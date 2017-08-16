@@ -20,10 +20,12 @@ import org.geotools.data.wmts.model.TileMatrix;
 import org.geotools.tile.impl.ZoomLevel;
 
 /**
+ * Represents a TileMatrix in WMTS.
+ *
  * @author ian
  * @author Emanuele Tajariol (etj at geo-solutions dot it)
  */
-public class WMTSZoomLevel extends ZoomLevel {
+class WMTSZoomLevel extends ZoomLevel {
 
     private final WMTSTileService service;
 
@@ -53,7 +55,7 @@ public class WMTSZoomLevel extends ZoomLevel {
     }
 
     public String toString() {
-        return "ZoomLevel " + getZoomLevel() + ": " + getMaxTilePerColNumber() + " rows "
-                + getMaxTilePerRowNumber() + " cols";
+        return "ZoomLevel [z:" + getZoomLevel() + " col: " + getMaxTilePerColNumber() + " rows:"
+                + getMaxTilePerRowNumber() + "]";
     }
 }

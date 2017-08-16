@@ -26,6 +26,7 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.httpclient.HttpClient;
@@ -39,25 +40,44 @@ import org.geotools.tile.TileService;
 import org.geotools.tile.impl.ZoomLevel;
 import org.geotools.util.ObjectCache;
 import org.geotools.util.ObjectCaches;
+import org.geotools.util.logging.Logging;
 
 /**
- *
  * Handle information about a WMTS tile
  *
  * @author ian
  * @author Emanuele Tajariol (etj at geo-solutions dot it)
  */
-public class WMTSTile extends Tile {
+class WMTSTile extends Tile {
 
-    public static final int DEFAULT_TILE_SIZE = 256;
+    protected static final Logger LOGGER = Logging.getLogger(WMTSTile.class.getPackage().getName());
+
+    public final static String WMTS_TILE_CACHE_SIZE_PROPERTY_NAME = "wmts.tile.cache.size";
 
     /**
+     * Cache for tiles.
+     *
      * Many WMTS tiles may be reloaded over and over, especially in a tiled
      * getMap request.
      *
-     * TODO: The size should be made configurable
-     **/
-    private static ObjectCache tileImages = ObjectCaches.create("soft", 150);
+     * You can set the cache size using the property WMTS_TILE_CACHE_SIZE_PROPERTY_NAME.
+     */
+    private static final ObjectCache tileImages;
+
+    static {
+        int cacheSize = 150;
+
+        String size = System.getProperty(WMTS_TILE_CACHE_SIZE_PROPERTY_NAME);
+        if (size != null) {
+            try {
+                cacheSize = Integer.parseUnsignedInt(size);
+            } catch (NumberFormatException ex) {
+                LOGGER.info(
+                        "Bad " + WMTS_TILE_CACHE_SIZE_PROPERTY_NAME + " property '" + size + "'");
+            }
+        }
+        tileImages = ObjectCaches.create("soft", cacheSize);
+    }
 
     private final WMTSServiceType type;
 
@@ -73,7 +93,9 @@ public class WMTSTile extends Tile {
      */
     public WMTSTile(WMTSTileIdentifier tileIdentifier, TileService service) {
         super(tileIdentifier, WMTSTileFactory.getExtentFromTileName(tileIdentifier, service),
-                DEFAULT_TILE_SIZE);
+                ((WMTSTileService) service)
+                        .getTileMatrix(tileIdentifier.getZoomLevel().getZoomLevel())
+                        .getTileWidth());
         this.service = (WMTSTileService) service;
         this.type = this.service.getType();
     }
@@ -87,7 +109,7 @@ public class WMTSTile extends Tile {
 
     @Override
     public URL getUrl() {
-        String baseUrl = new String(service.getTemplateURL());
+        String baseUrl = service.getTemplateURL();
 
         TileIdentifier tileIdentifier = getTileIdentifier();
         if (null == type) {
@@ -114,7 +136,8 @@ public class WMTSTile extends Tile {
         baseUrl = replaceToken(baseUrl, "time",
                 service.getDimensions().get(WMTSTileService.DIMENSION_TIME));
 
-        LOGGER.fine("Requesting tile " + tileIdentifier.getCode());
+        if (LOGGER.isLoggable(Level.FINE))
+            LOGGER.fine("Requesting tile " + tileIdentifier.getCode());
 
         try {
             return new URL(baseUrl);
@@ -128,7 +151,8 @@ public class WMTSTile extends Tile {
         String token = "{" + dimName + "}";
         int index = base.toLowerCase().indexOf(token.toLowerCase());
         if (index != -1) {
-            LOGGER.fine("Resolving dimension " + dimName + " --> " + dimValue);
+            if (LOGGER.isLoggable(Level.FINE))
+                LOGGER.fine("Resolving dimension " + dimName + " --> " + dimValue);
             return base.substring(0, index) + dimValue
                     + base.substring(index + dimName.length() + 2);
         } else {
@@ -150,23 +174,24 @@ public class WMTSTile extends Tile {
         params.put("style", service.getStyleName());
         params.put("format", service.getFormat());
         params.put("tilematrixset", service.getTileMatrixSetName());
-        // params.put("TileMatrix",
-        // service.getTileMatrixSetName()+":"+tileIdentifier.getZ());
-        // params.put("TileMatrix", tileIdentifier.getZ());
         params.put("TileMatrix", service.getTileMatrix(tileIdentifier.getZ()).getIdentifier());
         params.put("TileCol", tileIdentifier.getX());
         params.put("TileRow", tileIdentifier.getY());
 
         StringBuilder arguments = new StringBuilder();
-        for (String p : params.keySet()) {
+        for (String key : params.keySet()) {
+            Object val = params.get(key);
             try {
-                arguments.append(p).append("=")
-                        .append(URLEncoder.encode(params.get(p).toString(), "UTF-8"));
-                arguments.append('&');
+                if (val != null) {
+                    arguments.append(key).append("=");
+                    arguments.append(URLEncoder.encode(val.toString(), "UTF-8"));
+                    arguments.append('&');
+                }
             } catch (Exception e) {
-                // TODO: handle exception
+                LOGGER.warning("Could not encode param '" + key + "' with value '" + val + "'");
             }
         }
+
         try {
             return new URL(baseUrl + arguments.toString());
         } catch (MalformedURLException e) {
@@ -185,10 +210,12 @@ public class WMTSTile extends Tile {
         String tileKey = tile.getUrl().toString();
 
         if (!(tileImages.peek(tileKey) == null || tileImages.get(tileKey) == null)) {
-            LOGGER.log(Level.FINE, "Tile image already loaded for tile " + getId());
+            if (LOGGER.isLoggable(Level.FINE))
+                LOGGER.log(Level.FINE, "Tile image already loaded for tile " + getId());
             return (BufferedImage) tileImages.get(tileKey);
         } else {
-            LOGGER.log(Level.FINE, "Tile image not yet loaded for tile " + getId());
+            if (LOGGER.isLoggable(Level.FINE))
+                LOGGER.log(Level.FINE, "Tile image not yet loaded for tile " + getId());
             BufferedImage bi = doLoadImageTileImage(tile);
             tileImages.put(tileKey, bi);
             return bi;
@@ -211,8 +238,9 @@ public class WMTSTile extends Tile {
     private InputStream setupInputStream(URL url, Map<String, String> headers) throws IOException {
         HttpClient client = new HttpClient();
         String uri = url.toExternalForm();
-        uri = uri.replaceAll("\\{Time\\}", "20140101");
-        LOGGER.log(Level.FINE, "URL is " + uri);
+
+        if (LOGGER.isLoggable(Level.FINE))
+            LOGGER.log(Level.FINE, "URL is " + uri);
 
         HttpMethod get = new GetMethod(uri);
         if (MapUtils.isNotEmpty(headers)) {

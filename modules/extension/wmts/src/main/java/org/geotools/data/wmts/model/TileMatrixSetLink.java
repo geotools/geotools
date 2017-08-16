@@ -20,6 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Tells which TileMatrixSet a layer is using.
+ *
+ * Optionally defines a row/column subrange (TileMatrixLimits) for the layer in such TileMatrixSet.
+ *
  * @author ian
  * @author Emanuele Tajariol (etj at geo-solutions dot it)
  */

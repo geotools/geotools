@@ -17,6 +17,12 @@
 package org.geotools.data.wmts.model;
 
 /**
+ * Range subset for a layer in a TileMatrixSet.
+ *
+ * To inform the client about the valid range of the TileCol and Tile Row indices
+ * a layer definition can optionally use the tileMatrixSetLimits section that specifies a
+ * minimum and a maximum that are limits of these indices for each TileMatrix.
+ * 
  * @author ian
  * @author Emanuele Tajariol (etj at geo-solutions dot it)
  */

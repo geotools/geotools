@@ -47,11 +47,7 @@ public class WMTSMapLayer extends GridReaderLayer {
     static public final Logger LOGGER = org.geotools.util.logging.Logging
             .getLogger("org.geotools.map");
 
-    /**
-     * The default raster style
-     */
-    final static Style STYLE;
-    static {
+    private static Style createStyle() {
         StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
         RasterSymbolizer symbolizer = factory.createRasterSymbolizer();
 
@@ -61,20 +57,22 @@ public class WMTSMapLayer extends GridReaderLayer {
         final FeatureTypeStyle type = factory.createFeatureTypeStyle();
         type.rules().add(rule);
 
-        STYLE = factory.createStyle();
-        STYLE.featureTypeStyles().add(type);
+        Style style = factory.createStyle();
+        style.featureTypeStyles().add(type);
+
+        return style;
     }
 
     private String rawTime;
 
     /**
-     * Builds a new WMS layer
+     * Builds a new WMTS map layer
      *
      * @param wmts
      * @param layer
      */
     public WMTSMapLayer(WebMapTileServer wmts, Layer layer) {
-        super(new WMTSCoverageReader(wmts, layer), STYLE);
+        super(new WMTSCoverageReader(wmts, layer), createStyle());
     }
 
     public WMTSCoverageReader getReader() {
@@ -82,15 +80,15 @@ public class WMTSMapLayer extends GridReaderLayer {
     }
 
     public synchronized ReferencedEnvelope getBounds() {
-        WMTSCoverageReader wmsReader = getReader();
-        if (wmsReader != null) {
-            return wmsReader.bounds;
+        WMTSCoverageReader wmtsReader = getReader();
+        if (wmtsReader != null) {
+            return wmtsReader.bounds;
         }
         return super.getBounds();
     }
 
     /**
-     * Returns the {@link WebMapServer} used by this layer
+     * Returns the {@link WebMapTileServer} used by this layer
      *
      * @return
      */
@@ -99,7 +97,7 @@ public class WMTSMapLayer extends GridReaderLayer {
     }
 
     /**
-     * Returns the CRS used to make requests to the remote WMS
+     * Returns the CRS used to make requests to the remote WMTS
      *
      * @return
      */
@@ -117,11 +115,11 @@ public class WMTSMapLayer extends GridReaderLayer {
     }
 
     /**
-     * Returns true if the specified CRS can be used directly to perform WMS
+     * Returns true if the specified CRS can be used directly to perform WMTS
      * requests.
      *
      * Natively supported crs will provide the best rendering quality as no
-     * client side reprojection is necessary, the image coming from the WMS
+     * client side reprojection is necessary, the tiles coming from the WMTS
      * server will be used as-is
      *
      * @param crs

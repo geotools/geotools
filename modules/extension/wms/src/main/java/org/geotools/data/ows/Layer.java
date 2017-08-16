@@ -597,8 +597,8 @@ public class Layer implements Comparable<Layer> {
             if( !srsName.equals("CRS:84")){
                 throw new IllegalStateException("Layer LatLonBoundingBox srsName required to be null or CRS:84");
             }
-        }else {
-            latLonBoundingBox.setSRSName("CRS:84",false);;
+        } else {
+            latLonBoundingBox.setSRSName("CRS:84",false);
         }
         this.latLonBoundingBox = latLonBoundingBox;
     }

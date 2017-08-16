@@ -95,10 +95,8 @@ public class ScaleZoomLevelMatcher {
             double scale, TileService wmtSource) throws Exception {
 
         CoordinateReferenceSystem crsMap = mapExtentMapCrs.getCoordinateReferenceSystem();
-        CoordinateReferenceSystem crsTiles = wmtSource.getTileCrs(); // the CRS
-        // used for
-        // the tile
-        // cutting
+        // the CRS used for the tile cutting
+        CoordinateReferenceSystem crsTiles = wmtSource.getTileCrs();
 
         // Transformation: MapCrs -> TileCrs (mostly WGS_84)
         MathTransform transformMapToTileCrs = CRS.findMathTransform(crsMap, crsTiles);

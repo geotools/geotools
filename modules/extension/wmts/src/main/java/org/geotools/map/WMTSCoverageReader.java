@@ -152,7 +152,8 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
                     "WGS84(DD)" }) {
                 if (owsLayer.getSrs().contains(preferred)) {
                     srsName = preferred;
-                    LOGGER.info("defaulting CRS to: " + srsName);
+                    if (LOGGER.isLoggable(Level.INFO))
+                        LOGGER.info("defaulting CRS to: " + srsName);
                 }
             }
 
@@ -164,7 +165,9 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
                         // next
                         CRS.decode(srs);
                         srsName = srs;
-                        LOGGER.info("setting CRS: " + srsName);
+
+                        if (LOGGER.isLoggable(Level.INFO))
+                            LOGGER.info("setting CRS: " + srsName);
                         break;
                     } catch (Exception e) {
                         // it's fine, we could not decode that code
@@ -175,20 +178,22 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
             if (srsName == null) {
                 if (owsLayer.getSrs().isEmpty()) {
                     // force 4326
+                    if (LOGGER.isLoggable(Level.INFO))
+                        LOGGER.info("adding default CRS to: " + srsName);
                     srsName = "EPSG:4326";
-                    LOGGER.info("adding default CRS to: " + srsName);
                     owsLayer.getSrs().add(srsName);
                 } else {
                     // if not even that works we just take the first...
                     srsName = owsLayer.getSrs().iterator().next();
-                    LOGGER.info("guessing CRS to: " + srsName);
+                    if (LOGGER.isLoggable(Level.INFO))
+                        LOGGER.info("guessing CRS to: " + srsName);
                 }
             }
 
             validSRS = owsLayer.getSrs();
 
         } else {
-            LOGGER.info("TODO: check if this code path is ever run");
+            LOGGER.severe("TODO: check if this code path is ever run");
 
             Set<String> intersection = new HashSet<>(validSRS);
             intersection.retainAll(owsLayer.getSrs());
@@ -198,7 +203,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
                 if (intersection.isEmpty()) {
                     throw new IllegalArgumentException("The layer being appended does "
                             + "not have any SRS in common with the ones already "
-                            + "included in the WMS request, cannot be merged");
+                            + "included in the  request, cannot be merged");
                 } else if (intersection.contains("EPSG:4326")) {
                     srsName = "EPSG:4326";
                 } else {
@@ -213,7 +218,8 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
         try {
             crs = CRS.decode(srsName);
         } catch (Exception e) {
-            LOGGER.log(Level.FINE, "Bounds unavailable for layer" + owsLayer);
+            if (LOGGER.isLoggable(Level.INFO))
+                LOGGER.log(Level.INFO, "Bounds unavailable for layer" + owsLayer);
         }
         this.crs = crs;
         this.requestCRS = crs;
@@ -234,12 +240,14 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
         for (Dimension dim : layer.getLayerDimensions()) {
             if ("time".equalsIgnoreCase(dim.getName())) {
                 time = dim.getExtent().getDefaultValue();
-                LOGGER.fine("TIME dimension found, default is " + time);
+                if (LOGGER.isLoggable(Level.FINE))
+                    LOGGER.fine("TIME dimension found, default is " + time);
                 break;
             }
         }
         if (requestedTime != null) {
-            LOGGER.fine("TIME dimension requested: " + requestedTime);
+            if (LOGGER.isLoggable(Level.FINE))
+                LOGGER.fine("TIME dimension requested: " + requestedTime);
             time = requestedTime;
         }
 
@@ -338,11 +346,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
             inPoints[2] = tileEnvViewport.getMaxX();
             inPoints[1] = tileEnvViewport.getMaxY();
             worldToImageTransform.transform(inPoints, 0, outPoints, 0, 2);
-            /*
-             * for(int i=0;i<4;i+=2) {
-             * System.out.println(inPoints[i]+","+inPoints[i+1]+" to "+outPoints
-             * [i]+","+outPoints[i+1]); }
-             */
+
             renderTile(tile, g2d, outPoints);
 
             if (debug) {
@@ -362,7 +366,8 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
 
         BufferedImage img = getTileImage(tile);
         if (img == null) {
-            LOGGER.fine("couldn't draw " + tile.getId());
+            if (LOGGER.isLoggable(Level.INFO))
+                LOGGER.info("couldn't draw " + tile.getId());
             return;
         }
         g2d.drawImage(img, (int) points[0], (int) points[1], (int) Math.ceil(points[2] - points[0]),
@@ -370,9 +375,7 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
     }
 
     protected BufferedImage getTileImage(Tile tile) {
-
         return tile.getBufferedImage();
-
     }
 
     @Override
@@ -443,8 +446,6 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
             throw new IOException("Could not decode request SRS " + requestSrs);
         }
 
-        ReferencedEnvelope requestEnvelope = gridEnvelope;
-
         this.width = width;
         this.height = height;
 
@@ -462,10 +463,12 @@ public class WMTSCoverageReader extends AbstractGridCoverage2DReader {
      * @return
      */
     public void updateBounds() {
-        LOGGER.entering("WMTSCoverage", "updatingBounds");
+        if (LOGGER.isLoggable(Level.FINER))
+            LOGGER.entering("WMTSCoverage", "updatingBounds");
         GeneralEnvelope envelope = layer.getEnvelope(requestCRS);
         ReferencedEnvelope result = reference(envelope);
-        LOGGER.info("setting bounds to " + result);
+        if (LOGGER.isLoggable(Level.FINE))
+            LOGGER.fine("setting bounds to " + result);
 
         this.bounds = result;
         this.originalEnvelope = new GeneralEnvelope(result);

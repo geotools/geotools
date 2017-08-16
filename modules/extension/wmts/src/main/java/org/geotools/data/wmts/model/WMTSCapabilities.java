@@ -35,13 +35,14 @@ import org.geotools.data.ows.Layer;
 import org.geotools.data.ows.OperationType;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.cs.AxisDirection;
 import org.opengis.referencing.operation.TransformException;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
+import java.util.logging.Level;
 
 import net.opengis.ows11.WGS84BoundingBoxType;
 import net.opengis.ows11.AllowedValuesType;
@@ -66,12 +67,13 @@ import net.opengis.wmts.v_1.TileMatrixType;
 import net.opengis.wmts.v_1.URLTemplateType;
 import org.geotools.data.wms.xml.Dimension;
 import org.geotools.data.wms.xml.Extent;
+import org.geotools.ows.ServiceException;
 
 /**
  * Represents a base object for a WMTS getCapabilities response.
  *
  * (Based on existing work by rgould for WMS service)
- * 
+ *
  * @author ian
  * @author Emanuele Tajariol (etj at geo-solutions dot it)
  *
@@ -80,16 +82,6 @@ public class WMTSCapabilities extends Capabilities {
 
     static public final Logger LOGGER = org.geotools.util.logging.Logging
             .getLogger("org.geotools.data.wmts");
-
-    private static CoordinateReferenceSystem CRS84;
-    static {
-        try {
-            CRS84 = CRS.decode("CRS:84");
-        } catch (FactoryException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
 
     private WMTSRequest request;
 
@@ -112,148 +104,31 @@ public class WMTSCapabilities extends Capabilities {
     /**
      * @param object
      */
-    public WMTSCapabilities(CapabilitiesType capabilities) {
+    public WMTSCapabilities(CapabilitiesType capabilities) throws ServiceException {
         caps = capabilities;
         setService(new WMTSService(caps.getServiceIdentification()));
         setVersion(caps.getServiceIdentification().getServiceTypeVersion().get(0).toString());
         ContentsType contents = caps.getContents();
 
+        // Parse layers
         for (Object l : contents.getDatasetDescriptionSummary()) {
 
             if (l instanceof LayerType) {
                 LayerType layerType = (LayerType) l;
-
-                String title = ((LanguageStringType) layerType.getTitle().get(0)).getValue();
-
-                WMTSLayer layer = new WMTSLayer(title);
-                layer.setName(layerType.getIdentifier().getValue());
-
-                EList<TileMatrixSetLinkType> tmsLinks = layerType.getTileMatrixSetLink();
-                for (TileMatrixSetLinkType linkType : tmsLinks) {
-                    TileMatrixSetLink link = new TileMatrixSetLink();
-                    link.setIdentifier(linkType.getTileMatrixSet());
-                    TileMatrixSetLimitsType limits = linkType.getTileMatrixSetLimits();
-                    if (limits != null) {
-                        for (TileMatrixLimitsType tmlt : limits.getTileMatrixLimits()) {
-                            TileMatrixLimits tml = new TileMatrixLimits();
-                            tml.setTileMatix(tmlt.getTileMatrix());
-                            tml.setMinCol(tmlt.getMinTileCol().longValue());
-                            tml.setMaxCol(tmlt.getMaxTileCol().longValue());
-                            tml.setMinRow(tmlt.getMinTileRow().longValue());
-                            tml.setMaxRow(tmlt.getMaxTileRow().longValue());
-                            link.addLimit(tml);
-                        }
-
-                    }
-                    layer.addTileMatrixLink(link);
-                }
-
-                layer.getFormats().addAll(layerType.getFormat());
-
-                layer.getInfoFormats().addAll(layerType.getInfoFormat());
-
-                @SuppressWarnings("unchecked")
-                EList<BoundingBoxType> bboxes = layerType.getBoundingBox();
-                Map<String, CRSEnvelope> boundingBoxes = new HashMap<>();
-                for (BoundingBoxType bbox : bboxes) {
-                    boundingBoxes.put(bbox.getCrs(), bbox2bbox(bbox));
-                }
-
-                WGS84BoundingBoxType wgsBBox = null;
-                if (!layerType.getWGS84BoundingBox().isEmpty()) {
-                    wgsBBox = (WGS84BoundingBoxType) layerType.getWGS84BoundingBox().get(0);
-                }
-                if (wgsBBox != null) {
-                    int y;
-                    int x;
-                    // in WMTS WGS84 is in lon,lat order - see
-                    // https://portal.opengeospatial.org/services/srv_public_issues.php?call=viewIssue&issue_id=898
-                    if (CRS.getAxisOrder(CRS84).equals(AxisDirection.NORTH_EAST)) {
-                        x = 1;
-                        y = 0;
-                    } else {
-                        x = 0;
-                        y = 1;
-                    }
-                    boundingBoxes.put("CRS:84",
-                            new CRSEnvelope("CRS:84",
-                                    ((Double) wgsBBox.getLowerCorner().get(x)).doubleValue(),
-                                    ((Double) wgsBBox.getLowerCorner().get(y)).doubleValue(),
-                                    ((Double) wgsBBox.getUpperCorner().get(x)).doubleValue(),
-                                    ((Double) wgsBBox.getUpperCorner().get(y)).doubleValue()));
-
-                    layer.setLatLonBoundingBox(boundingBoxes.get("CRS:84"));
-
-                }
-                layer.setBoundingBoxes(boundingBoxes);
-
-                EList<URLTemplateType> resourceURL = layerType.getResourceURL();
-                if (resourceURL != null && !resourceURL.isEmpty()) {
-                    for (URLTemplateType resource : resourceURL) {
-                        String template = resourceURL.get(0).getTemplate();
-                        String format = resourceURL.get(0).getFormat();
-                        // layer.formats.add(format);
-
-                        layer.putResourceURL(format, template);
-                    }
-                }
-
-                EList<DimensionType> dimensionList = layerType.getDimension();
-                if (dimensionList != null && !dimensionList.isEmpty()) {
-                    for (DimensionType dimensionType : dimensionList) {
-                        CodeType identifierType = dimensionType.getIdentifier();
-                        String dimIdentifier = identifierType.getValue();
-                        String dimDefault = dimensionType.getDefault();
-
-                        DomainMetadataType uom = dimensionType.getUOM();
-                        String dimUom = uom == null ? "N/A" : uom.getValue();
-
-                        Dimension d = new Dimension(dimIdentifier, dimUom);
-                        d.setUnitSymbol(dimensionType.getUnitSymbol());
-                        d.setCurrent(dimensionType.isCurrent());
-
-                        // TODO: improve values encoding
-                        String dimValues = String.join(",", dimensionType.getValue());
-
-                        Extent e = new Extent(dimIdentifier, dimDefault, false, false, dimValues);
-                        d.setExtent(e);
-
-                        layer.getLayerDimensions().add(d);
-                    }
-                }
-
+                WMTSLayer layer = parseLayer(layerType);
                 layers.add(layer);
                 layerMap.put(layer.getName(), layer);
+
+            } else {
+                if (LOGGER.isLoggable(Level.INFO)) {
+                    LOGGER.info("Unknown object " + l);
+                }
             }
         }
 
+        // Parse TileMatrixSets
         for (TileMatrixSetType tm : contents.getTileMatrixSet()) {
-            TileMatrixSet matrixSet = new TileMatrixSet();
-            matrixSet.setCRS(tm.getSupportedCRS());
-            matrixSet.setIdentifier(tm.getIdentifier().getValue());
-            if (tm.getBoundingBox() != null) {
-                matrixSet.setBbox(bbox2bbox(tm.getBoundingBox()));
-            }
-
-            for (TileMatrixType mat : tm.getTileMatrix()) {
-                TileMatrix matrix = new TileMatrix();
-
-                matrix.setIdentifier(mat.getIdentifier().getValue());
-                matrix.setDenominator(mat.getScaleDenominator());
-                matrix.setMatrixHeight(mat.getMatrixHeight().intValue());
-                matrix.setMatrixWidth(mat.getMatrixWidth().intValue());
-                matrix.setTileHeight(mat.getTileHeight().intValue());
-                matrix.setTileWidth(mat.getTileWidth().intValue());
-                matrix.setParent(matrixSet);
-                if (matrix.getCrs() == null) {
-                    throw new RuntimeException("unable to create CRS " + matrixSet.getCrs());
-                }
-                List<Double> c = mat.getTopLeftCorner();
-
-                matrix.setTopLeft(gf.createPoint(
-                        new Coordinate(c.get(0).doubleValue(), c.get(1).doubleValue())));
-                matrixSet.addMatrix(matrix);
-            }
+            TileMatrixSet matrixSet = parseMatrixSet(tm);
             matrixes.add(matrixSet);
             matrixSetMap.put(matrixSet.getIdentifier(), matrixSet);
         }
@@ -264,18 +139,14 @@ public class WMTSCapabilities extends Capabilities {
         Map<String, CoordinateReferenceSystem> names = new HashMap<>();
         for (TileMatrixSet tms : matrixes) {
 
-            try {
-                CoordinateReferenceSystem coordinateReferenceSystem = tms
-                        .getCoordinateReferenceSystem();
-                crs.add(coordinateReferenceSystem);
-                names.put(tms.getIdentifier(), coordinateReferenceSystem);
-            } catch (FactoryException e) {
-                // LOGGER.log(Level.FINER, e.getMessage(), e);
-            }
+            CoordinateReferenceSystem refSystem = tms.getCoordinateReferenceSystem();
+            crs.add(refSystem);
+            names.put(tms.getIdentifier(), refSystem);
 
             srs.add(tms.getCrs());
         }
 
+        // Fill in some layers info from the linked MatrixSets
         for (Layer l : layers) {
             WMTSLayer wmtsLayer = (WMTSLayer) l;
             Map<String, TileMatrixSetLink> tileMatrixLinks = wmtsLayer.getTileMatrixLinks();
@@ -294,13 +165,16 @@ public class WMTSCapabilities extends Capabilities {
                         // TODO: refer a bbox which is natively wgs84
                         ReferencedEnvelope re = new ReferencedEnvelope(tms.getBbox());
                         try {
-                            ReferencedEnvelope wgs84re = re.transform(CRS84, true);
+                            ReferencedEnvelope wgs84re = re.transform(DefaultGeographicCRS.WGS84,
+                                    true);
                             wmtsLayer.setLatLonBoundingBox(new CRSEnvelope(wgs84re));
                             break;
                         } catch (Exception ex) {
                             // the RE can't be projected on WGS84,
                             // so let's try another one
-                            LOGGER.fine("Can't use " + tms.getIdentifier() + " for bbox");
+                            if (LOGGER.isLoggable(Level.FINE))
+                                LOGGER.fine("Can't use " + tms.getIdentifier() + " for bbox: "
+                                        + ex.getMessage());
                             continue;
                         }
                     }
@@ -308,9 +182,8 @@ public class WMTSCapabilities extends Capabilities {
 
                 if (wmtsLayer.getLatLonBoundingBox() == null) {
                     // We did not find any good bbox
-                    LOGGER.warning("No good BBOX found for layer " + l.getName());
-                    // todo: find a proper exception type
-                    throw new RuntimeException("No good BBOX found for layer " + l.getName());
+                    LOGGER.warning("No good Bbox found for layer " + l.getName());
+                    throw new ServiceException("No good Bbox found for layer " + l.getName());
                 }
             }
 
@@ -324,7 +197,9 @@ public class WMTSCapabilities extends Capabilities {
                 String crsCode = tmsCRS.getName().getCode();
 
                 if (wmtsLayer.getBoundingBoxes().containsKey(crsCode)) {
-                    LOGGER.fine("Bbox for " + crsCode + " already exists for layer " + l.getName());
+                    if (LOGGER.isLoggable(Level.FINE))
+                        LOGGER.fine(
+                                "Bbox for " + crsCode + " already exists for layer " + l.getName());
                     continue;
                 }
 
@@ -336,18 +211,14 @@ public class WMTSCapabilities extends Capabilities {
                 // add bboxes
                 try {
                     // make safe to CRS bounds
-                    // ReferencedEnvelope safeEnv = wgs84Env.intersection(
-                    // org.geotools.tile.impl.wmts.WMTSService.getAcceptableExtent(tmsCRS));
-                    // wmtsLayer.getBoundingBoxes().put(tmsCRS.getName().getCode(),
-                    // new CRSEnvelope(safeEnv.transform(tmsCRS, true)));
-
                     // making bbox safe may restrict it too much: let's trust in
                     // the declaration
                     wmtsLayer.getBoundingBoxes().put(crsCode,
                             new CRSEnvelope(wgs84Env.transform(tmsCRS, true)));
                     wmtsLayer.addSRS(tmsCRS);
                 } catch (TransformException | FactoryException e) {
-                    LOGGER.info("Not adding CRS " + crsCode + " for layer " + l.getName());
+                    if (LOGGER.isLoggable(Level.INFO))
+                        LOGGER.info("Not adding CRS " + crsCode + " for layer " + l.getName());
                 }
             }
         }
@@ -389,7 +260,8 @@ public class WMTSCapabilities extends Capabilities {
                                 }
                             }
                         } catch (MalformedURLException e) {
-                            e.printStackTrace();
+                            throw new ServiceException(
+                                    "Error parsing WMTS operation URL: " + e.getMessage());
                         }
                     }
                     EList posts = dcp.getHTTP().getPost();
@@ -413,7 +285,8 @@ public class WMTSCapabilities extends Capabilities {
                                 }
                             }
                         } catch (MalformedURLException e) {
-                            e.printStackTrace();
+                            throw new ServiceException(
+                                    "Error parsing WMTS operation URL: " + e.getMessage());
                         }
                     }
                 }
@@ -426,6 +299,128 @@ public class WMTSCapabilities extends Capabilities {
             }
         }
 
+    }
+
+    private TileMatrixSet parseMatrixSet(TileMatrixSetType tm)
+            throws RuntimeException, IllegalArgumentException, ServiceException {
+        TileMatrixSet matrixSet = new TileMatrixSet();
+        matrixSet.setCRS(tm.getSupportedCRS());
+        matrixSet.setIdentifier(tm.getIdentifier().getValue());
+        if (tm.getBoundingBox() != null) {
+            matrixSet.setBbox(bbox2bbox(tm.getBoundingBox()));
+        }
+        for (TileMatrixType mat : tm.getTileMatrix()) {
+            TileMatrix matrix = new TileMatrix();
+
+            matrix.setIdentifier(mat.getIdentifier().getValue());
+            matrix.setDenominator(mat.getScaleDenominator());
+            matrix.setMatrixHeight(mat.getMatrixHeight().intValue());
+            matrix.setMatrixWidth(mat.getMatrixWidth().intValue());
+            matrix.setTileHeight(mat.getTileHeight().intValue());
+            matrix.setTileWidth(mat.getTileWidth().intValue());
+            matrix.setParent(matrixSet);
+            if (matrix.getCrs() == null) {
+                throw new ServiceException("MatrixSet " + tm.getIdentifier().getValue()
+                        + ": unable to create CRS " + matrixSet.getCrs());
+            }
+            List<Double> c = mat.getTopLeftCorner();
+
+            matrix.setTopLeft(gf.createPoint(new Coordinate(c.get(0), c.get(1))));
+            matrixSet.addMatrix(matrix);
+        }
+        return matrixSet;
+    }
+
+    private WMTSLayer parseLayer(LayerType layerType) {
+        String title = ((LanguageStringType) layerType.getTitle().get(0)).getValue();
+        WMTSLayer layer = new WMTSLayer(title);
+        layer.setName(layerType.getIdentifier().getValue());
+        EList<TileMatrixSetLinkType> tmsLinks = layerType.getTileMatrixSetLink();
+        for (TileMatrixSetLinkType linkType : tmsLinks) {
+            TileMatrixSetLink link = new TileMatrixSetLink();
+            link.setIdentifier(linkType.getTileMatrixSet());
+            TileMatrixSetLimitsType limits = linkType.getTileMatrixSetLimits();
+            if (limits != null) {
+                for (TileMatrixLimitsType tmlt : limits.getTileMatrixLimits()) {
+                    TileMatrixLimits tml = new TileMatrixLimits();
+                    tml.setTileMatix(tmlt.getTileMatrix());
+                    tml.setMinCol(tmlt.getMinTileCol().longValue());
+                    tml.setMaxCol(tmlt.getMaxTileCol().longValue());
+                    tml.setMinRow(tmlt.getMinTileRow().longValue());
+                    tml.setMaxRow(tmlt.getMaxTileRow().longValue());
+                    link.addLimit(tml);
+                }
+
+            }
+            layer.addTileMatrixLink(link);
+        }
+        layer.getFormats().addAll(layerType.getFormat());
+        layer.getInfoFormats().addAll(layerType.getInfoFormat());
+        @SuppressWarnings("unchecked")
+        EList<BoundingBoxType> bboxes = layerType.getBoundingBox();
+        Map<String, CRSEnvelope> boundingBoxes = new HashMap<>();
+        for (BoundingBoxType bbox : bboxes) {
+            boundingBoxes.put(bbox.getCrs(), bbox2bbox(bbox));
+        }
+        WGS84BoundingBoxType wgsBBox = null;
+        if (!layerType.getWGS84BoundingBox().isEmpty()) {
+            wgsBBox = (WGS84BoundingBoxType) layerType.getWGS84BoundingBox().get(0);
+        }
+        if (wgsBBox != null) {
+            int y;
+            int x;
+            // in WMTS WGS84 is in lon,lat order - see
+            // https://portal.opengeospatial.org/services/srv_public_issues.php?call=viewIssue&issue_id=898
+            if (CRS.getAxisOrder(DefaultGeographicCRS.WGS84).equals(CRS.AxisOrder.NORTH_EAST)) {
+                x = 1;
+                y = 0;
+            } else {
+                x = 0;
+                y = 1;
+            }
+            boundingBoxes.put("CRS:84",
+                    new CRSEnvelope("CRS:84", (Double) wgsBBox.getLowerCorner().get(x),
+                            (Double) wgsBBox.getLowerCorner().get(y),
+                            (Double) wgsBBox.getUpperCorner().get(x),
+                            (Double) wgsBBox.getUpperCorner().get(y)));
+
+            layer.setLatLonBoundingBox(boundingBoxes.get("CRS:84"));
+
+        }
+        layer.setBoundingBoxes(boundingBoxes);
+        EList<URLTemplateType> resourceURL = layerType.getResourceURL();
+        if (resourceURL != null && !resourceURL.isEmpty()) {
+            for (URLTemplateType resource : resourceURL) {
+                String template = resource.getTemplate();
+                String format = resource.getFormat();
+
+                layer.putResourceURL(format, template);
+            }
+        }
+        EList<DimensionType> dimensionList = layerType.getDimension();
+        if (dimensionList != null && !dimensionList.isEmpty()) {
+            for (DimensionType dimensionType : dimensionList) {
+                CodeType identifierType = dimensionType.getIdentifier();
+                String dimIdentifier = identifierType.getValue();
+                String dimDefault = dimensionType.getDefault();
+
+                DomainMetadataType uom = dimensionType.getUOM();
+                String dimUom = uom == null ? "N/A" : uom.getValue();
+
+                Dimension d = new Dimension(dimIdentifier, dimUom);
+                d.setUnitSymbol(dimensionType.getUnitSymbol());
+                d.setCurrent(dimensionType.isCurrent());
+
+                // TODO: improve values encoding
+                String dimValues = String.join(",", dimensionType.getValue());
+
+                Extent e = new Extent(dimIdentifier, dimDefault, false, false, dimValues);
+                d.setExtent(e);
+
+                layer.getLayerDimensions().add(d);
+            }
+        }
+        return layer;
     }
 
     /**
@@ -511,9 +506,8 @@ public class WMTSCapabilities extends Capabilities {
 
     public static CRSEnvelope bbox2bbox(BoundingBoxType bbox) {
 
-        return new CRSEnvelope(bbox.getCrs(), ((Double) bbox.getLowerCorner().get(0)).doubleValue(),
-                ((Double) bbox.getLowerCorner().get(1)).doubleValue(),
-                ((Double) bbox.getUpperCorner().get(0)).doubleValue(),
-                ((Double) bbox.getUpperCorner().get(1)).doubleValue());
+        return new CRSEnvelope(bbox.getCrs(), (Double) bbox.getLowerCorner().get(0),
+                (Double) bbox.getLowerCorner().get(1), (Double) bbox.getUpperCorner().get(0),
+                (Double) bbox.getUpperCorner().get(1));
     }
 }

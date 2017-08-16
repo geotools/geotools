@@ -18,6 +18,8 @@ package org.geotools.data.wmts.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.geotools.data.ows.CRSEnvelope;
 
 import org.geotools.referencing.CRS;
@@ -25,6 +27,16 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
+/**
+ * The geometry of the tiled space.
+ *
+ * In a tiled map layer, the representation of the space is constrained in a discrete set of
+ * parameters. A tile matrix set defines these parameters. Each tile matrix set contains one
+ * or more "tile matrices" defining the tiles that are available for that coordinate reference
+ * system.
+ *
+ * @author Emanuele Tajariol (etj at geo-solutions dot it)
+ */
 public class TileMatrixSet {
     private static final CoordinateReferenceSystem WEB_MERCATOR_CRS;
 
@@ -34,37 +46,38 @@ public class TileMatrixSet {
         try {
             tmpCrs = CRS.decode("EPSG:3857");
         } catch (FactoryException e) {
-            /*LOGGER.log(Level.SEVERE,
-                    "Failed to create Web Mercator CRS EPSG:3857", e);*/
             throw new RuntimeException(e);
         }
         WEB_MERCATOR_CRS = tmpCrs;
-
     }
-
-    final public static String OWS = "http://www.opengis.net/ows/1.1";
 
     private String identifier;
 
     private String crs;
 
+    CoordinateReferenceSystem coordinateReferenceSystem;
+
     private CRSEnvelope bbox;
 
     private ArrayList<TileMatrix> matrices = new ArrayList<>();
 
-    public void setIdentifier(String textContent) {
-        this.identifier = textContent;
-
+    public void setIdentifier(String id) {
+        this.identifier = id;
     }
 
-    public void setCRS(String textContent) {
-        this.crs = textContent;
+    public void setCRS(String crs) throws IllegalArgumentException {
+        try {
+            this.coordinateReferenceSystem = parseCoordinateReferenceSystem(crs);
+        } catch (Exception ex) {
+            throw new IllegalArgumentException("Can't parse crs " + crs + ":" + ex.getMessage(),
+                    ex);
+        }
 
+        this.crs = crs;
     }
 
-    public void addMatrix(TileMatrix processTM) {
-        matrices.add(processTM);
-
+    public void addMatrix(TileMatrix tileMatrix) {
+        matrices.add(tileMatrix);
     }
 
     /**
@@ -74,10 +87,18 @@ public class TileMatrixSet {
         return crs;
     }
 
-    public CoordinateReferenceSystem getCoordinateReferenceSystem()
+    public CoordinateReferenceSystem getCoordinateReferenceSystem() {
+        return coordinateReferenceSystem;
+    }
+
+    /**
+     * Try and parse the crs string.
+     *
+     * Also takes care of including deprecated codes like EPSG:900913 replacing them with EPSG:3857.
+     */
+    protected CoordinateReferenceSystem parseCoordinateReferenceSystem(String crs)
             throws NoSuchAuthorityCodeException, FactoryException {
 
-        //TODO: Kill who ever is still using this hack!
         if (crs.equalsIgnoreCase("epsg:900913")
                 || crs.equalsIgnoreCase("urn:ogc:def:crs:EPSG::900913")) {
             return WEB_MERCATOR_CRS;
@@ -125,7 +146,7 @@ public class TileMatrixSet {
     }
 
     /**
-     * @return
+     * @return the number of levels in this MatrixSet
      */
     public int size() {
         return matrices.size();

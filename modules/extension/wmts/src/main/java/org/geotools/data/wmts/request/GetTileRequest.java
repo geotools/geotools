@@ -30,8 +30,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 /**
  * Construct a WMTS getTile request.
  *
- * DOC TODO
- *
  * (Based on existing work by rgould for WMS service)
  * 
  * @author ian

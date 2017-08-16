@@ -16,28 +16,13 @@
  */
 package org.geotools.data.wmts.client;
 
-import org.geotools.data.wmts.model.TileMatrixLimits;
 import org.geotools.data.wmts.model.WMTSServiceType;
 import org.geotools.data.wmts.model.TileMatrixSet;
 import org.geotools.data.wmts.model.TileMatrix;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpException;
-import org.apache.commons.httpclient.HttpMethod;
-import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -45,13 +30,11 @@ import org.geotools.tile.Tile;
 import org.geotools.tile.TileFactory;
 import org.geotools.tile.TileService;
 import org.geotools.tile.impl.ScaleZoomLevelMatcher;
-import org.geotools.tile.impl.ZoomLevel;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.cs.AxisDirection;
 import org.opengis.referencing.operation.TransformException;
-import org.xml.sax.SAXException;
 
 import com.vividsolutions.jts.geom.Envelope;
 import java.io.File;
@@ -76,10 +59,6 @@ public class WMTSTileService extends TileService {
 
     protected static final Logger LOGGER = Logging
             .getLogger(WMTSTileService.class.getPackage().getName());
-
-    private static final String OWS = "http://www.opengis.net/ows/1.1";
-
-    private static final String XLINK = "http://www.w3.org/1999/xlink";
 
     public static final String DIMENSION_TIME = "time";
 
@@ -109,8 +88,6 @@ public class WMTSTileService extends TileService {
 
     private String format = "image/png";
 
-    private List<TileMatrixLimits> limits;
-
     private File cachedGetCapabilities = null;
 
     private Map<String, String> dimensions = new HashMap<>();
@@ -137,8 +114,7 @@ public class WMTSTileService extends TileService {
 
         this.layer = layer;
         this.tileMatrixSetName = tileMatrixSet.getIdentifier();
-        TileMatrixSetLink tmsLink = layer.getTileMatrixLinks().get(tileMatrixSetName);
-        this.limits = tmsLink.getLimits();
+
         this.envelope = new ReferencedEnvelope(layer.getLatLonBoundingBox());
 
         this.scaleList = buildScaleList(tileMatrixSet);
@@ -161,44 +137,35 @@ public class WMTSTileService extends TileService {
         return scaleList;
     }
 
-    @Override
-    public Set<Tile> findTilesInExtent(ReferencedEnvelope requestedExtent, int scaleFactor,
-            boolean recommendedZoomLevel, int maxNumberOfTiles) {
-
-        Set<Tile> ret = Collections.emptySet();
+    protected ReferencedEnvelope getReqExtentInTileCrs(ReferencedEnvelope requestedExtent) {
 
         CoordinateReferenceSystem reqCrs = requestedExtent.getCoordinateReferenceSystem();
 
-        LOGGER.fine("orig request bbox :" + requestedExtent + " "
-                + reqCrs.getCoordinateSystem().getAxis(0).getDirection() + " (" + reqCrs.getName()
-                + ")");
-        System.out.println("orig request bbox :" + requestedExtent + " "
-                + reqCrs.getCoordinateSystem().getAxis(0).getDirection() + " (" + reqCrs.getName()
-                + ")");
-        // ReferencedEnvelope reqExtentInTileCrs = createSafeEnvelopeInTileCRS(
-        // _mapExtent ) ;
+        if (LOGGER.isLoggable(Level.FINE)) {
+            LOGGER.fine("orig request bbox :" + requestedExtent + " "
+                    + reqCrs.getCoordinateSystem().getAxis(0).getDirection() + " ("
+                    + reqCrs.getName() + ")");
+        }
 
         ReferencedEnvelope reqExtentInTileCrs = null;
         for (CRSEnvelope layerEnv : layer.getLayerBoundingBoxes()) {
             if (CRS.equalsIgnoreMetadata(reqCrs, layerEnv.getCoordinateReferenceSystem())) {
                 // crop req extent according to layer bbox
                 requestedExtent = requestedExtent.intersection(new ReferencedEnvelope(layerEnv));
-                System.out.println("cropping request bbox :" + requestedExtent);
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine("Layer CRS match: cropping request bbox :" + requestedExtent);
+                }
                 break;
             } else {
-                System.out.println("... no crs match: " + "req:" + reqCrs.getName() + " cov:"
-                        + layerEnv.getCoordinateReferenceSystem().getName());
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine("Layer CRS not matching: " + "req:" + reqCrs.getName() + " cov:"
+                            + layerEnv.getCoordinateReferenceSystem().getName());
+                }
             }
         }
 
-        CoordinateReferenceSystem tileCrs;
-        try { // TODO: the matrixset should provide an already decoded CRS
-            tileCrs = this.matrixSet.getCoordinateReferenceSystem();
-            System.out.println("tile crs orig :" + tileCrs.getName());
-        } catch (FactoryException ex) {
-            LOGGER.log(Level.WARNING, "Tile CRS can't be decoded");
-            return ret;
-        }
+        CoordinateReferenceSystem tileCrs = this.matrixSet.getCoordinateReferenceSystem();
+
         if (!CRS.equalsIgnoreMetadata(tileCrs, requestedExtent.getCoordinateReferenceSystem())) {
             try {
                 reqExtentInTileCrs = requestedExtent.transform(tileCrs, true);
@@ -212,12 +179,10 @@ public class WMTSTileService extends TileService {
                 try {
                     ReferencedEnvelope covExtentInReqCrs = envelope.transform(reqCrs, true);
                     requestedExtent = requestedExtent.intersection(covExtentInReqCrs);
-                    System.out.println(
-                            "cropping request bbox by projectet layer env: " + requestedExtent);
 
                 } catch (TransformException | FactoryException ex2) {
                     LOGGER.log(Level.WARNING, "Incompatible CRS: " + ex2.getMessage());
-                    return ret; // should throw
+                    return null; // should throw
                 }
             }
         } else {
@@ -225,30 +190,30 @@ public class WMTSTileService extends TileService {
         }
 
         if (reqExtentInTileCrs == null) {
-            LOGGER.log(Level.FINE, "Requested extent not in tile CRS range");
-            return ret;
+            if (LOGGER.isLoggable(Level.FINE))
+                LOGGER.log(Level.FINE, "Requested extent not in tile CRS range");
+            return null;
         }
 
-        LOGGER.log(Level.FINE,
-                "tile crs req bbox :" + reqExtentInTileCrs + " "
-                        + reqExtentInTileCrs.getCoordinateReferenceSystem().getCoordinateSystem()
-                                .getAxis(0).getDirection()
-                        + " (" + reqExtentInTileCrs.getCoordinateReferenceSystem().getName() + ")");
-        System.out.println("tile crs req bbox :" + reqExtentInTileCrs + " "
-                + reqExtentInTileCrs.getCoordinateReferenceSystem().getCoordinateSystem().getAxis(0)
-                        .getDirection()
-                + " (" + reqExtentInTileCrs.getCoordinateReferenceSystem().getName() + ")");
+        if (LOGGER.isLoggable(Level.FINE)) {
+            LOGGER.log(Level.FINE,
+                    "tile crs req bbox :" + reqExtentInTileCrs + " "
+                            + reqExtentInTileCrs.getCoordinateReferenceSystem()
+                                    .getCoordinateSystem().getAxis(0).getDirection()
+                            + " (" + reqExtentInTileCrs.getCoordinateReferenceSystem().getName()
+                            + ")");
+        }
 
         ReferencedEnvelope coverageEnvelope = getBounds();
-        LOGGER.log(Level.FINE,
-                "coverage bbox :" + coverageEnvelope + " "
-                        + coverageEnvelope.getCoordinateReferenceSystem().getCoordinateSystem()
-                                .getAxis(0).getDirection()
-                        + " (" + coverageEnvelope.getCoordinateReferenceSystem().getName() + ")");
-        System.out.println("coverage bbox :" + coverageEnvelope + " "
-                + coverageEnvelope.getCoordinateReferenceSystem().getCoordinateSystem().getAxis(0)
-                        .getDirection()
-                + " (" + coverageEnvelope.getCoordinateReferenceSystem().getName() + ")");
+
+        if (LOGGER.isLoggable(Level.FINE)) {
+            LOGGER.log(Level.FINE,
+                    "coverage bbox :" + coverageEnvelope + " "
+                            + coverageEnvelope.getCoordinateReferenceSystem().getCoordinateSystem()
+                                    .getAxis(0).getDirection()
+                            + " (" + coverageEnvelope.getCoordinateReferenceSystem().getName()
+                            + ")");
+        }
 
         ReferencedEnvelope requestEnvelopeWGS84;
 
@@ -256,8 +221,9 @@ public class WMTSTileService extends TileService {
                 reqExtentInTileCrs.getCoordinateReferenceSystem());
         if (sameCRS) {
             if (!coverageEnvelope.intersects((BoundingBox) reqExtentInTileCrs)) {
-                LOGGER.log(Level.FINE, "Extents do not intersect (sameCRS))");
-                return ret;
+                if (LOGGER.isLoggable(Level.FINE))
+                    LOGGER.log(Level.FINE, "Extents do not intersect (sameCRS))");
+                return null;
             }
         } else {
             ReferencedEnvelope dataEnvelopeWGS84;
@@ -267,21 +233,35 @@ public class WMTSTileService extends TileService {
                 requestEnvelopeWGS84 = requestedExtent.transform(DefaultGeographicCRS.WGS84, true);
 
                 if (!dataEnvelopeWGS84.intersects((BoundingBox) requestEnvelopeWGS84)) {
-                    LOGGER.log(Level.FINE, "Extents do not intersect");
-                    return ret;
+                    if (LOGGER.isLoggable(Level.FINE))
+                        LOGGER.log(Level.FINE, "Extents do not intersect");
+                    return null;
                 }
             } catch (TransformException | FactoryException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
                 throw new RuntimeException(e);
             }
         }
 
-        TileFactory tileFactory = getTileFactory();
+        return reqExtentInTileCrs;
+    }
+
+    @Override
+    public Set<Tile> findTilesInExtent(ReferencedEnvelope requestedExtent, int scaleFactor,
+            boolean recommendedZoomLevel, int maxNumberOfTiles) {
+
+        Set<Tile> ret = Collections.emptySet();
+
+        ReferencedEnvelope reqExtentInTileCrs = getReqExtentInTileCrs(requestedExtent);
+        if (reqExtentInTileCrs == null) {
+            if (LOGGER.isLoggable(Level.FINE))
+                LOGGER.log(Level.FINE, "No valid extents, no Tiles will be returned.");
+            return ret;
+        }
+
+        WMTSTileFactory tileFactory = (WMTSTileFactory) getTileFactory();
 
         ScaleZoomLevelMatcher zoomLevelMatcher = null;
         try {
-
             zoomLevelMatcher = ScaleZoomLevelMatcher.createMatcher(reqExtentInTileCrs,
                     matrixSet.getCoordinateReferenceSystem(), scaleFactor);
 
@@ -290,7 +270,7 @@ public class WMTSTileService extends TileService {
         }
 
         int zl = getZoomLevelFromMapScale(zoomLevelMatcher, scaleFactor);
-        ZoomLevel zoomLevel = tileFactory.getZoomLevel(zl, this);
+        WMTSZoomLevel zoomLevel = tileFactory.getZoomLevel(zl, this);
         long maxNumberOfTilesForZoomLevel = zoomLevel.getMaxTileNumber();
 
         if (LOGGER.isLoggable(Level.FINE)) {
@@ -298,58 +278,84 @@ public class WMTSTileService extends TileService {
                     + " x " + zoomLevel.getMaxTilePerRowNumber() + "]");
         }
 
-        // Map<String, Tile> tileList = new HashMap<String, Tile>();
         Set<Tile> tileList = new HashSet<>(
                 (int) Math.min(maxNumberOfTiles, maxNumberOfTilesForZoomLevel));
-        Tile firstTile;
-        // Let's get the first tile which covers the upper-left corner
-        if (/*
-             * TileMatrix.isGeotoolsLongitudeFirstAxisOrderForced() ||
-             */reqExtentInTileCrs.getCoordinateReferenceSystem().getCoordinateSystem().getAxis(0)
-                .getDirection().equals(AxisDirection.EAST)) {
-            firstTile = tileFactory.findTileAtCoordinate(reqExtentInTileCrs.getMinX(),
-                    reqExtentInTileCrs.getMaxY(), zoomLevel, this);
-        } else {
-            LOGGER.log(Level.FINE, "Inverted tile coords!");
-            firstTile = tileFactory.findTileAtCoordinate(reqExtentInTileCrs.getMinY(),
-                    reqExtentInTileCrs.getMaxX(), zoomLevel, this);
+
+        double ulLon, ulLat;
+        // Let's get upper-left corner coords
+        CRS.AxisOrder aorder = CRS.getAxisOrder(reqExtentInTileCrs.getCoordinateReferenceSystem());
+        switch (aorder) {
+        case EAST_NORTH:
+            ulLon = reqExtentInTileCrs.getMinX();
+            ulLat = reqExtentInTileCrs.getMaxY();
+            break;
+        case NORTH_EAST:
+            if (LOGGER.isLoggable(Level.FINE))
+                LOGGER.log(Level.FINE, "Inverted tile coords!");
+            ulLon = reqExtentInTileCrs.getMinY();
+            ulLat = reqExtentInTileCrs.getMaxX();
+            break;
+        default:
+            LOGGER.log(Level.WARNING, "unexpected axis order " + aorder);
+            return ret;
         }
 
-        LOGGER.log(Level.FINE,
-                "Adding first tile " + firstTile.getId() + " " + firstTile.getExtent() + " ("
-                        + firstTile.getExtent().getCoordinateReferenceSystem().getName() + ")");
+        // The first tile which covers the upper-left corner
+        Tile firstTile = tileFactory.findUpperLeftTile(ulLon, ulLat, zoomLevel, this);
+
+        if (firstTile == null) {
+            if (LOGGER.isLoggable(Level.INFO)) {
+                LOGGER.log(Level.INFO,
+                        "First tile not available at x:" + reqExtentInTileCrs.getMinX() + " y:"
+                                + reqExtentInTileCrs.getMaxY() + " at " + zoomLevel);
+            }
+
+            return ret;
+        }
+
+        if (LOGGER.isLoggable(Level.FINE)) {
+            LOGGER.log(Level.FINE,
+                    "Adding first tile " + firstTile.getId() + " " + firstTile.getExtent() + " ("
+                            + firstTile.getExtent().getCoordinateReferenceSystem().getName() + ")");
+        }
+
         addTileToCache(firstTile);
         tileList.add(firstTile);
 
         Tile firstTileOfRow = firstTile;
         Tile movingTile = firstTile;
 
-        // Loop column
-        do {
-            // Loop row
-            do {
+        do { // Loop column
+            do { // Loop row
 
                 // get the next tile right of this one
-                // Tile rightNeighbour = movingTile.getRightNeighbour();
                 Tile rightNeighbour = tileFactory.findRightNeighbour(movingTile, this);// movingTile.getRightNeighbour();
 
-                // Check if the new tile is still part of the extent and
-                // that we don't have the first tile again
-                // boolean intersects = extent.intersects((Envelope)
-                // rightNeighbour.getExtent());
+                if (rightNeighbour == null) { // no more tiles to the right
+                    if (LOGGER.isLoggable(Level.FINE)) {
+                        LOGGER.log(Level.FINE, "No tiles on the right of " + movingTile.getId());
+                    }
+
+                    break;
+                }
+
+                // Check if the new tile is still part of the extent 
                 boolean intersects = reqExtentInTileCrs
                         .intersects((Envelope) rightNeighbour.getExtent());
-                LOGGER.log(Level.FINE, "Intersect (" + rightNeighbour.getId() + " , "
-                        + rightNeighbour.getExtent() + ") --> " + intersects);
-                if (intersects && !firstTileOfRow.equals(rightNeighbour)) {
-                    LOGGER.log(Level.FINE, "Adding right neighbour " + rightNeighbour.getId());
+                if (intersects) {
+                    if (LOGGER.isLoggable(Level.FINE)) {
+                        LOGGER.log(Level.FINE, "Adding right neighbour " + rightNeighbour.getId());
+                    }
 
                     addTileToCache(rightNeighbour);
                     tileList.add(rightNeighbour);
 
                     movingTile = rightNeighbour;
                 } else {
-                    LOGGER.log(Level.FINE, "Stopping on right neighbour " + rightNeighbour.getId());
+                    if (LOGGER.isLoggable(Level.FINE)) {
+                        LOGGER.log(Level.FINE,
+                                "Right neighbour out of extents " + rightNeighbour.getId());
+                    }
 
                     break;
                 }
@@ -361,30 +367,53 @@ public class WMTSTileService extends TileService {
             } while (tileList.size() < maxNumberOfTilesForZoomLevel);
 
             // get the next tile under the first one of the row
-            // Tile lowerNeighbour = firstTileOfRow.getLowerNeighbour();
             Tile lowerNeighbour = tileFactory.findLowerNeighbour(firstTileOfRow, this);
+
+            if (lowerNeighbour == null) { // no more tiles to the right
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.log(Level.FINE, "No more tiles below " + firstTileOfRow.getId());
+                }
+
+                break;
+            }
 
             // Check if the new tile is still part of the extent
             boolean intersects = reqExtentInTileCrs
                     .intersects((Envelope) lowerNeighbour.getExtent());
-            LOGGER.log(Level.FINE, "Intersect (" + lowerNeighbour.getId() + ") --> " + intersects);
-            if (intersects && !firstTile.equals(lowerNeighbour)) {
-                LOGGER.log(Level.FINE, "Adding lower neighbour " + lowerNeighbour.getId());
 
-                // System.out.printf("N: %s %s", lowerNeighbour.getId(),
-                // addTileToList(lowerNeighbour));
+            if (intersects) {
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.log(Level.FINE, "Adding lower neighbour " + lowerNeighbour.getId());
+                }
 
                 addTileToCache(lowerNeighbour);
                 tileList.add(lowerNeighbour);
 
                 firstTileOfRow = movingTile = lowerNeighbour;
             } else {
-                LOGGER.log(Level.FINE, "Stopping on lower neighbour " + lowerNeighbour.getId());
+                if (LOGGER.isLoggable(Level.FINE))
+                    LOGGER.log(Level.FINE,
+                            "Lower neighbour out of extents" + lowerNeighbour.getId());
                 break;
             }
         } while (tileList.size() < maxNumberOfTilesForZoomLevel);
 
         return tileList;
+    }
+
+    /**
+     * Add a tile to the cache.
+     *
+     * At the moment we are delegating the cache to the super class, which handles the cache as a soft cache.
+     * The soft cache has an un-controllable time to live, could last a split seconds or 100 years. 
+     * However, WMTS services normally come with caching headers of some sort, e.g., 
+     * do not cache, or keep for 1 hour, or 6 months and so on.
+     *
+     * TODO: The code should account for that.
+     */
+    @Override
+    protected Tile addTileToCache(Tile tile) {
+        return super.addTileToCache(tile);
     }
 
     /**
@@ -438,25 +467,12 @@ public class WMTSTileService extends TileService {
 
     @Override
     public ReferencedEnvelope getBounds() {
-
         return envelope;
-        // if (envelope != null) {
-        // return envelope;
-        // }
-        // // Look this up from the CRS
-        // CoordinateReferenceSystem projectedTileCrs = getProjectedTileCrs();
-        // return envelope = getAcceptableExtent(projectedTileCrs);
     }
 
     @Override
     public CoordinateReferenceSystem getProjectedTileCrs() {
-        try {
-            return matrixSet.getCoordinateReferenceSystem();
-        } catch (FactoryException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-
+        return matrixSet.getCoordinateReferenceSystem();
     }
 
     @Override
@@ -483,121 +499,8 @@ public class WMTSTileService extends TileService {
         this.tileMatrixSetName = tileMatrixSetName;
     }
 
-    /**
-     * @return the limits
-     */
-    public List<TileMatrixLimits> getLimits() {
-
-        return limits;
-    }
-
-    /**
-     * @param limits
-     *            the limits to set
-     */
-    public void setLimits(List<TileMatrixLimits> limits) {
-        this.limits = limits;
-    }
-
-    private org.w3c.dom.Document parseCachedCapabilities() throws IOException {
-
-        try {
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            dbf.setNamespaceAware(true);
-            DocumentBuilder db = dbf.newDocumentBuilder();
-
-            org.w3c.dom.Document doc = db.parse(cachedGetCapabilities);
-            return doc;
-        } catch (ParserConfigurationException | SAXException e) {
-            throw new IOException("Error handling getCapabilities document", e);
-        }
-    }
-
-    private org.w3c.dom.Document getKVPCapabilitiesDoc() throws IOException {
-
-        if (cachedGetCapabilities != null) {
-            return parseCachedCapabilities();
-        }
-
-        HttpClient client = new HttpClient();
-        HttpMethod method = new GetMethod(getBaseUrl());
-        method.setQueryString("REQUEST=GetCapabilities");
-        method.getParams().setParameter(HttpMethodParams.RETRY_HANDLER,
-                new DefaultHttpMethodRetryHandler(3, false));
-        try {
-            // Execute the method.
-
-            int statusCode = client.executeMethod(method);
-
-            if (statusCode != HttpStatus.SC_OK) {
-                LOGGER.severe("Method failed: " + method.getStatusLine());
-            }
-
-            // Read the response body.
-            byte[] responseBody = method.getResponseBody();
-
-            // Deal with the response.
-            // Use caution: ensure correct character encoding and is not binary
-            // data
-            // System.out.println(new String(responseBody,"UTF-8"));
-
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            dbf.setNamespaceAware(true);
-            DocumentBuilder db = dbf.newDocumentBuilder();
-
-            org.w3c.dom.Document doc = db.parse(new ByteArrayInputStream(responseBody));
-            return doc;
-        } catch (HttpException e) {
-            throw new IOException("Error handling getCapabilities document", e);
-        } catch (IOException | ParserConfigurationException | SAXException e) {
-            throw new IOException("Error handling getCapabilities document", e);
-        } finally {
-            // Release the connection.
-            method.releaseConnection();
-        }
-    }
-
-    private org.w3c.dom.Document getRESTCapabilitiesDoc() throws IOException {
-
-        if (cachedGetCapabilities != null) {
-            return parseCachedCapabilities();
-        }
-
-        HttpClient client = new HttpClient();
-        HttpMethod method = new GetMethod(getBaseUrl());
-        method.getParams().setParameter(HttpMethodParams.RETRY_HANDLER,
-                new DefaultHttpMethodRetryHandler(3, false));
-        try {
-            // Execute the method.
-            int statusCode = client.executeMethod(method);
-
-            if (statusCode != HttpStatus.SC_OK) {
-                LOGGER.severe("Method failed: " + method.getStatusLine());
-
-            }
-
-            // Read the response body.
-            byte[] responseBody = method.getResponseBody();
-
-            // Deal with the response.
-            // Use caution: ensure correct character encoding and is not binary
-            // data
-            // System.out.println(new String(responseBody,"UTF-8"));
-
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            dbf.setNamespaceAware(true);
-            DocumentBuilder db = dbf.newDocumentBuilder();
-
-            org.w3c.dom.Document doc = db.parse(new ByteArrayInputStream(responseBody));
-            return doc;
-        } catch (HttpException e) {
-            throw new IOException("Error handling REST getCapabilities document", e);
-        } catch (IOException | ParserConfigurationException | SAXException e) {
-            throw new IOException("Error handling REST getCapabilities document", e);
-        } finally {
-            // Release the connection.
-            method.releaseConnection();
-        }
+    public TileMatrixSetLink getMatrixSetLink() {
+        return layer.getTileMatrixLinks().get(tileMatrixSetName);
     }
 
     /**
@@ -664,7 +567,6 @@ public class WMTSTileService extends TileService {
     /**
      */
     public WMTSZoomLevel getZoomLevel(int zoom) {
-        //
         return new WMTSZoomLevel(zoom, this);
     }
 

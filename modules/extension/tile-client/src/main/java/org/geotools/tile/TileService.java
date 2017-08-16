@@ -53,7 +53,9 @@ public abstract class TileService {
             .getLogger(TileService.class.getPackage().getName());
 
     /**
-     * This WeakHashMap acts as a memory cache. Because we are using SoftReference, we won't run out of Memory, the GC will free space.
+     * This WeakHashMap acts as a memory cache. 
+     * 
+     * Because we are using SoftReference, we won't run out of Memory, the GC will free space.
      **/
     private ObjectCache tiles = ObjectCaches.create("soft", 50); //$NON-NLS-1$
 
@@ -120,10 +122,11 @@ public abstract class TileService {
     }
 
     /**
-     * Translates the map scale into a zoom-level for the map services. The scale-factor (0-100) decides whether the tiles will be scaled down (100)
+     * Translates the map scale into a zoom-level for the map services.
+     *
+     * The scale-factor (0-100) decides whether the tiles will be scaled down (100)
      * or scaled up (0).
      *
-     * @param renderJob Contains all the needed information
      * @param scaleFactor Scale-factor (0-100)
      * @return Zoom-level
      */
@@ -256,8 +259,7 @@ public abstract class TileService {
 
         long maxNumberOfTilesForZoomLevel = zoomLevel.getMaxTileNumber();
 
-        // Map<String, Tile> tileList = new HashMap<String, Tile>();
-        Set<Tile> tileList = new HashSet<Tile>(100);
+        Set<Tile> tileList = new HashSet<>(100);
 
         // Let's get the first tile which covers the upper-left corner
         Tile firstTile = tileFactory.findTileAtCoordinate(extent.getMinX(), extent.getMaxY(),
@@ -275,8 +277,7 @@ public abstract class TileService {
             do {
 
                 // get the next tile right of this one
-                // Tile rightNeighbour = movingTile.getRightNeighbour();
-                Tile rightNeighbour = tileFactory.findRightNeighbour(movingTile, this);// movingTile.getRightNeighbour();
+                Tile rightNeighbour = tileFactory.findRightNeighbour(movingTile, this);
 
                 // Check if the new tile is still part of the extent and
                 // that we don't have the first tile again
@@ -299,15 +300,11 @@ public abstract class TileService {
             } while (tileList.size() < maxNumberOfTilesForZoomLevel);
 
             // get the next tile under the first one of the row
-            // Tile lowerNeighbour = firstTileOfRow.getLowerNeighbour();
             Tile lowerNeighbour = tileFactory.findLowerNeighbour(firstTileOfRow, this);
 
             // Check if the new tile is still part of the extent
             if (extent.intersects((Envelope) lowerNeighbour.getExtent())
                     && !firstTile.equals(lowerNeighbour)) {
-
-                // System.out.printf("N: %s %s", lowerNeighbour.getId(),
-                // addTileToList(lowerNeighbour));
 
                 addTileToCache(lowerNeighbour);
                 tileList.add(lowerNeighbour);
@@ -321,27 +318,33 @@ public abstract class TileService {
         return tileList;
     }
 
-    private boolean listContainsTile(String tileId) {
-        return !(tiles.peek(tileId) == null || tiles.get(tileId) == null);
-    }
-
+    /**
+     *
+     * @param tile
+     * @return
+     */
     protected Tile addTileToCache(Tile tile) {
-        if (listContainsTile(tile.getId())) {
+        String id = tile.getId();
+        boolean isInCache = !(tiles.peek(id) == null || tiles.get(id) == null);
+
+        if (isInCache) {
             if (LOGGER.isLoggable(Level.FINER)) {
-                LOGGER.fine("Tile already in cache: " + tile.getId());
+                LOGGER.fine("Tile already in cache: " + id);
             }
-            return (Tile) tiles.get(tile.getId());
+            return (Tile) tiles.get(id);
         } else {
             if (LOGGER.isLoggable(Level.FINER)) {
-                LOGGER.fine("Tile added to cache: " + tile.getId());
+                LOGGER.fine("Tile added to cache: " + id);
             }
-            tiles.put(tile.getId(), tile);
+            tiles.put(id, tile);
             return tile;
         }
     }
 
     /**
-     * Returns a list that represents a mapping between zoom-levels and map scale. Array index: zoom-level Value at index: map scale High zoom-level
+     * Returns a list that represents a mapping between zoom-levels and map scale.
+     *
+     * Array index: zoom-level Value at index: map scale High zoom-level
      * -> more detailed map Low zoom-level -> less detailed map
      *
      * @return mapping between zoom-levels and map scale
@@ -352,8 +355,6 @@ public abstract class TileService {
 
     /**
      * The projection the tiles are drawn in.
-     *
-     * @return
      */
     public abstract CoordinateReferenceSystem getProjectedTileCrs();
 
@@ -377,8 +378,14 @@ public abstract class TileService {
     }
 
     /**
-     * The extent from the viewport may look like this: MaxY: 110° (=-70°) MinY: -110° MaxX: 180° MinX: -180° But cutExtentIntoTiles(..) requires an
-     * extent that looks like this: MaxY: 85° (or 90°) MinY: -85° (or -90°) MaxX: 180° MinX: -180°
+     * Normalize extents.
+     *
+     * The extent from the viewport may look like this: 
+     *     MaxY: 110° (=-70°) MinY: -110° MaxX: 180° MinX: -180°
+     *
+     * But cutExtentIntoTiles(..) requires an
+     * extent that looks like this:
+     *     MaxY: 85° (or 90°) MinY: -85° (or -90°) MaxX: 180° MinX: -180°
      *
      * @param envelope
      * @return
@@ -406,8 +413,6 @@ public abstract class TileService {
 
         return envelope;
     }
-
-    // endregion
 
     public String toString() {
         return getName();

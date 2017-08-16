@@ -19,15 +19,20 @@ package org.geotools.data.wmts.model;
 import org.geotools.factory.GeoTools;
 import org.geotools.factory.Hints;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.cs.AxisDirection;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.opengis.referencing.FactoryException;
+import org.geotools.referencing.CRS;
 
+/**
+ * A tile matrix set is composed of a collection of tile matrices, each one with a resolution
+ * optimized for a particular scale and identified by a tile matrix identifier.
+ * Each tile matrix set has an optional approximated bounding box but each tile matrix has
+ * an exact bounding box that is deduced indirectly from other parameters.
+ *
+ * @author Emanuele Tajariol (etj at geo-solutions dot it)
+ */
 public class TileMatrix {
 
     static private final GeometryFactory gf = new GeometryFactory();
@@ -173,8 +178,8 @@ public class TileMatrix {
     }
 
     /**
-     * @param doubleValue
-     * @param doubleValue2
+     * @param lon
+     * @param lat
      */
     public void setTopLeft(double lon, double lat) {
         boolean isLongitudeFirstAxisOrderForced = Boolean
@@ -183,13 +188,14 @@ public class TileMatrix {
                         .get(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER) == Boolean.TRUE;
 
         CoordinateReferenceSystem crs = getCrs();
-        if (isLongitudeFirstAxisOrderForced || (crs != null && crs.getCoordinateSystem().getAxis(0)
-                .getDirection().equals(AxisDirection.EAST))) {
+        if (isLongitudeFirstAxisOrderForced
+                || (crs != null && CRS.getAxisOrder(crs).equals(CRS.AxisOrder.EAST_NORTH))) {
             topLeft = gf.createPoint(new Coordinate(lon, lat));
             return;
+        } else {
+            // guess lat/lon?
+            topLeft = gf.createPoint(new Coordinate(lat, lon));
         }
-        // guess lat/lon?
-        topLeft = gf.createPoint(new Coordinate(lat, lon));
     }
 
     public TileMatrixSet getParent() {
@@ -200,28 +206,10 @@ public class TileMatrix {
         this.parent = parent;
     }
 
-    private CoordinateReferenceSystem parsedCrs = null;
-
-    private boolean isCrsParsed = false;
-
     /**
      * Retrieve the CRS from the parent TileMatrixSet
      */
     public CoordinateReferenceSystem getCrs() {
-        if (isCrsParsed) {
-            return parsedCrs;
-        }
-        if (parent != null) {
-            try {
-                parsedCrs = parent.getCoordinateReferenceSystem();
-
-            } catch (FactoryException e) {
-                Logger.getLogger(this.getClass().getName()).log(Level.INFO,
-                        "Can't parse CRS: " + e.getMessage(), e);
-            }
-            isCrsParsed = true; // mark it as parsed even if error occurred
-        }
-
-        return parsedCrs;
+        return parent == null ? null : parent.getCoordinateReferenceSystem();
     }
 }

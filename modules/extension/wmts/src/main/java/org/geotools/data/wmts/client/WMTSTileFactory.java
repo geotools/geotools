@@ -19,12 +19,15 @@ package org.geotools.data.wmts.client;
 import org.geotools.data.wmts.model.TileMatrixLimits;
 import org.geotools.data.wmts.model.TileMatrix;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.measure.converter.UnitConverter;
 import javax.measure.unit.NonSI;
 import javax.measure.unit.SI;
 import javax.measure.unit.Unit;
+import org.geotools.data.wmts.model.TileMatrixSet;
+import org.geotools.data.wmts.model.TileMatrixSetLink;
 
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.tile.Tile;
@@ -43,36 +46,25 @@ import org.opengis.referencing.cs.CoordinateSystem;
  * @author Emanuele Tajariol (etj at geo-solutions dot it)
  */
 public class WMTSTileFactory extends TileFactory {
-    /** pixelSizeMeters */
+
     private static final double PixelSizeMeters = 0.28e-3;
 
     private static final Logger LOGGER = Logging
             .getLogger(WMTSTileFactory.class.getPackage().getName());
 
     /**
+     * Return a tile with the proper row and column indexes.
      *
+     * Please notice that the tile indexes are purely computed on the zoom level details,
+     * but the MatrixLimits in a given layer may make the row/col invalid for that layer.
      */
-    public WMTSTileFactory() {
-        // TODO Auto-generated constructor stub
-    }
-
     @Override
     public Tile findTileAtCoordinate(double lon, double lat, ZoomLevel zoomLevel,
             TileService service) {
+
         WMTSZoomLevel zl = (WMTSZoomLevel) zoomLevel;
         TileMatrix tileMatrix = ((WMTSTileService) service).getMatrixSet().getMatrices()
                 .get(zl.getZoomLevel());
-        List<TileMatrixLimits> limits = ((WMTSTileService) service).getLimits();
-        TileMatrixLimits tileMatrixLimits;
-        if (limits != null && zl.getZoomLevel() < limits.size()) {
-            tileMatrixLimits = limits.get(zl.getZoomLevel());
-        } else { // probably a REST API with no limits
-            tileMatrixLimits = new TileMatrixLimits();
-            tileMatrixLimits.setMinCol(0L);
-            tileMatrixLimits.setMinRow(0L);
-            tileMatrixLimits.setMaxCol(tileMatrix.getMatrixWidth());
-            tileMatrixLimits.setMaxRow(tileMatrix.getMatrixHeight());
-        }
 
         double pixelSpan = getPixelSpan(tileMatrix);
 
@@ -92,38 +84,100 @@ public class WMTSTileFactory extends TileFactory {
         double epsilon = 1e-6;
         long xTile = (int) Math.floor((lon - tileMatrixMinX) / tileSpanX + epsilon);
         long yTile = (int) Math.floor((tileMatrixMaxY - lat) / tileSpanY + epsilon);
-        // to avoid requesting out-of-range tiles
 
-        if (xTile >= tileMatrixLimits.getMaxcol())
-            xTile = tileMatrixLimits.getMaxcol() - 1;
-        if (yTile >= tileMatrixLimits.getMaxrow())
-            yTile = tileMatrixLimits.getMaxrow() - 1;
+        // sanitize
+        xTile = Math.max(0, xTile);
+        yTile = Math.max(0, yTile);
 
-        if (xTile < tileMatrixLimits.getMincol())
-            xTile = tileMatrixLimits.getMincol();
-        if (yTile < tileMatrixLimits.getMinrow())
-            yTile = tileMatrixLimits.getMinrow();
+        if (LOGGER.isLoggable(Level.FINE)) {
+            LOGGER.fine("findTile: (lon,lat)=(" + lon + "," + lat + ")  (col,row)=" + xTile + ", "
+                    + yTile + " zoom:" + zoomLevel.getZoomLevel());
+        }
 
-        LOGGER.fine("findTile: (lon,lat)=(" + lon + "," + lat + ")  (col,row)=" + xTile + ", "
-                + yTile + " zoom:" + zoomLevel.getZoomLevel());
         return new WMTSTile((int) xTile, (int) yTile, zoomLevel, service);
     }
 
+    /**
+     * Find the first valid Upper Left tile for the current layer.
+     */
+    public Tile findUpperLeftTile(double lon, double lat, WMTSZoomLevel zoomLevel,
+            WMTSTileService service) {
+        // get the tile in the tilematrix
+        Tile matrixTile = findTileAtCoordinate(lon, lat, zoomLevel, service);
+        return constrainToUpperLeftTile(matrixTile, zoomLevel, service);
+    }
+
+    public static TileMatrixLimits getLimits(TileMatrixSetLink tmsl, TileMatrixSet tms, int z) {
+
+        List<TileMatrixLimits> limitsList = tmsl.getLimits();
+        TileMatrixLimits limits;
+
+        if (limitsList != null && z < limitsList.size()) {
+            limits = limitsList.get(z);
+        } else {
+            // no limits defined in layer; let's take all the defined tiles
+            TileMatrix tileMatrix = tms.getMatrices().get(z);
+
+            limits = new TileMatrixLimits();
+            limits.setMinCol(0L);
+            limits.setMinRow(0L);
+            limits.setMaxCol(tileMatrix.getMatrixWidth() - 1);
+            limits.setMaxRow(tileMatrix.getMatrixHeight() - 1);
+            limits.setTileMatix(tms.getIdentifier());
+        }
+
+        return limits;
+    }
+
+    /**
+     * If the tile is outside the limits, take a valid one which can be used to start a loop on.
+     */
+    public WMTSTile constrainToUpperLeftTile(Tile matrixTile, WMTSZoomLevel zl,
+            WMTSTileService service) {
+
+        TileMatrixLimits limits = getLimits(service.getMatrixSetLink(), service.getMatrixSet(),
+                zl.getZoomLevel());
+
+        long origxTile = matrixTile.getTileIdentifier().getX();
+        long origyTile = matrixTile.getTileIdentifier().getY();
+        long xTile = origxTile;
+        long yTile = origyTile;
+
+        if (xTile >= limits.getMaxcol())
+            xTile = limits.getMaxcol() - 1;
+        if (yTile >= limits.getMaxrow())
+            yTile = limits.getMaxrow() - 1;
+
+        if (xTile < limits.getMincol())
+            xTile = limits.getMincol();
+        if (yTile < limits.getMinrow())
+            yTile = limits.getMinrow();
+
+        if (origxTile != xTile || origyTile != yTile) {
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine("findUpperLeftTile: constraining tile within limits: (" + origxTile
+                        + "," + origyTile + ") -> (" + xTile + "," + yTile + ")");
+            }
+        }
+
+        return new WMTSTile((int) xTile, (int) yTile, zl, service);
+    }
+
     @Override
-    public ZoomLevel getZoomLevel(int zoomLevel, TileService service) {
+    public WMTSZoomLevel getZoomLevel(int zoomLevel, TileService service) {
         return new WMTSZoomLevel(zoomLevel, (WMTSTileService) service);
     }
 
     @Override
     public Tile findRightNeighbour(Tile tile, TileService service) {
-        return new WMTSTile((WMTSTileIdentifier) tile.getTileIdentifier().getRightNeighbour(),
-                service);
+        WMTSTileIdentifier id = (WMTSTileIdentifier) tile.getTileIdentifier().getRightNeighbour();
+        return id == null ? null : new WMTSTile(id, service);
     }
 
     @Override
     public Tile findLowerNeighbour(Tile tile, TileService service) {
-        return new WMTSTile((WMTSTileIdentifier) tile.getTileIdentifier().getLowerNeighbour(),
-                service);
+        WMTSTileIdentifier id = (WMTSTileIdentifier) tile.getTileIdentifier().getLowerNeighbour();
+        return id == null ? null : new WMTSTile(id, service);
     }
 
     /**

@@ -89,14 +89,11 @@ public class TileLayer extends DirectLayer {
         long t = System.currentTimeMillis();
         renderTiles(tiles, g2d, viewportExtent, viewport.getWorldToScreen());
 
-        // System.out.println("Sync: " + (System.currentTimeMillis() - t));
-
         this.coverage = gridFactory.create("GridCoverage", mosaickedImage, viewportExtent);
 
         graphics.drawImage(mosaickedImage, 0, 0, null);
 
         LOGGER.fine("Drawing done");
-
     }
 
     protected void renderTiles(Collection<Tile> tiles, Graphics2D g2d,
@@ -126,9 +123,7 @@ public class TileLayer extends DirectLayer {
             worldToImageTransform.transform(points, 0, points, 0, 2);
 
             renderTile(tile, g2d, points);
-
         }
-
     }
 
     protected void renderTile(Tile tile, Graphics2D g2d, double[] points) {
@@ -140,9 +135,7 @@ public class TileLayer extends DirectLayer {
     }
 
     protected BufferedImage getTileImage(Tile tile) {
-
         return tile.getBufferedImage();
-
     }
 
     private int calculateScale(ReferencedEnvelope extent, Rectangle screenArea) {
@@ -161,6 +154,5 @@ public class TileLayer extends DirectLayer {
     private BufferedImage createImage(Rectangle rectangle) {
 
         return new BufferedImage(rectangle.width, rectangle.height, BufferedImage.TYPE_INT_RGB);
-
     }
 }

@@ -52,9 +52,6 @@ public class AsyncTileLayer extends TileLayer {
 
         this.countDownLatch = new CountDownLatch(tiles.size());
 
-        // g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
-        // (float) 0.5));
-
         localRenderTiles(tiles, g2d, viewportExtent, worldToImageTransform);
         try {
             this.countDownLatch.await();
@@ -62,8 +59,6 @@ public class AsyncTileLayer extends TileLayer {
             ie.printStackTrace();
         }
         this.countDownLatch = null;
-
-        // System.out.println("Async: " + (System.currentTimeMillis() - t));
     }
 
     protected void renderTile(final Tile tile, final Graphics2D g2d, final double[] points) {
@@ -91,8 +86,6 @@ public class AsyncTileLayer extends TileLayer {
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
                 RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
-        // double[] points = new double[4];
-
         for (Tile tile : tiles) {
             ReferencedEnvelope nativeTileEnvelope = tile.getExtent();
 
@@ -112,13 +105,6 @@ public class AsyncTileLayer extends TileLayer {
             worldToImageTransform.transform(points, 0, points, 0, 2);
 
             renderTile(tile, g2d, points);
-
-            // BufferedImage img = getTileImage(tile);
-            //
-            // g2d.drawImage(img, (int) points[0], (int) points[1],
-            // (int) Math.ceil(points[2] - points[0]),
-            // (int) Math.ceil(points[3] - points[1]), null);
-
         }
 
     }

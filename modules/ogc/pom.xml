@@ -67,7 +67,7 @@
     <module>net.opengis.wps</module>
     <module>net.opengis.wcs</module>
     <module>net.opengis.csw</module>
-    <module>net.opengis.wmtsv1</module>
+    <module>net.opengis.wmts</module>
   </modules>
 
 </project>

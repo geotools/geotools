@@ -319,9 +319,13 @@ public abstract class TileService {
     }
 
     /**
+     * Add a tile to the cache.
      *
-     * @param tile
-     * @return
+     * The cache used here is a soft cache, which has an un-controllable time to live
+     * (could last a split seconds or 100 years).
+     *
+     * Subclasses services (such as WMTS) may have some more hints about the tile TTL, so a more
+     * controllable cache should be implemented in these cases.
      */
     protected Tile addTileToCache(Tile tile) {
         String id = tile.getId();

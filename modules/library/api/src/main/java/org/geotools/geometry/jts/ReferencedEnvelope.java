@@ -781,11 +781,8 @@ public class ReferencedEnvelope extends Envelope implements org.opengis.geometry
 
             buffer.append(getMinimum(i)).append(" : ").append(getMaximum(i));
         }
-        buffer.append("] ");
-        if(crs!=null) {
-            buffer.append(CRS.getAxisOrder(crs));
-        }
-        return buffer.toString();
+
+        return buffer.append(']').toString();
     }
     /**
      * Factory method to create the correct ReferencedEnvelope.

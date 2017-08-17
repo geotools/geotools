@@ -39,11 +39,13 @@ import net.opengis.wmts.v_1.CapabilitiesType;
  * Provides a hook up to parse the capabilties document from inputstream.
  *
  * (Based on existing work by rgould for WMS service)
- * 
+ *
  * @author ian
  * @author Emanuele Tajariol (etj at geo-solutions dot it)
  */
 public class WMTSGetCapabilitiesResponse extends GetCapabilitiesResponse {
+
+    private static WMTSConfiguration WMTS_CONFIGURATION = new WMTSConfiguration();
 
     public WMTSGetCapabilitiesResponse(HTTPResponse response) throws ServiceException, IOException {
         this(response, null);
@@ -59,8 +61,8 @@ public class WMTSGetCapabilitiesResponse extends GetCapabilitiesResponse {
             InputStream inputStream = null;
             try {
                 inputStream = response.getResponseStream();
-                Parser parser = new Parser(new WMTSConfiguration());
 
+                Parser parser = new Parser(WMTS_CONFIGURATION);
                 object = parser.parse(new InputSource(inputStream));
 
             } catch (SAXException | ParserConfigurationException e) {

@@ -272,10 +272,13 @@ public class GranuleTest extends Assert {
 
         BoundingBox checkCropBBox = requestNE.spatialRequestHelper.getComputedBBox();
         assertNotNull(checkCropBBox);
-        assertEquals(
+        /*assertEquals(
                 "ReferencedEnvelope[1587997.8835 : 1612003.2265, 6162000.4515 : 6198002.1165]",
-                checkCropBBox.toString());
-
+                checkCropBBox.toString());*/
+        assertEquals(1587997.8835, checkCropBBox.getMinimum(0),0.0001);
+        assertEquals(1612003.2265, checkCropBBox.getMaximum(0),0.0001);
+        assertEquals(6162000.4515, checkCropBBox.getMinimum(1),0.0001);
+        assertEquals(6198002.1165, checkCropBBox.getMaximum(1),0.0001);
         // set up the request (east-north version)
         final ReferencedEnvelope requestBBoxEN = new ReferencedEnvelope(1583436.86902,
                 1617044.34782, 6154440.101350001, 6204842.43235, crs_EN);
@@ -287,9 +290,13 @@ public class GranuleTest extends Assert {
 
         checkCropBBox = requestEN.spatialRequestHelper.getComputedBBox();
         assertNotNull(checkCropBBox);
-        assertEquals(
+        /*assertEquals(
                 "ReferencedEnvelope[1587997.8835 : 1612003.2265, 6162000.4515 : 6198002.1165]",
-                checkCropBBox.toString());
+                checkCropBBox.toString());*/
+        assertEquals(1587997.8835, checkCropBBox.getMinimum(0),0.0001);
+        assertEquals(1612003.2265, checkCropBBox.getMaximum(0),0.0001);
+        assertEquals(6162000.4515, checkCropBBox.getMinimum(1),0.0001);
+        assertEquals(6198002.1165, checkCropBBox.getMaximum(1),0.0001);
     }
 
 }

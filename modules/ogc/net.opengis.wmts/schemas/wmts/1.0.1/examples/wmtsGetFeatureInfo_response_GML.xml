@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This is an example of a KVP WMTS GetFeatureInfo response -->
+<ReguralGridedElevations xmlns="http://www.opengis.uab.es/SITiled/world/etopo2" xmlns:gml="http://www.opengis.net/gml" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.uab.es/SITiled/world/etopo2 wmtsGetFeatureInfo_response_GML.xsd">
+	<gml:featureMember>
+		<GridPoint_etopo2>
+			<elevation>503.0</elevation>
+			<TileRow>1</TileRow>
+			<TileCol>2</TileCol>
+			<J>86</J>
+			<I>132</I>
+			<Geometry>
+				<gml:Point srsDimension="2" srsName="urn:ogc:def:crs:OGC:1.3:CRS84">
+					<gml:pos>2.50 42.22</gml:pos>
+				</gml:Point>
+			</Geometry>
+		</GridPoint_etopo2>
+	</gml:featureMember>
+</ReguralGridedElevations>

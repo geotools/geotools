@@ -29,12 +29,16 @@
   <dependencies>
     <dependency>
       <groupId>org.eclipse.emf</groupId>
-      <artifactId>common</artifactId>
+      <artifactId>org.eclipse.emf.common</artifactId>
     </dependency>
     <dependency>
       <groupId>org.eclipse.emf</groupId>
-      <artifactId>ecore</artifactId>
+      <artifactId>org.eclipse.emf.ecore</artifactId>
     </dependency>
+    <dependency>
+        <groupId>org.eclipse.emf</groupId>
+        <artifactId>org.eclipse.emf.ecore.xmi</artifactId>
+      </dependency>
   </dependencies>
 
   <build>
@@ -63,6 +67,7 @@
     <module>net.opengis.wps</module>
     <module>net.opengis.wcs</module>
     <module>net.opengis.csw</module>
+    <module>net.opengis.wmts</module>
   </modules>
 
 </project>

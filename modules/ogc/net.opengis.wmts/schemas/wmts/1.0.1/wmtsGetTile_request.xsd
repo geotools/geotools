@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://www.opengis.net/wmts/1.0"
+	xmlns="http://www.w3.org/2001/XMLSchema" 
+	xmlns:ows="http://www.opengis.net/ows/1.1" 
+	xmlns:wmts="http://www.opengis.net/wmts/1.0" 
+	elementFormDefault="qualified" xml:lang="en"
+	version="1.0.1">
+	<annotation>
+		<appinfo>wmtsGetTile_request</appinfo>
+		<documentation>
+			This XML Schema Document encodes XML WMTS GetTile 
+			request that can be used in SOAP encodings.
+			
+			WMTS is an OGC Standard.
+			Copyright (c) 2009,2010 Open Geospatial Consortium.
+		    	To obtain additional rights of use, visit http://www.opengeospatial.org/legal/.
+		</documentation>
+	</annotation>
+	<!-- =============================================================
+		includes and imports
+	============================================================== -->
+	<include schemaLocation="wmts.xsd"/>
+	<import namespace="http://www.opengis.net/ows/1.1" 
+				schemaLocation="http://schemas.opengis.net/ows/1.1.0/owsAll.xsd"/>
+	<!-- =============================================================
+		elements and types
+	============================================================== -->
+	<element name="GetTile">
+		<complexType>
+			<sequence>
+				<element name="Layer" type="string">
+					<annotation>
+						<documentation>A layer identifier has to be referenced</documentation>
+					</annotation>
+				</element>
+				<element name="Style" type="string">
+					<annotation>
+						<documentation>A style identifier has to be referenced.</documentation>
+					</annotation>
+				</element>
+				<element name="Format" type="ows:MimeType">
+					<annotation>
+						<documentation>Output format of the tile</documentation>
+					</annotation>
+				</element>
+				<element ref="wmts:DimensionNameValue" minOccurs="0" maxOccurs="unbounded">
+					<annotation>
+						<documentation>Dimension name and value</documentation>
+					</annotation>
+				</element>
+				<element name="TileMatrixSet" type="string">
+					<annotation>
+						<documentation>A TileMatrixSet identifier has to be referenced</documentation>
+					</annotation>
+				</element>
+				<element name="TileMatrix" type="string">
+					<annotation>
+						<documentation>A TileMatrix identifier has to be referenced</documentation>
+					</annotation>
+				</element>
+				<element name="TileRow" type="nonNegativeInteger">
+					<annotation>
+						<documentation>Row index of tile matrix</documentation>
+					</annotation>
+				</element>
+				<element name="TileCol" type="nonNegativeInteger">
+					<annotation>
+						<documentation>Column index of tile matrix</documentation>
+					</annotation>
+				</element>
+			</sequence>
+			<attribute name="service" type="string" use="required" fixed="WMTS"/>
+			<attribute name="version" type="string" use="required" fixed="1.0.0"/>
+		</complexType>
+	</element>
+	<element name="DimensionNameValue">
+		<complexType>
+			<simpleContent>
+				<extension base="string">
+					<annotation>
+						<documentation>Dimension value</documentation>
+					</annotation>
+					<attribute name="name" type="string" use="required">
+						<annotation>
+							<documentation>Dimension name</documentation>
+						</annotation>
+					</attribute>
+				</extension>
+			</simpleContent>
+		</complexType>
+	</element>
+</schema>

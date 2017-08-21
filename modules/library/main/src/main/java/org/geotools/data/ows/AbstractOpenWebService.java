@@ -64,7 +64,7 @@ public abstract class AbstractOpenWebService<C extends Capabilities, R extends O
     /** Hints, now used for the XML parsing **/
     protected Map<String, Object> hints;
     
-    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.data.ows");
+    protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.data.ows");
     
     /**
      * Set up the specifications used and retrieve the Capabilities document

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This is an example of a SOAP WMTS GetCapabilities request
+	equivalent to a KVP request like:
+	http://foo.bar/foo?Service=WMTS&Version=1.0.0&Request=GetCapabilities -->
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xsi:schemaLocation="http://www.w3.org/2003/05/soap-envelope http://www.w3.org/2003/05/soap-envelope">
+	<soap:Body>
+		<GetCapabilities xmlns="http://www.opengis.net/wmts/1.0"
+			xmlns:ows="http://www.opengis.net/ows/1.1"
+			xsi:schemaLocation="http://www.opengis.net/wmts/1.0 http://schemas.opengis.net/wmts/1.0/wmtsGetCapabilities_request.xsd"
+			service="WMTS">
+			<ows:AcceptVersions>
+				<ows:Version>1.0.0</ows:Version>
+			</ows:AcceptVersions>
+			<ows:AcceptFormats>
+				<ows:OutputFormat>application/xml</ows:OutputFormat>
+			</ows:AcceptFormats>
+		</GetCapabilities>
+	</soap:Body>
+</soap:Envelope>

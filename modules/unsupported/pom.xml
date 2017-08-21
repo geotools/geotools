@@ -156,12 +156,6 @@
 			</modules>
 		</profile>
 		<profile>
-			<id>tile</id>
-			<modules>
-				<module>tile-client</module>
-			</modules>
-		</profile>
-		<profile>
 			<id>mongodb</id>
 			<modules>
 				<module>mongodb</module>

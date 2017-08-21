@@ -13,6 +13,8 @@ Extensions build additional functionality on top of the core services of the Geo
    grid
    ogc/index
    wms/index
+   tile-client/index
+   wmts/index
    validation
    xsd/index
    transform/transform

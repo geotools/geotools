@@ -93,10 +93,10 @@ public class FeatureHandler extends DelegatingHandler<SimpleFeature> {
         if ("id".equals(key) && properties == null) {
             id = "";
             return true;
-        } else if ("crs".equals(key)) {
+        } else if ("crs".equals(key) && properties == null /* it's top level, not a property */) {
             delegate = new CRSHandler();
             return true;
-        } else if ("geometry".equals(key)) {
+        } else if ("geometry".equals(key) && properties == null /* it's top level, not a property */) {
             delegate = new GeometryHandler(new GeometryFactory());
             return true;
         } else if ("properties".equals(key) && delegate == NULL) {

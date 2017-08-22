@@ -1096,5 +1096,28 @@ public class FeatureJSONTest extends GeoJSONTestSupport {
         assertEquals(4, outerBoundary.getNumPoints());
         Point lastPoint = outerBoundary.getPointN(3);
         assertTrue(lastPoint.equalsExact(expectedLastPoint));
-        assertFalse(fiter.hasNext());    }
+        assertFalse(fiter.hasNext());    
+    }
+    
+    public void testParseCrsAttribute() throws Exception {
+        String json = strip("{\n" +
+                "  \"type\": \"Feature\",\n" + 
+                "  \"geometry\": {\n" + 
+                "      \"type\":\"Polygon\",\n" + 
+                "      \"coordinates\":[[[-180,-90],[180,-90],[180,90],[-180,90],[-180, -90]]]\n" + 
+                "  },\n" + 
+                "  \"properties\": {\n" + 
+                "    \"eop:identifier\" : \"S2A_OPER_MSI_L1C_TL_SGS__20180101T000000_A006640_T32TPP_N02.04\",\n" + 
+                "    \"timeStart\" : \"2018-01-01T00:00:00Z\",\n" + 
+                "    \"timeEnd\" : \"2018-01-01T00:00:00Z\",\n" + 
+                "    \"originalPackageLocation\" : \"/var/data/sentinel2/2017/04/23/S2A_OPER_MSI_L1C_TL_SGS__20180101T000000_A006640_T32TPP_N02.04.zip\",\n" + 
+                "    \"thumbnailURL\" : null,\n" + 
+                "    \"quicklookURL\" : null,\n" + 
+                "    \"crs\" : \"EPSG:32632\",\n" + 
+                "  }\n" + 
+                "}");
+        SimpleFeature sf = fjson.readFeature(json);
+        assertNotNull(sf);
+        assertEquals("EPSG:32632", sf.getAttribute("crs"));
+    }
 }

@@ -31,10 +31,14 @@ import org.opengis.filter.capability.FunctionName;
  */
 public class FilterFunction_greaterThan extends FunctionExpressionImpl {
     
-    public static FunctionName NAME = new FunctionNameImpl("greaterThan", Boolean.class,
-            parameter("object1", Object.class),
-            parameter("object2", Object.class));
-
+    public static FunctionName NAME = new FunctionNameImpl("greaterThan", 
+            parameter("greaterThan", Boolean.class, "greaterThan",
+                    "Returns true if x > y. Parameters can be either numbers or strings (in the second case lexicographic ordering is used)"),
+            parameter("x", Object.class, "x",
+                    "Can be any object type: date, string, number, etc..."),
+            parameter("y", Object.class, "y",
+                    "Can be any object type: date, string, number, etc..."));
+    
     public FilterFunction_greaterThan() {
         super(NAME);
     }

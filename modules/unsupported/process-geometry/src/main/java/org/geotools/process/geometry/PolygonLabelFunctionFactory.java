@@ -15,7 +15,7 @@
  *    Lesser General Public License for more details.
  *    
  */
-package org.geotools.polylabel;
+package org.geotools.process.geometry;
 
 import java.util.ArrayList;
 import java.util.Collections;

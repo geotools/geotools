@@ -15,7 +15,7 @@
  *    Lesser General Public License for more details.
  *    
  */
-package org.geotools.polylabel;
+package org.geotools.process.geometry;
 
 import java.util.logging.Level;
 
@@ -36,7 +36,7 @@ import com.vividsolutions.jts.operation.distance.DistanceOp;
  * 
  */
 public class Cell implements Comparable<Cell> {
-    static final private GeometryBuilder gb = new GeometryBuilder();
+    static final private GeometryBuilder GB = new GeometryBuilder();
 
     private static final double SQRT2 = 1.4142135623730951;
 
@@ -55,7 +55,7 @@ public class Cell implements Comparable<Cell> {
         this.setX(x); // cell center x
         this.setY(y); // cell center y
         this.setH(h); // half the cell size
-        Point p = gb.point(x, y);
+        Point p = GB.point(x, y);
 
         // distance from cell center to polygon
         this.setD(pointToPolygonDist(p, polygon)); 
@@ -71,7 +71,7 @@ public class Cell implements Comparable<Cell> {
     }
 
     public Point getPoint() {
-        return gb.point(x, y);
+        return GB.point(x, y);
     }
 
     // signed distance from point to polygon outline (negative if point is

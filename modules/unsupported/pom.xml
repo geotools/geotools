@@ -179,12 +179,17 @@
             <module>javafx</module>
           </modules>
         </profile>
-        <profile>               
+        <profile>
             <id>mbstyle</id>
+            <activation>
+                <property>
+                    <name>all</name>
+                </property>
+            </activation>
             <modules>
                 <module>mbstyle</module>
             </modules>
-        </profile>        
+        </profile>
 		<profile>
 			<id>unsupported</id>
 			<activation>

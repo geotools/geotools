@@ -44,5 +44,7 @@ public class EndedByImplTest extends TemporalFilterTestSupport {
     void doAssert(TemporalPrimitive tp1, TemporalPrimitive tp2, boolean b) {
         EndedByImpl a = new EndedByImpl(ff.literal(tp1), ff.literal(tp2));
         assertEquals(b, a.evaluate(null));
+        assertFalse(a.toString().contains(EndedByImpl.class.getName()));
+        assertTrue(a.toString().contains(EndedByImpl.NAME));
     }
 }

@@ -14,7 +14,7 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.polylabel;
+package org.geotools.process.geometry;
 
 import static org.junit.Assert.*;
 
@@ -22,6 +22,7 @@ import java.util.List;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FunctionFactory;
+import org.geotools.process.geometry.PolygonLabelFunctionFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.filter.FilterFactory2;
@@ -45,7 +46,7 @@ public class PolygonLabelFunctionFactoryTest {
     }
 
     /**
-     * Test method for {@link org.geotools.polylabel.PolygonLabelFunctionFactory#getFunctionNames()}.
+     * Test method for {@link org.geotools.process.geometry.PolygonLabelFunctionFactory#getFunctionNames()}.
      */
     @Test
     public void testGetFunctionNames() {

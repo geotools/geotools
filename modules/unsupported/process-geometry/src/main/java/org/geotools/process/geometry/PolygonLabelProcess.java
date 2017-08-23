@@ -17,7 +17,7 @@
  *    
  */
 
-package org.geotools.polylabel;
+package org.geotools.process.geometry;
 
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;

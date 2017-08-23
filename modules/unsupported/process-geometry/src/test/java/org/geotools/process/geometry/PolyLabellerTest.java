@@ -16,7 +16,7 @@
  *    
  */
 
-package org.geotools.polylabel;
+package org.geotools.process.geometry;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -28,8 +28,6 @@ import java.io.StringReader;
 
 import org.geotools.geojson.geom.GeometryJSON;
 import org.geotools.geometry.jts.GeometryBuilder;
-import org.geotools.test.TestData;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.vividsolutions.jts.geom.MultiPolygon;

@@ -150,6 +150,38 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
         this.layerIds.add(layerId);
         this.symbolizer = symbolizer;
     }
+    
+    /**
+     * Construct <code>LabelCacheItem</code>.
+     */
+    LabelCacheItem(LabelCacheItem other) {
+        // copy part
+        this.textStyle = other.textStyle;
+        this.label = other.label;
+        this.layerIds.addAll(other.getLayerIds());
+        this.geoms.addAll(other.geoms);
+        this.symbolizer = other.symbolizer;
+        this.priority = other.priority;
+        this.spaceAround = other.spaceAround;
+        this.label = other.label;
+        this.maxDisplacement = other.maxDisplacement;
+        this.minGroupDistance = other.minGroupDistance;
+        this.repeat = other.repeat;
+        this.labelAllGroup = other.labelAllGroup;
+        this.removeGroupOverlaps = other.removeGroupOverlaps;
+        this.allowOverruns = other.allowOverruns;
+        this.followLineEnabled = other.followLineEnabled;
+        this.maxAngleDelta = other.maxAngleDelta;
+        this.autoWrap = other.autoWrap;
+        this.forceLeftToRightEnabled = other.forceLeftToRightEnabled;
+        this.conflictResolutionEnabled = other.conflictResolutionEnabled;
+        this.goodnessOfFit = other.goodnessOfFit;
+        this.polygonAlign = other.polygonAlign;
+        this.graphicsResize = other.graphicsResize;
+        this.graphicMargin = other.graphicMargin;
+        this.textUnderlined = other.textUnderlined;
+        this.symbolizer = other.symbolizer;
+    }
 
     /**
      * Return a modifiable set of ids

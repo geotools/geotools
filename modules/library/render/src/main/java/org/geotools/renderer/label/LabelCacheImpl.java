@@ -62,6 +62,7 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
+import com.vividsolutions.jts.geom.GeometryComponentFilter;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.LinearRing;
@@ -512,13 +513,21 @@ public final class LabelCacheImpl implements LabelCache {
                          painted = paintLineLabelsWithLetterConflict(painter, tempTransform, displayArea, glyphs);
                      else
                          painted = paintLineLabels(painter, tempTransform, displayArea, glyphs);
-                     if (!painted){
+                     if (!painted) {
                          nonPaintedLineLabels++;
-                     } else paintedLineLabels++;
+                     } else {
+                         paintedLineLabels++;
+                     }
+                } else if (geom instanceof Polygon || geom instanceof MultiPolygon
+                        || geom instanceof LinearRing) {
+                    if(labelItem.getTextStyle().isPointPlacement() && !labelItem.isFollowLineEnabled()) {
+                        // labelling the polygon centroid/label point
+                        paintPolygonLabel(painter, tempTransform, displayArea, glyphs);
+                    } else {
+                        // labelling the polygon border(s)
+                        paintPolygonBorder(painter, tempTransform, displayArea, glyphs);
+                    }
                 }
-                else if (geom instanceof Polygon || geom instanceof MultiPolygon
-                        || geom instanceof LinearRing)
-                    paintPolygonLabel(painter, tempTransform, displayArea, glyphs);
             } catch (Exception e) {
                 if(LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.log(Level.FINE, "Failure while painting labels", e);
@@ -1264,6 +1273,39 @@ public final class LabelCacheImpl implements LabelCache {
                 glyphs.addLabel(labelItem, transformed);
             return true;
         }
+    }
+    
+    /**
+     * Splits the polygon into its component lines and labels those, one by one
+     */
+    private boolean paintPolygonBorder(LabelPainter painter, AffineTransform tempTransform,
+            Rectangle displayArea, LabelIndex glyphs) throws Exception {
+        // turn the polygon in its component lines
+        Geometry geometry = painter.getLabel().getGeometry();
+        List<LineString> lines = new ArrayList<>();
+        geometry.apply((GeometryComponentFilter) g -> {
+            if (g instanceof LineString) {
+                lines.add((LineString) g);
+            }
+        });
+
+        // loop over every line and draw labels on it
+        boolean painted = false;
+        LabelCacheItem item = painter.getLabel();
+        LabelCacheItem itemCopy = new LabelCacheItem(item);
+        for (LineString ls : lines) {
+            itemCopy.geoms.clear();
+            itemCopy.geoms.add(ls);
+            painter.setLabel(itemCopy);
+            if (!DISABLE_LETTER_LEVEL_CONFLICT) {
+                painted |= paintLineLabelsWithLetterConflict(painter, tempTransform, displayArea,
+                        glyphs);
+            } else {
+                painted |= paintLineLabels(painter, tempTransform, displayArea, glyphs);
+            }
+        }
+
+        return painted;
     }
 
     /**

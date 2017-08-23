@@ -66,7 +66,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * @author Pietro Arena - Sinergis
  * @author Luca Paolino - GeoSolutions
  */
-@DescribeProcess(title = "Intersection of Feature Collections", description = "Spatial intersection of two feature collections, incuding combining attributes from both.")
+@DescribeProcess(title = "Intersection of Feature Collections", description = "Spatial intersection of two feature collections, including combining attributes from both.")
 public class IntersectionFeatureCollection implements VectorProcess {
     private static final Logger logger = Logger
             .getLogger("org.geotools.process.feature.gs.IntersectionFeatureCollection");

@@ -93,7 +93,8 @@ public class OffsetCurveBuilder {
      * returned geometry will be either a LineString or a MultiLineString
      *
      * @param g The source geometry
-     * @return The offset geometry, or null if no offset geometry could be computed (e.g. the input geometry is made of points)
+     * @return The offset geometry (a single linestring for single line inputs, a multi-linestring for multi-line inputs), 
+     *         or null if no offset geometry could be computed (e.g. the input geometry is made of points)
      */
     public Geometry offset(Geometry g) {
         // shortcut for too short offset

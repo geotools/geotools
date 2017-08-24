@@ -72,4 +72,28 @@ public class LabelUnderlineTest extends AbstractLabelLineTest {
         File reference = new File("./src/test/resources/org/geotools/renderer/lite/test-data/labelTopLeft.sld.png");
         ImageAssert.assertEquals(reference, image, 3000);
     }
+    
+    @Test
+    public void testLabelsUnderlineWithOffset() throws Exception {
+        // load the style that will underline the labels
+        Style style = loadParametricStyle(this, "lineStyleTemplate.sld", "VENDOR_KEY", TextSymbolizer.UNDERLINE_TEXT_KEY, "VENDOR_VALUE", "true");
+        Style offsetStyle = PerpendicularOffsetVisitor.apply(style, 15);
+        // set the map content
+        BufferedImage image = renderNonStraightLines(featureSource, offsetStyle, 1000, 1000, bounds);
+        // let's see if the result image match our expectations
+        File reference = new File("./src/test/resources/org/geotools/renderer/lite/test-data/underlineOffsetStyle.sld.png");
+        ImageAssert.assertEquals(reference, image, 3000);
+    }
+    
+    @Test
+    public void testLabelsUnderlineWithNegativeOffset() throws Exception {
+        // load the style that will underline the labels
+        Style style = loadParametricStyle(this, "lineStyleTemplate.sld", "VENDOR_KEY", TextSymbolizer.UNDERLINE_TEXT_KEY, "VENDOR_VALUE", "true");
+        Style offsetStyle = PerpendicularOffsetVisitor.apply(style, -15);
+        // set the map content
+        BufferedImage image = renderNonStraightLines(featureSource, offsetStyle, 1000, 1000, bounds);
+        // let's see if the result image match our expectations
+        File reference = new File("./src/test/resources/org/geotools/renderer/lite/test-data/underlineNegativeOffsetStyle.sld.png");
+        ImageAssert.assertEquals(reference, image, 3000);
+    }
 }

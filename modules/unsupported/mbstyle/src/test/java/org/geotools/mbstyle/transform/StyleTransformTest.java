@@ -503,7 +503,7 @@ public class StyleTransformTest {
         assertEquals(1, tsym.fonts().size());
         assertEquals(2, tsym.fonts().get(0).getFamily().size());
 
-        assertEquals("Some Test Font", tsym.fonts().get(0).getFamily().get(0).toString());
+        assertEquals("Bitstream Vera Sans", tsym.fonts().get(0).getFamily().get(0).toString());
         assertEquals("Other Test Font", tsym.fonts().get(0).getFamily().get(1).toString());
     }
 

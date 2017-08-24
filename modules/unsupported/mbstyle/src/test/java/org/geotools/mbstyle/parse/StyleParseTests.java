@@ -140,7 +140,7 @@ public class StyleParseTests {
         assertEquals(10.0, l.getTextRotate().doubleValue(), .00001);
         assertEquals(0.05, l.getTextLetterSpacing().doubleValue(), .00001);
         assertEquals(5.0, l.getTextMaxWidth().doubleValue(), .00001);
-        assertEquals(Arrays.asList("Some Test Font", "Other Test Font"), l.getTextFont());
+        assertEquals(Arrays.asList("Bitstream Vera Sans", "Other Test Font"), l.getTextFont());
         assertEquals(new Color(0xFEDCBA), l.getTextColor());
         assertEquals(0.94, l.getTextOpacity().doubleValue(), .00001);
         assertEquals(new Color(0xABCDEF), l.getTextHaloColor());

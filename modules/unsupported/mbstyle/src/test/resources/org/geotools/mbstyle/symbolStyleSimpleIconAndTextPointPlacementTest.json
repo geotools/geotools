@@ -48,7 +48,7 @@
                 "text-field": "{text}",
                 "text-letter-spacing": 0.05,
                 "text-max-width": 5,
-                "text-font": ["Open Sans Regular", "Arial Unicode MS Regular"],
+                "text-font": ["Bitstream Vera Sans", "Arial Unicode MS Regular"],
                 "text-allow-overlap": true,
             },
             "paint": {

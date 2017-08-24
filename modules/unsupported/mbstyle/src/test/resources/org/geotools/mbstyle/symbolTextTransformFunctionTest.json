@@ -44,11 +44,12 @@
                         ["3", "none"],
                         ["4", "uppercase"],
                         ["5", "lowercase"],
-                        ["6", "none"]                        
+                        ["6", "none"]
                     ]
-                }
+                },
                 "visibility": "visible",
                 "text-field": "TesT",
+                "text-font": ["Bitstream Vera Sans"],
                 "symbol-placement": "line"
             },
             "paint": {

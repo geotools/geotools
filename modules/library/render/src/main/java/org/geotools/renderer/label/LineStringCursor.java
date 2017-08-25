@@ -334,6 +334,62 @@ public class LineStringCursor {
 
         return maxDifference;
     }
+    
+    /**
+     * A variant of {@link #getMaxAngleChange(double, double)} taking a step and evaluating angle differences at such step. This helps when a line has
+     * many little segments and chars would end up showing several segments apart (so the full angle change needs to be considered)
+     * 
+     * @param startOrdinate
+     * @param endOrdinate
+     * @param step
+     * @return
+     */
+    public double getMaxAngleChange(double startOrdinate, double endOrdinate, double step) {
+        if (startOrdinate > endOrdinate)
+            throw new IllegalArgumentException("Invalid arguments, endOrdinate < starOrdinate");
+
+        // compute the begin and end segments
+        LineStringCursor delegate = new LineStringCursor(this);
+        double ordinate = startOrdinate; // center of first step
+        delegate.moveTo(ordinate);
+        int prevSegment = delegate.segment;
+        double prevAngle = getSegmentAngle(prevSegment);
+        double maxDifference = 0;
+        try {
+            do {
+                // make sure to more forward enough to both move at least to the next segment
+                // but also to cover at least "step" distance (might require more than one segment)
+                double distance = segmentLenghts[delegate.segment] - delegate.offsetDistance;
+                delegate.offsetDistance = 0;
+                while ((distance < step || delegate.segment == prevSegment) && delegate.segment < (delegate.segmentLenghts.length - 1)) {
+                    delegate.segment++;
+                    distance += segmentLenghts[delegate.segment];
+                }
+                ordinate += distance;
+    
+                if (ordinate < endOrdinate) {
+                    double angle = getSegmentAngle(delegate.segment);
+                    double difference = angle - prevAngle;
+                    // normalize angle, the difference can become 2 * PI
+                    if (difference > Math.PI) {
+                        difference -= 2 * Math.PI;
+                    } else if (difference < -Math.PI) {
+                        difference += 2 * Math.PI;
+                    }
+                    difference = Math.abs(difference);
+                    if (difference > maxDifference) {
+                        maxDifference = difference;
+                    }
+                    prevAngle = angle;
+                }
+            } while (ordinate < endOrdinate);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        return maxDifference;
+    }
+
 
     /**
      * Returns the maximum distance between the curve and a straight line connecting the 
@@ -425,4 +481,5 @@ public class LineStringCursor {
         subCoords[subCoords.length - 1] = end;
         return lineString.getFactory().createLineString(subCoords);
     }
+
 }

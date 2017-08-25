@@ -29,6 +29,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.Map.Entry;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.geotools.data.DataAccess;
@@ -465,13 +466,14 @@ public class PreGeneralizedFeatureSource implements SimpleFeatureSource {
              * a starting geometry to simplify further.
              */
             result =  (Double) query.getHints().get(Hints.GEOMETRY_SIMPLIFICATION);
-            log.warning("Hint for geometry simplification in query, fallback to base feature" );
+            log.fine("Hint for geometry simplification in query, fallback to base feature" );
         }
         if (result == null) {
-            log.warning("No hint for geometry distance in query, fallback to base feature" );
-        }
-        else {
-            log.info("Hint geometry distance: "+result);
+            log.fine("No hint for geometry distance in query, fallback to base feature" );
+        } else {
+            if(log.isLoggable(Level.FINE)) {
+                log.fine("Hint geometry distance: " +result);
+            }
         }
         return result;
     }

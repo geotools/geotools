@@ -16,8 +16,7 @@
  */
 package org.geotools.geopkg.mosaic;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.awt.Rectangle;
 import java.awt.image.RenderedImage;
@@ -49,6 +48,23 @@ public class GeoPackageReaderTest {
             throw new RuntimeException(e);
         }
     }
+    
+    @Test
+    public void testDefaultCoverage() throws IOException {
+        GeoPackageReader reader = new GeoPackageReader(GeoPackageTest.class.getResource("Blue_Marble.gpkg"), null);
+
+        GridCoverage2D gc = reader.read("bluemarble_tif_tiles", (GeneralParameterValue[]) null);
+        assertNotNull(gc);
+        
+        assertEquals(-180, gc.getEnvelope().getMinimum(0),0.01);
+        assertEquals(-90, gc.getEnvelope().getMinimum(1),0.01);
+        assertEquals(180, gc.getEnvelope().getMaximum(0),0.01);
+        assertEquals(90, gc.getEnvelope().getMaximum(1),0.01);
+        RenderedImage img = gc.getRenderedImage();
+        assertEquals(1536, img.getWidth());
+        assertEquals(768, img.getHeight());
+    }
+    
     @Test
     public void testZoomlevel0() throws IOException {
         GeoPackageReader reader = new GeoPackageReader(GeoPackageTest.class.getResource("Blue_Marble.gpkg"), null);

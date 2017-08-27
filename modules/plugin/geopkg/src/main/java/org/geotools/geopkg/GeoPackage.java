@@ -1435,11 +1435,13 @@ public class GeoPackage {
         TileEntry e = new TileEntry();
         initEntry(e, rs);
 
-        //load all the tile matrix entries
+        // load all the tile matrix entries (and join with the data table to see if a certain level
+        // has tiles available, given the indexes in the data table, it should be real quick)
         PreparedStatement psm = cx.prepareStatement(format(
-            "SELECT * FROM %s" + 
+            "SELECT *, exists(SELECT 1 FROM %s data where data.zoom_level = tileMatrix.zoom_level) as has_tiles" +
+            " FROM %s as tileMatrix" + 
             " WHERE table_name = ?" +
-            " ORDER BY zoom_level ASC", TILE_MATRIX_METADATA));
+            " ORDER BY zoom_level ASC", e.getTableName(), TILE_MATRIX_METADATA));
         try {
             psm.setString(1, e.getTableName());
 
@@ -1454,6 +1456,7 @@ public class GeoPackage {
                     m.setTileHeight(rsm.getInt("tile_height"));
                     m.setXPixelSize(rsm.getDouble("pixel_x_size"));
                     m.setYPixelSize(rsm.getDouble("pixel_y_size"));
+                    m.setTiles(rsm.getBoolean("has_tiles"));
 
                     e.getTileMatricies().add(m);
                 }

@@ -223,7 +223,7 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
 
             int boundsLeftTile, boundsBottomTile, boundsRightTile, boundsTopTile;
 
-            //find the closest zoom based on horizontal resolution
+            // find the closest zoom based on horizontal resolution
             TileMatrix bestMatrix = null;
             if (requestedEnvelope != null && dim != null) {
                 // requested res
@@ -232,6 +232,9 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
                 //loop over matrices            
                 double difference = Double.MAX_VALUE;
                 for (TileMatrix matrix : entry.getTileMatricies()) {
+                    if(!matrix.hasTiles()) {
+                        continue;
+                    }
                     double newRes = matrix.getXPixelSize();
                     double newDifference = Math.abs(horRes - newRes);
                     if (newDifference < difference) {
@@ -244,12 +247,20 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
                 // pick the highest resolution, like in a geotiff with overviews
                 double resolution = Double.POSITIVE_INFINITY;
                 for (TileMatrix matrix : entry.getTileMatricies()) {
+                    if(!matrix.hasTiles()) {
+                        continue;
+                    }
                     double newRes = matrix.getXPixelSize();
                     if (newRes < resolution) {
                         resolution = newRes;
                         bestMatrix = matrix;
                     }
                 }
+            }
+            
+            if (bestMatrix == null) {
+                // it means no level has tiles, return null, it's ok to do so
+                return null;
             }
 
             //take available tiles from database
@@ -318,7 +329,6 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
                  * transparency is actually needed 
                  */
                 List<RenderedImage> sources = new ArrayList<>();
-                List<RenderedImage> alphas = new ArrayList<>();
                 ImageWorker iw = new ImageWorker();
                 while (it.hasNext()) {                
                     Tile tile = it.next();

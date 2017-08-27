@@ -187,5 +187,21 @@ public class GeoPackageReaderTest {
         File referenceFull = new File("./src/test/resources/org/geotools/geopkg/giantPolyFull.png");
         ImageAssert.assertEquals(referenceFull, img, 1000);
     }
+    
+    @Test
+    public void testZoomLevel0Empty() throws IOException {
+        // hit everything at zoom level 0
+        GeoPackageReader reader = new GeoPackageReader(GeoPackageTest.class.getResource("giantPoly.gpkg"), null);
+        GeneralParameterValue[] parameters = new GeneralParameterValue[1];
+        GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(new Rectangle(128,128)), new ReferencedEnvelope(-180,180,-90,90,WGS_84));
+        parameters[0] = new Parameter<GridGeometry2D>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
+        GridCoverage2D gc = reader.read(parameters);
+        
+        // should be the same as reading the native resolution, since that one is the only available
+        // used to return an empty image instead
+        RenderedImage img = gc.getRenderedImage();
+        File referenceFull = new File("./src/test/resources/org/geotools/geopkg/giantPolyFull.png");
+        ImageAssert.assertEquals(referenceFull, img, 1000);
+    }
 
 }

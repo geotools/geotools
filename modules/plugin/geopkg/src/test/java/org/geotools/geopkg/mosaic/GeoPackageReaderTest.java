@@ -19,6 +19,7 @@ package org.geotools.geopkg.mosaic;
 import static org.junit.Assert.*;
 
 import java.awt.Rectangle;
+import java.awt.image.ColorModel;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
@@ -37,6 +38,8 @@ import org.junit.Test;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
+import it.geosolutions.rendered.viewer.RenderedImageBrowser;
+
 
 public class GeoPackageReaderTest {
     
@@ -54,7 +57,10 @@ public class GeoPackageReaderTest {
     public void testDefaultCoverage() throws IOException {
         GeoPackageReader reader = new GeoPackageReader(GeoPackageTest.class.getResource("Blue_Marble.gpkg"), null);
 
-        GridCoverage2D gc = reader.read("bluemarble_tif_tiles", (GeneralParameterValue[]) null);
+        GeneralParameterValue[] parameters = new GeneralParameterValue[1];
+        GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(new Rectangle(1000,500)), new ReferencedEnvelope(-160,160.0,-80.0,80,WGS_84));
+        parameters[0] = new Parameter<GridGeometry2D>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
+        GridCoverage2D gc = reader.read("bluemarble_tif_tiles", parameters);
         assertNotNull(gc);
         
         assertEquals(-180, gc.getEnvelope().getMinimum(0),0.01);
@@ -168,8 +174,18 @@ public class GeoPackageReaderTest {
         parameters[0] = new Parameter<GridGeometry2D>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
         GridCoverage2D gc = reader.read("bluemarble_tif_tiles", parameters);
         RenderedImage img = gc.getRenderedImage();
-        File reference = new File("./src/test/resources/org/geotools/gpkg/test-data/tilePositionZoomLevel4.sld.png");
+        File reference = new File("./src/test/resources/org/geotools/geopkg/tilePositionZoomLevel4.png");
         ImageAssert.assertEquals(reference, img, 1000);
+    }
+    
+    @Test
+    public void testPngJpegTileReading() throws IOException {
+        // hit everything, mixing transparent and opaque
+        GeoPackageReader reader = new GeoPackageReader(GeoPackageTest.class.getResource("giantPoly.gpkg"), null);
+        GridCoverage2D gc = reader.read(null);
+        RenderedImage img = gc.getRenderedImage();
+        File referenceFull = new File("./src/test/resources/org/geotools/geopkg/giantPolyFull.png");
+        ImageAssert.assertEquals(referenceFull, img, 1000);
     }
 
 }

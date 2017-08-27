@@ -21,11 +21,14 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
+import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
 import java.awt.image.WritableRaster;
+import java.awt.image.renderable.ParameterBlock;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -39,6 +42,12 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
+import javax.media.jai.ImageLayout;
+import javax.media.jai.Interpolation;
+import javax.media.jai.JAI;
+import javax.media.jai.ParameterBlockJAI;
+import javax.media.jai.PlanarImage;
+import javax.media.jai.operator.MosaicDescriptor;
 
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -47,6 +56,7 @@ import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.factory.GeoTools;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -55,6 +65,7 @@ import org.geotools.geopkg.Tile;
 import org.geotools.geopkg.TileEntry;
 import org.geotools.geopkg.TileMatrix;
 import org.geotools.geopkg.TileReader;
+import org.geotools.image.ImageWorker;
 import org.geotools.referencing.CRS;
 import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
@@ -66,6 +77,10 @@ import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Envelope;
+
+import it.geosolutions.jaiext.JAIExt;
+import it.geosolutions.jaiext.mosaic.MosaicRIF;
+import it.geosolutions.jaiext.warp.WarpRIF;
 
 /**
  * GeoPackage Grid Reader (supports the GP mosaic datastore).
@@ -179,7 +194,7 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
     @Override
     public GridCoverage2D read(String coverageName, GeneralParameterValue[] parameters) throws IllegalArgumentException, IOException {
         TileEntry entry = tiles.get(coverageName);
-        BufferedImage image = null;
+        RenderedImage image = null;
         ReferencedEnvelope resultEnvelope = null;
         GeoPackage file = new GeoPackage(sourceFile);
         try {
@@ -226,7 +241,15 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
                 }
             }
             if (bestMatrix == null) {
-                bestMatrix = entry.getTileMatricies().get(0);
+                // pick the highest resolution, like in a geotiff with overviews
+                double resolution = Double.POSITIVE_INFINITY;
+                for (TileMatrix matrix : entry.getTileMatricies()) {
+                    double newRes = matrix.getXPixelSize();
+                    if (newRes < resolution) {
+                        resolution = newRes;
+                        bestMatrix = matrix;
+                    }
+                }
             }
 
             //take available tiles from database
@@ -286,29 +309,57 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
                     offsetY - (bottomTile + 1) * resY, //
                     offsetY - topTile * resY, crs);
 
-            TileReader it;
-            it = file.reader(entry, bestMatrix.getZoomLevel(), bestMatrix.getZoomLevel(), leftTile, rightTile, topTile, bottomTile);
-
-            while (it.hasNext()) {                
-                Tile tile = it.next();
-
-                BufferedImage tileImage = readImage(tile.getData());
-
-                if (image == null) {
-                    image = getStartImage(tileImage, width, height);
+            try(TileReader it = file.reader(entry, bestMatrix.getZoomLevel(), bestMatrix.getZoomLevel(), leftTile, rightTile, topTile, bottomTile)) {
+                /**
+                 * Composing the output is harder than it seems, GeoPackage does not mandate any uniformity in tiles,
+                 * they can be in different formats (a mix of PNG and JPEG) and can have different color models,
+                 * thus a mix of (possibly different) palettes, gray, RGB, RGBA. GDAL in particular defaults
+                 * to generate a mix of PNG and JPEG to generate the slow and large PNG format only when 
+                 * transparency is actually needed 
+                 */
+                List<RenderedImage> sources = new ArrayList<>();
+                List<RenderedImage> alphas = new ArrayList<>();
+                ImageWorker iw = new ImageWorker();
+                while (it.hasNext()) {                
+                    Tile tile = it.next();
+    
+                    BufferedImage tileImage = readImage(tile.getData());
+                    
+                    iw.setImage(tileImage);
+                    int posx = (int) (tile.getColumn() - leftTile) * DEFAULT_TILE_SIZE;
+                    int posy = (int) (tile.getRow() - topTile) * DEFAULT_TILE_SIZE;
+                    if(posx != 0 || posy != 0) {
+                        iw.translate(posx, posy, Interpolation.getInstance(Interpolation.INTERP_NEAREST));
+                        RenderedImage translated = iw.getRenderedImage();
+                        sources.add(translated);
+                    } else {
+                        sources.add(tileImage);
+                    }
                 }
+                
+                if (sources.isEmpty()) {
+                    // no tiles
+                    image = getStartImage(width, height);
+                } else if(sources.size() == 1) {
+                    // one tile
+                    image = sources.get(0);
+                } else {
+                    // at the time of writing, only JAI-EXT mosaic can handle a mix of different 
+                    // color models, we need to use it explicitly
+                    final ParameterBlockJAI pb = new ParameterBlockJAI(
+                            new it.geosolutions.jaiext.mosaic.MosaicDescriptor());
+                    sources.forEach(s -> pb.addSource(s));
+                    pb.setParameter("mosaicType", MosaicDescriptor.MOSAIC_TYPE_OVERLAY);
+                    pb.setParameter("sourceAlpha", null);
+                    pb.setParameter("sourceROI", null);
+                    pb.setParameter("sourceThreshold", null);
+                    pb.setParameter("backgroundValues", new double[] {0});
+                    pb.setParameter("nodata", null);
 
-                //c oordinates
-                int posx = (int) (tile.getColumn() - leftTile) * DEFAULT_TILE_SIZE;
-                int posy = (int) (tile.getRow() - topTile) * DEFAULT_TILE_SIZE;
-
-                image.getRaster().setRect(posx, posy, tileImage.getData() );
-            }
-
-            it.close();
-
-            if (image == null) { // no tiles ??
-                image = getStartImage(width, height);
+                    image = PlanarImage.wrapRenderedImage(
+                            // explicit reference here too
+                            new MosaicRIF().create(pb, GeoTools.getDefaultHints()));
+                }
             }
         }
         finally {

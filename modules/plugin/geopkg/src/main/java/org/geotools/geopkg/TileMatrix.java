@@ -101,4 +101,12 @@ public class TileMatrix {
     public void setYPixelSize(Double yPixelSize) {
         this.yPixelSize = yPixelSize;
     }
+
+    @Override
+    public String toString() {
+        return "TileMatrix [zoomLevel=" + zoomLevel + ", matrixWidth=" + matrixWidth
+                + ", matrixHeight=" + matrixHeight + ", tileWidth=" + tileWidth + ", tileHeight="
+                + tileHeight + ", xPixelSize=" + xPixelSize + ", yPixelSize=" + yPixelSize + "]";
+    }
+    
 }

@@ -20,6 +20,7 @@ import static org.junit.Assert.*;
 
 import java.awt.Rectangle;
 import java.awt.image.RenderedImage;
+import java.io.File;
 import java.io.IOException;
 
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -98,11 +99,11 @@ public class GeoPackageReaderTest {
         GridCoverage2D gc = reader.read("bluemarble_tif_tiles", parameters);
         RenderedImage img = gc.getRenderedImage();
         assertEquals(0, gc.getEnvelope().getMinimum(0),0.01);
-        assertEquals(0, gc.getEnvelope().getMinimum(1),0.01);
+        assertEquals(-30, gc.getEnvelope().getMinimum(1),0.01); 
         assertEquals(180, gc.getEnvelope().getMaximum(0),0.01);
         assertEquals(90, gc.getEnvelope().getMaximum(1),0.01);
         assertEquals(1536, img.getWidth());
-        assertEquals(768, img.getHeight());
+        assertEquals(1024, img.getHeight());
     }
 
     @Test
@@ -115,11 +116,11 @@ public class GeoPackageReaderTest {
         GridCoverage2D gc = reader.read("bluemarble_tif_tiles", parameters);
         RenderedImage img = gc.getRenderedImage();
         assertEquals(0, gc.getEnvelope().getMinimum(0),0.01);
-        assertEquals(0, gc.getEnvelope().getMinimum(1),0.01);
-        assertEquals(90, gc.getEnvelope().getMaximum(0),0.01);
+        assertEquals(-15, gc.getEnvelope().getMinimum(1),0.01);
+        assertEquals(105, gc.getEnvelope().getMaximum(0),0.01);
         assertEquals(45, gc.getEnvelope().getMaximum(1),0.01);
-        assertEquals(1536, img.getWidth());
-        assertEquals(768, img.getHeight());
+        assertEquals(1792, img.getWidth());
+        assertEquals(1024, img.getHeight());
     }
     
     @Test
@@ -132,11 +133,11 @@ public class GeoPackageReaderTest {
         GridCoverage2D gc = reader.read("bluemarble_tif_tiles", parameters);
         RenderedImage img = gc.getRenderedImage();
         assertEquals(0, gc.getEnvelope().getMinimum(0),0.01);
-        assertEquals(0, gc.getEnvelope().getMinimum(1),0.01);
-        assertEquals(45, gc.getEnvelope().getMaximum(0),0.01);
+        assertEquals(-7.5, gc.getEnvelope().getMinimum(1),0.01);
+        assertEquals(52.5, gc.getEnvelope().getMaximum(0),0.01);
         assertEquals(22.5, gc.getEnvelope().getMaximum(1),0.01);
-        assertEquals(1536, img.getWidth());
-        assertEquals(768, img.getHeight());
+        assertEquals(1792, img.getWidth());
+        assertEquals(1024, img.getHeight());
     }
     
     @Test
@@ -149,11 +150,26 @@ public class GeoPackageReaderTest {
         GridCoverage2D gc = reader.read("bluemarble_tif_tiles", parameters);
         RenderedImage img = gc.getRenderedImage();
         assertEquals(0, gc.getEnvelope().getMinimum(0),0.01);
-        assertEquals(0, gc.getEnvelope().getMinimum(1),0.01);
-        assertEquals(22.5, gc.getEnvelope().getMaximum(0),0.01);
+        assertEquals(-3.75, gc.getEnvelope().getMinimum(1),0.01);
+        assertEquals(26.25, gc.getEnvelope().getMaximum(0),0.01);
         assertEquals(11.25, gc.getEnvelope().getMaximum(1),0.01);
-        assertEquals(1536, img.getWidth());
-        assertEquals(768, img.getHeight());
+        assertEquals(1792, img.getWidth());
+        assertEquals(1024, img.getHeight());
+    }
+    
+    @Test
+    public void testTilePositioning() throws IOException {
+        // before GEOT-5809 the bounds might have matched, but the raster contents were wrong, check
+        // image vs image
+        GeoPackageReader reader = new GeoPackageReader(GeoPackageTest.class.getResource("Blue_Marble.gpkg"), null);
+        
+        GeneralParameterValue[] parameters = new GeneralParameterValue[1];
+        GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(new Rectangle(128,128)), new ReferencedEnvelope(-81,-80,30,31,WGS_84));
+        parameters[0] = new Parameter<GridGeometry2D>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg);
+        GridCoverage2D gc = reader.read("bluemarble_tif_tiles", parameters);
+        RenderedImage img = gc.getRenderedImage();
+        File reference = new File("./src/test/resources/org/geotools/gpkg/test-data/tilePositionZoomLevel4.sld.png");
+        ImageAssert.assertEquals(reference, img, 1000);
     }
 
 }

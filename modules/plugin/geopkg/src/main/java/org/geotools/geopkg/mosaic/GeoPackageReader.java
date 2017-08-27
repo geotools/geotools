@@ -83,7 +83,7 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
         
     protected File sourceFile;
                 
-    protected Map<String, TileEntry> tiles = new HashMap<String, TileEntry>();
+    protected Map<String, TileEntry> tiles = new LinkedHashMap<String, TileEntry>();
     
     public GeoPackageReader(Object source, Hints hints) throws IOException {
        coverageFactory = CoverageFactoryFinder.getGridCoverageFactory(this.hints);
@@ -97,6 +97,10 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
        } finally {
            file.close();
        }
+       
+       // have a sane default when hit with no name, useful in particular
+       // when the geopackage only has one coverage
+       coverageName = tiles.keySet().iterator().next();
     }
 
     @Override
@@ -268,7 +272,7 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
 
             it.close();
 
-            if (image == null){ // no tiles ??
+            if (image == null) { // no tiles ??
                 image = getStartImage(width, height);
             }
         }
@@ -339,7 +343,7 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
     @Override
     public GridCoverage2D read(GeneralParameterValue[] parameters) throws IllegalArgumentException,
             IOException {
-        throw new IllegalArgumentException("No layer specified!");
+        return read(coverageName, parameters);
     }
 
 }

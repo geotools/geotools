@@ -246,13 +246,6 @@ public class ogcComplexTypes {
             
             if (canEncode(element, value, hints)) {
                 AttributesImpl attributes = new AttributesImpl();
-//                attributes.addAttribute(WFSSchema.NAMESPACE.toString(),
-//                    attrs[0].getName(), null, "string", attrs[0].getFixed());
-//                attributes.addAttribute(WFSSchema.NAMESPACE.toString(),
-//                    attrs[1].getName(), null, "string", attrs[1].getFixed());
-//                attributes.addAttribute(WFSSchema.NAMESPACE.toString(),
-//                    attrs[2].getName(), null, "string", attrs[2].getFixed());
-                
                 
                 try {
                     output.startElement(element.getNamespace(), element.getName(), attributes);

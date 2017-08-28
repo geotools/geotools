@@ -53,7 +53,7 @@ fi
 set -e
 
 # deploy the release to maven repo
-if [ -z $SKIP_DEPLOY ]; then
+if [ "$SKIP_DEPLOY"  != true ]; then
   mvn clean deploy -DskipTests -Dall
   mvn clean -P deploy.boundless deploy -DskipTests -Dall
 fi

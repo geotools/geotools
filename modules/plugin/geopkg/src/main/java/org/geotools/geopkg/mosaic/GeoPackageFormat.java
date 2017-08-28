@@ -130,7 +130,7 @@ public class GeoPackageFormat extends AbstractGridFormat {
      */
     private void setInfo() {
         final HashMap<String,String> info = new HashMap<String,String> ();
-        info.put("name", "GeoPackage (mosaic)");
+        info.put("name", "GeoPackageMosaic");
         info.put("description", "GeoPackage mosaic plugin");
         info.put("vendor", "Geotools");
         info.put("docURL", "");

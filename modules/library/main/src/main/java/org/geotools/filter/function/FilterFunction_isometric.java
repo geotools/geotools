@@ -28,6 +28,7 @@ import java.util.List;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.filter.function.FilterFunction_offset.OffsetOrdinateFilter;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.filter.capability.FunctionName;
 
@@ -134,7 +135,8 @@ public class FilterFunction_isometric extends FunctionExpressionImpl implements
             // extrude each segment
             List<Polygon> result = new ArrayList<Polygon>();
             for (Segment segment : segments) {
-                CoordinateSequence cs = gf.getCoordinateSequenceFactory().create(5, 2);
+                CoordinateSequence cs =
+                    JTS.createCS(gf.getCoordinateSequenceFactory(), 5, 2);
                 cs.setOrdinate(0, 0, segment.x0);
                 cs.setOrdinate(0, 1, segment.y0);
                 cs.setOrdinate(3, 0, segment.x0);

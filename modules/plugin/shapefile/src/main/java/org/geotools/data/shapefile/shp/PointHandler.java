@@ -18,6 +18,8 @@ package org.geotools.data.shapefile.shp;
 
 import java.nio.ByteBuffer;
 
+import org.geotools.geometry.jts.JTS;
+
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.GeometryFactory;
@@ -83,7 +85,9 @@ public class PointHandler implements ShapeHandler {
         }
         
         int dimension = shapeType == ShapeType.POINTZ && !flatGeometry ? 3 : 2;
-        CoordinateSequence cs = geometryFactory.getCoordinateSequenceFactory().create(1, dimension);
+        CoordinateSequence cs =
+            JTS.createCS(geometryFactory.getCoordinateSequenceFactory(), 1, dimension);
+        
         cs.setOrdinate(0, 0, buffer.getDouble());
         cs.setOrdinate(0, 1, buffer.getDouble());
 

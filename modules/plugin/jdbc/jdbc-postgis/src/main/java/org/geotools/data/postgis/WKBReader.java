@@ -45,6 +45,7 @@ import org.geotools.geometry.jts.CircularArc;
 import org.geotools.geometry.jts.CompoundCurve;
 import org.geotools.geometry.jts.CompoundRing;
 import org.geotools.geometry.jts.CurvedGeometryFactory;
+import org.geotools.geometry.jts.JTS;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.CoordinateSequence;
@@ -406,7 +407,8 @@ public class WKBReader {
     }
 
     private CoordinateSequence readCoordinateSequence(int size) throws IOException {
-        CoordinateSequence seq = csFactory.create(size, inputDimension);
+        CoordinateSequence seq =
+            JTS.createCS(csFactory, size, inputDimension);
         int targetDim = seq.getDimension();
         if (targetDim > inputDimension)
             targetDim = inputDimension;

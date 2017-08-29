@@ -129,7 +129,8 @@ class GrowableOrdinateArray {
      */
     public CoordinateSequence toCoordinateSequence(GeometryFactory gf) {
         double[] data = getData();
-        CoordinateSequence cs = gf.getCoordinateSequenceFactory().create(data.length / 2, 2);
+        CoordinateSequence cs =
+                JTS.createCS(gf.getCoordinateSequenceFactory(), data.length / 2, 2);
         for (int i = 0; i < cs.size(); i++) {
             cs.setOrdinate(i, 0, data[i * 2]);
             cs.setOrdinate(i, 1, data[i * 2 + 1]);

@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
 
 import com.vividsolutions.jts.algorithm.CGAlgorithms;
@@ -177,7 +178,8 @@ public class PolygonHandler implements ShapeHandler {
                 }
             }
 
-            CoordinateSequence csRing = geometryFactory.getCoordinateSequenceFactory().create(length + close, dimensions);
+            CoordinateSequence csRing =
+                JTS.createCS(geometryFactory.getCoordinateSequenceFactory(),length + close, dimensions);
             // double area = 0;
             // int sx = offset;
             for (int i = 0; i < length; i++) {
@@ -236,7 +238,8 @@ public class PolygonHandler implements ShapeHandler {
      */
     private CoordinateSequence readCoordinates(final ByteBuffer buffer,
             final int numPoints, final int dimensions) {
-        CoordinateSequence cs = geometryFactory.getCoordinateSequenceFactory().create(numPoints, dimensions);
+        CoordinateSequence cs =
+            JTS.createCS(geometryFactory.getCoordinateSequenceFactory(), numPoints, dimensions);
 
         DoubleBuffer dbuffer = buffer.asDoubleBuffer();
         double[] ordinates = new double[numPoints * 2];

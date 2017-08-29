@@ -19,6 +19,7 @@ package org.geotools.gml4wcs.bindings;
 import java.util.List;
 
 import org.eclipse.xsd.XSDElementDeclaration;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.gml2.FeatureTypeCache;
 import org.geotools.gml2.bindings.GML2ParsingUtils;
 import org.geotools.xml.BindingWalkerFactory;
@@ -103,7 +104,7 @@ public class GML3ParsingUtils {
             List dps = node.getChildValues(DirectPosition.class);
             DirectPosition dp = (DirectPosition) dps.get(0);
 
-            CoordinateSequence seq = csf.create(dps.size(), dp.getDimension());
+            CoordinateSequence seq = JTS.createCS(csf, dps.size(), dp.getDimension());
 
             for (int i = 0; i < dps.size(); i++) {
                 dp = (DirectPosition) dps.get(i);
@@ -140,9 +141,9 @@ public class GML3ParsingUtils {
             CoordinateSequence seq = null;
 
             if (dps.length == 0) {
-                seq = csf.create(0, 0);
+                seq = JTS.createCS(csf, 0, 0);
             } else {
-                seq = csf.create(dps.length, dps[0].getDimension());
+                seq = JTS.createCS(csf, dps.length, dps[0].getDimension());
 
                 for (int i = 0; i < dps.length; i++) {
                     DirectPosition dp = (DirectPosition) dps[i];

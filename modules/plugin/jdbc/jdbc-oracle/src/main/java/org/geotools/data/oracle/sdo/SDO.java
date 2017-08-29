@@ -31,6 +31,7 @@ import org.geotools.geometry.jts.CircularArc;
 import org.geotools.geometry.jts.CompoundCurvedGeometry;
 import org.geotools.geometry.jts.CurvedGeometries;
 import org.geotools.geometry.jts.CurvedGeometryFactory;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.LiteCoordinateSequenceFactory;
 
 import com.vividsolutions.jts.algorithm.RobustCGAlgorithms;
@@ -2092,7 +2093,7 @@ public final class SDO {
         //      POINT_TYPE Special Case
         //
         if ((D == 2) && (L == 0) && (TT == 1)) {
-            CoordinateSequence cs = f.create(1, 2);
+            CoordinateSequence cs = JTS.createCS(f, 1, 2);
             for (int i = 0; i < 2; i++)
                 cs.setOrdinate(0, i, ordinates[i]);
             return cs;
@@ -2159,7 +2160,7 @@ public final class SDO {
         OrdinateList x, OrdinateList y, OrdinateList z) {
         final int LENGTH = x.size();
         // Coordinate[] array = new Coordinate[LENGTH];
-        CoordinateSequence cs = f.create(LENGTH, z == null ? 2: 3);
+        CoordinateSequence cs = JTS.createCS(f, LENGTH, z == null ? 2 : 3);
 
         if (z != null) {
             for (int i = 0; i < LENGTH; i++) {
@@ -2234,7 +2235,7 @@ public final class SDO {
         final int LENGTH = x.size();
         // TODO org.geotools.geometry.jts.LiteCoordinateSequenceFactory does not support 4 dimensions!
         // CoordinateSequence cs = f.create(LENGTH, z == null ? 3: 4);
-        CoordinateSequence cs = f.create(LENGTH, z == null ? 2: 3);
+        CoordinateSequence cs = JTS.createCS(f, LENGTH, z == null ? 2 : 3);
 
         if (z != null) {
             for (int i = 0; i < LENGTH; i++) {

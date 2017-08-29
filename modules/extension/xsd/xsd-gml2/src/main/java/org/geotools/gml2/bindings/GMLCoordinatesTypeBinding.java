@@ -20,6 +20,7 @@ import java.util.StringTokenizer;
 
 import javax.xml.namespace.QName;
 
+import org.geotools.geometry.jts.JTS;
 import org.geotools.gml2.GML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
@@ -170,7 +171,7 @@ public class GMLCoordinatesTypeBinding extends AbstractComplexBinding {
             }
 
             if (seq == null) {
-                seq = csFactory.create(ncoords, oords.length);
+                seq = JTS.createCS(csFactory, ncoords, oords.length);
             }
 
             seq.setOrdinate(i, CoordinateSequence.X, Double.parseDouble(x));

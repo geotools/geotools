@@ -17,6 +17,7 @@
 package org.geotools.data.shapefile.shp;
 
 import org.geotools.factory.Hints;
+import org.geotools.geometry.jts.JTS;
 import org.opengis.feature.type.GeometryDescriptor;
 
 import com.vividsolutions.jts.algorithm.CGAlgorithms;
@@ -172,21 +173,20 @@ public class JTSUtilities {
      * @return A new ring with the reversed Coordinates.
      */
     public static final LinearRing reverseRing(LinearRing lr) {
-		GeometryFactory gf = lr.getFactory();
-		CoordinateSequenceFactory csf = gf.getCoordinateSequenceFactory();
+        GeometryFactory gf = lr.getFactory();
+        CoordinateSequenceFactory csf = gf.getCoordinateSequenceFactory();
 
-		CoordinateSequence csOrig = lr.getCoordinateSequence();
-		int numPoints = csOrig.size();
-		int dimensions = csOrig.getDimension();
-		CoordinateSequence csNew = csf.create(numPoints, dimensions);
+        CoordinateSequence csOrig = lr.getCoordinateSequence();
+        int numPoints = csOrig.size();
+        int dimensions = csOrig.getDimension();
+        CoordinateSequence csNew = JTS.createCS(csf, numPoints, dimensions);
 
-		for (int i = 0; i < numPoints; i++) {
-			for (int j = 0; j < dimensions; j++) {
-				csNew.setOrdinate(numPoints-1-i, j, csOrig.getOrdinate(i, j));
-			}
-		}
-		
-		return gf.createLinearRing(csNew);
+        for (int i = 0; i < numPoints; i++) {
+            for (int j = 0; j < dimensions; j++) {
+                csNew.setOrdinate(numPoints - 1 - i, j, csOrig.getOrdinate(i, j));
+            }
+        }
+        return gf.createLinearRing(csNew);
     }
 
     /**

@@ -473,7 +473,7 @@ public class GeometryBuilder {
             cs = new CoordinateArraySequence(n,dim);
         }
         else {
-            cs = csFact.create(n, dim);
+            cs = JTS.createCS(csFact, n, dim);
         }
         if( cs.getDimension() != dim ) {
             // illegal state error, try and fix

@@ -29,6 +29,7 @@ import org.geotools.data.shapefile.files.FileReader;
 import org.geotools.data.shapefile.files.ShpFileType;
 import org.geotools.data.shapefile.files.ShpFiles;
 import org.geotools.data.shapefile.files.StreamLogging;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.renderer.ScreenMap;
 import org.geotools.resources.NIOUtilities;
 import org.geotools.util.logging.Logging;
@@ -136,19 +137,19 @@ public class ShapefileReader implements FileReader {
         public Object getSimplifiedShape() {
             CoordinateSequenceFactory csf = geometryFactory.getCoordinateSequenceFactory();
             if(type.isPointType()) {
-                CoordinateSequence cs = csf.create(1, 2);
+                CoordinateSequence cs = JTS.createCS(csf, 1, 2);
                 cs.setOrdinate(0, 0, (minX + maxX) / 2);
                 cs.setOrdinate(0, 1, (minY + maxY) / 2);
                 return geometryFactory.createMultiPoint(new Point[] {geometryFactory.createPoint(cs)});
             } else if(type.isLineType()) {
-                CoordinateSequence cs = csf.create(2, 2);
+                CoordinateSequence cs = JTS.createCS(csf, 2, 2);
                 cs.setOrdinate(0, 0, minX);
                 cs.setOrdinate(0, 1, minY);
                 cs.setOrdinate(1, 0, maxX);
                 cs.setOrdinate(1, 1, maxY);
                 return geometryFactory.createMultiLineString(new LineString[] {geometryFactory.createLineString(cs)});
             } else if(type.isPolygonType()) {
-                CoordinateSequence cs = csf.create(5, 2);
+                CoordinateSequence cs = JTS.createCS(csf, 5, 2);
                 cs.setOrdinate(0, 0, minX);
                 cs.setOrdinate(0, 1, minY);
                 cs.setOrdinate(1, 0, minX);

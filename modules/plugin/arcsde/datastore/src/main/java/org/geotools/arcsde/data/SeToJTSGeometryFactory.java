@@ -3,6 +3,7 @@
  */
 package org.geotools.arcsde.data;
 
+import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.LiteCoordinateSequenceFactory;
 
 import com.esri.sde.sdk.client.SeRow;
@@ -126,7 +127,8 @@ public class SeToJTSGeometryFactory implements GeometryFactory {
             this.currPartNumPoints = numPoints;
             this.currPointNo = 0;
             final int dimension = 2;
-            this.currCoordSeq = gf.getCoordinateSequenceFactory().create(numPoints, dimension);
+            this.currCoordSeq =
+                JTS.createCS(gf.getCoordinateSequenceFactory(), numPoints, dimension);
         }
 
         @Override

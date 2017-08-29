@@ -19,6 +19,8 @@ package org.geotools.data.shapefile.shp;
 import java.nio.ByteBuffer;
 import java.nio.DoubleBuffer;
 
+import org.geotools.geometry.jts.JTS;
+
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.Envelope;
@@ -110,7 +112,8 @@ public class MultiPointHandler implements ShapeHandler {
 
         int numpoints = buffer.getInt();
         int dimensions = shapeType == shapeType.MULTIPOINTZ && !flatGeometry ? 3 : 2;
-        CoordinateSequence cs = geometryFactory.getCoordinateSequenceFactory().create(numpoints, dimensions);
+        CoordinateSequence cs =
+            JTS.createCS(geometryFactory.getCoordinateSequenceFactory(), numpoints, dimensions);
 
         DoubleBuffer dbuffer = buffer.asDoubleBuffer();
         double[] ordinates = new double[numpoints * 2];

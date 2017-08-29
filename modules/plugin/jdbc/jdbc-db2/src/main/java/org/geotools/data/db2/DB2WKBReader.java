@@ -19,6 +19,9 @@ package org.geotools.data.db2;
 
 
 import java.io.IOException;
+
+import org.geotools.geometry.jts.JTS;
+
 import com.vividsolutions.jts.geom.*;
 import com.vividsolutions.jts.io.ByteArrayInStream;
 import com.vividsolutions.jts.io.ByteOrderDataInStream;
@@ -288,19 +291,19 @@ public class DB2WKBReader {
       return factory.createGeometryCollection(geoms);
     }
 
-    private CoordinateSequence readCoordinateSequence(int size) throws IOException
-    {
-      CoordinateSequence seq = factory.getCoordinateSequenceFactory().create(size, inputDimension);
-      int targetDim = seq.getDimension();
-      if (targetDim > inputDimension)
-        targetDim = inputDimension;
-      for (int i = 0; i < size; i++) {
-        readCoordinate();
-        for (int j = 0; j < targetDim; j++) {
-          seq.setOrdinate(i, j, ordValues[j]);
+    private CoordinateSequence readCoordinateSequence(int size) throws IOException {
+        CoordinateSequence seq =
+            JTS.createCS(factory.getCoordinateSequenceFactory(), size, inputDimension);
+        int targetDim = seq.getDimension();
+        if (targetDim > inputDimension)
+            targetDim = inputDimension;
+        for (int i = 0; i < size; i++) {
+            readCoordinate();
+            for (int j = 0; j < targetDim; j++) {
+                seq.setOrdinate(i, j, ordValues[j]);
+            }
         }
-      }
-      return seq;
+        return seq;
     }
 
     /**

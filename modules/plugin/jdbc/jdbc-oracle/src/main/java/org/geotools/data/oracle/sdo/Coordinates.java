@@ -22,6 +22,8 @@ import java.text.NumberFormat;
 import java.util.Collections;
 import java.util.List;
 
+import org.geotools.geometry.jts.JTS;
+
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.CoordinateList;
 import com.vividsolutions.jts.geom.CoordinateSequence;
@@ -176,13 +178,13 @@ public class Coordinates {
 
         // handle coordinate sequence dimension correctly
         int size = toIndex - fromIndex;
-        CoordinateSequence newSeq = factory.create(size, sequence.getDimension());
+        CoordinateSequence newSeq = JTS.createCS(factory, size, sequence.getDimension());
         CoordinateSequences.copy(sequence, fromIndex, newSeq, 0, size);
         return newSeq;
      }
 
     /**
-     * DOCUMENT ME!
+     * Reverse provided coordinate sequence (used to correct CW vs CCW order).
      *
      * @param factory
      * @param sequence

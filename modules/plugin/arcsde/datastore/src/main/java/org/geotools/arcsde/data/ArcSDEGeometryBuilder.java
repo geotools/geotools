@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 
 import org.geotools.arcsde.ArcSdeException;
 import org.geotools.data.DataSourceException;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.LiteCoordinateSequenceFactory;
 import org.geotools.util.logging.Logging;
 
@@ -291,7 +292,7 @@ public abstract class ArcSDEGeometryBuilder {
             cs = ((LiteCoordinateSequenceFactory) csFact).create(coordList, dimension);
         } else {
             final int nCoords = coordList.length / dimension;
-            cs = csFact.create(nCoords, dimension);
+            cs = JTS.createCS(csFact, nCoords, dimension);
             for (int coordN = 0; coordN < nCoords; coordN++) {
                 cs.setOrdinate(coordN, 0, coordList[dimension * coordN]);
                 cs.setOrdinate(coordN, 1, coordList[dimension * coordN + 1]);

@@ -48,7 +48,7 @@ class Ordinates {
      * Converts the ordinate into a coordinate sequence
      */
     public CoordinateSequence toCoordinateSequence(CoordinateSequenceFactory csfac) {
-        CoordinateSequence cs = csfac.create(size(), 2);
+        CoordinateSequence cs = JTS.createCS(csfac, size(), 2);
         for (int i = 0; i <= curr; i++) {
             cs.setOrdinate(i, 0, ordinates[i * 2]);
             cs.setOrdinate(i, 1, ordinates[i * 2 + 1]);

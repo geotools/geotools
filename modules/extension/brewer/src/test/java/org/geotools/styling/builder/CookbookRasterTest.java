@@ -6,6 +6,7 @@ import org.geotools.styling.ColorMap;
 import org.geotools.styling.ColorMapEntry;
 import org.geotools.styling.NormalizeContrastMethodStrategy;
 import org.geotools.styling.RasterSymbolizer;
+import org.geotools.styling.SelectedChannelType;
 import org.geotools.styling.ShadedRelief;
 import org.geotools.styling.Style;
 import org.junit.Test;
@@ -210,6 +211,47 @@ public class CookbookRasterTest extends AbstractStyleTest {
         ShadedRelief sr = rs.getShadedRelief();
         assertEquals(10.0, sr.getReliefFactor().evaluate(null, Double.class), 0.0);
         assertTrue(sr.isBrightnessOnly());
+    }
+    
+    @Test
+    public void testGrayChannelSelection() {
+        final RasterSymbolizerBuilder rsb = new RasterSymbolizerBuilder();
+        rsb.channelSelection().gray().channelName("BAND1");
+        Style style = rsb.buildStyle();
+        StyleCollector collector = new StyleCollector();
+        style.accept(collector);
+        assertSimpleStyle(collector);
+
+        // check the symbolizer
+        RasterSymbolizer rs = (RasterSymbolizer) collector.symbolizers.get(0);
+        final SelectedChannelType[] rgbChannels = rs.getChannelSelection().getRGBChannels();
+        assertNull(rgbChannels[0]);
+        assertNull(rgbChannels[1]);
+        assertNull(rgbChannels[2]);
+        assertEquals("BAND1", rs.getChannelSelection().getGrayChannel().getChannelName());
+    }
+    
+    @Test
+    public void testRGBChannelSelection() {
+        final RasterSymbolizerBuilder rsb = new RasterSymbolizerBuilder();
+        final ChannelSelectionBuilder cs = rsb.channelSelection();
+        cs.red().channelName("BAND1");
+        cs.green().channelName("BAND3");
+        cs.blue().channelName("BAND5");
+        Style style = rsb.buildStyle();
+        
+        StyleCollector collector = new StyleCollector();
+        style.accept(collector);
+        assertSimpleStyle(collector);
+
+        // check the symbolizer
+        RasterSymbolizer rs = (RasterSymbolizer) collector.symbolizers.get(0);
+        final SelectedChannelType[] rgbChannels = rs.getChannelSelection().getRGBChannels();
+        assertEquals("BAND1", rgbChannels[0].getChannelName());
+        assertEquals("BAND3", rgbChannels[1].getChannelName());
+        assertEquals("BAND5", rgbChannels[2].getChannelName());
+        assertNull(rs.getChannelSelection().getGrayChannel());
+        
     }
 
 }

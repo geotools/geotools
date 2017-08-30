@@ -175,6 +175,12 @@
     <dependency>
       <groupId>org.jaitools</groupId>
       <artifactId>jt-utils</artifactId>
+      <exclusions>
+        <exclusion>
+           <groupId>com.vividsolutions</groupId>
+           <artifactId>jts</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.jaitools</groupId>

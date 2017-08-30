@@ -185,6 +185,12 @@
     <dependency>
       <groupId>org.jaitools</groupId>
       <artifactId>jt-vectorbinarize</artifactId>
+      <exclusions>
+         <exclusion>
+            <groupId>com.vividsolutions</groupId>
+            <artifactId>jts</artifactId>
+         </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>net.sf.ehcache</groupId>

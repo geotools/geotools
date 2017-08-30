@@ -91,11 +91,23 @@
           <groupId>org.jaitools</groupId>
           <artifactId>jt-zonalstats</artifactId>
           <version>${jt.version}</version>
+          <exclusions>
+            <exclusion>
+               <groupId>com.vividsolutions</groupId>
+               <artifactId>jts</artifactId>
+            </exclusion>
+          </exclusions>
         </dependency>
         <dependency>
           <groupId>org.jaitools</groupId>
           <artifactId>jt-rangelookup</artifactId>
           <version>${jt.version}</version>
+          <exclusions>
+            <exclusion>
+               <groupId>com.vividsolutions</groupId>
+               <artifactId>jts</artifactId>
+            </exclusion>
+          </exclusions>
         </dependency>
         <dependency>
           <groupId>org.jaitools</groupId>
@@ -112,7 +124,13 @@
           <groupId>org.jaitools</groupId>
           <artifactId>jt-vectorize</artifactId>
           <version>${jt.version}</version>
-        </dependency>            
+          <exclusions>
+            <exclusion>
+               <groupId>com.vividsolutions</groupId>
+               <artifactId>jts</artifactId>
+            </exclusion>
+          </exclusions>
+        </dependency>
         <dependency>
           <groupId>org.jaitools</groupId>
           <artifactId>jt-utils</artifactId>

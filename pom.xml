@@ -762,6 +762,17 @@
         </exclusions>
       </dependency>
       <dependency>
+        <groupId>com.vividsolutions</groupId>
+        <artifactId>jts-example</artifactId>
+        <version>1.14.0</version>
+        <exclusions>
+          <exclusion>
+            <groupId>xerces</groupId>
+            <artifactId>xercesImpl</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
         <groupId>org.wkb4j</groupId>
         <artifactId>wkb4j</artifactId>
         <version>1.0-RC1</version>

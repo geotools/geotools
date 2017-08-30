@@ -137,6 +137,12 @@
             <artifactId>jt-utils</artifactId>
             <version>${jt.version}</version>
             <scope>test</scope>
+            <exclusions>
+              <exclusion>
+                 <groupId>com.vividsolutions</groupId>
+                 <artifactId>jts</artifactId>
+              </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 </project>

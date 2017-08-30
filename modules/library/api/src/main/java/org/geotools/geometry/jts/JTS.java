@@ -1385,7 +1385,7 @@ public final class JTS {
             cs = new CoordinateArraySequence(size,dimension);
         }
         else {
-            cs = JTS.createCS(csFactory, size, dimension);
+            cs = csFactory.create(size, dimension);
         }
         if( cs.getDimension() != dimension ) {
             // illegal state error, try and fix

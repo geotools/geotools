@@ -68,6 +68,10 @@
           <groupId>com.h2database</groupId>
           <artifactId>h2</artifactId>
         </exclusion>
+        <exclusion>
+           <groupId>com.vividsolutions</groupId>
+           <artifactId>jts</artifactId>
+        </exclusion>
       </exclusions>
     </dependency>
     <dependency>

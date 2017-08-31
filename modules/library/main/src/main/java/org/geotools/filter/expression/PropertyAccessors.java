@@ -50,8 +50,9 @@ public class PropertyAccessors {
             boolean nonCached = factory instanceof SimpleFeaturePropertyAccessorFactory
                     || factory instanceof DirectPropertyAccessorFactory
                     || factory instanceof NullPropertyAccessorFactory;
-            if (!nonCached)
+            if (!nonCached) {
                 cache.add(factory);
+            }
         }
         FACTORY_CACHE = cache.toArray(new PropertyAccessorFactory[cache.size()]);
     }

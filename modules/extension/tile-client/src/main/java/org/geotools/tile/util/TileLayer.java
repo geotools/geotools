@@ -16,14 +16,6 @@
  */
 package org.geotools.tile.util;
 
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
-import java.util.Collection;
-import java.util.logging.Logger;
-
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -37,6 +29,14 @@ import org.geotools.tile.TileService;
 import org.geotools.util.logging.Logging;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.operation.TransformException;
+
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+import java.util.Collection;
+import java.util.logging.Logger;
 
 /**
  * <p>
@@ -153,6 +153,6 @@ public class TileLayer extends DirectLayer {
 
     private BufferedImage createImage(Rectangle rectangle) {
 
-        return new BufferedImage(rectangle.width, rectangle.height, BufferedImage.TYPE_INT_RGB);
+        return new BufferedImage(rectangle.width, rectangle.height, BufferedImage.TYPE_INT_ARGB);
     }
 }

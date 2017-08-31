@@ -674,25 +674,60 @@ public final class Utilities {
         }
     }
 
-    // TODO: document
+    /**
+     * Creates a stream over the specified {@link Iterable}'s elements.
+     *
+     * This operation is lazy in the sense that it does not iterate over the elements.
+     *
+     * @param iterable the iterable to stream over
+     * @param <T> the type of elements contained in the iterable
+     * @return a stream over the iterable's elements
+     */
     public static <T> Stream<T> stream(Iterable<T> iterable) {
         return StreamSupport.stream(iterable.spliterator(), false);
     }
 
-    // TODO: document
+    /**
+     * Creates a stream over the specified {@link Iterator}'s elements.
+     *
+     * This operation is lazy in the sense that it does not iterate over the elements.
+     *
+     * @param iterator the iterator to stream over
+     * @param <T> the type of elements contained in the iterator
+     * @return a stream over the iterator's elements
+     */
     public static <T> Stream<T> stream(Iterator<T> iterator) {
         return StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterator, 0), false);
     }
 
-    // TODO: document
+    /**
+     * Creates a stream with zero or one element, depending on whether the specified
+     * {@link Optional} is empty or not.
+     *
+     * @param optional the optional to stream over
+     * @param <T> the type of the element contained in the optional
+     * @return a stream over the option's element or empty
+     */
     public static <T> Stream<T> stream(Optional<T> optional) {
         return optional.isPresent() ? Stream.of(optional.get()) : Stream.empty();
     }
 
-    // TODO: document
-    public static <T, U> Stream<Class<? extends U>> streamAsSubtype(Class<T> type, Class<U> subtype) {
-        return subtype.isAssignableFrom(type)
-                ? Stream.of(type.asSubclass(subtype))
+    /**
+     * Creates a stream with zero or one elements, depending on whether the specified {@code supertype} is
+     * actually a supertype of the specified {@code type} (according to {@code supertype.isAssignableFrom(type)}).
+     *
+     * If the test is {@code true}, {@code type} is cast to a subclass of {@code supertype} and returned
+     * in the stream; otherwise the stream is empty.
+     *
+     * @param type the type to cast
+     * @param supertype the surmised supertype of {@code type}
+     * @param <T> the type of {@code type}
+     * @param <U> the type of {@code supertype}
+     * @return a stream over {@code type} cast to a subclass of {@code supertype} or empty
+     */
+    public static <T, U> Stream<Class<? extends U>> streamIfSubtype(Class<T> type, Class<U> supertype) {
+        return supertype.isAssignableFrom(type)
+                ? Stream.of(type.asSubclass(supertype))
                 : Stream.empty();
     }
 

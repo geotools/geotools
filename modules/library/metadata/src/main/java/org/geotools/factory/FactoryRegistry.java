@@ -35,7 +35,7 @@ import org.geotools.resources.i18n.Loggings;
 import org.geotools.resources.i18n.LoggingKeys;
 
 import static org.geotools.util.Utilities.stream;
-import static org.geotools.util.Utilities.streamAsSubtype;
+import static org.geotools.util.Utilities.streamIfSubtype;
 
 
 /**
@@ -1284,7 +1284,7 @@ public class FactoryRegistry {
                                    final Predicate<? super T> filter1, final Predicate<? super T> filter2)
     {
         return registry.streamCategories()
-                .flatMap(category -> streamAsSubtype(category, base))
+                .flatMap(category -> streamIfSubtype(category, base))
                 .map(category -> setOrUnsetOrdering(category, set, filter1, filter2))
                 .reduce((done1, done2) -> done1 || done2)
                 .orElse(false);

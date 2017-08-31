@@ -16,10 +16,9 @@
  */
 package org.geotools.factory;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableMap.Builder;
 import org.geotools.util.PartiallyOrderedSet;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -27,6 +26,8 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toMap;
 import static org.geotools.util.Utilities.stream;
 
 /**
@@ -39,9 +40,9 @@ class CategoryRegistry {
 	/**
 	 * Heterogeneous map, where `Class<T>` is mapped to `InstanceRegistry<T>` for any `T`.
 	 *
-	 * Code depends on this map being immutable to avoid concurrent modification exceptions.
+	 * Code depends on this map never being mutated to avoid concurrent modification exceptions.
 	 */
-	private final ImmutableMap<Class<?>, InstanceRegistry<?>> categories;
+	private final Map<Class<?>, InstanceRegistry<?>> categories;
 
 	/**
 	 * Creates a new registry with the specified Registers the specified category.
@@ -54,15 +55,14 @@ class CategoryRegistry {
 	public CategoryRegistry(final FactoryRegistry factoryRegistry, final Iterable<Class<?>> categories) {
 		requireNonNull(factoryRegistry);
 		requireNonNull(categories);
-		this.categories = createCategoriesMap(factoryRegistry, categories);
-	}
-
-	private static ImmutableMap<Class<?>, InstanceRegistry<?>> createCategoriesMap(
-			final FactoryRegistry factoryRegistry, final Iterable<Class<?>> categories) {
-		Builder<Class<?>, InstanceRegistry<?>> categoriesBuilder = ImmutableMap.builder();
-		categories.forEach(category ->
-				categoriesBuilder.put(category, new InstanceRegistry<>(factoryRegistry, category)));
-		return categoriesBuilder.build();
+		// use an unmodifiable map to guarantee immutability
+		this.categories = stream(categories)
+				.collect(collectingAndThen(
+						toMap(
+								category -> category,
+								category -> new InstanceRegistry<>(factoryRegistry, category),
+								(firstCategory, secondCategories) -> secondCategories),
+						Collections::unmodifiableMap));
 	}
 
 	/**

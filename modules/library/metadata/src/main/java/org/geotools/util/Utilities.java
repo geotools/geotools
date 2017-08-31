@@ -25,7 +25,9 @@ import java.util.Iterator;
 import java.util.Optional;
 import java.util.Queue;
 import java.util.Set;
+import java.util.Spliterators;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import org.geotools.factory.Hints;
 import org.geotools.resources.i18n.ErrorKeys;
@@ -670,6 +672,16 @@ public final class Utilities {
         if (object == null) {
             throw new NullPointerException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, name));
         }
+    }
+
+    // TODO: document
+    public static <T> Stream<T> stream(Iterable<T> iterable) {
+        return StreamSupport.stream(iterable.spliterator(), false);
+    }
+
+    // TODO: document
+    public static <T> Stream<T> stream(Iterator<T> iterator) {
+        return StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterator, 0), false);
     }
 
     // TODO: document

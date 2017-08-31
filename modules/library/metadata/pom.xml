@@ -130,10 +130,6 @@
       <scope>provided</scope>  <!-- Not required for default execution. -->
       <optional>true</optional>
     </dependency>
-    <dependency>
-        <groupId>com.google.guava</groupId>
-        <artifactId>guava</artifactId>
-    </dependency>
   </dependencies>
 
   <build>

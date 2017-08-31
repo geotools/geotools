@@ -330,10 +330,11 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
                  */
                 List<RenderedImage> sources = new ArrayList<>();
                 ImageWorker iw = new ImageWorker();
-                while (it.hasNext()) {                
+                TileImageReader tileReader = new TileImageReader();
+                while (it.hasNext()) { 
                     Tile tile = it.next();
     
-                    BufferedImage tileImage = readImage(tile.getData());
+                    BufferedImage tileImage = tileReader.read(tile.getData());
                     
                     iw.setImage(tileImage);
                     int posx = (int) (tile.getColumn() - leftTile) * DEFAULT_TILE_SIZE;
@@ -388,18 +389,6 @@ public class GeoPackageReader extends AbstractGridCoverage2DReader {
         }
     }
 
-    protected static BufferedImage readImage(byte[] data) throws IOException {
-        ByteArrayInputStream bis = new ByteArrayInputStream(data);
-        Object source = bis; 
-        ImageInputStream iis = ImageIO.createImageInputStream(source); 
-        Iterator<?> readers = ImageIO.getImageReaders(iis);
-        ImageReader reader = (ImageReader) readers.next();
-        reader.setInput(iis, true);
-        ImageReadParam param = reader.getDefaultReadParam();
- 
-        return reader.read(0, param);
-    }
-    
     protected BufferedImage getStartImage(BufferedImage copyFrom, int width, int height) {
         Map<String, Object> properties = null;
 

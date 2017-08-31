@@ -26,7 +26,6 @@ import java.awt.RenderingHints;
 import java.util.stream.Stream;
 import javax.imageio.spi.ServiceRegistry.Filter;
 
-import com.google.common.collect.Iterators;
 import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
 import org.geotools.resources.Classes;
@@ -35,6 +34,7 @@ import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Loggings;
 import org.geotools.resources.i18n.LoggingKeys;
 
+import static org.geotools.util.Utilities.stream;
 import static org.geotools.util.Utilities.streamAsSubtype;
 
 
@@ -210,7 +210,9 @@ public class FactoryRegistry {
 
     // TODO: document
     public <T> Iterator<T> getFactories(final Class<T> category, final Predicate<? super T> factoryFilter, final boolean useOrdering) {
-        return Iterators.filter(getFactories(category, useOrdering), factoryFilter::test);
+        return stream(getFactories(category, useOrdering))
+                .filter(factoryFilter)
+                .iterator();
     }
 
     /**

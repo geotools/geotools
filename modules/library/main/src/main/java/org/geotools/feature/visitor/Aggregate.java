@@ -16,8 +16,12 @@
  */
 package org.geotools.feature.visitor;
 
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.FunctionExpression;
 import org.geotools.util.Converters;
+import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Function;
 
 /**
  * Aggregate functions defined for use with the GeoTools library.
@@ -110,6 +114,26 @@ public enum Aggregate {
 
         @Override
         public CalcResult wrap(Expression aggregateAttribute, Object value) {
+            return new SumVisitor.SumResult(value);
+        }
+    },
+    SUMAREA {
+        @Override
+        public FeatureCalc create(Expression expr) {
+            // if expr is <property> wrap it with area2 function, if not, it's already wrapped 
+            if(expr instanceof FunctionExpression) {
+                return new SumVisitor(expr);
+            }
+            FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
+            return new SumVisitor(factory.function("area2", expr));
+        }
+
+        @Override
+        public CalcResult wrap(Expression aggregateAttribute, Object value) {
+            if (value == null ){
+                return AbstractCalcResult.NULL_RESULT;
+            }
+            Double area = Converters.convert(value, Double.class);
             return new SumVisitor.SumResult(value);
         }
     };

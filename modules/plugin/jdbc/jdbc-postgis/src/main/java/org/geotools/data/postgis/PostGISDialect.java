@@ -38,6 +38,8 @@ import java.util.logging.Level;
 
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.factory.Hints;
+import org.geotools.feature.visitor.SumAreaVisitor;
+import org.geotools.filter.function.FilterFunction_area;
 import org.geotools.geometry.jts.CircularRing;
 import org.geotools.geometry.jts.CircularString;
 import org.geotools.geometry.jts.CompoundCurve;
@@ -53,6 +55,7 @@ import org.geotools.jdbc.ColumnMetadata;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.referencing.CRS;
 import org.geotools.util.Version;
+import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
@@ -79,6 +82,8 @@ import com.vividsolutions.jts.io.WKTWriter;
  * @source $URL$
  */
 public class PostGISDialect extends BasicSQLDialect {
+
+    private static final String AREA_FUNCTION = "ST_Area";
 
     public static final String BIGDATE_UDT = "bigdate";
 
@@ -1251,4 +1256,12 @@ public class PostGISDialect extends BasicSQLDialect {
                 ? "ST_EstimatedExtent" : "ST_Estimated_Extent";
     }
 
+    @Override
+    public void registerFunctions(Map<String, String> functions) {
+        super.registerFunctions(functions);
+        functions.put(FilterFunction_area.NAME.getName(), AREA_FUNCTION);
+    }
+
+    
+    
 }

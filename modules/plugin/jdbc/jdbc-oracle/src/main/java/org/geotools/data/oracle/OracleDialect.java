@@ -41,6 +41,7 @@ import org.geotools.data.oracle.sdo.GeometryConverter;
 import org.geotools.data.oracle.sdo.SDOSqlDumper;
 import org.geotools.data.oracle.sdo.TT;
 import org.geotools.factory.Hints;
+import org.geotools.filter.function.FilterFunction_area;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JDBCDataStore;
@@ -88,6 +89,8 @@ import oracle.sql.STRUCT;
  */
 public class OracleDialect extends PreparedStatementSQLDialect {
     
+    private static final String AREA_FUNCTION = "SDO_GEOM.SDO_AREA";
+
     /**
      * Sentinel value used to mark that the unwrapper lookup happened already, and an unwrapper was
      * not found
@@ -121,7 +124,21 @@ public class OracleDialect extends PreparedStatementSQLDialect {
     
     private static final Pattern AXIS_NAME_VALIDATOR = Pattern.compile("^[\\w]{1,30}");
     
-    
+    @Override
+    public void registerFunctions(Map<String, String> functions) {
+        super.registerFunctions(functions);
+        functions.put(FilterFunction_area.NAME.getName(), AREA_FUNCTION);
+    }
+
+    @Override
+    public void encodeFunctionPostfix(String function, StringBuffer sql) {
+        if (AREA_FUNCTION.equalsIgnoreCase(function)) {
+            sql.append(",0.05)");
+        } else {
+            super.encodeFunctionPostfix(function, sql);
+        }
+    }
+
     /**
      * Marks a geometry column as geodetic
      */

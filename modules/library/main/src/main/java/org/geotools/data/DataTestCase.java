@@ -83,6 +83,10 @@ public class DataTestCase extends TestCase {
     protected SimpleFeatureType lakeType; // lake: id, geom, name
     protected SimpleFeature[] lakeFeatures;
     protected ReferencedEnvelope lakeBounds;
+    
+    protected SimpleFeatureType buildingType; // building: id, geom, name
+    protected SimpleFeature[] buildingFeatures;
+    protected ReferencedEnvelope buildingBounds;
     protected FilterFactory2 ff;
     
     
@@ -254,6 +258,25 @@ public class DataTestCase extends TestCase {
         );
         lakeBounds = new ReferencedEnvelope();
         lakeBounds.expandToInclude(ReferencedEnvelope.reference(lakeFeatures[0].getBounds()));                 
+        
+        buildingType = DataUtilities.createType(namespace+".building",
+                "id:0,geom:Polygon:nillable,name:String");
+        buildingFeatures = new SimpleFeature[1];
+        //             + 14,8
+        //            / \
+        //      12,6 +   + 16,6
+        //           |   | 
+        //      12,4 +---+ 16,4
+        //
+        buildingFeatures[0] = SimpleFeatureBuilder.build(lakeType, new Object[]{
+                new Integer(0),
+                polygon( new int[]{ 12,6, 14,8, 16,6, 16,4, 12,4, 12,6} ),
+                "church"
+            },
+            "building.bd1"
+        );
+        buildingBounds = new ReferencedEnvelope();
+        buildingBounds.expandToInclude(ReferencedEnvelope.reference(buildingFeatures[0].getBounds()));
     }
 
     /**
@@ -275,6 +298,9 @@ public class DataTestCase extends TestCase {
         riverBounds = null;
         rv1Filter = null;
         newRiver = null;                    
+        buildingType = null;
+        buildingFeatures = null;
+        buildingBounds = null;
     }
 
     /**

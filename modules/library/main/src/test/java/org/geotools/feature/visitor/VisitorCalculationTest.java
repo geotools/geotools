@@ -64,6 +64,10 @@ public class VisitorCalculationTest extends DataTestCase {
     SimpleFeatureType ft2;
     SimpleFeatureCollection fc3;
     SimpleFeatureType ft3;
+    SimpleFeatureCollection fc4;
+    SimpleFeatureType ft4;
+    SimpleFeatureCollection fc5;
+    SimpleFeatureType ft5;
 
     public VisitorCalculationTest(String arg0) {
         super(arg0);
@@ -87,6 +91,12 @@ public class VisitorCalculationTest extends DataTestCase {
 
         ft3 = boringType;
         fc3 = DataUtilities.collection(boringFeatures);
+        
+        ft4 = lakeType;
+        fc4 = DataUtilities.collection(lakeFeatures);
+        
+        ft5 = buildingType;
+        fc5 = DataUtilities.collection(buildingFeatures);
     }
 
     // test only the visitor functions themselves, and try the merge operation
@@ -253,6 +263,25 @@ public class VisitorCalculationTest extends DataTestCase {
         // test merge
         assertSame(sumResult2, sumVisitor.getResult().merge(sumResult2));
         assertSame(sumResult2, sumResult2.merge(sumVisitor.getResult()));
+    }
+    
+    public void testArea() throws IllegalFilterException, IOException {
+        SumAreaVisitor areaVisitor = new SumAreaVisitor(1, ft4);
+        fc4.accepts(areaVisitor, null);
+
+        SumAreaVisitor areaVisitor2 = new SumAreaVisitor(1, ft5);
+        fc5.accepts(areaVisitor2, null);
+
+        double value1 = areaVisitor.getResult().toDouble();
+        assertEquals(10.0, value1);
+
+        double value2 = areaVisitor2.getResult().toDouble();
+        assertEquals(12.0, value2);
+
+        CalcResult areaResult1 = areaVisitor.getResult();
+        CalcResult areaResult2 = areaVisitor2.getResult();
+        CalcResult areaResult3 = areaResult1.merge(areaResult2);
+        assertEquals((double) 22.0, areaResult3.toDouble(), 0);
     }
     
     public void testCount() throws IllegalFilterException, IOException {

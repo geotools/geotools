@@ -64,6 +64,16 @@ public class AggregateProcessTest {
         Results result = AggregateProcess.process( source.getFeatures(), "cat",  functions, true, null );
         assertTrue( result.sum > 0 );
     }
+    
+    @Test
+    public void testSumArea() throws Exception {
+        SimpleFeatureSource source = bugs.getFeatureSource("zones");
+
+        Set<AggregationFunction> functions = EnumSet.of(AggregationFunction.SumArea);
+        
+        Results result = AggregateProcess.process( source.getFeatures(), "the_geom",  functions, true, null );
+        assertTrue( result.area > 0 );
+    }
 
     @Test
     public void testSumWithGroupBy() throws Exception {
@@ -74,6 +84,19 @@ public class AggregateProcessTest {
         assertNotNull(result.getGroupByResult());
         // the group by result should not be empty
         assertTrue(result.getGroupByResult().size() > 0);
+        // the size of each line result should be 2 (one group by attribute and one aggregation function)
+        assertTrue(result.getGroupByResult().get(0).length == 2);
+    }
+    
+    @Test
+    public void testSumAreaWithGroupBy() throws Exception {
+        SimpleFeatureSource source = bugs.getFeatureSource("groupedzones");
+        Set<AggregationFunction> functions = EnumSet.of(AggregationFunction.SumArea);
+        Results result = AggregateProcess.process( source.getFeatures(), "the_geom", functions, Collections.singletonList("str1"), true, null);
+        // we expect a group by result
+        assertNotNull(result.getGroupByResult());
+        // the group by result should not be empty
+        assertTrue(result.getGroupByResult().size() == 3);
         // the size of each line result should be 2 (one group by attribute and one aggregation function)
         assertTrue(result.getGroupByResult().get(0).length == 2);
     }

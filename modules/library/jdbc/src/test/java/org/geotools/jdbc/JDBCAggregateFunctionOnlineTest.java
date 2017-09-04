@@ -26,11 +26,13 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.visitor.MaxVisitor;
 import org.geotools.feature.visitor.MinVisitor;
 import org.geotools.feature.visitor.NearestVisitor;
+import org.geotools.feature.visitor.SumAreaVisitor;
 import org.geotools.feature.visitor.SumVisitor;
 import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.SortByImpl;
 import org.geotools.filter.SortOrder;
+import org.geotools.filter.function.FilterFunction_area;
 import org.geotools.util.Converters;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
@@ -48,7 +50,10 @@ import org.opengis.filter.sort.SortBy;
 public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
 
     boolean visited = false;
-  
+    
+    @Override
+    protected abstract JDBCAggregateTestSetup createTestSetup();
+    
     @Override
     protected void setUpInternal() throws Exception {
         super.setUpInternal();
@@ -80,6 +85,35 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
         dataStore.getFeatureSource(tname("ft1")).accepts(Query.ALL, v, null);
         assertFalse(visited);
         assertEquals( 3.3, v.getResult().toDouble(), 0.01 );
+    }
+    
+    class MySumAreaVisitor extends SumAreaVisitor {
+
+        public MySumAreaVisitor(Expression expr) throws IllegalFilterException {
+            super(expr);
+        }
+        
+        public void visit(Feature feature) {
+            super.visit(feature);
+            visited = true;
+        }
+        public void visit(SimpleFeature feature) {
+            super.visit(feature);
+            visited = true;
+        }
+        
+    }
+    
+    public void testSumArea() throws Exception {
+        FilterFactory ff = dataStore.getFilterFactory();
+        PropertyName p = ff.property( aname("geom") );
+        
+        SumAreaVisitor v = new MySumAreaVisitor(p);
+        dataStore.getFeatureSource(tname("aggregate")).accepts(Query.ALL, v, null);
+        if (dataStore.getSupportedFunctions().containsKey(FilterFunction_area.NAME.getName())) {
+            assertFalse(visited);
+        }
+        assertEquals( 10.0, v.getResult().toDouble(), 0.01 );
     }
     
     public void testSumWithFilter() throws Exception {

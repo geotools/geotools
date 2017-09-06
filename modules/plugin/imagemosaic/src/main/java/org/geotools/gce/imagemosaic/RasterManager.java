@@ -48,6 +48,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
+import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.DecimationPolicy;
 import org.geotools.coverage.grid.io.DefaultDimensionDescriptor;
@@ -1634,6 +1635,11 @@ public class RasterManager implements Cloneable {
         // check additional domains
         if (domainsManager != null) {
             return domainsManager.getMetadataValue(name);
+        }
+        
+        // check if heterogeneous CRS
+        if (name.equalsIgnoreCase(AbstractGridCoverage2DReader.MULTICRS_READER)) {
+            return String.valueOf(configuration.getCatalogConfigurationBean().isHeterogeneousCRS());
         }
 
         //

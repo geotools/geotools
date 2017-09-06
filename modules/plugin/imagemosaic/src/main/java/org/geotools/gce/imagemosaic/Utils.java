@@ -726,10 +726,13 @@ public class Utils {
                     .valueOf(properties.getProperty(Prop.HETEROGENEOUS, "false").trim());
             catalogConfigurationBean.setHeterogeneous(heterogeneous);
         }
-        if (!catalogConfigurationBean.isHeterogeneous() && (!ignoreSome || !ignorePropertiesSet.contains(Prop.HETEROGENEOUS_CRS))) {
-            final boolean heterogeneous = Boolean
+        if (!ignoreSome || !ignorePropertiesSet.contains(Prop.HETEROGENEOUS_CRS)) {
+            final boolean heterogeneousCRS = Boolean
                     .valueOf(properties.getProperty(Prop.HETEROGENEOUS_CRS, "false").trim());
-            catalogConfigurationBean.setHeterogeneous(heterogeneous);
+            if (!catalogConfigurationBean.isHeterogeneous()) {
+                catalogConfigurationBean.setHeterogeneous(heterogeneousCRS);
+            }
+            catalogConfigurationBean.setHeterogeneousCRS(heterogeneousCRS);
         }
 
 

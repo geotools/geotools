@@ -126,6 +126,13 @@ public interface GridCoverage2DReader extends GridCoverageReader {
      * can perform reprojection for us).
      */
     public static final String REPROJECTING_READER = "ReprojectingReader";
+    
+    /**
+     * This property is present, and evaluates to "true", if the reader internally has multiple
+     * CRS elements, even if it advertises a single CRS in output (e.g., it won't perform a general
+     * reprojection for us, but generate and output in its declared CRS)
+     */
+    public static final String MULTICRS_READER = "MultiCRSReader";
 
     
     /**

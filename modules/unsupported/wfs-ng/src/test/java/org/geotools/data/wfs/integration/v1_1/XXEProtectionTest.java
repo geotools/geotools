@@ -94,7 +94,8 @@ public class XXEProtectionTest {
         WFSConfig config = WFSTestData.getGmlCompatibleConfig();
         String baseDirectory = "GeoServer_2.0/1.1.0_XXE_Transaction/";
         IntegrationTestWFSClient client = new IntegrationTestWFSClient(baseDirectory, config) {
-            protected org.geotools.data.ows.Response mockTransaction(org.geotools.data.wfs.internal.TransactionRequest request) throws java.io.IOException {
+            @Override
+            protected org.geotools.data.ows.Response mockTransactionSuccess(org.geotools.data.wfs.internal.TransactionRequest request) throws java.io.IOException {
                 String resource = "Transaction.xml";
                 URL contentUrl = new URL(baseDirectory, resource);
                 

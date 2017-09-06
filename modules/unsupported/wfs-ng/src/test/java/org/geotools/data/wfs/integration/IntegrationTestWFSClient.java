@@ -87,6 +87,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 
 public class IntegrationTestWFSClient extends WFSClient {
 
+    private boolean failOnTransaction;
     protected URL baseDirectory;
 
     private Map<QName, Diff> diffs = new HashMap<QName, Diff>();
@@ -114,7 +115,11 @@ public class IntegrationTestWFSClient extends WFSClient {
                 return mockGetFeature((GetFeatureRequest) request);
             }
             if (request instanceof TransactionRequest) {
-                return mockTransaction((TransactionRequest) request);
+                if(failOnTransaction){
+                    return mockTransactionFailure((TransactionRequest) request);
+                }else{
+                    return mockTransactionSuccess((TransactionRequest) request);
+                }
             }
         } catch (ServiceException e) {
             throw new IOException(e);
@@ -290,7 +295,7 @@ public class IntegrationTestWFSClient extends WFSClient {
         }
     }
 
-    protected Response mockTransaction(TransactionRequest request) throws IOException {
+    protected Response mockTransactionSuccess(TransactionRequest request) throws IOException {
 
         List<String> added = new ArrayList<String>();
         int deleted = 0, updated = 0;
@@ -346,6 +351,21 @@ public class IntegrationTestWFSClient extends WFSClient {
         HTTPResponse httpResponse = new TestHttpResponse(outputFormat, "UTF-8", responseContents);
         
         return request.createResponse(httpResponse);
+    }
+    
+    protected Response mockTransactionFailure(TransactionRequest request) throws IOException {
+        final QName typeName = request.getTypeNames().iterator().next();
+
+        String resource = "TransactionFailure_" + typeName.getLocalPart() + ".xml";
+        URL contentUrl = new URL(baseDirectory, resource);
+
+        String outputFormat = request.getOutputFormat();
+
+        HTTPResponse httpResponse = new TestHttpResponse(outputFormat, "UTF-8", contentUrl);
+
+        WFSResponse response = request.createResponse(httpResponse);
+
+        return response;
     }
 
     private Diff diff(QName typeName) {
@@ -452,5 +472,9 @@ public class IntegrationTestWFSClient extends WFSClient {
                         WFS.TransactionResponse);
             return encodedTransactionResponse;
         }
+    }
+    
+    public void setFailOnTransaction(boolean failOnTransaction) {
+        this.failOnTransaction = failOnTransaction;
     }
 }

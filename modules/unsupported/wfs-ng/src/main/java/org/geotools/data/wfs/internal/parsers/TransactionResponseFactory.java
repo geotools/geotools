@@ -17,6 +17,7 @@
 package org.geotools.data.wfs.internal.parsers;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -27,10 +28,9 @@ import org.geotools.data.wfs.internal.Versions;
 import org.geotools.data.wfs.internal.WFSOperationType;
 import org.geotools.data.wfs.internal.WFSRequest;
 import org.geotools.data.wfs.internal.WFSResponse;
-import org.geotools.data.wfs.internal.WFSResponseFactory;
 import org.geotools.ows.ServiceException;
 
-public class TransactionResponseFactory implements WFSResponseFactory {
+public class TransactionResponseFactory extends AbstractWFSResponseFactory {
 
     private static final List<String> SUPPORTED_OUTPUT_FORMATS = Collections
             .unmodifiableList(Arrays.asList(//
@@ -81,15 +81,16 @@ public class TransactionResponseFactory implements WFSResponseFactory {
     public List<String> getSupportedOutputFormats() {
         return SUPPORTED_OUTPUT_FORMATS;
     }
-
+    
     @Override
-    public WFSResponse createResponse(WFSRequest request, HTTPResponse response) throws IOException {
+    protected WFSResponse createResponseImpl(WFSRequest request, HTTPResponse response,
+            InputStream in) throws IOException {
         try {
             if (Versions.v2_0_0.toString().equals(request.getStrategy().getVersion())) {
-                return new org.geotools.data.wfs.internal.v2_0.TransactionResponseImpl(request, response);
+                return new org.geotools.data.wfs.internal.v2_0.TransactionResponseImpl(request, response, in);
             } else if (Versions.v1_0_0.toString().equals(request.getStrategy().getVersion())
                     || Versions.v1_1_0.toString().equals(request.getStrategy().getVersion())) {
-                return new org.geotools.data.wfs.internal.v1_x.TransactionResponseImpl(request, response);
+                return new org.geotools.data.wfs.internal.v1_x.TransactionResponseImpl(request, response, in);
             }
             return null;            
         } catch (ServiceException e) {
@@ -97,4 +98,8 @@ public class TransactionResponseFactory implements WFSResponseFactory {
         }
     }
 
+    @Override
+    protected boolean isValidResponseHead(String head) {
+        return head.indexOf("TransactionResponse") > 0;
+    }
 }

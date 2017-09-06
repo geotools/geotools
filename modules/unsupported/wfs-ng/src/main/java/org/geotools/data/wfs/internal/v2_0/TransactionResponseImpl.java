@@ -25,11 +25,6 @@ import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import net.opengis.wfs20.ActionResultsType;
-import net.opengis.wfs20.CreatedOrModifiedFeatureType;
-import net.opengis.wfs20.TransactionResponseType;
-import net.opengis.wfs20.TransactionSummaryType;
-
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.wfs.internal.TransactionResponse;
 import org.geotools.data.wfs.internal.WFSRequest;
@@ -42,6 +37,11 @@ import org.opengis.filter.identity.FeatureId;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.SAXException;
 
+import net.opengis.wfs20.ActionResultsType;
+import net.opengis.wfs20.CreatedOrModifiedFeatureType;
+import net.opengis.wfs20.TransactionResponseType;
+import net.opengis.wfs20.TransactionSummaryType;
+
 public class TransactionResponseImpl extends WFSResponse implements TransactionResponse {
 
     private List<FeatureId> inserted;
@@ -52,7 +52,7 @@ public class TransactionResponseImpl extends WFSResponse implements TransactionR
 
     private int insertCount;
 
-    public TransactionResponseImpl(WFSRequest originatingRequest, HTTPResponse response)
+    public TransactionResponseImpl(WFSRequest originatingRequest, HTTPResponse response, InputStream in)
             throws ServiceException, IOException {
 
         super(originatingRequest, response);
@@ -68,8 +68,7 @@ public class TransactionResponseImpl extends WFSResponse implements TransactionR
             if(resolver != null) {
                 parser.setEntityResolver(resolver);
             }
-            InputStream input = response.getResponseStream();
-            parsed = parser.parse(input);
+            parsed = parser.parse(in);
         } catch (SAXException e) {
             throw new IOException(e);
         } catch (ParserConfigurationException e) {

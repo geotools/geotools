@@ -17,6 +17,10 @@
 package org.geotools.data.wfs.internal;
 
 import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * A Java Exception that mirrors a WFS {@code ExceptionReport} and is meant to be produced by
@@ -25,8 +29,53 @@ import java.io.IOException;
  */
 public class WFSException extends IOException {
     private static final long serialVersionUID = -2828901359361793862L;
+    
+    public static final class ExceptionDetails implements Serializable {
+
+        /** serialVersionUID */
+        private static final long serialVersionUID = 7073282354241139071L;
+
+        private String code;
+
+        private String locator;
+
+        private List<String> texts;
+
+        public ExceptionDetails(String code, String locator, List<String> texts) {
+            super();
+            this.code = code;
+            this.locator = locator;
+            if (texts == null) {
+                texts = Collections.emptyList();
+            } else {
+                texts = new ArrayList<>(texts);
+            }
+            this.texts = texts;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public List<String> getTexts() {
+            return Collections.unmodifiableList(texts);
+        }
+
+        public String getLocator() {
+            return locator;
+        }
+
+        @Override
+        public String toString() {
+            return "ExceptionDetails [code=" + code + ", locator=" + locator + ", texts=" + texts
+                    + "]";
+        }
+    }
 
     private StringBuilder msg;
+
+    /** Structured representations of the WFS ExceptionReport */
+    private List<ExceptionDetails> exceptionDetails = new ArrayList<>();
 
     public WFSException(String msg) {
         this(msg, null);
@@ -41,8 +90,24 @@ public class WFSException extends IOException {
         }
     }
 
+    /**
+     * Use {@link #addExceptionMessage(String)} instead, or {@link #addExceptionDetails(String, String, List)} for exceptions consisting of code and
+     * messages
+     * 
+     * @param report
+     */
+    @Deprecated
     public void addExceptionReport(String report) {
-        msg.append("\n\t[").append(report).append("]");
+        addExceptionMessage(report);
+    }
+
+    public void addExceptionMessage(String message) {
+        msg.append("\n\t[").append(message).append("]");
+    }
+
+    public void addExceptionDetails(String code, String locator, List<String> texts) {
+        addExceptionMessage(code + ": " + String.valueOf(texts));
+        exceptionDetails.add(new ExceptionDetails(code, locator, texts));
     }
 
     @Override
@@ -53,5 +118,12 @@ public class WFSException extends IOException {
     @Override
     public String getLocalizedMessage() {
         return msg.toString();
+    }
+    
+    /**
+     * @return the structured contents of the WFS exception, if any
+     */
+    public List<ExceptionDetails> getExceptionDetails() {
+        return Collections.unmodifiableList(exceptionDetails);
     }
 }

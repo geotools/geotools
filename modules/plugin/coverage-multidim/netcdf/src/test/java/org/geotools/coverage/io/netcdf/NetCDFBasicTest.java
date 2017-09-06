@@ -771,4 +771,39 @@ public final class NetCDFBasicTest extends Assert {
         }
     }
 
+    @Test
+    public void testNetCDFCoordinateAxisOrder() throws MalformedURLException, IOException {
+        final File inputFile = TestData.file(this, "axisorder.nc");
+        // Get format
+        final AbstractGridFormat format = (AbstractGridFormat) GridFormatFinder.findFormat(
+                inputFile.toURI().toURL(), null);
+        final NetCDFReader reader = new NetCDFReader(inputFile, null);
+        Assert.assertNotNull(format);
+        Assert.assertNotNull(reader);
+        try {
+            // Selection of all the Coverage names
+            String[] names = reader.getGridCoverageNames();
+            assertNotNull(names);
+            assertEquals(1, names.length);
+
+            // Parsing metadata values
+            assertEquals("true", reader.getMetadataValue(names[0], "HAS_TIME_DOMAIN"));
+
+            List<DimensionDescriptor> descriptors = reader.getDimensionDescriptors(names[0]);
+            assertEquals(1, descriptors.size());
+            DimensionDescriptor descriptor = descriptors.get(0);
+            assertEquals("time", descriptor.getStartAttribute());
+            assertEquals("TIME", descriptor.getName());
+            assertEquals("1983-09-28T00:00:00.000Z/1983-09-28T00:00:00.000Z", reader.getMetadataValue(names[0], "TIME_DOMAIN"));
+
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.dispose();
+                } catch (Throwable t) {
+                    // Does nothing
+                }
+            }
+        }
+    }
 }

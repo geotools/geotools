@@ -71,14 +71,17 @@ import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.util.InternationalString;
 import org.opengis.util.ProgressListener;
+
 import ucar.nc2.Dimension;
 import ucar.nc2.Variable;
 import ucar.nc2.constants.AxisType;
 import ucar.nc2.dataset.CoordinateAxis;
+import ucar.nc2.dataset.CoordinateAxis.AxisComparator;
 import ucar.nc2.dataset.CoordinateSystem;
 import ucar.nc2.dataset.VariableDS;
 
 import javax.measure.unit.Unit;
+
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BandedSampleModel;
@@ -98,6 +101,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
 
     private final static boolean QUICK_SCAN;
     private final static String QUICK_SCAN_KEY = "org.geotools.netcdf.quickscan"; 
+    private final static AxisComparator AXIS_COMPARATOR = new CoordinateAxis.AxisComparator();
 
     /** 
      * Simple chars replacing classes to deal with "custom" 
@@ -692,8 +696,10 @@ public class VariableAdapter extends CoverageSourceDescriptor {
          * referencing framework.
          */
         final List<CoordinateVariable<?>> otherAxes = new ArrayList<CoordinateVariable<?>>();
-        int index=-1;
-        for(CoordinateAxis axis :coordinateSystem.getCoordinateAxes()){
+        int index = -1;
+        List<CoordinateAxis> axesSorted = new ArrayList<>(coordinateSystem.getCoordinateAxes());
+        Collections.sort(axesSorted, AXIS_COMPARATOR);
+        for (CoordinateAxis axis : axesSorted) {
             index++;
             String fullName = axis.getFullName();
             if (NetCDFUtilities.getIgnoredDimensions().contains(fullName)) {

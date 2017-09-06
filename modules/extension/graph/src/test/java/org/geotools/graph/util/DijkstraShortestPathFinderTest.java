@@ -144,14 +144,13 @@ public class DijkstraShortestPathFinderTest extends TestCase {
    * 1. The node cost should be 0 for the source, 1 for the bifurcation and 3 for the two leafs.
    */
   public void test_3() {
-	  	double[] expected = { 0.0, 1.0, 3.0, 3.0 };
 	    int nnodes = 4;
 	    
 	    // Creating a single bifurcation graph.
 	    Object[] singleBif = GraphTestUtil.buildSingleBifurcation(builder(), nnodes, 1);
 	    
 	    // Getting the source.
-	    Node source = (Node)builder().getGraph().getNodes().iterator().next();
+	    Node source = (Node) singleBif[0];
 
         // Creating a path finder and calculates the paths.
         DijkstraShortestPathFinder pf = new DijkstraShortestPathFinder(builder().getGraph(), 
@@ -161,8 +160,7 @@ public class DijkstraShortestPathFinderTest extends TestCase {
 
         pf.calculate();
 
-        // Extracting the actual node costs.
-        ArrayList<Double> gotArray = new ArrayList<Double>(nnodes);
+        // Testing if the actual node cost is the same as the expected.
         for (Iterator it = builder().getGraph().getNodes().iterator() ; it.hasNext();)
         {
 
@@ -170,18 +168,21 @@ public class DijkstraShortestPathFinderTest extends TestCase {
 
             Path path = pf.getPath(d);
 
-            gotArray.add(pf.getCost(d));
+            double actual = pf.getCost(d);
+            double expected = 3;
+            if (d == source)
+            {
+            	expected = 0;
+            }
+            else if(d == singleBif[2])
+            {
+            	expected = 1;
+            }
+
+            assertEquals(expected, actual);
 
         }
-        
-        double[] actual = new double[gotArray.size()];
-        for (int i = 0 ; i < actual.length ; i++)
-        {
-        	actual[i] = gotArray.get(i);
-        }
-        
-        // Testing if the actual node cost is the same as the expected.
-        assertArrayEquals(expected, actual, 0.1);
+
 	  }
   
   /**

@@ -21,10 +21,12 @@ import static org.junit.Assert.*;
 import java.awt.Rectangle;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 
 import javax.media.jai.Interpolation;
 
+import org.apache.commons.io.FileUtils;
 import org.geotools.TestData;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
@@ -33,6 +35,7 @@ import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
 import org.geotools.gce.geotiff.GeoTiffReader;
+import org.geotools.gce.imagemosaic.ImageMosaicReader;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -45,7 +48,9 @@ import org.geotools.renderer.crs.ProjectionHandlerFinder;
 import org.geotools.renderer.lite.GridCoverageRendererTest;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.opengis.coverage.grid.Format;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.geometry.Envelope;
@@ -53,6 +58,9 @@ import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class GridCoverageReaderHelperTest {
+    
+    @Rule
+    public TemporaryFolder crsMosaicFolder = new TemporaryFolder();
 
     static final double EPS = 1e-9;
 
@@ -334,5 +342,26 @@ public class GridCoverageReaderHelperTest {
                 reader.dispose();
             }
         }
+    }
+    
+    @Test
+    public void testPaddingHeteroMosaic() throws Exception {
+        String testLocation = "hetero_utm";
+        URL storeUrl = TestData.url(this.getClass(), testLocation);
+
+        File testDataFolder = new File(storeUrl.toURI());
+        File testDirectory = crsMosaicFolder.newFolder(testLocation);
+        FileUtils.copyDirectory(testDataFolder, testDirectory);
+
+        ImageMosaicReader imReader = new ImageMosaicReader(testDirectory, null);
+        ReferencedEnvelope mapExtent = new ReferencedEnvelope(11, 13, -1, 1, DefaultGeographicCRS.WGS84);
+        GridCoverageReaderHelper helper = new GridCoverageReaderHelper(imReader, new Rectangle(1024,
+                512), mapExtent, Interpolation.getInstance(Interpolation.INTERP_NEAREST));
+        ReferencedEnvelope readEnvelope = helper.getReadEnvelope();
+        final double EPS = 1e-3;  
+        assertEquals(10.981, readEnvelope.getMinX(), EPS);
+        assertEquals(13.021, readEnvelope.getMaxX(), EPS);
+        assertEquals(-1.041, readEnvelope.getMinY(), EPS);
+        assertEquals(1.037, readEnvelope.getMaxY(), EPS);
     }
 }

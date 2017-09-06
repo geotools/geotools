@@ -16,6 +16,18 @@
  */
 package org.geotools.gce.imagemosaic;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.media.jai.Interpolation;
+
+import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.DecimationPolicy;
@@ -32,17 +44,12 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.metadata.Identifier;
-import org.opengis.parameter.*;
+import org.opengis.parameter.GeneralParameterDescriptor;
+import org.opengis.parameter.GeneralParameterValue;
+import org.opengis.parameter.ParameterDescriptor;
+import org.opengis.parameter.ParameterValue;
+import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.ReferenceIdentifier;
-
-import javax.media.jai.Interpolation;
-import java.awt.*;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * A class to handle coverage requests to a reader for a single 2D layer..
@@ -55,6 +62,8 @@ public class RasterLayerRequest {
     /** Logger. */
     private final static Logger LOGGER = org.geotools.util.logging.Logging
             .getLogger(RasterLayerRequest.class);
+
+    private static final int DEFAULT_PADDING = 10;
 
     private ReadType readType = AbstractGridFormat.USE_JAI_IMAGEREAD.getDefaultValue()
             ? ReadType.JAI_IMAGEREAD : ReadType.DIRECT_READ;
@@ -301,7 +310,7 @@ public class RasterLayerRequest {
                 if (value == null)
                     continue;
                 final GridGeometry2D gg = (GridGeometry2D) value;
-
+                
                 spatialRequestHelper.setRequestedGridGeometry(gg);
                 continue;
             }
@@ -495,7 +504,20 @@ public class RasterLayerRequest {
             if (value == null)
                 return;
             final GridGeometry2D gg = (GridGeometry2D) value;
-            spatialRequestHelper.setRequestedGridGeometry(gg.toCanonical());
+            
+            if (rasterManager.getConfiguration().getCatalogConfigurationBean()
+                    .isHeterogeneousCRS()) {
+                GridEnvelope2D paddedRange = new GridEnvelope2D(gg.getGridRange2D());
+                paddedRange.setBounds(paddedRange.x - DEFAULT_PADDING,
+                        paddedRange.y - DEFAULT_PADDING, paddedRange.width + DEFAULT_PADDING * 2,
+                        paddedRange.height + DEFAULT_PADDING * 2);
+
+                GridGeometry2D padded = new GridGeometry2D(paddedRange, gg.getGridToCRS(),
+                        gg.getCoordinateReferenceSystem());
+                spatialRequestHelper.setRequestedGridGeometry(padded.toCanonical());
+            } else {
+                spatialRequestHelper.setRequestedGridGeometry(gg.toCanonical());
+            }
             return;
         }
 

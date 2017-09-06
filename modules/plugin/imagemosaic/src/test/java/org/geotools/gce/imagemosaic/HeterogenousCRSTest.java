@@ -39,6 +39,7 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -144,6 +145,9 @@ public class HeterogenousCRSTest {
         Hints creationHints = new Hints();
         ImageMosaicReader imReader = new ImageMosaicReader(testDirectory, creationHints);
         Assert.assertNotNull(imReader);
+        
+        // check it advertises the mixed crs 
+        assertEquals("true", imReader.getMetadataValue(GridCoverage2DReader.MULTICRS_READER));
 
         //hack workaround for the store not being created with a consistent CRS in certain
         //environments.

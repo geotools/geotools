@@ -39,6 +39,8 @@ public class CatalogConfigurationBean {
     private boolean caching = Utils.DEFAULT_CONFIGURATION_CACHING;
 
     private boolean heterogeneous;
+    
+    private boolean heterogeneousCRS;
 
     /**
      * Whether the specified store should be wrapped. Only PostGis stores support this parameter. (Oracle stores are wrapped by default).
@@ -113,6 +115,14 @@ public class CatalogConfigurationBean {
 
     public void setHeterogeneous(boolean heterogeneous) {
         this.heterogeneous = heterogeneous;
+    }
+    
+    public boolean isHeterogeneousCRS() {
+        return heterogeneousCRS;
+    }
+
+    public void setHeterogeneousCRS(boolean heterogeneousCRS) {
+        this.heterogeneousCRS = heterogeneousCRS;
     }
 
     public boolean isAbsolutePath() {

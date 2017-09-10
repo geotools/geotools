@@ -393,16 +393,10 @@ public class JDBCFeatureSource extends ContentFeatureSource {
         else {
             featureSource = ((JDBCFeatureStore)source).getFeatureSource();
         }
-
+        
         Filter[] split = new Filter[2];
         if ( original != null ) {
-            //create a filter splitter
-            PostPreProcessFilterSplittingVisitor splitter = new PostPreProcessFilterSplittingVisitor(getDataStore()
-                    .getFilterCapabilities(), featureSource.getSchema(), null);
-            original.accept(splitter, null);
-        
-            split[0] = splitter.getFilterPre();
-            split[1] = splitter.getFilterPost();
+            split = getDataStore().getSQLDialect().splitFilter(original, featureSource.getSchema());
         }
         
         // handle three-valued logic differences by adding "is not null" checks in the filter,
@@ -440,8 +434,12 @@ public class JDBCFeatureSource extends ContentFeatureSource {
     
                     int count = 0;
     
-                    //grab a reader
-                     FeatureReader<SimpleFeatureType, SimpleFeature> reader = getReader( query );
+                    // grab a reader
+                    Query preQuery = new Query(query);
+                    query.setFilter(preFilter);
+                    FeatureReader<SimpleFeatureType, SimpleFeature> preReader = getReader( preQuery );
+                    // wrap with post filter
+                    FilteringFeatureReader reader = new FilteringFeatureReader(preReader, postFilter);
                     try {
                         while (reader.hasNext()) {
                             reader.next();

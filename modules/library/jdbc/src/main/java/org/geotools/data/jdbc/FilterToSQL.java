@@ -198,7 +198,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
     protected FilterCapabilities capabilities = null;
 
     /** Standard java logger */
-    private static Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
+    protected static Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
 
     /** Character used to escape database schema, table and column names */
     private String sqlNameEscape = "";

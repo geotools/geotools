@@ -75,3 +75,7 @@ CREATE TRIGGER rtree_${t}_${c}_delete AFTER DELETE ON ${t}
 BEGIN
   DELETE FROM rtree_${t}_${c} WHERE id = OLD.${i};
 END;
+
+-- Register the spatial index extension for this table/column
+INSERT INTO gpkg_extensions(table_name, column_name, extension_name, definition, scope) 
+  VALUES('${t}', '${c}', 'gpkg_rtree_index', 'GeoPackage 1.0 Specification Annex L', 'write-only');

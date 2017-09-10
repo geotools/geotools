@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2017, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -22,11 +22,11 @@ import org.geotools.jdbc.JDBCSpatialFiltersOnlineTest;
 /**
  * Spatial filters test, without spatial index support on the column
  */
-public class GeoPkgSpatialFiltersOnlineTest extends JDBCSpatialFiltersOnlineTest {
+public class GeoPkgSpatialFiltersSpatialIndexOnlineTest extends JDBCSpatialFiltersOnlineTest {
     
     @Override
     protected JDBCDataStoreAPITestSetup createTestSetup() {
-        return new GeoPkgDataStoreAPITestSetup(false);
+        return new GeoPkgDataStoreAPITestSetup(true);
     }
 
 }

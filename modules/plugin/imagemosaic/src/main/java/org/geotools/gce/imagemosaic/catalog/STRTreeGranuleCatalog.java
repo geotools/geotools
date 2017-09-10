@@ -30,6 +30,7 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.Query;
@@ -401,7 +402,10 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
             if (comparator == null) {
                 index.query(requestedBBox, new JTSIndexVisitorAdapter(visitor, q));
             } else {
-                List<GranuleDescriptor> granules = index.query(requestedBBox);
+                final List<GranuleDescriptor> unfilteredGranules = index.query(requestedBBox);
+                List<GranuleDescriptor> granules = unfilteredGranules.stream().
+                        filter(gd -> filter.evaluate(gd.getOriginator())).collect(Collectors.toList());
+                
                 Comparator<GranuleDescriptor> granuleComparator = (gd1, gd2) -> {
                     SimpleFeature sf1 = gd1.getOriginator();
                     SimpleFeature sf2 = gd2.getOriginator();

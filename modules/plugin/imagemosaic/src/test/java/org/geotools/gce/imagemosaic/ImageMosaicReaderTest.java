@@ -98,6 +98,7 @@ import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.Hints;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.gce.imagemosaic.Utils.Prop;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
@@ -138,6 +139,7 @@ import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.NoninvertibleTransformException;
@@ -4382,7 +4384,64 @@ public class ImageMosaicReaderTest extends Assert{
     }
     
     @Test
-    public void testSortOnCachedCatalog() throws Exception {
+    public void testSortOnCachedCatalogDescending() throws Exception {
+        File timeCached = setupTimeCachedMosaic();
+
+        // read reference image (the one that should be on top)
+        BufferedImage expected = ImageIO
+                .read(new File(timeCached, "world.200405.3x5400x2700.tiff"));
+
+        // sort on time attribute
+        final ParameterValue<String> sortBy = ImageMosaicFormat.SORT_BY.createValue();
+        sortBy.setValue("time D");
+        ImageMosaicReader reader = new ImageMosaicReader(timeCached);
+        GridCoverage2D coverage = reader.read(new GeneralParameterValue[] { sortBy });
+        ImageAssert.assertEquals(expected, coverage.getRenderedImage(), 0);
+        coverage.dispose(true);
+        reader.dispose();
+    }
+    
+    @Test
+    public void testSortOnCachedCatalogAscending() throws Exception {
+        File timeCached = setupTimeCachedMosaic();
+
+        // read reference image (the one that should be on top)
+        BufferedImage expected = ImageIO
+                .read(new File(timeCached, "world.200402.3x5400x2700.tiff"));
+
+        // sort on time attribute
+        final ParameterValue<String> sortBy = ImageMosaicFormat.SORT_BY.createValue();
+        sortBy.setValue("time A");
+        ImageMosaicReader reader = new ImageMosaicReader(timeCached);
+        GridCoverage2D coverage = reader.read(new GeneralParameterValue[] { sortBy });
+        ImageAssert.assertEquals(expected, coverage.getRenderedImage(), 0);
+        coverage.dispose(true);
+        reader.dispose();
+    }
+    
+    @Test
+    public void testSortOnCachedCatalogAscendingFiltered() throws Exception {
+        File timeCached = setupTimeCachedMosaic();
+
+        // read reference image (the one that should be on top)
+        BufferedImage expected = ImageIO
+                .read(new File(timeCached, "world.200403.3x5400x2700.tiff"));
+
+        // sort on time attribute
+        final ParameterValue<String> sortBy = ImageMosaicFormat.SORT_BY.createValue();
+        sortBy.setValue("time A");
+        final ParameterValue<Filter> filter = ImageMosaicFormat.FILTER.createValue();
+        // during does not include the limits apparently, so we end up with a weird filter
+        filter.setValue(ECQL.toFilter("time during 2004-02-28T23:59:59/2004-05-01T00:00:00"));
+        ImageMosaicReader reader = new ImageMosaicReader(timeCached);
+        GridCoverage2D coverage = reader.read(new GeneralParameterValue[] { sortBy, filter });
+        ImageAssert.assertEquals(expected, coverage.getRenderedImage(), 0);
+        coverage.dispose(true);
+        reader.dispose();
+    }
+
+    private File setupTimeCachedMosaic() throws FileNotFoundException, IOException,
+            NoSuchAuthorityCodeException, FactoryException {
         // copy the test data
         File source = DataUtilities.urlToFile(timeURL);
         File testDataDir = TestData.file(this, ".");
@@ -4412,18 +4471,6 @@ public class ImageMosaicReaderTest extends Assert{
         try (OutputStream os = new FileOutputStream(indexerProperties)) {
             indexer.store(os, null);
         }
-
-        // read reference image (the one that should be on top)
-        BufferedImage expected = ImageIO
-                .read(new File(timeCached, "world.200405.3x5400x2700.tiff"));
-
-        // sort on time attribute
-        final ParameterValue<String> sortBy = ImageMosaicFormat.SORT_BY.createValue();
-        sortBy.setValue("time D");
-        reader = TestUtils.getReader(timeCachedUrl, format);
-        GridCoverage2D coverage = reader.read(new GeneralParameterValue[] { sortBy });
-        ImageAssert.assertEquals(expected, coverage.getRenderedImage(), 0);
-        coverage.dispose(true);
-        reader.dispose();
+        return timeCached;
     }
 }

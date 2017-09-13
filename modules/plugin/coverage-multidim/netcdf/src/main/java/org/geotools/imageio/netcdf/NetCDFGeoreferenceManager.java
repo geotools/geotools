@@ -574,8 +574,9 @@ class NetCDFGeoreferenceManager {
         Set<String> unsupported = NetCDFUtilities.getUnsupportedDimensions();
         Set<String> ignored = NetCDFUtilities.getIgnoredDimensions();
         for (CoordinateAxis axis : dataset.getCoordinateAxes()) {
-            if (axis.getDimensions().size() > 0) {
-                String axisName = axis.getFullName(); 
+            final int axisDimensions = axis.getDimensions().size();
+            if (axisDimensions > 0 && axisDimensions < 3) {
+                String axisName = axis.getFullName();
                 if (axis.getAxisType() != null) {
                     coordinates.put(axisName, CoordinateVariable.create(axis));
                 } else {

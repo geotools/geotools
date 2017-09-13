@@ -35,11 +35,17 @@ public class OracleDateTestSetup extends JDBCDateTestSetup {
                 "TO_DATE('2009-09-29', 'yyyy-MM-dd'), " +
                 "TO_DATE('2009-09-29 17:54:23', 'yyyy-MM-dd HH24:mi:ss')," +
                 "TO_DATE('17:54:23', 'HH24:mi:ss')  )");
+        
+        run( "CREATE TABLE TIMESTAMPS (" +
+                "ID NUMERIC(10) NOT NULL, " + 
+                "T TIMESTAMP, " +
+                "CONSTRAINT temporals_pk PRIMARY KEY (id))");
     }
 
     @Override
     protected void dropDateTable() throws Exception {
         runSafe("DROP TABLE DATES");
+        runSafe("DROP TABLE TIMESTAMPS");
     }
 
 }

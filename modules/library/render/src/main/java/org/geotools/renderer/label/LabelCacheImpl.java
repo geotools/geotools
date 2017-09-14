@@ -43,6 +43,7 @@ import java.util.logging.Logger;
 
 import org.geotools.geometry.jts.GeometryClipper;
 import org.geotools.geometry.jts.LiteShape2;
+import org.geotools.geometry.jts.OffsetCurveBuilder;
 import org.geotools.renderer.RenderListener;
 import org.geotools.renderer.VendorOptionParser;
 import org.geotools.renderer.label.LabelCacheItem.GraphicResize;
@@ -658,13 +659,23 @@ public final class LabelCacheImpl implements LabelCache {
         boolean allowOverruns = labelItem.allowOverruns();
         double maxAngleDelta = labelItem.getMaxAngleDelta();
 
+        final int perpendicularOffset = painter.getLabel().getTextStyle().getPerpendicularOffset();
+        OffsetCurveBuilder offsetBuilder = null;
+        if (perpendicularOffset != 0) {
+            offsetBuilder = new OffsetCurveBuilder(perpendicularOffset, 2);
+        }
         int labelCount = 0;
         for (LineString line : lines) {
             // if we are following lines, use a simplified version of the line,
             // we don't want very small segments to influence the character
             // orientation
-            if (labelItem.isFollowLineEnabled())
+            if (labelItem.isFollowLineEnabled()) {
                 line = decimateLineString(line, step);
+                if (offsetBuilder != null) {
+                    // offset the line and replace it
+                    line = (LineString) offsetBuilder.offset(line);
+                }
+            }
 
             // max distance between candidate label points, if any
             final double lineStringLength = line.getLength();
@@ -677,36 +688,14 @@ public final class LabelCacheImpl implements LabelCache {
                 return labelCount > 0;
             }
 
-            // create the candidate positions for the labels over the line. If
-            // we can place just one
-            // label or we're not supposed to replicate them, create the mid
-            // position, otherwise
-            // create mid and then create the sequence of before and after
-            // labels
-            double[] labelPositions;
-            if (labelDistance > 0 && labelDistance < lineStringLength / 2) {
-                // one label in the middle, plus all the labels we can fit before/after on the two half lines
-                final int positionCount = (int) ((lineStringLength / 2) / labelDistance) * 2 + 1;
-                labelPositions = new double[positionCount];
-                labelPositions[0] = lineStringLength / 2;
-                double offset = labelDistance;
-                for (int i = 1; i < labelPositions.length; i++) {
-                    labelPositions[i] = labelPositions[i - 1] + offset;
-                    // this will generate a sequence like s, -2s, 3s, -4s, ...
-                    // which will make the cursor alternate on mid + s, mid - s,
-                    // mid + 2s, mid - 2s, mid + 3s, ...
-                    offset = nextOffset(offset, labelDistance);
-                }
-            } else {
-                labelPositions = new double[1];
-                labelPositions[0] = lineStringLength / 2;
-            }
+            double[] labelPositions = buildLabelPositions(labelDistance, lineStringLength);
 
             // Ok, now we try to paint each of the labels in each position, and
             // we take into
             // account that we might have to displace the labels
             LineStringCursor cursor = new LineStringCursor(line);
             AffineTransform tx = new AffineTransform();
+            boolean mightSkipLastLabel = line.isClosed() && (lineStringLength - ((labelPositions.length - 1) * labelDistance)) < labelDistance;
             for (int i = 0; i < labelPositions.length; i++) {
                 cursor.moveTo(labelPositions[i]);
                 Coordinate centroid = cursor.getCurrentPosition();
@@ -730,7 +719,7 @@ public final class LabelCacheImpl implements LabelCache {
                     if (labelItem.followLineEnabled) {
                         // curved label, but we might end up drawing a straight
                         // one as an optimization
-                        maxAngleChange = cursor.getMaxAngleChange(startOrdinate, endOrdinate);
+                        maxAngleChange = cursor.getMaxAngleChange(startOrdinate, endOrdinate, step);
                         setupLineTransform(painter, cursor, centroid, tx, true);
                         curved = maxAngleChange >= MIN_CURVED_DELTA;
                     } else {
@@ -760,7 +749,7 @@ public final class LabelCacheImpl implements LabelCache {
                             // for curved labels we never paint in case of
                             // overrun
                             if ((startOrdinate > 0 && endOrdinate <= cursor.getLineStringLength())) {
-                                if (maxAngleChange < maxAngleDelta) {
+                                if (maxAngleChange <= maxAngleDelta) {
                                     // a max distance related to both the font size, but also having a visual limit
                                     // of a couple of millimeters assuming 90dpi
                                     double maxDistance = Math.min(painter.getLineHeight() / 2, 7);
@@ -802,6 +791,13 @@ public final class LabelCacheImpl implements LabelCache {
 
                             // Add each glyph's bounding box to the index
                             glyphVectorProcessor.process(new GlyphProcessor.IndexAdder(painter, paintedBounds));
+                        }
+                        
+                        // do not paint the last label on a ring if we have painted its symmetric
+                        // one and the residual space at the ends does not guarantee labelDistance
+                        // between last and second to last
+                        if((i == labelPositions.length - 2) && painted &&  mightSkipLastLabel) {
+                            i++;
                         }
                     } else {
                         // generate a sequence like s, -2s, 3s, -4s,...
@@ -871,12 +867,23 @@ public final class LabelCacheImpl implements LabelCache {
         double maxAngleDelta = labelItem.getMaxAngleDelta();
 
         int labelCount = 0;
+        final int perpendicularOffset = painter.getLabel().getTextStyle().getPerpendicularOffset();
+        OffsetCurveBuilder offsetBuilder = null;
+        if(perpendicularOffset != 0) {
+            offsetBuilder = new OffsetCurveBuilder(perpendicularOffset, 2);
+        }
         for (LineString line : lines) {
             // if we are following lines, use a simplified version of the line,
             // we don't want very small segments to influence the character
             // orientation
-            if (labelItem.isFollowLineEnabled())
+            if (labelItem.isFollowLineEnabled()) {
                 line = decimateLineString(line, step);
+                
+                if(offsetBuilder != null) {
+                    // offset the line and replace it
+                    line = (LineString) offsetBuilder.offset(line);
+                }
+            }
 
             // max distance between candidate label points, if any
             final double lineStringLength = line.getLength();
@@ -888,35 +895,17 @@ public final class LabelCacheImpl implements LabelCache {
                     && line.getLength() < textBounds.getWidth())
                 return labelCount > 0;
 
-            // create the candidate positions for the labels over the line. If
-            // we can place just one
-            // label or we're not supposed to replicate them, create the mid
-            // position, otherwise
-            // create mid and then create the sequence of before and after
-            // labels
-            double[] labelPositions;
-            if (labelDistance > 0 && labelDistance < lineStringLength / 2) {
-                labelPositions = new double[(int) (lineStringLength / labelDistance)];
-                labelPositions[0] = lineStringLength / 2;
-                double offset = labelDistance;
-                for (int i = 1; i < labelPositions.length; i++) {
-                    labelPositions[i] = labelPositions[i - 1] + offset;
-                    // this will generate a sequence like s, -2s, 3s, -4s, ...
-                    // which will make the cursor alternate on mid + s, mid - s,
-                    // mid + 2s, mid - 2s, mid + 3s, ...
-                    double signum = Math.signum(offset);
-                    offset = -1 * signum * (Math.abs(offset) + labelDistance);
-                }
-            } else {
-                labelPositions = new double[1];
-                labelPositions[0] = lineStringLength / 2;
-            }
+            double[] labelPositions = buildLabelPositions(labelDistance, lineStringLength);
 
             // Ok, now we try to paint each of the labels in each position, and
             // we take into
             // account that we might have to displace the labels
             LineStringCursor cursor = new LineStringCursor(line);
             AffineTransform tx = new AffineTransform();
+            // Checks if the second to last and last (symmetric to the center) labels are too close
+            // in a linear ring to be painted both. Will verify if the second to last is painted before
+            // painting the last one (making sure only one is)
+            boolean mightSkipLastLabel = line.isClosed() && (lineStringLength - ((labelPositions.length - 1) * labelDistance)) < labelDistance;
             for (int i = 0; i < labelPositions.length; i++) {
                 cursor.moveTo(labelPositions[i]);
                 Coordinate centroid = cursor.getCurrentPosition();
@@ -940,7 +929,7 @@ public final class LabelCacheImpl implements LabelCache {
                     if (labelItem.followLineEnabled) {
                         // curved label, but we might end up drawing a straight
                         // one as an optimization
-                        maxAngleChange = cursor.getMaxAngleChange(startOrdinate, endOrdinate);
+                        maxAngleChange = cursor.getMaxAngleChange(startOrdinate, endOrdinate, step);
                         if (maxAngleChange < MIN_CURVED_DELTA) {
                             // if label will be painted as straight, use the
                             // straight bounds
@@ -1005,6 +994,13 @@ public final class LabelCacheImpl implements LabelCache {
                             }
                             paintedBounds.addLabel(labelItem, labelEnvelope);
                         }
+                        
+                        // do not paint the last label on a ring if we have painted its symmetric
+                        // one and the residual space at the ends does not guarantee labelDistance
+                        // between last and second to last
+                        if((i == labelPositions.length - 2) && painted &&  mightSkipLastLabel) {
+                            i++;
+                        }
                     } else {
                         // this will generate a sequence like s, -2s, 3s, -4s,
                         // ...
@@ -1024,6 +1020,32 @@ public final class LabelCacheImpl implements LabelCache {
         }
 
         return labelCount > 0;
+    }
+
+    private double[] buildLabelPositions(int labelDistance, final double lineStringLength) {
+        // create the candidate positions for the labels over the line. If
+        // we can place just one label or we're not supposed to replicate them, create the mid
+        // position, otherwise create mid and then create the sequence of before and after labels
+        double[] labelPositions;
+        if (labelDistance > 0 && labelDistance < lineStringLength / 2) {
+            // one label in the middle, plus all the labels we can fit before/after on the two half lines
+            final int positionCount = (int) ((lineStringLength / 2) / labelDistance) * 2 + 1;
+            labelPositions = new double[positionCount];
+            labelPositions[0] = lineStringLength / 2;
+            double offset = labelDistance;
+            for (int i = 1; i < labelPositions.length; i++) {
+                labelPositions[i] = labelPositions[i - 1] + offset;
+                // this will generate a sequence like s, -2s, 3s, -4s, ...
+                // which will make the cursor alternate on mid + s, mid - s,
+                // mid + 2s, mid - 2s, mid + 3s, ...
+                offset = nextOffset(offset, labelDistance);
+            }
+        } else {
+            labelPositions = new double[1];
+            labelPositions[0] = lineStringLength / 2;
+        }
+        
+        return labelPositions;
     }
 
     private Rectangle2D getCurvedLabelBounds(LineStringCursor cursor, double startOrdinate,
@@ -1051,7 +1073,12 @@ public final class LabelCacheImpl implements LabelCache {
             simplified.add(inputCoordinates[inputCoordinates.length - 1]);
         Coordinate[] newCoords = simplified
                 .toArray(new Coordinate[simplified.size()]);
-        return line.getFactory().createLineString(newCoords);
+        // preserve close-ness if it was there
+        if (line instanceof LinearRing) {
+            return line.getFactory().createLinearRing(newCoords);
+        } else {
+            return line.getFactory().createLineString(newCoords);
+        }
     }
 
     /**
@@ -1121,8 +1148,10 @@ public final class LabelCacheImpl implements LabelCache {
             } else {
                 rotation = cursor.getCurrentAngle();
             }
-            // move it off the line
-            displacementY -= textStyle.getPerpendicularOffset() + (painter.getLineCount() - 1)
+            // move it off the line. If there is a follow line enabled, the perpendicular offset
+            // has been baked into the geometry, so no need to account for it here
+            final int perpendicularOffset = followLine ? 0 : textStyle.getPerpendicularOffset();
+            displacementY -= perpendicularOffset + (painter.getLineCount() - 1)
                     * (textBounds.getHeight() / painter.getLineCount());
             anchorX = 0.5; // centered
             anchorY = painter.getLinePlacementYAnchor();
@@ -1282,6 +1311,12 @@ public final class LabelCacheImpl implements LabelCache {
             Rectangle displayArea, LabelIndex glyphs) throws Exception {
         // turn the polygon in its component lines
         Geometry geometry = painter.getLabel().getGeometry();
+        // for offset based labeling to make sense on polygons (controlling inside vs outside)
+        // we need to normalize the geometry (it basically fixing the coordinate order of the rings,
+        // shell clockwise, holes counterclockwise)
+        if (painter.getLabel().getTextStyle().getPerpendicularOffset() != 0) {
+            geometry.normalize();
+        }
         List<LineString> lines = new ArrayList<>();
         geometry.apply((GeometryComponentFilter) g -> {
             if (g instanceof LineString) {
@@ -1820,6 +1855,11 @@ public final class LabelCacheImpl implements LabelCache {
     }
 
     private List<LineString> mergeLines(Collection<LineString> lines) {
+        // optimization and avoid rebuilding the elements into a different for (e.g., ring -> line)
+        if (lines.size() <= 1) {
+            return new ArrayList<>(lines);
+        }
+        
         LineMerger lm = new LineMerger();
         lm.add(lines);
         // build merged lines

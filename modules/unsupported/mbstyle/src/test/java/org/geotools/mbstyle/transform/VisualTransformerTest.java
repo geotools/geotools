@@ -29,6 +29,8 @@ import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.MapboxTestUtils;
 import org.geotools.referencing.CRS;
 import org.geotools.renderer.lite.StreamingRenderer;
+import org.geotools.renderer.lite.LabelShieldTest;
+import org.geotools.renderer.style.FontCache;
 import org.geotools.styling.*;
 import org.geotools.styling.Stroke;
 import org.json.simple.JSONObject;
@@ -39,6 +41,7 @@ import org.junit.Test;
 import org.opengis.filter.FilterFactory;
 
 import java.awt.*;
+import java.awt.Font;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -108,9 +111,14 @@ public class VisualTransformerTest {
         lineZigFS = ds.getFeatureSource("testlinezigs");
         pointsWithMarksFS = ds.getFeatureSource("testmarks");
         bounds = new ReferencedEnvelope(0, 10, 0, 10, CRS.decode("EPSG:4326"));
+        
+        
+        FontCache.getDefaultInstance().registerFont(
+        Font.createFont(Font.TRUETYPE_FONT, TestData.getResource(LabelShieldTest.class, "Vera.ttf")
+        		 .openStream()));
 
         // UNCOMMENT THE BELOW LINE TO DISPLAY VISUAL TESTS
-         System.setProperty("org.geotools.test.interactive", "true");
+        // System.setProperty("org.geotools.test.interactive", "true");
     }
     /**
      * Test generation of a GeoTools style from an MBBackgroundLayer

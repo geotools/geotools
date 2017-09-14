@@ -37,6 +37,7 @@
                 "text-justify": "left",
                 "visibility": "visible",
                 "text-field": "{text}",
+                "text-font": ["Bitstream Vera Sans"],
                 "text-letter-spacing": 0.05,
                 "text-max-width": 5,
             },

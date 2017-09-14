@@ -272,6 +272,33 @@
             </typeBindings>
         </configuration>
       </plugin>
+      <!-- build test jar so that tests in GeoServer can use classes in GeoTools xsd-gml3
+        tests -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <executions>
+            <execution>
+                <phase>package</phase>
+                <goals>
+                     <goal>test-jar</goal>
+                 </goals>
+            </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <executions>
+            <execution>
+                <phase>package</phase>
+                <goals>
+                     <goal>test-jar</goal>
+                </goals>
+            </execution>
+        </executions>
+      </plugin>
 
     </plugins>
   </build>

@@ -121,7 +121,7 @@
     </dependency>
     <dependency>
       <groupId>com.vividsolutions</groupId>
-      <artifactId>jts</artifactId>
+      <artifactId>jts-core</artifactId>
       <!-- The version number is specified in the parent POM. -->
     </dependency>
     <dependency>
@@ -175,10 +175,22 @@
     <dependency>
       <groupId>org.jaitools</groupId>
       <artifactId>jt-utils</artifactId>
+      <exclusions>
+        <exclusion>
+           <groupId>com.vividsolutions</groupId>
+           <artifactId>jts</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.jaitools</groupId>
       <artifactId>jt-vectorbinarize</artifactId>
+      <exclusions>
+         <exclusion>
+            <groupId>com.vividsolutions</groupId>
+            <artifactId>jts</artifactId>
+         </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>net.sf.ehcache</groupId>
@@ -205,6 +217,5 @@
       <artifactId>commons-io</artifactId>
     </dependency>
   </dependencies>
-
 
 </project>

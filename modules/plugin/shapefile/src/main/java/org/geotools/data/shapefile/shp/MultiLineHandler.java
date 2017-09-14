@@ -19,6 +19,8 @@ package org.geotools.data.shapefile.shp;
 import java.nio.ByteBuffer;
 import java.nio.DoubleBuffer;
 
+import org.geotools.geometry.jts.JTS;
+
 import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
 import com.vividsolutions.jts.geom.Envelope;
@@ -154,7 +156,8 @@ public class MultiLineHandler implements ShapeHandler {
                 clonePoint = false;
             }
 
-            CoordinateSequence cs = geometryFactory.getCoordinateSequenceFactory().create(length, dimensions);
+            CoordinateSequence cs =
+                JTS.createCS(geometryFactory.getCoordinateSequenceFactory(), length, dimensions);
             double[] xy = new double[xyLength * 2];
             doubleBuffer.get(xy);
             for (int i = 0; i < xyLength; i++) {

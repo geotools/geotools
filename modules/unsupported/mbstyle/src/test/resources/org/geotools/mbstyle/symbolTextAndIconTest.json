@@ -44,6 +44,7 @@
                 "text-anchor": "CENTER",
                 "text-pitch-alignment": "viewport",
                 "text-field": "{text}",
+                "text-font": ["Bitstream Vera Sans"],
                 "icon-image": "pattern",
                 "symbol-placement": "point"
             },

@@ -189,6 +189,12 @@
             <modules>
                 <module>mbstyle</module>
             </modules>
+        </profile>        
+        <profile>
+            <id>s3-geotiff</id>
+            <modules>
+                <module>s3-geotiff</module>
+            </modules>
         </profile>
 		<profile>
 			<id>unsupported</id>
@@ -208,6 +214,7 @@
 				<module>solr</module>
 				<module>css</module>
 				<module>geojsonstore</module>
+                <module>s3-geotiff</module>
 			</modules>
 		</profile>
 	</profiles>
@@ -223,7 +230,7 @@
 		<module>geojson</module>
 		<module>mbtiles</module>
 		<module>wfs-ng</module>
-		
+
 	</modules>
 
 </project>

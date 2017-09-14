@@ -28,6 +28,8 @@ import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
+import com.vividsolutions.jts.geom.impl.CoordinateArraySequenceFactory;
 
 /**
  * A builder for {@link Geometry} objects. Primarily intended to
@@ -465,7 +467,18 @@ public class GeometryBuilder {
             throw new IllegalArgumentException("Ordinate array length "
                     + ord.length + " is not a multiple of dimension " + dim);
         int n = ord.length / dim;
-        CoordinateSequence cs = csFact.create(n, dim);
+        CoordinateSequence cs;
+        if( csFact instanceof CoordinateArraySequenceFactory && dim == 1) {
+            // work around JTS 1.14 CoordinateArraySequenceFactory regression ignorning provided dimension
+            cs = new CoordinateArraySequence(n,dim);
+        }
+        else {
+            cs = JTS.createCS(csFact, n, dim);
+        }
+        if( cs.getDimension() != dim ) {
+            // illegal state error, try and fix
+            throw new IllegalStateException("Unable to use"+csFact+" to produce CoordinateSequence with dimension "+dim);
+        }
         for (int i = 0; i < n; i++) {
             for (int d = 0; d < dim; d++)
                 cs.setOrdinate(i, d, ord[dim * i + d]);

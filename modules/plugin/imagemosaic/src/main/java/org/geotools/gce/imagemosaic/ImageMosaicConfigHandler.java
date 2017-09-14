@@ -987,6 +987,9 @@ public class ImageMosaicConfigHandler {
 
             if (heterogeneousCRS) {
                 this.propertiesCollectors = Collections.singletonList(new CRSExtractor());
+                for (MosaicConfigurationBean configuration : configurations.values()) {
+                    configuration.getCatalogConfigurationBean().setHeterogeneousCRS(true);
+                }
             }
             return;
         }
@@ -1216,6 +1219,9 @@ public class ImageMosaicConfigHandler {
                 Boolean.toString(mosaicConfiguration.isCheckAuxiliaryMetadata()));
         properties.setProperty(Utils.Prop.HETEROGENEOUS,
                 Boolean.toString(catalogConfigurationBean.isHeterogeneous()));
+        properties.setProperty(Utils.Prop.HETEROGENEOUS_CRS,
+                Boolean.toString(catalogConfigurationBean.isHeterogeneousCRS()));
+
         boolean wrapStore = catalogConfigurationBean.isWrapStore();
         if (wrapStore) {
             // Avoid setting this property when false, since it's default
@@ -1430,6 +1436,7 @@ public class ImageMosaicConfigHandler {
             currentConfigurationBean = configBuilder.getMosaicConfigurationBean();
             if(heterogeneousCRS) {
                 currentConfigurationBean.getCatalogConfigurationBean().setHeterogeneous(true);
+                currentConfigurationBean.getCatalogConfigurationBean().setHeterogeneousCRS(true);
             }
 
             // Creating a rasterManager which will be initialized after populating the catalog

@@ -155,7 +155,7 @@ public class SymbolMBLayerTest {
     	assertEquals(2.0, testLayerDefault.getIconPadding());
     	assertEquals("20.0", featureTypePoint.get(0).rules().get(0).getSymbolizers()[1].getOptions().get("spaceAround"));
     	assertEquals(30.0, testLineLayer.getIconPadding());
-    	assertEquals("30.0", featureTypeLine.get(0).rules().get(0).getSymbolizers()[0].getOptions().get("spaceAround"));
+    	assertEquals("15.0", featureTypeLine.get(0).rules().get(0).getSymbolizers()[0].getOptions().get("spaceAround"));
     }
     @Test
     public void testTextFont(){

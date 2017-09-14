@@ -555,7 +555,7 @@ public class GeometryClipper {
      * @return
      */
     LinearRing buildBoundsString(final GeometryFactory gf, final CoordinateSequenceFactory csf) {
-        CoordinateSequence cs = csf.create(5, 2);
+        CoordinateSequence cs = JTS.createCS(csf, 5, 2);
         cs.setOrdinate(0, 0, xmin);
         cs.setOrdinate(0, 1, ymin);
         cs.setOrdinate(1, 0, xmin);
@@ -681,7 +681,7 @@ public class GeometryClipper {
                         segment[3] = y1;
                         double[] clippedSegment = clipSegment(segment);
                         if (clippedSegment != null) {
-                            CoordinateSequence cs = csf.create(2, 2);
+                            CoordinateSequence cs = JTS.createCS(csf, 2, 2);
                             cs.setOrdinate(0, 0, clippedSegment[0]);
                             cs.setOrdinate(0, 1, clippedSegment[1]);
                             cs.setOrdinate(1, 0, clippedSegment[2]);
@@ -734,7 +734,7 @@ public class GeometryClipper {
             CoordinateSequence cs1 = clipped.get(clipped.size() - 1).getCoordinateSequence();
             if (cs0.getOrdinate(0, 0) == cs1.getOrdinate(cs1.size() - 1, 0)
                     && cs0.getOrdinate(0, 1) == cs1.getOrdinate(cs1.size() - 1, 1)) {
-                CoordinateSequence cs = csf.create(cs0.size() + cs1.size() - 1, 2);
+                CoordinateSequence cs = JTS.createCS(csf, cs0.size() + cs1.size() - 1, 2);
                 for (int i = 0; i < cs1.size(); i++) {
                     cs.setOrdinate(i, 0, cs1.getOrdinate(i, 0));
                     cs.setOrdinate(i, 1, cs1.getOrdinate(i, 1));

@@ -30,6 +30,7 @@ public class TileMatrix {
     Integer tileWidth, tileHeight;
     Double xPixelSize;
     Double yPixelSize;
+    boolean tiles;
 
     public TileMatrix() {
     }
@@ -101,4 +102,21 @@ public class TileMatrix {
     public void setYPixelSize(Double yPixelSize) {
         this.yPixelSize = yPixelSize;
     }
+    
+    public boolean hasTiles() {
+        return tiles;
+    }
+
+    public void setTiles(boolean tiles) {
+        this.tiles = tiles;
+    }
+
+    @Override
+    public String toString() {
+        return "TileMatrix [zoomLevel=" + zoomLevel + ", matrixWidth=" + matrixWidth
+                + ", matrixHeight=" + matrixHeight + ", tileWidth=" + tileWidth + ", tileHeight="
+                + tileHeight + ", xPixelSize=" + xPixelSize + ", yPixelSize=" + yPixelSize
+                + ", tiles=" + tiles + "]";
+    }
+    
 }

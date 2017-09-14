@@ -26,7 +26,6 @@ import java.io.File;
 
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.test.ImageAssert;
 import org.geotools.map.FeatureLayer;
@@ -34,12 +33,13 @@ import org.geotools.map.MapContent;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.style.FontCache;
 import org.geotools.styling.Style;
+import org.geotools.styling.visitor.DuplicatingStyleVisitor;
 import org.geotools.test.TestData;
 import org.junit.Before;
 import org.junit.Test;
 
 public class RepeatedLabelTest {
-
+    
     SimpleFeatureSource fs_line;
     SimpleFeatureSource square;
     SimpleFeatureSource squareHoles;
@@ -96,16 +96,45 @@ public class RepeatedLabelTest {
     
     @Test
     public void testLabelSquareBorders() throws Exception {
-        checkRepeatedLabelsPolygonBorder(square, "repeatedLabelsAlongLine", "poly", 1000);
+        checkRepeatedLabelsPolygonBorder(square, "repeatedLabelsAlongLine", "poly", null, 1000);
     }
     
     @Test
     public void testLabelSquareBordersWithHoles() throws Exception {
-        checkRepeatedLabelsPolygonBorder(squareHoles, "repeatedLabelsAlongLine", "polyHole", 1000);
+        checkRepeatedLabelsPolygonBorder(squareHoles, "repeatedLabelsAlongLine", "polyHole", null, 1000);
     }
     
-    private void checkRepeatedLabelsPolygonBorder(SimpleFeatureSource features, String styleName, String testImageSuffix, int tolerance) throws Exception {
+    @Test
+    public void testLabelSquareBordersPositiveOffset() throws Exception {
+        PerpendicularOffsetVisitor visitor = new PerpendicularOffsetVisitor(10);
+        checkRepeatedLabelsPolygonBorder(square, "repeatedLabelsAlongLine", "poly-perp-offset", visitor, 1000);
+    }
+    
+    @Test
+    public void testLabelSquareBordersNegativeOffset() throws Exception {
+        PerpendicularOffsetVisitor visitor = new PerpendicularOffsetVisitor(-10);
+        checkRepeatedLabelsPolygonBorder(square, "repeatedLabelsAlongLine", "poly-perp-negative-offset", visitor, 1000);
+    }
+    
+    @Test
+    public void testLabelSquareBordersHolesPositiveOffset() throws Exception {
+        PerpendicularOffsetVisitor visitor = new PerpendicularOffsetVisitor(5);
+        checkRepeatedLabelsPolygonBorder(squareHoles, "repeatedLabelsAlongLine", "poly-hole-perp-offset", visitor, 1000);
+    }
+    
+    @Test
+    public void testLabelSquareBordersHoleNegativeOffset() throws Exception {
+        PerpendicularOffsetVisitor visitor = new PerpendicularOffsetVisitor(-5);
+        checkRepeatedLabelsPolygonBorder(squareHoles, "repeatedLabelsAlongLine", "poly-hole-perp-negative-offset", visitor, 1000);
+    }
+
+    
+    private void checkRepeatedLabelsPolygonBorder(SimpleFeatureSource features, String styleName, String testImageSuffix, DuplicatingStyleVisitor styleVisitor, int tolerance) throws Exception {
         Style style = RendererBaseTest.loadStyle(this, styleName + ".sld");
+        if(styleVisitor != null) {
+            style.accept(styleVisitor);
+            style = (Style) styleVisitor.getCopy();
+        }
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(features, style));

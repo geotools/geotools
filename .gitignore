@@ -14,3 +14,4 @@ nb-configuration.xml
 .idea/
 workspace
 *.db
+.metadata

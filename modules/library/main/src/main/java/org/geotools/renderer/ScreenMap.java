@@ -16,6 +16,7 @@
  */
 package org.geotools.renderer;
 
+import org.geotools.geometry.jts.JTS;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 
@@ -205,7 +206,7 @@ public class ScreenMap {
         double y1 = midy + spanY / 2;
         if (Point.class.isAssignableFrom(geometryType)
                 || MultiPoint.class.isAssignableFrom(geometryType)) {
-            CoordinateSequence cs = csf.create(1, 2);
+            CoordinateSequence cs = JTS.createCS(csf, 1, 2);
             cs.setOrdinate(0, 0, midx);
             cs.setOrdinate(0, 1, midy);
             if (Point.class.isAssignableFrom(geometryType)) {
@@ -217,7 +218,7 @@ public class ScreenMap {
             }
         } else if (LineString.class.isAssignableFrom(geometryType)
                 || MultiLineString.class.isAssignableFrom(geometryType)) {
-            CoordinateSequence cs = csf.create(2, 2);
+            CoordinateSequence cs = JTS.createCS(csf, 2, 2);
             cs.setOrdinate(0, 0, x0);
             cs.setOrdinate(0, 1, y0);
             cs.setOrdinate(1, 0, x1);
@@ -229,7 +230,7 @@ public class ScreenMap {
                 return geometryFactory.createLineString(cs);
             }
         } else {
-            CoordinateSequence cs = csf.create(5, 2);
+            CoordinateSequence cs = JTS.createCS(csf, 5, 2);
             cs.setOrdinate(0, 0, x0);
             cs.setOrdinate(0, 1, y0);
             cs.setOrdinate(1, 0, x0);

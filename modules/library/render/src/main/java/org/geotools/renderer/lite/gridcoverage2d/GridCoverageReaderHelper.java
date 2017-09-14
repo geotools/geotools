@@ -106,7 +106,7 @@ public class GridCoverageReaderHelper {
         // we are going to read
         sameCRS = CRS.equalsIgnoreMetadata(mapExtent.getCoordinateReferenceSystem(),
                 reader.getCoordinateReferenceSystem());
-        paddingRequired = (!sameCRS || !(interpolation instanceof InterpolationNearest)) && !isReprojectingReader(reader);
+        paddingRequired = (!sameCRS || !(interpolation instanceof InterpolationNearest) || isMultiCRSReader(reader)) && !isReprojectingReader(reader);
         if (paddingRequired) {
             // expand the map raster area
             GridEnvelope2D requestedGridEnvelope = new GridEnvelope2D(mapRasterArea);
@@ -139,6 +139,19 @@ public class GridCoverageReaderHelper {
      */
     public static boolean isReprojectingReader(GridCoverage2DReader reader) throws IOException {
         return "true".equals(reader.getMetadataValue(GridCoverage2DReader.REPROJECTING_READER));
+    }
+
+    /**
+     * Returns true if the reader is advertising a single CRS, cannot fully perform a reproject
+     * to any target CRS, but internally is working with several CRSs and could use some extra
+     * padding on the requests
+     * 
+     * @param reader
+     * @return
+     * @throws IOException
+     */
+    boolean isMultiCRSReader(GridCoverage2DReader reader) throws IOException {
+        return "true".equals(reader.getMetadataValue(GridCoverage2DReader.MULTICRS_READER));
     }
 
     public ReferencedEnvelope getReadEnvelope() {

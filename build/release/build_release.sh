@@ -127,7 +127,7 @@ ant -f rename.xml
 popd > /dev/null
 
 # build the release
-if [ -z $SKIP_BUILD ]; then
+if [ "$SKIP_BUILD" != true ]; then
   echo "building release"
   export MAVEN_OPTS="-Xmx2048m"
   mvn $MAVEN_FLAGS -DskipTests -Dall clean -Pcollect install

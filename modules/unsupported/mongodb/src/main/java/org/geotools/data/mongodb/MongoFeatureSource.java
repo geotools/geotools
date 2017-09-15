@@ -33,9 +33,13 @@ import org.geotools.data.mongodb.complex.JsonSelectFunction;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.feature.visitor.MaxVisitor;
+import org.geotools.feature.visitor.MinVisitor;
+import org.geotools.filter.SortByImpl;
 import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.logging.Logging;
+import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.BinaryComparisonOperator;
@@ -158,6 +162,62 @@ public class MongoFeatureSource extends ContentFeatureSource {
         }
         return r;
     }
+    
+    @Override
+    protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {
+        // Don't do the following shortcuts if we don't request all features, as it doesn't make sense.
+        if (query.getMaxFeatures() != Integer.MAX_VALUE) {
+            return false;
+        }
+        
+        if (visitor instanceof MinVisitor) {
+            MinVisitor minVisitor = (MinVisitor) visitor;
+            List<Expression> expressions = minVisitor.getExpressions();
+            if (expressions.size() != 1 || !(expressions.get(0) instanceof PropertyName)) {
+                return false;
+            }
+            
+            PropertyName propertyName = (PropertyName) expressions.get(0);
+            SortBy sortBy = new SortByImpl(propertyName, SortOrder.ASCENDING);
+            
+            Query newQuery = new Query(query);
+            newQuery.setSortBy(new SortBy[] {sortBy});
+
+            // Sorting to get min only need to get one result
+            newQuery.setMaxFeatures(1);
+
+            FeatureReader<SimpleFeatureType, SimpleFeature> reader = getReader(newQuery);
+            if (reader.hasNext()) {
+                // Don't need to visit all features, retrieved the min value lets just tell the MinVisitor
+                minVisitor.setValue(propertyName.evaluate(reader.next()));
+            }
+        } else if (visitor instanceof MaxVisitor) {
+            MaxVisitor maxVisitor = (MaxVisitor) visitor;
+            List<Expression> expressions = maxVisitor.getExpressions();
+            if (expressions.size() != 1 || !(expressions.get(0) instanceof PropertyName)) {
+                return false;
+            }
+
+            PropertyName propertyName = (PropertyName) expressions.get(0);
+            SortBy sortBy = new SortByImpl(propertyName, SortOrder.DESCENDING);
+            
+            Query newQuery = new Query(query);
+            newQuery.setSortBy(new SortBy[] {sortBy});
+
+            // Sorting to get max only need to get one result
+            newQuery.setMaxFeatures(1);
+
+            FeatureReader<SimpleFeatureType, SimpleFeature> reader = getReader(newQuery);
+            if (reader.hasNext()) {
+                // Don't need to visit all features, retrieved the min value lets just tell the MaxVisitor
+                maxVisitor.setValue(propertyName.evaluate(reader.next()));
+            }
+        } else {
+            return false;
+        }
+        
+        return true;
+    }
 
     @Override
     protected boolean canOffset() {
@@ -237,7 +297,8 @@ public class MongoFeatureSource extends ContentFeatureSource {
             BasicDBObject orderBy = new BasicDBObject();
             for (SortBy sortBy : q.getSortBy()) {
                 String propName = sortBy.getPropertyName().getPropertyName();
-                orderBy.append(propName, sortBy.getSortOrder() == SortOrder.ASCENDING ? 1 : -1);
+                String property = mapper.getPropertyPath(propName);
+                orderBy.append(property, sortBy.getSortOrder() == SortOrder.ASCENDING ? 1 : -1);
             }
             c = c.sort(orderBy);
         }

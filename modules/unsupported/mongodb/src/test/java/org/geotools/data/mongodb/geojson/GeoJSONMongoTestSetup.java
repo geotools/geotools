@@ -33,7 +33,7 @@ public class GeoJSONMongoTestSetup extends MongoTestSetup {
     static Date[] dateValues = new Date[] {
         parseDate("2015-01-01T00:00:00.000Z"),
         parseDate("2015-01-01T16:30:00.000Z"),
-        parseDate("0000-00-00T16:30:00.000Z")
+        parseDate("2015-01-01T21:30:00.000Z")
     };
 
     @Override

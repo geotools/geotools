@@ -147,13 +147,6 @@
           <!--systemPropertyVariables>
             <embedmongo.port>${embedmongo.port}</embedmongo.port>
           </systemPropertyVariables-->
-          <excludes>
-           <exclude>**/MongoSchemaDBStoreTest.java</exclude>
-           <exclude>**/MongoSchemaFileStoreTest.java</exclude>
-           <exclude>**/GeoJSONMongoDataStoreTest.java</exclude>
-           <exclude>**/GeoJSONMongoFeatureSourceTest.java</exclude>
-           <exclude>**/MongoTestUtil.java</exclude>
-          </excludes>
           <forkCount>1</forkCount>
         </configuration>
       </plugin>

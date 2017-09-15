@@ -257,7 +257,6 @@ public class FilterToMongoTest extends TestCase {
         And and = ff.and(greaterThan, lessThan);
         BasicDBObject obj = (BasicDBObject) and.accept(filterToMongo, null);
         assertNotNull(obj);
-        System.out.println(obj.toJson());
         
         BasicDBList andFilter = (BasicDBList) obj.get("$and");
         assertNotNull(andFilter);

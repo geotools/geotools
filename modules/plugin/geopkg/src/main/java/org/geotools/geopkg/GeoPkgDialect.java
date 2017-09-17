@@ -31,13 +31,11 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.sql.Types;
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
 import org.geotools.filter.FilterAttributeExtractor;
-import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.visitor.ExtractBoundsFilterVisitor;
 import org.geotools.geometry.jts.Geometries;
 import org.geotools.geopkg.Entry.DataType;
@@ -72,10 +70,9 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 public class GeoPkgDialect extends PreparedStatementSQLDialect {
    
     static final String HAS_SPATIAL_INDEX = "hasGeopkgSpatialIndex";
-    
 
     protected GeoPkgGeomWriter.Configuration geomWriterConfig;
-    
+
     public GeoPkgDialect(JDBCDataStore dataStore, GeoPkgGeomWriter.Configuration writerConfig) {
         super(dataStore);
         this.geomWriterConfig = writerConfig;
@@ -128,8 +125,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         return g != null ? g.getEnvelopeInternal() : null;
     }
 
-    @Override
-    public Geometry decodeGeometryValue(GeometryDescriptor descriptor, ResultSet rs, String column, 
+    @Override  public Geometry decodeGeometryValue(GeometryDescriptor descriptor, ResultSet rs, String column,
         GeometryFactory factory, Connection cx) throws IOException, SQLException {
         return geometry(rs.getBytes(column),factory);
     }

@@ -36,14 +36,16 @@ import com.vividsolutions.jts.io.WKBReader;
  * @author Niels Charlier
  */
 public class GeoPkgGeomReader {
-    
+
+    static final GeometryFactory DEFAULT_GEOM_FACTORY = new GeometryFactory();
+
     protected InStream input;
     
     protected GeometryHeader header = null;
     
     protected Geometry geometry = null;
     
-    private GeometryFactory factory = new GeometryFactory();
+    private GeometryFactory factory = DEFAULT_GEOM_FACTORY;
     
     public GeoPkgGeomReader(InStream input) {
         this.input = input;
@@ -73,7 +75,7 @@ public class GeoPkgGeomReader {
         }
         return geometry;
     }
-    
+
     public Envelope getEnvelope() throws IOException {
         if (getHeader().getFlags().getEnvelopeIndicator() == EnvelopeType.NONE) {
             return get().getEnvelopeInternal();

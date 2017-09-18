@@ -50,7 +50,6 @@ import org.geotools.referencing.operation.projection.MapProjection;
 import org.geotools.renderer.crs.ProjectionHandler;
 import org.geotools.renderer.crs.ProjectionHandlerFinder;
 import org.geotools.renderer.lite.GridCoverageRendererTest;
-import org.geotools.util.URLs;
 import org.junit.*;
 import org.junit.rules.TemporaryFolder;
 import org.opengis.coverage.grid.Format;
@@ -59,8 +58,6 @@ import org.opengis.geometry.Envelope;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.datum.PixelInCell;
-import org.opengis.referencing.operation.MathTransform;
 
 public class GridCoverageReaderHelperTest {
     
@@ -394,7 +391,7 @@ public class GridCoverageReaderHelperTest {
         }
 
         // crate the first reader
-        URL harvestSingleURL = URLs.fileToUrl(directory1);
+        URL harvestSingleURL = DataUtilities.fileToURL(directory1);
         ImageMosaicReader reader = new ImageMosaicReader(directory1, null);
 
         // now create a second reader that won't be informed of the harvesting changes

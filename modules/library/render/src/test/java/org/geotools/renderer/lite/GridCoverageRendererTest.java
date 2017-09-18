@@ -1379,7 +1379,7 @@ public class GridCoverageRendererTest  {
         }
 
         // crate the first reader
-        URL harvestSingleURL = URLs.fileToUrl(directory1);
+        URL harvestSingleURL = DataUtilities.fileToURL(directory1);
         ImageMosaicReader reader = new ImageMosaicReader(directory1, null);
 
         // now create a second reader that won't be informed of the harvesting changes

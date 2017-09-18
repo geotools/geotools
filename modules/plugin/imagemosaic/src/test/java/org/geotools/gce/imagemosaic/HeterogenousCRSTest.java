@@ -38,9 +38,11 @@ import org.apache.commons.io.FileUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
+import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.factory.Hints;
+import org.geotools.filter.text.cql2.CQL;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.image.test.ImageAssert;
@@ -54,6 +56,7 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.opengis.filter.Filter;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.FactoryException;
@@ -254,6 +257,35 @@ public class HeterogenousCRSTest {
 
         
         assertExpectedMosaic(imReader, expectedResultLocation, inputTransparentColor, outputTransparentColor);
+        imReader.dispose();
+    }
+    
+    @Test
+    public void testHeteroSentinel2Filtered() throws Exception {
+        String testLocation = "hetero_s2";
+        URL storeUrl = TestData.url(this, testLocation);
+
+        File testDataFolder = new File(storeUrl.toURI());
+        File testDirectory = crsMosaicFolder.newFolder(testLocation);
+        FileUtils.copyDirectory(testDataFolder, testDirectory);
+        
+        ImageMosaicReader imReader = new ImageMosaicReader(testDirectory, null);
+        Assert.assertNotNull(imReader);
+        
+        // read a coverage and compare with expected image
+        ParameterValue<Color> inputTransparentColor = AbstractGridFormat.INPUT_TRANSPARENT_COLOR.createValue();
+        inputTransparentColor.setValue(Color.BLACK);
+        ParameterValue<Color> outputTransparentColor = ImageMosaicFormat.OUTPUT_TRANSPARENT_COLOR.createValue();
+        outputTransparentColor.setValue(Color.BLACK);
+        ParameterValue<GridGeometry2D> ggp = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+        GridEnvelope2D range = new GridEnvelope2D(0, 0, 158, 103);
+        GridGeometry2D gg = new GridGeometry2D(range, new ReferencedEnvelope(11.6834779, 11.8616874, 47.6380806, 47.7542552, CRS.decode("EPSG:4236", true)));
+        ggp.setValue(gg);
+        ParameterValue<Filter> filter = ImageMosaicFormat.FILTER.createValue();
+        filter.setValue(CQL.toFilter("location = 'g1.tif'"));
+
+        final String expectedResultLocation = "hetero_s2_results/filtered.png";
+        assertExpectedMosaic(imReader, expectedResultLocation, inputTransparentColor, outputTransparentColor, filter, ggp);
         imReader.dispose();
     }
 

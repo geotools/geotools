@@ -58,10 +58,13 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
+import org.geotools.coverage.grid.io.GranuleSource;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.footprint.FootprintBehavior;
 import org.geotools.data.DataSourceException;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
+import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.Hints;
 import org.geotools.filter.SortByImpl;
 import org.geotools.gce.imagemosaic.OverviewsController.OverviewLevel;
@@ -97,7 +100,10 @@ import org.opengis.coverage.SampleDimension;
 import org.opengis.coverage.SampleDimensionType;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
@@ -1415,7 +1421,48 @@ public class RasterLayerResponse {
         RasterLayerRequest originalRequest = this.getRequest();
         RasterManager originalRasterManager = originalRequest.getRasterManager();
         RasterManager manager = originalRasterManager.getForGranuleCRS(templateDescriptor, this.mosaicBBox);
-        RasterLayerRequest request = new RasterLayerRequest(originalRequest.getParams(), manager);
+        RasterLayerRequest request = new RasterLayerRequest(originalRequest.getParams(), manager) {
+            @Override
+            protected ReferencedEnvelope computeCoverageBoundingBox(RasterManager rasterManager)
+                    throws IOException {
+                // in case of filtering we are re-computing the bbox from the data, it gets
+                // back in the mosaic CRS instead of the desired one. Force it to use the whole
+                // thing, we already used the filter
+                // TODO: add projection handler support
+                if(filter != null && ! Filter.INCLUDE.equals(filter)) {
+                    // limit it to the filtered granules bounding box by full enumeration, to avoid
+                    // imprecise datastore optimizations (e.g., loose bounds)
+                    GranuleSource granules = rasterManager.getGranuleSource(true, null);
+                    String crsAttribute = manager.getCrsAttribute();
+                    String granuleCRSCode = (String) templateDescriptor.getOriginator()
+                            .getAttribute(crsAttribute);
+                    FilterFactory2 ff = FeatureUtilities.DEFAULT_FILTER_FACTORY;
+                    PropertyIsEqualTo crsFilter = ff.equal(ff.property(crsAttribute),
+                            ff.literal(granuleCRSCode), false);
+                    Filter composite = ff.and(crsFilter, filter);
+
+                    Query query = new Query(granules.getSchema().getTypeName(), composite);
+                    // ... load only the default geometry if possible
+                    final GeometryDescriptor gd = granules.getSchema().getGeometryDescriptor();
+                    if(gd != null) {
+                        query.setPropertyNames(new String[] {gd.getLocalName()});
+                    }
+                    SimpleFeatureCollection features = granules.getGranules(query);
+                    ReferencedEnvelope envelope = DataUtilities.bounds(features);
+                    if(envelope != null && !envelope.isEmpty()) {
+                        try {
+                            return envelope.transform(granuleCRS, true);
+                        } catch (TransformException | FactoryException e) {
+                            LOGGER.log(Level.FINE, "Could not transform filtered envelope into target granule CRS, falling back on mosaic");
+                        }
+                    }
+                }
+
+                // fallback
+                return rasterManager.spatialDomainManager.coverageBBox;
+
+            }
+        };
         // if the output needs to have transparent footprint behavior, we need to preserve the
         // various sub-mosaic ROIs until the final mosaicking
         if (request.getFootprintBehavior() == FootprintBehavior.Transparent) {

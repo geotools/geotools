@@ -1677,21 +1677,7 @@ public class RasterManager implements Cloneable {
 
         // compute the bounds of the sub-mosaic in that CRS
         ReferencedEnvelope bounds = getBoundsForGranuleCRS(templateDescriptor, requestBounds);
-        ProjectionHandler ph = ProjectionHandlerFinder.getHandler(requestBounds, granuleCRS, true);
-        ReferencedEnvelope targetBounds = null;
-        if(ph != null) {
-            List<ReferencedEnvelope> queryEnvelopes = ph.getQueryEnvelopes();
-            for (ReferencedEnvelope envelope : queryEnvelopes) {
-                ReferencedEnvelope transformed = envelope.transform(granuleCRS, true);
-                if(targetBounds == null) {
-                    targetBounds = transformed;
-                } else {
-                    targetBounds.expandToInclude(transformed);
-                }
-            }
-        } else {
-            targetBounds = bounds.transform(granuleCRS, true);
-        }
+        ReferencedEnvelope targetBounds = reprojectBounds(requestBounds, granuleCRS, bounds);
         
 
         // rebuild the raster manager
@@ -1722,6 +1708,27 @@ public class RasterManager implements Cloneable {
                 reprojected.overviewsController);
 
         return reprojected;
+    }
+
+    private ReferencedEnvelope reprojectBounds(ReferencedEnvelope referenceBounds,
+            CoordinateReferenceSystem targetCRS, ReferencedEnvelope bounds)
+            throws FactoryException, TransformException {
+        ProjectionHandler ph = ProjectionHandlerFinder.getHandler(referenceBounds, targetCRS, true);
+        ReferencedEnvelope targetBounds = null;
+        if(ph != null) {
+            List<ReferencedEnvelope> queryEnvelopes = ph.getQueryEnvelopes();
+            for (ReferencedEnvelope envelope : queryEnvelopes) {
+                ReferencedEnvelope transformed = envelope.transform(targetCRS, true);
+                if(targetBounds == null) {
+                    targetBounds = transformed;
+                } else {
+                    targetBounds.expandToInclude(transformed);
+                }
+            }
+        } else {
+            targetBounds = bounds.transform(targetCRS, true);
+        }
+        return targetBounds;
     }
 
     /**

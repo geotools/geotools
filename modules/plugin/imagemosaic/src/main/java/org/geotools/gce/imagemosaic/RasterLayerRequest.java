@@ -119,7 +119,7 @@ public class RasterLayerRequest {
 
     private List<?> elevation;
 
-    private Filter filter;
+    protected Filter filter;
 
     private boolean accurateResolution;
 
@@ -258,7 +258,7 @@ public class RasterLayerRequest {
         spatialRequestHelper.compute();
     }
 
-    private ReferencedEnvelope computeCoverageBoundingBox(final RasterManager rasterManager) throws IOException {
+    protected ReferencedEnvelope computeCoverageBoundingBox(final RasterManager rasterManager) throws IOException {
         if(filter != null && ! Filter.INCLUDE.equals(filter)) {
             // limit it to the filtered granules bounding box by full enumeration, to avoid
             // imprecise datastore optimizations (e.g., loose bounds)

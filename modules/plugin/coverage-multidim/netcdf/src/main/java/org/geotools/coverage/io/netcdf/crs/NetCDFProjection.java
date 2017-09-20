@@ -617,7 +617,11 @@ public class NetCDFProjection {
                 // Grid Mapping found
                 crs = NetCDFProjection.parseProjection(variable);
                 if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine("Detected NetCDFProjection through gridMapping variable: " + crs.toWKT());
+                    if(crs!=null) {
+                        LOGGER.fine("Detected NetCDFProjection through gridMapping variable: " + crs.toWKT());
+                    } else {
+                        LOGGER.fine("Detected NetCDFProjection through gridMapping variable: null");
+                    }
                 }
                 break;
             }

@@ -684,7 +684,7 @@ public class VisualTransformerTest {
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));        
         BufferedImage image = MapboxTestUtils.showRender(renderTitle, renderer, DISPLAY_TIME,
                 new ReferencedEnvelope[] { bounds }, null, width, height);
-        ImageAssert.assertEquals(file(renderComparisonFileName), image, 50);
+        ImageAssert.assertEquals(file(renderComparisonFileName), image, 900);
         mc.dispose();
     }
     
@@ -710,7 +710,7 @@ public class VisualTransformerTest {
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
         BufferedImage image = MapboxTestUtils.showRender(renderTitle, renderer, DISPLAY_TIME,
                 new ReferencedEnvelope[] { bounds }, null);
-        ImageAssert.assertEquals(file(renderComparisonFileName), image, 50);
+        ImageAssert.assertEquals(file(renderComparisonFileName), image, 900);
         mc.dispose();
     }
     

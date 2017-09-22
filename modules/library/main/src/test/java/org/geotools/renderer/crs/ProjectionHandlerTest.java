@@ -23,6 +23,8 @@ import java.io.Reader;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
 
+import com.vividsolutions.jts.io.WKBReader;
+import org.geotools.data.Base64;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
@@ -31,6 +33,7 @@ import org.geotools.referencing.operation.projection.PolarStereographic;
 import org.geotools.referencing.operation.transform.IdentityTransform;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.crs.SingleCRS;
 import org.opengis.referencing.operation.MathTransform;
@@ -885,4 +888,68 @@ public class ProjectionHandlerTest {
         List<ReferencedEnvelope> queryEnvelopes = ph.getQueryEnvelopes();
         assertEquals(0, queryEnvelopes.size());
     }
+
+    @Test
+    public void testCutGeometryTouchingValidArea() throws Exception {
+        // for some reason JTS won't cut correctly this geometry with an zero height, but not empty, reference cutting
+        // envelope (result of intersecting the valid area with the geometry own bbox, which results in a "line" polygon
+        // Used a BASE64 encoded WKB as WKT is not precise enough to make it happen
+        String wkb = "AAAAAAMAAAACAAAAJsBX4dme0ZBrwBBHY3zBphTAV9wm/XQjVMAN5aZ25n+AwFfRnB4QLcDACkbY\n" +
+                "u6mfgMBX0IDk68FEwAn9i4xuQADAV9LyxRH1/MAKtRmwO4KAwFfFCYjFNfzABzwNbZWeAMBXro+u\n" +
+                "Q3TIwAMozHt2zADAV5nQ8kYDGMAABfJy8QWAwFdz2+lf1Xy/9dkUVMuzAMBXK24mVt9kv9u1veRJ\n" +
+                "CADAVxApDvwLFD0wAAAAAAAAwFlKt6hdgbi+jC+LAAAAAMBZS9W86QecwAP6Pg0jSwDAWOUBPzQM\n" +
+                "OMAD1MCXZ+6AwFiD2a7LN6jABO4o20CCgMBYcM4alj+AwAVxI3rh+4DAWGFB3LdZJMAGMd3VXb+A\n" +
+                "wFhJc+py+vDACDw/gWQHAMBYO+vyzRGUwAnbp1i4wgDAWDEaWTENgMALgYeOOnuAwFgpGBGENtjA\n" +
+                "DRepG9PXAMBYIP4dLlt8wA+klG+5IADAWBwX+BP4WMARKUKeEtiAwFgXoZhXNYDAExH5Zal0QMBY\n" +
+                "GEP/ANogwBbbF0xESIDAWBN/U/McQMAYXuP5jyKAwFgKqiyQ+gTAGix578FUgMBYA1s+gKpwwBsT\n" +
+                "o7wYhYDAV/qZDD5aYMAbwu+JuyoAwFfqj6KbhxTAHIrvGplNAMBX4hOw7Jx0wBy+1+x/XkDAV9vV\n" +
+                "ZESR7MAca5H4ZYHAwFfWkK/y7sDAG3TJ1EFXgMBX1+eqod08wBrqABEuC8DAV+jS2XIy3MAYBQgf\n" +
+                "RHnAwFfslYpsZkDAFphJ8XbhQMBX6mVp0arUwBOSV/ye1QDAV+HZntGQa8AQR2N8waYUAAAABMBX\n" +
+                "4dme0ZBrwBBHY3zBphTAV+GPbx9YxMAQMbM4fB1AwFfivDEmxxzAEIAAI+c6wMBX4dme0ZBrwBBH\n" +
+                "Y3zBphQ=";
+        Geometry geometry = new WKBReader().read(Base64.decode(wkb));
+
+        CoordinateReferenceSystem lambertPolar = getLambertPolar();
+        ReferencedEnvelope renderingEnvelope = new ReferencedEnvelope(-14542204.652543461,15480411.404320458,-18705497.11355389,11278026.995319324, lambertPolar);
+        ReferencedEnvelope validAreaBounds = new ReferencedEnvelope(-180, 180, 0, 90, DefaultGeographicCRS.WGS84);
+        ProjectionHandler ph = new ProjectionHandler(DefaultGeographicCRS.WGS84, validAreaBounds, renderingEnvelope);
+
+        // should not return anything
+        assertNull(ph.preProcess(geometry));
+    }
+
+    @Test
+    public void testCutGeometryCrossingValidArea() throws Exception {
+        // same as above, but with a different geometry and a different cause
+        String wkb = "AAAAAAMAAAABAAAAIMBX4dme0ZBrwBBHY3zBphTAV9GcHhAtwMAKRti7qZ+AwFfQgOTrwUTACf2L\n" +
+                "jG5AAMBX0vLFEfX8wAq1GbA7goDAV8UJiMU1/MAHPA1tlZ4AwFeuj65DdMjAAyjMe3bMAMBXc9vp\n" +
+                "X9V8v/XZFFTLswDAVytuJlbfZL/btb3kSQgAwFcQKQ78CxQ9MAAAAAAAAMBZSreoXYG4vowviwAA\n" +
+                "AADAWUvVvOkHnMAD+j4NI0sAwFjlAT80DDjAA9TAl2fugMBYg9muyzeowATuKNtAgoDAWGFB3LdZ\n" +
+                "JMAGMd3VXb+AwFhJc+py+vDACDw/gWQHAMBYMRpZMQ2AwAuBh446e4DAWCkYEYQ22MANF6kb09cA\n" +
+                "wFgg/h0uW3zAD6SUb7kgAMBYF6GYVzWAwBMR+WWpdEDAWBhD/wDaIMAW2xdMREiAwFgKqiyQ+gTA\n" +
+                "Gix578FUgMBYA1s+gKpwwBsTo7wYhYDAV/qZDD5aYMAbwu+JuyoAwFfqj6KbhxTAHIrvGplNAMBX\n" +
+                "4hOw7Jx0wBy+1+x/XkDAV9vVZESR7MAca5H4ZYHAwFfWkK/y7sDAG3TJ1EFXgMBX1+eqod08wBrq\n" +
+                "ABEuC8DAV+jS2XIy3MAYBQgfRHnAwFfslYpsZkDAFphJ8XbhQMBX6mVp0arUwBOSV/ye1QDAV+HZ\n" +
+                "ntGQa8AQR2N8waYU";
+        Geometry geometry = new WKBReader().read(Base64.decode(wkb));
+
+        CoordinateReferenceSystem lambertPolar = getLambertPolar();
+        ReferencedEnvelope renderingEnvelope = new ReferencedEnvelope(-14542204.652543461,15480411.404320458,-18705497.11355389,11278026.995319324, lambertPolar);
+        ReferencedEnvelope validAreaBounds = new ReferencedEnvelope(-180, 180, 0, 90, DefaultGeographicCRS.WGS84);
+        ProjectionHandler ph = new ProjectionHandler(DefaultGeographicCRS.WGS84, validAreaBounds, renderingEnvelope);
+
+        // should returns something, but not the original geometry
+        Geometry preProcessed = ph.preProcess(geometry);
+        assertNull(preProcessed);
+    }
+
+    private CoordinateReferenceSystem getLambertPolar() throws FactoryException {
+        String crsWKT = "PROJCS[\"North_Pole_Lambert_Azimuthal_Equal_Area\",GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\"," +
+                "SPHEROID[\"WGS_1984\",6378137,298.257223563]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.017453292519943295]]," +
+                "PROJECTION[\"Lambert_Azimuthal_Equal_Area\"],PARAMETER[\"False_Easting\",0],PARAMETER[\"False_Northing\",0]," +
+                "PARAMETER[\"Central_Meridian\",0],PARAMETER[\"Latitude_Of_Origin\",90],UNIT[\"Meter\",1]]";
+        return CRS.parseWKT(crsWKT);
+    }
+
+
 }

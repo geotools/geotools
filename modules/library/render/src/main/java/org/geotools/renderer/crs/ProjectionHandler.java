@@ -25,6 +25,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import com.vividsolutions.jts.geom.*;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
@@ -38,16 +39,6 @@ import org.opengis.referencing.crs.GeographicCRS;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.geom.PrecisionModel;
 import com.vividsolutions.jts.geom.prep.PreparedGeometry;
 import com.vividsolutions.jts.geom.prep.PreparedGeometryFactory;
 import com.vividsolutions.jts.precision.EnhancedPrecisionOp;
@@ -95,7 +86,7 @@ public class ProjectionHandler {
      * Initializes a projection handler 
      * 
      * @param sourceCRS The source CRS
-     * @param validArea The valid area (used to cut geometries that go beyond it)
+     * @param validAreaBounds The valid area (used to cut geometries that go beyond it)
      * @param renderingEnvelope The target rendering area and target CRS
      * 
      * @throws FactoryException
@@ -440,9 +431,7 @@ public class ProjectionHandler {
         ReferencedEnvelope geWGS84 = ge.transform(WGS84, true);
         // if the size of the envelope is less than 1 meter (1e-6 in degrees) expand it a bit
         // to make intersection tests work
-        if (geWGS84.getWidth() < EPS || geWGS84.getHeight() < EPS) {
-            geWGS84.expandBy(EPS);
-        }
+        geWGS84.expandBy(EPS);
         if(validArea == null) {
             // if the geometry is within the valid area for this projection
             // just skip expensive cutting
@@ -457,8 +446,26 @@ public class ProjectionHandler {
             ReferencedEnvelope envIntWgs84 = new ReferencedEnvelope(validAreaBounds.intersection(geWGS84), WGS84);
             
             // if the intersection is empty the geometry is completely outside of the valid area, skip it
-            if(envIntWgs84.isEmpty()) {
-                return null;
+            if(envIntWgs84.getHeight() <= 0 || envIntWgs84.getWidth() <= 0) {
+                // valid area is crossing dateline?
+                if(validAreaBounds.contains(180, (validAreaBounds.getMinY() + validAreaBounds.getMaxY()) / 2)) {
+                    ReferencedEnvelope translated = new ReferencedEnvelope(validAreaBounds);
+                    translated.translate(-360, 0);
+                    if(translated.contains((Envelope) geWGS84)) {
+                        return geometry;
+                    }
+                    envIntWgs84 = translated.intersection(geWGS84);
+                } else if(validAreaBounds.contains(-180, (validAreaBounds.getMinY() + validAreaBounds.getMaxY()) / 2)) {
+                    ReferencedEnvelope translated = new ReferencedEnvelope(validAreaBounds);
+                    translated.translate(360, 0);
+                    if(translated.contains((Envelope) geWGS84)) {
+                        return geometry;
+                    }
+                    envIntWgs84 = translated.intersection(geWGS84);
+                }
+                if(envIntWgs84.getHeight() <= 0 || envIntWgs84.getWidth() <= 0) {
+                    return null;
+                }
             }
                 
             ReferencedEnvelope envInt = envIntWgs84.transform(geometryCRS, true);
@@ -589,8 +596,13 @@ public class ProjectionHandler {
             }
         }
 
+        // clean up lower dimensional elements
+        GeometryDimensionCollector collector = new GeometryDimensionCollector(geometry.getDimension());
+        result.apply(collector);
+        result = collector.collect();
+
         // handle in special way empty intersections
-        if (result.isEmpty()) {
+        if (result == null || result.isEmpty()) {
             return null;
         } else {
             return result;

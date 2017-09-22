@@ -38,6 +38,7 @@ import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.renderer.crs.GeometryDimensionCollector;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -263,63 +264,26 @@ public class ClipProcess implements VectorProcess {
                     clipped = clip.intersection(geom);
                 }
             }
-            
-            // empty intersection?
-            if (clipped == null || clipped.isEmpty() || clipped.getNumGeometries() == 0) {
+
+            if (clipped == null) {
                 return null;
             }
-            
-            // map the result to the target output type, removing the spurious lower dimensional
-            // elements that might result out of the intersection
-            Geometry result;
-            if(Point.class.isAssignableFrom(target) || MultiPoint.class.isAssignableFrom(target) 
-                    || GeometryCollection.class.equals(target)) {
-                result = clipped;
-            } else if(MultiLineString.class.isAssignableFrom(target) || LineString.class.isAssignableFrom(target)) {
-                final List<LineString> geoms = new ArrayList<LineString>();
-                clipped.apply(new GeometryComponentFilter() {
-                    
-                    @Override
-                    public void filter(Geometry geom) {
-                        if(geom instanceof LineString) {
-                            geoms.add((LineString) geom);
-                        }
-                    }
-                });
-                if(geoms.size() == 0) {
-                    result = null;
-                } else {
-                    LineString[] lsArray = geoms.toArray(new LineString[geoms.size()]);
-                    result = geom.getFactory().createMultiLineString(lsArray);
-                }
-            } else if(MultiPolygon.class.isAssignableFrom(target) || Polygon.class.isAssignableFrom(target)) {
-                final List<Polygon> geoms = new ArrayList<Polygon>();
-                clipped.apply(new GeometryComponentFilter() {
-                    
-                    @Override
-                    public void filter(Geometry geom) {
-                        if(geom instanceof Polygon) {
-                            geoms.add((Polygon) geom);
-                        }
-                    }
-                });
-                if(geoms.size() == 0) {
-                    result = null;
-                } else {
-                    Polygon[] lsArray = geoms.toArray(new Polygon[geoms.size()]);
-                    result = geom.getFactory().createMultiPolygon(lsArray);
-                }
-            } else {
-                throw new RuntimeException("Unrecognized target type " + target.getCanonicalName());
+
+            // empty intersection?
+            GeometryDimensionCollector collector = new GeometryDimensionCollector(geom.getDimension());
+            clipped.apply(collector);
+            Geometry result = collector.collect();
+            if(result == null) {
+                return null;
             }
-            
+
             // manage Z preservation
             if(preserveZ && !geom.equalsExact(clipped)) {
                 // for polygons we need to go idw, for points and multipoints idw will do and will not
                 // add much overhead (it has optimizations for points that were already in the input)
-                if(result instanceof MultiPolygon || result instanceof MultiPoint || result instanceof Point) {
+                if(result.getDimension() == 2 || result.getDimension() == 0) {
                     result.apply(new IDWElevationInterpolator(geom, crs));
-                } else if(result instanceof MultiLineString) {
+                } else if(result.getDimension() == 1) {
                     result.apply(new LinearElevationInterpolator(geom, crs));
                 }
             }

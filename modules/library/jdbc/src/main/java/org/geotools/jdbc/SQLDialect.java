@@ -44,6 +44,7 @@ import org.geotools.feature.visitor.MinVisitor;
 import org.geotools.feature.visitor.SumVisitor;
 import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.filter.FilterCapabilities;
+import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.util.logging.Logging;
@@ -52,6 +53,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.ExcludeFilter;
+import org.opengis.filter.Filter;
 import org.opengis.filter.Id;
 import org.opengis.filter.IncludeFilter;
 import org.opengis.filter.PropertyIsBetween;
@@ -1435,5 +1437,30 @@ public abstract class SQLDialect {
      */
     public String[] getDesiredTablesType() {
         return new String[]{"TABLE", "VIEW", "MATERIALIZED VIEW", "SYNONYM"};
+    }
+
+    /**
+     * Splits the filter into two parts, an encodable one, and a non encodable one. The default 
+     * implementation uses the filter capabilities to split the filter, subclasses can implement 
+     * their own logic if need be.
+     * 
+     * @param original
+     * @return
+     */
+    public Filter[] splitFilter(Filter filter, SimpleFeatureType schema) {
+        PostPreProcessFilterSplittingVisitor splitter = new PostPreProcessFilterSplittingVisitor(
+                dataStore.getFilterCapabilities(), schema, null);
+        filter.accept(splitter, null);
+
+        Filter[] split = new Filter[2];
+        split[0] = splitter.getFilterPre();
+        split[1] = splitter.getFilterPost();
+
+        return split;
+    }
+    
+    protected PrimaryKey getPrimaryKey(String typeName) throws IOException {
+        SimpleFeatureType featureType = dataStore.getSchema(typeName);
+        return dataStore.getPrimaryKey(featureType);
     }
 }

@@ -32,8 +32,11 @@ import com.vividsolutions.jts.geom.Polygon;
  */
 public class GeoPkgDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
 
-    protected GeoPkgDataStoreAPITestSetup() {
+    boolean addSpatialIndex;
+
+    protected GeoPkgDataStoreAPITestSetup(boolean addSpatialIndex) {
         super(new GeoPkgTestSetup());
+        this.addSpatialIndex = addSpatialIndex;
     }
 
     @Override
@@ -72,11 +75,16 @@ public class GeoPkgDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
                 + "X'"+((GeoPkgTestSetup)delegate).toString(poly)
                 +"', 'muddy');";
         run(sql);
+
+        if (addSpatialIndex) {
+            ((GeoPkgTestSetup) delegate).createSpatialIndex("lake", "geom", "fid");
+        }
     }
 
     @Override
     protected void dropLakeTable() throws Exception {
         ((GeoPkgTestSetup)delegate).removeTable("lake");
+        ((GeoPkgTestSetup)delegate).removeTable("rtree_lake_geom");
     }
     
     @Override
@@ -104,13 +112,19 @@ public class GeoPkgDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
                 + "X'"+((GeoPkgTestSetup)delegate).toString(line)
                 +"', 'rv2', 3.0);";
         run(sql);
+
+        if (addSpatialIndex) {
+            ((GeoPkgTestSetup) delegate).createSpatialIndex("river", "geom", "fid");
+        }
      
     }
     
     @Override
     protected void dropRiverTable() throws Exception {
         ((GeoPkgTestSetup)delegate).removeTable("river");
+        ((GeoPkgTestSetup)delegate).removeTable("rtree_river_geom");
     }
+    
     GeometryBuilder gb = new GeometryBuilder();
     @Override
     protected void createRoadTable() throws Exception {
@@ -138,11 +152,16 @@ public class GeoPkgDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
         sql = "INSERT INTO road VALUES (2, 2,"
                 + "X'"+((GeoPkgTestSetup)delegate).toString(line)+"', 'r3');";
         run(sql);
+
+        if (addSpatialIndex) {
+            ((GeoPkgTestSetup) delegate).createSpatialIndex("road", "geom", "fid");
+        }
     }
     
     @Override
     protected void dropRoadTable() throws Exception {
         ((GeoPkgTestSetup)delegate).removeTable("road");
+        ((GeoPkgTestSetup)delegate).removeTable("rtree_road_geom");
     }
   
 

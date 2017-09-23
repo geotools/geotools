@@ -16,7 +16,6 @@
  */
 package org.geotools.jdbc;
 
-import java.awt.RenderingHints;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;

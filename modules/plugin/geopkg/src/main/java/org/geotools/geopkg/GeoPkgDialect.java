@@ -32,8 +32,11 @@ import java.sql.Timestamp;
 import java.sql.Types;
 import java.sql.Date;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 
+import org.geotools.filter.FilterAttributeExtractor;
+import org.geotools.filter.visitor.ExtractBoundsFilterVisitor;
 import org.geotools.geometry.jts.Geometries;
 import org.geotools.geopkg.Entry.DataType;
 import org.geotools.geopkg.geom.GeoPkgGeomReader;
@@ -41,10 +44,15 @@ import org.geotools.geopkg.geom.GeoPkgGeomWriter;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.PreparedFilterToSQL;
 import org.geotools.jdbc.PreparedStatementSQLDialect;
+import org.geotools.jdbc.PrimaryKey;
 import org.geotools.referencing.CRS;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.PropertyDescriptor;
+import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory;
+import org.opengis.filter.spatial.BBOX;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -61,10 +69,10 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  */
 public class GeoPkgDialect extends PreparedStatementSQLDialect {
    
-    
+    static final String HAS_SPATIAL_INDEX = "hasGeopkgSpatialIndex";
 
     protected GeoPkgGeomWriter.Configuration geomWriterConfig;
-    
+
     public GeoPkgDialect(JDBCDataStore dataStore, GeoPkgGeomWriter.Configuration writerConfig) {
         super(dataStore);
         this.geomWriterConfig = writerConfig;
@@ -117,8 +125,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         return g != null ? g.getEnvelopeInternal() : null;
     }
 
-    @Override
-    public Geometry decodeGeometryValue(GeometryDescriptor descriptor, ResultSet rs, String column, 
+    @Override  public Geometry decodeGeometryValue(GeometryDescriptor descriptor, ResultSet rs, String column,
         GeometryFactory factory, Connection cx) throws IOException, SQLException {
         return geometry(rs.getBytes(column),factory);
     }
@@ -463,5 +470,88 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
     @Override
     public void encodeColumnType(String sqlTypeName, StringBuffer sql) {
         sql.append(sqlTypeName.toUpperCase()); //may keep cite tests happy about geom names
+    }
+    
+    @Override
+    public void postCreateAttribute(AttributeDescriptor att, String tableName, String schemaName,
+            Connection cx) throws SQLException {
+        super.postCreateAttribute(att, tableName, schemaName, cx);
+
+        if(att instanceof GeometryDescriptor) {
+            String sql = "SELECT * FROM gpkg_extensions WHERE (lower(table_name)=lower('" + tableName
+                    + "') " + "AND lower(column_name)=lower('" + att.getLocalName() + "') "
+                    + "AND extension_name='gpkg_rtree_index')";
+            try (Statement st = cx.createStatement(); ResultSet rs = st.executeQuery(sql)) {
+                // did we get a result?
+                boolean hasSpatialIndex = rs.next();
+                att.getUserData().put(HAS_SPATIAL_INDEX, hasSpatialIndex);
+            }
+        }
+    }
+    
+    @Override
+    public Filter[] splitFilter(Filter filter, SimpleFeatureType schema) {
+        // sqlite does not have ST_* function support but can do a rtree search, assuming
+        // there are rtrees to hit
+        // This implementation only supports figuring a bbox in case there is a single
+        // indexed spatial attribute (could be extended to use multiple spatial attributes if need be)
+        final GeometryDescriptor searchAttribute = simpleSpatialSearch(filter, schema);
+        if (searchAttribute != null) {
+            Envelope envelope = (Envelope) filter.accept(ExtractBoundsFilterVisitor.BOUNDS_VISITOR,
+                    null);
+            if (envelope != null && !envelope.isNull() 
+                    && !Double.isInfinite(envelope.getWidth())
+                    && !Double.isInfinite(envelope.getHeight())) {
+                // split assuming there is no spatial support
+                Filter[] split = super.splitFilter(filter, schema);
+                FilterFactory ff = dataStore.getFilterFactory();
+                BBOX bbox = ff.bbox(searchAttribute.getLocalName(), envelope.getMinX(),
+                        envelope.getMinY(), envelope.getMaxX(), envelope.getMaxY(), null);
+                split[0] = ff.and(split[0], bbox);
+                
+                return split;
+            }
+        }
+        // fallback, use normal encoding
+        return super.splitFilter(filter, schema);
+    }
+
+    /**
+     * Checks if the filter uses a single spatial attribute, and such spatial attribute is indexed
+     * 
+     * @param filter
+     * @param schema
+     * @return
+     */
+    private GeometryDescriptor simpleSpatialSearch(Filter filter, SimpleFeatureType schema) {
+        FilterAttributeExtractor attributeExtractor = new FilterAttributeExtractor();
+        filter.accept(attributeExtractor, null);
+        Set<String> attributes = attributeExtractor.getAttributeNameSet();
+        GeometryDescriptor geometryAttribute = null;
+        for (String name : attributes) {
+            // handle default geometry case
+            AttributeDescriptor ad;
+            if ("".equals(name)) {
+                ad = schema.getGeometryDescriptor();
+            } else {
+                ad = schema.getDescriptor(name);
+            }
+            // check if geometris
+            if (ad instanceof GeometryDescriptor) {
+                if (geometryAttribute != null) {
+                    // two different attributes found
+                    return null;
+                }
+                // can run both on spatial filters and without
+                geometryAttribute = (GeometryDescriptor) ad;
+            }
+        }
+
+        return geometryAttribute;
+    }
+    
+    @Override
+    protected PrimaryKey getPrimaryKey(String typeName) throws IOException {
+        return super.getPrimaryKey(typeName);
     }
 }

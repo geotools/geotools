@@ -17,16 +17,20 @@
 package org.geotools.geopkg;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.geotools.geometry.jts.GeometryBuilder;
-
 import org.geotools.geopkg.geom.GeoPkgGeomWriter;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.JDBCTestSetup;
+import org.geotools.sql.SqlUtil;
 
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -105,6 +109,7 @@ public class GeoPkgTestSetup extends JDBCTestSetup {
         runSafe("DROP VIEW  IF EXISTS " + tableName);
         runSafe("DELETE FROM gpkg_geometry_columns where table_name ='"+tableName+"'");
         runSafe("DELETE FROM gpkg_contents where table_name ='"+tableName+"'");
+        runSafe("DELETE FROM gpkg_extensions where table_name ='"+tableName+"'");
         runSafe("DELETE FROM gt_pk_metadata where table_name ='"+tableName+"'");
     }
 
@@ -131,5 +136,19 @@ public class GeoPkgTestSetup extends JDBCTestSetup {
         fixture.put( "driver","org.sqlite.JDBC");
         fixture.put( "url","jdbc:sqlite:target/geotools");
         return fixture;
+    }
+    
+    protected void createSpatialIndex(String tableName, String geometryColumn,
+            String primaryKeyColumn) throws SQLException, IOException {
+        Map<String, String> properties = new HashMap<>();
+        properties.put("t", tableName);
+        properties.put("c", geometryColumn);
+        properties.put("i", primaryKeyColumn);
+
+        try (InputStream is = GeoPackage.class
+                .getResourceAsStream(GeoPackage.SPATIAL_INDEX + ".sql");
+                Connection cx = getConnection()) {
+            SqlUtil.runScript(is, cx, properties);
+        }
     }
 }

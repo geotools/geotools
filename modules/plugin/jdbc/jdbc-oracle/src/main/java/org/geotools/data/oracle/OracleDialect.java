@@ -163,6 +163,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
     		put("NVARCHAR", String.class);
     		put("NVARCHAR2", String.class);
             put("DATE", java.sql.Date.class);
+            put("TIMESTAMP", java.sql.Timestamp.class);
     	}
     };
     
@@ -1436,6 +1437,8 @@ public class OracleDialect extends PreparedStatementSQLDialect {
         // starting with Oracle 11 + recent JDBC drivers the DATE type does not have a mapping
         // anymore in the JDBC driver, manually register it instead
         overrides.put(Types.DATE, "DATE");
+        // overriding default java.sql.Timestamp to Oracle DATE mapping
+        overrides.put(Types.TIMESTAMP, "TIMESTAMP");
     }
     
     @Override

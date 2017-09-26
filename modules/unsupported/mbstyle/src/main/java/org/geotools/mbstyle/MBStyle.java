@@ -16,16 +16,33 @@
  */
 package org.geotools.mbstyle;
 
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.PrecisionModel;
+import org.geotools.data.DataUtilities;
+import org.geotools.feature.DefaultFeatureCollection;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.mbstyle.layer.BackgroundMBLayer;
 import org.geotools.mbstyle.layer.MBLayer;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.mbstyle.parse.MBObjectStops;
 import org.geotools.mbstyle.source.MBSource;
-import org.geotools.styling.*;
+import org.geotools.referencing.CRS;
+import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.NamedLayer;
+import org.geotools.styling.Style;
+import org.geotools.styling.StyleFactory;
+import org.geotools.styling.StyledLayerDescriptor;
+import org.geotools.styling.UserLayer;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import java.awt.*;
+import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -322,16 +339,17 @@ public class MBStyle {
      */
     public StyledLayerDescriptor transform() {
         StyleFactory sf = parse.getStyleFactory();
+        StyledLayerDescriptor sld = sf.createStyledLayerDescriptor();
+
+
         List<MBLayer> layers = layers();
         if (layers.isEmpty()) {
             throw new MBFormatException("layers empty");
         }
 
-
-        StyledLayerDescriptor sld = sf.createStyledLayerDescriptor();
-        Style style = sf.createStyle();
-
+        Map<String, NamedLayer> sourceLayers = new HashMap<>();
         for (MBLayer layer : layers) {
+            Style style = sf.createStyle();
             MBObjectStops mbObjectStops = new MBObjectStops(layer);
 
             int layerMaxZoom = layer.getMaxZoom();
@@ -366,16 +384,69 @@ public class MBStyle {
                     style.featureTypeStyles().addAll(featureTypeStyle);
                 }
             }
+
+            if( !style.featureTypeStyles().isEmpty() ) {
+
+                if (layer instanceof BackgroundMBLayer) {
+                    //Background does not use a source; construct a user later with a world extent inline feature
+                    //so that we still have a valid SLD.
+                    UserLayer userLayer = sf.createUserLayer();
+
+                    final SimpleFeatureTypeBuilder ftb = new SimpleFeatureTypeBuilder();
+                    final PrecisionModel pm = new PrecisionModel(PrecisionModel.FLOATING);
+                    final GeometryFactory jtsFactory = new GeometryFactory(pm, 4326);
+
+                    //must include a geometry so that the layer is rendered
+                    try {
+                        CoordinateReferenceSystem crs = CRS.decode("EPSG:4326");
+
+                        ftb.add("geometry", com.vividsolutions.jts.geom.Polygon.class, crs);
+                        ftb.setCRS(crs);
+                        ftb.setDefaultGeometry("geometry");
+                        ftb.setName("background");
+                        SimpleFeatureType featureType = ftb.buildFeatureType();
+
+                        final DefaultFeatureCollection fc = new DefaultFeatureCollection();
+                        fc.add(SimpleFeatureBuilder.build(
+                                featureType,
+                                new Object[] {jtsFactory.toGeometry(new ReferencedEnvelope(CRS.getEnvelope(crs)))},
+                                "background"));
+
+                        userLayer.setInlineFeatureType(featureType);
+                        userLayer.setInlineFeatureDatastore(DataUtilities.dataStore(fc));
+                        userLayer.setName("background");
+
+                        userLayer.userStyles().add(style);
+                        sld.layers().add(userLayer);
+                    } catch (FactoryException e) {
+                        throw new MBFormatException("Error constructing background layer", e);
+                    }
+                } else {
+                    String sourceLayer = layer.getSourceLayer();
+                    if (sourceLayer == null) {
+                        //If source-layer is not set, assume the source just has one layer which shares its name
+                        sourceLayer = layer.getSource();
+                    }
+                    //Add all styles with the same source-layer to the same NamedLayer
+                    NamedLayer namedLayer = sourceLayers.get(sourceLayer);
+                    if (namedLayer == null) {
+                        namedLayer = sf.createNamedLayer();
+                        namedLayer.setName(sourceLayer);
+                        //TODO: When NamedLayer supports description, use layer.getId() for description
+
+                        sourceLayers.put(sourceLayer, namedLayer);
+                        sld.layers().add(namedLayer);
+                    }
+                    namedLayer.styles().add(style);
+                }
+            }
         }
 
-        if( style.featureTypeStyles().isEmpty() ){
+        if (sld.layers().isEmpty()) {
             throw new MBFormatException("No visibile layers");
         }
 
-        UserLayer userLayer = sf.createUserLayer();
-        userLayer.userStyles().add(style);
 
-        sld.layers().add(userLayer);
         sld.setName(getName());
         return sld;
     }

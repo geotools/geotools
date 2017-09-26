@@ -188,8 +188,8 @@ public class VisualTransformerTest {
         // Get the style
         MBStyle mbStyle = new MBStyle(jsonObject);
         StyledLayerDescriptor sld = mbStyle.transform();
-        UserLayer l = (UserLayer) sld.layers().get(0);
-        Style style = l.getUserStyles()[0];
+        NamedLayer l = (NamedLayer) sld.layers().get(0);
+        Style style = l.getStyles()[0];
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(polygonFS, style));
@@ -215,8 +215,8 @@ public class VisualTransformerTest {
         // Get the style
         MBStyle mbStyle = new MBStyle(jsonObject);
         StyledLayerDescriptor sld = mbStyle.transform();
-        UserLayer l = (UserLayer) sld.layers().get(0);
-        Style style = l.getUserStyles()[0];
+        NamedLayer l = (NamedLayer) sld.layers().get(0);
+        Style style = l.getStyles()[0];
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(polygonFS, style));
@@ -243,8 +243,8 @@ public class VisualTransformerTest {
         // Get the style
         MBStyle mbStyle = new MBStyle(jsonObject);
         StyledLayerDescriptor sld = mbStyle.transform();
-        UserLayer l = (UserLayer) sld.layers().get(0);
-        Style style = l.getUserStyles()[0];
+        NamedLayer l = (NamedLayer) sld.layers().get(0);
+        Style style = l.getStyles()[0];
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(polygonsBigFS, style));
@@ -270,8 +270,8 @@ public class VisualTransformerTest {
         // Get the style
         MBStyle mbStyle = new MBStyle(jsonObject);
         StyledLayerDescriptor sld = mbStyle.transform();
-        UserLayer l = (UserLayer) sld.layers().get(0);
-        Style style = l.getUserStyles()[0];
+        NamedLayer l = (NamedLayer) sld.layers().get(0);
+        Style style = l.getStyles()[0];
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(polygonsBigFS, style));
@@ -297,8 +297,8 @@ public class VisualTransformerTest {
         // Get the style
         MBStyle mbStyle = new MBStyle(jsonObject);
         StyledLayerDescriptor sld = mbStyle.transform();
-        UserLayer l = (UserLayer) sld.layers().get(0);
-        Style style = l.getUserStyles()[0];
+        NamedLayer l = (NamedLayer) sld.layers().get(0);
+        Style style = l.getStyles()[0];
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(polygonsBigFS, style));
@@ -324,8 +324,8 @@ public class VisualTransformerTest {
         // Get the style
         MBStyle mbStyle = new MBStyle(jsonObject);
         StyledLayerDescriptor sld = mbStyle.transform();
-        UserLayer l = (UserLayer) sld.layers().get(0);
-        Style style = l.getUserStyles()[0];
+        NamedLayer l = (NamedLayer) sld.layers().get(0);
+        Style style = l.getStyles()[0];
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(pointFS, style));
@@ -351,8 +351,8 @@ public class VisualTransformerTest {
         // Get the style
         MBStyle mbStyle = new MBStyle(jsonObject);
         StyledLayerDescriptor sld = mbStyle.transform();
-        UserLayer l = (UserLayer) sld.layers().get(0);
-        Style style = l.getUserStyles()[0];
+        NamedLayer l = (NamedLayer) sld.layers().get(0);
+        Style style = l.getStyles()[0];
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(pointFS, style));
@@ -489,8 +489,8 @@ public class VisualTransformerTest {
         // Get the style
         MBStyle mbStyle = new MBStyle(jsonObject);
         StyledLayerDescriptor sld = mbStyle.transform();
-        UserLayer l = (UserLayer) sld.layers().get(0);
-        Style style = l.getUserStyles()[0];
+        NamedLayer l = (NamedLayer) sld.layers().get(0);
+        Style style = l.getStyles()[0];
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(pointsWithMarksFS, style));
@@ -517,8 +517,8 @@ public class VisualTransformerTest {
         // Get the style
         MBStyle mbStyle = new MBStyle(jsonObject);
         StyledLayerDescriptor sld = mbStyle.transform();
-        UserLayer l = (UserLayer) sld.layers().get(0);
-        Style style = l.getUserStyles()[0];
+        NamedLayer l = (NamedLayer) sld.layers().get(0);
+        Style style = l.getStyles()[0];
 
         MapContent mc = new MapContent();
         mc.addLayer(new FeatureLayer(pointsWithMarksFS, style));
@@ -552,8 +552,8 @@ public class VisualTransformerTest {
         // Get the style
         MBStyle mbStyle = new MBStyle(jsonObject);
         StyledLayerDescriptor sld = mbStyle.transform();
-        UserLayer l = (UserLayer) sld.layers().get(0);
-        Style style = l.getUserStyles()[0];
+        NamedLayer l = (NamedLayer) sld.layers().get(0);
+        Style style = l.getStyles()[0];
         
         MapContent mc = new MapContent();
 
@@ -578,8 +578,8 @@ public class VisualTransformerTest {
         // Get the style
         MBStyle mbStyle = new MBStyle(jsonObject);
         StyledLayerDescriptor sld = mbStyle.transform();
-        UserLayer l = (UserLayer) sld.layers().get(0);
-        Style style = l.getUserStyles()[0];
+        NamedLayer l = (NamedLayer) sld.layers().get(0);
+        Style style = l.getStyles()[0];
         
         MapContent mc = new MapContent();
 
@@ -630,8 +630,8 @@ public class VisualTransformerTest {
 //        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("rasterStyleTestAllProperties.json");
 //        MBStyle mbStyle = new MBStyle(jsonObject);
 //        StyledLayerDescriptor sld = mbStyle.transform();
-//        UserLayer l = (UserLayer) sld.layers().get(0);
-//        Style style = l.getUserStyles()[0];
+//        NamedLayer l = (NamedLayer) sld.layers().get(0);
+//        Style style = l.getStyles()[0];
 //        RasterSymbolizer s = (RasterSymbolizer)style.featureTypeStyles().get(0).getRules()[0].getSymbolizers()[0];      
 //
 //        RenderedImage image = renderer.renderImage(worldPaletteReader, null, s,
@@ -647,8 +647,8 @@ public class VisualTransformerTest {
 //        // Get the style
 //        MBStyle mbStyle = new MBStyle(jsonObject);
 //        StyledLayerDescriptor sld = mbStyle.transform();
-//        UserLayer l = (UserLayer) sld.layers().get(0);
-//        Style style = l.getUserStyles()[0];
+//        NamedLayer l = (NamedLayer) sld.layers().get(0);
+//        Style style = l.getStyles()[0];
 //
 //        MapContent mc = new MapContent();
 //
@@ -670,14 +670,15 @@ public class VisualTransformerTest {
         // Get the style
         MBStyle mbStyle = new MBStyle(jsonStyle);
         StyledLayerDescriptor sld = mbStyle.transform();
-        UserLayer l = (UserLayer) sld.layers().get(0);
-        Style style = l.getUserStyles()[0];
 
         MapContent mc = new MapContent();        
         if (includeGrid) {
             mc.addLayer(new FeatureLayer(gridFS, defaultLineStyle()));    
-        }        
-        mc.addLayer(new FeatureLayer(pointFS, style));
+        }
+        for (StyledLayer l : sld.layers()) {
+            NamedLayer nl = (NamedLayer) l;
+            mc.addLayer(new FeatureLayer(pointFS, nl.getStyles()[0]));
+        }
 
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setMapContent(mc);
@@ -695,8 +696,8 @@ public class VisualTransformerTest {
         // Get the style
         MBStyle mbStyle = new MBStyle(jsonStyle);
         StyledLayerDescriptor sld = mbStyle.transform();
-        UserLayer l = (UserLayer) sld.layers().get(0);
-        Style style = l.getUserStyles()[0];
+        NamedLayer l = (NamedLayer) sld.layers().get(0);
+        Style style = l.getStyles()[0];
 
         MapContent mc = new MapContent();
 

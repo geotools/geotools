@@ -27,7 +27,7 @@ import org.json.simple.JSONObject;
  * @see <a href="https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-geojson">https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-geojson</a>
  *
  */
-public class GeoJsonMBSource extends TileMBSource {
+public class GeoJsonMBSource extends MBSource {
 
     public GeoJsonMBSource(JSONObject json) {
         this(json, null);

@@ -16,26 +16,9 @@
  */
 package org.geotools.gce.imagemosaic;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.awt.Dimension;
-import java.awt.Rectangle;
-import java.awt.Transparency;
-import java.awt.image.Raster;
-import java.awt.image.RenderedImage;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.URL;
-import java.util.Properties;
-
-import javax.media.jai.PlanarImage;
-import javax.media.jai.ROI;
-
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.io.WKBWriter;
+import com.vividsolutions.jts.io.WKTWriter;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -58,11 +41,7 @@ import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.image.ImageUtilities;
 import org.geotools.test.TestData;
 import org.geotools.util.URLs;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.rules.TemporaryFolder;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureVisitor;
@@ -78,9 +57,19 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.WKBWriter;
-import com.vividsolutions.jts.io.WKTWriter;
+import javax.media.jai.PlanarImage;
+import javax.media.jai.ROI;
+import java.awt.*;
+import java.awt.image.Raster;
+import java.awt.image.RenderedImage;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URL;
+import java.util.Properties;
+
+import static org.junit.Assert.*;
 
 public class ImageMosaicFootprintsTest {
 
@@ -948,13 +937,16 @@ public class ImageMosaicFootprintsTest {
 
     @Rule
     public TemporaryFolder redFootprintFolder = new TemporaryFolder();
+
     /**
      * When the mosaic bounds don't match the requested image bounds, there's only one granule in the requested bounds
      * and FootprintBehavior is transparent a border is added to the image. This actually only happens in
      * very specific circumstances, like in the test data which is an L shaped. In this case the
      * footprint behavior was not being respected, resulting in a background color even though the
      * background should be transparent.
-     *
+     * Update: now the image mosaic uses only the footprint of the intercepted tiles to build the result, so
+     * the bbox has been moved to hit the internal corner of the L in order to still generate a transparent corner
+     * (with the original bbox only the part intersecting the requested granule is returned)
      */
     @Test
     public void testFootprintWithBorderNeeded() throws IOException {
@@ -973,8 +965,7 @@ public class ImageMosaicFootprintsTest {
             .getCoordinateReferenceSystem();
 
         GridEnvelope2D gridRange = new GridEnvelope2D(0,0,100,100);
-        Envelope requestEnvelope = new ReferencedEnvelope(989964.5828856088,
-            990881.0173239836, 218260.08651691137, 219176.52095528613, coordinateReferenceSystem);
+        Envelope requestEnvelope = new ReferencedEnvelope(989960, 990800, 217380, 219200, coordinateReferenceSystem);
         GridGeometry2D readGeometry = new GridGeometry2D(gridRange, requestEnvelope);
         readGeom.setValue(readGeometry);
         GeneralParameterValue[] readParams = new GeneralParameterValue[]{footprintBehaviorParam, readGeom};

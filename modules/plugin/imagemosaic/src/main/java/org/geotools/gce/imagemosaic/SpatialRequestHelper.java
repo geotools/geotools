@@ -692,6 +692,10 @@ public class SpatialRequestHelper {
         return computedBBox;
     }
 
+    public BoundingBox getCoverageBBox() {
+        return coverageProperties.getBbox();
+    }
+
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();

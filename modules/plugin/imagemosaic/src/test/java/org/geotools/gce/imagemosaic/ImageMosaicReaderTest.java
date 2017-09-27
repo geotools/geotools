@@ -121,6 +121,7 @@ import org.geotools.test.TestData;
 import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
 import org.geotools.util.URLs;
+import org.hamcrest.CoreMatchers;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -250,21 +251,20 @@ public class ImageMosaicReaderTest extends Assert{
 	 * @throws FactoryException
 	 */
 	@Test
-//        @Ignore	
 	public void crop() throws Exception {
-		imageMosaicCropTest(rgbURL, "crop-rgbURL");
+		imageMosaicCropTest(rgbURL, "crop-rgbURL", false);
 		
-		imageMosaicCropTest(indexURL, "crop-indexURL");
+		imageMosaicCropTest(indexURL, "crop-indexURL", false);
 		
-		imageMosaicCropTest(grayURL, "crop-grayURL");
+		imageMosaicCropTest(grayURL, "crop-grayURL", true);
 		
-		imageMosaicCropTest(overviewURL, "crop-overviewURL");
+		imageMosaicCropTest(overviewURL, "crop-overviewURL", true);
 		
-		imageMosaicCropTest(indexAlphaURL, "crop-indexAlphaURL");
+		imageMosaicCropTest(indexAlphaURL, "crop-indexAlphaURL", false);
 		
-		imageMosaicCropTest(rgbAURL, "crop-rgbAURL");
+		imageMosaicCropTest(rgbAURL, "crop-rgbAURL", false);
 		
-		imageMosaicCropTest(index_unique_paletteAlphaURL,"crop-index_unique_paletteAlphaURL");
+		imageMosaicCropTest(index_unique_paletteAlphaURL,"crop-index_unique_paletteAlphaURL", true);
 
 	}
 
@@ -1912,13 +1912,16 @@ public class ImageMosaicReaderTest extends Assert{
 	/**
 	 * Tests {@link ImageMosaicReader} asking to crop the lower left quarter of
 	 * the input coverage.
-	 * 
+	 *
+	 * @param testURL The location of the source mosaic
 	 * @param title
 	 *            to use when showing image.
+	 * @param acceptContainment true if the result is expected to be contained in the crop area, possibly because
+	 *                          the mosaic is sparse
 	 * 
 	 * @throws Exception
 	 */
-	private void imageMosaicCropTest(URL testURL, String title)
+	private void imageMosaicCropTest(URL testURL, String title, boolean acceptContainment)
 			throws Exception{
 
 		// Get the resources as needed.
@@ -1949,7 +1952,11 @@ public class ImageMosaicReaderTest extends Assert{
         GridCoverage2D coverage = TestUtils.checkCoverage(reader,
                 new GeneralParameterValue[] { gg, outTransp }, title);
         // the envelope is the requested one
-        assertEnvelope(coverage.getEnvelope(), cropEnvelope, tolerance);
+        if(acceptContainment) {
+            assertContainsEnvelope(cropEnvelope, coverage.getEnvelope(), tolerance);
+        } else {
+            assertEnvelope(cropEnvelope, coverage.getEnvelope(), tolerance);
+        }
         // the raster space ordinates are not far away from the origin
         RenderedImage ri = coverage.getRenderedImage();
         assertEquals(0, ri.getMinX(), 10);
@@ -1961,6 +1968,13 @@ public class ImageMosaicReaderTest extends Assert{
         assertEquals(expected.getMaximum(0), actual.getMaximum(0), tolerance);
         assertEquals(expected.getMinimum(1), actual.getMinimum(1), tolerance);
         assertEquals(expected.getMaximum(1), actual.getMaximum(1), tolerance);
+    }
+
+    void assertContainsEnvelope(Envelope expected, Envelope contained, double tolerance) {
+        assertTrue(expected.getMinimum(0) < contained.getMinimum(0) + tolerance);
+        assertTrue(expected.getMaximum(0) > contained.getMaximum(0) - tolerance);
+        assertTrue(expected.getMinimum(1) < contained.getMinimum(1) + tolerance);
+        assertTrue(expected.getMaximum(1) > contained.getMaximum(1) - tolerance);
     }
 	
     @Test
@@ -2069,14 +2083,6 @@ public class ImageMosaicReaderTest extends Assert{
     }
         
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		TestRunner.run(ImageMosaicReaderTest.suite());
-
-	}
-	
 	@BeforeClass
 	public static void init(){
 		
@@ -2475,6 +2481,63 @@ public class ImageMosaicReaderTest extends Assert{
         assertEquals(fullEnvelope.getSpan(1), reducedEnvelope.getSpan(1), 0d);
 
         reader.dispose();
+    }
+
+    @Test
+    public void testHarvestSpatialTwoReaders() throws Exception {
+        File source = URLs.urlToFile(rgbURL);
+        File testDataDir = TestData.file(this, ".");
+        File directory1 = new File(testDataDir, "rgbHarvest1");
+        File directory2 = new File(testDataDir, "rgbHarvest2");
+        if (directory1.exists()) {
+            FileUtils.deleteDirectory(directory1);
+        }
+        FileUtils.copyDirectory(source, directory1);
+        // remove all mosaic related files
+        for (File file : FileUtils.listFiles(directory1, new RegexFileFilter("rgb.*"), null)) {
+            assertTrue(file.delete());
+        }
+        // move all files except global_mosaic_0 to the second dir
+        directory2.mkdirs();
+        for (File file : FileUtils.listFiles(directory1,
+                new RegexFileFilter("global_mosaic_[^0].*"), null)) {
+            assertTrue(file.renameTo(new File(directory2, file.getName())));
+        }
+
+        // crate the first reader
+        URL harvestSingleURL = URLs.fileToUrl(directory1);
+        final AbstractGridFormat format = TestUtils.getFormat(harvestSingleURL);
+        ImageMosaicReader reader = TestUtils.getReader(harvestSingleURL, format);
+        GeneralEnvelope singleGranuleEnvelope = reader.getOriginalEnvelope();
+        // System.out.println(singleGranuleEnvelope);
+
+        // now create a second reader that won't be informed of the harvesting changes
+        // (simulating changes over a cluster, where the bbox information won't be updated from one node to the other)
+        ImageMosaicReader reader2 = TestUtils.getReader(harvestSingleURL, format);
+
+        // harvest the other files with the first reader
+        for (File file : directory2.listFiles()) {
+            assertTrue(file.renameTo(new File(directory1, file.getName())));
+        }
+        reader.harvest(null, directory1, null);
+
+        // make a request in a bbox that's outside of the original envelope, the
+        // second reader does not have the metadata updated, but can still respond to the
+        // request
+        MathTransform mt = reader.getOriginalGridToWorld(PixelInCell.CELL_CORNER);
+        Envelope env = new Envelope2D(DefaultGeographicCRS.WGS84, 10, 40, 15, 45);
+        GridEnvelope2D rasterEnvelope = new GridEnvelope2D(
+                new Envelope2D(CRS.transform(mt.inverse(), env)), PixelInCell.CELL_CORNER);
+        GridGeometry2D gg = new GridGeometry2D(rasterEnvelope, env);
+        final ParameterValue<GridGeometry2D> ggParameter = AbstractGridFormat.READ_GRIDGEOMETRY2D
+                .createValue();
+        ggParameter.setValue(gg);
+        GridCoverage2D coverage = reader2.read(new GeneralParameterValue[] { ggParameter });
+        assertNotNull(coverage);
+        coverage.dispose(true);
+
+        reader.dispose();
+        reader2.dispose();
     }
 
     @Test
@@ -4383,6 +4446,16 @@ public class ImageMosaicReaderTest extends Assert{
         assertEquals(expectedEnvelope.getMaximum(1), actualEnvelope.getMaximum(1), EPS);
         
     }
+
+	@Test
+	public void testFilteredNoResults() throws Exception {
+		AbstractGridFormat format = TestUtils.getFormat(rgbURL);
+		ImageMosaicReader reader = TestUtils.getReader(rgbURL, format);
+		ParameterValue<Filter> filter = ImageMosaicFormat.FILTER.createValue();
+		filter.setValue(ECQL.toFilter("location = 'abcdefghi'"));
+		GridCoverage2D coverage = TestUtils.getCoverage(reader, new GeneralParameterValue[]{filter}, false);
+		assertNull(coverage);
+	}
     
     @Test
     public void testSortOnCachedCatalogDescending() throws Exception {

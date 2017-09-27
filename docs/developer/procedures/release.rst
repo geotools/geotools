@@ -19,7 +19,7 @@ Prerequisites
 The following are necessary to perform a GeoTools release:
 
 #. Commit access to the GeoTools `Git repository <https://Github.com/geotools/geotools>`_
-#. Build access to `Jenkins <http://ares.boundlessgeo.com/jenkins/>`_
+#. Build access to `Jenkins <https://build.geoserver.org>`_
 #. Edit access to the GeoTools `Blog <http://www.blogger.com/blogger.g?blogID=5176900881057973693#overview>`_
 #. Administration rights to `GeoTools JIRA <https://osgeo-org.atlassian.net/projects/GEOT/>`__
 #. Release/file management privileges in `SourceForge <https://sourceforge.net/projects/geotools/>`_
@@ -81,6 +81,8 @@ When creating the first release candidate of a series, there are some extra step
         docs/user/tutorial/quickstart/artifacts/pom2.xml \
         modules/library/metadata/src/main/java/org/geotools/factory/GeoTools.java
 
+.. note:: If you are on macOS, you will need to add ``''`` after the ``-i`` argument for each ``sed`` command.
+
 * Commit the changes and push to the master branch on GitHub::
 
       git commit -am "Update version to 18-SNAPSHOT"
@@ -88,10 +90,10 @@ When creating the first release candidate of a series, there are some extra step
       
 * Create the new beta version in `JIRA <https://osgeo-org.atlassian.net/projects/GEOT>`_ for issues on master; for example, if master is now ``18-SNAPSHOT``, create a Jira version ``18-beta`` for the first release of the ``18.x`` series
 
-* Update the jobs on ares:
+* Update the jobs on build.geoserver.org:
   
   * disable the maintenance jobs, and remove them from the geotools view
-  * create new jobs, create from the exsisting master jobs, editing the branch and the DIST=stable configuration
+  * create new jobs, create from the exsisting master jobs, editing the branch and the DIST=stable configuration. Remember to also create the new docs jobs.
   * edit the previous stable branch, changing to DIST=maintenance
 
 * Announce on the developer mailing list that the new stable branch has been created and that the feature freeze on master is over
@@ -99,7 +101,7 @@ When creating the first release candidate of a series, there are some extra step
 Build the Release
 -----------------
 
-Run the `geotools-release <http://ares.boundlessgeo.com/jenkins/job/geotools-release/>`_ job in Jenkins. The job takes the following parameters:
+Run the `geotools-release <https://build.geoserver.org/view/geotools/job/geotools-release/>`_ job in Jenkins. The job takes the following parameters:
 
 **BRANCH**
 
@@ -125,7 +127,7 @@ This job will checkout the specified branch/revision and build the GeoTools
 release artifacts. When successfully complete all release artifacts will be 
 uploaded to the following location::
 
-   http://ares.boundlessgeo.com/geotools/release/<RELEASE> 
+   http://build.geoserver.org/geotools/release/<RELEASE> 
 
 Test the Artifacts
 ------------------
@@ -146,7 +148,7 @@ A simple way to do so is:
 Publish the Release
 -------------------
 
-Run the `geotools-release-publish <http://ares.boundlessgeo.com/jenkins/job/geotools-release-publish/>`_ in Jenkins. The job takes the following parameters:
+Run the `geotools-release-publish <https://build.geoserver.org/view/geotools/job/geotools-release-publish/>`_ in Jenkins. The job takes the following parameters:
 
 **VERSION** 
 
@@ -167,7 +169,7 @@ Run the `geotools-release-publish <http://ares.boundlessgeo.com/jenkins/job/geot
 
 This job will rsync all the artifacts located at::
 
-     http://ares.boundlessgeo.com/geotools/release/<RELEASE>
+     http://build.geoserver.org/geotools/release/<RELEASE>
 
 to the SourceForge FRS server, and also deploy the artifacts to the public geotools maven repository.
 

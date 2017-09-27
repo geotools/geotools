@@ -452,10 +452,9 @@ public class ImagePyramidReaderTest extends ImageLevelsMapperTest {
         GridCoverage2D coverage = ((GridCoverage2D) reader.read(new GeneralParameterValue[] { gg }));
         assertNotNull("Null value returned instead of a coverage", coverage);
 
-        //
-        assertTrue("coverage dimensions different from what we expected", coverage
-                .getGridGeometry().getGridRange().getSpan(0) == 127
-                && coverage.getGridGeometry().getGridRange().getSpan(1) == 127);
+        // used to match exactly, but now we compute the exact bbox matching the request on the fly
+        assertEquals(127, coverage.getGridGeometry().getGridRange().getSpan(0), 5);
+        assertEquals(127, coverage.getGridGeometry().getGridRange().getSpan(1), 5);
         if (TestData.isInteractiveTest())
             coverage.show("testCropHighestLevel");
         else

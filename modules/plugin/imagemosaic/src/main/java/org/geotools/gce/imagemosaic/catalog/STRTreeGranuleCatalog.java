@@ -363,21 +363,8 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
     private ReferencedEnvelope extractAndCombineBBox(Filter filter) {
         final Utils.BBOXFilterExtractor bboxExtractor = new Utils.BBOXFilterExtractor();
         filter.accept(bboxExtractor, null);
-        ReferencedEnvelope requestedBBox = bboxExtractor.getBBox();
         BoundingBox bbox = wrappedCatalogue.getBounds(typeName);
-        // add eventual bbox from the underlying index to constrain search
-        if (requestedBBox != null) {
-            // intersection
-            final Envelope intersection = requestedBBox
-                    .intersection(ReferencedEnvelope.reference(bbox));
-
-            // create intersection and return it
-            requestedBBox = new ReferencedEnvelope(intersection,
-                    bbox.getCoordinateReferenceSystem());
-        } else {
-            return ReferencedEnvelope.reference(bbox);
-        }
-        return requestedBBox;
+        return ReferencedEnvelope.reference(bbox);
     }
 
     public List<GranuleDescriptor> getGranules() throws IOException {

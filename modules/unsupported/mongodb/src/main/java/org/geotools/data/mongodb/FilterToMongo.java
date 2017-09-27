@@ -89,6 +89,8 @@ import org.opengis.filter.temporal.TOverlaps;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -111,9 +113,6 @@ import static org.geotools.util.Converters.convert;
 public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
 
     private static final Logger LOGGER = Logging.getLogger(FilterToMongo.class);
-
-    static final SimpleDateFormat ISO8601_SDF = new SimpleDateFormat(
-            "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
 
     final CollectionMapper mapper;
 
@@ -637,15 +636,11 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
                 return literal;
             }
             // by default, convert date to ISO-8601 string
-            return ISO8601_SDF.format((Date) literal);
+            return DateTimeFormatter.ISO_DATE_TIME.format(((Date) literal).toInstant());
         } else if (literal instanceof String) {
             if (targetType != null && Date.class.isAssignableFrom(targetType)) {
                 // try parse string assuming it's ISO-8601 formatted
-                try {
-                    return ISO8601_SDF.parse((String) literal);
-                } catch (ParseException e) {
-                    LOGGER.log(Level.WARNING, "Could not parse String literal as ISO-8601 date", e);
-                }
+                return Date.from(Instant.from(DateTimeFormatter.ISO_DATE_TIME.parse((String) literal)));
             }
             // try to convert to the expected type
             return convertLiteral(literal, targetType);

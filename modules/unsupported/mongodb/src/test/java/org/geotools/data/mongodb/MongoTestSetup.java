@@ -19,6 +19,8 @@ package org.geotools.data.mongodb;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Map;
 import java.util.Properties;
@@ -53,11 +55,7 @@ public abstract class MongoTestSetup {
      * @return the parsed date
      */
     protected static Date parseDate(String dateAsString) {
-        try {
-            return FilterToMongo.ISO8601_SDF.parse(dateAsString);
-        } catch (ParseException e) {
-            throw new IllegalArgumentException("Failed to parse string as ISO-8601 formatted date", e);
-        }
+        return Date.from(Instant.from(DateTimeFormatter.ISO_DATE_TIME.parse(dateAsString)));
     }
 
 }

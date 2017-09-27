@@ -19,6 +19,7 @@ package org.geotools.gce.imagemosaic;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,18 +39,24 @@ import org.geotools.coverage.grid.io.imageio.ReadType;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.SpatialRequestHelper.CoverageProperties;
+import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory2;
+import org.opengis.geometry.BoundingBox;
 import org.opengis.metadata.Identifier;
 import org.opengis.parameter.GeneralParameterDescriptor;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.parameter.ParameterValueGroup;
+import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.ReferenceIdentifier;
+import org.opengis.referencing.operation.TransformException;
 
 /**
  * A class to handle coverage requests to a reader for a single 2D layer..
@@ -138,6 +145,8 @@ public class RasterLayerRequest {
 
     private GeneralParameterValue[] params;
 
+    private Envelope2D requestedBounds;
+
     public List<?> getElevation() {
         return elevation;
     }
@@ -214,7 +223,7 @@ public class RasterLayerRequest {
         this.rasterManager = rasterManager;
         this.heterogeneousGranules = rasterManager.heterogeneousGranules;
         CoverageProperties coverageProperties = new CoverageProperties();
-        coverageProperties.setBBox(computeCoverageBoundingBox(rasterManager));
+        coverageProperties.setBBox(rasterManager.spatialDomainManager.coverageBBox);
         coverageProperties.setRasterArea(rasterManager.spatialDomainManager.coverageRasterArea);
         coverageProperties
                 .setFullResolution(rasterManager.spatialDomainManager.coverageFullResolution);
@@ -242,10 +251,8 @@ public class RasterLayerRequest {
                 }
             }
         }
-        // re-compute bbox now that eventual filter has been read
-        if(this.filter != null) {
-            coverageProperties.setBBox(computeCoverageBoundingBox(rasterManager));
-        }
+        // re-compute bbox now tha we have the read params ready
+        coverageProperties.setBBox(computeCoverageBoundingBox(rasterManager));
 
         // //
         //
@@ -259,22 +266,35 @@ public class RasterLayerRequest {
     }
 
     protected ReferencedEnvelope computeCoverageBoundingBox(final RasterManager rasterManager) throws IOException {
-        if(filter != null && ! Filter.INCLUDE.equals(filter)) {
-            // limit it to the filtered granules bounding box by full enumeration, to avoid
-            // imprecise datastore optimizations (e.g., loose bounds)
+        try {
+            ReferencedEnvelope queryBounds =  null;
+            if (requestedBounds != null) {
+                try {
+                    ReferencedEnvelope re = ReferencedEnvelope.reference(requestedBounds);
+                    queryBounds = re.transform(rasterManager.spatialDomainManager.coverageCRS2D, true);
+                } catch (TransformException | FactoryException e) {
+                    LOGGER.log(Level.FINE, "Failed to reproject requested envelope in native, skipping spatial filter in output bounds computation", e);
+                }
+            }
+            MosaicQueryBuilder builder = new MosaicQueryBuilder(this, queryBounds);
+            Query query = builder.build();
+            query.setSortBy(null); // no need to actually sort on anything here
             GranuleSource granules = rasterManager.getGranuleSource(true, null);
-            Query query = new Query(granules.getSchema().getTypeName(), filter);
             // ... load only the default geometry if possible
             final GeometryDescriptor gd = granules.getSchema().getGeometryDescriptor();
-            if(gd != null) {
-                query.setPropertyNames(new String[] {gd.getLocalName()});
+            if (gd != null) {
+                query.setPropertyNames(new String[]{gd.getLocalName()});
             }
             SimpleFeatureCollection features = granules.getGranules(query);
             ReferencedEnvelope envelope = DataUtilities.bounds(features);
-            if(envelope != null && !envelope.isEmpty()) {
+            if (envelope != null && !envelope.isEmpty()) {
                 return envelope;
             }
+        } catch (TransformException | FactoryException e) {
+            throw new IOException(e);
         }
+
+        // fallback on cached bbox
         return rasterManager.spatialDomainManager.coverageBBox;
     }
 
@@ -504,6 +524,7 @@ public class RasterLayerRequest {
             if (value == null)
                 return;
             final GridGeometry2D gg = (GridGeometry2D) value;
+            this.requestedBounds = gg.getEnvelope2D();
             
             if (rasterManager.getConfiguration().getCatalogConfigurationBean()
                     .isHeterogeneousCRS()) {

@@ -685,8 +685,13 @@ public class RasterLayerResponse {
 
             // do we return a null (outside of the coverage) or a blank? The choice is "hard" as we
             // might be in a hole of the coverage and not know it
-            if(!mosaicBBox.intersects((BoundingBox) ReferencedEnvelope.reference(coverageEnvelope)) &&
-                    !mosaicBBox.intersects((BoundingBox) ReferencedEnvelope.reference(rasterManager.spatialDomainManager.coverageBBox))) {
+            if (!mosaicBBox.intersects((BoundingBox) ReferencedEnvelope.reference(coverageEnvelope)) &&
+                    !mosaicBBox.intersects((BoundingBox) ReferencedEnvelope.reference(rasterManager
+                            .spatialDomainManager.coverageBBox))) {
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine("Could not locate any granule in the requested bbox, returning null as it does not " +
+                            "match the cached bbox of the mosaic");
+                }
                 return null;
             } else {
                 // prepare a blank response

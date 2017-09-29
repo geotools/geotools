@@ -468,6 +468,16 @@ public final class GridCoverageRenderer {
         if (preSymbolizer == null) {
             return null;
         }
+
+        // In case of high oversampling the preSymbolizer image might be huge,
+        // consider that case and crop if needed
+        GridCoverage2D sanitized = preSymbolizer;
+        RenderedImage preSymbolizerImage = preSymbolizer.getRenderedImage();
+        RenderedImage preAffineImage = coverage.getRenderedImage();
+        if(preSymbolizerImage.getWidth() > (preAffineImage.getWidth() * 2)
+                || preSymbolizerImage.getHeight() > (preAffineImage.getHeight() * 2)) {
+            sanitized = crop(preSymbolizer, destinationEnvelope, false, bkgValues);
+        }
         
         // ///////////////////////////////////////////////////////////////////
         //
@@ -475,14 +485,14 @@ public final class GridCoverageRenderer {
         //
         // ///////////////////////////////////////////////////////////////////
         final GridCoverage2D symbolizerGC;
-        if(symbolizer!=null){
-                if (LOGGER.isLoggable(Level.FINE)){
-                    LOGGER.fine("Applying Raster Symbolizer ");
-                }            
-        	final RasterSymbolizerHelper rsp = new RasterSymbolizerHelper (preSymbolizer,this.hints);
-        	rsp.visit(symbolizer);
-        	symbolizerGC = (GridCoverage2D) rsp.getOutput();
-    	} else {
+        if (symbolizer != null) {
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine("Applying Raster Symbolizer ");
+            }
+            final RasterSymbolizerHelper rsp = new RasterSymbolizerHelper(sanitized, this.hints);
+            rsp.visit(symbolizer);
+            symbolizerGC = (GridCoverage2D) rsp.getOutput();
+        } else {
             symbolizerGC = preSymbolizer;
         }
         if (DEBUG) {
@@ -949,15 +959,6 @@ public final class GridCoverageRenderer {
         for (Iterator<GridCoverage2D> it = displacedCoverages.iterator(); it.hasNext();) {
             GridCoverage2D coverage = it.next();
             ReferencedEnvelope re = ReferencedEnvelope.reference(coverage.getEnvelope2D());
-            MathTransform2D gridToWorld = coverage.getGridGeometry().getGridToCRS2D();
-            if(gridToWorld instanceof AffineTransform2D) {
-                double[] resolutions = CoverageUtilities.getResolution((AffineTransform2D) gridToWorld);
-                if(resolutions != null) {
-                    // make sure the coverage contributes at least one pixel... we could use / 2, but
-                    // being a bit extra cautious
-                    re.expandBy(-resolutions[0] / 2, -resolutions[1] / 2);
-                }
-            }
             if(!destinationEnvelope.intersects(re, false)) {
                 it.remove();
             }

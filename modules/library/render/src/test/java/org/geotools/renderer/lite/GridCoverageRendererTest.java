@@ -1329,6 +1329,28 @@ public class GridCoverageRendererTest  {
                 "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/offDateline.png");
         ImageAssert.assertEquals(reference, image, 0);
     }
+
+    @Test
+    public void testHighOversample() throws Exception {
+        // tiny bbox request
+        MapContent content = new MapContent();
+        content.getViewport().setBounds(new ReferencedEnvelope(0,-0.0020,0.0040,0, DefaultGeographicCRS.WGS84));
+        RasterSymbolizer rs = buildRainColorMap();
+        final Style style = new StyleBuilder().createStyle(rs);
+        content.addLayer(new GridReaderLayer(rainReader, style));
+
+        final StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(content);
+        Map<Object, Object> rendererParams = new HashMap<Object, Object>();
+        rendererParams.put(StreamingRenderer.ADVANCED_PROJECTION_HANDLING_KEY, true);
+        rendererParams.put(StreamingRenderer.CONTINUOUS_MAP_WRAPPING, true);
+        renderer.setRendererHints(rendererParams);
+
+        BufferedImage image = RendererBaseTest.showRender("highOversample", renderer,
+                1000, content.getViewport().getBounds());
+        ImageAssert.assertEquals(new File(
+                "src/test/resources/org/geotools/renderer/lite/rainHighOversample.png"), image, 1000);
+    }
     
     /**
      * Checks the pixel i/j is fully transparent

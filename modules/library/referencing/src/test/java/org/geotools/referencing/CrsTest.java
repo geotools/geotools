@@ -431,7 +431,6 @@ public final class CrsTest {
                 "PARAMETER[\"false_northing\",0],PARAMETER[\"Scale_Factor\",1.0],UNIT[\"m\",1]]";
         CoordinateReferenceSystem lambertCRS = CRS.parseWKT(initialLambertWkt);
         String parsedLambertWkt = lambertCRS.toWKT();
-        System.out.println(parsedLambertWkt);
         CoordinateReferenceSystem lambertCRS2 = CRS.parseWKT(parsedLambertWkt);
         assertTrue(CRS.equalsIgnoreMetadata(lambertCRS, lambertCRS2));
     }

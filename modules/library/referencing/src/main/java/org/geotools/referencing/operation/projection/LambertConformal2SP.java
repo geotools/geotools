@@ -25,11 +25,8 @@ import org.opengis.referencing.operation.ConicProjection;
 import org.opengis.referencing.operation.MathTransform;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
-import org.geotools.referencing.operation.MathTransformProvider;
-import org.geotools.referencing.operation.projection.MapProjection.AbstractProvider;
 import org.geotools.resources.i18n.VocabularyKeys;
 import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.util.Utilities;
 
 
 /**
@@ -105,8 +102,6 @@ public class LambertConformal2SP extends LambertConformal {
         static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(new NamedIdentifier[] {
                 new NamedIdentifier(Citations.OGC,      "Lambert_Conformal_Conic_2SP"),
                 new NamedIdentifier(Citations.EPSG,     "Lambert Conic Conformal (2SP)"),
-                new NamedIdentifier(Citations.ESRI,     "Lambert_Conformal_Conic"),
-                new NamedIdentifier(Citations.ESRI,     "Lambert_Conformal_Conic_2SP"),
                 new NamedIdentifier(Citations.EPSG,     "9802"),
                 new NamedIdentifier(Citations.GEOTIFF,  "CT_LambertConfConic_2SP"),
                 new NamedIdentifier(Citations.GEOTIFF,  "CT_LambertConfConic"),
@@ -116,8 +111,8 @@ public class LambertConformal2SP extends LambertConformal {
                 SEMI_MAJOR,          SEMI_MINOR,
                 CENTRAL_MERIDIAN,    LATITUDE_OF_ORIGIN,
                 STANDARD_PARALLEL_1, STANDARD_PARALLEL_2,
-                FALSE_EASTING,       FALSE_NORTHING, 
-                SCALE_FACTOR // This last parameter is for ESRI compatibility
+                FALSE_EASTING,       FALSE_NORTHING,
+                SCALE_FACTOR // This last parameter is for backwards compatibility, see LambertConformalEsriProvider
             });
 
         /**
@@ -145,38 +140,19 @@ public class LambertConformal2SP extends LambertConformal {
         protected MathTransform createMathTransform(final ParameterValueGroup parameters)
                 throws ParameterNotFoundException
         {
-            if(getParameter(STANDARD_PARALLEL_2, parameters) == null &&
-               getParameter(STANDARD_PARALLEL_1, parameters) == null &&
-               getParameter(LATITUDE_OF_ORIGIN, parameters) != null) {
-                // handle the ESRI 1SP case
-                return new LambertConformal1SP(parameters);
-            } else if(Utilities.equals(doubleValue(STANDARD_PARALLEL_1, parameters),
-                                doubleValue(STANDARD_PARALLEL_2, parameters)) &&
-               Utilities.equals(doubleValue(STANDARD_PARALLEL_1, parameters),
-                                doubleValue(LATITUDE_OF_ORIGIN, parameters))
-                                ) {
-                // handle the ESRI 1SP case
-                return new LambertConformal1SP(parameters);
-            } else if(getParameter(STANDARD_PARALLEL_2, parameters) == null &&
-               Utilities.equals(doubleValue(STANDARD_PARALLEL_1, parameters),
-                                doubleValue(LATITUDE_OF_ORIGIN, parameters))) {
-                // handle the ESRI 1SP case
-                return new LambertConformal1SP(parameters);
-            } else {
-                // switch sp1 and sp2 so that we get a consistent ordering, this allows to recognize
-                // tow Lamber conformal with the same standard parallels declared in opposite order
-                ParameterValue<Double> sp1 = getParameter(STANDARD_PARALLEL_1, parameters); 
-                ParameterValue<Double> sp2 = getParameter(STANDARD_PARALLEL_2, parameters);
-                if(sp1 != null && sp2 != null) {
-                    if(sp1.doubleValue() < sp2.doubleValue()) {
-                        final double temp = sp1.doubleValue();
-                        sp1.setValue(sp2.doubleValue());
-                        sp2.setValue(temp);
-                    }
+            // switch sp1 and sp2 so that we get a consistent ordering, this allows to recognize
+            // t Lambert conformal with the same standard parallels declared in opposite order
+            ParameterValue<Double> sp1 = getParameter(STANDARD_PARALLEL_1, parameters);
+            ParameterValue<Double> sp2 = getParameter(STANDARD_PARALLEL_2, parameters);
+            if(sp1 != null && sp2 != null) {
+                if(sp1.doubleValue() < sp2.doubleValue()) {
+                    final double temp = sp1.doubleValue();
+                    sp1.setValue(sp2.doubleValue());
+                    sp2.setValue(temp);
                 }
-                
-                return new LambertConformal2SP(parameters);
             }
+
+            return new LambertConformal2SP(parameters);
         }
     }
 }

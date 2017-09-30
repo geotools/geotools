@@ -20,6 +20,8 @@ import static org.junit.Assert.*;
 
 import java.awt.geom.Rectangle2D;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.GeneralEnvelope;
@@ -417,5 +419,20 @@ public final class CrsTest {
         CoordinateReferenceSystem epsg3857 = CRS.parseWKT(wkt);
         
         assertTrue(CRS.equalsIgnoreMetadata(esriCrs, epsg3857));
+    }
+
+    @Test
+    public void testLambertParsing() throws FactoryException {
+        String initialLambertWkt = "PROJCS[\"LAMBERT WKT\",GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\"," +
+                "SPHEROID[\"WGS_1984\",6371200.0,0]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\"," +
+                "0.017453292519943295]],PROJECTION[\"Lambert_Conformal_Conic\"]," +
+                "PARAMETER[\"standard_parallel_1\",25.0],PARAMETER[\"latitude_of_origin\",25.0]," +
+                "PARAMETER[\"central_meridian\",-95.0],PARAMETER[\"false_easting\",0]," +
+                "PARAMETER[\"false_northing\",0],PARAMETER[\"Scale_Factor\",1.0],UNIT[\"m\",1]]";
+        CoordinateReferenceSystem lambertCRS = CRS.parseWKT(initialLambertWkt);
+        String parsedLambertWkt = lambertCRS.toWKT();
+        System.out.println(parsedLambertWkt);
+        CoordinateReferenceSystem lambertCRS2 = CRS.parseWKT(parsedLambertWkt);
+        assertTrue(CRS.equalsIgnoreMetadata(lambertCRS, lambertCRS2));
     }
 }

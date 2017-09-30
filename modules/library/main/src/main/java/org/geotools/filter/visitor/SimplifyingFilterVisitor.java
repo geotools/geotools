@@ -24,6 +24,7 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.geotools.filter.FilterAttributeExtractor;
+import org.geotools.filter.IsBetweenImpl;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.And;
@@ -403,35 +404,6 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
             // simplify out double negation
             Not innerNot = (Not) inner;
             return innerNot.getFilter().accept(this, extraData);
-        } else if(inner == Filter.INCLUDE) {
-        	return Filter.EXCLUDE;
-        } else if(inner == Filter.EXCLUDE) {
-        	return Filter.INCLUDE;
-        } else if (inner instanceof PropertyIsBetween && isSimpleFeature()) {
-            PropertyIsBetween pb = (PropertyIsBetween) inner.accept(this, extraData);
-            Filter lt = ff.less(pb.getExpression(), pb.getLowerBoundary());
-            Filter gt = ff.greater(pb.getExpression(), pb.getUpperBoundary());
-            return ff.or(lt, gt);
-        } else if (inner instanceof PropertyIsEqualTo && isSimpleFeature()) {
-            PropertyIsEqualTo pe = (PropertyIsEqualTo) inner.accept(this, extraData);
-            return ff.notEqual(pe.getExpression1(), pe.getExpression2(), pe.isMatchingCase());
-        } else if (inner instanceof PropertyIsNotEqualTo && isSimpleFeature()) {
-            PropertyIsNotEqualTo pe = (PropertyIsNotEqualTo) inner.accept(this, extraData);
-            return ff.equal(pe.getExpression1(), pe.getExpression2(), pe.isMatchingCase());
-        } else if (inner instanceof PropertyIsGreaterThan && isSimpleFeature()) {
-            PropertyIsGreaterThan pg = (PropertyIsGreaterThan) inner.accept(this, extraData);
-            return ff.lessOrEqual(pg.getExpression1(), pg.getExpression2(), pg.isMatchingCase());
-        } else if (inner instanceof PropertyIsGreaterThanOrEqualTo && isSimpleFeature()) {
-            PropertyIsGreaterThanOrEqualTo pg = (PropertyIsGreaterThanOrEqualTo) inner.accept(this,
-                    extraData);
-            return ff.less(pg.getExpression1(), pg.getExpression2(), pg.isMatchingCase());
-        } else if (inner instanceof PropertyIsLessThan && isSimpleFeature()) {
-            PropertyIsLessThan pl = (PropertyIsLessThan) inner.accept(this, extraData);
-            return ff.greaterOrEqual(pl.getExpression1(), pl.getExpression2(), pl.isMatchingCase());
-        } else if (inner instanceof PropertyIsLessThanOrEqualTo && isSimpleFeature()) {
-            PropertyIsLessThanOrEqualTo pl = (PropertyIsLessThanOrEqualTo) inner.accept(this,
-                    extraData);
-            return ff.greater(pl.getExpression1(), pl.getExpression2(), pl.isMatchingCase());
         } else if (inner instanceof And) {
             // De Morgan
             And and = (And) inner;
@@ -450,9 +422,39 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
                 negatedChildren.add((Filter) ff.not(child).accept(this, extraData));
             }
             return ff.and(negatedChildren);
-        } else {
-            return super.visit(filter, extraData);
+        } else if(isSimpleFeature()) {
+            Filter simplified = (Filter) inner.accept(this, extraData);
+            if(simplified == Filter.INCLUDE) {
+                return Filter.EXCLUDE;
+            } else if(simplified == Filter.EXCLUDE) {
+                return Filter.INCLUDE;
+            } else if (simplified instanceof PropertyIsBetween) {
+                PropertyIsBetween pb = (PropertyIsBetween) simplified;
+                Filter lt = ff.less(pb.getExpression(), pb.getLowerBoundary());
+                Filter gt = ff.greater(pb.getExpression(), pb.getUpperBoundary());
+                return ff.or(lt, gt);
+            } else if (simplified instanceof PropertyIsEqualTo) {
+                PropertyIsEqualTo pe = (PropertyIsEqualTo) simplified;
+                return ff.notEqual(pe.getExpression1(), pe.getExpression2(), pe.isMatchingCase());
+            } else if (simplified instanceof PropertyIsNotEqualTo) {
+                PropertyIsNotEqualTo pe = (PropertyIsNotEqualTo) simplified;
+                return ff.equal(pe.getExpression1(), pe.getExpression2(), pe.isMatchingCase());
+            } else if (simplified instanceof PropertyIsGreaterThan) {
+                PropertyIsGreaterThan pg = (PropertyIsGreaterThan) simplified;
+                return ff.lessOrEqual(pg.getExpression1(), pg.getExpression2(), pg.isMatchingCase());
+            } else if (simplified instanceof PropertyIsGreaterThanOrEqualTo) {
+                PropertyIsGreaterThanOrEqualTo pg = (PropertyIsGreaterThanOrEqualTo) simplified;
+                return ff.less(pg.getExpression1(), pg.getExpression2(), pg.isMatchingCase());
+            } else if (simplified instanceof PropertyIsLessThan) {
+                PropertyIsLessThan pl = (PropertyIsLessThan) simplified;
+                return ff.greaterOrEqual(pl.getExpression1(), pl.getExpression2(), pl.isMatchingCase());
+            } else if (simplified instanceof PropertyIsLessThanOrEqualTo) {
+                PropertyIsLessThanOrEqualTo pl = (PropertyIsLessThanOrEqualTo) simplified;
+                return ff.greater(pl.getExpression1(), pl.getExpression2(), pl.isMatchingCase());
+            }
         }
+        // fallback, cannot do anything "intelligent"
+        return super.visit(filter, extraData);
     }
 
     /**

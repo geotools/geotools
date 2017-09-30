@@ -29,12 +29,7 @@ import org.geotools.filter.function.EnvFunction;
 import org.geotools.filter.function.math.FilterFunction_random;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor.FIDValidator;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.And;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.Id;
-import org.opengis.filter.Or;
-import org.opengis.filter.PropertyIsEqualTo;
+import org.opengis.filter.*;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
@@ -610,4 +605,16 @@ public class SimplifyingFilterVisitorTest extends TestCase {
         Filter simplified = (Filter) or.accept(visitor, null);
         assertEquals(ff.lessOrEqual(func, ff.literal(50000)), simplified);
     }
+
+    public void testSimplifyNegateImpossible() throws Exception {
+        PropertyIsEqualTo propertyIsEqualTo = ff.equal(ff.literal("a"), ff.literal("b"), true);
+        Not negated = ff.not(propertyIsEqualTo);
+
+        SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
+        SimpleFeatureType schema = DataUtilities.createType("test", "pop:String");
+        visitor.setFeatureType(schema);
+        Filter simplified = (Filter) negated.accept(visitor, null);
+        assertEquals(Filter.INCLUDE, simplified);
+    }
+
 }

@@ -507,41 +507,6 @@ public class GridCoverageReaderHelper {
      */
     GridCoverage2D readSingleCoverage(GeneralParameterValue[] readParams, GridGeometry2D gg)
             throws IOException {
-        // //
-        //
-        // Intersect the present envelope with the request envelope, also in WGS 84 to make sure
-        // there is an actual intersection
-        //
-        // //
-        boolean sameCRS;
-        ReferencedEnvelope requestedEnvelope = ReferencedEnvelope.reference(gg.getEnvelope2D());
-        try {
-            final CoordinateReferenceSystem coverageCRS = reader.getCoordinateReferenceSystem();
-            final CoordinateReferenceSystem requestCRS = gg.getCoordinateReferenceSystem();
-            final ReferencedEnvelope coverageEnvelope = ReferencedEnvelope.reference(reader
-                    .getOriginalEnvelope());
-            final ReferencedEnvelope readEnvelope = requestedEnvelope;
-            sameCRS = CRS.equalsIgnoreMetadata(coverageCRS, requestCRS);
-            if (sameCRS) {
-                if (!coverageEnvelope.intersects((BoundingBox) readEnvelope)) {
-                    return null;
-                }
-            } else {
-                ReferencedEnvelope dataEnvelopeWGS84 = coverageEnvelope.transform(
-                        DefaultGeographicCRS.WGS84, true);
-                ReferencedEnvelope requestEnvelopeWGS84 = readEnvelope.transform(
-                        DefaultGeographicCRS.WGS84, true);
-                if (!dataEnvelopeWGS84.intersects((BoundingBox) requestEnvelopeWGS84)) {
-                    return null;
-                }
-            }
-        } catch (Exception e) {
-            LOGGER.log(
-                    Level.WARNING,
-                    "Failed to compare data and request envelopes, reading the whole mapExtent instead",
-                    e);
-        }
-
         // setup the grid geometry param that will be passed to the reader
         final Parameter<GridGeometry2D> readGGParam = (Parameter<GridGeometry2D>) AbstractGridFormat.READ_GRIDGEOMETRY2D
                 .createValue();

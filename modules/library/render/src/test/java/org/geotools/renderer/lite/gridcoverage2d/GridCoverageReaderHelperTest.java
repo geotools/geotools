@@ -27,10 +27,14 @@ import java.util.List;
 import javax.media.jai.Interpolation;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.geotools.TestData;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
+import org.geotools.coverage.grid.GridEnvelope2D;
+import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
+import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
@@ -46,16 +50,17 @@ import org.geotools.referencing.operation.projection.MapProjection;
 import org.geotools.renderer.crs.ProjectionHandler;
 import org.geotools.renderer.crs.ProjectionHandlerFinder;
 import org.geotools.renderer.lite.GridCoverageRendererTest;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.geotools.util.URLs;
+import org.junit.*;
 import org.junit.rules.TemporaryFolder;
 import org.opengis.coverage.grid.Format;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.geometry.Envelope;
 import org.opengis.parameter.GeneralParameterValue;
+import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.datum.PixelInCell;
+import org.opengis.referencing.operation.MathTransform;
 
 public class GridCoverageReaderHelperTest {
     
@@ -363,5 +368,57 @@ public class GridCoverageReaderHelperTest {
         assertEquals(13.021, readEnvelope.getMaxX(), EPS);
         assertEquals(-1.041, readEnvelope.getMinY(), EPS);
         assertEquals(1.037, readEnvelope.getMaxY(), EPS);
+    }
+
+    // fails on Travis but not locally in IDE nor Maven. There are other tests covering this
+    // same behavior in GridCoverageRendererTest and they don't fail...
+    @Test
+    @Ignore
+    public void testHarvestSpatialTwoReaders() throws Exception {
+        File source = TestData.file(this.getClass(), "red_footprint_test");
+        File testDataDir = org.geotools.test.TestData.file(this, ".");
+        File directory1 = new File(testDataDir, "redHarvest1");
+        File directory2 = new File(testDataDir, "redHarvest2");
+        if (directory1.exists()) {
+            FileUtils.deleteDirectory(directory1);
+        }
+        if (directory2.exists()) {
+            FileUtils.deleteDirectory(directory1);
+        }
+        FileUtils.copyDirectory(source, directory1);
+        // move all files except red3 to the second dir
+        directory2.mkdirs();
+        for (File file : FileUtils.listFiles(directory1,
+                new RegexFileFilter("red[^3].*"), null)) {
+            assertTrue(file.renameTo(new File(directory2, file.getName())));
+        }
+
+        // crate the first reader
+        URL harvestSingleURL = URLs.fileToUrl(directory1);
+        ImageMosaicReader reader = new ImageMosaicReader(directory1, null);
+
+        // now create a second reader that won't be informed of the harvesting changes
+        // (simulating changes over a cluster, where the bbox information won't be updated from one node to the other)
+        ImageMosaicReader reader2 = new ImageMosaicReader(directory1, null);
+
+        // harvest the other files with the first reader
+        for (File file : directory2.listFiles()) {
+            assertTrue(file.renameTo(new File(directory1, file.getName())));
+        }
+        reader.harvest(null, directory1, null);
+
+        // now use the GridCoveargeReaderHelper to read data outside of the original envelope of reader2
+        ReferencedEnvelope readEnvelope = new ReferencedEnvelope(991000, 992000, 216000, 217000,
+                reader2.getCoordinateReferenceSystem());
+        Rectangle rasterArea = new Rectangle(0, 0, 10, 10);
+        GridCoverageReaderHelper helper = new GridCoverageReaderHelper(reader2, rasterArea, readEnvelope, null);
+        ParameterValue<GridGeometry2D> ggParam = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+        ggParam.setValue(new GridGeometry2D(new GridEnvelope2D(rasterArea), readEnvelope));
+        GridCoverage2D coverage = helper.readCoverage(new GeneralParameterValue[]{ggParam});
+        assertNotNull(coverage);
+        coverage.dispose(true);
+
+        reader.dispose();
+        reader2.dispose();
     }
 }

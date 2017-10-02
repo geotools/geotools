@@ -47,11 +47,15 @@ import javax.media.jai.Interpolation;
 import javax.media.jai.ROI;
 import javax.media.jai.TiledImage;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.geotools.TestData;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
+import org.geotools.coverage.grid.GridEnvelope2D;
+import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
@@ -67,6 +71,7 @@ import org.geotools.gce.geotiff.GeoTiffFormat;
 import org.geotools.gce.geotiff.GeoTiffReader;
 import org.geotools.gce.geotiff.GeoTiffWriteParams;
 import org.geotools.gce.geotiff.GeoTiffWriter;
+import org.geotools.gce.imagemosaic.ImageMosaicReader;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -84,8 +89,10 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.crs.DefaultProjectedCRS;
 import org.geotools.referencing.cs.DefaultCartesianCS;
 import org.geotools.referencing.operation.DefaultMathTransformFactory;
+import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.referencing.operation.projection.MapProjection;
 import org.geotools.renderer.lite.gridcoverage2d.ContrastEnhancementType;
+import org.geotools.renderer.lite.gridcoverage2d.GridCoverageReaderHelper;
 import org.geotools.renderer.lite.gridcoverage2d.GridCoverageReaderHelperTest;
 import org.geotools.renderer.lite.gridcoverage2d.GridCoverageRenderer;
 import org.geotools.resources.image.ImageUtilities;
@@ -1387,6 +1394,72 @@ public class GridCoverageRendererTest  {
                 "src/test/resources/org/geotools/renderer/lite/rainHighOversample.png"), image, 1000);
     }
     
+    public void testHarvestSpatialTwoReaders() throws Exception {
+        File source = TestData.file(GridCoverageReaderHelperTest.class, "red_footprint_test");
+        File testDataDir = org.geotools.test.TestData.file(this, ".");
+        File directory1 = new File(testDataDir, "redHarvest1");
+        File directory2 = new File(testDataDir, "redHarvest2");
+        if (directory1.exists()) {
+            FileUtils.deleteDirectory(directory1);
+        }
+        if (directory2.exists()) {
+            FileUtils.deleteDirectory(directory1);
+        }
+        FileUtils.copyDirectory(source, directory1);
+        // move all files except red3 to the second dir
+        directory2.mkdirs();
+        for (File file : FileUtils.listFiles(directory1,
+                new RegexFileFilter("red[^3].*"), null)) {
+            assertTrue(file.renameTo(new File(directory2, file.getName())));
+        }
+
+        // crate the first reader
+        URL harvestSingleURL = URLs.fileToUrl(directory1);
+        ImageMosaicReader reader = new ImageMosaicReader(directory1, null);
+
+        // now create a second reader that won't be informed of the harvesting changes
+        // (simulating changes over a cluster, where the bbox information won't be updated from one node to the other)
+        ImageMosaicReader reader2 = new ImageMosaicReader(directory1, null);
+
+        try {
+            // harvest the other files with the first reader
+            for (File file : directory2.listFiles()) {
+                assertTrue(file.renameTo(new File(directory1, file.getName())));
+            }
+            reader.harvest(null, directory1, null);
+
+            // now render an image directly
+            ReferencedEnvelope readEnvelope = new ReferencedEnvelope(991000, 992000, 216000, 217000, reader2.getCoordinateReferenceSystem());
+            Rectangle rasterArea = new Rectangle(0, 0, 10, 10);
+            GridToEnvelopeMapper mapper = new GridToEnvelopeMapper(new GridEnvelope2D(rasterArea), readEnvelope);
+            AffineTransform affineTransform = mapper.createAffineTransform();
+            GridCoverageRenderer renderer = new GridCoverageRenderer(reader2.getCoordinateReferenceSystem(), readEnvelope,
+                    rasterArea, affineTransform);
+            StyleBuilder sb = new StyleBuilder();
+            RasterSymbolizer symbolizer = sb.createRasterSymbolizer();
+            RenderedImage image = renderer.renderImage(reader2, null, symbolizer, Interpolation.getInstance(Interpolation.INTERP_NEAREST), Color.BLACK, 256, 256);
+
+
+            File reference = new File("src/test/resources/org/geotools/renderer/lite/gridcoverage2d/red.png");
+            ImageAssert.assertEquals(reference, image, 0);
+
+            // and render it also as streaming renderer
+            MapContent mc = new MapContent();
+            mc.addLayer(new GridReaderLayer(reader2, sb.createStyle(symbolizer)));
+            StreamingRenderer sr = new StreamingRenderer();
+            sr.setMapContent(mc);
+            BufferedImage bi = new BufferedImage(rasterArea.width, rasterArea.height, BufferedImage.TYPE_3BYTE_BGR);
+            Graphics2D graphics = bi.createGraphics();
+            sr.paint(graphics, rasterArea, readEnvelope);
+            graphics.dispose();
+
+            ImageAssert.assertEquals(reference, bi, 0);
+        } finally {
+            reader.dispose();
+            reader2.dispose();
+        }
+    }
+
     /**
      * Checks the pixel i/j is fully transparent
      * @param image

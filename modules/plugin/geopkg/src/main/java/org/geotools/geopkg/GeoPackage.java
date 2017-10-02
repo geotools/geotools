@@ -1161,11 +1161,11 @@ public class GeoPackage {
                 }
                 //create the tile table itself
                 st = cx.prepareStatement(format("CREATE TABLE %s (" +
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "zoom_level INTEGER NOT NULL DEFAULT 0," +
-                    "tile_column INTEGER NOT NULL DEFAULT 0," +
-                    "tile_row INTEGER NOT NULL DEFAULT 0," +
-                    "tile_data BLOB NOT NULL DEFAULT (zeroblob(4)))", e.getTableName()));
+                    "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
+                    "zoom_level INTEGER NOT NULL," +
+                    "tile_column INTEGER NOT NULL," +
+                    "tile_row INTEGER NOT NULL," +
+                    "tile_data BLOB NOT NULL)", e.getTableName()));
                 try {
                     st.execute();
                 } finally {

@@ -97,6 +97,8 @@ import javax.media.jai.operator.SubtractDescriptor;
 import javax.media.jai.operator.XorConstDescriptor;
 import javax.media.jai.registry.RenderedRegistryMode;
 
+import it.geosolutions.jaiext.range.RangeDouble;
+import it.geosolutions.jaiext.rlookup.RangeLookupTable;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
@@ -104,6 +106,7 @@ import org.geotools.image.io.ImageIOExt;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.operation.transform.WarpBuilder;
 import org.geotools.resources.Arguments;
+import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.image.ColorUtilities;
@@ -4932,7 +4935,22 @@ public class ImageWorker {
     
                     bgValues = new double[] { 0, 0, 0, 0 };
                 } else {
-                    image = new ImageWorker(image).addAlphaChannel().getRenderedImage();
+                    if(nodata != null) {
+                        // must map nodata to alpha
+                        RangeLookupTable.Builder builder = new RangeLookupTable.Builder();
+                        if (nodata.getMin().doubleValue() != Double.NEGATIVE_INFINITY) {
+                            builder.add(RangeFactory.create(Double.NEGATIVE_INFINITY, true, nodata.getMin().doubleValue(), !nodata.isMinIncluded()), (byte) 255);
+                        }
+                        builder.add(nodata, (byte) 0);
+                        if (nodata.getMax().doubleValue() != Double.POSITIVE_INFINITY) {
+                            builder.add(RangeFactory.create(nodata.getMax().doubleValue(), !nodata.isMaxIncluded(), Double.POSITIVE_INFINITY, false), (byte) 255);
+                        }
+                        RangeLookupTable lookupTable = builder.build();
+                        final RenderedImage alpha = new ImageWorker(this.image).rangeLookup(lookupTable).getRenderedImage();
+                        image = new ImageWorker(image).addBand(alpha, false, true, null).getRenderedImage();
+                    } else {
+                        image = new ImageWorker(image).addAlphaChannel().getRenderedImage();
+                    }
                     // this will work fine for all situation where the color components are <= 3
                     // e.g., one band rasters with no colormap will have only one usually
                     bgValues = new double[] { 0, 0, 0, 0 };

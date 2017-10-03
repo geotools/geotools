@@ -294,6 +294,11 @@ public class Utils {
         public static final String HETEROGENEOUS_CRS = "HeterogeneousCRS";
 
         public static final String GRANULE_COLLECTOR_FACTORY = "GranuleCollectorFactory";
+
+        /**
+         * The NoData value used in case no granule is found, but the request falls inside the image mosaic bounds
+         */
+        public static final String NO_DATA = "NoData";
     }
 
     /**
@@ -789,6 +794,22 @@ public class Utils {
                     LOGGER.log(Level.FINE,
                             "Unable to decode CRS of mosaic properties file. Configured CRS "
                                     + "code was: " + crsCode,
+                            e);
+                }
+            }
+        }
+
+        // target NoData
+        if (!ignoreSome || !ignorePropertiesSet.contains(Prop.NO_DATA)) {
+            String noDataStr = properties.getProperty(Prop.NO_DATA);
+            if (noDataStr != null && !noDataStr.isEmpty()) {
+                try {
+                    double noData = Double.parseDouble(noDataStr);
+                    retValue.setNoData(noData);
+                } catch (NumberFormatException e) {
+                    LOGGER.log(Level.FINE,
+                            "Unable to decode NoData of mosaic properties file. Configured NoData "
+                                    + "code was: " + noDataStr,
                             e);
                 }
             }

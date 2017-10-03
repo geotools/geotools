@@ -24,6 +24,42 @@ import it.geosolutions.jaiext.range.NoDataContainer;
 import it.geosolutions.jaiext.range.Range;
 import it.geosolutions.jaiext.range.RangeFactory;
 import it.geosolutions.jaiext.utilities.ImageLayout2;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
+import java.awt.image.ColorModel;
+import java.awt.image.IndexColorModel;
+import java.awt.image.RenderedImage;
+import java.awt.image.SampleModel;
+import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.imageio.ImageReadParam;
+import javax.measure.unit.Unit;
+import javax.media.jai.ImageLayout;
+import javax.media.jai.Interpolation;
+import javax.media.jai.JAI;
+import javax.media.jai.PlanarImage;
+import javax.media.jai.ROI;
+import javax.media.jai.RenderedOp;
+import javax.media.jai.operator.ConstantDescriptor;
+import javax.media.jai.operator.MosaicDescriptor;
+
+import it.geosolutions.jaiext.JAIExt;
 import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.TypeMap;
@@ -283,7 +319,7 @@ public class RasterLayerResponse {
          * A dry run means: no tasks are executed.
          *
          * @param dryRun <code>true</code> for a dry run, <code>false</code> otherwise.
-         * @param collectorsFactory
+         * @param collectors
          */
         private MosaicProducer(final boolean dryRun, List<SubmosaicProducer> collectors) {
             this.granuleCollectors = collectors;
@@ -935,6 +971,11 @@ public class RasterLayerResponse {
                     new double[][] { { CoverageUtilities
                             .getMosaicThreshold(il.getSampleModel(null).getDataType()) } },
                     new Range[] { RangeFactory.create(0, 0) });
+            // there was really nothing here, so make sure this comes out in the output
+            Double noData = rasterManager.getConfiguration().getNoData();
+            if (noData != null) {
+                w.setNoData(RangeFactory.create(noData, noData));
+            }
             finalImage = w.getRenderedImage();
         }
         //
@@ -968,10 +1009,6 @@ public class RasterLayerResponse {
 
     /**
      * This method is responsible for creating a coverage from the supplied {@link RenderedImage}.
-     *
-     * @param image
-     * @return
-     * @throws IOException
      */
     private GridCoverage2D prepareCoverage(MosaicOutput mosaicOutput) throws IOException {
 

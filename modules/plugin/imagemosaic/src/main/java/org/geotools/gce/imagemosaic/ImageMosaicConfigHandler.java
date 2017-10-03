@@ -416,9 +416,6 @@ public class ImageMosaicConfigHandler {
 
     /**
      * Create a {@link SimpleFeatureType} from the specified configuration.
-     *
-     * @param configurationBean
-     * @param actualCRS CRS of the mosaic
      * @return the schema for the mosaic
      */
     private SimpleFeatureType createSchema(CatalogBuilderConfiguration runConfiguration,
@@ -1258,6 +1255,10 @@ public class ImageMosaicConfigHandler {
             properties.setProperty(Prop.MOSAIC_CRS, CRS.toSRS(mosaicConfiguration.getCrs()));
         }
 
+        if (mosaicConfiguration.getNoData() != null) {
+            properties.setProperty(Prop.NO_DATA, String.valueOf(mosaicConfiguration.getNoData()));
+        }
+
         OutputStream outStream = null;
         String filePath = runConfiguration.getParameter(Prop.ROOT_MOSAIC_DIR) + "/"
         // + runConfiguration.getIndexName() + ".properties"));
@@ -1321,7 +1322,6 @@ public class ImageMosaicConfigHandler {
         MosaicConfigurationBean currentConfigurationBean = null;
         RasterManager rasterManager = null;
         if (coverageExists) {
-
             // Get the manager for this coverage so it can be updated
             rasterManager = getParentReader().getRasterManager(targetCoverageName);
             mosaicConfiguration = rasterManager.getConfiguration();
@@ -1377,6 +1377,19 @@ public class ImageMosaicConfigHandler {
                 configBuilder.setCrs(CRS.decode(mosaicCrs, true));
             } else {
                 configBuilder.setCrs(actualCRS);
+            }
+
+            String noData = IndexerUtils.getParameter(Prop.NO_DATA, indexer);
+            if(noData != null && !noData.isEmpty()) {
+                try {
+                    double noDataValue = Double.parseDouble(noData);
+                    configBuilder.setNoData(noDataValue);
+                } catch (NumberFormatException e) {
+                    String error = "Invalid NoData specification " + noData + ", was expecting a number";
+                    LOGGER.log(Level.WARNING, error);
+                    throw new RuntimeException(error, e);
+                }
+
             }
 
             // get/compute the resolution levels
@@ -1520,7 +1533,7 @@ public class ImageMosaicConfigHandler {
      * @param resolutionLevels
      * @param fromCRS
      * @param toCRS
-     * @param envelope
+     * @param sourceEnvelope
      * @return
      * @throws FactoryException 
      * @throws TransformException 

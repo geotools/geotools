@@ -726,6 +726,10 @@ public class IndexerUtils {
             setParam(parameters, props, Utils.Prop.MOSAIC_CRS);
         }
 
+        if (props.containsKey(Utils.Prop.NO_DATA)) {
+            setParam(parameters, props, Utils.Prop.NO_DATA);
+        }
+
         return indexer;
     }
 

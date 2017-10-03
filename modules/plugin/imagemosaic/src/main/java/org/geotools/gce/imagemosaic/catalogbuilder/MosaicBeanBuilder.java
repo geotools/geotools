@@ -34,6 +34,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 public class MosaicBeanBuilder {
 
     private MosaicConfigurationBean bean;
+    private Double noData;
 
     /**
      * Default constructor
@@ -271,7 +272,16 @@ public class MosaicBeanBuilder {
             bean.setAuxiliaryFilePath(auxiliaryFilePath);
             bean.setAuxiliaryDatastorePath(auxiliaryDatastorePath);
             bean.setCheckAuxiliaryMetadata(checkAuxiliaryMetadata);
+            bean.setNoData(noData);;
         }
         return bean;
+    }
+
+    public void setNoData(Double noData) {
+        this.noData = noData;
+    }
+
+    public Double getNoData() {
+        return noData;
     }
 }

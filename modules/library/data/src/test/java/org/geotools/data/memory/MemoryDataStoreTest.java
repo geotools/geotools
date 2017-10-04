@@ -164,6 +164,19 @@ public class MemoryDataStoreTest extends DataTestCase {
     }
 
     /*
+     * Test for void MemoryDataStore.addFeatures(FeatureCollection<SimpleFeatureType,SimpleFeature> collection)
+     */
+    public void testMemoryDataStoreAddFeatures() throws Exception {
+        MemoryDataStore store = new MemoryDataStore();
+        assertNotNull(store);
+        store.addFeatures(DataUtilities.collection(roadFeatures));
+        assertStoreHasFeatureType(store, "road");
+        SimpleFeatureSource featureSource = store.getFeatureSource("road");
+        SimpleFeatureCollection features = featureSource.getFeatures();
+        int size = features.size();
+        assertEquals(roadFeatures.length, size);
+    }
+    /*
      * Test for void MemoryDataStore(FeatureReader)
      */
     public void testMemoryDataStoreFeatureArray() throws IOException {

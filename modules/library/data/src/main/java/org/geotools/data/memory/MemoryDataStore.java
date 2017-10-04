@@ -192,7 +192,9 @@ public class MemoryDataStore extends ContentDataStore {
         }
         synchronized (entries) {
             try( FeatureIterator<SimpleFeature> iterator = collection.features()){
-                addFeatureInternal( iterator.next() );
+                while( iterator.hasNext() ) {
+                    addFeatureInternal( iterator.next() );
+                }
             }
         }
     }

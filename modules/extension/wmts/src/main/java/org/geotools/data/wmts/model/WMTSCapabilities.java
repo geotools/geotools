@@ -305,6 +305,7 @@ public class WMTSCapabilities extends Capabilities {
             throws RuntimeException, IllegalArgumentException, ServiceException {
         TileMatrixSet matrixSet = new TileMatrixSet();
         matrixSet.setCRS(tm.getSupportedCRS());
+        matrixSet.setWellKnownScaleSet(tm.getWellKnownScaleSet());
         matrixSet.setIdentifier(tm.getIdentifier().getValue());
         if (tm.getBoundingBox() != null) {
             matrixSet.setBbox(bbox2bbox(tm.getBoundingBox()));

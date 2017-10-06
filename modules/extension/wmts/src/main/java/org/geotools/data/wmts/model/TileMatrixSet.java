@@ -55,6 +55,8 @@ public class TileMatrixSet {
 
     private String crs;
 
+    private String wellKnownScaleSet;
+
     CoordinateReferenceSystem coordinateReferenceSystem;
 
     private CRSEnvelope bbox;
@@ -134,6 +136,14 @@ public class TileMatrixSet {
 
     public void setBbox(CRSEnvelope bbox) {
         this.bbox = bbox;
+    }
+
+    public String getWellKnownScaleSet() {
+        return wellKnownScaleSet;
+    }
+
+    public void setWellKnownScaleSet(String wellKnownScaleSet) {
+        this.wellKnownScaleSet = wellKnownScaleSet;
     }
 
     public String toString() {

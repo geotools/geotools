@@ -120,7 +120,11 @@ public class TileMatrixSetBinding extends AbstractComplexBinding {
         matrixSet.setBoundingBox((BoundingBoxType) node.getChildValue("BoundingBox"));
         matrixSet.setIdentifier((CodeType) node.getChildValue("Identifier"));
         matrixSet.setSupportedCRS(((URI) node.getChildValue("SupportedCRS")).toString());
-        matrixSet.setWellKnownScaleSet((String) node.getChildValue("WellKnownScaleSet"));
+
+        URI wkss = (URI)node.getChildValue("WellKnownScaleSet");
+        if(wkss != null) {
+            matrixSet.setWellKnownScaleSet(wkss.toString());
+        }
         matrixSet.getAbstract().addAll(node.getChildren("abstract"));
         List<Node> children = node.getChildren("TileMatrix");
         for(Node c:children) {

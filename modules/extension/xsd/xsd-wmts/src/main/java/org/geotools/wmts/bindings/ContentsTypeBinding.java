@@ -3,9 +3,7 @@ package org.geotools.wmts.bindings;
 import org.geotools.wmts.WMTS;
 import org.geotools.xml.*;
 import org.geotools.xml.AbstractComplexBinding;
-import org.opengis.metadata.MetaData;
 
-import net.opengis.ows20.DatasetDescriptionSummaryBaseType;
 import net.opengis.ows20.MetadataType;
 import net.opengis.wmts.v_1.ContentsType;
 import net.opengis.wmts.v_1.TileMatrixSetType;

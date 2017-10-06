@@ -41,6 +41,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 public class MosaicConfigurationBean {
 
     private Indexer indexer;
+    private Double noData;
 
     /**
      * Default constructor
@@ -267,22 +268,44 @@ public class MosaicConfigurationBean {
         this.auxiliaryDatastorePath = auxiliaryDatastorePath;
     }
 
-    @Override
-    public String toString() {
-        return "MosaicConfigurationBean [expandToRGB=" + expandToRGB + ", levels="
-                + Arrays.toString(levels) + ", name=" + name + ", levelsNum=" + levelsNum
-                + ", timeAttribute=" + timeAttribute + ", elevationAttribute=" + elevationAttribute
-                + ", crsAttribute=" + crsAttribute
-                + ",sampleModel=" + sampleModel + ", envelope=" + envelope
-                + ", footprintManagement=" + footprintManagement + ", checkAuxiliaryMetadata="
-                + checkAuxiliaryMetadata + "]";
-    }
-
     public void setIndexer(Indexer indexer) {
         this.indexer = indexer;
     }
 
     public Indexer getIndexer() {
         return indexer;
+    }
+
+    public Double getNoData() {
+        return noData;
+    }
+
+    public void setNoData(Double noData) {
+        this.noData = noData;
+    }
+
+    @Override
+    public String toString() {
+        return "MosaicConfigurationBean{" +
+                "noData=" + noData +
+                ", expandToRGB=" + expandToRGB +
+                ", checkAuxiliaryMetadata=" + checkAuxiliaryMetadata +
+                ", levels=" + Arrays.toString(levels) +
+                ", name='" + name + '\'' +
+                ", levelsNum=" + levelsNum +
+                ", timeAttribute='" + timeAttribute + '\'' +
+                ", elevationAttribute='" + elevationAttribute + '\'' +
+                ", crsAttribute='" + crsAttribute + '\'' +
+                ", additionalDomainAttributes='" + additionalDomainAttributes + '\'' +
+                ", crs=" + crs +
+                ", sampleModel=" + sampleModel +
+                ", colorModel=" + colorModel +
+                ", palette=" + Arrays.toString(palette) +
+                ", envelope=" + envelope +
+                ", auxiliaryFilePath='" + auxiliaryFilePath + '\'' +
+                ", auxiliaryDatastorePath='" + auxiliaryDatastorePath + '\'' +
+                ", coverageNameCollectorSpi='" + coverageNameCollectorSpi + '\'' +
+                ", footprintManagement=" + footprintManagement +
+                '}';
     }
 }

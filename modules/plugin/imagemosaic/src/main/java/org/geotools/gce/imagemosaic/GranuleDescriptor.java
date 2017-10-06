@@ -39,6 +39,7 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.ImageTypeSpecifier;
+import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.spi.ImageInputStreamSpi;
 import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.ImageInputStream;
@@ -53,6 +54,7 @@ import javax.media.jai.ROIShape;
 import javax.media.jai.TileCache;
 import javax.media.jai.TileScheduler;
 
+import it.geosolutions.imageio.core.CoreCommonImageMetadata;
 import org.apache.commons.beanutils.MethodUtils;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
@@ -336,6 +338,8 @@ public class GranuleDescriptor {
      */
     private MaskOverviewProvider ovrProvider;
 
+    private NoDataContainer noData;
+
     protected void init(final BoundingBox granuleBBOX, final URL granuleUrl,
             final ImageReaderSpi suggestedSPI, final MultiLevelROI roiProvider,
             final boolean heterogeneousGranules, final boolean handleArtifactsFiltering,
@@ -367,6 +371,7 @@ public class GranuleDescriptor {
             //
             SpiHelper spiProvider = new SpiHelper(granuleFile, suggestedSPI);
             boolean isMultidim = spiProvider.isMultidim();
+
 
             GeneralEnvelope envelope = gcReader.getOriginalEnvelope();
             this.granuleEnvelope = envelope;
@@ -410,8 +415,7 @@ public class GranuleDescriptor {
                         "Unable to get an ImageReader for the provided file "
                                 + granuleUrl.toString());
 
-            boolean ignoreMetadata = isMultidim ? customizeReaderInitialization(reader, hints)
-                    : false;
+            boolean ignoreMetadata = isMultidim ? customizeReaderInitialization(reader, hints) : false;
             reader.setInput(inStream, false, ignoreMetadata);
             // get selected level and base level dimensions
             final Rectangle originalDimension = Utils.getDimension(0, reader);
@@ -430,7 +434,6 @@ public class GranuleDescriptor {
                     originalDimension.width, originalDimension.height));
 
             ////////////////////// Setting overviewController ///////////////////////
-
             if (heterogeneousGranules) {
                 // //
                 //
@@ -470,6 +473,10 @@ public class GranuleDescriptor {
                 }
             }
 
+            // handle the nodata if available
+            if (!ignoreMetadata) {
+                setupNoData(reader);
+            }
         } catch (IllegalStateException e) {
             throw new IllegalArgumentException(e);
 
@@ -496,6 +503,32 @@ public class GranuleDescriptor {
                 }
             }
 
+        }
+    }
+
+    private void setupNoData(ImageReader reader) throws IOException {
+        // grabbing the nodata if possible
+        int index = 0;
+        if (originator != null) {
+            Object imageIndex = originator.getAttribute("imageindex");
+            if (imageIndex instanceof Integer) {
+                index = (Integer) imageIndex;
+            }
+        }
+        try {
+            IIOMetadata metadata = reader.getImageMetadata(index);
+            if (metadata instanceof CoreCommonImageMetadata) {
+                double[] noData = ((CoreCommonImageMetadata) metadata).getNoData();
+                if (noData != null) {
+                    this.noData = new NoDataContainer(noData);
+                }
+            }
+        } catch(UnsupportedOperationException e) {
+            // some imageio-ext plugin throw this because they do not support getting the metadata
+            // instead of returning null
+            if (LOGGER.isLoggable(Level.FINER)) {
+                LOGGER.log(Level.FINER, "Failed to gather metadata, might not be fatal, some readers do not support it", e);
+            }
         }
     }
 
@@ -1148,6 +1181,12 @@ public class GranuleDescriptor {
                 if (iw.getNoData() != null) {
                     PlanarImage t = PlanarImage.wrapRenderedImage(renderedImage);
                     t.setProperty(NoDataContainer.GC_NODATA, new NoDataContainer(iw.getNoData()));
+                    renderedImage = t;
+                } else if(this.noData != null) {
+                    // on deferred loading we cannot get the noData from the image, but we might have read it
+                    // at the beginning
+                    PlanarImage t = PlanarImage.wrapRenderedImage(renderedImage);
+                    t.setProperty(NoDataContainer.GC_NODATA, noData);
                     renderedImage = t;
                 }
                 return new GranuleLoadingResult(renderedImage, null, granuleURLUpdated, doFiltering,

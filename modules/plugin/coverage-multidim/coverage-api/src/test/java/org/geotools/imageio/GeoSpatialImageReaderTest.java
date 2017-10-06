@@ -109,28 +109,9 @@ public class GeoSpatialImageReaderTest {
 
         reader.setInput(file);
 
-        // Test exceptions
-        // Ensure that UnsupportedOperationException is thrown
-        boolean notThrown = false;
-        try {
-            reader.getImageMetadata(0);
-            notThrown = true;
-        } catch (UnsupportedOperationException e) {
-        } catch (IOException e) {
-            notThrown = true;
-        }
-        assertFalse(notThrown);
-        // Reset the boolean
-        notThrown = false;
-
-        try {
-            reader.getStreamMetadata();
-            notThrown = true;
-        } catch (UnsupportedOperationException e) {
-        } catch (IOException e) {
-            notThrown = true;
-        }
-        assertFalse(notThrown);
+        // Test unsupported methods (that can return null!)
+        assertNull(reader.getImageMetadata(0));
+        assertNull(reader.getStreamMetadata());
 
         // Reader Catalog
         CoverageSlicesCatalog sliceCat = reader.getCatalog();

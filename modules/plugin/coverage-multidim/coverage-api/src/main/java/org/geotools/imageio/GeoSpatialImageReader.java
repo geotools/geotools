@@ -67,10 +67,8 @@ public abstract class GeoSpatialImageReader extends ImageReader implements FileS
     @Override
     public IIOMetadata getImageMetadata(int imageIndex) throws IOException {
         checkImageIndex(imageIndex);
-        if (ignoreMetadata) {
-            return null;
-        }
-        throw new UnsupportedOperationException("ImageMetadata are not supported for this ImageReader");
+        // metadata is not supported, the interface allows for returning null
+        return null;
     }
 
     @Override
@@ -90,7 +88,7 @@ public abstract class GeoSpatialImageReader extends ImageReader implements FileS
 
     @Override
     public IIOMetadata getStreamMetadata() throws IOException {
-        throw new UnsupportedOperationException("getStreamMetadata is not supported");
+        return null;
     }
 
     /**

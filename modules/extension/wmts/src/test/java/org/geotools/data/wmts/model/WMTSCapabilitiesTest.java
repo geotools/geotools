@@ -231,6 +231,31 @@ public class WMTSCapabilitiesTest extends TestCase {
         }
     }
 
+    public void testParserOLSample() throws Exception {
+        WMTSCapabilities capabilities = createCapabilities("ol.getcapa.xml");
+        try {
+            assertEquals("1.0.0", capabilities.getVersion());
+
+            WMTSService service = (WMTSService) capabilities.getService();
+            assertEquals("Koordinates Labs", service.getTitle());
+
+            List<TileMatrixSet> matrixSets = capabilities.getMatrixSets();
+            assertNotNull(matrixSets);
+            assertFalse(matrixSets.isEmpty());
+
+            assertEquals("urn:ogc:def:wkss:OGC:1.0:GoogleMapsCompatible",
+                    matrixSets.get(0).getWellKnownScaleSet());
+
+        } catch (Exception e) {
+            // a standard catch block shared with the other tests
+            if ((e.getMessage() != null) && e.getMessage().indexOf("timed out") > 0) {
+                System.err.println("Unable to test - timed out: " + e);
+            } else {
+                throw (e);
+            }
+        }
+    }
+
     protected WebMapTileServer getCustomWMS(URL featureURL)
             throws SAXException, URISyntaxException, IOException {
         return new WebMapTileServer(featureURL);

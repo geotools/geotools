@@ -46,7 +46,7 @@ public class GMLMultiPointTypeBinding2Test extends GMLTestSupport {
 
     public void testEncode() throws Exception {
         Document doc = encode(GML2MockData.multiPoint(), GML.MultiPoint);
-        print(doc);
+        // print(doc);
         
         assertEquals(2,
             doc.getElementsByTagNameNS(GML.NAMESPACE, GML.pointMember.getLocalPart()).getLength());

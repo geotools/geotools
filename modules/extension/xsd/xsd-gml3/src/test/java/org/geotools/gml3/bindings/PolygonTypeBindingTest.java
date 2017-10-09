@@ -88,7 +88,7 @@ public class PolygonTypeBindingTest extends GML3TestSupport {
     public void testEncodeCurved() throws Exception {
         Polygon poly = GML3MockData.curvePolygon();
         Document doc = encode(poly, GML.Polygon);
-        print(doc);
+        // print(doc);
 
     }
 

@@ -134,7 +134,7 @@ public class XSAnyTypeBindingTest extends GML3TestSupport {
         QName observation = ANYTYPETEST.OBSERVATION;
         ComplexAttribute myCode = testAnyTypeTest(observation, SAMPLE_CLASS_VALUE);
         Document dom = encode(myCode, observation);
-        print(dom);
+        // print(dom);
         assertEquals("test:Observation", dom.getDocumentElement().getNodeName());
         assertEquals(1, dom.getDocumentElement().getElementsByTagName("test:class").getLength());
         assertNotNull(dom.getDocumentElement().getElementsByTagName("test:class").item(0).getFirstChild());
@@ -145,7 +145,7 @@ public class XSAnyTypeBindingTest extends GML3TestSupport {
         QName typeName = ANYTYPETEST.UNRESTRICTED;
         ComplexAttribute unrestricted = createUnrestrictedAttr(typeName, SAMPLE_UNRESTRICTED_VALUE);
         Document dom = encode(unrestricted, typeName);
-        print(dom);
+        // print(dom);
         assertEquals("test:unrestrictedEl", dom.getDocumentElement().getNodeName());
         assertEquals(SAMPLE_UNRESTRICTED_VALUE,dom.getDocumentElement().getTextContent());
     }

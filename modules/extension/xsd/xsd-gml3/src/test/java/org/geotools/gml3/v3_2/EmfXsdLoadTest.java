@@ -121,18 +121,18 @@ public class EmfXsdLoadTest {
             }
         }
         Assert.assertNotNull(type);
-        System.err.println("Child element declaration types for " + name + " :");
+        // System.err.println("Child element declaration types for " + name + " :");
         List<XSDElementDeclaration> children = Schemas.getChildElementDeclarations(type);
         boolean foundNull = false;
         for (XSDElementDeclaration child : children) {
-            System.err.println("QName: " + child.getQName() + " URI: " + child.getURI() + " Type: "
-                    + child.getTypeDefinition()
-                    + (child.getTypeDefinition() == null ? " <<< FAILURE" : ""));
+            // System.err.println("QName: " + child.getQName() + " URI: " + child.getURI() + " Type: "
+            //        + child.getTypeDefinition()
+            //        + (child.getTypeDefinition() == null ? " <<< FAILURE" : ""));
             if (child.getTypeDefinition() == null) {
                 foundNull = true;
             }
         }
-        System.err.println();
+        // System.err.println();
         Assert.assertFalse("Unexpected child element declaration with null type", foundNull);
     }
 

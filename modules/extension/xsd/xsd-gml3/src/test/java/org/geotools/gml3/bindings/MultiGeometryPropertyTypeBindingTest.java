@@ -28,7 +28,7 @@ import org.w3c.dom.Document;
 public class MultiGeometryPropertyTypeBindingTest extends GML3TestSupport {
     public void testEncode() throws Exception {
         Document dom = encode(GML3MockData.multiGeometry(), GML.multiGeometryProperty);
-        print(dom);
+        // print(dom);
         assertEquals(1,
             dom.getElementsByTagNameNS(GML.NAMESPACE, GML.MultiGeometry.getLocalPart()).getLength());
     }

@@ -41,7 +41,7 @@ public class MultiPointTypeBindingTest extends GML32TestSupport {
 
     public void testEncode() throws Exception {
         Document dom = encode(GML3MockData.multiPoint(), GML.MultiPoint);
-        print(dom);
+        // print(dom);
         assertEquals(2,
             dom.getElementsByTagNameNS(GML.NAMESPACE, GML.pointMember.getLocalPart()).getLength());
     }

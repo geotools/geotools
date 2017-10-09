@@ -36,7 +36,7 @@ public class CodeTypeBindingTest extends ComplexAttributeTestSupport {
     public void testEncode() throws Exception {
         ComplexAttribute myCode = gmlCodeType(GML.name, TEST_NAME_VALUE, TEST_NAME_CODESPACE);
         Document dom = encode(myCode, GML.name);
-        print(dom);
+        // print(dom);
         assertEquals("gml:name", dom.getDocumentElement().getNodeName());
         assertEquals(TEST_NAME_VALUE, dom.getDocumentElement().getFirstChild().getNodeValue());
         assertNotNull(dom.getDocumentElement().getAttribute("codeSpace"));

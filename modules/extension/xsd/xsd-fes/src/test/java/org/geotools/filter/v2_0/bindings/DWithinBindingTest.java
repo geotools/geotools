@@ -15,6 +15,6 @@ public class DWithinBindingTest extends FESTestSupport {
     public void testEncode() throws Exception {
         DWithin dwithin = FilterMockData.dwithin();
         Document dom = encode(dwithin, FES.DWithin);
-        print(dom);
+        // print(dom);
     }
 }

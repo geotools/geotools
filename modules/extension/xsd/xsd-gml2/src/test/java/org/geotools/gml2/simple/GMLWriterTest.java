@@ -77,7 +77,7 @@ public class GMLWriterTest extends GMLTestSupport{
             "GEOMETRYCOLLECTION (LINESTRING"
             + " (180 200, 160 180), POINT (19 19), POINT (20 10))");
         Document doc = encode(gce, geometry);
-        print(doc);
+        // print(doc);
         assertEquals(1,
             xpath.getMatchingNodes("//gml:LineString", doc).getLength());
         assertEquals(2, xpath.getMatchingNodes("//gml:Point", doc).getLength());

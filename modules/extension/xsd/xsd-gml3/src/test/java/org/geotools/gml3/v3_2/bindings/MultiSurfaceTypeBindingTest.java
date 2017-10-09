@@ -30,7 +30,7 @@ import org.w3c.dom.Document;
 public class MultiSurfaceTypeBindingTest extends GML32TestSupport {
     public void testEncode() throws Exception {
         Document dom = encode(GML3MockData.multiPolygon(), GML.MultiSurface);
-        print(dom);
+        // print(dom);
         assertEquals(2,
             dom.getElementsByTagNameNS(GML.NAMESPACE, GML.Polygon.getLocalPart()).getLength());
     }

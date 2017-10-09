@@ -78,7 +78,7 @@ public class FeatureCollectionTypeBindingTest extends WFSTestSupport {
         fc.getFeature().add( features );
         
         Document dom = encode( fc, WFS.FeatureCollection );
-        print( dom );
+        // print( dom );
         
         NodeList featureNodes = dom.getElementsByTagNameNS( "http://geotools.org" , "feature" );
         

@@ -65,6 +65,6 @@ public class LinearRingTypeBindingTest extends GML32TestSupport {
         assertEquals("gml:LinearRing", d.getDocumentElement().getNodeName());
         assertXpathExists("/gml:LinearRing/gml:posList", d);
         
-        print(d);
+        // print(d);
     }
 }

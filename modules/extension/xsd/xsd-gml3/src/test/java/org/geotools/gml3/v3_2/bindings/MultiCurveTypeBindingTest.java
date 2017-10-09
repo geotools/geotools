@@ -31,7 +31,7 @@ import org.w3c.dom.Document;
 public class MultiCurveTypeBindingTest extends GML32TestSupport {
     public void testEncode() throws Exception {
         Document dom = encode(GML3MockData.multiLineString(), GML.MultiCurve);
-        print(dom);
+        // print(dom);
         
         XMLAssert.assertXpathEvaluatesTo("2", "count(//gml:curveMember)", dom);
         XMLAssert.assertXpathEvaluatesTo("2", "count(//gml:LineString)", dom);

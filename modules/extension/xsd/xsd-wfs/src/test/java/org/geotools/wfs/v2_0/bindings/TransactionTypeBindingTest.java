@@ -199,7 +199,7 @@ public class TransactionTypeBindingTest extends WFSTestSupport {
                 
         registerNamespaceMapping("bla", "http://blabla");
         Document doc = encode(t, WFS.Transaction);
-        print(doc);
+        // print(doc);
         
         HashMap<String, String> m = new HashMap<String, String>();
         m.put("bla", "http://blabla");

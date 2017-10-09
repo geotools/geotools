@@ -49,7 +49,7 @@ public class GeometryPropertyTypeBindingTest extends GML3TestSupport {
                         5, 5, 7, 3 }));
 
         Document dom = encode(curve, GML.geometryMember);
-        print(dom);
+        // print(dom);
         XpathEngine xpath = XMLUnit.newXpathEngine();
         String basePath = "/gml:geometryMember/gml:Curve/gml:segments/gml:ArcString";
         assertEquals(1,

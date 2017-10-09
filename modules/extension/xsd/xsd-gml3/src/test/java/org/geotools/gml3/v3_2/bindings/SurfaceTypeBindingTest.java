@@ -35,7 +35,7 @@ public class SurfaceTypeBindingTest extends GML32TestSupport {
     
     public void testEncode() throws Exception {
         Document dom = encode(GML3MockData.multiPolygon(), GML.Surface);
-        print(dom);
+        // print(dom);
         assertEquals(2,
             dom.getElementsByTagNameNS(GML.NAMESPACE, GML.PolygonPatch.getLocalPart()).getLength());
     }

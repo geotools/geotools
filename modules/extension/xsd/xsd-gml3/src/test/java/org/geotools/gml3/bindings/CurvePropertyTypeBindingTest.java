@@ -35,7 +35,7 @@ public class CurvePropertyTypeBindingTest extends GML3TestSupport {
 
     public void testEncode() throws Exception {
         Document dom = encode(GML3MockData.multiLineString(), GML.curveProperty);
-        print(dom);
+        // print(dom);
         assertEquals(1, dom.getElementsByTagName("gml:Curve").getLength() + dom.getElementsByTagName("gml:LineString").getLength() );
     }
 }

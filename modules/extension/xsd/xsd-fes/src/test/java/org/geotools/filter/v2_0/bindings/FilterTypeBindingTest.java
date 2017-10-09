@@ -193,7 +193,7 @@ public class FilterTypeBindingTest extends FESTestSupport {
     public void testEncodeRsourceId() throws Exception {
         Document doc = encode(FilterMockData.resourceId(), FES.Filter);
         assertEquals("fes:Filter", doc.getDocumentElement().getNodeName());
-        print(doc);
+        // print(doc);
 
         assertEquals(4, getElementsByQName(doc, FES.ResourceId).getLength());
 

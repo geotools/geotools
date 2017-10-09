@@ -61,7 +61,7 @@ public class OGCPropertyIsLikeTypeBindingTest extends FilterTestSupport {
     
     public void testEncodeAsFilter() throws Exception {
         Document doc = encode(FilterMockData.propertyIsLike(), OGC.Filter);
-        print(doc);
+        // print(doc);
         
         assertEquals(1,
             doc.getDocumentElement()

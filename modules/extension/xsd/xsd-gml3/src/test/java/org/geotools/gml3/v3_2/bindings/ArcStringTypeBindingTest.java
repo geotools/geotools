@@ -75,7 +75,7 @@ public class ArcStringTypeBindingTest extends GML32TestSupport {
 
         // encode
         Document dom = encode(compound, GML.curveProperty);
-        print(dom);
+        // print(dom);
         XpathEngine xpath = XMLUnit.newXpathEngine();
 
         // the curve portion

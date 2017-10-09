@@ -45,7 +45,7 @@ public class MeasureTypeBindingTest extends ComplexAttributeTestSupport {
     public void testEncode() throws Exception {
         ComplexAttribute myCode = gmlMeasureType(GML.measure, "12", "m");
         Document dom = encode(myCode, GML.measure);
-        print(dom);
+        // print(dom);
         assertEquals("gml:measure", dom.getDocumentElement().getNodeName());
         assertEquals("12", dom.getDocumentElement().getFirstChild().getNodeValue());
         assertNotNull(dom.getDocumentElement().getAttribute("uom"));

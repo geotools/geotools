@@ -243,10 +243,11 @@ public class WMTSCapabilitiesTest extends TestCase {
             assertNotNull(matrixSets);
             assertFalse(matrixSets.isEmpty());
 
-            assertEquals("urn:ogc:def:wkss:OGC:1.0:GoogleMapsCompatible", matrixSets.get(0).getWellKnownScaleSet());
+            assertEquals("urn:ogc:def:wkss:OGC:1.0:GoogleMapsCompatible",
+                    matrixSets.get(0).getWellKnownScaleSet());
 
         } catch (Exception e) {
-            e.printStackTrace();
+            // a standard catch block shared with the other tests
             if ((e.getMessage() != null) && e.getMessage().indexOf("timed out") > 0) {
                 System.err.println("Unable to test - timed out: " + e);
             } else {

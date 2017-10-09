@@ -110,9 +110,9 @@ public class TileMatrixSetBinding extends AbstractComplexBinding {
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
-        if(node.getChildren().isEmpty()) {
+        if (node.getChildren().isEmpty()) {
             // we are in a Contents/Layer/TileMatrixSetLink/TileMatrixSet (simple) element
-            return (String)value;
+            return (String) value;
         }
 
         // we are in a Contents/TileMatrixSet (complex) element
@@ -120,10 +120,14 @@ public class TileMatrixSetBinding extends AbstractComplexBinding {
         matrixSet.setBoundingBox((BoundingBoxType) node.getChildValue("BoundingBox"));
         matrixSet.setIdentifier((CodeType) node.getChildValue("Identifier"));
         matrixSet.setSupportedCRS(((URI) node.getChildValue("SupportedCRS")).toString());
-        matrixSet.setWellKnownScaleSet((String) node.getChildValue("WellKnownScaleSet"));
+
+        URI wkss = (URI) node.getChildValue("WellKnownScaleSet");
+        if (wkss != null) {
+            matrixSet.setWellKnownScaleSet(wkss.toString());
+        }
         matrixSet.getAbstract().addAll(node.getChildren("abstract"));
         List<Node> children = node.getChildren("TileMatrix");
-        for(Node c:children) {
+        for (Node c : children) {
             matrixSet.getTileMatrix().add((TileMatrixType) c.getValue());
         }
 

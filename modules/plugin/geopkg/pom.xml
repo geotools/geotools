@@ -113,12 +113,6 @@
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.geotools</groupId>
-            <artifactId>gt-image</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
 	<dependency>
 	  <groupId>org.geotools.xsd</groupId>
 	  <artifactId>gt-xsd-core</artifactId>
@@ -129,11 +123,6 @@
 	  <artifactId>gt-xsd-fes</artifactId>
 	  <version>${project.version}</version>
 	</dependency>   
-	<dependency>
-	  <groupId>org.geotools.xsd</groupId>
-	  <artifactId>gt-xsd-ows</artifactId>
-	  <version>${project.version}</version>
-	</dependency>
 	<dependency>
 	  <groupId>xmlunit</groupId>
 	  <artifactId>xmlunit</artifactId>

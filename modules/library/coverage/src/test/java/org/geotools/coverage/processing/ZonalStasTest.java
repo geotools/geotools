@@ -17,8 +17,17 @@
 package org.geotools.coverage.processing;
 
 import static java.lang.Math.round;
+
+import com.vividsolutions.jts.io.ParseException;
+import com.vividsolutions.jts.io.WKTReader;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReader;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
+import org.geotools.data.*;
+import org.geotools.data.collection.ListFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.SchemaException;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.jaitools.CollectionFactory;
 import org.jaitools.media.jai.zonalstats.Result;
 import org.jaitools.media.jai.zonalstats.ZonalStats;
@@ -54,10 +63,6 @@ import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.coverage.processing.OperationJAI;
-import org.geotools.data.DataStore;
-import org.geotools.data.FeatureSource;
-import org.geotools.data.FileDataStoreFinder;
-import org.geotools.data.WorldFileReader;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.geometry.GeneralEnvelope;
@@ -65,6 +70,7 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.util.logging.Logging;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -95,6 +101,29 @@ public class ZonalStasTest extends TestCase {
     final static double DELTA = 10E-4;
 
     private final static Logger LOGGER = Logging.getLogger(ZonalStasTest.class.toString());
+
+    static ListFeatureCollection testPolygons;
+
+    static {
+        try {
+            WKTReader reader = new WKTReader();
+            Geometry g1 = reader.read("POLYGON ((11.895130178020111 46.207934814601089,11.895809089115916 " +
+                    "46.207927430715209,11.895112009452415 46.207050983935503,11.895130178020111 46.207934814601089))");
+            Geometry g2 = reader.read("POLYGON ((11.896630238926786 46.207395686643665,11.897000925691524 " +
+                    "46.207985638846736,11.897753464657697 46.20749492858355,11.896630238926786 46.207395686643665))");
+            Geometry g3 = reader.read("POLYGON ((11.897871315022112 46.20812076814061,11.898581076580497 " +
+                    "46.208161712380381,11.898470449632523 46.207673246668122,11.897871315022112 46.20812076814061))");
+
+            SimpleFeatureType schema = DataUtilities.createType("testPolygons", "the_geom:Polygon");
+            testPolygons = new ListFeatureCollection(schema);
+            testPolygons.add(SimpleFeatureBuilder.build(schema, new Object[] {g1}, "testpolygon.1"));
+            testPolygons.add(SimpleFeatureBuilder.build(schema, new Object[] {g2}, "testpolygon.2"));
+            testPolygons.add(SimpleFeatureBuilder.build(schema, new Object[] {g3}, "testpolygon.3"));
+        } catch (SchemaException | ParseException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 
     private class StatisticsTool {
 
@@ -281,14 +310,8 @@ public class ZonalStasTest extends TestCase {
                         new GridSampleDimension[] { new GridSampleDimension("coverage") }, null,
                         null);
 
-        final File fileshp = TestData.file(this, "testpolygon.shp");
-        final DataStore store = FileDataStoreFinder.getDataStore(fileshp.toURI().toURL());
-        FeatureSource<SimpleFeatureType, SimpleFeature> featureSource = store
-                .getFeatureSource(store.getNames().get(0));
-        FeatureCollection<SimpleFeatureType, SimpleFeature> featureCollection = featureSource
-                .getFeatures();
         List<SimpleFeature> polygonList = new ArrayList<SimpleFeature>();
-        FeatureIterator<SimpleFeature> featureIterator = featureCollection.features();
+        FeatureIterator<SimpleFeature> featureIterator = testPolygons.features();
         while (featureIterator.hasNext()) {
             SimpleFeature feature = featureIterator.next();
             polygonList.add(feature);
@@ -382,14 +405,8 @@ public class ZonalStasTest extends TestCase {
                         new GridSampleDimension[] { new GridSampleDimension("coverage") }, null,
                         null);
 
-        final File fileshp = TestData.file(this, "testpolygon.shp");
-        final DataStore store = FileDataStoreFinder.getDataStore(fileshp.toURI().toURL());
-        FeatureSource<SimpleFeatureType, SimpleFeature> featureSource = store
-                .getFeatureSource(store.getNames().get(0));
-        FeatureCollection<SimpleFeatureType, SimpleFeature> featureCollection = featureSource
-                .getFeatures();
         List<SimpleFeature> polygonList = new ArrayList<SimpleFeature>();
-        FeatureIterator<SimpleFeature> featureIterator = featureCollection.features();
+        FeatureIterator<SimpleFeature> featureIterator = testPolygons.features();
         while (featureIterator.hasNext()) {
             SimpleFeature feature = featureIterator.next();
             polygonList.add(feature);

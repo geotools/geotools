@@ -42,6 +42,7 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.processing.operation.ZonalStatistics;
+import org.geotools.coverage.processing.operation.ZonalStats;
 import org.geotools.data.DataStore;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.FileDataStoreFinder;
@@ -51,6 +52,7 @@ import org.geotools.feature.FeatureIterator;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.logging.Logging;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -252,14 +254,8 @@ public class ZonalStatisticsTest extends TestCase {
                         null);
 
         // Selection of the input geometries and creation of the related list.
-        final File fileshp = TestData.file(this, "testpolygon.shp");
-        final DataStore store = FileDataStoreFinder.getDataStore(fileshp.toURI().toURL());
-        FeatureSource<SimpleFeatureType, SimpleFeature> featureSource = store
-                .getFeatureSource(store.getNames().get(0));
-        FeatureCollection<SimpleFeatureType, SimpleFeature> featureCollection = featureSource
-                .getFeatures();
         List<SimpleFeature> polygonList = new ArrayList<SimpleFeature>();
-        FeatureIterator<SimpleFeature> featureIterator = featureCollection.features();
+        FeatureIterator<SimpleFeature> featureIterator = ZonalStasTest.testPolygons.features();
         while (featureIterator.hasNext()) {
             SimpleFeature feature = featureIterator.next();
             polygonList.add(feature);
@@ -368,14 +364,8 @@ public class ZonalStatisticsTest extends TestCase {
                         null);
 
         // Selection of the input geometries and creation of the related list.
-        final File fileshp = TestData.file(this, "testpolygon.shp");
-        final DataStore store = FileDataStoreFinder.getDataStore(fileshp.toURI().toURL());
-        FeatureSource<SimpleFeatureType, SimpleFeature> featureSource = store
-                .getFeatureSource(store.getNames().get(0));
-        FeatureCollection<SimpleFeatureType, SimpleFeature> featureCollection = featureSource
-                .getFeatures();
         List<SimpleFeature> polygonList = new ArrayList<SimpleFeature>();
-        FeatureIterator<SimpleFeature> featureIterator = featureCollection.features();
+        FeatureIterator<SimpleFeature> featureIterator = ZonalStasTest.testPolygons.features();
         while (featureIterator.hasNext()) {
             SimpleFeature feature = featureIterator.next();
             polygonList.add(feature);

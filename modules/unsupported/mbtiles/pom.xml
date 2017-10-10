@@ -65,11 +65,6 @@
       <artifactId>gt-api</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <dependency>
-      <groupId>org.geotools</groupId>
-      <artifactId>gt-main</artifactId>
-      <version>${project.version}</version>
-    </dependency>
     
     
         <dependency>
@@ -81,13 +76,6 @@
           <groupId>org.geotools</groupId>
           <artifactId>gt-coverage</artifactId>
           <version>${project.version}</version>
-        </dependency>
-        <dependency>
-          <groupId>org.geotools</groupId>
-          <artifactId>gt-jdbc</artifactId>
-          <version>${project.version}</version>
-          <classifier>tests</classifier>
-          <scope>test</scope>
         </dependency>
 	<dependency>
           <groupId>org.geotools</groupId>

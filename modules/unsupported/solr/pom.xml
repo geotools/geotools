@@ -59,11 +59,6 @@
       <classifier>noclassprop</classifier>
     </dependency>
     <dependency>
-      <groupId>org.geotools.xsd</groupId>
-      <artifactId>gt-xsd-filter</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-data</artifactId>
       <version>${project.version}</version>

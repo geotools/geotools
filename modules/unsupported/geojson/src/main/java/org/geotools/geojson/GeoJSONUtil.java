@@ -206,12 +206,13 @@ public class GeoJSONUtil {
         return true;
     }
     
-    public static Coordinate createCoordinate(List ordinates) {
+    public static Coordinate createCoordinate(List ordinates) throws ParseException{
         Coordinate c = new Coordinate();
-        if (ordinates.size() > 0) {
-            c.x = ((Number)ordinates.get(0)).doubleValue();
+        if (ordinates.size() <= 1) {
+            throw new ParseException(ParseException.ERROR_UNEXPECTED_EXCEPTION,"Too few ordinates to create coordinate");
         }
         if (ordinates.size() > 1) {
+            c.x = ((Number)ordinates.get(0)).doubleValue();
             c.y = ((Number)ordinates.get(1)).doubleValue();
         }
         if (ordinates.size() > 2) {

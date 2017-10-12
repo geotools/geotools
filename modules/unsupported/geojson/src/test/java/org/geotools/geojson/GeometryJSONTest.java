@@ -49,6 +49,10 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
     String pointText() {
         return strip("{'type': 'Point','coordinates':[100.1,0.1]}");
     }
+    
+    String badPointText() {
+        return strip("{'type': 'Point','coordinates':[100.1]}");
+    }
 
     Point point() {
         Point p = gf.createPoint(new Coordinate(100.1, 0.1));
@@ -65,8 +69,14 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
     }
     
     public void testPointRead() throws Exception {
-        assertTrue(point().equals(gjson.readPoint(reader(pointText()))));
-        assertTrue(point3d().equals(gjson.readPoint(reader(point3dText()))));
+        assertEquals(point(),gjson.readPoint(reader(pointText())));
+        assertEquals(point3d(),gjson.readPoint(reader(point3dText())));
+        try {
+            gjson.read(reader(badPointText()));
+            fail("Read in a bad point");
+        } catch (Exception e) {
+            // good
+        }
     }
      
     public void testLineWrite() throws Exception {
@@ -80,6 +90,11 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
             "{'type': 'LineString', 'coordinates': [[100.1,0.1],[101.1,1.1]]}");
     }
 
+    String badLineText() {
+        return strip(
+            "{'type': 'LineString', 'coordinates': [[100.1,0.1],[101.1]]}");
+    }
+    
     String line2Text() {
         return strip("null");
     }
@@ -89,6 +104,8 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
         return l;
     }
 
+    
+    
     LineString line2() {
         LineString l = gf.createLineString(array(new double[][]{}));
         return l;
@@ -105,9 +122,15 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
     }
     
     public void testLineRead() throws Exception {
-        assertTrue(line().equals(gjson.readLine(reader(lineText()))));
+        assertEquals(line(),(gjson.readLine(reader(lineText()))));
         assertNull(gjson.readLine(reader(line2Text())));
-        assertTrue(line3d().equals(gjson.readLine(reader(line3dText()))));
+        assertEquals(line3d(),(gjson.readLine(reader(line3dText()))));
+        try {
+            gjson.read(gjson.readLine(reader(badLineText())));
+            fail("Read in bad line");
+        } catch (Exception e) {
+            //good
+        }
     }
        
     public void testPolyWrite() throws Exception {
@@ -153,6 +176,14 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
          "}");
     }
     
+    String badPolygonText1() {
+        return strip("{ 'type': 'Polygon',"+
+        "'coordinates': ["+
+        "  [ [100.1, 0.1], [101.1], [101.1, 1.1], [100.1, 1.1], [100.1, 0.1] ]"+
+        "  ]"+
+         "}");
+    }
+    
     String polygonText2() {
         return strip("{ 'type': 'Polygon',"+
         "    'coordinates': ["+
@@ -170,9 +201,15 @@ public class GeometryJSONTest extends GeoJSONTestSupport {
     }
     
     public void testPolyRead() throws Exception {
-        assertTrue(polygon1().equals(gjson.readPolygon(reader(polygonText1()))));
-        assertTrue(polygon2().equals(gjson.readPolygon(reader(polygonText2()))));
-        assertTrue(polygon3().equals(gjson.readPolygon(reader(polygonText3()))));
+        assertEquals(polygon1(),(gjson.readPolygon(reader(polygonText1()))));
+        assertEquals(polygon2(),(gjson.readPolygon(reader(polygonText2()))));
+        assertEquals(polygon3(),(gjson.readPolygon(reader(polygonText3()))));
+        try {
+            gjson.readPolygon(reader(badPolygonText1()));
+            fail("Read bad polygon");
+        } catch (Exception e) {
+            //good
+        }
     }
     
     public void testMultiPointWrite() throws Exception {

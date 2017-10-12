@@ -50,7 +50,7 @@ public class GeometryHandlerBase<G extends Geometry> extends HandlerBase impleme
         return value;
     }
 
-    protected Coordinate coordinate(List ordinates) {
+    protected Coordinate coordinate(List ordinates) throws ParseException{
         return createCoordinate(ordinates);
     }
 

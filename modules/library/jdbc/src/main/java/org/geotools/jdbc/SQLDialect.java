@@ -912,7 +912,7 @@ public abstract class SQLDialect {
     /**
      * Encodes the CREATE TABLE statement.
      * <p>
-     * Default implementation adds â€œCREATE TABLEâ€� to the sql buffer.
+     * Default implementation adds "CREATE TABLE" to the sql buffer.
      * Subclasses may choose to override to handle db specific syntax.
      * </p>
      */

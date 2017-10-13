@@ -98,9 +98,10 @@ public class XsDateTimeFormat extends Format {
         int length = pString.length();
         
         //before we try to do this the hard way try a default date format
-        SimpleDateFormat df = new SimpleDateFormat("EEE MMM d HH:mm:ss zzz yyyy");
+        SimpleDateFormat df = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
         try {
             Date d = df.parse(pString.substring(offset));
+            pParsePosition.setIndex(length);
             Calendar c = Calendar.getInstance();
             c.setTime(d);
             return c;

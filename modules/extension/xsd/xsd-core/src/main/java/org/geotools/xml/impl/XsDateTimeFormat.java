@@ -21,7 +21,9 @@ import java.text.FieldPosition;
 import java.text.Format;
 import java.text.ParseException;
 import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.TimeZone;
 
 
@@ -94,7 +96,17 @@ public class XsDateTimeFormat extends Format {
         }
         int offset = pParsePosition.getIndex();
         int length = pString.length();
-
+        
+        //before we try to do this the hard way try a default date format
+        SimpleDateFormat df = new SimpleDateFormat("EEE MMM d HH:mm:ss zzz yyyy");
+        try {
+            Date d = df.parse(pString.substring(offset));
+            Calendar c = Calendar.getInstance();
+            c.setTime(d);
+            return c;
+        } catch (ParseException e) {
+            //log here?
+        }
         boolean isMinus = false;
         StringBuffer digits = new StringBuffer();
         int year, month, mday;

@@ -206,8 +206,8 @@ public class FactoryCreator extends FactoryRegistry {
          * Note: all Factory objects should be fully constructed by now,
          * since the super-class has already iterated over all factories.
          */
-        for (final Iterator<T> it = getUnfilteredFactories(category); it.hasNext();) {
-            final T factory = it.next();
+        Iterable<T> unfilteredFactories = getUnfilteredFactories(category)::iterator;
+        for (final T factory : unfilteredFactories) {
             final Class<?> implementation = factory.getClass();
             if (types!=null && !isTypeOf(types, implementation)) {
                 continue;

@@ -169,6 +169,10 @@ public class FactoryRegistry {
      * Breakage:
      *
      *  - not all methods of `ServiceRegistry` API were implemented
+     *
+     * Optional vs FactoryRegistryException
+     *
+     *  - maybe methods could return Optional instead of throwing an exception?
      */
 
     public Stream<Class<?>> streamCategories() {
@@ -194,25 +198,24 @@ public class FactoryRegistry {
     // TODO: document
     @Deprecated
     public <T> Iterator<T> getServiceProviders(final Class<T> category, final boolean useOrdering) {
-        return getFactories(category, useOrdering);
+        return getFactories(category, useOrdering).iterator();
     }
 
     // TODO: document
-    public <T> Iterator<T> getFactories(final Class<T> category, final boolean useOrdering) {
-        return registry.iterateInstances(category, useOrdering);
+    public <T> Stream<T> getFactories(final Class<T> category, final boolean useOrdering) {
+        return registry.streamInstances(category, useOrdering);
     }
 
     // TODO: document
     @Deprecated
     public <T> Iterator<T> getServiceProviders(final Class<T> category, final Filter filter, final boolean useOrdering) {
-        return getFactories(category, filter::filter, useOrdering);
+        return getFactories(category, filter::filter, useOrdering).iterator();
     }
 
     // TODO: document
-    public <T> Iterator<T> getFactories(final Class<T> category, final Predicate<? super T> factoryFilter, final boolean useOrdering) {
-        return stream(getFactories(category, useOrdering))
-                .filter(factoryFilter)
-                .iterator();
+    public <T> Stream<T> getFactories(final Class<T> category, final Predicate<? super T> factoryFilter, final boolean useOrdering) {
+        return getFactories(category, useOrdering)
+                .filter(factoryFilter);
     }
 
     /**
@@ -233,11 +236,11 @@ public class FactoryRegistry {
     @Deprecated // TODO: document
     public synchronized <T> Iterator<T> getServiceProviders(final Class<T> category, final Filter filter, final Hints hints) {
         Predicate<? super T> predicate = filter == null ? null : filter::filter;
-        return getFactories(category, predicate, hints);
+        return getFactories(category, predicate, hints).iterator();
     }
 
     // TODO: document; filter and hints can be null
-    public synchronized <T> Iterator<T> getFactories(final Class<T> category, final Predicate<? super T> filter, final Hints hints) {
+    public synchronized <T> Stream<T> getFactories(final Class<T> category, final Predicate<? super T> filter, final Hints hints) {
         /*
          * The implementation of this method is very similar to the 'getUnfilteredFactories'
          * one except for filter handling. See the comments in 'getUnfilteredFactories' for
@@ -271,7 +274,7 @@ public class FactoryRegistry {
      *
      * @todo Use Hints to match Constructor.
      */
-    final <T> Iterator<T> getUnfilteredFactories(final Class<T> category) {
+    final <T> Stream<T> getUnfilteredFactories(final Class<T> category) {
         /*
          * If the map is not empty, then this means that a scanning is under progress, i.e.
          * 'scanForPlugins' is currently being executed. This is okay as long as the user
@@ -395,12 +398,12 @@ public class FactoryRegistry {
                             if (debug) {
                                 debug("CHECK", category, key, "consider hint[" + i + ']', type);
                             }
-                            final T candidate = getFactoryImplementation(category, type, filter, hints);
-                            if (candidate != null) {
+                            final Optional<T> candidate = getFactoryImplementation(category, type, filter, hints);
+                            if (candidate.isPresent()) {
                                 if (debug) {
                                     debug("RETURN", category, key, "found implementation", candidate.getClass());
                                 }
-                                return candidate;
+                                return candidate.get();
                             }
                         }
                         if (length != 0) {
@@ -415,12 +418,12 @@ public class FactoryRegistry {
         if (debug && implementation != null) {
             debug("CHECK", category, key, "consider hint[last]", implementation);
         }
-        final T candidate = getFactoryImplementation(category, implementation, filter, hints);
-        if (candidate != null) {
+        final Optional<T> candidate = getFactoryImplementation(category, implementation, filter, hints);
+        if (candidate.isPresent()) {
             if (debug) {
                 debug("RETURN", category, key, "found implementation", candidate.getClass());
             }
-            return candidate;
+            return candidate.get();
         }
         if (debug) {
             debug("THROW", category, key, "could not find implementation.", null);
@@ -478,43 +481,43 @@ public class FactoryRegistry {
      * @param  hints          A {@linkplain Hints map of hints}, or {@code null} if none.
      * @return A factory for the specified category and hints, or {@code null} if none.
      */
-    private <T> T getFactoryImplementation(final Class<T> category, final Class<?> implementation,
+    private <T> Optional<T> getFactoryImplementation(final Class<T> category, final Class<?> implementation,
                                            final Predicate<? super T> filter, final Hints hints)
     {
-        for (final Iterator<T> it = getUnfilteredFactories(category); it.hasNext();) {
-            final T candidate = it.next();
-            // Implementation class must be tested before 'isAcceptable'
-            // in order to avoid StackOverflowError in some situations.
+        Optional<T> factory = getUnfilteredFactories(category)
+                // Implementation class must be tested before 'isAcceptable'
+                // in order to avoid StackOverflowError in some situations.
+                .filter(candidate -> implementation == null || implementation.isInstance(candidate))
+                .filter(candidate -> isAcceptable(candidate, category, hints, filter))
+                .findFirst();
+        if (factory.isPresent()) {
+            return factory;
+        }
+
+        final List<Reference<T>> cached = getCachedProviders(category);
+        if (cached == null) {
+            return Optional.empty();
+        }
+
+        /*
+         * Checks if a factory previously created by FactoryCreator could fit. This
+         * block should never be executed if this instance is not a FactoryCreator.
+         */
+        for (final Iterator<Reference<T>> it=cached.iterator(); it.hasNext();) {
+            final T candidate = it.next().get();
+            if (candidate == null) {
+                it.remove();
+                continue;
+            }
             if (implementation!=null && !implementation.isInstance(candidate)) {
                 continue;
             }
             if (!isAcceptable(candidate, category, hints, filter)) {
                 continue;
             }
-            return candidate;
+            return Optional.of(candidate);
         }
-        final List<Reference<T>> cached = getCachedProviders(category);
-        if (cached != null) {
-            /*
-             * Checks if a factory previously created by FactoryCreator could fit. This
-             * block should never be executed if this instance is not a FactoryCreator.
-             */
-            for (final Iterator<Reference<T>> it=cached.iterator(); it.hasNext();) {
-                final T candidate = it.next().get();
-                if (candidate == null) {
-                    it.remove();
-                    continue;
-                }
-                if (implementation!=null && !implementation.isInstance(candidate)) {
-                    continue;
-                }
-                if (!isAcceptable(candidate, category, hints, filter)) {
-                    continue;
-                }
-                return candidate;
-            }
-        }
-        return null;
+        return Optional.empty();
     }
 
     /**
@@ -865,6 +868,15 @@ public class FactoryRegistry {
     }
 
     // TODO: document
+    public void registerFactories(final Iterable<?> factories) {
+        if (factories == null) {
+            // TODO: do something fancy like in getFactory(Class, Predicate, Hints, Hints.Key) ?
+            throw new IllegalArgumentException("The factories must not be null.");
+        }
+        factories.forEach(this::registerFactory);
+    }
+
+    // TODO: document
     @Deprecated
     public void registerServiceProvider(final Object provider) {
         registerFactory(provider);
@@ -1027,8 +1039,8 @@ public class FactoryRegistry {
                      * not be properly ordered. Since this code exists more for compatibility reasons
                      * than as a commited API, we ignore this short comming for now.
                      */
-                    for (final Iterator<T> it=getFactories(category, false); it.hasNext();) {
-                        final T other = it.next();
+                    Iterable<T> factories = getFactories(category, false)::iterator;
+                    for (final T other : factories) {
                         if (other != factory) {
                             setOrdering(category, factory, other);
                         }
@@ -1161,6 +1173,15 @@ public class FactoryRegistry {
     }
 
     // TODO: document
+    public void deregisterFactories(final Iterable<?> factories) {
+        if (factories == null) {
+            // TODO: do something fancy like in getFactory(Class, Predicate, Hints, Hints.Key) ?
+            throw new IllegalArgumentException("The factories must not be null.");
+        }
+        factories.forEach(this::deregisterFactory);
+    }
+
+    // TODO: document
     @Deprecated
     public void deregisterServiceProvider(final Object provider) {
         deregisterFactory(provider);
@@ -1230,9 +1251,9 @@ public class FactoryRegistry {
      */
     public <T> boolean setOrdering(final Class<T> category, final Comparator<T> comparator) {
         boolean set = false;
-        final List<T> previous = new ArrayList<T>();
-        for (final Iterator<T> it=getFactories(category, false); it.hasNext();) {
-            final T f1 = it.next();
+        final List<T> previous = new ArrayList<>();
+        Iterable<T> factories = getFactories(category, false)::iterator;
+        for (final T f1 : factories) {
             for (int i=previous.size(); --i>=0;) {
                 final T f2 = previous.get(i);
                 final int c;
@@ -1299,8 +1320,8 @@ public class FactoryRegistry {
         boolean done = false;
         T impl1 = null;
         T impl2 = null;
-        for (final Iterator<? extends T> it=getFactories(category, false); it.hasNext();) {
-            final T factory = it.next();
+        Iterable<T> factories = getFactories(category, false)::iterator;
+        for (final T factory : factories) {
             if (filter1.test(factory)) impl1 = factory;
             if (filter2.test(factory)) impl2 = factory;
             if (impl1!=null && impl2!=null && impl1!=impl2) {

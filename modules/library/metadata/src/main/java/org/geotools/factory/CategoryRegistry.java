@@ -167,8 +167,8 @@ class CategoryRegistry {
 	 * @param useOrder whether to return instances in topological order as specified by {@link #setOrder}
 	 * @return The instances registered for the specified category.
 	 */
-	public <T> Iterator<T> iterateInstances(final Class<T> category, final boolean useOrder) {
-		return instanceRegistry(category).iterate(useOrder);
+	public <T> Stream<T> streamInstances(final Class<T> category, final boolean useOrder) {
+		return instanceRegistry(category).stream(useOrder);
 	}
 
 	/**
@@ -189,7 +189,7 @@ class CategoryRegistry {
 
 	/**
 	 * Orders the specified instances, so that the first appears before the second when
-	 * {@link #iterateInstances(Class, boolean) iterateInstances} is called with
+	 * {@link #streamInstances(Class, boolean) iterateInstances} is called with
 	 * {@code useOrder = true}.
 	 *
 	 * @param category The category to order instances for.
@@ -203,7 +203,7 @@ class CategoryRegistry {
 
 	/**
 	 * Removes the ordering between the specified instances, so that the first no longer appears
-	 * before the second when {@link #iterateInstances(Class, boolean) iterateInstances} is
+	 * before the second when {@link #streamInstances(Class, boolean) iterateInstances} is
 	 * called with {@code useOrder = true}.
 	 *
 	 * @param category The category to clear instance order for.
@@ -281,11 +281,11 @@ class CategoryRegistry {
 			}
 		}
 
-		public Iterator<T> iterate(final boolean useOrder) {
+		public Stream<T> stream(final boolean useOrder) {
 			if (useOrder) {
-				return instances.iterator();
+				return instances.stream();
 			} else {
-				return instancesByType.values().iterator();
+				return instancesByType.values().stream();
 			}
 		}
 

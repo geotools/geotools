@@ -92,12 +92,6 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.geotools.jdbc</groupId>
-      <artifactId>gt-jdbc-postgis</artifactId>
-      <version>${project.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.geotools.ogc</groupId>
       <artifactId>net.opengis.wps</artifactId>
       <version>${project.version}</version>

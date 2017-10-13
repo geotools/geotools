@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:gml="http://www.opengis.net/gml" xmlns:sf="http://cite.opengeospatial.org/gmlsf" elementFormDefault="qualified" targetNamespace="http://cite.opengeospatial.org/gmlsf">
-  <xsd:import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+  <xsd:import namespace="http://www.opengis.net/gml"/>
   <xsd:element name="PrimitiveGeoFeature" substitutionGroup="gml:_Feature" type="sf:PrimitiveGeoFeatureType">
     <xsd:annotation/>
   </xsd:element>

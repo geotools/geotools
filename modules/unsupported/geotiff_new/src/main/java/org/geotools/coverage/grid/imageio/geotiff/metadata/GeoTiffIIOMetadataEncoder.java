@@ -30,7 +30,7 @@ import org.geotools.coverage.grid.io.imageio.geotiff.GeoTiffConstants;
 import org.geotools.coverage.grid.io.imageio.geotiff.PixelScale;
 import org.geotools.coverage.grid.io.imageio.geotiff.TiePoint;
 import org.geotools.util.KeySortedList;
-import org.jdom.Element;
+import org.jdom2.Element;
 
 
 

@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.geotools.ows.ServiceException;
-import org.jdom.JDOMException;
+import org.jdom2.JDOMException;
 
 
 /**

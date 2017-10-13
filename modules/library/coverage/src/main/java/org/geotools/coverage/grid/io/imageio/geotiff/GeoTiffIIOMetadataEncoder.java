@@ -26,7 +26,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.geotools.util.KeySortedList;
-import org.jdom.Element;
+import org.jdom2.Element;
 
 
 

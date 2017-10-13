@@ -17,7 +17,7 @@
 
 package org.geotools.data.complex.xml;
 
-import org.jdom.Document;
+import org.jdom2.Document;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**

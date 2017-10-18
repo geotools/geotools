@@ -994,7 +994,7 @@ public final class GeoTools {
     /**
      * Removes a provider that was previously {@linkplain #addFactoryIteratorProvider added}.
      * Note that factories already obtained from the specified provider will not be
-     * {@linkplain FactoryRegistry#deregisterServiceProvider deregistered} by this method.
+     * {@linkplain FactoryRegistry#deregisterFactory deregistered} by this method.
      *
      * @param provider The provider to remove.
      */

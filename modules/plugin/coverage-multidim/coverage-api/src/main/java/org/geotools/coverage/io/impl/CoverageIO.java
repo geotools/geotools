@@ -40,6 +40,8 @@ import org.geotools.factory.Hints;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.util.ProgressListener;
 
+import static org.geotools.util.Utilities.toUnmodifiableSet;
+
 /**
  * A class containing static convenience methods for locating <code>CoverageAccess</code>s and
  * specific <code>CoverageSource</code>s, and performing simple encoding and decoding.
@@ -180,14 +182,10 @@ public class CoverageIO{
     public static synchronized Set<Driver> getAvailableDrivers() {
         // get all Driver implementations
         scanForPlugins();
-        final Iterator<Driver> it = getServiceRegistry().getServiceProviders(Driver.class, false);
-        final Set<Driver> drivers = new HashSet<Driver>();
-        while (it.hasNext()) {
-            final Driver spi = (Driver) it.next();
-            if (spi.isAvailable())
-                drivers.add(spi);
-        }
-        return Collections.unmodifiableSet(drivers);
+        return getServiceRegistry()
+                .getFactories(Driver.class, false)
+                .filter(Driver::isAvailable)
+                .collect(toUnmodifiableSet());
     }
 
     /**

@@ -22,10 +22,14 @@ import java.util.AbstractQueue;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Queue;
 import java.util.Set;
 import java.util.Spliterators;
+import java.util.function.Function;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -729,6 +733,30 @@ public final class Utilities {
         return supertype.isAssignableFrom(type)
                 ? Stream.of(type.asSubclass(supertype))
                 : Stream.empty();
+    }
+
+	/**
+	 * @param <T> the type of elements in the stream
+	 * @return a {@code Collector} which collects elements into an unmodifiable {@code Set}
+	 */
+	public static <T> Collector<T, ?, Set<T>> toUnmodifiableSet() {
+        return Collectors.collectingAndThen(Collectors.toSet(), Collections::unmodifiableSet);
+    }
+
+	/**
+	 * Collects stream elements into a {@code Map} whose values are the stream elements and
+	 * whose keys are those elements' fully qualified class names.
+	 *
+	 * If the stream contains several instances of the same class, only one of them will be
+	 * present in the map. If the stream has an iteration order, the later elements win
+	 * over earlier ones.
+	 *
+	 * @param <T> the type of elements in the stream
+	 * @return a {@code Collector} which collects elements into a {@code Map}
+	 * whose keys are class names and whose values are stream elements
+	 */
+	public static <T> Collector<T, ?, Map<String, T>> toInstanceByClassNameMap() {
+        return Collectors.toMap(element -> element.getClass().getName(), Function.identity(), (first, second) -> second);
     }
 
 }

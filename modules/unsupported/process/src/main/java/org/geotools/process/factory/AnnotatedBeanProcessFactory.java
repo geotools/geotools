@@ -230,12 +230,9 @@ public class AnnotatedBeanProcessFactory extends AnnotationDrivenProcessFactory 
         }
 
         public Class<? extends T>[] lookupBeanClasses() {
-            Iterator<T> it = getServiceProviders(getBeanClass(), null, null);
-            List<Class> list = new ArrayList();
-            while(it.hasNext()) {
-                list.add((Class<? extends T>) it.next().getClass());
-            }
-            return list.toArray(new Class[list.size()]);
+            return getFactories(getBeanClass(), null, null)
+                    .map(Object::getClass)
+                    .toArray(Class[]::new);
         }
     }
 }

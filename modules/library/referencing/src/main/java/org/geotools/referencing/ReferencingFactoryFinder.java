@@ -195,7 +195,7 @@ loop:       for (int i=0; ; i++) {
             Hints hints, final Hints.Key key) throws FactoryRegistryException
     {
         hints = mergeSystemHints(hints);
-        return getServiceRegistry().getServiceProvider(category, null, hints, key);
+        return getServiceRegistry().getFactory(category, null, hints, key);
     }
 
     /**
@@ -218,7 +218,7 @@ loop:       for (int i=0; ; i++) {
             throws FactoryRegistryException
     {
         hints = mergeSystemHints(hints);
-        return getServiceRegistry().getServiceProvider(category, new AuthorityFilter(authority), hints, key);
+        return getServiceRegistry().getFactory(category, new AuthorityFilter(authority), hints, key);
     }
 
     /**
@@ -574,7 +574,7 @@ loop:       for (int i=0; ; i++) {
     /**
      * A filter for factories provided by a given vendor.
      */
-    private static final class VendorFilter implements ServiceRegistry.Filter {
+    private static final class VendorFilter implements Predicate<Factory> {
         /** The vendor to filter. */
         private final String vendor;
 
@@ -583,9 +583,10 @@ loop:       for (int i=0; ; i++) {
             this.vendor = vendor;
         }
 
-        /** Returns {@code true} if the specified provider is built by the vendor. */
-        public boolean filter(final Object provider) {
-            return Citations.titleMatches(((Factory)provider).getVendor(), vendor);
+        /** Returns {@code true} if the specified factory is built by the vendor. */
+        @Override
+        public boolean test(final Factory factory) {
+            return Citations.titleMatches(factory.getVendor(), vendor);
         }
     }
 
@@ -631,7 +632,7 @@ loop:       for (int i=0; ; i++) {
     /**
      * A filter for factories provided for a given authority.
      */
-    private static final class AuthorityFilter implements ServiceRegistry.Filter {
+    private static final class AuthorityFilter implements Predicate<AuthorityFactory> {
         /** The authority to filter. */
         private final String authority;
 
@@ -641,7 +642,8 @@ loop:       for (int i=0; ; i++) {
         }
 
         /** Returns {@code true} if the specified provider is for the authority. */
-        public boolean filter(final Object provider) {
+        @Override
+        public boolean test(final AuthorityFactory provider) {
             if (authority == null) {
                 // If the user didn't specified an authority name, then the factory to use must
                 // be specified explicitly through a hint (e.g. Hints.CRS_AUTHORITY_FACTORY).
@@ -662,7 +664,7 @@ loop:       for (int i=0; ; i++) {
         if (registry == null) {
             scanForPlugins();
         }
-        getServiceRegistry().registerServiceProvider(authority);
+        getServiceRegistry().registerFactory(authority);
         authorityNames = null;
     }
 
@@ -674,7 +676,7 @@ loop:       for (int i=0; ; i++) {
      * @param authority The authority factory to remove.
      */
     public static synchronized void removeAuthorityFactory(final AuthorityFactory authority) {
-        getServiceRegistry().deregisterServiceProvider(authority);
+        getServiceRegistry().deregisterFactory(authority);
         authorityNames = null;
     }
 
@@ -686,7 +688,7 @@ loop:       for (int i=0; ; i++) {
      * @since 2.4
      */
     public static synchronized boolean isRegistered(final Factory factory) {
-        return factory.equals(getServiceRegistry().getServiceProviderByClass(factory.getClass()));
+        return factory.equals(getServiceRegistry().getFactoryByClass(factory.getClass()));
     }
 
     /**

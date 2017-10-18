@@ -20,12 +20,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 import junit.framework.TestCase;
 
@@ -50,10 +49,9 @@ public class SolrDataStoreFinderTest extends TestCase {
         map.put(SolrDataStoreFactory.FIELD.key, "layer_type");
         map.put(SolrDataStoreFactory.NAMESPACE.key, "namesapce");
 
-        Iterator ps = getAvailableDataSources();
-        SolrDataStoreFactory fac;
+        Iterator<DataStoreFactorySpi> ps = getAvailableDataSources().iterator();
         while (ps.hasNext()) {
-            fac = (SolrDataStoreFactory) ps.next();
+            DataStoreFactorySpi fac = ps.next();
 
             try {
                 if (fac.canProcess(map)) {
@@ -78,21 +76,11 @@ public class SolrDataStoreFinderTest extends TestCase {
         getServiceRegistry().scanForPlugins();
     }
 
-    public Iterator getAvailableDataSources() {
-        Set availableDS = new HashSet();
-        Iterator it = getServiceRegistry().getServiceProviders(DataStoreFactorySpi.class, null,
-                null);
-        SolrDataStoreFactory dsFactory;
-        while (it.hasNext()) {
-            Object ds = it.next();
-            if (ds instanceof SolrDataStoreFactory) {
-                dsFactory = (SolrDataStoreFactory) ds;
-                if (dsFactory.isAvailable()) {
-                    availableDS.add(dsFactory);
-                }
-            }
-        }
-        return availableDS.iterator();
+    public Stream<DataStoreFactorySpi> getAvailableDataSources() {
+        return getServiceRegistry()
+                .getFactories(DataStoreFactorySpi.class, null,null)
+                .filter(ds -> ds instanceof SolrDataStoreFactory)
+                .filter(DataStoreFactorySpi::isAvailable);
     }
 
 }

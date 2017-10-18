@@ -65,7 +65,7 @@ public class JTSFactoryFinder extends FactoryFinder {
         assert Thread.holdsLock(JTSFactoryFinder.class);
         if (registry == null) {
             registry = new FactoryCreator(Arrays.asList(new Class<?>[] { GeometryFactory.class } ));
-            registry.registerServiceProvider( new GeometryFactory(), GeometryFactory.class );
+            registry.registerFactory( new GeometryFactory(), GeometryFactory.class );
         }
         return registry;
     }
@@ -87,8 +87,8 @@ public class JTSFactoryFinder extends FactoryFinder {
      */
     public static synchronized GeometryFactory getGeometryFactory(Hints hints) throws FactoryRegistryException {
         hints = mergeSystemHints(hints);
-        return (GeometryFactory) getServiceRegistry().getServiceProvider(
-                GeometryFactory.class, null, hints, Hints.JTS_GEOMETRY_FACTORY);
+        return getServiceRegistry()
+                .getFactory(GeometryFactory.class, null, hints, Hints.JTS_GEOMETRY_FACTORY);
     }
     /**
      * Returns the first implementation of {@link GeometryFactory}, a new one is created if
@@ -122,8 +122,8 @@ public class JTSFactoryFinder extends FactoryFinder {
      */
     public static synchronized PrecisionModel getPrecisionModel(Hints hints) throws FactoryRegistryException {
         hints = mergeSystemHints(hints);
-        return (PrecisionModel) getServiceRegistry().getServiceProvider(
-                PrecisionModel.class, null, hints, Hints.JTS_PRECISION_MODEL);
+        return getServiceRegistry()
+                .getFactory(PrecisionModel.class, null, hints, Hints.JTS_PRECISION_MODEL);
     }
 
     /**
@@ -147,8 +147,8 @@ public class JTSFactoryFinder extends FactoryFinder {
      */
     public static synchronized CoordinateSequenceFactory getCoordinateSequenceFactory(Hints hints) throws FactoryRegistryException {
         hints = mergeSystemHints(hints);
-        return (CoordinateSequenceFactory) getServiceRegistry().getServiceProvider(
-                CoordinateSequenceFactory.class, null, hints, Hints.JTS_COORDINATE_SEQUENCE_FACTORY);
+        return getServiceRegistry()
+                .getFactory(CoordinateSequenceFactory.class, null, hints, Hints.JTS_COORDINATE_SEQUENCE_FACTORY);
     }
 
     /**

@@ -133,7 +133,7 @@ final class FactoryIteratorProviders {
     /**
      * Removes a provider that was previously {@linkplain #addFactoryIteratorProvider added}.
      * Note that factories already obtained from the specified provider will not be
-     * {@linkplain FactoryRegistry#deregisterServiceProvider deregistered} by this method.
+     * {@linkplain FactoryRegistry#deregisterFactory deregistered} by this method.
      */
     public static void removeFactoryIteratorProvider(FactoryIteratorProvider provider) {
         synchronized (GLOBAL) {

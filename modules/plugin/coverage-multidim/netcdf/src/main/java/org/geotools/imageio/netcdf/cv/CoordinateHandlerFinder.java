@@ -32,6 +32,8 @@ import org.geotools.util.logging.Logging;
 import ucar.nc2.dataset.CoordinateAxis;
 import ucar.nc2.dataset.CoordinateAxis1D;
 
+import static org.geotools.util.Utilities.toUnmodifiableSet;
+
 /**
  * Enable programs to find all available CoordinateHandler implementations.
  *
@@ -87,13 +89,9 @@ public final class CoordinateHandlerFinder {
         // get all CoordinateHandlerSpi implementations
         scanForPlugins();
 
-        final Iterator<CoordinateHandlerSpi> it = getServiceRegistry().getServiceProviders(
-                CoordinateHandlerSpi.class, true);
-        final Set<CoordinateHandlerSpi> handlers = new HashSet<CoordinateHandlerSpi>();
-        while (it.hasNext()) {
-            handlers.add(it.next());
-        }
-        return Collections.unmodifiableSet(handlers);
+        return getServiceRegistry()
+                .getFactories(CoordinateHandlerSpi.class, true)
+                .collect(toUnmodifiableSet());
     }
 
     /**

@@ -18,12 +18,12 @@
 package org.geotools.gce.imagemosaic.granulehandler;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.geotools.factory.FactoryCreator;
 import org.geotools.factory.FactoryRegistry;
+
+import static org.geotools.util.Utilities.toInstanceByClassNameMap;
 
 /**
  * Access the granule handler factories
@@ -36,15 +36,9 @@ public class GranuleHandlerFactoryFinder {
         // get all GranuleHandlerFactorySPI implementations
         FactoryRegistry serviceRegistry = getServiceRegistry();
         serviceRegistry.scanForPlugins();
-        final Iterator<GranuleHandlerFactorySPI> it = serviceRegistry
-                .getServiceProviders(GranuleHandlerFactorySPI.class, true);
-        Map<String, GranuleHandlerFactorySPI> acceptorFactorySPIMap = new HashMap<>();
-        while (it.hasNext()) {
-            GranuleHandlerFactorySPI GranuleGeometryHandlerFactorySPI = it.next();
-            acceptorFactorySPIMap.put(GranuleGeometryHandlerFactorySPI.getClass().getName(),
-                    GranuleGeometryHandlerFactorySPI);
-        }
-        return acceptorFactorySPIMap;
+        return serviceRegistry
+                .getFactories(GranuleHandlerFactorySPI.class, true)
+                .collect(toInstanceByClassNameMap());
     }
 
     /**

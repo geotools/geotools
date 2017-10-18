@@ -18,12 +18,12 @@
 package org.geotools.gce.imagemosaic.granulecollector;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.geotools.factory.FactoryCreator;
 import org.geotools.factory.FactoryRegistry;
+
+import static org.geotools.util.Utilities.toInstanceByClassNameMap;
 
 /**
  * Helper finder for SubmosaicProducerFactories
@@ -36,15 +36,9 @@ public class SubmosaicProducerFactoryFinder {
         // get all GranuleHandlerFactorySPI implementations
         FactoryRegistry serviceRegistry = getServiceRegistry();
         serviceRegistry.scanForPlugins();
-        final Iterator<SubmosaicProducerFactory> it = serviceRegistry
-                .getServiceProviders(SubmosaicProducerFactory.class, true);
-        Map<String, SubmosaicProducerFactory> acceptorFactorySPIMap = new HashMap<>();
-        while (it.hasNext()) {
-            SubmosaicProducerFactory submosaicProducerFactory = it.next();
-            acceptorFactorySPIMap.put(submosaicProducerFactory.getClass().getName(),
-                    submosaicProducerFactory);
-        }
-        return acceptorFactorySPIMap;
+        return serviceRegistry
+                .getFactories(SubmosaicProducerFactory.class, true)
+                .collect(toInstanceByClassNameMap());
     }
 
     /**

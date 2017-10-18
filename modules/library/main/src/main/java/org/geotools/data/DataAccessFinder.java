@@ -31,6 +31,8 @@ import org.geotools.factory.FactoryRegistry;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
 
+import static java.util.stream.Collectors.toSet;
+
 /**
  * Enable programs to find all available DataAccess implementations, including
  * the DataStore ones.
@@ -203,18 +205,10 @@ public final class DataAccessFinder {
 
     static synchronized <T extends DataAccessFactory> Set<T> getAvailableDataStores(
             FactoryRegistry registry, Class<T> targetClass) {
-        Set<T> availableDS = new HashSet<T>(5);
-        Iterator<T> it = registry.getServiceProviders(targetClass, null, null);
-        T dsFactory;
-        while (it.hasNext()) {
-            dsFactory = it.next();
-
-            if (dsFactory.isAvailable()) {
-                availableDS.add(dsFactory);
-            }
-        }
-
-        return availableDS;
+        return registry
+                .getFactories(targetClass, null, null)
+                .filter(DataAccessFactory::isAvailable)
+                .collect(toSet());
     }
 
     /**

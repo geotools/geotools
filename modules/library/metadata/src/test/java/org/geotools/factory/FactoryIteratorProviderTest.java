@@ -61,8 +61,8 @@ public final class FactoryIteratorProviderTest {
         if (type != null) {
             hints = new Hints(DummyFactory.DUMMY_FACTORY, type);
         }
-        return registry.getServiceProvider(DummyFactory.class,
-                null, hints, DummyFactory.DUMMY_FACTORY);
+        return registry.
+                getFactory(DummyFactory.class, null, hints, DummyFactory.DUMMY_FACTORY);
     }
 
     /**

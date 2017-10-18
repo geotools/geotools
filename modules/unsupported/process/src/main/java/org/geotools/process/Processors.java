@@ -76,7 +76,7 @@ public class Processors extends FactoryFinder {
      * @param factory
      */
     public static void addProcessFactory(ProcessFactory factory) {
-    	getServiceRegistry().registerServiceProvider(factory);
+    	getServiceRegistry().registerFactory(factory);
     }
     
     /**
@@ -88,7 +88,7 @@ public class Processors extends FactoryFinder {
     	if(lastFactory == factory) {
     		lastFactory = null;
     	}
-    	getServiceRegistry().deregisterServiceProvider(factory);
+    	getServiceRegistry().deregisterFactory(factory);
     }
     
     /**

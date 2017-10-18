@@ -343,7 +343,7 @@ public final class CommonFactoryFinder extends FactoryFinder {
 
         // otherwise do the lousy slow system scan
         synchronized (CommonFactoryFinder.class) {
-            return getServiceRegistry().getServiceProvider(category, null, hints, key);
+            return getServiceRegistry().getFactory(category, null, hints, key);
         }
     }
 

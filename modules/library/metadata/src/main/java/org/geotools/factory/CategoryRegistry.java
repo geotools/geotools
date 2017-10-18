@@ -150,7 +150,6 @@ class CategoryRegistry {
 		// during construction, we registered `InstanceRegistry<T>` for `Class<T>`, so this cast is save
 		InstanceRegistry<T> registry = (InstanceRegistry<T>) categories.get(category);
 		if (registry == null) {
-			// TODO: do something fancy like in FactoryRegistry#getFactory(Class, Predicate, Hints, Hints.Key) ?
 			throw new IllegalArgumentException("The category '" + category + "' is not registered");
 		}
 		return registry;

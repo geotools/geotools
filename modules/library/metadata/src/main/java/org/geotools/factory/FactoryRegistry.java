@@ -169,18 +169,6 @@ public class FactoryRegistry {
         needScanForPlugins.addAll(categories);
     }
 
-    /*
-     * TODO: discuss how much API can be broken
-     *
-     * Breakage:
-     *
-     *  - not all methods of `ServiceRegistry` API were implemented
-     *
-     * Optional vs FactoryRegistryException
-     *
-     *  - maybe methods could return Optional instead of throwing an exception?
-     */
-
     public Stream<Class<?>> streamCategories() {
         return registry.streamCategories();
     }
@@ -891,7 +879,6 @@ public class FactoryRegistry {
 
     public <T> boolean registerFactory(final T factory, final Class<T> category) {
         if (!category.isAssignableFrom(factory.getClass())) {
-            // TODO: do something fancy like in getFactory(Class, Predicate, Hints, Hints.Key) ?
             throw new ClassCastException();
         }
         return registry.registerInstance(factory, category);
@@ -1182,7 +1169,6 @@ public class FactoryRegistry {
         ensureArgumentNonNull("factory", factory);
         ensureArgumentNonNull("category", category);
         if (!category.isAssignableFrom(factory.getClass())) {
-            // TODO: do something fancy like in getFactory(Class, Predicate, Hints, Hints.Key) ?
             throw new ClassCastException();
         }
         return registry.deregisterInstance(factory, category);

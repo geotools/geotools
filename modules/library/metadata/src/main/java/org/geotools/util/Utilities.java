@@ -663,7 +663,7 @@ public final class Utilities {
         }
         return s;
     }
-    
+
     /**
      * Makes sure that an argument is non-null.
      * 
@@ -675,6 +675,21 @@ public final class Utilities {
             throws NullPointerException {
         if (object == null) {
             throw new NullPointerException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, name));
+        }
+    }
+
+    /**
+     * Makes sure that an argument is non-null and throws an {@link IllegalArgumentException}
+     * if it is.
+     *
+     * @param name argument name
+     * @param object argument
+     * @throws IllegalArgumentException if {@code object} is null.
+     */
+    public static void ensureArgumentNonNull(final String name, final Object object)
+            throws IllegalArgumentException {
+        if (object == null) {
+            throw new IllegalArgumentException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, name));
         }
     }
 

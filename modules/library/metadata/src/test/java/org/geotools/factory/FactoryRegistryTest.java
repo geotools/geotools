@@ -16,19 +16,19 @@
  */
 package org.geotools.factory;
 
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 import static org.junit.Assert.*;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 
-import org.geotools.resources.LazySet;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -77,15 +77,14 @@ public final class FactoryRegistryTest {
         } else {
             registry = new FactoryRegistry(categories);
         }
-        registry.registerServiceProvider(factory1);
-        registry.registerServiceProvider(factory2);
-        registry.registerServiceProvider(factory3);
+        registry.registerFactory(factory1);
+        registry.registerFactory(factory2);
+        registry.registerFactory(factory3);
         assertTrue(registry.setOrdering(DummyFactory.class, (DummyFactory)factory1, (DummyFactory)factory2));
         assertTrue(registry.setOrdering(DummyFactory.class, (DummyFactory)factory2, (DummyFactory)factory3));
         assertTrue(registry.setOrdering(DummyFactory.class, (DummyFactory)factory1, (DummyFactory)factory3));
 
-        final List<?> factories = new ArrayList<Object>(new LazySet<Object>(
-                registry.getServiceProviders(DummyFactory.class, null, null)));
+        final List<?> factories = registry.getFactories(DummyFactory.class, null, null).collect(toList());
         assertTrue(factories.contains(factory1));
         assertTrue(factories.contains(factory2));
         assertTrue(factories.contains(factory3));
@@ -123,7 +122,7 @@ public final class FactoryRegistryTest {
          * No hints. The fist factory should be selected.
          */
         hints   = null;
-        factory = registry.getServiceProvider(DummyFactory.class, null, hints, key);
+        factory = registry.getFactory(DummyFactory.class, null, hints, key);
         assertSame("No preferences; should select the first factory. ", factory1, factory);
         /*
          * A hint compatible with one of our factories. Factory #1 declares explicitly that it uses
@@ -131,7 +130,7 @@ public final class FactoryRegistryTest {
          * indifferent. Since factory #1 is the first one in the list, it should be selected.
          */
         hints   = new Hints(Hints.KEY_INTERPOLATION, Hints.VALUE_INTERPOLATION_BILINEAR);
-        factory = registry.getServiceProvider(DummyFactory.class, null, hints, key);
+        factory = registry.getFactory(DummyFactory.class, null, hints, key);
         assertSame("First factory matches; it should be selected. ", factory1, factory);
         /*
          * A hint incompatible with all our factories. Factory #1 is the only one to defines
@@ -140,7 +139,7 @@ public final class FactoryRegistryTest {
          */
         hints = new Hints(Hints.KEY_INTERPOLATION, Hints.VALUE_INTERPOLATION_BICUBIC);
         try {
-            factory = registry.getServiceProvider(DummyFactory.class, null, hints, key);
+            factory = registry.getFactory(DummyFactory.class, null, hints, key);
             fail("Found factory "+factory+", while the hint should have been rejected.");
         } catch (FactoryNotFoundException exception) {
             // This is the expected exception. Continue...
@@ -151,9 +150,9 @@ public final class FactoryRegistryTest {
          * this one doesn't have any dependency toward factory #1.
          */
         final DummyFactory factory4 = new DummyFactory.Example4();
-        registry.registerServiceProvider(factory4);
+        registry.registerFactory(factory4);
         assertTrue(registry.setOrdering(DummyFactory.class, factory1, factory4));
-        factory = registry.getServiceProvider(DummyFactory.class, null, hints, key);
+        factory = registry.getFactory(DummyFactory.class, null, hints, key);
         assertSame("The new factory should be selected. ", factory4, factory);
 
         // ----------------------------
@@ -164,13 +163,13 @@ public final class FactoryRegistryTest {
          */
         DummyFactory explicit = new DummyFactory.Example3();
         hints   = new Hints(DummyFactory.DUMMY_FACTORY, explicit);
-        factory = registry.getServiceProvider(DummyFactory.class, null, hints, key);
+        factory = registry.getFactory(DummyFactory.class, null, hints, key);
         assertSame("The user-specified factory should have been selected. ", explicit, factory);
         /*
          * User specifies the expected implementation class rather than an instance.
          */
         hints   = new Hints(DummyFactory.DUMMY_FACTORY, DummyFactory.Example2.class);
-        factory = registry.getServiceProvider(DummyFactory.class, null, hints, key);
+        factory = registry.getFactory(DummyFactory.class, null, hints, key);
         assertSame("Factory of class #2 were requested. ", factory2, factory);
         /*
          * Same as above, but with classes specified in an array.
@@ -179,7 +178,7 @@ public final class FactoryRegistryTest {
             DummyFactory.Example3.class,
             DummyFactory.Example2.class
         });
-        factory = registry.getServiceProvider(DummyFactory.class, null, hints, key);
+        factory = registry.getFactory(DummyFactory.class, null, hints, key);
         assertSame("Factory of class #3 were requested. ", factory3, factory);
         /*
          * The following hint should be ignored by factory #1, since this factory doesn't have
@@ -187,7 +186,7 @@ public final class FactoryRegistryTest {
          * it should be selected.
          */
         hints   = new Hints(DummyFactory.INTERNAL_FACTORY, DummyFactory.Example2.class);
-        factory = registry.getServiceProvider(DummyFactory.class, null, hints, key);
+        factory = registry.getFactory(DummyFactory.class, null, hints, key);
         assertSame("Expected factory #1. ", factory1, factory);
         /*
          * If the user really wants some factory that do have a dependency to factory #2, he should
@@ -212,7 +211,7 @@ public final class FactoryRegistryTest {
          */
         hints = new Hints(DummyFactory.INTERNAL_FACTORY, DummyFactory.Example1.class);
         hints.add(implementations);
-        factory = registry.getServiceProvider(DummyFactory.class, null, hints, key);
+        factory = registry.getFactory(DummyFactory.class, null, hints, key);
         assertSame("Expected a factory using #1 internally. ", factory2, factory);
     }
 
@@ -236,11 +235,11 @@ public final class FactoryRegistryTest {
          * See comments in 'testGetProvider()' for explanation.
          */
         hints   = new Hints(Hints.KEY_INTERPOLATION, Hints.VALUE_INTERPOLATION_BILINEAR);
-        factory = registry.getServiceProvider(DummyFactory.class, null, hints, key);
+        factory = registry.getFactory(DummyFactory.class, null, hints, key);
         assertSame("First factory matches; it should be selected. ", factory1, factory);
 
         hints   = new Hints(DummyFactory.DUMMY_FACTORY, DummyFactory.Example2.class);
-        factory = registry.getServiceProvider(DummyFactory.class, null, hints, key);
+        factory = registry.getFactory(DummyFactory.class, null, hints, key);
         assertSame("Factory of class #2 were requested. ", factory2, factory);
         /*
          * The following case was throwing an exception in testGetProvider(). It should fails again
@@ -250,7 +249,7 @@ public final class FactoryRegistryTest {
          */
         hints = new Hints(Hints.KEY_INTERPOLATION, Hints.VALUE_INTERPOLATION_BICUBIC);
         try {
-            factory = registry.getServiceProvider(DummyFactory.class, null, hints, key);
+            factory = registry.getFactory(DummyFactory.class, null, hints, key);
             fail("Found or created factory "+factory+", while it should not have been allowed.");
         } catch (FactoryNotFoundException exception) {
             // This is the expected exception. Continue...
@@ -263,9 +262,9 @@ public final class FactoryRegistryTest {
          * Example5 is invoked, since the constructor with a Hints argument should have priority.
          */
         final DummyFactory factory5 = new DummyFactory.Example5(null);
-        registry.registerServiceProvider(factory5);
+        registry.registerFactory(factory5);
         assertTrue(registry.setOrdering(DummyFactory.class, factory1, factory5));
-        factory = registry.getServiceProvider(DummyFactory.class, null, hints, key);
+        factory = registry.getFactory(DummyFactory.class, null, hints, key);
         assertSame   ("An instance of Factory #5 should have been created.", factory5.getClass(), factory.getClass());
         assertNotSame("A NEW instance of Factory #5 should have been created", factory5, factory);
         /*
@@ -273,7 +272,7 @@ public final class FactoryRegistryTest {
          * It doesn't matter if this class is registered or not.
          */
         hints.put(DummyFactory.DUMMY_FACTORY, DummyFactory.Example4.class);
-        factory = registry.getServiceProvider(DummyFactory.class, null, hints, key);
+        factory = registry.getFactory(DummyFactory.class, null, hints, key);
         assertEquals("An instance of Factory #4 should have been created.", DummyFactory.Example4.class, factory.getClass());
     }
     
@@ -283,20 +282,18 @@ public final class FactoryRegistryTest {
         assertNotNull(url);
         
         FactoryRegistry reg = new FactoryCreator( DummyInterface.class );
-        Iterator it = reg.getServiceProviders(DummyInterface.class, false);
-        assertFalse(it.hasNext());
-        
+        Stream<DummyInterface> factories = reg.getFactories(DummyInterface.class, false);
+        assertFalse(factories.findAny().isPresent());
+
         URLClassLoader cl = new URLClassLoader(new URL[]{url});
         GeoTools.addClassLoader(cl);
         reg.scanForPlugins();
 
-        // collect the classes
-        it = reg.getServiceProviders(DummyInterface.class, false);
-        Set<String> classes = new HashSet<String>();
-        while(it.hasNext()) {
-            classes.add(it.next().getClass().getName());
-        }
-        
+        Set<String> classes = reg
+				.getFactories(DummyInterface.class, false)
+				.map(factory -> factory.getClass().getName())
+				.collect(toSet());
+
         assertEquals(2, classes.size());
         assertTrue(classes.contains("pkg.Foo"));
         assertTrue(classes.contains("org.geotools.factory.DummyInterfaceImpl"));
@@ -325,11 +322,10 @@ public final class FactoryRegistryTest {
 			Class dummy = loader.loadClass("org.geotools.factory.DummyInterface");
 			FactoryRegistry reg = new FactoryCreator(dummy);
 			reg.scanForPlugins();
-			Iterator it = reg.getServiceProviders(dummy, false);
-			assertTrue(it.hasNext());
-			Object next = it.next();
+            Optional factory = reg.getFactories(dummy, false).findFirst();
+            assertTrue(factory.isPresent());
 			// factory class should have same class loader as interface
-			assertSame(loader, next.getClass().getClassLoader());
+			assertSame(loader, factory.get().getClass().getClassLoader());
 		}
 	}
 

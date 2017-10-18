@@ -32,6 +32,8 @@ import org.geotools.factory.Hints;
 import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverage;
 
+import static org.geotools.util.Utilities.toUnmodifiableSet;
+
 /**
  * Enable programs to find all available grid format implementations.
  *
@@ -83,16 +85,10 @@ public final class GridFormatFinder {
 	public static synchronized Set<GridFormatFactorySpi> getAvailableFormats() {
 		// get all GridFormatFactorySpi implementations
 		scanForPlugins();
-		final Iterator<GridFormatFactorySpi> it = getServiceRegistry().
-			getServiceProviders(GridFormatFactorySpi.class, true);
-		final Set<GridFormatFactorySpi> formats= new HashSet<GridFormatFactorySpi>();
-		while (it.hasNext()) {
-			final GridFormatFactorySpi spi = it.next();
-			if (spi.isAvailable())
-				formats.add(spi);
-
-		}
-		return Collections.unmodifiableSet(formats);
+		return getServiceRegistry()
+				.getFactories(GridFormatFactorySpi.class, true)
+				.filter(GridFormatFactorySpi::isAvailable)
+				.collect(toUnmodifiableSet());
 	}
 
 	/**

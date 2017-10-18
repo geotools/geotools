@@ -21,8 +21,8 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 import javax.sql.DataSource;
 
@@ -604,9 +604,9 @@ public abstract class JDBCDataStoreFactory implements DataStoreFactorySpi {
     static JDBCCallbackFactory findCallbackFactory(String factoryName) {
         if (factoryName != null) {
             try {
-                return CALLBACK_REGISTRY.getServiceProvider(JDBCCallbackFactory.class,
-                    f -> factoryName.equalsIgnoreCase(((JDBCCallbackFactory) f).getName()), null, null
-                );
+                Predicate<JDBCCallbackFactory> sameName = f -> factoryName.equalsIgnoreCase(f.getName());
+                return CALLBACK_REGISTRY
+                        .getFactory(JDBCCallbackFactory.class, sameName, null, null);
             }
             catch(FactoryRegistryException e) {
                 // pass through

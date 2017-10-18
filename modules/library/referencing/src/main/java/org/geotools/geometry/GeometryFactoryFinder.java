@@ -74,12 +74,12 @@ public class GeometryFactoryFinder extends FactoryFinder {
 
     public static synchronized Precision getPrecision(Hints hints) throws FactoryRegistryException {
         hints = mergeSystemHints(hints);
-        return getServiceRegistry().getServiceProvider( Precision.class, null, hints, Hints.PRECISION );
+        return getServiceRegistry().getFactory( Precision.class, null, hints, Hints.PRECISION );
     }
 
     public static synchronized PositionFactory getPositionFactory( Hints hints) throws FactoryRegistryException {
         hints = mergeSystemHints(hints);
-        return getServiceRegistry().getServiceProvider( PositionFactory.class, null, hints, Hints.POSITION_FACTORY );
+        return getServiceRegistry().getFactory( PositionFactory.class, null, hints, Hints.POSITION_FACTORY );
     }
     /**
      * An implementation of {@link GeometryFactory} for the provided crs.
@@ -91,22 +91,22 @@ public class GeometryFactoryFinder extends FactoryFinder {
      */
     public static synchronized GeometryFactory getGeometryFactory( Hints hints) throws FactoryRegistryException {
         hints = mergeSystemHints(hints);
-        return getServiceRegistry().getServiceProvider( GeometryFactory.class, null, hints, Hints.GEOMETRY_FACTORY );
+        return getServiceRegistry().getFactory( GeometryFactory.class, null, hints, Hints.GEOMETRY_FACTORY );
     }
 
     public static synchronized ComplexFactory getComplexFactory(Hints hints) throws FactoryRegistryException {
         hints = mergeSystemHints(hints);
-        return getServiceRegistry().getServiceProvider( ComplexFactory.class, null, hints, Hints.COMPLEX_FACTORY );
+        return getServiceRegistry().getFactory( ComplexFactory.class, null, hints, Hints.COMPLEX_FACTORY );
     }
 
     public static synchronized AggregateFactory getAggregateFactory(Hints hints) throws FactoryRegistryException {
         hints = mergeSystemHints(hints);
-        return getServiceRegistry().getServiceProvider( AggregateFactory.class, null, hints, Hints.AGGREGATE_FACTORY );
+        return getServiceRegistry().getFactory( AggregateFactory.class, null, hints, Hints.AGGREGATE_FACTORY );
     }
 
     public static synchronized PrimitiveFactory getPrimitiveFactory(Hints hints) throws FactoryRegistryException {
         hints = mergeSystemHints(hints);
-        return getServiceRegistry().getServiceProvider( PrimitiveFactory.class, null, hints, Hints.PRIMITIVE_FACTORY );
+        return getServiceRegistry().getFactory( PrimitiveFactory.class, null, hints, Hints.PRIMITIVE_FACTORY );
     }
 
 }

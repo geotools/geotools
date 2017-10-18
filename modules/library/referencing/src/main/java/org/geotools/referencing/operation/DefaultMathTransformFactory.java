@@ -280,16 +280,14 @@ public class DefaultMathTransformFactory extends ReferencingFactory implements M
         if (provider!=null && provider.nameMatches(method)) {
             return provider;
         }
-        final Iterator<MathTransformProvider> providers =
-                registry.getServiceProviders(MathTransformProvider.class, null, HINTS);
-        while (providers.hasNext()) {
-            provider = providers.next();
-            if (provider.nameMatches(method)) {
-                return lastProvider = provider;
-            }
-        }
-        throw new NoSuchIdentifierException(Errors.format(
-                  ErrorKeys.NO_TRANSFORM_FOR_CLASSIFICATION_$1, method), method);
+
+        provider = registry.getFactories(MathTransformProvider.class, null, HINTS)
+                .filter(prov -> prov.nameMatches(method))
+                .findAny()
+                .orElseThrow(() -> new NoSuchIdentifierException(Errors
+                        .format(ErrorKeys.NO_TRANSFORM_FOR_CLASSIFICATION_$1, method), method));
+
+        return lastProvider = provider;
     }
 
     /**

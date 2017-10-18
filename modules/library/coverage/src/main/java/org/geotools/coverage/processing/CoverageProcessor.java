@@ -637,15 +637,9 @@ public class CoverageProcessor {
 	 */
 	public void scanForPlugins() {
 		synchronized (operations) {
-			
-		    final Iterator<Operation> it = registry.getServiceProviders(Operation.class, null, null);
-		    while (it.hasNext()) {
-		        final Operation operation = it.next();
-		        final String name = operation.getName().trim();
-		        if (!operations.containsKey(name)) {
-		            addOperation0(operation);
-		        }
-		    }
+			registry.getFactories(Operation.class, null, null)
+					.filter(operation -> !operations.containsKey(operation.getName().trim()))
+					.forEach(this::addOperation0);
 		}
 	}
 

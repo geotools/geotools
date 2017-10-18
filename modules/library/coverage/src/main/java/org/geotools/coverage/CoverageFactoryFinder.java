@@ -90,7 +90,7 @@ public final class CoverageFactoryFinder extends FactoryFinder {
         }
         synchronized (CoverageFactoryFinder.class) {
             hints = mergeSystemHints(hints);
-            return getServiceRegistry().getServiceProvider(GridCoverageFactory.class, null, hints, null);
+            return getServiceRegistry().getFactory(GridCoverageFactory.class, null, hints, null);
         }
     }
 

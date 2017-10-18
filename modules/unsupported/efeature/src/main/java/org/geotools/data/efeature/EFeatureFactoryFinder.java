@@ -80,19 +80,15 @@ public class EFeatureFactoryFinder extends FactoryFinder {
             // Do the lousy slow system scan
             //
             synchronized (EFeatureFactoryFinder.class) {
-                
                 // Query all factories
                 //
-                Iterator<BufferedFactory> factories = 
-                       getServiceRegistry().getServiceProviders(
-                               BufferedFactory.class, null, null);
-                
-                if(factories.hasNext())
-                {
-                    EFeatureContextFactory it = (EFeatureContextFactory)factories.next();
-                    eFeatureContextFactory = new WeakReference<EFeatureContextFactory>(it);
-                }
-            }            
+                getServiceRegistry()
+                        .getFactories(BufferedFactory.class, null, null)
+                        .findFirst()
+                        .map(factory -> (EFeatureContextFactory) factory)
+                        .map(WeakReference::new)
+                        .ifPresent(factory -> eFeatureContextFactory = factory);
+            }
         }
         // Verify that instance was found 
         //

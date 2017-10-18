@@ -18,14 +18,13 @@
 package org.geotools.gce.imagemosaic.properties;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 import org.geotools.factory.FactoryCreator;
 import org.geotools.factory.FactoryRegistry;
+
+import static org.geotools.util.Utilities.toUnmodifiableSet;
 
 /**
  * 
@@ -57,16 +56,10 @@ public final class PropertiesCollectorFinder {
     public static synchronized Set<PropertiesCollectorSPI> getPropertiesCollectorSPI() {
         // get all GridFormatFactorySpi implementations
         scanForPlugins();
-        final Iterator<PropertiesCollectorSPI> it = getServiceRegistry()
-                .getServiceProviders(PropertiesCollectorSPI.class, true);
-        final Set<PropertiesCollectorSPI> collectors = new HashSet<PropertiesCollectorSPI>();
-        while (it.hasNext()) {
-            final PropertiesCollectorSPI spi = (PropertiesCollectorSPI) it.next();
-            if (spi.isAvailable())
-                collectors.add(spi);
-
-        }
-        return Collections.unmodifiableSet(collectors);
+        return getServiceRegistry()
+                .getFactories(PropertiesCollectorSPI.class, true)
+                .filter(PropertiesCollectorSPI::isAvailable)
+                .collect(toUnmodifiableSet());
     }
 
     /**

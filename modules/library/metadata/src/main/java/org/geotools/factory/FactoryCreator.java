@@ -261,7 +261,7 @@ public class FactoryCreator extends FactoryRegistry {
     /**
      * Invokes {@link #createServiceProvider}, but checks against recursive calls. If the specified
      * implementation is already under construction, returns {@code null} in order to tell to
-     * {@link #getServiceProvider} that it need to search for an other implementation. This is
+     * {@link #getFactory} that it need to search for an other implementation. This is
      * needed for avoiding infinite recursivity when a factory is a wrapper around an ther factory
      * of the same category. For example this is the case of
      * {@link org.geotools.referencing.operation.BufferedCoordinateOperationFactory}.

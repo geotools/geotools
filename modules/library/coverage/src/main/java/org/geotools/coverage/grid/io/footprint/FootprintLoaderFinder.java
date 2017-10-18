@@ -17,16 +17,13 @@
  */
 package org.geotools.coverage.grid.io.footprint;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 import org.geotools.factory.FactoryCreator;
 import org.geotools.factory.FactoryRegistry;
+
+import static org.geotools.util.Utilities.toUnmodifiableSet;
 
 /**
  * Enable programs to find all available FootprintLoader implementations.
@@ -73,13 +70,9 @@ public final class FootprintLoaderFinder {
     public static synchronized Set<FootprintLoaderSpi> getAvailableLoaders() {
         // get all FootprintLoaderSpi implementations
         scanForPlugins();
-        final Iterator<FootprintLoaderSpi> it = getServiceRegistry().getServiceProviders(
-                FootprintLoaderSpi.class, true);
-        final Set<FootprintLoaderSpi> loaders = new HashSet<FootprintLoaderSpi>();
-        while (it.hasNext()) {
-            loaders.add(it.next());
-        }
-        return Collections.unmodifiableSet(loaders);
+        return getServiceRegistry()
+                .getFactories(FootprintLoaderSpi.class, true)
+                .collect(toUnmodifiableSet());
     }
 
     /**

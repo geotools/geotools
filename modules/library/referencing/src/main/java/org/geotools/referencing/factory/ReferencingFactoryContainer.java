@@ -166,10 +166,9 @@ public class ReferencingFactoryContainer extends ReferencingFactory {
                 cache = new FactoryCreator(Arrays.asList(new Class<?>[] {
                         ReferencingFactoryContainer.class
                 }));
-                cache.registerServiceProvider(new ReferencingFactoryContainer(null),
-                        ReferencingFactoryContainer.class);
+                cache.registerFactory(new ReferencingFactoryContainer(null), ReferencingFactoryContainer.class);
             }
-            return cache.getServiceProvider(ReferencingFactoryContainer.class, null, completed, null);
+            return cache.getFactory(ReferencingFactoryContainer.class, null, completed, null);
         }
     }
 

@@ -286,26 +286,21 @@ public class AbstractFactory implements Factory, RegistrableFactory {
      * @see #MINIMUM_PRIORITY
      * @see #MAXIMUM_PRIORITY
      */
-    public void onRegistration(final FactoryRegistry registry, final Class category) {
-        for (final Iterator it=registry.getServiceProviders(category, false); it.hasNext();) {
-            final Object provider = it.next();
-            if (provider!=this && provider instanceof AbstractFactory) {
-                final AbstractFactory factory = (AbstractFactory) provider;
-                final int priority = getPriority();
-                final int compare  = factory.getPriority();
-                final Object first, second;
-                if (priority > compare) {
-                    first  = this;
-                    second = factory;
-                } else if (priority < compare) {
-                    first  = factory;
-                    second = this;
-                } else {
-                    continue; // No ordering
-                }
-                registry.setOrdering(category, first, second);
-            }
-        }
+    public void onRegistration(final FactoryRegistry registry, final Class<?> category) {
+        registry.getFactories(category, false)
+                .filter(factory -> factory != this)
+                .filter(AbstractFactory.class::isInstance)
+                .map(factory -> (AbstractFactory) factory)
+                .forEach(factory -> {
+                    final int priority = getPriority();
+                    final int compare  = factory.getPriority();
+                    if (priority > compare) {
+                        registry.setOrdering((Class) category, this, factory);
+                    } else if (priority < compare) {
+                        registry.setOrdering((Class) category, factory, this);
+                    }
+                    // no ordering if priority == compare
+                });
     }
 
     /**
@@ -349,7 +344,7 @@ public class AbstractFactory implements Factory, RegistrableFactory {
      * <p>
      * The requirement for the <cite>exact same class</cite> is needed for consistency with the
      * {@linkplain FactoryRegistry factory registry} working, since at most one instance of a given
-     * class {@linkplain FactoryRegistry#getServiceProviderByClass) is allowed} in a registry.
+     * class {@linkplain FactoryRegistry#getFactoryByClass) is allowed} in a registry.
      *
      * @param object The object to compare.
      * @return {@code true} if the given object is equals to this factory.

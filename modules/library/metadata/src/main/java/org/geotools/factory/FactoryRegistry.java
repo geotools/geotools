@@ -34,7 +34,7 @@ import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Loggings;
 import org.geotools.resources.i18n.LoggingKeys;
 
-import static org.geotools.util.Utilities.stream;
+import static org.geotools.util.Utilities.ensureArgumentNonNull;
 import static org.geotools.util.Utilities.streamIfSubtype;
 
 
@@ -92,7 +92,13 @@ public class FactoryRegistry {
      */
     private static final Level DEBUG_LEVEL = Level.FINEST;
 
-    // TODO: document
+    /**
+     * Holds the registered factories by their category.
+     *
+     * {@link CategoryRegistry} does not accept {@code null} values and will throw
+     * {@link IllegalArgumentException}s if it encounters any. This factory registry
+     * relies on that behavior and "outsources" a lot of its {@code null} checks this way.
+     */
     private final CategoryRegistry registry;
 
     /**
@@ -179,20 +185,14 @@ public class FactoryRegistry {
         return registry.streamCategories();
     }
 
-    // TODO: ensure uniform null handling here and in CategoryRegistry
-
     // TODO: document
     @Deprecated
     public <T> T getServiceProviderByClass(Class<T> providerClass) {
         return getFactoryByClass(providerClass);
     }
 
-    public <T> T getFactoryByClass(Class<T> categoryClass) {
-        if (categoryClass == null) {
-            // TODO: do something fancy like in getFactory(Class, Predicate, Hints, Hints.Key) ?
-            throw new IllegalArgumentException("The categoryClass must not be null.");
-        }
-        return registry.getInstanceOfType(categoryClass).orElse(null);
+    public <T> T getFactoryByClass(Class<T> category) {
+        return registry.getInstanceOfType(category).orElse(null);
     }
 
     // TODO: document
@@ -206,16 +206,19 @@ public class FactoryRegistry {
         return registry.streamInstances(category, useOrdering);
     }
 
-    // TODO: document
+    // TODO: document; filter can be null
     @Deprecated
     public <T> Iterator<T> getServiceProviders(final Class<T> category, final Filter filter, final boolean useOrdering) {
-        return getFactories(category, filter::filter, useOrdering).iterator();
+        Predicate<T> factoryFilter = filter == null ? null : filter::filter;
+        return getFactories(category, factoryFilter, useOrdering).iterator();
     }
 
-    // TODO: document
+    // TODO: document; filter can be null
     public <T> Stream<T> getFactories(final Class<T> category, final Predicate<? super T> factoryFilter, final boolean useOrdering) {
-        return getFactories(category, useOrdering)
-                .filter(factoryFilter);
+		Stream<T> factories = getFactories(category, useOrdering);
+		return factoryFilter == null
+				? factories
+				: factories.filter(factoryFilter);
     }
 
     /**
@@ -860,19 +863,13 @@ public class FactoryRegistry {
 
     // TODO: document
     public void registerFactories(final Iterator<?> factories) {
-        if (factories == null) {
-            // TODO: do something fancy like in getFactory(Class, Predicate, Hints, Hints.Key) ?
-            throw new IllegalArgumentException("The factories must not be null.");
-        }
+        ensureArgumentNonNull("factories", factories);
         factories.forEachRemaining(this::registerFactory);
     }
 
     // TODO: document
     public void registerFactories(final Iterable<?> factories) {
-        if (factories == null) {
-            // TODO: do something fancy like in getFactory(Class, Predicate, Hints, Hints.Key) ?
-            throw new IllegalArgumentException("The factories must not be null.");
-        }
+        ensureArgumentNonNull("factories", factories);
         factories.forEach(this::registerFactory);
     }
 
@@ -883,10 +880,6 @@ public class FactoryRegistry {
     }
 
     public void registerFactory(final Object factory) {
-        if (factory == null) {
-            // TODO: do something fancy like in getFactory(Class, Predicate, Hints, Hints.Key) ?
-            throw new IllegalArgumentException("The factory must not be null.");
-        }
         registry.registerInstance(factory);
     }
 
@@ -897,14 +890,6 @@ public class FactoryRegistry {
     }
 
     public <T> boolean registerFactory(final T factory, final Class<T> category) {
-        if (factory == null) {
-            // TODO: do something fancy like in getFactory(Class, Predicate, Hints, Hints.Key) ?
-            throw new IllegalArgumentException("The factory must not be null.");
-        }
-        if (category == null) {
-            // TODO: do something fancy like in getFactory(Class, Predicate, Hints, Hints.Key) ?
-            throw new IllegalArgumentException("The category must not be null.");
-        }
         if (!category.isAssignableFrom(factory.getClass())) {
             // TODO: do something fancy like in getFactory(Class, Predicate, Hints, Hints.Key) ?
             throw new ClassCastException();
@@ -1165,19 +1150,13 @@ public class FactoryRegistry {
 
     // TODO: document
     public void deregisterFactories(final Iterator<?> factories) {
-        if (factories == null) {
-            // TODO: do something fancy like in getFactory(Class, Predicate, Hints, Hints.Key) ?
-            throw new IllegalArgumentException("The factories must not be null.");
-        }
+        ensureArgumentNonNull("factories", factories);
         factories.forEachRemaining(this::deregisterFactory);
     }
 
     // TODO: document
     public void deregisterFactories(final Iterable<?> factories) {
-        if (factories == null) {
-            // TODO: do something fancy like in getFactory(Class, Predicate, Hints, Hints.Key) ?
-            throw new IllegalArgumentException("The factories must not be null.");
-        }
+        ensureArgumentNonNull("factories", factories);
         factories.forEach(this::deregisterFactory);
     }
 
@@ -1188,12 +1167,8 @@ public class FactoryRegistry {
     }
 
     // TODO: document
-    public void deregisterFactory(final Object provider) {
-        if (provider == null) {
-            // TODO: do something fancy like in getFactory(Class, Predicate, Hints, Hints.Key) ?
-            throw new IllegalArgumentException("The provider must not be null.");
-        }
-        registry.deregisterInstance(provider);
+    public void deregisterFactory(final Object factory) {
+        registry.deregisterInstance(factory);
     }
 
     // TODO: document
@@ -1204,14 +1179,8 @@ public class FactoryRegistry {
 
     // TODO: document
     public <T> boolean deregisterFactory(final T factory, final Class<T> category) {
-        if (factory == null) {
-            // TODO: do something fancy like in getFactory(Class, Predicate, Hints, Hints.Key) ?
-            throw new IllegalArgumentException("The factory must not be null.");
-        }
-        if (category == null) {
-            // TODO: do something fancy like in getFactory(Class, Predicate, Hints, Hints.Key) ?
-            throw new IllegalArgumentException("The category must not be null.");
-        }
+        ensureArgumentNonNull("factory", factory);
+        ensureArgumentNonNull("category", category);
         if (!category.isAssignableFrom(factory.getClass())) {
             // TODO: do something fancy like in getFactory(Class, Predicate, Hints, Hints.Key) ?
             throw new ClassCastException();
@@ -1221,12 +1190,6 @@ public class FactoryRegistry {
 
     // TODO: document
     public <T> boolean setOrdering(final Class<T> category, final T firstFactory, final T secondFactory) {
-        if (firstFactory == null) {
-            throw new IllegalArgumentException("First provider must not be null.");
-        }
-        if (secondFactory == null) {
-            throw new IllegalArgumentException("Second provider must not be null.");
-        }
         if (firstFactory == secondFactory) {
             throw new IllegalArgumentException("Providers must not be the same instance.");
         }
@@ -1297,6 +1260,8 @@ public class FactoryRegistry {
     @Deprecated // TODO document
     public <T> boolean setOrdering(final Class<T> base, final boolean set,
                                    final Filter filter1, final Filter filter2) {
+        ensureArgumentNonNull("filter1", filter1);
+        ensureArgumentNonNull("filter2", filter2);
         return setOrdering(base, set, (Predicate<T>) filter1::filter, filter2::filter);
     }
 
@@ -1304,6 +1269,8 @@ public class FactoryRegistry {
     public <T> boolean setOrdering(final Class<T> base, final boolean set,
                                    final Predicate<? super T> filter1, final Predicate<? super T> filter2)
     {
+        ensureArgumentNonNull("filter1", filter1);
+        ensureArgumentNonNull("filter2", filter2);
         return registry.streamCategories()
                 .flatMap(category -> streamIfSubtype(category, base))
                 .map(category -> setOrUnsetOrdering(category, set, filter1, filter2))
@@ -1333,17 +1300,11 @@ public class FactoryRegistry {
     }
 
     // TODO: document
-    public <T> boolean unsetOrdering(final Class<T> category, final T firstProvider, final T secondProvider) {
-        if (firstProvider == null) {
-            throw new IllegalArgumentException("First provider must not be null.");
-        }
-        if (secondProvider == null) {
-            throw new IllegalArgumentException("Second provider must not be null.");
-        }
-        if (firstProvider == secondProvider) {
+    public <T> boolean unsetOrdering(final Class<T> category, final T firstFactory, final T secondFactory) {
+        if (firstFactory == secondFactory) {
             throw new IllegalArgumentException("Providers must not be the same instance.");
         }
-        return registry.clearOrder(category, firstProvider, secondProvider);
+        return registry.clearOrder(category, firstFactory, secondFactory);
     }
 
 }

@@ -25,15 +25,18 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toMap;
+import static org.geotools.util.Utilities.ensureArgumentNonNull;
 import static org.geotools.util.Utilities.stream;
 
 /**
  * The category registry holds multiple instances per category. Categories are
  * {@link Class classes} and instances are also accessible by the class they implement.
  * Note that instances have to implement/extend the category they are filed under.
+ *
+ * This class is {@code null}-intolerant and throws {@link IllegalArgumentException}s if
+ * an argument is {@code null}.
  */
 class CategoryRegistry {
 
@@ -53,8 +56,8 @@ class CategoryRegistry {
 	 * @param categories The categories to register; must not be {@code null} but can contain {@code null}.
 	 */
 	public CategoryRegistry(final FactoryRegistry factoryRegistry, final Iterable<Class<?>> categories) {
-		requireNonNull(factoryRegistry);
-		requireNonNull(categories);
+		ensureArgumentNonNull("factoryRegistry", factoryRegistry);
+		ensureArgumentNonNull("categories", categories);
 		// use an unmodifiable map to guarantee immutability
 		this.categories = stream(categories)
 				.collect(collectingAndThen(
@@ -72,7 +75,7 @@ class CategoryRegistry {
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> void registerInstance(final T instance) {
-		requireNonNull(instance);
+		ensureArgumentNonNull("instance", instance);
 		streamCategories()
 				.filter(category -> category.isAssignableFrom(instance.getClass()))
 				// the cast is correct because the filter above only leaves categories that are supertypes of `instance`
@@ -99,7 +102,7 @@ class CategoryRegistry {
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> void deregisterInstance(final T instance) {
-		requireNonNull(instance);
+		ensureArgumentNonNull("instance", instance);
 		streamCategories()
 				.filter(category -> category.isAssignableFrom(instance.getClass()))
 				// the cast is correct because the filter above only leaves categories that are supertypes of `instance`
@@ -142,7 +145,7 @@ class CategoryRegistry {
 	 * Throws an exception if that category was not registered.
 	 */
 	private <T> InstanceRegistry<T> instanceRegistry(final Class<T> category) {
-		requireNonNull(category);
+		ensureArgumentNonNull("category", category);
 		@SuppressWarnings("unchecked")
 		// during construction, we registered `InstanceRegistry<T>` for `Class<T>`, so this cast is save
 		InstanceRegistry<T> registry = (InstanceRegistry<T>) categories.get(category);
@@ -179,7 +182,7 @@ class CategoryRegistry {
 	 * @return An instance if one was found.
 	 */
 	public <S> Optional<S> getInstanceOfType(Class<S> type) {
-		requireNonNull(type);
+		ensureArgumentNonNull("type", type);
 		return streamCategories()
 				.filter(category -> category.isAssignableFrom(type))
 				.map(this::instanceRegistry)
@@ -196,8 +199,8 @@ class CategoryRegistry {
 	 * @return {@code true} if this establishes a new order
 	 */
 	public <T> boolean setOrder(Class<T> category, T firstInstance, T secondInstance) {
-		requireNonNull(firstInstance);
-		requireNonNull(secondInstance);
+		ensureArgumentNonNull("firstInstance", firstInstance);
+		ensureArgumentNonNull("secondInstance", secondInstance);
 		return instanceRegistry(category).setOrder(firstInstance, secondInstance);
 	}
 
@@ -210,8 +213,8 @@ class CategoryRegistry {
 	 * @return {@code true} if that ordering existed before
 	 */
 	public <T> boolean clearOrder(Class<T> category, T firstInstance, T secondInstance) {
-		requireNonNull(firstInstance);
-		requireNonNull(secondInstance);
+		ensureArgumentNonNull("firstInstance", firstInstance);
+		ensureArgumentNonNull("secondInstance", secondInstance);
 		return instanceRegistry(category).clearOrder(firstInstance, secondInstance);
 	}
 
@@ -229,7 +232,7 @@ class CategoryRegistry {
 		}
 
 		public boolean register(final T instance) {
-			requireNonNull(instance);
+			ensureArgumentNonNull("instance", instance);
 			boolean deregistered = deregisterByType(instance);
 			registerInternal(instance);
 			notifyRegistered(instance);
@@ -248,7 +251,7 @@ class CategoryRegistry {
 		}
 
 		public boolean deregister(final T instance) {
-			requireNonNull(instance);
+			ensureArgumentNonNull("instance", instance);
 			if (instancesByType.containsKey(instance.getClass())) {
 				deregisterByType(instance);
 				return true;
@@ -290,7 +293,7 @@ class CategoryRegistry {
 		}
 
 		public <S> Optional<S> getInstanceOfType(Class<S> type) {
-			requireNonNull(type);
+			ensureArgumentNonNull("type", type);
 			@SuppressWarnings("unchecked")
 			S instance = (S) instancesByType.get(type);
 			return Optional.ofNullable(instance);
@@ -304,8 +307,8 @@ class CategoryRegistry {
 		}
 
 		public boolean clearOrder(T firstInstance, T secondInstance) {
-			requireNonNull(firstInstance);
-			requireNonNull(secondInstance);
+			ensureArgumentNonNull("firstInstance", firstInstance);
+			ensureArgumentNonNull("secondInstance", secondInstance);
 			return instancesByType.containsKey(firstInstance.getClass())
 					&& instancesByType.containsKey(secondInstance.getClass())
 					// if both are contained, set the order

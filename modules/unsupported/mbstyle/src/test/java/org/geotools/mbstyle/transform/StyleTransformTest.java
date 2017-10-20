@@ -266,7 +266,7 @@ public class StyleTransformTest {
         assertEquals(1, fts.get(0).rules().size());
         Rule r = fts.get(0).rules().get(0);
 
-        assertEquals(3, r.symbolizers().size());
+        assertEquals(2, r.symbolizers().size());
         Symbolizer symbolizer = r.symbolizers().get(0);
         assertTrue(symbolizer instanceof LineSymbolizer);
         LineSymbolizer lsym = (LineSymbolizer) symbolizer;
@@ -276,8 +276,10 @@ public class StyleTransformTest {
         assertEquals("square", lsym.getStroke().getLineCap().evaluate(null, String.class));
         assertEquals("round", lsym.getStroke().getLineJoin().evaluate(null, String.class));
         assertEquals(.5d, lsym.getStroke().getOpacity().evaluate(null, Double.class), .0001);
-        assertEquals(Integer.valueOf(18), lsym.getStroke().getWidth().evaluate(null, Integer.class));
-        assertEquals(Integer.valueOf(4), lsym.getPerpendicularOffset().evaluate(null, Integer.class));
+        assertEquals(Integer.valueOf(10), lsym.getStroke().getWidth().evaluate(null, Integer.class));
+        assertEquals(Integer.valueOf(-5), lsym.getPerpendicularOffset().evaluate(null, Integer.class));
+        
+        
 
     }
     

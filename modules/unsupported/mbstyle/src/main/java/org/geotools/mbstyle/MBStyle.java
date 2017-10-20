@@ -347,9 +347,11 @@ public class MBStyle {
             throw new MBFormatException("layers empty");
         }
 
-        Map<String, NamedLayer> sourceLayers = new HashMap<>();
+        //TODO: Just track last NamedLayer
+        NamedLayer currentNamedLayer = null;
+        String currentName = null;
         for (MBLayer layer : layers) {
-            Style style = sf.createStyle();
+            List<FeatureTypeStyle> featureTypeStyles = new ArrayList<>();
             MBObjectStops mbObjectStops = new MBObjectStops(layer);
 
             int layerMaxZoom = layer.getMaxZoom();
@@ -360,7 +362,6 @@ public class MBStyle {
                     : MBObjectStops.zoomLevelToScaleDenominator((long) Math.max(-25, layerMinZoom));
 
             if (layer.visibility()) {
-                List<FeatureTypeStyle> featureTypeStyle = null;
                 // check for property and zoom functions, if true we will have a layer for each one that
                 // becomes a feature type style.
                 if (mbObjectStops.ls.zoomStops || mbObjectStops.ls.zoomPropertyStops) {
@@ -375,22 +376,26 @@ public class MBStyle {
                             minScaleDenominator = MBObjectStops.zoomLevelToScaleDenominator(rangeForStopLevel[1]);
                         }
 
-                        featureTypeStyle = l.transform(this, minScaleDenominator, maxScaleDenominator);
-                        style.featureTypeStyles().addAll(featureTypeStyle);
+                        featureTypeStyles.addAll(l.transform(this, minScaleDenominator, maxScaleDenominator));
                         i++;
                     }
                 } else {
-                    featureTypeStyle = layer.transform(this, layerMinScaleDenominator, layerMaxScaleDenominator);
-                    style.featureTypeStyles().addAll(featureTypeStyle);
+                    featureTypeStyles.addAll(layer.transform(this, layerMinScaleDenominator, layerMaxScaleDenominator));
                 }
             }
 
-            if( !style.featureTypeStyles().isEmpty() ) {
+            if( !featureTypeStyles.isEmpty() ) {
 
                 if (layer instanceof BackgroundMBLayer) {
+                    //clear current layer data
+                    currentNamedLayer = null;
+                    currentName = null;
+
                     //Background does not use a source; construct a user later with a world extent inline feature
                     //so that we still have a valid SLD.
                     UserLayer userLayer = sf.createUserLayer();
+                    Style style = sf.createStyle();
+                    style.featureTypeStyles().addAll(featureTypeStyles);
 
                     final SimpleFeatureTypeBuilder ftb = new SimpleFeatureTypeBuilder();
                     final PrecisionModel pm = new PrecisionModel(PrecisionModel.FLOATING);
@@ -416,6 +421,7 @@ public class MBStyle {
                         userLayer.setInlineFeatureDatastore(DataUtilities.dataStore(fc));
                         userLayer.setName("background");
 
+
                         userLayer.userStyles().add(style);
                         sld.layers().add(userLayer);
                     } catch (FactoryException e) {
@@ -427,17 +433,20 @@ public class MBStyle {
                         //If source-layer is not set, assume the source just has one layer which shares its name
                         sourceLayer = layer.getSource();
                     }
-                    //Add all styles with the same source-layer to the same NamedLayer
-                    NamedLayer namedLayer = sourceLayers.get(sourceLayer);
-                    if (namedLayer == null) {
-                        namedLayer = sf.createNamedLayer();
-                        namedLayer.setName(sourceLayer);
+                    //Append to existing namedlayer if source name is the same, otherwise create a new one
+                    if (currentNamedLayer == null || !sourceLayer.equals(currentName)) {
+                        currentNamedLayer = sf.createNamedLayer();
+                        currentName = sourceLayer;
+                        currentNamedLayer.setName(currentName);
                         //TODO: When NamedLayer supports description, use layer.getId() for description
 
-                        sourceLayers.put(sourceLayer, namedLayer);
-                        sld.layers().add(namedLayer);
+                        Style style = sf.createStyle();
+                        currentNamedLayer.styles().add(style);
+
+                        sld.layers().add(currentNamedLayer);
                     }
-                    namedLayer.styles().add(style);
+                    //Add all featureTypeStyles to the first (and only) UserStyle
+                    currentNamedLayer.styles().get(0).featureTypeStyles().addAll(featureTypeStyles);
                 }
             }
         }

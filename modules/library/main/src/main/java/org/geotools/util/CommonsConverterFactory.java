@@ -23,10 +23,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.*;
 
-import java.util.TimeZone;
 import org.geotools.factory.Hints;
 
 /**
@@ -34,7 +32,7 @@ import org.geotools.factory.Hints;
  * <p>
  * Formally this class made use of the apache commons {@link org.apache.commons.beanutils.Converter}
  * interface.
- * 
+ *
  * @author Justin Deoliveira, The Open Planning Project
  * @since 2.4
  * @version 2.7
@@ -43,7 +41,12 @@ import org.geotools.factory.Hints;
  * @source $URL$
  */
 public class CommonsConverterFactory implements ConverterFactory {
-	
+
+    static protected List<String> formats = Arrays.asList(
+        "yyyy-MM-dd HH:mm:ss.S a",
+        "yyyy-MM-dd HH:mm:ssa",
+        "yyyy-MM-dd'T'HH:mm:ss.SSSX");
+
     // some additional converters
     /**
      * converts a string to a uri.
@@ -55,8 +58,8 @@ public class CommonsConverterFactory implements ConverterFactory {
             try {
                     URI uri = new URI( string );
                     return target.cast( uri );
-            } 
-            catch (URISyntaxException e) { } 
+            }
+            catch (URISyntaxException e) { }
             return null;
         }
     }
@@ -68,10 +71,10 @@ public class CommonsConverterFactory implements ConverterFactory {
             try { //first try integer
                 parsed = (Number) new IntegerConverter().convert(string,Integer.class);
             }
-            catch(Exception e) {}            
+            catch(Exception e) {}
             if ( parsed == null ) { //try double
                 parsed = (Number) new DoubleConverter().convert(string,Double.class);
-            }            
+            }
             return target.cast(parsed);
         }
     }
@@ -176,7 +179,7 @@ public class CommonsConverterFactory implements ConverterFactory {
 //                Arrays.asList(new String[]{"YES","Y","TRUE","ON","1"}) );
 //        static final Set<String> NO = new HashSet<String>(
 //                Arrays.asList(new String[]{"NO","N","FALSE","OFF","0"}) );
-        
+
         public <T> T convert(Object source, Class<T> target) throws Exception {
             if( source == null ) return null;
             String string = (String) source;
@@ -217,30 +220,32 @@ public class CommonsConverterFactory implements ConverterFactory {
             return null;
         }
     }
-    
+
     static class DateConverter implements Converter {
+
+        static public List<String> formats = Arrays.asList(
+            "yyyy-MM-dd HH:mm:ss.S a",
+            "yyyy-MM-dd HH:mm:ssa",
+            "yyyy-MM-dd'T'HH:mm:ss.SSSX");
+
         public <T> T convert(Object source, Class<T> target) throws Exception {
-            if( source == null ) return null;
+
+            if (source == null) {
+                return null;
+            }
+
             String string = (String) source;
-            
-            try {
-                SimpleDateFormat format1 = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss.S a" );
-                Date parsed = format1.parse(string);
-                return target.cast( parsed );
-            }
-            catch( Exception ignore){
-            }
-            try {
-                SimpleDateFormat format2 = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ssa" );
-                Date parsed = format2.parse(string);
-                return target.cast( parsed );
-            }
-            catch( Exception ignore){
+
+            for (String format : formats) {
+                try {
+                    return target.cast((new SimpleDateFormat(format)).parse(string));
+                } catch (Exception ignore) {
+                }
             }
             return null;
         }
     }
-    
+
     static class URLConverter implements Converter {
         public <T> T convert(Object source, Class<T> target) throws Exception {
             if( source == null ) return null;
@@ -258,7 +263,7 @@ public class CommonsConverterFactory implements ConverterFactory {
             }
         }
     }
-    
+
     static class SQLDateConverter implements Converter {
         public <T> T convert(Object source, Class<T> target) throws Exception {
             if( source == null ) return null;
@@ -271,7 +276,7 @@ public class CommonsConverterFactory implements ConverterFactory {
             }
         }
     }
-    
+
     static class SQLTimeConverter implements Converter {
         public <T> T convert(Object source, Class<T> target) throws Exception {
             if( source == null ) return null;
@@ -348,7 +353,7 @@ public class CommonsConverterFactory implements ConverterFactory {
         register.put(Boolean.TYPE, new BooleanConverter());
         register.put(Character.class, new CharacterConverter());
         register.put(Character.TYPE, new CharacterConverter());
-        
+
         // the follow was required to pass tests
         // (they were not registered explicitly)
         // java.lang.Class</li>
@@ -358,19 +363,20 @@ public class CommonsConverterFactory implements ConverterFactory {
         register.put(java.sql.Time.class, new SQLTimeConverter() );
         register.put(java.sql.Timestamp.class, new SQLTimestampConverter() );
         register.put(TimeZone.class, new TimeZoneConverter());
-        
+
         register.put(Date.class, new DateConverter() );
 
     }
-	
-	
+
+
 	/**
-	 * Delegates to {@link ConvertUtils#lookup(java.lang.Class)} to create a 
+	 * Delegates to {@link ConvertUtils#lookup(java.lang.Class)} to create a
 	 * converter instance.
-	 * 
-	 * @see ConverterFactory#createConverter(Class, Class, Hints). 
+	 *
+	 * @see ConverterFactory#createConverter(Class, Class, Hints).
 	 */
 	public Converter createConverter(Class<?> source, Class<?> target, Hints hints) {
+
 		if ( source == null || !source.equals( String.class ) ) {
 		    return null; // only do strings
 		}

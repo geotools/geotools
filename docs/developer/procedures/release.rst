@@ -96,6 +96,18 @@ When creating the first release candidate of a series, there are some extra step
 
 * Announce on the developer mailing list that the new stable branch has been created and that the feature freeze on master is over
 
+* This is the time to update the README.md, README.html and documentation links
+  
+  For the new stable branch:
+  
+  * common.py - update the external links block changing 'latest' to 'stable'
+  * README.md and README.html - update the user guide links changing 'latest' to 'stable'  
+  
+  For the new maintenance branch:
+  
+  * common.py - update the external links block changing 'stable' to 'maintenance' (the geoserver link will change to 'maintain').
+  * README.md and README.html - update the user guide links changing 'stable' to 'maintenance'  
+
 Build the Release
 -----------------
 

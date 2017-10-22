@@ -11,7 +11,6 @@
     <url>http://maven.apache.org</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <!-- use the latest snapshot -->
         <geotools.version>19-SNAPSHOT</geotools.version>
     </properties>
     <dependencies>
@@ -44,12 +43,12 @@
             <url>http://download.osgeo.org/webdav/geotools/</url>
         </repository>
         <repository>
-          <snapshots>
-            <enabled>true</enabled>
-          </snapshots>
-          <id>boundless</id>
-          <name>Boundless Maven Repository</name>
-          <url>http://repo.boundlessgeo.com/main</url>
+            <snapshots>
+              <enabled>true</enabled>
+            </snapshots>
+            <id>boundless</id>
+            <name>Boundless Maven Repository</name>
+            <url>http://repo.boundlessgeo.com/main</url>
         </repository>
     </repositories>
 

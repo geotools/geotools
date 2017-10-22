@@ -54,7 +54,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <geotools.version>14.1</geotools.version>
+        <geotools.version>18.0</geotools.version>
     </properties>
 
     <repositories>

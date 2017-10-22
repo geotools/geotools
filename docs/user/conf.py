@@ -7,7 +7,7 @@ from common import *
 extensions = ['sphinx.ext.extlinks']
 
 extlinks = { 
-    'geoserver': ('http://docs.geoserver.org/latest/en/user/%s','')
+    'geoserver': ('http://docs.geoserver.org/maintain/en/user/%s','')
 }
 
 # The suffix of source filenames.

@@ -178,7 +178,7 @@ such as GeoTools publish their work.
 2. We are going to start by defining the version number of GeoTools we wish to use. This workbook
    was written for |release| although you may wish to try a different version.
    
-   For production a stable release is recommended:
+   For production a stable release of |branch| should be used for `geotools.version`:
     
    .. literalinclude:: artifacts/pom.xml
         :language: xml
@@ -210,12 +210,7 @@ such as GeoTools publish their work.
         :start-after: </dependencies>
         :end-before: <build>
 
-   If you are using a nightly build (such as |branch|-SNAPSHOT) and add a reference to the snapshot repository.
-   
-   .. literalinclude:: artifacts/pom2.xml
-     :language: xml
-     :start-after: </dependencies>
-     :end-before: <build>
+   .. note:: Note the snapshot repository above is only required if you are using a nightly build (such as |branch|-SNAPSHOT)
 
 5. If you'd like to use Java 8 language level features (eg. lambdas), you need to tell Maven to use the 1.8 source level
 

@@ -28,9 +28,9 @@ extensions = ['sphinx.ext.todo','sphinx.ext.extlinks']
 extlinks = { 
     'wiki': ('https://github.com/geotools/geotools/wiki/%s',''),
     'website': ('http://geotools.org/%s',''),
-    'geoserver': ('http://docs.geoserver.org/latest/en/user/%s',''),
+    'geoserver': ('http://docs.geoserver.org/stable/en/user/%s',''),
     'developer': ('http://docs.geotools.org/latest/developer/%s',''),
-    'user': ('http://docs.geotools.org/latest/userguide/%s',''),
+    'user': ('http://docs.geotools.org/stable/userguide/%s',''),
     'geot': ('https://osgeo-org.atlassian.net/browse/GEOT-%s','GEOT-')
 }
 
@@ -51,7 +51,7 @@ exclude_patterns = ['**/.svn']
 
 # General information about the project.
 project = u'GeoTools'
-copyright = u'2016, GeoTools'
+copyright = u'2017, GeoTools'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the

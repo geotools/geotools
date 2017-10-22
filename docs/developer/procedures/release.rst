@@ -146,14 +146,19 @@ Download and try out some of the artifacts from the above location and do a
 quick smoke test that there are no issues. Engage other developers to help 
 test on the developer list.
 
-In particular, you can downlad the source artifacts and build them locally on an empty Maven repository to make sure
-any random user out there can do the same.
+In particular, you can downlad the source artifacts and build them locally on an empty Maven repository to make sure any random user out there can do the same.
+
 A simple way to do so is:
 
 *  Unpack the sources
+*  Check the README.html links go to the correct stable or maintenance user guide
 *  Temporarily move the ``$HOME/.m2/repository`` to a different location, so that Maven will be forced to build from an empty repo. If you don't want to fiddle with your main repo just use ``mvn -Dmaven.repo.local=/tmp/m2 install -Dall -T1C`` where it points to any empty directory.
 *  Do a full build using ``mvn install -Dall -T1C``
 *  On a successfull build, delete ``$HOME/.m2/repository`` and restore the old maven repository backed up at the beginning
+
+Download the user guide:
+
+* Check the eclipse quickstart section on `geotools.version`, should reference the correct release tag and snapshot tag.
  
 Publish the Release
 -------------------

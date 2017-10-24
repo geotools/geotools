@@ -39,11 +39,10 @@
             "paint": {
                 "line-color": "#0099ff",
                 "line-pattern": "pattern",
-                "line-opacity": 0.9
+                "line-opacity": 0.9,
                 "line-translate-anchor": "viewport",
                 "line-dasharray": [50, 50],
                 "line-offset": 30,
-                "line-gap-width": 8,
                 "line-translate": [
                     3,
                     30

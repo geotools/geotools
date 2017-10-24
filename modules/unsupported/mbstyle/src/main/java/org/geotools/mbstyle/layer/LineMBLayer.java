@@ -533,22 +533,16 @@ public class LineMBLayer extends MBLayer {
         }
 
         if (getLineGapWidth().intValue() > 0) {
+            Double topOffset = getLineOffset().doubleValue() + (getLineGapWidth().doubleValue() / 2d) + getLineWidth().doubleValue()/2d;
+            Double bottomOffset = getLineOffset().doubleValue() - (getLineGapWidth().doubleValue() / 2d) - getLineWidth().doubleValue()/2d ;
 
-            org.geotools.styling.Stroke gapStroke = sf.stroke(lineColor(), lineOpacity(), ff.add(lineWidth(), lineGapWidth()),
-                    lineJoin(), lineCap(), null, null);
-            LineSymbolizer gapOuterLine = sf.lineSymbolizer(getId(), null,
-                    sf.description(Text.text("line"), null), NonSI.PIXEL, gapStroke, lineOffset());
-
-            org.geotools.styling.Stroke blankStroke = sf.stroke(ff.literal(Color.WHITE), lineOpacity(),
-                    ff.subtract(ff.add(lineWidth(), lineGapWidth()), ff.literal(1)),
-                    lineJoin(), lineCap(), null, null);
-            LineSymbolizer blankLine = sf.lineSymbolizer(getId(), null,
-                    sf.description(Text.text("line"), null), NonSI.PIXEL, blankStroke, lineOffset());
-            symbolizers.add(gapOuterLine);
-            symbolizers.add(blankLine);
+            ls = sf.lineSymbolizer(getId(), null,
+                    sf.description(Text.text("line"), null), NonSI.PIXEL, stroke, ff.literal(topOffset));
+            LineSymbolizer bottomLine = sf.lineSymbolizer(getId(), null,
+                    sf.description(Text.text("line"), null), NonSI.PIXEL, stroke, ff.literal(bottomOffset));
+            symbolizers.add(bottomLine);
         }
         symbolizers.add(ls);
-
 
         MBFilter filter = getFilter();
         List<org.opengis.style.Rule> rules = new ArrayList<>();

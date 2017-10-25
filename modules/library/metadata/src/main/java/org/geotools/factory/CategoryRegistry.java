@@ -35,8 +35,8 @@ import static org.geotools.util.Utilities.stream;
  * {@link Class classes} and instances are also accessible by the class they implement.
  * Note that instances have to implement/extend the category they are filed under.
  *
- * This class is {@code null}-intolerant and throws {@link IllegalArgumentException}s if
- * an argument is {@code null}.
+ * This class is not thread-safe and {@code null}-intolerant (throws
+ * @link IllegalArgumentException}s if an argument is {@code null}).
  */
 class CategoryRegistry {
 
@@ -64,7 +64,7 @@ class CategoryRegistry {
 						toMap(
 								category -> category,
 								category -> new InstanceRegistry<>(factoryRegistry, category),
-								(firstCategory, secondCategories) -> secondCategories),
+								(firstRegistry, secondRegistry) -> secondRegistry),
 						Collections::unmodifiableMap));
 	}
 
@@ -223,13 +223,14 @@ class CategoryRegistry {
 		private final Class<?> category;
 
 		private final Map<Class<?>, T> instancesByType = new HashMap<>();
-		private final PartiallyOrderedSet<T> instances = new PartiallyOrderedSet<>(false);
+		private final PartiallyOrderedSet<T> orderedInstances = new PartiallyOrderedSet<>(false);
 
 		private InstanceRegistry(FactoryRegistry factoryRegistry, Class<?> category) {
 			this.factoryRegistry = factoryRegistry;
 			this.category = category;
 		}
 
+		/** @return {@code true} if this the first instance of its class. */
 		public boolean register(final T instance) {
 			ensureArgumentNonNull("instance", instance);
 			boolean deregistered = deregisterByType(instance);
@@ -246,9 +247,10 @@ class CategoryRegistry {
 
 		private void registerInternal(final T instance) {
 			instancesByType.put(instance.getClass(), instance);
-			instances.add(instance);
+			orderedInstances.add(instance);
 		}
 
+		/** @return {true} if an instance of the same type was previously registered */
 		public boolean deregister(final T instance) {
 			ensureArgumentNonNull("instance", instance);
 			if (instancesByType.containsKey(instance.getClass())) {
@@ -259,12 +261,17 @@ class CategoryRegistry {
 			}
 		}
 
-		// documentation hint: returns true if an instance of the same type was previously registered
+		/** @return {true} if an instance of the same type was previously registered */
 		private boolean deregisterByType(final T instance) {
 			T removed = instancesByType.remove(instance.getClass());
-			instances.remove(instance);
-			notifyDeregistered(instance);
-			return removed != null;
+			boolean instanceWasRemoved = removed != null;
+
+			if (instanceWasRemoved) {
+				orderedInstances.remove(removed);
+				notifyDeregistered(removed);
+			}
+
+			return instanceWasRemoved;
 		}
 
 		private void notifyDeregistered(final T instance) {
@@ -278,14 +285,14 @@ class CategoryRegistry {
 			while (values.hasNext()) {
 				T instance = values.next();
 				values.remove();
-				instances.remove(instance);
+				orderedInstances.remove(instance);
 				notifyDeregistered(instance);
 			}
 		}
 
 		public Stream<T> stream(final boolean useOrder) {
 			if (useOrder) {
-				return instances.stream();
+				return orderedInstances.stream();
 			} else {
 				return instancesByType.values().stream();
 			}
@@ -298,20 +305,22 @@ class CategoryRegistry {
 			return Optional.ofNullable(instance);
 		}
 
+		/** @see CategoryRegistry#setOrder(Class, Object, Object) */
 		public boolean setOrder(T firstInstance, T secondInstance) {
 			return instancesByType.containsKey(firstInstance.getClass())
 					&& instancesByType.containsKey(secondInstance.getClass())
 					// if both are contained, set the order
-					&& instances.setOrder(firstInstance, secondInstance);
+					&& orderedInstances.setOrder(firstInstance, secondInstance);
 		}
 
+		/** @see CategoryRegistry#clearOrder(Class, Object, Object) */
 		public boolean clearOrder(T firstInstance, T secondInstance) {
 			ensureArgumentNonNull("firstInstance", firstInstance);
 			ensureArgumentNonNull("secondInstance", secondInstance);
 			return instancesByType.containsKey(firstInstance.getClass())
 					&& instancesByType.containsKey(secondInstance.getClass())
 					// if both are contained, set the order
-					&& instances.clearOrder(firstInstance, secondInstance);
+					&& orderedInstances.clearOrder(firstInstance, secondInstance);
 		}
 	}
 

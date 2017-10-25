@@ -696,7 +696,8 @@ public final class Utilities {
     /**
      * Creates a stream over the specified {@link Iterable}'s elements.
      *
-     * This operation is lazy in the sense that it does not iterate over the elements.
+     * This operation is lazy in the sense that it does not iterate over the elements
+     * until the Stream is consumed.
      *
      * @param iterable the iterable to stream over
      * @param <T> the type of elements contained in the iterable
@@ -709,7 +710,8 @@ public final class Utilities {
     /**
      * Creates a stream over the specified {@link Iterator}'s elements.
      *
-     * This operation is lazy in the sense that it does not iterate over the elements.
+     * This operation is lazy in the sense that it does not iterate over the elements
+     * until the Stream is consumed.
      *
      * @param iterator the iterator to stream over
      * @param <T> the type of elements contained in the iterator

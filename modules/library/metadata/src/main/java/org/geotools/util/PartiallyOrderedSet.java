@@ -16,6 +16,7 @@
  */
 package org.geotools.util;
 
+import java.text.MessageFormat;
 import java.util.AbstractSet;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -90,7 +91,11 @@ public class PartiallyOrderedSet<E> extends AbstractSet<E> {
         removeDirectedEdge(target, source);
         boolean sourceNew = source.outgoings.add(target);
         boolean targetNew = target.ingoings.add(source);
-        assert sourceNew == targetNew;
+        if (sourceNew != targetNew) {
+            String message =  MessageFormat
+                    .format("Inconsistent edge encountered from [source: {0}] to [target: {1}]:", source, target);
+            throw new IllegalStateException(message);
+        }
         return targetNew;
     }
 
@@ -111,7 +116,11 @@ public class PartiallyOrderedSet<E> extends AbstractSet<E> {
     private boolean removeDirectedEdge(DirectedGraphNode source, DirectedGraphNode target) {
         boolean sourceExisted = source.outgoings.remove(target);
         boolean targetExisted = target.ingoings.remove(source);
-        assert sourceExisted == targetExisted;
+        if (sourceExisted != targetExisted) {
+            String message =  MessageFormat
+                    .format("Inconsistent edge encountered from [source: {0}] to [target: {1}]:", source, target);
+            throw new IllegalStateException(message);
+        }
         return targetExisted;
     }
 

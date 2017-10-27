@@ -1606,9 +1606,11 @@ public final class JDBCDataStore extends ContentDataStore
     protected AttributeDescriptor extractAggregateAttribute(FeatureVisitor visitor,
             SimpleFeatureType featureType) {
         Expression expression = getAggregateExpression(visitor);
-        Object result = expression.evaluate(featureType);
-        if (result instanceof AttributeDescriptor) {
-            return (AttributeDescriptor) result;
+        if (expression != null) {
+            Object result = expression.evaluate(featureType);
+            if (result instanceof AttributeDescriptor) {
+                return (AttributeDescriptor) result;
+            }
         }
         return null;
     }

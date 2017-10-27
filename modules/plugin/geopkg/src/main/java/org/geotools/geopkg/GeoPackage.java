@@ -1282,8 +1282,8 @@ public class GeoPackage {
     }
     
     protected String getSpatialIndexName(FeatureEntry entry) {
-        // Make Sure the table name is escaped - GEOT-5852
-        String spatial_index = "\"rtree_" + entry.getTableName() + "_" + entry.getGeometryColumn()+"\"";
+      
+        String spatial_index = "rtree_" + entry.getTableName() + "_" + entry.getGeometryColumn();
         return spatial_index;
     }
     /**
@@ -1298,8 +1298,7 @@ public class GeoPackage {
             Connection cx = connPool.getConnection();
 
             try {
-                //since this will be a parameter not a table name in this query remove quotes;
-                String tableName = getSpatialIndexName(entry).replace("\"", "");
+                String tableName = getSpatialIndexName(entry);
                 PreparedStatement ps = prepare(cx, "SELECT name FROM sqlite_master WHERE type='table' AND name=? ")
                         .set(tableName)
                         .log(Level.FINE).statement();
@@ -1347,8 +1346,8 @@ public class GeoPackage {
         if (maxY != null) {
             q.add("maxy <= " + maxY);
         }
-
-        StringBuffer sql = new StringBuffer("SELECT id FROM ").append(getSpatialIndexName(entry));
+        // Make Sure the table name is escaped - GEOT-5852
+        StringBuffer sql = new StringBuffer("SELECT id FROM ").append("\""+getSpatialIndexName(entry)+"\"");
         if (!q.isEmpty()) {
             sql.append(" WHERE ");
             for (String s : q) {

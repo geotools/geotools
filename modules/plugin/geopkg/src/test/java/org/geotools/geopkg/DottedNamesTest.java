@@ -76,13 +76,12 @@ public class DottedNamesTest {
         String name = typeNamesArr[0];
         SimpleFeatureSource fs = gpkg.getFeatureSource(name);
         assertNotNull(fs);
-        ReferencedEnvelope bounds = fs.getBounds();
-        System.out.println(bounds);
+        
         SimpleFeatureCollection features = fs.getFeatures(ECQL.toFilter("BBOX(geom,100000,500000,200000,600000)"));
         try(SimpleFeatureIterator itr=features.features()){
             while(itr.hasNext()) {
                 SimpleFeature f = itr.next();
-                System.out.println(f);
+                assertNotNull(f);
             }
         }
     }

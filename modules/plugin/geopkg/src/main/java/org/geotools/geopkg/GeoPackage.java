@@ -1298,8 +1298,10 @@ public class GeoPackage {
             Connection cx = connPool.getConnection();
 
             try {
+                //since this will be a parameter not a table name in this query remove quotes;
+                String tableName = getSpatialIndexName(entry).replace("\"", "");
                 PreparedStatement ps = prepare(cx, "SELECT name FROM sqlite_master WHERE type='table' AND name=? ")
-                        .set(getSpatialIndexName(entry))
+                        .set(tableName)
                         .log(Level.FINE).statement();
                 
                 try {   

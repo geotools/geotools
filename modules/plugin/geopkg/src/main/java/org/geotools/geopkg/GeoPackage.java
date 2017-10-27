@@ -1282,9 +1282,10 @@ public class GeoPackage {
     }
     
     protected String getSpatialIndexName(FeatureEntry entry) {
-        return "rtree_" + entry.getTableName() + "_" + entry.getGeometryColumn();        
+        // Make Sure the table name is escaped - GEOT-5852
+        String spatial_index = "\"rtree_" + entry.getTableName() + "_" + entry.getGeometryColumn()+"\"";
+        return spatial_index;
     }
-    
     /**
      * Verifies if a spatial index is present
      * 

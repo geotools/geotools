@@ -160,8 +160,13 @@ public class GeoPkgFilterToSQL extends PreparedFilterToSQL {
                 PrimaryKeyColumn pk = primaryKey.getColumns().get(0);
                 String pkName = pk.getName();
                 filterFactory.property(pkName).accept(this, null);
+                // Make Sure the table name is escaped - GEOT-5852
+                StringBuffer sb = new StringBuffer();
+                dialect.encodeTableName(
+                        "rtree_" + featureType.getTypeName() + "_" + attribute.getLocalName(), sb);
+                String spatial_index = sb.toString();
 
-                out.write(" IN (SELECT id FROM rtree_" + featureType.getTypeName() + "_" + attribute.getLocalName() + " r WHERE");
+                out.write(" IN (SELECT id FROM " + spatial_index + " r WHERE");
                 out.write(" r.maxx >= " + envelope.getMinX());
                 out.write(" AND r.minx <= " + envelope.getMaxX());
                 out.write(" AND r.maxy >= " + envelope.getMinY());

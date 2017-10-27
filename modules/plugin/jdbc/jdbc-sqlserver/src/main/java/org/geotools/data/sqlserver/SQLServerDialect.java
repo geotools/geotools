@@ -153,11 +153,11 @@ public class SQLServerDialect extends BasicSQLDialect {
     
     
     @Override
-    protected void encodeFunction(String function, String column, StringBuffer sql) {
+    protected void encodeAggregateFunction(String function, String column, StringBuffer sql) {
         if (AREA_FUNCTION.equalsIgnoreCase(function)) {
             sql.append(column).append(".").append(function).append("()");
         } else {
-            super.encodeFunction(function, column, sql);
+            super.encodeAggregateFunction(function, column, sql);
         }
     }
     

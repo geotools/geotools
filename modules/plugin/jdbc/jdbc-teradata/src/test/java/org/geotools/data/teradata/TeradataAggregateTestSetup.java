@@ -33,6 +33,10 @@ public class TeradataAggregateTestSetup extends JDBCAggregateTestSetup {
         // add the spatial index
         run("CREATE MULTISET TABLE \"aggregate_geom_idx\""
                 + " (id INTEGER NOT NULL, cellid INTEGER NOT NULL) PRIMARY INDEX (cellid)");
+        
+        run("INSERT INTO \"aggregate\" (\"fid\", \"id\",\"geom\",\"name\") VALUES (0, 0,'POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))', 'muddy1');");
+        run("INSERT INTO \"aggregate\" (\"fid\", \"id\",\"geom\",\"name\") VALUES (1, 1,'POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))', 'muddy1');");
+        run("INSERT INTO \"aggregate\" (\"fid\", \"id\",\"geom\",\"name\") VALUES (2, 2,'POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))', 'muddy2');");
     }
     
     public TeradataTestSetup getDelegate() {

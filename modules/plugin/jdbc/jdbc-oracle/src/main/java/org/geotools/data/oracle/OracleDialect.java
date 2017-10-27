@@ -131,11 +131,11 @@ public class OracleDialect extends PreparedStatementSQLDialect {
     }
 
     @Override
-    public void encodeFunctionPostfix(String function, StringBuffer sql) {
+    public void encodeAggregateFunctionPostfix(String function, StringBuffer sql) {
         if (AREA_FUNCTION.equalsIgnoreCase(function)) {
             sql.append(",0.05)");
         } else {
-            super.encodeFunctionPostfix(function, sql);
+            super.encodeAggregateFunctionPostfix(function, sql);
         }
     }
 

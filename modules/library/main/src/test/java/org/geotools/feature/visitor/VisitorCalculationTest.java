@@ -68,6 +68,8 @@ public class VisitorCalculationTest extends DataTestCase {
     SimpleFeatureType ft4;
     SimpleFeatureCollection fc5;
     SimpleFeatureType ft5;
+    SimpleFeatureCollection fc6;
+    SimpleFeatureType ft6;
 
     public VisitorCalculationTest(String arg0) {
         super(arg0);
@@ -97,6 +99,9 @@ public class VisitorCalculationTest extends DataTestCase {
         
         ft5 = buildingType;
         fc5 = DataUtilities.collection(buildingFeatures);
+        
+        ft6 = invalidGeomType;
+        fc6 = DataUtilities.collection(invalidGeomFeatures);
     }
 
     // test only the visitor functions themselves, and try the merge operation
@@ -282,6 +287,13 @@ public class VisitorCalculationTest extends DataTestCase {
         CalcResult areaResult2 = areaVisitor2.getResult();
         CalcResult areaResult3 = areaResult1.merge(areaResult2);
         assertEquals((double) 22.0, areaResult3.toDouble(), 0);
+    }
+    
+    public void testAreaInvalidPolygon() throws IllegalFilterException, IOException {
+        SumAreaVisitor areaVisitor = new SumAreaVisitor(1, ft6);
+        fc6.accepts(areaVisitor, null);
+        double value1 = areaVisitor.getResult().toDouble();
+        assertEquals(0.0, value1);
     }
     
     public void testCount() throws IllegalFilterException, IOException {

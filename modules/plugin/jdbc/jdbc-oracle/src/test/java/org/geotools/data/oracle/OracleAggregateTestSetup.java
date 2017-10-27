@@ -44,7 +44,13 @@ public class OracleAggregateTestSetup extends JDBCAggregateTestSetup {
         //insert data
         run("INSERT INTO aggregate (fid,id,geom,name) VALUES (aggregate_fid_seq.nextval, 0,"
             + "MDSYS.SDO_GEOMETRY( 2003, 303104, NULL, SDO_ELEM_INFO_ARRAY(1,1003,1), "
-            + "SDO_ORDINATE_ARRAY(12,6, 14,8, 16,6, 16,4, 14,4, 12,6)), 'muddy')");
+            + "SDO_ORDINATE_ARRAY(12,6, 14,8, 16,6, 16,4, 14,4, 12,6)), 'muddy1')");
+        run("INSERT INTO aggregate (fid,id,geom,name) VALUES (aggregate_fid_seq.nextval, 1,"
+                + "MDSYS.SDO_GEOMETRY( 2003, 303104, NULL, SDO_ELEM_INFO_ARRAY(1,1003,1), "
+                + "SDO_ORDINATE_ARRAY(12,6, 14,8, 16,6, 16,4, 14,4, 12,6)), 'muddy1')");
+        run("INSERT INTO aggregate (fid,id,geom,name) VALUES (aggregate_fid_seq.nextval, 2,"
+                + "MDSYS.SDO_GEOMETRY( 2003, 303104, NULL, SDO_ELEM_INFO_ARRAY(1,1003,1), "
+                + "SDO_ORDINATE_ARRAY(12,6, 14,8, 16,6, 16,4, 14,4, 12,6)), 'muddy2')");
     }
 
     @Override

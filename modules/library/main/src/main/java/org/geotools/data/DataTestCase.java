@@ -84,6 +84,10 @@ public class DataTestCase extends TestCase {
     protected SimpleFeature[] lakeFeatures;
     protected ReferencedEnvelope lakeBounds;
     
+    protected SimpleFeatureType invalidGeomType; // invalidGeom: id, geom, name
+    protected SimpleFeature[] invalidGeomFeatures;
+    protected ReferencedEnvelope invalidGeomBounds;
+    
     protected SimpleFeatureType buildingType; // building: id, geom, name
     protected SimpleFeature[] buildingFeatures;
     protected ReferencedEnvelope buildingBounds;
@@ -258,6 +262,24 @@ public class DataTestCase extends TestCase {
         );
         lakeBounds = new ReferencedEnvelope();
         lakeBounds.expandToInclude(ReferencedEnvelope.reference(lakeFeatures[0].getBounds()));                 
+        
+        invalidGeomType = DataUtilities.createType(namespace+".invalid",
+                "id:0,geom:Polygon:nillable,name:String");
+        
+        invalidGeomFeatures = new SimpleFeature[1];
+        //        12,8 14,8
+        //          |\/\
+        //          |/\_\
+        //     12,6 +   + 16,6
+        //
+        invalidGeomFeatures[0] = SimpleFeatureBuilder.build(invalidGeomType, new Object[]{
+                new Integer(0),
+                polygon( new int[]{ 12,6, 14,8, 16,6, 12,8, 12, 6} ),
+                "notvalid"
+            },
+            "invalid.inv1"
+        );
+        invalidGeomBounds = new ReferencedEnvelope();
         
         buildingType = DataUtilities.createType(namespace+".building",
                 "id:0,geom:Polygon:nillable,name:String");

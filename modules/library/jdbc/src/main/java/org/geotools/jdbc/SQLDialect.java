@@ -384,6 +384,12 @@ public abstract class SQLDialect {
         aggregates.put( SumVisitor.class, "sum");
     }
     
+    /**
+     * Register the dialect mappings between Geotools FilterFunction names and database
+     * related function.
+     * 
+     * @param functions mappings from GT FilterFunction name to sql function name
+     */
     public void registerFunctions(Map<String ,String> functions) {
         
     }
@@ -1469,17 +1475,17 @@ public abstract class SQLDialect {
         return dataStore.getPrimaryKey(featureType);
     }
     
-    protected void encodeFunction( String function, String column, StringBuffer sql ) {
-        encodeFunctionPrefix(function, sql);
+    protected void encodeAggregateFunction( String function, String column, StringBuffer sql ) {
+        encodeAggregateFunctionPrefix(function, sql);
         sql.append(column);
-        encodeFunctionPostfix(function, sql);
+        encodeAggregateFunctionPostfix(function, sql);
     }
 
-    public void encodeFunctionPrefix(String function, StringBuffer sql) {
+    public void encodeAggregateFunctionPrefix(String function, StringBuffer sql) {
         sql.append(function).append("(");
     }
 
-    public void encodeFunctionPostfix(String function, StringBuffer sql) {
+    public void encodeAggregateFunctionPostfix(String function, StringBuffer sql) {
         sql.append(")");
     }
 }

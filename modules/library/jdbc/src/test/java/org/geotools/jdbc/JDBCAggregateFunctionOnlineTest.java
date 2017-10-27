@@ -18,11 +18,15 @@ package org.geotools.jdbc;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.geotools.data.Query;
-import org.geotools.data.Query;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.visitor.GroupByVisitor;
+import org.geotools.feature.visitor.GroupByVisitorBuilder;
 import org.geotools.feature.visitor.MaxVisitor;
 import org.geotools.feature.visitor.MinVisitor;
 import org.geotools.feature.visitor.NearestVisitor;
@@ -113,7 +117,26 @@ public abstract class JDBCAggregateFunctionOnlineTest extends JDBCTestSupport {
         if (dataStore.getSupportedFunctions().containsKey(FilterFunction_area.NAME.getName())) {
             assertFalse(visited);
         }
-        assertEquals( 10.0, v.getResult().toDouble(), 0.01 );
+        assertEquals( 30.0, v.getResult().toDouble(), 0.01 );
+    }
+    
+    public void testSumAreaWithGroupBy() throws Exception {
+        FilterFactory ff = dataStore.getFilterFactory();
+        PropertyName p = ff.property( aname("geom") );
+        
+        GroupByVisitor v =new GroupByVisitorBuilder()
+            .withAggregateAttribute(ff.function("area2", p))
+            .withAggregateVisitor("SumArea")
+            .withGroupByAttributes(Collections.singleton(aname("name")), dataStore.getSchema(tname("aggregate")))
+            .build();
+        
+        dataStore.getFeatureSource(tname("aggregate")).accepts(Query.ALL, v, null);
+        if (dataStore.getSupportedFunctions().containsKey(FilterFunction_area.NAME.getName())) {
+            assertFalse(visited);
+        }
+        List groups = v.getResult().toList();
+        assertEquals( 20.0, (Double)((Object[]) groups.get(0))[1], 0.01);
+        assertEquals( 10.0, (Double)((Object[]) groups.get(1))[1], 0.01);
     }
     
     public void testSumWithFilter() throws Exception {

@@ -36,7 +36,13 @@ public class SQLServerAggregateTestSetup extends JDBCAggregateTestSetup {
 
         run("INSERT INTO aggregate (id,geom,name) VALUES ( 0,"
                 + "geometry::STGeomFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',4326),"
-                + "'muddy')");
+                + "'muddy1')");
+        run("INSERT INTO aggregate (id,geom,name) VALUES ( 1,"
+                + "geometry::STGeomFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',4326),"
+                + "'muddy1')");
+        run("INSERT INTO aggregate (id,geom,name) VALUES ( 2,"
+                + "geometry::STGeomFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',4326),"
+                + "'muddy2')");
 
         run("CREATE SPATIAL INDEX _aggregate_geometry_index on aggregate(geom) WITH (BOUNDING_BOX = (-100, -100, 100, 100))");
     }

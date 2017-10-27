@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2005-2017, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2017, Open Source Geospatial Foundation (OSGeo)
  *    
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -24,6 +24,12 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 
+/**
+ * Calculates the Sum of Areas for geometric fields
+ *
+ * @author Mauro Bartolomeoli
+ *
+ */
 public class SumAreaVisitor extends SumVisitor {
 
     static FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);

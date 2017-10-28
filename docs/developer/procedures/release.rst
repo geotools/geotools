@@ -21,7 +21,7 @@ The following are necessary to perform a GeoTools release:
 #. Commit access to the GeoTools `Git repository <https://Github.com/geotools/geotools>`_
 #. Build access to `Jenkins <https://build.geoserver.org>`_
 #. Edit access to the GeoTools `Blog <http://www.blogger.com/blogger.g?blogID=5176900881057973693#overview>`_
-#. Administration rights to `GeoTools JIRA <https://osgeo-org.atlassian.net/projects/GEOT/>`__
+#. Administration rights to `GeoTools JIRA <https://osgeo-org.atlassian.net/projects/GEOT/>`_
 #. Release/file management privileges in `SourceForge <https://sourceforge.net/projects/geotools/>`_
 
 Versions and revisions
@@ -68,6 +68,8 @@ When creating the first release candidate of a series, there are some extra step
 
     git checkout -b 17.x
     git push geotools 17.x
+
+* Enable `GitHub branch protection <https://github.com/geotools/geotools/settings/branches>`_ for the new stable branch: tick "Protect this branch" (only) and press "Save changes".
 
 * Checkout the master branch and update the version in all pom.xml files and a few miscellaneous files; for example, if changing master from ``17-SNAPSHOT`` to ``18-SNAPSHOT``::
 

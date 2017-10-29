@@ -2458,21 +2458,23 @@ public class StreamingRenderer implements GTRenderer {
                     }
                 }
             }
-            // only emit a feature drawn event if we actually painted something with it, 
-            // if it has been clipped out or eliminated by the screenmap we won't emit the event instead
-            if(paintCommands > 0) {
-                requests.put(new FeatureRenderedRequest(rf.feature));
-            }
+
 
             if (doElse) {
                 final int elseLength = elseRuleList.length;
                 for (int tt = 0; tt < elseLength; tt++) {
                     r = elseRuleList[tt];
 
-                    processSymbolizers(graphics, rf, r.symbolizers());
-
+                    paintCommands += processSymbolizers(graphics, rf, r.symbolizers());
                 }
             }
+
+            // only emit a feature drawn event if we actually painted something with it,
+            // if it has been clipped out or eliminated by the screenmap we won't emit the event instead
+            if (paintCommands > 0) {
+                requests.put(new FeatureRenderedRequest(rf.feature));
+            }
+
         } catch (Throwable tr) {
             fireErrorEvent(tr);
         }

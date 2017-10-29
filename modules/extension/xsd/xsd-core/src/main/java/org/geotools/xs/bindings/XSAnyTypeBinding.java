@@ -81,7 +81,7 @@ public class XSAnyTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
-    public Class getType() {
+    public Class<Object> getType() {
         return Object.class;
     }
 
@@ -115,7 +115,8 @@ public class XSAnyTypeBinding extends AbstractComplexBinding {
         String text = null;
 
         if ((value != null) && value instanceof String) {
-            text = ((String) value).trim();
+          //GEOS-8227 don't trim text it will already be trimmed unless in CDATA
+            text = ((String) value)/*.trim()*/;
 
             if ("".equals(text)) {
                 text = null;
@@ -138,33 +139,34 @@ public class XSAnyTypeBinding extends AbstractComplexBinding {
         }
 
         //create a map of the elements and attributes
-        Map map = new HashMap();
+        Map<String, Object> map = new HashMap<String, Object>();
         List attributes = node.getAttributes();
         List children = node.getChildren();
         mapBinding(map, attributes);
         mapBinding(map, children);
 
         if ((text != null) && !"".equals(text.trim())) {
-            map.put(null, text.trim());
+            //GEOS-8227 don't trim text it will already be trimmed unless in CDATA
+            map.put(null, text/*.trim()*/);
         }
 
         return map;
     }
 
-    private void mapBinding(Map map, List attributes) {
+    private void mapBinding(Map<String, Object> map, List attributes) {
         for (Iterator i = attributes.iterator(); i.hasNext();) {
             Node attribute = (Node) i.next();
             String name = attribute.getComponent().getName();
             Object value = attribute.getValue();
 
             if (map.containsKey(name)) {
-                List values;
+                List<Object> values;
                 Object obj = map.get(name);
 
                 if (obj instanceof List) {
-                    values = (List) obj;
+                    values = (List<Object>) obj;
                 } else {
-                    values = new ArrayList();
+                    values = new ArrayList<Object>();
                     values.add(obj);
                     map.put(name, values);
                 }

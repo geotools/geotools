@@ -136,7 +136,8 @@ public class ParseExecutor implements Visitor {
                             || ((XSDComplexTypeDefinition) type).isMixed())) {
                         result = value;
                     } else if ((value != null) && value instanceof String) {
-                        value = ((String) value).trim();
+                      //GEOS-8227 don't trim text it will already be trimmed unless in CDATA
+                        value = ((String) value)/*.trim()*/;
 
                         if ("".equals(value)) {
                             result = null;
@@ -303,8 +304,8 @@ public class ParseExecutor implements Visitor {
                 for (Iterator f = type.getFacets().iterator(); f.hasNext();) {
                     XSDFacet facet = (XSDFacet) f.next();
 
-                    //white space
-                    if (facet instanceof XSDWhiteSpaceFacet) {
+                    //white space unless it is in a CDATA block - GEOS-8227
+                    if (facet instanceof XSDWhiteSpaceFacet && !parser.isCDATA()) {
                         XSDWhiteSpaceFacet whitespace = (XSDWhiteSpaceFacet) facet;
 
                         if (whitespace.getValue() == XSDWhiteSpace.REPLACE_LITERAL) {
@@ -328,8 +329,11 @@ public class ParseExecutor implements Visitor {
             // for mixed
             if (instance.getTypeDefinition() instanceof XSDComplexTypeDefinition
                     && ((XSDComplexTypeDefinition) instance.getTypeDefinition()).isMixed()) {
-                //collape the text
-                text = Whitespace.COLLAPSE.preparse(text);
+                //Collapse the text
+                //Seems to be an issue for transaction updates - See GEOS-8227
+                if(!parser.isCDATA()) {
+                    text = Whitespace.COLLAPSE.preparse(text);
+                }
             }
         }
 

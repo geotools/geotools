@@ -55,6 +55,7 @@ import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
+import org.xml.sax.ext.DefaultHandler2;
 import org.xml.sax.helpers.DefaultHandler;
 
 
@@ -72,7 +73,7 @@ import org.xml.sax.helpers.DefaultHandler;
  *
  * @source $URL$
  */
-public class ParserHandler extends DefaultHandler {
+public class ParserHandler extends DefaultHandler2 {
 
     
     /**
@@ -106,7 +107,7 @@ public class ParserHandler extends DefaultHandler {
     /** binding loader */
     BindingLoader bindingLoader;
 
-    /** bindign walker */
+    /** Binding walker */
     BindingWalker bindingWalker;
 
     /**
@@ -152,6 +153,10 @@ public class ParserHandler extends DefaultHandler {
     
     /** context customizer **/
     ContextCustomizer contextCustomizer;
+
+    private boolean inCDATA=false;
+
+    private boolean CDATAEnding=false;
     
     public ParserHandler(Configuration config) {
         this.config = config;
@@ -757,6 +762,9 @@ O:          for (int i = 0; i < schemas.length; i++) {
         
         //pop namespace context
         namespaces.popContext();
+        if(isCDATAEnding()) {
+            setCDATA(false);
+        }
     }
 
     protected void endElementInternal(ElementHandler handler) {
@@ -847,5 +855,52 @@ O:          for (int i = 0; i < schemas.length; i++) {
         }
 
         return (XSDSchemaLocationResolver[]) l.toArray(new XSDSchemaLocationResolver[l.size()]);
+    }
+
+    
+
+
+    @Override
+    public InputSource resolveEntity(String name, String publicId, String baseURI, String systemId)
+            throws SAXException, IOException {
+        if(entityResolver!=null) {
+            return entityResolver.resolveEntity(publicId, systemId);
+        }
+        return super.resolveEntity(name, publicId, baseURI, systemId);
+    }
+
+    @Override
+    public void startCDATA() throws SAXException {
+        setCDATA(true);
+    }
+
+    @Override
+    public void endCDATA() throws SAXException {   
+        setCDATAEnding(true);
+    }
+    /**
+     * @param b
+     */
+    private void setCDATAEnding(boolean b) {
+        // TODO Auto-generated method stub
+        CDATAEnding = b;
+    }
+
+    /**
+     * @return the cDATAEnding
+     */
+    public boolean isCDATAEnding() {
+        return CDATAEnding;
+    }
+
+    /**
+     * @param b
+     */
+    public void setCDATA(boolean b) {
+        this.inCDATA = b;
+        
+    }
+    public boolean isCDATA() {
+        return inCDATA;
     }
 }

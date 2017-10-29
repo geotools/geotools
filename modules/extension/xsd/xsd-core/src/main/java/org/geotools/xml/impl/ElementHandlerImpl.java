@@ -29,6 +29,8 @@ import org.eclipse.xsd.util.XSDUtil;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
+import org.xml.sax.ext.LexicalHandler;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -233,6 +235,7 @@ public class ElementHandlerImpl extends HandlerImpl implements ElementHandler {
         } else {
             ParseExecutor executor = new ParseExecutor(element, node, getParentHandler().getContext(),
                     parser);
+            
             parser.getBindingWalker()
                   .walk(element.getElementDeclaration(), executor, container(),
                 getParentHandler().getContext());

@@ -50,6 +50,8 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.NamespaceSupport;
 
+import com.sun.org.apache.xerces.internal.impl.Constants;
+
 
 /**
  * GeoTools XML parser.
@@ -570,7 +572,8 @@ public class Parser {
         //set hte property to map namespaces to schema locations
         parser.setProperty("http://apache.org/xml/properties/schema/external-schemaLocation",
             schemaLocation.toString());
-
+        //add the handler as a LexivalHandler too.
+        parser.setProperty(Constants.SAX_PROPERTY_PREFIX+Constants.LEXICAL_HANDLER_PROPERTY, handler);
         return parser;
     }
 

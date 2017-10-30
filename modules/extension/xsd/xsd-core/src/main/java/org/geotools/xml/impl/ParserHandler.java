@@ -562,7 +562,7 @@ O:          for (int i = 0; i < schemas.length; i++) {
         
         //get the handler at top of the stack and lookup child
 
-        //First ask teh parent handler for a child
+        //First ask the parent handler for a child
         Handler parent = (Handler) handlers.peek();
         ElementHandler handler = (ElementHandler) parent.createChildHandler(qualifiedName);
 

@@ -47,6 +47,7 @@ import org.geotools.xml.Schemas;
 import org.geotools.xml.SimpleBinding;
 import org.geotools.xml.impl.BindingWalker.Visitor;
 import org.geotools.xs.facets.Whitespace;
+import org.jdom.Attribute;
 import org.picocontainer.MutablePicoContainer;
 
 
@@ -139,7 +140,7 @@ public class ParseExecutor implements Visitor {
                       //GEOS-8227 don't trim text it will already be trimmed unless in CDATA
                         value = ((String) value)/*.trim()*/;
 
-                        if ("".equals(value)) {
+                        if ("".equals(((String) value).trim())) {
                             result = null;
                         } else {
                             result = value;
@@ -317,7 +318,11 @@ public class ParseExecutor implements Visitor {
                         }
 
                         if (whitespace.getValue() == XSDWhiteSpace.PRESERVE_LITERAL) {
-                            //do nothing
+                            //With GEOS-8227 fix now assumes that text is trimmed before return 
+                            //but don't do this to attributes, as they are never CDATA
+                           /* if(!(instance instanceof org.geotools.xml.AttributeInstance)) {
+                                text = text.trim();
+                            }*/
                         }
                     }
                 }
@@ -336,7 +341,9 @@ public class ParseExecutor implements Visitor {
                 }
             }
         }
-
+        if(!parser.isCDATA()) {
+            text = Whitespace.COLLAPSE.preparse(text);
+        }
         return text;
     }
 

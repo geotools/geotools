@@ -72,6 +72,7 @@ public class MapContent {
 
     /** The logger for the map module. */
     static protected final Logger LOGGER = Logging.getLogger("org.geotools.map");
+    static final String UNDISPOSED_MAPCONTENT_ERROR = "Call MapContent dispose() to prevent memory leaks";
 
     /** List of Layers to be rendered */
     private final LayerList layerList;
@@ -120,7 +121,7 @@ public class MapContent {
     protected void finalize() throws Throwable {
         if( this.layerList != null){
             if( !this.layerList.isEmpty()){
-                LOGGER.severe("Call MapContent dispose() to prevent memory leaks");
+                LOGGER.severe(UNDISPOSED_MAPCONTENT_ERROR);
             }
         }
         super.finalize();

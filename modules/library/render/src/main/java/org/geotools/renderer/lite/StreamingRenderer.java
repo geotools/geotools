@@ -771,6 +771,7 @@ public class StreamingRenderer implements GTRenderer {
             localPool = true;
         }
         Future painterFuture = localThreadPool.submit(painterThread);
+        List<CompositingGroup> compositingGroups = null;
         try {
             if(mapContent == null) {
                 throw new IllegalStateException("Cannot call paint, you did not set a MapContent in this renderer");
@@ -780,8 +781,7 @@ public class StreamingRenderer implements GTRenderer {
             MapContent zGroupedMapContent = ZGroupLayerFactory.filter(mapContent);
 
             // split over multiple map contents, one per composition base
-            List<CompositingGroup> compositingGroups = CompositingGroup
-                    .splitOnCompositingBase(graphics, paintArea, zGroupedMapContent);
+            compositingGroups = CompositingGroup.splitOnCompositingBase(graphics, paintArea, zGroupedMapContent);
             
             int layerCounter = 0;
             for (CompositingGroup compositingGroup : compositingGroups) {
@@ -850,23 +850,31 @@ public class StreamingRenderer implements GTRenderer {
                         fireErrorEvent(e);
                     }
                 }
-                // the compositing group has its own map content, clones of the original one,
-                // they need to be disposed to avoid nagging messages (not that disposing here
-                // does any good...)
-                compositingGroup.mapContent.dispose();
             }
         } finally {
             try {
-                if(!renderingStopRequested) {
-                    requests.put(new EndRequest());
-                    painterFuture.get();
+                // clean up generated map contents (in finally block to ensure it's done regardless of how we got here
+                if (compositingGroups != null) {
+                    for (CompositingGroup group : compositingGroups) {
+                        MapContent groupContent = group.getMapContent();
+                        if (groupContent != mapContent) {
+                            groupContent.dispose();
+                        }
+                    }
                 }
-            } catch(Exception e) {
-                painterFuture.cancel(true);
-                fireErrorEvent(e);
             } finally {
-                if(localPool) {
-                    localThreadPool.shutdown();
+                try {
+                    if (!renderingStopRequested) {
+                        requests.put(new EndRequest());
+                        painterFuture.get();
+                    }
+                } catch (Exception e) {
+                    painterFuture.cancel(true);
+                    fireErrorEvent(e);
+                } finally {
+                    if (localPool) {
+                        localThreadPool.shutdown();
+                    }
                 }
             }
         }

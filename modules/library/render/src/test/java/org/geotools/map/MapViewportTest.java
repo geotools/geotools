@@ -17,27 +17,18 @@
 
 package org.geotools.map;
 
-import java.awt.Rectangle;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Point2D;
-import java.io.ByteArrayOutputStream;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
-import java.util.logging.StreamHandler;
-
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.util.logging.Logging;
-
-
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import static org.junit.Assert.*;
+
+import java.awt.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Unit tests for the viewport class.
@@ -46,7 +37,7 @@ import static org.junit.Assert.*;
  *
  * @source $URL$
  */
-public class MapViewportTest {
+public class MapViewportTest extends LoggerTest {
     
     // World bounds with aspect ratio 1:1
     private static final ReferencedEnvelope WORLD_1_1 = new ReferencedEnvelope(
@@ -63,24 +54,8 @@ public class MapViewportTest {
     private static final Rectangle SCREEN_1_2 = new Rectangle(100, 200);
     
     private static final double TOL = 1.0e-6d;
-    
-    private static final Logger LOGGER = Logging.getLogger("org.geotools.map");
-    private static Level oldLevel;
-    private Handler logHandler;
-    private ByteArrayOutputStream logStream;
-    
-    @BeforeClass
-    public static void setupOnce() {
-        oldLevel = LOGGER.getLevel();
-        LOGGER.setLevel(Level.FINE); 
-    }
-    
-    @AfterClass
-    public static void cleanupOnce() {
-        LOGGER.setLevel(oldLevel);
-    }
-    
-    
+
+
     @Test
     public void defaultCtor() {
         MapViewport vp = new MapViewport();
@@ -341,14 +316,13 @@ public class MapViewportTest {
         grabLogger();
 
         vp.setBounds(BIG_WORLD_1_1);
-        logHandler.flush();
-        String s = logStream.toString();
+        String s = getLogOutput();
         assertTrue(s.contains("Ignored call to setBounds"));
         assertTrue(WORLD_1_1.boundsEquals2D(vp.getBounds(), TOL));
         
         releaseLogger();
     }
-    
+
     @Test
     public void callSetScreenAreaWhenNonEditable() throws Exception {
         MapViewport vp = new MapViewport();
@@ -357,8 +331,7 @@ public class MapViewportTest {
         grabLogger();
 
         vp.setScreenArea(SCREEN_2_1);
-        logHandler.flush();
-        String s = logStream.toString();
+        String s = getLogOutput();
         assertTrue(s.contains("Ignored call to setScreenArea"));
         assertEquals(SCREEN_1_1, vp.getScreenArea());
         
@@ -374,8 +347,7 @@ public class MapViewportTest {
         grabLogger();
 
         vp.setCoordinateReferenceSystem(null);
-        logHandler.flush();
-        String s = logStream.toString();
+        String s = getLogOutput();
         assertTrue(s.contains("Ignored call to setCoordinateReferenceSystem"));
         assertTrue(CRS.equalsIgnoreMetadata(crs, vp.getCoordinateReferenceSystem()));
         
@@ -390,26 +362,11 @@ public class MapViewportTest {
         grabLogger();
 
         vp.setMatchingAspectRatio(!original);
-        logHandler.flush();
-        String s = logStream.toString();
+        String s = getLogOutput();
         assertTrue(s.contains("Ignored call to setMatchingAspectRatio"));
         assertEquals(original, vp.isMatchingAspectRatio());
         
         releaseLogger();
     }
-    
-    private void grabLogger() {
-        logStream = new ByteArrayOutputStream();
-        logHandler = new StreamHandler(logStream, new SimpleFormatter());
-        logHandler.setLevel(Level.ALL);
-        LOGGER.addHandler(logHandler);
-        LOGGER.setUseParentHandlers(false);
-    }
-    
-    private void releaseLogger() {
-        if (logHandler != null) {
-            LOGGER.removeHandler(logHandler);
-            LOGGER.setUseParentHandlers(true);
-        }
-    }
+
 }

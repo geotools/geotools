@@ -66,13 +66,17 @@ import org.geotools.data.store.ContentDataStore;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.data.store.ContentState;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.visitor.CountVisitor;
+import org.geotools.feature.visitor.FeatureAttributeVisitor;
 import org.geotools.feature.visitor.GroupByVisitor;
 import org.geotools.feature.visitor.LimitingVisitor;
+import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.FilterCapabilities;
+import org.geotools.filter.FunctionExpression;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JoinInfo.JoinPart;
 import org.geotools.referencing.CRS;
@@ -84,6 +88,7 @@ import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Id;
 import org.opengis.filter.PropertyIsLessThanOrEqualTo;
 import org.opengis.filter.expression.Expression;
@@ -144,6 +149,8 @@ import com.vividsolutions.jts.geom.Point;
 public final class JDBCDataStore extends ContentDataStore
     implements GmlObjectStore {
     
+    private static final FilterFactory2 FF2 = CommonFactoryFinder.getFilterFactory2();
+
     /**
      * When true, record a stack trace documenting who disposed the JDBCDataStore. If dispose()
      * is called a second time we can identify the offending parties.
@@ -263,6 +270,11 @@ public final class JDBCDataStore extends ContentDataStore
      * Feature visitor to aggregate function name
      */
     protected HashMap<Class<? extends FeatureVisitor>,String> aggregateFunctions;
+    
+    /**
+     * java supported filter function mappings to dialect name;
+     */
+    protected HashMap<String, String> supportedFunctions;
     
     /**
      * flag controlling if the datastore is supporting feature and geometry
@@ -672,6 +684,17 @@ public final class JDBCDataStore extends ContentDataStore
             dialect.registerAggregateFunctions(aggregateFunctions);
         }
         return aggregateFunctions;
+    }
+    
+    /**
+     * Returns the supported functions and the dialect name they map to.
+     */
+    public Map<String, String> getSupportedFunctions() {
+        if (supportedFunctions == null) {
+            supportedFunctions = new HashMap<>();
+            dialect.registerFunctions(supportedFunctions);
+        }
+        return supportedFunctions;
     }
     
     /**
@@ -1450,10 +1473,21 @@ public final class JDBCDataStore extends ContentDataStore
             return null;
         }
         // try to extract an aggregate attribute from the visitor
-        AttributeDescriptor att = extractAggregateAttribute(visitor, featureType);
-        if (att == null && !isCountVisitor(visitor)) {
-            return null; // aggregate function optimization only supported for PropertyName expression
+        Expression aggregateExpression = getAggregateExpression(visitor);
+        AttributeDescriptor att = null;
+        // check if aggregation expression is supported
+        if (aggregateExpression instanceof FunctionExpression) {
+            FunctionExpression func = (FunctionExpression) aggregateExpression;
+            if (!getSupportedFunctions().containsKey(func.getFunctionName().getName())) {
+                return null;
+            }
+        } else {
+            att = extractAggregateAttribute(visitor, featureType);
+            if (att == null && !isCountVisitor(visitor)) {
+                 return null; // aggregate function optimization only supported for PropertyName expression
+            }
         }
+        
         // if the visitor is limiting the result to a given start - max, we will
         // try to apply limits to the aggregate query
         LimitingVisitor limitingVisitor = null;
@@ -1471,11 +1505,20 @@ public final class JDBCDataStore extends ContentDataStore
             
             try {
                 if ( dialect instanceof PreparedStatementSQLDialect ) {
-                    st = selectAggregateSQLPS(function, att, groupByAttributes, featureType, query, limitingVisitor,  cx);
+                    if (att == null) {
+                        st = selectAggregateSQLPS(function, aggregateExpression, groupByAttributes, featureType, query, limitingVisitor,  cx);
+                    } else {
+                        st = selectAggregateSQLPS(function, att, groupByAttributes, featureType, query, limitingVisitor,  cx);
+                    }
                     rs = ((PreparedStatement)st).executeQuery();
                 } 
                 else {
-                    String sql = selectAggregateSQL(function, att, groupByAttributes, featureType, query, limitingVisitor);
+                    String sql;
+                    if (att == null) {
+                        sql = selectAggregateSQL(function, aggregateExpression, groupByAttributes, featureType, query, limitingVisitor);
+                    } else {
+                        sql = selectAggregateSQL(function, att, groupByAttributes, featureType, query, limitingVisitor);
+                    }
                     LOGGER.fine( sql );
                     
                     st = cx.createStatement();
@@ -1556,11 +1599,44 @@ public final class JDBCDataStore extends ContentDataStore
     /**
      * Helper method that extract the attribute that will be used by the aggregate function.
      *
-     * @param visitor     the feature visitor
+     * @param visitor the feature visitor
      * @param featureType the feature type
      * @return the aggregate attribute or NULL if the visitor don't contains an aggregate attribute
      */
-    protected AttributeDescriptor extractAggregateAttribute(FeatureVisitor visitor, SimpleFeatureType featureType) {
+    protected AttributeDescriptor extractAggregateAttribute(FeatureVisitor visitor,
+            SimpleFeatureType featureType) {
+        Expression expression = getAggregateExpression(visitor);
+        if (expression != null) {
+            Object result = expression.evaluate(featureType);
+            if (result instanceof AttributeDescriptor) {
+                return (AttributeDescriptor) result;
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * Helper method that extract the attribute that will be used by the aggregate function.
+     *
+     * @param expression expression to extract the attribute from
+     * @param featureType the feature type
+     * @return the aggregate attribute or NULL if the visitor don't contains an aggregate attribute
+     */
+    protected AttributeDescriptor extractAggregateAttribute(Expression expression,
+            SimpleFeatureType featureType) {
+        if (expression == null) {
+            return null;
+        }
+        FilterAttributeExtractor extractor = new FilterAttributeExtractor(featureType);
+        expression.accept(extractor, null);
+        if (extractor.getPropertyNameSet().isEmpty()) {
+            return null;
+        }
+        PropertyName pName = extractor.getPropertyNameSet().iterator().next();
+        return (AttributeDescriptor) pName.evaluate(featureType);
+    }
+
+    private Expression getAggregateExpression(FeatureVisitor visitor) {
         // if is a group by visitor we need to use the internal aggregate visitor
         FeatureVisitor aggregateVisitor = isGroupByVisitor(visitor) ? ((GroupByVisitor) visitor).getAggregateVisitor() : visitor;
         Expression expression = getExpression(aggregateVisitor);
@@ -1569,8 +1645,7 @@ public final class JDBCDataStore extends ContentDataStore
             LOGGER.info("Visitor " + visitor.getClass() + " has no aggregate attribute.");
             return null;
         }
-        // we evaluate the expression and return the aggregate attribute
-        return (AttributeDescriptor) expression.evaluate(featureType);
+        return expression;
     }
 
     /**
@@ -3757,7 +3832,7 @@ public final class JDBCDataStore extends ContentDataStore
      */
     protected String selectCountSQL(SimpleFeatureType featureType, Query query, LimitingVisitor visitor) throws SQLException, IOException {
         //JD: this method should not be called anymore
-        return selectAggregateSQL("count",null,featureType,query, visitor);
+        return selectAggregateSQL("count", (Expression) null, featureType, query, visitor);
     }
 
     /**
@@ -3766,7 +3841,7 @@ public final class JDBCDataStore extends ContentDataStore
     protected PreparedStatement selectCountSQLPS(SimpleFeatureType featureType, Query query, LimitingVisitor visitor, Connection cx ) 
         throws SQLException, IOException {
         //JD: this method shold not be called anymore
-        return selectAggregateSQLPS("count",null,featureType,query,visitor,cx);
+        return selectAggregateSQLPS("count", (Expression) null,featureType,query,visitor,cx);
     }
     
     /**
@@ -3776,8 +3851,24 @@ public final class JDBCDataStore extends ContentDataStore
             SimpleFeatureType featureType, Query query, LimitingVisitor visitor) throws SQLException, IOException {
         return selectAggregateSQL(function, att, null, featureType, query, visitor);
     }
+    
+    /**
+     * Generates a 'SELECT <function>() FROM' statement.
+     */
+    protected String selectAggregateSQL(String function, Expression att,
+            SimpleFeatureType featureType, Query query, LimitingVisitor visitor) throws SQLException, IOException {
+        return selectAggregateSQL(function, att, null, featureType, query, visitor);
+    }
 
-    protected String selectAggregateSQL(String function, AttributeDescriptor att, List<AttributeDescriptor> groupByAttributes,
+    protected String selectAggregateSQL(String function, AttributeDescriptor att,
+            List<AttributeDescriptor> groupByAttributes, SimpleFeatureType featureType, Query query,
+            LimitingVisitor visitor) throws SQLException, IOException {
+        StringBuffer sql = new StringBuffer();
+        doSelectAggregateSQL(function, expressionFromAttribute(att), groupByAttributes, featureType, query, visitor, sql);
+        return sql.toString();
+    }
+    
+    protected String selectAggregateSQL(String function, Expression att, List<AttributeDescriptor> groupByAttributes,
                                         SimpleFeatureType featureType, Query query, LimitingVisitor visitor) throws SQLException, IOException {
         StringBuffer sql = new StringBuffer();
         doSelectAggregateSQL(function, att, groupByAttributes, featureType, query, visitor, sql);
@@ -3787,14 +3878,33 @@ public final class JDBCDataStore extends ContentDataStore
     /**
      * Generates a 'SELECT <function>() FROM' prepared statement.
      */
+    
     protected PreparedStatement selectAggregateSQLPS(String function, AttributeDescriptor att,
+            SimpleFeatureType featureType, Query query, LimitingVisitor visitor, Connection cx)
+                    throws SQLException, IOException {
+
+        return selectAggregateSQLPS(function, att, null, featureType, query, visitor, cx);
+    }
+    
+    protected PreparedStatement selectAggregateSQLPS(String function, Expression att,
                                                      SimpleFeatureType featureType, Query query, LimitingVisitor visitor, Connection cx)
             throws SQLException, IOException {
 
         return selectAggregateSQLPS(function, att, null, featureType, query, visitor, cx);
     }
 
-    protected PreparedStatement selectAggregateSQLPS(String function, AttributeDescriptor att, List<AttributeDescriptor> groupByAttributes,
+    protected PreparedStatement selectAggregateSQLPS(String function, AttributeDescriptor att,
+            List<AttributeDescriptor> groupByAttributes, SimpleFeatureType featureType, Query query,
+            LimitingVisitor visitor, Connection cx) throws SQLException, IOException {
+        return selectAggregateSQLPS(function, expressionFromAttribute(att), groupByAttributes,
+                featureType, query, visitor, cx);
+    }
+
+    private Expression expressionFromAttribute(AttributeDescriptor att) {
+        return FF2.property(att.getName());
+    }
+
+    protected PreparedStatement selectAggregateSQLPS(String function, Expression att, List<AttributeDescriptor> groupByAttributes,
                                                      SimpleFeatureType featureType, Query query, LimitingVisitor visitor, Connection cx)
         throws SQLException, IOException {
         
@@ -3814,8 +3924,10 @@ public final class JDBCDataStore extends ContentDataStore
     /**
      * Helper method to factor out some commonalities between selectAggregateSQL, and selectAggregateSQLPS 
      */
-    List<FilterToSQL> doSelectAggregateSQL(String function, AttributeDescriptor att, List<AttributeDescriptor> groupByAttributes,
+    List<FilterToSQL> doSelectAggregateSQL(String function, Expression expr, List<AttributeDescriptor> groupByAttributes,
             SimpleFeatureType featureType, Query query, LimitingVisitor visitor, StringBuffer sql) throws SQLException, IOException {
+
+        AttributeDescriptor att = extractAggregateAttribute(expr, featureType);
 
         JoinInfo join = !query.getJoins().isEmpty() 
             ? JoinInfo.create(query, featureType, this) : null;
@@ -3839,7 +3951,8 @@ public final class JDBCDataStore extends ContentDataStore
                 encodeGroupByAttributes(groupByAttributes, query, sql);
                 sql.append(",");
             }
-            encodeFunction(function,att,query,sql);
+
+            encodeFunction(function, att, expr, query, sql);
             sql.append( " FROM ");
         }
         
@@ -3877,7 +3990,7 @@ public final class JDBCDataStore extends ContentDataStore
                 encodeGroupByAttributes(groupByAttributes, query, sql2);
                 sql2.append(",");
             }
-            encodeFunction(function,att,query,sql2);
+            encodeFunction(function, att, expr, query, sql2);
             sql2.append(" AS gt_result_");
             sql2.append(" FROM (");
             sql.insert(0,sql2.toString());
@@ -3934,23 +4047,42 @@ public final class JDBCDataStore extends ContentDataStore
         }
     }
 
-    protected void encodeFunction( String function, AttributeDescriptor att, Query query, StringBuffer sql ) {
+    protected void encodeFunction(String function, AttributeDescriptor att, Query query,
+            StringBuffer sql) {
         sql.append(function).append("(");
-        if ( att == null ) {
-            sql.append( "*" );
-        }
-        else {
-            if ( att instanceof GeometryDescriptor ) {
-                encodeGeometryColumn((GeometryDescriptor)att, sql,query.getHints());
-            }
-            else {
-                dialect.encodeColumnName( att.getLocalName(), sql);
+        if (att == null) {
+            sql.append("*");
+        } else {
+            if (att instanceof GeometryDescriptor) {
+                encodeGeometryColumn((GeometryDescriptor) att, sql, query.getHints());
+            } else {
+                dialect.encodeColumnName(att.getLocalName(), sql);
             }
         }
-        
         sql.append(")");
     }
     
+    protected void encodeFunction(String function,  AttributeDescriptor att, Expression expression, Query query,
+            StringBuffer sql) {
+        if (expression instanceof PropertyName) {
+            encodeFunction (function, att, query, sql);
+        } else {
+            sql.append(function).append("(");
+            if (expression instanceof FunctionExpression) {
+                dialect.encodeAggregateFunction(getFunctionName(((FunctionExpression) expression).getName()),
+                        att.getLocalName(), sql);
+            } else {
+                sql.append("*");
+            }
+
+            sql.append(")");
+        }
+    }
+
+    private String getFunctionName(String function) {
+        return getSupportedFunctions().get(function);
+    }
+
     /**
      * Generates a 'DELETE FROM' sql statement.
      */
@@ -4744,7 +4876,7 @@ public final class JDBCDataStore extends ContentDataStore
     protected void encodeGeometryColumn(GeometryDescriptor gatt, StringBuffer sql,Hints hints) {
         encodeGeometryColumn(gatt, null, sql, hints);
     }
-
+    
     protected void encodeGeometryColumn(GeometryDescriptor gatt, String prefix, StringBuffer sql,Hints hints) {
     	
     	int srid = getDescriptorSRID(gatt);

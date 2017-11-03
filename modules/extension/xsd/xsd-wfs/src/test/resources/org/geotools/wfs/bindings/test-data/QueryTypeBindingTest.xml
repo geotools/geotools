@@ -18,9 +18,7 @@
 	<wfs:PropertyName>property2</wfs:PropertyName>
 	<wfs:XlinkPropertyName
 		traverseXlinkDepth="*"
-		traverseXlinkExpiry="10">
-		gt:propertyA/gt:propertyB
-	</wfs:XlinkPropertyName>
+		traverseXlinkExpiry="10">gt:propertyA/gt:propertyB</wfs:XlinkPropertyName>
 	<wfs:XlinkPropertyName traverseXlinkDepth="1">gt:propertyC/gt:propertyD</wfs:XlinkPropertyName>
 
 	<ogc:Function name="max">

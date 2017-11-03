@@ -40,7 +40,7 @@ public class DescribeFeatureTypeResponseFactory implements WFSResponseFactory {
     public boolean canProcess(WFSRequest originatingRequest, String contentType) {
         return originatingRequest instanceof DescribeFeatureTypeRequest
                 && (contentType == null || contentType.startsWith("text/xml")
-                || contentType.startsWith("application/gml+xml"));
+                || contentType.startsWith("application/gml+xml")|| contentType.startsWith("application/xml"));
     }
 
     @Override

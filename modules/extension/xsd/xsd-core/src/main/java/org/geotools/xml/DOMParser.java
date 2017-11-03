@@ -61,7 +61,7 @@ public class DOMParser {
     }
 
     /**
-     * Parses the supplied DOM returning a single object respresenting the
+     * Parses the supplied DOM returning a single object representing the
      * result of the parse.
      *
      * @return The object representation of the root element of the document.

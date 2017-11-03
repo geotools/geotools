@@ -18,6 +18,7 @@ import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.styling.*;
 import org.hamcrest.CoreMatchers;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -38,6 +39,7 @@ import static org.junit.Assert.assertThat;
  * Done my best to isolate from other tests being run, but specific JVMs might ignore that... if we
  * see it is breaking the build on some platform we'll have to remove it
  */
+@Ignore // sigh, as expected it's not working all the time
 public class StreamingRendererMapContentReleaseTest extends LoggerTest {
 
     private static final StyleFactory sf = CommonFactoryFinder.getStyleFactory();

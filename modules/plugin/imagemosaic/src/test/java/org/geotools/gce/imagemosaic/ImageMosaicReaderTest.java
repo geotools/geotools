@@ -99,6 +99,7 @@ import org.geotools.data.FileResourceInfo;
 import org.geotools.data.Query;
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.Transaction;
+import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.Hints;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -2633,6 +2634,69 @@ public class ImageMosaicReaderTest extends Assert{
             reader.dispose();
         }
     }
+
+	@Test
+	public void testRenamedMosaicGranuleSource() throws Exception {
+		File source = URLs.urlToFile(rgbAURLTiff);
+		File testDataDir = TestData.file(this, ".");
+		File mosaicDirectory = new File(testDataDir, "singleHarvestRGBA1");
+		File storageDirectory = new File(testDataDir, "singleHarvestRGBA2");
+		if (mosaicDirectory.exists()) {
+			FileUtils.deleteDirectory(mosaicDirectory);
+		}
+		FileUtils.copyDirectory(source, mosaicDirectory);
+		// remove all mosaic related files
+		for (File file : FileUtils.listFiles(mosaicDirectory, new RegexFileFilter("rgba.*"), null)) {
+			assertTrue(file.delete());
+		}
+		// create an indexer to rename the mosaic and type names
+		Properties indexer = new Properties();
+		indexer.put(Prop.NAME, "rgba");
+		indexer.put(Utils.Prop.TYPENAME, "theTable");
+		try (FileOutputStream fos = new FileOutputStream(new File(mosaicDirectory, "indexer.properties"))) {
+			indexer.store(fos, null);
+		}
+		// for this to work we need a datastore.properties (a shapefile cannot contain a typename other than its
+		// name, but the name of the store is fixed to match the one of the coverage)
+		// place H2 file in the dir
+		try(FileWriter out = new FileWriter(new File(mosaicDirectory, "/datastore.properties"))) {
+			out.write("database=imagemosaicremove\n");
+			out.write(H2_SAMPLE_PROPERTIES);
+			out.flush();
+		}
+
+		// move this file to another dir, we'll harvest it later
+		String fileNameToMove = "passA2006128211927.tiff";
+		File monthFive = new File(mosaicDirectory, fileNameToMove);
+		if (storageDirectory.exists()) {
+			FileUtils.deleteDirectory(storageDirectory);
+		}
+		storageDirectory.mkdirs();
+		File renamed = new File(storageDirectory, fileNameToMove);
+		assertTrue(monthFive.renameTo(renamed));
+
+		// ok, let's create a mosaic with a single granule and check the granule source name
+		URL harvestSingleURL = fileToUrl(mosaicDirectory);
+		final AbstractGridFormat format = TestUtils.getFormat(harvestSingleURL);
+		ImageMosaicReader reader = TestUtils.getReader(harvestSingleURL, format);
+		GranuleSource gs = reader.getGranules("rgba", true);
+		assertEquals("rgba", gs.getSchema().getTypeName());
+
+		// this used to blow things out
+		SimpleFeatureCollection features = gs.getGranules(new Query("rgba"));
+		SimpleFeature first = DataUtilities.first(features);
+		assertEquals("rgba", first.getType().getTypeName());
+
+		// another variant that used to cause problems
+		Query q = new Query("rgba");
+		q.setPropertyNames(new String[] {"location"});
+		features = gs.getGranules(q);
+		first = DataUtilities.first(features);
+		assertEquals("rgba", first.getType().getTypeName());
+		assertEquals(1, first.getAttributes().size());
+
+		reader.dispose();
+	}
 
     @Test
     public void testHarvestMultipleFiles() throws Exception {

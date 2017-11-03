@@ -57,6 +57,7 @@ import org.geotools.coverage.grid.io.GranuleStore;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.grid.io.OverviewPolicy;
+import org.geotools.coverage.grid.io.RenamingGranuleSource;
 import org.geotools.coverage.grid.io.StructuredGridCoverage2DReader;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
@@ -905,6 +906,8 @@ public class RasterManager implements Cloneable {
 
     String typeName;
 
+    String name;
+
     Envelope imposedEnvelope;
 
     MosaicConfigurationBean configuration;
@@ -925,6 +928,7 @@ public class RasterManager implements Cloneable {
         this.heterogeneousGranules = configuration.getCatalogConfigurationBean().isHeterogeneous();
         this.configuration = configuration;
         hints = parentReader.getHints();
+        this.name = configuration.getName();
         updateHints(hints, configuration, parentReader);
 
         if (checkAuxiliaryMetadata) {
@@ -1459,6 +1463,10 @@ public class RasterManager implements Cloneable {
             if (readOnly) {
                 if (granuleSource == null) {
                     granuleSource = new GranuleCatalogSource(granuleCatalog, typeName, hints);
+                    if (!typeName.equalsIgnoreCase(name)) {
+                        // need to rename
+                        granuleSource = new RenamingGranuleSource(name, granuleSource);
+                    }
                 }
                 return granuleSource;
             } else {

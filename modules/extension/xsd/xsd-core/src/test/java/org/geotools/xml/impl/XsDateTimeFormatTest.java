@@ -20,6 +20,7 @@ import static org.junit.Assert.*;
 
 import java.text.ParseException;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import org.junit.Test;
@@ -231,6 +232,8 @@ public class XsDateTimeFormatTest {
         TimeZone originalTimeZone = TimeZone.getDefault();
         TimeZone tz = TimeZone.getTimeZone("GMT");
         TimeZone.setDefault(tz);
+        Locale originalLocale = Locale.getDefault();
+        Locale.setDefault(Locale.ENGLISH);
         String t = "Tue Apr 25 13:13:14 UTC 2017";
         Object parseObject = format.parseObject(t, true);
         assertTrue(parseObject instanceof Calendar);
@@ -297,5 +300,6 @@ public class XsDateTimeFormatTest {
         assertEquals(mins, 22);
         assertEquals(sec, 10);
         TimeZone.setDefault(originalTimeZone);
+        Locale.setDefault(originalLocale);
     }
 }

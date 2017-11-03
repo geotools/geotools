@@ -54,8 +54,9 @@ public class ECQLExamples {
                 System.out.println("15 - Temporal During: lastEarthQuake DURING 1700-01-01T00:00:00Z/2011-01-01T00:00:00Z");
                 System.out.println("16 - In predicate: principalMineralResource IN ('silver','oil', 'gold' )");
                 System.out.println("17 - Temporal During using UTC Zone +3: 2006-11-30T01:00:00+03:00 DURING 2006-11-30T00:30:00+03:00/2006-11-30T01:30:00+03:00");
-                
-                System.out.println("0 - quite");
+                System.out.println("18 - Spatial Operation using the contains DE-9IM: RELATE(geometry, SRID=4326;LINESTRING (-134.921387 58.687767, -135.303391 59.092838), T*****FF*)");
+
+                System.out.println("0 - Quit");
                 System.out.print(">");
 
                 String line = reader.readLine();
@@ -115,7 +116,12 @@ public class ECQLExamples {
                 case 17: 
                 	utcTimeZone();
                 	break;
-                default:
+
+                case 18:
+                    referencedRelatePattern();
+                    break;
+
+                    default:
                     System.out.println("invalid option");
                 }
                 System.out.println("Press a key to continue.");
@@ -144,6 +150,25 @@ public class ECQLExamples {
         System.out.println("Result of filter evaluation: " + result);
 		
 	}
+
+    /**
+     * Example using the "contains" intersection matrix.
+     *
+     * @throws Exception
+     */
+    private static void referencedRelatePattern() throws Exception {
+
+        // ecql referencedRelatePattern start
+        Filter filter = ECQL.toFilter("RELATE(geometry, SRID=4326;LINESTRING (-134.921387 58.687767, -135.303391 59.092838), T*****FF*)");
+        // ecql referencedRelatePattern end
+        Utility.prittyPrintFilter(filter);
+
+        SimpleFeature usa = DataExamples.getInstanceOfCountry();
+
+        Boolean result = filter.evaluate(usa);
+        System.out.println("Result of filter evaluation: " + result);
+
+    }
 
 
 	private static void afterPredicateWithLefHandtExpression() throws Exception{

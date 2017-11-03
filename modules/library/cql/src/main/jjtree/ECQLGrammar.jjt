@@ -174,7 +174,8 @@ TOKEN [IGNORE_CASE]: /* geometry markers */
   < MULTILINESTRING: "multilinestring"> |
   < MULTIPOLYGON: "multipolygon"> |
   < GEOMETRYCOLLECTION: "geometrycollection"> |
-  < ENVELOPE: "envelope">
+  < ENVELOPE: "envelope"> |
+  < SRID: "srid">
 }
 
 TOKEN [IGNORE_CASE]: /* temporal expression*/
@@ -636,6 +637,17 @@ void DistanceUnits() #DistanceUnits_Node:
 	<FEET> | <METERS> | <STATUTE_MILES> | <NAUTICAL_MILES> | <KILOMETERS>
 }
 
+void GeometryLiteral() #GeometryLiteral:
+{}
+{
+  SimpleGeometryLiteral() | ReferencedGeometryLiteral()
+}
+
+void ReferencedGeometryLiteral() #ReferencedGeometryLiteral:
+{}
+{
+  <SRID> <EQ> IntegerLiteral() <SENTENCE_SEPARATOR> GeometryLiteral()
+}
 
 /*
  * <geometry literal> ::= 
@@ -648,7 +660,7 @@ void DistanceUnits() #DistanceUnits_Node:
  * 	| <GeometryCollection Tagged Text>
  *	| <Envelope Tagged Text>
  */
-void GeometryLiteral() #GeometryLiteral:
+void SimpleGeometryLiteral() #SimpleGeometryLiteral:
 {}
 {
   PointTaggedText() |
@@ -1229,7 +1241,7 @@ void GeometryCollectionTaggedText() #WKTNode:
  void GeometryCollectionText() #GeometryCollectionText_Node:
  {}
  {
- 	( <LP> GeometryLiteral() ( <COMMA> GeometryLiteral() )* <RP>)?
+ 	( <LP> SimpleGeometryLiteral() ( <COMMA> SimpleGeometryLiteral() )* <RP>)?
  }
  
 /*

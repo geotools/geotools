@@ -17,14 +17,17 @@
 
 package org.geotools.filter.text.ecql;
 
+import com.vividsolutions.jts.geom.Geometry;
 import org.geotools.filter.text.commons.CompilerUtil;
 import org.geotools.filter.text.commons.Language;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.cql2.CQLGeoOperationTest;
+import org.geotools.referencing.CRS;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.filter.Filter;
+import org.opengis.filter.expression.Literal;
 import org.opengis.filter.spatial.Contains;
 import org.opengis.filter.spatial.Crosses;
 import org.opengis.filter.spatial.Disjoint;
@@ -32,6 +35,10 @@ import org.opengis.filter.spatial.Equals;
 import org.opengis.filter.spatial.Intersects;
 import org.opengis.filter.spatial.Overlaps;
 import org.opengis.filter.spatial.Touches;
+import org.opengis.referencing.FactoryException;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * ECQL Geo Operation Test
@@ -86,11 +93,11 @@ public final class ECQLGeoOperationTest extends CQLGeoOperationTest{
 
     @Test
     public void disjoint() throws CQLException{
-        
+
 
         Filter resultFilter = CompilerUtil.parseFilter(language, "DISJOINT(the_geom, POINT(1 2))");
 
-        Assert.assertTrue("Disjoint was expected", resultFilter instanceof Disjoint);
+        assertTrue("Disjoint was expected", resultFilter instanceof Disjoint);
     }
 
     @Test
@@ -98,7 +105,7 @@ public final class ECQLGeoOperationTest extends CQLGeoOperationTest{
 
         Filter resultFilter = CompilerUtil.parseFilter(language,"INTERSECTS(the_geom, POINT(1 2))");
 
-        Assert.assertTrue("Intersects was expected", resultFilter instanceof Intersects);
+        assertTrue("Intersects was expected", resultFilter instanceof Intersects);
     }
 
     @Test
@@ -106,28 +113,28 @@ public final class ECQLGeoOperationTest extends CQLGeoOperationTest{
 
         Filter resultFilter = CompilerUtil.parseFilter(language,"INTERSECTS(POLYGON((1 2, 2 2, 2 3, 1 2)), POINT(1 2))");
 
-        Assert.assertTrue("Intersects was expected", resultFilter instanceof Intersects);
+        assertTrue("Intersects was expected", resultFilter instanceof Intersects);
     }
 
     @Test
     public void touches() throws CQLException{
         Filter resultFilter = CompilerUtil.parseFilter(language,"TOUCHES(the_geom, POINT(1 2))");
 
-        Assert.assertTrue("Touches was expected", resultFilter instanceof Touches);
+        assertTrue("Touches was expected", resultFilter instanceof Touches);
     }
     
     @Test
     public void crosses() throws CQLException {
         Filter resultFilter = CompilerUtil.parseFilter(language,"CROSSES(the_geom, POINT(1 2))");
 
-        Assert.assertTrue("Crosses was expected", resultFilter instanceof Crosses);
+        assertTrue("Crosses was expected", resultFilter instanceof Crosses);
         
     }
     @Test
     public void contains() throws CQLException      {
         Filter resultFilter = CompilerUtil.parseFilter(language,"CONTAINS(the_geom, POINT(1 2))");
 
-        Assert.assertTrue("Contains was expected", resultFilter instanceof Contains);
+        assertTrue("Contains was expected", resultFilter instanceof Contains);
     }
     
     @Test
@@ -137,7 +144,7 @@ public final class ECQLGeoOperationTest extends CQLGeoOperationTest{
 
         resultFilter = CompilerUtil.parseFilter(language,"OVERLAPS(the_geom, POINT(1 2))");
 
-        Assert.assertTrue("Overlaps was expected", resultFilter instanceof Overlaps);
+        assertTrue("Overlaps was expected", resultFilter instanceof Overlaps);
     }
     
     @Test
@@ -145,7 +152,7 @@ public final class ECQLGeoOperationTest extends CQLGeoOperationTest{
         // EQUALS
         Filter resultFilter = CompilerUtil.parseFilter(language,"EQUALS(the_geom, POINT(1 2))");
 
-        Assert.assertTrue("not an instance of Equals", resultFilter instanceof Equals);
+        assertTrue("not an instance of Equals", resultFilter instanceof Equals);
     }
     
 
@@ -154,7 +161,7 @@ public final class ECQLGeoOperationTest extends CQLGeoOperationTest{
         
         Filter resultFilter = CompilerUtil.parseFilter(language,"INTERSECTS(centroid(the_geom), POINT(1 2))");
 
-        Assert.assertTrue("Intersects was expected", resultFilter instanceof Intersects);
+        assertTrue("Intersects was expected", resultFilter instanceof Intersects);
     }
 
     @Test
@@ -162,12 +169,12 @@ public final class ECQLGeoOperationTest extends CQLGeoOperationTest{
         
         Filter resultFilter = CompilerUtil.parseFilter(language,"INTERSECTS(the_geom, buffer(POINT(1 2),10))");
         
-        Assert.assertTrue("Intersects was expected", resultFilter instanceof Intersects);
+        assertTrue("Intersects was expected", resultFilter instanceof Intersects);
 
         
         resultFilter = CompilerUtil.parseFilter(language,"INTERSECTS(the_geom, buffer(the_geom,10))"); 
         
-        Assert.assertTrue("Intersects was expected", resultFilter instanceof Intersects);
+        assertTrue("Intersects was expected", resultFilter instanceof Intersects);
     }
 
     @Test
@@ -175,22 +182,21 @@ public final class ECQLGeoOperationTest extends CQLGeoOperationTest{
         
         Filter resultFilter = CompilerUtil.parseFilter(language,"INTERSECTS(centroid(the_geom), buffer(POINT(1 2) ,10))");
 
-        Assert.assertTrue("Intersects was expected", resultFilter instanceof Intersects);
+        assertTrue("Intersects was expected", resultFilter instanceof Intersects);
 
     }
     
-    /**
-     * This test require an extension of bbox filter
-     */
-    @Ignore
-    public void bboxWithFunctionOnFirstArgument(){
-        
-        //  TODO function on first arg BBOX( buffer( the_geom , 10), 10,20,30,40 )
-        //  TODO function on second argument BBOX( buffer( the_geom , 10), buffer( POINT( 15,15), 10) )
-        //  TODO Geometry on first and second arguments BBOX( POLYGON( .... ), POLYGON( .... ), 10) )
-        //  TODO Proposal in geotools wiki for this
+    @Test
+    public void intersectsWithReferencedGeometry() throws CQLException, FactoryException {
+
+        Filter resultFilter = CompilerUtil.parseFilter(language,"INTERSECTS(the_geom, SRID=4326;POINT(1 2))");
+
+        assertTrue("Intersects was expected", resultFilter instanceof Intersects);
+        Intersects intersects = (Intersects) resultFilter;
+        Literal geomLiteral = (Literal) intersects.getExpression2();
+        assertEquals(CRS.decode("EPSG:4326", true), geomLiteral.evaluate(null, Geometry.class).getUserData());
     }
 
-  
-    
+
+
 }

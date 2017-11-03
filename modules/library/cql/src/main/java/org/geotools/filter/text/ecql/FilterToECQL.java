@@ -20,6 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.geotools.factory.Hints;
 import org.geotools.filter.text.commons.ExpressionToText;
 import org.geotools.filter.text.commons.FilterToTextUtil;
 import org.opengis.filter.And;
@@ -84,9 +85,22 @@ final class FilterToECQL implements FilterVisitor {
      */
     private static Pattern NUMBER = Pattern.compile("[0-9]+");
     
-    ExpressionToText expressionVisitor = new ExpressionToText();
-    
-	@Override
+    ExpressionToText expressionVisitor;
+
+
+	/**
+	 * Default constructor.  The behavior of EWKT encoding is controlled by the
+	 * {@link Hints#ENCODE_EWKT} hint
+	 */
+	public FilterToECQL() {
+    	this(ECQL.isEwktEncodingEnabled());
+	}
+
+    public FilterToECQL(boolean encodeEwkt) {
+		expressionVisitor = new ExpressionToText(encodeEwkt);
+    }
+
+    @Override
 	public Object visitNullFilter(Object extraData) {
 		throw new NullPointerException("Cannot encode null as a Filter");
 	}
@@ -365,52 +379,52 @@ final class FilterToECQL implements FilterVisitor {
 
 	@Override
 	public Object visit(Beyond filter, Object extraData) {
-    	return FilterToTextUtil.buildDistanceBufferOperation("BEYOND", filter, extraData);
+    	return FilterToTextUtil.buildDistanceBufferOperation("BEYOND", filter, extraData, expressionVisitor);
 	}
 
 	@Override
 	public Object visit(Contains filter, Object extraData) {
-    	return FilterToTextUtil.buildBinarySpatialOperator("CONTAINS", filter, extraData);
+    	return FilterToTextUtil.buildBinarySpatialOperator("CONTAINS", filter, extraData, expressionVisitor);
 	}
 
 	@Override
 	public Object visit(Crosses filter, Object extraData) {
-    	return FilterToTextUtil.buildBinarySpatialOperator("CROSSES", filter, extraData);
+    	return FilterToTextUtil.buildBinarySpatialOperator("CROSSES", filter, extraData, expressionVisitor);
 	}
 
 	@Override
 	public Object visit(Disjoint filter, Object extraData) {
-    	return FilterToTextUtil.buildBinarySpatialOperator("DISJOINT", filter, extraData);
+    	return FilterToTextUtil.buildBinarySpatialOperator("DISJOINT", filter, extraData, expressionVisitor);
 	}
 
 	@Override
 	public Object visit(DWithin filter, Object extraData) {
-    	return FilterToTextUtil.buildDWithin(filter, extraData);
+    	return FilterToTextUtil.buildDWithin(filter, extraData, expressionVisitor);
 	}
 
 	@Override
 	public Object visit(Equals filter, Object extraData) {
-    	return FilterToTextUtil.buildBinarySpatialOperator("EQUALS", filter, extraData);
+    	return FilterToTextUtil.buildBinarySpatialOperator("EQUALS", filter, extraData, expressionVisitor);
 	}
 
 	@Override
 	public Object visit(Intersects filter, Object extraData) {
-    	return FilterToTextUtil.buildBinarySpatialOperator("INTERSECTS", filter, extraData);
+    	return FilterToTextUtil.buildBinarySpatialOperator("INTERSECTS", filter, extraData, expressionVisitor);
 	}
 
 	@Override
 	public Object visit(Overlaps filter, Object extraData) {
-    	return FilterToTextUtil.buildBinarySpatialOperator("OVERLAPS", filter, extraData);
+    	return FilterToTextUtil.buildBinarySpatialOperator("OVERLAPS", filter, extraData, expressionVisitor);
 	}
 
 	@Override
 	public Object visit(Touches filter, Object extraData) {
-    	return FilterToTextUtil.buildBinarySpatialOperator("TOUCHES", filter, extraData);
+    	return FilterToTextUtil.buildBinarySpatialOperator("TOUCHES", filter, extraData, expressionVisitor);
 	}
 
 	@Override
 	public Object visit(Within filter, Object extraData) {
-    	return FilterToTextUtil.buildBinarySpatialOperator("WITHIN", filter, extraData);
+    	return FilterToTextUtil.buildBinarySpatialOperator("WITHIN", filter, extraData, expressionVisitor);
 	}
 
 	@Override

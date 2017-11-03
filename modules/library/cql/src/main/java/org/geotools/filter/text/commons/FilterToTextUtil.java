@@ -217,31 +217,45 @@ public final class FilterToTextUtil {
         return output;
 	}
 
-	public static Object buildDistanceBufferOperation(final String geoOperation, DistanceBufferOperator filter, Object extraData){
-		
+	public static Object buildDistanceBufferOperation(final String geoOperation, DistanceBufferOperator filter, Object extraData) {
+        ExpressionToText visitor = new ExpressionToText();
+
+        return buildDistanceBufferOperation(geoOperation, filter, extraData, visitor);
+	}
+
+    public static Object buildDistanceBufferOperation(String geoOperation, DistanceBufferOperator filter, Object
+            extraData, ExpressionToText visitor) {
         LOGGER.finer("exporting " + geoOperation);
         StringBuilder output = asStringBuilder(extraData);
-        
+
         output.append(geoOperation).append("(");
         Expression expr = filter.getExpression1();
-        ExpressionToText visitor = new ExpressionToText();
-		expr.accept(visitor, output);
+        expr.accept(visitor, output);
         output.append(", ");
         filter.getExpression2().accept(visitor, output);
+        output.append(", ");
+        output.append( filter.getDistance() );
+        output.append(", ");
+        output.append( filter.getDistanceUnits() );
         output.append(")");
-        
-        return output;
-	}
-	
 
-	public static Object buildDWithin(DWithin filter, Object extraData) {
-    	
-    	LOGGER.finer("exporting DWITHIN");
-        StringBuilder output = asStringBuilder(extraData);
-        
-        output.append("DWITHIN(");
+        return output;
+    }
+
+
+    public static Object buildDWithin(DWithin filter, Object extraData) {
         ExpressionToText visitor = new ExpressionToText();
-        
+
+        return buildDWithin(filter, extraData, visitor);
+	}
+
+    public static Object buildDWithin(DWithin filter, Object extraData, ExpressionToText visitor) {
+        LOGGER.finer("exporting DWITHIN");
+        StringBuilder output = asStringBuilder(extraData);
+
+        output.append("DWITHIN(");
+
+
         filter.getExpression1().accept(visitor, output);
         output.append(", ");
         filter.getExpression2().accept(visitor, output);
@@ -250,30 +264,37 @@ public final class FilterToTextUtil {
         output.append(", ");
         output.append( filter.getDistanceUnits() );
         output.append(")");
-        
-        return output;
-	}
 
-	public static Object buildBinarySpatialOperator(
+        return output;
+    }
+
+    public static Object buildBinarySpatialOperator(
 			final String spatialOperator,
 			final BinarySpatialOperator filter, 
 			Object extraData) {
-    	
+
+        ExpressionToText visitor = new ExpressionToText();
+
+        return buildBinarySpatialOperator(spatialOperator, filter, extraData, visitor);
+	}
+
+    public static Object buildBinarySpatialOperator(String spatialOperator, BinarySpatialOperator filter, Object
+            extraData, ExpressionToText visitor) {
         LOGGER.finer("exporting " + spatialOperator);
         StringBuilder output = asStringBuilder(extraData);
-        
+
         output.append(spatialOperator).append("(");
         Expression expr =  filter.getExpression1();
-        ExpressionToText visitor = new ExpressionToText();
-		expr.accept(visitor, output);
+
+        expr.accept(visitor, output);
         output.append(", ");
         filter.getExpression2().accept(visitor, output);
         output.append(")");
-        
-        return output;
-	}
 
-	public static Object buildBinaryTemporalOperator(final String temporalOperator, BinaryTemporalOperator filter, Object extraData) {
+        return output;
+    }
+
+    public static Object buildBinaryTemporalOperator(final String temporalOperator, BinaryTemporalOperator filter, Object extraData) {
     	
         LOGGER.finer("exporting " + temporalOperator);
 

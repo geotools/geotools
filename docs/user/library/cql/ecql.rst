@@ -5,8 +5,14 @@ The ECQL language is intended as an extension of CQL, thus you can write all pre
 
 References
 
-* `ECQL Parser Design <http://old.geotools.org/ECQL-Parser-Design_110493908.html>`__ (design doc with BNF)
+* `ECQL Parser Design <http://old.geotools.org/ECQL-Parser-Design_110493908.html>`__ (design doc with BNF, note, in addition to WKT syntax for geometries 
+  GeoTools now supports also Extended WKT, same as PostGIS, see example below)
 * `GeoServer CQL Examples <http://docs.geoserver.org/latest/en/user/tutorials/cql/cql_tutorial.html>`_ (geoserver)
+
+.. note::
+
+  Starting with GeoTools 19.0 Geometry objects carrying a CoordinateReferenceSystem among user data get encoded as EWKT.
+  If you do not desire so, set the ``Hints.ENCODE_EWKT`` system hint to false (e..g, ``Hints.putSystemDefault(Hints.ENCODE_EWKT, false);``).
 
 ECQL Utility Class
 ^^^^^^^^^^^^^^^^^^
@@ -133,6 +139,15 @@ Examples
      :language: java
      :start-after: ecql relatePattern start
      :end-before: ecql relatePattern end
+     
+  The following variant shows the same, but giving the geometry a coordinate reference system using the EWKT convention of 
+  preceding it with "SRID=epsgCode;":
+
+  .. literalinclude:: /../src/main/java/org/geotools/cql/ECQLExamples.java
+     :language: java
+     :start-after: ecql referencedRelatePattern start
+     :end-before: ecql referencedRelatePattern end
+
 
 
 * Filter by temporal relation:

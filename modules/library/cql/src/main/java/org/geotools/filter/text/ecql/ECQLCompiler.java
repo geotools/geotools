@@ -446,12 +446,18 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
                 
             case JJTMULTIPOLYGONTEXT_NODE:
                 return this.builder.buildMultiPolygon(JJTPOLYGONTEXT_NODE);
-                
+
+            case JJTREFERENCEDGEOMETRYLITERAL:
+                return this.builder.buildReferencedGeometryLiteral();
+
             case JJTGEOMETRYLITERAL:
                 return this.builder.buildGeometryLiteral();
 
+            case JJTSIMPLEGEOMETRYLITERAL:
+                return this.builder.buildSimpleGeometryLiteral();
+
             case JJTGEOMETRYCOLLECTIONTEXT_NODE:
-                return this.builder.buildGeometryCollection(JJTGEOMETRYLITERAL);
+                return this.builder.buildGeometryCollection(JJTSIMPLEGEOMETRYLITERAL);
                 
                 
             case JJTWKTNODE:

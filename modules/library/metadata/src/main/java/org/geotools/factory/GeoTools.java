@@ -247,6 +247,22 @@ public final class GeoTools {
     }
 
     /**
+     * The {@linkplain System#getProperty(String) system property} key for the default
+     * value to be assigned to the {@link Hints#ENCODE_EWKT} hint.
+     *
+     * This setting specifies if geometries with {@link org.opengis.referencing.crs.CoordinateReferenceSystem} in
+     * the user data shall be encoded as EWKT or not.
+     *
+     * @see Hints#ENCODE_EWKT
+     * @see #getDefaultHints
+     * @since 19.0
+     */
+    public static final String ENCODE_WKT = "org.geotools.ecql.ewkt";
+    static {
+        bind(ENCODE_WKT, Hints.ENCODE_EWKT);
+    }
+
+    /**
      * The initial context. Will be created only when first needed.
      */
     private static InitialContext context;

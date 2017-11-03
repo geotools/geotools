@@ -232,7 +232,7 @@ public class CQL {
      * @return expression as text
      */
     public static String toCQL( Expression expression ){
-        ExpressionToText toCQL = new ExpressionToText();
+        ExpressionToText toCQL = new ExpressionToText(false);
         
         StringBuilder output = (StringBuilder) expression.accept( toCQL, new StringBuilder() );
         

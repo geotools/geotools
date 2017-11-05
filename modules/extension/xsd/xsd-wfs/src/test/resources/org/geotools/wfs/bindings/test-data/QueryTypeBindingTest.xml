@@ -20,7 +20,7 @@
 		traverseXlinkDepth="*"
 		traverseXlinkExpiry="10">
 		gt:propertyA/gt:propertyB
-	</wfs:XlinkPropertyName>
+		</wfs:XlinkPropertyName>
 	<wfs:XlinkPropertyName traverseXlinkDepth="1">gt:propertyC/gt:propertyD</wfs:XlinkPropertyName>
 
 	<ogc:Function name="max">

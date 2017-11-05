@@ -38,6 +38,7 @@ import org.eclipse.xsd.XSDTypeDefinition;
 import org.eclipse.xsd.XSDVariety;
 import org.eclipse.xsd.XSDWhiteSpace;
 import org.eclipse.xsd.XSDWhiteSpaceFacet;
+import org.geotools.xml.AttributeInstance;
 import org.geotools.xml.Binding;
 import org.geotools.xml.ComplexBinding;
 import org.geotools.xml.ElementInstance;
@@ -47,6 +48,7 @@ import org.geotools.xml.Schemas;
 import org.geotools.xml.SimpleBinding;
 import org.geotools.xml.impl.BindingWalker.Visitor;
 import org.geotools.xs.facets.Whitespace;
+import org.jdom.Attribute;
 import org.picocontainer.MutablePicoContainer;
 
 
@@ -136,9 +138,8 @@ public class ParseExecutor implements Visitor {
                             || ((XSDComplexTypeDefinition) type).isMixed())) {
                         result = value;
                     } else if ((value != null) && value instanceof String) {
-                        value = ((String) value).trim();
-
-                        if ("".equals(value)) {
+                        value = ((String) value);
+                        if ("".equals(((String) value).trim())) {
                             result = null;
                         } else {
                             result = value;
@@ -303,8 +304,8 @@ public class ParseExecutor implements Visitor {
                 for (Iterator f = type.getFacets().iterator(); f.hasNext();) {
                     XSDFacet facet = (XSDFacet) f.next();
 
-                    //white space
-                    if (facet instanceof XSDWhiteSpaceFacet) {
+                    
+                    if (facet instanceof XSDWhiteSpaceFacet && !parser.isCDATA()) {
                         XSDWhiteSpaceFacet whitespace = (XSDWhiteSpaceFacet) facet;
 
                         if (whitespace.getValue() == XSDWhiteSpace.REPLACE_LITERAL) {
@@ -316,7 +317,12 @@ public class ParseExecutor implements Visitor {
                         }
 
                         if (whitespace.getValue() == XSDWhiteSpace.PRESERVE_LITERAL) {
-                            //do nothing
+                            // XML spec seems to indicate that this is wrong, but then abstracts etc look wrong.
+                            // https://www.w3.org/TR/xmlschema-2/#dt-whiteSpace
+                            // however we need to not trim attributes as then GML coordinates don't work!
+                            if (!(instance instanceof AttributeInstance)) {
+                                text = text.trim();
+                            }
                         }
                     }
                 }
@@ -328,11 +334,15 @@ public class ParseExecutor implements Visitor {
             // for mixed
             if (instance.getTypeDefinition() instanceof XSDComplexTypeDefinition
                     && ((XSDComplexTypeDefinition) instance.getTypeDefinition()).isMixed()) {
-                //collape the text
-                text = Whitespace.COLLAPSE.preparse(text);
+                //Collapse the text, but don't do so for CDATA where it's meant to be preserved
+                if (!parser.isCDATA()) {
+                    text = Whitespace.COLLAPSE.preparse(text);
+                }
             }
         }
-
+        if (!parser.isCDATA()) {
+            text = Whitespace.COLLAPSE.preparse(text);
+        }
         return text;
     }
 

@@ -171,10 +171,10 @@ public class WFSClientTest {
         assertTrue(info.getKeywords().contains("WMS"));
         assertEquals("http://schemas.opengis.net/wfs/1.0.0/WFS-transaction.xsd", info.getSchema().toString());
         assertEquals("http://localhost:8080/geoserver/wfs?", info.getSource().toString());
-        assertEquals("\n\t\t\tThis is a description of your Web Feature Server." +
+        assertEquals("This is a description of your Web Feature Server." +
                 "\n\n\t\t\tThe GeoServer is a full transactional Web Feature Server, you may wish to limit GeoServer to a Basic service" +
-        	"\n\t\t\tlevel to prevent modificaiton of your geographic data." +
-                "\n\t\t", info.getDescription());
+        	"\n\t\t\tlevel to prevent modificaiton of your geographic data."
+                , info.getDescription());
     }
     
     private void testGetRemoteTypeNames(String capabilitiesLocation, int typeCount)

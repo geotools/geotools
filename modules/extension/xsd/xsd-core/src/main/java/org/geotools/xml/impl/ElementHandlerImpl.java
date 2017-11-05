@@ -29,7 +29,6 @@ import org.eclipse.xsd.util.XSDUtil;
 import org.picocontainer.defaults.DefaultPicoContainer;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
-import org.xml.sax.ext.LexicalHandler;
 
 import java.util.ArrayList;
 import java.util.List;

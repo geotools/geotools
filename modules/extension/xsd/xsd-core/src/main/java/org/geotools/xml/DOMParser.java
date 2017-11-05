@@ -79,7 +79,7 @@ public class DOMParser {
         try {
             // Prepare the result
             SAXResult result = new SAXResult(handler);
-            //improve CDATA Management - GEOS-8227
+            // add lexical handler to spot CDATA
             result.setLexicalHandler(handler);
 
             TransformerFactory xformerFactory = TransformerFactory.newInstance();

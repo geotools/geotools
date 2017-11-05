@@ -56,7 +56,7 @@ public class DescribeStoredQueriesTypeBindingTest extends WFSTestSupport {
         assertNotNull(desc);
         
         assertEquals("Hirlam Pressure Grid", desc.getTitle().get(0).getValue());
-        assertEquals("\n            Hirlam forecast model's pressure levels as a grid data encoded in GRIB format.\n        ", desc.getAbstract().get(0).getValue());
+        assertEquals("Hirlam forecast model's pressure levels as a grid data encoded in GRIB format.", desc.getAbstract().get(0).getValue());
         
         assertEquals(6, desc.getParameter().size());
         ParameterExpressionType param1= desc.getParameter().get(0);

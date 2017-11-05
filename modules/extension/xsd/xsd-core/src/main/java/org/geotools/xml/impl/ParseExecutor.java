@@ -38,6 +38,7 @@ import org.eclipse.xsd.XSDTypeDefinition;
 import org.eclipse.xsd.XSDVariety;
 import org.eclipse.xsd.XSDWhiteSpace;
 import org.eclipse.xsd.XSDWhiteSpaceFacet;
+import org.geotools.xml.AttributeInstance;
 import org.geotools.xml.Binding;
 import org.geotools.xml.ComplexBinding;
 import org.geotools.xml.ElementInstance;
@@ -137,9 +138,7 @@ public class ParseExecutor implements Visitor {
                             || ((XSDComplexTypeDefinition) type).isMixed())) {
                         result = value;
                     } else if ((value != null) && value instanceof String) {
-                      //GEOS-8227 don't trim text it will already be trimmed unless in CDATA
-                        value = ((String) value)/*.trim()*/;
-
+                        value = ((String) value);
                         if ("".equals(((String) value).trim())) {
                             result = null;
                         } else {
@@ -305,7 +304,7 @@ public class ParseExecutor implements Visitor {
                 for (Iterator f = type.getFacets().iterator(); f.hasNext();) {
                     XSDFacet facet = (XSDFacet) f.next();
 
-                    //white space unless it is in a CDATA block - GEOS-8227
+                    
                     if (facet instanceof XSDWhiteSpaceFacet && !parser.isCDATA()) {
                         XSDWhiteSpaceFacet whitespace = (XSDWhiteSpaceFacet) facet;
 
@@ -318,11 +317,12 @@ public class ParseExecutor implements Visitor {
                         }
 
                         if (whitespace.getValue() == XSDWhiteSpace.PRESERVE_LITERAL) {
-                            //With GEOS-8227 fix now assumes that text is trimmed before return 
-                            //but don't do this to attributes, as they are never CDATA
-                           /* if(!(instance instanceof org.geotools.xml.AttributeInstance)) {
+                            // XML spec seems to indicate that this is wrong, but then abstracts etc look wrong.
+                            // https://www.w3.org/TR/xmlschema-2/#dt-whiteSpace
+                            // however we need to not trim attributes as then GML coordinates don't work!
+                            if (!(instance instanceof AttributeInstance)) {
                                 text = text.trim();
-                            }*/
+                            }
                         }
                     }
                 }
@@ -334,14 +334,13 @@ public class ParseExecutor implements Visitor {
             // for mixed
             if (instance.getTypeDefinition() instanceof XSDComplexTypeDefinition
                     && ((XSDComplexTypeDefinition) instance.getTypeDefinition()).isMixed()) {
-                //Collapse the text
-                //Seems to be an issue for transaction updates - See GEOS-8227
-                if(!parser.isCDATA()) {
+                //Collapse the text, but don't do so for CDATA where it's meant to be preserved
+                if (!parser.isCDATA()) {
                     text = Whitespace.COLLAPSE.preparse(text);
                 }
             }
         }
-        if(!parser.isCDATA()) {
+        if (!parser.isCDATA()) {
             text = Whitespace.COLLAPSE.preparse(text);
         }
         return text;

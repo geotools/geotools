@@ -115,10 +115,9 @@ public class XSAnyTypeBinding extends AbstractComplexBinding {
         String text = null;
 
         if ((value != null) && value instanceof String) {
-          //GEOS-8227 don't trim text it will already be trimmed unless in CDATA
-            text = ((String) value)/*.trim()*/;
+            text = ((String) value);
 
-            if ("".equals(text)) {
+            if ("".equals(text.trim())) {
                 text = null;
             }
         }
@@ -139,15 +138,14 @@ public class XSAnyTypeBinding extends AbstractComplexBinding {
         }
 
         //create a map of the elements and attributes
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         List attributes = node.getAttributes();
         List children = node.getChildren();
         mapBinding(map, attributes);
         mapBinding(map, children);
 
         if ((text != null) && !"".equals(text.trim())) {
-            //GEOS-8227 don't trim text it will already be trimmed unless in CDATA
-            map.put(null, text/*.trim()*/);
+            map.put(null, text);
         }
 
         return map;

@@ -154,9 +154,9 @@ public class ParserHandler extends DefaultHandler2 {
     /** context customizer **/
     ContextCustomizer contextCustomizer;
 
-    private boolean inCDATA=false;
+    private boolean inCDATA = false;
 
-    private boolean CDATAEnding=false;
+    private boolean CDATAEnding = false;
     
     public ParserHandler(Configuration config) {
         this.config = config;
@@ -863,7 +863,7 @@ O:          for (int i = 0; i < schemas.length; i++) {
     @Override
     public InputSource resolveEntity(String name, String publicId, String baseURI, String systemId)
             throws SAXException, IOException {
-        if(entityResolver!=null) {
+        if (entityResolver != null) {
             return entityResolver.resolveEntity(publicId, systemId);
         }
         return super.resolveEntity(name, publicId, baseURI, systemId);
@@ -875,10 +875,12 @@ O:          for (int i = 0; i < schemas.length; i++) {
     }
 
     @Override
-    public void endCDATA() throws SAXException {   
+    public void endCDATA() throws SAXException {
         setCDATAEnding(true);
     }
+
     /**
+     * Notify the parser that the current CDATA block is ending.
      * @param b
      */
     private void setCDATAEnding(boolean b) {
@@ -894,12 +896,19 @@ O:          for (int i = 0; i < schemas.length; i++) {
     }
 
     /**
+     * Inform the parser that it is inside a CDATA block.
+     * 
      * @param b
      */
     public void setCDATA(boolean b) {
         this.inCDATA = b;
-        
+
     }
+
+    /**
+     * Check if the current text is inside a CDATA block.
+     * @return
+     */
     public boolean isCDATA() {
         return inCDATA;
     }

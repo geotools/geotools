@@ -210,10 +210,8 @@ public class MySQLDialectBasic extends BasicSQLDialect {
         byte[] wkb = rs.getBytes(column);
 
         try {
-            //TODO: srid
-            Polygon polygon = (Polygon) new WKBReader().read(wkb);
-
-            return polygon.getEnvelopeInternal();
+            Geometry geometry = new WKBReader().read(wkb);
+            return geometry.getEnvelopeInternal();
         } catch (ParseException e) {
             String msg = "Error decoding wkb for envelope";
             throw (IOException) new IOException(msg).initCause(e);

@@ -80,7 +80,7 @@ public abstract class AbstractWfsDataStoreOnlineTest {
 
     private final String SERVER_URL;
 
-    protected static Boolean serviceAvailable = null;
+    protected Boolean serviceAvailable = null;
 
     /**
      * The DataStore under test, static so we create it only once

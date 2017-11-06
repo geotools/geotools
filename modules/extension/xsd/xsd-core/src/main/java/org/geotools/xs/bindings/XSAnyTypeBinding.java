@@ -81,7 +81,7 @@ public class XSAnyTypeBinding extends AbstractComplexBinding {
      *
      * @generated modifiable
      */
-    public Class<Object> getType() {
+    public Class getType() {
         return Object.class;
     }
 
@@ -115,9 +115,9 @@ public class XSAnyTypeBinding extends AbstractComplexBinding {
         String text = null;
 
         if ((value != null) && value instanceof String) {
-            text = ((String) value);
+            text = ((String) value).trim();
 
-            if ("".equals(text.trim())) {
+            if ("".equals(text)) {
                 text = null;
             }
         }
@@ -138,33 +138,33 @@ public class XSAnyTypeBinding extends AbstractComplexBinding {
         }
 
         //create a map of the elements and attributes
-        Map<String, Object> map = new HashMap<>();
+        Map map = new HashMap();
         List attributes = node.getAttributes();
         List children = node.getChildren();
         mapBinding(map, attributes);
         mapBinding(map, children);
 
         if ((text != null) && !"".equals(text.trim())) {
-            map.put(null, text);
+            map.put(null, text.trim());
         }
 
         return map;
     }
 
-    private void mapBinding(Map<String, Object> map, List attributes) {
+    private void mapBinding(Map map, List attributes) {
         for (Iterator i = attributes.iterator(); i.hasNext();) {
             Node attribute = (Node) i.next();
             String name = attribute.getComponent().getName();
             Object value = attribute.getValue();
 
             if (map.containsKey(name)) {
-                List<Object> values;
+                List values;
                 Object obj = map.get(name);
 
                 if (obj instanceof List) {
-                    values = (List<Object>) obj;
+                    values = (List) obj;
                 } else {
-                    values = new ArrayList<Object>();
+                    values = new ArrayList();
                     values.add(obj);
                     map.put(name, values);
                 }

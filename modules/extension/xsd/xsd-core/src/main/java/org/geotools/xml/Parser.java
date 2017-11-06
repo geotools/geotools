@@ -72,10 +72,6 @@ import org.xml.sax.helpers.NamespaceSupport;
  * @source $URL$
  */
 public class Parser {
-    private static final String LEXICAL_HANDLER_PROPERTY = "lexical-handler";
-
-    private static final String SAX_PROPERTY_PREFIX = "http://xml.org/sax/properties/";
-
     /** sax handler which maintains the element stack */
     private ParserHandler handler;
 
@@ -86,7 +82,7 @@ public class Parser {
     private InputStream input;
 
     /**
-     * Creates a new instance of the parser.
+     * Creats a new instance of the parser.
      *
      * @param configuration The parser configuration, bindings and context,
      *         must never be <code>null</code>.
@@ -296,7 +292,7 @@ public class Parser {
      * Sets the flag which controls how the parser handles validation errors.
      * <p>
      * When this flag is set, the parser will throw an exception when it encounters 
-     * a validation error. Otherwise the error will be stored, retrievable from 
+     * a validation error. Otherise the error will be stored, retreivable from 
      * {@link #getValidationErrors()}.
      * </p>
      * <p>
@@ -498,7 +494,7 @@ public class Parser {
      * Returns the namespace mappings maintained by the parser.
      * <p>
      * Clients may register additional namespace mappings. This is useful when
-     * an application wishes to provide some "default" namespace mappings.
+     * an application whishes to provide some "default" namespace mappings.
      * </p>
      * <p>
      * Clients should register namespace mappings in the current "context", ie
@@ -560,7 +556,7 @@ public class Parser {
                 continue;
             }
 
-            //Separate entries by space
+            //seperate entries by space
             if (schemaLocation.length() > 0) {
                 schemaLocation.append(" ");
             }
@@ -571,11 +567,10 @@ public class Parser {
             schemaLocation.append(dependency.getSchemaFileURL());
         }
 
-        //set the property to map namespaces to schema locations
+        //set hte property to map namespaces to schema locations
         parser.setProperty("http://apache.org/xml/properties/schema/external-schemaLocation",
             schemaLocation.toString());
-        //add the handler as a LexicalHandler too.
-        parser.setProperty(SAX_PROPERTY_PREFIX+LEXICAL_HANDLER_PROPERTY, handler);
+
         return parser;
     }
 

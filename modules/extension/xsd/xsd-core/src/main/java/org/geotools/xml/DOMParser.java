@@ -61,7 +61,7 @@ public class DOMParser {
     }
 
     /**
-     * Parses the supplied DOM returning a single object representing the
+     * Parses the supplied DOM returning a single object respresenting the
      * result of the parse.
      *
      * @return The object representation of the root element of the document.
@@ -79,8 +79,6 @@ public class DOMParser {
         try {
             // Prepare the result
             SAXResult result = new SAXResult(handler);
-            // add lexical handler to spot CDATA
-            result.setLexicalHandler(handler);
 
             TransformerFactory xformerFactory = TransformerFactory.newInstance();
 

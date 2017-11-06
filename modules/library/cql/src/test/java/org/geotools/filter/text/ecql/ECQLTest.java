@@ -16,12 +16,6 @@
  */
 package org.geotools.filter.text.ecql;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-
-import java.awt.Color;
-import java.util.List;
-
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.geotools.filter.FilterFactoryImpl;
@@ -54,6 +48,12 @@ import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.DistanceBufferOperator;
 import org.opengis.filter.spatial.Intersects;
 import org.opengis.filter.temporal.Before;
+
+import java.awt.*;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 /**
  * ECQL Test Case.
@@ -147,6 +147,12 @@ public final class ECQLTest  {
     @Test
     public void dwithinGeometry() throws Exception{
         assertFilter("DWITHIN(buffer(the_geom,5), POINT (1 2), 10.0, kilometers)",DistanceBufferOperator.class);
+    }
+
+    @Test
+    public void dwithinReferencedGeometry() throws Exception {
+        assertFilter("DWITHIN(buffer(the_geom,5), SRID=3857;POINT (1 2), 10.0, kilometers)", DistanceBufferOperator
+                .class);
     }
 
     /**
@@ -382,6 +388,19 @@ public final class ECQLTest  {
         
         String cqlResult = ECQL.toCQL(list);
         
+        Assert.assertEquals(expectedECQL, cqlResult );
+    }
+
+    @Test
+    public void filterListToECQLWithRefencedGeometries() throws Exception{
+
+        String expectedECQL = "INTERSECTS(the_geom, SRID=4326;POINT (1 2)); INTERSECTS(abcd, SRID=4962;POINT (0 0))";
+        List<Filter> list = ECQL.toFilterList(expectedECQL);
+
+        Assert.assertTrue(list.size() == 2);
+
+        String cqlResult = ECQL.toCQL(list);
+
         Assert.assertEquals(expectedECQL, cqlResult );
     }
     

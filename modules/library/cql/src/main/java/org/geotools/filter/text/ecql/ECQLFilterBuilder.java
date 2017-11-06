@@ -16,16 +16,21 @@
  */
 package org.geotools.filter.text.ecql;
 
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryCollection;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.MultiLineString;
+import com.vividsolutions.jts.geom.MultiPoint;
+import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
 import org.geotools.filter.text.commons.AbstractFilterBuilder;
+import org.geotools.filter.text.commons.BuildResultStack;
 import org.geotools.filter.text.commons.IToken;
 import org.geotools.filter.text.commons.Result;
 import org.geotools.filter.text.cql2.CQLException;
+import org.geotools.referencing.CRS;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.Id;
@@ -38,16 +43,14 @@ import org.opengis.filter.expression.Literal;
 import org.opengis.filter.identity.FeatureId;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.filter.spatial.BinarySpatialOperator;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Builds the filters required by the {@link ECQLCompiler}.
@@ -334,7 +337,28 @@ final class ECQLFilterBuilder extends AbstractFilterBuilder {
         return literal;
     }
 
+    public Literal buildReferencedGeometryLiteral() throws CQLException {
+        BuildResultStack resultStack = getResultStack();
+        Literal literal = resultStack.popLiteral();
+        int srid = resultStack.popIntegerValue();
+        try {
+            CoordinateReferenceSystem crs = CRS.decode("EPSG:" + srid);
+            Geometry geometry = (Geometry) literal.getValue();
+            geometry.setUserData(crs);
+        } catch (FactoryException e) {
+            throw new CQLException("Failed to build CRS for SRID: " + srid, null, e, getStatement());
+        }
+
+        return literal;
+    }
+
     public Literal buildGeometryLiteral() throws CQLException {
+        // skip the container node
+        Result result = getResultStack().popResult();
+        return (Literal) result.getBuilt();
+    }
+
+    public Literal buildSimpleGeometryLiteral() throws CQLException {
         return getResultStack().popLiteral();
     }
 

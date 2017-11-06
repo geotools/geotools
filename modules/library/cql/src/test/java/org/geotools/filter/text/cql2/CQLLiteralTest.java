@@ -17,9 +17,12 @@
 
 package org.geotools.filter.text.cql2;
 
+import com.vividsolutions.jts.geom.GeometryCollection;
 import org.geotools.filter.function.FilterFunction_relatePattern;
 import org.geotools.filter.text.commons.CompilerUtil;
 import org.geotools.filter.text.commons.Language;
+import org.geotools.referencing.CRS;
+import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -31,6 +34,10 @@ import org.opengis.filter.spatial.BinarySpatialOperator;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.WKTReader;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
 
 /**
  * Literal parser test
@@ -430,8 +437,23 @@ public class CQLLiteralTest {
         
         Assert.assertEquals(expectedDateTime, actualDateTime.toString());
     }
-    
-    
+
+
+    /**
+     * Asserts that the geometries are equals
+     *
+     * @param strGeomExpected
+     * @param actualGeometry
+     */
+    protected void assertEqualsReferencedGeometries(
+            final String strGeomExpected,
+            final Geometry actualGeometry,
+            final int expectedSrid) throws Exception {
+        CoordinateReferenceSystem expectedCRS = CRS.decode("EPSG:" + expectedSrid);
+        assertThat(actualGeometry.getUserData(), equalTo(expectedCRS));
+        assertEqualsGeometries(strGeomExpected, actualGeometry);
+    }
+
 
     /**
      * Asserts that the geometries are equals
@@ -446,8 +468,12 @@ public class CQLLiteralTest {
             WKTReader reader = new WKTReader();
             Geometry expectedGeometry;
             expectedGeometry = reader.read(strGeomExpected);
-            
-            Assert.assertTrue(expectedGeometry.equalsTopo(actualGeometry));
+
+            if (expectedGeometry instanceof GeometryCollection) {
+                Assert.assertTrue(expectedGeometry.equalsExact(actualGeometry));
+            } else {
+                Assert.assertTrue(expectedGeometry.equalsTopo(actualGeometry));
+            }
 
     }
     

@@ -185,11 +185,11 @@ public final class BuildResultStack {
     public int popIntegerValue() throws CQLException {
         try {
             Literal expr = this.popLiteral();
-            Integer number = (Integer) expr.getValue();
+            Number number = (Number) expr.getValue();
 
             return number.intValue();
         } catch (ClassCastException cce) {
-            throw new CQLException("Expected double");
+            throw new CQLException("Expected integer");
         }
     }
 

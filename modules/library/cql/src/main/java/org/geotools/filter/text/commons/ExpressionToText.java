@@ -16,19 +16,12 @@
  */
 package org.geotools.filter.text.commons;
 
-import java.awt.Color;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.TimeZone;
-import java.util.TreeSet;
-import java.util.regex.Pattern;
-
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.io.WKTWriter;
+import org.geotools.factory.Hints;
+import org.geotools.filter.text.ecql.ECQL;
+import org.geotools.referencing.CRS;
+import org.geotools.util.logging.Logging;
 import org.opengis.filter.expression.Add;
 import org.opengis.filter.expression.Divide;
 import org.opengis.filter.expression.Expression;
@@ -39,10 +32,24 @@ import org.opengis.filter.expression.Multiply;
 import org.opengis.filter.expression.NilExpression;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.expression.Subtract;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.temporal.Period;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.WKTWriter;
+import java.awt.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.TimeZone;
+import java.util.TreeSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 /**
  * This class is responsible to convert an expression to a CQL/ECQL valid expression.
@@ -58,8 +65,30 @@ import com.vividsolutions.jts.io.WKTWriter;
  * @source $URL$
  */
 public class ExpressionToText implements ExpressionVisitor {
-	
-    static private  StringBuilder asStringBuilder( Object extraData){
+
+    static final Logger LOGGER = Logging.getLogger(ExpressionToText.class);
+
+    boolean encodeEWKT;
+
+    /**
+     * Default constructor.  The behavior of EWKT encoding is controlled by the
+     * {@link Hints#ENCODE_EWKT} hint
+     */
+    public ExpressionToText() {
+        this(ECQL.isEwktEncodingEnabled());
+    }
+
+    /**
+     * Builds an {@link ExpressionToText}
+     *
+     * @param encodeEWKT When true, it will encode {@link Geometry} as EWKT when a
+     *                           {@link CoordinateReferenceSystem} object is found as the geometry user data
+     */
+    public ExpressionToText(boolean encodeEWKT) {
+        this.encodeEWKT = encodeEWKT;
+    }
+
+    static private  StringBuilder asStringBuilder(Object extraData){
         if( extraData instanceof StringBuilder){
             return (StringBuilder) extraData;
         }
@@ -168,6 +197,17 @@ public class ExpressionToText implements ExpressionVisitor {
         Object literal = expression.getValue();
         if (literal instanceof Geometry) {
             Geometry geometry = (Geometry) literal;
+            if (geometry.getUserData() instanceof CoordinateReferenceSystem && encodeEWKT) {
+                CoordinateReferenceSystem crs = (CoordinateReferenceSystem) geometry.getUserData();
+                try {
+                    Integer code = CRS.lookupEpsgCode(crs, false);
+                    if(code != null) {
+                        output.append("SRID=").append(code).append(";");
+                    }
+                } catch (FactoryException e) {
+                    LOGGER.log(Level.FINE, "Error while trying to get SRID for geometry, will not encode it", e);
+                }
+            }
             WKTWriter writer = new WKTWriter();
             String wkt = writer.write( geometry );
             output.append( wkt );

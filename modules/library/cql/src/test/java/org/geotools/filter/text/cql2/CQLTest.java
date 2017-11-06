@@ -18,6 +18,10 @@ package org.geotools.filter.text.cql2;
 
 import java.util.List;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterFactoryImpl;
 import org.geotools.filter.IsNullImpl;
 import org.geotools.filter.function.FilterFunction_relatePattern;
@@ -30,6 +34,7 @@ import org.geotools.filter.text.ecql.ECQLGeoOperationTest;
 import org.geotools.filter.text.ecql.ECQLLikePredicateTest;
 import org.geotools.filter.text.ecql.ECQLNullPredicateTest;
 import org.geotools.filter.text.ecql.ECQLTemporalPredicateTest;
+import org.geotools.referencing.CRS;
 import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.filter.And;
@@ -46,10 +51,15 @@ import org.opengis.filter.expression.Add;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
+import org.opengis.filter.spatial.Beyond;
+import org.opengis.filter.spatial.DWithin;
 import org.opengis.filter.spatial.Disjoint;
 import org.opengis.filter.spatial.DistanceBufferOperator;
+import org.opengis.filter.spatial.Intersects;
 import org.opengis.filter.temporal.Before;
+import org.opengis.referencing.FactoryException;
 
+import static org.junit.Assert.assertEquals;
 
 
 /**
@@ -325,5 +335,20 @@ public class CQLTest {
 
         CQL.toExpression("attName", ff);
         Assert.assertTrue("Provided FilterFactory was not called", called[0]);
+    }
+
+    @Test
+    public void testEWKTEncodingDisabled() throws Exception {
+        Literal literalGeometry = getWgs84PointLiteral();
+
+        // check EWKT is not used for CQL
+        String cql = CQL.toCQL(literalGeometry);
+        assertEquals("POINT (1 2)", cql);
+    }
+
+    private Literal getWgs84PointLiteral() throws FactoryException {
+        Point p = new GeometryFactory().createPoint(new Coordinate(1, 2));
+        p.setUserData(CRS.decode("EPSG:4326", true));
+        return CommonFactoryFinder.getFilterFactory2().literal(p);
     }
 }

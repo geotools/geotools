@@ -16,14 +16,7 @@
  */
 package org.geotools.filter.text.ecql;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.xml.transform.TransformerException;
-
+import org.geotools.factory.Hints;
 import org.geotools.filter.FilterTransformer;
 import org.geotools.filter.text.commons.CompilerUtil;
 import org.geotools.filter.text.commons.ExpressionToText;
@@ -31,6 +24,13 @@ import org.geotools.filter.text.cql2.CQLException;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
+
+import javax.xml.transform.TransformerException;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Iterator;
+import java.util.List;
 
 
 /**
@@ -204,7 +204,7 @@ public class ECQL {
      * @return ecql predicates separated by ";"
      */
     public static String toCQL( List<Filter> filterList ){
-        FilterToECQL toECQL = new FilterToECQL();
+        FilterToECQL toECQL = new FilterToECQL(isEwktEncodingEnabled());
         
         StringBuilder output = new StringBuilder();
         Iterator<Filter> iter = filterList.iterator();
@@ -225,12 +225,25 @@ public class ECQL {
      * @return ecql predicate
      */
     public static String toCQL( Filter filter ){
-        FilterToECQL toCQL = new FilterToECQL();
+        FilterToECQL toCQL = new FilterToECQL(isEwktEncodingEnabled());
         
         StringBuilder output = (StringBuilder) filter.accept( toCQL, new StringBuilder() );
         
         return output.toString();        
     }
+
+    /**
+     * Convenience method checking if EWKT encoding should be enabled in ECQL, or not
+     * @return
+     */
+    public static boolean isEwktEncodingEnabled() {
+        Object value = Hints.getSystemDefault(Hints.ENCODE_EWKT);
+        if (value == null) {
+            return true;
+        }
+        return Boolean.TRUE.equals(value);
+    }
+
     /**
      * Generates the expression text associated to the {@link Expression} object.
      * 
@@ -238,7 +251,7 @@ public class ECQL {
      * @return expression as text
      */
     public static String toCQL( Expression expression ){
-        ExpressionToText toECQL = new ExpressionToText();
+        ExpressionToText toECQL = new ExpressionToText(isEwktEncodingEnabled());
         
         StringBuilder output = (StringBuilder) expression.accept( toECQL, new StringBuilder() );
         

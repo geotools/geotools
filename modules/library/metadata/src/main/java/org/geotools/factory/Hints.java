@@ -1007,6 +1007,12 @@ public class Hints extends RenderingHints {
     public static final Key LOCAL_DATE_TIME_HANDLING = new Key(Boolean.class);
 
     /**
+     * A flag to enabled/disable EWKT geometry encoding in ECQL
+     */
+    public static final Key ENCODE_EWKT = new Key(Boolean.class);
+
+
+    /**
      * Constructs an initially empty set of hints.
      *
      * @since 2.5

@@ -42,11 +42,6 @@ import org.geotools.factory.Hints;
  */
 public class CommonsConverterFactory implements ConverterFactory {
 
-    static protected List<String> formats = Arrays.asList(
-        "yyyy-MM-dd HH:mm:ss.S a",
-        "yyyy-MM-dd HH:mm:ssa",
-        "yyyy-MM-dd'T'HH:mm:ss.SSSX");
-
     // some additional converters
     /**
      * converts a string to a uri.

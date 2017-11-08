@@ -41,7 +41,8 @@ import com.vividsolutions.jts.io.WKTWriter;
  * MySQL database dialect based on basic (non-prepared) statements.
  * 
  * @author Justin Deoliveira, OpenGEO
- *
+ * @author Nikolaos Pringouris <nprigour@gmail.com> added support
+ * 		   for MySQL versions 5.6 (and above)	
  *
  *
  *
@@ -238,8 +239,9 @@ public class MySQLDialectBasic extends BasicSQLDialect {
              * therefore we must override behavior and check for a geometry and not a polygon 
              */
             //TODO: srid
-			Geometry geometry = new WKBReader().read(wkb);
-			return geometry.getEnvelopeInternal();
+        	Geometry geom = (Geometry) new WKBReader().read(wkb);
+
+            return geom.getEnvelopeInternal();
         } catch (ParseException e) {
             String msg = "Error decoding wkb for envelope";
             throw (IOException) new IOException(msg).initCause(e);

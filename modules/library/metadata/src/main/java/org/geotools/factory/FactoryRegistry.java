@@ -173,11 +173,10 @@ public class FactoryRegistry {
         return registry.streamCategories();
     }
 
-    // TODO: document
-    @Deprecated
-    public <T> T getServiceProviderByClass(Class<T> providerClass) {
-        return getFactoryByClass(providerClass);
-    }
+//    @Deprecated
+//    public <T> T getServiceProviderByClass(Class<T> providerClass) {
+//        return getFactoryByClass(providerClass);
+//    }
     
     /**
      * Instance of category, or null if not available.
@@ -205,7 +204,6 @@ public class FactoryRegistry {
         return registry.streamInstances(category, useOrdering);
     }
 
-    // TODO: document; filter can be null
 //    @Deprecated
 //    public <T> Iterator<T> getServiceProviders(final Class<T> category, final Filter filter, final boolean useOrdering) {
 //        Predicate<T> factoryFilter = filter == null ? null : filter::filter;
@@ -242,13 +240,12 @@ public class FactoryRegistry {
      *
      * @since 2.3
      */
-//    @Deprecated // TODO: document
+//    @Deprecated 
 //    public synchronized <T> Iterator<T> getServiceProviders(final Class<T> category, final Filter filter, final Hints hints) {
 //        Predicate<? super T> predicate = filter == null ? null : filter::filter;
 //        return getFactories(category, predicate, hints).iterator();
 //    }
 
-    // TODO: document; filter and hints can be null
     /**
      * Returns the providers in the registry for the specified category, filter and hints.
      * Providers that are not {@linkplain OptionalFactory#isAvailable available} will be
@@ -315,8 +312,15 @@ public class FactoryRegistry {
         return getFactories(category, true);
     }
 
+//    @Deprecated 
+//    public <T> T getServiceProvider(final Class<T> category, final Filter filter, Hints hints, final Hints.Key key)
+//            throws FactoryRegistryException {
+//        Predicate<T> predicate = filter == null ? null : filter::filter;
+//        return getFactory(category, predicate, hints, key);
+//    }
+
     /**
-     * Returns the first provider in the registry for the specified category, using the specified
+     * Returns the first factory in the registry for the specified category, using the specified
      * map of hints (if any). This method may {@linkplain #scanForPlugins scan for plugins} the
      * first time it is invoked. Except as a result of this scan, no new provider instance is
      * created by the default implementation of this method. The {@link FactoryCreator} class
@@ -342,14 +346,6 @@ public class FactoryRegistry {
      * @see #getServiceProviders(Class, Filter, Hints)
      * @see FactoryCreator#getServiceProvider
      */
-//    @Deprecated // TODO: document
-//    public <T> T getServiceProvider(final Class<T> category, final Filter filter, Hints hints, final Hints.Key key)
-//            throws FactoryRegistryException {
-//        Predicate<T> predicate = filter == null ? null : filter::filter;
-//        return getFactory(category, predicate, hints, key);
-//    }
-
-    // TODO document; filter, hints, key can be null
     public <T> T getFactory(final Class<T> category, final Predicate<? super T> filter, Hints hints, final Hints.Key key)
             throws FactoryRegistryException
     {
@@ -876,40 +872,69 @@ public class FactoryRegistry {
         }
     }
 
-    // TODO: document
-    @Deprecated
-    public void registerServiceProviders(final Iterator<?> providers) {
-        registerFactories(providers);
-    }
+//    @Deprecated
+//    public void registerServiceProviders(final Iterator<?> providers) {
+//        registerFactories(providers);
+//    }
 
-    // TODO: document
+    /**
+     * Manually register factories.
+     * <p>
+     * Used to facilitate integration with other plug-in systems, such as OSGi, that
+     * block classpath visibility of service provider interface registration.
+     * 
+     * @param factories
+     */
     public void registerFactories(final Iterator<?> factories) {
         ensureArgumentNonNull("factories", factories);
         factories.forEachRemaining(this::registerFactory);
     }
 
-    // TODO: document
+    /**
+     * Manually register factories.
+     * <p>
+     * Used to facilitate integration with other plug-in systems, such as OSGi, that
+     * block classpath visibility of service provider interface registration.
+     * 
+     * @param factories
+     */
     public void registerFactories(final Iterable<?> factories) {
         ensureArgumentNonNull("factories", factories);
         factories.forEach(this::registerFactory);
     }
 
-    // TODO: document
-    @Deprecated
-    public void registerServiceProvider(final Object provider) {
-        registerFactory(provider);
-    }
+//    @Deprecated
+//    public void registerServiceProvider(final Object provider) {
+//        registerFactory(provider);
+//    }
 
+    /**
+     * Manually register a factory.
+     * <p>
+     * Used to facilitate integration with other plug-in systems, such as OSGi, that block classpath
+     * visibility of service provider interface registration.
+     * 
+     * @param factory
+     */
     public void registerFactory(final Object factory) {
         registry.registerInstance(factory);
     }
 
-    // TODO: document
-    @Deprecated
-    public <T> boolean registerServiceProvider(final T provider, final Class<T> category) {
-        return registerFactory(provider, category);
-    }
 
+//    @Deprecated
+//    public <T> boolean registerServiceProvider(final T provider, final Class<T> category) {
+//        return registerFactory(provider, category);
+//    }
+    /**
+     * Manually register a factory.
+     * <p>
+     * Used to facilitate integration with other plug-in systems, such as OSGi, that
+     * block classpath visibility of service provider interface registration.
+     * 
+     * @param factory
+     * @param category
+     * @return
+     */
     public <T> boolean registerFactory(final T factory, final Class<T> category) {
         if (!category.isAssignableFrom(factory.getClass())) {
             throw new ClassCastException();
@@ -1163,41 +1188,71 @@ public class FactoryRegistry {
     }
 
     // TODO: document
-    @Deprecated
-    public void deregisterServiceProviders(final Iterator<?> providers) {
-        deregisterFactories(providers);
-    }
+//    @Deprecated
+//    public void deregisterServiceProviders(final Iterator<?> providers) {
+//        deregisterFactories(providers);
+//    }
 
-    // TODO: document
+    /**
+     * Manually deregister factories.
+     * <p>
+     * Used to facilitate integration with other plug-in systems, such as OSGi, that
+     * block classpath visibility of service provider interface registration.
+     * 
+     * @param factories
+     */
     public void deregisterFactories(final Iterator<?> factories) {
         ensureArgumentNonNull("factories", factories);
         factories.forEachRemaining(this::deregisterFactory);
     }
 
-    // TODO: document
+    /**
+     * Manually deregister factories.
+     * <p>
+     * Used to facilitate integration with other plug-in systems, such as OSGi, that
+     * block classpath visibility of service provider interface registration.
+     * 
+     * @param factories
+     */
     public void deregisterFactories(final Iterable<?> factories) {
         ensureArgumentNonNull("factories", factories);
         factories.forEach(this::deregisterFactory);
     }
 
     // TODO: document
-    @Deprecated
-    public void deregisterServiceProvider(final Object provider) {
-        deregisterFactory(provider);
-    }
+//    @Deprecated
+//    public void deregisterServiceProvider(final Object provider) {
+//        deregisterFactory(provider);
+//    }
 
-    // TODO: document
+    /**
+     * Manually deregister a factory
+     * <p>
+     * Used to facilitate integration with other plug-in systems, such as OSGi, that
+     * block classpath visibility of service provider interface registration.
+     *  
+     * @param factory
+     */
     public void deregisterFactory(final Object factory) {
         registry.deregisterInstance(factory);
     }
 
     // TODO: document
-    @Deprecated
-    public <T> void deregisterServiceProvider(final T provider, final Class<T> category) {
-        deregisterFactory(provider);
-    }
+//    @Deprecated
+//    public <T> void deregisterServiceProvider(final T provider, final Class<T> category) {
+//        deregisterFactory(provider);
+//    }
 
-    // TODO: document
+    /**
+     * Manually deregister a factory
+     * <p>
+     * Used to facilitate integration with other plug-in systems, such as OSGi, that
+     * block classpath visibility of service provider interface registration.
+     * 
+     * @param factory
+     * @param category
+     * @return
+     */
     public <T> boolean deregisterFactory(final T factory, final Class<T> category) {
         ensureArgumentNonNull("factory", factory);
         ensureArgumentNonNull("category", category);
@@ -1207,7 +1262,15 @@ public class FactoryRegistry {
         return registry.deregisterInstance(factory, category);
     }
 
-    // TODO: document
+    /**
+     * Define pairwise ordering giving priority to the <code>firstFactory</code> over the
+     * <code>secondFactory</code>.
+     * 
+     * @param category
+     * @param firstFactory
+     * @param secondFactory
+     * @return if this call establishes a new order
+     */
     public <T> boolean setOrdering(final Class<T> category, final T firstFactory, final T secondFactory) {
         if (firstFactory == secondFactory) {
             throw new IllegalArgumentException("Providers must not be the same instance.");

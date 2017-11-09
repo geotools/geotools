@@ -17,12 +17,14 @@
 package org.geotools.factory;
 
 import org.geotools.util.PartiallyOrderedSet;
+import org.geotools.util.logging.Logging;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.collectingAndThen;
@@ -230,7 +232,19 @@ class CategoryRegistry {
      * @param <T> category
      */
     private static class InstanceRegistry<T> {
-
+        /**
+         * The logger for all events related to factory registry.
+         */
+        protected static final Logger LOGGER = Logging.getLogger("org.geotools.factory");
+        
+        private static Class<?> REGISTERABLE_SERVICE = null;
+        static {
+            try {
+                REGISTERABLE_SERVICE = Class.forName("javax.imageio.spi.RegisterableService");
+            }
+            catch (ClassNotFoundException ignore) {
+            }
+        }
         private final FactoryRegistry factoryRegistry;
 
         private final Class<?> category;
@@ -256,6 +270,9 @@ class CategoryRegistry {
         private void notifyRegistered(final T instance) {
             if (instance instanceof RegistrableFactory) {
                 ((RegistrableFactory) instance).onRegistration(factoryRegistry, category);
+            }
+            if( REGISTERABLE_SERVICE !=  null && REGISTERABLE_SERVICE.isInstance(instance)) {
+                LOGGER.warning("Migrate instances from RegisterableService to RegistrableFactory: "+instance);
             }
         }
 

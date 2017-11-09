@@ -82,7 +82,7 @@ public class ProjectionHandlerFinder {
     private static LazySet<ProjectionHandlerFactory> getProjectionHandlerFactories() {
         Hints hints = GeoTools.getDefaultHints();
         return new LazySet<ProjectionHandlerFactory>(
-                registry.getServiceProviders(ProjectionHandlerFactory.class, null, hints));
+                registry.getFactories(ProjectionHandlerFactory.class, null, hints));
     }
 
     /**

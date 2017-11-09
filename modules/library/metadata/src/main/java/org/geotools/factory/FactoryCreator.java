@@ -22,7 +22,7 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.InvocationTargetException;
 import java.util.function.Predicate;
-import javax.imageio.spi.ServiceRegistry.Filter;
+//import javax.imageio.spi.ServiceRegistry.Filter;
 
 import org.geotools.util.logging.Logging;
 import org.geotools.resources.i18n.Errors;
@@ -49,7 +49,7 @@ public class FactoryCreator extends FactoryRegistry {
     /**
      * The array of classes for searching the one-argument constructor.
      */
-    private static final Class[] HINTS_ARGUMENT = new Class[] {Hints.class};
+    private static final Class<?>[] HINTS_ARGUMENT = new Class[] {Hints.class};
 
     /**
      * List of factories already created. Used as a cache.
@@ -103,7 +103,7 @@ public class FactoryCreator extends FactoryRegistry {
             c = new LinkedList<Reference<?>>();
             cache.put(category, c);
         }
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings({ "unchecked", "rawtypes" })
         final List<Reference<T>> cheat = (List) c;
         /*
          * Should be safe because we created an empty list, there is no other place where this
@@ -135,19 +135,34 @@ public class FactoryCreator extends FactoryRegistry {
      *         provide suffisient information for creating a new factory.
      * @throws FactoryRegistryException if the factory can't be created for some other reason.
      */
-    @Override
-    @Deprecated // TODO document
-    public <T> T getServiceProvider(final Class<T>  category,
-                                    final Filter    filter,
-                                    final Hints     hints,
-                                    final Hints.Key key)
-            throws FactoryRegistryException
-    {
-        Predicate<T> predicate = filter == null ? null : filter::filter;
-        return getFactory(category, predicate, hints, key);
-    }
+//    @Override
+//    @Deprecated // TODO document
+//    public <T> T getServiceProvider(final Class<T>  category,
+//                                    final Filter    filter,
+//                                    final Hints     hints,
+//                                    final Hints.Key key)
+//            throws FactoryRegistryException
+//    {
+//        Predicate<T> predicate = filter == null ? null : filter::filter;
+//        return getFactory(category, predicate, hints, key);
+//    }
 
-    // TODO document
+    /**
+     * Factory for the specified category, using the specified map of hints (if any).
+     * If a provider matching the requirements is found in the registry, it is returned. Otherwise,
+     * a new provider is created and returned. This creation step is the only difference between
+     * this method and the {@linkplain FactoryRegistry#getServiceProvider super-class method}.
+     *
+     * @param  category The category to look for.
+     * @param  filter   Optional predicate, or {@code null} if none.
+     * @param  hints    A {@linkplain Hints map of hints}, or {@code null} if none.
+     * @param  key      The key to use for looking for a user-provided instance in the hints, or
+     *                  {@code null} if none.
+     * @return A factory for the specified category and hints (never {@code null}).
+     * @throws FactoryNotFoundException if no factory was found, and the specified hints don't
+     *         provide suffisient information for creating a new factory.
+     * @throws FactoryRegistryException if the factory can't be created for some other reason.
+     */
     public <T> T getFactory(final Class<T>     category,
                             final Predicate<? super T> filter,
                             final Hints        hints,

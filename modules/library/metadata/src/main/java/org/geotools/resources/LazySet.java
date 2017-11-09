@@ -18,6 +18,7 @@ package org.geotools.resources;
 
 import java.util.AbstractSet;
 import java.util.Iterator;
+import java.util.stream.Stream;
 
 
 /**
@@ -57,6 +58,15 @@ public final class LazySet<E> extends AbstractSet<E> {
     @SuppressWarnings("unchecked")
     public LazySet(final Iterator<? extends E> iterator) {
         this.iterator = iterator;
+        elements = (E[]) new Object[4];
+    }
+    /**
+     * Construct a set to be filled using the specified iterator.
+     * Iteration in the given iterator will occurs only when needed.
+     */
+    @SuppressWarnings("unchecked")
+    public LazySet(Stream<? extends E> stream) {
+        this.iterator = (Iterator<? extends E>) stream.iterator();
         elements = (E[]) new Object[4];
     }
 

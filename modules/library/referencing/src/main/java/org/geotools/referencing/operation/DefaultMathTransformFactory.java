@@ -22,11 +22,11 @@ package org.geotools.referencing.operation;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.TreeSet;
-import javax.imageio.spi.ServiceRegistry;
+import java.util.function.Predicate;
+
 import javax.measure.unit.Unit;
 import javax.measure.quantity.Length;
 import javax.measure.converter.ConversionException;
@@ -192,14 +192,14 @@ public class DefaultMathTransformFactory extends ReferencingFactory implements M
      * @see #createParameterizedTransform
      */
     public Set<OperationMethod> getAvailableMethods(final Class<? extends Operation> type) {
-        return new LazySet<OperationMethod>(registry.getServiceProviders(MathTransformProvider.class,
+        return new LazySet<OperationMethod>(registry.getFactories(MathTransformProvider.class,
                 (type!=null) ? new MethodFilter(type) : null, HINTS));
     }
 
     /**
      * A filter for the set of available operations.
      */
-    private static final class MethodFilter implements ServiceRegistry.Filter {
+    private static final class MethodFilter implements Predicate<MathTransformProvider> {
         /**
          * The expected type ({@code Projection.class}) for projections).
          */
@@ -216,7 +216,8 @@ public class DefaultMathTransformFactory extends ReferencingFactory implements M
          * Returns {@code true} if the specified element should be included. If the type is
          * unknown, conservatively returns {@code true}.
          */
-        public boolean filter(final Object element) {
+        @Override
+        public boolean test(MathTransformProvider element) {
             if (element instanceof MathTransformProvider) {
                 final Class<? extends Operation> t = ((MathTransformProvider) element).getOperationType();
                 if (t!=null && !type.isAssignableFrom(t)) {

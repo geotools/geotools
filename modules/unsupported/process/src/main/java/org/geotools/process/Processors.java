@@ -16,12 +16,12 @@
  */
 package org.geotools.process;
 
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
+import java.util.stream.Stream;
 
 import org.geotools.data.Parameter;
 import org.geotools.factory.FactoryCreator;
@@ -97,8 +97,8 @@ public class Processors extends FactoryFinder {
      * @return Set of ProcessFactory
      */
     public static Set<ProcessFactory> getProcessFactories() {
-        Iterator<ProcessFactory> serviceProviders = getServiceRegistry().getServiceProviders(
-                        ProcessFactory.class, null, null);
+        Stream<ProcessFactory> serviceProviders = getServiceRegistry()
+                .getFactories(ProcessFactory.class, null, null);
         return new LazySet<ProcessFactory>(serviceProviders);
     }
 

@@ -24,8 +24,6 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.function.Predicate;
 
-import javax.imageio.spi.ServiceRegistry;
-
 import org.geotools.factory.FactoryCreator;
 import org.geotools.factory.FactoryFinder;
 import org.geotools.factory.FactoryRegistry;
@@ -178,7 +176,7 @@ loop:       for (int i=0; ; i++) {
             Set<T> getFactories(final Class<T> category, Hints hints)
     {
         hints = mergeSystemHints(hints);
-        return new LazySet<T>(getServiceRegistry().getServiceProviders(category, null, hints));
+        return new LazySet<T>(getServiceRegistry().getFactories(category, null, hints));
     }
 
     /**

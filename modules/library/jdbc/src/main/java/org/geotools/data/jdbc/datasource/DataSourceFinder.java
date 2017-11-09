@@ -26,6 +26,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.sql.DataSource;
 
@@ -178,37 +180,32 @@ public final class DataSourceFinder {
     }
 
     /**
-     * Finds all implemtaions of DataStoreFactory which have registered using the services
+     * Finds all implementations of DataStoreFactory which have registered using the services
      * mechanism, and that have the appropriate libraries on the classpath.
      * 
-     * @return An iterator over all discovered datastores which have registered factories, and whose
+     * @return An iterator over all discovered DataStores which have registered factories, and whose
      *         available method returns true.
      */
-    public static synchronized Iterator getAvailableDataSources() {
-        Set availableDS = new HashSet();
-        Iterator it = getServiceRegistry().getServiceProviders(DataSourceFactorySpi.class, null, null);
-        DataSourceFactorySpi dsFactory;
-        while (it.hasNext()) {
-            dsFactory = (DataSourceFactorySpi) it.next();
-
-            if (dsFactory.isAvailable()) {
-                availableDS.add(dsFactory);
-            }
-        }
-
+    public static synchronized Iterator<DataSourceFactorySpi> getAvailableDataSources() {
+        Stream<DataSourceFactorySpi> factories = getServiceRegistry()
+                .getFactories(DataSourceFactorySpi.class, null, null);
+        
+        // results are collected into HashSet (even though iterator is returned)
+        // to find broken implementations early rather than later caller code
+        Set<DataSourceFactorySpi> availableDS = factories
+                .filter(dsFactory -> dsFactory.isAvailable())
+                .collect(Collectors.toCollection(HashSet::new));
         return availableDS.iterator();
     }
 
     /**
-     * Finds all implemtaions of DataStoreFactory which have registered using the services
+     * Finds all implementations of UnWrapper which have registered using the services
      * mechanism, and that have the appropriate libraries on the classpath.
      * 
-     * @return An iterator over all discovered datastores which have registered factories, and whose
-     *         available method returns true.
+     * @return An iterator over all discovered UnWrapper which have registered factories
      */
-    public static synchronized Iterator getUnWrappers() {
-        Set availableDS = new HashSet();
-        return getServiceRegistry().getServiceProviders(UnWrapper.class, null, null);
+    public static synchronized Iterator<UnWrapper> getUnWrappers() {
+        return getServiceRegistry().getFactories(UnWrapper.class, null, null).iterator();
     }
 
     /**

@@ -280,7 +280,7 @@ public class AbstractFactory implements Factory, RegistrableFactory {
      * through all services under the same category that extends the {@code AbstractFactory}
      * class, and set the ordering according the priority given at construction time.
      *
-     * @param registry A service registry where this factory has been registered.
+     * @param registry A factory registry where this factory has been registered.
      * @param category The registry category under which this object has been registered.
      *
      * @see #MINIMUM_PRIORITY

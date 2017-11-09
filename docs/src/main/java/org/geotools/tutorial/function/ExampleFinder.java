@@ -1,12 +1,11 @@
 package org.geotools.tutorial.function;
 
-import java.util.Iterator;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import org.geotools.factory.FactoryCreator;
 import org.geotools.factory.FactoryFinder;
 import org.geotools.factory.FactoryRegistry;
-import org.geotools.factory.GeoTools;
 import org.geotools.factory.Hints;
 import org.geotools.filter.FunctionFactory;
 import org.geotools.resources.LazySet;
@@ -33,8 +32,8 @@ public class ExampleFinder extends FactoryFinder {
      */
     public static synchronized Set<FunctionFactory> getFilterFactories(Hints hints) {
         hints = mergeSystemHints(hints);
-        Iterator<FunctionFactory> serviceProviders = getServiceRegistry().getServiceProviders(
-                FunctionFactory.class, null, hints);
+        Stream<FunctionFactory> serviceProviders = getServiceRegistry()
+                .getFactories(FunctionFactory.class, null, hints);
         return new LazySet<>(serviceProviders);
     }
         

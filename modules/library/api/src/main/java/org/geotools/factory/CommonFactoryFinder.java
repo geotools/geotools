@@ -131,8 +131,8 @@ public final class CommonFactoryFinder extends FactoryFinder {
      */
     public static synchronized Set<StyleFactory> getStyleFactories(Hints hints) {
         hints = mergeSystemHints(hints);
-        return new LazySet<StyleFactory>(getServiceRegistry().getServiceProviders(
-                StyleFactory.class, null, hints));
+        return new LazySet<StyleFactory>(
+                getServiceRegistry().getFactories(StyleFactory.class, null, hints));
     }
 
     /**
@@ -143,8 +143,8 @@ public final class CommonFactoryFinder extends FactoryFinder {
      */
     public static synchronized Set<Function> getFunctions(Hints hints) {
         hints = mergeSystemHints(hints);
-        return new LazySet<Function>(getServiceRegistry().getServiceProviders(
-                Function.class, null, hints));
+        return new LazySet<Function>(
+                getServiceRegistry().getFactories(Function.class, null, hints));
     }
 
     /**
@@ -156,8 +156,8 @@ public final class CommonFactoryFinder extends FactoryFinder {
      */
     public static synchronized Set<FunctionFactory> getFunctionFactories(Hints hints) {
         hints = mergeSystemHints(hints);
-        return new LazySet<FunctionFactory>(getServiceRegistry().getServiceProviders(
-                FunctionFactory.class, null, hints));
+        return new LazySet<FunctionFactory>(
+                getServiceRegistry().getFactories(FunctionFactory.class, null, hints));
     }
     
     /**
@@ -187,8 +187,8 @@ public final class CommonFactoryFinder extends FactoryFinder {
      */
     public static synchronized Set<FeatureLockFactory> getFeatureLockFactories(Hints hints) {
         hints = mergeSystemHints(hints);
-        return new LazySet<FeatureLockFactory>(getServiceRegistry().getServiceProviders(
-                FeatureLockFactory.class, null, hints));
+        return new LazySet<FeatureLockFactory>(
+                getServiceRegistry().getFactories(FeatureLockFactory.class, null, hints));
     }
 
     /**
@@ -199,8 +199,8 @@ public final class CommonFactoryFinder extends FactoryFinder {
      */
     public static synchronized Set<FileDataStoreFactorySpi> getFileDataStoreFactories(Hints hints) {
         hints = mergeSystemHints(hints);
-        return new LazySet<FileDataStoreFactorySpi>(getServiceRegistry().getServiceProviders(
-                FileDataStoreFactorySpi.class, null, hints));
+        return new LazySet<FileDataStoreFactorySpi>(
+                getServiceRegistry().getFactories(FileDataStoreFactorySpi.class, null, hints));
     }
     
     /** Return the first implementation of {@link FeatureFactory} matching the specified hints.
@@ -277,9 +277,9 @@ public final class CommonFactoryFinder extends FactoryFinder {
      */
     public static synchronized Set<FeatureCollections> getFeatureCollectionsSet(Hints hints) {
         hints = mergeSystemHints(hints);
-        return new LazySet<FeatureCollections>(getServiceRegistry().getServiceProviders(
-                FeatureCollections.class, null, hints));
-    }    
+        return new LazySet<FeatureCollections>(
+                getServiceRegistry().getFactories(FeatureCollections.class, null, hints));
+    }
 
     /**
      * Returns the first implementation of {@link FilterFactory} matching the specified hints.
@@ -355,8 +355,8 @@ public final class CommonFactoryFinder extends FactoryFinder {
      */
     public static synchronized Set<FilterFactory> getFilterFactories(Hints hints) {
         hints = mergeSystemHints(hints);
-        return new LazySet<FilterFactory>(getServiceRegistry().getServiceProviders(
-                FilterFactory.class, null, hints));
+        return new LazySet<FilterFactory>(
+                getServiceRegistry().getFactories(FilterFactory.class, null, hints));
     }
 
     /**

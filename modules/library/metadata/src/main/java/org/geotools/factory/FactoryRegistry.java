@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 import java.lang.ref.Reference;
 import java.awt.RenderingHints;
 import java.util.stream.Stream;
-import javax.imageio.spi.ServiceRegistry.Filter;
+// import javax.imageio.spi.ServiceRegistry.Filter;
 
 import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
@@ -178,35 +178,53 @@ public class FactoryRegistry {
     public <T> T getServiceProviderByClass(Class<T> providerClass) {
         return getFactoryByClass(providerClass);
     }
-
+    
+    /**
+     * Instance of category, or null if not available.
+     * @param category The category to look for. Usually an interface class
+     *                 (not the actual implementation class).
+     * @return instance, or null of not available
+     */
     public <T> T getFactoryByClass(Class<T> category) {
         return registry.getInstanceOfType(category).orElse(null);
     }
 
-    // TODO: document
-    @Deprecated
-    public <T> Iterator<T> getServiceProviders(final Class<T> category, final boolean useOrdering) {
-        return getFactories(category, useOrdering).iterator();
-    }
+//    @Deprecated
+//    public <T> Iterator<T> getServiceProviders(final Class<T> category, final boolean useOrdering) {
+//        return getFactories(category, useOrdering).iterator();
+//    }
 
-    // TODO: document
+    /**
+     * Factories for the provided category type.
+     * @param category The category to look for. Usually an interface class
+     *                 (not the actual implementation class).
+     * @param useOrdering true to use provided pairwise orderings
+     * @return factories registered for category
+     */
     public <T> Stream<T> getFactories(final Class<T> category, final boolean useOrdering) {
         return registry.streamInstances(category, useOrdering);
     }
 
     // TODO: document; filter can be null
-    @Deprecated
-    public <T> Iterator<T> getServiceProviders(final Class<T> category, final Filter filter, final boolean useOrdering) {
-        Predicate<T> factoryFilter = filter == null ? null : filter::filter;
-        return getFactories(category, factoryFilter, useOrdering).iterator();
-    }
+//    @Deprecated
+//    public <T> Iterator<T> getServiceProviders(final Class<T> category, final Filter filter, final boolean useOrdering) {
+//        Predicate<T> factoryFilter = filter == null ? null : filter::filter;
+//        return getFactories(category, factoryFilter, useOrdering).iterator();
+//    }
 
-    // TODO: document; filter can be null
-    public <T> Stream<T> getFactories(final Class<T> category, final Predicate<? super T> factoryFilter, final boolean useOrdering) {
-		Stream<T> factories = getFactories(category, useOrdering);
-		return factoryFilter == null
-				? factories
-				: factories.filter(factoryFilter);
+    /**
+     * Factories for the provided category type.
+     * 
+     * @param category The category to look for. Usually an interface class
+     *                 (not the actual implementation class).
+     * @param factoryFilter Predicate to filter factories, null for all factories
+     * @param useOrdering true to use provided pairwise orderings
+     * @return factories registered for category
+     */
+    public <T> Stream<T> getFactories(final Class<T> category,
+            final Predicate<? super T> factoryFilter, final boolean useOrdering) {
+        Stream<T> factories = getFactories(category, useOrdering);
+        return factoryFilter == null ? factories : factories.filter(factoryFilter);
     }
 
     /**
@@ -224,13 +242,28 @@ public class FactoryRegistry {
      *
      * @since 2.3
      */
-    @Deprecated // TODO: document
-    public synchronized <T> Iterator<T> getServiceProviders(final Class<T> category, final Filter filter, final Hints hints) {
-        Predicate<? super T> predicate = filter == null ? null : filter::filter;
-        return getFactories(category, predicate, hints).iterator();
-    }
+//    @Deprecated // TODO: document
+//    public synchronized <T> Iterator<T> getServiceProviders(final Class<T> category, final Filter filter, final Hints hints) {
+//        Predicate<? super T> predicate = filter == null ? null : filter::filter;
+//        return getFactories(category, predicate, hints).iterator();
+//    }
 
     // TODO: document; filter and hints can be null
+    /**
+     * Returns the providers in the registry for the specified category, filter and hints.
+     * Providers that are not {@linkplain OptionalFactory#isAvailable available} will be
+     * ignored. This method will {@linkplain #scanForPlugins() scan for plugins} the first
+     * time it is invoked for the given category.
+     *
+     * @param <T>      The class represented by the {@code category} argument.
+     * @param category The category to look for. Usually an interface class
+     *                 (not the actual implementation class).
+     * @param filter   The optional filter predicate, or {@code null}.
+     * @param hints    The optional user requirements, or {@code null}.
+     * @return Factories ready to use for the specified category, filter and hints.
+     *
+     * @since 2.3
+     */
     public synchronized <T> Stream<T> getFactories(final Class<T> category, final Predicate<? super T> filter, final Hints hints) {
         /*
          * The implementation of this method is very similar to the 'getUnfilteredFactories'
@@ -309,12 +342,12 @@ public class FactoryRegistry {
      * @see #getServiceProviders(Class, Filter, Hints)
      * @see FactoryCreator#getServiceProvider
      */
-    @Deprecated // TODO: document
-    public <T> T getServiceProvider(final Class<T> category, final Filter filter, Hints hints, final Hints.Key key)
-            throws FactoryRegistryException {
-        Predicate<T> predicate = filter == null ? null : filter::filter;
-        return getFactory(category, predicate, hints, key);
-    }
+//    @Deprecated // TODO: document
+//    public <T> T getServiceProvider(final Class<T> category, final Filter filter, Hints hints, final Hints.Key key)
+//            throws FactoryRegistryException {
+//        Predicate<T> predicate = filter == null ? null : filter::filter;
+//        return getFactory(category, predicate, hints, key);
+//    }
 
     // TODO document; filter, hints, key can be null
     public <T> T getFactory(final Class<T> category, final Predicate<? super T> filter, Hints hints, final Hints.Key key)
@@ -438,7 +471,7 @@ public class FactoryRegistry {
      * @param type     Optional class to format after the message, or {@code null}.
      */
     private static void debug(final String status, final Class<?> category,
-                              final Hints.Key key, final String message, final Class type)
+                              final Hints.Key key, final String message, final Class<?> type)
     {
         final StringBuilder buffer = new StringBuilder(status);
         buffer.append(Utilities.spaces(Math.max(1, 7-status.length())))
@@ -1243,15 +1276,30 @@ public class FactoryRegistry {
      * @param filter2 Filter for the factory to which {@code filter1} is preferred.
      * @return {@code true} if the ordering changed as a result of this call.
      */
-    @Deprecated // TODO document
-    public <T> boolean setOrdering(final Class<T> base, final boolean set,
-                                   final Filter filter1, final Filter filter2) {
-        ensureArgumentNonNull("filter1", filter1);
-        ensureArgumentNonNull("filter2", filter2);
-        return setOrdering(base, set, (Predicate<T>) filter1::filter, filter2::filter);
-    }
+//    @Deprecated // TODO document
+//    public <T> boolean setOrdering(final Class<T> base, final boolean set,
+//                                   final Filter filter1, final Filter filter2) {
+//        ensureArgumentNonNull("filter1", filter1);
+//        ensureArgumentNonNull("filter2", filter2);
+//        return setOrdering(base, set, (Predicate<T>) filter1::filter, filter2::filter);
+//    }
 
-    // TODO: document
+    /**
+     * Sets or unsets a pairwise ordering between all factories meeting a criterion.
+     * 
+     * For example in the CRS framework ({@link org.geotools.referencing.FactoryFinder}), this is
+     * used for setting ordering between all factories provided by two vendors, or for two
+     * authorities. If one or both factories are not currently registered, or if the desired
+     * ordering is already set/unset, nothing happens and false is returned.
+     *
+     * @param <T> The class represented by the {@code base} argument.
+     * @param base The base category. Only categories {@linkplain Class#isAssignableFrom assignable}
+     *        to {@code base} will be processed.
+     * @param set {@code true} for setting the ordering, or {@code false} for unsetting.
+     * @param filter1 Predicate for the preferred factory.
+     * @param filter2 Predicate for the factory to which {@code filter1} is preferred.
+     * @return {@code true} if the ordering changed as a result of this call.
+     */
     public <T> boolean setOrdering(final Class<T> base, final boolean set,
                                    final Predicate<? super T> filter1, final Predicate<? super T> filter2)
     {

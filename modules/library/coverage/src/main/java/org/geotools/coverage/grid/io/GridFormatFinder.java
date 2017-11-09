@@ -73,23 +73,20 @@ public final class GridFormatFinder {
 		// singleton
 	}
 
-	/**
-	 * Finds all avalaible implementations of {@link GridFormatFactorySpi} which
-	 * have registered using the services mechanism, and that have the
-	 * appropriate libraries on the classpath.
-	 *
-	 * @return An unmodifiable {@link Set} of all discovered datastores which
-	 *         have registered factories, and whose available method returns
-	 *         true.
-	 */
-	public static synchronized Set<GridFormatFactorySpi> getAvailableFormats() {
-		// get all GridFormatFactorySpi implementations
-		scanForPlugins();
-		return getServiceRegistry()
-				.getFactories(GridFormatFactorySpi.class, true)
-				.filter(GridFormatFactorySpi::isAvailable)
-				.collect(toUnmodifiableSet());
-	}
+    /**
+     * Finds all avalaible implementations of {@link GridFormatFactorySpi} which have registered
+     * using the services mechanism, and that have the appropriate libraries on the classpath.
+     *
+     * @return An unmodifiable {@link Set} of all discovered datastores which have registered
+     *         factories, and whose available method returns true.
+     */
+    public static synchronized Set<GridFormatFactorySpi> getAvailableFormats() {
+        // get all GridFormatFactorySpi implementations
+        scanForPlugins();
+        return getServiceRegistry().getFactories(GridFormatFactorySpi.class, true)
+                .filter(GridFormatFactorySpi::isAvailable)
+                .collect(toUnmodifiableSet());
+    }
 
 	/**
 	 * Returns the service registry. The registry will be created the first time

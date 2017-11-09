@@ -104,8 +104,8 @@ public final class CoverageFactoryFinder extends FactoryFinder {
      */
     public static synchronized Set<GridCoverageFactory> getGridCoverageFactories(Hints hints) {
         hints = mergeSystemHints(hints);
-        return new LazySet<GridCoverageFactory>(getServiceRegistry().getServiceProviders(
-                GridCoverageFactory.class, null, hints));
+        return new LazySet<GridCoverageFactory>(
+                getServiceRegistry().getFactories(GridCoverageFactory.class, null, hints));
     }
 
     /**

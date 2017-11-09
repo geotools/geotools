@@ -627,23 +627,23 @@ public class CoverageProcessor {
 		return doOperation(parameters, null);
 	}
 
-	/**
-	 * Scans for factory plug-ins on the application class path. This method is needed because the
-	 * application class path can theoretically change, or additional plug-ins may become available.
-	 * Rather than re-scanning the classpath on every invocation of the API, the class path is
-	 * scanned automatically only on the first invocation. Clients can call this method to prompt
-	 * a re-scan. Thus this method need only be invoked by sophisticated applications which
-	 * dynamically make new plug-ins available at runtime.
-	 */
-	public void scanForPlugins() {
-		synchronized (operations) {
-			registry.getFactories(Operation.class, null, null)
-					.filter(operation -> !operations.containsKey(operation.getName().trim()))
-					.forEach(this::addOperation0);
-		}
-	}
+    /**
+     * Scans for factory plug-ins on the application class path. This method is needed because the
+     * application class path can theoretically change, or additional plug-ins may become available.
+     * Rather than re-scanning the classpath on every invocation of the API, the class path is
+     * scanned automatically only on the first invocation. Clients can call this method to prompt a
+     * re-scan. Thus this method need only be invoked by sophisticated applications which
+     * dynamically make new plug-ins available at runtime.
+     */
+    public void scanForPlugins() {
+        synchronized (operations) {
+            registry.getFactories(Operation.class, null, null)
+                    .filter(operation -> !operations.containsKey(operation.getName().trim()))
+                    .forEach(this::addOperation0);
+        }
+    }
 
-	/**
+    /**
      * Dumps to the {@linkplain System#out standard output stream} a list of operations for the
      * default processor. If no argument is provided, then only a summary of operations is printed.
      * If arguments are provided, then the operation parameters are printed for all operation names

@@ -85,8 +85,8 @@ public final class Converters {
      */
     public static synchronized Set<ConverterFactory> getConverterFactories(Hints hints) {
         hints = GeoTools.addDefaultHints(hints);
-        return new LazySet<ConverterFactory>(getServiceRegistry().getServiceProviders(
-                ConverterFactory.class, null, hints));
+        return new LazySet<ConverterFactory>(
+                getServiceRegistry().getFactories(ConverterFactory.class, null, hints));
     }
 
     /**

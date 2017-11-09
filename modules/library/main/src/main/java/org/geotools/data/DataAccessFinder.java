@@ -92,6 +92,7 @@ public final class DataAccessFinder {
      *             If a suitable loader can be found, but it can not be attached
      *             to the specified resource without errors.
      */
+    @SuppressWarnings("unchecked")
     public static synchronized DataAccess<FeatureType, Feature> getDataStore(
             Map<String, Serializable> params) throws IOException {
         Iterator<DataAccessFactory> ps = getAvailableDataStores();
@@ -177,7 +178,7 @@ public final class DataAccessFinder {
 
     static synchronized <T extends DataAccessFactory> Iterator<T> getAllDataStores(
             FactoryRegistry registry, Class<T> category) {
-        return registry.getServiceProviders(category, null, null);
+        return registry.getFactories(category, null, null).iterator();
     }
 
     /**

@@ -21,9 +21,7 @@ import java.io.Writer;
 import java.util.List;
 import java.util.Locale;
 import java.util.Iterator;
-import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Collections;
 
 import org.opengis.metadata.Identifier;
 import org.opengis.metadata.citation.Citation;
@@ -121,7 +119,7 @@ final class FactoryPrinter implements Comparator<Class<?>> {
             /*
              * Writes the authorities in a single cell. Same for vendors and implementations.
              */
-            final Iterator<?> providers = registry.getServiceProviders(category, null, null);
+            final Iterator<?> providers = registry.getFactories(category, null, null).iterator();
             while (providers.hasNext()) {
                 if (implementations.length() != 0) {
                     table          .write ('\n');

@@ -22,7 +22,7 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.InvocationTargetException;
 import java.util.function.Predicate;
-//import javax.imageio.spi.ServiceRegistry.Filter;
+import javax.imageio.spi.ServiceRegistry.Filter;
 
 import org.geotools.util.logging.Logging;
 import org.geotools.resources.i18n.Errors;
@@ -38,7 +38,6 @@ import org.geotools.resources.i18n.ErrorKeys;
  * previously created factory can fit.
  *
  * @since 2.1
- *
  *
  * @source $URL$
  * @version $Id$
@@ -120,32 +119,19 @@ public class FactoryCreator extends FactoryRegistry {
     }
 
     /**
-     * Returns a provider for the specified category, using the specified map of hints (if any).
-     * If a provider matching the requirements is found in the registry, it is returned. Otherwise,
-     * a new provider is created and returned. This creation step is the only difference between
-     * this method and the {@linkplain FactoryRegistry#getServiceProvider super-class method}.
-     *
-     * @param  category The category to look for.
-     * @param  filter   An optional filter, or {@code null} if none.
-     * @param  hints    A {@linkplain Hints map of hints}, or {@code null} if none.
-     * @param  key      The key to use for looking for a user-provided instance in the hints, or
-     *                  {@code null} if none.
-     * @return A factory for the specified category and hints (never {@code null}).
-     * @throws FactoryNotFoundException if no factory was found, and the specified hints don't
-     *         provide suffisient information for creating a new factory.
-     * @throws FactoryRegistryException if the factory can't be created for some other reason.
+     * @deprecated Replaced with {@link #getFactories(Class, Predicate, boolean)}
      */
-//    @Override
-//    @Deprecated // TODO document
-//    public <T> T getServiceProvider(final Class<T>  category,
-//                                    final Filter    filter,
-//                                    final Hints     hints,
-//                                    final Hints.Key key)
-//            throws FactoryRegistryException
-//    {
-//        Predicate<T> predicate = filter == null ? null : filter::filter;
-//        return getFactory(category, predicate, hints, key);
-//    }
+    @Override
+    @Deprecated
+    public <T> T getServiceProvider(final Class<T>  category,
+                                    final Filter    filter,
+                                    final Hints     hints,
+                                    final Hints.Key key)
+            throws FactoryRegistryException
+    {
+        Predicate<T> predicate = filter == null ? null : filter::filter;
+        return getFactory(category, predicate, hints, key);
+    }
 
     /**
      * Factory for the specified category, using the specified map of hints (if any).
@@ -295,6 +281,18 @@ public class FactoryCreator extends FactoryRegistry {
     }
 
     /**
+     * @deprecated Replaced with {@link #createFactory(Class, Class, Hints)}
+     */
+    @Deprecated
+    protected <T> T createServiceProvider(final Class<T> category,
+                                          final Class<?> implementation,
+                                          final Hints hints)
+            throws FactoryRegistryException
+    {
+        return createFactory(category, implementation, hints);
+    }
+
+    /**
      * Creates a new instance of the specified factory using the specified hints.
      * The default implementation tries to instantiate the given implementation class
      * using the first of the following constructor found:
@@ -310,16 +308,6 @@ public class FactoryCreator extends FactoryRegistry {
      * @return The factory.
      * @throws FactoryRegistryException if the factory creation failed.
      */
-    @Deprecated // TODO: document
-    protected <T> T createServiceProvider(final Class<T> category,
-                                          final Class<?> implementation,
-                                          final Hints hints)
-            throws FactoryRegistryException
-    {
-        return createFactory(category, implementation, hints);
-    }
-
-    // TODO: document
     protected <T> T createFactory(final Class<T> category,
                                   final Class<?> implementation,
                                   final Hints    hints)

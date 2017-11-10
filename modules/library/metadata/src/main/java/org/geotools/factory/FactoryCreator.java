@@ -93,10 +93,10 @@ public class FactoryCreator extends FactoryRegistry {
     }
 
     /**
-     * Returns the providers available in the cache. To be used by {@link FactoryRegistry}.
+     * Returns the factories available in the cache. To be used by {@link FactoryRegistry}.
      */
     @Override
-    final <T> List<Reference<T>> getCachedProviders(final Class<T> category) {
+    final <T> List<Reference<T>> getCachedFactories(final Class<T> category) {
         List<Reference<?>> c = cache.get(category);
         if (c == null) {
             c = new LinkedList<Reference<?>>();
@@ -115,7 +115,7 @@ public class FactoryCreator extends FactoryRegistry {
      * Caches the specified factory under the specified category.
      */
     private <T> void cache(final Class<T> category, final T factory) {
-        getCachedProviders(category).add(new WeakReference<T>(factory));
+        getCachedFactories(category).add(new WeakReference<T>(factory));
     }
 
     /**

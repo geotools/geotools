@@ -32,6 +32,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ import java.util.regex.Pattern;
 import javax.measure.unit.NonSI;
 
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.FilterFactoryImpl;
 import org.geotools.styling.ColorMapEntry;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.LabelPlacement;
@@ -61,13 +63,13 @@ import org.geotools.styling.UserLayer;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlSeq;
 import org.geotools.ysld.Ysld;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
+import org.opengis.filter.expression.Literal;
 import org.opengis.style.ChannelSelection;
 import org.opengis.style.ContrastMethod;
 import org.opengis.style.Graphic;
@@ -1319,5 +1321,13 @@ public class YsldEncodeTest {
 
         exception.expect(IllegalArgumentException.class);
         Ysld.encode(sld(fts), out);
+    }
+
+    @Test
+    public void testColorObject() throws Exception {
+        RasterSymbolizerEncoder encoder = new RasterSymbolizerEncoder(null);
+        Literal literal = new FilterFactoryImpl().literal(Color.BLACK);
+        Object obj = encoder.toObjOrNull(literal);
+        assertEquals(obj.getClass(), Color.class);
     }
 }

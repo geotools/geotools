@@ -225,6 +225,17 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
             return null;
 
         List<Expression> subExpressions = Util.splitConcatenates(expr);
+
+        if (subExpressions.size() == 1) {
+            Expression subExpr = subExpressions.get(0);
+            if (subExpr instanceof Literal) {
+                Object obj = ((Literal) subExpr).getValue();
+                if (!(obj instanceof String)) {
+                    return obj;
+                }
+            }
+        }
+
         StringBuilder builder = new StringBuilder();
         for (Expression subExpr : subExpressions) {
             if (isNull(subExpr)) {

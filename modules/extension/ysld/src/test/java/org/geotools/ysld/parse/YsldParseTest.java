@@ -35,6 +35,7 @@ import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
 import org.geotools.styling.UomOgcMapping;
+import org.geotools.ysld.TestUtils;
 import org.geotools.ysld.Ysld;
 import org.geotools.ysld.YsldTests;
 import org.hamcrest.BaseMatcher;
@@ -66,9 +67,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import javax.measure.unit.SI;
 
 import static org.easymock.EasyMock.expect;
 import static org.easymock.classextension.EasyMock.createMock;
@@ -83,6 +87,7 @@ import static org.geotools.ysld.TestUtils.nilExpression;
 import static org.geotools.ysld.TestUtils.lexEqualTo;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anyOf;
+import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.describedAs;
 import static org.hamcrest.Matchers.equalTo;
@@ -1184,13 +1189,13 @@ public class YsldParseTest {
         // need to use the geotools.styling interface as it provides the accessors for the entries.
         ColorMap map = (ColorMap) symb.getColorMap();
 
-        String colour1 = (String) map.getColorMapEntry(0).getColor().evaluate(null);
-        String colour2 = (String) map.getColorMapEntry(1).getColor().evaluate(null);
-        String colour3 = (String) map.getColorMapEntry(2).getColor().evaluate(null);
+        Color colour1 = (Color) map.getColorMapEntry(0).getColor().evaluate(null);
+        Color colour2 = (Color) map.getColorMapEntry(1).getColor().evaluate(null);
+        Color colour3 = (Color) map.getColorMapEntry(2).getColor().evaluate(null);
 
-        assertThat(colour1, is("#FF0000"));
-        assertThat(colour2, is("#00FF00"));
-        assertThat(colour3, is("#0000FF"));
+        assertThat(colour1, is(Color.RED));
+        assertThat(colour2, is(Color.GREEN));
+        assertThat(colour3, is(Color.BLUE));
     }
     
     @Test
@@ -1235,13 +1240,13 @@ public class YsldParseTest {
         ColorMap map = (ColorMap) symb.getColorMap();
 
         System.out.println(map.getColorMapEntry(0).getColor().evaluate(null));
-        String colour1 = (String) map.getColorMapEntry(0).getColor().evaluate(null);
-        String colour2 = (String) map.getColorMapEntry(1).getColor().evaluate(null);
-        String colour3 = (String) map.getColorMapEntry(2).getColor().evaluate(null);
+        Color colour1 = (Color) map.getColorMapEntry(0).getColor().evaluate(null);
+        Color colour2 = (Color) map.getColorMapEntry(1).getColor().evaluate(null);
+        Color colour3 = (Color) map.getColorMapEntry(2).getColor().evaluate(null);
 
-        assertThat(colour1, is("#FF0000"));
-        assertThat(colour2, is("#00FF00"));
-        assertThat(colour3, is("#0000FF"));
+        assertThat(colour1, is(Color.RED));
+        assertThat(colour2, is(Color.GREEN));
+        assertThat(colour3, is(Color.BLUE));
     }
     
     @SuppressWarnings("unchecked")

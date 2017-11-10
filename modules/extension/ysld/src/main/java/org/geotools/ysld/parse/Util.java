@@ -218,13 +218,7 @@ public class Util {
         if (value != null)
             value = value.toString();
 
-        String hex = null;
-        if (color != null) {
-            hex = String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
-            hex = hex.toUpperCase();
-        }
-
-        return color != null ? factory.filter.literal(hex) : expression((String) value, factory);
+        return color != null ? factory.filter.literal(color) : expression((String) value, factory);
     }
 
     static Color parseColorAsHex(Matcher m) {

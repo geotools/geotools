@@ -17,7 +17,7 @@ not only for GeoTools users, but also for projects built on top of GeoTools such
 
 Writing a new DataStore for GeoTools is one of the best ways to get involved in the project, as
 writing it will make clear many of the core concepts of the API. The modular nature of GeoTools allows new DataStores to quickly become part of the next release, so that new formats are can 
-quickly be distributed to to all GeoTools users.
+quickly be distributed to all GeoTools users.
 
 **Contents**
 

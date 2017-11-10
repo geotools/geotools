@@ -39,7 +39,7 @@ Each subsequent line is used to capture a single feature of information suitable
 .. literalinclude:: artifacts/locations.csv
       :lines: 2
 
-In our example the LAT and LON information represents a `POINT(46.066667, 11.116667)`, the CITY  `Trento` and the NUMBER `140` and YEAR `2002` capture details of the *GRASS users conference* (and one of the earliest *Free and Open Source Software for Geomatics (FOSS4G)* events.
+In our example the LAT and LON information represents a `POINT(46.066667, 11.116667)`, the CITY  `Trento` and the NUMBER `140` and YEAR `2002` capture details of the *GRASS users conference* (and one of the earliest *Free and Open Source Software for Geomatics (FOSS4G)* events).
 
 Approach to Parsing CSV
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -52,7 +52,7 @@ Here is our strategy for representing GeoTools concepts with a CSV file.
 
 * FeatureType Name
 
-  Same as the name of the :file:`.csv` file (ie. "locations" for :file:`locations.csv`.)
+  Same as the name of the :file:`.csv` file (i.e. "locations" for :file:`locations.csv`.)
 
 * DataStore
 
@@ -64,7 +64,7 @@ Here is our strategy for representing GeoTools concepts with a CSV file.
 
 * Geometry
 
-  Initially we will try and recognise several columns and map them into Point x and y ordinates. This technique is used to handle content from websites such as **geonames**.
+  Initially we will try to recognise several columns and map them into Point x and y ordinates. This technique is used to handle content from websites such as **geonames**.
 
   We can also look at parsing a column using the Well-Known-Text representation of a Geometry.
 

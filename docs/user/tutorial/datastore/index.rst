@@ -16,8 +16,7 @@ Once a DataStore implementation is written, any information written in that form
 not only for GeoTools users, but also for projects built on top of GeoTools such as GeoServer, GeoMajas, GeoScript and uDig.
 
 Writing a new DataStore for GeoTools is one of the best ways to get involved in the project, as
-writing it will make clear many of the core concepts of the API. The modular nature of GeoTools allows new DataStores to quickly become part of the next release, so that new formats can 
-quickly be distributed to all GeoTools users.
+writing it will make clear many of the core concepts of the API. The modular nature of GeoTools allows new DataStores to quickly become part of the next release, so that new formats can quickly be distributed to all GeoTools users.
 
 **Contents**
 

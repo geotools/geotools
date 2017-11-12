@@ -190,6 +190,8 @@ public abstract class AbstractGetMapRequest extends AbstractWMSRequest implement
      */
     public void setBBox(String bbox) {
         //TODO enforce non-subsettable layers
+        //make sure there are no spaces in the bbox
+        bbox=bbox.replace(" ", "");
         properties.setProperty(BBOX, bbox);
     }
     

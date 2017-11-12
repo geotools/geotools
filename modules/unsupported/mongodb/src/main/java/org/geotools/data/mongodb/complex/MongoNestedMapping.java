@@ -72,13 +72,18 @@ public class MongoNestedMapping extends NestedAttributeMapping {
             throw new RuntimeException("MongoDB nesting only supports foreign keys of 'CollectionLink' type.");
         }
         CollectionLinkFunction.LinkCollection linkCollection = (CollectionLinkFunction.LinkCollection) foreignKeyValue;
-        List collection = getSubCollection(feature, linkCollection.getCollectionPath());
+        String collectionPath = linkCollection.getCollectionPath();
+        if (feature instanceof MongoCollectionFeature) {
+            String parentPath = ((MongoCollectionFeature) feature).getCollectionPath();
+            collectionPath = parentPath + "." + collectionPath;
+        }
+        List collection = getSubCollection(feature, collectionPath);
         if (collection == null) {
             return Collections.emptyList();
         }
         List<SimpleFeature> features = new ArrayList<>();
         for (int i = 0; i < collection.size(); i++) {
-            features.add(MongoCollectionFeature.build(feature, linkCollection.getCollectionPath(), i));
+            features.add(MongoCollectionFeature.build(feature, collectionPath, i));
         }
         FeatureSource fSource = buildMappingFeatureSource(feature, features);
         ArrayList<Feature> matchingFeatures = new ArrayList<Feature>();
@@ -87,7 +92,10 @@ public class MongoNestedMapping extends NestedAttributeMapping {
         if (fCollection instanceof MappingFeatureCollection) {
             FeatureIterator<Feature> iterator = fCollection.features();
             while (iterator.hasNext()) {
-                matchingFeatures.add(iterator.next());
+                Feature nestedFeature = iterator.next();
+                String parentPath = MongoComplexUtilities.resolvePath((Feature) feature, linkCollection.getCollectionPath());
+                MongoComplexUtilities.setParentPath(nestedFeature, parentPath);
+                matchingFeatures.add(nestedFeature);
             }
             iterator.close();
         }

@@ -35,6 +35,7 @@ import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
+import org.xml.sax.ext.EntityResolver2;
 
 
 /**
@@ -271,9 +272,21 @@ public class ParserTest extends TestCase {
         // Set an EntityResolver implementation to prevent usage of external entities.
         // When parsing an XML entity, the empty InputSource returned by this resolver provokes 
         // a java.net.MalformedURLException
-        parser.setEntityResolver(new EntityResolver() {
+        parser.setEntityResolver(new EntityResolver2() {
             @Override
             public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
+                return new InputSource();
+            }
+
+            @Override
+            public InputSource getExternalSubset(String name, String baseURI)
+                    throws SAXException, IOException {
+                return new InputSource();
+            }
+
+            @Override
+            public InputSource resolveEntity(String name, String publicId, String baseURI,
+                    String systemId) throws SAXException, IOException {
                 return new InputSource();
             }            
         });
@@ -285,9 +298,26 @@ public class ParserTest extends TestCase {
         }
 
         // Set another EntityResolver
-        parser.setEntityResolver(new EntityResolver() {
+        parser.setEntityResolver(new EntityResolver2() {
             @Override
             public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
+                if ("file:///this/file/does/not/exist".equals(systemId)) {
+                    return new InputSource(new StringReader("hello"));
+                } else {
+                    return new InputSource();
+                }
+            }
+
+            @Override
+            public InputSource getExternalSubset(String name, String baseURI)
+                    throws SAXException, IOException {
+                // TODO Auto-generated method stub
+                return null;
+            }
+
+            @Override
+            public InputSource resolveEntity(String name, String publicId, String baseURI,
+                    String systemId) throws SAXException, IOException {
                 if ("file:///this/file/does/not/exist".equals(systemId)) {
                     return new InputSource(new StringReader("hello"));
                 } else {

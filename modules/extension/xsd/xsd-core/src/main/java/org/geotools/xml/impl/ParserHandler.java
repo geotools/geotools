@@ -56,7 +56,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.ext.DefaultHandler2;
-import org.xml.sax.helpers.DefaultHandler;
+import org.xml.sax.ext.EntityResolver2;
 
 
 /**
@@ -149,7 +149,7 @@ public class ParserHandler extends DefaultHandler2 {
     List<URIHandler> uriHandlers = new ArrayList<URIHandler>();
 
     /** entity resolver */
-    EntityResolver entityResolver;
+    EntityResolver2 entityResolver;
     
     /** context customizer **/
     ContextCustomizer contextCustomizer;
@@ -267,7 +267,7 @@ public class ParserHandler extends DefaultHandler2 {
     }
 
     public void setEntityResolver(EntityResolver entityResolver) {
-        this.entityResolver = entityResolver;
+        this.entityResolver = (EntityResolver2) entityResolver;
     }
     
     public EntityResolver getEntityResolver() {
@@ -281,6 +281,15 @@ public class ParserHandler extends DefaultHandler2 {
             return super.resolveEntity(publicId, systemId);
         }
     }    
+    
+    @Override
+    public InputSource resolveEntity(String name, String publicId, String baseURI, String systemId)
+            throws SAXException, IOException {
+        if (entityResolver != null) {
+            return entityResolver.resolveEntity(name, publicId, baseURI, systemId);
+        }
+        return super.resolveEntity(name, publicId, baseURI, systemId);
+    }
     
     public void startPrefixMapping(String prefix, String uri)
         throws SAXException {
@@ -860,14 +869,7 @@ O:          for (int i = 0; i < schemas.length; i++) {
     
 
 
-    @Override
-    public InputSource resolveEntity(String name, String publicId, String baseURI, String systemId)
-            throws SAXException, IOException {
-        if (entityResolver != null) {
-            return entityResolver.resolveEntity(publicId, systemId);
-        }
-        return super.resolveEntity(name, publicId, baseURI, systemId);
-    }
+
 
     @Override
     public void startCDATA() throws SAXException {

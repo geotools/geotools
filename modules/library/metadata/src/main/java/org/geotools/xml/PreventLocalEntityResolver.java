@@ -27,6 +27,7 @@ import org.geotools.util.logging.Logging;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.ext.EntityResolver2;
+import org.xml.sax.helpers.DefaultHandler;
 
 
 /**
@@ -81,9 +82,22 @@ public class PreventLocalEntityResolver implements EntityResolver2, Serializable
         return null;
     }
 
+    /**
+     * Tells the parser to resolve the systemId against the baseURI
+     * and read the entity text from that resulting absolute URI.
+     * Note that because the older
+     * {@link DefaultHandler#resolveEntity DefaultHandler.resolveEntity()},
+     * method is overridden to call this one, this method may sometimes
+     * be invoked with null <em>name</em> and <em>baseURI</em>, and
+     * with the <em>systemId</em> already absolutized.
+     */
+    
     @Override
     public InputSource resolveEntity(String name, String publicId, String baseURI, String systemId)
             throws SAXException, IOException {
+        if (baseURI != null && baseURI.matches("(?i)(jar:file|http|vfs)[^?#;]*\\.xsd")) {
+            return null;
+        }
         return resolveEntity(publicId, systemId);
     }
 }

@@ -35,7 +35,36 @@ import java.util.Set;
  */
 public final class MongoComplexUtilities {
 
+    // if this property is set to TRUE the system will expect nested collection full path to be provided
+    private final static boolean USE_LEGACY_PATHS = Boolean.parseBoolean(
+            System.getProperty("org.geotools.data.mongodb.complex.useLegacyPaths", "false"));
+
+    // key used to store the parent JSON path in a feature user data map
+    public static final String MONGO_PARENT_PATH = "MONGO_PARENT_PATH";
+
     private MongoComplexUtilities() {
+    }
+
+    /**
+     * Concat the parent path if it exists to the provided JSON path.
+     */
+    public static String resolvePath(Feature feature, String jsonPath) {
+        Object parentPath = feature.getUserData().get(MONGO_PARENT_PATH);
+        return parentPath == null ? jsonPath : parentPath + "." + jsonPath;
+    }
+
+    /**
+     * Store the parent path in a feature user data map.
+     */
+    public static void setParentPath(Feature feature, String parentPath) {
+        feature.getUserData().put(MONGO_PARENT_PATH, parentPath);
+    }
+
+    /**
+     * If TRUE no recursive paths will be used, this onyl exists for backwards compatibility.
+     */
+    public static boolean useLegacyPaths() {
+        return USE_LEGACY_PATHS;
     }
 
     /**

@@ -38,12 +38,21 @@ public final class JsonSelectFunction extends FunctionExpressionImpl {
 
     public Object evaluate(Object object) {
         String path = (String) this.params.get(0).evaluate(object);
+        if (object instanceof MongoCollectionFeature) {
+            if (!MongoComplexUtilities.useLegacyPaths()) {
+                String parentPath = ((MongoCollectionFeature) object).getCollectionPath();
+                path = parentPath + "." + path;
+            }
+        }
         if (object == null) {
             return new AttributeExpressionImpl(new NameImpl(path));
         }
         return MongoComplexUtilities.getValue(object, path);
     }
 
+    /**
+     * Return the JSON path to be selected.
+     */
     public String getJsonPath() {
         return (String) this.params.get(0).evaluate(null);
     }

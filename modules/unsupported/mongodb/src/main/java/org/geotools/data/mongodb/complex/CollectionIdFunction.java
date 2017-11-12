@@ -30,7 +30,7 @@ import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 public final class CollectionIdFunction extends FunctionExpressionImpl {
 
     private static final FunctionName DEFINITION = new FunctionNameImpl(
-            "collectionId", parameter("value", Object.class), parameter("path", String.class));
+            "collectionId", parameter("value", Object.class));
 
     public CollectionIdFunction() {
         super(DEFINITION);

@@ -64,7 +64,8 @@ public class JDBCTransactionStateTest {
             public Object answer(InvocationOnMock invocation) {
                 Object[] arguments = invocation.getArguments();
                 LogRecord logRecord = (LogRecord) arguments[0];
-                if (logRecord.getLevel() == Level.WARNING) {
+                if (logRecord.getLevel() == Level.WARNING
+                        && !logRecord.getSourceMethodName().equals("finalize")) {
                     warningsCount++;
                 }
                 return null;

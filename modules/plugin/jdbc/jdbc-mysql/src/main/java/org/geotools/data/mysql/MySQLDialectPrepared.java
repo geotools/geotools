@@ -51,14 +51,27 @@ public class MySQLDialectPrepared extends PreparedStatementSQLDialect {
     MySQLDialect delegate;
     
     public MySQLDialectPrepared(JDBCDataStore dataStore) {
+    	this( dataStore, false );
+    }
+    
+    public MySQLDialectPrepared(JDBCDataStore dataStore, boolean usePreciseSpatialOps) {
         super( dataStore );
-        delegate = new MySQLDialect( dataStore );
+        delegate = new MySQLDialect(dataStore);
+        delegate.setUsePreciseSpatialOps(usePreciseSpatialOps);
     }
     
     public void setStorageEngine(String storageEngine) {
         delegate.setStorageEngine(storageEngine);
     }
 
+    public void setUsePreciseSpatialOps(boolean usePreciseSpatialOps) {
+    	delegate.setUsePreciseSpatialOps(usePreciseSpatialOps);
+    }
+    
+    public boolean getUsePreciseSpatialOps() {
+    	return delegate.getUsePreciseSpatialOps();
+    }
+    
     @Override
     public boolean includeTable(String schemaName, String tableName, Connection cx)
             throws SQLException {

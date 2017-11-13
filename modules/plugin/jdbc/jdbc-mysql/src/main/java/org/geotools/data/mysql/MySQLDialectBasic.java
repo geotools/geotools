@@ -33,7 +33,6 @@ import org.opengis.feature.type.GeometryDescriptor;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKBReader;
 import com.vividsolutions.jts.io.WKTWriter;
@@ -42,7 +41,8 @@ import com.vividsolutions.jts.io.WKTWriter;
  * MySQL database dialect based on basic (non-prepared) statements.
  * 
  * @author Justin Deoliveira, OpenGEO
- *
+ * @author Nikolaos Pringouris <nprigour@gmail.com> added support
+ * 		   for MySQL versions 5.6 (and above)	
  *
  *
  *
@@ -53,14 +53,27 @@ public class MySQLDialectBasic extends BasicSQLDialect {
     MySQLDialect delegate;
     
     public MySQLDialectBasic(JDBCDataStore dataStore) {
+        this( dataStore, false );
+    }
+    
+    public MySQLDialectBasic(JDBCDataStore dataStore, boolean usePreciseSpatialOps) {
         super( dataStore );
         delegate = new MySQLDialect(dataStore);
+        delegate.setUsePreciseSpatialOps(usePreciseSpatialOps);
     }
     
     public void setStorageEngine(String storageEngine) {
         delegate.setStorageEngine(storageEngine);
     }
 
+    public void setUsePreciseSpatialOps(boolean usePreciseSpatialOps) {
+    	delegate.setUsePreciseSpatialOps(usePreciseSpatialOps);
+    }
+    
+    public boolean getUsePreciseSpatialOps() {
+    	return delegate.getUsePreciseSpatialOps();
+    }
+    
     @Override
     public boolean includeTable(String schemaName, String tableName, Connection cx)
             throws SQLException {
@@ -169,7 +182,11 @@ public class MySQLDialectBasic extends BasicSQLDialect {
     public void encodeGeometryValue(Geometry value, int dimension, int srid, StringBuffer sql)
             throws IOException {
         if (value != null) {
-            sql.append("GeomFromText('");
+        	if (delegate.usePreciseSpatialOps) {
+        		sql.append("ST_GeomFromText('");
+        	} else {
+        		sql.append("GeomFromText('");
+        	}
             sql.append(new WKTWriter().write(value));
             sql.append("', ").append(srid).append(")");
         }
@@ -198,8 +215,14 @@ public class MySQLDialectBasic extends BasicSQLDialect {
     @Override
     public void encodeGeometryEnvelope(String tableName, String geometryColumn,
             StringBuffer sql) {
-        sql.append("asWKB(");
-        sql.append("envelope(");
+    	if (delegate.usePreciseSpatialOps) {
+            sql.append("ST_AsWKB(");
+            sql.append("ST_envelope(");
+    	} else {
+            sql.append("asWKB(");
+            sql.append("envelope(");
+    	}
+
         encodeColumnName(geometryColumn, sql);
         sql.append("))");
     }
@@ -210,8 +233,15 @@ public class MySQLDialectBasic extends BasicSQLDialect {
         byte[] wkb = rs.getBytes(column);
 
         try {
-            Geometry geometry = new WKBReader().read(wkb);
-            return geometry.getEnvelopeInternal();
+            /**
+             * As of MySQL 5.7.6, if the argument is a point or a vertical or horizontal line segment, 
+             * ST_Envelope() returns the point or the line segment as its MBR rather than returning an invalid polygon 
+             * therefore we must override behavior and check for a geometry and not a polygon 
+             */
+            //TODO: srid
+        	Geometry geom = (Geometry) new WKBReader().read(wkb);
+
+            return geom.getEnvelopeInternal();
         } catch (ParseException e) {
             String msg = "Error decoding wkb for envelope";
             throw (IOException) new IOException(msg).initCause(e);
@@ -230,7 +260,7 @@ public class MySQLDialectBasic extends BasicSQLDialect {
 
     @Override
     public FilterToSQL createFilterToSQL() {
-        return new MySQLFilterToSQL();
+        return new MySQLFilterToSQL(delegate.getUsePreciseSpatialOps());
     }
     
     @Override

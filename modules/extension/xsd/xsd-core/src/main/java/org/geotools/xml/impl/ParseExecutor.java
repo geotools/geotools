@@ -48,7 +48,6 @@ import org.geotools.xml.Schemas;
 import org.geotools.xml.SimpleBinding;
 import org.geotools.xml.impl.BindingWalker.Visitor;
 import org.geotools.xs.facets.Whitespace;
-import org.jdom.Attribute;
 import org.picocontainer.MutablePicoContainer;
 
 

@@ -112,6 +112,7 @@ public class PostGISDialect extends BasicSQLDialect {
             put("CIRCULARSTRING", CircularString.class);
             put("MULTISURFACE", MultiSurface.class);
             put("BYTEA", byte[].class);
+            put("HSTORE", HStore.class);
         }
     };
     
@@ -477,6 +478,10 @@ public class PostGISDialect extends BasicSQLDialect {
             return BigDate.class;
         }
 
+        if (HStore.TYPENAME.equalsIgnoreCase(typeName)) {
+        	return HStore.class;
+        }
+        
         String gType = null;
         if ("geometry".equalsIgnoreCase(typeName)) {
             gType = lookupGeometryType(columnMetaData, cx, "geometry_columns", "f_geometry_column");
@@ -856,6 +861,7 @@ public class PostGISDialect extends BasicSQLDialect {
         // jdbc metadata for geom columns reports DATA_TYPE=1111=Types.OTHER
         mappings.put(Geometry.class, Types.OTHER);
         mappings.put(UUID.class, Types.OTHER);
+        mappings.put(HStore.class, Types.OTHER);
         mappings.put(BigDate.class, Types.BIGINT);
     }
 
@@ -880,6 +886,7 @@ public class PostGISDialect extends BasicSQLDialect {
         mappings.put("timestamp", Timestamp.class);
         mappings.put("timestamptz", Timestamp.class);
         mappings.put("uuid", UUID.class);
+        mappings.put("hstore", HStore.class);
     }
     
     @Override

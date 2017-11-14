@@ -140,7 +140,7 @@
 
     <dependency>
       <groupId>org.jdom</groupId>
-      <artifactId>jdom</artifactId>
+      <artifactId>jdom2</artifactId>
     </dependency>
 
     <dependency>

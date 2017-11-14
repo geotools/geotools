@@ -22,7 +22,7 @@ import org.geotools.data.complex.xml.XmlXpathFilterData;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.util.XmlXpathUtilites;
-import org.jdom.Document;
+import org.jdom2.Document;
 import org.opengis.filter.capability.FunctionName;
 import org.xml.sax.helpers.NamespaceSupport;
 

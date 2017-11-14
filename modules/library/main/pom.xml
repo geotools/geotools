@@ -211,7 +211,7 @@
     </dependency>
     <dependency>
       <groupId>org.jdom</groupId>
-      <artifactId>jdom</artifactId>
+      <artifactId>jdom2</artifactId>
       <!-- The version number is specified in the parent POM. -->
     </dependency>
     <dependency>

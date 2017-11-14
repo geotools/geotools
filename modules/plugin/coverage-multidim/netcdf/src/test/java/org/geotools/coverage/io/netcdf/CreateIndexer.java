@@ -41,11 +41,11 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.geotools.imageio.netcdf.NetCDFImageReaderSpi;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
-import org.jdom.xpath.XPath;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
+import org.jdom2.xpath.XPath;
 
 /**
  * CommandLine Utility to be used in order to create an ImageMosaic indexer.xml as well as 
@@ -218,11 +218,13 @@ public class CreateIndexer {
 
     private static boolean setCoverages(Element root, StringBuilder builder) throws JDOMException {
         builder.append("  <coverages>\n");
-        List<Element> coverages = XPath.selectNodes(root, "coverages/coverage");
+        List<?> coverages = XPath.selectNodes(root, "coverages/coverage");
         boolean longName = false;
-        for (Element cov : coverages) {
-            if (setCoverage(cov, builder)) {
-                longName = true;
+        for (Object cov : coverages) {
+            if (cov instanceof Element) {
+                if (setCoverage(((Element)cov), builder)) {
+                    longName = true;
+                }
             }
         }
         builder.append("  </coverages>\n");
@@ -279,29 +281,32 @@ public class CreateIndexer {
 
     private static void getAttributes(Set<String> timeAttributes, Set<String> elevationAttributes,
             Element root) throws JDOMException {
-        List<Element> schemaAttributes = XPath.selectNodes(root,
+        List<?> schemaAttributes = XPath.selectNodes(root,
                 "coverages/coverage/schema/attributes");
-        for (Element e : schemaAttributes) {
-            String attributes = e.getText();
-            String[] attribs = attributes.split(",");
-            for (String attrib : attribs) {
-                if (attrib.contains(TIME_ATTRIB_TYPE)) {
-                    String[] nameTypePair = attrib.split(":");
-                    String name = nameTypePair[0];
-                    if (!timeAttributes.contains(name)) {
-                        timeAttributes.add(name);
-                    }
 
-                } else if (attrib.contains(ELEVATION_ATTRIB_TYPE_FLOAT) || attrib.contains(ELEVATION_ATTRIB_TYPE_DOUBLE)) {
-                    String[] nameTypePair = attrib.split(":");
-                    String name = nameTypePair[0];
-                    if (!elevationAttributes.contains(name)) {
-                        elevationAttributes.add(name);
+        for (Object e : schemaAttributes) {
+            if (e instanceof Element) {
+                String attributes = ((Element)e).getText();
+                String[] attribs = attributes.split(",");
+                for (String attrib : attribs) {
+                    if (attrib.contains(TIME_ATTRIB_TYPE)) {
+                        String[] nameTypePair = attrib.split(":");
+                        String name = nameTypePair[0];
+                        if (!timeAttributes.contains(name)) {
+                            timeAttributes.add(name);
+                        }
+
+                    } else if (attrib.contains(ELEVATION_ATTRIB_TYPE_FLOAT)
+                                || attrib.contains(ELEVATION_ATTRIB_TYPE_DOUBLE)) {
+                        String[] nameTypePair = attrib.split(":");
+                        String name = nameTypePair[0];
+                        if (!elevationAttributes.contains(name)) {
+                            elevationAttributes.add(name);
+                        }
                     }
                 }
             }
         }
-        
     }
 
     private static void setDomains(Set<String> timeAttributes, Set<String> elevationAttributes,

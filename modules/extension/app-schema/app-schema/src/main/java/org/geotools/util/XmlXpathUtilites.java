@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import org.apache.commons.jxpath.JXPathContext;
-import org.jdom.Document;
+import org.jdom2.Document;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**
@@ -150,10 +150,10 @@ public class XmlXpathUtilites {
             for (int i = 0; i < values.size(); i++) {
                 Object value = values.get(i);
                 String unwrappedValue = "";
-                if (value instanceof org.jdom.Attribute) {
-                    unwrappedValue = ((org.jdom.Attribute) value).getValue();
-                } else if (value instanceof org.jdom.Element) {
-                    unwrappedValue = ((org.jdom.Element) value).getValue();
+                if (value instanceof org.jdom2.Attribute) {
+                    unwrappedValue = ((org.jdom2.Attribute) value).getValue();
+                } else if (value instanceof org.jdom2.Element) {
+                    unwrappedValue = ((org.jdom2.Element) value).getValue();
                 }
                 ls.add(unwrappedValue);
             }    

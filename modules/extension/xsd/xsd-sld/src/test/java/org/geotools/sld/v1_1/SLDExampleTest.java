@@ -40,6 +40,7 @@ import org.opengis.style.ExternalGraphic;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.ext.EntityResolver2;
 
 /**
  * 
@@ -143,9 +144,22 @@ public class SLDExampleTest extends TestCase {
         }
         
         // set an entity resolver to prevent access to the local file system 
-        parser.setEntityResolver(new EntityResolver() {
+        parser.setEntityResolver(new EntityResolver2() {
             @Override
             public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
+                return new InputSource();
+            }
+
+            @Override
+            public InputSource getExternalSubset(String name, String baseURI)
+                    throws SAXException, IOException {
+                // TODO Auto-generated method stub
+                return null;
+            }
+
+            @Override
+            public InputSource resolveEntity(String name, String publicId, String baseURI,
+                    String systemId) throws SAXException, IOException {
                 return new InputSource();
             }      
         });

@@ -32,7 +32,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-import java.awt.Color;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -42,12 +42,13 @@ import java.util.regex.Pattern;
 import javax.measure.unit.NonSI;
 
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.FilterFactoryImpl;
+import org.geotools.styling.ColorMap;
 import org.geotools.styling.ColorMapEntry;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.LabelPlacement;
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.Mark;
+import org.geotools.styling.NamedLayer;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.RasterSymbolizer;
 import org.geotools.styling.Rule;
@@ -60,16 +61,17 @@ import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
 import org.geotools.styling.UomOgcMapping;
 import org.geotools.styling.UserLayer;
+import org.geotools.ysld.Tuple;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlSeq;
 import org.geotools.ysld.Ysld;
+import org.geotools.ysld.parse.YsldParser;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.Literal;
 import org.opengis.style.ChannelSelection;
 import org.opengis.style.ContrastMethod;
 import org.opengis.style.Graphic;
@@ -1324,10 +1326,27 @@ public class YsldEncodeTest {
     }
 
     @Test
-    public void testColorObject() throws Exception {
-        RasterSymbolizerEncoder encoder = new RasterSymbolizerEncoder(null);
-        Literal literal = new FilterFactoryImpl().literal(Color.BLACK);
-        Object obj = encoder.toObjOrNull(literal);
-        assertEquals(obj.getClass(), Color.class);
+    public void testEncodeColorMapEntry() throws IOException {
+        StyledLayerDescriptor style = new YsldParser(new ByteArrayInputStream(
+                    ("name:  Test\n" +
+                    "title: Test Style title\n" +
+                    "abstract: Styling of Test layer\n" +
+                    "feature-styles:\n" +
+                    "- rules:\n" +
+                    "  - title: raster\n" +
+                    "    symbolizers:\n" +
+                    "      - raster:\n" +
+                    "          opacity: 1.0\n" +
+                    "          color-map:\n" +
+                    "            type: values\n" +
+                    "            entries:\n" +
+                    "            - ['#e20374', 1.0, 1, Lorem Ipsum (magenta = covered)]").getBytes())).parse();
+
+        RasterSymbolizer symbolizer = (RasterSymbolizer)((NamedLayer)style.getStyledLayers()[0]).styles().get(0).featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
+
+        ColorMap colorMap = symbolizer.getColorMap();
+        RasterSymbolizerEncoder.ColorMapEntryIterator iterator = new RasterSymbolizerEncoder(symbolizer).new ColorMapEntryIterator(colorMap);
+        Tuple map = iterator.next();
+        assertEquals("('#E20374',1.0,1,Lorem Ipsum (magenta = covered))", map.toString());
     }
 }

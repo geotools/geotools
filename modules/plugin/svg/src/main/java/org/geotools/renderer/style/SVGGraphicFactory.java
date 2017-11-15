@@ -24,6 +24,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -135,12 +136,12 @@ public class SVGGraphicFactory implements Factory, ExternalGraphicFactory, Graph
         if (svgfile == null) {
             throw new IllegalArgumentException(
                     "The specified expression could not be turned into an URL");
-        } else {
-            // just for validation parse the URL
-            if(Converters.convert(svgfile, URL.class) == null) {
-                throw new IllegalArgumentException(
-                        "Invalid URL: " + svgfile);
-            }
+        }
+        // just for validation parse the URL
+        URL svgUrl = Converters.convert(svgfile, URL.class);
+        if (svgUrl == null) {
+            throw new IllegalArgumentException(
+                    "Invalid URL: " + svgfile);
         }
 
         // turn the svg into a document and cache results
@@ -162,7 +163,15 @@ public class SVGGraphicFactory implements Factory, ExternalGraphicFactory, Graph
                     return source;
                 }
             };
-            Document doc = f.createDocument(svgfile);
+            String svgUri = svgfile;
+            // Remove parameters from file URLs, as it is not supported by Windows
+            if ("file".equals(svgUrl.getProtocol()) && svgUrl.getQuery() != null) {
+                int idx = svgfile.indexOf('?');
+                if (idx > -1) {
+                    svgUri = svgfile.substring(0, idx);
+                }
+            }
+            Document doc = f.createDocument(svgUri);
             Map<String, String> parameters = getParametersFromUrl(svgfile);
             if(!parameters.isEmpty() || hasParameters(doc.getDocumentElement())) {
                 replaceParameters(doc.getDocumentElement(), parameters);

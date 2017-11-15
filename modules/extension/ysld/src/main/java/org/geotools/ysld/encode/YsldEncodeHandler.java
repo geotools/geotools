@@ -167,7 +167,14 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
     }
 
     Object toColorOrNull(Expression expr) {
-        Object obj = toObjOrNull(expr, false);
+        Object obj;
+        if (expr instanceof Literal) {
+            obj = ((Literal) expr).getValue();
+            if (obj instanceof Color) {
+                return obj;
+            }
+        }
+        obj = toObjOrNull(expr, false);
         if (obj instanceof String && expr instanceof Literal) {
             String str = Util.stripQuotes(obj.toString());
             obj = makeColorIfPossible(str);
@@ -225,6 +232,7 @@ public abstract class YsldEncodeHandler<T> implements Iterator<Object> {
             return null;
 
         List<Expression> subExpressions = Util.splitConcatenates(expr);
+
         StringBuilder builder = new StringBuilder();
         for (Expression subExpr : subExpressions) {
             if (isNull(subExpr)) {

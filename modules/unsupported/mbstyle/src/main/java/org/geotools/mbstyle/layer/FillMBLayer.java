@@ -290,6 +290,7 @@ public class FillMBLayer extends MBLayer {
 
             ExternalGraphic eg = transformer.createExternalGraphicForSprite(fillPatternExpr, styleContext);
             GraphicFill gf = sf.graphicFill(Arrays.asList(eg), fillOpacity(), null, null, null, fillTranslateDisplacement());
+            stroke.setOpacity(ff.literal(0));
             fill = sf.fill(gf, null, null);
         } else {
             fill = sf.fill(null, fillColor(), fillOpacity());

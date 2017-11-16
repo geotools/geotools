@@ -19,21 +19,38 @@ package org.geotools.data.mongodb;
 
 import java.util.Date;
 
+import com.mongodb.BasicDBList;
+import com.mongodb.BasicDBObject;
+import com.vividsolutions.jts.geom.Point;
 import junit.framework.TestCase;
-
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+
+import org.junit.Test;
+import org.opengis.filter.And;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.PropertyIsBetween;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.PropertyIsGreaterThan;
 import org.opengis.filter.PropertyIsLessThan;
 import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.expression.Literal;
 import org.opengis.filter.spatial.BBOX;
 
 import com.mongodb.BasicDBObject;
 import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.algorithm.CGAlgorithms;
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+
+import java.math.BigInteger;
+
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertThat;
 
 public class FilterToMongoTest extends TestCase {
 
@@ -138,4 +155,70 @@ public class FilterToMongoTest extends TestCase {
         assertEquals(MongoTestSetup.parseDate(UPPER_BOUND), filter.get("$lte"));
     }
 
+    public void testEqualToInteger() throws Exception {
+        PropertyIsEqualTo equalTo = ff.equals(ff.property("foo"), ff.literal(10));
+        BasicDBObject obj = (BasicDBObject) equalTo.accept(filterToMongo, null);
+        assertNotNull(obj);
+
+        assertEquals(1, obj.keySet().size());
+        assertEquals(10, obj.get("properties.foo"));
+    }
+
+    public void testEqualToLong() throws Exception {
+        PropertyIsEqualTo equalTo = ff.equals(ff.property("foo"), ff.literal(10L));
+        BasicDBObject obj = (BasicDBObject) equalTo.accept(filterToMongo, null);
+        assertNotNull(obj);
+
+        assertEquals(1, obj.keySet().size());
+        assertEquals(10L, obj.get("properties.foo"));
+    }
+
+    public void testEqualToBigInteger() throws Exception {
+        PropertyIsEqualTo equalTo = ff
+                .equals(ff.property("foo"), ff.literal(BigInteger.valueOf(10L)));
+        BasicDBObject obj = (BasicDBObject) equalTo.accept(filterToMongo, null);
+        assertNotNull(obj);
+
+        assertEquals(1, obj.keySet().size());
+        assertEquals("10", obj.get("properties.foo"));
+    }
+
+    @Test public void testLiteralsHandling() throws Exception {
+        // test NULL properties, supported primitives types should be preserved
+        testLiteralEncoding(null, null, null);
+        testLiteralEncoding(null, Object.class, null);
+        testLiteralEncoding(false, null, false);
+        testLiteralEncoding(10D, null, 10D);
+        testLiteralEncoding(10, null, 10);
+        testLiteralEncoding(10L, null, 10L);
+        testLiteralEncoding("10", null, "10");
+        // test primitives types conversions
+        testLiteralEncoding("10", Double.class, 10D);
+        testLiteralEncoding("10", Integer.class, 10);
+        testLiteralEncoding("10", Long.class, 10L);
+        testLiteralEncoding("10", String.class, "10");
+        testLiteralEncoding(10f, Double.class, 10d);
+        testLiteralEncoding("true", Boolean.class, true);
+        testLiteralEncoding(10, String.class, "10");
+        testLiteralEncoding(new BigInteger("10"), Long.class, 10L);
+        // test not supported and invalid types conversions
+        testLiteralEncoding("10", Boolean.class, "10");
+        testLiteralEncoding(new BigInteger("10"), BigInteger.class, "10");
+    }
+
+    /**
+     * Helper method that test literal conversions.
+     */
+    private <T, U> void testLiteralEncoding(T literalValue, Class<?> typeHint, U expectedValue) {
+        // construct the literal and visit it
+        Literal literal = ff.literal(literalValue);
+        Object value = literal.accept(filterToMongo, typeHint);
+        // check the result againts the expected result
+        if (expectedValue == null) {
+            assertThat(value, nullValue());
+        } else {
+            assertThat(value, notNullValue());
+            assertThat(value, is(expectedValue));
+        }
+    }
 }

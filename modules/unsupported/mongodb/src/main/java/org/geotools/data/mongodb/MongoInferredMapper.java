@@ -23,13 +23,13 @@ import com.mongodb.DBObject;
 import com.vividsolutions.jts.geom.Geometry;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.geotools.data.mongodb.complex.MongoComplexUtilities;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.logging.Logging;
@@ -85,7 +85,8 @@ public class MongoInferredMapper extends AbstractCollectionMapper {
         
         Set<String> indexedGeometries = MongoUtil.findIndexedGeometries(collection);
         Set<String> indexedFields = MongoUtil.findIndexedFields(collection);
-        Map<String, Class<?>> mappedFields = MongoUtil.findMappableFields(collection);
+        //Map<String, Class<?>> mappedFields = MongoUtil.findMappableFields(collection);
+        Map<String, Class> mappedFields = MongoComplexUtilities.findMappings(collection.findOne());
         
         // don't need to worry about indexed properties we've found in our scan...
         indexedFields.removeAll(mappedFields.keySet());
@@ -128,7 +129,7 @@ public class MongoInferredMapper extends AbstractCollectionMapper {
         LOG.log(Level.INFO, "building type {0}: mapping geometry field {1} from collection {2}",
                     new Object[] {name, geometryField, collection.getFullName() });
         
-        for (Map.Entry<String, Class<?>> mappedField : mappedFields.entrySet()) {
+        for (Map.Entry<String, Class> mappedField : mappedFields.entrySet()) {
             String field = mappedField.getKey();
             Class<?> binding = mappedField.getValue();
             ftBuilder.userData(MongoDataStore.KEY_mapping, field);

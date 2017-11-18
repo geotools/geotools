@@ -47,7 +47,7 @@ You can list available drivers::
 
 To connect to an OGR layer there are two parameters:
 
-* DriverName = The name of the OGR Driver (http://www.gdal.org/ogr/ogr_formats.html). 
+* DriverName = The name of the OGR Driver (http://www.gdal.org/ogr_formats.html). 
 
 * DataSourceName = The name of the file or data source connection. This value depends on what driver you are using.
 

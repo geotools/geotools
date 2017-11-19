@@ -17,9 +17,6 @@
 package org.geotools.data.mysql;
 
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
 
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.filter.FilterCapabilities;
@@ -50,6 +47,17 @@ import com.vividsolutions.jts.geom.LinearRing;
  */
 public class MySQLFilterToSQL extends FilterToSQL {
 
+	protected boolean usePreciseSpatialOps;
+	
+	public MySQLFilterToSQL() {
+		this(false);
+	}
+			
+	public MySQLFilterToSQL(boolean usePreciseSpatialOps) {
+		super();
+		this.usePreciseSpatialOps = usePreciseSpatialOps;
+	}
+	
     @Override
     protected FilterCapabilities createFilterCapabilities() {
         //MySQL does not actually implement all of the special functions
@@ -82,16 +90,27 @@ public class MySQLFilterToSQL extends FilterToSQL {
     @Override
     protected Object visitBinarySpatialOperator(BinarySpatialOperator filter,
             PropertyName property, Literal geometry, boolean swapped, Object extraData) {
-        return visitBinarySpatialOperator(filter, (Expression)property, (Expression)geometry, 
-            swapped, extraData);
+    	
+    	if (usePreciseSpatialOps) {
+	        return visitBinarySpatialOperatorEnhanced(filter, (Expression)property, (Expression)geometry, 
+	            swapped, extraData);
+    	} else {
+	        return visitBinarySpatialOperator(filter, (Expression)property, (Expression)geometry, 
+		            swapped, extraData);
+    	}
     }
     
     @Override
     protected Object visitBinarySpatialOperator(BinarySpatialOperator filter, Expression e1,
         Expression e2, Object extraData) {
-        return visitBinarySpatialOperator(filter, e1, e2, false, extraData);
+    	if (usePreciseSpatialOps) {
+	        return visitBinarySpatialOperatorEnhanced(filter, e1, e2, false, extraData);
+    	} else {
+    		return visitBinarySpatialOperator(filter, e1, e2, false, extraData);
+    	}       
     }
 
+    
     protected Object visitBinarySpatialOperator(BinarySpatialOperator filter, Expression e1,
         Expression e2, boolean swapped, Object extraData) {
     
@@ -186,4 +205,95 @@ public class MySQLFilterToSQL extends FilterToSQL {
         return extraData;
     }
 
+    
+    /**
+     * supported if version of MySQL is at least 5.6.
+     * 
+     * @param filter
+     * @param e1
+     * @param e2
+     * @param swapped
+     * @param extraData
+     * @return
+     */
+	protected Object visitBinarySpatialOperatorEnhanced(BinarySpatialOperator filter, Expression e1,
+			Expression e2, boolean swapped, Object extraData) {
+
+		try {
+
+			if (filter instanceof DistanceBufferOperator) {
+				out.write("ST_Distance(");
+				e1.accept(this, extraData);
+				out.write(", ");
+				e2.accept(this, extraData);
+				out.write(")");
+
+				if (filter instanceof DWithin) {
+					out.write("<");
+				}
+				else if (filter instanceof Beyond) {
+					out.write(">");
+				}
+				else {
+					throw new RuntimeException("Unknown distance operator");
+				}
+				out.write(Double.toString(((DistanceBufferOperator)filter).getDistance()));
+			}
+			else if (filter instanceof BBOX) {
+				out.write("MbrIntersects(");
+				e1.accept(this, extraData);
+				out.write(",");
+				e2.accept(this, extraData);
+				out.write(")");
+			}
+			else {
+
+				if (filter instanceof Contains) {
+					out.write("ST_Contains(");
+				}
+				else if (filter instanceof Crosses) {
+					out.write("ST_Crosses(");
+				}
+				else if (filter instanceof Disjoint) {
+					out.write("ST_Disjoint(");
+				}
+				else if (filter instanceof Equals) {
+					out.write("ST_Equals(");
+				}
+				else if (filter instanceof Intersects) {
+					out.write("ST_Intersects(");
+				}
+				else if (filter instanceof Overlaps) {
+					out.write("ST_Overlaps(");
+				}
+				else if (filter instanceof Touches) {
+					out.write("ST_Touches(");
+				}
+				else if (filter instanceof Within) {
+					out.write("ST_Within(");
+				}
+				else {
+					throw new RuntimeException("Unknown operator: " + filter);
+				}
+
+				if (swapped) {
+					e2.accept(this, extraData);
+					out.write(", ");
+					e1.accept(this, extraData);
+				}
+				else {
+					e1.accept(this, extraData);
+					out.write(", ");
+					e2.accept(this, extraData);
+				}
+
+				out.write(")");
+			}
+		} 
+		catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+
+		return extraData;
+	}
 }

@@ -108,8 +108,8 @@ public class MySQLDataStoreFactory extends JDBCDataStoreFactory {
         	//version is at least 5.6.
         	enhancedSpatialSupport = isMySqlVersion56(dataStore);
         } else if (enhancedSpatialFlag && !isMySqlVersion56(dataStore)) {
-        		System.out.println("MySQL version does not support enhancedSpatialSupport. Disabling it");
-        		enhancedSpatialSupport = false;
+        	dataStore.getLogger().info("MySQL version does not support enhancedSpatialSupport. Disabling it");
+        	enhancedSpatialSupport = false;
         }
         
         SQLDialect dialect = dataStore.getSQLDialect();

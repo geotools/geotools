@@ -29,11 +29,19 @@ public class MySQLSpatialFiltersOnlineTest extends JDBCSpatialFiltersOnlineTest 
 	
     @Override
 	protected void connect() throws Exception {
-		super.connect();
-		if (dialect instanceof MySQLDialect) {
-			System.out.println("MySQLDialect enhanced spatial support is:" + ((MySQLDialect)dialect).getUsePreciseSpatialOps());
+        super.connect();
+        
+        //uncomment code below to enable logging
+    	//java.util.logging.ConsoleHandler handler = new java.util.logging.ConsoleHandler();
+        //handler.setLevel(java.util.logging.Level.FINE);
+        //org.geotools.util.logging.Logging.getLogger("org.geotools.data.jdbc").addHandler(handler);
+		
+        if (dialect instanceof MySQLDialect) {
+			 org.geotools.util.logging.Logging.getLogger("org.geotools.data.jdbc").info(
+					 "MySQLDialect enhanced spatial support is:" + ((MySQLDialect)dialect).getUsePreciseSpatialOps());
 		} else if (dialect instanceof MySQLDialectBasic) {
-			System.out.println("MySQLDialectBasic enhanced spatial support is:" + ((MySQLDialectBasic)dialect).getUsePreciseSpatialOps());
+			 org.geotools.util.logging.Logging.getLogger("org.geotools.data.jdbc").info(
+					 "MySQLDialectBasic enhanced spatial support is:" + ((MySQLDialectBasic)dialect).getUsePreciseSpatialOps());
 		}
 	}
 

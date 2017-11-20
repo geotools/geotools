@@ -368,9 +368,10 @@ public class MBObjectStops {
                         JSONArray stop = (JSONArray) stops.get(i);
                         if (stop.get(0) instanceof Long) {
                             layerZoomLevels.add(((Long)stop.get(0)));
-                        }
-                        if (stop.get(0) instanceof JSONObject) {
+                        } else if (stop.get(0) instanceof JSONObject) {
                             layerZoomLevels.add((Long)((JSONObject) stop.get(0)).get("zoom"));
+                        } else {
+                            throw new MBFormatException("The \"property\" field missing for stops or invalid zoom.");
                         }
                     }
                 }

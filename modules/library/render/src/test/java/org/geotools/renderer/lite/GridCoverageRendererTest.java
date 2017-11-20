@@ -16,38 +16,8 @@
  */
 package org.geotools.renderer.lite;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
-import java.awt.image.ComponentColorModel;
-import java.awt.image.RenderedImage;
-import java.awt.image.WritableRaster;
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.imageio.ImageIO;
-import javax.media.jai.Interpolation;
-import javax.media.jai.ROI;
-
+import com.vividsolutions.jts.geom.Envelope;
+import it.geosolutions.jaiext.JAIExt;
 import org.geotools.TestData;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;
@@ -120,9 +90,34 @@ import org.opengis.referencing.crs.GeographicCRS;
 import org.opengis.referencing.datum.Ellipsoid;
 import org.opengis.referencing.operation.MathTransform;
 
-import com.vividsolutions.jts.geom.Envelope;
+import javax.imageio.ImageIO;
+import javax.media.jai.Interpolation;
+import javax.media.jai.ROI;
+import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.awt.image.ComponentColorModel;
+import java.awt.image.RenderedImage;
+import java.awt.image.WritableRaster;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import it.geosolutions.jaiext.JAIExt;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * @author Simone Giannecchini
@@ -1542,4 +1537,38 @@ public class GridCoverageRendererTest  {
         }
 
     }
+
+    /**
+     * Test painting a request outside the valid area
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void testPaintOutsideValidArea() throws Exception {
+        
+        StyleBuilder sb = new StyleBuilder();
+        Style style = sb.createStyle(sb.createRasterSymbolizer());
+        final MapContent content = new MapContent();
+        content.addLayer(new GridReaderLayer(worldReader, style));
+
+        final StreamingRenderer renderer = new StreamingRenderer();
+        CountingRenderListener counter = new CountingRenderListener();
+        renderer.addRenderListener(counter);
+        renderer.setMapContent(content);
+        Map<Object, Object> rendererParams = new HashMap<Object, Object>();
+        rendererParams.put(StreamingRenderer.ADVANCED_PROJECTION_HANDLING_KEY, true);
+        renderer.setRendererHints(rendererParams);
+        BufferedImage image = new BufferedImage(256, 256, BufferedImage.TYPE_4BYTE_ABGR);
+        Graphics2D g2d = (Graphics2D) image.getGraphics();
+        CoordinateReferenceSystem crs = CRS.decode("EPSG:3572", true);
+        ReferencedEnvelope envelope = new ReferencedEnvelope(-38207011.656556, -12735670.552185,
+                12735670.552186, 38207011.656556, crs);
+        renderer.paint(g2d, new Rectangle(0,0,256,256), envelope);
+        g2d.dispose();
+        content.dispose();
+        // make sure no errors and no features
+        assertEquals(0, counter.errors);
+        assertEquals(0, counter.features);
+    }
+
 }

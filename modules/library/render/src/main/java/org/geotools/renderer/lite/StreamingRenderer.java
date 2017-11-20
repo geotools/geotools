@@ -1653,6 +1653,12 @@ public class StreamingRenderer implements GTRenderer {
      */
     private Filter createBBoxFilters(FeatureType schema, List<PropertyName> attributes,
             List<ReferencedEnvelope> bboxes) throws IllegalFilterException {
+        // if there are no bboxes to render then use Filter.EXCLUDE as there is no clear way
+        // to return
+        if (bboxes.isEmpty()) {
+            return Filter.EXCLUDE;
+        }
+        
         Filter filter = Filter.INCLUDE;
         final int length = attributes.size();
         Object attType;

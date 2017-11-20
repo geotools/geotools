@@ -16,6 +16,7 @@
  */
 package org.geotools.renderer.lite;
 
+
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
@@ -50,6 +51,8 @@ import javax.media.jai.ROI;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.RegexFileFilter;
+import com.vividsolutions.jts.geom.Envelope;
+import it.geosolutions.jaiext.JAIExt;
 import org.geotools.TestData;
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;
@@ -93,7 +96,6 @@ import org.geotools.referencing.operation.DefaultMathTransformFactory;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
 import org.geotools.referencing.operation.projection.MapProjection;
 import org.geotools.renderer.lite.gridcoverage2d.ContrastEnhancementType;
-import org.geotools.renderer.lite.gridcoverage2d.GridCoverageReaderHelper;
 import org.geotools.renderer.lite.gridcoverage2d.GridCoverageReaderHelperTest;
 import org.geotools.renderer.lite.gridcoverage2d.GridCoverageRenderer;
 import org.geotools.resources.image.ImageUtilities;
@@ -126,10 +128,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.crs.GeographicCRS;
 import org.opengis.referencing.datum.Ellipsoid;
 import org.opengis.referencing.operation.MathTransform;
-
-import com.vividsolutions.jts.geom.Envelope;
-
-import it.geosolutions.jaiext.JAIExt;
 
 /**
  * @author Simone Giannecchini
@@ -1637,4 +1635,38 @@ public class GridCoverageRendererTest  {
         }
 
     }
+
+    /**
+     * Test painting a request outside the valid area
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void testPaintOutsideValidArea() throws Exception {
+        
+        StyleBuilder sb = new StyleBuilder();
+        Style style = sb.createStyle(sb.createRasterSymbolizer());
+        final MapContent content = new MapContent();
+        content.addLayer(new GridReaderLayer(worldReader, style));
+
+        final StreamingRenderer renderer = new StreamingRenderer();
+        CountingRenderListener counter = new CountingRenderListener();
+        renderer.addRenderListener(counter);
+        renderer.setMapContent(content);
+        Map<Object, Object> rendererParams = new HashMap<Object, Object>();
+        rendererParams.put(StreamingRenderer.ADVANCED_PROJECTION_HANDLING_KEY, true);
+        renderer.setRendererHints(rendererParams);
+        BufferedImage image = new BufferedImage(256, 256, BufferedImage.TYPE_4BYTE_ABGR);
+        Graphics2D g2d = (Graphics2D) image.getGraphics();
+        CoordinateReferenceSystem crs = CRS.decode("EPSG:3572", true);
+        ReferencedEnvelope envelope = new ReferencedEnvelope(-38207011.656556, -12735670.552185,
+                12735670.552186, 38207011.656556, crs);
+        renderer.paint(g2d, new Rectangle(0,0,256,256), envelope);
+        g2d.dispose();
+        content.dispose();
+        // make sure no errors and no features
+        assertEquals(0, counter.errors);
+        assertEquals(0, counter.features);
+    }
+
 }

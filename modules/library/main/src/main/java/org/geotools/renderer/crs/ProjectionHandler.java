@@ -289,6 +289,14 @@ public class ProjectionHandler {
     protected ReferencedEnvelope transformEnvelope(ReferencedEnvelope envelope,
             CoordinateReferenceSystem targetCRS) throws TransformException, FactoryException {
         try {
+            if (validAreaBounds != null) {
+                ReferencedEnvelope validAreaInTargetCRS = validAreaBounds.transform(envelope.getCoordinateReferenceSystem(), true);
+                envelope = envelope.intersection(validAreaInTargetCRS);
+                if (envelope.isEmpty()) {
+                    return null;
+                }
+            }
+            
             ReferencedEnvelope transformed = envelope.transform(targetCRS, true, 10);
             ProjectionHandler handler = ProjectionHandlerFinder.getHandler(new ReferencedEnvelope(targetCRS),
                     DefaultGeographicCRS.WGS84, true);

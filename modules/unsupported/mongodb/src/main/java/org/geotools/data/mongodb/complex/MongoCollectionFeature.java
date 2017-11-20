@@ -31,6 +31,8 @@ final class MongoCollectionFeature extends SimpleFeatureImpl {
 
     private final MongoFeature mongoFeature;
 
+    private final String collectionPath;
+
     private final Map<String, Integer> collectionsIndexes = new HashMap<>();
 
     static MongoCollectionFeature build(Object feature, String collectionPath, int collectionIndex) {
@@ -52,6 +54,7 @@ final class MongoCollectionFeature extends SimpleFeatureImpl {
         super(feature.getValues(), feature.getFeatureType(), new FeatureIdImpl(UUID.randomUUID().toString()), false);
         this.mongoFeature = feature;
         this.collectionsIndexes.put(collectionPath, collectionIndex);
+        this.collectionPath = collectionPath;
     }
 
     MongoFeature getMongoFeature() {
@@ -60,5 +63,9 @@ final class MongoCollectionFeature extends SimpleFeatureImpl {
 
     Map<String, Integer> getCollectionsIndexes() {
         return collectionsIndexes;
+    }
+
+    public String getCollectionPath() {
+        return collectionPath;
     }
 }

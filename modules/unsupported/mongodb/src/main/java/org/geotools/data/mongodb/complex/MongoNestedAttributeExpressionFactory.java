@@ -21,10 +21,13 @@ import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.data.complex.NestedAttributeMapping;
 import org.geotools.data.complex.filter.XPathUtil;
 import org.geotools.data.complex.spi.CustomAttributeExpressionFactory;
+import org.geotools.filter.ConstantExpression;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Literal;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -47,6 +50,7 @@ public class MongoNestedAttributeExpressionFactory implements CustomAttributeExp
         int steps = xpath.size();
         XPathUtil.StepList finalXpath = xpath.subList(nestedMapping.getTargetXPath().size(), steps);
         AttributeMapping attributeMapping = nestedMapping;
+        String jsonPath = addPath(attributeMapping, "");
         int end = finalXpath.size();
         int start = 0;
         while (end > start) {
@@ -56,6 +60,7 @@ public class MongoNestedAttributeExpressionFactory implements CustomAttributeExp
                     break;
                 }
                 attributeMapping = result.attributeMapping;
+                jsonPath = addPath(attributeMapping, jsonPath);
                 start += result.index;
             } catch (Exception exception) {
                 throw new RuntimeException("Error getting feature type mapping.");
@@ -66,12 +71,28 @@ public class MongoNestedAttributeExpressionFactory implements CustomAttributeExp
         }
         Expression sourceExpression = attributeMapping.getSourceExpression();
         if (sourceExpression instanceof JsonSelectFunction) {
-            List<Expression> parameters = new ArrayList<>();
             JsonSelectAllFunction jsonSelect = new JsonSelectAllFunction();
-            jsonSelect.setParameters(((JsonSelectFunction) sourceExpression).getParameters());
+            jsonPath = addPath(jsonPath, ((JsonSelectFunction) sourceExpression).getJsonPath());
+            List<Expression> parameters = Collections.singletonList(ConstantExpression.constant(jsonPath));
+            jsonSelect.setParameters(parameters);
             return jsonSelect;
         }
         return sourceExpression;
+    }
+
+    private String addPath(AttributeMapping attribute, String currentPath) {
+        if (attribute instanceof MongoNestedMapping) {
+            Expression sourceExpression = attribute.getSourceExpression();
+            if (sourceExpression instanceof CollectionLinkFunction) {
+                String collection = ((CollectionLinkFunction) sourceExpression).getPath();
+                return addPath(currentPath, collection);
+            }
+        }
+        return currentPath;
+    }
+
+    private String addPath(String currentPath, String newPath) {
+        return currentPath == null || currentPath.isEmpty() ? newPath : currentPath + "." + newPath;
     }
 
     private static final class SearchResult {

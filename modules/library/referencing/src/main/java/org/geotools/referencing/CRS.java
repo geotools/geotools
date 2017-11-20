@@ -16,20 +16,6 @@
  */
 package org.geotools.referencing;
 
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Set;
-import java.util.StringTokenizer;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
 import org.geotools.factory.Factory;
 import org.geotools.factory.FactoryNotFoundException;
 import org.geotools.factory.FactoryRegistryException;
@@ -71,6 +57,7 @@ import org.opengis.metadata.extent.BoundingPolygon;
 import org.opengis.metadata.extent.Extent;
 import org.opengis.metadata.extent.GeographicBoundingBox;
 import org.opengis.metadata.extent.GeographicExtent;
+import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.AuthorityFactory;
 import org.opengis.referencing.FactoryException;
@@ -101,6 +88,19 @@ import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.NoninvertibleTransformException;
 import org.opengis.referencing.operation.Projection;
 import org.opengis.referencing.operation.TransformException;
+
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.StringTokenizer;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -1639,11 +1639,114 @@ search:             if (DefaultCoordinateSystemAxis.isCompassDirection(axis.getD
                 targetPt.setOrdinate(i, centerPt.getOrdinate(i));
             }
         }
+
+        MapProjection targetProjection = CRS.getMapProjection(targetCRS);
+        if (targetProjection != null) {
+            // the points intersecting the rays emanating from the center of the projection in polar stereographic 
+            // and other projections is a maximum deformation point, add those to the envelope too
+            getProjectionCenterLonLat(targetCRS, centerPt);
+            // now try to intesect the source envelope with the center point
+            if(isPole(centerPt, DefaultGeographicCRS.WGS84)) {
+                try {
+                    MathTransform geoToTarget;
+                    Envelope geoEnvelope;
+                    if (sourceCRS instanceof GeographicCRS) {
+                        // this is a simplification to avoid dateline flips due to datum differences
+                        geoToTarget = findMathTransform(sourceCRS, targetCRS);
+                        geoEnvelope = envelope;
+                    } else {
+                        MathTransform mtWgs84 = findMathTransform(sourceCRS, DefaultGeographicCRS.WGS84);
+                        geoToTarget = findMathTransform(DefaultGeographicCRS.WGS84, targetCRS);
+                        geoEnvelope = transform(mtWgs84, envelope, null);
+                    }
+                    expandEnvelopeOnExtremePoints(centerPt, transformed, geoToTarget, geoEnvelope);
+                    if (targetProjection instanceof PolarStereographic || targetProjection instanceof LambertAzimuthalEqualArea) {
+                        // sample quadrant points too
+                        centerPt.setOrdinate(0, rollLongitude(centerPt.getOrdinate(0) - 90));
+                        expandEnvelopeOnExtremePoints(centerPt, transformed, geoToTarget, geoEnvelope);
+                        centerPt.setOrdinate(0, rollLongitude(centerPt.getOrdinate(0) - 90));
+                        expandEnvelopeOnExtremePoints(centerPt, transformed, geoToTarget, geoEnvelope);
+                        centerPt.setOrdinate(0, rollLongitude(centerPt.getOrdinate(0) - 90));
+                        expandEnvelopeOnExtremePoints(centerPt, transformed, geoToTarget, geoEnvelope);
+                    }
+                } catch (FactoryException | TransformException e) {
+                    LOGGER.log(Level.FINE, "Failed to transform from source to WGS84 to further enlarge the envelope on extreme points, proceeding without expansion", e);
+                }
+            }
+        }
+
         return transformed;
     }
 
-    private static boolean isPole(DirectPosition2D point, CoordinateReferenceSystem crs) {
-        DirectPosition2D result = new DirectPosition2D();
+    private static double rollLongitude(final double x) {
+        double rolled = x - (((int) (x + Math.signum(x) * 180)) / 360) * 360.0;
+        return rolled;
+    }
+
+    private static void expandEnvelopeOnExtremePoints(GeneralDirectPosition centerPt, GeneralEnvelope transformed, 
+                                                      MathTransform geoToTarget, Envelope geoEnvelope) throws TransformException {
+        GeneralDirectPosition workPoint = new GeneralDirectPosition(centerPt.getDimension());
+        double centerLon = centerPt.getOrdinate(0);
+        double minLon = geoEnvelope.getMinimum(0);
+        double maxLon = geoEnvelope.getMaximum(0);
+        double minLat = geoEnvelope.getMinimum(1);
+        double maxLat = geoEnvelope.getMaximum(1);
+        if (minLon <= centerLon && centerLon <= maxLon) {
+            // intersection at boundaries, south
+            includeTransformedPoint(transformed, geoToTarget, workPoint, centerLon, minLat);
+            // intersection at boundaries, north
+            includeTransformedPoint(transformed, geoToTarget, workPoint, centerLon, maxLat);
+        }
+        double centerLat = centerPt.getOrdinate(1);
+        if (minLat <= centerLat && centerLat <= maxLat) {
+            // intersection at boundaries, west
+            includeTransformedPoint(transformed, geoToTarget, workPoint, minLon, centerLat);
+            // intersection at boundaries, east
+            includeTransformedPoint(transformed, geoToTarget, workPoint, maxLon, centerLat);
+        }
+    }
+
+    private static void includeTransformedPoint(GeneralEnvelope envelope, MathTransform mt,
+                                                GeneralDirectPosition workPoint, double x, double y) throws TransformException {
+        workPoint.setOrdinate(0, x);
+        workPoint.setOrdinate(1, y);
+        mt.transform(workPoint, workPoint);
+        envelope.add(workPoint);
+    }
+
+    private static GeneralDirectPosition getProjectionCenterLonLat(CoordinateReferenceSystem crs, GeneralDirectPosition centerPt) {
+        // set defaults
+        centerPt.setOrdinate(0, 0);
+        centerPt.setOrdinate(1, 0);
+
+        MapProjection projection = getMapProjection(crs);
+        if (projection == null) {
+            return centerPt;
+        }
+
+        for (GeneralParameterValue gpv : projection.getParameterValues().values()) {
+            // for safety
+            if(! (gpv instanceof ParameterValue)) {
+                continue;
+            }
+            ParameterValue pv = (ParameterValue) gpv;
+            ReferenceIdentifier pvName = pv.getDescriptor().getName();
+            if (MapProjection.AbstractProvider.LATITUDE_OF_ORIGIN.getName().equals(pvName)) {
+                centerPt.setOrdinate(1, pv.doubleValue());
+            } else if (MapProjection.AbstractProvider.LATITUDE_OF_CENTRE.getName().equals(pvName)) {
+                centerPt.setOrdinate(1, pv.doubleValue());
+            } else if (MapProjection.AbstractProvider.LONGITUDE_OF_CENTRE.getName().equals(pvName)) {
+                centerPt.setOrdinate(0, pv.doubleValue());
+            } else if (MapProjection.AbstractProvider.CENTRAL_MERIDIAN.getName().equals(pvName)) {
+                centerPt.setOrdinate(0, pv.doubleValue());
+            }
+        }
+        
+        return centerPt;
+    }
+
+    private static boolean isPole(DirectPosition point, CoordinateReferenceSystem crs) {
+        DirectPosition result = new DirectPosition2D();
         GeographicCRS geographic;
         try {
             ProjectedCRS projectedCRS = getProjectedCRS(crs);
@@ -1663,9 +1766,9 @@ search:             if (DefaultCoordinateSystemAxis.isCompassDirection(axis.getD
         
         final double EPS = 1e-6;
         if (getAxisOrder(geographic) == AxisOrder.NORTH_EAST) {
-            return Math.abs(result.x - 90) < EPS || Math.abs(result.x + 90) < EPS;  
+            return Math.abs(result.getOrdinate(0) - 90) < EPS || Math.abs(result.getOrdinate(0) + 90) < EPS;  
         } else {
-            return Math.abs(result.y - 90) < EPS || Math.abs(result.y + 90) < EPS;
+            return Math.abs(result.getOrdinate(1) - 90) < EPS || Math.abs(result.getOrdinate(1) + 90) < EPS;
         }
 
          

@@ -22,10 +22,12 @@ import java.awt.geom.Rectangle2D;
 import java.util.Set;
 
 import org.geotools.geometry.DirectPosition2D;
+import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.referencing.operation.projection.MapProjection;
 import org.geotools.resources.geometry.XRectangle2D;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -375,5 +377,47 @@ public final class CrsTest {
         for(String wkt : wkts) {
             assertNotNull(CRS.parseWKT(wkt));
         }
+    }
+    
+    @Test
+    public void reprojectEnvelopeRotatedPole() throws Exception {
+        try {
+            MapProjection.SKIP_SANITY_CHECKS = true;
+            String wkt = "PROJCS[\"WGS 84 / North Pole LAEA Alaska\", \n" +
+                    "  GEOGCS[\"WGS 84\", \n" +
+                    "    DATUM[\"World Geodetic System 1984\", \n" +
+                    "      SPHEROID[\"WGS 84\", 6378137.0, 298.257223563, AUTHORITY[\"EPSG\",\"7030\"]], \n" +
+                    "      AUTHORITY[\"EPSG\",\"6326\"]], \n" +
+                    "    PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]], \n" +
+                    "    UNIT[\"degree\", 0.017453292519943295], \n" +
+                    "    AXIS[\"Geodetic latitude\", NORTH], \n" +
+                    "    AXIS[\"Geodetic longitude\", EAST], \n" +
+                    "    AUTHORITY[\"EPSG\",\"4326\"]], \n" +
+                    "  PROJECTION[\"Lambert_Azimuthal_Equal_Area\", AUTHORITY[\"EPSG\",\"9820\"]], \n" +
+                    "  PARAMETER[\"latitude_of_center\", 90.0], \n" +
+                    "  PARAMETER[\"longitude_of_center\", -150.0], \n" +
+                    "  PARAMETER[\"false_easting\", 0.0], \n" +
+                    "  PARAMETER[\"false_northing\", 0.0], \n" +
+                    "  UNIT[\"m\", 1.0], \n" +
+                    "  AXIS[\"Easting\", \"South along 60 deg West\"], \n" +
+                    "  AXIS[\"Northing\", \"South along 30 deg East\"], \n" +
+                    "  AUTHORITY[\"EPSG\",\"3572\"]]";
+
+            CoordinateReferenceSystem crs = CRS.parseWKT(wkt);
+            // a legit originalEnvelope in rotated pole
+            GeneralEnvelope originalEnvelope = new GeneralEnvelope(crs);
+            originalEnvelope.setEnvelope(-9000000, -9000000, 900000, 9000000);
+            // back to wgs84
+            GeneralEnvelope wgs84Envelope = CRS.transform(originalEnvelope, DefaultGeographicCRS.WGS84);
+            System.out.println(wgs84Envelope);
+            // and then again in target crs, the result should contain the input, but not taking
+            // into account the origin in -150, it ended up not doing so
+            GeneralEnvelope transformed = CRS.transform(wgs84Envelope, crs);
+            // System.out.println(transformed);
+            assertTrue(transformed.contains(originalEnvelope, true));
+        } finally {
+            MapProjection.SKIP_SANITY_CHECKS = false;
+        }
+
     }
 }

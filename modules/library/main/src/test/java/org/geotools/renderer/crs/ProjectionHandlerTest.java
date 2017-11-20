@@ -287,8 +287,18 @@ public class ProjectionHandlerTest {
         ReferencedEnvelope env = envelopes.get(0);
         assertEquals(-180.0, env.getMinX(), EPS);
         assertEquals(180.0, env.getMaxX(), EPS);
-        assertEquals(-89, env.getMinY(), 0.1);
-        assertEquals(89.0, env.getMaxY(), 0.1);
+        assertEquals(-85, env.getMinY(), 0.1);
+        assertEquals(85.0, env.getMaxY(), 0.1);
+    }
+
+    @Test
+    public void testQueryOutsideValidArea() throws Exception {
+        ReferencedEnvelope world = new ReferencedEnvelope(-200, 200, -89, -86, WGS84);
+        ReferencedEnvelope mercatorEnvelope = world.transform(MERCATOR_SHIFTED, true);
+
+        ProjectionHandler handler = ProjectionHandlerFinder.getHandler(mercatorEnvelope, WGS84, true);
+        List<ReferencedEnvelope> envelopes = handler.getQueryEnvelopes();
+        assertEquals(0, envelopes.size());
     }
 
     @Test

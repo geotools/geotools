@@ -210,12 +210,13 @@ public class MBFilterTest {
         
         MBFilter mbfilter = new MBFilter(json);
         Filter filter = mbfilter.filter();
-        assertEquals("EQUALS(in(a,1,2,3), true)", ECQL.toCQL(filter) );
+        System.out.println(ECQL.toCQL(filter));
+        assertEquals("in(a,1,2,3) = true", ECQL.toCQL(filter) );
         
         json = array("['!in', 'a', 1, 2, 3]");
         mbfilter = new MBFilter(json);
         filter = mbfilter.filter();
-        assertEquals("EQUALS(in(a,1,2,3), false)", ECQL.toCQL(filter) );
+        assertEquals("in(a,1,2,3) = false", ECQL.toCQL(filter) );
     }
     
     @Test

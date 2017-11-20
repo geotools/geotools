@@ -390,7 +390,7 @@ public class MBFilter {
                 args[i] = ff.literal( value );
             }
             Function in = ff.function("in", args );
-            return ff.equal( in, ff.literal(true));
+            return ff.equals( in, ff.literal(true));
         } else if ("!in".equals(operator)) {
             String key = parse.get(json, 1);
             Expression[] args = new Expression[json.size() - 1];
@@ -400,7 +400,7 @@ public class MBFilter {
                 args[i] = ff.literal(value);
             }
             Function in = ff.function("in", args);
-            return ff.equal(in, ff.literal(false));
+            return ff.equals(in, ff.literal(false));
         // Combining Filters
         } else if ("all".equals(operator)) {
             List<Filter> all = new ArrayList<>();

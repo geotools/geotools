@@ -56,9 +56,12 @@ import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.FeatureReader;
+import org.geotools.data.FeatureStore;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
+import org.geotools.data.collection.ListFeatureCollection;
+import org.geotools.data.shapefile.dbf.DbaseFileHeader;
 import org.geotools.data.shapefile.files.ShpFileType;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -75,6 +78,7 @@ import org.geotools.feature.type.BasicFeatureTypes;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.util.URLs;
 import org.junit.After;
 import org.junit.Test;
@@ -113,6 +117,21 @@ import com.vividsolutions.jts.geom.Polygon;
  * @author Ian Schneider
  */
 public class ShapefileDataStoreTest extends TestCaseSupport {
+
+    // Custom class for testing
+    class CustomTypeClass {
+
+        private int customField;
+
+        CustomTypeClass(int value) {
+            this.customField = value;
+        }
+
+        @Override
+        public String toString() {
+            return Integer.toString(customField);
+        }
+    }
 
     final static String STATE_POP = "shapes/statepop.shp";
     final static String STREAM = "shapes/stream.shp";
@@ -307,6 +326,50 @@ public class ShapefileDataStoreTest extends TestCaseSupport {
         List<AttributeDescriptor> attributes = schema.getAttributeDescriptors();
         assertEquals("Number of Attributes", 253, attributes.size());
         shapeDataStore.dispose();
+    }
+
+    @Test
+    public void testCustomAttributeInSchema() throws Exception {
+        File shp = org.geotools.test.TestData.file(this, "dumper");
+        shp = new File(shp, "custom.shp");
+        SimpleFeatureTypeBuilder ftBuilder = new SimpleFeatureTypeBuilder();
+        ftBuilder.setName("custom");
+        ftBuilder.setCRS(DefaultGeographicCRS.WGS84);
+        ftBuilder.add("defaultGeom", Point.class, DefaultGeographicCRS.WGS84);
+        ftBuilder.setDefaultGeometry("defaultGeom");
+        ftBuilder.add("custom", CustomTypeClass.class);
+
+        SimpleFeatureType type = ftBuilder.buildFeatureType();
+        URL shapeUrl = URLs.fileToUrl(shp);
+        ShapefileDataStore shapeDataStore = new ShapefileDataStore(shapeUrl);
+
+        // Before the update, this call would have thrown an IOException
+        // due to no mapping found for custom class, failing the test
+        shapeDataStore.createSchema(type);
+
+        ListFeatureCollection collection = new ListFeatureCollection(type);
+        SimpleFeatureBuilder builder = new SimpleFeatureBuilder(type);
+        Object[] values = new Object[] { new GeometryFactory().createPoint(new Coordinate(10, 10)),
+                new CustomTypeClass(20) };
+        builder.addAll(values);
+
+        SimpleFeature feature = builder.buildFeature(type.getTypeName() + '.' + 0);
+        collection.add(feature);
+
+        FeatureStore store = (FeatureStore) shapeDataStore
+                .getFeatureSource(type.getName().getLocalPart());
+        DefaultTransaction transaction = new DefaultTransaction("create");
+        store.setTransaction(transaction);
+        store.addFeatures(collection);
+        transaction.commit();
+        shapeDataStore.dispose();
+
+        // Now read it back
+        shapeDataStore = new ShapefileDataStore(shapeUrl);
+        SimpleFeatureCollection featureCollection = loadFeatures(shapeDataStore);
+        assertTrue(String.class.equals(featureCollection.features().next().getAttribute("custom").getClass()));
+        shapeDataStore.dispose();
+
     }
 
     @Test

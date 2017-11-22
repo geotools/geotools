@@ -55,7 +55,6 @@ import org.geotools.jdbc.ColumnMetadata;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.referencing.CRS;
 import org.geotools.util.Version;
-import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
@@ -112,7 +111,6 @@ public class PostGISDialect extends BasicSQLDialect {
             put("CIRCULARSTRING", CircularString.class);
             put("MULTISURFACE", MultiSurface.class);
             put("BYTEA", byte[].class);
-            put("HSTORE", HStore.class);
         }
     };
     
@@ -479,7 +477,11 @@ public class PostGISDialect extends BasicSQLDialect {
         }
 
         if (HStore.TYPENAME.equalsIgnoreCase(typeName)) {
-        	return HStore.class;
+            return HStore.class;
+        }
+
+        if ("json".equalsIgnoreCase(typeName) || "jsonb".equalsIgnoreCase(typeName)) {
+            return String.class;
         }
         
         String gType = null;
@@ -887,6 +889,8 @@ public class PostGISDialect extends BasicSQLDialect {
         mappings.put("timestamptz", Timestamp.class);
         mappings.put("uuid", UUID.class);
         mappings.put("hstore", HStore.class);
+        mappings.put("json", String.class);
+        mappings.put("jsonb", String.class);
     }
     
     @Override

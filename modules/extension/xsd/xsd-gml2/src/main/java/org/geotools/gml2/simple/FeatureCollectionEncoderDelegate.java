@@ -79,6 +79,8 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
     QName boundedBy;
 
     QName name;
+    
+    protected boolean encodeGeometryIds = false;
 
     protected FeatureCollectionEncoderDelegate(SimpleFeatureCollection features, Encoder encoder,
             GMLDelegate gml) {
@@ -173,7 +175,8 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
                 continue;
             }
 
-            encodeValue(output, ee, value, attribute);
+            String gmlId = encodeGeometryIds ? f.getID() + "." + name.getLocalPart() : null;
+            encodeValue(output, ee, value, attribute, gmlId);
         }
 
         output.endElement(ftContext.featureQualifiedName);
@@ -182,7 +185,7 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
     }
 
     private void encodeValue(GMLWriter output, ObjectEncoder ee, Object value,
-            AttributeContext attribute) throws SAXException, Exception {
+            AttributeContext attribute, String featureId) throws SAXException, Exception {
         output.startElement(attribute.name, null);
 
         if (value instanceof Geometry) {
@@ -193,7 +196,7 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
                     ((GeometryDescriptor) attribute.descriptor).getCoordinateReferenceSystem(),
                     dimension);
             GeometryEncoder geometryEncoder = getGeometryEncoder(value, attribute);
-            geometryEncoder.encode(g, atts, output);
+            geometryEncoder.encode(g, atts, output, featureId);
         } else if (value instanceof Envelope) {
             ReferencedEnvelope e = (ReferencedEnvelope) value;
             Integer dimension = GML2EncodingUtils.getEnvelopeDimension(e,

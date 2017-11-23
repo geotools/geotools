@@ -193,7 +193,7 @@ public class GMLWriter {
             qualifiedName = qualify(qn.getNamespaceURI(), qn.getLocalPart(), null);
         }
         if (atts == null) {
-            atts =new AttributesImpl();
+            atts = new AttributesImpl();
         }
         if (qualifiedName != null) {
             String localName = null;

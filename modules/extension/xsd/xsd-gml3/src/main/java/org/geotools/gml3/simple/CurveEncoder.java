@@ -60,8 +60,12 @@ class CurveEncoder extends GeometryEncoder<LineString> {
         this.arcString = ARC_STRING.derive(gmlPrefix, gmlUri);
     }
 
-    public void encode(LineString geometry, AttributesImpl atts, GMLWriter handler)
+    public void encode(LineString geometry, AttributesImpl atts, GMLWriter handler, String gmlId)
             throws Exception {
+        if ( gmlId != null) {
+            atts = cloneWithGmlId(atts, gmlId);
+        }
+        
         handler.startElement(curve, atts);
         handler.startElement(segments, null);
 

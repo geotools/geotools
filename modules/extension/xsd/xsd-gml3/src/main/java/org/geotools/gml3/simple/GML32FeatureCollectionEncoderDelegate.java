@@ -60,6 +60,7 @@ public class GML32FeatureCollectionEncoderDelegate extends
 
     public GML32FeatureCollectionEncoderDelegate(SimpleFeatureCollection features, Encoder encoder) {
         super(features, encoder, new GML32Delegate(encoder));
+        this.encodeGeometryIds = true;
     }
 
     public static class GML32Delegate implements org.geotools.gml2.simple.GMLDelegate {

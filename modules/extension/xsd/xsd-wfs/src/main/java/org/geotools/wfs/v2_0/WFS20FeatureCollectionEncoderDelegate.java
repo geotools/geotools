@@ -34,6 +34,7 @@ class WFS20FeatureCollectionEncoderDelegate extends FeatureCollectionEncoderDele
 
     public WFS20FeatureCollectionEncoderDelegate(SimpleFeatureCollection features, Encoder encoder) {
         super(features, encoder, new WFS20EncoderDelegate(encoder));
+        this.encodeGeometryIds = true;
     }
 
     static class WFS20EncoderDelegate extends GML32FeatureCollectionEncoderDelegate.GML32Delegate {

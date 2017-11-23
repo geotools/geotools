@@ -73,26 +73,28 @@ class MultiLineStringEncoder extends GeometryEncoder<Geometry> {
     }
 
     @Override
-    public void encode(Geometry geometry, AttributesImpl atts, GMLWriter handler)
+    public void encode(Geometry geometry, AttributesImpl atts, GMLWriter handler, String gmlId)
             throws Exception {
+        atts = cloneWithGmlId(atts, gmlId);
         handler.startElement(multiContainer, atts);
 
-        encodeMembers(geometry, handler);
+        encodeMembers(geometry, handler, gmlId);
 
         handler.endElement(multiContainer);
     }
 
-    protected void encodeMembers(Geometry geometry, GMLWriter handler) throws SAXException,
+    protected void encodeMembers(Geometry geometry, GMLWriter handler, String gmlId) throws SAXException,
             Exception {
         for (int i = 0; i < geometry.getNumGeometries(); i++) {
             handler.startElement(member, null);
             LineString line = (LineString) geometry.getGeometryN(i);
+            String childId = gmlId + "." + (i + 1);
             if (curveEncoding && line instanceof CurvedGeometry) {
-                ce.encode(line, null, handler);
+                ce.encode(line, null, handler, childId);
             } else if (line instanceof LinearRing) {
-                lre.encode(line, null, handler);
+                lre.encode(line, null, handler, childId);
             } else {
-                lse.encode(line, null, handler);
+                lse.encode(line, null, handler, childId);
             }
             handler.endElement(member);
         }

@@ -52,12 +52,13 @@ class GeometryCollectionEncoder extends GeometryEncoder<GeometryCollection> {
     }
 
     @Override
-    public void encode(GeometryCollection geometry, AttributesImpl atts, GMLWriter handler)
+    public void encode(GeometryCollection geometry, AttributesImpl atts, GMLWriter handler, String gmlId)
             throws Exception {
+        atts = cloneWithGmlId(atts, gmlId);
         handler.startElement(multiGeometry, atts);
         for (int i = 0; i < geometry.getNumGeometries(); i++) {
             handler.startElement(geometryMember, null);
-            gge.encode(geometry.getGeometryN(i), atts, handler);
+            gge.encode(geometry.getGeometryN(i), null, handler, gmlId + "." + (i + 1));
             handler.endElement(geometryMember);
         }
         handler.endElement(multiGeometry);

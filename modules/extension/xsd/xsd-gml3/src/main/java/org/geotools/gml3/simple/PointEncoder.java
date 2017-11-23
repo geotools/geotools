@@ -48,8 +48,9 @@ class PointEncoder extends GeometryEncoder<Point> {
     }
 
     @Override
-    public void encode(Point geometry, AttributesImpl atts, GMLWriter handler)
+    public void encode(Point geometry, AttributesImpl atts, GMLWriter handler, String gmlId)
             throws Exception {
+        atts = cloneWithGmlId(atts, gmlId);
         handler.startElement(point, atts);
         handler.startElement(pos, null);
         

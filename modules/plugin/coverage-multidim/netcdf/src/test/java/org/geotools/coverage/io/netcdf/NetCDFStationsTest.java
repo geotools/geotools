@@ -24,6 +24,7 @@ import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.referencing.CRS;
+import org.geotools.resources.image.ImageUtilities;
 import org.geotools.test.TestData;
 import org.junit.Assert;
 import org.junit.Before;
@@ -187,11 +188,11 @@ public final class NetCDFStationsTest extends Assert {
 
         } finally {
 
-            // cleaning the tests directory
-            FileUtils.deleteQuietly(testDirectory);
             if (reader != null) {
                 reader.dispose();
             }
+            // cleaning the tests directory
+            FileUtils.deleteQuietly(testDirectory);
         }
     }
 
@@ -208,7 +209,7 @@ public final class NetCDFStationsTest extends Assert {
 
         // just keeping a reference to the reader so we can close it in the finally block
         ImageMosaicReader reader = null;
-
+        PlanarImage image = null;
         try {
 
             // move test files to the test directory
@@ -227,17 +228,21 @@ public final class NetCDFStationsTest extends Assert {
             // reading stationA data set
             GridCoverage2D coverage = reader.read("stationA", readParameters);
             assertThat(coverage, notNullValue());
-            PlanarImage image =  PlanarImage.wrapRenderedImage(coverage.getRenderedImage());
+            image =  PlanarImage.wrapRenderedImage(coverage.getRenderedImage());
             return image.getData();
 
 
         } finally {
 
-            // cleaning the tests directory
-            FileUtils.deleteQuietly(testDirectory);
+            if (image != null) {
+                ImageUtilities.disposeImage(image);
+            }
             if (reader != null) {
                 reader.dispose();
             }
+
+            // cleaning the tests directory
+            FileUtils.deleteQuietly(testDirectory);
         }
     }
 

@@ -36,7 +36,9 @@ import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.ImageTypeSpecifier;
 import javax.imageio.spi.ImageReaderSpi;
+import javax.imageio.stream.ImageInputStream;
 
+import org.apache.commons.io.IOUtils;
 import org.geotools.coverage.grid.io.FileSetManager;
 import org.geotools.coverage.io.catalog.CoverageSlice;
 import org.geotools.coverage.io.catalog.CoverageSlicesCatalog;
@@ -154,6 +156,9 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
      */
     boolean uniqueTimeAttribute = false;
 
+    /** The <code>ImageInputStream</code> (if any) associated to this reader. */
+    private ImageInputStream imageInputStream = null;
+
     /** Internal Cache for CoverageSourceDescriptor.**/
     private final SoftValueHashMap<String, VariableAdapter> coverageSourceDescriptorsCache= new SoftValueHashMap<String, VariableAdapter>();
 
@@ -260,6 +265,10 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         super.setInput(input, seekForwardOnly, ignoreMetadata);
         if (dataset != null) {
             reset();
+        }
+
+        if (input instanceof ImageInputStream) {
+            this.imageInputStream = (ImageInputStream) input;
         }
         try {
             dataset = extractDataset(input);
@@ -434,12 +443,17 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
                 ancillaryFileManager.dispose();
             }
 
+            if (imageInputStream != null) {
+                IOUtils.closeQuietly(imageInputStream);
+            }
+
         } catch (IOException e) {
             if (LOGGER.isLoggable(Level.WARNING))
                 LOGGER.warning("Errors closing NetCDF dataset." + e.getLocalizedMessage());
         } finally {
             dataset = null;
             ancillaryFileManager = null;
+            imageInputStream = null;
         }
     }
 

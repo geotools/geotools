@@ -65,15 +65,10 @@ public class PostGISJsonOnlineTest extends JDBCTestSupport {
 
     @Test
     public void testEntryWithSpaces() throws Exception {
-        String name = "entryWithSpaces";
-        SimpleFeature feature = getSingleFeatureByName(name);
-        String jsonColumnValue = (String) feature.getAttribute("jsonColumn");
-        String jsonbColumnValue = (String) feature.getAttribute("jsonbColumn");
-        
-        assertTrue(jsonColumnValue.contains("{\"title\"    :    \"Title\"}"));
-
+        SimpleFeature feature = getSingleFeatureByName("entryWithSpaces");
+        assertEquals("{\"title\"    :    \"Title\" }", feature.getAttribute("jsonColumn"));
         // JSONB does not preserve white spaces
-        assertFalse(jsonbColumnValue.contains("    :    "));
+        assertEquals("{\"title\": \"Title\"}", feature.getAttribute("jsonbColumn"));
     }
 
     @Test

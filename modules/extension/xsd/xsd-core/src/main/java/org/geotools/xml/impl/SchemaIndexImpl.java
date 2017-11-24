@@ -102,6 +102,9 @@ public class SchemaIndexImpl implements SchemaIndex {
     
     public void destroy() {
         //remove the adapter from the schemas
+        if(schemas==null) {
+            return;
+        }
         for (int i = 0; i < schemas.length; i++) {
             synchronized(this.schemas[i].eAdapters()) {
                 this.schemas[i].eAdapters().remove(adapter);

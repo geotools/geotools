@@ -123,6 +123,10 @@ public class XSDateTimeStrategyTest extends TestSchema {
         testParseEncode(XS.DATETIME, "2011-10-24T00:00:00.200-03:00", expected,
                 "2011-10-24T03:00:00.200Z");
 
+        expected = new java.sql.Timestamp(timestamp(2011, 9, 24, 10, 53, 00));
+        testParseEncode(XS.DATETIME, "2011-10-24T10:53Z", expected, "2011-10-24T10:53:00Z");
+
+
     }
 
     public void testEncodeCalendarDate() throws Exception {

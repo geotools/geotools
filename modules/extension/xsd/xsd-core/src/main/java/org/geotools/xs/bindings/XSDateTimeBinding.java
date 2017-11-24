@@ -106,7 +106,7 @@ public class XSDateTimeBinding implements SimpleBinding {
      */
     public Timestamp parse(InstanceComponent instance, Object value)
         throws Exception {
-        Calendar calendar = DatatypeConverterImpl.getInstance().parseDateTime((String) value);
+        Calendar calendar = DatatypeConverterImpl.getInstance().parseDateTime((String) value, true);
         Timestamp dateTime = new Timestamp(calendar.getTimeInMillis());
         return dateTime;
     }

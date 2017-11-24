@@ -25,6 +25,7 @@ import java.util.Set;
 import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.renderer.style.TextStyle2D;
 import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.TextSymbolizer.DisplacementMode;
 import org.geotools.styling.TextSymbolizer.PolygonAlignOptions;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -58,6 +59,8 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
     private Set<String> layerIds = new HashSet<String>();
 
     int maxDisplacement = 0;
+    
+    DisplacementMode displacementMode = DisplacementMode.STANDARD;
 
     int minGroupDistance = 0;
 
@@ -232,6 +235,19 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
         this.maxDisplacement = maxDisplacement;
     }
 
+    /**
+     * defines the way displacement takes place (applies only in polygon or point features)
+     * 
+     * @return
+     */
+    public DisplacementMode getDisplacementMode() {
+        return displacementMode;
+    }
+
+    public void setDisplacementMode(DisplacementMode displacementMode) {
+        this.displacementMode = displacementMode;
+    }
+    
     /**
      * When enabled, repeats labels every "repeat" pixels (works on lines only
      * atm)

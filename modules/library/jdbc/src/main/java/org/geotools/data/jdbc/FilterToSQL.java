@@ -16,26 +16,8 @@
  */
 package org.geotools.data.jdbc;
 
-import static org.geotools.filter.capability.FunctionNameImpl.parameter;
-
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.sql.Timestamp;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.measure.converter.UnitConverter;
-import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
-
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
 import org.geotools.data.jdbc.fidmapper.FIDMapper;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
@@ -115,10 +97,27 @@ import org.opengis.filter.temporal.TEquals;
 import org.opengis.filter.temporal.TOverlaps;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.crs.GeographicCRS;
+import org.opengis.temporal.Instant;
 import org.opengis.temporal.Period;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
+import javax.measure.converter.UnitConverter;
+import javax.measure.unit.SI;
+import javax.measure.unit.Unit;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.sql.Timestamp;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 /**
  * Encodes a filter into a SQL WHERE statement.  It should hopefully be generic
@@ -1441,17 +1440,21 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * @throws IOException
      */
     protected void writeLiteral(Object literal) throws IOException {
-        if(literal == null) {
-          out.write("NULL");
-        } else if(literal instanceof Number || literal instanceof Boolean) {
+        if (literal == null) {
+            out.write("NULL");
+        } else if (literal instanceof Number || literal instanceof Boolean) {
             out.write(String.valueOf(literal));
-        } else if(literal instanceof java.sql.Date || literal instanceof java.sql.Timestamp) {
+        } else if (literal instanceof java.sql.Date || literal instanceof java.sql.Timestamp) {
             // java.sql.date toString declares to always format to yyyy-mm-dd 
             // (and TimeStamp uses a similar approach)
             out.write("'" + literal + "'");
-        } else if(literal instanceof java.util.Date) {
+        } else if (literal instanceof java.util.Date) {
             // get back to the previous case
             Timestamp ts = new java.sql.Timestamp(((Date) literal).getTime());
+            out.write("'" + ts + "'");
+        } else if (literal instanceof Instant) {
+            java.util.Date date = ((Instant) literal).getPosition().getDate();
+            Timestamp ts = new java.sql.Timestamp(date.getTime());
             out.write("'" + ts + "'");
         } else {
             // we don't know the type...just convert back to a string

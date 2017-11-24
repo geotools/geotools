@@ -16,22 +16,14 @@
  */
 package org.geotools.data.jdbc;
 
-import java.io.IOException;
-import java.io.StringWriter;
-import java.sql.Connection;
-import java.sql.Statement;
-import java.util.Date;
-import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import junit.framework.TestCase;
-
 import org.geotools.data.jdbc.fidmapper.FIDMapper;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.temporal.object.DefaultInstant;
+import org.geotools.temporal.object.DefaultPosition;
+import org.geotools.util.Converters;
+import org.geotools.util.SimpleInternationalString;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
@@ -42,6 +34,20 @@ import org.opengis.filter.expression.Add;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.identity.FeatureId;
 
+import java.io.IOException;
+import java.io.StringWriter;
+import java.sql.Connection;
+import java.sql.Statement;
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import static org.geotools.util.Converters.*;
 
 
 /**
@@ -351,5 +357,20 @@ public class FilterToSQLTest extends TestCase {
         
         encoder.encode(equal);
         assertEquals("testAttr = 5", output.toString());
+    }
+    
+    public void testAfterInstant() throws Exception {
+        Date date = convert("2002-12-03 10:00:00AM", Date.class);
+        DefaultInstant instant = new DefaultInstant(new DefaultPosition(date));
+        Expression literal = filterFac.literal(instant);
+        Expression prop = filterFac.property(timestampFType.getAttributeDescriptors().get(0)
+                .getLocalName());
+        PropertyIsEqualTo filter = filterFac.equals(prop, literal);
+
+        encoder.setFeatureType(timestampFType);
+        encoder.encode(filter);
+
+        LOGGER.fine("testAttr is a Timestamp " + filter + " -> " + output.getBuffer().toString());
+        assertEquals(output.getBuffer().toString(), "WHERE testAttr = '2002-12-03 10:00:00.0'");
     }
 }

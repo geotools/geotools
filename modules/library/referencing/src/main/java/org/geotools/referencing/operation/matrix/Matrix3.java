@@ -17,28 +17,14 @@
 package org.geotools.referencing.operation.matrix;
 
 import java.awt.geom.AffineTransform;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.Serializable;
-import java.text.FieldPosition;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.util.Locale;
 
-import org.opengis.referencing.operation.Matrix;
 import org.ejml.UtilEjml;
-import org.ejml.alg.fixed.FixedOps3;
-import org.ejml.data.DenseMatrix64F;
-import org.ejml.data.FixedMatrix2x2_64F;
-import org.ejml.data.FixedMatrix3x3_64F;
-import org.geotools.io.ContentFormatException;
-import org.geotools.io.LineFormat;
-import org.geotools.resources.XArray;
-import org.geotools.resources.i18n.Errors;
+import org.ejml.data.DMatrix3x3;
+import org.ejml.dense.fixed.CommonOps_DDF3;
 import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.util.Utilities;
+import org.geotools.resources.i18n.Errors;
+import org.opengis.referencing.operation.Matrix;
 
 /**
  * A matrix of fixed {@value #SIZE}&times;{@value #SIZE} size.
@@ -61,12 +47,12 @@ public class Matrix3 implements XMatrix, Serializable {
      */
     public static final int SIZE = 3;
 
-    FixedMatrix3x3_64F mat;
+    DMatrix3x3 mat;
     /**
      * Creates a new identity matrix.
      */
     public Matrix3() {
-        mat = new FixedMatrix3x3_64F();
+        mat = new DMatrix3x3();
         setIdentity();
     }
 
@@ -77,7 +63,7 @@ public class Matrix3 implements XMatrix, Serializable {
                    double m10, double m11, double m12,
                    double m20, double m21, double m22)
     {
-        mat = new FixedMatrix3x3_64F(
+        mat = new DMatrix3x3(
                  m00, m01, m02,
                  m10, m11, m12,
                  m20, m21, m22);
@@ -87,7 +73,7 @@ public class Matrix3 implements XMatrix, Serializable {
      * Constructs a 3&times;3 matrix from the specified affine transform.
      */
     public Matrix3(final AffineTransform transform) {
-        mat = new FixedMatrix3x3_64F();
+        mat = new DMatrix3x3();
         setMatrix(transform);
     }
 
@@ -96,7 +82,7 @@ public class Matrix3 implements XMatrix, Serializable {
      * The specified matrix size must be {@value #SIZE}&times;{@value #SIZE}.
      */
     public Matrix3(final Matrix matrix) {
-        mat = new FixedMatrix3x3_64F();
+        mat = new DMatrix3x3();
         if (matrix.getNumRow()!=SIZE || matrix.getNumCol()!=SIZE) {
             throw new IllegalArgumentException(Errors.format(ErrorKeys.ILLEGAL_MATRIX_SIZE));
         }
@@ -107,16 +93,16 @@ public class Matrix3 implements XMatrix, Serializable {
         }
     }
     /**
-     * Cast (or convert) Matrix to internal DenseMatrix64F representation required for FixedOps3.
+     * Cast (or convert) Matrix to internal DMatrixRMaj representation required for CommonOps_DDF3.
      * @param matrix
      * @return
      */
-    private FixedMatrix3x3_64F internal( Matrix matrix ){
+    private DMatrix3x3 internal( Matrix matrix ){
         if( matrix instanceof Matrix3 ){
             return ((Matrix3)matrix).mat;
         }
         else {
-            FixedMatrix3x3_64F a = new FixedMatrix3x3_64F(
+            DMatrix3x3 a = new DMatrix3x3(
                     matrix.getElement(0,0), matrix.getElement(0,1), matrix.getElement(0,2),
                     matrix.getElement(1,0), matrix.getElement(1,1), matrix.getElement(1,2),
                     matrix.getElement(2,0), matrix.getElement(2,1), matrix.getElement(2,2));
@@ -192,13 +178,13 @@ public class Matrix3 implements XMatrix, Serializable {
      */
     @Override
     public void negate() {
-        FixedOps3.changeSign(mat);
+        CommonOps_DDF3.changeSign(mat);
     }
 
     @Override
     public void negate(Matrix matrix) {
-        FixedMatrix3x3_64F a = internal(matrix);
-        FixedOps3.changeSign(a);
+        DMatrix3x3 a = internal(matrix);
+        CommonOps_DDF3.changeSign(a);
         this.mat = a;
     }
 
@@ -207,19 +193,19 @@ public class Matrix3 implements XMatrix, Serializable {
      */
     @Override
     public void transpose() {
-        FixedOps3.transpose(mat);
+        CommonOps_DDF3.transpose(mat);
     }
 
     @Override
     public void transpose(Matrix matrix) {
-        FixedMatrix3x3_64F a = internal(matrix);
-        FixedOps3.transpose(a, mat);
+        DMatrix3x3 a = internal(matrix);
+        CommonOps_DDF3.transpose(a, mat);
     }
     
     @Override
     public void invert() {
-        FixedMatrix3x3_64F ret = new FixedMatrix3x3_64F();
-        boolean success = FixedOps3.invert(mat,ret);
+        DMatrix3x3 ret = new DMatrix3x3();
+        boolean success = CommonOps_DDF3.invert(mat,ret);
         if(!success){
             throw new SingularMatrixException("Could not invert, possible singular matrix?");
         }
@@ -228,8 +214,8 @@ public class Matrix3 implements XMatrix, Serializable {
 
     @Override
     public void invert(Matrix matrix) throws SingularMatrixException {
-        FixedMatrix3x3_64F a = internal(matrix);
-        boolean success = FixedOps3.invert(a, mat);
+        DMatrix3x3 a = internal(matrix);
+        boolean success = CommonOps_DDF3.invert(a, mat);
         if(!success){
             throw new SingularMatrixException("Could not invert, possible singular matrix?");
         }
@@ -284,7 +270,7 @@ public class Matrix3 implements XMatrix, Serializable {
      */
     @Override
     public void setZero() {
-        FixedOps3.fill(mat, 0);
+        CommonOps_DDF3.fill(mat, 0);
     }
 
     /**
@@ -292,7 +278,7 @@ public class Matrix3 implements XMatrix, Serializable {
      */
     @Override
     public void setIdentity() {
-        FixedOps3.setIdentity(mat);
+        CommonOps_DDF3.setIdentity(mat);
     }
 
     /**
@@ -385,7 +371,6 @@ public class Matrix3 implements XMatrix, Serializable {
      *         or if the last row is not {@code [0 0 1]}.
      */
     public final AffineTransform toAffineTransform2D() throws IllegalStateException {
-        int check;
         if (isAffine()) {
             return new AffineTransform(getElement(0,0), getElement(1,0),
             getElement(0,1), getElement(1,1),
@@ -416,13 +401,13 @@ public class Matrix3 implements XMatrix, Serializable {
     }
     @Override
     public void mul(double scalar) {
-        FixedOps3.scale(scalar, this.mat);
+        CommonOps_DDF3.scale(scalar, this.mat);
     }
 
     @Override
     public void mul(double scalar, Matrix matrix) {
-        FixedMatrix3x3_64F ret = new FixedMatrix3x3_64F();
-        FixedOps3.scale(scalar, internal( matrix ), ret );
+        DMatrix3x3 ret = new DMatrix3x3();
+        CommonOps_DDF3.scale(scalar, internal( matrix ), ret );
         mat = ret;
     }
 
@@ -446,9 +431,9 @@ public class Matrix3 implements XMatrix, Serializable {
      * 
      */
     public final void mul(Matrix matrix){
-        FixedMatrix3x3_64F b = internal(matrix);
-        FixedMatrix3x3_64F ret = new FixedMatrix3x3_64F();
-        FixedOps3.mult(mat,b,ret);
+        DMatrix3x3 b = internal(matrix);
+        DMatrix3x3 ret = new DMatrix3x3();
+        CommonOps_DDF3.mult(mat,b,ret);
         mat = ret;
     }
 
@@ -458,12 +443,12 @@ public class Matrix3 implements XMatrix, Serializable {
      * @param matrix2
      */
     public void mul(Matrix matrix1, Matrix matrix2) {
-        FixedMatrix3x3_64F a = internal(matrix1);
-        FixedMatrix3x3_64F b = internal(matrix2);
+        DMatrix3x3 a = internal(matrix1);
+        DMatrix3x3 b = internal(matrix2);
         if( a == mat || b == mat ){
-            mat = new FixedMatrix3x3_64F();
+            mat = new DMatrix3x3();
         }
-        FixedOps3.mult(a, b, mat);
+        CommonOps_DDF3.mult(a, b, mat);
     }
 
     @Override
@@ -475,7 +460,7 @@ public class Matrix3 implements XMatrix, Serializable {
 
     @Override
     public void sub(double scalar, Matrix matrix) {
-        FixedMatrix3x3_64F a = internal(matrix);
+        DMatrix3x3 a = internal(matrix);
         mat.a11 = scalar - a.a11;
         mat.a12 = scalar - a.a12;
         mat.a12 = scalar - a.a13;
@@ -488,7 +473,7 @@ public class Matrix3 implements XMatrix, Serializable {
     }
 
     public void sub(Matrix matrix) {
-        FixedMatrix3x3_64F a = internal(matrix);
+        DMatrix3x3 a = internal(matrix);
         mat.a11 -= a.a11;
         mat.a12 -= a.a12;
         mat.a12 -= a.a13;
@@ -501,8 +486,8 @@ public class Matrix3 implements XMatrix, Serializable {
     }
 
     public void sub(Matrix matrix1, Matrix matrix2) {
-        FixedMatrix3x3_64F a = internal(matrix1);
-        FixedMatrix3x3_64F b = internal(matrix2);
+        DMatrix3x3 a = internal(matrix1);
+        DMatrix3x3 b = internal(matrix2);
         mat.a11 = a.a11 - b.a11;
         mat.a12 = a.a12 - b.a12;
         mat.a12 = a.a13 - b.a13;
@@ -533,7 +518,7 @@ public class Matrix3 implements XMatrix, Serializable {
 
     @Override
     public void add(double scalar, XMatrix matrix) {
-        FixedMatrix3x3_64F a = internal(matrix);
+        DMatrix3x3 a = internal(matrix);
         mat.a11 = scalar + a.a11;
         mat.a12 = scalar + a.a12;
         mat.a12 = scalar + a.a13;
@@ -547,19 +532,19 @@ public class Matrix3 implements XMatrix, Serializable {
 
     @Override
     public void add(XMatrix matrix) {
-        FixedOps3.add(mat, internal(matrix), mat);
+        CommonOps_DDF3.add(mat, internal(matrix), mat);
     }
 
     @Override
     public void add(XMatrix matrix1, XMatrix matrix2) {
-        FixedMatrix3x3_64F a = internal(matrix1);
-        FixedMatrix3x3_64F b = internal(matrix2);
-        FixedOps3.add(a, b, mat);
+        DMatrix3x3 a = internal(matrix1);
+        DMatrix3x3 b = internal(matrix2);
+        CommonOps_DDF3.add(a, b, mat);
     }
 
     @Override
     public double determinate() {
-        double det = FixedOps3.det(mat);
+        double det = CommonOps_DDF3.det(mat);
         // if the decomposition silently failed then the matrix is most likely singular
         if(UtilEjml.isUncountable(det))
             return 0;

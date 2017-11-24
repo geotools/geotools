@@ -18,6 +18,7 @@ package org.geotools.filter.spatial;
 
 import java.util.List;
 
+import org.geotools.filter.function.BoundedByFunction;
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -367,11 +368,17 @@ public class ReprojectingFilterVisitor extends DuplicatingFilterVisitor {
     private abstract class GeometryFilterTransformer {
         Object transform(final BinarySpatialOperator filter, Object extraData) {
             // check working assumptions, first expression is a property
-            if (!(filter.getExpression1() instanceof PropertyName))
-                throw new IllegalArgumentException("Binary geometry filter, but first expression "
-                        + "is not a property name? (it's a " + filter.getExpression1().getClass()
-                        + ")");
-            final CoordinateReferenceSystem propertyCrs = findPropertyCRS((PropertyName) filter.getExpression1());
+            final CoordinateReferenceSystem propertyCrs;
+            if (filter.getExpression1() instanceof BoundedByFunction) {
+                propertyCrs = featureType.getCoordinateReferenceSystem();
+            } else {
+                if (!(filter.getExpression1() instanceof PropertyName)) {
+                    throw new IllegalArgumentException("Binary geometry filter, but first expression "
+                            + "is not a property name? (it's a " + filter.getExpression1().getClass()
+                            + ")");
+                }
+                propertyCrs = findPropertyCRS((PropertyName) filter.getExpression1());
+            }
 
             if (propertyCrs == null)
                 return cloneFilter(filter, extraData);

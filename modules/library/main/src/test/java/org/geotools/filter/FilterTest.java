@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.vividsolutions.jts.geom.Envelope;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -38,6 +39,7 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.filter.expression.PropertyAccessor;
 import org.geotools.filter.expression.PropertyAccessorFactory;
+import org.geotools.geometry.jts.JTS;
 import org.junit.Assert;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
@@ -1354,4 +1356,12 @@ public class FilterTest extends TestCase {
         Filter f = fac.between(fac.property("nullInt"), fac.literal(10), fac.literal(20));
         Assert.assertFalse(f.evaluate(testFeature));
     }
+    
+    public void testBoundedBy() {
+	    Geometry box = JTS.toGeometry(new Envelope(0, 10, 0, 10));
+        Intersects intersects = fac.intersects(fac.function("boundedBy"), fac.literal(box));
+
+        assertTrue(intersects.evaluate(testFeature));
+    }
+    
 }

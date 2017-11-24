@@ -22,8 +22,10 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.ExpressionVisitor;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
+import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.filter.spatial.Intersects;
+import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -123,12 +125,23 @@ public class ReprojectingFilterVisitorTest extends TestCase {
     }
     
     public void testIntersectsReproject() throws Exception {
+        Expression geom = ff.property("geom");
+        testIntersectsReproject(geom);
+    }
+
+    public void testBoundedByReproject() throws Exception {
+        Expression geom = ff.function("boundedBy");
+        testIntersectsReproject(geom);
+    }
+
+    public void testIntersectsReproject(Expression geom) throws FactoryException {
         GeometryFactory gf = new GeometryFactory();
         LineString ls = gf.createLineString(new Coordinate[] {new Coordinate(10, 15), new Coordinate(20, 25)});
         ls.setUserData(CRS.decode("urn:x-ogc:def:crs:EPSG:6.11.2:4326"));
-        
+
         // see if coordinates gets flipped, urn forces lat/lon interpretation
-        Intersects original = ff.intersects(ff.property("geom"), ff.literal(ls));
+
+        Intersects original = ff.intersects(geom, ff.literal(ls));
         Filter clone = (Filter) original.accept(reprojector, null);
         assertNotSame(original, clone);
         Intersects isClone = (Intersects) clone;
@@ -140,7 +153,7 @@ public class ReprojectingFilterVisitorTest extends TestCase {
         assertTrue(20 == clonedLs.getCoordinateN(1).y);
         assertEquals(CRS.decode("EPSG:4326"), clonedLs.getUserData());
     }
-    
+
     public void testIntersectsUnreferencedGeometry() throws Exception {
         GeometryFactory gf = new GeometryFactory();
         LineString ls = gf.createLineString(new Coordinate[] {new Coordinate(10, 15), new Coordinate(20, 25)});

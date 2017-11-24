@@ -20,6 +20,7 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertThat;
 
 import java.awt.Color;
+import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.TexturePaint;
@@ -29,15 +30,27 @@ import java.awt.geom.GeneralPath;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
+import java.awt.image.renderable.RenderableImage;
+import java.io.BufferedInputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
 
+import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.map.FeatureLayer;
+import org.geotools.map.Layer;
+import org.geotools.map.MapContent;
+import org.geotools.referencing.CRS;
+import org.geotools.renderer.RenderListener;
+import org.geotools.renderer.lite.RendererUtilities;
 import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.renderer.style.SLDStyleFactory.SymbolizerKey;
 import org.geotools.styling.ExternalGraphic;
@@ -49,6 +62,8 @@ import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.Mark;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.PolygonSymbolizer;
+import org.geotools.styling.Style;
+import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.util.NumberRange;
@@ -57,10 +72,16 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.io.ParseException;
+import com.vividsolutions.jts.io.WKTReader;
 
 import junit.framework.TestCase;
 
@@ -444,4 +465,72 @@ public class SLDStyleFactoryTest extends TestCase {
         assertNull(kerningValue);
     }
 
+    public void testGEOT5878()  {
+        String wkt[] = {
+                "Polygon ((6438348.98000000044703484 4962869.70000000018626451, 6438348.88999999966472387 4962867.28000000026077032, 6438343.53000000026077032 4962867.28000000026077032, 6438343.53000000026077032 4962869.76999999955296516, 6438343.61000000033527613 4962870.17999999970197678, 6438348.90000000037252903 4962870.0400000000372529, 6438348.98000000044703484 4962869.70000000018626451))",
+                "Polygon ((6438339.7099999999627471 4962870.38999999966472387, 6438339.94000000040978193 4962873.86000000033527613, 6438346.65000000037252903 4962873.61000000033527613, 6438346.62999999988824129 4962870.38999999966472387, 6438339.7099999999627471 4962870.38999999966472387))" };
+        double naglib = 1.5707964;
+        // build two features
+        SimpleFeatureTypeBuilder ftb = new SimpleFeatureTypeBuilder();
+        ftb.setName("test");
+        CoordinateReferenceSystem crs = null;
+        try {
+            crs = CRS.decode("EPSG:31276");
+        } catch (FactoryException e1) {
+           fail(e1.getMessage());
+        }
+        ftb.add("the_geom", Polygon.class, crs);
+        ftb.add("Nagib", Double.class);
+        SimpleFeatureType schema = ftb.buildFeatureType();
+        WKTReader reader = new WKTReader();
+        SimpleFeatureBuilder fb = new SimpleFeatureBuilder(schema);
+        List<SimpleFeature> features = new ArrayList<>();
+        for (String w : wkt) {
+            Geometry geom = null;
+            try {
+                geom = reader.read(w);
+            } catch (ParseException e) {
+                fail(e.getMessage());
+            }
+            fb.set("the_geom", geom);
+            fb.set("Nagib", naglib);
+            features.add(fb.buildFeature(null));
+        }             
+        StyleBuilder sb = new StyleBuilder();
+        Mark mark = sb.createMark(
+                "wkt://LINESTRING(0 0, ${sin(Nagib) * 20000} ${cos(Nagib) * 20000} )", Color.red);
+        Graphic graphic = sb.createGraphic(null, mark, null);
+        graphic.setSize(ff.literal("40px"));
+        Fill fill = sf.createFill(null, null, null, graphic);
+        PolygonSymbolizer symb = sb.createPolygonSymbolizer();
+        symb.setFill(fill);
+
+        Style style = sb.createStyle();
+        style.featureTypeStyles().add(sb.createFeatureTypeStyle(symb));
+        Layer layer = new FeatureLayer(DataUtilities.collection(features), style);
+        MapContent content = new MapContent();
+        content.addLayer(layer);
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.addRenderListener(new RenderListener() {
+            
+            @Override
+            public void featureRenderer(SimpleFeature feature) {
+                // TODO Auto-generated method stub
+                
+            }
+            
+            @Override
+            public void errorOccurred(Exception e) {
+                fail("an error occured");
+                
+            }
+        });
+        renderer.setMapContent(content);
+        BufferedImage img = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
+        Rectangle paintArea = new Rectangle(0, 0, 100, 100);
+        
+        renderer.paint(img.createGraphics(), paintArea, layer.getBounds(),
+                RendererUtilities.worldToScreenTransform(layer.getBounds(), paintArea));
+        
+    }
 }

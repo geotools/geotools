@@ -51,13 +51,14 @@ class MultiPointEncoder extends GeometryEncoder<MultiPoint> {
     }
 
     @Override
-    public void encode(MultiPoint geometry, AttributesImpl atts, GMLWriter handler)
+    public void encode(MultiPoint geometry, AttributesImpl atts, GMLWriter handler, String gmlId)
             throws Exception {
+        atts = cloneWithGmlId(atts, gmlId);
         handler.startElement(multiPoint, atts);
 
         for (int i = 0; i < geometry.getNumGeometries(); i++) {
             handler.startElement(pointMember, null);
-            pe.encode((Point) geometry.getGeometryN(i), null, handler);
+            pe.encode((Point) geometry.getGeometryN(i), null, handler, gmlId + "." + (i + 1));
             handler.endElement(pointMember);
         }
 

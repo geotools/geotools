@@ -54,13 +54,14 @@ class MultiPolygonEncoder extends GeometryEncoder<MultiPolygon> {
     }
 
     @Override
-    public void encode(MultiPolygon geometry, AttributesImpl atts, GMLWriter handler)
+    public void encode(MultiPolygon geometry, AttributesImpl atts, GMLWriter handler, String gmlId)
             throws Exception {
+        atts = cloneWithGmlId(atts, gmlId);
         handler.startElement(multiSurface, atts);
 
         for (int i = 0; i < geometry.getNumGeometries(); i++) {
             handler.startElement(surfaceMember, null);
-            pe.encode((Polygon) geometry.getGeometryN(i), null, handler);
+            pe.encode((Polygon) geometry.getGeometryN(i), null, handler, gmlId + "." + (i + 1));
             handler.endElement(surfaceMember);
         }
 

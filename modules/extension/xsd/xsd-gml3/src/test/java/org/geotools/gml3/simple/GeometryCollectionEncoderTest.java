@@ -21,6 +21,8 @@ import com.vividsolutions.jts.io.ParseException;
 
 import org.geotools.geometry.jts.WKTReader2;
 import org.geotools.gml3.GML;
+import org.geotools.xml.XMLUtils;
+import org.geotools.xml.test.XMLTestSupport;
 import org.w3c.dom.Document;
 /**
  * Unit test for GeometryCollectionEncoder
@@ -34,7 +36,8 @@ public class GeometryCollectionEncoderTest extends GeometryEncoderTestSupport {
         Geometry geometry = new WKTReader2().read(
             "GEOMETRYCOLLECTION (LINESTRING"
             + " (180 200, 160 180), POINT (19 19), POINT (20 10))");
-        Document doc = encode(gce, geometry);
+        Document doc = encode(gce, geometry, "feature.1");
+        // XMLTestSupport.print(doc);
         assertEquals(1,
             xpath.getMatchingNodes("//gml:LineString", doc).getLength());
         assertEquals(2, xpath.getMatchingNodes("//gml:Point", doc).getLength());
@@ -46,5 +49,9 @@ public class GeometryCollectionEncoderTest extends GeometryEncoderTestSupport {
         assertEquals("19 19",
             xpath.evaluate(
                 "//gml:MultiGeometry/gml:geometryMember/gml:Point/gml:pos", doc));
+        assertEquals("feature.1", xpath.evaluate("//gml:MultiGeometry/@gml:id", doc));
+        assertEquals("feature.1.1", xpath.evaluate("//gml:MultiGeometry/gml:geometryMember[1]/gml:LineString/@gml:id", doc));
+        assertEquals("feature.1.2", xpath.evaluate("//gml:MultiGeometry/gml:geometryMember[2]/gml:Point/@gml:id", doc));
+        assertEquals("feature.1.3", xpath.evaluate("//gml:MultiGeometry/gml:geometryMember[3]/gml:Point/@gml:id", doc));
     }
 }

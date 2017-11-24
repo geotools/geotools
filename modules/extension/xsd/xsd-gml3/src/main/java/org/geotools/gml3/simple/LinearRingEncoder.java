@@ -16,9 +16,12 @@
  */
 package org.geotools.gml3.simple;
 
+import com.vividsolutions.jts.geom.LineString;
+import org.geotools.gml2.simple.GMLWriter;
 import org.geotools.gml2.simple.QualifiedName;
 import org.geotools.gml3.GML;
 import org.geotools.xml.Encoder;
+import org.xml.sax.helpers.AttributesImpl;
 
 /**
  * Encodes a GML3 linear ring
@@ -32,5 +35,11 @@ class LinearRingEncoder extends LineStringEncoder {
 
     protected LinearRingEncoder(Encoder encoder, String gmlPrefix, String gmlUri) {
         super(encoder, LINEAR_RING.derive(gmlPrefix, gmlUri));
+    }
+
+    @Override
+    public void encode(LineString geometry, AttributesImpl atts, GMLWriter handler, String gmlId) throws Exception {
+        // linearRing is not a geometry, just a component, has no id
+        super.encode(geometry, atts, handler, null);
     }
 }

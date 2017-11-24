@@ -25,6 +25,7 @@ import net.opengis.wfs.FeatureCollectionType;
 import net.opengis.wfs.WfsFactory;
 import net.opengis.wfs20.Wfs20Factory;
 
+import org.custommonkey.xmlunit.XMLAssert;
 import org.geotools.data.memory.MemoryDataStore;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -32,6 +33,7 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.gml3.GMLConfiguration;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.Encoder;
+import org.geotools.xml.test.XMLTestSupport;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -98,8 +100,7 @@ public class WFSFeatureCollectionEncodingTest extends TestCase {
         e.setIndenting(true);
         
         Document d = e.encodeAsDOM( fc, WFS.FeatureCollection );
-//        TransformerFactory.newInstance().newTransformer().transform(
-//            new DOMSource(d), new StreamResult(System.out));
+        // XMLTestSupport.print(d);
         
         NamedNodeMap attributes = d.getDocumentElement().getAttributes();
         assertEquals("unknown", attributes.getNamedItem("numberMatched" ).getTextContent());
@@ -109,6 +110,12 @@ public class WFSFeatureCollectionEncodingTest extends TestCase {
         assertEquals( 2, d.getElementsByTagName( "gml:Point" ).getLength() );
         assertEquals( 2, d.getElementsByTagName( "gml:pos" ).getLength() );
         assertEquals( 0, d.getElementsByTagName( "gml:coord" ).getLength() );
+        
+        // check ids
+        assertEquals("zero.geometry", d.getElementsByTagName("gml:Point").item(0).getAttributes().getNamedItem("gml:id").getNodeValue());
+        assertEquals("one.geometry", d.getElementsByTagName("gml:Point").item(1).getAttributes().getNamedItem("gml:id").getNodeValue());
+
+        XMLAssert.
         
         assertEquals( 2, d.getElementsByTagName( "geotools:feature" ).getLength() );
         assertNotNull( ((Element)d.getElementsByTagName( "geotools:feature").item( 0 )).getAttribute("gml:id") );
@@ -220,6 +227,8 @@ public class WFSFeatureCollectionEncodingTest extends TestCase {
     }
     
     Encoder encoder() {
-        return new Encoder(new org.geotools.wfs.v2_0.WFSConfiguration());
+        WFSConfiguration configuration = new WFSConfiguration();
+        configuration.getProperties().add(org.geotools.gml2.GMLConfiguration.OPTIMIZED_ENCODING);
+        return new Encoder(configuration);
     }
 }

@@ -19,6 +19,7 @@ package org.geotools.gml3.simple;
 
 import org.geotools.geometry.jts.WKTReader2;
 import org.geotools.gml3.GML;
+import org.geotools.xml.test.XMLTestSupport;
 import org.w3c.dom.Document;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -96,12 +97,16 @@ public class MultiCurveEncoderTest extends GeometryEncoderTestSupport {
         MultiLineStringEncoder encoder = new MultiLineStringEncoder(gtEncoder, "gml", GML.NAMESPACE, false);
         Geometry geometry = new WKTReader2()
                 .read("MULTILINESTRING((105 105, 125 125))");
-        Document doc = encode(encoder, geometry);
+        Document doc = encode(encoder, geometry, "multi");
         // XMLTestSupport.print(doc);
         assertEquals(1, xpath.getMatchingNodes("//gml:MultiLineString", doc).getLength());
         assertEquals(1, xpath.getMatchingNodes("//gml:MultiLineString/gml:lineStringMember", doc).getLength());
         assertEquals("105 105 125 125", xpath.evaluate(
                 "//gml:MultiLineString/gml:lineStringMember[1]/gml:LineString/gml:posList", doc));
+
+        // geometry ids
+        assertEquals("multi", xpath.evaluate("/gml:MultiLineString/@gml:id", doc));
+        assertEquals("multi.1", xpath.evaluate("/gml:MultiLineString/gml:lineStringMember/gml:LineString/@gml:id", doc));
     }
 
 }

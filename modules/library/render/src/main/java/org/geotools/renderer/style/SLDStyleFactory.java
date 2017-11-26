@@ -1273,32 +1273,39 @@ public class SLDStyleFactory {
    
         double size = evalToDouble(gr.getSize(), feature, 16);
         final double sizeX = size * shapeAspectRatio; // apply the aspect
-        												// ratio to fix the
-        												// sample's width.
+      	 					      // ratio to fix the
+        					      // sample's width.
         final double sizeY = size;
         
         // we need to paint the mark in a 3x3 grid to account for border effects
         // due to antialiasing (e.g., even if the mark is 10 pixels wide, due to the 
         // antialiasing graphically it occupies 12 or so pixels)
-        image = new BufferedImage((int) Math.ceil(sizeX * 3), (int) Math
-        		.ceil(sizeY * 3), BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2d = image.createGraphics();
-        g2d.setRenderingHints(renderingHints);
-        double rotation = Math.toRadians(evalToDouble(gr.getRotation(), feature, 0.0)); // fix for GEOS-6217
-        for (int i = -1; i < 2; i++) {
-        	for (int j = -1; j < 2; j++) {
-        		double tx = sizeX * 1.5 + sizeX * i;
-        		double ty = sizeY * 1.5 + sizeY * j;
-        		fillDrawMark(g2d, tx, ty, mark, size, rotation, feature);
-        	}
+        
+        //check if this will cause an overflow in the image creation
+        if ((sizeX * 3) * (sizeY * 3) > Integer.MAX_VALUE) {
+            LOGGER.warning("Size of mark (" + sizeX + " * " + sizeY + ") is too large");
+        } else {
+            image = new BufferedImage((int) Math.ceil(sizeX * 3), (int) Math.ceil(sizeY * 3),
+                    BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g2d = image.createGraphics();
+            g2d.setRenderingHints(renderingHints);
+            double rotation = Math.toRadians(evalToDouble(gr.getRotation(), feature, 0.0)); // fix for GEOS-6217
+            for (int i = -1; i < 2; i++) {
+                for (int j = -1; j < 2; j++) {
+                    double tx = sizeX * 1.5 + sizeX * i;
+                    double ty = sizeY * 1.5 + sizeY * j;
+                    fillDrawMark(g2d, tx, ty, mark, size, rotation, feature);
+                }
+            }
+            g2d.dispose();
+
+            int iSizeX = (int) Math.floor(sizeX);
+            int iSizeY = (int) Math.floor(sizeY);
+            // updated to use the new sizes
+            image = image.getSubimage(iSizeX, iSizeY, Math.max(iSizeX, 1), Math.max(iSizeY, 1));
+            return image;
         }
-        g2d.dispose();
-   
-        int iSizeX = (int) Math.floor(sizeX);
-        int iSizeY = (int) Math.floor(sizeY);
-        // updated to use the new sizes
-        image = image.getSubimage(iSizeX, iSizeY, Math.max(iSizeX, 1), Math.max(iSizeY, 1));
-        return image;
+         return new BufferedImage(10, 10, BufferedImage.TYPE_INT_ARGB);
     }
 
     /**

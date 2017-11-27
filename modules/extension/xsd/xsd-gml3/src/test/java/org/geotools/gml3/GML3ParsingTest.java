@@ -6,6 +6,7 @@ import static org.junit.Assert.assertThat;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.TimeZone;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -22,6 +23,8 @@ import org.geotools.gml3.v3_2.GMLParsingTest;
 import org.geotools.xml.Parser;
 import org.geotools.xml.StreamingParser;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.temporal.Calendar;
+import org.opengis.temporal.Period;
 import org.w3c.dom.Document;
 
 import com.vividsolutions.jts.geom.CoordinateSequence;
@@ -99,5 +102,20 @@ public class GML3ParsingTest extends TestCase {
         Geometry expected = new WKTReader().read(
                 "POLYGON((94000 471000 10, 94001 471000 11, 94001 471001 12, 94000 471001 13, 94000 471000 10))");
         assertTrue(CoordinateSequences.equalsND(expected, polygon));
+    }
+
+    public void testParseTimePeriodByPosition() throws Exception {
+        Parser p = new Parser(new GMLConfiguration());
+        Object g = p.parse(GML3ParsingTest.class.getResourceAsStream("timePeriodByPosition.xml"));
+        assertThat(g, instanceOf(Period.class));
+
+        Period period = (Period) g;
+        TimeZone gmt = TimeZone.getTimeZone("GMT");
+        java.util.Calendar calendar = java.util.Calendar.getInstance(gmt);
+        calendar.clear();
+        calendar.set(2006, 5, 28, 4, 8, 0);
+        assertEquals(calendar.getTime(), period.getBeginning().getPosition().getDate());
+        calendar.set(2009, 5, 28, 6, 8, 0);
+        assertEquals(calendar.getTime(), period.getEnding().getPosition().getDate());
     }
 }

@@ -17,10 +17,12 @@
 package org.geotools.gml3.bindings;
 
 import org.geotools.gml3.GML;
+import org.geotools.temporal.object.DefaultInstant;
 import org.geotools.temporal.object.DefaultPeriod;
 import org.geotools.xml.*;
 import org.opengis.temporal.Instant;
 import org.opengis.temporal.Period;
+import org.opengis.temporal.Position;
 
 import javax.xml.namespace.QName;
 
@@ -86,14 +88,16 @@ public class TimePeriodTypeBinding extends AbstractComplexBinding {
             begin = (Instant) node.getChildValue("begin");
         }
         else {
-            begin = (Instant) node.getChildValue("beginPosition");
+            Position beginPosition = (Position) node.getChildValue("beginPosition");
+            begin = new DefaultInstant(beginPosition);
         }
         
         if (node.hasChild("end")) {
             end = (Instant) node.getChildValue("end");
         }
         else {
-            end = (Instant) node.getChildValue("endPosition");
+            Position endPosition = (Position) node.getChildValue("endPosition");
+            end = new DefaultInstant(endPosition);
         }
         
         if (begin == null || end == null) {

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<TimePeriod frame="http://www.iso.org/iso/iso8601" id="TP01">
+  <beginPosition>2006-06-28T04:08:00Z</beginPosition>
+  <endPosition>2009-06-28T06:08:00Z</endPosition>
+</TimePeriod>

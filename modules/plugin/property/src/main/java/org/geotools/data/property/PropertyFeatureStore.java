@@ -17,6 +17,7 @@
 package org.geotools.data.property;
 
 import java.io.IOException;
+import java.util.Set;
 
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
@@ -27,6 +28,7 @@ import org.geotools.data.Transaction;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureStore;
 import org.geotools.data.store.ContentState;
+import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.type.Name;
@@ -53,6 +55,14 @@ public class PropertyFeatureStore extends ContentFeatureStore {
         this.store = (PropertyDataStore) entry.getDataStore();
         this.typeName = entry.getTypeName();
     }
+
+    @Override
+    protected void addHints(Set<Hints.Key> hints) {
+        // mark the features as detached, that is, the user can directly alter them
+        // without altering the state of the DataStore
+        hints.add(Hints.FEATURE_DETACHED);
+    }
+    
     /** We handle events internally */
     protected boolean canEvent() {
         return false;

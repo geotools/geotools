@@ -45,6 +45,7 @@ import org.geotools.feature.visitor.SumAreaVisitor;
 import org.geotools.feature.visitor.SumVisitor;
 import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.filter.FilterCapabilities;
+import org.geotools.filter.function.InFunction;
 import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
@@ -136,6 +137,7 @@ public abstract class SQLDialect {
         {
             addAll(FilterCapabilities.LOGICAL_OPENGIS);
             addAll(FilterCapabilities.SIMPLE_COMPARISONS_OPENGIS);
+            addAll(InFunction.getInCapabilities());
             
             //simple arithmetic
             addType(Add.class);

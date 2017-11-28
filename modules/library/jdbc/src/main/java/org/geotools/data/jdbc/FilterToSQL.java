@@ -25,6 +25,7 @@ import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.FunctionImpl;
 import org.geotools.filter.LikeFilterImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
+import org.geotools.filter.function.InFunction;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JoinPropertyName;
 import org.geotools.jdbc.PrimaryKey;
@@ -95,6 +96,7 @@ import org.opengis.filter.temporal.OverlappedBy;
 import org.opengis.filter.temporal.TContains;
 import org.opengis.filter.temporal.TEquals;
 import org.opengis.filter.temporal.TOverlaps;
+import org.opengis.parameter.Parameter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.crs.GeographicCRS;
 import org.opengis.temporal.Instant;
@@ -238,6 +240,9 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
     /** inline flag, controlling whether "WHERE" will prefix the SQL encoded filter */
     protected boolean inline = false;
 
+    /** Whether the encoder should try to encode "in" function into a SQL IN operator */
+    protected boolean inEncodingEnabled = true;
+
     /**
      * Default constructor
      */
@@ -258,6 +263,22 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
 
     public void setInline(boolean inline) {
         this.inline = inline;
+    }
+
+    /**
+     * Whether "in" like functions are encoded in SQL or not
+     * @return a boolean value, true if the in linke functions are encoded
+     */
+    public boolean isInEncodingEnabled() {
+        return inEncodingEnabled;
+    }
+
+    /**
+     * Makes the encoder translate in like functions into SQL (see also {@link InFunction#isInFunction(Expression)} 
+     * @param inEncodingEnabled the new flag controlling in encoding
+     */
+    public void setInEncodingEnabled(boolean inEncodingEnabled) {
+        this.inEncodingEnabled = inEncodingEnabled;
     }
 
     /**
@@ -397,6 +418,9 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      */
     protected FilterCapabilities createFilterCapabilities() {
         FilterCapabilities capabilities = new FilterCapabilities();
+        if (inEncodingEnabled) {
+            capabilities.addAll(InFunction.getInCapabilities());
+        }
 
         capabilities.addAll(FilterCapabilities.LOGICAL_OPENGIS);
         capabilities.addAll(FilterCapabilities.SIMPLE_COMPARISONS_OPENGIS);
@@ -746,6 +770,21 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
 
         Expression left = filter.getExpression1();
         Expression right = filter.getExpression2();
+
+        // shortcut for IN case, to have a more natural encoding for the common/sane case of 
+        // "in(property, v1, v2, ... vn) = true" into "property in (v1, v2, ..., vn) 
+        if (inEncodingEnabled && ("=".equals(extraData) || "!=".equals(extraData))) {
+            if (right instanceof Literal && InFunction.isInFunction(left) && 
+                    right.evaluate(null, Boolean.class) != null) {
+                encodeInComparison((Function) left, (Literal) right, extraData);
+                return;
+            } else if (left instanceof Literal && InFunction.isInFunction(right) 
+                    && left.evaluate(null, Boolean.class) != null) {
+                encodeInComparison((Function) right, (Literal) left, extraData);
+                return;
+            }
+        }
+        
         Class leftContext = null, rightContext = null;
         if (left instanceof PropertyName) {
             // aha!  It's a propertyname, we should get the class and pass it in
@@ -839,6 +878,16 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * write out the binary expression and cast only the end result, not passing any context into
      * encoding the individual parts
      */
+
+    private void encodeInComparison(Function in, Literal bool, Object extraData) {
+        boolean negated = "!=".equals(extraData);
+        if (bool.evaluate(null, Boolean.class) == Boolean.FALSE) {
+            negated = !negated;
+        }
+
+        visitInFunction(in, false, negated, null);
+    }
+
     void writeBinaryExpression(Expression e, Class context) throws IOException {
         Writer tmp = out;
         try {
@@ -1536,45 +1585,113 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
      * @see #getFunctionName(Function) 
      */
     public Object visit(Function function, Object extraData) throws RuntimeException {
-        try {
-            List<Expression> parameters = function.getParameters();
-            List contexts = null;
-            //check context, if a list which patches parameter size list assume its context
-            // to pass along to each Expression for encoding
-            if( extraData instanceof List && ((List)extraData).size() == parameters.size() ) {
-                contexts = (List) extraData;
-            }
-            
-            //set the encoding function flag to signal we are inside a function
-            encodingFunction = true;
-            
-            //write the name
-            out.write( getFunctionName(function) );
-            
-            //write the arguments
-            out.write( "(");
-            for ( int i = 0; i < parameters.size(); i++ ) {
-                Expression e = parameters.get( i );
-                
-                Object context = function.getFunctionName().getArguments().get(i).getType();
-                e.accept(this, context);
-                
-                if ( i < parameters.size()-1 ) {
-                    out.write( ",");    
+        // special case for IN functions
+        if (inEncodingEnabled && InFunction.isInFunction(function)) {
+            visitInFunction(function, true, false, extraData);
+        } else {
+            try {
+                List<Expression> parameters = function.getParameters();
+                List contexts = null;
+                //check context, if a list which patches parameter size list assume its context
+                // to pass along to each Expression for encoding
+                if (extraData instanceof List && ((List) extraData).size() == parameters.size()) {
+                    contexts = (List) extraData;
                 }
-                
+
+                // set the encoding function flag to signal we are inside a function
+                encodingFunction = true;
+
+                //write the name
+                out.write(getFunctionName(function));
+
+                //write the arguments
+                out.write("(");
+                List<Parameter<?>> arguments = function.getFunctionName().getArguments();
+                Parameter<?> lastArgument = arguments.isEmpty() ? null : arguments.get(arguments.size() - 1);
+                for (int i = 0; i < parameters.size(); i++) {
+                    Expression e = parameters.get(i);
+
+                    Object context;
+                    // the last argument can be multi-valued
+                    if (arguments.size() <= i 
+                            && (lastArgument.getMaxOccurs() > 0 || lastArgument.getMaxOccurs() == -1)) {
+                        context = lastArgument.getType();
+                    } else {
+                        context = arguments.get(i).getType();
+                    }
+                    
+                    e.accept(this, context);
+
+                    if (i < parameters.size() - 1) {
+                        out.write(",");
+                    }
+
+                }
+                out.write(")");
+
+                //reset the encoding function flag
+                encodingFunction = false;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-            out.write( ")");
-            
-            //reset the encoding function flag
-            encodingFunction = false;
-        } catch (IOException e) {
-            throw new RuntimeException( e );
         }
         
         return extraData;
     }
-    
+
+    /**
+     * Encodes a "in" function (as recognized by {@link InFunction#isInFunction(Expression)}
+     *
+     * @param function
+     * @param extraData
+     */
+    protected void visitInFunction(Function function, boolean encodeAsExpression, boolean negate, Object extraData) {
+        try {
+            if (encodeAsExpression) {
+                out.write("(");
+            }
+
+            // figure out the context, the first property name found will be used as a type reference,
+            // otherwise null context will be used
+            List<Expression> parameters = function.getParameters();
+            Class context = function.getParameters().stream()
+                    .filter(p -> p instanceof PropertyName)
+                    .map(p -> p.evaluate(featureType))
+                    .filter(o -> o instanceof AttributeDescriptor)
+                    .map(o -> ((AttributeDescriptor) o).getType().getBinding())
+                    .findFirst()
+                    .orElse(null);
+
+            // encode the attribute being tested, as is
+            function.getParameters().get(0).accept(this, context);
+
+            if (negate) {
+                out.write(" NOT IN (");
+            } else {
+                out.write(" IN (");
+            }
+            
+
+            // encode all other values to be used
+            int size = parameters.size();
+            for (int i = 1; i < size; i++) {
+                Expression e = function.getParameters().get(i);
+                e.accept(this, context);
+
+                if (i < size - 1) {
+                    out.write(", ");
+                }
+            }
+            out.write(")");
+
+            if (encodeAsExpression) {
+                out.write(")");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     /**
      * Returns the n-th parameter of a function, throwing an exception if the parameter is not there
      * and has been marked as mandatory

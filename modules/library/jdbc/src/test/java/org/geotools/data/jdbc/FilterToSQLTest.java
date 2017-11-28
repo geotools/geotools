@@ -22,8 +22,6 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.temporal.object.DefaultInstant;
 import org.geotools.temporal.object.DefaultPosition;
-import org.geotools.util.Converters;
-import org.geotools.util.SimpleInternationalString;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
@@ -32,6 +30,9 @@ import org.opengis.filter.Id;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.expression.Add;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Function;
+import org.opengis.filter.expression.Literal;
+import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.identity.FeatureId;
 
 import java.io.IOException;
@@ -39,6 +40,7 @@ import java.io.StringWriter;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashSet;
@@ -46,6 +48,8 @@ import java.util.Set;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.geotools.util.Converters.*;
 
@@ -372,5 +376,65 @@ public class FilterToSQLTest extends TestCase {
 
         LOGGER.fine("testAttr is a Timestamp " + filter + " -> " + output.getBuffer().toString());
         assertEquals(output.getBuffer().toString(), "WHERE testAttr = '2002-12-03 10:00:00.0'");
+    }
+
+    public void testSimpleIn() throws FilterToSQLException {
+        // straight
+        assertEquals(encodeInComparison("in", true, "true", 1, 2), "WHERE testAttr IN (1, 2)");
+        // double negation
+        assertEquals(encodeInComparison("in", false, "false", 1, 2), "WHERE testAttr IN (1, 2)");
+    }
+
+    public void testMixedLogic() throws FilterToSQLException {
+        assertEquals(encodeInComparison("in", true, "true", 1, 2), "WHERE testAttr IN (1, 2)");
+        assertEquals(encodeInComparison("in", false, "false", 1, 2), "WHERE testAttr IN (1, 2)");
+    }
+
+    public void testIn2To10() throws FilterToSQLException {
+        for (int i = 2; i <= 10; i++) {
+            Object[] values = new Object[i];
+            for (int j = 0; j < values.length; j++) {
+                values[j] = j;
+            }
+            String commaSeparatedValues = Arrays.stream(values)
+                                                .map(v -> String.valueOf(v))
+                                                .collect(Collectors.joining(", "));
+            assertEquals(encodeInComparison("in" + i, true, "true", values), "WHERE testAttr IN (" + commaSeparatedValues + ")");
+        }
+    }
+    
+    public void testInWithLessThan() throws FilterToSQLException {
+        FilterToSQL encoder = new FilterToSQL(output);
+
+        Function function = buildInFunction("in", new Object[] {1, 2});
+        Filter filter = filterFac.less(function, filterFac.literal(true));
+        encoder.encode(filter);
+
+        // weird but legit, at least in some databases
+        assertEquals("WHERE (testAttr IN (1, 2)) < true", output.getBuffer().toString());
+    }
+
+    public String encodeInComparison(String functionName, boolean equality, String literal, Object... valueList) throws FilterToSQLException {
+        FilterToSQL encoder = new FilterToSQL(output);
+
+        Function function = buildInFunction(functionName, valueList);
+        Filter filter;
+        if(equality) {
+            filter = filterFac.equal(function, filterFac.literal(literal), true); 
+        }  else {
+            filter = filterFac.notEqual(function, filterFac.literal(literal), true);
+        }
+        encoder.encode(filter);
+
+        String result = output.getBuffer().toString();
+        output.getBuffer().setLength(0);
+        return result;
+    }
+
+    public Function buildInFunction(String functionName, Object[] valueList) {
+        Stream<Literal> values = Arrays.stream(valueList).map(v -> filterFac.literal(v));
+        Stream<PropertyName> property = Stream.of(filterFac.property("testAttr"));
+        Expression[] literals = Stream.concat(property, values).toArray(i -> new Expression[i]);
+        return filterFac.function(functionName, literals);
     }
 }

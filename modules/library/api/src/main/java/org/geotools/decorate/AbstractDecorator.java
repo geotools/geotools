@@ -17,8 +17,6 @@
 package org.geotools.decorate;
 
 import java.io.Serializable;
-import java.sql.SQLException;
-import java.sql.Wrapper;
 
 /**
  * Generic delegating base class. Provides the following features:
@@ -38,30 +36,24 @@ public class AbstractDecorator<D> implements Wrapper, Serializable {
         this.delegate = delegate;
     }
 
+    @Override
     public boolean isWrapperFor(Class<?> iface) {
         // first drill down to the latest wrapper, then check if the last delegate actually
         // implements the required interface
         if (delegate instanceof Wrapper)
-            try {
-                return ((Wrapper) delegate).isWrapperFor(iface);
-            } catch (SQLException e) {
-                return false;
-            }
+            return ((Wrapper) delegate).isWrapperFor(iface);
         else if (iface.isInstance(delegate))
             return true;
         else
             return false;
     }
 
+    @Override
     public <T> T unwrap(Class<T> iface) throws IllegalArgumentException {
         // first drill down to the latest wrapper, then check if the last delegate actually
         // implements the required interface and return it
         if (delegate instanceof Wrapper)
-            try {
-                return ((Wrapper) delegate).unwrap(iface);
-            } catch (SQLException e) {
-                throw new IllegalArgumentException(e);
-            }
+            return ((Wrapper) delegate).unwrap(iface);
         else if (iface.isInstance(delegate))
             return (T) delegate;
         else

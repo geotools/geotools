@@ -79,7 +79,7 @@ public class QueryExpressionTextDelegate extends CopyingHandler implements Parse
             }
         }
         else {
-            super.endElement(uri, localName, qName);
+            super.endElement(uri, localName, qName.startsWith(":") ? localName : qName);
         }
     }
     

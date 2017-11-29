@@ -45,8 +45,13 @@ public class CopyingHandler extends DefaultHandler {
             buffer = new StringBuffer();
             root = true;
         }
-        
-        buffer.append("<").append(qName);
+
+        buffer.append("<");
+        if(qName.startsWith(":")) {
+            buffer.append(localName);
+        } else {
+            buffer.append(qName);
+        }
         if (attributes.getLength() > 0) {
             for (int i = 0; i < attributes.getLength(); i++) {
                 buffer.append(" ").append(attributes.getQName(i)).append("=\"")

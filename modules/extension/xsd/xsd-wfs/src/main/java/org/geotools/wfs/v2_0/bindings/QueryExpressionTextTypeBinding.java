@@ -96,7 +96,7 @@ public class QueryExpressionTextTypeBinding extends AbstractComplexEMFBinding {
             //include the query text
 
             //this is a hack, but we need to build up a dom with namespaces without actually 
-            // having them decelared by the edxpression text, so we first parse the query 
+            // having them declared by the expression text, so we first parse the query 
             // expression with a sax handler that can transform to a namespace aware dom 
             // using the current namespace context
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();

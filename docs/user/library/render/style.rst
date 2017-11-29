@@ -390,7 +390,7 @@ Examples:
 
 * GeoServer SLD cookbook
   
-  :geoserver:`Points <styling/sld-cookbook/points.html>`
+  :geoserver:`Points <styling/sld/cookbook/points.html>`
   
 * Quick example creating a PointSymbolizer using StyleBuilder:
   
@@ -430,7 +430,7 @@ Examples:
 
 * GeoServer SLD cookbook
   
-  :geoserver:`Lines <styling/sld-cookbook/lines.html>`
+  :geoserver:`Lines <styling/sld/cookbook/lines.html>`
 
 PolygonSymbolizer
 '''''''''''''''''
@@ -441,7 +441,7 @@ Examples:
 
 * GeoServer SLD cookbook
   
-  :geoserver:`Polygons <styling/sld-cookbook/polygons.html>`
+  :geoserver:`Polygons <styling/sld/cookbook/polygons.html>`
   
 * Quick example using StyleBuilder to create a PolygonSymbolizer:
 
@@ -463,9 +463,9 @@ Examples:
 
 * GeoServer SLD cookbook
   
-  * :geoserver:`Point Labels <styling/sld-cookbook/points.html>`
-  * :geoserver:`Line Labels <styling/sld-cookbook/lines.html>`
-  * :geoserver:`Polygon Labels <styling/sld-cookbook/polygons.html>`
+  * :geoserver:`Point Labels <styling/sld/cookbook/points.html>`
+  * :geoserver:`Line Labels <styling/sld/cookbook/lines.html>`
+  * :geoserver:`Polygon Labels <styling/sld/cookbook/polygons.html>`
 
 * Here is a quick example of creating a TextSymbolizer with StyleBuilder:
   
@@ -565,7 +565,7 @@ Used to control the rendering of raster data with full "color map" control.
 
 * GeoServer SLD cookbook
   
-  * :geoserver:`Rasters <styling/sld-cookbook/rasters.html>`
+  * :geoserver:`Rasters <styling/sld/cookbook/rasters.html>`
   
 StyleVisitor
 ^^^^^^^^^^^^

@@ -27,13 +27,19 @@ import net.opengis.wfs20.Wfs20Factory;
 
 import org.custommonkey.xmlunit.XMLAssert;
 import org.geotools.data.memory.MemoryDataStore;
+import org.geotools.feature.AttributeBuilder;
+import org.geotools.feature.AttributeTypeBuilder;
 import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.gml3.GMLConfiguration;
+import org.geotools.gml3.v3_2.GML;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.Encoder;
 import org.geotools.xml.test.XMLTestSupport;
+import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.AttributeType;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -56,19 +62,29 @@ public class WFSFeatureCollectionEncodingTest extends TestCase {
     protected void setUp() throws Exception {
         
         store = new MemoryDataStore();
-        
+
+        AttributeTypeBuilder ab = new AttributeTypeBuilder();
+        ab.setNamespaceURI(GML.NAMESPACE);
+        ab.setName("identifier");
+        ab.setBinding(String.class);
+        AttributeType identifierType = ab.buildType();
+        AttributeDescriptor identifierDescriptor = ab.buildDescriptor(new NameImpl(GML.NAMESPACE, "identifier"), identifierType);
+
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName( "feature" );
         tb.setNamespaceURI( "http://geotools.org");
+        tb.add( identifierDescriptor );
         tb.add( "geometry", Point.class );
         tb.add( "integer", Integer.class );
         store.createSchema(tb.buildFeatureType());
         
         SimpleFeatureBuilder b = new SimpleFeatureBuilder( store.getSchema("feature") );
+        b.add ("id1");
         b.add( new GeometryFactory().createPoint( new Coordinate( 0, 0 ) ) );
         b.add( 0 );
         store.addFeature(b.buildFeature( "zero" ));
-        
+
+        b.add ("id2");
         b.add( new GeometryFactory().createPoint( new Coordinate( 1, 1 ) ) );
         b.add( 1 );
         store.addFeature(b.buildFeature( "one" ));
@@ -184,7 +200,7 @@ public class WFSFeatureCollectionEncodingTest extends TestCase {
         e.setIndenting(true);
         
         Document d = e.encodeAsDOM( fc, WFS.FeatureCollection );
-        // XMLTestSupport.print(d);
+        XMLTestSupport.print(d);
         
         List<Element> members = getChildElementsByTagName( d.getDocumentElement(), "wfs:member" ); 
         assertEquals( 2, members.size() );

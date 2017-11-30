@@ -47,8 +47,10 @@ import org.geotools.xs.bindings.XSStringBinding;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
@@ -186,7 +188,7 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
 
     private void encodeValue(GMLWriter output, ObjectEncoder ee, Object value,
             AttributeContext attribute, String featureId) throws SAXException, Exception {
-        output.startElement(attribute.name, null);
+        output.startElement(attribute.name, getPropertyAttributes(attribute.name, attribute.featureType, attribute.descriptor, value));
 
         if (value instanceof Geometry) {
             Geometry g = (Geometry) value;
@@ -211,6 +213,22 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
         }
 
         output.endElement(attribute.name);
+    }
+
+    /**
+     * Allows subclasses to generate a list of attributes for the property being encoded.
+     * The default implementation just returns null
+     * 
+     *
+     *
+     * @param name
+     * @param featureType
+     * @param attribute The attribute being encoded
+     * @param value The attribute value
+     * @return A Attributes, or null if no attributes are desired
+     */
+    protected Attributes getPropertyAttributes(QualifiedName name, FeatureType featureType, AttributeDescriptor attribute, Object value) {
+        return null;
     }
 
     private GeometryEncoder getGeometryEncoder(Object value, AttributeContext attribute) {
@@ -279,6 +297,8 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
         Binding binding;
         
         AttributeDescriptor descriptor;
+        
+        FeatureType featureType;
 
         public AttributeContext(QualifiedName name) {
             this.name = name;
@@ -357,6 +377,7 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
                     contentName = new QualifiedName(content.getTargetNamespace(), content.getName());
                 }
                 AttributeContext attribute = new AttributeContext(contentName);
+                attribute.featureType = schema;
                 attributes.add(attribute);
                 int idx = getNameIndex(content.getName(), attributeDescriptors);
                 attribute.attributeIndex = idx;

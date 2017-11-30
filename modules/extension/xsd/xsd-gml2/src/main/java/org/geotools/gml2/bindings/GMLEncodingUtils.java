@@ -368,7 +368,13 @@ public class GMLEncodingUtils {
                 //TODO: do a proper mapping
                 element.setTypeDefinition(schemaIndex.getTypeDefinition(XS.STRING));
             }
-            element.setTargetNamespace(featureType.getName().getNamespaceURI());
+
+            String attributeNs = attribute.getName().getNamespaceURI();
+            if ( attributeNs != null && !attributeNs.trim().isEmpty()) {
+                element.setTargetNamespace(attributeNs);
+            } else {
+                element.setTargetNamespace(featureType.getName().getNamespaceURI());
+            }
             
 
             XSDParticle particle = f.createXSDParticle();

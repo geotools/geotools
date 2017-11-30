@@ -23,7 +23,11 @@ import org.geotools.gml2.simple.QualifiedName;
 import org.geotools.gml3.simple.GML32FeatureCollectionEncoderDelegate;
 import org.geotools.gml3.v3_2.GML;
 import org.geotools.xml.Encoder;
+import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.FeatureType;
+import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
+import org.xml.sax.helpers.AttributesImpl;
 
 /**
  * Encoder delegate for high speed GML 3.2 encoding of SimpleFeatureCollection
@@ -36,6 +40,20 @@ class WFS20FeatureCollectionEncoderDelegate extends FeatureCollectionEncoderDele
         super(features, encoder, new WFS20EncoderDelegate(encoder));
         this.encodeGeometryIds = true;
     }
+
+    @Override
+    protected Attributes getPropertyAttributes(QualifiedName name, FeatureType featureType, AttributeDescriptor 
+            attribute, Object
+            value) {
+        if ("identifier".equals(name.getLocalPart()) && GML.NAMESPACE.equals(name.getNamespaceURI())) {
+            AttributesImpl atts = new AttributesImpl();
+            atts.addAttribute(null, "codeSpace", "codeSpace", null, featureType.getName().getNamespaceURI());
+            return atts;
+        }
+
+        return null;
+    }
+
 
     static class WFS20EncoderDelegate extends GML32FeatureCollectionEncoderDelegate.GML32Delegate {
 

@@ -16,9 +16,14 @@
  */
 package org.geotools.gml3.simple;
 
-import java.util.List;
-import java.util.Map;
-
+import com.vividsolutions.jts.geom.GeometryCollection;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.LinearRing;
+import com.vividsolutions.jts.geom.MultiLineString;
+import com.vividsolutions.jts.geom.MultiPoint;
+import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.geometry.jts.CircularRing;
@@ -37,18 +42,16 @@ import org.geotools.xml.Configuration;
 import org.geotools.xml.Encoder;
 import org.geotools.xml.XSD;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.FeatureType;
+import org.opengis.feature.type.Name;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
+import java.util.List;
+import java.util.Map;
 
 /**
  * SimpleFeatureCollection encoder delegate for fast GML3 encoding
@@ -61,6 +64,18 @@ public class GML32FeatureCollectionEncoderDelegate extends
     public GML32FeatureCollectionEncoderDelegate(SimpleFeatureCollection features, Encoder encoder) {
         super(features, encoder, new GML32Delegate(encoder));
         this.encodeGeometryIds = true;
+    }
+
+    @Override
+    protected Attributes getPropertyAttributes(QualifiedName name, FeatureType featureType, AttributeDescriptor attribute, Object
+            value) {
+        if ("identifier".equals(name.getLocalPart()) && GML.NAMESPACE.equals(name.getNamespaceURI())) {
+            AttributesImpl atts = new AttributesImpl();
+            atts.addAttribute(null, "codeSpace", "codeSpace", null, featureType.getName().getNamespaceURI());
+            return atts;
+        }
+
+        return null;
     }
 
     public static class GML32Delegate implements org.geotools.gml2.simple.GMLDelegate {

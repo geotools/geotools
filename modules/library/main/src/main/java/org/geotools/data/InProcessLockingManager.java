@@ -545,7 +545,7 @@ public class InProcessLockingManager implements LockingManager {
      *
      * @author Jody Garnett, Refractions Research
      */
-    interface Lock {
+    public interface Lock {
         /**
          * Check if lock has expired, it will be removed if so
          *

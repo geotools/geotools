@@ -5054,7 +5054,7 @@ public class Wfs20PackageImpl extends EPackageImpl implements Wfs20Package {
                 !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getLockFeatureType_AbstractQueryExpression(),
                 theFes20Package.getAbstractQueryExpressionType(), null, "abstractQueryExpression",
-                null, 1, -1, LockFeatureType.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE,
+                null, 1, -1, LockFeatureType.class, IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE,
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED,
                 IS_ORDERED);
         initEAttribute(getLockFeatureType_Expiry(), theXMLTypePackage.getPositiveInteger(),

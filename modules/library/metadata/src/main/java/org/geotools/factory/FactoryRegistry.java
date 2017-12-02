@@ -169,6 +169,29 @@ public class FactoryRegistry {
         this(Arrays.asList(categories));
     }
 
+    @Override
+    protected void finalize() throws Throwable {
+        deregisterAll();
+        super.finalize();
+    }
+
+    /**
+     * @deprecated Replace with {@link ServiceLoader#load(Class)}
+     */
+    @Deprecated
+    public static <T> Iterator<T> lookupProviders(Class<T> service) {
+        return ServiceLoader.load(service).iterator();
+    }
+
+    /**
+     * @param classLoader 
+     * @deprecated Replace with {@link ServiceLoader#load(Class,ClassLoader)}
+     */
+    @Deprecated
+    public static <T> Iterator<T> lookupProviders(Class<T> service, ClassLoader classLoader) {
+        return ServiceLoader.load(service,classLoader).iterator();
+    }
+    
     /**
      * Constructs a new registry for the specified categories.
      *

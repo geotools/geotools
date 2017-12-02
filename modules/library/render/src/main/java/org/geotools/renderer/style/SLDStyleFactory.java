@@ -1255,11 +1255,11 @@ public class SLDStyleFactory {
 
 	
 
-    private BufferedImage markToTilableImage(org.geotools.styling.Graphic gr, Object feature, Mark mark,
-            Shape shape) {
+    private BufferedImage markToTilableImage(org.geotools.styling.Graphic gr, Object feature,
+            Mark mark, Shape shape) {
         BufferedImage image;
         Rectangle2D shapeBounds = shape.getBounds2D();
-   
+
         // The aspect ratio is the relation between the width and height of
         // this mark (x width units per y height units or width/height). The
         // aspect ratio is used to render non isometric sized marks (where
@@ -1267,38 +1267,54 @@ public class SLDStyleFactory {
         // isometric
         // mark, simply calculate <code>height * aspectRatio</code>, where
         // height is given by getSize().
-        double shapeAspectRatio = (shapeBounds.getHeight() > 0 && shapeBounds
-        		.getWidth() > 0) ? shapeBounds.getWidth()
-        		/ shapeBounds.getHeight() : 1.0;
-   
+        double shapeAspectRatio = (shapeBounds.getHeight() > 0 && shapeBounds.getWidth() > 0)
+                ? shapeBounds.getWidth() / shapeBounds.getHeight() : 1.0;
+
         double size = evalToDouble(gr.getSize(), feature, 16);
         final double sizeX = size * shapeAspectRatio; // apply the aspect
-        												// ratio to fix the
-        												// sample's width.
+                                                      // ratio to fix the
+                                                      // sample's width.
         final double sizeY = size;
-        
+
         // we need to paint the mark in a 3x3 grid to account for border effects
-        // due to antialiasing (e.g., even if the mark is 10 pixels wide, due to the 
+        // due to antialiasing (e.g., even if the mark is 10 pixels wide, due to the
         // antialiasing graphically it occupies 12 or so pixels)
-        image = new BufferedImage((int) Math.ceil(sizeX * 3), (int) Math
-        		.ceil(sizeY * 3), BufferedImage.TYPE_INT_ARGB);
+
+        // check if this will cause an overflow in the image creation GEOT-5878
+        int repeat = 3;
+        if ((sizeX * repeat) * (sizeY * repeat) > Integer.MAX_VALUE) {
+            LOGGER.warning("Size of graphic (" + sizeX + " * " + sizeY + ") is too large");
+            if (sizeX * sizeY > Integer.MAX_VALUE) {
+                LOGGER.severe("Size of graphic (" + sizeX + " * " + sizeY
+                        + ") is too large will not draw");
+                return new BufferedImage(10, 10, BufferedImage.TYPE_INT_ARGB);
+            } else {
+                LOGGER.fine("Size of metatiled graphic (" + (repeat * sizeX) + " * " + (repeat * sizeY)
+                        + ") is too large, not metatiling it");
+                // try without meta-tiling
+                repeat = 1;
+            }
+        }
+        image = new BufferedImage((int) Math.ceil(sizeX * repeat), (int) Math.ceil(sizeY * repeat),
+                BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = image.createGraphics();
         g2d.setRenderingHints(renderingHints);
         double rotation = Math.toRadians(evalToDouble(gr.getRotation(), feature, 0.0)); // fix for GEOS-6217
         for (int i = -1; i < 2; i++) {
-        	for (int j = -1; j < 2; j++) {
-        		double tx = sizeX * 1.5 + sizeX * i;
-        		double ty = sizeY * 1.5 + sizeY * j;
-        		fillDrawMark(g2d, tx, ty, mark, size, rotation, feature);
-        	}
+            for (int j = -1; j < 2; j++) {
+                double tx = sizeX * (repeat / 2.0) + sizeX * i;
+                double ty = sizeY * (repeat / 2.0) + sizeY * j;
+                fillDrawMark(g2d, tx, ty, mark, size, rotation, feature);
+            }
         }
         g2d.dispose();
-   
+
         int iSizeX = (int) Math.floor(sizeX);
         int iSizeY = (int) Math.floor(sizeY);
         // updated to use the new sizes
         image = image.getSubimage(iSizeX, iSizeY, Math.max(iSizeX, 1), Math.max(iSizeY, 1));
         return image;
+
     }
 
     /**

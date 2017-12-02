@@ -1289,7 +1289,7 @@ public class SLDStyleFactory {
                         + ") is too large will not draw");
                 return new BufferedImage(10, 10, BufferedImage.TYPE_INT_ARGB);
             } else {
-                LOGGER.fine("Size of metatiled graphic (" + (3 * sizeX) + " * " + (3 * sizeY)
+                LOGGER.fine("Size of metatiled graphic (" + (repeat * sizeX) + " * " + (repeat * sizeY)
                         + ") is too large, not metatiling it");
                 // try without meta-tiling
                 repeat = 1;

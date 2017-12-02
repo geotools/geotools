@@ -19,7 +19,6 @@ package org.geotools.referencing.operation.matrix;
 import java.io.Serializable;
 
 import org.opengis.referencing.operation.Matrix;
-import org.ejml.alg.fixed.FixedOps3;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.i18n.ErrorKeys;
 

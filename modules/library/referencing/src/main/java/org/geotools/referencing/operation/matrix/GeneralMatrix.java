@@ -32,8 +32,8 @@ import org.opengis.referencing.operation.Matrix;
 import org.opengis.geometry.Envelope;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.ejml.UtilEjml;
-import org.ejml.data.DenseMatrix64F;
-import org.ejml.ops.CommonOps;
+import org.ejml.data.DMatrixRMaj;
+import org.ejml.dense.row.CommonOps_DDRM;
 import org.geotools.io.LineFormat;
 import org.geotools.io.ContentFormatException;
 import org.geotools.util.Utilities;
@@ -61,7 +61,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
      */
     private static final long serialVersionUID = 8447482612423035361L;
 
-    DenseMatrix64F mat;
+    DMatrixRMaj mat;
 
     /**
      * Constructs a square identity matrix of size {@code size}&nbsp;&times;&nbsp;{@code size}.
@@ -69,7 +69,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
      * @param size The number of rows and columns.
      */
     public GeneralMatrix(final int size) {
-        mat = new DenseMatrix64F(size, size);
+        mat = new DMatrixRMaj(size, size);
         setIdentity();
     }
 
@@ -81,7 +81,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
      * @param numCol Number of columns.
      */
     public GeneralMatrix(final int numRow, final int numCol) {
-        mat = new DenseMatrix64F(numRow, numCol);
+        mat = new DMatrixRMaj(numRow, numCol);
         setIdentity();
     }
 
@@ -98,7 +98,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
      * @param matrix Initial values in row order
      */
     public GeneralMatrix(final int numRow, final int numCol, final double ... matrix) {
-        mat = new DenseMatrix64F(numRow, numCol, true, matrix);
+        mat = new DMatrixRMaj(numRow, numCol, true, matrix);
         if (numRow * numCol != matrix.length) {
             throw new IllegalArgumentException(String.valueOf(matrix.length));
         }
@@ -117,7 +117,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
      * @param matrix Initial values in row order
      */
     public GeneralMatrix(final int numRow, final int numCol, final Matrix matrix) {
-        mat = new DenseMatrix64F(numRow, numCol);
+        mat = new DMatrixRMaj(numRow, numCol);
         if (matrix.getNumRow()!=numRow || matrix.getNumCol()!=numCol) {
             throw new IllegalArgumentException(Errors.format(ErrorKeys.ILLEGAL_MATRIX_SIZE));
         }
@@ -136,7 +136,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
      *         (i.e. if all rows doesn't have the same length).
      */
     public GeneralMatrix(final double[][] matrix) throws IllegalArgumentException {
-        mat = new DenseMatrix64F(matrix);
+        mat = new DMatrixRMaj(matrix);
         final int numRow = getNumRow();
         final int numCol = getNumCol();
         for (int j = 0; j < numRow; j++) {
@@ -156,9 +156,9 @@ public class GeneralMatrix implements XMatrix, Serializable {
      */
     public GeneralMatrix(final Matrix matrix) {
         if (matrix instanceof GeneralMatrix) {
-            mat = new DenseMatrix64F(((GeneralMatrix) matrix).mat);
+            mat = new DMatrixRMaj(((GeneralMatrix) matrix).mat);
         } else {
-            mat = new DenseMatrix64F(matrix.getNumRow(), matrix.getNumCol());
+            mat = new DMatrixRMaj(matrix.getNumRow(), matrix.getNumCol());
 
             final int height = getNumRow();
             final int width = getNumCol();
@@ -176,7 +176,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
      * @param matrix The matrix to copy.
      */
     public GeneralMatrix(final GeneralMatrix matrix) {
-        mat = new DenseMatrix64F(matrix.mat);
+        mat = new DMatrixRMaj(matrix.mat);
     }
 
     /**
@@ -185,7 +185,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
      * @param transform The matrix to copy.
      */
     public GeneralMatrix(final AffineTransform transform) {
-        mat = new DenseMatrix64F(
+        mat = new DMatrixRMaj(
             3,3, true, new double[] {
             transform.getScaleX(), transform.getShearX(), transform.getTranslateX(),
             transform.getShearY(), transform.getScaleY(), transform.getTranslateY(),
@@ -213,7 +213,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
      * @param dstRegion The destination region.
      */
     public GeneralMatrix(final Envelope srcRegion, final Envelope dstRegion) {
-        mat = new DenseMatrix64F(dstRegion.getDimension()+1, srcRegion.getDimension()+1);
+        mat = new DMatrixRMaj(dstRegion.getDimension()+1, srcRegion.getDimension()+1);
         
         // Next lines should be first if only Sun could fix RFE #4093999 (sigh...)
         final int srcDim = srcRegion.getDimension();
@@ -357,16 +357,16 @@ public class GeneralMatrix implements XMatrix, Serializable {
     // In-place operations
     //
     /**
-     * Cast (or convert) Matrix to internal DenseMatrix64F representation required for CommonOps.
+     * Cast (or convert) Matrix to internal DMatrixRMaj representation required for CommonOps_DDRM.
      * @param matrix
      * @return
      */
-    private DenseMatrix64F internal( Matrix matrix ){
+    private DMatrixRMaj internal( Matrix matrix ){
         if( matrix instanceof GeneralMatrix ){
             return ((GeneralMatrix)matrix).mat;
         }
         else {
-            DenseMatrix64F a = new DenseMatrix64F(matrix.getNumRow(), matrix.getNumCol());
+            DMatrixRMaj a = new DMatrixRMaj(matrix.getNumRow(), matrix.getNumCol());
             for (int j = 0; j < a.numRows; j++) {
                 for (int i = 0; i < a.numCols; i++) {
                     a.set(j, i, matrix.getElement(j, i));
@@ -464,13 +464,13 @@ public class GeneralMatrix implements XMatrix, Serializable {
     @Override
     public void negate() {
         // JNH: This seems the most aggressive approach.
-        CommonOps.changeSign(mat);
+        CommonOps_DDRM.changeSign(mat);
     }
 
     @Override
     public void negate(Matrix matrix) {
-        DenseMatrix64F a = internal(matrix);
-        CommonOps.changeSign(a);
+        DMatrixRMaj a = internal(matrix);
+        CommonOps_DDRM.changeSign(a);
         this.mat = a;
     }
 
@@ -479,18 +479,18 @@ public class GeneralMatrix implements XMatrix, Serializable {
      */
     @Override
     public void transpose() {
-        CommonOps.transpose(mat);
+        CommonOps_DDRM.transpose(mat);
     }
 
     @Override
     public void transpose(Matrix matrix) {
-        DenseMatrix64F a = internal(matrix);
-        CommonOps.transpose(a, mat);
+        DMatrixRMaj a = internal(matrix);
+        CommonOps_DDRM.transpose(a, mat);
     }
     
     @Override
     public void invert() {
-        boolean success = CommonOps.invert(mat);
+        boolean success = CommonOps_DDRM.invert(mat);
         if(!success){
             throw new SingularMatrixException("Could not invert, possible singular matrix?");
         }
@@ -498,19 +498,19 @@ public class GeneralMatrix implements XMatrix, Serializable {
 
     @Override
     public void invert(Matrix matrix) throws SingularMatrixException {
-        DenseMatrix64F a;
+        DMatrixRMaj a;
         if( matrix instanceof GeneralMatrix ){
-            a = new DenseMatrix64F( ((GeneralMatrix)matrix).mat );
+            a = new DMatrixRMaj( ((GeneralMatrix)matrix).mat );
         }
         else {
-            a = new DenseMatrix64F(matrix.getNumRow(), matrix.getNumCol());
+            a = new DMatrixRMaj(matrix.getNumRow(), matrix.getNumCol());
             for (int j = 0; j < mat.numRows; j++) {
                 for (int i = 0; i < mat.numCols; i++) {
                     mat.set(j, i, matrix.getElement(j, i));
                 }
             }
         }
-        boolean success = CommonOps.invert(a);
+        boolean success = CommonOps_DDRM.invert(a);
         if(!success){
             throw new SingularMatrixException("Could not invert, possible singular matrix?");
         }
@@ -591,7 +591,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
      */
     @Override
     public void setIdentity() {
-        CommonOps.setIdentity(mat);
+        CommonOps_DDRM.setIdentity(mat);
     }
 
     /**
@@ -857,7 +857,7 @@ public class GeneralMatrix implements XMatrix, Serializable {
                               int rowDest, int colDest, GeneralMatrix target) {
         int rowLimit = rowSource + numRows;
         int colLimit = colSource + numCol;
-        CommonOps.extract(mat, rowSource, rowLimit, colSource, colLimit, target.mat, rowDest, colDest);
+        CommonOps_DDRM.extract(mat, rowSource, rowLimit, colSource, colLimit, target.mat, rowDest, colDest);
     }
 
     /**
@@ -873,13 +873,13 @@ public class GeneralMatrix implements XMatrix, Serializable {
     }
     @Override
     public void mul(double scalar) {
-        CommonOps.scale(scalar, this.mat);
+        CommonOps_DDRM.scale(scalar, this.mat);
     }
 
     @Override
     public void mul(double scalar, Matrix matrix) {
-        DenseMatrix64F a = new DenseMatrix64F( matrix.getNumRow(), matrix.getNumCol() ); 
-        CommonOps.scale(scalar, internal( matrix ), a );
+        DMatrixRMaj a = new DMatrixRMaj( matrix.getNumRow(), matrix.getNumCol() ); 
+        CommonOps_DDRM.scale(scalar, internal( matrix ), a );
         mat = a;
     }
 
@@ -901,9 +901,9 @@ public class GeneralMatrix implements XMatrix, Serializable {
      * 
      */
     public final void mul(Matrix matrix){
-        DenseMatrix64F b = internal(matrix);
-        DenseMatrix64F ret = new DenseMatrix64F(mat.numRows,b.numCols);
-        CommonOps.mult(mat,b,ret);
+        DMatrixRMaj b = internal(matrix);
+        DMatrixRMaj ret = new DMatrixRMaj(mat.numRows,b.numCols);
+        CommonOps_DDRM.mult(mat,b,ret);
         mat = ret;
     }
     
@@ -913,38 +913,38 @@ public class GeneralMatrix implements XMatrix, Serializable {
      * @param matrix2
      */
     public void mul(Matrix matrix1, Matrix matrix2) {
-        DenseMatrix64F a = internal(matrix1);
-        DenseMatrix64F b = internal(matrix2);
+        DMatrixRMaj a = internal(matrix1);
+        DMatrixRMaj b = internal(matrix2);
         if( a == mat || b == mat ){
-            mat = new DenseMatrix64F(a.numRows, b.numCols );
+            mat = new DMatrixRMaj(a.numRows, b.numCols );
         }
         else {
             mat.reshape(a.numRows, b.numCols, false);
         }
-        CommonOps.mult(a, b, mat);
+        CommonOps_DDRM.mult(a, b, mat);
     }
 
     @Override
     public void sub(double scalar) {
-        CommonOps.subtract(mat, scalar, mat);
+        CommonOps_DDRM.subtract(mat, scalar, mat);
     }
 
     @Override
     public void sub(double scalar, Matrix matrix) {
-        DenseMatrix64F a = internal(matrix);
+        DMatrixRMaj a = internal(matrix);
         mat.reshape(a.numRows, a.numCols, false);
-        CommonOps.subtract(scalar, a, mat);
+        CommonOps_DDRM.subtract(scalar, a, mat);
     }
 
     public void sub(Matrix matrix) {
-        CommonOps.subtract(mat, internal(matrix), mat);
+        CommonOps_DDRM.subtract(mat, internal(matrix), mat);
     }
 
     public void sub(Matrix matrix1, Matrix matrix2) {
-        DenseMatrix64F a = internal(matrix1);
-        DenseMatrix64F b = internal(matrix2);
+        DMatrixRMaj a = internal(matrix1);
+        DMatrixRMaj b = internal(matrix2);
         mat.reshape(a.numRows, a.numCols, false);
-        CommonOps.subtract(a, b, mat);
+        CommonOps_DDRM.subtract(a, b, mat);
     }
 
     /**
@@ -967,40 +967,40 @@ public class GeneralMatrix implements XMatrix, Serializable {
         }
         else {
             // grow or shrink
-            DenseMatrix64F ret = new DenseMatrix64F(numRows,numCols);
-            CommonOps.extract(mat,0,numRows,0,numCols,ret,0,0);
+            DMatrixRMaj ret = new DMatrixRMaj(numRows,numCols);
+            CommonOps_DDRM.extract(mat,0,numRows,0,numCols,ret,0,0);
             mat = ret;
         }
     }
 
     @Override
     public void add(double scalar) {
-        CommonOps.add(mat, scalar, mat);
+        CommonOps_DDRM.add(mat, scalar, mat);
     }
 
     @Override
     public void add(double scalar, XMatrix matrix) {
-        DenseMatrix64F a = internal(matrix);
+        DMatrixRMaj a = internal(matrix);
         mat.reshape(a.numRows, a.numCols, false);
-        CommonOps.add(a, scalar, mat);
+        CommonOps_DDRM.add(a, scalar, mat);
     }
 
     @Override
     public void add(XMatrix matrix) {
-        CommonOps.add(mat, internal(matrix), mat);
+        CommonOps_DDRM.add(mat, internal(matrix), mat);
     }
 
     @Override
     public void add(XMatrix matrix1, XMatrix matrix2) {
-        DenseMatrix64F a = internal(matrix1);
-        DenseMatrix64F b = internal(matrix2);
+        DMatrixRMaj a = internal(matrix1);
+        DMatrixRMaj b = internal(matrix2);
         mat.reshape(a.numRows, a.numCols, false);
-        CommonOps.add(a, b, mat);
+        CommonOps_DDRM.add(a, b, mat);
     }
 
     @Override
     public double determinate() {
-        double det = CommonOps.det(mat);
+        double det = CommonOps_DDRM.det(mat);
         // if the decomposition silently failed then the matrix is most likely singular
         if(UtilEjml.isUncountable(det))
             return 0;

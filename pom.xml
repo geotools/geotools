@@ -746,9 +746,9 @@
       
       <!-- Mathematic, geometries, SVG... -->
       <dependency>
-        <groupId>com.googlecode.efficient-java-matrix-library</groupId>
-        <artifactId>core</artifactId>
-        <version>0.26</version>
+        <groupId>org.ejml</groupId>
+        <artifactId>ejml-ddense</artifactId>
+        <version>0.32</version>
       </dependency>
       <dependency>
         <groupId>com.vividsolutions</groupId>

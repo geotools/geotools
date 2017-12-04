@@ -23,4 +23,26 @@ public class EncoderTest extends TestCase {
 
         System.out.println(e.encodeAsString(ml, new QName(ML.NAMESPACE, "mails")));
     }
+    
+    /**
+     * Tests for {@link Encoder#setOmitXMLDeclaration(boolean)}
+     */
+    public void testSetOmitXMLDeclaration() {
+        Encoder encoder = new Encoder(new MLConfiguration());
+        encoder.setOmitXMLDeclaration(false);
+        assertFalse(encoder.isOmitXMLDeclaration());
+        encoder.setOmitXMLDeclaration(true);
+        assertTrue(encoder.isOmitXMLDeclaration());
+    }
+    
+    /**
+     * Tests for {@link Encoder#setIndenting(boolean)}
+     */
+    public void testSetIndenting() {
+        Encoder encoder = new Encoder(new MLConfiguration());
+        encoder.setIndenting(false);
+        assertFalse(encoder.isIndenting());
+        encoder.setIndenting(true);
+        assertTrue(encoder.isIndenting());
+    }
 }

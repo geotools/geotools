@@ -2909,6 +2909,7 @@ public class StreamingRenderer implements GTRenderer {
                 throw new NullPointerException("Label_Cache_Hint has a null value for the labelcache");
 
             this.labelCache=cache;
+            painter = new StyledShapePainter(cache);
         }
         if(hints != null && hints.containsKey(LINE_WIDTH_OPTIMIZATION_KEY)) {
             styleFactory.setLineOptimizationEnabled(Boolean.TRUE.equals(hints.get(LINE_WIDTH_OPTIMIZATION_KEY)));

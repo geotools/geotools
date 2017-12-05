@@ -48,11 +48,7 @@ public class StyleAttributeExtractorTruncated extends StyleAttributeExtractor
 		implements StyleVisitor {
 
 	boolean usingVolatileFunctions = false;
-
-	public StyleAttributeExtractorTruncated() {
-		setSymbolizerGeometriesVisitEnabled(false);
-	}
-
+	
 	@Override
 	public void clear() {
 		super.clear();
@@ -67,6 +63,53 @@ public class StyleAttributeExtractorTruncated extends StyleAttributeExtractor
 		usingVolatileFunctions |= (expression instanceof VolatileFunction);
 		return super.visit(expression, data);
 	};
+
+	public void visit(RasterSymbolizer rs) {
+		if (rs != null) {
+			if (rs.getImageOutline() != null) {
+				rs.getImageOutline().accept(this);
+			}
+
+			if (rs.getOpacity() != null) {
+				rs.getOpacity().accept(this, null);
+			}
+		}
+	}
+
+	/**
+	 * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.PointSymbolizer)
+	 */
+	public void visit(PointSymbolizer ps) {
+
+		if (ps.getGraphic() != null) {
+			ps.getGraphic().accept(this);
+		}
+
+	}
+
+	/**
+	 * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.LineSymbolizer)
+	 */
+	public void visit(LineSymbolizer line) {
+
+		if (line.getStroke() != null) {
+			line.getStroke().accept(this);
+		}
+	}
+
+	/**
+	 * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.PolygonSymbolizer)
+	 */
+	public void visit(PolygonSymbolizer poly) {
+
+		if (poly.getStroke() != null) {
+			poly.getStroke().accept(this);
+		}
+
+		if (poly.getFill() != null) {
+			poly.getFill().accept(this);
+		}
+	}
 
 	/**
 	 * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.TextSymbolizer)

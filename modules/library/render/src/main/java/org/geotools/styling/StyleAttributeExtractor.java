@@ -57,24 +57,6 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor
     boolean defaultGeometryUsed = false;
 
     /**
-     * Symbolizer geometry is enabled by default, but there are relevant cases in which we don't desire that
-     */
-    boolean symbolizerGeometriesVisitEnabled = true;
-
-
-    public boolean isSymbolizerGeometriesVisitEnabled() {
-        return symbolizerGeometriesVisitEnabled;
-    }
-
-    /**
-     * Enables/disables visit of the symbolizer geometry property (on by default)
-     * @param symbolizerGeometriesVisitEnabled
-     */
-    public void setSymbolizerGeometriesVisitEnabled(boolean symbolizerGeometriesVisitEnabled) {
-        this.symbolizerGeometriesVisitEnabled = symbolizerGeometriesVisitEnabled;
-    }
-
-    /**
      * reads the read-only-property.
      * See GEOS-469
      *
@@ -223,10 +205,8 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor
     }
 
     public void visit(RasterSymbolizer rs) {
-        if (symbolizerGeometriesVisitEnabled) {
-            if (rs.getGeometry() != null) {
-                rs.getGeometry().accept(this, null);
-            }
+        if (rs.getGeometry() != null) {
+            rs.getGeometry().accept(this, null);
         }
 
         if (rs.getImageOutline() != null) {
@@ -242,12 +222,10 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.PointSymbolizer)
      */
     public void visit(PointSymbolizer ps) {
-        if (symbolizerGeometriesVisitEnabled) {
-            if (ps.getGeometry() != null) {
-                ps.getGeometry().accept(this, null);
-            } else {
-                this.defaultGeometryUsed = true; // they want the default geometry (see GEOS-469)
-            }
+        if (ps.getGeometry() != null) {
+            ps.getGeometry().accept(this, null);
+        }   else {
+            this.defaultGeometryUsed = true; // they want the default geometry (see GEOS-469)
         }
 
         if (ps.getGraphic() != null) {
@@ -260,12 +238,10 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.LineSymbolizer)
      */
     public void visit(LineSymbolizer line) {
-        if (symbolizerGeometriesVisitEnabled) {
-            if (line.getGeometry() != null) {
-                line.getGeometry().accept(this, null);
-            } else {
-                this.defaultGeometryUsed = true; // they want the default geometry (see GEOS-469)
-            }
+        if (line.getGeometry() != null) {
+            line.getGeometry().accept(this, null);
+        } else {
+            this.defaultGeometryUsed = true; // they want the default geometry (see GEOS-469)
         }
 
         if (line.getPerpendicularOffset() != null) {
@@ -281,12 +257,10 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.PolygonSymbolizer)
      */
     public void visit(PolygonSymbolizer poly) {
-        if (symbolizerGeometriesVisitEnabled) {
-            if (poly.getGeometry() != null) {
-                poly.getGeometry().accept(this, null);
-            } else {
-                this.defaultGeometryUsed = true; // they want the default geometry (see GEOS-469)
-            }
+        if (poly.getGeometry() != null) {
+            poly.getGeometry().accept(this, null);
+        } else {
+            this.defaultGeometryUsed = true; // they want the default geometry (see GEOS-469)
         }
 
         if (poly.getStroke() != null) {
@@ -302,12 +276,10 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor
      * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.TextSymbolizer)
      */
     public void visit(TextSymbolizer text) {
-        if (symbolizerGeometriesVisitEnabled) {
-            if (text.getGeometry() != null) {
-                text.getGeometry().accept(this, null);
-            } else {
-                this.defaultGeometryUsed = true; // they want the default geometry (see GEOS-469)
-            }
+        if (text.getGeometry() != null) {
+            text.getGeometry().accept(this, null);
+        } else {
+            this.defaultGeometryUsed = true; // they want the default geometry (see GEOS-469)
         }
 
         if (text instanceof TextSymbolizer2)
@@ -578,5 +550,6 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor
 
     public void visit(ShadedRelief sr) {
         sr.accept(this);
+        
     }
 }

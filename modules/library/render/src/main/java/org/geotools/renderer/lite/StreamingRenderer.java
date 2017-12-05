@@ -51,7 +51,6 @@ import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 import javax.media.jai.Interpolation;
 import javax.media.jai.PlanarImage;
@@ -2303,8 +2302,7 @@ public class StreamingRenderer implements GTRenderer {
                 if( featureIterator == null ){
                     return; // nothing to do
                 }
-                boolean cloningRequired = isCloningRequired(lfts);
-                RenderableFeature rf = createRenderableFeature(layerId, cloningRequired);
+                RenderableFeature rf = createRenderableFeature(layerId, isCloningRequired(lfts));
                 rf.layer = liteFeatureTypeStyle.layer;
                 rf.setScreenMap(liteFeatureTypeStyle.screenMap);
                 // loop exit condition tested inside try catch
@@ -2354,8 +2352,7 @@ public class StreamingRenderer implements GTRenderer {
             if (iterator == null)
                 return; // nothing to do
 
-            boolean cloningRequired = isCloningRequired(lfts);
-            RenderableFeature rf = createRenderableFeature(layerId, cloningRequired);
+            RenderableFeature rf = createRenderableFeature(layerId, isCloningRequired(lfts));
             // loop exit condition tested inside try catch
             // make sure we test hasNext() outside of the try/cath that follows, as that
             // one is there to make sure a single feature error does not ruin the rendering
@@ -2424,28 +2421,8 @@ public class StreamingRenderer implements GTRenderer {
                 }
             }
         }
-        
-        // check also that the rendered geometry is not used in any other filter or property of the LFTS
-        StyleAttributeExtractor extractorOther = new StyleAttributeExtractor();
-        extractorOther.setSymbolizerGeometriesVisitEnabled(false);
-        for (LiteFeatureTypeStyle lft : lfts) {
-            for (Rule r : lft.ruleList) {
-                if (r.getFilter() != null) {
-                    r.getFilter().accept(extractorOther, null);
-                }
-                for (Symbolizer s : r.symbolizers()) {
-                    s.accept(extractorOther);
-                }
-            }
-        }
-        Set<String> filterAndSymbolizerProperties = extractorOther.getAttributes().stream()
-                .map(pn -> pn.getPropertyName()).collect(Collectors.toSet());
-        if (extractorOther.getDefaultGeometryUsed() && featureType.getGeometryDescriptor() != null) {
-            String defaultGeometryName = featureType.getGeometryDescriptor().getName().getLocalPart();
-            filterAndSymbolizerProperties.add(defaultGeometryName);
-        }
-        return !Collections.disjoint(filterAndSymbolizerProperties, plainGeometries) ||
-                !Collections.disjoint(filterAndSymbolizerProperties, txGeometries);        
+
+        return false;
     }
 
     /**
@@ -3664,5 +3641,4 @@ public class StreamingRenderer implements GTRenderer {
         }
         
     }
-
 }

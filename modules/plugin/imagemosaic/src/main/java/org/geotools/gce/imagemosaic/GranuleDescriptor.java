@@ -1118,6 +1118,11 @@ public class GranuleDescriptor {
                     interpolation instanceof InterpolationNearest ? Boolean.FALSE : Boolean.TRUE);
             if (XAffineTransform.isIdentity(finalRaster2Model,
                     CoverageUtilities.AFFINE_IDENTITY_EPS)) {
+                if (noData != null) {
+                    PlanarImage t = PlanarImage.wrapRenderedImage(raster);
+                    t.setProperty(NoDataContainer.GC_NODATA, noData);
+                    raster = t;
+                }
                 return new GranuleLoadingResult(raster, null, granuleURLUpdated, doFiltering,
                         pamDataset, this);
             } else {

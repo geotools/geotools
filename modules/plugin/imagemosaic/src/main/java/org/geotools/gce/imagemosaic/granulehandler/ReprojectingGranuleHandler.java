@@ -17,6 +17,8 @@
 
 package org.geotools.gce.imagemosaic.granulehandler;
 
+import com.vividsolutions.jts.geom.GeometryCollection;
+import com.vividsolutions.jts.geom.MultiPolygon;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.StructuredGridCoverage2DReader;
 import org.geotools.gce.imagemosaic.MosaicConfigurationBean;
@@ -59,6 +61,9 @@ public class ReprojectingGranuleHandler implements GranuleHandler {
                     geometry = Utils.reprojectEnvelopeToGeometry(finalEnvelope, targetCRS, null);
                     if(geometry == null) {
                         throw new GranuleHandlingException("Reprojection of source envelope failed, got back a null one " + finalEnvelope);
+                    } else if (geometry instanceof GeometryCollection) {
+                        // in case of wrapping only pick the first footprint
+                        geometry = geometry.getGeometryN(0);
                     }
                 } catch (TransformException | FactoryException e) {
                     throw new GranuleHandlingException(

@@ -4435,6 +4435,7 @@ public class ImageWorker {
         }
         // Setting NoData
         Range[] nodataNew = null;
+        double[] nodataBackground = null;
         boolean noInternalNoData = true;
         if(nodata != null && srcNum > 0){
             nodataNew = new Range[srcNum];
@@ -4444,6 +4445,10 @@ public class ImageWorker {
             for(int i = 0; i < srcNum; i++){
                 RenderedImage img = pb.getRenderedSource(i);
                 Range nodProp = extractNoDataProperty(img);
+                if (background == null && nodProp != null && nodataBackground == null) {
+                    nodataBackground = new double[1];
+                    nodataBackground[0] = nodProp.getMax().doubleValue();
+                }
                 noInternalNoData &= (nodProp == null);
                 nodataNew[i] = nodProp;
             }
@@ -4457,7 +4462,7 @@ public class ImageWorker {
         pb.add(alphasNew);
         pb.add(roisNew);
         pb.add(thresholds);
-        pb.add(background);
+        pb.add(background != null ? background : nodataBackground);
         pb.add(nodataNew);
         image = JAI.create("Mosaic", pb, getRenderingHints());
         // Setting the final ROI as union of the older ROIs, assuming
@@ -4471,7 +4476,6 @@ public class ImageWorker {
         } else {
             setROI(null);
         }
-        
         return this;
     }
 

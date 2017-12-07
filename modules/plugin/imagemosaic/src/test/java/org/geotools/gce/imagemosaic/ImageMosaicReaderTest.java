@@ -46,7 +46,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
-import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.text.ParseException;
@@ -70,7 +69,6 @@ import javax.imageio.ImageIO;
 import javax.media.jai.RenderedOp;
 import javax.swing.JFrame;
 
-import it.geosolutions.jaiext.range.NoDataContainer;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
@@ -125,7 +123,6 @@ import org.geotools.test.TestData;
 import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
 import org.geotools.util.URLs;
-import org.hamcrest.CoreMatchers;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -160,8 +157,8 @@ import it.geosolutions.imageio.pam.PAMDataset.PAMRasterBand;
 import it.geosolutions.imageio.pam.PAMParser;
 import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import it.geosolutions.jaiext.JAIExt;
+import it.geosolutions.jaiext.range.NoDataContainer;
 import junit.framework.JUnit4TestAdapter;
-import junit.textui.TestRunner;
 
 /**
  * Testing {@link ImageMosaicReader}.
@@ -4671,6 +4668,25 @@ public class ImageMosaicReaderTest extends Assert{
 		assertNoData(coverage, 0d);
 
 	}
+
+    @Test
+    public void testMaintainNoDataIdentity() throws Exception {
+        // For this test the input file has the nodata value set to 7.
+        String testLocation = "nodata";
+        URL storeUrl = TestData.url(this, testLocation);
+
+        File testDataFolder = new File(storeUrl.toURI());
+        ImageMosaicReader imReader = new ImageMosaicReader(testDataFolder, null);
+        Assert.assertNotNull(imReader);
+
+        // read a coverage in deferred mode, check the nodata is there
+        ParameterValue<Boolean> deferredLoading = AbstractGridFormat.USE_JAI_IMAGEREAD
+                .createValue();
+
+        deferredLoading.setValue(true);
+        GridCoverage2D coverage = imReader.read(new GeneralParameterValue[] { deferredLoading });
+        assertNoData(coverage, 7d);
+    }
 
 	public void assertNoData(GridCoverage2D coverageDeferred, Double expectedNoData) {
 		NoDataContainer noDataContainer = CoverageUtilities.getNoDataProperty(coverageDeferred);

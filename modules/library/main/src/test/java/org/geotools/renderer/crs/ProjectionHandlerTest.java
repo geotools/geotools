@@ -961,5 +961,26 @@ public class ProjectionHandlerTest {
         return CRS.parseWKT(crsWKT);
     }
 
+    @Test
+    public void testUTMDatelineWrapping() throws Exception {
+        CoordinateReferenceSystem crs = CRS.decode("EPSG:32601", true);
+        ReferencedEnvelope re = new ReferencedEnvelope(300000 , 409800 , 5890200, 6000000, crs);
+        
+        MathTransform mt = CRS.findMathTransform(crs, WGS84);
+        Geometry geom = JTS.toGeometry(re);
+
+        ReferencedEnvelope targetReferenceEnvelope = new ReferencedEnvelope(-180, 180, -90, 90, WGS84);
+        ProjectionHandler ph = ProjectionHandlerFinder.getHandler(targetReferenceEnvelope, crs, true);
+
+        Geometry preProcessed = ph.preProcess(geom);
+        Geometry transformed = JTS.transform(preProcessed, mt);
+        Geometry postProcessed = ph.postProcess(mt.inverse(), transformed);
+        
+        // sits across the dateline and it's "small" (used to cover the entire planet)
+        Envelope ppEnvelope = postProcessed.getGeometryN(0).getEnvelopeInternal();
+        assertTrue(ppEnvelope.contains(180, 54));
+        // the original width is 109km, at this latitude one degree of longitude is only 65km
+        assertEquals(1.7, ppEnvelope.getWidth(), 0.1);  
+    }
 
 }

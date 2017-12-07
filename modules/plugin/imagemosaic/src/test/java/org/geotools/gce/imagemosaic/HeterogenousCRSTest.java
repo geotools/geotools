@@ -17,30 +17,17 @@
 
 package org.geotools.gce.imagemosaic;
 
-import static org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
-import static org.junit.Assert.*;
-
-import java.awt.Color;
-import java.awt.RenderingHints;
-import java.awt.image.RenderedImage;
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.concurrent.Executors;
-
-import javax.media.jai.Interpolation;
-
+import com.vividsolutions.jts.geom.Geometry;
 import org.apache.commons.io.FileUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
-import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.coverage.grid.io.GranuleSource;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
+import org.geotools.data.Query;
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.Hints;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.geometry.GeneralEnvelope;
@@ -56,11 +43,29 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.operation.TransformException;
+
+import javax.media.jai.Interpolation;
+import java.awt.*;
+import java.awt.image.RenderedImage;
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+
+import static org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Testing whether a simple mosaic correctly has its elements reprojected
@@ -346,7 +351,7 @@ public class HeterogenousCRSTest {
         ImageMosaicReader imReader = new ImageMosaicReader(testDirectory, creationHints);
         Assert.assertNotNull(imReader);
         assertEquals(CRS.toSRS(imReader.getCoordinateReferenceSystem()), "EPSG:4326");
-        
+
         // read before dateline
         GeneralParameterValue gg1 = buildGridGeometryParameter(new ReferencedEnvelope(179, 180, 60, 62, DefaultGeographicCRS.WGS84), 128, 256);
         GridCoverage2D gcBefore = imReader.read(new GeneralParameterValue[] {gg1});
@@ -358,6 +363,17 @@ public class HeterogenousCRSTest {
         GridCoverage2D gcAfter = imReader.read(new GeneralParameterValue[] {ggAfter});
         RenderedImage riAfter = gcAfter.getRenderedImage();
         ImageAssert.assertEquals(testFile("hetero_crs_dateline_results/after.png"), riAfter, 1000);
+
+        GranuleSource gs = imReader.getGranules(null, true);
+        SimpleFeatureCollection granules = gs.getGranules(Query.ALL);
+        try (SimpleFeatureIterator fi = granules.features()) {
+            while (fi.hasNext()) {
+                SimpleFeature sf = fi.next();
+                Geometry geom = (Geometry) sf.getDefaultGeometry();
+                // check it did not wrap around the globe
+                assertTrue(geom.toText(), geom.getEnvelopeInternal().getWidth() < 3);
+            }
+        }
     }
     
     @Test

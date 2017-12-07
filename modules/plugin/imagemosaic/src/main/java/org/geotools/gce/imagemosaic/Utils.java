@@ -2183,7 +2183,18 @@ public class Utils {
         }
 
     }
-    
+
+    /**
+     * Reprojects an envelope using the {@link ProjectionHandler} machinery. The output can be a multipolygon in case
+     * of wrapping, which might or might not be what you want, act accordingly
+     * 
+     * @param sourceEnvelope
+     * @param targetCRS
+     * @param targetReferenceEnvelope
+     * @return
+     * @throws FactoryException
+     * @throws TransformException
+     */
     public static Geometry reprojectEnvelopeToGeometry(ReferencedEnvelope sourceEnvelope, CoordinateReferenceSystem targetCRS, ReferencedEnvelope targetReferenceEnvelope)
             throws FactoryException, TransformException {
         ProjectionHandler handler;

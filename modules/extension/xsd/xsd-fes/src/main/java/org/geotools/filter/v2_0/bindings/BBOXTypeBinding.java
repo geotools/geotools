@@ -16,11 +16,7 @@
  */
 package org.geotools.filter.v2_0.bindings;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.namespace.QName;
-
+import com.vividsolutions.jts.geom.Envelope;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDFactory;
 import org.eclipse.xsd.XSDParticle;
@@ -29,11 +25,13 @@ import org.geotools.filter.v2_0.FES;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.gml3.v3_2.GML;
 import org.geotools.referencing.CRS;
-import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import com.vividsolutions.jts.geom.Envelope;
+import javax.xml.namespace.QName;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -63,6 +61,20 @@ import com.vividsolutions.jts.geom.Envelope;
  */
 public class BBOXTypeBinding extends OGCBBOXTypeBinding {
 
+    static final XSDParticle ENVELOPE_PARTICLE;
+
+    static {
+        ENVELOPE_PARTICLE = XSDFactory.eINSTANCE.createXSDParticle();
+        ENVELOPE_PARTICLE.setMinOccurs(0);
+        ENVELOPE_PARTICLE.setMaxOccurs(-1);
+        try {
+            ENVELOPE_PARTICLE.setContent(GML.getInstance().getSchema().resolveElementDeclaration(GML.Envelope
+                    .getLocalPart()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public QName getTarget() {
         return FES.BBOXType;
     }
@@ -81,31 +93,27 @@ public class BBOXTypeBinding extends OGCBBOXTypeBinding {
         
         return null;
     }
-    
+
     @Override
     public List getProperties(Object object, XSDElementDeclaration element) throws Exception {
         BBOX box = (BBOX) object;
-        
+
         List properties = new ArrayList();
-        
-        XSDParticle particle = XSDFactory.eINSTANCE.createXSDParticle();
-        particle.setContent(GML.getInstance().getSchema().resolveElementDeclaration(GML.Envelope.getLocalPart()));
-        particle.setMinOccurs(0);
-        particle.setMaxOccurs(-1);
-        
-        Envelope env;
+        Envelope env = null;
         try {
             String srs = box.getSRS();
-            if(srs != null) {
+            if (srs != null) {
                 CoordinateReferenceSystem crs = CRS.decode(srs);
                 env = new ReferencedEnvelope(box.getMinX(), box.getMaxX(), box.getMinY(), box.getMaxY(), crs);
             }
-        } catch(Throwable t) {
+        } catch (Throwable t) {
             // never mind
         }
-        env = new Envelope(box.getMinX(), box.getMaxX(), box.getMinY(), box.getMaxY());
-        
-        properties.add( new Object[] {particle, env} );       
+        if (env == null) {
+            env = new Envelope(box.getMinX(), box.getMaxX(), box.getMinY(), box.getMaxY());
+        }
+
+        properties.add(new Object[]{ENVELOPE_PARTICLE, env});
         return properties;
     }
 }

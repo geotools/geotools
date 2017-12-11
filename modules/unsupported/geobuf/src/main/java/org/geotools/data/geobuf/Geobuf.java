@@ -952,10 +952,10 @@ public final class Geobuf {
       }
 
       public static Builder newBuilder() {
-        return (Builder) DEFAULT_INSTANCE.createBuilder();
+        return DEFAULT_INSTANCE.toBuilder();
       }
       public static Builder newBuilder(org.geotools.data.geobuf.Geobuf.Data.Feature prototype) {
-        return (Builder) DEFAULT_INSTANCE.createBuilder(prototype);
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
       }
 
       /**
@@ -1416,7 +1416,7 @@ public final class Geobuf {
 
         // @@protoc_insertion_point(builder_scope:org.geotools.data.geobuf.Data.Feature)
       }
-      private byte memoizedIsInitialized = 2;
+      private byte memoizedIsInitialized = -1;
       @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
       protected final java.lang.Object dynamicMethod(
           com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
@@ -1432,11 +1432,18 @@ public final class Geobuf {
 
             boolean shouldMemoize = ((Boolean) arg0).booleanValue();
             if (!hasGeometry()) {
+              if (shouldMemoize) {
+                memoizedIsInitialized = 0;
+              }
               return null;
             }
             if (!getGeometry().isInitialized()) {
+              if (shouldMemoize) {
+                memoizedIsInitialized = 0;
+              }
               return null;
             }
+            if (shouldMemoize) memoizedIsInitialized = 1;
             return DEFAULT_INSTANCE;
 
           }
@@ -1486,9 +1493,6 @@ public final class Geobuf {
                 (com.google.protobuf.CodedInputStream) arg0;
             com.google.protobuf.ExtensionRegistryLite extensionRegistry =
                 (com.google.protobuf.ExtensionRegistryLite) arg1;
-            if (extensionRegistry == null) {
-              throw new java.lang.NullPointerException();
-            }
             try {
               boolean done = false;
               while (!done) {
@@ -1601,14 +1605,7 @@ public final class Geobuf {
               }
             }
             return PARSER;
-        }
-        case GET_MEMOIZED_IS_INITIALIZED: {
-          return memoizedIsInitialized;
-        }
-        case SET_MEMOIZED_IS_INITIALIZED: {
-          memoizedIsInitialized = (byte) (arg0 == null ? 0 : 1);
-          return null;
-        }
+          }
         }
         throw new UnsupportedOperationException();
       }
@@ -2544,10 +2541,10 @@ public final class Geobuf {
       }
 
       public static Builder newBuilder() {
-        return (Builder) DEFAULT_INSTANCE.createBuilder();
+        return DEFAULT_INSTANCE.toBuilder();
       }
       public static Builder newBuilder(org.geotools.data.geobuf.Geobuf.Data.Geometry prototype) {
-        return (Builder) DEFAULT_INSTANCE.createBuilder(prototype);
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
       }
 
       /**
@@ -3010,7 +3007,7 @@ public final class Geobuf {
 
         // @@protoc_insertion_point(builder_scope:org.geotools.data.geobuf.Data.Geometry)
       }
-      private byte memoizedIsInitialized = 2;
+      private byte memoizedIsInitialized = -1;
       @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
       protected final java.lang.Object dynamicMethod(
           com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
@@ -3026,13 +3023,20 @@ public final class Geobuf {
 
             boolean shouldMemoize = ((Boolean) arg0).booleanValue();
             if (!hasType()) {
+              if (shouldMemoize) {
+                memoizedIsInitialized = 0;
+              }
               return null;
             }
             for (int i = 0; i < getGeometriesCount(); i++) {
               if (!getGeometries(i).isInitialized()) {
+                if (shouldMemoize) {
+                  memoizedIsInitialized = 0;
+                }
                 return null;
               }
             }
+            if (shouldMemoize) memoizedIsInitialized = 1;
             return DEFAULT_INSTANCE;
 
           }
@@ -3068,9 +3072,6 @@ public final class Geobuf {
                 (com.google.protobuf.CodedInputStream) arg0;
             com.google.protobuf.ExtensionRegistryLite extensionRegistry =
                 (com.google.protobuf.ExtensionRegistryLite) arg1;
-            if (extensionRegistry == null) {
-              throw new java.lang.NullPointerException();
-            }
             try {
               boolean done = false;
               while (!done) {
@@ -3200,14 +3201,7 @@ public final class Geobuf {
               }
             }
             return PARSER;
-        }
-        case GET_MEMOIZED_IS_INITIALIZED: {
-          return memoizedIsInitialized;
-        }
-        case SET_MEMOIZED_IS_INITIALIZED: {
-          memoizedIsInitialized = (byte) (arg0 == null ? 0 : 1);
-          return null;
-        }
+          }
         }
         throw new UnsupportedOperationException();
       }
@@ -3714,10 +3708,10 @@ public final class Geobuf {
       }
 
       public static Builder newBuilder() {
-        return (Builder) DEFAULT_INSTANCE.createBuilder();
+        return DEFAULT_INSTANCE.toBuilder();
       }
       public static Builder newBuilder(org.geotools.data.geobuf.Geobuf.Data.FeatureCollection prototype) {
-        return (Builder) DEFAULT_INSTANCE.createBuilder(prototype);
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
       }
 
       /**
@@ -3985,7 +3979,7 @@ public final class Geobuf {
 
         // @@protoc_insertion_point(builder_scope:org.geotools.data.geobuf.Data.FeatureCollection)
       }
-      private byte memoizedIsInitialized = 2;
+      private byte memoizedIsInitialized = -1;
       @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
       protected final java.lang.Object dynamicMethod(
           com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
@@ -4002,9 +3996,13 @@ public final class Geobuf {
             boolean shouldMemoize = ((Boolean) arg0).booleanValue();
             for (int i = 0; i < getFeaturesCount(); i++) {
               if (!getFeatures(i).isInitialized()) {
+                if (shouldMemoize) {
+                  memoizedIsInitialized = 0;
+                }
                 return null;
               }
             }
+            if (shouldMemoize) memoizedIsInitialized = 1;
             return DEFAULT_INSTANCE;
 
           }
@@ -4033,9 +4031,6 @@ public final class Geobuf {
                 (com.google.protobuf.CodedInputStream) arg0;
             com.google.protobuf.ExtensionRegistryLite extensionRegistry =
                 (com.google.protobuf.ExtensionRegistryLite) arg1;
-            if (extensionRegistry == null) {
-              throw new java.lang.NullPointerException();
-            }
             try {
               boolean done = false;
               while (!done) {
@@ -4112,14 +4107,7 @@ public final class Geobuf {
               }
             }
             return PARSER;
-        }
-        case GET_MEMOIZED_IS_INITIALIZED: {
-          return memoizedIsInitialized;
-        }
-        case SET_MEMOIZED_IS_INITIALIZED: {
-          memoizedIsInitialized = (byte) (arg0 == null ? 0 : 1);
-          return null;
-        }
+          }
         }
         throw new UnsupportedOperationException();
       }
@@ -4667,10 +4655,10 @@ public final class Geobuf {
       }
 
       public static Builder newBuilder() {
-        return (Builder) DEFAULT_INSTANCE.createBuilder();
+        return DEFAULT_INSTANCE.toBuilder();
       }
       public static Builder newBuilder(org.geotools.data.geobuf.Geobuf.Data.Value prototype) {
-        return (Builder) DEFAULT_INSTANCE.createBuilder(prototype);
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
       }
 
       /**
@@ -4978,9 +4966,6 @@ public final class Geobuf {
                 (com.google.protobuf.CodedInputStream) arg0;
             com.google.protobuf.ExtensionRegistryLite extensionRegistry =
                 (com.google.protobuf.ExtensionRegistryLite) arg1;
-            if (extensionRegistry == null) {
-              throw new java.lang.NullPointerException();
-            }
             try {
               boolean done = false;
               while (!done) {
@@ -5050,13 +5035,7 @@ public final class Geobuf {
               }
             }
             return PARSER;
-        }
-        case GET_MEMOIZED_IS_INITIALIZED: {
-          return (byte) 1;
-        }
-        case SET_MEMOIZED_IS_INITIALIZED: {
-          return null;
-        }
+          }
         }
         throw new UnsupportedOperationException();
       }
@@ -5643,10 +5622,10 @@ public final class Geobuf {
     }
 
     public static Builder newBuilder() {
-      return (Builder) DEFAULT_INSTANCE.createBuilder();
+      return DEFAULT_INSTANCE.toBuilder();
     }
     public static Builder newBuilder(org.geotools.data.geobuf.Geobuf.Data prototype) {
-      return (Builder) DEFAULT_INSTANCE.createBuilder(prototype);
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
 
     /**
@@ -6012,7 +5991,7 @@ public final class Geobuf {
 
       // @@protoc_insertion_point(builder_scope:org.geotools.data.geobuf.Data)
     }
-    private byte memoizedIsInitialized = 2;
+    private byte memoizedIsInitialized = -1;
     @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
     protected final java.lang.Object dynamicMethod(
         com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
@@ -6029,19 +6008,29 @@ public final class Geobuf {
           boolean shouldMemoize = ((Boolean) arg0).booleanValue();
           if (hasFeatureCollection()) {
             if (!getFeatureCollection().isInitialized()) {
+              if (shouldMemoize) {
+                memoizedIsInitialized = 0;
+              }
               return null;
             }
           }
           if (hasFeature()) {
             if (!getFeature().isInitialized()) {
+              if (shouldMemoize) {
+                memoizedIsInitialized = 0;
+              }
               return null;
             }
           }
           if (hasGeometry()) {
             if (!getGeometry().isInitialized()) {
+              if (shouldMemoize) {
+                memoizedIsInitialized = 0;
+              }
               return null;
             }
           }
+          if (shouldMemoize) memoizedIsInitialized = 1;
           return DEFAULT_INSTANCE;
 
         }
@@ -6103,9 +6092,6 @@ public final class Geobuf {
               (com.google.protobuf.CodedInputStream) arg0;
           com.google.protobuf.ExtensionRegistryLite extensionRegistry =
               (com.google.protobuf.ExtensionRegistryLite) arg1;
-          if (extensionRegistry == null) {
-            throw new java.lang.NullPointerException();
-          }
           try {
             boolean done = false;
             while (!done) {
@@ -6204,14 +6190,7 @@ public final class Geobuf {
             }
           }
           return PARSER;
-      }
-      case GET_MEMOIZED_IS_INITIALIZED: {
-        return memoizedIsInitialized;
-      }
-      case SET_MEMOIZED_IS_INITIALIZED: {
-        memoizedIsInitialized = (byte) (arg0 == null ? 0 : 1);
-        return null;
-      }
+        }
       }
       throw new UnsupportedOperationException();
     }

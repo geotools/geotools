@@ -30,7 +30,10 @@ import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
 import org.geotools.util.NullProgressListener;
 import org.opengis.feature.Feature;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.filter.FilterFactory;
+import org.opengis.filter.expression.Expression;
 import org.opengis.util.ProgressListener;
 
 /**
@@ -44,7 +47,7 @@ import org.opengis.util.ProgressListener;
 public class AggregateProcess implements VectorProcess {
     // the functions this process can handle
     public enum AggregationFunction {
-        Count, Average, Max, Median, Min, StdDev, Sum;
+        Count, Average, Max, Median, Min, StdDev, Sum, SumArea;
     }
     /**
      * Computes various attribute statistics over vector data sets
@@ -74,7 +77,7 @@ public class AggregateProcess implements VectorProcess {
     public Results execute(
             @DescribeParameter(name = "features", description = "Input feature collection") SimpleFeatureCollection features,
             @DescribeParameter(name = "aggregationAttribute", min = 0, description = "Attribute on which to perform aggregation") String aggAttribute,
-            @DescribeParameter(name = "function", description = "An aggregate function to compute. Functions include Count, Average, Max, Median, Min, StdDev, and Sum.", collectionType = AggregationFunction.class) Set<AggregationFunction> functions,
+            @DescribeParameter(name = "function", description = "An aggregate function to compute. Functions include Count, Average, Max, Median, Min, StdDev, Sum and SumArea.", collectionType = AggregationFunction.class) Set<AggregationFunction> functions,
             @DescribeParameter(name = "singlePass", description = "If True computes all aggregation values in a single pass (this will defeat DBMS-specific optimizations)", defaultValue = "false") boolean singlePass,
             @DescribeParameter(name = "groupByAttributes", min = 0, description = "List of group by attributes", collectionType = String.class) List<String> groupByAttributes,
             ProgressListener progressListener) throws ProcessException, IOException {
@@ -120,6 +123,8 @@ public class AggregateProcess implements VectorProcess {
                 calc = new StandardDeviationVisitor(CommonFactoryFinder.getFilterFactory(null).property(aggAttribute));
             } else if (function == AggregationFunction.Sum) {
                 calc = new SumVisitor(attIndex, features.getSchema());
+            } else if (function == AggregationFunction.SumArea) {
+                calc = new SumAreaVisitor(attIndex, features.getSchema());
             } else {
                 throw new ProcessException("Uknown method " + function);
             }
@@ -154,8 +159,13 @@ public class AggregateProcess implements VectorProcess {
     private Results handleGroupByVisitor(SimpleFeatureCollection features, String aggAttribute, Set<AggregationFunction> functions,
                                          List<String> rawGroupByAttributes, ProgressListener progressListener) throws IOException {
         // building a group by visitor for every aggregate function
+        
+        FilterFactory factory = CommonFactoryFinder.getFilterFactory(null);
+        
         List<GroupByVisitor> groupByVisitors = functions.stream().map(function -> new GroupByVisitorBuilder()
-                .withAggregateAttribute(aggAttribute, features.getSchema())
+                .withAggregateAttribute(function == AggregationFunction.SumArea ?
+                            factory.function("area2", factory.property(features.getSchema().getDescriptor(aggAttribute).getLocalName())) :
+                                factory.property(features.getSchema().getDescriptor(aggAttribute).getLocalName()))
                 .withAggregateVisitor(function.name())
                 .withGroupByAttributes(rawGroupByAttributes, features.getSchema())
                 .withProgressListener(progressListener)
@@ -249,6 +259,7 @@ public class AggregateProcess implements VectorProcess {
         Double average;
         Double standardDeviation;
         Double sum;
+        Double area;
         Long count;
 
         // this values are used by output formats that want to add more meta information (the JSON tabular output format for example)
@@ -278,6 +289,7 @@ public class AggregateProcess implements VectorProcess {
             average = toDouble(results.get(AggregationFunction.Average));
             standardDeviation = toDouble(results.get(AggregationFunction.StdDev));
             sum = toDouble(results.get(AggregationFunction.Sum));
+            area = toDouble(results.get(AggregationFunction.SumArea));
             Number nc = results.get(AggregationFunction.Count);
             if(nc != null) {
                 count = nc.longValue();
@@ -310,7 +322,9 @@ public class AggregateProcess implements VectorProcess {
         public Double getSum() {
             return sum;
         }
-
+        public Double getArea() {
+            return area;
+        }
         public Long getCount() {
             return count;
         }

@@ -35,6 +35,7 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.image.ImageWorker;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.resources.coverage.CoverageUtilities;
@@ -242,6 +243,7 @@ public class ImageMosaicFootprintsTest {
         assertNotNull(coverage);
         return coverage;
     }
+    
     @Test
     public void testAreaOutside() throws Exception {
         // copy the footprints mosaic over
@@ -255,7 +257,7 @@ public class ImageMosaicFootprintsTest {
         // activate footprint management
         GeneralParameterValue[] params = new GeneralParameterValue[3];
         ParameterValue<String> footprintManagement = AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
-        footprintManagement.setValue(FootprintBehavior.None.name());
+        footprintManagement.setValue(FootprintBehavior.Transparent.name());
         params[0] = footprintManagement;
         
         // this prevents us from having problems with link to files still open.
@@ -270,6 +272,8 @@ public class ImageMosaicFootprintsTest {
         dim.setSize(4, 4);
         final Rectangle rasterArea = ((GridEnvelope2D) reader.getOriginalGridRange());
         rasterArea.setSize(dim);
+        rasterArea.x = 0;
+        rasterArea.y = (int) (rasterArea.getHeight() / 2);
         final GridEnvelope2D range = new GridEnvelope2D(rasterArea);
         gg.setValue(new GridGeometry2D(range, PixelInCell.CELL_CENTER,reader.getOriginalGridToWorld(PixelInCell.CELL_CENTER),reader.getCoordinateReferenceSystem(),null));
         params[2]=gg;
@@ -277,6 +281,15 @@ public class ImageMosaicFootprintsTest {
         GridCoverage2D coverage = reader.read(params);
         reader.dispose();
         assertNotNull(coverage);
+        
+        // check the ROI is there
+        RenderedImage ri = coverage.getRenderedImage();
+        Object roiCandidate = ri.getProperty("ROI");
+        assertTrue(roiCandidate instanceof ROI);
+        // empty ROI
+        ROI roi = (ROI) roiCandidate;
+        assertFalse(roi.intersects(ri.getMinX(), ri.getMinY(), ri.getWidth(), ri.getHeight()));
+
     }
     
     @Test
@@ -332,6 +345,13 @@ public class ImageMosaicFootprintsTest {
         ri = coverage.getRenderedImage();
         assertNotEquals(Transparency.OPAQUE, ri.getColorModel().getTransparency());
         reader.dispose();
+
+        // check the ROI is there
+        Object roiCandidate = ri.getProperty("ROI");
+        assertTrue(roiCandidate instanceof ROI);
+        // empty ROI
+        ROI roi = (ROI) roiCandidate;
+        assertFalse(roi.intersects(ri.getMinX(), ri.getMinY(), ri.getWidth(), ri.getHeight()));
     }
 
     @Test

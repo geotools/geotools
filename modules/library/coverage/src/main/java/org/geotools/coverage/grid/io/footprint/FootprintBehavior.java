@@ -23,8 +23,13 @@ import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
+import javax.media.jai.RenderedOp;
+import javax.media.jai.operator.ConstantDescriptor;
 import javax.media.jai.operator.MosaicDescriptor;
 
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Polygon;
+import it.geosolutions.jaiext.vectorbin.ROIGeometry;
 import org.geotools.factory.Hints;
 import org.geotools.image.ImageWorker;
 
@@ -150,7 +155,8 @@ public enum FootprintBehavior {
             
             RenderedImage result = imageWorker.getRenderedImage();
             imageWorker.dispose();
-            return result;
+            
+            return super.postProcessBlankResponse(result, hints);
         }
         
     };
@@ -205,7 +211,17 @@ public enum FootprintBehavior {
      * @return
      */
     public RenderedImage postProcessBlankResponse(RenderedImage finalImage, RenderingHints hints) {
-        return finalImage;
+        // prepare a ROI made of only zeroes
+        ImageLayout layout = new ImageLayout(finalImage.getMinX(), finalImage.getMinY(),
+                finalImage.getWidth(), finalImage.getHeight());
+        RenderedOp roi = ConstantDescriptor.create((float) finalImage.getWidth(),
+                (float) finalImage.getHeight(), new Byte[] { 0 },
+                new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
+
+
+        ImageWorker iw = new ImageWorker(finalImage);
+        iw.setROI(new ROI(roi));
+        return iw.getRenderedImage();
     }
 
 }

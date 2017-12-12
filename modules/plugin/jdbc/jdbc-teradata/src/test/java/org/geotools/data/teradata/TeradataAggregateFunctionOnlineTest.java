@@ -17,7 +17,7 @@
 package org.geotools.data.teradata;
 
 import org.geotools.jdbc.JDBCAggregateFunctionOnlineTest;
-import org.geotools.jdbc.JDBCTestSetup;
+import org.geotools.jdbc.JDBCAggregateTestSetup;
 
 /**
  * 
@@ -27,8 +27,8 @@ import org.geotools.jdbc.JDBCTestSetup;
 public class TeradataAggregateFunctionOnlineTest extends JDBCAggregateFunctionOnlineTest {
 
 
-    protected JDBCTestSetup createTestSetup() {
-        return new TeradataTestSetup();
+    protected JDBCAggregateTestSetup createTestSetup() {
+        return new TeradataAggregateTestSetup();
     }
 
 }

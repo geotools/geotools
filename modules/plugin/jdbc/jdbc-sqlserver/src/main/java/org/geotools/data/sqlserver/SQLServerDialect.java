@@ -39,6 +39,7 @@ import org.geotools.data.Query;
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.data.sqlserver.reader.SqlServerBinaryReader;
 import org.geotools.factory.Hints;
+import org.geotools.filter.function.FilterFunction_area;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.BasicSQLDialect;
 import org.geotools.jdbc.JDBCDataStore;
@@ -79,6 +80,8 @@ public class SQLServerDialect extends BasicSQLDialect {
     private static final int DEFAULT_AXIS_MIN = -10000000;
     static final String SPATIAL_INDEX_KEY = "SpatialIndex";
 
+    private static final String AREA_FUNCTION = "STArea";
+    
     /**
      * Pattern used to match the first FROM element in a SQL query, without matching
      * also attributes containing FROM inside the name. We require to locate
@@ -141,6 +144,23 @@ public class SQLServerDialect extends BasicSQLDialect {
         super(dataStore);
     }
 
+    @Override
+    public void registerFunctions(Map<String, String> functions) {
+        super.registerFunctions(functions);
+        functions.put(FilterFunction_area.NAME.getName(), AREA_FUNCTION);
+    }
+
+    
+    
+    @Override
+    protected void encodeAggregateFunction(String function, String column, StringBuffer sql) {
+        if (AREA_FUNCTION.equalsIgnoreCase(function)) {
+            sql.append(column).append(".").append(function).append("()");
+        } else {
+            super.encodeAggregateFunction(function, column, sql);
+        }
+    }
+    
     @Override
     public boolean includeTable(String schemaName, String tableName,
             Connection cx) throws SQLException {

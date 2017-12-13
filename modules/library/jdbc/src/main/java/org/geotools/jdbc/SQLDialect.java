@@ -41,6 +41,7 @@ import org.geotools.factory.Hints;
 import org.geotools.feature.visitor.CountVisitor;
 import org.geotools.feature.visitor.MaxVisitor;
 import org.geotools.feature.visitor.MinVisitor;
+import org.geotools.feature.visitor.SumAreaVisitor;
 import org.geotools.feature.visitor.SumVisitor;
 import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.filter.FilterCapabilities;
@@ -381,6 +382,16 @@ public abstract class SQLDialect {
         aggregates.put( MinVisitor.class, "min");
         aggregates.put( MaxVisitor.class, "max");
         aggregates.put( SumVisitor.class, "sum");
+    }
+    
+    /**
+     * Register the dialect mappings between Geotools FilterFunction names and database
+     * related function.
+     * 
+     * @param functions mappings from GT FilterFunction name to sql function name
+     */
+    public void registerFunctions(Map<String ,String> functions) {
+        
     }
     
     /**
@@ -907,7 +918,7 @@ public abstract class SQLDialect {
     /**
      * Encodes the CREATE TABLE statement.
      * <p>
-     * Default implementation adds “CREATE TABLE” to the sql buffer.
+     * Default implementation adds "CREATE TABLE" to the sql buffer.
      * Subclasses may choose to override to handle db specific syntax.
      * </p>
      */
@@ -1462,5 +1473,19 @@ public abstract class SQLDialect {
     protected PrimaryKey getPrimaryKey(String typeName) throws IOException {
         SimpleFeatureType featureType = dataStore.getSchema(typeName);
         return dataStore.getPrimaryKey(featureType);
+    }
+    
+    protected void encodeAggregateFunction( String function, String column, StringBuffer sql ) {
+        encodeAggregateFunctionPrefix(function, sql);
+        sql.append(column);
+        encodeAggregateFunctionPostfix(function, sql);
+    }
+
+    public void encodeAggregateFunctionPrefix(String function, StringBuffer sql) {
+        sql.append(function).append("(");
+    }
+
+    public void encodeAggregateFunctionPostfix(String function, StringBuffer sql) {
+        sql.append(")");
     }
 }

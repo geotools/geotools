@@ -662,8 +662,18 @@ public class GeoPackage {
                     SimpleFeature f = it.next();
                     SimpleFeature g = w.next();
                     for (PropertyDescriptor pd : collection.getSchema().getDescriptors()) {
+                        /* geopkg spec requires booleans to be stored as SQLite integers this fixes
+                         * bug reported by GEOT-5904 */
                         String name = pd.getName().getLocalPart();
-                        g.setAttribute(name, f.getAttribute(name));
+                        if (pd.getType().getBinding() == Boolean.class) {
+                            int bool = 0;
+                            if (f.getAttribute(name) != null) {
+                                bool = (Boolean)(f.getAttribute(name)) ? 1 : 0;
+                            }
+                            g.setAttribute(name, bool);
+                        } else {
+                            g.setAttribute(name, f.getAttribute(name));
+                        }
                     }
 
                     w.write();

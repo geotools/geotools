@@ -402,6 +402,20 @@ public class GeoPackageTest {
             re.close();
         }
     }
+
+    @Test
+    public void testBooleanWrite() throws Exception {
+        ShapefileDataStore shp = new ShapefileDataStore(setUpBoolShapefile());
+        SimpleFeatureCollection coll = shp.getFeatureSource().getFeatures();
+
+        FeatureEntry entry = new FeatureEntry();
+        entry.setBounds(coll.getBounds());
+        try {
+            geopkg.add(entry, coll);
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
     
     @Test 
     public void testFunctionsNoEnvelope() throws Exception {
@@ -788,6 +802,25 @@ public class GeoPackageTest {
         }
         
         return URLs.fileToUrl(new File(d, "bugsites.shp"));
+    }
+
+    URL setUpBoolShapefile() throws Exception {
+        File d = File.createTempFile("BooleanTest", "shp", new File("target"));
+        d.delete();
+        d.mkdirs();
+
+        String[] exts = new String[]{"shp", "shx", "dbf", "prj"};
+        for (String ext : exts) {
+            if("prj".equals(ext)) {
+                String wkt = CRS.decode("EPSG:4326", true).toWKT();
+                FileUtils.writeStringToFile(new File(d, "BooleanTest.prj"), wkt);
+            } else {
+                FileUtils.copyURLToFile(TestData.url("shapes/BooleanTest." + ext),
+                        new File(d, "BooleanTest." + ext));
+            }
+        }
+
+        return URLs.fileToUrl(new File(d, "BooleanTest.shp"));
     }
 
     URL setUpGeoTiff() throws IOException {

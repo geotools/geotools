@@ -330,7 +330,7 @@ public class Encoder {
      *            <code>true</code> if XML declaration should be omitted
      */
     public void setOmitXMLDeclaration(final boolean ommitXmlDeclaration) {
-        outputProps.put(OutputKeys.OMIT_XML_DECLARATION, "yes");
+        outputProps.put(OutputKeys.OMIT_XML_DECLARATION, ommitXmlDeclaration ? "yes" : "no");
     }
 
     /**
@@ -356,7 +356,7 @@ public class Encoder {
      *            <code>true</code> if indentation should be on
      */
     public void setIndenting(final boolean doIndent) {
-        outputProps.put(OutputKeys.INDENT, "yes");
+        outputProps.put(OutputKeys.INDENT, doIndent ? "yes" : "no");
     }
 
     /**

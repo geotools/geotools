@@ -56,5 +56,6 @@ public class H2JNDIDataStoreFactory extends JDBCJNDIDataStoreFactory {
     protected void setupParameters(Map parameters) {
         super.setupParameters(parameters);
         parameters.put(ASSOCIATIONS.key, ASSOCIATIONS);
+        parameters.put(AUTO_SERVER.key, AUTO_SERVER);
     }
 }

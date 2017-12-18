@@ -17,7 +17,6 @@
 package org.geotools.data.wfs.internal;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -30,48 +29,6 @@ import java.util.List;
 public class WFSException extends IOException {
     private static final long serialVersionUID = -2828901359361793862L;
     
-    public static final class ExceptionDetails implements Serializable {
-
-        /** serialVersionUID */
-        private static final long serialVersionUID = 7073282354241139071L;
-
-        private String code;
-
-        private String locator;
-
-        private List<String> texts;
-
-        public ExceptionDetails(String code, String locator, List<String> texts) {
-            super();
-            this.code = code;
-            this.locator = locator;
-            if (texts == null) {
-                texts = Collections.emptyList();
-            } else {
-                texts = new ArrayList<>(texts);
-            }
-            this.texts = texts;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public List<String> getTexts() {
-            return Collections.unmodifiableList(texts);
-        }
-
-        public String getLocator() {
-            return locator;
-        }
-
-        @Override
-        public String toString() {
-            return "ExceptionDetails [code=" + code + ", locator=" + locator + ", texts=" + texts
-                    + "]";
-        }
-    }
-
     private StringBuilder msg;
 
     /** Structured representations of the WFS ExceptionReport */

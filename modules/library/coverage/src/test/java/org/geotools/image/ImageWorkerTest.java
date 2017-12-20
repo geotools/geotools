@@ -85,7 +85,6 @@ import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.referencing.operation.transform.WarpBuilder;
 import org.geotools.resources.image.ComponentColorModelJAI;
 import it.geosolutions.jaiext.vectorbin.ROIGeometry;
-import it.geosolutions.rendered.viewer.RenderedImageBrowser;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -145,7 +144,7 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
     /**
      * Image to use for testing purpose.
      */
-    private static RenderedImage sstImage, worldImage, chlImage, bathy, smallWorld, gray, grayAlpha;
+    private static RenderedImage sstImage, worldImage, chlImage, bathy, smallWorld, gray, grayAlpha, imageWithNodata;
 
     /**
      * {@code true} if the image should be visualized.
@@ -336,7 +335,13 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
             final InputStream input = TestData.openStream(GridCoverage2D.class, "gray-alpha.png");
             grayAlpha = ImageIO.read(input);
             input.close();
-        }          
+        }
+
+        if (imageWithNodata == null) {
+            final InputStream input = org.geotools.test.TestData.openStream(this, "nodataD.tiff");
+            imageWithNodata = ImageIO.read(input);
+            input.close();
+        }
     }
 
 
@@ -1203,6 +1208,34 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         assertEquals(0, sample);
         assertNoData(image, noData);
     }
+
+    @Test
+    public void testNoDataBackground() throws IOException {
+        assertTrue("Assertions should be enabled.", ImageWorker.class.desiredAssertionStatus());
+        PlanarImage inputImage = PlanarImage.wrapRenderedImage(imageWithNodata);
+        double noDataValue = -30000d;
+        NoDataContainer noData = new NoDataContainer(noDataValue);
+        inputImage.setProperty(NoDataContainer.GC_NODATA, noData);
+
+        ImageWorker worker = new ImageWorker();
+        final int w = imageWithNodata.getWidth();
+        final int h = imageWithNodata.getHeight();
+
+        // Specify an ImageLayout to build a mosaic being 2 times (along x and y) the size of the original image.
+        ImageLayout layout = new ImageLayout(imageWithNodata.getMinX(), imageWithNodata.getMinY(), 
+                w * 2, h * 2, imageWithNodata.getTileGridXOffset(),imageWithNodata.getTileGridYOffset(),
+                imageWithNodata.getTileWidth(), imageWithNodata.getTileHeight(), imageWithNodata.getSampleModel(), imageWithNodata.getColorModel());
+        worker.setRenderingHint(JAI.KEY_IMAGE_LAYOUT, layout);
+
+        // Perform the mosaicking operation
+        RenderedImage image = worker.mosaic(new RenderedImage[]{inputImage}, MosaicDescriptor.MOSAIC_TYPE_OVERLAY , null, null, null, null).getRenderedImage();
+
+        // querying the pixels outside of the original image extent have been filled with nodata
+        double sample = image.getData().getSample(w + 10, h + 10, 0);
+        assertNoData(image, noData.getAsRange());
+        assertEquals(noDataValue, sample, 1E-6);
+    }
+
 
     @Test
     public void testOpacityGrayAlpha() {

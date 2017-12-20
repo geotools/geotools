@@ -29,29 +29,33 @@ Versions and revisions
 
 When performing a release we don't require a "code freeze" in which no developers can commit to the repository. Instead we release from a revision that is known to pass all tests, including unit/integration tests as well as CITE tests on the GeoServer side. These instructions are valid in case you are making a release in combination with GeoServer, if you are making a stand alone release it's up to you to choose the proper GIT revision number for the GeoTools released to be picked from.
 
-To obtain the GeoServer and Geotools revisions that have passed the `CITE test <http://ares.boundlessgeo.com/jenkins/view/geoserver-cite/>`_, navigate to the latest Jenkins run of the CITE test  and view it's console output and select to view its full log. For example::
-	
-	 http://ares.boundlessgeo.com/jenkins/view/geoserver-cite/job/2.4-cite-wfs-1.1/8/consoleText
-	
-Perform a search on the log for 'Git revision' and you should obtain the following.::
+To obtain the GeoServer and Geotools revisions that have passed the `CITE test <https://build.geoserver.org/view/testing-cite/>`_, navigate to the latest Jenkins run of the CITE test  and view it's console output and select to view its full log. For example:
 
-	version = 2.2-SNAPSHOT
-	Git revision = 4ea8d3fdcdbb130892a03f27ab086068b95a3b01
-	Git branch = 4ea8d3fdcdbb130892a03f27ab086068b95a3b01
-	build date = 03-Aug-2012 03:39
-	geotools version = 8-SNAPSHOT
-	geotools revision = 73e8d0746a4527e46a46e5e8bc778ca92ca89130
-	
-Since we don't make any release from master, ensure you select the right CITE test that passed to obtain the right revision.	
+    https://build.geoserver.org/job/2.11-cite-wms-1.1/286/consoleText
+
+Perform a search on the log for 'git revision' (this is the GeoServer revision) and you should obtain the following:
+
+.. code-block:: none
+
+    version = 2.11-SNAPSHOT
+    git revision = 08f43fa77fdcd0698640d823065b6dfda7f87497
+    git branch = origin/2.11.x
+    build date = 18-Dec-2017 19:51
+    geotools version = 17-SNAPSHOT
+    geotools revision = a91a88002c7b2958140321fbba4d5ed0fa85b78d
+    geowebcache version = 1.11-SNAPSHOT
+    geowebcache revision = 0f1cbe9466e424621fae9fefdab4ac5a7e26bd8b/0f1cb
+
+Since we don't make any release from master, ensure you select the right CITE test that passed to obtain the right revision.
 
 Release in JIRA
 ---------------
 
 1. Navigate to the `GeoTools project page <https://osgeo-org.atlassian.net/projects/GEOT?selectedItem=com.atlassian.jira.jira-projects-plugin:release-page&status=released-unreleased>`_ in JIRA.
 
-2. Click ``Manage Versions``. Create a new version for the next version to be released after the current release (For example, if you are releasing GeoTools 15.1, create version 15.2).
+2. Add a new version for the next version to be released after the current release. For example, if you are releasing GeoTools 17.5, create version 17.6.
 
-3. Return to the project page, and click on the version you are releasing. Click the ``Release`` button, and enter the release date when prompted. If there are still unsolved issues remaining in this release, you will be prompted to move them to an unreleased version. If so, choose the new version you created in step 2.
+3. Click in the Actions column for the version you are releasing and select Release. Enter the release date when prompted. If there are still unsolved issues remaining in this release, you will be prompted to move them to an unreleased version. If so, choose the new version you created in step 2.
 
 If you are cutting the first RC of a series, create the stable branch
 ---------------------------------------------------------------------
@@ -150,7 +154,7 @@ Download and try out some of the artifacts from the above location and do a
 quick smoke test that there are no issues. Engage other developers to help 
 test on the developer list.
 
-In particular, you can downlad the source artifacts and build them locally on an empty Maven repository to make sure any random user out there can do the same.
+In particular, you can download the source artifacts and build them locally on an empty Maven repository to make sure any random user out there can do the same.
 
 A simple way to do so is:
 
@@ -201,7 +205,7 @@ Announce the Release
 Announce on GeoTools Blog
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-#. Navigate to Blogspot and sign in: http://blogspot.com/
+#. Navigate to Blogger and sign in: https://www.blogger.com/
 #. Select the GeoTools blog from the list (if not listed, get someone to add you)
 #. Create a new blog post anouncing your release; copy and paste a previous blog post preserving series information unless this is the first of a new series
 #. You will need to correct the following information: 

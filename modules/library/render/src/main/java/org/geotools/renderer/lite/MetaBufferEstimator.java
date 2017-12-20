@@ -63,6 +63,7 @@ import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.TextSymbolizer2;
 import org.geotools.styling.UserLayer;
+import org.opengis.feature.Feature;
 import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
@@ -80,19 +81,38 @@ import org.opengis.style.GraphicalSymbol;
 
 public class MetaBufferEstimator extends FilterAttributeExtractor implements StyleVisitor {
     /** The logger for the rendering module. */
-    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.rendering");
+    protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.rendering");
     
-    FilterAttributeExtractor attributeExtractor = new FilterAttributeExtractor();
+    protected FilterAttributeExtractor attributeExtractor = new FilterAttributeExtractor();
 
     /**
      * @uml.property  name="estimateAccurate"
      */
-    boolean estimateAccurate = true;
+    protected boolean estimateAccurate = true;
 
     /**
      * @uml.property  name="buffer"
      */
-    int buffer = 0;
+    protected int buffer = 0;
+
+    /**
+     * Feature used to evaluate sizes (optional, without it expressions based on attributes won't work)
+     */
+    Feature sample;
+
+
+    /**
+     * Builds an estimator suitable for styles without expressions
+     */
+    public MetaBufferEstimator() {
+    }
+
+    /**
+     * Builds an estimator suitable for styles with expression, will evaluate against the provided feature
+     */
+    public MetaBufferEstimator(Feature sample) {
+        this.sample = sample;
+    }
 
     /**
      * Should you reuse this extractor multiple time, calling this method will reset the buffer and
@@ -407,7 +427,7 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
         }
     }
 
-    private void evaluateWidth(Expression width) {
+    protected void evaluateWidth(Expression width) {
         int value = getPositiveValue(width);
         if(value < 0) {
             estimateAccurate = false;
@@ -416,22 +436,18 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
         }
     }
     
-    private int getPositiveValue(Expression ex) {
-        if (isConstant(ex)) {
-            Double result = ex.evaluate(null, Double.class);
-            if(result != null) {
-                return (int) Math.ceil(result);
-            } else {
-                return -1;
-            }
-        } else {
+    protected int getPositiveValue(Expression ex) {
+        double value = getDouble(ex);
+        if (value == -1) {
             return -1;
+        } else {
+            return (int) Math.ceil(value);
         }
     }
-    
-    private double getDouble(Expression ex) {
-        if (isConstant(ex)) {
-            Double result = ex.evaluate(null, Double.class);
+
+    protected double getDouble(Expression ex) {
+        if (isConstant(ex) || sample != null) {
+            Double result = ex.evaluate(sample, Double.class);
             if (result != null) {
                 return result;
             } else {
@@ -442,7 +458,7 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
         }
     }
 
-    private boolean isConstant(Expression ex) {
+    protected boolean isConstant(Expression ex) {
         // quick common cases first
         if(ex instanceof Literal) {
             return true;

@@ -20,6 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.geotools.data.DataTestCase;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.styling.Graphic;
 import org.geotools.styling.LineSymbolizer;
@@ -32,7 +33,13 @@ import org.junit.Test;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.NilExpression;
 
-public class MetaBufferEstimatorTest {
+import java.awt.*;
+
+public class MetaBufferEstimatorTest extends DataTestCase {
+
+    public MetaBufferEstimatorTest(String name) {
+        super(name);
+    }
 
     @Test
     public void testExternalGraphic() throws Exception {
@@ -208,4 +215,16 @@ public class MetaBufferEstimatorTest {
         assertEquals(16, estimator.getBuffer());
     }
 
+    @Test
+    public void testFeatureBound() throws Exception {
+        StyleBuilder sb = new StyleBuilder();
+        LineSymbolizer ls = sb.createLineSymbolizer(Color.BLUE);
+        ls.getStroke().setWidth(ff.multiply(ff.literal(2), ff.property("flow")));
+        Style style = sb.createStyle(ls);
+
+        MetaBufferEstimator estimator = new MetaBufferEstimator(riverFeatures[0]);
+        style.accept(estimator);
+        assertTrue(estimator.isEstimateAccurate());
+        assertEquals(9, estimator.getBuffer());
+    }
 }

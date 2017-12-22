@@ -171,7 +171,7 @@ public class ImageWorker {
     public final static String JAIEXT_ENABLED_KEY = "org.geotools.coverage.jaiext.enabled";
 
     public final static boolean JAIEXT_ENABLED;
-
+    
     public static boolean isJaiExtEnabled() {
         return JAIEXT_ENABLED;
     }
@@ -349,6 +349,14 @@ public class ImageWorker {
         // assign, either null or the real CS
         CS_PYCC = cs;
     }
+    private final static byte[] ALPHA_LUT;
+    static {
+        ALPHA_LUT = new byte[256];
+        for (int i = 1; i < 256; i++) {
+            ALPHA_LUT[i] = (byte) (255 & 0xFF);
+        }
+    }
+
 
     protected static OperationDescriptor getOperationDescriptor(final String name)
             throws OperationNotFoundException
@@ -4685,7 +4693,7 @@ public class ImageWorker {
     }
 
     /**
-     * Warps the underlying raster using the provided Warp object.
+     * Performs Lookup on the underlying image 
      */
     public ImageWorker lookup(LookupTable table) {
         // ParameterBlock definition
@@ -4936,7 +4944,6 @@ public class ImageWorker {
                     final ImageWorker iw = new ImageWorker(image);
                     final RenderedImage alpha = iw.retainLastBand().getRenderedImage();
                     alphaChannels = new PlanarImage[] { PlanarImage.wrapRenderedImage(alpha) };
-    
                     bgValues = new double[] { 0, 0, 0, 0 };
                 } else {
                     if(nodata != null) {
@@ -4950,7 +4957,26 @@ public class ImageWorker {
                             builder.add(RangeFactory.create(nodata.getMax().doubleValue(), !nodata.isMaxIncluded(), Double.POSITIVE_INFINITY, false), (byte) 255);
                         }
                         RangeLookupTable lookupTable = builder.build();
-                        final RenderedImage alpha = new ImageWorker(this.image).rangeLookup(lookupTable).getRenderedImage();
+                        final RenderedImage alpha;
+                        final int numBands = this.image.getSampleModel().getNumBands();
+                        if (numBands == 1) {
+                            alpha = new ImageWorker(this.image).rangeLookup(lookupTable)
+                                    .getRenderedImage();
+                        } else {
+                            // need to combine all bands to extract alpha based on nodata.
+                            // we may want to setup a custom jai operation for that.
+                            final double weight = (1.0 / numBands);
+                            final double[][] matrix = new double[1][numBands + 1];
+
+                            // Assign a weight to each band to combine results of RangeLookup
+                            for (int i = 0; i < numBands; i++) {
+                                matrix[0][i] = weight;
+                            }
+
+                            // Final lookup table to assign fully transparent (0) to all zero pixels 
+                            alpha = new ImageWorker(this.image).setROI(roi).rangeLookup(lookupTable).bandCombine(matrix)
+                                    .lookup(LookupTableFactory.create(ALPHA_LUT)).getRenderedImage();
+                        }
                         image = new ImageWorker(image).addBand(alpha, false, true, null).getRenderedImage();
                     } else {
                         image = new ImageWorker(image).addAlphaChannel().getRenderedImage();
@@ -4961,8 +4987,7 @@ public class ImageWorker {
                 }
             }
         }
-        
-        //
+
         // If we need to add a collar use mosaic or if we need to blend/apply a bkg color
         ImageWorker iw = new ImageWorker(image);
         ROI[] rois = new ROI[] {roi};

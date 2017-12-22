@@ -43,6 +43,7 @@ import java.awt.image.DirectColorModel;
 import java.awt.image.IndexColorModel;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
+import java.awt.image.SampleModel;
 import java.awt.image.WritableRaster;
 import java.awt.image.renderable.ParameterBlock;
 import java.io.File;
@@ -1694,7 +1695,74 @@ public final class ImageWorkerTest extends GridProcessingTestBase {
         Object roiProperty = mosaicked.getProperty("ROI");
         assertThat(roiProperty, not((instanceOf(ROI.class))));
     }
-    
+
+    @Test
+    public void testPrepareRenderingAlphaOnNoData() {
+
+        // All image pixels are initialized to RED.
+        BufferedImage red = getSyntheticRGB(Color.RED);
+        final int w = red.getWidth();
+        final int h = red.getHeight();
+        final int specialPixelsOriginX = w / 4;
+        final int specialPixelsOriginY = h / 4;
+
+        // Setting the top left quarter of the image to all zeros
+        int[] zero = new int[]{0, 0, 0};
+        WritableRaster raster = red.getRaster();
+        for (int i = 0; i < specialPixelsOriginX; i++) {
+            for (int j = 0; j < specialPixelsOriginY; j++) {
+                raster.setPixel(i, j, zero);
+            }
+        }
+
+        // setting some special pixels to colors with up to 2 bands equal to zero.
+        final int specialPixels = 9;
+        final int specialPixelsValues[][] = new int[specialPixels][];
+
+        specialPixelsValues[0] = new int[] { 0, 0, 255 };
+        specialPixelsValues[1] = new int[] { 0, 255, 0 };
+        specialPixelsValues[2] = new int[] { 255, 0, 0 };
+
+        specialPixelsValues[3] = new int[] { 0, 255, 255 };
+        specialPixelsValues[4] = new int[] { 255, 0, 255 };
+        specialPixelsValues[5] = new int[] { 255, 255, 0 };
+
+        specialPixelsValues[6] = new int[] { 128, 0, 255 };
+        specialPixelsValues[7] = new int[] { 0, 128, 64 };
+        specialPixelsValues[8] = new int[] { 128, 128, 0 };
+
+        for (int k = 0; k < specialPixels; k++) {
+            raster.setPixel(specialPixelsOriginX + k, specialPixelsOriginY + k, specialPixelsValues[k]);
+        }
+
+        ImageWorker iw = new ImageWorker(red);
+        Range noData = RangeFactory.create(0, 0);
+        iw.setNoData(noData);
+        iw.prepareForRendering();
+
+        // Check alpha has been properly handled
+        BufferedImage result = iw.getBufferedImage();
+        SampleModel sm = result.getSampleModel();
+        assertEquals(4, sm.getNumBands());
+        ColorModel cm = result.getColorModel();
+        assertTrue(cm.hasAlpha());
+        WritableRaster updatedRaster = result.getRaster();
+
+        // Checking alpha component for pixels having all zeros on the input image
+        for (int i = 0; i < specialPixelsOriginX; i++) {
+            for (int j = 0; j < specialPixelsOriginY; j++) {
+                assertEquals(0, updatedRaster.getSample(i, j, 3));
+            }
+        }
+
+        // Checking alpha component for pixels having up to 2 bands with zeros on the input image
+        for (int i = specialPixelsOriginX; i < w; i++) {
+            for (int j = specialPixelsOriginY; j < h; j++) {
+                assertEquals(255, updatedRaster.getSample(i, j, 3));
+            }
+        }
+    }
+
     @Test
     public void testMosaicBackgroundColorWithImagesOwningROI() {
         BufferedImage red = getSyntheticRGB(Color.RED);

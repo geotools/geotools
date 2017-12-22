@@ -1,7 +1,7 @@
 Axis Order
 ----------
 
-Computer scientists and geographers disagree about one of the basic tenants of geography. Rather then decide who is right, as a library GeoTools gives your application a chance to match your users communities expectations.
+Computer scientists and geographers disagree about one of the basic tenets of geography. Rather than decide who is right, as a library GeoTools gives your application a chance to match your users communities expectations.
 
 **Eeek**
 

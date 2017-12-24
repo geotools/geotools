@@ -45,6 +45,8 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.io.WKTReader;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 
 /**
@@ -262,7 +264,7 @@ public abstract class JDBCDataStoreOnlineTest extends JDBCTestSupport {
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
         builder.setName(tname("ft2"));
         builder.setNamespaceURI(dataStore.getNamespaceURI());
-        builder.setCRS(CRS.decode("EPSG:26713"));
+        builder.setCRS(getUTMCRS());
         builder.add(aname("geometry"), Point.class);
         builder.add(aname("intProperty"), Integer.class);
         builder.add(aname("stringProperty"), String.class);
@@ -292,7 +294,17 @@ public abstract class JDBCDataStoreOnlineTest extends JDBCTestSupport {
         //clear out the feature type cache
         dataStore.getEntry(new NameImpl(dataStore.getNamespaceURI(), tname("ft2"))).dispose();
         ft2 = dataStore.getSchema(tname("ft2"));
-        assertTrue(CRS.equalsIgnoreMetadata(CRS.decode("EPSG:26713"), ft2.getCoordinateReferenceSystem()));
+        assertTrue(CRS.equalsIgnoreMetadata(getUTMCRS(), ft2.getCoordinateReferenceSystem()));
+    }
+
+    /**
+     * Allows subclasses to use a axis order specific version of it (the outer is always east/north, but 
+     * the wrapped geographic CRS is order dependent)
+     * @return
+     * @throws FactoryException
+     */
+    protected CoordinateReferenceSystem getUTMCRS() throws FactoryException {
+        return CRS.decode("EPSG:26713");
     }
 
     public void testCreateSchemaFidColumn() throws Exception {
@@ -300,7 +312,7 @@ public abstract class JDBCDataStoreOnlineTest extends JDBCTestSupport {
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
         builder.setName(tname("ft2"));
         builder.setNamespaceURI(dataStore.getNamespaceURI());
-        builder.setCRS(CRS.decode("EPSG:26713"));
+        builder.setCRS(getUTMCRS());
         builder.add(aname("geometry"), Point.class);
         builder.add(aname("intProperty"), Integer.class);
         builder.add(aname("stringProperty"), String.class);

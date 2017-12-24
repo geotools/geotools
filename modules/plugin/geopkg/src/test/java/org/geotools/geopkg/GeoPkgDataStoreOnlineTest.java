@@ -17,6 +17,9 @@
 package org.geotools.geopkg;
 
 import org.geotools.jdbc.JDBCDataStoreOnlineTest;
+import org.geotools.referencing.CRS;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class GeoPkgDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
 
@@ -32,6 +35,10 @@ public class GeoPkgDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
 
     @Override
     public void testCreateSchemaWithConstraints() throws Exception {
+    }
+
+    protected CoordinateReferenceSystem getUTMCRS() throws FactoryException {
+        return CRS.decode("EPSG:26713", true);
     }
 
 }

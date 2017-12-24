@@ -49,7 +49,8 @@ import org.opengis.filter.spatial.BBOX;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
-
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 
 /**
@@ -70,7 +71,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         SimpleFeatureType schema = featureSource.getSchema();
         assertEquals(tname("ft1"), schema.getTypeName());
         assertEquals(dataStore.getNamespaceURI(), schema.getName().getNamespaceURI());
-        assertTrue(areCRSEqual(CRS.decode("EPSG:4326"), schema.getCoordinateReferenceSystem()));
+        assertTrue(areCRSEqual(getWGS84(), schema.getCoordinateReferenceSystem()));
 
         assertEquals(4, schema.getAttributeCount());
         assertNotNull(schema.getDescriptor(aname("geometry")));
@@ -86,7 +87,7 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         assertEquals(2l, Math.round(bounds.getMaxX()));
         assertEquals(2l, Math.round(bounds.getMaxY()));
 
-        assertTrue(areCRSEqual(CRS.decode("EPSG:4326"), bounds.getCoordinateReferenceSystem()));
+        assertTrue(areCRSEqual(getWGS84(), bounds.getCoordinateReferenceSystem()));
     }
 
     public void testBoundsWithQuery() throws Exception {
@@ -102,7 +103,16 @@ public abstract class JDBCFeatureSourceOnlineTest extends JDBCTestSupport {
         assertEquals(1l, Math.round(bounds.getMaxX()));
         assertEquals(1l, Math.round(bounds.getMaxY()));
 
-        assertTrue(areCRSEqual(CRS.decode("EPSG:4326"), bounds.getCoordinateReferenceSystem()));
+        assertTrue(areCRSEqual(getWGS84(), bounds.getCoordinateReferenceSystem()));
+    }
+
+    /**
+     * Allows subclasses to use a axis order specific version of it
+     * @return
+     * @throws FactoryException
+     */
+    protected CoordinateReferenceSystem getWGS84() throws FactoryException {
+        return CRS.decode("EPSG:4326");
     }
 
     public void testCount() throws Exception {

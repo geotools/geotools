@@ -19,8 +19,11 @@ package org.geotools.geopkg;
 import org.geotools.data.Query;
 import org.geotools.jdbc.JDBCFeatureSourceOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
+import org.geotools.referencing.CRS;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.PropertyIsLike;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * 
@@ -28,6 +31,15 @@ import org.opengis.filter.PropertyIsLike;
  * @source $URL$
  */
 public class GeoPkgFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest {
+
+    /**
+     * Allows subclasses to use a axis order specific version of it
+     * @return
+     * @throws FactoryException
+     */
+    protected CoordinateReferenceSystem getWGS84() throws FactoryException {
+        return CRS.decode("EPSG:4326", true);
+    }
 
     @Override
     protected JDBCTestSetup createTestSetup() {

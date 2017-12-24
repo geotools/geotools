@@ -29,6 +29,8 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 import com.vividsolutions.jts.geom.Geometry;
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -58,6 +60,12 @@ import com.vividsolutions.jts.geom.Geometry;
  * @source $URL$
  */
 public class PlacemarkTypeBinding extends AbstractComplexBinding {
+
+    private final List<String> SUPPORTED_GEOMETRY_TYPES;
+
+    public PlacemarkTypeBinding() {
+        SUPPORTED_GEOMETRY_TYPES = Arrays.asList("Point", "LineString", "Polygon", "MultiGeometry");
+    }
 
     /**
      * @generated
@@ -105,7 +113,13 @@ public class PlacemarkTypeBinding extends AbstractComplexBinding {
         b.init(feature);
 
         //&lt;element minOccurs="0" ref="kml:Geometry"/&gt;
-        b.set("Geometry", node.getChildValue(Geometry.class));
+        for(Object childObj : node.getChildren(Geometry.class)) {
+            Node childNode = (Node)childObj;
+            String componentName = childNode.getComponent().getName();
+            if (SUPPORTED_GEOMETRY_TYPES.contains(componentName)) {
+                b.set("Geometry", childNode.getValue());
+            }
+        }
 
         return b.buildFeature(feature.getID());
     }

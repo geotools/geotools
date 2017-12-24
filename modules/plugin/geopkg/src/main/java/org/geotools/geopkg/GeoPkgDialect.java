@@ -130,6 +130,11 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         return geometry(rs.getBytes(column),factory);
     }
 
+    @Override
+    public Geometry decodeGeometryValue(GeometryDescriptor descriptor, ResultSet rs, int column, GeometryFactory 
+            factory, Connection cx) throws IOException, SQLException {
+        return geometry(rs.getBytes(column),factory);
+    }
 
     @Override
     public void setGeometryValue(Geometry g, int dimension, int srid, Class binding,

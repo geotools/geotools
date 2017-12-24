@@ -182,7 +182,7 @@ public abstract class PreparedStatementSQLDialect extends SQLDialect {
     /*
      * Helper method to convert a value.
      */
-    <T> T convert( Object value, Class<T> binding ) {
+    protected <T> T convert( Object value, Class<T> binding ) {
         if (value == null) {
             return (T) value;
         }

@@ -554,4 +554,12 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
     protected PrimaryKey getPrimaryKey(String typeName) throws IOException {
         return super.getPrimaryKey(typeName);
     }
+
+    @Override
+    protected <T> T convert(Object value, Class<T> binding) {
+        if (Integer.class.equals(binding) && value instanceof Boolean) {
+            return (T) Integer.valueOf(Boolean.TRUE.equals(value) ? 1 : 0);
+        }
+        return super.convert(value, binding);
+    }
 }

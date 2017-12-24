@@ -346,7 +346,8 @@ public class CssParser extends BaseParser<Object> {
     }
 
     Rule MixedExpression() {
-        return Sequence(push(MARKER), OneOrMore(FirstOf(ECQLExpression(), String())), new Action() {
+        return Sequence(push(MARKER), OneOrMore(FirstOf(ECQLExpression(), String()), Optional(FirstOf(String("px"),
+                String("m"), String("ft"), String("%"), String("deg")), push(new Value.Literal(match())))), new Action() {
 
             @Override
             public boolean run(Context ctx) {

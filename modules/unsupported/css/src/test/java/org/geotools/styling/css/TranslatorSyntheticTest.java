@@ -1314,6 +1314,20 @@ public class TranslatorSyntheticTest extends CssBaseTest {
         assertCategorizeScaleDenominator(css);
     }
 
+    @Test
+    public void testMeasuredExpression() throws CQLException {
+        String css = "* { stroke: black; stroke-width: [a * 10]m;}";
+        Style style = translate(css);
+        Rule rule = assertSingleRule(style);
+        Filter filter = rule.getFilter();
+        assertEquals(Filter.INCLUDE, filter);
+
+        LineSymbolizer ls = assertSingleSymbolizer(rule, LineSymbolizer.class);
+        final Stroke stroke = ls.getStroke();
+        assertExpression("'#000000'", stroke.getColor());
+        assertExpression("Concatenate(a * 10, 'm')", stroke.getWidth());
+    }
+
     private void assertScaleMinMax(String css, Double min, Double max) {
         Style style = translate(css);
         Rule rule = assertSingleRule(style);

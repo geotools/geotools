@@ -76,7 +76,7 @@ public class AnnotationFeatureType
             tb.add( ANNOTATION_ATTRIBUTE_NAME, String.class );
             tmp = tb.buildFeatureType();
         } catch (Exception ex) {
-            org.geotools.util.logging.Logging.getLogger( "org.geotools.data.vpf.AnnotationFeatureType" ).log(
+            org.geotools.util.logging.Logging.getLogger( "org.geotools.data.AnnotationFeatureType" ).log(
                Level.SEVERE, "Error creating ANNOTATION feature type", ex );
         }
         ANNOTATION = tmp;

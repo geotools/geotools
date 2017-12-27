@@ -16,25 +16,10 @@
  */
 package org.geotools.geopkg;
 
-import static java.lang.String.format;
-import static org.geotools.geopkg.GeoPackage.GEOMETRY_COLUMNS;
-import static org.geotools.geopkg.GeoPackage.GEOPACKAGE_CONTENTS;
-import static org.geotools.geopkg.GeoPackage.SPATIAL_REF_SYS;
-
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.sql.Types;
-import java.sql.Date;
-import java.util.Map;
-import java.util.Set;
-import java.util.logging.Level;
-
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import org.geotools.factory.Hints;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.visitor.ExtractBoundsFilterVisitor;
 import org.geotools.geometry.jts.Geometries;
@@ -57,9 +42,24 @@ import org.opengis.filter.spatial.BBOX;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.sql.Types;
+import java.util.Map;
+import java.util.Set;
+import java.util.logging.Level;
+
+import static java.lang.String.format;
+import static org.geotools.geopkg.GeoPackage.GEOMETRY_COLUMNS;
+import static org.geotools.geopkg.GeoPackage.GEOPACKAGE_CONTENTS;
+import static org.geotools.geopkg.GeoPackage.SPATIAL_REF_SYS;
 
 /**
  * The GeoPackage SQL Dialect.
@@ -127,14 +127,14 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
     }
 
     @Override  public Geometry decodeGeometryValue(GeometryDescriptor descriptor, ResultSet rs, String column,
-        GeometryFactory factory, Connection cx) throws IOException, SQLException {
-        return geometry(rs.getBytes(column),factory);
+                                                   GeometryFactory factory, Connection cx, Hints hints) throws IOException, SQLException {
+        return geometry(descriptor.getType().getBinding(), rs.getBytes(column), factory, hints);
     }
 
     @Override
-    public Geometry decodeGeometryValue(GeometryDescriptor descriptor, ResultSet rs, int column, GeometryFactory 
-            factory, Connection cx) throws IOException, SQLException {
-        return geometry(rs.getBytes(column),factory);
+    public Geometry decodeGeometryValue(GeometryDescriptor descriptor, ResultSet rs, int column, GeometryFactory
+            factory, Connection cx, Hints hints) throws IOException, SQLException {
+        return geometry(descriptor.getType().getBinding(), rs.getBytes(column), factory, hints);
     }
 
     @Override
@@ -160,15 +160,17 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
      * @return
      * @throws IOException 
      */
-    private Geometry geometry(byte[] bytes, GeometryFactory factory) throws IOException {
+    private Geometry geometry(Class geometryType, byte[] bytes, GeometryFactory factory, Hints hints) throws IOException {
         GeoPkgGeomReader geoPkgGeomReader = new GeoPkgGeomReader(bytes);
         geoPkgGeomReader.setFactory(factory);
+        geoPkgGeomReader.setHints(hints);
+        geoPkgGeomReader.setGeometryType(geometryType);
         return bytes != null ? geoPkgGeomReader.get() : null;
        
     }
     
     Geometry geometry(byte[] b) throws IOException {
-        return geometry(b, null);
+        return geometry(null, b, null, null);
     }
 
     @Override
@@ -580,5 +582,10 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
         } else {
             return rs.getString(columnIdx);
         }
+    }
+
+    @Override
+    protected void addSupportedHints(Set<Hints.Key> hints) {
+        hints.add(Hints.GEOMETRY_DISTANCE);
     }
 }

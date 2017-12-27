@@ -74,6 +74,7 @@ public class TestData {
     public ReferencedEnvelope riverBounds;
     public Filter rv1Filter;
     public SimpleFeature newRiver;
+    public boolean forceLongitudeFirst = false;
 
     public TestData(int initialFidValue) throws Exception {
         this.initialFidValue = initialFidValue;
@@ -117,7 +118,7 @@ public class TestData {
         roadFeatures[2] = SimpleFeatureBuilder.build(roadType,
                 new Object[] { new Integer(3), line(new int[] { 3, 2, 4, 2, 5, 3 }), "r3" },
                 ROAD +"." + (initialFidValue + 2));
-        roadBounds = new ReferencedEnvelope(CRS.decode("EPSG:4326"));
+        roadBounds = new ReferencedEnvelope(CRS.decode("EPSG:4326", forceLongitudeFirst));
         roadBounds.expandToInclude(new ReferencedEnvelope(roadFeatures[0].getBounds()));
         roadBounds.expandToInclude(new ReferencedEnvelope(roadFeatures[1].getBounds()));
         roadBounds.expandToInclude(new ReferencedEnvelope(roadFeatures[2].getBounds()));
@@ -175,7 +176,7 @@ public class TestData {
                             { 4, 6, 4, 8, 6, 10 }
                         }), "rv2", new Double(3.0)
                 }, RIVER +"." + (initialFidValue + 1));
-        riverBounds = new ReferencedEnvelope(CRS.decode("EPSG:4326"));
+        riverBounds = new ReferencedEnvelope(CRS.decode("EPSG:4326", forceLongitudeFirst));
         riverBounds.expandToInclude(ReferencedEnvelope.reference(riverFeatures[0].getBounds()));
         riverBounds.expandToInclude(ReferencedEnvelope.reference(riverFeatures[1].getBounds()));
 

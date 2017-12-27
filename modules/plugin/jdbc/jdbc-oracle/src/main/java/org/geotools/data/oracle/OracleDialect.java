@@ -542,7 +542,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
 
     @Override
     public Geometry decodeGeometryValue(GeometryDescriptor descriptor,
-            ResultSet rs, String column, GeometryFactory factory, Connection cx )
+                                        ResultSet rs, String column, GeometryFactory factory, Connection cx, Hints hints)
             throws IOException, SQLException {
         
         // read the geometry
@@ -550,7 +550,7 @@ public class OracleDialect extends PreparedStatementSQLDialect {
         return convertGeometry(geom, descriptor, factory);
     }
     
-    public Geometry decodeGeometryValue(GeometryDescriptor descriptor, ResultSet rs, int column, GeometryFactory factory, Connection cx) throws IOException ,SQLException {
+    public Geometry decodeGeometryValue(GeometryDescriptor descriptor, ResultSet rs, int column, GeometryFactory factory, Connection cx, Hints hints) throws IOException ,SQLException {
         // read the geometry
         Geometry geom = readGeometry( rs, column, factory, cx );
         return convertGeometry(geom, descriptor, factory);

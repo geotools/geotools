@@ -368,7 +368,7 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
                         try {
                             value = dataStore.getSQLDialect()
                                              .decodeGeometryValue(gatt, rs, offset+attributeRsIndex[i],
-                                    geometryFactory, cx);
+                                    geometryFactory, cx, hints);
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
@@ -675,7 +675,7 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
                                 if ( att instanceof GeometryDescriptor ) {
                                     GeometryDescriptor gatt = (GeometryDescriptor) att;
                                     values[index] = dataStore.getSQLDialect()
-                                        .decodeGeometryValue( gatt, rs, rsindex, dataStore.getGeometryFactory(), st.getConnection() );
+                                        .decodeGeometryValue( gatt, rs, rsindex, dataStore.getGeometryFactory(), st.getConnection(), hints);
                                 }
                                 else {
                                     values[index] = rs.getObject( rsindex );    

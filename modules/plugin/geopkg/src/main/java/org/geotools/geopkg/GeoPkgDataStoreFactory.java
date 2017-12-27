@@ -45,7 +45,13 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
     /** optional user parameter */
     public static final Param USER = new Param(JDBCDataStoreFactory.USER.key, JDBCDataStoreFactory.USER.type, 
             JDBCDataStoreFactory.USER.description, false, JDBCDataStoreFactory.USER.sample);
-    
+
+    /** Maximum number of connections in the connection pool -> there is no server side limit, start with a higher than normal
+     *  value while still preventing "too many open files" */
+    public static final Param MAXCONN = new Param("max connections", Integer.class,
+            "maximum number of open connections", false, new Integer(100));
+
+
     /** parameter for database instance */
     public static final Param DATABASE = new Param("database", File.class, "Database", true );
 
@@ -126,6 +132,8 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
         parameters.put(DATABASE.key, DATABASE);
         //replace user to make optional
         parameters.put(USER.key, USER);
+        //replace maxconn to increase default value
+        parameters.put(MAXCONN.key, MAXCONN);
         //replace dbtype
         parameters.put(DBTYPE.key, DBTYPE);
     }

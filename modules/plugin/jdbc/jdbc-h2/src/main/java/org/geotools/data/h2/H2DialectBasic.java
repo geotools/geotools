@@ -24,6 +24,7 @@ import java.sql.SQLException;
 import java.util.Map;
 
 import org.geotools.data.jdbc.FilterToSQL;
+import org.geotools.factory.Hints;
 import org.geotools.jdbc.BasicSQLDialect;
 import org.geotools.jdbc.JDBCDataStore;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -225,7 +226,7 @@ public class H2DialectBasic extends BasicSQLDialect {
 
     @Override
     public Geometry decodeGeometryValue(GeometryDescriptor descriptor,
-            ResultSet rs, String column, GeometryFactory factory, Connection cx)
+                                        ResultSet rs, String column, GeometryFactory factory, Connection cx, Hints hints)
             throws IOException, SQLException {
         byte[] bytes = rs.getBytes(column);
 

@@ -557,7 +557,7 @@ public class SQLServerDialect extends BasicSQLDialect {
 
     @Override
     public Geometry decodeGeometryValue(GeometryDescriptor descriptor,
-            ResultSet rs, String column, GeometryFactory factory, Connection cx)
+                                        ResultSet rs, String column, GeometryFactory factory, Connection cx, Hints hints)
                     throws IOException, SQLException {
         byte[] bytes = rs.getBytes(column);
         if(bytes == null) {

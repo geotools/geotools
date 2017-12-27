@@ -72,16 +72,16 @@ public class PostGISPSDialect extends PreparedStatementSQLDialect {
     
     @Override
     public Geometry decodeGeometryValue(GeometryDescriptor descriptor, ResultSet rs, int column,
-            GeometryFactory factory, Connection cx) throws IOException, SQLException {
-        return delegate.decodeGeometryValue(descriptor, rs, column, factory, cx);
+                                        GeometryFactory factory, Connection cx, Hints hints) throws IOException, SQLException {
+        return delegate.decodeGeometryValue(descriptor, rs, column, factory, cx, new Hints());
     }
 
 
     public Geometry decodeGeometryValue(GeometryDescriptor descriptor,
-            ResultSet rs, String column, GeometryFactory factory, Connection cx)
+                                        ResultSet rs, String column, GeometryFactory factory, Connection cx, Hints hints)
             throws IOException, SQLException {
         return delegate
-                .decodeGeometryValue(descriptor, rs, column, factory, cx);
+                .decodeGeometryValue(descriptor, rs, column, factory, cx, hints);
     }
 
     @Override

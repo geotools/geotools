@@ -32,6 +32,7 @@ import org.geotools.data.DefaultTransaction;
 import org.geotools.data.FeatureLock;
 import org.geotools.data.Transaction;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.factory.Hints;
 import org.geotools.feature.NameImpl;
 import org.junit.Before;
 import org.junit.Test;
@@ -255,8 +256,8 @@ public class EnsureAuthorizationTest {
 
             @Override
             public Geometry decodeGeometryValue(GeometryDescriptor descriptor,
-                    ResultSet rs, String column, GeometryFactory factory,
-                    Connection cx) throws IOException, SQLException {
+                                                ResultSet rs, String column, GeometryFactory factory,
+                                                Connection cx, Hints hints) throws IOException, SQLException {
                 return null;
             }
             
@@ -279,8 +280,8 @@ public class EnsureAuthorizationTest {
 
             @Override
             public Geometry decodeGeometryValue(GeometryDescriptor descriptor,
-                    ResultSet rs, String column, GeometryFactory factory,
-                    Connection cx) throws IOException, SQLException {
+                                                ResultSet rs, String column, GeometryFactory factory,
+                                                Connection cx, Hints hints) throws IOException, SQLException {
                 return null;
             }
 

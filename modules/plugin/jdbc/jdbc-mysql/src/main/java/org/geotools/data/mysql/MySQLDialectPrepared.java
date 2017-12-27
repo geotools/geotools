@@ -191,9 +191,9 @@ public class MySQLDialectPrepared extends PreparedStatementSQLDialect {
     
     @Override
     public Geometry decodeGeometryValue(GeometryDescriptor descriptor,
-            ResultSet rs, String column, GeometryFactory factory, Connection cx)
+                                        ResultSet rs, String column, GeometryFactory factory, Connection cx, Hints hints)
             throws IOException, SQLException {
-        return delegate.decodeGeometryValue(descriptor, rs, column, factory, cx);
+        return delegate.decodeGeometryValue(descriptor, rs, column, factory, cx, hints);
     }
     
     //

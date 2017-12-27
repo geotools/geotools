@@ -38,7 +38,6 @@ import java.util.logging.Level;
 
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.factory.Hints;
-import org.geotools.feature.visitor.SumAreaVisitor;
 import org.geotools.filter.function.FilterFunction_area;
 import org.geotools.geometry.jts.CircularRing;
 import org.geotools.geometry.jts.CircularString;
@@ -267,7 +266,7 @@ public class PostGISDialect extends BasicSQLDialect {
 
     @Override
     public Geometry decodeGeometryValue(GeometryDescriptor descriptor,
-            ResultSet rs, String column, GeometryFactory factory, Connection cx)
+                                        ResultSet rs, String column, GeometryFactory factory, Connection cx, Hints hints)
             throws IOException, SQLException {
         WKBAttributeIO reader = getWKBReader(factory);
         
@@ -275,7 +274,7 @@ public class PostGISDialect extends BasicSQLDialect {
     }
     
     public Geometry decodeGeometryValue(GeometryDescriptor descriptor,
-            ResultSet rs, int column, GeometryFactory factory, Connection cx)
+                                        ResultSet rs, int column, GeometryFactory factory, Connection cx, Hints hints)
             throws IOException, SQLException {
         WKBAttributeIO reader = getWKBReader(factory);
         

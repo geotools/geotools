@@ -1490,4 +1490,12 @@ public abstract class SQLDialect {
     public void encodeAggregateFunctionPostfix(String function, StringBuffer sql) {
         sql.append(")");
     }
+
+    /**
+     * Reads a primary key column value. By default uses {@link ResultSet#getString(int)}, subclasses
+     * can use a more efficient way should they wish to
+     */
+    public String getPkColumnValue(ResultSet rs, PrimaryKeyColumn pkey, int columnIdx) throws SQLException {
+        return rs.getString(columnIdx);
+    }
 }

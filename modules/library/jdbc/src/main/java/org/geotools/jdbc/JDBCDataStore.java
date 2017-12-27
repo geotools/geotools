@@ -71,7 +71,6 @@ import org.geotools.factory.Hints;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.visitor.CountVisitor;
-import org.geotools.feature.visitor.FeatureAttributeVisitor;
 import org.geotools.feature.visitor.GroupByVisitor;
 import org.geotools.feature.visitor.LimitingVisitor;
 import org.geotools.filter.FilterAttributeExtractor;
@@ -2203,18 +2202,21 @@ public final class JDBCDataStore extends ContentDataStore
      */
     protected String encodeFID( PrimaryKey pkey, ResultSet rs, int offset ) throws SQLException, IOException {
         // no pk columns
-        if(pkey.getColumns().isEmpty()) {
+        List<PrimaryKeyColumn> columns = pkey.getColumns();
+        if(columns.isEmpty()) {
             return SimpleFeatureBuilder.createDefaultFeatureId();
         } 
         
         // just one, no need to build support structures
-        if(pkey.getColumns().size() == 1)
-            return rs.getString(offset+1);
+        if(columns.size() == 1) {
+            return dialect.getPkColumnValue(rs, columns.get(0), offset + 1);
+        }
 
         // more than one
         List<Object> keyValues = new ArrayList<Object>();
-        for(int i = 0; i < pkey.getColumns().size(); i++) {
-            String o = rs.getString(offset+i+1);
+        for(int i = 0; i < columns.size(); i++) {
+            PrimaryKeyColumn column = columns.get(i);
+            String o = dialect.getPkColumnValue(rs, columns.get(0), offset + i + 1);
             keyValues.add( o );
         }
         return encodeFID( keyValues );

@@ -45,6 +45,7 @@ import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.PreparedFilterToSQL;
 import org.geotools.jdbc.PreparedStatementSQLDialect;
 import org.geotools.jdbc.PrimaryKey;
+import org.geotools.jdbc.PrimaryKeyColumn;
 import org.geotools.referencing.CRS;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -400,7 +401,7 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             Connection cx) throws SQLException {
         Statement st = cx.createStatement();
         try {
-            ResultSet rs = st.executeQuery( "SELECT last_insert_rowid();");
+            ResultSet rs = st.executeQuery( "SELECT last_insert_rowid()");
             try {
                 if (rs.next()) {
                     return rs.getInt( 1 );
@@ -566,5 +567,18 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
             return (T) Integer.valueOf(Boolean.TRUE.equals(value) ? 1 : 0);
         }
         return super.convert(value, binding);
+    }
+
+    @Override
+    public String getPkColumnValue(ResultSet rs, PrimaryKeyColumn pkey, int columnIdx) throws SQLException {
+        // by spec primary key of a GeoPackage column is integer, but maybe other tables do not
+        // follow this rule. Calling rs.getInt avoids an inefficient block of code in sqlite driver
+        if (Integer.class.equals(pkey.getType())) {
+            // primary keys cannot contain null values, so no need to check rs.wasNull() and
+            // thus saving an expensive native call
+            return  String.valueOf(rs.getInt(columnIdx));
+        } else {
+            return rs.getString(columnIdx);
+        }
     }
 }

@@ -587,5 +587,6 @@ public class GeoPkgDialect extends PreparedStatementSQLDialect {
     @Override
     protected void addSupportedHints(Set<Hints.Key> hints) {
         hints.add(Hints.GEOMETRY_DISTANCE);
+        hints.add(Hints.SCREENMAP);
     }
 }

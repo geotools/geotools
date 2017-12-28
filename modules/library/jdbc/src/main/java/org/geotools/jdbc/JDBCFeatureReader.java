@@ -16,6 +16,36 @@
  */
 package org.geotools.jdbc;
 
+import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import org.geotools.data.FeatureReader;
+import org.geotools.data.Query;
+import org.geotools.data.Transaction;
+import org.geotools.factory.Hints;
+import org.geotools.feature.GeometryAttributeImpl;
+import org.geotools.feature.IllegalAttributeException;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.feature.type.AttributeDescriptorImpl;
+import org.geotools.feature.type.Types;
+import org.geotools.filter.identity.FeatureIdImpl;
+import org.geotools.geometry.jts.CurvedGeometryFactory;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.renderer.ScreenMap;
+import org.geotools.util.Converters;
+import org.geotools.util.logging.Logging;
+import org.opengis.feature.FeatureFactory;
+import org.opengis.feature.GeometryAttribute;
+import org.opengis.feature.Property;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.GeometryDescriptor;
+import org.opengis.feature.type.Name;
+import org.opengis.filter.identity.FeatureId;
+import org.opengis.geometry.BoundingBox;
+import org.opengis.referencing.operation.TransformException;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -33,35 +63,6 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.geotools.data.FeatureReader;
-import org.geotools.data.Query;
-import org.geotools.data.Transaction;
-import org.geotools.factory.Hints;
-import org.geotools.feature.GeometryAttributeImpl;
-import org.geotools.feature.IllegalAttributeException;
-import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.geotools.feature.type.AttributeDescriptorImpl;
-import org.geotools.feature.type.Types;
-import org.geotools.filter.identity.FeatureIdImpl;
-import org.geotools.geometry.jts.CurvedGeometryFactory;
-import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.util.Converters;
-import org.geotools.util.logging.Logging;
-import org.opengis.feature.FeatureFactory;
-import org.opengis.feature.GeometryAttribute;
-import org.opengis.feature.Property;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.GeometryDescriptor;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.identity.FeatureId;
-import org.opengis.geometry.BoundingBox;
-
-import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
 
 /**
  * Reader for jdbc datastore
@@ -108,6 +109,12 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
      * hints
      */
     protected Hints hints;
+
+    /**
+     * Screenmap for feature skipping behaviour
+     */
+    protected ScreenMap screenMap;
+
     /**
      * current transaction
      */
@@ -116,6 +123,12 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
      * flag indicating if the iterator has another feature
      */
     protected Boolean next;
+
+    /**
+     * The next feature to be returned
+     */
+    private SimpleFeature nextFeature;
+    
     /**
      * feature builder
      */
@@ -141,7 +154,7 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
     protected int offset = 0;
     
     protected JDBCReaderCallback callback = JDBCReaderCallback.NULL;
-
+    
     public JDBCFeatureReader( String sql, Connection cx, JDBCFeatureSource featureSource, SimpleFeatureType featureType, Query query ) 
         throws SQLException {
         init( featureSource, featureType, query );
@@ -214,6 +227,9 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
         if (linearizationTolerance != null) {
             geometryFactory = new CurvedGeometryFactory(geometryFactory, linearizationTolerance);
         }
+        
+        // screenmap support
+        this.screenMap = (ScreenMap) hints.get(Hints.SCREENMAP); 
 
         // create a feature builder using the factory hinted or the one coming 
         // from the datastore
@@ -271,6 +287,9 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
 
     public void setNext(Boolean next) {
         this.next = next;
+        if (next == null) {
+            nextFeature = null;
+        }
     }
 
     public SimpleFeatureType getFeatureType() {
@@ -290,9 +309,15 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
         
         if (next == null) {
             try {
-                callback.beforeNext(rs);
-                next = Boolean.valueOf(rs.next());
-                callback.afterNext(rs, next);
+                while (nextFeature == null && !Boolean.FALSE.equals(next)) {
+                    callback.beforeNext(rs);
+                    next = Boolean.valueOf(rs.next());
+                    callback.afterNext(rs, next);
+                    
+                    if (next) {
+                        nextFeature = readNextFeature();
+                    }
+                }
 
                 if (!next) {
                     callback.finish(this);
@@ -304,6 +329,116 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
         }
 
         return next.booleanValue();
+    }
+    
+    protected SimpleFeature readNextFeature() throws IOException {
+        //grab the connection
+        Connection cx;
+        try {
+            cx = st.getConnection();
+        }
+        catch (SQLException e) {
+            throw (IOException) new IOException().initCause(e);
+        }
+
+        // figure out the fid
+        String fid;
+
+        try {
+            fid = dataStore.encodeFID(pkey,rs,offset);
+            if (fid == null) {
+                //fid could be null during an outer join
+                return null;
+            }
+            // wrap the fid in the type name
+            fid = featureType.getTypeName() + "." + fid;
+        } catch (Exception e) {
+            throw new RuntimeException("Could not determine fid from primary key", e);
+        }
+
+        // round up attributes
+        final int attributeCount = featureType.getAttributeCount();
+        int[] attributeRsIndex = buildAttributeRsIndex();
+        for(int i = 0; i < attributeCount; i++) {
+            AttributeDescriptor type = featureType.getDescriptor(i);
+
+            try {
+                Object value = null;
+
+                // is this a geometry?
+                if (type instanceof GeometryDescriptor) {
+                    GeometryDescriptor gatt = (GeometryDescriptor) type;
+
+                    //read the geometry
+                    try {
+                        value = dataStore.getSQLDialect()
+                                .decodeGeometryValue(gatt, rs, offset+attributeRsIndex[i],
+                                        geometryFactory, cx, hints);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    if (value != null) {
+                        //check to see if a crs was set
+                        Geometry geometry = (Geometry) value;
+                        if ( geometry.getUserData() == null ) {
+                            //if not set, set from descriptor
+                            geometry.setUserData( gatt.getCoordinateReferenceSystem() );
+                        }
+
+                        try {
+                            // is position already busy skip it
+                            if (screenMap != null) {
+                                if (screenMap.canSimplify(geometry.getEnvelopeInternal())) {
+                                    if (screenMap.checkAndSet(geometry.getEnvelopeInternal())) {
+                                        return null;
+                                    } else {
+                                        value = screenMap.getSimplifiedShape(geometry);
+                                    }
+                                }
+                            }
+                        } catch (TransformException e) {
+                            if(LOGGER.isLoggable(Level.WARNING)) {
+                                LOGGER.log(Level.WARNING, "Failed to process screenmap checks, proceeding without", e);
+                            }
+                        }
+
+                    }
+                    
+                } else {
+                    value = rs.getObject(offset+attributeRsIndex[i]);
+                }
+
+                // they value may need conversion. We let converters chew the initial
+                // value towards the target type, if the result is not the same as the
+                // original, then a conversion happened and we may want to report it to the
+                // user (being the feature type reverse engineerd, it's unlikely a true
+                // conversion will be needed)
+                if(value != null) {
+                    Class binding = type.getType().getBinding();
+                    Object converted = Converters.convert(value, binding);
+                    if(converted != null && converted != value) {
+                        value = converted;
+                        if (dataStore.getLogger().isLoggable(Level.FINER)) {
+                            String msg = value + " is not of type " + binding.getName()
+                                    + ", attempting conversion";
+                            dataStore.getLogger().finer(msg);
+                        }
+                    }
+                }
+
+                builder.add(value);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        // create the feature
+        try {
+            return builder.buildFeature(fid);
+        } catch (IllegalAttributeException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     protected void ensureNext() {
@@ -324,101 +459,23 @@ public class JDBCFeatureReader implements  FeatureReader<SimpleFeatureType, Simp
             ensureOpen();
             if(!hasNext()) {
                 throw new NoSuchElementException("No more features in this reader, you should call " +
-                		"hasNext() to check for feature availability");
+                        "hasNext() to check for feature availability");
+            }
+
+            // join readers share the same resultset among many readers, won't call hasNext() on each
+            if (nextFeature == null) {
+                nextFeature = readNextFeature();
+            }
+            if (nextFeature == null && screenMap != null) {
+                throw new IllegalStateException("Feature joining currently not supported along screenmap");
             }
             
-            //grab the connection
-            Connection cx;
-            try {
-                cx = st.getConnection();
-            } 
-            catch (SQLException e) {
-                throw (IOException) new IOException().initCause(e);
-            }
-            
-            // figure out the fid
-            String fid;
-    
-            try {
-                fid = dataStore.encodeFID(pkey,rs,offset);
-                if (fid == null) {
-                    //fid could be null during an outer join
-                    return null;
-                }
-                // wrap the fid in the type name
-                fid = featureType.getTypeName() + "." + fid;
-            } catch (Exception e) {
-                throw new RuntimeException("Could not determine fid from primary key", e);
-            }
-    
-            // round up attributes
-            final int attributeCount = featureType.getAttributeCount();
-            int[] attributeRsIndex = buildAttributeRsIndex();
-            for(int i = 0; i < attributeCount; i++) {
-                AttributeDescriptor type = featureType.getDescriptor(i);
-                
-                try {
-                    Object value = null;
-    
-                    // is this a geometry?
-                    if (type instanceof GeometryDescriptor) {
-                        GeometryDescriptor gatt = (GeometryDescriptor) type;
-                        
-                        //read the geometry
-                        try {
-                            value = dataStore.getSQLDialect()
-                                             .decodeGeometryValue(gatt, rs, offset+attributeRsIndex[i],
-                                    geometryFactory, cx, hints);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                        
-                        if (value != null) {
-                            //check to see if a crs was set
-                            Geometry geometry = (Geometry) value;
-                            if ( geometry.getUserData() == null ) {
-                                //if not set, set from descriptor
-                                geometry.setUserData( gatt.getCoordinateReferenceSystem() );
-                            }
-                        }
-                    } else {
-                        value = rs.getObject(offset+attributeRsIndex[i]);
-                    }
-    
-                    // they value may need conversion. We let converters chew the initial
-                    // value towards the target type, if the result is not the same as the
-                    // original, then a conversion happened and we may want to report it to the
-                    // user (being the feature type reverse engineerd, it's unlikely a true
-                    // conversion will be needed)
-                    if(value != null) {
-                        Class binding = type.getType().getBinding();
-                        Object converted = Converters.convert(value, binding);
-                        if(converted != null && converted != value) {
-                            value = converted;
-                            if (dataStore.getLogger().isLoggable(Level.FINER)) {
-                                String msg = value + " is not of type " + binding.getName()
-                                    + ", attempting conversion";
-                                dataStore.getLogger().finer(msg);
-                            }
-                        }
-                    }
-    
-                    builder.add(value);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-    
-            // create the feature
-            try {
-                return builder.buildFeature(fid);
-            } catch (IllegalAttributeException e) {
-                throw new RuntimeException(e);
-            }
+            return nextFeature;
         } finally {
             // reset the next flag. We do this in a finally block to make sure we
             // move to the next record no matter what, if the current one could
             // not be read there is no salvation for it anyways
+            nextFeature = null;
             next = null;
         }
     }

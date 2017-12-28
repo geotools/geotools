@@ -75,7 +75,7 @@ public class JDBCUpdateFeatureWriter extends JDBCFeatureReader implements
         }
      
         //reset next flag
-        next = null;
+        setNext(null);
     
         if( this.featureSource.getEntry().getState(tx).hasListener() ){
             // record bounds as we have a listener who will be interested

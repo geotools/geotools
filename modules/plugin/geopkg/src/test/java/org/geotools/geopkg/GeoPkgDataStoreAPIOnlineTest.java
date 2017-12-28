@@ -31,11 +31,15 @@ import org.geotools.jdbc.JDBCDataStoreAPIOnlineTest;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 import org.geotools.jdbc.JDBCDataStoreOnlineTest;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.operation.transform.AffineTransform2D;
+import org.geotools.renderer.ScreenMap;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import sun.awt.X11.Screen;
 
+import java.awt.geom.AffineTransform;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Objects;
@@ -86,7 +90,34 @@ public class GeoPkgDataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest {
             assertEquals(new Coordinate(1, 1), ls.getStartPoint().getCoordinate());
             assertEquals(new Coordinate(5, 2), ls.getEndPoint().getCoordinate());
         }
+    }
 
+    public void testScreenMap() throws Exception {
+        SimpleFeatureSource fs = dataStore.getFeatureSource(tname("road"));
+        assertTrue(fs.getSupportedHints().contains(Hints.SCREENMAP));
+
+        FilterFactory factory = dataStore.getFilterFactory();
+        Query q = new Query(tname("road"), factory.id(Collections.singleton(factory.featureId("road.0"))));
+        ScreenMap screenMap = new ScreenMap(0, 0, 10, 10, new AffineTransform2D(AffineTransform.getScaleInstance(0.1, 0.1)));
+        screenMap.setSpans(10, 10);
+        Hints hints = new Hints(Hints.SCREENMAP, screenMap);
+        q.setHints(hints);
+
+        try(SimpleFeatureIterator it = fs.getFeatures(q).features()) {
+            it.hasNext();
+
+            // original feature:
+            //      0 | LINESTRING( 1 1, 2 2, 4 2, 5 1 );srid=4326 | "r1"
+            // but geometry has been simplified to a "full pixel size" (10x10) centered in the middle of the shape
+            SimpleFeature f = it.next();
+            LineString ls = (LineString) f.getDefaultGeometry();
+            assertEquals(2, ls.getNumPoints());
+            assertEquals(new Coordinate(-2, -3.5), ls.getStartPoint().getCoordinate());
+            assertEquals(new Coordinate(8, 6.5), ls.getEndPoint().getCoordinate());
+        }
+        
+        // check the screenmap has been updated
+        assertTrue(screenMap.get(0, 0));   
     }
 
 }

@@ -16,11 +16,6 @@
  */
 package org.geotools.geopkg;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.Map;
-
 import org.apache.commons.dbcp.BasicDataSource;
 import org.geotools.data.Parameter;
 import org.geotools.geopkg.geom.GeoPkgGeomWriter;
@@ -28,6 +23,13 @@ import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.SQLDialect;
 import org.sqlite.SQLiteConfig;
+import org.sqlite.javax.SQLiteConnectionPoolDataSource;
+
+import javax.sql.DataSource;
+import java.io.File;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.Map;
 
 /**
  * The GeoPackage DataStore Factory.
@@ -41,16 +43,6 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
     /** parameter for database type */
     public static final Param DBTYPE = new Param("dbtype", String.class, "Type", true, "geopkg",
             Collections.singletonMap(Parameter.LEVEL, "program"));
-    
-    /** optional user parameter */
-    public static final Param USER = new Param(JDBCDataStoreFactory.USER.key, JDBCDataStoreFactory.USER.type, 
-            JDBCDataStoreFactory.USER.description, false, JDBCDataStoreFactory.USER.sample);
-
-    /** Maximum number of connections in the connection pool -> there is no server side limit, start with a higher than normal
-     *  value while still preventing "too many open files" */
-    public static final Param MAXCONN = new Param("max connections", Integer.class,
-            "maximum number of open connections", false, new Integer(100));
-
 
     /** parameter for database instance */
     public static final Param DATABASE = new Param("database", File.class, "Database", true );
@@ -123,21 +115,32 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
     protected void setupParameters(Map parameters) {
         super.setupParameters(parameters);
         
-        //remove unneccessary parameters
+        // remove unnecessary parameters
         parameters.remove(HOST.key);
         parameters.remove(PORT.key);
         parameters.remove(SCHEMA.key);
-        
-        //replace database with File database
+        parameters.remove(USER.key); // sqlite has no user, just a password
+        parameters.remove(MAXCONN.key);
+        parameters.remove(MINCONN.key);
+        parameters.remove(MAXWAIT.key);
+        parameters.remove(VALIDATECONN.key);
+        parameters.remove(TEST_WHILE_IDLE.key);
+        parameters.remove(TIME_BETWEEN_EVICTOR_RUNS.key);
+        parameters.remove(MIN_EVICTABLE_TIME.key);
+        parameters.remove(EVICTOR_TESTS_PER_RUN.key);
+
+        // replace database with File database
         parameters.put(DATABASE.key, DATABASE);
-        //replace user to make optional
-        parameters.put(USER.key, USER);
-        //replace maxconn to increase default value
-        parameters.put(MAXCONN.key, MAXCONN);
-        //replace dbtype
+        // replace dbtype
         parameters.put(DBTYPE.key, DBTYPE);
     }
 
+    /**
+     * This is left for public API compatibility but it's not as efficient as using the GeoPackage internal pool
+     * @param params Map of connection parameter.
+     * @return
+     * @throws IOException
+     */
     @Override
     public BasicDataSource createDataSource(Map params) throws IOException {
         //create a datasource
@@ -148,34 +151,51 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
 
         // url
         dataSource.setUrl(getJDBCUrl(params));
-        
-        //dataSource.setMaxActive(1);
-        //dataSource.setMinIdle(1);
 
-        //dataSource.setTestOnBorrow(true);
-        //dataSource.setValidationQuery(getValidationQuery());
         addConnectionProperties(dataSource);
-        
+
         dataSource.setAccessToUnderlyingConnectionAllowed(true);
-        
+
         return dataSource;
     }
 
+
     @Override
-    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map params) throws IOException {
-        dataStore.setDatabaseSchema(null);
-        return dataStore;
+    protected DataSource createDataSource(Map params, SQLDialect dialect) throws IOException {
+        SQLiteConfig config = new SQLiteConfig();
+        config.setSharedCache(true);
+        config.enableLoadExtension(true);
+        String password = (String) PASSWD.lookUp(params);
+        // support for encrypted databases has been ddded after 3.20.1, we'll have to 
+        // wait for a future release of sqlite-jdbc
+        // if(password != null) {
+        //     config.setPragma(SQLiteConfig.Pragma.PASSWORD, password);
+        // }
+        // TODO: add this and make configurable once we upgrade to a sqlitejdbc exposing mmap_size
+        // config.setPragma(SQLiteConfig.Pragma.MMAP_SIZE, String.valueOf(1024 * 1024 * 1000));
+        
+        // use native "pool", which is actually not pooling anything (that's fast and
+        // has less scalability overhead)
+        SQLiteConnectionPoolDataSource ds = new SQLiteConnectionPoolDataSource(config);
+        ds.setUrl(getJDBCUrl(params));
+                
+        return ds;
     }
 
     static void addConnectionProperties(BasicDataSource dataSource) {
         SQLiteConfig config = new SQLiteConfig();
         config.setSharedCache(true);
         config.enableLoadExtension(true);
-        //config.enableSpatiaLite(true);
-        
+
         for (Map.Entry e : config.toProperties().entrySet()) {
             dataSource.addConnectionProperty((String)e.getKey(), (String)e.getValue());
         }
+    }
+
+    @Override
+    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map params) throws IOException {
+        dataStore.setDatabaseSchema(null);
+        return dataStore;
     }
 
 }

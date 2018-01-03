@@ -901,7 +901,7 @@ public final class JDBCDataStore extends ContentDataStore
                         if ( rs.next() ) {
                             //read the geometry
                             Geometry g = getSQLDialect().decodeGeometryValue(
-                                null, rs, "geometry", getGeometryFactory(), cx );
+                                null, rs, "geometry", getGeometryFactory(), cx, hints);
                             
                             //read the metadata
                             String name = rs.getString( "name" );

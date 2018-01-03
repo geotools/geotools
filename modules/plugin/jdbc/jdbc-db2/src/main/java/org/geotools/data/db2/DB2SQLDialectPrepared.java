@@ -136,15 +136,15 @@ public class DB2SQLDialectPrepared extends PreparedStatementSQLDialect {
     
 	@Override
     public Geometry decodeGeometryValue(GeometryDescriptor descriptor, ResultSet rs, String name,
-        GeometryFactory factory, Connection cx ) throws IOException, SQLException {
-		return delegate.decodeGeometryValue(descriptor, rs, name, factory, cx);
+                                        GeometryFactory factory, Connection cx, Hints hints) throws IOException, SQLException {
+		return delegate.decodeGeometryValue(descriptor, rs, name, factory, cx, hints);
 		
     }
 	
    @Override
    public Geometry decodeGeometryValue(GeometryDescriptor descriptor, ResultSet rs, int column,
-            GeometryFactory factory, Connection cx) throws IOException, SQLException {
-        return delegate.decodeGeometryValue(descriptor, rs, column, factory, cx);
+                                       GeometryFactory factory, Connection cx, Hints hints) throws IOException, SQLException {
+        return delegate.decodeGeometryValue(descriptor, rs, column, factory, cx, new Hints());
     }
 	
 

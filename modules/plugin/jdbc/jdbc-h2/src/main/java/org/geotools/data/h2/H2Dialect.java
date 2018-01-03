@@ -29,6 +29,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 
+import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.Geometries;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.SQLDialect;
@@ -409,7 +410,7 @@ public class H2Dialect extends SQLDialect {
     
 
     public Geometry decodeGeometryValue(GeometryDescriptor descriptor, ResultSet rs, String column,
-        GeometryFactory factory, Connection cx ) throws IOException, SQLException {
+                                        GeometryFactory factory, Connection cx, Hints hints) throws IOException, SQLException {
         byte[] bytes = rs.getBytes(column);
 
         if (bytes == null) {

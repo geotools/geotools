@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.geotools.factory.Hints;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.SQLDialect;
 import org.opengis.feature.type.GeometryDescriptor;
@@ -39,7 +40,7 @@ public class MBTilesDialect extends SQLDialect {
 
     @Override
     public Geometry decodeGeometryValue(GeometryDescriptor descriptor, ResultSet rs, String column,
-            GeometryFactory factory, Connection cx) throws IOException, SQLException {
+                                        GeometryFactory factory, Connection cx, Hints hints) throws IOException, SQLException {
         // TODO Auto-generated method stub
         return null;
     }

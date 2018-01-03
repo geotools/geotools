@@ -458,14 +458,14 @@ public class DB2SQLDialect extends SQLDialect  {
     
     @Override
     public Geometry decodeGeometryValue(GeometryDescriptor descriptor, ResultSet rs, String name,
-        GeometryFactory factory, Connection cx ) throws IOException, SQLException {    	
+                                        GeometryFactory factory, Connection cx, Hints hints) throws IOException, SQLException {    	
         byte[] bytes = rs.getBytes(name);
         return decodeGeometryValueFromBytes(factory, bytes);
     }
 
     @Override
     public Geometry decodeGeometryValue(GeometryDescriptor descriptor, ResultSet rs, int column,
-            GeometryFactory factory, Connection cx) throws IOException, SQLException {
+                                        GeometryFactory factory, Connection cx, Hints hints) throws IOException, SQLException {
         byte[] bytes = rs.getBytes(column);
         return decodeGeometryValueFromBytes(factory, bytes);        
     }

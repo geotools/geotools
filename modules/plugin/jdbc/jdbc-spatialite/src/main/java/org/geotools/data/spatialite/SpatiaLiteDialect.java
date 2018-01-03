@@ -19,15 +19,11 @@ package org.geotools.data.spatialite;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.Map;
 import java.util.logging.Level;
@@ -316,7 +312,7 @@ public class SpatiaLiteDialect extends BasicSQLDialect {
 
     @Override
     public Geometry decodeGeometryValue(GeometryDescriptor descriptor, ResultSet rs, int column,
-            GeometryFactory factory, Connection cx) throws IOException, SQLException {
+                                        GeometryFactory factory, Connection cx, Hints hints) throws IOException, SQLException {
         byte[] wkb = rs.getBytes(column);
         if (wkb == null) {
             return null;
@@ -343,7 +339,7 @@ public class SpatiaLiteDialect extends BasicSQLDialect {
 
     @Override
     public Geometry decodeGeometryValue(GeometryDescriptor descriptor, ResultSet rs, String column,
-            GeometryFactory factory, Connection cx) throws IOException, SQLException {
+                                        GeometryFactory factory, Connection cx, Hints hints) throws IOException, SQLException {
         return null;
     }
     

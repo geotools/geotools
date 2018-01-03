@@ -41,7 +41,6 @@ import org.geotools.factory.Hints;
 import org.geotools.feature.visitor.CountVisitor;
 import org.geotools.feature.visitor.MaxVisitor;
 import org.geotools.feature.visitor.MinVisitor;
-import org.geotools.feature.visitor.SumAreaVisitor;
 import org.geotools.feature.visitor.SumVisitor;
 import org.geotools.feature.visitor.UniqueVisitor;
 import org.geotools.filter.FilterCapabilities;
@@ -864,8 +863,8 @@ public abstract class SQLDialect {
      * objects.
      * </p>
      */
-    public abstract Geometry decodeGeometryValue(GeometryDescriptor descriptor, ResultSet rs,
-        String column, GeometryFactory factory, Connection cx ) throws IOException, SQLException;
+    public abstract Geometry decodeGeometryValue(GeometryDescriptor descriptor, ResultSet rs, 
+       String column, GeometryFactory factory, Connection cx, Hints hints) throws IOException, SQLException;
     
     /**
      * Decodes a geometry value from the result of a query specifying the column 
@@ -877,10 +876,10 @@ public abstract class SQLDialect {
      * @see {@link #decodeGeometryValue(GeometryDescriptor, ResultSet, String, GeometryFactory)}.
      */
     public Geometry decodeGeometryValue(GeometryDescriptor descriptor, ResultSet rs,
-        int column, GeometryFactory factory, Connection cx ) throws IOException, SQLException {
-        
+      int column, GeometryFactory factory, Connection cx, Hints hints) throws IOException, SQLException {
+
         String columnName = rs.getMetaData().getColumnName( column );
-        return decodeGeometryValue(descriptor, rs, columnName, factory, cx);
+        return decodeGeometryValue(descriptor, rs, columnName, factory, cx, hints);
     }
     
     /**

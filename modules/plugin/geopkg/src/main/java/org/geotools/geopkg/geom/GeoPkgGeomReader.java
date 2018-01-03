@@ -16,18 +16,31 @@
  */
 package org.geotools.geopkg.geom;
 
-import java.io.IOException;
-import java.io.InputStream;
-
+import com.vividsolutions.jts.geom.CoordinateSequence;
+import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.LinearRing;
+import com.vividsolutions.jts.geom.MultiLineString;
+import com.vividsolutions.jts.geom.MultiPoint;
+import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.io.ByteArrayInStream;
 import com.vividsolutions.jts.io.ByteOrderDataInStream;
 import com.vividsolutions.jts.io.InStream;
 import com.vividsolutions.jts.io.InputStreamInStream;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKBReader;
+import org.geotools.factory.Hints;
+import org.geotools.geometry.jts.JTS;
+import org.geotools.math.Line;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Translates a GeoPackage geometry BLOB to a vividsolutions Geometry.
@@ -47,6 +60,10 @@ public class GeoPkgGeomReader {
     
     private GeometryFactory factory = DEFAULT_GEOM_FACTORY;
     
+    private Hints hints;
+    private Number simplificationDistance;
+    private Class geometryType;
+
     public GeoPkgGeomReader(InStream input) {
         this.input = input;
     }
@@ -70,10 +87,68 @@ public class GeoPkgGeomReader {
         if (header == null) {
             header = readHeader();
         }
+
         if (geometry == null) {
-            geometry = read();
+            Envelope envelope = header.getEnvelope();
+            if (simplificationDistance != null && geometryType != null && 
+                    header.getFlags().getEnvelopeIndicator() != EnvelopeType.NONE &&
+                    envelope.getWidth() < simplificationDistance.doubleValue() 
+                    && envelope.getHeight() < simplificationDistance.doubleValue()) {
+                Geometry simplified = getSimplifiedShape(geometryType, envelope.getMinX(), envelope.getMinY(), 
+                        envelope.getMaxX(), envelope.getMaxY());
+                if (simplified != null) {
+                    geometry = simplified;
+                }
+            }
+
+            if (geometry == null) {
+                geometry = read();
+            }
         }
         return geometry;
+    }
+
+    public Geometry getSimplifiedShape(Class type, double minX, double minY, double maxX, double maxY) {
+        CoordinateSequenceFactory csf = factory.getCoordinateSequenceFactory();
+        if(Point.class.equals(type)) {
+            CoordinateSequence cs = JTS.createCS(csf, 1, 2);
+            cs.setOrdinate(0, 0, (minX + maxX) / 2);
+            cs.setOrdinate(0, 1, (minY + maxY) / 2);
+            return factory.createPoint(cs);
+        } else if(MultiPoint.class.equals(type)) {
+            Point p = (Point) getSimplifiedShape(Point.class, minX, minY, maxX, maxY);
+            return factory.createMultiPoint(new Point[] {p});
+        } else if(LineString.class.equals(type) || LinearRing.class.equals(type)) {
+            CoordinateSequence cs = JTS.createCS(csf, 2, 2);
+            cs.setOrdinate(0, 0, minX);
+            cs.setOrdinate(0, 1, minY);
+            cs.setOrdinate(1, 0, maxX);
+            cs.setOrdinate(1, 1, maxY);
+            return factory.createLineString(cs);
+        } else if(MultiLineString.class.equals(type)) {
+            LineString ls = (LineString) getSimplifiedShape(LineString.class, minX, minY, maxX, maxY);
+            return factory.createMultiLineString(new LineString[] {ls});
+        } else if(Polygon.class.equals(type)) {
+            CoordinateSequence cs = JTS.createCS(csf, 5, 2);
+            cs.setOrdinate(0, 0, minX);
+            cs.setOrdinate(0, 1, minY);
+            cs.setOrdinate(1, 0, minX);
+            cs.setOrdinate(1, 1, maxY);
+            cs.setOrdinate(2, 0, maxX);
+            cs.setOrdinate(2, 1, maxY);
+            cs.setOrdinate(3, 0, maxX);
+            cs.setOrdinate(3, 1, minY);
+            cs.setOrdinate(4, 0, minX);
+            cs.setOrdinate(4, 1, minY);
+            LinearRing ring = factory.createLinearRing(cs);
+            return factory.createPolygon(ring, null);
+        } else if(MultiPolygon.class.equals(type) || GeometryCollection.class.equals(type)) {
+            Polygon polygon = (Polygon) getSimplifiedShape(Polygon.class, minX, minY, maxX, maxY);
+            return factory.createMultiPolygon(new Polygon[] {polygon});
+        } else {
+            // don't really know what to do with this case, guessing a type might break expectations
+            return null;
+        }
     }
 
     public Envelope getEnvelope() throws IOException {
@@ -181,6 +256,15 @@ public class GeoPkgGeomReader {
             this.factory = factory;
         }
     }
-    
 
+    public void setHints(Hints hints) {
+        if (hints != null) {
+            this.simplificationDistance = (Number) hints.get(Hints.GEOMETRY_DISTANCE);
+        }
+        this.hints = hints;
+    }
+
+    public void setGeometryType(Class geometryType) {
+        this.geometryType = geometryType;
+    }
 }

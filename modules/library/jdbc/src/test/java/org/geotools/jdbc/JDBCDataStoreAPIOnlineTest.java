@@ -73,13 +73,15 @@ import com.vividsolutions.jts.geom.Point;
  */
 public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
     private static final int LOCK_DURATION = 3600 * 1000; // one hour
-    TestData td;
+    protected TestData td;
+    protected boolean forceLongitudeFirst = false;
 
     protected void connect() throws Exception {
         super.connect();
 
         if (td == null) {
             td = new TestData(((JDBCDataStoreAPITestSetup) setup).getInitialPrimaryKeyValue());
+            td.forceLongitudeFirst = this.forceLongitudeFirst;
             
             td.ROAD = tname( td.ROAD );
             td.ROAD_ID = aname( td.ROAD_ID );
@@ -150,7 +152,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         String featureTypeName = tname("building");
 
         // create a featureType and write it to PostGIS
-        CoordinateReferenceSystem crs = CRS.decode("EPSG:4326");
+        CoordinateReferenceSystem crs = CRS.decode("EPSG:4326", forceLongitudeFirst);
 
         SimpleFeatureTypeBuilder ftb = new SimpleFeatureTypeBuilder();
         ftb.setName(featureTypeName);
@@ -894,7 +896,7 @@ public abstract class JDBCDataStoreAPIOnlineTest extends JDBCTestSupport {
         SimpleFeatureCollection some = road.getFeatures(td.rd12Filter);
         assertEquals(2, some.size());
 
-        ReferencedEnvelope e = new ReferencedEnvelope(CRS.decode("EPSG:4326"));
+        ReferencedEnvelope e = new ReferencedEnvelope(CRS.decode("EPSG:4326", forceLongitudeFirst));
         e.include(td.roadFeatures[0].getBounds());
         e.include(td.roadFeatures[1].getBounds());
 //        assertEquals(e, some.getBounds());

@@ -88,7 +88,7 @@ public class JDBCDataStoreTest {
                 }
 
                 @Override
-                public Geometry decodeGeometryValue(GeometryDescriptor descriptor, ResultSet rs, String column, GeometryFactory factory, Connection cx) throws IOException, SQLException {
+                public Geometry decodeGeometryValue(GeometryDescriptor descriptor, ResultSet rs, String column, GeometryFactory factory, Connection cx, Hints hints) throws IOException, SQLException {
                     return null;
                 }
             };

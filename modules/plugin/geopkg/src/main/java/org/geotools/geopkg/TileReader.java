@@ -84,7 +84,7 @@ public class TileReader implements Iterator<Tile>, Closeable {
             st = rs.getStatement();
 
             rs.close();
-            if (st != null) {
+            if (st != null && !st.isClosed()) {
                 st.close();
             }
 

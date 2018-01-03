@@ -16,10 +16,6 @@
  */
 package org.geotools.renderer;
 
-import org.geotools.geometry.jts.JTS;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
-
 import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
 import com.vividsolutions.jts.geom.Envelope;
@@ -32,6 +28,9 @@ import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
+import org.geotools.geometry.jts.JTS;
+import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.TransformException;
 
 /**
  * The screenmap is a packed bitmap of the screen, one bit per pixels. It can be used to avoid
@@ -195,6 +194,23 @@ public class ScreenMap {
      * @param geometryType
      * @return
      */
+    public Geometry getSimplifiedShape(Geometry geometry) {
+        Envelope envelope = geometry.getEnvelopeInternal();
+        return getSimplifiedShape(envelope.getMinX(), envelope.getMinY(), envelope.getMaxX(), envelope.getMaxY(), 
+                geometry.getFactory(), geometry.getClass());
+    }
+
+    /**
+     * Returns geometry suitable for rendering the pixel that has just been occupied.
+     * The geometry is designed to actually fill the pixel
+     * @param minx
+     * @param miny
+     * @param maxx
+     * @param maxy
+     * @param geometryFactory
+     * @param geometryType
+     * @return
+     */
     public Geometry getSimplifiedShape(double minx, double miny, double maxx, double maxy,
             GeometryFactory geometryFactory, Class geometryType) {
         CoordinateSequenceFactory csf = geometryFactory.getCoordinateSequenceFactory();
@@ -273,5 +289,5 @@ public class ScreenMap {
             pixels[index] = tmp;
         }
     }
-
+    
 }

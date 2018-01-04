@@ -37,7 +37,6 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import sun.awt.X11.Screen;
 
 import java.awt.geom.AffineTransform;
 import java.io.IOException;

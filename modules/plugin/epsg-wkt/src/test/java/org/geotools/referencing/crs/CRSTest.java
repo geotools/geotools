@@ -38,6 +38,7 @@ import org.opengis.referencing.operation.MathTransform;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.Polygon;
@@ -142,7 +143,7 @@ public class CRSTest extends TestCase {
         Polygon poly3 = poly( new double[]{
                 -123.47009555832284,48.543261561072285,
                 -123.46972894676578,48.55009592117936,
-                -123.45463828850829,48.54973520267305,
+                -123.45463828850829,48.54973520267304,
                 -123.4550070827961,48.54290089070186,
                 -123.47009555832284,48.543261561072285
         });
@@ -154,8 +155,8 @@ public class CRSTest extends TestCase {
         
         Polygon polyAfter = (Polygon) JTS.transform(poly1, transform);
         System.out.println( polyAfter );
-        
-        assertTrue( poly3.equalsTopo( polyAfter ));
+
+        assertEnvelopeEquals(poly3, polyAfter, 0.00000000000001);
         
         Envelope before = poly1.getEnvelopeInternal();
         Envelope expected = poly3.getEnvelopeInternal();
@@ -174,7 +175,7 @@ public class CRSTest extends TestCase {
         Polygon poly3 = poly( new double[]{
                 -123.47009555832284,48.543261561072285,
                 -123.46972894676578,48.55009592117936,
-                -123.45463828850829,48.54973520267305,
+                -123.45463828850829,48.54973520267304,
                 -123.4550070827961,48.54290089070186,
                 -123.47009555832284,48.543261561072285
         });
@@ -186,9 +187,9 @@ public class CRSTest extends TestCase {
         
         Polygon polyAfter = (Polygon) JTS.transform(poly1, transform);
         System.out.println( polyAfter );
-        
-        assertTrue( poly3.equalsTopo( polyAfter ));
-        
+
+        assertEnvelopeEquals(poly3, polyAfter, 0.00000000000001);
+
         Envelope before = poly1.getEnvelopeInternal();
         Envelope expected = poly3.getEnvelopeInternal();
         
@@ -209,6 +210,16 @@ public class CRSTest extends TestCase {
             array[i] = new Coordinate( coords[i*2], coords[i*2+1] );
         }
         return factory.getCoordinateSequenceFactory().create( array );
+    }
+
+    protected void assertEnvelopeEquals(Geometry a, Geometry b, double tolerance) {
+        Envelope aEnv = a.getEnvelopeInternal();
+        Envelope bEnv = b.getEnvelopeInternal();
+
+        assertEquals(aEnv.getMinX(), bEnv.getMinX(), tolerance);
+        assertEquals(aEnv.getMaxX(), bEnv.getMaxX(), tolerance);
+        assertEquals(aEnv.getMinY(), bEnv.getMinY(), tolerance);
+        assertEquals(aEnv.getMaxY(), bEnv.getMaxY(), tolerance);
     }
     
 }

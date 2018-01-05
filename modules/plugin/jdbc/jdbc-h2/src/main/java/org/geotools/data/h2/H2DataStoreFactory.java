@@ -62,6 +62,10 @@ public class H2DataStoreFactory extends JDBCDataStoreFactory {
     public static final Param PORT = new Param(JDBCDataStoreFactory.PORT.key, JDBCDataStoreFactory.PORT.type, 
             JDBCDataStoreFactory.PORT.description, false, 9902);
 
+    /** optional auto server mode parameter */
+    public static final Param AUTO_SERVER = new Param("autoServer", Boolean.class,
+            "Activate AUTO_SERVER mode for local file database connections", false, false);
+
     /**
      * optional parameter to handle MVCC.
      * @link http://www.h2database.com/html/advanced.html#mvcc
@@ -110,6 +114,7 @@ public class H2DataStoreFactory extends JDBCDataStoreFactory {
         //add additional parameters
         parameters.put(ASSOCIATIONS.key, ASSOCIATIONS);
         parameters.put(DBTYPE.key, DBTYPE);
+        parameters.put(AUTO_SERVER.key, AUTO_SERVER);
     }
 
     public String getDisplayName() {
@@ -157,30 +162,30 @@ public class H2DataStoreFactory extends JDBCDataStoreFactory {
         String database = (String) DATABASE.lookUp(params);
         String host = (String) HOST.lookUp(params);
         Boolean mvcc = (Boolean) MVCC.lookUp(params);
+        Boolean autoServer = (Boolean) AUTO_SERVER.lookUp(params);
+        String autoServerSpec = Boolean.TRUE.equals(autoServer) ? ";AUTO_SERVER=TRUE" : "";
         
         if (host != null && !host.equals("")) {
             Integer port = (Integer) PORT.lookUp(params);
             if (port != null && !port.equals("")) {
                 return "jdbc:h2:tcp://" + host + ":" + port + "/" + database;
-            }
-            else {
+            } else {
                 return "jdbc:h2:tcp://" + host + "/" + database;
             }
         } else if (baseDirectory == null) {
-            //use current working directory
-            return "jdbc:h2:" + database + ";AUTO_SERVER=TRUE"
+            // use current working directory
+            return "jdbc:h2:" + database + autoServerSpec
                     + (mvcc != null ? (";MVCC=" + mvcc) : "");
         } else {
-            //use directory specified if the patch is relative
+            // use directory specified if the patch is relative
             String location;
             if (!new File(database).isAbsolute()) {
                 location = new File(baseDirectory, database).getAbsolutePath();    
-            }
-            else {
+            } else {
                 location = database;
             }
 
-            return "jdbc:h2:file:" + location + ";AUTO_SERVER=TRUE"
+            return "jdbc:h2:file:" + location + autoServerSpec
                     + (mvcc != null ? (";MVCC=" + mvcc) : "");
         }
     }

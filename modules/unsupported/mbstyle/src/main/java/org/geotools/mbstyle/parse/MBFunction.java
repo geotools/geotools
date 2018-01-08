@@ -1006,8 +1006,11 @@ public class MBFunction {
         List<MBFunction> functions = new ArrayList<>();
         for (int i = 0; i < dimensionCount; i++) {
             final Integer n = i;
-            JSONArray newStops = parsedStops.stream().map(stop -> stop.reducedToIndex(n))
-                    .collect(Collectors.toCollection(JSONArray::new));
+            JSONArray newStops = new JSONArray();
+            for (MBArrayStop stop : parsedStops) {
+                JSONArray jsonArray = stop.reducedToIndex(n);
+                newStops.add(jsonArray);
+            }
             JSONObject newObj = (JSONObject) parser.parse(json.toJSONString());
             
             newObj.put("stops", newStops);

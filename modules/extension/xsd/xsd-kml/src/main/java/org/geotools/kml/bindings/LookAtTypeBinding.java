@@ -97,13 +97,13 @@ public class LookAtTypeBinding extends AbstractComplexBinding {
         Coordinate c = new Coordinate();
 
         //&lt;element default="0" minOccurs="0" name="longitude" type="kml:angle180"/&gt;
-        c.y = ((Double) node.getChildValue("longitude", Double.valueOf(0d))).doubleValue();
+        c.x = (Double) node.getChildValue("longitude", 0d);
 
         //&lt;element default="0" minOccurs="0" name="latitude" type="kml:angle90"/&gt;
-        c.x = ((Double) node.getChildValue("latitude", Double.valueOf(0d))).doubleValue();
+        c.y = (Double) node.getChildValue("latitude", 0d);
 
         //&lt;element default="0" minOccurs="0" name="altitude" type="double"/&gt;
-        c.z = ((Double) node.getChildValue("altitude", Double.valueOf(0d))).doubleValue();
+        c.z = (Double) node.getChildValue("altitude", 0d);
 
         Point p = geometryFactory.createPoint(c);
 

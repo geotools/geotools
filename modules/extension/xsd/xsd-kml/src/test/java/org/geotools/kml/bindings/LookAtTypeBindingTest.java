@@ -46,16 +46,16 @@ public class LookAtTypeBindingTest extends KMLTestSupport {
 
         Point p = (Point) parse();
         Coordinate c = p.getCoordinate();
-        assertEquals(1d, c.y, 0.1);
-        assertEquals(2d, c.x, 0.1);
+        assertEquals(1d, c.x, 0.1);
+        assertEquals(2d, c.y, 0.1);
         assertEquals(3d, c.z, 0.1);
 
         xml = "<LookAt/>";
         buildDocument(xml);
         p = (Point) parse();
         c = p.getCoordinate();
-        assertEquals(0d, c.y, 0.1);
         assertEquals(0d, c.x, 0.1);
+        assertEquals(0d, c.y, 0.1);
         assertEquals(0d, c.z, 0.1);
     }
 }

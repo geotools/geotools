@@ -691,9 +691,10 @@ public class NetCDFReader extends AbstractGridCoverage2DReader implements Struct
                     String key = keysIt.next();
                     CoverageSource sourceCov = coverages.get(key);
                     sourceCov.dispose();
-                }
+                } 
+                coverages.clear();
             }
-            coverages.clear();
+  
             coverages = null;
         }
         if (access != null) {

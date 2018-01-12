@@ -1114,10 +1114,12 @@ public class SLDTransformerTest {
         intString.add(Locale.CANADA_FRENCH, "titre");
         rule.getDescription().setTitle(intString);
         String xml = transformer.transform(rule);
-        assertTrue(xml.contains("<sld:Title>title"));
-        assertTrue(xml.contains("<sld:Localized lang=\""+Locale.ITALIAN.toString()+"\">titolo</sld:Localized>"));
-        assertTrue(xml.contains("<sld:Localized lang=\""+Locale.FRENCH.toString()+"\">titre</sld:Localized>"));
-        assertTrue(xml.contains("<sld:Localized lang=\""+Locale.CANADA_FRENCH.toString()+"\">titre</sld:Localized>"));
+        Document doc = buildTestDocument(xml);
+
+        assertXpathEvaluatesTo("title", "normalize-space(//sld:Title/text()[1])", doc);
+        assertXpathEvaluatesTo("titolo", "//sld:Title/sld:Localized[@lang='"+Locale.ITALIAN.toString()+"']", doc);
+        assertXpathEvaluatesTo("titre", "//sld:Title/sld:Localized[@lang='"+Locale.FRENCH.toString()+"']", doc);
+        assertXpathEvaluatesTo("titre", "//sld:Title/sld:Localized[@lang='"+Locale.CANADA_FRENCH.toString()+"']", doc);
     }
     
     public void testLocalizedAbstract() throws Exception {
@@ -1365,7 +1367,7 @@ public class SLDTransformerTest {
         String xml = transformer.transform(sld);
         Document doc = buildTestDocument(xml);
         
-        assertXpathEvaluatesTo("abc", "//sld:Label/text()[1]", doc);
+        assertXpathEvaluatesTo("abc", "normalize-space(//sld:Label/text()[1])", doc);
         assertXpathEvaluatesTo("ogc:PropertyName", "name(//sld:Label/*[1])", doc);
         assertXpathEvaluatesTo("myProperty", "//sld:Label/*[1]/text()", doc);
     }
@@ -1378,10 +1380,13 @@ public class SLDTransformerTest {
         StyledLayerDescriptor sld = buildSLDAroundSymbolizer(ts);
         
         String xml = transformer.transform(sld);
-        
-        assertTrue(xml.contains("<sld:Label><![CDATA[ abc]]>" + NEWLINE + 
-                "                            <ogc:PropertyName>myProperty</ogc:PropertyName>" + NEWLINE
-                + "                        </sld:Label>"));
+        Document doc = buildTestDocument(xml);
+
+        assertXpathEvaluatesTo("abc", "normalize-space(//sld:Label/text()[1])", doc);
+        assertXpathEvaluatesTo("myProperty", "//sld:Label/ogc:PropertyName", doc);
+
+        // normalize-space() strips indentation, but also CDATA whitespace, so we resort to string comparisons here
+        assertTrue(xml.contains("<![CDATA[ abc]]>"));
     }
     
     @Test
@@ -1392,9 +1397,13 @@ public class SLDTransformerTest {
         StyledLayerDescriptor sld = buildSLDAroundSymbolizer(ts);
         
         String xml = transformer.transform(sld);
-        assertTrue(xml.contains("<sld:Label><![CDATA[abc ]]>" + NEWLINE +  
-                "                            <ogc:PropertyName>myProperty</ogc:PropertyName>" + NEWLINE
-                + "                        </sld:Label>"));
+        Document doc = buildTestDocument(xml);
+
+        assertXpathEvaluatesTo("abc", "normalize-space(//sld:Label/text()[1])", doc);
+        assertXpathEvaluatesTo("myProperty", "//sld:Label/ogc:PropertyName", doc);
+
+        // normalize-space() strips indentation, but also CDATA whitespace, so we resort to string comparisons here
+        assertTrue(xml.contains("<![CDATA[abc ]]>"));
     }
     
     @Test
@@ -1405,10 +1414,30 @@ public class SLDTransformerTest {
         StyledLayerDescriptor sld = buildSLDAroundSymbolizer(ts);
         
         String xml = transformer.transform(sld);
-        assertTrue(xml.contains("<sld:Label><![CDATA[a  bc]]>" + NEWLINE +
-                "                            <ogc:PropertyName>myProperty</ogc:PropertyName>" + NEWLINE
-                + "                        </sld:Label>"));
+        Document doc = buildTestDocument(xml);
 
+        assertXpathEvaluatesTo("a bc", "normalize-space(//sld:Label/text()[1])", doc);
+        assertXpathEvaluatesTo("myProperty", "//sld:Label/ogc:PropertyName", doc);
+
+        // normalize-space() strips indentation, but also CDATA whitespace, so we resort to string comparisons here
+        assertTrue(xml.contains("<![CDATA[a  bc]]>"));
+    }
+
+    @Test
+    public void testLabelCDataNewline() throws Exception {
+        StyleBuilder sb = new StyleBuilder();
+        TextSymbolizer ts = sb.createTextSymbolizer();
+        ts.setLabel(ff.function("strConcat", ff.literal("a \n bc"), ff.property("myProperty")));
+        StyledLayerDescriptor sld = buildSLDAroundSymbolizer(ts);
+
+        String xml = transformer.transform(sld);
+        Document doc = buildTestDocument(xml);
+
+        assertXpathEvaluatesTo("a bc", "normalize-space(//sld:Label/text()[1])", doc);
+        assertXpathEvaluatesTo("myProperty", "//sld:Label/ogc:PropertyName", doc);
+
+        // normalize-space() strips indentation, but also CDATA whitespace, so we resort to string comparisons here
+        assertTrue(xml.contains("<![CDATA[a \n bc]]>"));
     }
     
     @Test
@@ -1419,10 +1448,15 @@ public class SLDTransformerTest {
         StyledLayerDescriptor sld = buildSLDAroundSymbolizer(ts);
         
         String xml = transformer.transform(sld);
-        // System.out.println(xml);
-        // Java own xpath processor does not seem to fully support normalize-space() so we resort to string comparisons here
-        assertTrue(xml.contains("<sld:Label><![CDATA[abc ]]>" + NEWLINE +  
-                "                            <ogc:PropertyName>myProperty</ogc:PropertyName><![CDATA[ def]]></sld:Label>"));
+        Document doc = buildTestDocument(xml);
+
+        assertXpathEvaluatesTo("abc", "normalize-space(//sld:Label/text()[1])", doc);
+        assertXpathEvaluatesTo("myProperty", "//sld:Label/ogc:PropertyName", doc);
+        assertXpathEvaluatesTo("def", "normalize-space(//sld:Label/text()[2])", doc);
+
+        // normalize-space() strips indentation, but also CDATA whitespace, so we resort to string comparisons here
+        assertTrue(xml.contains("<![CDATA[abc ]]>"));
+        assertTrue(xml.contains("<![CDATA[ def]]>"));
     }
 
     /**

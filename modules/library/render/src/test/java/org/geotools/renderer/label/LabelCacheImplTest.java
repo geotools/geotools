@@ -3,7 +3,9 @@ package org.geotools.renderer.label;
 import static org.junit.Assert.*;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -21,8 +23,11 @@ import org.geotools.test.TestGraphics;
 import org.geotools.util.NumberRange;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.operation.TransformException;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.LineString;
@@ -126,6 +131,30 @@ public class LabelCacheImplTest {
         LabelCacheItem item2 = labels.get(1);
         assertEquals("label1", item2.getLabel());
         assertEquals(Arrays.asList(L2), item2.getGeoms());
+    }
+    
+    @Test
+    public void testCustomBehaviour() throws TransformException, FactoryException {
+        final List<String> labels = new ArrayList<String>();
+        Graphics2D graphics = Mockito.mock(Graphics2D.class);
+        LabelCacheImpl myCache = new LabelCacheImpl() {
+            @Override
+            int paintLabel(Graphics2D graphics, Rectangle displayArea, LabelIndex glyphs,
+                    int paintedLineLabels, LabelPainter painter, LabelCacheItem labelItem) {
+                labels.add(labelItem.getLabel());
+                return super.paintLabel(graphics, displayArea, glyphs, paintedLineLabels, painter,
+                        labelItem);
+            }
+        };
+        TextSymbolizer ts = sb.createTextSymbolizer(Color.BLACK, (Font) null, "name");
+        SimpleFeature f1 = createFeature("label1", L1);
+        myCache.enableLayer(LAYER_ID);
+        myCache.put(LAYER_ID, ts, f1, new LiteShape2((Geometry) f1.getDefaultGeometry(), null, null,
+                false), ALL_SCALES);
+        
+        myCache.endLayer(LAYER_ID, graphics, new Rectangle(0, 0, 256, 256));
+        myCache.end(graphics, new Rectangle(0, 0, 256, 256));
+        assertEquals(1, labels.size());
     }
     
     @Test

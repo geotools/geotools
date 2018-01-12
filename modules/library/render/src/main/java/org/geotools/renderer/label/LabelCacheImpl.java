@@ -99,7 +99,7 @@ import com.vividsolutions.jts.operation.linemerge.LineMerger;
  *
  * @source $URL$
  */
-public final class LabelCacheImpl implements LabelCache {
+public class LabelCacheImpl implements LabelCache {
     
     static final boolean DEBUG_CACHE_BOUNDS = Boolean.getBoolean("org.geotools.labelcache.showbounds");
 
@@ -455,8 +455,6 @@ public final class LabelCacheImpl implements LabelCache {
         glyphs.reserveArea( reserved );
 
         //Used to check the paintLineLabel function
-        boolean painted;
-        int nonPaintedLineLabels = 0;
         int paintedLineLabels = 0;
 
         // Hack: let's reduce the display area width and height by one pixel.
@@ -484,64 +482,69 @@ public final class LabelCacheImpl implements LabelCache {
             if (stop)
                 return;
             
-            try {
-                painter.setLabel(labelItem);
-                // LabelCacheItem labelItem = (LabelCacheItem)
-                // labelCache.get(labelIter.next());
-
-                // DJB: simplified this. Just send off to the point,line,or
-                // polygon routine
-                // NOTE: labelItem.getGeometry() returns the FIRST geometry, so
-                // we're assuming that lines & points arent mixed
-                // If they are, then the FIRST geometry determines how its
-                // rendered (which is probably bad since it should be in
-                // area,line,point order
-                // TOD: as in NOTE above
-
-                /*
-                 * Just use identity for tempTransform because display area is
-                 * 0,0,width,height and oldTransform may have a different
-                 * origin. OldTransform will be used later for drawing. -rg & je
-                 */
-                AffineTransform tempTransform = new AffineTransform();
-
-                Geometry geom = labelItem.getGeometry();
-                if ((geom instanceof Point) || (geom instanceof MultiPoint))
-                    paintPointLabel(painter, tempTransform, displayArea, glyphs);
-                else if (((geom instanceof LineString) && !(geom instanceof LinearRing))
-                        || (geom instanceof MultiLineString)){
-                     if(!DISABLE_LETTER_LEVEL_CONFLICT)
-                         painted = paintLineLabelsWithLetterConflict(painter, tempTransform, displayArea, glyphs);
-                     else
-                         painted = paintLineLabels(painter, tempTransform, displayArea, glyphs);
-                     if (!painted) {
-                         nonPaintedLineLabels++;
-                     } else {
-                         paintedLineLabels++;
-                     }
-                } else if (geom instanceof Polygon || geom instanceof MultiPolygon
-                        || geom instanceof LinearRing) {
-                    if(labelItem.getTextStyle().isPointPlacement() && !labelItem.isFollowLineEnabled()) {
-                        // labelling the polygon centroid/label point
-                        paintPolygonLabel(painter, tempTransform, displayArea, glyphs);
-                    } else {
-                        // labelling the polygon border(s)
-                        paintPolygonBorder(painter, tempTransform, displayArea, glyphs);
-                    }
-                }
-            } catch (Exception e) {
-                if(LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.log(Level.FINE, "Failure while painting labels", e);
-                }
-                for (RenderListener listener : renderListeners) {
-                    listener.errorOccurred(e);
-                }
-            }
+            paintedLineLabels = paintLabel(graphics, displayArea, glyphs, paintedLineLabels, painter, labelItem);
         }
         //Output for line labels
         LOGGER.log(Level.FINE, "TOTAL LINE LABELS : {0}", items.size());
         LOGGER.log(Level.FINE, "PAINTED LINE LABELS : {0}", paintedLineLabels);
-        LOGGER.log(Level.FINE, "REMAINING LINE LABELS : {0}", nonPaintedLineLabels);
+        LOGGER.log(Level.FINE, "REMAINING LINE LABELS : {0}", items.size() - paintedLineLabels);
+    }
+
+    int paintLabel(Graphics2D graphics, Rectangle displayArea, LabelIndex glyphs,
+            int paintedLineLabels, LabelPainter painter, LabelCacheItem labelItem) {
+        boolean painted;
+        try {
+            painter.setLabel(labelItem);
+            // LabelCacheItem labelItem = (LabelCacheItem)
+            // labelCache.get(labelIter.next());
+
+            // DJB: simplified this. Just send off to the point,line,or
+            // polygon routine
+            // NOTE: labelItem.getGeometry() returns the FIRST geometry, so
+            // we're assuming that lines & points arent mixed
+            // If they are, then the FIRST geometry determines how its
+            // rendered (which is probably bad since it should be in
+            // area,line,point order
+            // TOD: as in NOTE above
+
+            /*
+             * Just use identity for tempTransform because display area is 0,0,width,height and oldTransform may have a different origin. OldTransform
+             * will be used later for drawing. -rg & je
+             */
+            AffineTransform tempTransform = new AffineTransform();
+
+            Geometry geom = labelItem.getGeometry();
+            if ((geom instanceof Point) || (geom instanceof MultiPoint))
+                paintPointLabel(painter, tempTransform, displayArea, glyphs);
+            else if (((geom instanceof LineString) && !(geom instanceof LinearRing))
+                    || (geom instanceof MultiLineString)) {
+                if (!DISABLE_LETTER_LEVEL_CONFLICT)
+                    painted = paintLineLabelsWithLetterConflict(painter, tempTransform, displayArea,
+                            glyphs);
+                else
+                    painted = paintLineLabels(painter, tempTransform, displayArea, glyphs);
+                if (painted) {
+                    paintedLineLabels++;
+                }
+            } else if (geom instanceof Polygon || geom instanceof MultiPolygon
+                    || geom instanceof LinearRing)
+                if (labelItem.getTextStyle().isPointPlacement()
+                        && !labelItem.isFollowLineEnabled()) {
+                    // labelling the polygon centroid/label point
+                    paintPolygonLabel(painter, tempTransform, displayArea, glyphs);
+                } else {
+                    // labelling the polygon border(s)
+                    paintPolygonBorder(painter, tempTransform, displayArea, glyphs);
+                }
+        } catch (Exception e) {
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.log(Level.FINE, "Failure while painting labels", e);
+            }
+            for (RenderListener listener : renderListeners) {
+                listener.errorOccurred(e);
+            }
+        }
+        return paintedLineLabels;
     }
 
 

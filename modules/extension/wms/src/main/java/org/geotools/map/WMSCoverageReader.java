@@ -36,6 +36,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.ows.ServiceException;
 import org.geotools.referencing.CRS;
 import org.geotools.renderer.lite.RendererUtilities;
+import org.geotools.styling.Style;
 import org.opengis.coverage.grid.Format;
 import org.opengis.geometry.Envelope;
 import org.opengis.parameter.GeneralParameterValue;
@@ -112,6 +113,8 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
      * Last request CRS (used for reprojected GetFeatureInfo)
      */
     CoordinateReferenceSystem requestCRS;
+
+    public List<String> styles = new ArrayList<>();
     
     /**
      * Builds a new WMS coverage reader
@@ -120,10 +123,13 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
      * @param layer
      */
     public WMSCoverageReader(WebMapServer wms, Layer layer) {
+        this(wms,layer,"");
+    }
+    public WMSCoverageReader(WebMapServer wms, Layer layer, String style) {
         this.wms = wms;
         
         // init the reader
-        addLayer(layer);
+        addLayer(layer,style);
 
         // best guess at the format with a preference for PNG (since it's normally transparent)
         List<String> formats = wms.getCapabilities().getRequest().getGetMap().getFormats();
@@ -139,8 +145,11 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
     }
 
     void addLayer(Layer layer) {
+        addLayer(layer, "");
+    }
+    void addLayer(Layer layer,String style) {
         this.layers.add(layer);
-
+        this.styles.add(style);
         if (srsName == null) {
             // initialize from first layer
             for(String srs : layer.getBoundingBoxes().keySet()) {
@@ -356,8 +365,11 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
         // for some silly reason GetMapRequest will list the layers in the opposite order...
         List<Layer> reversed = new ArrayList<Layer>(layers);
         Collections.reverse(reversed);
+        List<String> rStyles = new ArrayList<>(styles);
+        Collections.reverse(rStyles);
+        int i=0;
         for (Layer layer : reversed) {
-            mapRequest.addLayer(layer);
+            mapRequest.addLayer(layer,rStyles.get(i++));
         }
         mapRequest.setDimensions(width, height);
         mapRequest.setFormat(format);

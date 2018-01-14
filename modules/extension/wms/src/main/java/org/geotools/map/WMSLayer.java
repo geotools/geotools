@@ -26,7 +26,6 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 import org.geotools.data.ows.Layer;
-import org.geotools.data.ows.StyleImpl;
 import org.geotools.data.wms.WebMapServer;
 import org.geotools.data.wms.request.GetMapRequest;
 import org.geotools.factory.CommonFactoryFinder;
@@ -71,8 +70,6 @@ public class WMSLayer extends GridReaderLayer {
         STYLE = factory.createStyle();
         STYLE.featureTypeStyles().add(type);
     }
-
-    private String wmsStyle;
 
     /**
      * Builds a new WMS layer
@@ -198,17 +195,22 @@ public class WMSLayer extends GridReaderLayer {
     }
 
     /**
-     * Returns the WMS {@link Layer} used by this layer
+     * Returns the WMS {@link Layer}s used by this layer
      * 
      * @return
      */
     public List<Layer> getWMSLayers() {
-        return getReader().layers;
+        return ((WMSCoverageReader)reader).getLayers();
     }
 
+    /**
+     * return the names of the styles used by this layer.
+     * @return
+     */
     public List<String> getWMSStyles(){
-        return getReader().styles;
+        return ((WMSCoverageReader)reader).getStyles();
     }
+    
     /**
      * Returns the CRS used to make requests to the remote WMS
      * 
@@ -233,7 +235,7 @@ public class WMSLayer extends GridReaderLayer {
      * @param layer
      */
     public void addLayer(Layer layer) {
-        addLayer(layer,"");
+        addLayer(layer, "");
     }
 
     /**

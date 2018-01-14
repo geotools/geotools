@@ -16,7 +16,8 @@
  */
 package org.geotools.map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.net.URL;
@@ -117,12 +118,12 @@ public class WMSLayerTest {
         assertNotNull(l);
         List<StyleImpl> styles = wmsLayers[0].getStyles();
         assertEquals(4, styles.size());
-        l.setWMSStyle(styles.get(1).getName());
+        l = new WMSLayer(server, wmsLayers[0],styles.get(1).getName());
         
         WMSLayer l2 = new WMSLayer(server, wmsLayers[0], styles.get(3).getName());
         assertNotNull(l2);
     }
 
-   
+
 
 }

@@ -80,6 +80,7 @@ public class WMSLayer extends GridReaderLayer {
     public WMSLayer(WebMapServer wms, Layer layer) {
         super( new WMSCoverageReader(wms, layer), STYLE );
     }
+    
     /**
      * Builds a new WMS layer
      * 

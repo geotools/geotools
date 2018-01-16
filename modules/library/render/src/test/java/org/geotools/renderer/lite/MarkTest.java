@@ -232,6 +232,26 @@ public class MarkTest {
     }
 
     @Test
+    public void testRenderingBufferCircleLarge() throws Exception {
+        Style pStyle = RendererBaseTest.loadStyle(this, "markCircleLarge.sld");
+
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(pointFS, pStyle));
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(mc);
+        renderer.setRendererHints(Collections.singletonMap(
+                StreamingRenderer.ADVANCED_PROJECTION_HANDLING_KEY, true));
+        renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
+        renderer.setRendererHints(Collections.singletonMap(StreamingRenderer.RENDERING_BUFFER, 64));
+        ReferencedEnvelope bounds = new ReferencedEnvelope(-10, -0.5, -10, -0.5, DefaultGeographicCRS.WGS84);
+
+        BufferedImage image = RendererBaseTest.showRender("Decorative marks in the corner",
+                renderer, TIME, bounds);
+        ImageAssert.assertEquals(file("bufferCircleLarge"), image, 50);
+    }
+
+    @Test
     public void testTriangle() throws Exception {
         Style pStyle = RendererBaseTest.loadStyle(this, "markTriangle.sld");
         Style lStyle = RendererBaseTest.loadStyle(this, "lineGray.sld");

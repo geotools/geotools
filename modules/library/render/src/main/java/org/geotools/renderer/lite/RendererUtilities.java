@@ -47,6 +47,7 @@ import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.renderer.style.GraphicStyle2D;
 import org.geotools.renderer.style.IconStyle2D;
 import org.geotools.renderer.style.LineStyle2D;
+import org.geotools.renderer.style.MarkStyle2D;
 import org.geotools.renderer.style.Style2D;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
@@ -824,11 +825,18 @@ public final class RendererUtilities {
             LineStyle2D ls = ((LineStyle2D) style);
             double gsSize = getStyle2DSize(ls.getGraphicStroke());
             double strokeSize = 0;
-            if(ls.getStroke() instanceof BasicStroke) {
+            if (ls.getStroke() instanceof BasicStroke) {
                 strokeSize = ((BasicStroke) ls.getStroke()).getLineWidth();
             }
             double offset = ls.getPerpendicularOffset();
-            return maxSize(maxSize(gsSize, strokeSize), offset);
+            double lineSize = maxSize(maxSize(gsSize, strokeSize), offset);
+            // a MarkStyle2D is also a LineStyle2D, but we have to account for the symbol size
+            if (style instanceof MarkStyle2D) {
+                MarkStyle2D mark = (MarkStyle2D) style;
+                return mark.getSize() + lineSize;
+            } else {
+               return lineSize;
+            }
         } else {
             return 0;
         }

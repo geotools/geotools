@@ -16,25 +16,18 @@
  */
 package org.geotools.wfs.v1_0;
 
-import java.util.Iterator;
-
-import javax.xml.namespace.QName;
-
 import net.opengis.wfs.InsertResultsType;
 import net.opengis.wfs.InsertedFeatureType;
 import net.opengis.wfs.WfsFactory;
-
-import org.eclipse.xsd.XSDElementDeclaration;
-import org.eclipse.xsd.XSDFactory;
 import org.geotools.filter.v1_0.capabilities.OGC;
 import org.geotools.xml.AbstractComplexEMFBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
-import org.geotools.xml.impl.ElementImpl;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import com.sun.org.apache.xerces.internal.dom.ElementNSImpl;
+import javax.xml.namespace.QName;
+import java.util.Iterator;
 
 
 /**

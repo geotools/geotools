@@ -20,7 +20,6 @@ import it.geosolutions.jaiext.JAIExt;
 import it.geosolutions.jaiext.range.NoDataContainer;
 import it.geosolutions.jaiext.range.Range;
 import it.geosolutions.jaiext.range.RangeFactory;
-import sun.font.CreatedFontTracker;
 
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -36,8 +35,6 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.media.jai.ImageLayout;
-import javax.media.jai.Interpolation;
-import javax.media.jai.InterpolationNearest;
 import javax.media.jai.JAI;
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.PlanarImage;
@@ -70,7 +67,6 @@ import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.image.ImageUtilities;
 import org.geotools.util.Utilities;
 import it.geosolutions.jaiext.utilities.ImageLayout2;
-import org.opengis.coverage.ColorInterpretation;
 import org.opengis.coverage.Coverage;
 import org.opengis.coverage.grid.GridGeometry;
 import org.opengis.metadata.spatial.PixelOrientation;

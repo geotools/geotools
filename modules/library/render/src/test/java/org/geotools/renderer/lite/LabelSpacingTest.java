@@ -61,6 +61,6 @@ public class LabelSpacingTest extends AbstractLabelLineTest {
         // let's see if the result image match our expectations
         File reference = new File(
                 "./src/test/resources/org/geotools/renderer/lite/test-data/lineLabelsIncreaseWordSpacing.png");
-        ImageAssert.assertEquals(reference, image, 3000);
+        ImageAssert.assertEquals(reference, image, 3500);
     }
 }

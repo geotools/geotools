@@ -140,8 +140,8 @@ public class ComplexDataTypeBindingTest extends WPSTestSupport {
         Element element = document.getDocumentElement();
         assertEquals("ComplexDataType", element.getLocalName());
         assertEquals("text/plain", element.getAttribute("mimeType"));
-        Node node = element.getChildNodes().item(0);
-        assertEquals("test data", node.getTextContent());
+
+        assertTrue(xml.contains("<![CDATA[test data]]>"));
     }
 
     @SuppressWarnings("unchecked")

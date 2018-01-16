@@ -87,7 +87,7 @@ public class MarkTest {
         
         BufferedImage image = RendererBaseTest.showRender("Decorative marks", renderer, TIME,
                 bounds);
-        ImageAssert.assertEquals(file("circle"), image, 50);
+        ImageAssert.assertEquals(file("circle"), image, 150);
     }     
     
     @Test

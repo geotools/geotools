@@ -1437,7 +1437,7 @@ public class SLDTransformerTest {
         assertXpathEvaluatesTo("myProperty", "//sld:Label/ogc:PropertyName", doc);
 
         // normalize-space() strips indentation, but also CDATA whitespace, so we resort to string comparisons here
-        assertTrue(xml.contains("<![CDATA[a \n bc]]>"));
+        assertTrue(xml.contains("<![CDATA[a " + NEWLINE + " bc]]>"));
     }
     
     @Test

@@ -105,6 +105,7 @@ public class HeterogenousCRSTest {
         System.setProperty("org.geotools.referencing.forceXY", "true");
     }
 
+    @Ignore
     @Test
     public void testHeterogeneousCRS() throws IOException, URISyntaxException, TransformException,
             FactoryException {

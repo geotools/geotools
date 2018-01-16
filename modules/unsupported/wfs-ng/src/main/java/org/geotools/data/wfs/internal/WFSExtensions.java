@@ -16,16 +16,15 @@
  */
 package org.geotools.data.wfs.internal;
 
+import org.geotools.data.wfs.WFSDataStoreFactory;
+import org.geotools.factory.FactoryNotFoundException;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ServiceLoader;
 import java.util.Set;
-
-import javax.imageio.spi.ServiceRegistry;
-
-import org.geotools.data.wfs.WFSDataStoreFactory;
-import org.geotools.factory.FactoryNotFoundException;
 
 /**
  * Utility class to look up for a parser that can deal with a given WFS response and process it.
@@ -81,9 +80,9 @@ public class WFSExtensions {
     // }
 
     /**
+     * @param originatingRequest
      * @param contentType
-     * @param requestType
-     * @param outputFormat
+     * 
      * @return
      * @throws FactoryNotFoundException
      */
@@ -143,8 +142,9 @@ public class WFSExtensions {
                          * Now that we're on the correct classloader lets perform the lookup
                          */
                         Iterator<WFSResponseFactory> providers;
-                        providers = ServiceRegistry.lookupProviders(WFSResponseFactory.class);
-                        registry = new HashSet<WFSResponseFactory>();
+
+                        providers = ServiceLoader.load(WFSResponseFactory.class).iterator();
+                        registry = new HashSet<>();
                         while (providers.hasNext()) {
                             WFSResponseFactory provider = providers.next();
                             registry.add(provider);

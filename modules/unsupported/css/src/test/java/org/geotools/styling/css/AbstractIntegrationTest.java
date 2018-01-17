@@ -86,6 +86,11 @@ public abstract class AbstractIntegrationTest extends CssBaseTest {
             FileNotFoundException, SAXException, ParserConfigurationException {
         File sldFile = new File(file.getParentFile(), FilenameUtils.getBaseName(file.getName())
                 + (exclusiveRulesEnabled ? "" : "-first") + ".sld");
+
+        //Java 9 pretty-print has slightly different indentation
+        File sldFile_java9 = new File(file.getParentFile(), FilenameUtils.getBaseName(file.getName())
+                + (exclusiveRulesEnabled ? "" : "-first") + "_java9.sld");
+
         if (!sldFile.exists()) {
             Stylesheet ss = CssParser.parse(css);
             CssTranslator tx = new CssTranslator();
@@ -129,6 +134,16 @@ public abstract class AbstractIntegrationTest extends CssBaseTest {
         if (!expectedSLD.equals(actualSLD)) {
             String message = "Comparison failed, the two files are: " + sldFile.getAbsolutePath()
                     + " " + sldFile2.getAbsolutePath();
+
+            //Try the java9 version
+            if (sldFile_java9.exists()) {
+                expectedSLD = parseToSld(FileUtils.readFileToString(sldFile_java9));
+                if (expectedSLD.equals(actualSLD)) {
+                    return;
+                }
+            }
+
+
             System.err.println(message);
             fail(message);
         }

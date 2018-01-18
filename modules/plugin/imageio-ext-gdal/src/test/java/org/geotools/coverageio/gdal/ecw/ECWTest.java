@@ -46,6 +46,7 @@ import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
 import org.geotools.test.TestData;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.parameter.GeneralParameterValue;
@@ -63,6 +64,7 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  *
  * @source $URL$
  */
+@Ignore
 public final class ECWTest extends GDALTestCase {
 	/**
 	 * file name of a valid ECW sample data to be used for tests.

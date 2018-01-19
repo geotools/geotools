@@ -100,6 +100,43 @@ web site (http://geogratis.cgdi.gc.ca/).</Abstract>
         <LatLonBoundingBox minx="-180" miny="-90" maxx="180" maxy="90" />
         <BoundingBox SRS="EPSG:4326"
                     minx="-180" miny="-90" maxx="180" maxy="90" />
+        <Style>
+          <Name>population</Name>
+          <Title>Population in the United States</Title>
+          <Abstract>A sample filter that filters the United States into three
+        categories of population, drawn in different colors</Abstract>
+          <LegendURL width="81" height="80">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://localhost:8080/geoserver/wms?request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=topp%3Astates"/>
+          </LegendURL>
+        </Style>
+        <Style>
+          <Name>polygon</Name>
+          <Title>Default Polygon</Title>
+          <Abstract>A sample style that draws a polygon</Abstract>
+          <LegendURL width="20" height="20">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://localhost:8080/geoserver/wms?request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=topp%3Astates&amp;style=polygon"/>
+          </LegendURL>
+        </Style>
+        <Style>
+          <Name>pophatch</Name>
+          <Title>Population in the United States</Title>
+          <Abstract>A sample filter that filters the United States into three
+        categories of population, drawn in different colors</Abstract>
+          <LegendURL width="81" height="80">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://localhost:8080/geoserver/wms?request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=topp%3Astates&amp;style=pophatch"/>
+          </LegendURL>
+        </Style>
+        <Style>
+          <Name>pop-places</Name>
+          <Title>pop-places</Title>
+          <LegendURL width="162" height="200">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://localhost:8080/geoserver/wms?request=GetLegendGraphic&amp;format=image%2Fpng&amp;width=20&amp;height=20&amp;layer=topp%3Astates&amp;style=pop-places"/>
+          </LegendURL>
+        </Style>
     </Layer>
   </Layer>
 </Capability>

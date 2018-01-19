@@ -80,6 +80,17 @@ public class WMSLayer extends GridReaderLayer {
     public WMSLayer(WebMapServer wms, Layer layer) {
         super( new WMSCoverageReader(wms, layer), STYLE );
     }
+    
+    /**
+     * Builds a new WMS layer
+     * 
+     * @param wms
+     * @param layer
+     * @param style
+     */
+    public WMSLayer(WebMapServer wms, Layer layer, String style) {
+        super(new WMSCoverageReader(wms, layer, style), STYLE);
+    }
 
     public WMSCoverageReader getReader(){
         return (WMSCoverageReader) this.reader;
@@ -185,14 +196,22 @@ public class WMSLayer extends GridReaderLayer {
     }
 
     /**
-     * Returns the WMS {@link Layer} used by this layer
+     * Returns the WMS {@link Layer}s used by this layer
      * 
      * @return
      */
     public List<Layer> getWMSLayers() {
-        return getReader().layers;
+        return ((WMSCoverageReader)reader).getLayers();
     }
 
+    /**
+     * return the names of the styles used by this layer.
+     * @return
+     */
+    public List<String> getWMSStyles(){
+        return ((WMSCoverageReader)reader).getStyles();
+    }
+    
     /**
      * Returns the CRS used to make requests to the remote WMS
      * 
@@ -217,7 +236,17 @@ public class WMSLayer extends GridReaderLayer {
      * @param layer
      */
     public void addLayer(Layer layer) {
-        getReader().addLayer(layer);
+        addLayer(layer, "");
+    }
+
+    /**
+     * Allows to add another WMS layer into the GetMap requests
+     * 
+     * @param layer
+     * @param style
+     */
+    public void addLayer(Layer layer, String style) {
+        getReader().addLayer(layer, style);
     }
 
     /**

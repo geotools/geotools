@@ -256,7 +256,8 @@ public class RasterZonalStatistics implements RasterProcess {
         void addStatsToFeature(ZonalStats stats) {
             double sum = stats.statistic(Statistic.SUM).results().get(0).getValue();
             double avg = stats.statistic(Statistic.MEAN).results().get(0).getValue();
-            builder.add(Math.round(sum / avg)); // count
+            double count = stats.statistic(Statistic.MEAN).results().get(0).getNumAccepted();
+            builder.add(count); // count
             builder.add(stats.statistic(Statistic.MIN).results().get(0).getValue());
             builder.add(stats.statistic(Statistic.MAX).results().get(0).getValue());
             builder.add(sum);

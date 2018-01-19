@@ -16,26 +16,18 @@
 // */
 package org.geotools.process.raster;
 
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Polygon;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReader;
 import it.geosolutions.imageioimpl.plugins.tiff.TIFFImageReaderSpi;
-
-import java.awt.image.BufferedImage;
-import java.awt.image.WritableRaster;
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.imageio.ImageIO;
-import javax.media.jai.PlanarImage;
-
 import junit.framework.Assert;
-
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.data.DataStore;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.FileDataStoreFinder;
 import org.geotools.data.WorldFileReader;
@@ -43,14 +35,33 @@ import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.geometry.jts.JTS;
+import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.geotools.test.TestData;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
+
+import javax.imageio.ImageIO;
+import javax.media.jai.PlanarImage;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+import java.awt.image.WritableRaster;
+import java.io.File;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author DamianoG
@@ -202,5 +213,51 @@ public class ZonalStatsProcessTest extends Assert {
             }
 
         }
+    }
+
+    @Test
+    public void testStatisticsOnZeroes() {
+        CoordinateReferenceSystem crs = DefaultEngineeringCRS.GENERIC_2D;
+
+        // prepare a BW image in 3857
+        BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_BYTE_BINARY);
+        Graphics2D graphics = image.createGraphics();
+        graphics.setColor(Color.WHITE);
+        graphics.fillRect(0, 0, 50, 100);
+        graphics.dispose();
+        final MathTransform transform = new AffineTransform2D(AffineTransform.getScaleInstance(1, 1));
+        GridCoverage2D coverage2D = CoverageFactoryFinder.getGridCoverageFactory(null).create(
+                "coverage",
+                image,
+                new GridGeometry2D(new GridEnvelope2D(PlanarImage.wrapRenderedImage(image)
+                        .getBounds()), transform, crs),
+                new GridSampleDimension[] {new GridSampleDimension("coverage")}, null, null);
+        assertNotNull(coverage2D);
+
+        // prepare one rectangle feature that covers (and more) the top half of the raster
+        SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
+        tb.add("geom", Polygon.class, crs);
+        tb.add("cat", Integer.class);
+        tb.setName("zones");
+        SimpleFeatureType schema = tb.buildFeatureType();
+        Polygon poly = JTS.toGeometry(new Envelope(-10, 110, -10, 50));
+        SimpleFeature feature = SimpleFeatureBuilder.build(schema, new Object[]{poly, Integer.valueOf(1)}, "fid123");
+        SimpleFeatureCollection features = DataUtilities.collection(feature);
+
+        RasterZonalStatistics stats = new RasterZonalStatistics();
+        SimpleFeatureCollection results = stats.execute(coverage2D, 0, features, coverage2D);
+        List<SimpleFeature> resultList = DataUtilities.list(results);
+        
+        assertEquals(2, resultList.size());
+        Map<Integer, Integer> countsSummary = new LinkedHashMap<>();
+        for (SimpleFeature sf : resultList) {
+            int cloud = ((Number) sf.getAttribute("max")).intValue();
+            int count = ((Number) sf.getAttribute("count")).intValue();
+            countsSummary.compute(cloud, (k, v) -> v == null ? count : v + count);
+        }
+        // evenly split, half and half
+        assertEquals(2500, countsSummary.get(0), 0d);
+        assertEquals(2500, countsSummary.get(1), 0d);
+
     }
 }

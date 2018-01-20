@@ -540,6 +540,8 @@ Considerable vendor options are provided for working with TextSymbolizers:
   
 * maxDisplacement (400) The distance, in pixel, a label can be displaced from its natural position in an attempt to find a position that does not conflict with already drawn labels.
 
+* displacementMode(standard): Option controlling the way label displacement occurs in case of label conflicts. Applies only for point and polygon features if maxDisplacement value is set and conflictResolution is enabled (possible values are: vertical_both, vertical_up, vertical_down, standard)  
+
 * minGroupDistance (3) Minimum distance between two labels in the same label group. To be used when both displacement and repeat are used to avoid having two labels too close to each other
   
 * partials(true): Option to truncate labels placed on the border of the displayArea (display partial labels)

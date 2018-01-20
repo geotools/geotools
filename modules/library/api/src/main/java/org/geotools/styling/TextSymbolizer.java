@@ -356,6 +356,35 @@ public interface TextSymbolizer extends org.opengis.style.TextSymbolizer,Symboli
      */
     public static final double DEFAULT_WORD_SPACING = 0;
 
+    /**
+     * Option expand word spacing, expressed as a value in pixels. This option does not support
+     * negative values
+     */
+    public static final String DICPLACEMENT_MODE_KEY = "displacementMode";
+
+    public static enum DisplacementMode {
+    	/**
+    	 * default displacement
+    	 */
+        STANDARD, 
+        /**
+         * moves label vertical in both directions
+         */
+        VERTICAL_BOTH, 
+        /**
+         * moves label vertical upward direction
+         */
+        VERTICAL_UP, 
+        /**
+         * moves label vertical downward direction
+         */
+        VERTICAL_DOWN;
+        
+    }
+    /**
+     * Default value for the displacementMode
+     */
+    public static final DisplacementMode DEFAULT_DICPLACEMENT_MODE = DisplacementMode.STANDARD;
     
     /**
      * Returns the expression that will be evaluated to determine what text is

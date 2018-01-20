@@ -52,6 +52,7 @@ import org.geotools.renderer.lite.RendererUtilities;
 import org.geotools.renderer.style.SLDStyleFactory;
 import org.geotools.renderer.style.TextStyle2D;
 import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.TextSymbolizer.DisplacementMode;
 import org.geotools.styling.TextSymbolizer.PolygonAlignOptions;
 import org.geotools.util.NumberRange;
 import org.geotools.util.logging.Logging;
@@ -363,6 +364,7 @@ public class LabelCacheImpl implements LabelCache {
         item.setTextUnderlined(voParser.getBooleanOption(symbolizer, UNDERLINE_TEXT_KEY, DEFAULT_UNDERLINE_TEXT));
         item.setTextStrikethrough(voParser.getBooleanOption(symbolizer, STRIKETHROUGH_TEXT_KEY, DEFAULT_STRIKETHROUGH_TEXT));
         item.setWordSpacing(voParser.getDoubleOption(symbolizer, WORD_SPACING_KEY, DEFAULT_WORD_SPACING));
+        item.setDisplacementMode((DisplacementMode) voParser.getEnumOption(symbolizer, DICPLACEMENT_MODE_KEY, DEFAULT_DICPLACEMENT_MODE));
 
         return item;
     }
@@ -1186,11 +1188,7 @@ public class LabelCacheImpl implements LabelCache {
             return false;
 
         // prepare for the search loop
-        TextStyle2D ts = labelItem.getTextStyle();
-        // ... use at least a 2 pixel step, no matter what the label length is
-        final double step = painter.getAscent() > 2 ? painter.getAscent() : 2;
-        double radius = Math.sqrt(ts.getDisplacementX() * ts.getDisplacementX() 
-            + ts.getDisplacementY() * ts.getDisplacementY());
+        TextStyle2D ts = labelItem.getTextStyle();     
         AffineTransform tx = new AffineTransform(tempTransform);
         
         // if straight paint works we're good
@@ -1203,53 +1201,88 @@ public class LabelCacheImpl implements LabelCache {
             return false;
         }
         
+        DisplacementMode displacementMode = labelItem.getDisplacementMode();
+        // ... use at least a 2 pixel step, no matter what the label length is
+        final double step = displacementMode != DisplacementMode.STANDARD
+                ? painter.getLineHeight()/2 : painter.getAscent() > 2 ? painter.getAscent() : 2;
+        double radius = Math.sqrt(ts.getDisplacementX() * ts.getDisplacementX() 
+            + ts.getDisplacementY() * ts.getDisplacementY());
+        
         // get a cloned text style that we can modify without issues
         TextStyle2D cloned = new TextStyle2D(ts);
         // ... and the closest quadrant angle that we'll use to start the search from
         int startAngle = getClosestStandardAngle(ts.getDisplacementX(), ts.getDisplacementY());
         int angle = startAngle;
-        while(radius <= labelItem.maxDisplacement) {
-            // the offset is used to generate a x, -x, 2x, -2x, 3x, -3x sequence
-            for (int offset = 45; offset <= 360; offset = offset + 45) {
-                double dx = radius * Math.cos(Math.toRadians(angle));
-                double dy = radius * Math.sin(Math.toRadians(angle));
-                
-                // using dx and dy would be easy but due to numeric approximations, 
-                // it's actually very hard to get it right so we use the angle
-                double[] anchorPointCandidates;
-                // normalize the angle so that it's between 0 and 360
-                int normAngle = angle % 360;
-                if(normAngle < 0)
-                    normAngle = 360 + normAngle;
-                if(normAngle < 90 || normAngle > 270) {
-                    anchorPointCandidates = RIGHT_ANCHOR_CANDIDATES;
-                } else if(normAngle > 90 && normAngle < 270) {
-                    anchorPointCandidates = LEFT_ANCHOR_CANDIDATES;
-                } else {
-                    anchorPointCandidates = MID_ANCHOR_CANDIDATES;
+        while (radius <= labelItem.maxDisplacement) {
+            // check for special vertical displacement mode
+            if (displacementMode != DisplacementMode.STANDARD) {
+                int[] offsets = getDisplacementAngles(displacementMode);
+                for (int normAngle : offsets) {
+                    angle = normAngle;
+                    double dx = radius * Math.cos(Math.toRadians(angle));
+                    double dy = radius * Math.sin(Math.toRadians(angle));
+
+                    // using only MID_ANCHOR_CANDIDATES
+                    double[] anchorPointCandidates = MID_ANCHOR_CANDIDATES;
+
+                    // try out various anchor point positions
+                    for (int i = 0; i < anchorPointCandidates.length; i += 2) {
+                        double ax = anchorPointCandidates[i];
+                        double ay = anchorPointCandidates[i + 1];
+                        cloned.setAnchorX(ax);
+                        cloned.setAnchorY(ay);
+                        cloned.setDisplacementX(dx);
+                        cloned.setDisplacementY(dy);
+                        tx = new AffineTransform(tempTransform);
+                        if (paintPointLabelInternal(painter, tx, displayArea, glyphs, labelItem,
+                                point, cloned))
+                            return true;
+                    }
                 }
-                
-                // try out various anchor point positions
-                for (int i = 0; i < anchorPointCandidates.length; i +=2) {
-                    double ax = anchorPointCandidates[i];
-                    double ay = anchorPointCandidates[i + 1];
-                    cloned.setAnchorX(ax);
-                    cloned.setAnchorY(ay);
-                    cloned.setDisplacementX(dx);
-                    cloned.setDisplacementY(dy);
-                    
-                    tx = new AffineTransform(tempTransform);
-                    if(paintPointLabelInternal(painter, tx, displayArea, glyphs, labelItem, point, cloned))
-                        return true;
+            } else {
+                // the offset is used to generate a x, -x, 2x, -2x, 3x, -3x sequence
+                for (int offset = 45; offset <= 360; offset = offset + 45) {
+                    double dx = radius * Math.cos(Math.toRadians(angle));
+                    double dy = radius * Math.sin(Math.toRadians(angle));
+
+                    // using dx and dy would be easy but due to numeric approximations,
+                    // it's actually very hard to get it right so we use the angle
+                    double[] anchorPointCandidates;
+                    // normalize the angle so that it's between 0 and 360
+                    int normAngle = angle % 360;
+                    if (normAngle < 0)
+                        normAngle = 360 + normAngle;
+                    if (normAngle < 90 || normAngle > 270) {
+                        anchorPointCandidates = RIGHT_ANCHOR_CANDIDATES;
+                    } else if (normAngle > 90 && normAngle < 270) {
+                        anchorPointCandidates = LEFT_ANCHOR_CANDIDATES;
+                    } else {
+                        anchorPointCandidates = MID_ANCHOR_CANDIDATES;
+                    }
+
+                    // try out various anchor point positions
+                    for (int i = 0; i < anchorPointCandidates.length; i += 2) {
+                        double ax = anchorPointCandidates[i];
+                        double ay = anchorPointCandidates[i + 1];
+                        cloned.setAnchorX(ax);
+                        cloned.setAnchorY(ay);
+                        cloned.setDisplacementX(dx);
+                        cloned.setDisplacementY(dy);
+
+                        tx = new AffineTransform(tempTransform);
+                        if (paintPointLabelInternal(painter, tx, displayArea, glyphs, labelItem,
+                                point, cloned))
+                            return true;
+                    }
+
+                    // make sure we do the jumps back and forth to generate the proper sequence
+                    if (angle <= startAngle)
+                        angle = angle + offset;
+                    else
+                        angle = angle - offset;
                 }
-                
-                // make sure we do the jumps back and forth to generate the proper sequence
-                if(angle <= startAngle)
-                    angle = angle + offset;
-                else
-                    angle = angle - offset;
             }
-            
+
             // increase the radius and move forward
             radius += step;
         }
@@ -1392,33 +1425,58 @@ public class LabelCacheImpl implements LabelCache {
                 pg, centroid, textStyle))
             return true;
         
+        DisplacementMode displacementMode = labelItem.getDisplacementMode();
         // candidate position was busy, let's circle out and find a good position
         // ... use at least a 2 pixel step, no matter what the label length is
-        final double step = painter.getAscent() > 2 ? painter.getAscent() : 2;
+        final double step = displacementMode != DisplacementMode.STANDARD
+                ? painter.getLineHeight() / 2 : painter.getAscent() > 2 ? painter.getAscent() : 2;
         double radius = step;
         Coordinate c = new Coordinate(centroid.getCoordinate());
         Coordinate cc = centroid.getCoordinate();
         Point testPoint = centroid.getFactory().createPoint(c);
-        while(radius < labelItem.getMaxDisplacement()) {
-            for(int angle = 0; angle < 360; angle += 45) {
-                double dx = Math.cos(Math.toRadians(angle)) * radius;
-                double dy = Math.sin(Math.toRadians(angle)) * radius;
-                
-                c.x = cc.x + dx;
-                c.y = cc.y + dy;
-                testPoint.geometryChanged();
-                if(!pg.contains(testPoint))
-                    continue;
-                
-                textStyle.setDisplacementX(dx);
-                textStyle.setDisplacementY(dy);
-                
-                tx = new AffineTransform(tempTransform);
-                if(paintPolygonLabelInternal(painter, tx, displayArea, glyphs, labelItem,
-                        pg, centroid, textStyle))
-                    return true;
+        while (radius < labelItem.getMaxDisplacement()) {
+            // check for special vertical displacement mode
+            if (displacementMode != DisplacementMode.STANDARD) {
+                int[] offsets = getDisplacementAngles(displacementMode);
+                for (int angle : offsets) {
+                    double dx = Math.cos(Math.toRadians(angle)) * radius;
+                    double dy = Math.sin(Math.toRadians(angle)) * radius;
+
+                    c.x = cc.x + dx;
+                    c.y = cc.y + dy;
+                    testPoint.geometryChanged();
+                    if (!pg.contains(testPoint))
+                        continue;
+
+                    textStyle.setDisplacementX(dx);
+                    textStyle.setDisplacementY(dy);
+
+                    tx = new AffineTransform(tempTransform);
+                    if (paintPolygonLabelInternal(painter, tx, displayArea, glyphs, labelItem, pg,
+                            centroid, textStyle))
+                        return true;
+                }
+            } else {
+                for (int angle = 0; angle < 360; angle += 45) {
+                    double dx = Math.cos(Math.toRadians(angle)) * radius;
+                    double dy = Math.sin(Math.toRadians(angle)) * radius;
+
+                    c.x = cc.x + dx;
+                    c.y = cc.y + dy;
+                    testPoint.geometryChanged();
+                    if (!pg.contains(testPoint))
+                        continue;
+
+                    textStyle.setDisplacementX(dx);
+                    textStyle.setDisplacementY(dy);
+
+                    tx = new AffineTransform(tempTransform);
+                    if (paintPolygonLabelInternal(painter, tx, displayArea, glyphs, labelItem, pg,
+                            centroid, textStyle))
+                        return true;
+                }
             }
-            
+
             radius += step;
         }
         
@@ -2073,4 +2131,21 @@ public class LabelCacheImpl implements LabelCache {
     }
 
 
+    /**
+     * return the displacement angles to be used based on mode selected
+     * @param mode
+     * @return
+     */
+    protected int[] getDisplacementAngles(DisplacementMode mode) {
+        switch (mode) {
+        case VERTICAL_BOTH:
+            return new int[] { 90, 270 };
+        case VERTICAL_UP:
+            return new int[] { 90 };
+        case VERTICAL_DOWN:
+            return new int[] { 270 };
+        default:
+            return new int[] {};
+        }
+    }
 }

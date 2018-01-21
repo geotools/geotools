@@ -3,6 +3,7 @@ package org.geotools.renderer;
 import java.util.Map;
 
 import org.geotools.styling.Symbolizer;
+import org.geotools.styling.TextSymbolizer.DisplacementMode;
 
 /**
  * Helper class that provides utility methods to extract and parse elements from the vendor options
@@ -140,6 +141,38 @@ public class VendorOptionParser {
             } else {
                 return new int[] {parsed[0], parsed[0], parsed[0], parsed[0]};
             }
+        }
+    }
+    
+    
+    /**
+     * Returns an array of int in the range [0, 360) which corresponds to the possible 
+     * displacement angles.
+     * 
+     * @param symbolizer
+     * @param optionName expected a String with DisplacementMode enum values comma separated 
+     * @return
+     */
+    public int[] getDisplacementAngles(Symbolizer symbolizer, String optionName) {
+        String value = getOption(symbolizer, optionName);
+        if(value == null) {
+            return null;
+        } else {
+            String[] values = value.trim().split(",");
+            if(values.length == 0) {
+                return null;
+            }
+            int[] parsed = new int[values.length];
+            for (int i = 0; i < parsed.length; i++) {
+                try {
+                    DisplacementMode mode = DisplacementMode.valueOf(values[i].trim().toUpperCase());
+                    parsed[i] = mode.getAngle();
+                } catch (Exception e) {
+                    throw new IllegalArgumentException(values[i] + 
+                            " is not legal. The values of displacement mode must be one of the following: " + DisplacementMode.values());
+                }
+            } 
+           return parsed;
         }
     }
 }

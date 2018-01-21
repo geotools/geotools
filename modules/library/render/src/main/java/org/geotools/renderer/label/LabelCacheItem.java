@@ -58,6 +58,8 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
     private Set<String> layerIds = new HashSet<String>();
 
     int maxDisplacement = 0;
+    
+    int[] displacementAngles;
 
     int minGroupDistance = 0;
 
@@ -232,6 +234,20 @@ public class LabelCacheItem implements Comparable<LabelCacheItem> {
         this.maxDisplacement = maxDisplacement;
     }
 
+    /**
+     * defines the actual angle towards which displacement of label will take place 
+     * (applies only in polygon or point features)
+     * 
+     * @return
+     */
+    public int[] getDisplacementAngles() {
+        return displacementAngles;
+    }
+
+    public void setDisplacementAngles(int[] displacementAngles) {
+        this.displacementAngles = displacementAngles;
+    }
+    
     /**
      * When enabled, repeats labels every "repeat" pixels (works on lines only
      * atm)

@@ -107,8 +107,10 @@ public class SolrDataStore extends ContentDataStore {
         // TODO: make connection timeouts configurable
         this.url = url;
         this.layerMapper = layerMapper;
-        this.solrServer = new HttpSolrClient(url.toString());
-        this.solrServer.setAllowCompression(true);
+        this.solrServer = new HttpSolrClient.Builder()
+                .withBaseSolrUrl(url.toString())
+                .allowCompression(true)
+                .build();
         this.solrServer.setConnectionTimeout(10000);
         this.solrServer.setFollowRedirects(true);
         this.solrServer.setSoTimeout(10000);

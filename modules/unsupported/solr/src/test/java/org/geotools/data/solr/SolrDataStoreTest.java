@@ -29,7 +29,7 @@ public class SolrDataStoreTest extends OnlineTestCase {
 
     public void testGetNames() throws IOException {
         String url = fixture.getProperty(SolrDataStoreFactory.URL.key);
-        String field = fixture.getProperty(SolrDataStoreFactory.FIELD.key);
+        String field = "status_s";
 
         Map params = new HashMap();
         params.put(SolrDataStoreFactory.URL.key, url);

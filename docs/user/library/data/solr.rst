@@ -38,5 +38,3 @@ Example use:
         Map map = new HashMap();
         map.put("solr_url", new URL("http://localhost:8080/solr"));
         map.put(SolrDataStoreFactory.NAMESPACE.key, "namespace");
-
-       

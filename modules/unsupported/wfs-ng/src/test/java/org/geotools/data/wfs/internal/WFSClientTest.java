@@ -171,12 +171,19 @@ public class WFSClientTest {
         assertTrue(info.getKeywords().contains("WMS"));
         assertEquals("http://schemas.opengis.net/wfs/1.0.0/WFS-transaction.xsd", info.getSchema().toString());
         assertEquals("http://localhost:8080/geoserver/wfs?", info.getSource().toString());
-        assertEquals("This is a description of your Web Feature Server." +
-                "\n\n\t\t\tThe GeoServer is a full transactional Web Feature Server, you may wish to limit GeoServer to a Basic service" +
-        	"\n\t\t\tlevel to prevent modificaiton of your geographic data."
-                , info.getDescription());
+        assertTrue(info.getDescription().contains("This is a description of your Web Feature Server.") &&
+          info.getDescription().contains("The GeoServer is a full transactional Web Feature Server, you may wish to limit GeoServer to a Basic service") &&
+          info.getDescription().contains("level to prevent modificaiton of your geographic data."));
     }
-    
+
+    @Test
+    public void testGetInfoArcGIS() throws Exception {
+        WFSClient client = newClient("ArcGIS/GetCapabilities.xml");
+        WFSServiceInfo info = client.getInfo();
+        assertEquals("SLIP_Public_Services_Environment_WFS", info.getTitle());
+        assertEquals("1.1.0", info.getVersion());
+    }
+
     private void testGetRemoteTypeNames(String capabilitiesLocation, int typeCount)
             throws Exception {
 

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:SLIP_Public_Services_Environment_WFS="https:services.slip.wa.gov.au/arcgis/services/SLIP_Public_Services/Environment_WFS/MapServer/WFSServer" xmlns:gml="http://www.opengis.net/gml" targetNamespace="https:services.slip.wa.gov.au/arcgis/services/SLIP_Public_Services/Environment_WFS/MapServer/WFSServer" elementFormDefault="qualified">
+ <xs:import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd" />
+ <xs:element name="Clearing_Regulations_-_Environmentally_Sensitive_Areas__DER-016_" type="SLIP_Public_Services_Environment_WFS:Clearing_Regulations_-_Environmentally_Sensitive_Areas__DER-016_Type" substitutionGroup="gml:_Feature" />
+ <xs:complexType name="Clearing_Regulations_-_Environmentally_Sensitive_Areas__DER-016_Type">
+  <xs:complexContent>
+   <xs:extension base="gml:AbstractFeatureType">
+    <xs:sequence>
+     <xs:element name="oid" type="xs:int" />
+     <xs:element name="gid" type="xs:int" />
+     <xs:element name="esa">
+      <xs:simpleType>
+       <xs:restriction base="xs:string">
+        <xs:maxLength value="50" />
+       </xs:restriction>
+      </xs:simpleType>
+     </xs:element>
+     <xs:element name="the_geom" type="gml:MultiSurfacePropertyType" />
+    </xs:sequence>
+   </xs:extension>
+  </xs:complexContent>
+ </xs:complexType>
+</xs:schema>

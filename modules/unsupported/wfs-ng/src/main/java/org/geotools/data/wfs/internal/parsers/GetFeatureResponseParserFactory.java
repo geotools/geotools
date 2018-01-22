@@ -46,6 +46,7 @@ public class GetFeatureResponseParserFactory extends AbstractGetFeatureResponseP
                     "text/xml; subtype=gml/3.1.1; charset=UTF-8",
                     "text/xml; subtype=gml/3.1.1/profiles/gmlsf/0",//
                     "text/xml;subtype=gml/3.1.1/profiles/gmlsf/0",//
+                    "text/xml; subType=gml/3.1.1/profiles/gmlsf/1.0.0/0",//
                     "application/gml+xml; subtype=gml/3.1.1",//
                     "application/gml+xml;subtype=gml/3.1.1",//
                     "application/gml+xml; subtype=gml/3.1.1/profiles/gmlsf/0",//

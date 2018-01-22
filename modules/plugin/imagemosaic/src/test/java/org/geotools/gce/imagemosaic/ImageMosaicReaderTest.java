@@ -74,6 +74,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
+import org.apache.commons.io.filefilter.OrFileFilter;
 import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
@@ -2038,8 +2039,70 @@ public class ImageMosaicReaderTest extends Assert{
         assertNull(CoverageUtilities.getNoDataProperty(coverage));
     }
 
+    @Test
+    public void testBlankResponseWithBandSelection() throws FactoryException, IOException {
+        File source = URLs.urlToFile(rgbURL);
+        File testDataDir = TestData.file(this, ".");
+        File directory1 = new File(testDataDir, "rgbMosaicSource");
+        File directory2 = new File(testDataDir, "rgbMosaicBandSelect");
+        if (directory1.exists()) {
+            FileUtils.deleteDirectory(directory1);
+        }
+        FileUtils.copyDirectory(source, directory1);
+        // remove all mosaic related files
+        for (File file : FileUtils.listFiles(directory1, new RegexFileFilter("rgb.*"), null)) {
+            assertTrue(file.delete());
+        }
+        // Copy 2 not adjacent files (therefore creating void area between them)
+        directory2.mkdirs();
+        for (File file : FileUtils.listFiles(directory1,
+                new OrFileFilter(new RegexFileFilter("global_mosaic_10.*"),
+                        new RegexFileFilter("global_mosaic_12.*")),
+                null)) {
+            assertTrue(file.renameTo(new File(directory2, file.getName())));
+        }
 
-    
+        final URL testUrl = URLs.fileToUrl(directory2);
+        final AbstractGridFormat format = TestUtils.getFormat(testUrl);
+        final ImageMosaicReader reader = TestUtils.getReader(testUrl, format);
+
+        assertNotNull(reader);
+
+        // ask to extract an area that is inside the coverage bbox, but in a hole (no data)
+        final ParameterValue<GridGeometry2D> ggp = AbstractGridFormat.READ_GRIDGEOMETRY2D
+                .createValue();
+        Envelope2D env = new Envelope2D(reader.getCoordinateReferenceSystem(), 10, 41, 1, 1);
+        GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(0, 0, 50, 50), (Envelope) env);
+        ggp.setValue(gg);
+
+        // Select 2 bands
+        final ParameterValue<int[]> bands = ImageMosaicFormat.BANDS.createValue();
+        bands.setValue(new int[] { 0, 2 });
+
+        // Set a custom background values for the 3 original bands
+        final ParameterValue<double[]> bgp = ImageMosaicFormat.BACKGROUND_VALUES.createValue();
+        bgp.setValue(new double[] { 255, 127, 64 });
+
+        // read and check we actually got a coverage in the requested area
+        GridCoverage2D coverage = reader.read(new GeneralParameterValue[] { ggp, bgp, bands });
+        assertNotNull(coverage);
+        assertTrue(coverage.getEnvelope2D().intersects((Rectangle2D) env));
+
+        // Since we have requested a void area (no data within the mosaic's definition area)
+        // check that the returned image respects the number of components from band selection
+        RenderedImage ri = coverage.getRenderedImage();
+        ColorModel cm = ri.getColorModel();
+        SampleModel sm = ri.getSampleModel();
+        assertEquals(2, cm.getNumComponents());
+        assertEquals(2, sm.getNumBands());
+
+        // Check the constant values
+        int[] pixel = new int[2];
+        ri.getData().getPixel(0, 0, pixel);
+        assertEquals(255, pixel[0]);
+        assertEquals(64, pixel[1]);
+    }
+
     @Test
     //@Ignore
     public void testRequestInOut() throws Exception {

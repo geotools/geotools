@@ -1,0 +1,2125 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "currentVersion": {
+      "type": "number"
+    },
+    "id": {
+      "type": "integer"
+    },
+    "name": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string"
+    },
+    "serviceItemId": {
+      "type": "string"
+    },
+    "displayField": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "copyrightText": {
+      "type": "string"
+    },
+    "defaultVisibility": {
+      "type": "boolean"
+    },
+    "editingInfo": {
+      "type": "object",
+      "properties": {
+        "lastEditDate": {
+          "type": "long"
+        }
+      },
+      "required": [
+        "lastEditDate"
+      ]
+    },
+    "multiScaleGeometryInfo": {
+      "type": "object",
+      "properties": {
+        "levels": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        }
+      },
+      "required": [
+        "levels"
+      ]
+    },
+    "relationships": {
+      "type": "array",
+      "items": {}
+    },
+    "isDataVersioned": {
+      "type": "boolean"
+    },
+    "supportsCalculate": {
+      "type": "boolean"
+    },
+    "supportsTruncate": {
+      "type": "boolean"
+    },
+    "supportsAttachmentsByUploadId": {
+      "type": "boolean"
+    },
+    "supportsRollbackOnFailureParameter": {
+      "type": "boolean"
+    },
+    "supportsStatistics": {
+      "type": "boolean"
+    },
+    "supportsAdvancedQueries": {
+      "type": "boolean"
+    },
+    "supportsValidateSql": {
+      "type": "boolean"
+    },
+    "supportsCoordinatesQuantization": {
+      "type": "boolean"
+    },
+    "supportsApplyEditsWithGlobalIds": {
+      "type": "boolean"
+    },
+    "supportsMultiScaleGeometry": {
+      "type": "boolean"
+    },
+    "advancedQueryCapabilities": {
+      "type": "object",
+      "properties": {
+        "supportsPagination": {
+          "type": "boolean"
+        },
+        "supportsQueryRelatedPagination": {
+          "type": "boolean"
+        },
+        "supportsQueryWithDistance": {
+          "type": "boolean"
+        },
+        "supportsReturningQueryExtent": {
+          "type": "boolean"
+        },
+        "supportsStatistics": {
+          "type": "boolean"
+        },
+        "supportsOrderBy": {
+          "type": "boolean"
+        },
+        "supportsDistinct": {
+          "type": "boolean"
+        },
+        "supportsQueryWithResultType": {
+          "type": "boolean"
+        },
+        "supportsSqlExpression": {
+          "type": "boolean"
+        },
+        "supportsAdvancedQueryRelated": {
+          "type": "boolean"
+        },
+        "supportsReturningGeometryCentroid": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "supportsPagination",
+        "supportsQueryRelatedPagination",
+        "supportsQueryWithDistance",
+        "supportsReturningQueryExtent",
+        "supportsStatistics",
+        "supportsOrderBy",
+        "supportsDistinct",
+        "supportsQueryWithResultType",
+        "supportsSqlExpression",
+        "supportsAdvancedQueryRelated",
+        "supportsReturningGeometryCentroid"
+      ]
+    },
+    "useStandardizedQueries": {
+      "type": "boolean"
+    },
+    "geometryType": {
+      "type": "string"
+    },
+    "minScale": {
+      "type": "integer"
+    },
+    "maxScale": {
+      "type": "integer"
+    },
+    "extent": {
+      "type": "object",
+      "properties": {
+        "xmin": {
+          "type": "number"
+        },
+        "ymin": {
+          "type": "number"
+        },
+        "xmax": {
+          "type": "number"
+        },
+        "ymax": {
+          "type": "number"
+        },
+        "spatialReference": {
+          "type": "object",
+          "properties": {
+            "wkid": {
+              "type": "integer"
+            },
+            "latestWkid": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "wkid",
+            "latestWkid"
+          ]
+        }
+      },
+      "required": [
+        "xmin",
+        "ymin",
+        "xmax",
+        "ymax",
+        "spatialReference"
+      ]
+    },
+    "drawingInfo": {
+      "type": "object",
+      "properties": {
+        "renderer": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string"
+            },
+            "symbol": {
+              "type": "object",
+              "properties": {
+                "color": {
+                  "type": "null"
+                },
+                "outline": {
+                  "type": "object",
+                  "properties": {
+                    "color": {
+                      "type": "array",
+                      "items": {
+                        "type": "integer"
+                      }
+                    },
+                    "width": {
+                      "type": "number"
+                    },
+                    "type": {
+                      "type": "string"
+                    },
+                    "style": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "color",
+                    "width",
+                    "type",
+                    "style"
+                  ]
+                },
+                "type": {
+                  "type": "string"
+                },
+                "style": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "color",
+                "outline",
+                "type",
+                "style"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "symbol"
+          ]
+        },
+        "transparency": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "renderer",
+        "transparency"
+      ]
+    },
+    "allowGeometryUpdates": {
+      "type": "boolean"
+    },
+    "hasAttachments": {
+      "type": "boolean"
+    },
+    "htmlPopupType": {
+      "type": "string"
+    },
+    "hasM": {
+      "type": "boolean"
+    },
+    "hasZ": {
+      "type": "boolean"
+    },
+    "objectIdField": {
+      "type": "string"
+    },
+    "globalIdField": {
+      "type": "string"
+    },
+    "typeIdField": {
+      "type": "string"
+    },
+    "fields": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "alias": {
+            "type": "string"
+          },
+          "sqlType": {
+            "type": "string"
+          },
+          "nullable": {
+            "type": "boolean"
+          },
+          "editable": {
+            "type": "boolean"
+          },
+          "domain": {
+            "type": "null"
+          },
+          "defaultValue": {
+            "type": "null"
+          }
+        },
+        "required": [
+          "name",
+          "type",
+          "alias",
+          "sqlType",
+          "nullable",
+          "editable",
+          "domain",
+          "defaultValue"
+        ]
+      }
+    },
+    "indexes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "fields": {
+            "type": "string"
+          },
+          "isAscending": {
+            "type": "boolean"
+          },
+          "isUnique": {
+            "type": "boolean"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "fields",
+          "isAscending",
+          "isUnique",
+          "description"
+        ]
+      }
+    },
+    "types": {
+      "type": "array",
+      "items": {}
+    },
+    "templates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "drawingTool": {
+            "type": "string"
+          },
+          "prototype": {
+            "type": "object",
+            "properties": {
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "LGA": {
+                    "type": "null"
+                  },
+                  "MetropolitanRural": {
+                    "type": "null"
+                  },
+                  "Departmental_Region": {
+                    "type": "null"
+                  },
+                  "Departmental_Area": {
+                    "type": "null"
+                  },
+                  "Area_of_LGA_sq_km": {
+                    "type": "null"
+                  },
+                  "ASGS_LGA_code": {
+                    "type": "null"
+                  },
+                  "Most_populous_town_or_suburb_in": {
+                    "type": "null"
+                  },
+                  "Distance_to_Melbourne_in_km": {
+                    "type": "null"
+                  },
+                  "Travel_time_from_Melbourne_GPO_": {
+                    "type": "null"
+                  },
+                  "ARIA_Remoteness_category": {
+                    "type": "null"
+                  },
+                  "Percent_Business_land_use": {
+                    "type": "null"
+                  },
+                  "Percent_Industrial_land_use": {
+                    "type": "null"
+                  },
+                  "Percent_Residential_land_use": {
+                    "type": "null"
+                  },
+                  "Percent_Rural_land_use": {
+                    "type": "null"
+                  },
+                  "Percent_Other_land_use": {
+                    "type": "null"
+                  },
+                  "Per_annum_pop_change_actual_for": {
+                    "type": "null"
+                  },
+                  "Per_annum_pop_change_projected_": {
+                    "type": "null"
+                  },
+                  "Females0to14yrs": {
+                    "type": "null"
+                  },
+                  "Females15to24yrs": {
+                    "type": "null"
+                  },
+                  "Females25to44yrs": {
+                    "type": "null"
+                  },
+                  "Females45to64yrs": {
+                    "type": "null"
+                  },
+                  "Females65to84yrs": {
+                    "type": "null"
+                  },
+                  "Female85yrsPlus": {
+                    "type": "null"
+                  },
+                  "TotalFemales": {
+                    "type": "null"
+                  },
+                  "Males0to14yrs": {
+                    "type": "null"
+                  },
+                  "Males15to24yrs": {
+                    "type": "null"
+                  },
+                  "Males25to44yrs": {
+                    "type": "null"
+                  },
+                  "Males45to64yrs": {
+                    "type": "null"
+                  },
+                  "Males65to84yrs": {
+                    "type": "null"
+                  },
+                  "Male85yrsPlus": {
+                    "type": "null"
+                  },
+                  "TotalMales": {
+                    "type": "null"
+                  },
+                  "Total0to14yrs": {
+                    "type": "null"
+                  },
+                  "Tota15to24yrs": {
+                    "type": "null"
+                  },
+                  "Tota25to44yrs": {
+                    "type": "null"
+                  },
+                  "Tota45to64yrs": {
+                    "type": "null"
+                  },
+                  "Tota65to84yrs": {
+                    "type": "null"
+                  },
+                  "Tota85yrsPlus": {
+                    "type": "null"
+                  },
+                  "Total2013ERP": {
+                    "type": "null"
+                  },
+                  "Percent_Total0to14yrs": {
+                    "type": "null"
+                  },
+                  "PercentTotal15to24yrs": {
+                    "type": "null"
+                  },
+                  "PercentTotal25to44yrs": {
+                    "type": "null"
+                  },
+                  "PercentTotal45to64yrs": {
+                    "type": "null"
+                  },
+                  "PercentTotal65to84yrs": {
+                    "type": "null"
+                  },
+                  "PercentTotal84yrsPlus": {
+                    "type": "null"
+                  },
+                  "Total_fertility_rate_2012": {
+                    "type": "null"
+                  },
+                  "Rank_Total_fertility_rate_2012": {
+                    "type": "null"
+                  },
+                  "Teenage_fertility_rate_2012": {
+                    "type": "null"
+                  },
+                  "Rank_Teenage_fertility_rate_201": {
+                    "type": "null"
+                  },
+                  "Percent_Aboriginal_or_Torres_St": {
+                    "type": "null"
+                  },
+                  "Rank_Aboriginal_or_Torres_Strai": {
+                    "type": "null"
+                  },
+                  "Percent_Born_overseas_2011": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_Born_overseas_2011": {
+                    "type": "null"
+                  },
+                  "Born_in_a_non_English_speaking_": {
+                    "type": "null"
+                  },
+                  "Rank_Born_in_a_non_English_spea": {
+                    "type": "null"
+                  },
+                  "Country_1_Percent_for_Top_5_ove": {
+                    "type": "null"
+                  },
+                  "Country_1_for_Top_5_overseas_co": {
+                    "type": "null"
+                  },
+                  "Country_2_Percent_for_Top_5_ove": {
+                    "type": "null"
+                  },
+                  "Country_2_for_Top_5_overseas_co": {
+                    "type": "null"
+                  },
+                  "Country_3_Percent_for_Top_5_ove": {
+                    "type": "null"
+                  },
+                  "Country_3_for_Top_5_overseas_co": {
+                    "type": "null"
+                  },
+                  "Country_4_Percent_for_Top_5_ove": {
+                    "type": "null"
+                  },
+                  "Country_4_for_Top_5_overseas_co": {
+                    "type": "null"
+                  },
+                  "Country_5_Percent_for_Top_5_ove": {
+                    "type": "null"
+                  },
+                  "Country_5_for_Top_5_overseas_co": {
+                    "type": "null"
+                  },
+                  "Percent_Speaks_LOTE_at_home": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_Speaks_LOTE_at_hom": {
+                    "type": "null"
+                  },
+                  "Country_1_Percent_Top_5_languag": {
+                    "type": "null"
+                  },
+                  "Country_1_Top_5_languages_spoke": {
+                    "type": "null"
+                  },
+                  "Country_2_Percent_Top_5_languag": {
+                    "type": "null"
+                  },
+                  "Country_2_Top_5_languages_spoke": {
+                    "type": "null"
+                  },
+                  "Country_3_Percent_Top_5_languag": {
+                    "type": "null"
+                  },
+                  "Country_3_Top_5_languages_spoke": {
+                    "type": "null"
+                  },
+                  "Country_4_Percent_Top_5_languag": {
+                    "type": "null"
+                  },
+                  "Country_4_Top_5_languages_spoke": {
+                    "type": "null"
+                  },
+                  "Country_5_Percent_Top_5_languag": {
+                    "type": "null"
+                  },
+                  "Country_5_Top_5_languages_spoke": {
+                    "type": "null"
+                  },
+                  "Percent_Low_English_proficiency": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_Low_English_profic": {
+                    "type": "null"
+                  },
+                  "Ancestry_1_Percent_Top_5_ancest": {
+                    "type": "null"
+                  },
+                  "Ancestry_1_Top_5_ancestries": {
+                    "type": "null"
+                  },
+                  "Ancestry_2_Percent_Top_5_ancest": {
+                    "type": "null"
+                  },
+                  "Ancestry_2_Top_5_ancestries": {
+                    "type": "null"
+                  },
+                  "Ancestry_3_Percent_Top_5_ancest": {
+                    "type": "null"
+                  },
+                  "Ancestry_3_Top_5_ancestries": {
+                    "type": "null"
+                  },
+                  "Ancestry_4_Percent_Top_5_ancest": {
+                    "type": "null"
+                  },
+                  "Ancestry_4_Top_5_ancestries": {
+                    "type": "null"
+                  },
+                  "Ancestry_5_Percent_Top_5_ancest": {
+                    "type": "null"
+                  },
+                  "Ancestry_5_Top_5_ancestries": {
+                    "type": "null"
+                  },
+                  "New_settler_arrivals_per_100000": {
+                    "type": "null"
+                  },
+                  "Rank_New_settler_arrivals_per_1": {
+                    "type": "null"
+                  },
+                  "Humanitarian_arrivals_as_a_Perc": {
+                    "type": "null"
+                  },
+                  "Rank_Humanitarian_arrivals_as_a": {
+                    "type": "null"
+                  },
+                  "Community_acceptance_of_diverse": {
+                    "type": "null"
+                  },
+                  "Rank_Community_acceptance_of_di": {
+                    "type": "null"
+                  },
+                  "Proportion_of_households_with_b": {
+                    "type": "null"
+                  },
+                  "Households_with_broadband_inter": {
+                    "type": "null"
+                  },
+                  "Gaming_machine_losses_per_head_": {
+                    "type": "null"
+                  },
+                  "Rank_Gaming_machine_losses_per_": {
+                    "type": "null"
+                  },
+                  "Family_Incidents_per_1000_pop": {
+                    "type": "null"
+                  },
+                  "Rank_Family_Incidents_per_1000_": {
+                    "type": "null"
+                  },
+                  "Drug_usage_and_possession_offen": {
+                    "type": "null"
+                  },
+                  "Rank_Drug_usage_and_possession_": {
+                    "type": "null"
+                  },
+                  "Total_Crime_per_1000_pop": {
+                    "type": "null"
+                  },
+                  "Rank_Total_Crime_per_1000_pop": {
+                    "type": "null"
+                  },
+                  "Feels_safe_walking_alone_during": {
+                    "type": "null"
+                  },
+                  "Rank_Feels_safe_walking_alone_d": {
+                    "type": "null"
+                  },
+                  "Believe_other_people_can_be_tru": {
+                    "type": "null"
+                  },
+                  "Rank_Believe_other_people_can_b": {
+                    "type": "null"
+                  },
+                  "Spoke_with_more_than_5_people_t": {
+                    "type": "null"
+                  },
+                  "Rank_Spoke_with_more_than_5_peo": {
+                    "type": "null"
+                  },
+                  "Able_to_definitely_get_help_fro": {
+                    "type": "null"
+                  },
+                  "Rank_Able_to_definitely_get_hel": {
+                    "type": "null"
+                  },
+                  "Volunteers": {
+                    "type": "null"
+                  },
+                  "Rank_Volunteers": {
+                    "type": "null"
+                  },
+                  "Feel_valued_by_society": {
+                    "type": "null"
+                  },
+                  "Rank_Feel_valued_by_society": {
+                    "type": "null"
+                  },
+                  "Attended_a_local_community_even": {
+                    "type": "null"
+                  },
+                  "Rank_Attended_a_local_community": {
+                    "type": "null"
+                  },
+                  "Take_action_on_behalf_of_the_lo": {
+                    "type": "null"
+                  },
+                  "Rank_Take_action_on_behalf_of_t": {
+                    "type": "null"
+                  },
+                  "Members_of_a_sports_group": {
+                    "type": "null"
+                  },
+                  "Rank_Members_of_a_sports_group": {
+                    "type": "null"
+                  },
+                  "Members_of_a_religious_group": {
+                    "type": "null"
+                  },
+                  "Rank_Members_of_a_religious_gro": {
+                    "type": "null"
+                  },
+                  "Rated_their_community_as_an_act": {
+                    "type": "null"
+                  },
+                  "Rank_Rated_their_community_as_a": {
+                    "type": "null"
+                  },
+                  "Rated_their_community_as_a_plea": {
+                    "type": "null"
+                  },
+                  "Rank_ated_their_community_as_a_": {
+                    "type": "null"
+                  },
+                  "Rated_their_community_as_good_o": {
+                    "type": "null"
+                  },
+                  "Rank_Rated_their_community_as_g": {
+                    "type": "null"
+                  },
+                  "Index_of_Relative_Socia_Economi": {
+                    "type": "null"
+                  },
+                  "Rank_Index_of_Relative_Socia_Ec": {
+                    "type": "null"
+                  },
+                  "Unemployment_rate": {
+                    "type": "null"
+                  },
+                  "Rank_Unemployment_rate": {
+                    "type": "null"
+                  },
+                  "Percent_Individual_income_Less_": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_Individual_income_": {
+                    "type": "null"
+                  },
+                  "Percent_Female_income_Less_than": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_Female_income_Less": {
+                    "type": "null"
+                  },
+                  "Percent_Male_income_Less_than_4": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_Male_income_Less_t": {
+                    "type": "null"
+                  },
+                  "Percent_One_Parent_headed_famil": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_One_Parent_headed_": {
+                    "type": "null"
+                  },
+                  "One_Parent_headed_families_Perc": {
+                    "type": "null"
+                  },
+                  "Rank_One_Parent_headed_families": {
+                    "type": "null"
+                  },
+                  "One_Parent_headed_families_Pe_1": {
+                    "type": "null"
+                  },
+                  "Rank_One_Parent_headed_famili_1": {
+                    "type": "null"
+                  },
+                  "Equivalised_median_income": {
+                    "type": "null"
+                  },
+                  "Rank_Equivalised_median_income": {
+                    "type": "null"
+                  },
+                  "Delayed_medical_consultation_be": {
+                    "type": "null"
+                  },
+                  "Rank_Delayed_medical_consultati": {
+                    "type": "null"
+                  },
+                  "Delayed_purchasing_prescribed_m": {
+                    "type": "null"
+                  },
+                  "Rank_Delayed_purchasing_prescri": {
+                    "type": "null"
+                  },
+                  "Percent_low_income_welfare_depe": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_low_income_welfare": {
+                    "type": "null"
+                  },
+                  "Percent_of_pop_with_food_insecu": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_of_pop_with_food_i": {
+                    "type": "null"
+                  },
+                  "Percent_Mortgage_Stress": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_Mortgage_Stress": {
+                    "type": "null"
+                  },
+                  "Percent_Rental_Stress": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_Rental_Stress": {
+                    "type": "null"
+                  },
+                  "Percent_of_rental_housing_that_": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_of_rental_housing_": {
+                    "type": "null"
+                  },
+                  "Median_house_price": {
+                    "type": "null"
+                  },
+                  "Rank_Median_house_price": {
+                    "type": "null"
+                  },
+                  "Median_rent_for_3_bedrooms_home": {
+                    "type": "null"
+                  },
+                  "Rank_Median_rent_for_3_bedrooms": {
+                    "type": "null"
+                  },
+                  "New_dwellings_approved_for_cons": {
+                    "type": "null"
+                  },
+                  "Rank_New_dwellings_approved_for": {
+                    "type": "null"
+                  },
+                  "Social_housing_stock_as_a_Perce": {
+                    "type": "null"
+                  },
+                  "Rank_Social_housing_stock_as_a_": {
+                    "type": "null"
+                  },
+                  "Number_of_Social_housing_dwelli": {
+                    "type": "null"
+                  },
+                  "Rank_Number_of_Social_housing_d": {
+                    "type": "null"
+                  },
+                  "Homelessness_rate_per_1000_pop": {
+                    "type": "null"
+                  },
+                  "Rank_Homelessness_rate_per_1000": {
+                    "type": "null"
+                  },
+                  "Percent_of_work_journeys_which_": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_of_work_journeys_w": {
+                    "type": "null"
+                  },
+                  "Percent_of_work_journeys_which1": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_of_work_journeys_1": {
+                    "type": "null"
+                  },
+                  "Persons_with_at_least_2_hour_da": {
+                    "type": "null"
+                  },
+                  "Rank_Persons_with_at_least_2_ho": {
+                    "type": "null"
+                  },
+                  "Percent_households_with_no_moto": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_households_with_no": {
+                    "type": "null"
+                  },
+                  "FTE_Students": {
+                    "type": "null"
+                  },
+                  "Percent_year_9_students_who_att": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_of_year_9_students": {
+                    "type": "null"
+                  },
+                  "Percent_of_year_9_students_who_": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_year_9_students_wh": {
+                    "type": "null"
+                  },
+                  "Percent_19_year_olds_completing": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_19_year_olds_compl": {
+                    "type": "null"
+                  },
+                  "Percent_persons_who_did_not_com": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_of_persons_who_did": {
+                    "type": "null"
+                  },
+                  "Percent_persons_who_completed_a": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_persons_who_comple": {
+                    "type": "null"
+                  },
+                  "Percent_of_school_children_atte": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_of_school_children": {
+                    "type": "null"
+                  },
+                  "Percent_of_persons_reporting_as": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_of_persons_reporti": {
+                    "type": "null"
+                  },
+                  "Percent_of_persons_reporting_ty": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_of_persons_repor_1": {
+                    "type": "null"
+                  },
+                  "Percent_of_persons_reporting_hi": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_of_persons_repor_2": {
+                    "type": "null"
+                  },
+                  "Percent_of_persons_reporting_he": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_of_persons_repor_3": {
+                    "type": "null"
+                  },
+                  "Percent_of_persons_reporting_os": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_of_persons_repor_4": {
+                    "type": "null"
+                  },
+                  "Percent_of_persons_reporting_ar": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_of_persons_repor_5": {
+                    "type": "null"
+                  },
+                  "Percent_of_persons_who_are_over": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_of_persons_who_are": {
+                    "type": "null"
+                  },
+                  "Percent_of_females_who_are_over": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_of_females_who_are": {
+                    "type": "null"
+                  },
+                  "Percent_of_males_who_are_overwe": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_of_males_who_are_o": {
+                    "type": "null"
+                  },
+                  "Percent_of_persons_who_are_obes": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_of_persons_who_a_1": {
+                    "type": "null"
+                  },
+                  "Percent_of_females_who_are_obes": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_of_females_who_a_1": {
+                    "type": "null"
+                  },
+                  "Percent_of_males_who_are_obese": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_of_males_who_are_1": {
+                    "type": "null"
+                  },
+                  "Malignant_cancers_diagnosed_per": {
+                    "type": "null"
+                  },
+                  "Rank_Malignant_cancers_diagnose": {
+                    "type": "null"
+                  },
+                  "Male_Cancer_incidence_per_1000_": {
+                    "type": "null"
+                  },
+                  "Rank_Male_Cancer_incidence_per_": {
+                    "type": "null"
+                  },
+                  "Female_Cancer_incidence_per_100": {
+                    "type": "null"
+                  },
+                  "Rank_Female_Cancer_incidence_pe": {
+                    "type": "null"
+                  },
+                  "Percent_Poor_dental_health": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_Poor_dental_health": {
+                    "type": "null"
+                  },
+                  "Notifications_per_100000_pop_of": {
+                    "type": "null"
+                  },
+                  "Rank_Notifications_per_100000_p": {
+                    "type": "null"
+                  },
+                  "Notifications_per_100000_pop__1": {
+                    "type": "null"
+                  },
+                  "Rank_Notifications_per_100000_1": {
+                    "type": "null"
+                  },
+                  "Notifications_per_100000_people": {
+                    "type": "null"
+                  },
+                  "Rank_Notifications_per_100000_2": {
+                    "type": "null"
+                  },
+                  "Percent_of_persons_18yrsPlus_wh": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_of_persons_18yrsPl": {
+                    "type": "null"
+                  },
+                  "Percent_of_males_18yrsPlus_who_": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_of_males_18yrsPlus": {
+                    "type": "null"
+                  },
+                  "Percent_of_females_18yrsPlus_wh": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_of_females_18yrsPl": {
+                    "type": "null"
+                  },
+                  "Consumed_alcohol_at_least_weekl": {
+                    "type": "null"
+                  },
+                  "Rank_Consumed_alcohol_at_least_": {
+                    "type": "null"
+                  },
+                  "Consumed_alcohol_at_least_wee_1": {
+                    "type": "null"
+                  },
+                  "Rank_Consumed_alcohol_at_least1": {
+                    "type": "null"
+                  },
+                  "Percent_of_persons_who_do_not_m": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_of_persons_who_do_": {
+                    "type": "null"
+                  },
+                  "Percent_of_males_who_do_not_mee": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_of_males_who_do_no": {
+                    "type": "null"
+                  },
+                  "Percent_of_females_who_do_not_m": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_of_females_who_do_": {
+                    "type": "null"
+                  },
+                  "Percent_of_persons_who_drink_so": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_of_persons_who_dri": {
+                    "type": "null"
+                  },
+                  "Percent_of_persons_who_share_a_": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_of_persons_who_sha": {
+                    "type": "null"
+                  },
+                  "Percent_of_persons_who_do_not_1": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_of_persons_who_do1": {
+                    "type": "null"
+                  },
+                  "Percent_of_males_who_do_not_m_1": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_of_males_who_do__1": {
+                    "type": "null"
+                  },
+                  "Percent_of_females_who_do_not_1": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_of_females_who_do1": {
+                    "type": "null"
+                  },
+                  "Percent_of_persons_who_sit_for_": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_of_persons_who_sit": {
+                    "type": "null"
+                  },
+                  "Percent_of_persons_who_visit_a_": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_of_persons_who_vis": {
+                    "type": "null"
+                  },
+                  "Percent_of_breast_screening_par": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_of_breast_screenin": {
+                    "type": "null"
+                  },
+                  "Percent_of_cervical_cancer_scre": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_of_cervical_cancer": {
+                    "type": "null"
+                  },
+                  "Bowel_cancer_screening_particip": {
+                    "type": "null"
+                  },
+                  "Rank_Bowel_cancer_screening_par": {
+                    "type": "null"
+                  },
+                  "Bowel_cancer_screening_partic_1": {
+                    "type": "null"
+                  },
+                  "Rank_Bowel_cancer_screening_p_1": {
+                    "type": "null"
+                  },
+                  "Bowel_cancer_screening_partic_2": {
+                    "type": "null"
+                  },
+                  "Rank_Bowel_cancer_screening_p_2": {
+                    "type": "null"
+                  },
+                  "Low_Birthweight_babies": {
+                    "type": "null"
+                  },
+                  "Rank_Low_Birthweight_babies": {
+                    "type": "null"
+                  },
+                  "Percent_Infants_fully_breastfed": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_Infants_fully_brea": {
+                    "type": "null"
+                  },
+                  "Percent_Children_fully_immunise": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_Children_fully_imm": {
+                    "type": "null"
+                  },
+                  "Proportion_of_infants_enrolled_": {
+                    "type": "null"
+                  },
+                  "Rank_Proportion_of_infants_enro": {
+                    "type": "null"
+                  },
+                  "Kindergarten_participation_rate": {
+                    "type": "null"
+                  },
+                  "Percent_of_children_with_kinder": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_of_children_with_k": {
+                    "type": "null"
+                  },
+                  "Percent_of_children_with_emotio": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_of_children_with_e": {
+                    "type": "null"
+                  },
+                  "Percent_of_children_with_speech": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_of_children_with_s": {
+                    "type": "null"
+                  },
+                  "Percent_of_adolescents_who_repo": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_of_adolescents_who": {
+                    "type": "null"
+                  },
+                  "Percent_of_children_who_are_dev": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_of_children_who_ar": {
+                    "type": "null"
+                  },
+                  "Percent_of_children_who_are_d_1": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_of_children_who__1": {
+                    "type": "null"
+                  },
+                  "Core_activity_need_for_assistan": {
+                    "type": "null"
+                  },
+                  "Rank_Core_activity_need_for_ass": {
+                    "type": "null"
+                  },
+                  "People_with_severe_and_profound": {
+                    "type": "null"
+                  },
+                  "Rank_People_with_severe_and_pro": {
+                    "type": "null"
+                  },
+                  "People_with_severe_and_profou_1": {
+                    "type": "null"
+                  },
+                  "Rank_People_with_severe_and_p_1": {
+                    "type": "null"
+                  },
+                  "Percent_pop_aged_75yrsPlus_livi": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_pop_aged_75yrsPlus": {
+                    "type": "null"
+                  },
+                  "Pop_aged_75yrsPlus_living_alone": {
+                    "type": "null"
+                  },
+                  "Rank_Pop_aged_75yrsPlus_living_": {
+                    "type": "null"
+                  },
+                  "Pop_aged_75yrsPlus_living_alo_1": {
+                    "type": "null"
+                  },
+                  "Rank_Pop_aged_75yrsPlus_living1": {
+                    "type": "null"
+                  },
+                  "Persons_receiving_Disability_Se": {
+                    "type": "null"
+                  },
+                  "Rank_Persons_receiving_Disabili": {
+                    "type": "null"
+                  },
+                  "Disability_pension_per_1000_eli": {
+                    "type": "null"
+                  },
+                  "Rank_Disability_pension_per_100": {
+                    "type": "null"
+                  },
+                  "Aged_care_HighCare_beds": {
+                    "type": "null"
+                  },
+                  "Aged_care_LowCare_beds": {
+                    "type": "null"
+                  },
+                  "Age_pension_per_1000_eligible_p": {
+                    "type": "null"
+                  },
+                  "Rank_Age_pension_per_1000_eligi": {
+                    "type": "null"
+                  },
+                  "Male_life_expectancy": {
+                    "type": "null"
+                  },
+                  "Rank_Male_life_expectancy": {
+                    "type": "null"
+                  },
+                  "Female_life_expectancy": {
+                    "type": "null"
+                  },
+                  "Rank_Female_life_expectancy": {
+                    "type": "null"
+                  },
+                  "Persons_reporting_fair_or_poor_": {
+                    "type": "null"
+                  },
+                  "Rank_Persons_reporting_fair_or_": {
+                    "type": "null"
+                  },
+                  "Females_reporting_fair_or_poor_": {
+                    "type": "null"
+                  },
+                  "Rank_Females_reporting_fair_or_": {
+                    "type": "null"
+                  },
+                  "Males_reporting_fair_or_poor_he": {
+                    "type": "null"
+                  },
+                  "Rank_Males_reporting_fair_or_po": {
+                    "type": "null"
+                  },
+                  "Percent_who_have_a_high_degree_": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_who_have_a_high_de": {
+                    "type": "null"
+                  },
+                  "Percent_of_persons_sleeping_les": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_of_persons_sleepin": {
+                    "type": "null"
+                  },
+                  "Percent_persons_with_adequate_w": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_persons_with_adequ": {
+                    "type": "null"
+                  },
+                  "Unintentional_injuries_treated_": {
+                    "type": "null"
+                  },
+                  "Rank_Unintentional_injuries_tre": {
+                    "type": "null"
+                  },
+                  "Intentional_injuries_treated_in": {
+                    "type": "null"
+                  },
+                  "Rank_Intentional_injuries_treat": {
+                    "type": "null"
+                  },
+                  "Percent_of_unintentional_hospit": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_of_unintentional_h": {
+                    "type": "null"
+                  },
+                  "Indirect_standardised_death_rat": {
+                    "type": "null"
+                  },
+                  "Rank_Indirect_standardised_deat": {
+                    "type": "null"
+                  },
+                  "Avoidable_deaths_0to74_yrs_for_": {
+                    "type": "null"
+                  },
+                  "Rank_Avoidable_deaths_0to74_yrs": {
+                    "type": "null"
+                  },
+                  "Avoidable_deaths_0to74yrsrs_for": {
+                    "type": "null"
+                  },
+                  "Rank_Avoidable_deaths_0to74yrsr": {
+                    "type": "null"
+                  },
+                  "Avoidable_deaths_0to74yrsrs_f_1": {
+                    "type": "null"
+                  },
+                  "Rank_Avoidable_deaths_0to74yr_1": {
+                    "type": "null"
+                  },
+                  "Avoidable_deaths_0to74yrs_for_r": {
+                    "type": "null"
+                  },
+                  "Rank_Avoidable_deaths_0to74yrs_": {
+                    "type": "null"
+                  },
+                  "Primary_Health_Network": {
+                    "type": "null"
+                  },
+                  "Primary_Care_Partnership": {
+                    "type": "null"
+                  },
+                  "Number_of_hospitals_and_health_": {
+                    "type": "null"
+                  },
+                  "Number_of_public_hospitals_and_": {
+                    "type": "null"
+                  },
+                  "Number_of_private_hospitals_and": {
+                    "type": "null"
+                  },
+                  "GPs_per_1000_pop": {
+                    "type": "null"
+                  },
+                  "Rank_GPs_per_1000_pop": {
+                    "type": "null"
+                  },
+                  "GP_sites_per_1000_pop": {
+                    "type": "null"
+                  },
+                  "Rank_GP_sites_per_1000_pop": {
+                    "type": "null"
+                  },
+                  "Allied_health_sites_per_1000_po": {
+                    "type": "null"
+                  },
+                  "Rank_Allied_health_sites_per_10": {
+                    "type": "null"
+                  },
+                  "Dental_services_per_1000_pop": {
+                    "type": "null"
+                  },
+                  "Rank_Dental_services_per_1000_p": {
+                    "type": "null"
+                  },
+                  "Pharmacies_per_1000_pop": {
+                    "type": "null"
+                  },
+                  "Rank_Pharmacies_per_1000_pop": {
+                    "type": "null"
+                  },
+                  "Percent_Near_Public_Transport": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_Near_Public_Transp": {
+                    "type": "null"
+                  },
+                  "Percent_with_private_health_ins": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_with_private_healt": {
+                    "type": "null"
+                  },
+                  "Hospital_inpatient_separations_": {
+                    "type": "null"
+                  },
+                  "Rank_Hospital_inpatient_separat": {
+                    "type": "null"
+                  },
+                  "Percent_inpatient_separations_f": {
+                    "type": "null"
+                  },
+                  "Rank_Percent_inpatient_separati": {
+                    "type": "null"
+                  },
+                  "Main_public_hospital_attended_f": {
+                    "type": "null"
+                  },
+                  "Main_public_hospital_attended_P": {
+                    "type": "null"
+                  },
+                  "Rank_Main_public_hospital_atten": {
+                    "type": "null"
+                  },
+                  "Average_length_of_stay_in_days_": {
+                    "type": "null"
+                  },
+                  "Rank_Average_length_of_stay_in_": {
+                    "type": "null"
+                  },
+                  "Average_length_of_stay_for_all_": {
+                    "type": "null"
+                  },
+                  "Rank_Average_length_of_stay_for": {
+                    "type": "null"
+                  },
+                  "Per_annum_Percent_Change_in_Sep": {
+                    "type": "null"
+                  },
+                  "Rank_Per_annum_Percent_Change_i": {
+                    "type": "null"
+                  },
+                  "Per_annum_Percent_Projected_Cha": {
+                    "type": "null"
+                  },
+                  "Rank_Per_annum_Percent_Projecte": {
+                    "type": "null"
+                  },
+                  "ACSCs_per_1000_pop_Total": {
+                    "type": "null"
+                  },
+                  "Rank_ACSCs_per_1000_pop_Total": {
+                    "type": "null"
+                  },
+                  "ACSCs_per_1000_pop_Acute": {
+                    "type": "null"
+                  },
+                  "Rank_ACSCs_per_1000_pop_Acute": {
+                    "type": "null"
+                  },
+                  "ACSCs_per_1000_pop_Chronic": {
+                    "type": "null"
+                  },
+                  "Rank_ACSCs_per_1000_pop_Chronic": {
+                    "type": "null"
+                  },
+                  "ACSCs_per_1000_pop_Vaccine_prev": {
+                    "type": "null"
+                  },
+                  "Rank_ACSCs_per_1000_pop_Vaccine": {
+                    "type": "null"
+                  },
+                  "Emergency_Department_presentati": {
+                    "type": "null"
+                  },
+                  "Rank_Emergency_Department_prese": {
+                    "type": "null"
+                  },
+                  "Primary_care_type_presentations": {
+                    "type": "null"
+                  },
+                  "Rank_Primary_care_type_presenta": {
+                    "type": "null"
+                  },
+                  "Child_protection_investigations": {
+                    "type": "null"
+                  },
+                  "Rank_Child_protection_investiga": {
+                    "type": "null"
+                  },
+                  "Child_protection_substantiation": {
+                    "type": "null"
+                  },
+                  "Rank_Child_protection_substanti": {
+                    "type": "null"
+                  },
+                  "Number_of_Child_FIRST_assessmen": {
+                    "type": "null"
+                  },
+                  "Rank_Number_of_Child_FIRST_asse": {
+                    "type": "null"
+                  },
+                  "GP_attendances_per_1000_pop_Mal": {
+                    "type": "null"
+                  },
+                  "Rank_GP_attendances_per_1000_po": {
+                    "type": "null"
+                  },
+                  "GP_attendances_per_1000_pop_Fem": {
+                    "type": "null"
+                  },
+                  "Rank_GP_attendances_per_1000__1": {
+                    "type": "null"
+                  },
+                  "GP_attendances_per_1000_pop_Tot": {
+                    "type": "null"
+                  },
+                  "Rank_GP_attendances_per_1000__2": {
+                    "type": "null"
+                  },
+                  "HACC_clients_aged_0to64yrs_per_": {
+                    "type": "null"
+                  },
+                  "Rank_HACC_clients_aged_0to64yrs": {
+                    "type": "null"
+                  },
+                  "HACC_clients_aged_65yrsPlus_per": {
+                    "type": "null"
+                  },
+                  "Rank_HACC_clients_aged_65yrsPlu": {
+                    "type": "null"
+                  },
+                  "No_clients_who_received_Alcohol": {
+                    "type": "null"
+                  },
+                  "Rank_No_clients_who_received_Al": {
+                    "type": "null"
+                  },
+                  "Registered_mental_mealth_client": {
+                    "type": "null"
+                  },
+                  "Rank_Registered_mental_mealth_c": {
+                    "type": "null"
+                  }
+                },
+                "required": [
+                  "LGA",
+                  "MetropolitanRural",
+                  "Departmental_Region",
+                  "Departmental_Area",
+                  "Area_of_LGA_sq_km",
+                  "ASGS_LGA_code",
+                  "Most_populous_town_or_suburb_in",
+                  "Distance_to_Melbourne_in_km",
+                  "Travel_time_from_Melbourne_GPO_",
+                  "ARIA_Remoteness_category",
+                  "Percent_Business_land_use",
+                  "Percent_Industrial_land_use",
+                  "Percent_Residential_land_use",
+                  "Percent_Rural_land_use",
+                  "Percent_Other_land_use",
+                  "Per_annum_pop_change_actual_for",
+                  "Per_annum_pop_change_projected_",
+                  "Females0to14yrs",
+                  "Females15to24yrs",
+                  "Females25to44yrs",
+                  "Females45to64yrs",
+                  "Females65to84yrs",
+                  "Female85yrsPlus",
+                  "TotalFemales",
+                  "Males0to14yrs",
+                  "Males15to24yrs",
+                  "Males25to44yrs",
+                  "Males45to64yrs",
+                  "Males65to84yrs",
+                  "Male85yrsPlus",
+                  "TotalMales",
+                  "Total0to14yrs",
+                  "Tota15to24yrs",
+                  "Tota25to44yrs",
+                  "Tota45to64yrs",
+                  "Tota65to84yrs",
+                  "Tota85yrsPlus",
+                  "Total2013ERP",
+                  "Percent_Total0to14yrs",
+                  "PercentTotal15to24yrs",
+                  "PercentTotal25to44yrs",
+                  "PercentTotal45to64yrs",
+                  "PercentTotal65to84yrs",
+                  "PercentTotal84yrsPlus",
+                  "Total_fertility_rate_2012",
+                  "Rank_Total_fertility_rate_2012",
+                  "Teenage_fertility_rate_2012",
+                  "Rank_Teenage_fertility_rate_201",
+                  "Percent_Aboriginal_or_Torres_St",
+                  "Rank_Aboriginal_or_Torres_Strai",
+                  "Percent_Born_overseas_2011",
+                  "Rank_Percent_Born_overseas_2011",
+                  "Born_in_a_non_English_speaking_",
+                  "Rank_Born_in_a_non_English_spea",
+                  "Country_1_Percent_for_Top_5_ove",
+                  "Country_1_for_Top_5_overseas_co",
+                  "Country_2_Percent_for_Top_5_ove",
+                  "Country_2_for_Top_5_overseas_co",
+                  "Country_3_Percent_for_Top_5_ove",
+                  "Country_3_for_Top_5_overseas_co",
+                  "Country_4_Percent_for_Top_5_ove",
+                  "Country_4_for_Top_5_overseas_co",
+                  "Country_5_Percent_for_Top_5_ove",
+                  "Country_5_for_Top_5_overseas_co",
+                  "Percent_Speaks_LOTE_at_home",
+                  "Rank_Percent_Speaks_LOTE_at_hom",
+                  "Country_1_Percent_Top_5_languag",
+                  "Country_1_Top_5_languages_spoke",
+                  "Country_2_Percent_Top_5_languag",
+                  "Country_2_Top_5_languages_spoke",
+                  "Country_3_Percent_Top_5_languag",
+                  "Country_3_Top_5_languages_spoke",
+                  "Country_4_Percent_Top_5_languag",
+                  "Country_4_Top_5_languages_spoke",
+                  "Country_5_Percent_Top_5_languag",
+                  "Country_5_Top_5_languages_spoke",
+                  "Percent_Low_English_proficiency",
+                  "Rank_Percent_Low_English_profic",
+                  "Ancestry_1_Percent_Top_5_ancest",
+                  "Ancestry_1_Top_5_ancestries",
+                  "Ancestry_2_Percent_Top_5_ancest",
+                  "Ancestry_2_Top_5_ancestries",
+                  "Ancestry_3_Percent_Top_5_ancest",
+                  "Ancestry_3_Top_5_ancestries",
+                  "Ancestry_4_Percent_Top_5_ancest",
+                  "Ancestry_4_Top_5_ancestries",
+                  "Ancestry_5_Percent_Top_5_ancest",
+                  "Ancestry_5_Top_5_ancestries",
+                  "New_settler_arrivals_per_100000",
+                  "Rank_New_settler_arrivals_per_1",
+                  "Humanitarian_arrivals_as_a_Perc",
+                  "Rank_Humanitarian_arrivals_as_a",
+                  "Community_acceptance_of_diverse",
+                  "Rank_Community_acceptance_of_di",
+                  "Proportion_of_households_with_b",
+                  "Households_with_broadband_inter",
+                  "Gaming_machine_losses_per_head_",
+                  "Rank_Gaming_machine_losses_per_",
+                  "Family_Incidents_per_1000_pop",
+                  "Rank_Family_Incidents_per_1000_",
+                  "Drug_usage_and_possession_offen",
+                  "Rank_Drug_usage_and_possession_",
+                  "Total_Crime_per_1000_pop",
+                  "Rank_Total_Crime_per_1000_pop",
+                  "Feels_safe_walking_alone_during",
+                  "Rank_Feels_safe_walking_alone_d",
+                  "Believe_other_people_can_be_tru",
+                  "Rank_Believe_other_people_can_b",
+                  "Spoke_with_more_than_5_people_t",
+                  "Rank_Spoke_with_more_than_5_peo",
+                  "Able_to_definitely_get_help_fro",
+                  "Rank_Able_to_definitely_get_hel",
+                  "Volunteers",
+                  "Rank_Volunteers",
+                  "Feel_valued_by_society",
+                  "Rank_Feel_valued_by_society",
+                  "Attended_a_local_community_even",
+                  "Rank_Attended_a_local_community",
+                  "Take_action_on_behalf_of_the_lo",
+                  "Rank_Take_action_on_behalf_of_t",
+                  "Members_of_a_sports_group",
+                  "Rank_Members_of_a_sports_group",
+                  "Members_of_a_religious_group",
+                  "Rank_Members_of_a_religious_gro",
+                  "Rated_their_community_as_an_act",
+                  "Rank_Rated_their_community_as_a",
+                  "Rated_their_community_as_a_plea",
+                  "Rank_ated_their_community_as_a_",
+                  "Rated_their_community_as_good_o",
+                  "Rank_Rated_their_community_as_g",
+                  "Index_of_Relative_Socia_Economi",
+                  "Rank_Index_of_Relative_Socia_Ec",
+                  "Unemployment_rate",
+                  "Rank_Unemployment_rate",
+                  "Percent_Individual_income_Less_",
+                  "Rank_Percent_Individual_income_",
+                  "Percent_Female_income_Less_than",
+                  "Rank_Percent_Female_income_Less",
+                  "Percent_Male_income_Less_than_4",
+                  "Rank_Percent_Male_income_Less_t",
+                  "Percent_One_Parent_headed_famil",
+                  "Rank_Percent_One_Parent_headed_",
+                  "One_Parent_headed_families_Perc",
+                  "Rank_One_Parent_headed_families",
+                  "One_Parent_headed_families_Pe_1",
+                  "Rank_One_Parent_headed_famili_1",
+                  "Equivalised_median_income",
+                  "Rank_Equivalised_median_income",
+                  "Delayed_medical_consultation_be",
+                  "Rank_Delayed_medical_consultati",
+                  "Delayed_purchasing_prescribed_m",
+                  "Rank_Delayed_purchasing_prescri",
+                  "Percent_low_income_welfare_depe",
+                  "Rank_Percent_low_income_welfare",
+                  "Percent_of_pop_with_food_insecu",
+                  "Rank_Percent_of_pop_with_food_i",
+                  "Percent_Mortgage_Stress",
+                  "Rank_Percent_Mortgage_Stress",
+                  "Percent_Rental_Stress",
+                  "Rank_Percent_Rental_Stress",
+                  "Percent_of_rental_housing_that_",
+                  "Rank_Percent_of_rental_housing_",
+                  "Median_house_price",
+                  "Rank_Median_house_price",
+                  "Median_rent_for_3_bedrooms_home",
+                  "Rank_Median_rent_for_3_bedrooms",
+                  "New_dwellings_approved_for_cons",
+                  "Rank_New_dwellings_approved_for",
+                  "Social_housing_stock_as_a_Perce",
+                  "Rank_Social_housing_stock_as_a_",
+                  "Number_of_Social_housing_dwelli",
+                  "Rank_Number_of_Social_housing_d",
+                  "Homelessness_rate_per_1000_pop",
+                  "Rank_Homelessness_rate_per_1000",
+                  "Percent_of_work_journeys_which_",
+                  "Rank_Percent_of_work_journeys_w",
+                  "Percent_of_work_journeys_which1",
+                  "Rank_Percent_of_work_journeys_1",
+                  "Persons_with_at_least_2_hour_da",
+                  "Rank_Persons_with_at_least_2_ho",
+                  "Percent_households_with_no_moto",
+                  "Rank_Percent_households_with_no",
+                  "FTE_Students",
+                  "Percent_year_9_students_who_att",
+                  "Rank_Percent_of_year_9_students",
+                  "Percent_of_year_9_students_who_",
+                  "Rank_Percent_year_9_students_wh",
+                  "Percent_19_year_olds_completing",
+                  "Rank_Percent_19_year_olds_compl",
+                  "Percent_persons_who_did_not_com",
+                  "Rank_Percent_of_persons_who_did",
+                  "Percent_persons_who_completed_a",
+                  "Rank_Percent_persons_who_comple",
+                  "Percent_of_school_children_atte",
+                  "Rank_Percent_of_school_children",
+                  "Percent_of_persons_reporting_as",
+                  "Rank_Percent_of_persons_reporti",
+                  "Percent_of_persons_reporting_ty",
+                  "Rank_Percent_of_persons_repor_1",
+                  "Percent_of_persons_reporting_hi",
+                  "Rank_Percent_of_persons_repor_2",
+                  "Percent_of_persons_reporting_he",
+                  "Rank_Percent_of_persons_repor_3",
+                  "Percent_of_persons_reporting_os",
+                  "Rank_Percent_of_persons_repor_4",
+                  "Percent_of_persons_reporting_ar",
+                  "Rank_Percent_of_persons_repor_5",
+                  "Percent_of_persons_who_are_over",
+                  "Rank_Percent_of_persons_who_are",
+                  "Percent_of_females_who_are_over",
+                  "Rank_Percent_of_females_who_are",
+                  "Percent_of_males_who_are_overwe",
+                  "Rank_Percent_of_males_who_are_o",
+                  "Percent_of_persons_who_are_obes",
+                  "Rank_Percent_of_persons_who_a_1",
+                  "Percent_of_females_who_are_obes",
+                  "Rank_Percent_of_females_who_a_1",
+                  "Percent_of_males_who_are_obese",
+                  "Rank_Percent_of_males_who_are_1",
+                  "Malignant_cancers_diagnosed_per",
+                  "Rank_Malignant_cancers_diagnose",
+                  "Male_Cancer_incidence_per_1000_",
+                  "Rank_Male_Cancer_incidence_per_",
+                  "Female_Cancer_incidence_per_100",
+                  "Rank_Female_Cancer_incidence_pe",
+                  "Percent_Poor_dental_health",
+                  "Rank_Percent_Poor_dental_health",
+                  "Notifications_per_100000_pop_of",
+                  "Rank_Notifications_per_100000_p",
+                  "Notifications_per_100000_pop__1",
+                  "Rank_Notifications_per_100000_1",
+                  "Notifications_per_100000_people",
+                  "Rank_Notifications_per_100000_2",
+                  "Percent_of_persons_18yrsPlus_wh",
+                  "Rank_Percent_of_persons_18yrsPl",
+                  "Percent_of_males_18yrsPlus_who_",
+                  "Rank_Percent_of_males_18yrsPlus",
+                  "Percent_of_females_18yrsPlus_wh",
+                  "Rank_Percent_of_females_18yrsPl",
+                  "Consumed_alcohol_at_least_weekl",
+                  "Rank_Consumed_alcohol_at_least_",
+                  "Consumed_alcohol_at_least_wee_1",
+                  "Rank_Consumed_alcohol_at_least1",
+                  "Percent_of_persons_who_do_not_m",
+                  "Rank_Percent_of_persons_who_do_",
+                  "Percent_of_males_who_do_not_mee",
+                  "Rank_Percent_of_males_who_do_no",
+                  "Percent_of_females_who_do_not_m",
+                  "Rank_Percent_of_females_who_do_",
+                  "Percent_of_persons_who_drink_so",
+                  "Rank_Percent_of_persons_who_dri",
+                  "Percent_of_persons_who_share_a_",
+                  "Rank_Percent_of_persons_who_sha",
+                  "Percent_of_persons_who_do_not_1",
+                  "Rank_Percent_of_persons_who_do1",
+                  "Percent_of_males_who_do_not_m_1",
+                  "Rank_Percent_of_males_who_do__1",
+                  "Percent_of_females_who_do_not_1",
+                  "Rank_Percent_of_females_who_do1",
+                  "Percent_of_persons_who_sit_for_",
+                  "Rank_Percent_of_persons_who_sit",
+                  "Percent_of_persons_who_visit_a_",
+                  "Rank_Percent_of_persons_who_vis",
+                  "Percent_of_breast_screening_par",
+                  "Rank_Percent_of_breast_screenin",
+                  "Percent_of_cervical_cancer_scre",
+                  "Rank_Percent_of_cervical_cancer",
+                  "Bowel_cancer_screening_particip",
+                  "Rank_Bowel_cancer_screening_par",
+                  "Bowel_cancer_screening_partic_1",
+                  "Rank_Bowel_cancer_screening_p_1",
+                  "Bowel_cancer_screening_partic_2",
+                  "Rank_Bowel_cancer_screening_p_2",
+                  "Low_Birthweight_babies",
+                  "Rank_Low_Birthweight_babies",
+                  "Percent_Infants_fully_breastfed",
+                  "Rank_Percent_Infants_fully_brea",
+                  "Percent_Children_fully_immunise",
+                  "Rank_Percent_Children_fully_imm",
+                  "Proportion_of_infants_enrolled_",
+                  "Rank_Proportion_of_infants_enro",
+                  "Kindergarten_participation_rate",
+                  "Percent_of_children_with_kinder",
+                  "Rank_Percent_of_children_with_k",
+                  "Percent_of_children_with_emotio",
+                  "Rank_Percent_of_children_with_e",
+                  "Percent_of_children_with_speech",
+                  "Rank_Percent_of_children_with_s",
+                  "Percent_of_adolescents_who_repo",
+                  "Rank_Percent_of_adolescents_who",
+                  "Percent_of_children_who_are_dev",
+                  "Rank_Percent_of_children_who_ar",
+                  "Percent_of_children_who_are_d_1",
+                  "Rank_Percent_of_children_who__1",
+                  "Core_activity_need_for_assistan",
+                  "Rank_Core_activity_need_for_ass",
+                  "People_with_severe_and_profound",
+                  "Rank_People_with_severe_and_pro",
+                  "People_with_severe_and_profou_1",
+                  "Rank_People_with_severe_and_p_1",
+                  "Percent_pop_aged_75yrsPlus_livi",
+                  "Rank_Percent_pop_aged_75yrsPlus",
+                  "Pop_aged_75yrsPlus_living_alone",
+                  "Rank_Pop_aged_75yrsPlus_living_",
+                  "Pop_aged_75yrsPlus_living_alo_1",
+                  "Rank_Pop_aged_75yrsPlus_living1",
+                  "Persons_receiving_Disability_Se",
+                  "Rank_Persons_receiving_Disabili",
+                  "Disability_pension_per_1000_eli",
+                  "Rank_Disability_pension_per_100",
+                  "Aged_care_HighCare_beds",
+                  "Aged_care_LowCare_beds",
+                  "Age_pension_per_1000_eligible_p",
+                  "Rank_Age_pension_per_1000_eligi",
+                  "Male_life_expectancy",
+                  "Rank_Male_life_expectancy",
+                  "Female_life_expectancy",
+                  "Rank_Female_life_expectancy",
+                  "Persons_reporting_fair_or_poor_",
+                  "Rank_Persons_reporting_fair_or_",
+                  "Females_reporting_fair_or_poor_",
+                  "Rank_Females_reporting_fair_or_",
+                  "Males_reporting_fair_or_poor_he",
+                  "Rank_Males_reporting_fair_or_po",
+                  "Percent_who_have_a_high_degree_",
+                  "Rank_Percent_who_have_a_high_de",
+                  "Percent_of_persons_sleeping_les",
+                  "Rank_Percent_of_persons_sleepin",
+                  "Percent_persons_with_adequate_w",
+                  "Rank_Percent_persons_with_adequ",
+                  "Unintentional_injuries_treated_",
+                  "Rank_Unintentional_injuries_tre",
+                  "Intentional_injuries_treated_in",
+                  "Rank_Intentional_injuries_treat",
+                  "Percent_of_unintentional_hospit",
+                  "Rank_Percent_of_unintentional_h",
+                  "Indirect_standardised_death_rat",
+                  "Rank_Indirect_standardised_deat",
+                  "Avoidable_deaths_0to74_yrs_for_",
+                  "Rank_Avoidable_deaths_0to74_yrs",
+                  "Avoidable_deaths_0to74yrsrs_for",
+                  "Rank_Avoidable_deaths_0to74yrsr",
+                  "Avoidable_deaths_0to74yrsrs_f_1",
+                  "Rank_Avoidable_deaths_0to74yr_1",
+                  "Avoidable_deaths_0to74yrs_for_r",
+                  "Rank_Avoidable_deaths_0to74yrs_",
+                  "Primary_Health_Network",
+                  "Primary_Care_Partnership",
+                  "Number_of_hospitals_and_health_",
+                  "Number_of_public_hospitals_and_",
+                  "Number_of_private_hospitals_and",
+                  "GPs_per_1000_pop",
+                  "Rank_GPs_per_1000_pop",
+                  "GP_sites_per_1000_pop",
+                  "Rank_GP_sites_per_1000_pop",
+                  "Allied_health_sites_per_1000_po",
+                  "Rank_Allied_health_sites_per_10",
+                  "Dental_services_per_1000_pop",
+                  "Rank_Dental_services_per_1000_p",
+                  "Pharmacies_per_1000_pop",
+                  "Rank_Pharmacies_per_1000_pop",
+                  "Percent_Near_Public_Transport",
+                  "Rank_Percent_Near_Public_Transp",
+                  "Percent_with_private_health_ins",
+                  "Rank_Percent_with_private_healt",
+                  "Hospital_inpatient_separations_",
+                  "Rank_Hospital_inpatient_separat",
+                  "Percent_inpatient_separations_f",
+                  "Rank_Percent_inpatient_separati",
+                  "Main_public_hospital_attended_f",
+                  "Main_public_hospital_attended_P",
+                  "Rank_Main_public_hospital_atten",
+                  "Average_length_of_stay_in_days_",
+                  "Rank_Average_length_of_stay_in_",
+                  "Average_length_of_stay_for_all_",
+                  "Rank_Average_length_of_stay_for",
+                  "Per_annum_Percent_Change_in_Sep",
+                  "Rank_Per_annum_Percent_Change_i",
+                  "Per_annum_Percent_Projected_Cha",
+                  "Rank_Per_annum_Percent_Projecte",
+                  "ACSCs_per_1000_pop_Total",
+                  "Rank_ACSCs_per_1000_pop_Total",
+                  "ACSCs_per_1000_pop_Acute",
+                  "Rank_ACSCs_per_1000_pop_Acute",
+                  "ACSCs_per_1000_pop_Chronic",
+                  "Rank_ACSCs_per_1000_pop_Chronic",
+                  "ACSCs_per_1000_pop_Vaccine_prev",
+                  "Rank_ACSCs_per_1000_pop_Vaccine",
+                  "Emergency_Department_presentati",
+                  "Rank_Emergency_Department_prese",
+                  "Primary_care_type_presentations",
+                  "Rank_Primary_care_type_presenta",
+                  "Child_protection_investigations",
+                  "Rank_Child_protection_investiga",
+                  "Child_protection_substantiation",
+                  "Rank_Child_protection_substanti",
+                  "Number_of_Child_FIRST_assessmen",
+                  "Rank_Number_of_Child_FIRST_asse",
+                  "GP_attendances_per_1000_pop_Mal",
+                  "Rank_GP_attendances_per_1000_po",
+                  "GP_attendances_per_1000_pop_Fem",
+                  "Rank_GP_attendances_per_1000__1",
+                  "GP_attendances_per_1000_pop_Tot",
+                  "Rank_GP_attendances_per_1000__2",
+                  "HACC_clients_aged_0to64yrs_per_",
+                  "Rank_HACC_clients_aged_0to64yrs",
+                  "HACC_clients_aged_65yrsPlus_per",
+                  "Rank_HACC_clients_aged_65yrsPlu",
+                  "No_clients_who_received_Alcohol",
+                  "Rank_No_clients_who_received_Al",
+                  "Registered_mental_mealth_client",
+                  "Rank_Registered_mental_mealth_c"
+                ]
+              }
+            },
+            "required": [
+              "attributes"
+            ]
+          }
+        },
+        "required": [
+          "name",
+          "description",
+          "drawingTool",
+          "prototype"
+        ]
+      }
+    },
+    "supportedQueryFormats": {
+      "type": "string"
+    },
+    "hasStaticData": {
+      "type": "boolean"
+    },
+    "maxRecordCount": {
+      "type": "integer"
+    },
+    "standardMaxRecordCount": {
+      "type": "integer"
+    },
+    "tileMaxRecordCount": {
+      "type": "integer"
+    },
+    "maxRecordCountFactor": {
+      "type": "integer"
+    },
+    "capabilities": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "currentVersion",
+    "id",
+    "name",
+    "type",
+    "serviceItemId",
+    "displayField",
+    "description",
+    "copyrightText",
+    "defaultVisibility",
+    "editingInfo",
+    "multiScaleGeometryInfo",
+    "relationships",
+    "isDataVersioned",
+    "supportsCalculate",
+    "supportsTruncate",
+    "supportsAttachmentsByUploadId",
+    "supportsRollbackOnFailureParameter",
+    "supportsStatistics",
+    "supportsAdvancedQueries",
+    "supportsValidateSql",
+    "supportsCoordinatesQuantization",
+    "supportsApplyEditsWithGlobalIds",
+    "supportsMultiScaleGeometry",
+    "advancedQueryCapabilities",
+    "useStandardizedQueries",
+    "geometryType",
+    "minScale",
+    "maxScale",
+    "extent",
+    "drawingInfo",
+    "allowGeometryUpdates",
+    "hasAttachments",
+    "htmlPopupType",
+    "hasM",
+    "hasZ",
+    "objectIdField",
+    "globalIdField",
+    "typeIdField",
+    "fields",
+    "indexes",
+    "types",
+    "templates",
+    "supportedQueryFormats",
+    "hasStaticData",
+    "maxRecordCount",
+    "standardMaxRecordCount",
+    "tileMaxRecordCount",
+    "maxRecordCountFactor",
+    "capabilities"
+  ]
+}

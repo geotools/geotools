@@ -1,0 +1,84 @@
+{
+  "currentVersion" : 10.41,
+  "serviceItemId" : "8e2fe1ee979b4c80a837caac2968d6d4",
+  "serviceDescription" : "",
+  "hasVersionedData" : false,
+  "supportsDisconnectedEditing" : false,
+  "hasStaticData" : true,
+  "maxRecordCount" : 2000,
+  "supportedQueryFormats" : "JSON",
+  "capabilities" : "Query,Sync",
+  "description" : "",
+  "copyrightText" : "",
+  "spatialReference" : {
+    "wkid" : 102100,
+    "latestWkid" : 3857
+  },
+  "initialExtent" : {
+    "xmin" : -19496009.707956623,
+    "ymin" : -7128878.350037612,
+    "xmax" : 19947945.358478159,
+    "ymax" : 14502137.593437815,
+    "spatialReference" : {
+      "wkid" : 102100,
+      "latestWkid" : 3857
+    }
+  },
+  "fullExtent" : {
+    "xmin" : -19496009.707956623,
+    "ymin" : -7128878.350037612,
+    "xmax" : 19947945.358478159,
+    "ymax" : 14502137.593437815,
+    "spatialReference" : {
+      "wkid" : 102100,
+      "latestWkid" : 3857
+    }
+  },
+  "allowGeometryUpdates" : true,
+  "units" : "esriMeters",
+  "size" : 434176,
+  "syncEnabled" : true,
+  "syncCapabilities" : {
+    "supportsAsync" : true,
+    "supportsRegisteringExistingData" : true,
+    "supportsSyncDirectionControl" : true,
+    "supportsPerLayerSync" : true,
+    "supportsPerReplicaSync" : true,
+    "supportsSyncModelNone" : true,
+    "supportsRollbackOnFailure" : true,
+    "supportsAttachmentsSyncDirection" : true
+  },
+  "supportsApplyEditsWithGlobalIds" : true,
+  "editorTrackingInfo" : {
+    "enableEditorTracking" : false,
+    "enableOwnershipAccessControl" : false,
+    "allowOthersToQuery" : true,
+    "allowOthersToUpdate" : true,
+    "allowOthersToDelete" : true,
+    "allowAnonymousToUpdate" : true,
+    "allowAnonymousToDelete" : true
+  },
+  "xssPreventionInfo" : {
+    "xssPreventionEnabled" : true,
+    "xssPreventionRule" : "InputOnly",
+    "xssInputRule" : "rejectInvalid"
+  },
+  "layers" : [ {
+    "id" : 0,
+    "name" : "Airports_2",
+    "parentLayerId" : -1,
+    "defaultVisibility" : true,
+    "subLayerIds" : null,
+    "minScale" : 0,
+    "maxScale" : 0
+  } , {
+    "id" : 1,
+    "name" : "Airports_3",
+    "parentLayerId" : -1,
+    "defaultVisibility" : true,
+    "subLayerIds" : null,
+    "minScale" : 0,
+    "maxScale" : 0
+  } ],
+  "tables" : []
+}

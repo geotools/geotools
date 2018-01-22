@@ -1,0 +1,10 @@
+{
+  "currentVersion" : 10.41,
+  "services" : [ {
+    "name" : "Airports_2",
+    "type" : "FeatureServer"
+  }, {
+    "name" : "affordable_housing",
+    "type" : "FeatureServer"
+  } ]
+}

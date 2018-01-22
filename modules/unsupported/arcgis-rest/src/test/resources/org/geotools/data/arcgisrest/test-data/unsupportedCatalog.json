@@ -1,0 +1,12 @@
+{
+  "currentVersion" : 10.05, 
+  "serviceDescription" : "", 
+  "layers" : [
+    {
+      "id" : 0, 
+      "name" : "Earthquakes from last 7 days"
+    }
+  ], 
+  "tables" : [
+  ]
+}

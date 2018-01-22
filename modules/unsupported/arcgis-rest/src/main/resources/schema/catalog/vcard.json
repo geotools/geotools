@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "https://project-open-data.cio.gov/v1.1/schema/vcard.json#",
+  "title": "Project Open Data ContactPoint vCard",
+  "description": "A Dataset ContactPoint as a vCard object",
+  "type": "object",
+  "required": [
+    "fn",
+    "hasEmail"
+  ],
+  "properties": {
+    "@type": {
+      "title": "Metadata Context",
+      "description": "IRI for the JSON-LD data type. This should be vcard:Contact for contactPoint",
+      "enum": [
+        "vcard:Contact"
+      ]
+    },
+    "fn": {
+      "title": "Contact Name",
+      "description": "A full formatted name, eg Firstname Lastname",
+      "type": "string",
+      "minLength": 1
+    },
+    "hasEmail": {
+      "title": "Email",
+      "description": "Email address for the contact",
+      "pattern": "^mailto:[\\w\\_\\~\\!\\$\\&\\'\\(\\)\\*\\+\\,\\;\\=\\:.-]+@[\\w.-]+\\.[\\w.-]+?$",
+      "type": "string"
+    }
+  }
+}

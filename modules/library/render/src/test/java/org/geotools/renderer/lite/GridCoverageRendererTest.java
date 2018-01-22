@@ -706,6 +706,14 @@ public class GridCoverageRendererTest  {
         File reference = new File(
                 "src/test/resources/org/geotools/renderer/lite/gridcoverage2d/utm.png");
         ImageAssert.assertEquals(reference, image, 0);
+
+		Object property = image.getProperty(GridCoverageRenderer.PARENT_COVERAGE_PROPERTY);
+		assertNotNull(property);
+		assertTrue(property instanceof GridCoverage2D);
+		GridCoverage2D propertyCoverage = (GridCoverage2D) property;
+		CoordinateReferenceSystem targetCrs = propertyCoverage.getCoordinateReferenceSystem();
+		assertTrue(targetCrs.getName().equals(crs.getName()));
+
     }
 
     @Test
@@ -767,7 +775,6 @@ public class GridCoverageRendererTest  {
         RasterSymbolizer rasterSymbolizer = new StyleBuilder().createRasterSymbolizer();
         RenderedImage image = renderer.renderImage(worldPaletteReader, null, rasterSymbolizer,
                 Interpolation.getInstance(Interpolation.INTERP_BICUBIC), null, 256, 256);
-
         assertNotNull(image);
     }
 

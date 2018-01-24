@@ -31,6 +31,10 @@ public class CacheConfig {
 
     private static final Logger LOGGER = Logger.getLogger("S3");
 
+    //chunk size
+    public static final String S3_CHUNK_SIZE_BYTES = "s3.caching.chunkSizeBytes";
+
+
     //whether disk caching should be disabled
     public static final String S3_CACHING_DISABLE_DISK = "s3.caching.disableDisk";
 
@@ -59,12 +63,16 @@ public class CacheConfig {
     private int chunkSizeBytes = 5 * MEBIBYTE_IN_BYTES;
     private int diskCacheSize = 500 * MEBIBYTE_IN_BYTES;
     private int heapSize = 50 * MEBIBYTE_IN_BYTES;
-    private Path cachDirectory;
+    private Path cacheDirectory;
     private String configurationPath;
 
     public static CacheConfig getDefaultConfig() {
         CacheConfig config = new CacheConfig();
 
+        if (System.getProperty(S3_CHUNK_SIZE_BYTES) != null) {
+            config.setChunkSizeBytes(Integer.getInteger(S3_CHUNK_SIZE_BYTES));
+        }
+        
         if (Boolean.getBoolean(S3_CACHING_DISABLE_DISK)) {
             config.setUseDiskCache(false);
         }
@@ -108,7 +116,7 @@ public class CacheConfig {
             try {
                 String diskPath = System.getProperty(S3_CACHING_DISK_PATH);
                 Path cachePath = Paths.get(diskPath);
-                config.setCachDirectory(cachePath);
+                config.setCacheDirectory(cachePath);
             }
             catch (InvalidPathException e) {
                 LOGGER.log(Level.FINER, "Can't parse disk cache path", e);
@@ -117,7 +125,7 @@ public class CacheConfig {
         else {
             if (config.isUseDiskCache()) {
                 try {
-                    config.setCachDirectory(Files.createTempDirectory("s3Cachine"));
+                    config.setCacheDirectory(Files.createTempDirectory("s3Cachine"));
                 } catch (IOException e) {
                     throw new RuntimeException("CAN'T CREATE TEMP CACHING DIRECTORY AND NO DIRECTORY SPECIFIED", e);
                 }
@@ -164,12 +172,12 @@ public class CacheConfig {
         this.diskCacheSize = diskCacheSize;
     }
 
-    public Path getCachDirectory() {
-        return cachDirectory;
+    public Path getCacheDirectory() {
+        return cacheDirectory;
     }
 
-    public void setCachDirectory(Path cachDirectory) {
-        this.cachDirectory = cachDirectory;
+    public void setCacheDirectory(Path cacheDirectory) {
+        this.cacheDirectory = cacheDirectory;
     }
 
     public String getConfigurationPath() {

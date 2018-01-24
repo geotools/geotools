@@ -57,9 +57,12 @@ public enum CacheManagement {
                     PersistenceConfiguration.Strategy.LOCALTEMPSWAP));
             cacheConfig.defaultCache(defaultCacheConfiguration);
 
-            DiskStoreConfiguration diskConfig = new DiskStoreConfiguration();
-            diskConfig.setPath(config.getCachDirectory().toAbsolutePath().toString());
-            cacheConfig.diskStore(diskConfig);
+            if (config.isUseDiskCache()) {
+                DiskStoreConfiguration diskConfig = new DiskStoreConfiguration();
+                diskConfig.setPath(config.getCacheDirectory().toAbsolutePath().toString());
+                cacheConfig.diskStore(diskConfig);
+            }
+            
             manager = new CacheManager(cacheConfig);
 
             manager.addCache(DEFAULT_CACHE);

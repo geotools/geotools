@@ -48,6 +48,24 @@ Java 5    GeoTools 2.5.x   GeoTools 8.x     compiler=1.5
 Java 1.4  GeoTools 2.x     GeoTools 2.4.x   compiler=1.4 
 ========= ================ ================ =================
 
+Using Java 9 with GeoTools
+''''''''''''''''''''''''''
+
+Java 9 introduces a number of changes to the JVM, most notably the module system (Project Jigsaw). Refer to `The State of the Module System <http://openjdk.java.net/projects/jigsaw/spec/sotms/>`_ for more details.
+While GeoTools has not yet been updated to use the module system, GeoTools 19.x can run on Java 9.
+
+If your project depends on GeoTools 19.x, and you want to use it with Java 9, you will need to add the following flags to your JVM runtime arguments::
+
+    --add-modules=java.xml.bind --add-modules=java.activation
+
+This adds the JAXB and Activation modules to the Java Runtime (They are not included by default in Java 9).
+
+Note that these arguments are not supported under Java 8. If you wish to retain compatibility with Java 8, also include::
+
+    -XX:+IgnoreUnrecognizedVMOptions
+
+This tells the JVM to ignore options it doesn't recognize, so Java 8 won't throw an error.
+
 Why JAVA_HOME does not work on Windows
 ''''''''''''''''''''''''''''''''''''''
 

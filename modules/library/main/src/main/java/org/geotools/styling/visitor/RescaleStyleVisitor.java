@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.measure.quantity.Length;
+import javax.measure.unit.NonSI;
 import javax.measure.unit.Unit;
 
 import org.geotools.factory.CommonFactoryFinder;
@@ -330,6 +331,9 @@ public class RescaleStyleVisitor extends DuplicatingStyleVisitor {
         this.defaultUnit = sym.getUnitOfMeasure();
         try {
             super.visit(sym);
+
+            PolygonSymbolizer copy = (PolygonSymbolizer) pages.peek();
+            rescaleArrayOption(copy.getOptions(), PolygonSymbolizer.GRAPHIC_MARGIN_KEY, 0);
         } finally {
             this.defaultUnit = null;
         }        

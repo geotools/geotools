@@ -254,6 +254,27 @@ public class RescaleStyleVisitorTest {
         assertEquals("4", clone.getPerpendicularOffset().evaluate(null, String.class));
     }
     
-    
-    
+    @Test
+    public void testRescalePolygonMargin() throws Exception {
+        // create a graphic that needs rescaling
+        StyleBuilder sb = new StyleBuilder();
+
+        // a graphic fill
+        Fill fill = sb.createFill();
+        fill.setColor(null);
+        fill.setGraphicFill(sb.createGraphic(null, sb.createMark("square", null, sb.createStroke(2)), null));
+
+        // a polygon and line symbolizer using them
+        PolygonSymbolizer polygonSymbolizer = sb.createPolygonSymbolizer(sb.createStroke(), fill);
+        polygonSymbolizer.getOptions().put(PolygonSymbolizer.GRAPHIC_MARGIN_KEY, "1 2 3 4");
+
+        // rescale it
+        polygonSymbolizer.accept(visitor);
+        PolygonSymbolizer rps = (PolygonSymbolizer) visitor.getCopy();
+        Mark rm = (Mark) rps.getFill().getGraphicFill().graphicalSymbols().get(0);
+        assertEquals(4.0, rm.getStroke().getWidth().evaluate(null, Double.class), 0d);
+        assertEquals("2 4 6 8", rps.getOptions().get(PolygonSymbolizer.GRAPHIC_MARGIN_KEY));
+    }
+
+
 }

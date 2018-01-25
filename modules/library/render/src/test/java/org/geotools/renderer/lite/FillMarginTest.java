@@ -3,6 +3,9 @@ package org.geotools.renderer.lite;
 import java.awt.Font;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -70,6 +73,22 @@ public class FillMarginTest {
         
         BufferedImage image = RendererBaseTest.showRender("MarginFill", renderer, TIME, bounds);
         ImageAssert.assertEquals(new File("./src/test/resources/org/geotools/renderer/lite/test-data/margin/expected.png"), image, 100); 
+    }
+
+    @Test
+    public void testFillSLD10HighDPI() throws Exception {
+        Style style = RendererBaseTest.loadStyle(this, "margin/fill10.sld");
+
+        MapContent mc = new MapContent();
+        mc.addLayer(new FeatureLayer(bfs, style));
+
+        StreamingRenderer renderer = new StreamingRenderer();
+        renderer.setMapContent(mc);
+        Map hints = Collections.singletonMap(StreamingRenderer.DPI_KEY, 300);
+        renderer.setRendererHints(hints);
+
+        BufferedImage image = RendererBaseTest.renderImage(renderer, bounds, null, 480, 480);
+        ImageAssert.assertEquals(new File("./src/test/resources/org/geotools/renderer/lite/test-data/margin/expected-dpi300.png"), image, 100);
     }
     
     @Test

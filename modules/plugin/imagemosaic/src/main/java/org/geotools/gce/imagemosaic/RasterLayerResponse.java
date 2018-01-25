@@ -16,6 +16,7 @@
  */
 package org.geotools.gce.imagemosaic;
 
+import com.sun.media.imageioimpl.common.BogusColorSpace;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.util.Assert;
 import it.geosolutions.imageio.imageioimpl.EnhancedImageReadParam;
@@ -28,9 +29,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.color.ColorSpace;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.ColorModel;
+import java.awt.image.ComponentColorModel;
 import java.awt.image.IndexColorModel;
 import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
@@ -38,12 +41,10 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -59,7 +60,6 @@ import javax.media.jai.RenderedOp;
 import javax.media.jai.operator.ConstantDescriptor;
 import javax.media.jai.operator.MosaicDescriptor;
 
-import it.geosolutions.jaiext.JAIExt;
 import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.TypeMap;
@@ -909,7 +909,29 @@ public class RasterLayerResponse {
         LOGGER.fine("Creating constant image for area with no data");
 
         final ImageLayout2 il = new ImageLayout2();
-        il.setColorModel(rasterManager.defaultCM);
+        ColorModel cm = rasterManager.defaultCM;
+        SampleModel sm = rasterManager.defaultSM;
+        int[] bands = baseReadParameters.getBands();
+
+        if (bands != null && cm != null && bands.length != cm.getNumComponents()) {
+            final int nBands = bands.length;
+            ColorSpace cs = null;
+            switch (nBands) {
+            case 1:
+                cs = ColorSpace.getInstance(ColorSpace.CS_GRAY);
+                break;
+            case 3:
+                cs = ColorSpace.getInstance(ColorSpace.CS_sRGB);
+                break;
+            default:
+                cs = new BogusColorSpace(nBands);
+            }
+            cm = new ComponentColorModel(cs, cm.hasAlpha(), cm.isAlphaPremultiplied(),
+                    cm.getTransparency(), cm.getTransferType());
+            sm = cm.createCompatibleSampleModel(sm.getWidth(), sm.getHeight());
+        }
+
+        il.setColorModel(cm);
         Dimension tileSize = request.getTileDimensions();
         if (tileSize == null) {
             tileSize = JAI.getDefaultTileSize();
@@ -935,10 +957,9 @@ public class RasterLayerResponse {
 
             // impose the color model and samplemodel as the constant operation does not take them
             // into account!
-            if (rasterManager.defaultCM != null) {
-                il.setColorModel(rasterManager.defaultCM);
-                il.setSampleModel(rasterManager.defaultCM
-                        .createCompatibleSampleModel(tileSize.width, tileSize.height));
+            if (cm != null) {
+                il.setColorModel(cm);
+                il.setSampleModel(cm.createCompatibleSampleModel(tileSize.width, tileSize.height));
                 finalImage = new ImageWorker(finalImage).setRenderingHints(renderingHints)
                         .format(il.getSampleModel(null).getDataType()).getRenderedImage();
             }
@@ -949,19 +970,26 @@ public class RasterLayerResponse {
             }
             // impose the color model and samplemodel as the constant operation does not take them
             // into account!
-            ColorModel cm;
-            if (rasterManager.defaultCM != null) {
-                cm = rasterManager.defaultCM;
-            } else {
+            if (cm == null) {
                 byte[] arr = { (byte) 0, (byte) 0xff };
                 cm = new IndexColorModel(1, 2, arr, arr, arr);
             }
             il.setColorModel(cm);
             il.setSampleModel(cm.createCompatibleSampleModel(tileSize.width, tileSize.height));
 
-            final double[] bkgValues = new double[values.length];
-            for (int i = 0; i < values.length; i++) {
-                bkgValues[i] = values[i].doubleValue();
+            final double[] bkgValues;
+            if (bands != null && bands.length != 0) {
+                // Extract the background values
+                bkgValues = new double[bands.length];
+                for (int k = 0; k < bands.length; k++) {
+                    int index = k > values.length ? 0 : bands[k];
+                    bkgValues[k] = values[index].doubleValue();
+                }
+            } else {
+                bkgValues = new double[values.length];
+                for (int i = 0; i < values.length; i++) {
+                    bkgValues[i] = values[i].doubleValue();
+                }
             }
             Assert.isTrue(il.isValid(ImageLayout.WIDTH_MASK | ImageLayout.HEIGHT_MASK
                     | ImageLayout.SAMPLE_MODEL_MASK));

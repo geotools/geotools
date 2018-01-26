@@ -112,6 +112,10 @@ public class URLsTest {
         URL url = new URL("file", "////oehhwsfs09", "/some/path/on/the/server/filename.nds");
         File windowsShareFile = URLs.urlToFile(url);
         assertNotNull(windowsShareFile);
+        assertEquals("file café", URLs.urlToFile(new URL("file:file%20caf%C3%A9")).toString());
+        assertEquals("/file café", URLs.urlToFile(new URL("file:/file%20caf%C3%A9")).toString());
+        assertEquals("file café", URLs.urlToFile(new URL("file://file%20caf%C3%A9")).toString());
+
     }
 
 }

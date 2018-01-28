@@ -41,7 +41,9 @@ import java.util.function.BiFunction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.geotools.geometry.jts.Decimator;
 import org.geotools.geometry.jts.GeometryClipper;
+import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.geometry.jts.OffsetCurveBuilder;
 import org.geotools.renderer.RenderListener;
@@ -1060,11 +1062,18 @@ public class LabelCacheImpl implements LabelCache {
     }
 
     private LineString decimateLineString(LineString line, double step) {
+        // ideally this method should use Decimator, but due to 
+        // https://github.com/locationtech/jts/issues/254 that is not possible
+        // LineString copy = (LineString) LiteCoordinateSequence.cloneGeometry(line, line.getCoordinateSequence().getDimension());
+        // Decimator decimator = new Decimator(step, step);
+        //  decimator.decimate(copy);
+
         Coordinate[] inputCoordinates = line.getCoordinates();
-        List<Coordinate> simplified = new ArrayList<Coordinate>();
+        List<Coordinate> simplified = new ArrayList<>();
+        // add first
         Coordinate prev = inputCoordinates[0];
         simplified.add(prev);
-        for (int i = 1; i < inputCoordinates.length; i++) {
+        for (int i = 1; i < inputCoordinates.length - 1; i++) {
             Coordinate curr = inputCoordinates[i];
             // see if this one should be added
             if ((Math.abs(curr.x - prev.x) > step) || (Math.abs(curr.y - prev.y)) > step) {
@@ -1072,8 +1081,16 @@ public class LabelCacheImpl implements LabelCache {
                 prev = curr;
             }
         }
-        if (simplified.size() == 1)
-            simplified.add(inputCoordinates[inputCoordinates.length - 1]);
+        // special case for closed lines, and we have not accumulated at least 3 points so far
+        // the check is just first = last and at least 4 points
+        if (line instanceof LinearRing) {
+            while(simplified.size() < 3) {
+                simplified.add(prev);
+            }
+        }
+        // add last
+        simplified.add(inputCoordinates[inputCoordinates.length - 1]);
+        
         Coordinate[] newCoords = simplified
                 .toArray(new Coordinate[simplified.size()]);
         // preserve close-ness if it was there

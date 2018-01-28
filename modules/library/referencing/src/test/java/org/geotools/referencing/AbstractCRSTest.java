@@ -27,6 +27,7 @@ import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS.AxisOrder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.factory.OrderedAxisAuthorityFactory;
+import org.geotools.referencing.factory.ReferencingFactory;
 import org.geotools.referencing.operation.projection.LambertConformal1SP;
 import org.geotools.referencing.operation.projection.MapProjection;
 import org.geotools.referencing.operation.projection.TransverseMercator;
@@ -685,6 +686,42 @@ public abstract class AbstractCRSTest extends OnlineTestCase {
         } finally {
             MapProjection.SKIP_SANITY_CHECKS = false;
         }
+    }
+    
+    public void testTransformSouthEmisphereToStereographic() throws Exception {
+        String wkt = "PROJCS[\"NSIDC Sea Ice Polar Stereographic South\",\n" +
+                "    GEOGCS[\"Unspecified datum based upon the Hughes 1980 ellipsoid\",\n" +
+                "        DATUM[\"Not_specified_based_on_Hughes_1980_ellipsoid\",\n" +
+                "            SPHEROID[\"Hughes 1980\",6378273,298.279411123061,\n" +
+                "                AUTHORITY[\"EPSG\",\"7058\"]],\n" +
+                "            AUTHORITY[\"EPSG\",\"6054\"]],\n" +
+                "        PRIMEM[\"Greenwich\",0,\n" +
+                "            AUTHORITY[\"EPSG\",\"8901\"]],\n" +
+                "        UNIT[\"degree\",0.0174532925199433,\n" +
+                "            AUTHORITY[\"EPSG\",\"9122\"]],\n" +
+                "        AUTHORITY[\"EPSG\",\"4054\"]],\n" +
+                "    PROJECTION[\"Polar_Stereographic\"],\n" +
+                "    PARAMETER[\"latitude_of_origin\",-70],\n" +
+                "    PARAMETER[\"central_meridian\",0],\n" +
+                "    PARAMETER[\"scale_factor\",1],\n" +
+                "    PARAMETER[\"false_easting\",0],\n" +
+                "    PARAMETER[\"false_northing\",0],\n" +
+                "    UNIT[\"metre\",1,\n" +
+                "        AUTHORITY[\"EPSG\",\"9001\"]],\n" +
+                "    AXIS[\"X\",EAST],\n" +
+                "    AXIS[\"Y\",NORTH],\n" +
+                "    AUTHORITY[\"EPSG\",\"3412\"]]";
+        CoordinateReferenceSystem polar = CRS.parseWKT(wkt);
+
+        Envelope2D envelope = new Envelope2D(DefaultGeographicCRS.WGS84);
+        envelope.add(-180, -90);
+        envelope.add(180, 0);
+
+        Envelope transformed = CRS.transform(envelope, polar);
+        assertEquals(-1.271387435620243E7, transformed.getMinimum(0), 1e3);
+        assertEquals(-1.271387435620243E7, transformed.getMinimum(1), 1e3);
+        assertEquals(1.271387435620243E7, transformed.getMaximum(0), 1e3);
+        assertEquals(1.271387435620243E7, transformed.getMaximum(1), 1e3);
     }
 
     @Override

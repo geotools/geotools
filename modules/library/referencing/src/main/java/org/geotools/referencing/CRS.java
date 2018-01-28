@@ -1534,6 +1534,32 @@ search:             if (DefaultCoordinateSystemAxis.isCompassDirection(axis.getD
                 }
             }
         }
+        MapProjection targetProjection = CRS.getMapProjection(targetCRS);
+        if (targetProjection instanceof PolarStereographic && sourceCRS instanceof GeographicCRS) {
+            final CoordinateSystem sourceCS = sourceCRS.getCoordinateSystem();
+            for (int i = 0; i < sourceCS.getDimension(); i++) {
+                final CoordinateSystemAxis axis = sourceCS.getAxis(i);
+                if (equalsIgnoreMetadata(DefaultCoordinateSystemAxis.LONGITUDE, axis)) {
+                    double minLon = envelope.getMinimum(i);
+                    double maxLon = envelope.getMaximum(i);
+                    // world spanning longitude? add points around the globe quadrants then
+                    if ((maxLon - minLon) >= 360) {
+                        DirectPosition lower = generalEnvelope.getLowerCorner();
+                        DirectPosition upper = generalEnvelope.getUpperCorner();
+                        DirectPosition dest = new DirectPosition2D();
+                        for (int lon = -180; lon <= 180; lon += 90) {
+                            lower.setOrdinate(i, lon);
+                            mt.transform(lower, dest);
+                            transformed.add(dest);
+                            upper.setOrdinate(i, lon);
+                            mt.transform(upper, dest);
+                            transformed.add(dest);
+                        }
+                        
+                    }
+                }
+            }
+        }
         
         /*
          * Now takes the target CRS in account...
@@ -1640,7 +1666,6 @@ search:             if (DefaultCoordinateSystemAxis.isCompassDirection(axis.getD
             }
         }
 
-        MapProjection targetProjection = CRS.getMapProjection(targetCRS);
         if (targetProjection != null) {
             // the points intersecting the rays emanating from the center of the projection in polar stereographic 
             // and other projections is a maximum deformation point, add those to the envelope too

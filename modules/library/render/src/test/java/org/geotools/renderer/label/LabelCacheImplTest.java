@@ -3,8 +3,11 @@ package org.geotools.renderer.label;
 import static org.junit.Assert.*;
 
 import java.awt.Color;
+import java.awt.FontFormatException;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -16,9 +19,12 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.RenderListener;
+import org.geotools.renderer.lite.LineTest;
+import org.geotools.renderer.style.FontCache;
 import org.geotools.styling.Font;
 import org.geotools.styling.StyleBuilder;
 import org.geotools.styling.TextSymbolizer;
+import org.geotools.test.TestData;
 import org.geotools.test.TestGraphics;
 import org.geotools.util.NumberRange;
 import org.junit.Before;
@@ -36,6 +42,8 @@ import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
 
 public class LabelCacheImplTest {
+
+    private static final Geometry L4 = geometry("POLYGON((0 0, 0 0.1, 0.1 0.1, 0.1 0, 0 0))");
 
     private static final Geometry L3 = geometry("LINESTRING(20 20, 30 30)");
 
@@ -61,12 +69,20 @@ public class LabelCacheImplTest {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName("test");
         tb.add("name", String.class);
-        tb.add("geom", LineString.class, DefaultGeographicCRS.WGS84);
+        tb.add("geom", Geometry.class, DefaultGeographicCRS.WGS84);
         schema = tb.buildFeatureType();
         fb = new SimpleFeatureBuilder(schema);
         cache = new LabelCacheImpl();
         cache.startLayer(LAYER_ID);
         sb = new StyleBuilder();
+    }
+    
+    @Before
+    public void setVeraFont() throws IOException, FontFormatException {
+        FontCache.getDefaultInstance().registerFont(
+                java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, TestData.getResource(LineTest.class, "Vera.ttf")
+                        .openStream()));
+
     }
 
     @Test
@@ -204,6 +220,38 @@ public class LabelCacheImplTest {
         
         Mockito.verify(painter).setLabel(Mockito.any(LabelCacheItem.class));
         Mockito.verify(painter, Mockito.atLeastOnce()).getLabel();
+    }
+
+    @Test
+    public void testDecimateSmallRing() throws Exception {
+        Font font = sb.createFont("Bitstream Vera Sans", 12);
+        TextSymbolizer ts = sb.createTextSymbolizer(Color.BLACK, font, "name");
+        ts.getOptions().put(TextSymbolizer.FOLLOW_LINE_KEY, "true");
+
+        AtomicReference<Exception> exception = new AtomicReference<Exception>(null);
+        RenderListener listener = new RenderListener() {
+
+            @Override
+            public void featureRenderer(SimpleFeature feature) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void errorOccurred(Exception e) {
+                exception.set(e);
+            }
+        };
+        cache.addRenderListener(listener);
+        SimpleFeature f1 = createFeature("label1", L4);
+        cache.put(LAYER_ID, ts, f1, new LiteShape2((Geometry) f1.getDefaultGeometry(), null, null,
+                false), ALL_SCALES);
+        cache.endLayer("layerId", null, null);
+        BufferedImage bi = new BufferedImage(10, 10, BufferedImage.TYPE_4BYTE_ABGR);
+        Graphics2D graphics = bi.createGraphics();
+        cache.end(graphics, new Rectangle(0, 0, 10, 10));
+        // got here, no exception
+        assertNull(exception.get());
     }
 
     private SimpleFeature createFeature(String label, Geometry geom) {

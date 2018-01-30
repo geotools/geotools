@@ -179,6 +179,8 @@ public final class GridCoverageRenderer {
 
     private boolean advancedProjectionHandlingEnabled = true;
 
+    public static final String PARENT_COVERAGE_PROPERTY = "ParentCoverage";
+
     /**
      * Enables/disable map wrapping (active only when rendering off a {@link GridCoverage2DReader}
      * and when advanced projection handling has been enabled too)
@@ -403,7 +405,7 @@ public final class GridCoverageRenderer {
         final GridCoverage2D symbolizerGC = renderCoverage(gridCoverage, symbolizer, bkgValues);
         //symbolizerGC will be null if the coverage is outside of the view area.  Returning null here is handled appropriately
         //by the calling method
-        return symbolizerGC == null ? null : symbolizerGC.getRenderedImage();
+        return getImageFromParentCoverage(symbolizerGC);
     }
 
 
@@ -720,13 +722,8 @@ public final class GridCoverageRenderer {
             ) throws FactoryException, TransformException, NoninvertibleTransformException {
 
         GridCoverage2D coverage = renderCoverage(gridCoverage, symbolizer, interpolation,
-                background, tileSizeX,
-                tileSizeY);
-        if(coverage == null) {
-            return null;
-        } else {
-            return coverage.getRenderedImage();
-        }
+                background, tileSizeX, tileSizeY);
+        return getImageFromParentCoverage(coverage);
     }
 
     private GridCoverage2D renderCoverage(final GridCoverage2D gridCoverage,
@@ -748,7 +745,18 @@ public final class GridCoverageRenderer {
         }
     }
 
-
+	private RenderedImage getImageFromParentCoverage(GridCoverage2D parentCoverage) {
+		if (parentCoverage == null) {
+			return null;
+		}
+		RenderedImage ri = parentCoverage.getRenderedImage();
+		if (ri != null) {
+			PlanarImage pi = PlanarImage.wrapRenderedImage(ri);
+			pi.setProperty(PARENT_COVERAGE_PROPERTY, parentCoverage);
+			ri = pi;
+		}
+		return ri;
+	}
 
     private void setupTilingHints(final int tileSizeX, final int tileSizeY) {
         ////
@@ -1015,11 +1023,7 @@ public final class GridCoverageRenderer {
         // at this point, we might have a coverage that's still slightly larger
         // than the one requested, crop as needed
         GridCoverage2D cropped = crop(mosaicked, destinationEnvelope, false, bgValues);
-        if (cropped == null) {
-            return null;
-        }
-        
-        return cropped.getRenderedImage();
+        return getImageFromParentCoverage(cropped);
 
     }
 

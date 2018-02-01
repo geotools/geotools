@@ -165,9 +165,9 @@ public class URLs {
             string = string.replace("+", "%2B");
         }
         try {
-            string = URLDecoder.decode(string, "UTF-8");
+            string = URLDecoder.decode(string, java.nio.charset.StandardCharsets.UTF_8.name());
         } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException("Could not decode the URL to UTF-8 format", e);
+            throw new IllegalArgumentException("UTF-8 encoding not supported", e);
         }
         String path3;
         String simplePrefix = "file:/";
@@ -186,7 +186,12 @@ public class URLs {
             path3 = string.substring(simplePrefix.length() - 1);
         } else {
             String auth = url.getAuthority();
-            String path2 = url.getPath().replace("%20", " ");
+            String path2 = url.getPath();
+            try {
+                path2 = URLDecoder.decode(path2, java.nio.charset.StandardCharsets.UTF_8.name());
+            } catch (UnsupportedEncodingException e) {
+                throw new IllegalArgumentException("UTF-8 encoding not supported", e);
+            }
             if (auth != null && !auth.equals("")) {
                 path3 = "//" + auth + path2;
             } else {

@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "https://project-open-data.cio.gov/v1.1/schema/organization.json#",
+  "title": "Project Open Data Organization",
+  "description": "A Dataset Publisher Organization as a foaf:Agent object",
+  "type": "object",
+  "required": [
+    "name"
+  ],
+  "properties": {
+    "@type": {
+      "title": "Metadata Context",
+      "description": "IRI for the JSON-LD data type. This should be org:Organization for each publisher",
+      "enum": [
+        "org:Organization"
+      ]
+    },
+    "name": {
+      "title": "Publisher Name",
+      "description": "A full formatted name, eg Firstname Lastname",
+      "type": "string",
+      "minLength": 1
+    },
+    "subOrganizationOf": {
+      "title": "Parent Organization",
+      "$ref": "organization.json"
+    }
+  }
+}

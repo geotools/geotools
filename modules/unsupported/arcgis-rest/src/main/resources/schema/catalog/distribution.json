@@ -1,0 +1,139 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "https://project-open-data.cio.gov/v1.1/schema/distribution.json#",
+  "title": "Project Open Data Distribution",
+  "description": "Validates an entire collection of common core metadata JSON objects. Agencies produce said collections in the form of Data.json files.",
+  "type": "object",
+  "dependencies": {
+    "downloadURL": {
+      "properties": {
+        "mediaType": {
+          "type": "string",
+          "pattern": "^[-\\w]+/[-\\w]+(\\.[-\\w]+)*([+][-\\w]+)?$"
+        }
+      },
+      "required": [
+        "mediaType"
+      ]
+    }
+  },
+  "properties": {
+    "@type": {
+      "title": "Metadata Context",
+      "description": "IRI for the JSON-LD data type. This should be dcat:Distribution for each Distribution",
+      "enum": [
+        "dcat:Distribution"
+      ]
+    },
+    "downloadURL": {
+      "title": "Download URL",
+      "description": "URL providing direct access to a downloadable file of a dataset",
+      "type": "string",
+      "format": "uri"
+    },
+    "mediaType": {
+      "title": "Media Type",
+      "description": "The machine-readable file format (IANA Media Type or MIME Type) of the distribution’s downloadURL",
+      "anyOf": [
+        {
+          "pattern": "^[-\\w]+/[-\\w]+(\\.[-\\w]+)*([+][-\\w]+)?$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "format": {
+      "title": "Format",
+      "description": "A human-readable description of the file format of a distribution",
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "accessURL": {
+      "title": "Access URL",
+      "description": "URL providing indirect access to a dataset",
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "uri"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "description": {
+      "title": "Description",
+      "description": "Human-readable description of the distribution",
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "title": {
+      "title": "Title",
+      "description": "Human-readable name of the distribution",
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "conformsTo": {
+      "title": "Data Standard",
+      "description": "URL providing indirect access to a dataset",
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "uri"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "describedBy": {
+      "title": "Data Dictionary",
+      "description": "URL to the data dictionary for the distribution found at the downloadURL",
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "uri"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "describedByType": {
+      "title": "Data Dictionary Type",
+      "description": "The machine-readable file format (IANA Media Type or MIME Type) of the distribution’s describedBy URL",
+      "anyOf": [
+        {
+          "pattern": "^[-\\w]+/[-\\w]+(\\.[-\\w]+)*([+][-\\w]+)?$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  }
+}

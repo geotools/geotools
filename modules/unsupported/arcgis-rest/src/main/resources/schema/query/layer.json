@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "objectIdFieldName": {
+      "type": "string"
+    },
+    "globalIdFieldName": {
+      "type": "string"
+    },
+    "geometryType": {
+      "type": "string"
+    },
+    "spatialReference": {
+      "type": "object",
+      "properties": {
+        "wkid": {
+          "type": "integer"
+        },
+        "latestWkid": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "wkid",
+        "latestWkid"
+      ]
+    },
+    "fields": {
+      "type": "array",
+      "items": {}
+    },
+    "features": {
+      "type": "array",
+      "items": {}
+    }
+  },
+  "required": [
+    "objectIdFieldName",
+    "globalIdFieldName",
+    "geometryType",
+    "spatialReference",
+    "fields",
+    "features"
+  ]
+}

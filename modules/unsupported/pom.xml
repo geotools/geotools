@@ -216,6 +216,14 @@
                 <module>s3-geotiff</module>
 			</modules>
 		</profile>
+
+		<profile>
+			<id>arcgis-rest</id>
+			<modules>
+				<module>arcgis-rest</module>
+			</modules>
+		</profile>
+
 	</profiles>
 
 	<!-- Modules included in a normal build -->

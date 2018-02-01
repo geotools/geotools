@@ -16,6 +16,7 @@ Research and Development:
 .. toctree::
    :maxdepth: 1
 
+   arcgis-rest
    css
    csv
    efeature/index

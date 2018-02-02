@@ -45,21 +45,3 @@ is implemented, which allows to:
 * It can retrieve a list of avaialable layers from a FeatureServer
 * It can query a layer by bounding box
 
-
-Test
-----
-
-To test for memory leaks (and general performance), one coudl use ApacheBenchmark, as in:
-
-```
-#!/bin/bash
-HOST=localhost:8080
-NUSER=20
-NREQ=20
-TIMEOUT=90
-LAYER="cite:LGAProfiles2014Beta"
-URL="${HOST}/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature\
-&typeName=${LAYER}\
-&outputFormat=application%2Fjson"
-ab -n $((${NREQ} * ${NUSER})) -c ${NUSER} -s ${TIMEOUT} ${URL}
-```

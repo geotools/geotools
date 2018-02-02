@@ -49,7 +49,8 @@ public class OSMTileFactory extends WebMercatorTileFactory {
         int yTile = (int) Math.floor(
                 (1 - Math.log(Math.tan(lat * Math.PI / 180) + 1 / Math.cos(lat * Math.PI / 180))
                         / Math.PI) / 2 * (1 << zoomLevel.getZoomLevel()));
-
+        if(yTile<0)
+          yTile=0;
         return new OSMTile(xTile, yTile, zoomLevel, service);
     }
 

@@ -23,6 +23,7 @@ import org.geotools.tile.TileFactory;
 import org.geotools.tile.TileFactoryTest;
 import org.geotools.tile.TileService;
 import org.geotools.tile.impl.WebMercatorTileFactory;
+import org.geotools.tile.impl.WebMercatorTileService;
 import org.geotools.tile.impl.WebMercatorZoomLevel;
 import org.geotools.tile.impl.bing.BingService;
 import org.junit.Assert;
@@ -38,6 +39,16 @@ public class OSMTileFactoryTest extends TileFactoryTest {
 
         TileService service = createService();
         OSMTile expectedTile = new OSMTile(20, 15, new WebMercatorZoomLevel(5), service);
+        Assert.assertEquals(expectedTile, tile);
+    }
+    @Test
+    public void testGetTileFromTopLeftCoordinate() {
+
+        Tile tile = factory.findTileAtCoordinate(WebMercatorTileService.MIN_LONGITUDE, WebMercatorTileService.MAX_LATITUDE, new WebMercatorZoomLevel(5),
+                createService());
+
+        TileService service = createService();
+        OSMTile expectedTile = new OSMTile(0, 0, new WebMercatorZoomLevel(5), service);
         Assert.assertEquals(expectedTile, tile);
     }
 

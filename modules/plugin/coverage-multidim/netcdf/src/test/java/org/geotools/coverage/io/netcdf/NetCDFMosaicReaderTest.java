@@ -43,6 +43,7 @@ import javax.media.jai.ImageLayout;
 import javax.media.jai.PlanarImage;
 import javax.swing.JFrame;
 
+import it.geosolutions.jaiext.range.NoDataContainer;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -70,6 +71,7 @@ import org.geotools.resources.image.ImageUtilities;
 import org.geotools.test.TestData;
 import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
+import org.hamcrest.CoreMatchers;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
@@ -92,6 +94,8 @@ import it.geosolutions.imageio.utilities.ImageIOUtilities;
 import junit.framework.JUnit4TestAdapter;
 import junit.textui.TestRunner;
 import ucar.nc2.Variable;
+
+import static org.hamcrest.CoreMatchers.*;
 
 /**
  * Testing {@link ImageMosaicReader}.
@@ -609,10 +613,6 @@ public class NetCDFMosaicReaderTest extends Assert {
         SimpleFeatureIterator it = null;
         assertNotNull(reader);
         try {
-            // use imageio with defined tiles
-            final ParameterValue<Boolean> useJai = AbstractGridFormat.USE_JAI_IMAGEREAD
-                    .createValue();
-            useJai.setValue(false);
             // specify time
             ParameterValue<List> time = ImageMosaicFormat.TIME.createValue();
             final Date timeD = parseTimeStamp("2013-01-01T00:00:00.000");
@@ -621,8 +621,9 @@ public class NetCDFMosaicReaderTest extends Assert {
                     add(timeD);
                 }
             });
-            GeneralParameterValue[] params = new GeneralParameterValue[] { useJai, time };
+            GeneralParameterValue[] params = new GeneralParameterValue[] { time };
             GridCoverage2D coverage1 = reader.read(params);
+            assertNotData(coverage1, -999d);
             // Specify a new time (Check if two times returns two different coverages)
             final Date timeD2 = parseTimeStamp("2013-01-08T00:00:00.000");
             time.setValue(new ArrayList() {
@@ -630,9 +631,9 @@ public class NetCDFMosaicReaderTest extends Assert {
                     add(timeD2);
                 }
             });
-            params = new GeneralParameterValue[] { useJai, time };
+            params = new GeneralParameterValue[] { time };
             GridCoverage2D coverage2 = reader.read(params);
-
+            assertNotData(coverage2, -999d);
             // Ensure that the two images are different (different location)
             String property = (String) coverage1.getProperty("OriginalFileSource");
             String property2 = (String) coverage2.getProperty("OriginalFileSource");
@@ -647,6 +648,17 @@ public class NetCDFMosaicReaderTest extends Assert {
                 it.close();
             }
             reader.dispose();
+        }
+    }
+
+    private void assertNotData(GridCoverage2D coverage, Double expectedNoData) {
+        Object noData = coverage.getProperty("GC_NODATA");
+        if (expectedNoData == null) {
+            assertThat(noData, not(instanceOf(NoDataContainer.class)));
+        } else {
+            assertThat(noData, instanceOf(NoDataContainer.class));
+            NoDataContainer container = (NoDataContainer) noData;
+            assertEquals(expectedNoData, container.getAsSingleValue(), 0d);
         }
     }
 

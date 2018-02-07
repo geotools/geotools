@@ -35,6 +35,7 @@ import javax.imageio.IIOException;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.ImageTypeSpecifier;
+import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.ImageInputStream;
 
@@ -898,6 +899,27 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         return null;
     }
 
+    private double[] getNoData(VariableAdapter wrapper) {
+        RangeType range = wrapper.getRangeType();
+        if (range != null) {
+            Set<FieldType> fields = range.getFieldTypes();
+            if (fields != null && !fields.isEmpty()) {
+                FieldType field = fields.iterator().next();
+                if (field != null) {
+                    Set<SampleDimension> sampleDims = field.getSampleDimensions();
+                    if (sampleDims != null && !sampleDims.isEmpty()) {
+                        SampleDimension sampleDimension = sampleDims.iterator().next();
+                        double[] noData = sampleDimension.getNoDataValues();
+                        if (noData != null && noData.length > 0) {
+                            return noData;
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
     protected static void flipVertically(final ImageReadParam param, final int srcHeight,
             final Rectangle srcRegion) {
         final int spaceLeft = srcRegion.y;
@@ -1062,5 +1084,28 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         }
         catalog.dispose();
         ancillaryFileManager.purge();
+    }
+
+    @Override
+    public IIOMetadata getImageMetadata(int imageIndex) throws IOException {
+        checkImageIndex(imageIndex);
+
+        final Slice2DIndex slice2DIndex = getSlice2DIndex(imageIndex);
+        final String variableName = slice2DIndex.getVariableName();
+        final VariableAdapter wrapper = getCoverageDescriptor(new NameImpl(variableName));
+
+        CoordinateReferenceSystem crs = georeferencing.getCoordinateReferenceSystem(variableName);
+        int width = wrapper.getWidth();
+        int height = wrapper.getHeight();
+        SampleModel sampleModel = new BandedSampleModel(wrapper.getSampleModel().getDataType(), width, height, wrapper.getNumBands());
+        final ColorModel colorModel = ImageIOUtilities.createColorModel(sampleModel);
+        NetCDFImageMetadata metadata = new NetCDFImageMetadata(variableName, sampleModel, colorModel, crs);
+
+        double[] noData = getNoData(wrapper);
+        if (noData != null) {
+            metadata.setNoData(noData);
+        }
+
+        return metadata;
     }
 }

@@ -474,9 +474,7 @@ public class GranuleDescriptor {
             }
 
             // handle the nodata if available
-            if (!ignoreMetadata) {
-                setupNoData(reader);
-            }
+            setupNoData(reader);
         } catch (IllegalStateException e) {
             throw new IllegalArgumentException(e);
 

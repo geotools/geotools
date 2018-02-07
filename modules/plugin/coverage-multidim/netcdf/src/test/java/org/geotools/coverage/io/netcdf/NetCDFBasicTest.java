@@ -25,6 +25,7 @@ import java.security.MessageDigest;
 import java.util.List;
 import java.util.logging.Logger;
 
+import it.geosolutions.imageio.core.CoreCommonImageMetadata;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
@@ -45,6 +46,7 @@ import org.geotools.imageio.netcdf.NetCDFImageReaderSpi;
 import org.geotools.imageio.netcdf.Slice2DIndex;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.test.TestData;
+import org.hamcrest.CoreMatchers;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
@@ -55,6 +57,9 @@ import org.opengis.filter.Filter;
 
 import ucar.nc2.Variable;
 import ucar.nc2.dataset.NetcdfDataset;
+
+import javax.imageio.metadata.IIOMetadata;
+import javax.media.jai.FloatDoubleColorModel;
 
 /**
  * Testing Low level reader infrastructure.
@@ -180,6 +185,17 @@ public final class NetCDFBasicTest extends Assert {
                     }
                 }
             }
+
+            // check metadata
+            CoreCommonImageMetadata metadata = (CoreCommonImageMetadata) reader.getImageMetadata(0);
+            assertEquals(80, metadata.getWidth());
+            assertEquals(48, metadata.getHeight());
+            assertEquals(80, metadata.getTileWidth());
+            assertEquals(1, metadata.getTileHeight());
+            assertEquals(48, metadata.getSampleModel().getNumBands());
+            assertEquals(48, metadata.getNumBands());
+            assertEquals("FloatDoubleColorModel", metadata.getColorModel().getClass().getSimpleName());
+            assertEquals("EPSG:4326", metadata.getProjection());
         } finally {
             if (reader != null) {
                 try {

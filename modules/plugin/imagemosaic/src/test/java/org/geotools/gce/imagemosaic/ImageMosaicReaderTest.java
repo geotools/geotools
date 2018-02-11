@@ -407,6 +407,16 @@ public class ImageMosaicReaderTest extends Assert{
         assertEquals(16.0714285714285, result[0], DELTA);
         assertEquals(16.0427807486631, result[1], DELTA);
     }
+
+	@Test
+	public void testReadFromString() throws Exception {
+		final AbstractGridFormat format = TestUtils.getFormat(overviewURL);
+		File mosaicFile = URLs.urlToFile(overviewURL);
+		final ImageMosaicReader reader = (ImageMosaicReader) format.getReader(mosaicFile.getAbsolutePath());
+		double[] result = reader.getReadingResolutions(OverviewPolicy.QUALITY, new double[] { 32, 32 });
+		assertEquals(16.0714285714285, result[0], DELTA);
+		assertEquals(16.0427807486631, result[1], DELTA);
+	}
 	
 	@Test
 	    //@Ignore

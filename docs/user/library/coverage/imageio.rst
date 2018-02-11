@@ -45,8 +45,12 @@ file formats:
 * Arc/Info Binary Grid
 * ENVI .hdr Labelled
 * ENVISAT Image Format
+* GDAL VRT
 * GeoTIFF
+* IDRISI
 * JPEG
+* RPF TOC
+* SRP (ASRP/USRP) formats
 
 The ImageIO-EXT website includes ready to use ImageIO-Ext binaries including GDAL libraries. See
 "Release Information" for more info about the list of supported formats and available drivers.

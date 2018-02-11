@@ -175,7 +175,7 @@ public enum MergeBehavior {
         for (int i = 0; i < values.length; i++) {
             valuesS[i] = values[i].toString();
         }
-        return null;
+        return valuesS;
 
     }
 

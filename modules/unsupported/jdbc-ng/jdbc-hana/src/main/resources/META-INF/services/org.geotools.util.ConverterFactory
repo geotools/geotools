@@ -1,0 +1,3 @@
+org.geotools.data.hana.converter.BlobConverterFactory
+org.geotools.data.hana.converter.BooleanConverterFactory
+org.geotools.data.hana.converter.ClobConverterFactory

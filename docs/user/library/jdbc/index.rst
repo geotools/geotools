@@ -52,4 +52,5 @@ Unsupported plugins:
 .. toctree::
    :maxdepth: 1
    
+   hana
    ingres

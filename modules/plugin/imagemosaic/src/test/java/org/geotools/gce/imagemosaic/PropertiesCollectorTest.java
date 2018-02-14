@@ -64,7 +64,7 @@ public class PropertiesCollectorTest extends Assert {
             final Set<PropertiesCollectorSPI> spis = PropertiesCollectorFinder.getPropertiesCollectorSPI();
             assertNotNull(spis);
             assertTrue(!spis.isEmpty());
-            assertEquals(12,spis.size());
+            assertEquals(14,spis.size());
         }
 	
         @Test

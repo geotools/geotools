@@ -23,8 +23,10 @@ import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
+import org.geotools.coverage.grid.io.DimensionDescriptor;
 import org.geotools.coverage.grid.io.GranuleSource;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
+import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -40,11 +42,13 @@ import org.geotools.test.TestData;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
+import org.opengis.metadata.spatial.Dimension;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.FactoryException;
@@ -60,6 +64,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
 import static org.junit.Assert.assertEquals;
@@ -145,14 +152,7 @@ public class HeterogenousCRSTest {
         String expectedCRS, GeneralParameterValue... params)
         throws URISyntaxException, IOException {
 
-        URL storeUrl = TestData.url(this, testLocation);
-
-        File testDataFolder = new File(storeUrl.toURI());
-        File testDirectory = crsMosaicFolder.newFolder(testLocation);
-        FileUtils.copyDirectory(testDataFolder, testDirectory);
-        Hints creationHints = new Hints();
-        ImageMosaicReader imReader = new ImageMosaicReader(testDirectory, creationHints);
-        Assert.assertNotNull(imReader);
+        ImageMosaicReader imReader = getTestMosaic(testLocation);
         
         // check it advertises the mixed crs 
         assertEquals("true", imReader.getMetadataValue(GridCoverage2DReader.MULTICRS_READER));
@@ -183,7 +183,19 @@ public class HeterogenousCRSTest {
             ImageAssert.assertEquals(resultsFile, renderImage, 1000);
         }
     }
-    
+
+    private ImageMosaicReader getTestMosaic(String testLocation) throws URISyntaxException, IOException {
+        URL storeUrl = TestData.url(this, testLocation);
+
+        File testDataFolder = new File(storeUrl.toURI());
+        File testDirectory = crsMosaicFolder.newFolder(testLocation);
+        FileUtils.copyDirectory(testDataFolder, testDirectory);
+        Hints creationHints = new Hints();
+        ImageMosaicReader imReader = new ImageMosaicReader(testDirectory, creationHints);
+        Assert.assertNotNull(imReader);
+        return imReader;
+    }
+
     @Test
     public void testHarvestHeteroUTM() throws Exception {
         File indexer = TestData.file(this, "hetero_utm/indexer.properties");
@@ -342,14 +354,7 @@ public class HeterogenousCRSTest {
     @Test
     public void testHeteroCRSDateline() throws IOException, URISyntaxException, TransformException,
             FactoryException {
-        URL storeUrl = TestData.url(this, "hetero_crs_dateline");
-
-        File testDataFolder = new File(storeUrl.toURI());
-        File testDirectory = crsMosaicFolder.newFolder("hetero_crs_dateline");
-        FileUtils.copyDirectory(testDataFolder, testDirectory);
-        Hints creationHints = new Hints();
-        ImageMosaicReader imReader = new ImageMosaicReader(testDirectory, creationHints);
-        Assert.assertNotNull(imReader);
+        ImageMosaicReader imReader = getTestMosaic("hetero_crs_dateline");
         assertEquals(CRS.toSRS(imReader.getCoordinateReferenceSystem()), "EPSG:4326");
 
         // read before dateline
@@ -445,6 +450,50 @@ public class HeterogenousCRSTest {
     
     File testFile(String name) {
         return new File("src/test/resources/org/geotools/gce/imagemosaic/test-data/" + name);
+    }
+    
+    @Test
+    public void testCrsResolutionDomains() throws Exception {
+        ImageMosaicReader reader = getTestMosaic("diff_crs_sorting_test");
+        String coverageName = reader.getGridCoverageNames()[0];
+        
+        Map<String, DimensionDescriptor> descriptors = reader.getDimensionDescriptors(coverageName).stream().collect(Collectors.toMap(dd -> dd.getName(), dd -> dd));
+        assertEquals(4, descriptors.size());
+        DimensionDescriptor crsDescriptor = descriptors.get(DimensionDescriptor.CRS);
+        assertNotNull(crsDescriptor);
+        assertEquals("crs", crsDescriptor.getStartAttribute());
+        DimensionDescriptor resolutionDescriptor = descriptors.get(DimensionDescriptor.RESOLUTION);
+        assertNotNull(resolutionDescriptor);
+        assertEquals("resolution", resolutionDescriptor.getStartAttribute());
+        DimensionDescriptor resolutionXDescriptor = descriptors.get(DimensionDescriptor.RESOLUTION_X);
+        assertNotNull(resolutionXDescriptor);
+        assertEquals("resX", resolutionXDescriptor.getStartAttribute());
+        DimensionDescriptor resolutionYDescriptor = descriptors.get(DimensionDescriptor.RESOLUTION_Y);
+        assertNotNull(resolutionYDescriptor);
+        assertEquals("resY", resolutionYDescriptor.getStartAttribute());
+
+        GranuleSource granules = reader.getGranules(coverageName, true);
+        SimpleFeatureCollection features = granules.getGranules(Query.ALL);
+        List<SimpleFeature> featureList = DataUtilities.list(features);
+        for (SimpleFeature sf : featureList) {
+            String location = (String) sf.getAttribute("location");
+            String crs = (String) sf.getAttribute("crs");
+            assertEquals("EPSG:32610", crs);
+            Double resolution = (Double) sf.getAttribute("resolution");
+            Double resX = (Double) sf.getAttribute("resolution");
+            Double resY = (Double) sf.getAttribute("resolution");
+            // yes, weird difference between file name and resolution, resolution here comes
+            // from a gdalinfo run on the files
+            if (location.startsWith("32km")) {
+                assertEquals(17550, resolution, 10d);
+                assertEquals(17550, resX, 10d);
+                assertEquals(17550, resY, 10d);
+            } else if(location.startsWith("16km")) {
+                assertEquals(8712, resolution, 10d);
+                assertEquals(8712, resX, 10d);
+                assertEquals(8712, resY, 10d);
+            }
+        }
     }
     
 

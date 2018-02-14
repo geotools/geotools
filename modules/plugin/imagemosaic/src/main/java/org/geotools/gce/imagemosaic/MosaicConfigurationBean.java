@@ -87,6 +87,15 @@ public class MosaicConfigurationBean {
     /** crs attribute name, or <code>null</code> if absent */
     private String crsAttribute;
 
+    /** resolution attribute name, or <code>null</code> if absent */
+    private String resolutionAttribute;
+
+    /** resolutionX attribute name, or <code>null</code> if absent */
+    private String resolutionXAttribute;
+
+    /** resolutionY attribute name, or <code>null</code> if absent */
+    private String resolutionYAttribute;
+
     /** additional domain attributes names. <code>null</code> if absent. */
     private String additionalDomainAttributes;
 
@@ -170,6 +179,30 @@ public class MosaicConfigurationBean {
 
     public void setCRSAttribute(final String crsAttribute) {
         this.crsAttribute = crsAttribute;
+    }
+
+    public String getResolutionAttribute() {
+        return resolutionAttribute;
+    }
+
+    public void setResolutionAttribute(String resolutionAttribute) {
+        this.resolutionAttribute = resolutionAttribute;
+    }
+
+    public String getResolutionXAttribute() {
+        return resolutionXAttribute;
+    }
+
+    public void setResolutionXAttribute(String resolutionXAttribute) {
+        this.resolutionXAttribute = resolutionXAttribute;
+    }
+
+    public String getResolutionYAttribute() {
+        return resolutionYAttribute;
+    }
+
+    public void setResolutionYAttribute(String resolutionYAttribute) {
+        this.resolutionYAttribute = resolutionYAttribute;
     }
 
     public String getAdditionalDomainAttributes() {

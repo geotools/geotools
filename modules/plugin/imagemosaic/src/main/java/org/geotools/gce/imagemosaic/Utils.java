@@ -240,6 +240,12 @@ public class Utils {
         public static final String ADDITIONAL_DOMAIN_ATTRIBUTES = "AdditionalDomainAttributes";
 
         public static final String CRS_ATTRIBUTE = "CrsAttribute";
+
+        public static final String RESOLUTION_ATTRIBUTE = "ResolutionAttribute";
+
+        public static final String RESOLUTION_X_ATTRIBUTE = "ResolutionXAttribute";
+
+        public static final String RESOLUTION_Y_ATTRIBUTE = "ResolutionYAttribute";
         
         /**
          * Sets if the target schema should be used to locate granules (default is FALSE)<br/>
@@ -677,6 +683,22 @@ public class Utils {
         if (properties.containsKey(Prop.CRS_ATTRIBUTE)) {
             final String crsAttribute = properties.getProperty(Prop.CRS_ATTRIBUTE).trim();
             retValue.setCRSAttribute(crsAttribute);
+        }
+
+        //
+        // resolution attributes are optional
+        //
+        if (properties.containsKey(Prop.RESOLUTION_ATTRIBUTE)) {
+            final String attribute = properties.getProperty(Prop.RESOLUTION_ATTRIBUTE).trim();
+            retValue.setResolutionAttribute(attribute);
+        }
+        if (properties.containsKey(Prop.RESOLUTION_X_ATTRIBUTE)) {
+            final String attribute = properties.getProperty(Prop.RESOLUTION_X_ATTRIBUTE).trim();
+            retValue.setResolutionXAttribute(attribute);
+        }
+        if (properties.containsKey(Prop.RESOLUTION_Y_ATTRIBUTE)) {
+            final String attribute = properties.getProperty(Prop.RESOLUTION_Y_ATTRIBUTE).trim();
+            retValue.setResolutionYAttribute(attribute);
         }
 
         //
@@ -1527,6 +1549,14 @@ public class Utils {
     public static final String TIME_DOMAIN = "TIME";
 
     public static final String ELEVATION_DOMAIN = "ELEVATION";
+
+    public static final String CRS_DOMAIN = "CRS";
+
+    public static final String RESOLUTION_DOMAIN = "RESOLUTION";
+
+    public static final String RESOLUTION_X_DOMAIN = "RESOLUTION_X";
+
+    public static final String RESOLUTION_Y_DOMAIN = "RESOLUTION_Y";
 
     public static final String ADDITIONAL_DOMAIN = "ADDITIONAL";
 

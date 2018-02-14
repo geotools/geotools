@@ -84,4 +84,14 @@ public class DefaultDimensionDescriptor implements DimensionDescriptor {
             this.endAttribute = endAttribute;
     }
 
+    @Override
+    public String toString() {
+        return "DefaultDimensionDescriptor{" +
+                "name='" + name + '\'' +
+                ", unitSymbol='" + unitSymbol + '\'' +
+                ", units='" + units + '\'' +
+                ", startAttribute='" + startAttribute + '\'' +
+                ", endAttribute='" + endAttribute + '\'' +
+                '}';
+    }
 }

@@ -59,7 +59,6 @@ import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.coverage.grid.io.RenamingGranuleSource;
 import org.geotools.coverage.grid.io.StructuredGridCoverage2DReader;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.Hints;
@@ -528,6 +527,7 @@ public class RasterManager implements Cloneable {
         private final Map<String, DomainDescriptor> domainsMap = new HashMap<String, DomainDescriptor>();
 
         private final List<DimensionDescriptor> dimensions = new ArrayList<DimensionDescriptor>();
+        private final SimpleFeatureType simpleFeatureType;
 
         private final boolean attributeHasRange(String attribute) {
             return attribute.contains(Utils.RANGE_SPLITTER_CHAR);
@@ -537,7 +537,13 @@ public class RasterManager implements Cloneable {
                 SimpleFeatureType simpleFeatureType) {
             Utilities.ensureNonNull("additionalDomainAttributes", additionalDomainAttributes);
             Utilities.ensureNonNull("simpleFeatureType", simpleFeatureType);
+            this.simpleFeatureType = simpleFeatureType;
             init(additionalDomainAttributes, simpleFeatureType);
+        }
+        
+        public DimensionDescriptor addDimension(String name, String attribute) {
+            List<DimensionDescriptor> descriptors = init(Collections.singletonMap(name, attribute), simpleFeatureType);
+            return descriptors.get(0);
         }
 
         /**
@@ -545,8 +551,9 @@ public class RasterManager implements Cloneable {
          * @param simpleFeatureType
          * @throws IllegalArgumentException
          */
-        private void init(Map<String, String> domainAttributes, SimpleFeatureType simpleFeatureType)
+        private List<DimensionDescriptor> init(Map<String, String> domainAttributes, SimpleFeatureType simpleFeatureType)
                 throws IllegalArgumentException {
+            List<DimensionDescriptor> descriptors = new ArrayList<>();
             for (java.util.Map.Entry<String, String> entry : domainAttributes.entrySet()) {
 
                 DomainType domainType = DomainType.SINGLE_VALUE;
@@ -559,13 +566,13 @@ public class RasterManager implements Cloneable {
                     if (attributeHasRange(propertyName)) {
                         domainType = domainAttributes.containsKey(Utils.TIME_DOMAIN)
                                 ? DomainType.TIME_RANGE : DomainType.NUMBER_RANGE;
-                        addDomain(domainName, propertyName, domainType, simpleFeatureType);
+                        descriptors.add(addDomain(domainName, propertyName, domainType, simpleFeatureType));
                         continue;
                     } else {
                         propertyName = extractAttributes(propertyName);
                         if (simpleFeatureType.getDescriptor(propertyName) != null) {
                             // add
-                            addDomain(domainName, propertyName, domainType, simpleFeatureType);
+                            descriptors.add(addDomain(domainName, propertyName, domainType, simpleFeatureType));
                             // continue
                             continue;
                         }
@@ -586,7 +593,7 @@ public class RasterManager implements Cloneable {
                     try {
                         if (simpleFeatureType.getDescriptor(propertyName) != null) {
                             // add
-                            addDomain(domainName, propertyName, domainType, simpleFeatureType);
+                            descriptors.add(addDomain(domainName, propertyName, domainType, simpleFeatureType));
 
                             // continue
                             continue;
@@ -604,6 +611,7 @@ public class RasterManager implements Cloneable {
                         "Unable to add this domain:" + domainName + "-" + propertyName);
 
             }
+            return descriptors;
         }
 
         /**
@@ -615,8 +623,9 @@ public class RasterManager implements Cloneable {
         DomainManager(String additionalDomainAttributes, SimpleFeatureType simpleFeatureType) {
             Utilities.ensureNonNull("additionalDomainAttributes", additionalDomainAttributes);
             Utilities.ensureNonNull("simpleFeatureType", simpleFeatureType);
+            this.simpleFeatureType = simpleFeatureType;
 
-            final Map<String, String> domainPairs = new HashMap<String, String>();
+            final Map<String, String> domainPairs = new HashMap<>();
 
             // split, looking for multiple values
             final String[] additionalDomainsNames = additionalDomainAttributes.split(",");
@@ -655,7 +664,7 @@ public class RasterManager implements Cloneable {
          * @param propertyName
          * @param featureType
          */
-        private void addDomain(String name, String propertyName, final DomainType domainType,
+        private DimensionDescriptor addDomain(String name, String propertyName, final DomainType domainType,
                 final SimpleFeatureType featureType) {
             Utilities.ensureNonNull("name", name);
             Utilities.ensureNonNull("propertyName", propertyName);
@@ -693,11 +702,11 @@ public class RasterManager implements Cloneable {
             final String type = descriptor.getType().getBinding().getName();
             domainsMap.put(upperCase + DomainDescriptor.DOMAIN_SUFFIX, new DomainDescriptor(name,
                     domainType, type, basePropertyName, additionalPropertyName));
-            addDimensionDescriptor(name, upperCase, basePropertyName, additionalPropertyName);
+            return addDimensionDescriptor(name, upperCase, basePropertyName, additionalPropertyName);
         }
 
-        private void addDimensionDescriptor(String name, String upperCase, String basePropertyName,
-                String additionalPropertyName) {
+        private DimensionDescriptor addDimensionDescriptor(String name, String upperCase, String basePropertyName,
+                                                           String additionalPropertyName) {
             final String unitsName = upperCase.equalsIgnoreCase(Utils.TIME_DOMAIN)
                     ? CoverageUtilities.UCUM.TIME_UNITS.getName()
                     : upperCase.equalsIgnoreCase(Utils.ELEVATION_DOMAIN)
@@ -709,6 +718,7 @@ public class RasterManager implements Cloneable {
             final DimensionDescriptor dimensionDescriptor = new DefaultDimensionDescriptor(name,
                     unitsName, unitsSymbol, basePropertyName, additionalPropertyName);
             dimensions.add(dimensionDescriptor);
+            return dimensionDescriptor;
         }
 
         private String extractAttributes(String propertyName) {
@@ -1065,7 +1075,7 @@ public class RasterManager implements Cloneable {
                 // time attribute
                 final String timeDomain = configuration.getTimeAttribute();
                 if (timeDomain != null && timeDomainManager == null) {
-                    final HashMap<String, String> init = new HashMap<String, String>();
+                    final HashMap<String, String> init = new HashMap<>();
                     init.put(Utils.TIME_DOMAIN, timeDomain);
                     timeDomainManager = new DomainManager(init, schema);
                     dimensionDescriptors.addAll(timeDomainManager.dimensions);
@@ -1074,11 +1084,29 @@ public class RasterManager implements Cloneable {
                 // elevation attribute
                 final String elevationAttribute = configuration.getElevationAttribute();
                 if (elevationAttribute != null && elevationDomainManager == null) {
-                    final HashMap<String, String> init = new HashMap<String, String>();
+                    final HashMap<String, String> init = new HashMap<>();
                     init.put(Utils.ELEVATION_DOMAIN, elevationAttribute);
                     elevationDomainManager = new DomainManager(init, schema);
                     dimensionDescriptors.addAll(elevationDomainManager.dimensions);
                 }
+                
+                // other well known attributes
+                addExtraAttribute(schema, configuration.getCRSAttribute(), Utils.CRS_DOMAIN);
+                addExtraAttribute(schema, configuration.getResolutionAttribute(), Utils.RESOLUTION_DOMAIN);
+                addExtraAttribute(schema, configuration.getResolutionXAttribute(), Utils.RESOLUTION_X_DOMAIN);
+                addExtraAttribute(schema, configuration.getResolutionYAttribute(), Utils.RESOLUTION_Y_DOMAIN);
+            }
+        }
+    }
+
+    private void addExtraAttribute(SimpleFeatureType schema, String attributeName, String domainName) {
+        if (attributeName != null ) {
+            if (domainsManager != null) {
+                domainsManager = new DomainManager(Collections.singletonMap(domainName, attributeName), schema);
+                dimensionDescriptors.addAll(domainsManager .dimensions);
+            } else {
+                DimensionDescriptor crsDimension = domainsManager.addDimension(Utils.CRS_DOMAIN, attributeName);
+                dimensionDescriptors.add(crsDimension);
             }
         }
     }
@@ -1639,14 +1667,14 @@ public class RasterManager implements Cloneable {
             }
         }
 
-        // check additional domains
-        if (domainsManager != null) {
-            return domainsManager.getMetadataValue(name);
-        }
-        
         // check if heterogeneous CRS
         if (name.equalsIgnoreCase(AbstractGridCoverage2DReader.MULTICRS_READER)) {
             return String.valueOf(configuration.getCatalogConfigurationBean().isHeterogeneousCRS());
+        }
+
+        // check additional domains
+        if (domainsManager != null) {
+            return domainsManager.getMetadataValue(name);
         }
 
         //

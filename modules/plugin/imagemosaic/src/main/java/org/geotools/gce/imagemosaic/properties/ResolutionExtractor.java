@@ -28,6 +28,8 @@ import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeature;
 
+import static org.geotools.gce.imagemosaic.properties.ResolutionExtractor.Axis.BOTH;
+
 /**
  * 
  * @author Niels Charlier
@@ -36,9 +38,14 @@ import org.opengis.feature.simple.SimpleFeature;
 class ResolutionExtractor extends PropertiesCollector {
 
     private final static Logger LOGGER = Logging.getLogger(ResolutionExtractor.class);
+    
+    enum Axis {X, Y, BOTH};
+    
+    Axis axis = BOTH;
 
-    public ResolutionExtractor(PropertiesCollectorSPI spi, List<String> propertyNames) {
+    public ResolutionExtractor(PropertiesCollectorSPI spi, List<String> propertyNames, Axis axis) {
         super(spi, propertyNames);
+        this.axis = axis;
     }
 
     @Override
@@ -47,7 +54,13 @@ class ResolutionExtractor extends PropertiesCollector {
         try {
             resolutionLevels = gridCoverageReader.getResolutionLevels();
 
-            addMatch("" + Math.max(resolutionLevels[0][0], resolutionLevels[0][1]));
+            if (axis == Axis.X) {
+                addMatch("" + resolutionLevels[0][0]);
+            } else if(axis == Axis.Y) {
+                addMatch("" + resolutionLevels[0][1]);
+            } else {
+                addMatch("" + Math.max(resolutionLevels[0][0], resolutionLevels[0][1]));    
+            }
         } catch (IOException e) {
             LOGGER.log(Level.WARNING, e.getMessage(), e);
         }

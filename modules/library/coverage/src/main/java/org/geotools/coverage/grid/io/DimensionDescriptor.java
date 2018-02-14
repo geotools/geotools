@@ -17,6 +17,8 @@
 package org.geotools.coverage.grid.io;
 
 
+import org.geotools.referencing.CRS;
+
 /**
  * Describes a "dimension" exposed by a structured grid coverage reader. 
  * 
@@ -26,6 +28,12 @@ package org.geotools.coverage.grid.io;
  * 
  */
 public interface DimensionDescriptor {
+
+   public static final String TIME = "time";
+   public static final String CRS = "crs";
+   public static final String RESOLUTION = "resolution";
+   public static final String RESOLUTION_X = "resolution_x";
+   public static final String RESOLUTION_Y = "resolution_y";
 
     /**
     * The dimension name

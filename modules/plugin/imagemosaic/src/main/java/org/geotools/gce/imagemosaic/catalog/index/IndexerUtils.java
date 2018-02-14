@@ -632,41 +632,22 @@ public class IndexerUtils {
             schema.setName(getParameter(Utils.Prop.INDEX_NAME, indexer));
         }
 
-        DomainsType domains = coverage.getDomains();
-        List<DomainType> domainList = null;
-        // time attr
-        if (props.containsKey(Utils.Prop.TIME_ATTRIBUTE)) {
-            if (domains == null) {
-                domains = Utils.OBJECT_FACTORY.createDomainsType();
-                coverage.setDomains(domains);
-                domainList = domains.getDomain();
-            }
-            DomainType domain = Utils.OBJECT_FACTORY.createDomainType();
-            domain.setName(Utils.TIME_DOMAIN.toLowerCase());
-            setAttributes(domain, props.getProperty(Utils.Prop.TIME_ATTRIBUTE));
-            domainList.add(domain);
-        }
-
-        // elevation attr
-        if (props.containsKey(Utils.Prop.ELEVATION_ATTRIBUTE)) {
-            if (domains == null) {
-                domains = Utils.OBJECT_FACTORY.createDomainsType();
-                coverage.setDomains(domains);
-                domainList = domains.getDomain();
-            }
-            DomainType domain = Utils.OBJECT_FACTORY.createDomainType();
-            domain.setName(Utils.ELEVATION_DOMAIN.toLowerCase());
-            setAttributes(domain, props.getProperty(Utils.Prop.ELEVATION_ATTRIBUTE));
-            domainList.add(domain);
-        }
+        // add well known domains
+        addDomain(props, coverage, Utils.Prop.TIME_ATTRIBUTE, Utils.TIME_DOMAIN);
+        addDomain(props, coverage, Utils.Prop.ELEVATION_ATTRIBUTE, Utils.ELEVATION_DOMAIN);
+        addDomain(props, coverage, Utils.Prop.CRS_ATTRIBUTE, Utils.CRS_DOMAIN);
+        addDomain(props, coverage, Utils.Prop.RESOLUTION_ATTRIBUTE, Utils.RESOLUTION_DOMAIN);
+        addDomain(props, coverage, Utils.Prop.RESOLUTION_X_ATTRIBUTE, Utils.RESOLUTION_X_DOMAIN);
+        addDomain(props, coverage, Utils.Prop.RESOLUTION_Y_ATTRIBUTE, Utils.RESOLUTION_Y_DOMAIN);
 
         // Additional domain attr
         if (props.containsKey(Utils.Prop.ADDITIONAL_DOMAIN_ATTRIBUTES)) {
+            DomainsType domains = coverage.getDomains();
             if (domains == null) {
                 domains = Utils.OBJECT_FACTORY.createDomainsType();
                 coverage.setDomains(domains);
-                domainList = domains.getDomain();
             }
+            List<DomainType> domainList = domains.getDomain();
             String attributes = props.getProperty(Utils.Prop.ADDITIONAL_DOMAIN_ATTRIBUTES);
             parseAdditionalDomains(attributes, domainList);
         }
@@ -731,6 +712,21 @@ public class IndexerUtils {
         }
 
         return indexer;
+    }
+    
+    private static void addDomain(Properties props, Coverage coverage, String attributeName, String domainName) {
+        if (props.containsKey(attributeName)) {
+            DomainsType domains = coverage.getDomains();
+            if (domains == null) {
+                domains = Utils.OBJECT_FACTORY.createDomainsType();
+                coverage.setDomains(domains);
+            }
+            List<DomainType> domainList = domains.getDomain();
+            DomainType domain = Utils.OBJECT_FACTORY.createDomainType();
+            domain.setName(domainName.toLowerCase());
+            setAttributes(domain, props.getProperty(attributeName));
+            domainList.add(domain);
+        }
     }
 
     /**

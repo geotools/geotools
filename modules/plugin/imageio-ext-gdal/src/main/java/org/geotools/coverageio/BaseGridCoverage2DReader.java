@@ -17,23 +17,9 @@
  */
 package org.geotools.coverageio;
 
-import java.awt.Rectangle;
-import java.awt.geom.AffineTransform;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.channels.FileChannel;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.imageio.ImageReader;
-import javax.imageio.spi.ImageReaderSpi;
-import javax.media.jai.JAI;
-
+import com.vividsolutions.jts.geom.Geometry;
+import it.geosolutions.imageio.imageioimpl.imagereadmt.ImageReadDescriptorMT;
+import it.geosolutions.imageio.stream.input.FileImageInputStreamExt;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
@@ -64,10 +50,21 @@ import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 
-import com.vividsolutions.jts.geom.Geometry;
-
-import it.geosolutions.imageio.imageioimpl.imagereadmt.ImageReadDescriptorMT;
-import it.geosolutions.imageio.stream.input.FileImageInputStreamExt;
+import javax.imageio.ImageReader;
+import javax.imageio.spi.ImageReaderSpi;
+import javax.media.jai.JAI;
+import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.channels.FileChannel;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Base class for GridCoverage data access
@@ -301,6 +298,21 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
             input = inputFile;
         }
 
+        // string to file conversion attempt (other readers do it too)
+        if (input instanceof String) {
+            try {
+                final File sourceFile = new File((String) input);
+                if (sourceFile.exists()) {
+                    input = sourceFile;
+                } else {
+                    throw new IllegalArgumentException("Unsupported input type, string but not an existing path: " + 
+                            input);
+                }
+            } catch (Exception e) {
+                LOGGER.log(Level.FINER, "Failed to test if input string is a valid file", e);
+            }
+        }
+
         // //
         //        
         // File
@@ -329,7 +341,6 @@ public abstract class BaseGridCoverage2DReader extends AbstractGridCoverage2DRea
             final int dotIndex = coverageName.lastIndexOf(".");
             coverageName = (dotIndex == -1) ? coverageName : coverageName
                     .substring(0, dotIndex);
-
         } else {
             throw new IllegalArgumentException("Unsupported input type");
         }

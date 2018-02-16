@@ -364,7 +364,8 @@ public class Utils {
                     // is it a URL
                     try {
                         url = new URL(tempSource);
-                        source = URLs.urlToFile(url);
+                        file = URLs.urlToFile(url);
+                        source = file;
                     } catch (MalformedURLException e) {
                         url = null;
                         source = null;

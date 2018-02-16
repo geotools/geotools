@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2018, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -14,52 +14,48 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.coverageio.gdal.jp2ecw;
+package org.geotools.coverageio.gdal.srp;
 
-import it.geosolutions.imageio.plugins.jp2ecw.JP2GDALEcwImageReaderSpi;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import it.geosolutions.imageio.plugins.rpftoc.RPFTOCImageReaderSpi;
+import it.geosolutions.imageio.plugins.srp.SRPImageReaderSpi;
 import org.geotools.coverageio.gdal.BaseGDALGridFormat;
 import org.geotools.data.DataSourceException;
 import org.geotools.factory.Hints;
 import org.opengis.coverage.grid.Format;
 import org.opengis.geometry.MismatchedDimensionException;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
- * An implementation of {@link Format} for the JP2K format based on the ECW
- * driver.
+ * An implementation of {@link Format} for the SRP format.
  * 
- * @author Daniele Romagnoli, GeoSolutions
- * @author Simone Giannecchini (simboss), GeoSolutions
- * @since 2.5.x
- *
+ * @author Andrea Aime, GeoSolutions
+ * @since 19.x
  *
  * @source $URL$
  */
-// See https://github.com/geosolutions-it/imageio-ext/issues/148
-public final class JP2ECWFormat extends BaseGDALGridFormat implements Format {
+public final class SRPFormat extends BaseGDALGridFormat implements Format {
     /**
      * Logger.
      */
     private final static Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger("org.geotools.coverageio.gdal.jp2ecw");
+            .getLogger(SRPFormat.class.getPackage().getName());
 
     /**
      * Creates an instance and sets the metadata.
      */
-    public JP2ECWFormat() {
-        super(new JP2GDALEcwImageReaderSpi());
+    public SRPFormat() {
+        super(new SRPImageReaderSpi());
 
         if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine("Creating a new JP2KFormat.");
+            LOGGER.fine("Creating a new SRPFormat.");
         }
 
         setInfo();
     }
 
-    private static InfoWrapper INFO = new InfoWrapper("JP2K (ECW) Coverage Format", "JP2ECW");
+    private static InfoWrapper INFO = new InfoWrapper("ASRP/USRP Coverage Format", "SRP");
 
     /**
      * Sets the metadata information.
@@ -72,9 +68,9 @@ public final class JP2ECWFormat extends BaseGDALGridFormat implements Format {
      * @see org.geotools.data.coverage.grid.AbstractGridFormat#getReader(Object,
      *      Hints)
      */
-    public JP2ECWReader getReader(Object source, Hints hints) {
+    public SRPReader getReader(Object source, Hints hints) {
         try {
-            return new JP2ECWReader(source, hints);
+            return new SRPReader(source, hints);
         } catch (MismatchedDimensionException e) {
             final RuntimeException re = new RuntimeException();
             re.initCause(e);

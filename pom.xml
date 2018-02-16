@@ -93,7 +93,7 @@
     <test.forkMode>once</test.forkMode>
     <test.args></test.args>
     <src.output>${basedir}/target</src.output>
-    <imageio.ext.version>1.1.19</imageio.ext.version>
+    <imageio.ext.version>1.1.20</imageio.ext.version>
     <jaiext.version>1.0.20</jaiext.version>
     <netcdf.version>4.6.6</netcdf.version>
     <jt.version>1.4.0</jt.version>
@@ -680,6 +680,11 @@
       <dependency>
         <groupId>it.geosolutions.imageio-ext</groupId>
         <artifactId>imageio-ext-gdalvrt</artifactId>
+        <version>${imageio.ext.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>it.geosolutions.imageio-ext</groupId>
+        <artifactId>imageio-ext-gdalsrp</artifactId>
         <version>${imageio.ext.version}</version>
       </dependency>
       <dependency>

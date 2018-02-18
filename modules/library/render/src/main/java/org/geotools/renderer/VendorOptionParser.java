@@ -1,9 +1,9 @@
 package org.geotools.renderer;
 
-import java.util.Map;
-
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer.DisplacementMode;
+
+import java.util.Map;
 
 /**
  * Helper class that provides utility methods to extract and parse elements from the vendor options
@@ -113,13 +113,13 @@ public class VendorOptionParser {
      */
     public int[] getGraphicMargin(Symbolizer symbolizer, String optionName) {
         String value = getOption(symbolizer, optionName);
-        if(value == null) {
+        if (value == null) {
             return null;
         } else {
             String[] values = value.trim().split("\\s+");
-            if(values.length == 0) {
+            if (values.length == 0) {
                 return null;
-            } else if(values.length > 4) {
+            } else if (values.length > 4) {
                 throw new IllegalArgumentException("The graphic margin is to be specified with 1, 2 or 4 values");
             }
             int[] parsed = new int[values.length];
@@ -128,18 +128,18 @@ public class VendorOptionParser {
                 int margin = Integer.parseInt(values[i]);
                 allZeroMargin = allZeroMargin && margin == 0;
                 parsed[i] = margin;
-            } 
+            }
             // if not a single positive margin
-            if(allZeroMargin) {
+            if (allZeroMargin) {
                 return null;
-            } else if(parsed.length == 4) {
+            } else if (parsed.length == 4) {
                 return parsed;
-            } else if(parsed.length == 3) {
-                return new int[] {parsed[0], parsed[1], parsed[2], parsed[1]};
-            } else if(parsed.length == 2) {
-                return new int[] {parsed[0], parsed[1], parsed[0], parsed[1]};
+            } else if (parsed.length == 3) {
+                return new int[]{parsed[0], parsed[1], parsed[2], parsed[1]};
+            } else if (parsed.length == 2) {
+                return new int[]{parsed[0], parsed[1], parsed[0], parsed[1]};
             } else {
-                return new int[] {parsed[0], parsed[0], parsed[0], parsed[0]};
+                return new int[]{parsed[0], parsed[0], parsed[0], parsed[0]};
             }
         }
     }

@@ -365,7 +365,6 @@ public interface TextSymbolizer extends org.opengis.style.TextSymbolizer,Symboli
     /**
      * DisplacementMode associates an angle with each 
      * enum value
-     *
      */
     public static enum DisplacementMode {       
         N(90),
@@ -379,7 +378,7 @@ public interface TextSymbolizer extends org.opengis.style.TextSymbolizer,Symboli
         
         int angle;
         
-        private DisplacementMode(int angle) {
+        DisplacementMode(int angle) {
             this.angle = angle;
         }
         

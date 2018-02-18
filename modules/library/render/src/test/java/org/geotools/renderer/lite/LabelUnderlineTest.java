@@ -94,6 +94,6 @@ public class LabelUnderlineTest extends AbstractLabelLineTest {
         BufferedImage image = renderNonStraightLines(featureSource, offsetStyle, 1000, 1000, bounds);
         // let's see if the result image match our expectations
         File reference = new File("./src/test/resources/org/geotools/renderer/lite/test-data/underlineNegativeOffsetStyle.sld.png");
-        ImageAssert.assertEquals(reference, image, 3000);
+        ImageAssert.assertEquals(reference, image, 3500);
     }
 }

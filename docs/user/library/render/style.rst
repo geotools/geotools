@@ -538,7 +538,7 @@ Considerable vendor options are provided for working with TextSymbolizers:
   
 * maxAngleDelta (90) When drawing curved labels, max allowed angle between two subsequent characters. Higher angles may cause disconnected words or overlapping characters
   
-* maxDisplacement (400) The distance, in pixel, a label can be displaced from its natural position in an attempt to find a position that does not conflict with already drawn labels.
+* maxDisplacement (0) The distance, in pixel, a label can be displaced from its natural position in an attempt to find a position that does not conflict with already drawn labels.
 
 * minGroupDistance (3) Minimum distance between two labels in the same label group. To be used when both displacement and repeat are used to avoid having two labels too close to each other
   
@@ -557,6 +557,9 @@ Considerable vendor options are provided for working with TextSymbolizers:
 * strikethroughText(true): When true instructs the renderer to strikethrough labels
 
 * kerning(true): When true enables text kerning (adjustment of space between characters to get a more compact and readable layout) 
+
+* displacementMode: Comma separated list of label displacement directions for point/polygon labels (used along with maxDisplacement). The indicated directions will be tried in turn.
+                    Valid values are cardinal directions abbreviations, in particular, N, W, E, S, NW, NE, SW, SE.
 
 Raster Symbolizer
 '''''''''''''''''

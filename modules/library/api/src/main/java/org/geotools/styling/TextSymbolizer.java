@@ -356,6 +356,38 @@ public interface TextSymbolizer extends org.opengis.style.TextSymbolizer,Symboli
      */
     public static final double DEFAULT_WORD_SPACING = 0;
 
+    /**
+     * Option to control displacement of labels. Available values are defined
+     * as enum values @see {@link DisplacementMode}
+     */
+    public static final String DISPLACEMENT_MODE_KEY = "displacementMode";
+
+    /**
+     * DisplacementMode associates an angle with each 
+     * enum value
+     *
+     */
+    public static enum DisplacementMode {       
+        N(90),
+        W(180),
+        E(0),
+        S(270),
+        NW(135),
+        NE(45),
+        SW(225),
+        SE(315);
+        
+        int angle;
+        
+        private DisplacementMode(int angle) {
+            this.angle = angle;
+        }
+        
+        public int getAngle() {
+            return angle;
+        }
+    }
+   
     
     /**
      * Returns the expression that will be evaluated to determine what text is

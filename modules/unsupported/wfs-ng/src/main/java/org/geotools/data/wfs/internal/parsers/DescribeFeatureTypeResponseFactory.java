@@ -52,6 +52,7 @@ public class DescribeFeatureTypeResponseFactory implements WFSResponseFactory {
     public List<String> getSupportedOutputFormats() {
         return Arrays.asList("text/xml", "text/xml; subtype=gml/3.1.1",
                 "text/xml; subtype=gml/3.2", "XMLSCHEMA", "text/gml; subtype=gml/3.1.1",
+                "text/xml; subType=gml/3.1.1/profiles/gmlsf/1.0.0/0",
                 "application/gml+xml",  "application/gml+xml; version=3.2", 
                 "application/gml+xml; version=3.2;charset=UTF-8");
     }

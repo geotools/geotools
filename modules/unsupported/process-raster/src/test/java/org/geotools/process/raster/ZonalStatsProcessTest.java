@@ -256,8 +256,8 @@ public class ZonalStatsProcessTest extends Assert {
             countsSummary.compute(cloud, (k, v) -> v == null ? count : v + count);
         }
         // evenly split, half and half (in this version of GeoTools the mask captures one more row of data)
-        assertEquals(2550, countsSummary.get(0), 0d);
-        assertEquals(2550, countsSummary.get(1), 0d);
+        assertEquals(2500, countsSummary.get(0), 0d);
+        assertEquals(2500, countsSummary.get(1), 0d);
 
     }
 }

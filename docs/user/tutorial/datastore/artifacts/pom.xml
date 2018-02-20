@@ -13,7 +13,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <geotools.version>19-SNAPSHOT</geotools.version>
+    <geotools.version>20-SNAPSHOT</geotools.version>
   </properties>
 
   <dependencies>

@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.geotools</groupId>
         <artifactId>unsupported</artifactId>
-        <version>19-SNAPSHOT</version>
+        <version>19-beta</version>
     </parent>
 
     <groupId>org.geotools</groupId>

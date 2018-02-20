@@ -16,7 +16,7 @@
   <parent>
     <groupId>org.geotools.maven</groupId>
     <artifactId>maven</artifactId>
-    <version>19-SNAPSHOT</version>
+    <version>19-beta</version>
   </parent>
 
 

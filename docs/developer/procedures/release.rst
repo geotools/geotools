@@ -60,6 +60,8 @@ Release in JIRA
 If you are cutting the first RC of a series, create the stable branch
 ---------------------------------------------------------------------
 
+.. note:: The RC is the first release of a series, released one month before the .0 release. This replaces the beta release, which no longer exists.
+
 When creating the first release candidate of a series, there are some extra steps to create the new stable branch and update the version on master.
 
 * Checkout the master branch and make sure it is up to date and that there are no changes in your local workspace::
@@ -94,7 +96,7 @@ When creating the first release candidate of a series, there are some extra step
       git commit -am "Update version to 18-SNAPSHOT"
       git push geotools master
       
-* Create the new beta version in `JIRA <https://osgeo-org.atlassian.net/projects/GEOT>`_ for issues on master; for example, if master is now ``18-SNAPSHOT``, create a Jira version ``18-beta`` for the first release of the ``18.x`` series
+* Create the new release candidate version in `JIRA <https://osgeo-org.atlassian.net/projects/GEOT>`_ for issues on master; for example, if master is now ``18-SNAPSHOT``, create a Jira version ``18-RC1`` for the first release of the ``18.x`` series
 
 * Update the jobs on build.geoserver.org:
   
@@ -102,7 +104,7 @@ When creating the first release candidate of a series, there are some extra step
   * create new jobs, create from the exsisting master jobs, editing the branch and the DIST=stable configuration. Remember to also create the new docs jobs.
   * edit the previous stable branch, changing to DIST=maintenance
 
-* Announce on the developer mailing list that the new stable branch has been created and that the feature freeze on master is over
+* Announce on the developer mailing list that the new stable branch has been created.
 
 * This is the time to update the README.md, README.html and documentation links
   
@@ -123,7 +125,7 @@ Run the `geotools-release <https://build.geoserver.org/view/geotools/job/geotool
 
 **BRANCH**
 
-  The branch to release from, "8.x", "9.x", etc... This must be a stable branch. Releases are not performed from master, with the notable exception of beta releases, which are indeed cut from master.
+  The branch to release from, "8.x", "9.x", etc... This must be a stable branch. Releases are not performed from master.
      
 **REV**
 

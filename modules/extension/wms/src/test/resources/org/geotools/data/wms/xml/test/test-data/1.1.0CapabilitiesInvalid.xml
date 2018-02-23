@@ -1,0 +1,131 @@
+<?xml version='1.0' encoding="ISO-8859-1" standalone="no" ?>
+<!DOCTYPE WMT_MS_Capabilities SYSTEM "http://www.digitalearth.gov/wmt/xml/capabilities_1_1_0.dtd"
+ [
+ <!ELEMENT VendorSpecificCapabilities EMPTY>
+ ]>  <!-- end of DOCTYPE declaration -->
+
+<WMT_MS_Capabilities version="1.1.0">
+
+<!-- MapServer version 4.2.0 OUTPUT=GIF OUTPUT=PNG OUTPUT=JPEG OUTPUT=WBMP OUTPUT=PDF SUPPORTS=PROJ SUPPORTS=FREETYPE SUPPORTS=WMS_SERVER SUPPORTS=WMS_CLIENT SUPPORTS=WFS_SERVER SUPPORTS=WFS_CLIENT INPUT=EPPL7 INPUT=POSTGIS INPUT=OGR INPUT=GDAL INPUT=SHAPEFILE -->
+
+<Service>
+  <Name>OGC:WMS</Name>
+  <Title>GMap WMS Demo Server</Title>
+  <Abstract>This demonstration server was setup by DM Solutions Group (http://www.dmsolutions.ca/) and is powered by the UMN MapServer (http://mapserver.gis.umn.edu/).  This server uses Canadian source data (c)2000, Government of Canada with permission from Natural Resources Canada from NRCan's GeoGratis 
+web site (http://geogratis.cgdi.gc.ca/).</Abstract>
+  <OnlineResource xmlns:xlink="https://www.w3.org/1999/xlink" xlink:href="http://dev1.dmsolutions.ca/cgi-bin/mswms_gmap?"/>
+</Service>
+
+<Capability>
+  <Request>
+    <GetCapabilities>
+      <Format>application/vnd.ogc.wms_xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="https://www.w3.org/1999/xlink" xlink:href="http://dev1.dmsolutions.ca/cgi-bin/mswms_gmap?"/></Get>
+          <Post><OnlineResource xmlns:xlink="https://www.w3.org/1999/xlink" xlink:href="http://dev1.dmsolutions.ca/cgi-bin/mswms_gmap?"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetCapabilities>
+    <GetMap>
+      <Format>image/gif</Format>
+      <Format>image/png</Format>
+      <Format>image/jpeg</Format>
+      <Format>image/wbmp</Format>
+      <Format>text/html</Format>
+      <Format>application/x-pdf</Format>
+      <Format>image/tiff</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="https://www.w3.org/1999/xlink" xlink:href="http://dev1.dmsolutions.ca/cgi-bin/mswms_gmap?"/></Get>
+          <Post><OnlineResource xmlns:xlink="https://www.w3.org/1999/xlink" xlink:href="http://dev1.dmsolutions.ca/cgi-bin/mswms_gmap?"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetMap>
+    <GetFeatureInfo>
+      <Format>text/plain</Format>
+      <Format>text/html</Format>
+      <Format>application/vnd.ogc.gml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="https://www.w3.org/1999/xlink" xlink:href="http://dev1.dmsolutions.ca/cgi-bin/mswms_gmap?"/></Get>
+          <Post><OnlineResource xmlns:xlink="https://www.w3.org/1999/xlink" xlink:href="http://dev1.dmsolutions.ca/cgi-bin/mswms_gmap?"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetFeatureInfo>
+    <DescribeLayer>
+      <Format>text/xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="https://www.w3.org/1999/xlink" xlink:href="http://dev1.dmsolutions.ca/cgi-bin/mswms_gmap?"/></Get>
+          <Post><OnlineResource xmlns:xlink="https://www.w3.org/1999/xlink" xlink:href="http://dev1.dmsolutions.ca/cgi-bin/mswms_gmap?"/></Post>
+        </HTTP>
+      </DCPType>
+    </DescribeLayer>
+    <GetLegendGraphic>
+      <Format>image/gif</Format>
+      <Format>image/png</Format>
+      <Format>image/jpeg</Format>
+      <Format>image/wbmp</Format>
+      <Format>text/html</Format>
+      <Format>application/x-pdf</Format>
+      <Format>image/tiff</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="https://www.w3.org/1999/xlink" xlink:href="http://dev1.dmsolutions.ca/cgi-bin/mswms_gmap?"/></Get>
+          <Post><OnlineResource xmlns:xlink="https://www.w3.org/1999/xlink" xlink:href="http://dev1.dmsolutions.ca/cgi-bin/mswms_gmap?"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetLegendGraphic>
+  </Request>
+  <Exception>
+    <Format>application/vnd.ogc.se_xml</Format>
+    <Format>application/vnd.ogc.se_inimage</Format>
+    <Format>application/vnd.ogc.se_blank</Format>
+  </Exception>
+  <VendorSpecificCapabilities />
+  <UserDefinedSymbolization SupportSLD="1" UserLayer="0" UserStyle="1" RemoteWFS="0"/>
+  <Layer>
+    <Name>DEMO</Name>
+    <Title>GMap WMS Demo Server</Title>
+    <Abstract>Abstract Test</Abstract>
+    <KeywordList>
+    	<Keyword>word1</Keyword>
+    	<Keyword>word2</Keyword>
+    </KeywordList>
+    <SRS>EPSG:42304 EPSG:42101 EPSG:4269 EPSG:4326</SRS>   
+    <LatLonBoundingBox minx="-172.367" miny="35.6673" maxx="-11.5624" maxy="83.8293" />
+    <BoundingBox SRS="EPSG:42304"
+                minx="-2.2e+06" miny="-712631" maxx="3.0728e+06" maxy="3.84e+06" />
+    <Attribution>
+      <Title>test</Title>
+      <OnlineResource xmlns:xlink="https://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://www.example.com"/>
+      <LogoURL height="100" width="100">
+        <Format>image/png</Format>
+        <OnlineResource xmlns:xlink="https://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://www.osgeo.org/sites/all/themes/osgeo/logo.png"/>
+      </LogoURL>
+    </Attribution>      
+    <Layer queryable="0" opaque="0" cascaded="0">
+        <Name>bathymetry</Name>
+        <Title>Elevation/Bathymetry</Title>
+        <SRS>EPSG:42304</SRS>
+    <Attribution>
+      <Title>test</Title>
+      <OnlineResource xmlns:xlink="https://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://www.example.com"/>
+    </Attribution>
+    <MetadataURL type="TC211">
+        <Format>text/xml</Format>
+        <OnlineResource xmlns:xlink="https://www.w3.org/1999/xlink" xlink:href="http://www.example.com" xlink:type="simple"/>
+    </MetadataURL>
+    <Style>
+        <Name>default</Name>
+        <Title>teststyle</Title>
+        <LegendURL height="21" width="119">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="https://www.w3.org/1999/xlink" xlink:href="http://www.example.com" xlink:type="simple"/>
+        </LegendURL>
+    </Style>
+    </Layer>
+  </Layer>
+</Capability>
+</WMT_MS_Capabilities>

@@ -4349,7 +4349,7 @@ public class WMSComplexTypes {
 				Attributes attrs, Map hints) throws SAXException,
 				OperationNotSupportedException {
                     
-                    String legendURL = value[1].getValue().toString();
+                    String legendURL = value[1].getValue() == null ? null : value[1].getValue().toString();
                     return legendURL;
 			// throw new OperationNotSupportedException();
 		}

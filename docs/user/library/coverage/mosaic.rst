@@ -9,7 +9,7 @@ list the filename of the "images" to display and the location in which they shou
 * `ImageMosaicFormat <http://docs.geotools.org/latest/javadocs/org/geotools/gce/imagemosaic/ImageMosaicFormat.html>`_ (javadoc)
 * `ImageMosaicJDBCReader <http://docs.geotools.org/latest/javadocs/org/geotools/gce/imagemosaic/jdbc/ImageMosaicJDBCReader.html>`_ (javadoc)
 * :doc:`pyramid`
-* `Using the ImageMoasic plugin <http://docs.geoserver.org/stable/en/user/tutorials/image_mosaic_plugin/imagemosaic.html>`_
+* `Using the ImageMosaic plugin <http://docs.geoserver.org/stable/en/user/tutorials/image_mosaic_plugin/imagemosaic.html>`_
 
 **Maven**::
    

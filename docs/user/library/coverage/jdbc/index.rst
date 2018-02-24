@@ -1,9 +1,9 @@
 .. _im-jdbc:
 
-Image Moasic JDBC
+Image Mosaic JDBC
 -----------------
 
-This **gt-imagemoasic-jdbc** plugin is intended to handle large images stored as tiles in a JDBC
+This **gt-imagemosaic-jdbc** plugin is intended to handle large images stored as tiles in a JDBC
 database. Tiles created by pyramids are also stored in the database. The utility uses the indexing
 of databases to speed up access to the requested tiles, the plugin for itself has a multithreaded
 architecture to make use of dual/quad core CPUs and multiprocessor systems.
@@ -81,7 +81,7 @@ This example shows how to use the module::
 Mapping of table and attribute names
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Since there a lot of naming conventions in different enterprises, I is not idea to force the use of predefined table and attribute names. In our example, the names of the spatial and tile tables is selectable, the name of the meta table and all the attribute names were assumed. The mapping of these names is part of the XML configuration. The corresponding XML fragment shows the mapping of the assumed names.
+Since there a lot of naming conventions in different enterprises, it is not ideal to force the use of predefined table and attribute names. In our example, the names of the spatial and tile tables is selectable, the name of the meta table and all the attribute names were assumed. The mapping of these names is part of the XML configuration. The corresponding XML fragment shows the mapping of the assumed names.
 
 A sample XML fragment file **mapping.xml.inc**::
   
@@ -117,7 +117,7 @@ The structure of this XML Fragment is kept very simple, use it as a pattern.
 
 The name attribute of the <spatialExtension> has to be one of the following values
 
-* universal (a vendor neutral JDBC approach which should work with any jdbc database with BLOB support)
+* universal (a vendor neutral JDBC approach which should work with any JDBC database with BLOB support)
 * db2 (use spatial extender)
 * mysql (use the spatial features of mysql)
 * postgis (use the spatial features of postgis)

@@ -80,6 +80,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.jdbc.JoinInfo.JoinPart;
 import org.geotools.referencing.CRS;
 import org.geotools.util.Converters;
+import org.geotools.util.SoftValueHashMap;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -147,6 +148,11 @@ import com.vividsolutions.jts.geom.Point;
  */
 public final class JDBCDataStore extends ContentDataStore
     implements GmlObjectStore {
+
+    /**
+     * Caches the "setValue" method in various aggregate visitors
+     */
+    private static SoftValueHashMap<Class, Method> AGGREGATE_SETVALUE_CACHE = new SoftValueHashMap<>(1000); 
     
     private static final FilterFactory2 FF2 = CommonFactoryFinder.getFilterFactory2();
 
@@ -1707,18 +1713,23 @@ public final class JDBCDataStore extends ContentDataStore
     boolean setResult(FeatureVisitor visitor,Object result) {
         try {
             Method s = null;
-            try {
-                s = visitor.getClass().getMethod("setValue",result.getClass());
-            }
-            catch( Exception e ) {}
-            
-            if ( s == null ) {
-                for ( Method m : visitor.getClass().getMethods()) {
-                    if ( "setValue".equals( m.getName() ) ) {
-                        s = m;
-                        break;
+            if (AGGREGATE_SETVALUE_CACHE.containsKey(visitor.getClass())) {
+                s = AGGREGATE_SETVALUE_CACHE.get(visitor.getClass());
+            } else {
+                try {
+                    s = visitor.getClass().getMethod("setValue", result.getClass());
+                } catch (Exception e) {
+                }
+
+                if (s == null) {
+                    for (Method m : visitor.getClass().getMethods()) {
+                        if ("setValue".equals(m.getName())) {
+                            s = m;
+                            break;
+                        }
                     }
                 }
+                AGGREGATE_SETVALUE_CACHE.put(visitor.getClass(), s);
             }
             if ( s != null ){
                 Class type = s.getParameterTypes()[0];

@@ -40,6 +40,8 @@ import org.geotools.util.Utilities;
  * A new attribute LOCATION is used to distinguish granules coming from specific
  * file/reader instances.
  * 
+ * Starting with 19.x, it is also possible to use a {@link org.geotools.data.Repository} providing an externally
+ * managed store identified by name
  *  
  * @author Daniele Romagnoli, GeoSolutions
  */
@@ -47,6 +49,20 @@ public class DataStoreConfiguration {
 
     private final static H2DataStoreFactory INTERNAL_STORE_SPI = new H2DataStoreFactory();
 
+    /** The Datastore factory spi used to create the Datastore instance */
+    private DataStoreFactorySpi datastoreSpi;
+
+    /** The connection params */
+    private Map<String, Serializable> params;
+
+    /**
+     * a boolean stating whether the granules index is stored "the classic way", 
+     * which is using an internal H2 DB for each file or it's a shared DB.
+     */
+    private boolean shared = false;
+
+    private String storeName;
+    
     /** Default instance is using a H2 DB for each file */
     public DataStoreConfiguration(Map<String, Serializable> datastoreParams) {
         this(INTERNAL_STORE_SPI, datastoreParams);
@@ -58,6 +74,10 @@ public class DataStoreConfiguration {
         this.params = datastoreParams;
     }
 
+    public DataStoreConfiguration(String storeName) {
+        this.storeName = storeName;
+    }
+
     public DataStoreFactorySpi getDatastoreSpi() {
         return datastoreSpi;
     }
@@ -67,6 +87,9 @@ public class DataStoreConfiguration {
     }
 
     public Map<String, Serializable> getParams() {
+        if (params == null) {
+            params = new HashMap<>();
+        }
         return params;
     }
 
@@ -82,11 +105,9 @@ public class DataStoreConfiguration {
         this.shared = shared;
     }
 
-    /** The Datastore factory spi used to create the Datastore instance */
-    private DataStoreFactorySpi datastoreSpi;
-
-    /** The connection params */
-    private Map<String, Serializable> params;
+    public String getStoreName() {
+        return storeName;
+    }
 
     /**
      * Return default params for the 1 File <-> 1 H2 DB classic configuration. 
@@ -116,9 +137,4 @@ public class DataStoreConfiguration {
         return params;
     }
 
-    /**
-     * a boolean stating whether the granules index is stored "the classic way", 
-     * which is using an internal H2 DB for each file or it's a shared DB.
-     */
-    private boolean shared = false;
 }

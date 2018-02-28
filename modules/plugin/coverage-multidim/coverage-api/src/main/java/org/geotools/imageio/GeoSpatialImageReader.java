@@ -34,6 +34,7 @@ import org.geotools.coverage.io.catalog.CoverageSlicesCatalog;
 import org.geotools.coverage.io.catalog.CoverageSlicesCatalog.WrappedCoverageSlicesCatalog;
 import org.geotools.coverage.io.catalog.DataStoreConfiguration;
 import org.geotools.data.Query;
+import org.geotools.data.Repository;
 import org.opengis.feature.type.Name;
 
 /**
@@ -59,6 +60,7 @@ public abstract class GeoSpatialImageReader extends ImageReader implements FileS
      * low level granules index 
      */
     private String auxiliaryDatastorePath = null;
+    private Repository repository;
 
     protected GeoSpatialImageReader(ImageReaderSpi originatingProvider) {
         super(originatingProvider);
@@ -170,6 +172,10 @@ public abstract class GeoSpatialImageReader extends ImageReader implements FileS
     public void setAuxiliaryDatastorePath(String auxiliaryDatastorePath) {
         this.auxiliaryDatastorePath = auxiliaryDatastorePath;
     }
+    
+    public void setRepository(Repository repository) {
+        this.repository = repository;
+    }
 
     /**
      * Returns the underlying slicesCatalog. 
@@ -190,7 +196,7 @@ public abstract class GeoSpatialImageReader extends ImageReader implements FileS
      * @deprecated: use the {@link #initCatalog(DataStoreConfiguration)} instead 
      */
     protected void initCatalog(File parentLocation, String databaseName) throws IOException {
-        slicesCatalog = new CoverageSlicesCatalog(databaseName, parentLocation);
+        slicesCatalog = new CoverageSlicesCatalog(databaseName, parentLocation, repository);
     }
 
     /**
@@ -201,8 +207,8 @@ public abstract class GeoSpatialImageReader extends ImageReader implements FileS
      */
     protected void initCatalog(DataStoreConfiguration datastoreConfig) throws IOException {
         slicesCatalog = datastoreConfig.isShared() ?
-                new WrappedCoverageSlicesCatalog(datastoreConfig, file) :
-                    new CoverageSlicesCatalog(datastoreConfig);
+                new WrappedCoverageSlicesCatalog(datastoreConfig, file, repository) :
+                    new CoverageSlicesCatalog(datastoreConfig, repository);
     }
 
     @Override

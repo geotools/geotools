@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +39,7 @@ import org.geotools.data.DefaultTransaction;
 import org.geotools.data.FeatureStore;
 import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
+import org.geotools.data.Repository;
 import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -45,6 +47,7 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.DefaultFeatureCollection;
+import org.geotools.feature.NameImpl;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.visitor.FeatureCalc;
 import org.geotools.gce.imagemosaic.Utils;
@@ -86,9 +89,9 @@ public class CoverageSlicesCatalog {
         /** Internal query filter to be ANDED with the input query */
         private Filter queryFilter;  
 
-        public WrappedCoverageSlicesCatalog(DataStoreConfiguration config, File file)
+        public WrappedCoverageSlicesCatalog(DataStoreConfiguration config, File file, Repository repository)
                 throws IOException {
-            super(config);
+            super(config, repository);
             queryFilter = FF.equal(FF.property(CoverageSlice.Attributes.LOCATION),
                     FF.literal(file.getCanonicalPath()), true);
         }
@@ -148,29 +151,57 @@ public class CoverageSlicesCatalog {
 
     private final SoftValueHashMap<Integer, CoverageSlice> coverageSliceDescriptorsCache = new SoftValueHashMap<Integer, CoverageSlice>(0);
 
+    private boolean repositoryStore;
+
     public CoverageSlicesCatalog(final String database, final File parentLocation) {
-        this(new DataStoreConfiguration(DataStoreConfiguration.getDefaultParams(database, parentLocation)));
+        this(database, parentLocation, null);
+    }
+    
+    public CoverageSlicesCatalog(final String database, final File parentLocation, Repository repository) {
+        this(new DataStoreConfiguration(DataStoreConfiguration.getDefaultParams(database, parentLocation)), repository);
     }
 
     public CoverageSlicesCatalog(DataStoreConfiguration datastoreConfig) {
-        DataStoreFactorySpi spi = datastoreConfig.getDatastoreSpi();
-        final Map<String, Serializable> params = datastoreConfig.getParams();
-        Utilities.ensureNonNull("params", params);
-        try {
+        this(datastoreConfig, null);
+    }
 
+    public CoverageSlicesCatalog(DataStoreConfiguration datastoreConfig, Repository repository) {
+        DataStoreFactorySpi spi = datastoreConfig.getDatastoreSpi();
+        String storeName = datastoreConfig.getStoreName();
+        boolean useRepository = storeName != null && repository != null;
+        try {
             // creating a store, this might imply creating it for an existing underlying store or
             // creating a brand new one
             boolean isPostgis = Utils.isPostgisStore(spi);
             boolean isH2 = Utils.isH2Store(spi);
-            if (!(isH2 || isPostgis)) {
-                throw new IllegalArgumentException(
-                        "Low level index for multidim granules only supports"
-                        + " H2 and PostGIS databases");
-            }
-            if (isPostgis) {
+
+            Map<String, Serializable> params = datastoreConfig.getParams();
+            if (isPostgis && params != null) {
                 Utils.fixPostgisDBCreationParams(params);
             }
-            slicesIndexStore = spi.createDataStore(params);
+            if (useRepository) {
+                Name name = new NameImpl(storeName);
+                slicesIndexStore = repository.dataStore(name);
+                if (slicesIndexStore == null && storeName.indexOf(':') > -1) {
+                    int idx = storeName.lastIndexOf(':');
+                    name = new NameImpl(storeName.substring(0, idx), storeName.substring(idx + 1));
+                    slicesIndexStore = repository.dataStore(name);
+                }
+
+                if (slicesIndexStore == null) {
+                    throw new IllegalArgumentException("Could not locate store named " + storeName);
+                }
+                this.repositoryStore = true;
+            } else {
+                if (!(isH2 || isPostgis)) {
+                    throw new IllegalArgumentException(
+                            "Low level index for multidim granules only supports"
+                                    + " H2 and PostGIS databases");
+                }
+                Utilities.ensureNonNull("params", params);
+                
+                slicesIndexStore = spi.createDataStore(params);
+            }
             boolean wrapDatastore = false;
             String parentLocation = (String) params.get(Utils.Prop.PARENT_LOCATION);
             if (params.containsKey(Utils.Prop.WRAP_STORE)) {
@@ -306,7 +337,7 @@ public class CoverageSlicesCatalog {
         try {
             l.lock();
             try {
-                if (slicesIndexStore != null)
+                if (slicesIndexStore != null && !repositoryStore)
                     slicesIndexStore.dispose();
             } catch (Throwable e) {
                 if (LOGGER.isLoggable(Level.FINE))

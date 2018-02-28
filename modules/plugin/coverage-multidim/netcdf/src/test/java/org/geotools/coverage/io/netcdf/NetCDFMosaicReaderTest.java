@@ -33,6 +33,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
@@ -54,17 +55,23 @@ import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GranuleSource;
 import org.geotools.coverage.grid.io.HarvestedSource;
 import org.geotools.data.DataUtilities;
+import org.geotools.data.DefaultRepository;
 import org.geotools.data.Query;
+import org.geotools.data.directory.DirectoryDataStore;
+import org.geotools.data.shapefile.ShapefileDataStoreFactory;
+import org.geotools.data.shapefile.ShapefileDataStoreFactory.ShpFileStoreFactory;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
+import org.geotools.feature.NameImpl;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
 import org.geotools.gce.imagemosaic.Utils.Prop;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.imageio.netcdf.NetCDFImageReader;
 import org.geotools.imageio.netcdf.NetCDFImageReaderSpi;
+import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.resources.image.ImageUtilities;
@@ -300,13 +307,74 @@ public class NetCDFMosaicReaderTest extends Assert {
 
         ImageMosaicFormat format = new ImageMosaicFormat();
         ImageMosaicReader reader = format.getReader(mosaic);
+        checkCustomTimeAttribute(nc1, reader);
+    }
+
+    @Test
+    public void testCustomTimeAttributeRepository() throws IOException {
+        // setup repository
+        ShpFileStoreFactory dialect = new ShpFileStoreFactory(new ShapefileDataStoreFactory(), new HashMap());
+        File indexDirectory = new File("./target/custom_time_attribute_idx");
+        FileUtils.deleteQuietly(indexDirectory);
+        indexDirectory.mkdir();
+        File auxiliaryDataStoreFile = new File(indexDirectory, "test.properties");
+        String theStoreName = "testStore";
+        FileUtils.writeStringToFile(auxiliaryDataStoreFile, NetCDFUtilities.STORE_NAME + "=" + theStoreName);
+
+        DirectoryDataStore dataStore = new DirectoryDataStore(indexDirectory, dialect);
+
+        DefaultRepository repository = new DefaultRepository();
+        repository.register(new NameImpl(theStoreName), dataStore);
+
+        File nc1 = TestData.file(this,"polyphemus_20130301_NO2_time2.nc");
+        File mosaic = new File(TestData.file(this,"."),"nc_time2");
+        if (mosaic.exists()) {
+            FileUtils.deleteDirectory(mosaic);
+        }
+        assertTrue(mosaic.mkdirs());
+        FileUtils.copyFileToDirectory(nc1, mosaic);
+
+        // The indexer
+        Properties indexer = new Properties();
+        indexer.put("TimeAttribute", "time");
+        indexer.put("Schema", "the_geom:Polygon,location:String,imageindex:Integer,time:java.util.Date");
+        indexer.put("AuxiliaryDatastoreFile", auxiliaryDataStoreFile.getCanonicalPath());
+        final String auxiliaryFilePath = mosaic.getAbsolutePath() + File.separatorChar + ".polyphemus_20130301_NO2_time2";
+        final File auxiliaryFileDir = new File(auxiliaryFilePath);
+        assertTrue(auxiliaryFileDir.mkdirs());
+
+        File nc1Aux = TestData.file(this,"polyphemus_20130301_NO2_time2.xml");
+        FileUtils.copyFileToDirectory(nc1Aux, auxiliaryFileDir);
+
+        try (FileOutputStream fos = new FileOutputStream(new File(mosaic, "indexer.properties"))) {
+            indexer.store(fos, null);
+        }
+        File dsp = TestData.file(this,"datastore.properties");
+        FileUtils.copyFileToDirectory(dsp, mosaic);
+
+        ImageMosaicFormat format = new ImageMosaicFormat();
+        ImageMosaicReader reader = format.getReader(mosaic, new Hints(Hints.REPOSITORY, repository));
+        checkCustomTimeAttribute(nc1, reader);
+
+        // the index files have actually been created
+        List<String> typeNames = Arrays.asList(dataStore.getTypeNames());
+        assertEquals(1, typeNames.size());
+        assertTrue(typeNames.contains("NO2"));
+        dataStore.dispose();
+    }
+
+    public void checkCustomTimeAttribute(File nc1, ImageMosaicReader reader) throws IOException {
         NetCDFImageReader imageReader = null;
         SimpleFeatureIterator it = null;
         assertNotNull(reader);
+        GridCoverage2D coverage = null;
         try {
             String[] names = reader.getGridCoverageNames();
             assertEquals(1, names.length);
             assertEquals("NO2", names[0]);
+            
+            // check we can read
+            coverage = reader.read(null);
 
             // check we have the two granules we expect
             GranuleSource source = reader.getGranules("NO2", true);
@@ -333,6 +401,10 @@ public class NetCDFMosaicReaderTest extends Assert {
             assertNotNull(featureType.getDescriptor("time"));
 
         } finally {
+            if (coverage != null) {
+                coverage.dispose(true);
+            }
+            
             if (it != null) {
                 it.close();
             }

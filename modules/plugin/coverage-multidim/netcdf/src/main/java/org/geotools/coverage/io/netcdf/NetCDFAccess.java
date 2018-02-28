@@ -21,6 +21,8 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
@@ -40,12 +42,14 @@ import org.geotools.coverage.io.impl.DefaultFileDriver;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DefaultServiceInfo;
 import org.geotools.data.Parameter;
+import org.geotools.data.Repository;
 import org.geotools.data.ServiceInfo;
 import org.geotools.factory.Hints;
 import org.geotools.feature.NameImpl;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.imageio.GeoSpatialImageReader;
 import org.geotools.imageio.netcdf.NetCDFImageReader;
+import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.util.NullProgressListener;
 import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
@@ -140,14 +144,26 @@ public class NetCDFAccess extends DefaultFileCoverageAccess implements CoverageA
                 prefix = (String) hints.get(Utils.PARENT_DIR) + File.separatorChar;
             }
             if (hints.containsKey(Utils.AUXILIARY_FILES_PATH)) {
-                String filePath = prefix + (String) hints.get(Utils.AUXILIARY_FILES_PATH);
+                String filePath = (String) hints.get(Utils.AUXILIARY_FILES_PATH);
+                filePath = makeAbsolute(prefix, filePath);
                 reader.setAuxiliaryFilesPath(filePath);
             }
             if (hints.containsKey(Utils.AUXILIARY_DATASTORE_PATH)) {
-                String filePath = prefix + (String) hints.get(Utils.AUXILIARY_DATASTORE_PATH);
+                String filePath = (String) hints.get(Utils.AUXILIARY_DATASTORE_PATH);
+                filePath = makeAbsolute(prefix, filePath);
                 reader.setAuxiliaryDatastorePath(filePath);
             }
+            if (hints.containsKey(Hints.REPOSITORY)) {
+                reader.setRepository((Repository) hints.get(Hints.REPOSITORY));
+            }
         }
+    }
+
+    private String makeAbsolute(String prefix, String filePath) {
+        if (!Paths.get(filePath).isAbsolute()) {
+            filePath = prefix + filePath;
+        }
+        return filePath;
     }
 
     @Override

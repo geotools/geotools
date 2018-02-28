@@ -65,7 +65,7 @@ import org.geotools.coverage.grid.io.footprint.MultiLevelROI;
 import org.geotools.coverage.grid.io.imageio.MaskOverviewProvider;
 import org.geotools.coverage.grid.io.imageio.MaskOverviewProvider.SpiHelper;
 import org.geotools.coverage.grid.io.imageio.ReadType;
-import org.geotools.data.DataUtilities;
+import org.geotools.data.Repository;
 import org.geotools.factory.Hints;
 import org.geotools.factory.Hints.Key;
 import org.geotools.geometry.GeneralEnvelope;
@@ -556,6 +556,11 @@ public class GranuleDescriptor {
                         "setAuxiliaryFilesPath");
                 updateReaderWithAuxiliaryPath(hints, reader, Utils.AUXILIARY_DATASTORE_PATH,
                         "setAuxiliaryDatastorePath");
+                if (hints.get(Hints.REPOSITORY) != null &&
+                        MethodUtils.getAccessibleMethod(reader.getClass(), "setRepository",
+                                new Class[]{Repository.class}) != null) {
+                    MethodUtils.invokeMethod(reader, "setRepository", hints.get(Hints.REPOSITORY));
+                }
                 return true;
             } catch (NoSuchMethodException e) {
                 throw new RuntimeException(e);

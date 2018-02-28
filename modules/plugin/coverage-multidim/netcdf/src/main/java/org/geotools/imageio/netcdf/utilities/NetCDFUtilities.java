@@ -274,6 +274,8 @@ public class NetCDFUtilities {
     public static final String ENHANCE_SCALE_MISSING_DEFER = "org.geotools.coverage.io.netcdf.enhance.ScaleMissingDefer";
 
     public static boolean ENHANCE_SCALE_OFFSET = false;
+
+    public final static String STORE_NAME = "StoreName";
     
     /**
      * Number of bytes at the start of a file to search for a GRIB signature. Some GRIB files have WMO headers prepended by a telecommunications

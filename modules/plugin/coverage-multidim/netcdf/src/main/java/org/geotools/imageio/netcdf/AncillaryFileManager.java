@@ -803,24 +803,29 @@ public class AncillaryFileManager implements FileSetManager{
             URL datastoreURL = URLs.fileToUrl(datastoreIndexFile);
             Properties properties = CoverageUtilities.loadPropertiesFromURL(datastoreURL);
             if (properties != null) {
-                final String SPIClass = properties.getProperty("SPI");
-                try {
-                    // create a datastore as instructed
-                    final DataStoreFactorySpi spi = (DataStoreFactorySpi) Class.forName(SPIClass)
-                            .newInstance();
-                    Map<String, Serializable> datastoreParams = Utils.filterDataStoreParams(
-                            properties, spi);
+                String storeName = properties.getProperty(NetCDFUtilities.STORE_NAME);
+                if (storeName != null) {
+                    return new DataStoreConfiguration(storeName);
+                } else {
+                    final String SPIClass = properties.getProperty("SPI");
+                    try {
+                        // create a datastore as instructed
+                        final DataStoreFactorySpi spi = (DataStoreFactorySpi) Class.forName(SPIClass)
+                                .newInstance();
+                        Map<String, Serializable> datastoreParams = Utils.filterDataStoreParams(
+                                properties, spi);
 
-                    // create a datastore configuration using the specified SPI and datastoreParams
-                    datastoreConfiguration = new DataStoreConfiguration(spi, datastoreParams);
-                    datastoreConfiguration.setDatastoreSpi(spi);
-                    datastoreConfiguration.setParams(datastoreParams);
-                    datastoreConfiguration.setShared(true);
-                    // update params for the shared case
-                    checkStoreWrapping(datastoreConfiguration);
-                } catch (Exception e) {
-                    final IOException ioe = new IOException();
-                    throw (IOException) ioe.initCause(e);
+                        // create a datastore configuration using the specified SPI and datastoreParams
+                        datastoreConfiguration = new DataStoreConfiguration(spi, datastoreParams);
+                        datastoreConfiguration.setDatastoreSpi(spi);
+                        datastoreConfiguration.setParams(datastoreParams);
+                        datastoreConfiguration.setShared(true);
+                        // update params for the shared case
+                        checkStoreWrapping(datastoreConfiguration);
+                    } catch (Exception e) {
+                        final IOException ioe = new IOException();
+                        throw (IOException) ioe.initCause(e);
+                    }
                 }
             }
         } else {

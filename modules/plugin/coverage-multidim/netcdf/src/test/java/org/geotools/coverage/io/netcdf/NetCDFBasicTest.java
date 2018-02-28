@@ -16,15 +16,6 @@
  */
 package org.geotools.coverage.io.netcdf;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.security.MessageDigest;
-import java.util.List;
-import java.util.logging.Logger;
-
 import it.geosolutions.imageio.core.CoreCommonImageMetadata;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -38,7 +29,11 @@ import org.geotools.coverage.io.CoverageSourceDescriptor;
 import org.geotools.coverage.io.catalog.CoverageSlice;
 import org.geotools.coverage.io.catalog.CoverageSlicesCatalog;
 import org.geotools.data.DataUtilities;
+import org.geotools.data.DefaultRepository;
 import org.geotools.data.Query;
+import org.geotools.data.directory.DirectoryDataStore;
+import org.geotools.data.shapefile.ShapefileDataStoreFactory;
+import org.geotools.data.shapefile.ShapefileDataStoreFactory.ShpFileStoreFactory;
 import org.geotools.feature.NameImpl;
 import org.geotools.imageio.netcdf.AncillaryFileManager;
 import org.geotools.imageio.netcdf.NetCDFImageReader;
@@ -46,7 +41,6 @@ import org.geotools.imageio.netcdf.NetCDFImageReaderSpi;
 import org.geotools.imageio.netcdf.Slice2DIndex;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.test.TestData;
-import org.hamcrest.CoreMatchers;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
@@ -54,12 +48,20 @@ import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
-
 import ucar.nc2.Variable;
 import ucar.nc2.dataset.NetcdfDataset;
 
-import javax.imageio.metadata.IIOMetadata;
-import javax.media.jai.FloatDoubleColorModel;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.security.MessageDigest;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.logging.Logger;
 
 /**
  * Testing Low level reader infrastructure.
@@ -144,6 +146,39 @@ public final class NetCDFBasicTest extends Assert {
 
     @Test
     public void testImageReaderPolyphemusSimple() throws Exception {
+        testImageReaderPolyphemusSimple(null);
+    }
+
+    @Test
+    public void testImageReaderPolyphemusSimple2() throws Exception {
+        // setup repository
+        ShpFileStoreFactory dialect = new ShpFileStoreFactory(new ShapefileDataStoreFactory(), new HashMap());
+        File indexDirectory = new File("./target/polyphemus_simple_idx");
+        FileUtils.deleteQuietly(indexDirectory);
+        indexDirectory.mkdir();
+        File properties = new File(indexDirectory, "test.properties");
+        String theStoreName = "testStore";
+        FileUtils.writeStringToFile(properties, NetCDFUtilities.STORE_NAME + "=" + theStoreName);
+        
+        DirectoryDataStore dataStore = new DirectoryDataStore(indexDirectory, dialect);
+        
+        DefaultRepository repository = new DefaultRepository();
+        repository.register(new NameImpl(theStoreName), dataStore);
+
+        testImageReaderPolyphemusSimple(reader -> {
+            reader.setRepository(repository);
+            reader.setAuxiliaryDatastorePath(properties.getAbsolutePath());
+        });
+        
+        // the index files have actually been created
+        List<String> typeNames = Arrays.asList(dataStore.getTypeNames());
+        assertEquals(2, typeNames.size());
+        assertTrue(typeNames.contains("O3"));
+        assertTrue(typeNames.contains("NO2"));
+        dataStore.dispose();
+    }
+    
+    public void testImageReaderPolyphemusSimple(Consumer<NetCDFImageReader> readerCustomizer) throws Exception {
         final File file = TestData.file(this, "O3-NO2.nc");
         final NetCDFImageReaderSpi unidataImageReaderSpi = new NetCDFImageReaderSpi();
         assertTrue(unidataImageReaderSpi.canDecodeInput(file));
@@ -152,6 +187,9 @@ public final class NetCDFBasicTest extends Assert {
 
             // checking low level
             reader = (NetCDFImageReader) unidataImageReaderSpi.createReaderInstance();
+            if (readerCustomizer != null) {
+                readerCustomizer.accept(reader);
+            }
             reader.setInput(file);
             int numImages = reader.getNumImages(true);
             LOGGER.info("Found " + numImages + " images.");
@@ -822,4 +860,7 @@ public final class NetCDFBasicTest extends Assert {
             }
         }
     }
+
+    
+
 }

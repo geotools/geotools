@@ -52,6 +52,7 @@ public class ServiceExceptionParser {
      */
     public static ServiceException parse(InputStream inputStream) throws JDOMException, IOException {
         SAXBuilder builder = new SAXBuilder();
+        builder.setExpandEntities(false);
         Document document = builder.build(inputStream);
         
         Element root = document.getRootElement();

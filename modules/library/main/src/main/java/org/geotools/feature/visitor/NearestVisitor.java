@@ -16,7 +16,9 @@
  */
 package org.geotools.feature.visitor;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.util.Converters;
@@ -34,7 +36,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * 
  * @param <T>
  */
-public class NearestVisitor implements FeatureCalc {
+public class NearestVisitor implements FeatureCalc, FeatureAttributeVisitor {
     private Expression expr;
 
     private Class attributeClass;
@@ -177,6 +179,11 @@ public class NearestVisitor implements FeatureCalc {
      */
     public Object getValueToMatch() {
         return valueToMatch;
+    }
+
+    @Override
+    public List<Expression> getExpressions() {
+        return Arrays.asList(expr);
     }
 
     static interface NearestAccumulator<T> {

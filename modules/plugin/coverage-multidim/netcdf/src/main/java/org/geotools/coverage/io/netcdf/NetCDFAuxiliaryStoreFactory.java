@@ -57,7 +57,7 @@ public class NetCDFAuxiliaryStoreFactory implements DataStoreFactorySpi {
     
     public final static String AUXILIARY_STORE_KEY = "org.geotools.coverage.io.netcdf.auxiliary.store";
     
-    public static final Param FILE_PARAM = new Param("File", File.class, "NetCDF File Path", true,
+    public static final Param FILE_PARAM = new Param("File", String.class, "NetCDF File Path", true,
             null, Collections.emptyMap());
     
     public static final Param INDEX_PARAM = new Param("Index", String.class, "Index File Path", false,
@@ -87,10 +87,10 @@ public class NetCDFAuxiliaryStoreFactory implements DataStoreFactorySpi {
     @Override
     public boolean canProcess(Map<String, Serializable> params) {
         try {
-            File file = (File) FILE_PARAM.lookUp(params);
+        	String filePath = (String) FILE_PARAM.lookUp(params);
             String indexPath = (String) INDEX_PARAM.lookUp(params);
             String dsPath = (String) DS_PARAM.lookUp(params);
-            AncillaryFileManager ancilaryFileManager = new AncillaryFileManager(file, indexPath, dsPath);
+            AncillaryFileManager ancilaryFileManager = new AncillaryFileManager(filePath, indexPath, dsPath);
             DataStoreConfiguration datastoreConfig = ancilaryFileManager.getDatastoreConfiguration();
             return datastoreConfig.getDatastoreSpi().canProcess(datastoreConfig.getParams());            
         } catch (NoSuchAlgorithmException | JAXBException | IOException e) {
@@ -110,11 +110,11 @@ public class NetCDFAuxiliaryStoreFactory implements DataStoreFactorySpi {
 
     @Override
     public DataStore createDataStore(Map<String, Serializable> params) throws IOException {
-        File file = (File) FILE_PARAM.lookUp(params);
+        String filePath = (String) FILE_PARAM.lookUp(params);;
         String indexPath = (String) INDEX_PARAM.lookUp(params);
         String dsPath = (String) DS_PARAM.lookUp(params);
         try {
-            AncillaryFileManager ancilaryFileManager = new AncillaryFileManager(file, indexPath, dsPath);
+            AncillaryFileManager ancilaryFileManager = new AncillaryFileManager(filePath, indexPath, dsPath);
             DataStoreConfiguration datastoreConfig = ancilaryFileManager.getDatastoreConfiguration();            
             
             final DataStore delegate = datastoreConfig.getDatastoreSpi().createDataStore(datastoreConfig.getParams());

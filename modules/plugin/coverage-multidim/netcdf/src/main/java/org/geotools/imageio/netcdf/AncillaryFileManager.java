@@ -233,12 +233,15 @@ public class AncillaryFileManager implements FileSetManager{
     /** File storing the coverages indexer */
     private File indexerFile;
 
-    public AncillaryFileManager(final File netcdfFile, final String indexFilePath) throws IOException, JAXBException, NoSuchAlgorithmException {
-        this(netcdfFile, indexFilePath, null);
+    public AncillaryFileManager(final String netcdfFilePath, final String indexFilePath) throws IOException, JAXBException, NoSuchAlgorithmException {
+        this(netcdfFilePath, indexFilePath, null);
     }
 
-    public AncillaryFileManager(final File netcdfFile, final String indexFilePath, final String datastoreFilePath) throws IOException, JAXBException, NoSuchAlgorithmException {
+    public AncillaryFileManager(final String netcdfFilePath, final String indexFilePath, final String datastoreFilePath) throws IOException, JAXBException, NoSuchAlgorithmException {
 
+    	// Create the netcdf file from the netcdf path (abs).
+    	File netcdfFile = new File(netcdfFilePath);
+    	
         org.geotools.util.Utilities.ensureNonNull("file", netcdfFile);
         if (!netcdfFile.exists()) {
             throw new IllegalArgumentException("The specified file doesn't exist: " + netcdfFile);

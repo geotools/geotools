@@ -273,8 +273,10 @@ public class NetCDFImageReader extends GeoSpatialImageReader implements FileSetM
         try {
             dataset = extractDataset(input);
             file = NetCDFUtilities.getFile(input);
+            String absolutePath = file.getAbsolutePath();
+            
             if (file != null) {
-                ancillaryFileManager = new AncillaryFileManager(file, getAuxiliaryFilesPath(), getAuxiliaryDatastorePath());
+                ancillaryFileManager = new AncillaryFileManager(absolutePath, getAuxiliaryFilesPath(), getAuxiliaryDatastorePath());
             }
 
             init();

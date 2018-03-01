@@ -40,13 +40,14 @@ public class NetCDFAuxiliaryTest {
     public void test() throws Exception {
 
         File file = TestData.file(this, "fivedim.nc");
+        String absolutePath = file.getAbsolutePath();
         
         //first create reader to build index
         new NetCDFFormat().getReader(file);
         
         NetCDFAuxiliaryStoreFactory fac = new NetCDFAuxiliaryStoreFactory();
         Map<String, Serializable> params = new HashMap<>();
-        params.put(NetCDFAuxiliaryStoreFactory.FILE_PARAM.getName(), file);
+        params.put(NetCDFAuxiliaryStoreFactory.FILE_PARAM.getName(), absolutePath);
         
         assertTrue(fac.canProcess(params));
         

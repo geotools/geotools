@@ -31,6 +31,7 @@ import java.util.Map;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.ows.HTTPClient;
+import org.geotools.data.ows.SimpleHttpClient;
 import org.geotools.data.wfs.internal.Versions;
 import org.geotools.data.wfs.internal.WFSClient;
 import org.geotools.util.Version;
@@ -187,9 +188,35 @@ public class WFSDataStoreFactoryTest {
         final URL capabilitiesUrl = getClass()
                 .getResource("test-data/CubeWerx_4.12.6/1.0.0/GetCapabilities.xml");
         params.put(WFSDataStoreFactory.URL.key, capabilitiesUrl);
+        params.put(WFSDataStoreFactory.TIMEOUT.key, 1);
         WFSDataStore store = dsf.createDataStore(params);
         WFSClient wfsClient = store.getWfsClient();
         HTTPClient httpClient = wfsClient.getHTTPClient();
         assertEquals(expectGzipOnClient, httpClient.isTryGzip());
     }
+
+    @Test
+    public void testHttpPoolingTrueWithHttp() throws IOException {
+        params.put(WFSDataStoreFactory.USE_HTTP_CONNECTION_POOLING.key, true);
+        params.put(WFSDataStoreFactory.URL.key,
+                new URL("http://someserver.example.org/wfs?request=GetCapabilities"));
+        assertTrue(new WFSDataStoreFactory().getHttpClient(params) instanceof MultithreadedHttpClient);
+    }
+
+    @Test
+    public void testHttpPoolingFalseWithHttp() throws IOException {
+        params.put(WFSDataStoreFactory.USE_HTTP_CONNECTION_POOLING.key, false);
+        params.put(WFSDataStoreFactory.URL.key,
+                new URL("http://someserver.example.org/wfs?request=GetCapabilities"));
+        assertTrue(new WFSDataStoreFactory().getHttpClient(params) instanceof SimpleHttpClient);
+    }
+
+    @Test
+    public void testHttpPoolingTrueWithFile() throws IOException {
+        params.put(WFSDataStoreFactory.USE_HTTP_CONNECTION_POOLING.key, true);
+        params.put(WFSDataStoreFactory.URL.key,
+                new URL("file://some/file"));
+        assertTrue(new WFSDataStoreFactory().getHttpClient(params) instanceof SimpleHttpClient);
+    }
+
 }

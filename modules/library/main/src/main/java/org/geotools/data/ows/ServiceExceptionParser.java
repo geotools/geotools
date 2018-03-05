@@ -18,8 +18,8 @@ package org.geotools.data.ows;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.geotools.ows.ServiceException;
 import org.jdom.Document;
@@ -39,75 +39,62 @@ import org.jdom.input.SAXBuilder;
  */
 public class ServiceExceptionParser {
 
-	/**
-	 * Tries to read a ServiceExceptionReport from the input stream, and 
-	 * construct a chain of ServiceExceptions.
-	 * 
-	 * ServiceExceptions beyond the first can be accessed using 
-	 * ServiceException.next();
-	 * 
-	 * @param inputStream
-	 * @throws JDOMException
-	 * @throws IOException
-	 */
-	public static ServiceException parse(InputStream inputStream) throws JDOMException, IOException {
-		SAXBuilder builder = new SAXBuilder();
-		Document document = builder.build(inputStream);
-		
-		Element root = document.getRootElement();
-		List serviceExceptions = root.getChildren("ServiceException");
-				
-		/*
-		 * ServiceExceptions with codes get bumped to the top of the list.
-		 */
-		List codes = new ArrayList();
-		List noCodes = new ArrayList();
-		for (int i = 0; i < serviceExceptions.size(); i++) {
-			Element element = (Element) serviceExceptions.get(i);
-			ServiceException exception = parseSE(element);
-			if (exception.getCode() != null && exception.getCode().length() != 0 ) {
-				codes.add(exception);
-			} else {
-				noCodes.add(exception);
-			}
-		}
-		
-		/*
-		 * Now chain them.
-		 */
-		ServiceException firstException = null;
-		ServiceException recentException = null;
-		for (int i = 0; i < codes.size(); i++) {
-			ServiceException exception = (ServiceException) codes.get(i);
-			if (firstException == null) {
-				firstException = exception;
-				recentException = exception;
-			} else {
-				recentException.setNext(exception);
-				recentException = exception;
-			}
-		}
-		codes = null;
-		for (int i = 0; i < noCodes.size(); i++) {
-			ServiceException exception = (ServiceException) noCodes.get(i);
-			if (firstException == null) {
-				firstException = exception;
-				recentException = exception;
-			} else {
-				recentException.setNext(exception);
-				recentException = exception;
-			}
-		}
-		noCodes = null;
-		
-		return firstException;		
-	}
+    /**
+     * Tries to read a ServiceExceptionReport from the input stream, and 
+     * construct a chain of ServiceExceptions.
+     * 
+     * ServiceExceptions beyond the first can be accessed using 
+     * ServiceException.next();
+     * 
+     * @param inputStream
+     * @throws JDOMException
+     * @throws IOException
+     */
+    public static ServiceException parse(InputStream inputStream) throws JDOMException, IOException {
+        SAXBuilder builder = new SAXBuilder();
+        builder.setExpandEntities(false);
+        Document document = builder.build(inputStream);
+        
+        Element root = document.getRootElement();
+        List<Element> serviceExceptions = root.getChildren("ServiceException");
+                
+        /*
+         * ServiceExceptions with codes get bumped to the top of the list.
+         */
+        List<ServiceException> parsedExceptions = serviceExceptions.stream()
+            .map(ServiceExceptionParser::parseSE)
+            .sorted(ServiceExceptionParser::compare)
+            .collect(Collectors.toList());
+        /*
+         * Now chain them.
+         */
+        ServiceException firstException = null;
+        ServiceException recentException = null;
+        for (ServiceException exception : parsedExceptions) {
+            if (firstException == null) {
+                firstException = exception;
+                recentException = exception;
+            } else {
+                recentException.setNext(exception);
+                recentException = exception;
+            }
+        }
+        
+        return firstException;
+    }
 
-	private static ServiceException parseSE(Element element) {
-		String errorMessage = element.getText();
-		String code = element.getAttributeValue("code");
-		
-		return new ServiceException(errorMessage, code);
-	}
-
+    private static ServiceException parseSE(Element element) {
+        String errorMessage = element.getText();
+        String code = element.getAttributeValue("code");
+        
+        return new ServiceException(errorMessage, code);
+    }
+    
+    private static int sortValue(ServiceException exception) {
+        return exception.getCode() != null && !exception.getCode().isEmpty() ?0:1;
+    }
+    
+    private static int compare(ServiceException exception1, ServiceException exception2) {
+        return sortValue(exception1)-sortValue(exception2);
+    }
 }

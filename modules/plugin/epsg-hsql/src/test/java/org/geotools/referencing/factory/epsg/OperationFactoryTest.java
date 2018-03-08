@@ -17,11 +17,8 @@
 package org.geotools.referencing.factory.epsg;
 
 import java.util.Iterator;
+import java.util.Set;
 import java.util.logging.Level;
-
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 import org.geotools.factory.Hints;
 import org.geotools.geometry.DirectPosition2D;
@@ -31,6 +28,7 @@ import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.operation.AbstractCoordinateOperation;
 import org.geotools.referencing.operation.AuthorityBackedFactory;
 import org.geotools.referencing.operation.BufferedCoordinateOperationFactory;
+import org.geotools.referencing.operation.TransformTestBase;
 import org.geotools.resources.Arguments;
 import org.geotools.resources.Classes;
 import org.opengis.geometry.DirectPosition;
@@ -42,7 +40,12 @@ import org.opengis.referencing.operation.ConcatenatedOperation;
 import org.opengis.referencing.operation.Conversion;
 import org.opengis.referencing.operation.CoordinateOperation;
 import org.opengis.referencing.operation.CoordinateOperationFactory;
+import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.Transformation;
+
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 
 /**
@@ -209,4 +212,158 @@ public class OperationFactoryTest extends TestCase {
         assertEquals(expected.getOrdinate(0), arbitraryToInternal.getOrdinate(0), 1e-9);
         assertEquals(expected.getOrdinate(1), arbitraryToInternal.getOrdinate(1), 1e-9);
     }
+
+    /**
+     * Tests findOperations method for a pair of known CRSs. 23030 (Projected) to 4326 (geographic 2D) with different datum
+     */
+    public void testFindOperations1() throws Exception {
+        final CRSAuthorityFactory crsFactory;
+        final CoordinateOperationFactory opFactory;
+        CoordinateReferenceSystem sourceCRS;
+        CoordinateReferenceSystem targetCRS;
+
+        crsFactory = ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", null);
+        opFactory = ReferencingFactoryFinder.getCoordinateOperationFactory(null);
+        targetCRS = crsFactory.createCoordinateReferenceSystem("EPSG:4326");
+        sourceCRS = crsFactory.createCoordinateReferenceSystem("EPSG:23030");
+
+        Set<CoordinateOperation> operations = opFactory.findOperations(sourceCRS, targetCRS);
+        int size = operations.size();
+        assertTrue(size >= 37); // at least 37 operations should be registered in the database for this CRS pair
+
+        for (CoordinateOperation operation : operations) {
+            assertSame(sourceCRS, operation.getSourceCRS());
+            assertSame(targetCRS, operation.getTargetCRS());
+            final MathTransform transform = operation.getMathTransform();
+            TransformTestBase.assertInterfaced(transform);
+        }
+
+        // try reverse order
+        operations = opFactory.findOperations(targetCRS, sourceCRS);
+        assertEquals(size, operations.size());
+
+        for (CoordinateOperation operation : operations) {
+            assertSame(targetCRS, operation.getSourceCRS());
+            assertSame(sourceCRS, operation.getTargetCRS());
+            final MathTransform transform = operation.getMathTransform();
+            TransformTestBase.assertInterfaced(transform);
+        }
+
+    }
+
+    /**
+     * Tests findOperations method for a pair of known CRSs. 25830 (Projected) to 3035 (Projected), same datum
+     */
+    public void testFindOperations2() throws Exception {
+        final CRSAuthorityFactory crsFactory;
+        final CoordinateOperationFactory opFactory;
+        CoordinateReferenceSystem sourceCRS;
+        CoordinateReferenceSystem targetCRS;
+
+        crsFactory = ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", null);
+        opFactory = ReferencingFactoryFinder.getCoordinateOperationFactory(null);
+        targetCRS = crsFactory.createCoordinateReferenceSystem("EPSG:3035");
+        sourceCRS = crsFactory.createCoordinateReferenceSystem("EPSG:25830");
+
+        Set<CoordinateOperation> operations = opFactory.findOperations(sourceCRS, targetCRS);
+        int size = operations.size();
+        assertTrue(size == 1); // only one operation since they have the same datum
+
+        for (CoordinateOperation operation : operations) {
+            assertSame(sourceCRS, operation.getSourceCRS());
+            assertSame(targetCRS, operation.getTargetCRS());
+            final MathTransform transform = operation.getMathTransform();
+            TransformTestBase.assertInterfaced(transform);
+        }
+
+        // try reverse order
+        operations = opFactory.findOperations(targetCRS, sourceCRS);
+        assertEquals(size, operations.size());
+
+        for (CoordinateOperation operation : operations) {
+            assertSame(targetCRS, operation.getSourceCRS());
+            assertSame(sourceCRS, operation.getTargetCRS());
+            final MathTransform transform = operation.getMathTransform();
+            TransformTestBase.assertInterfaced(transform);
+        }
+
+    }
+
+    /**
+     * Tests findOperations method for a pair of known CRSs. 23030 (Projected) to 3034 (Projected), with different datum
+     * 
+     */
+    public void testFindOperations3() throws Exception {
+        final CRSAuthorityFactory crsFactory;
+        final CoordinateOperationFactory opFactory;
+        CoordinateReferenceSystem sourceCRS;
+        CoordinateReferenceSystem targetCRS;
+
+        crsFactory = ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", null);
+        opFactory = ReferencingFactoryFinder.getCoordinateOperationFactory(null);
+        targetCRS = crsFactory.createCoordinateReferenceSystem("EPSG:3034");
+        sourceCRS = crsFactory.createCoordinateReferenceSystem("EPSG:23030");
+
+        Set<CoordinateOperation> operations = opFactory.findOperations(sourceCRS, targetCRS);
+        int size = operations.size();
+        assertTrue(size >= 9); // at least 9 operation should be registered in the database for this CRS pair
+
+        for (CoordinateOperation operation : operations) {
+            assertSame(sourceCRS, operation.getSourceCRS());
+            assertSame(targetCRS, operation.getTargetCRS());
+            final MathTransform transform = operation.getMathTransform();
+            TransformTestBase.assertInterfaced(transform);
+        }
+
+        // try reverse order
+        operations = opFactory.findOperations(targetCRS, sourceCRS);
+        assertEquals(size, operations.size());
+
+        for (CoordinateOperation operation : operations) {
+            assertSame(targetCRS, operation.getSourceCRS());
+            assertSame(sourceCRS, operation.getTargetCRS());
+            final MathTransform transform = operation.getMathTransform();
+            TransformTestBase.assertInterfaced(transform);
+        }
+
+    }
+
+    /**
+     * Tests findOperations method for a pair of known CRSs. 4258 (Geographic2D) to 4326 (Geographic2D), with different datum
+     */
+    public void testFindOperations4() throws Exception {
+        final CRSAuthorityFactory crsFactory;
+        final CoordinateOperationFactory opFactory;
+        CoordinateReferenceSystem sourceCRS;
+        CoordinateReferenceSystem targetCRS;
+
+        crsFactory = ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", null);
+        opFactory = ReferencingFactoryFinder.getCoordinateOperationFactory(null);
+        targetCRS = crsFactory.createCoordinateReferenceSystem("EPSG:4326");
+        sourceCRS = crsFactory.createCoordinateReferenceSystem("EPSG:4258");
+
+        Set<CoordinateOperation> operations = opFactory.findOperations(sourceCRS, targetCRS);
+        int size = operations.size();
+        assertTrue(size >= 2); // at least 2 operation should be registered in the database for this CRS pair
+
+        for (CoordinateOperation operation : operations) {
+            assertSame(sourceCRS, operation.getSourceCRS());
+            assertSame(targetCRS, operation.getTargetCRS());
+            final MathTransform transform = operation.getMathTransform();
+            TransformTestBase.assertInterfaced(transform);
+        }
+
+        // try reverse order
+        operations = opFactory.findOperations(targetCRS, sourceCRS);
+        assertEquals(size, operations.size());
+
+        for (CoordinateOperation operation : operations) {
+            assertSame(targetCRS, operation.getSourceCRS());
+            assertSame(sourceCRS, operation.getTargetCRS());
+            final MathTransform transform = operation.getMathTransform();
+            TransformTestBase.assertInterfaced(transform);
+        }
+
+    }
+
 }

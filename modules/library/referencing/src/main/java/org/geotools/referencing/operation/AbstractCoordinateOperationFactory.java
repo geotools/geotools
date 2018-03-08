@@ -19,41 +19,54 @@
  */
 package org.geotools.referencing.operation;
 
-import java.util.Map;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Collections;
-import java.awt.RenderingHints;
-import javax.measure.converter.ConversionException;
-
-import org.opengis.metadata.quality.PositionalAccuracy;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.IdentifiedObject;
-import org.opengis.referencing.ReferenceIdentifier;
-import org.opengis.referencing.cs.CoordinateSystem;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.*;
+import static org.geotools.referencing.CRS.equalsIgnoreMetadata;
 import static org.opengis.referencing.IdentifiedObject.NAME_KEY;
+
+import java.awt.RenderingHints;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Set;
+
+import javax.measure.converter.ConversionException;
 
 import org.geotools.factory.Hints;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.metadata.iso.quality.PositionalAccuracyImpl;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.NamedIdentifier;
+import org.geotools.referencing.cs.AbstractCS;
 import org.geotools.referencing.factory.ReferencingFactory;
 import org.geotools.referencing.factory.ReferencingFactoryContainer;
-import org.geotools.referencing.cs.AbstractCS;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.resources.Classes;
-import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.i18n.ErrorKeys;
+import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.i18n.Vocabulary;
 import org.geotools.resources.i18n.VocabularyKeys;
 import org.geotools.util.CanonicalSet;
 import org.geotools.util.Utilities;
-
-import static org.geotools.referencing.CRS.equalsIgnoreMetadata;
+import org.opengis.metadata.quality.PositionalAccuracy;
+import org.opengis.parameter.ParameterValueGroup;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.IdentifiedObject;
+import org.opengis.referencing.ReferenceIdentifier;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.cs.CoordinateSystem;
+import org.opengis.referencing.operation.ConcatenatedOperation;
+import org.opengis.referencing.operation.Conversion;
+import org.opengis.referencing.operation.CoordinateOperation;
+import org.opengis.referencing.operation.CoordinateOperationFactory;
+import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.MathTransformFactory;
+import org.opengis.referencing.operation.Matrix;
+import org.opengis.referencing.operation.NoninvertibleTransformException;
+import org.opengis.referencing.operation.Operation;
+import org.opengis.referencing.operation.OperationMethod;
+import org.opengis.referencing.operation.OperationNotFoundException;
+import org.opengis.referencing.operation.Transformation;
 
 
 /**
@@ -522,6 +535,38 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
         }
         return createConcatenatedOperation(getTemporaryName(sourceCRS, targetCRS),
                                            new CoordinateOperation[] {step1, step2});
+    }
+    
+    /**
+     * Concatenate two sets of operation steps. The result is the concatenation
+     * of all the steps on the firt set with all the steps on the second set
+     * (cartesian product), which will be then concatenated with all the steps
+     * on the third step.
+     * 
+     * If an operation is an {@link #AXIS_CHANGES},
+     * it will be included as part of the second operation instead of creating an
+     * {@link ConcatenatedOperation}. If a concatenated operation is created, it
+     * will get an automatically generated name.
+     *
+     * @param  candidatesStep1 The first set of candidate steps
+     * @param  candidatesStep2 The second set of candidate steps
+     * @param  candidatesStep3 The third step of candidate steps
+     * @return A set of operations
+     * @throws FactoryException if any of the concatenated operations couldn't be constructed.
+     * @see #concatenate(CoordinateOperation, CoordinateOperation, CoordinateOperation)
+     */
+    protected Set<CoordinateOperation> concatenate(final  Set<CoordinateOperation> candidatesStep1,
+            final  Set<CoordinateOperation> candidatesStep2,
+            final  Set<CoordinateOperation> candidatesStep3) throws FactoryException {
+        HashSet<CoordinateOperation> result = new HashSet<CoordinateOperation>();
+        for (CoordinateOperation step1: candidatesStep1) {
+            for (CoordinateOperation step2: candidatesStep2) {
+                for (CoordinateOperation step3: candidatesStep3) {
+                    result.add(concatenate(step1, step2, step3));
+                }
+            }
+        }
+        return result;
     }
 
     /**

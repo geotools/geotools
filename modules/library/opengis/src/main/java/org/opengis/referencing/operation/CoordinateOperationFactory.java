@@ -9,15 +9,17 @@
  */
 package org.opengis.referencing.operation;
 
-import java.util.Map;
-import org.opengis.referencing.ObjectFactory;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.annotation.UML;
-import org.opengis.annotation.Extension;
+import static org.opengis.annotation.Specification.OGC_01009;
 
-import static org.opengis.annotation.Specification.*;
+import java.util.Map;
+import java.util.Set;
+
+import org.opengis.annotation.Extension;
+import org.opengis.annotation.UML;
+import org.opengis.parameter.ParameterValueGroup;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.ObjectFactory;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 
 /**
@@ -162,4 +164,19 @@ public interface CoordinateOperationFactory extends ObjectFactory {
                                         OperationMethod     method,
                                         ParameterValueGroup parameters)
             throws FactoryException;
+    
+    /**
+     * Returns all the available operations for conversion or transformation between two
+     * coordinate reference systems. An empty set is returned if no operation exists.
+     *
+     * @param  sourceCRS Input coordinate reference system.
+     * @param  targetCRS Output coordinate reference system.
+     * @return A set of coordinate operations from {@code sourceCRS} to {@code targetCRS}.
+     * @throws FactoryException if there was a failure retrieving or creating the operations.
+     */
+    @UML(identifier="createFromCoordinateSystems", specification=OGC_01009)
+    Set<CoordinateOperation> findOperations(CoordinateReferenceSystem sourceCRS,
+                                        CoordinateReferenceSystem targetCRS)
+            throws FactoryException;
+    
 }

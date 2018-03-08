@@ -99,15 +99,15 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
             }
         }
 
-        final HTTPClient http = new SimpleHttpClient();// new MultithreadedHttpClient();
+        final URL capabilitiesURL = (URL) URL.lookUp(params);
+
+        final HTTPClient http = getHttpClient(params);
         http.setTryGzip(config.isTryGZIP());
         http.setUser(config.getUser());
         http.setPassword(config.getPassword());
         int timeoutMillis = config.getTimeoutMillis();
         http.setConnectTimeout(timeoutMillis / 1000);
         http.setReadTimeout(timeoutMillis / 1000);
-
-        final URL capabilitiesURL = (URL) URL.lookUp(params);
 
         // WFSClient performs version negotiation and selects the correct strategy
         WFSClient wfsClient;
@@ -129,7 +129,27 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
 
         return dataStore;
     }
-    
+
+    /**
+     * Creates the HttpClient instance used to connect to the WFS service,
+     * compatible with the given parameters.
+     *
+     * @param params wfs service connection parameters
+     * @return the HttpClient instance
+     * @throws IOException
+     */
+    public HTTPClient getHttpClient(final Map<String, Serializable> params) throws IOException {
+        final URL capabilitiesURL = (URL) URL.lookUp(params);
+        final WFSConfig config = WFSConfig.fromParams(params);
+        return config.isUseHttpConnectionPooling() && isHttp(capabilitiesURL)
+                ? new MultithreadedHttpClient()
+                : new SimpleHttpClient();
+    }
+
+    private static boolean isHttp(java.net.URL capabilitiesURL) {
+        return capabilitiesURL.getProtocol().toLowerCase().matches("http(s)?");
+    }
+
     @Override
     public DataStore createNewDataStore(final Map<String, Serializable> params) throws IOException {
         throw new UnsupportedOperationException("Operation not applicable to a WFS service");

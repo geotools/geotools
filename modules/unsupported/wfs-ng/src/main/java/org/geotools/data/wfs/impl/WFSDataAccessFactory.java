@@ -121,7 +121,7 @@ public class WFSDataAccessFactory implements DataAccessFactory {
     }
 
     /** Access with {@link WFSDataStoreFactory#getParametersInfo()  */
-    private static final WFSFactoryParam<?>[] parametersInfo = new WFSFactoryParam[20];
+    private static final WFSFactoryParam<?>[] parametersInfo = new WFSFactoryParam[21];
 
     private static final int GMLComplianceLevel = 2;
 
@@ -404,7 +404,7 @@ public class WFSDataAccessFactory implements DataAccessFactory {
     }
     
     /**
-     * Optional {@code Integer} OCG GML compliance level. i.e. (simple feature) 0, 1 or 2
+     * Optional {@code Integer} OCG GML Compatible TypeNames (replace : by _)
      */
     public static final WFSFactoryParam<Boolean> GML_COMPATIBLE_TYPENAMES;
     static {
@@ -427,6 +427,17 @@ public class WFSDataAccessFactory implements DataAccessFactory {
                 EntityResolver.class, title, description, PreventLocalEntityResolver.INSTANCE, Parameter.LEVEL, "program");
     }
 
+    /**
+     * Optional {@code Boolean} use connection pooling for http(s) requests
+     */
+    public static final WFSFactoryParam<Boolean> USE_HTTP_CONNECTION_POOLING;
+    static {
+        String name = "WFSDataStoreFactory:USE_HTTP_CONNECTION_POOLING";
+        String title = "Use HTTP Connection Pooling";
+        String description = "Sets the usage of connection pooling for http(s) requests";
+        parametersInfo[20] = USE_HTTP_CONNECTION_POOLING = new WFSFactoryParam<Boolean>(name,
+                Boolean.class, title, description, true);
+    }
 
     /**
 	 * Checks whether {@code params} contains a valid set of parameters to

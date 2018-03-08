@@ -33,6 +33,7 @@ import static org.geotools.data.wfs.WFSDataStoreFactory.AXIS_ORDER;
 import static org.geotools.data.wfs.WFSDataStoreFactory.AXIS_ORDER_FILTER;
 import static org.geotools.data.wfs.WFSDataStoreFactory.GML_COMPATIBLE_TYPENAMES;
 import static org.geotools.data.wfs.WFSDataStoreFactory.ENTITY_RESOLVER;
+import static org.geotools.data.wfs.WFSDataStoreFactory.USE_HTTP_CONNECTION_POOLING;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -88,6 +89,8 @@ public class WFSConfig {
     
     protected boolean gmlCompatibleTypenames;
     
+    protected boolean useHttpConnectionPooling;
+
     protected EntityResolver entityResolver;
 
     public static enum PreferredHttpMethod {
@@ -111,6 +114,7 @@ public class WFSConfig {
         namespaceOverride = (String) NAMESPACE.getDefaultValue();
         gmlCompatibleTypenames = (Boolean) GML_COMPATIBLE_TYPENAMES.getDefaultValue();
         entityResolver = (EntityResolver) ENTITY_RESOLVER.getDefaultValue();
+        useHttpConnectionPooling = (Boolean) USE_HTTP_CONNECTION_POOLING.getDefaultValue();
     }
 
     public static WFSConfig fromParams(Map<?, ?> params) throws IOException {
@@ -148,7 +152,7 @@ public class WFSConfig {
         config.gmlCompatibleTypenames = GML_COMPATIBLE_TYPENAMES.lookUp(params) == null ? 
                 (Boolean) GML_COMPATIBLE_TYPENAMES.getDefaultValue() :  GML_COMPATIBLE_TYPENAMES.lookUp(params);
         config.entityResolver = ENTITY_RESOLVER.lookUp(params);
-        
+        config.useHttpConnectionPooling = USE_HTTP_CONNECTION_POOLING.lookUp(params);
         return config;
     }
 
@@ -271,13 +275,23 @@ public class WFSConfig {
     public boolean isGmlCompatibleTypenames() {
         return gmlCompatibleTypenames;
     }
-    
+
     /**
      * Returns the entity resolved to be used for XML parses
      * @return
      */
     public EntityResolver getEntityResolver() {
         return entityResolver;
+    }
+    
+    
+
+    /**
+     * 
+     * @return if http connection pooling should be used
+     */
+    public boolean isUseHttpConnectionPooling() {
+        return useHttpConnectionPooling;
     }
 
     /**

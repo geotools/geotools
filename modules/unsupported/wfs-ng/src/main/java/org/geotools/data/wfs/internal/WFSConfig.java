@@ -275,7 +275,7 @@ public class WFSConfig {
     public boolean isGmlCompatibleTypenames() {
         return gmlCompatibleTypenames;
     }
-    
+
     /**
      * Returns the entity resolved to be used for XML parses
      * @return

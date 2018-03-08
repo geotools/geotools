@@ -130,6 +130,14 @@ public class WFSDataStoreFactory extends WFSDataAccessFactory implements DataSto
         return dataStore;
     }
 
+    /**
+     * Creates the HttpClient instance used to connect to the WFS service,
+     * compatible with the given parameters.
+     *
+     * @param params wfs service connection parameters
+     * @return the HttpClient instance
+     * @throws IOException
+     */
     public HTTPClient getHttpClient(final Map<String, Serializable> params) throws IOException {
         final URL capabilitiesURL = (URL) URL.lookUp(params);
         final WFSConfig config = WFSConfig.fromParams(params);

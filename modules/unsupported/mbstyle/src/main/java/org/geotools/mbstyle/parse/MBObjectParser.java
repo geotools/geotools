@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
+import org.geotools.mbstyle.expression.MBExpression;
 import org.geotools.mbstyle.layer.LineMBLayer.LineJoin;
 import org.geotools.styling.Displacement;
 import org.geotools.styling.StyleFactory2;
@@ -271,6 +272,8 @@ public class MBObjectParser {
             Object value = json.get(index);
             if (value instanceof String || value instanceof Boolean || value instanceof Number) {
                 return value;
+            } if (value instanceof JSONArray){
+                return ff.literal(MBExpression.transformExpression(((JSONArray) value)));
             }
         }
         throw new MBFormatException(context.getSimpleName() + " requires [" + index + "] string, numeric or boolean");
@@ -310,6 +313,9 @@ public class MBObjectParser {
         }
         if (index < json.size() && json.get(index) instanceof String) {
             return (String) json.get(index);
+        }
+        if(index < json.size() && json.get(index) instanceof JSONArray){
+            return MBExpression.transformExpression((JSONArray)json.get(index)).toString();
         } else {
             throw new MBFormatException(
                     context.getSimpleName() + " requires [" + index + "] string");
@@ -826,8 +832,11 @@ public class MBObjectParser {
             MBFunction function = new MBFunction(this, (JSONObject) obj);
             return function.numeric();
         } else if (obj instanceof JSONArray) {
-            throw new MBFormatException("\"" + tag
-                    + "\" percentage from JSONArray not supported, expected value between 0 and 1");
+            if (((JSONArray) obj).get(0) instanceof String) {
+                return MBExpression.transformExpression((JSONArray)obj);
+            } else {
+                throw new MBFormatException(context + " number from JSONArray not supported");
+            }
         } else {
             throw new IllegalArgumentException("json contents invalid, \"" + tag
                     + "\" value limited to Number or JSONObject but was "
@@ -860,6 +869,13 @@ public class MBObjectParser {
         if (obj instanceof JSONObject) {
             MBFunction function = new MBFunction(this, (JSONObject) obj);
             return function.font();
+        }
+        if (obj instanceof JSONArray){
+            if (((JSONArray) obj).get(0) instanceof String) {
+                return MBExpression.transformExpression((JSONArray)obj);
+            } else {
+                throw new MBFormatException(context + " font from JSONArray not supported");
+            }
         } else {
             throw new IllegalArgumentException("json contents invalid, " + tag
                     + " value limited to JSONArray, or JSONObject but was "
@@ -901,7 +917,11 @@ public class MBObjectParser {
             MBFunction function = new MBFunction(this, (JSONObject) obj);
             return function.numeric();
         } else if (obj instanceof JSONArray) {
-            throw new MBFormatException(context + " number from JSONArray not supported");
+            if (((JSONArray) obj).get(0) instanceof String) {
+                return MBExpression.transformExpression((JSONArray)obj);
+            } else {
+                throw new MBFormatException(context + " number from JSONArray not supported");
+            }
         } else {
             throw new IllegalArgumentException("json contents invalid, " + context
                     + " value limited to String, Number, Boolean or JSONObject but was "
@@ -996,7 +1016,11 @@ public class MBObjectParser {
             MBFunction function = new MBFunction(this, (JSONObject) obj);
             return function.function(String.class);
         } else if (obj instanceof JSONArray) {
-            throw new MBFormatException(context + " string from JSONArray not supported");
+            if (((JSONArray) obj).get(0) instanceof String) {
+                return MBExpression.transformExpression((JSONArray)obj);
+            } else {
+                throw new MBFormatException(context + " string from JSONArray not supported");
+            }
         } else {
             throw new IllegalArgumentException("json contents invalid, " + context
                     + " value limited to String, Number, Boolean or JSONObject but was "
@@ -1087,7 +1111,11 @@ public class MBObjectParser {
             MBFunction function = new MBFunction( (JSONObject) obj );
             return function.color();
         } else if (obj instanceof JSONArray) {
-            throw new MBFormatException(context + " color from JSONArray not supported");
+            if (((JSONArray) obj).get(0) instanceof String) {
+                return MBExpression.transformExpression((JSONArray) obj);
+            } else {
+                throw new MBFormatException(context + " color from JSONArray not supported");
+            }
         } else {
             throw new IllegalArgumentException("json contents invalid, " + context
                     + " limited to String or JSONObject but was " + obj.getClass().getSimpleName());
@@ -1156,7 +1184,11 @@ public class MBObjectParser {
             MBFunction function = new MBFunction(this, (JSONObject) obj);
             return function.function(Boolean.class);
         } else if (obj instanceof JSONArray) {
-            throw new MBFormatException("\"" + tag + "\": boolean from JSONArray not supported");
+            if (((JSONArray) obj).get(0) instanceof String) {
+                return MBExpression.transformExpression((JSONArray)obj);
+            } else {
+                throw new MBFormatException(context + " boolean from JSONArray not supported");
+            }
         } else {
             throw new IllegalArgumentException("json contents invalid, \"" + tag
                     + "\" value limited to String, Boolean or JSONObject but was "

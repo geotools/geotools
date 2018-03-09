@@ -16,12 +16,6 @@
  */
 package org.geotools.gml.producer;
 
-import java.math.BigDecimal;
-import java.math.MathContext;
-import java.text.FieldPosition;
-import java.text.NumberFormat;
-import java.util.Locale;
-
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
@@ -51,16 +45,13 @@ public class CoordinateWriter {
     
     /** Internal representation of tuple delimiter (' ' for GML is  default) */
     private final String tupleDelimiter;
-    
-    /** To be used for formatting numbers, uses US locale. */
-    private final NumberFormat coordFormatter = NumberFormat.getInstance(Locale.US);
-    
+
     private final AttributesImpl atts = new org.xml.sax.helpers.AttributesImpl();
     
     private final StringBuffer coordBuff = new StringBuffer();
     
-    private final FieldPosition zero = new FieldPosition(0);
-    
+    private final CoordinateFormatter coordFormatter;
+
     private char[] buff = new char[200];
     
     /**
@@ -83,24 +74,7 @@ public class CoordinateWriter {
      */
     private String prefix = "gml";
     private String namespaceUri = GMLUtils.GML_URL;
-    
-    /**
-     * The power of ten used for fast rounding
-     */
-    private final double scale;
-    
-    /**
-     * The min value at which the decimal notation is used 
-     * (below it, the computerized scientific one is used instead)
-     */
-    private static final double DECIMAL_MIN = Math.pow(10, -3);
-    
-    /**
-     * The max value at which the decimal notation is used 
-     * (above it, the computerized scientific one is used instead)
-     */
-    private static final double DECIMAL_MAX = Math.pow(10, 7);
-    
+
     public CoordinateWriter() {
         this(4);
     }
@@ -138,7 +112,7 @@ public class CoordinateWriter {
      * <li>useZ: is used to force the use of 3 dimensions (if needed the z value below will be used for 2D data)
      * <li>z: the dummy z value to use if the coordinate does not have one
      * </ul>
-     * 
+     *
      * @param numDecimals Number of decimals to use (a speed vs accuracy trade off)
      * @param tupleDelim delimiter to use between ordinates (usually ',')
      * @param coordDelim delimiter to use between coordinates (usually ' ')
@@ -146,7 +120,7 @@ public class CoordinateWriter {
      * @param z Dummy z value to use if needed
      * @param dimension Dimension of coordinates (usually 2 or 3)
      */
-    public CoordinateWriter(int numDecimals, String tupleDelim, String coordDelim, boolean useZ, double z, int dimension) {        
+    public CoordinateWriter(int numDecimals, String tupleDelim, String coordDelim, boolean useZ, double z, int dimension) {
         if (tupleDelim == null || tupleDelim.length() == 0){
             throw new IllegalArgumentException("Tuple delimeter cannot be null or zero length");
         }
@@ -154,15 +128,14 @@ public class CoordinateWriter {
             throw new IllegalArgumentException("Coordinate delimeter cannot be null or zero length");
         }        
         D = dimension;
+
         
         tupleDelimiter = tupleDelim;
         coordinateDelimiter = coordDelim;
-        
-        coordFormatter.setMaximumFractionDigits(numDecimals);
-        coordFormatter.setGroupingUsed(false);
-        
-        scale = Math.pow(10, numDecimals);
-        
+
+        coordFormatter = new CoordinateFormatter(numDecimals);
+        coordFormatter.setForcedDecimal(true);
+
         String uri = namespaceUri;
         if ( !namespaceAware ) {
             uri = null;
@@ -262,16 +235,16 @@ public class CoordinateWriter {
             coordBuff.setLength(0);
             
             // format x into buffer and append delimiter
-            formatDecimal(x, coordBuff);
+            coordFormatter.format(x, coordBuff);
             coordBuff.append(coordinateDelimiter);
             // format y into buffer
-            formatDecimal(y, coordBuff);
-            
+            coordFormatter.format(y, coordBuff);
+
             boolean zAvailable = coordSeqDimension > 2 && !Double.isNaN(c.getOrdinate(i, 2)) && !Double.isInfinite(c.getOrdinate(i, 2));
             if (D == 3 || zAvailable || useDummyZ) {
                 z = zAvailable? c.getOrdinate(i, 2) : dummyZ;
                 coordBuff.append(coordinateDelimiter);
-                formatDecimal(z, coordBuff);
+                coordFormatter.format(z, coordBuff);
             }
             
             // if there is another coordinate, tack on a tuple delimiter
@@ -292,17 +265,5 @@ public class CoordinateWriter {
         output.endElement(namespaceUri,"coordinates", prefix + "coordinates");
     }
 
-    private void formatDecimal(double x, StringBuffer sb) {
-        if(Math.abs(x) >= DECIMAL_MIN && x < DECIMAL_MAX) {
-            x = Math.floor(x * scale + 0.5) / scale;
-            long lx = (long) x;
-            if(lx == x)
-                sb.append(lx);
-            else
-                sb.append(x);
-        } else {
-            coordFormatter.format(x, coordBuff, zero);
-        }
-    }
 
 }

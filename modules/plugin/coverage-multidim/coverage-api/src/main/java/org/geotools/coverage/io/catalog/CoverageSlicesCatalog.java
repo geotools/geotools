@@ -20,8 +20,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -49,6 +49,8 @@ import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.SchemaException;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.visitor.FeatureCalc;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.gce.imagemosaic.catalog.postgis.PostgisDatastoreWrapper;
@@ -408,6 +410,24 @@ public class CoverageSlicesCatalog {
                     tx = new DefaultTransaction("getGranulesTransaction" + System.nanoTime());
                     ((FeatureStore) featureSource).setTransaction(tx);
                 }
+                String[] requestedProperties = q.getPropertyNames();
+                boolean postRetypeRequired = requestedProperties != Query.ALL_NAMES;
+                SimpleFeatureType target = null;
+                if (postRetypeRequired) {
+                    List<String> propertiesList = new ArrayList<>(Arrays.asList(requestedProperties));
+                    if (!propertiesList.contains(IMAGE_INDEX_ATTR)) {
+                        // IMAGE_INDEX_ATTRIBUTE is mandatory for coverage slices descriptor caching.
+                        // add that the property
+                        String[] properties = new String[requestedProperties.length + 1];
+                        System.arraycopy(requestedProperties, 0, properties, 0, requestedProperties.length);
+                        properties[requestedProperties.length] = IMAGE_INDEX_ATTR;
+                        q.setPropertyNames(properties);
+                    }
+
+                    // prepare target FeatureType
+                    target = SimpleFeatureTypeBuilder.retype(featureSource.getSchema(), requestedProperties);
+                }
+
                 final SimpleFeatureCollection features = featureSource.getFeatures(q);
                 if (features == null) {
                     throw new NullPointerException(
@@ -444,8 +464,8 @@ public class CoverageSlicesCatalog {
                         if (coverageSliceDescriptorsCache.containsKey(granuleIndex)) {
                             slice = coverageSliceDescriptorsCache.get(granuleIndex);
                         } else {
-                            // create the granule coverageDescriptor
-                            slice = new CoverageSlice(sf);
+                            // create the granule coverageDescriptor (eventually retyping its feature)
+                            slice = new CoverageSlice(postRetypeRequired ? SimpleFeatureBuilder.retype(sf, target) : sf);
                             coverageSliceDescriptorsCache.put(granuleIndex, slice);
                         }
                     }

@@ -46,6 +46,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 
@@ -192,6 +193,88 @@ public class CatalogSliceTest extends Assert{
             q = new Query("2");
             sliceCat.computeAggregateFunction(q, cv);
             assertEquals(0, cv.getCount());
+
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            t.rollback();
+        } finally {
+            if (sliceCat != null) {
+                sliceCat.dispose();
+            }
+
+            t.close();
+
+            FileUtils.deleteDirectory(parentLocation);
+        }
+
+    }
+
+    @Test
+    public void propertyNamesQuery() throws Exception {
+        // connect to test catalog
+        final File parentLocation = new File(TestData.file(this, "."), "db2");
+        if (parentLocation.exists()) {
+            FileUtils.deleteDirectory(parentLocation);
+        }
+        assertTrue(parentLocation.mkdir());
+        final String databaseName = "test";
+        CoverageSlicesCatalog sliceCat = null;
+        final Transaction t = new DefaultTransaction(Long.toString(System.nanoTime()));
+        try {
+            sliceCat = new CoverageSlicesCatalog(databaseName, parentLocation);
+            String[] typeNames = sliceCat.getTypeNames();
+            assertNull(typeNames);
+
+            // create new schema 1
+            final String schemaDef1 = "the_geom:Polygon,coverage:String,imageindex:Integer,cloud_formations:Integer";
+            sliceCat.createType("test", schemaDef1);
+            typeNames = sliceCat.getTypeNames();
+            assertNotNull(typeNames);
+            assertEquals(1, typeNames.length);
+
+            ReferencedEnvelope referencedEnvelope = new ReferencedEnvelope(-180, 180, -90, 90,
+                    DefaultGeographicCRS.WGS84);
+
+            // add features to it
+            SimpleFeatureType schema = DataUtilities.createType("test", schemaDef1);
+
+            final int numGranules = 2;
+            for (int i = 0; i < numGranules; i++) {
+                SimpleFeature feat = DataUtilities.template(schema);
+                feat.setAttribute("coverage", "a");
+                feat.setAttribute("imageindex", Integer.valueOf(i));
+                feat.setAttribute("cloud_formations", Integer.valueOf(i + 1));
+                feat.setAttribute("the_geom", GEOM_FACTORY.toGeometry(referencedEnvelope));
+                sliceCat.addGranule("test", feat, t);
+            }
+            t.commit();
+
+            // read back with property names filtering
+            Query q = new Query();
+            q.setTypeName(typeNames[0]);
+            String[] propertyNames = new String[] { "cloud_formations" };
+            q.setPropertyNames(propertyNames);
+            List<CoverageSlice> granules = sliceCat.getGranules(q);
+
+            assertNotNull(granules);
+            assertEquals(numGranules, granules.size());
+
+            for (int i = 0; i < numGranules; i++) {
+                CoverageSlice slice = granules.get(i);
+                SimpleFeature feature = slice.getOriginator();
+                List<AttributeDescriptor> attributes = feature.getFeatureType()
+                        .getAttributeDescriptors();
+
+                // Check we are only getting the cloud_formations attribute due to propertyNames
+                assertEquals(1, attributes.size());
+                assertEquals("cloud_formations", attributes.get(0).getLocalName());
+
+                int cloud = (int) feature.getAttribute("cloud_formations");
+                assertEquals(cloud, i + 1);
+                // Make sure the imageindex is not returned since we have excluded it
+                // via propertyNames
+                assertNull(feature.getAttribute("imageindex"));
+            }
 
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);

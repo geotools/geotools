@@ -272,6 +272,8 @@ public abstract class TestCaseSupport extends TestCase {
             copy(testData, new String[] { "shp", "dbf", "shx" }, new String[] { "prj" });
         else if (testData.endsWith(".MIF"))
             copy(testData, new String[] { "MIF", "MID" }, new String[0]);
+        else if (testData.endsWith(".tab"))
+            copy(testData, new String[] { "tab", "dat", "id", "map" }, new String[0]);
         File f = URLs.urlToFile(TestData.url(this, testData));
         return f.getAbsolutePath();
     }

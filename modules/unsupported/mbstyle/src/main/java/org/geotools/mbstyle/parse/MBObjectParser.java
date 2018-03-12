@@ -1029,6 +1029,43 @@ public class MBObjectParser {
     }
 
     /**
+     * Convert the value in the provided JSONArray at index to a string Expression, or a function.
+     *
+     * @param json The JSONArray in which to look up the value
+     * @param index The index in the JSONArray at which to look up the value
+     * @return Expression based on provided json, or literal if json was null.
+     * @throws MBFormatException
+     */
+    public Expression string(JSONArray json, int index) {
+        Object obj = json.get(index);
+        if (obj == null) {
+            return ff.literal("");
+        } else if (obj instanceof String) {
+            String str = (String) obj;
+            return ff.literal(str);
+        } else if (obj instanceof Number) {
+            Number number = (Number) obj;
+            return ff.literal(number.toString());
+        } else if (obj instanceof Boolean) {
+            Boolean bool = (Boolean) obj;
+            return ff.literal(bool.toString());
+        } else if (obj instanceof JSONObject) {
+            MBFunction function = new MBFunction(this, (JSONObject) obj);
+            return function.function(String.class);
+        } else if (obj instanceof JSONArray) {
+            if (((JSONArray) obj).get(0) instanceof String) {
+                return MBExpression.transformExpression((JSONArray)obj);
+            } else {
+                throw new MBFormatException(context + " string from JSONArray not supported");
+            }
+        } else {
+            throw new IllegalArgumentException("json contents invalid, " + context
+                    + " value limited to String, Number, Boolean, JSONArray or JSONObject but was "
+                    + obj.getClass().getSimpleName());
+        }
+    }
+
+    /**
      * Convert json to Expression string, or a function.
      * 
      * @param json json representation

@@ -19,11 +19,16 @@ package org.geotools.mbstyle.expression;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FunctionImpl;
+
 import org.geotools.mbstyle.parse.MBFormatException;
+import org.geotools.mbstyle.parse.MBObjectParser;
+import org.geotools.mbstyle.transform.MBStyleTransformer;
 import org.json.simple.JSONArray;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Literal;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -45,11 +50,17 @@ public abstract class MBExpression extends FunctionImpl {
     final protected JSONArray json;
     final protected String name;
     final protected FilterFactory2 ff;
+    final protected MBObjectParser parse;
+    final protected MBStyleTransformer transformer;
 
     public MBExpression(JSONArray json) {
         this.json = json;
         this.name = (String) json.get(0);
         this.ff = CommonFactoryFinder.getFilterFactory2();
+        parse = new MBObjectParser(MBExpression.class);
+        transformer = new MBStyleTransformer(parse);
+
+
     }
 
     public String getName() {
@@ -123,7 +134,7 @@ public abstract class MBExpression extends FunctionImpl {
                         + "\" invalid.");
             }
         }
-        throw new MBFormatException("Requires a string naming the expression at position [0]");
+        throw new MBFormatException("Requires a string name of the expression at position 0");
     }
 
     /**
@@ -132,10 +143,26 @@ public abstract class MBExpression extends FunctionImpl {
     public abstract Expression getExpression();
 
     /**
+     * A function to evaluate a given parameter as an expression and use the MBStyleTransformer to transform Mapbox
+     * tokens into CQL expressions.
+     * @param ex
+     * @return
+     */
+    public Expression transformLiteral(Expression ex){
+        String text = ex.evaluate(null, String.class);
+        if (text.trim().isEmpty()) {
+            ex = ff.literal(" ");
+        } else {
+            ex = transformer.cqlExpressionFromTokens(text);
+        }
+        return ex;
+    }
+
+    /**
      * Creates an MBExpression and calls the associated function.
      */
     public static Expression transformExpression(JSONArray json) {
-            return create(json).getExpression();
+        return create(json).getExpression();
         }
     }
 

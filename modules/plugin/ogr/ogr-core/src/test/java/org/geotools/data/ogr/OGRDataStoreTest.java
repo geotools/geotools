@@ -771,7 +771,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         SimpleFeatureType schema = s.getSchema("geot5588a");
         assertEquals(Short.class, schema.getDescriptor("byte_field").getType().getBinding());
         assertEquals(Integer.class, schema.getDescriptor("short_field").getType().getBinding());
-        assertEquals(Integer.class, schema.getDescriptor("int_field_0").getType().getBinding());
+        assertEquals(BigInteger.class, schema.getDescriptor("int_field_0").getType().getBinding());
 
         // Check contents
         FeatureSource<SimpleFeatureType, SimpleFeature> fs = s.getFeatureSource("geot5588a");
@@ -781,7 +781,7 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
             SimpleFeature feature = iterator.next();
             assertEquals((short)999, feature.getAttribute("byte_field"));
             assertEquals(99999, feature.getAttribute("short_field"));
-            assertEquals(257, feature.getAttribute("int_field_0"));
+            assertEquals(BigInteger.valueOf(257), feature.getAttribute("int_field_0"));
 
             // There shouldn't be any more features from here
             assertFalse(iterator.hasNext());

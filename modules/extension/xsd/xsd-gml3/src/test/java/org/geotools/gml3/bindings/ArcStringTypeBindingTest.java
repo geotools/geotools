@@ -64,7 +64,7 @@ public class ArcStringTypeBindingTest extends GML3TestSupport {
         assertEquals(1,
                 xpath.getMatchingNodes(basePath + "[@interpolation='circularArc3Points']", dom)
                         .getLength());
-        assertEquals("1.0 1.0 2.0 2.0 3.0 1.0 5.0 5.0 7.0 3.0",
+        assertEquals("1 1 2 2 3 1 5 5 7 3",
                 xpath.evaluate(basePath + "/gml:posList", dom));
     }
 
@@ -86,14 +86,14 @@ public class ArcStringTypeBindingTest extends GML3TestSupport {
         assertEquals(1,
                 xpath.getMatchingNodes(basePath1 + "[@interpolation='circularArc3Points']", dom)
                         .getLength());
-        assertEquals("1.0 1.0 2.0 2.0 3.0 1.0 5.0 5.0 7.0 3.0",
+        assertEquals("1 1 2 2 3 1 5 5 7 3",
                 xpath.evaluate(basePath1 + "/gml:posList", dom));
 
         // the straight portion
         String basePath2 = "/gml:curveProperty/gml:Curve/gml:segments/gml:LineStringSegment";
         assertEquals(1, xpath.getMatchingNodes(basePath2 + "[@interpolation='linear']", dom)
                 .getLength());
-        assertEquals("7.0 3.0 10.0 15.0", xpath.evaluate(basePath2 + "/gml:posList", dom));
+        assertEquals("7 3 10 15", xpath.evaluate(basePath2 + "/gml:posList", dom));
 
     }
 }

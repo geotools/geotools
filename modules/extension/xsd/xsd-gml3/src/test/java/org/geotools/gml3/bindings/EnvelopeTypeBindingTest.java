@@ -37,11 +37,11 @@ public class EnvelopeTypeBindingTest extends GML3TestSupport {
 
         Element lowerCorner = (Element) dom.getElementsByTagNameNS(GML.NAMESPACE, "lowerCorner")
                                            .item(0);
-        assertEquals("0.0 0.0", lowerCorner.getFirstChild().getNodeValue());
+        assertEquals("0 0", lowerCorner.getFirstChild().getNodeValue());
 
         Element upperCorner = (Element) dom.getElementsByTagNameNS(GML.NAMESPACE, "upperCorner")
                                            .item(0);
-        assertEquals("10.0 10.0", upperCorner.getFirstChild().getNodeValue());
+        assertEquals("10 10", upperCorner.getFirstChild().getNodeValue());
 
         //assertEquals("urn:x-ogc:def:crs:EPSG:6.11.2:4326",
         assertEquals("urn:x-ogc:def:crs:EPSG:4326",

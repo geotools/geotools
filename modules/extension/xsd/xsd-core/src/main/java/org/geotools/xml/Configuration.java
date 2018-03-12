@@ -379,19 +379,8 @@ public abstract class Configuration {
      * @since 8.0
      */
     public <C extends Configuration> C getDependency(Class<C> clazz) {
-        //first try straight dependencies
-        for (Configuration dep : (List<Configuration>)getDependencies()) {
-            if (clazz.isInstance(dep)) {
-                return (C) dep;
-            }
-        }
-        //fall back to all
-        for (Configuration dep : (List<Configuration>)allDependencies()) {
-            if (clazz.isInstance(dep)) {
-                return (C) dep;
-            }
-        }
-        return null;
+        List dependencies = allDependencies();
+        return (C) dependencies.stream().filter(dep -> clazz.isInstance(dep)).findFirst().orElse(null);
     }
 
     /**

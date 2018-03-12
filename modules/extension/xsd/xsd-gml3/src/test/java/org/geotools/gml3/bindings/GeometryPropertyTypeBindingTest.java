@@ -16,12 +16,16 @@
  */
 package org.geotools.gml3.bindings;
 
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.io.WKTReader;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.custommonkey.xmlunit.XpathEngine;
 import org.geotools.geometry.jts.CurvedGeometryFactory;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
+import org.geotools.gml3.GMLConfiguration;
+import org.geotools.xml.Configuration;
 import org.w3c.dom.Document;
 
 import com.vividsolutions.jts.geom.LineString;
@@ -36,6 +40,13 @@ public class GeometryPropertyTypeBindingTest extends GML3TestSupport {
     @Override
     protected boolean enableExtendedArcSurfaceSupport() {
         return true;
+    }
+
+    protected Configuration createConfiguration() {
+        GMLConfiguration configuration = new GMLConfiguration(enableExtendedArcSurfaceSupport());
+        // configure a small number of decimals for testing purposes
+        configuration.setNumDecimals(2);
+        return configuration;
     }
 
     public void testEncode() throws Exception {
@@ -55,7 +66,18 @@ public class GeometryPropertyTypeBindingTest extends GML3TestSupport {
         assertEquals(1,
                 xpath.getMatchingNodes(basePath + "[@interpolation='circularArc3Points']", dom)
                         .getLength());
-        assertEquals("1.0 1.0 2.0 2.0 3.0 1.0 5.0 5.0 7.0 3.0",
+        assertEquals("1 1 2 2 3 1 5 5 7 3",
                 xpath.evaluate(basePath + "/gml:posList", dom));
     }
+
+    public void testEncodePointWithDecimals() throws Exception {
+        Geometry geometry = new WKTReader().read("POINT(1.234 5.678)");
+
+        Document dom = encode(geometry, GML.geometryMember);
+        // print(dom);
+        XpathEngine xpath = XMLUnit.newXpathEngine();
+        assertEquals("1.23 5.68", xpath.evaluate("/gml:geometryMember/gml:Point/gml:pos", dom));
+    }
+
+    
 }

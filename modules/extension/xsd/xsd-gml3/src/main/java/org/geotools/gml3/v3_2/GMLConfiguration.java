@@ -18,6 +18,8 @@ package org.geotools.gml3.v3_2;
 
 import javax.xml.namespace.QName;
 
+import org.geotools.gml.producer.CoordinateFormatter;
+import org.geotools.gml.producer.CoordinateWriter;
 import org.geotools.gml2.SrsSyntax;
 import org.geotools.gml2.bindings.GMLCoordinatesTypeBinding;
 import org.geotools.gml3.bindings.AbstractFeatureCollectionTypeBinding;

@@ -21,6 +21,7 @@ import javax.xml.namespace.QName;
 import org.geotools.geometry.DirectPosition1D;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.DirectPosition3D;
+import org.geotools.gml.producer.CoordinateFormatter;
 import org.geotools.gml3.GML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
@@ -67,8 +68,15 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 public class DirectPositionTypeBinding extends AbstractComplexBinding {
     GeometryFactory factory;
 
+    CoordinateFormatter formatter;
+
     public DirectPositionTypeBinding(GeometryFactory factory) {
         this.factory = factory;
+    }
+
+    public DirectPositionTypeBinding(GeometryFactory factory, CoordinateFormatter formatter) {
+        this.factory = factory;
+        this.formatter = formatter;
     }
 
     /**
@@ -139,7 +147,12 @@ public class DirectPositionTypeBinding extends AbstractComplexBinding {
                 }
 
                 // separator char is a blank
-                sb.append(String.valueOf(v)).append(" ");
+                if (formatter != null) {
+                    formatter.format(v, sb);
+                } else {
+                    sb.append(String.valueOf(v));
+                }
+                sb.append(" ");
             }
             if (dim > 0) {
                 sb.setLength(sb.length()-1);

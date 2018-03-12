@@ -16,14 +16,12 @@
  */
 package org.geotools.gml3.bindings;
 
-import java.math.BigInteger;
-
-import javax.xml.namespace.QName;
-
+import com.vividsolutions.jts.geom.CoordinateSequence;
 import org.geotools.geometry.DirectPosition1D;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.DirectPosition3D;
 import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
+import org.geotools.gml.producer.CoordinateFormatter;
 import org.geotools.gml3.GML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
@@ -33,7 +31,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import com.vividsolutions.jts.geom.CoordinateSequence;
+import javax.xml.namespace.QName;
+import java.math.BigInteger;
 
 /**
  * Binding object for the type
@@ -72,6 +71,16 @@ import com.vividsolutions.jts.geom.CoordinateSequence;
  * @source $URL$
  */
 public class DirectPositionListTypeBinding extends AbstractComplexBinding {
+
+    CoordinateFormatter formatter;
+
+    public DirectPositionListTypeBinding(CoordinateFormatter formatter) {
+        this.formatter = formatter;
+    }
+
+    public DirectPositionListTypeBinding() {
+        // no formatter
+    }
 
     /**
      * @generated
@@ -163,7 +172,6 @@ public class DirectPositionListTypeBinding extends AbstractComplexBinding {
      * @see org.geotools.xml.AbstractComplexBinding#encode(java.lang.Object, org.w3c.dom.Document, org.w3c.dom.Element)
      */
     public Element encode(Object object, Document document, Element value) throws Exception {
-        // TODO: remove this when the parser can do lists
         CoordinateSequence cs = (CoordinateSequence) object;
         StringBuffer sb = new StringBuffer();
 
@@ -172,15 +180,20 @@ public class DirectPositionListTypeBinding extends AbstractComplexBinding {
         int nOrdWithSpace = size * dim - 1;
         int count = 0;
         for (int i = 0; i < size; i++) {
-        	for (int d = 0; d < dim; d++) {
-	            sb.append(cs.getOrdinate(i, d));
-	
-	            if (count < nOrdWithSpace) {
-	                sb.append(" ");
-	            }
-	            count++;
+            for (int d = 0; d < dim; d++) {
+                double ordinate = cs.getOrdinate(i, d);
+                if (formatter != null) {
+                    formatter.format(ordinate, sb);
+                } else {
+                    sb.append(ordinate);
+                }
 
-        	}
+                if (count < nOrdWithSpace) {
+                    sb.append(" ");
+                }
+                count++;
+
+            }
         }
 
         value.appendChild(document.createTextNode(sb.toString()));

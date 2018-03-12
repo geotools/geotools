@@ -17,32 +17,51 @@
 
 package org.geotools.mbstyle.expression;
 
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
+import org.geotools.mbstyle.transform.MBStyleTransformer;
 import org.json.simple.JSONArray;
-import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Function;
+import org.opengis.filter.expression.Literal;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * This class is an extension of the MBExpression containing the functions to support MapBox Style String expressions.
+ * String operators "concat", "upcase", and "downcase" are used to manipulate strings within a style.
+ */
 
 public class MBString extends MBExpression{
-
+    MBObjectParser parse;
+    MBStyleTransformer transformer;
     public MBString(JSONArray json){
         super(json);
+        parse = new MBObjectParser(MBString.class);
+        transformer = new MBStyleTransformer(parse);
     }
-
 
     /**
      * Returns a string consisting of the concatenation of the inputs.
      * Example: ["concat", string, string, ...]: string
      * @return
      */
-    public Expression stringConcat(){
-        String concatString = "";
+    public Expression stringConcat() throws MBFormatException {
+        List<Expression> list = new ArrayList<>();
         for(int i =1; i < json.size(); i++) {
-            String s = (String) json.get(i);
-            concatString += s;
+            Expression arg = parse.string(json, i);
+            if (arg instanceof Literal) {
+                arg = transformLiteral(arg);
+                list.add(arg);
+            } else {
+                list.add(arg);
+            }
         }
-        return ff.literal(concatString);
+        Expression[] args = new Expression[list.size()];
+        args = list.toArray(args);
+        Function function = ff.function("Concatenate", args);
+        return function;
     }
 
     /**
@@ -52,12 +71,15 @@ public class MBString extends MBExpression{
      * @return
      */
     public Expression stringDowncase(){
-        if (json.get(1) instanceof String){
-            String s = (String) json.get(1);
-            return ff.literal(s.toLowerCase());
-        } else {
-            return ff.literal("Requires instance of string to convert to lowercase");
+        if (parse.string(json, 1) != null){
+            Expression arg =  parse.string(json, 1);
+            if (arg instanceof Literal) {
+                arg = transformLiteral(arg);
+            }
+            Expression function = ff.function("strToLowerCase", arg);
+            return function;
         }
+        throw new MBFormatException("Unable to downcase the value from " + parse.get(json, 1) );
     }
 
     /**
@@ -66,13 +88,16 @@ public class MBString extends MBExpression{
      * ["upcase", string]: string
      * @return
      */
-    public Expression stringUpcase(){
-        if (json.get(1) instanceof String){
-            String s = (String) json.get(1);
-            return ff.literal(s.toUpperCase());
-        } else {
-            return ff.literal("Requires instance of string to convert to uppercase");
+    public Expression stringUpcase() {
+        if (parse.string(json, 1) != null) {
+            Expression arg = parse.string(json, 1);
+            if (arg instanceof Literal) {
+                arg = transformLiteral(arg);
+            }
+            Expression function = ff.function("strToUpperCase", arg);
+            return function;
         }
+        throw new MBFormatException("Unable to upcase the value from " + parse.get(json, 1) );
     }
 
     /**

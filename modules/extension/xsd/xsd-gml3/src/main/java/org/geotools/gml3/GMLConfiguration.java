@@ -18,6 +18,8 @@ package org.geotools.gml3;
 
 import javax.xml.namespace.QName;
 
+import org.geotools.gml.producer.CoordinateFormatter;
+import org.geotools.gml.producer.CoordinateWriter;
 import org.geotools.gml2.FeatureTypeCache;
 import org.geotools.gml2.SrsSyntax;
 import org.geotools.gml2.bindings.GMLCoordTypeBinding;
@@ -360,6 +362,11 @@ public class GMLConfiguration extends Configuration {
         container.registerComponentInstance(new ArcParameters());
 
         container.registerComponentInstance(srsSyntax);
+        
+        if (numDecimals >= 0) {
+            container.registerComponentInstance(new CoordinateFormatter(numDecimals));    
+        }
+        
     }
 
     /**

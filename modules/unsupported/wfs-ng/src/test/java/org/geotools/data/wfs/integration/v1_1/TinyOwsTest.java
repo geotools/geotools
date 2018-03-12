@@ -191,8 +191,8 @@ public class TinyOwsTest {
         final String[] queryTokens = { "<ogc:BBOX>", 
                 "<ogc:PropertyName>the_geom</ogc:PropertyName>", 
                 "<gml:Envelope srsDimension=\"2\" srsName=\"urn:x-ogc:def:crs:EPSG:3857\">",
-                "<gml:lowerCorner>4623055.0 815134.0</gml:lowerCorner>",
-                "<gml:upperCorner>4629904.0 820740.0</gml:upperCorner>" };
+                "<gml:lowerCorner>4623055 815134</gml:lowerCorner>",
+                "<gml:upperCorner>4629904 820740</gml:upperCorner>" };
         WFSDataStore wfs = getWFSDataStore(new TinyOwsMockHttpClient() {
             @Override
             public HTTPResponse post(URL url, InputStream postContent, String postContentType) throws IOException {

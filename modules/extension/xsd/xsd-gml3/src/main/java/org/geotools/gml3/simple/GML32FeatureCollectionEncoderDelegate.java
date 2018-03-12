@@ -89,11 +89,11 @@ public class GML32FeatureCollectionEncoderDelegate extends
         }
 
         private int getNumDecimals(Configuration configuration) {
-            GMLConfiguration config;
+            org.geotools.gml3.v3_2.GMLConfiguration config;
             if (configuration instanceof org.geotools.gml3.v3_2.GMLConfiguration) {
-                config = (GMLConfiguration) configuration;
+                config = (org.geotools.gml3.v3_2.GMLConfiguration) configuration;
             } else {
-                config = configuration.getDependency(GMLConfiguration.class);
+                config = configuration.getDependency(org.geotools.gml3.v3_2.GMLConfiguration.class);
             }
 
             if (config == null) {

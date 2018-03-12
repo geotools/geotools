@@ -17,10 +17,9 @@
 package org.geotools.gml2.simple;
 
 import java.text.FieldPosition;
-import java.text.NumberFormat;
-import java.util.Locale;
 
 import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
+import org.geotools.gml.producer.CoordinateFormatter;
 import org.geotools.gml2.GML;
 import org.geotools.xml.XMLUtils;
 import org.xml.sax.Attributes;
@@ -61,6 +60,7 @@ public class GMLWriter {
      * Used in coordinate formatting
      */
     private static final FieldPosition ZERO = new FieldPosition(0);
+    private final CoordinateFormatter coordFormatter;
 
     /**
      * The actual XML encoder
@@ -94,19 +94,6 @@ public class GMLWriter {
     private QualifiedName posList;
 
     /**
-     * Scale used in truncate to reduce the number of decimals
-     */
-    private double scale;
-
-    /** To be used for formatting numbers, uses US locale. */
-    private final NumberFormat coordFormatter = NumberFormat.getInstance(Locale.US);
-
-    /**
-     * Whether we have to format in plain decimal numbers, or we can use scientific notation
-     */
-    private boolean forceDecimal;
-
-    /**
      * Create a new content handler
      * 
      * @param delegate The actual XML writer
@@ -128,11 +115,8 @@ public class GMLWriter {
         this.coordinates = COORDINATES.derive(gmlPrefix, gmlUri);
         this.posList = POS_LIST.derive(gmlPrefix, gmlUri);
 
-        this.coordFormatter.setMaximumFractionDigits(numDecimals);
-        this.coordFormatter.setGroupingUsed(false);
-
-        this.scale = Math.pow(10, numDecimals);
-        this.forceDecimal = forceDecimal;
+        this.coordFormatter = new CoordinateFormatter(numDecimals);
+        this.coordFormatter.setForcedDecimal(forceDecimal);
     }
 
     /**
@@ -295,14 +279,14 @@ public class GMLWriter {
 
     void position(double x, double y, double z, StringBuffer sb) {
         sb.setLength(0);
-        appendDecimal(x);
+        coordFormatter.format(x, sb);
         if (!Double.isNaN(y)) {
             sb.append(" ");
-            appendDecimal(y);
+            coordFormatter.format(y, sb);
         }
         if (!Double.isNaN(z)) {
             sb.append(" ");
-            appendDecimal(z);
+            coordFormatter.format(z, sb);
         }
     }
 
@@ -315,11 +299,11 @@ public class GMLWriter {
         int n = coordinates.size();
         int dim = CoordinateSequences.coordinateDimension(coordinates);
         for (int i = 0; i < n; i++) {
-            appendDecimal(coordinates.getX(i)).append(cs);
-            appendDecimal(coordinates.getY(i));
+            coordFormatter.format(coordinates.getX(i), sb).append(cs);
+            coordFormatter.format(coordinates.getY(i), sb);
             if(dim == 3) {
                 sb.append(cs);
-                appendDecimal(coordinates.getOrdinate(i, 2));
+                coordFormatter.format(coordinates.getOrdinate(i, 2), sb);
             }
             sb.append(ts);
         }
@@ -334,31 +318,8 @@ public class GMLWriter {
      */
     public void ordinate(double x) throws SAXException {
         sb.setLength(0);
-        appendDecimal(x);
+        coordFormatter.format(x, sb);
         characters(sb);
-    }
-
-    private StringBuffer appendDecimal(double x) {
-        if ((Math.abs(x) >= DECIMAL_MIN && x < DECIMAL_MAX) || x == 0) {
-            x = truncate(x);
-            long lx = (long) x;
-            if (lx == x)
-                sb.append(lx);
-            else
-                sb.append(x);
-        } else {
-            if (forceDecimal) {
-                coordFormatter.format(x, sb, ZERO);
-            } else {
-                sb.append(truncate(x));
-            }
-        }
-
-        return sb;
-    }
-
-    final double truncate(double x) {
-        return Math.floor(x * scale + 0.5) / scale;
     }
 
     /**

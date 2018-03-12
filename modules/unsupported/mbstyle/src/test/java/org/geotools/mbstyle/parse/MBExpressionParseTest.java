@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Function;
 
 import java.awt.*;
 import java.io.IOException;
@@ -43,7 +44,7 @@ public class MBExpressionParseTest {
      * Verify that an expression can be parsed correctly from Layout, Paint, and Filter properties.
      */
     @Test
-    public void testParseExpressions() throws IOException, ParseException {
+    public void testParseExpressions() {
 
         JSONObject layer = testLayersById.get("testExpressions");
         Optional<JSONObject> l = traverse(layer, JSONObject.class, "layout");
@@ -54,13 +55,16 @@ public class MBExpressionParseTest {
         JSONArray filter = f.get();
 
         // Testing parsing expression out of layer JSONObject
-        assertEquals("TEST", parse.string(layout, "text-field", "fallback").toString());
+        Function upper = ff.function("strToUpperCase",ff.literal("test"));
+        assertEquals(upper, parse.string(layout, "text-field", "fallback"));
 
         // Testing parsing expression out of filter JSONArray
-        assertEquals("Point", parse.value(filter, 2).toString());
+        Function cat = ff.function("Concatenate", ff.literal("P"), ff.literal("o"), ff.literal("int"));
+        assertEquals(cat, parse.string(filter, 2));
 
         // Testing parsing expression out of paint JSONObject
-        assertEquals("red", parse.color(paint, "text-color", Color.RED).toString());
+        Function down = ff.function("strToLowerCase", ff.literal("RED"));
+        assertEquals(down, parse.color(paint, "text-color", Color.RED));
 
 
         // Testing exception thrown for unknown expression
@@ -78,7 +82,7 @@ public class MBExpressionParseTest {
      * Verify that a upcase string expression can be parsed correctly.
      */
     @Test
-    public void testParseUpcaseExpression() throws IOException, ParseException {
+    public void testParseUpcaseExpression() {
 
         JSONObject layer = testLayersById.get("upcaseExpression");
         Optional<JSONObject> o = traverse(layer, JSONObject.class, "layout");
@@ -87,14 +91,15 @@ public class MBExpressionParseTest {
         JSONArray arr = (JSONArray) j.get("text-field");
         assertEquals(MBString.class, MBExpression.create(arr).getClass());
         Expression upcase = MBExpression.transformExpression(arr);
-        assertEquals(ff.literal("UPCASING STRING"), upcase);
+        Object up = upcase.evaluate(upcase);
+        assertEquals(ff.literal("UPCASING STRING"), ff.literal(up));
     }
 
     /**
      * Verify that a downcase string expression can be parsed correctly.
      */
     @Test
-    public void testParseDowncaseExpression() throws IOException, ParseException {
+    public void testParseDowncaseExpression() {
 
         JSONObject layer = testLayersById.get("downcaseExpression");
         Optional<JSONObject> o = traverse(layer, JSONObject.class, "layout");
@@ -103,14 +108,15 @@ public class MBExpressionParseTest {
         JSONArray arr = (JSONArray) j.get("text-field");
         assertEquals(MBString.class, MBExpression.create(arr).getClass());
         Expression downcase = MBExpression.transformExpression(arr);
-        assertEquals(ff.literal("downcasing string"), downcase);
+        Object down = downcase.evaluate(downcase);
+        assertEquals(ff.literal("downcasing string"), ff.literal(down));
     }
 
     /**
      * Verify that a concat string expression can be parsed correctly.
      */
     @Test
-    public void testParseConcatExpression() throws IOException, ParseException {
+    public void testParseConcatExpression() {
 
         JSONObject layer = testLayersById.get("concatExpression");
         Optional<JSONObject> o = traverse(layer, JSONObject.class, "layout");
@@ -119,7 +125,35 @@ public class MBExpressionParseTest {
         JSONArray arr = (JSONArray) j.get("text-field");
         assertEquals(MBString.class, MBExpression.create(arr).getClass());
         Expression concat = MBExpression.transformExpression(arr);
-        assertEquals(ff.literal("cat"), concat);
+        Object cat = concat.evaluate(concat);
+        assertEquals(ff.literal("cat"), ff.literal(cat));
+    }
+
+    @Test
+    public void testParseAllStringExpressions() {
+
+        JSONObject layer = testLayersById.get("allStringExpressions");
+        Optional<JSONObject> o = traverse(layer, JSONObject.class, "layout");
+        JSONObject j = o.get();
+        assertEquals(JSONArray.class, j.get("text-field").getClass());
+        JSONArray arr = (JSONArray) j.get("text-field");
+        assertEquals(MBString.class, MBExpression.create(arr).getClass());
+        Expression all = MBExpression.transformExpression(arr);
+        Object a = all.evaluate(all);
+        assertEquals(ff.literal("Cat"), ff.literal(a));
+    }
+    @Test
+    public void testParseUpcaseConcat() {
+
+        JSONObject layer = testLayersById.get("upcaseConcat");
+        Optional<JSONObject> o = traverse(layer, JSONObject.class, "layout");
+        JSONObject j = o.get();
+        assertEquals(JSONArray.class, j.get("text-field").getClass());
+        JSONArray arr = (JSONArray) j.get("text-field");
+        assertEquals(MBString.class, MBExpression.create(arr).getClass());
+        Expression all = MBExpression.transformExpression(arr);
+        Object a = all.evaluate(all);
+        assertEquals(ff.literal("CAT"), ff.literal(a));
     }
 
     // ---- COLOR EXPRESSIONS ---------------------------------------------------------

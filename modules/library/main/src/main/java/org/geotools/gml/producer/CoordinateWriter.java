@@ -128,7 +128,6 @@ public class CoordinateWriter {
             throw new IllegalArgumentException("Coordinate delimeter cannot be null or zero length");
         }        
         D = dimension;
-
         
         tupleDelimiter = tupleDelim;
         coordinateDelimiter = coordDelim;

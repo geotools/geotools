@@ -21,9 +21,11 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 /**
- * Formats coordinates with a given number of decimals, using code more efficient than NumberFormat when possible
+ * Formats coordinates with a given number of decimals, using code more efficient than NumberFormat 
+ * when possible.
+ * The class is not thread safe, create a new instance for each thread using it.
  */
-public class CoordinateFormatter {
+public final class CoordinateFormatter {
 
     /**
      * The min value at which the decimal notation is used 
@@ -43,7 +45,7 @@ public class CoordinateFormatter {
     private final FieldPosition ZERO = new FieldPosition(0);
 
     /**
-     * The power of ten used for fast rounding
+     * The power of ten used for fast rounding, computed using the provided number of decimal values
      */
     private final double scale;
 
@@ -78,24 +80,25 @@ public class CoordinateFormatter {
      */
     public StringBuffer format(double x, StringBuffer sb) {
         if ((Math.abs(x) >= DECIMAL_MIN && x < DECIMAL_MAX) || x == 0) {
-            x = truncate(x);
+            x = roundDecimals(x);
             long lx = (long) x;
-            if (lx == x)
+            if (lx == x) {
                 sb.append(lx);
-            else
+            } else {
                 sb.append(x);
+            }
         } else {
             if (forcedDecimal) {
                 coordFormatter.format(x, sb, ZERO);
             } else {
-                sb.append(truncate(x));
+                sb.append(roundDecimals(x));
             }
         }
-        
+
         return sb;
     }
 
-    final double truncate(double x) {
+    final double roundDecimals(double x) {
         return Math.floor(x * scale + 0.5) / scale;
     }
     

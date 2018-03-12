@@ -5,7 +5,7 @@ The objects defined in the referencing module can be compared in a number of dif
 
 Related:
 
-* http://home.gdal.org/projects/opengis/wktproblems.html
+* http://gdal.org/wktproblems.html
 
 Compare Identifier
 ^^^^^^^^^^^^^^^^^^

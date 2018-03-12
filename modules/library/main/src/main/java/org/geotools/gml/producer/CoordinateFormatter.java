@@ -80,7 +80,7 @@ public final class CoordinateFormatter {
      */
     public StringBuffer format(double x, StringBuffer sb) {
         if ((Math.abs(x) >= DECIMAL_MIN && x < DECIMAL_MAX) || x == 0) {
-            x = roundDecimals(x);
+            x = truncate(x);
             long lx = (long) x;
             if (lx == x) {
                 sb.append(lx);
@@ -91,17 +91,26 @@ public final class CoordinateFormatter {
             if (forcedDecimal) {
                 coordFormatter.format(x, sb, ZERO);
             } else {
-                sb.append(roundDecimals(x));
+                sb.append(truncate(x));
             }
         }
 
         return sb;
     }
 
-    final double roundDecimals(double x) {
-        return Math.floor(x * scale + 0.5) / scale;
+    final double truncate(double x) {
+        // scale the number multiplying it by the power of 10 of the desired decimals
+        //  e.g. if we want 8 decimals: 3.123456786 * 10E8 = 312345678.6
+        double scaled = x * scale;
+        // add 0.5 to round the decimal part, e.g 312345678.6 + 0.5 = 312345679.1
+        scaled += 0.5;
+        // take only the decimal part, e.g.  312345679
+        scaled = Math.floor(scaled);
+        // remove the scale factor, the number will now have the desired number of decimals
+        return scaled / scale;
     }
-    
+
+
     /**
      * Returns the maximum number of digits allowed in the fraction portion of a
      * number.

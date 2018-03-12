@@ -72,7 +72,7 @@ import org.geotools.resources.i18n.ErrorKeys;
  * @author Martin Desruisseaux (IRD)
  *
  * @see <A HREF="http://geoapi.sourceforge.net/snapshot/javadoc/org/opengis/referencing/doc-files/WKT.html">Well Know Text specification</A>
- * @see <A HREF="http://home.gdal.org/projects/opengis/wktproblems.html">OGC WKT Coordinate System Issues</A>
+ * @see <A HREF="http://gdal.org/wktproblems.html">OGC WKT Coordinate System Issues</A>
  */
 public class Formatter {
     /**

@@ -50,7 +50,7 @@ import org.geotools.resources.i18n.ErrorKeys;
  * @author Martin Desruisseaux (IRD)
  *
  * @see <A HREF="http://geoapi.sourceforge.net/snapshot/javadoc/org/opengis/referencing/doc-files/WKT.html">Well Know Text specification</A>
- * @see <A HREF="http://gdal.velocet.ca/~warmerda/wktproblems.html">OGC WKT Coordinate System Issues</A>
+ * @see <A HREF="http://gdal.org/wktproblems.html">OGC WKT Coordinate System Issues</A>
  */
 public abstract class AbstractParser extends Format {
     /**

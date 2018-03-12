@@ -77,7 +77,7 @@ import org.geotools.referencing.ReferencingFactoryFinder;
  * @todo Invokes {@link #freeUnused} automatically after some amount of time, in order to release
  *       memory for unusued aliases. A timer should be set in {@code reload()} method.
  *
- * @see <A HREF="http://gdal.velocet.ca/~warmerda/wktproblems.html">WKT problems</A>
+ * @see <A HREF="http://gdal.org/wktproblems.html">WKT problems</A>
  */
 public class DatumAliases extends ReferencingFactory implements DatumFactory {
     /**

@@ -67,8 +67,8 @@ import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.GeometryType;
 import org.opengis.feature.type.Name;
-import org.opengis.filter.Filter;
 import org.opengis.feature.type.PropertyDescriptor;
+import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
@@ -1074,9 +1074,33 @@ public class DataAccessMappingFeatureIterator extends AbstractMappingFeatureIter
                         + attMapping.getTargetXPath(), e);
             }
         }
+
+        // if a default geometry attribute was configured in the mapping, set its value
+        setDefaultGeometryAttribute(target);
+
         cleanEmptyElements(target);
-        
+
         return target;
+    }
+
+    private void setDefaultGeometryAttribute(Feature feature) {
+        String defaultGeomXPath = mapping.getDefaultGeometryXPath();
+        if (defaultGeomXPath != null && !defaultGeomXPath.isEmpty()) {
+            GeometryDescriptor defaultGeomDescr = feature.getType().getGeometryDescriptor();
+            if (defaultGeomDescr != null) {
+                PropertyName geomProperty = filterFac.property(defaultGeomXPath, namespaces);
+                Object geomValue = geomProperty.evaluate(feature);
+                if (geomValue instanceof Collection) {
+                    throw new RuntimeException(
+                            "Error setting default geometry value: multiple values were found");
+                }
+
+                String geomName = Types.toPrefixedName(defaultGeomDescr.getName(), namespaces);
+                StepList fakeDefaultGeomXPath = XPath.steps(targetFeature, geomName, namespaces);
+                xpathAttributeBuilder.set(feature, fakeDefaultGeomXPath, geomValue, null, null,
+                        false, null);
+            }
+        }
     }
 
     /**

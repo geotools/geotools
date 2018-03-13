@@ -17,6 +17,8 @@
 
 package org.geotools.data.complex.filter;
 
+import static org.geotools.data.complex.ComplexFeatureConstants.DEFAULT_GEOMETRY_LOCAL_NAME;
+
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
@@ -29,9 +31,11 @@ import org.geotools.data.complex.filter.FeatureChainedAttributeVisitor.FeatureCh
 import org.geotools.data.complex.filter.FeatureChainedAttributeVisitor.FeatureChainedAttributeDescriptor;
 import org.geotools.data.complex.filter.XPathUtil.StepList;
 import org.geotools.filter.FilterCapabilities;
+import org.geotools.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
 import org.geotools.util.logging.Logging;
 import org.opengis.filter.BinaryComparisonOperator;
+import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Id;
 import org.opengis.filter.PropertyIsBetween;
 import org.opengis.filter.PropertyIsLike;
@@ -249,6 +253,13 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
     }
 
     public Object visit(PropertyName expression, Object notUsed) {
+
+        // replace the artificial DEFAULT_GEOMETRY property with the actual one
+        if (DEFAULT_GEOMETRY_LOCAL_NAME.equals(expression.getPropertyName())) {
+            String defGeomPath = mappings.getDefaultGeometryXPath();
+            FilterFactory2 ff = new FilterFactoryImplNamespaceAware(mappings.getNamespaces());
+            expression = ff.property(defGeomPath);
+        }
         
         // break into single steps
         StepList exprSteps = XPath.steps(mappings.getTargetFeature(), expression.getPropertyName(), this.mappings.getNamespaces());

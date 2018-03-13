@@ -16,6 +16,8 @@
  */
 package org.geotools.data.complex;
 
+import static org.geotools.data.complex.ComplexFeatureConstants.DEFAULT_GEOMETRY_LOCAL_NAME;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -50,7 +52,9 @@ import org.opengis.feature.GeometryAttribute;
 import org.opengis.feature.Property;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
+import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.FeatureTypeFactory;
+import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.Name;
 import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.FilterFactory;
@@ -279,7 +283,13 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
                 }
 
                 for (PropertyName requestedProperty : propertyNames) {
-                    StepList requestedPropertySteps;                    
+                    // replace the artificial DEFAULT_GEOMETRY property with the actual one
+                    if (DEFAULT_GEOMETRY_LOCAL_NAME.equals(requestedProperty.getPropertyName())) {
+                        String defGeomPath = mapping.getDefaultGeometryXPath();
+                        requestedProperty = namespaceAwareFilterFactory.property(defGeomPath);
+                    }
+
+                    StepList requestedPropertySteps;
                     if (requestedProperty.getNamespaceContext() == null) {
                         requestedPropertySteps = XPath.steps(targetDescriptor, requestedProperty.getPropertyName(),
                                 namespaces);

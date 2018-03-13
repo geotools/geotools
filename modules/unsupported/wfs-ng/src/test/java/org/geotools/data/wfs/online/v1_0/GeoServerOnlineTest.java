@@ -71,6 +71,12 @@ public class GeoServerOnlineTest extends AbstractWfsDataStoreOnlineTest {
         return ff.intersects(ff.property("the_geom"), ff.literal(polygon));
     }
 
+    
+    /**
+     * Test to demonstrate GEOT-5921
+     * WFSClient passes ILIKE to 1.0.0 servers that can't handle it
+     * https://osgeo-org.atlassian.net/browse/GEOT-5921
+     */
     @Test
     public void testFeatureSourceGetFeaturesILikeFilter() throws IOException, CQLException {
         if (Boolean.FALSE.equals(serviceAvailable)) {
@@ -100,6 +106,11 @@ public class GeoServerOnlineTest extends AbstractWfsDataStoreOnlineTest {
 
     }
     
+    /**
+     * Test to demonstrate GEOT-5920
+     * WFSClient fails when a function is used in a query
+     * https://osgeo-org.atlassian.net/browse/GEOT-5920
+     */
     @Test
     public void testFeatureSourceGetFeaturesFunctionFilter() throws IOException, CQLException {
         if (Boolean.FALSE.equals(serviceAvailable)) {

@@ -16,6 +16,8 @@
  */
 package org.geotools.data.complex;
 
+import static org.geotools.data.complex.ComplexFeatureConstants.DEFAULT_GEOMETRY_LOCAL_NAME;
+
 import com.vividsolutions.jts.geom.EmptyGeometry;
 import com.vividsolutions.jts.geom.Geometry;
 import java.io.IOException;
@@ -289,6 +291,11 @@ public abstract class AbstractMappingFeatureIterator implements IMappingFeatureI
                 }
 
                 for (PropertyName requestedProperty : propertyNames) {
+                    // replace the artificial DEFAULT_GEOMETRY property with the actual one
+                    if (DEFAULT_GEOMETRY_LOCAL_NAME.equals(requestedProperty.getPropertyName())) {
+                        String defGeomPath = mapping.getDefaultGeometryXPath();
+                        requestedProperty = namespaceAwareFilterFactory.property(defGeomPath);
+                    }
                     StepList requestedPropertySteps;
                     if (requestedProperty.getNamespaceContext() == null) {
                         requestedPropertySteps =

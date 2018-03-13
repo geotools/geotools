@@ -17,6 +17,8 @@
 
 package org.geotools.data.complex;
 
+import static org.geotools.data.complex.ComplexFeatureConstants.DEFAULT_GEOMETRY_LOCAL_NAME;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -513,6 +515,14 @@ public class AppSchemaDataAccess implements DataAccess<FeatureType, Feature> {
 
                 if (!addThis) {
                     for (PropertyName requestedProperty : requestedProperties) {
+                        // replace the artificial DEFAULT_GEOMETRY property with the actual one
+                        if (DEFAULT_GEOMETRY_LOCAL_NAME.equals(
+                                requestedProperty.getPropertyName())) {
+                            String defGeomPath = mapping.getDefaultGeometryXPath();
+                            requestedProperty =
+                                    filterFac.property(defGeomPath, mapping.getNamespaces());
+                        }
+
                         StepList requestedPropertySteps;
                         if (requestedProperty.getNamespaceContext() == null) {
                             requestedPropertySteps =

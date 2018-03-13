@@ -58,6 +58,8 @@ public class TypeMapping implements Serializable {
 
     private String targetElementName;
 
+    private String defaultGeometryXPath;
+
     private List attributeMappings = Collections.EMPTY_LIST;
 
     /**
@@ -103,6 +105,14 @@ public class TypeMapping implements Serializable {
 
     public void setTargetElementName(String targetElementName) {
         this.targetElementName = targetElementName;
+    }
+
+    public String getDefaultGeometryXPath() {
+        return defaultGeometryXPath;
+    }
+
+    public void setDefaultGeometryXPath(String defaultGeometryXPath) {
+        this.defaultGeometryXPath = defaultGeometryXPath;
     }
 
     public String getItemXpath() {

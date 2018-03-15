@@ -47,7 +47,7 @@ public class GranuleDescriptorTest {
         fb.add(geometry.buffer(10));
         SimpleFeature feature = fb.buildFeature("xyz");
 
-        new GranuleDescriptor(feature, null, PathType.ABSOLUTE, "location", "/tmp") {
+        new GranuleDescriptor(feature, null, null, null, PathType.ABSOLUTE, "location", "/tmp") {
             protected void init(org.opengis.geometry.BoundingBox granuleBBOX,
                     java.net.URL granuleUrl, javax.imageio.spi.ImageReaderSpi suggestedSPI,
                     org.geotools.coverage.grid.io.footprint.MultiLevelROI roiProvider,

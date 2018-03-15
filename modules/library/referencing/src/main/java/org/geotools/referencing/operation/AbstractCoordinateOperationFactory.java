@@ -538,6 +538,26 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
     }
     
     /**
+     * Concatenate two operation steps. If an operation is an {@link #AXIS_CHANGES}, it will be included as part of the second operation instead of
+     * creating an {@link ConcatenatedOperation}. If a concatenated operation is created, it will get an automatically generated name.
+     *
+     * @param step1 The first step, or {@code null} for the identity operation.
+     * @param step2 The second step, or {@code null} for the identity operation.
+     * @return A concatenated operation, or {@code null} if all arguments was nul.
+     * @throws FactoryException if the operation can't be constructed.
+     */
+    protected Set<CoordinateOperation> concatenate(final Set<CoordinateOperation> candidatesStep1,
+            final Set<CoordinateOperation> candidatesStep2) throws FactoryException {
+        HashSet<CoordinateOperation> result = new HashSet<CoordinateOperation>();
+        for (CoordinateOperation step1 : candidatesStep1) {
+            for (CoordinateOperation step2 : candidatesStep2) {
+                result.add(concatenate(step1, step2));
+            }
+        }
+        return result;
+    }
+
+    /**
      * Concatenate two sets of operation steps. The result is the concatenation
      * of all the steps on the firt set with all the steps on the second set
      * (cartesian product), which will be then concatenated with all the steps

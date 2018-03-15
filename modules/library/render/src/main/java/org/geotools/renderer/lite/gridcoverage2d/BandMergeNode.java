@@ -97,6 +97,9 @@ class BandMergeNode extends BaseCoverageProcessingNode implements
 	 */
 	private Stack<RenderedImage> intermediateOps = new Stack<RenderedImage>();
 
+	/** alpha channel from previous nodes to be restored (it may be null) */
+	private RenderedImage alpha;
+
 	/**
 	 * Default constructor for the {@link BandMergeNode} which merge multiple
 	 * single bands into s single coverage.
@@ -131,15 +134,17 @@ class BandMergeNode extends BaseCoverageProcessingNode implements
 			//
 			// //
 			final int size = sources.size();
-			if (size == 1) {
+			final boolean hasAlpha = (alpha != null);
+			if (size == 1 && !hasAlpha) {
+			    // returns the source if we don't need to restore the alpha channel
 				return getSource(0).getOutput();
 			}
 			// //
 			//
-			// We can accept only 3 sources at this step
+			// We can accept only 3 sources OR 1 source (when alpha need to be added)
 			//
 			// //
-			if (size != 3) {
+			if (size != 3 && size != 1) {
 				throw new IllegalArgumentException(Errors.format(
 						ErrorKeys.INVALID_NUMBER_OF_SOURCES_$1, Integer.valueOf(size)));
 			}
@@ -170,12 +175,12 @@ class BandMergeNode extends BaseCoverageProcessingNode implements
 					// get the envelope for the first source.
 					gridGeometry = gg;
 
-					// color model
-					final ComponentColorModel cm = new ComponentColorModel(
-							ColorSpace.getInstance(ColorSpace.CS_LINEAR_RGB),
-							false, false, Transparency.OPAQUE,
-							currentSourceCoverage.getRenderedImage()
-									.getSampleModel().getDataType());
+                    // color model
+                    final ColorSpace colorSpace = (size == 1 && hasAlpha)
+                            ? ColorSpace.getInstance(ColorSpace.CS_GRAY) : ColorSpace.getInstance(ColorSpace.CS_LINEAR_RGB);
+                    final int transparency = hasAlpha ? Transparency.TRANSLUCENT : Transparency.OPAQUE;
+                    final ComponentColorModel cm = new ComponentColorModel(colorSpace, hasAlpha, false, 
+                            transparency, currentSourceCoverage.getRenderedImage().getSampleModel().getDataType());
 					layout = new ImageLayout();
 					layout.setColorModel(cm);
 				} else if (!gg.equals(gridGeometry))
@@ -230,6 +235,12 @@ class BandMergeNode extends BaseCoverageProcessingNode implements
 			// /////////////////////////////////////////////////////////////////////
 			if (layout != null)
 				hints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout));
+			if (hasAlpha && !op.getColorModel().hasAlpha()) {
+			    // Only restore the alphaChannel if not already available
+                            w.addBand(alpha, false, true, null);
+                            op = w.getRenderedImage();
+                            intermediateOps.add(op);
+			}
 			op = w.format(op.getSampleModel().getDataType()).getRenderedImage();
 			final GridSampleDimension [] sd= new GridSampleDimension[op.getSampleModel().getNumBands()];
 			for(int i=0;i<sd.length;i++)
@@ -243,7 +254,7 @@ class BandMergeNode extends BaseCoverageProcessingNode implements
 			        "BandMerge",
 			        op,
 			        gridGeometry,
-			        null, 
+			        sd,
 			        sourceGridCoverages.toArray(new GridCoverage[sourceGridCoverages.size()]),
 			        properties);
 
@@ -252,5 +263,12 @@ class BandMergeNode extends BaseCoverageProcessingNode implements
 				ErrorKeys.SOURCE_CANT_BE_NULL_$1, "BandMergeNode"));
 
 	}
+
+    /**
+     * If specified, the result of the bandMerge will contain the alpha channel.
+     */
+    public void setAlpha(RenderedImage alpha) {
+        this.alpha = alpha;
+    }
 
 }

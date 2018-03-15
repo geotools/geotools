@@ -16,12 +16,14 @@
  */
 package org.geotools.renderer.lite.gridcoverage2d;
 
+import java.awt.image.RenderedImage;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.factory.Hints;
+import org.geotools.image.ImageWorker;
 import org.geotools.renderer.i18n.ErrorKeys;
 import org.geotools.renderer.i18n.Errors;
 import org.geotools.renderer.i18n.Vocabulary;
@@ -104,6 +106,18 @@ class ChannelSelectionNode extends SubchainStyleVisitorCoverageProcessingAdapter
 		//creating a new separate chain
 		final RootNode chainSource = new RootNode(source, getHints());
 		final BandMergeNode subChainSink = new BandMergeNode(getHints());
+		RenderedImage sourceImage = source.getRenderedImage();
+		
+        // save the alpha channel (if any) for future restore
+        boolean hasAlpha = sourceImage != null
+                && sourceImage.getColorModel() != null
+                && sourceImage.getColorModel().hasAlpha();
+        RenderedImage alpha = null;
+        if (hasAlpha) {
+            alpha = new ImageWorker(sourceImage).setRenderingHints(getHints()).retainLastBand()
+                    .getRenderedImage();
+            subChainSink.setAlpha(alpha);
+        }
 		//anchoring the chain for later disposal
 		setSink(subChainSink);
 		

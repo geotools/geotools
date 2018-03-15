@@ -341,7 +341,9 @@ public class GranuleDescriptor {
     private NoDataContainer noData;
 
     protected void init(final BoundingBox granuleBBOX, final URL granuleUrl,
-            final ImageReaderSpi suggestedSPI, final MultiLevelROI roiProvider,
+            final AbstractGridFormat suggestedFormat,
+            final ImageReaderSpi suggestedSPI, final ImageInputStreamSpi suggestedIsSPI, 
+            final MultiLevelROI roiProvider,
             final boolean heterogeneousGranules, final boolean handleArtifactsFiltering,
             final Hints hints) {
         this.granuleBBOX = ReferencedEnvelope.reference(granuleBBOX);
@@ -351,15 +353,17 @@ public class GranuleDescriptor {
         filterMe = handleArtifactsFiltering && roiProvider != null;
 
         // When looking for formats which may parse this file, make sure to exclude the ImageMosaicFormat as return
-        File granuleFile = URLs.urlToFile(granuleUrl);
-        AbstractGridFormat format = GridFormatFinder.findFormat(granuleFile, EXCLUDE_MOSAIC);
+        //File granuleFile = URLs.urlToFile(granuleUrl);
+        AbstractGridFormat format = suggestedFormat == null ?
+                GridFormatFinder.findFormat(granuleUrl, EXCLUDE_MOSAIC) :
+                    suggestedFormat;
         // create the base grid to world transformation
         AbstractGridCoverage2DReader gcReader = null;
         ImageInputStream inStream = null;
         ImageReader reader = null;
         try {
 
-            gcReader = format.getReader(granuleFile, hints);
+            gcReader = format.getReader(granuleUrl, hints);
             // Getting Dataset Layout
             layout = gcReader.getDatasetLayout();
             if(heterogeneousGranules) {
@@ -369,32 +373,34 @@ public class GranuleDescriptor {
             //
             // get info about the raster we have to read
             //
-            SpiHelper spiProvider = new SpiHelper(granuleFile, suggestedSPI);
+            SpiHelper spiProvider = new SpiHelper(granuleUrl, suggestedSPI, suggestedIsSPI);
             boolean isMultidim = spiProvider.isMultidim();
 
 
             GeneralEnvelope envelope = gcReader.getOriginalEnvelope();
             this.granuleEnvelope = envelope;
 
-            ovrProvider = new MaskOverviewProvider(layout, granuleFile, spiProvider);
+            ovrProvider = new MaskOverviewProvider(layout, granuleUrl, spiProvider);
 
             // get a stream
             if (cachedStreamSPI == null) {
                 cachedStreamSPI = ovrProvider.getInputStreamSpi();
             }
             assert cachedStreamSPI != null : "no cachedStreamSPI available!";
-            inStream = cachedStreamSPI.createInputStreamInstance(granuleUrl, ImageIO.getUseCache(),
-                    ImageIO.getCacheDirectory());
             if (inStream == null) {
-                final File file = URLs.urlToFile(granuleUrl);
-                if (file != null) {
-                    if (LOGGER.isLoggable(Level.WARNING)) {
-                        LOGGER.log(Level.WARNING, Utils.getFileInfo(file));
+                inStream = cachedStreamSPI.createInputStreamInstance(granuleUrl, ImageIO.getUseCache(),
+                    ImageIO.getCacheDirectory());
+                if (inStream == null) {
+                    final File file = URLs.urlToFile(granuleUrl);
+                    if (file != null) {
+                        if (LOGGER.isLoggable(Level.WARNING)) {
+                            LOGGER.log(Level.WARNING, Utils.getFileInfo(file));
+                        }
                     }
+                    throw new IllegalArgumentException(
+                            "Unable to get an input stream for the provided file "
+                                    + granuleUrl.toString());
                 }
-                throw new IllegalArgumentException(
-                        "Unable to get an input stream for the provided file "
-                                + granuleUrl.toString());
             }
 
             // get a reader and try to cache the suggested SPI first
@@ -592,42 +598,51 @@ public class GranuleDescriptor {
     }
 
     public GranuleDescriptor(final String granuleLocation, final BoundingBox granuleBBox,
-            final ImageReaderSpi suggestedSPI, final MultiLevelROI roiProvider) {
-        this(granuleLocation, granuleBBox, suggestedSPI, roiProvider, -1, false);
+            final AbstractGridFormat suggestedFormat,
+            final ImageReaderSpi suggestedSPI, final ImageInputStreamSpi suggestedIsSPI, final MultiLevelROI roiProvider) {
+        this(granuleLocation, granuleBBox, suggestedFormat, suggestedSPI, suggestedIsSPI, roiProvider, -1, false);
     }
 
     public GranuleDescriptor(final String granuleLocation, final BoundingBox granuleBBox,
-            final ImageReaderSpi suggestedSPI, final MultiLevelROI roiProvider,
+            final AbstractGridFormat suggestedFormat,
+            final ImageReaderSpi suggestedSPI, final ImageInputStreamSpi suggestedIsSPI,final MultiLevelROI roiProvider,
             final boolean heterogeneousGranules) {
-        this(granuleLocation, granuleBBox, suggestedSPI, roiProvider, -1, heterogeneousGranules);
+        this(granuleLocation, granuleBBox, suggestedFormat, suggestedSPI, suggestedIsSPI, roiProvider, -1, heterogeneousGranules);
     }
 
     public GranuleDescriptor(final String granuleLocation, final BoundingBox granuleBBox,
-            final ImageReaderSpi suggestedSPI, final MultiLevelROI roiProvider,
+            final AbstractGridFormat suggestedFormat,
+            final ImageReaderSpi suggestedSPI, final ImageInputStreamSpi suggestedIsSPI, final MultiLevelROI roiProvider,
             final int maxDecimationFactor) {
-        this(granuleLocation, granuleBBox, suggestedSPI, roiProvider, maxDecimationFactor, false);
+        this(granuleLocation, granuleBBox, suggestedFormat, suggestedSPI, suggestedIsSPI, roiProvider, maxDecimationFactor, false);
 
     }
 
     public GranuleDescriptor(final String granuleLocation, final BoundingBox granuleBBox,
-            final ImageReaderSpi suggestedSPI, final MultiLevelROI roiProvider,
+            final AbstractGridFormat suggestedFormat,
+            final ImageReaderSpi suggestedSPI, final ImageInputStreamSpi suggestedIsSPI,
+            final MultiLevelROI roiProvider,
             final int maxDecimationFactor, final boolean heterogeneousGranules) {
-        this(granuleLocation, granuleBBox, suggestedSPI, roiProvider, maxDecimationFactor,
+        this(granuleLocation, granuleBBox, suggestedFormat, suggestedSPI, suggestedIsSPI, roiProvider, maxDecimationFactor,
                 heterogeneousGranules, false);
     }
 
     public GranuleDescriptor(final String granuleLocation, final BoundingBox granuleBBox,
-            final ImageReaderSpi suggestedSPI, final MultiLevelROI roiProvider,
+            final AbstractGridFormat suggestedFormat,
+            final ImageReaderSpi suggestedSPI, final ImageInputStreamSpi suggestedIsSPI,
+            final MultiLevelROI roiProvider,
             final int maxDecimationFactor, final boolean heterogeneousGranules,
             final boolean handleArtifactsFiltering) {
 
-        this(granuleLocation, granuleBBox, suggestedSPI, roiProvider, maxDecimationFactor,
+        this(granuleLocation, granuleBBox, suggestedFormat, suggestedSPI, suggestedIsSPI, roiProvider, maxDecimationFactor,
                 heterogeneousGranules, handleArtifactsFiltering, null);
 
     }
 
     public GranuleDescriptor(final String granuleLocation, final BoundingBox granuleBBox,
-            final ImageReaderSpi suggestedSPI, final MultiLevelROI roiProvider,
+            final AbstractGridFormat suggestedFormat,
+            final ImageReaderSpi suggestedSPI, final ImageInputStreamSpi suggestedIsSPI, 
+            final MultiLevelROI roiProvider,
             final int maxDecimationFactor, final boolean heterogeneousGranules,
             final boolean handleArtifactsFiltering, final Hints hints) {
 
@@ -643,7 +658,7 @@ public class GranuleDescriptor {
         }
 
         this.originator = null;
-        init(granuleBBox, rasterFile, suggestedSPI, roiProvider, heterogeneousGranules,
+        init(granuleBBox, rasterFile, suggestedFormat, suggestedSPI, suggestedIsSPI, roiProvider, heterogeneousGranules,
                 handleArtifactsFiltering, hints);
     }
 
@@ -656,21 +671,24 @@ public class GranuleDescriptor {
      * @param parentLocation
      */
     public GranuleDescriptor(final SimpleFeature feature, final ImageReaderSpi suggestedSPI,
+            final AbstractGridFormat suggestedFormat ,final ImageInputStreamSpi suggestedIsSPI, 
             final PathType pathType, final String locationAttribute, final String parentLocation) {
-        this(feature, suggestedSPI, pathType, locationAttribute, parentLocation, false);
+        this(feature, suggestedFormat, suggestedSPI, suggestedIsSPI, pathType, locationAttribute, parentLocation, false);
     }
 
-    public GranuleDescriptor(SimpleFeature feature, ImageReaderSpi suggestedSPI, PathType pathType,
+    public GranuleDescriptor(SimpleFeature feature, AbstractGridFormat suggestedFormat,
+            ImageReaderSpi suggestedSPI, final ImageInputStreamSpi suggestedIsSPI, PathType pathType,
             String locationAttribute, String parentLocation, boolean heterogeneousGranules,
             Hints hints) {
-        this(feature, suggestedSPI, pathType, locationAttribute, parentLocation, null,
+        this(feature, suggestedFormat, suggestedSPI, suggestedIsSPI, pathType, locationAttribute, parentLocation, null,
                 heterogeneousGranules, hints);
 
     }
 
-    public GranuleDescriptor(SimpleFeature feature, ImageReaderSpi suggestedSPI, PathType pathType,
+    public GranuleDescriptor(SimpleFeature feature, AbstractGridFormat suggestedFormat,
+            ImageReaderSpi suggestedSPI, final ImageInputStreamSpi suggestedIsSPI, PathType pathType,
             String locationAttribute, String parentLocation, boolean heterogeneousGranules) {
-        this(feature, suggestedSPI, pathType, locationAttribute, parentLocation,
+        this(feature, suggestedFormat, suggestedSPI, suggestedIsSPI, pathType, locationAttribute, parentLocation,
                 heterogeneousGranules, null);
     }
 
@@ -685,10 +703,11 @@ public class GranuleDescriptor {
      * @param inclusionGeometry the footprint of that granule (if any). It may be null.
      */
     public GranuleDescriptor(SimpleFeature feature, ImageReaderSpi suggestedSPI, PathType pathType,
+            final AbstractGridFormat suggestedFormat, final ImageInputStreamSpi suggestedIsSPI,
             final String locationAttribute, final String parentLocation,
             final MultiLevelROI roiProvider) {
-        this(feature, suggestedSPI, pathType, locationAttribute, parentLocation, roiProvider, false,
-                null);
+        this(feature, suggestedFormat, suggestedSPI, suggestedIsSPI, pathType, locationAttribute, parentLocation, roiProvider, 
+                false, null);
     }
 
     /**
@@ -702,7 +721,8 @@ public class GranuleDescriptor {
      * @param inclusionGeometry the footprint of that granule (if any). It may be null.
      * @param heterogeneousGranules if {@code true}, this granule belongs to a set of heterogeneous granules
      */
-    public GranuleDescriptor(final SimpleFeature feature, final ImageReaderSpi suggestedSPI,
+    public GranuleDescriptor(final SimpleFeature feature, final AbstractGridFormat suggestedFormat,
+            final ImageReaderSpi suggestedSPI, final ImageInputStreamSpi suggestedIsSPI,
             final PathType pathType, final String locationAttribute, final String parentLocation,
             final MultiLevelROI roiProvider, final boolean heterogeneousGranules,
             final Hints hints) {
@@ -720,8 +740,8 @@ public class GranuleDescriptor {
             LOGGER.fine("File found " + granuleLocation);
 
         this.originator = feature;
-        init(granuleBBox, rasterFile, suggestedSPI, roiProvider, heterogeneousGranules, false,
-                hints);
+        init(granuleBBox, rasterFile, suggestedFormat, suggestedSPI, suggestedIsSPI, roiProvider, 
+                heterogeneousGranules, false, hints);
 
     }
 

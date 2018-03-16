@@ -84,12 +84,40 @@
             "source": "composite",
             "source-layer": "waterway",
             "layout": {
+              "text-field": [
+                "concat",
+                "c",
+                "a",
+                "t"
+              ]
+            }
+        },
+        {
+          "id": "allStringExpressions",
+          "type": "symbol",
+          "source": "composite",
+          "source-layer": "waterway",
+          "layout": {
+            "text-field": [
+              "concat",
+              ["upcase", "c"],
+              ["downcase","A"],
+              "t"
+            ]
+          }
+        },
+        {
+            "id": "upcaseConcat",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
                 "text-field": [
-                    "concat",
-                    "c",
-                    "a",
-                    "t"
-                ]
+                    "upcase",
+                    ["concat",
+                    ["upcase", "c"],
+                    ["downcase","A"],
+                    "t"]]
             }
         }
     ]

@@ -16,27 +16,29 @@
  */
 package org.geotools.referencing.factory.epsg;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.logging.Level;
-
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 import org.geotools.factory.Hints;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.TransformedDirectPosition;
+import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
+import org.geotools.referencing.NamedIdentifier;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.operation.AbstractCoordinateOperation;
 import org.geotools.referencing.operation.AuthorityBackedFactory;
 import org.geotools.referencing.operation.BufferedCoordinateOperationFactory;
+import org.geotools.referencing.operation.TransformTestBase;
 import org.geotools.resources.Arguments;
 import org.geotools.resources.Classes;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.IdentifiedObject;
 import org.opengis.referencing.crs.CRSAuthorityFactory;
+import org.opengis.referencing.crs.CRSFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.ConcatenatedOperation;
 import org.opengis.referencing.operation.Conversion;
@@ -44,6 +46,9 @@ import org.opengis.referencing.operation.CoordinateOperation;
 import org.opengis.referencing.operation.CoordinateOperationFactory;
 import org.opengis.referencing.operation.Transformation;
 
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 /**
  * Tests the usage of {@link CoordinateOperationFactory} with the help of the
@@ -209,4 +214,66 @@ public class OperationFactoryTest extends TestCase {
         assertEquals(expected.getOrdinate(0), arbitraryToInternal.getOrdinate(0), 1e-9);
         assertEquals(expected.getOrdinate(1), arbitraryToInternal.getOrdinate(1), 1e-9);
     }
+
+    /**
+     * Ensures the provided source and target CRS match the source and target CRS of the operation. Ensures the operation math transform passes
+     * TransformTestBase.assertInterfaced assertion.
+     * 
+     * @param operation
+     * @param sourceCRS
+     * @param targetCRS
+     */
+    public static void assertOperation(CoordinateOperation operation,
+            CoordinateReferenceSystem sourceCRS, CoordinateReferenceSystem targetCRS) {
+        assertSame(sourceCRS, operation.getSourceCRS());
+        assertSame(targetCRS, operation.getTargetCRS());
+        TransformTestBase.assertInterfaced(operation.getMathTransform());
+    }
+
+    /**
+     * Tests findOperations method for CompoundCRS with a VerticalCRS component using the same datum for the horizontal component. EPSG:5555
+     * (Projected+Vertical) to EPSG:5554 (Projected+Vertical) using same datum. EPSG:25831+EPSG:5783 (Projected+Vertical) to EPSG:5554
+     * (Projected+Vertical) using same datum.
+     */
+    public void testCreateOperationCompound2CompoundVertical() throws Exception {
+        final CRSAuthorityFactory crsAuthFactory;
+        final CoordinateOperationFactory opFactory;
+        CoordinateReferenceSystem sourceCRS, sourceHorizontalCRS, sourceVerticalCRS;
+        CoordinateReferenceSystem targetCRS, targetHorizontalCRS;
+        CoordinateOperation operation;
+        Map<String, Object> properties;
+        CoordinateReferenceSystem[] elements;
+
+        CRSFactory crsFactory = ReferencingFactoryFinder.getCRSFactory(null);
+        crsAuthFactory = ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", null);
+        opFactory = ReferencingFactoryFinder.getCoordinateOperationFactory(null);
+
+        sourceCRS = crsAuthFactory.createCoordinateReferenceSystem("EPSG:5555");
+        targetCRS = crsAuthFactory.createCoordinateReferenceSystem("EPSG:5554");
+        // direct order
+        operation = opFactory.createOperation(sourceCRS, targetCRS);
+        assertOperation(operation, sourceCRS, targetCRS);
+        
+        // try reverse order
+        operation = opFactory.createOperation(targetCRS, sourceCRS);
+        assertOperation(operation, targetCRS, sourceCRS);
+
+        sourceHorizontalCRS = crsAuthFactory.createCoordinateReferenceSystem("EPSG:25831");
+        sourceVerticalCRS = crsAuthFactory.createCoordinateReferenceSystem("EPSG:5783");
+        properties = new HashMap<String, Object>();
+        properties.put(IdentifiedObject.NAME_KEY,
+                new NamedIdentifier(Citations.fromName("TEST"), "Compound 28530+5783"));
+        elements = new CoordinateReferenceSystem[] {
+                sourceHorizontalCRS, sourceVerticalCRS };
+        sourceCRS = crsFactory.createCompoundCRS(properties, elements);
+
+        // direct order
+        operation = opFactory.createOperation(sourceCRS, targetCRS);
+        assertOperation(operation, sourceCRS, targetCRS);
+
+        // try reverse order
+        operation = opFactory.createOperation(targetCRS, sourceCRS);
+        assertOperation(operation, targetCRS, sourceCRS);
+    }
+
 }

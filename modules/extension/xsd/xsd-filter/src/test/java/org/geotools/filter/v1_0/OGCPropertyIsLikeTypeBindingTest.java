@@ -20,6 +20,10 @@ import org.geotools.xml.Binding;
 import org.opengis.filter.PropertyIsLike;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.opengis.filter.PropertyIsLike;
+import org.geotools.xml.Binding;
+
 
 /** @source $URL$ */
 public class OGCPropertyIsLikeTypeBindingTest extends FilterTestSupport {
@@ -78,5 +82,28 @@ public class OGCPropertyIsLikeTypeBindingTest extends FilterTestSupport {
         assertEquals("x", e.getAttribute("wildCard"));
         assertEquals("y", e.getAttribute("singleChar"));
         assertEquals("z", e.getAttribute("escape"));
+    }
+    public void testEncodeWithFunctionAsFilter() throws Exception {
+        Document doc = encode(FilterMockData.propertyIsLike2(), OGC.Filter);
+        print(doc);
+        
+        NodeList property = doc.getDocumentElement()
+           .getElementsByTagNameNS(OGC.NAMESPACE, OGC.PropertyName.getLocalPart());
+        assertEquals(1,
+            property.getLength());
+        System.out.println(property.item(0).getNodeValue());
+        assertNotNull(property.item(0).getNodeValue());
+        assertNotSame("", property.item(0).getNodeValue());
+        assertEquals(1,
+            doc.getDocumentElement()
+               .getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart()).getLength());
+
+        Element e = getElementByQName( doc, OGC.PropertyIsLike);
+        assertEquals("x", e.getAttribute("wildCard"));
+        assertEquals("y", e.getAttribute("singleChar"));
+        assertEquals("z", e.getAttribute("escape"));
+        
+        Element p = getElementByQName(doc, OGC.PropertyName);
+        
     }
 }

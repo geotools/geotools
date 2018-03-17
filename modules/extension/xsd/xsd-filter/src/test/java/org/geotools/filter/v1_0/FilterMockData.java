@@ -38,6 +38,7 @@ import org.opengis.filter.PropertyIsNotEqualTo;
 import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.expression.Add;
 import org.opengis.filter.expression.Divide;
+import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.Multiply;
@@ -85,6 +86,11 @@ public class FilterMockData {
 
     static PropertyName propertyName() {
         return propertyName("foo");
+    }
+    
+    private static Expression propertyNameFunc() {
+
+        return f.function("strToLowerCase", propertyName("foo"));
     }
 
     static PropertyName propertyName(String property) {
@@ -198,6 +204,12 @@ public class FilterMockData {
     static PropertyIsLike propertyIsLike() {
         return f.like(propertyName(), "foo", "x", "y", "z");
     }
+    
+    static PropertyIsLike propertyIsLike2() {
+        return f.like(propertyNameFunc(), "strToLowerCase(STATE_NAME)", "x", "y", "z");
+    }
+
+   
 
     static Element propertyIsLike(Document document, Node parent) {
         Element isLike = element(document, parent, OGC.PropertyIsLike);

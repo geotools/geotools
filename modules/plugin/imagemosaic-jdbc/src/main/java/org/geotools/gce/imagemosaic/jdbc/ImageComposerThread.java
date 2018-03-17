@@ -95,7 +95,7 @@ public class ImageComposerThread extends AbstractThread {
         boolean alphaPremultiplied = copyFrom.isAlphaPremultiplied();
 
         
-        DataBuffer dataBuffer = createDataBufferFilledWithNoDataValues(raster, colorModel.getPixelSize());
+        DataBuffer dataBuffer = createDataBufferFilledWithNoDataValues(raster, colorModel.getPixelSize(), colorModel.hasAlpha());
         raster = Raster.createWritableRaster(sm, dataBuffer, null);
         BufferedImage image=  new BufferedImage(colorModel, raster, alphaPremultiplied, properties);
         if (levelInfo.getNoDataValue()==null) {        
@@ -185,10 +185,10 @@ public class ImageComposerThread extends AbstractThread {
 		return gridCoverage2D;
 	}
 
-    private DataBuffer createDataBufferFilledWithNoDataValues(WritableRaster raster, int pixelSize) {
+    private DataBuffer createDataBufferFilledWithNoDataValues(WritableRaster raster, int pixelSize, boolean hasAlpha) {
         int dataType = raster.getDataBuffer().getDataType();
         
-        Number noDataValue = levelInfo.getNoDataValue();        
+        Number noDataValue = hasAlpha ? 0 : levelInfo.getNoDataValue();        
         
         int dataBufferSize = raster.getDataBuffer().getSize();        
         int nrBanks = raster.getDataBuffer().getNumBanks();

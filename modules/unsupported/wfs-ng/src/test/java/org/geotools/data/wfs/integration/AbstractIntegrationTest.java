@@ -51,6 +51,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
+import org.geotools.data.wfs.internal.ExceptionDetails;
 import org.geotools.data.wfs.internal.WFSException;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -1425,6 +1426,16 @@ public abstract class AbstractIntegrationTest {
             assertTrue(e.getCause() instanceof WFSException);
             assertTrue(e.getMessage().contains("MyErrorMessage"));
             assertTrue(e.getMessage().contains("MyExceptionCode"));
+            
+            // Make sure the values from the exception are also available in structured form
+            WFSException wfsEx = (WFSException)e.getCause();
+            List<ExceptionDetails> exceptionData = wfsEx.getExceptionDetails();
+            assertEquals(1, exceptionData.size());
+            assertEquals("MyExceptionCode", exceptionData.get(0).getCode());
+            assertEquals("typeName", exceptionData.get(0).getLocator());
+            assertEquals(2, exceptionData.get(0).getTexts().size());
+            assertEquals("MyErrorMessage", exceptionData.get(0).getTexts().get(0));
+            assertEquals("AdditionalErrorMessage", exceptionData.get(0).getTexts().get(1));
             return;
         }
         assertTrue(false);

@@ -16,16 +16,18 @@
  */
 package org.geotools.data.wfs;
 
+import static org.geotools.data.DataUtilities.createType;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.xml.namespace.QName;
-
-import static org.geotools.data.DataUtilities.createType;
 
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.Query;
@@ -36,11 +38,13 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentFeatureCollection;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.data.wfs.integration.IntegrationTestWFSClient;
+import org.geotools.data.wfs.internal.WFSException;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureImpl;
 import org.geotools.filter.identity.FeatureIdImpl;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -221,5 +225,49 @@ public class WFSFeatureStoreTest {
         feature = coll.features().next();
         assertEquals("blah", feature.getAttribute("NAME"));
         
+    }
+    
+    /**
+     * Tests that WFS Transactions causing an ExceptionReport also end in a proper WFSException.
+     * @throws IOException
+     */
+    @Test
+    public void testTransactionExceptionReport() throws IOException{
+        // makes test to use GeoServer_1.7.x/1.0.0/TransactionFailure_poi.xml
+        wfs.setFailOnTransaction(true);
+        
+        ContentFeatureSource source = (ContentFeatureSource) dataStore.getFeatureSource(simpleTypeName1);
+        assertNotNull(source);
+        assertTrue(source instanceof WFSFeatureStore);
+
+        WFSFeatureStore store = (WFSFeatureStore) source;
+                 
+        MemoryFeatureCollection collection = new MemoryFeatureCollection(featureType1);
+        
+        SimpleFeature feat = new SimpleFeatureImpl(Arrays.asList(new Object[]{null, "mypoint",  "pics/x.jpg", "pics/y.jpg"}), featureType1, new FeatureIdImpl("myid") );
+        
+        collection.add(feat);
+        
+        Transaction transaction = new DefaultTransaction();
+        store.setTransaction(transaction);
+        
+        List<FeatureId> fids = store.addFeatures((SimpleFeatureCollection) collection);        
+        assertEquals(1, fids.size());
+          
+        try {
+            transaction.commit();
+        } catch (WFSException e) {
+            // WFS 1.0.0: Parser fails to parse the response properly
+            // probably because the parser configuration for WFS 1.0 misses 
+            // ExceptionReport bindings. 
+            // So here, in WFS 1.0 case textual information is available only.
+            StringWriter writer = new StringWriter();
+            PrintWriter printer = new PrintWriter(writer);
+            e.printStackTrace(printer);
+            printer.close();
+            assertTrue(writer.toString().contains("MyErrorMessage"));
+            return;
+        }
+        Assert.fail("Expected WFSException.");
     }
 }

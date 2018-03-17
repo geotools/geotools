@@ -52,7 +52,7 @@ public class TransactionResponseImpl extends WFSResponse implements TransactionR
 
     private int insertCount;
 
-    public TransactionResponseImpl(WFSRequest originatingRequest, HTTPResponse response)
+    public TransactionResponseImpl(WFSRequest originatingRequest, HTTPResponse response, InputStream in)
             throws ServiceException, IOException {
 
         super(originatingRequest, response);
@@ -68,8 +68,7 @@ public class TransactionResponseImpl extends WFSResponse implements TransactionR
             if(resolver != null) {
                 parser.setEntityResolver(resolver);
             }
-            InputStream input = response.getResponseStream();
-            parsed = parser.parse(input);
+            parsed = parser.parse(in);
         } catch (SAXException e) {
             throw new IOException(e);
         } catch (ParserConfigurationException e) {

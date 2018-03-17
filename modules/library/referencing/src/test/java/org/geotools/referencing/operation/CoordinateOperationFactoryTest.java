@@ -16,36 +16,44 @@
  */
 package org.geotools.referencing.operation;
 
+import static org.geotools.referencing.crs.DefaultEngineeringCRS.CARTESIAN_2D;
+import static org.geotools.referencing.crs.DefaultEngineeringCRS.CARTESIAN_3D;
+import static org.geotools.referencing.crs.DefaultEngineeringCRS.GENERIC_2D;
+import static org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.util.Set;
+
+import org.geotools.factory.Hints;
+import org.geotools.metadata.iso.quality.PositionalAccuracyImpl;
+import org.geotools.referencing.ReferencingFactoryFinder;
+import org.geotools.referencing.WKT;
+import org.geotools.referencing.crs.DefaultCompoundCRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.referencing.crs.DefaultTemporalCRS;
+import org.geotools.referencing.crs.DefaultVerticalCRS;
+import org.junit.Before;
+import org.junit.Test;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CompoundCRS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.crs.GeographicCRS;
+import org.opengis.referencing.operation.Conversion;
 import org.opengis.referencing.operation.CoordinateOperation;
 import org.opengis.referencing.operation.CoordinateOperationFactory;
-import org.opengis.referencing.operation.Conversion;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.Operation;
 import org.opengis.referencing.operation.OperationNotFoundException;
 import org.opengis.referencing.operation.Projection;
 import org.opengis.referencing.operation.Transformation;
-
-import org.geotools.factory.Hints;
-import org.geotools.referencing.WKT;
-import org.geotools.referencing.ReferencingFactoryFinder;
-import org.geotools.referencing.crs.DefaultCompoundCRS;
-import org.geotools.referencing.crs.DefaultVerticalCRS;
-import org.geotools.referencing.crs.DefaultTemporalCRS;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.metadata.iso.quality.PositionalAccuracyImpl;
-import static org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
-import static org.geotools.referencing.crs.DefaultEngineeringCRS.GENERIC_2D;
-import static org.geotools.referencing.crs.DefaultEngineeringCRS.GENERIC_3D;
-import static org.geotools.referencing.crs.DefaultEngineeringCRS.CARTESIAN_2D;
-import static org.geotools.referencing.crs.DefaultEngineeringCRS.CARTESIAN_3D;
-
-import org.junit.*;
-import static org.junit.Assert.*;
 
 
 /**
@@ -620,5 +628,42 @@ public final class CoordinateOperationFactoryTest extends TransformTestBase {
                    "to a single affine transform.", mt instanceof LinearTransform);
         assertTrue("The operation should be a simple axis change, not a complex" +
                    "chain of ConcatenatedOperations.", op instanceof Conversion);
+    }
+    
+    
+    /**
+     * Tests findOperations method.
+     */
+    @Test
+    public void testFindOperations() throws Exception {
+        final CoordinateReferenceSystem targetCRS = DefaultGeographicCRS.WGS84;
+        final CoordinateReferenceSystem sourceCRS = crsFactory.createFromWKT(WKT.NAD83);
+        final CoordinateReferenceSystem sourceCRS2 = crsFactory.createFromWKT(
+                "PROJCS[\"ED50 / UTM zone 30N\",GEOGCS[\"ED50\",DATUM[\"European Datum 1950\",SPHEROID[\"International 1924\",6378388.0,297.0,AUTHORITY[\"EPSG\",\"7022\"]],TOWGS84[-116.641,-56.931,-110.559,0.893,0.921,-0.917,-3.52],AUTHORITY[\"EPSG\",\"6230\"]],PRIMEM[\"Greenwich\",0.0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.017453292519943295],AXIS[\"Geodetic latitude\",NORTH],AXIS[\"Geodetic longitude\",EAST],AUTHORITY[\"EPSG\",\"4230\"]],PROJECTION[\"Transverse_Mercator\",AUTHORITY[\"EPSG\",\"9807\"]],PARAMETER[\"central_meridian\",-3.0],PARAMETER[\"latitude_of_origin\",0.0],PARAMETER[\"scale_factor\",0.9996],PARAMETER[\"false_easting\",500000.0],PARAMETER[\"false_northing\",0.0],UNIT[\"m\",1.0],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"EPSG\",\"23030\"]]");
+        Set<CoordinateOperation> operations = opFactory.findOperations(sourceCRS, targetCRS);
+        int size = operations.size();
+
+        for (CoordinateOperation operation: operations) {
+            if (usingDefaultFactory) {
+                assertSame(sourceCRS, operation.getSourceCRS());
+                assertSame(targetCRS, operation.getTargetCRS());
+            }
+            final MathTransform transform = operation.getMathTransform();
+            assertInterfaced(transform);
+        }
+
+        // try reverse order
+        operations = opFactory.findOperations(targetCRS, sourceCRS);
+        assertEquals(size, operations.size());
+
+        for (CoordinateOperation operation : operations) {
+            if (usingDefaultFactory) {
+                assertSame(targetCRS, operation.getSourceCRS());
+                assertSame(sourceCRS, operation.getTargetCRS());
+            }
+            final MathTransform transform = operation.getMathTransform();
+            TransformTestBase.assertInterfaced(transform);
+        }
+
     }
 }

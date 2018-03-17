@@ -17,19 +17,19 @@
 package org.geotools.referencing.operation;
 
 import java.util.Map;
+import java.util.Set;
 
+import org.geotools.factory.BufferedFactory;
+import org.geotools.factory.Hints;
+import org.geotools.referencing.ReferencingFactoryFinder;
+import org.geotools.util.SoftValueHashMap;
+import org.geotools.util.Utilities;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.CoordinateOperation;
 import org.opengis.referencing.operation.CoordinateOperationFactory;
 import org.opengis.referencing.operation.OperationMethod;
 import org.opengis.referencing.operation.OperationNotFoundException;
-
-import org.geotools.factory.Hints;
-import org.geotools.factory.BufferedFactory;
-import org.geotools.util.Utilities;
-import org.geotools.util.SoftValueHashMap;
-import org.geotools.referencing.ReferencingFactoryFinder;
 
 
 /**
@@ -260,6 +260,26 @@ public class BufferedCoordinateOperationFactory extends AbstractCoordinateOperat
         }
         return op;
     }
+    
+    /**
+     * Returns all available operations for conversion or transformation between two coordinate reference systems. The operation creation is delegated
+     * to the {@linkplain CoordinateOperationFactory coordinate operation factory} specified at construction time and the result is not cached.
+     *
+     * @param sourceCRS Input coordinate reference system.
+     * @param targetCRS Output coordinate reference system.
+     * @return A Set of coordinate operations from {@code sourceCRS} to {@code targetCRS}.
+     * @throws FactoryException if there was a failure retrieving or creating the operations.
+     */
+    @Override
+    public Set<CoordinateOperation> findOperations(final CoordinateReferenceSystem sourceCRS,
+                                               final CoordinateReferenceSystem targetCRS)
+            throws FactoryException
+    {
+        ensureNonNull("sourceCRS", sourceCRS);
+        ensureNonNull("targetCRS", targetCRS);
+        return getBackingFactory().findOperations(sourceCRS, targetCRS);
+    }
+
 
     /**
      * Returns an operation for conversion or transformation between two coordinate reference

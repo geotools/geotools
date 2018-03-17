@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2018, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -501,7 +501,7 @@ public class IsFullySupportedFilterVisitor implements FilterVisitor, ExpressionV
     }
 
     public Object visit(BegunBy begunBy, Object extraData) {
-        return visit((BinaryTemporalOperator)begunBy, extraData);
+        return visit((BinaryTemporalOperator)begunBy, BegunBy.NAME);
     }
 
     public Object visit(During during, Object extraData) {

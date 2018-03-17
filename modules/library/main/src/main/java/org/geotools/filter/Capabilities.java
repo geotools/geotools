@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2018, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -27,6 +27,7 @@ import org.geotools.filter.capability.FunctionsImpl;
 import org.geotools.filter.capability.OperatorImpl;
 import org.geotools.filter.capability.SpatialOperatorImpl;
 import org.geotools.filter.capability.SpatialOperatorsImpl;
+import org.geotools.filter.capability.TemporalOperatorImpl;
 import org.geotools.filter.visitor.IsFullySupportedFilterVisitor;
 import org.geotools.filter.visitor.IsSupportedFilterVisitor;
 import org.geotools.filter.visitor.OperatorNameFilterVisitor;
@@ -46,6 +47,7 @@ import org.opengis.filter.PropertyIsNotEqualTo;
 import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.capability.FilterCapabilities;
 import org.opengis.filter.capability.GeometryOperand;
+import org.opengis.filter.capability.TemporalOperators;
 import org.opengis.filter.expression.Add;
 import org.opengis.filter.expression.Divide;
 import org.opengis.filter.expression.Expression;
@@ -63,6 +65,20 @@ import org.opengis.filter.spatial.Intersects;
 import org.opengis.filter.spatial.Overlaps;
 import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
+import org.opengis.filter.temporal.After;
+import org.opengis.filter.temporal.AnyInteracts;
+import org.opengis.filter.temporal.Before;
+import org.opengis.filter.temporal.Begins;
+import org.opengis.filter.temporal.BegunBy;
+import org.opengis.filter.temporal.During;
+import org.opengis.filter.temporal.EndedBy;
+import org.opengis.filter.temporal.Ends;
+import org.opengis.filter.temporal.Meets;
+import org.opengis.filter.temporal.MetBy;
+import org.opengis.filter.temporal.OverlappedBy;
+import org.opengis.filter.temporal.TContains;
+import org.opengis.filter.temporal.TEquals;
+import org.opengis.filter.temporal.TOverlaps;
 
 /**
  * Allows for easier interaction with FilterCapabilities.
@@ -123,6 +139,24 @@ public class Capabilities {
         spatialNames.put(Beyond.class,Beyond.NAME);
         spatialNames.put(DWithin.class,DWithin.NAME);
     }
+    private static Map<Class<?>,String> temporalNames;
+    static {
+        temporalNames = new HashMap<>();
+        temporalNames.put(After.class, After.NAME );
+        temporalNames.put(AnyInteracts.class, AnyInteracts.NAME );
+        temporalNames.put(Before.class, Before.NAME );
+        temporalNames.put(Begins.class, Begins.NAME );
+        temporalNames.put(BegunBy.class, BegunBy.NAME );
+        temporalNames.put(During.class, During.NAME );
+        temporalNames.put(EndedBy.class, EndedBy.NAME );
+        temporalNames.put(Ends.class, Ends.NAME );
+        temporalNames.put(Meets.class, Meets.NAME );
+        temporalNames.put(MetBy.class, MetBy.NAME );
+        temporalNames.put(OverlappedBy.class, OverlappedBy.NAME );
+        temporalNames.put(TContains.class, TContains.NAME );
+        temporalNames.put(TEquals.class, TEquals.NAME );
+        temporalNames.put(TOverlaps.class, TOverlaps.NAME );
+    }
     private static Map<Class<?>,String> logicalNames;
     static {
         logicalNames = new HashMap<Class<?>,String>();
@@ -135,6 +169,7 @@ public class Capabilities {
         filterNames = new HashMap<Class<?>,String>();
         filterNames.putAll( scalarNames );
         filterNames.putAll( spatialNames );
+        filterNames.putAll( temporalNames );
         filterNames.putAll( logicalNames );
         
         filterNames.put(Id.class, "Id"); // not an operator name, see idCapabilities.hasFID() or idCapabilities.hasEID()
@@ -275,6 +310,13 @@ public class Capabilities {
                 operator.getGeometryOperands().add( GeometryOperand.Point );
                 operator.getGeometryOperands().add( GeometryOperand.Polygon );
                 
+                operators.getOperators().add( operator );
+            }
+        }
+        else if( temporalNames.containsValue( name )){
+            TemporalOperators operators = contents.getTemporalCapabilities().getTemporalOperators();
+            if( operators.getOperator( name ) == null ){
+                TemporalOperatorImpl operator = new TemporalOperatorImpl(name);
                 operators.getOperators().add( operator );
             }
         }

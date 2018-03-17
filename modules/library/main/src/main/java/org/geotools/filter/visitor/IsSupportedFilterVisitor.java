@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  * 
- *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2018, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -42,7 +42,6 @@ import org.opengis.filter.capability.ScalarCapabilities;
 import org.opengis.filter.capability.SpatialCapabilities;
 import org.opengis.filter.capability.SpatialOperators;
 import org.opengis.filter.capability.TemporalCapabilities;
-import org.opengis.filter.capability.TemporalOperator;
 import org.opengis.filter.capability.TemporalOperators;
 import org.opengis.filter.expression.Add;
 import org.opengis.filter.expression.Divide;
@@ -446,7 +445,7 @@ public class IsSupportedFilterVisitor implements FilterVisitor, ExpressionVisito
     }
 
     public Object visit(BegunBy begunBy, Object extraData) {
-        return visit((BinaryTemporalOperator)begunBy, extraData);
+        return visit((BinaryTemporalOperator)begunBy, BegunBy.NAME);
     }
 
     public Object visit(During during, Object extraData) {

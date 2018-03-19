@@ -88,8 +88,12 @@ public class OGRDataStore extends ContentDataStore {
             LOGGER.log(Level.FINE, "Error looking up type names", e);
             return Collections.emptyList();
         } finally {
-            ogr.DataSourceRelease(dataSource);
-            ogr.LayerRelease(layer);
+            if (dataSource != null) {
+                ogr.DataSourceRelease(dataSource);
+            }
+            if (layer != null) {
+                ogr.LayerRelease(layer);
+            }
         }
     }
 
@@ -208,8 +212,12 @@ public class OGRDataStore extends ContentDataStore {
 
             ogr.LayerSyncToDisk(layer);
         } finally {
-            ogr.LayerRelease(layer);
-            ogr.DataSourceRelease(dataSource);
+            if (layer != null) {
+                ogr.LayerRelease(layer);
+            }
+            if (dataSource != null) {
+                ogr.DataSourceRelease(dataSource);
+            }
         }
     }
 
@@ -328,8 +336,12 @@ public class OGRDataStore extends ContentDataStore {
 
             ogr.LayerSyncToDisk(layer);
         } finally {
-            ogr.LayerRelease(layer);
-            ogr.DataSourceRelease(dataSource);
+            if (layer != null) {
+                ogr.LayerRelease(layer);
+            }
+            if (dataSource != null) {
+                ogr.DataSourceRelease(dataSource);
+            }
         }
     }
 
@@ -357,8 +369,10 @@ public class OGRDataStore extends ContentDataStore {
         } catch (IOException e) {
             if (ogrDriver != null) {
                 Object driver = ogr.GetDriverByName(ogrDriver);
-                dataSource = ogr.DriverCreateDataSource(driver, ogrSourceName, options);
-                ogr.DriverRelease(driver);
+                if (driver != null) {
+                    dataSource = ogr.DriverCreateDataSource(driver, ogrSourceName, options);
+                    ogr.DriverRelease(driver);
+                }
                 if (dataSource == null)
                     throw new IOException("Could not create OGR data source with driver "
                             + ogrDriver + " and options " + options);

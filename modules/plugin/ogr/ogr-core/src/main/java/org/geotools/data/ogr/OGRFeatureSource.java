@@ -103,8 +103,12 @@ class OGRFeatureSource extends ContentFeatureSource {
                 return ogr.toEnvelope(extent, crs);
 
             } finally {
-                ogr.LayerRelease(layer);
-                ogr.DataSourceRelease(dataSource);
+                if (layer != null) {
+                    ogr.LayerRelease(layer);
+                }
+                if (dataSource != null) {
+                    ogr.DataSourceRelease(dataSource);
+                }
             }
         }
     }
@@ -155,8 +159,12 @@ class OGRFeatureSource extends ContentFeatureSource {
 
                 return (int) ogr.LayerGetFeatureCount(layer);
             } finally {
-                ogr.LayerRelease(layer);
-                ogr.DataSourceRelease(dataSource);
+                if (layer != null) {
+                    ogr.LayerRelease(layer);
+                }
+                if (dataSource != null) {
+                    ogr.DataSourceRelease(dataSource);
+                }
             }
         }
     }
@@ -294,8 +302,12 @@ class OGRFeatureSource extends ContentFeatureSource {
             return reader;
         } finally {
             if (cleanup) {
-                ogr.LayerRelease(layer);
-                ogr.DataSourceRelease(dataSource);
+                if (layer != null) {
+                    ogr.LayerRelease(layer);
+                }
+                if (dataSource != null) {
+                    ogr.DataSourceRelease(dataSource);
+                }
             }
         }
     }
@@ -429,8 +441,12 @@ class OGRFeatureSource extends ContentFeatureSource {
             // map to geotools feature type
             return new FeatureTypeMapper(ogr).getFeatureType(layer, typeName, namespaceURI);
         } finally {
-            ogr.LayerRelease(layer);
-            ogr.DataSourceRelease(dataSource);
+            if (layer != null) {
+                ogr.LayerRelease(layer);
+            }
+            if (dataSource != null) {
+                ogr.DataSourceRelease(dataSource);
+            }
         }
 
     }

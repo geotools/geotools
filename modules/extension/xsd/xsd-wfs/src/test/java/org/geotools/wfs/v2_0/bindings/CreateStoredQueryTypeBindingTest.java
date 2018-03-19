@@ -66,6 +66,8 @@ public class CreateStoredQueryTypeBindingTest extends WFSTestSupport {
         StoredQueryDescriptionType queryDefinition = csq.getStoredQueryDefinition().get(0);
         assertEquals(1, queryDefinition.getQueryExpressionText().size());
         QueryExpressionTextType text = queryDefinition.getQueryExpressionText().get(0);
-        assertEquals("<Query typeNames=\"${typeName}\"></Query>", text.getValue().trim());
+        assertEquals("<Query typeNames=\"${typeName}\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" " +
+                "xmlns:xml=\"http://www.w3.org/XML/1998/namespace\" xmlns:xsi=\"http://www" +
+                ".w3.org/2001/XMLSchema-instance\"></Query>", text.getValue().trim());
     }
 }

@@ -18,7 +18,7 @@ package org.geotools.util;
 
 import java.io.Serializable;
 
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;

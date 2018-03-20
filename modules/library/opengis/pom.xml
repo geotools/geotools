@@ -167,8 +167,8 @@
   <dependencies>
     
     <dependency>
-      <groupId>net.java.dev.jsr-275</groupId>
-      <artifactId>jsr-275</artifactId>
+      <groupId>javax.measure</groupId>
+      <artifactId>unit-api</artifactId>
     </dependency>
     
     <dependency>

@@ -16,9 +16,8 @@
  */
 package org.geotools.util;
 
-import javax.measure.unit.Unit;
-import javax.measure.converter.UnitConverter;
-import javax.measure.converter.ConversionException;
+import javax.measure.Unit;
+import javax.measure.UnitConverter;
 
 import org.geotools.resources.ClassChanger;
 

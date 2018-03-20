@@ -25,7 +25,7 @@ import java.util.Iterator;
 import java.util.HashMap;
 import java.util.Map;
 import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 import org.opengis.metadata.extent.Extent;
 import org.opengis.metadata.quality.Result;

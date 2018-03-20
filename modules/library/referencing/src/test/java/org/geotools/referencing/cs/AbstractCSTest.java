@@ -17,7 +17,7 @@
 package org.geotools.referencing.cs;
 
 import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 import javax.measure.quantity.Length;
 
 import org.opengis.referencing.cs.AxisDirection;

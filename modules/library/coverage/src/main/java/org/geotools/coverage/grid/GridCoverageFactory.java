@@ -26,7 +26,7 @@ import java.awt.image.RenderedImage;
 import java.awt.image.WritableRaster;
 import java.util.Map;
 
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 import javax.media.jai.ImageFunction;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.RasterFactory;

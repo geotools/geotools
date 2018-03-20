@@ -20,7 +20,7 @@
 package org.geotools.referencing.cs;
 
 import java.util.Map;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 import javax.measure.converter.UnitConverter;
 
 import org.opengis.referencing.cs.AxisDirection;

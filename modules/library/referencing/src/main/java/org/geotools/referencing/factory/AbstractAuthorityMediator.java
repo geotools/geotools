@@ -22,7 +22,7 @@ package org.geotools.referencing.factory;
 import java.util.Set;
 import java.util.logging.Level;
 
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 import org.apache.commons.pool.ObjectPool;
 import org.apache.commons.pool.ObjectPoolFactory;

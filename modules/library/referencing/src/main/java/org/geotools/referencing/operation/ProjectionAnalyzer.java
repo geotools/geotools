@@ -25,7 +25,7 @@ import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.LogRecord;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 import javax.measure.unit.SI;
 
 import org.opengis.parameter.ParameterValue;

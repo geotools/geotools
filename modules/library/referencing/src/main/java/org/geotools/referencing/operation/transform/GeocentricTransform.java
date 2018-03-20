@@ -24,7 +24,7 @@ import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Collections;
 import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 import javax.measure.quantity.Length;
 import javax.measure.converter.UnitConverter;
 

@@ -19,7 +19,7 @@ package org.geotools.styling.builder;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 import org.geotools.styling.ExtensionSymbolizer;
 import org.opengis.filter.expression.Expression;

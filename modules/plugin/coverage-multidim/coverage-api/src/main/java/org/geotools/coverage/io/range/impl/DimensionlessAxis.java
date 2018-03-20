@@ -25,7 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.measure.quantity.Dimensionless;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 import javax.media.jai.IHSColorSpace;
 
 import org.geotools.coverage.TypeMap;

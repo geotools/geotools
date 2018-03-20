@@ -46,7 +46,7 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageTypeSpecifier;
 import javax.imageio.stream.ImageInputStream;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 import javax.measure.unit.UnitFormat;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;

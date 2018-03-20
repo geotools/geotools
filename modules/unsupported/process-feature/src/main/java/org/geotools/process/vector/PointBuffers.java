@@ -21,7 +21,7 @@ import java.awt.geom.Point2D;
 
 import javax.measure.converter.UnitConverter;
 import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;

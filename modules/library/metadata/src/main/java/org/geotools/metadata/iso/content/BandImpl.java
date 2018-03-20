@@ -19,7 +19,7 @@
  */
 package org.geotools.metadata.iso.content;
 
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 import org.opengis.metadata.content.Band;
 
 

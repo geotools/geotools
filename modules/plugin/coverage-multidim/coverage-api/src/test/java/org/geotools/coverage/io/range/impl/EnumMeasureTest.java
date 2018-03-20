@@ -23,7 +23,7 @@ import java.util.Map;
 import javax.measure.Measure;
 import javax.measure.quantity.Dimensionless;
 import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 import org.geotools.feature.NameImpl;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;

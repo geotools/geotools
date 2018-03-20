@@ -23,7 +23,7 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.Map;
 import java.util.HashMap;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 import javax.measure.quantity.Angle;
 import javax.measure.quantity.Length;
 

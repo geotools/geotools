@@ -32,7 +32,7 @@ import java.util.Random;
 import java.util.Set;
 import javax.measure.unit.NonSI;
 import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 import org.opengis.parameter.InvalidParameterCardinalityException;
 import org.opengis.parameter.InvalidParameterNameException;

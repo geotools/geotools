@@ -20,7 +20,7 @@
 package org.geotools.referencing.datum;
 
 import java.util.Map;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 import javax.measure.quantity.Length;
 
 

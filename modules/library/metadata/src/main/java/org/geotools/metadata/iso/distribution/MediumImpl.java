@@ -20,7 +20,7 @@
 package org.geotools.metadata.iso.distribution;
 
 import java.util.Collection;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 import org.opengis.metadata.distribution.Medium;
 import org.opengis.metadata.distribution.MediumFormat;
 import org.opengis.metadata.distribution.MediumName;

@@ -18,7 +18,7 @@ package org.geotools.measure;
 
 import javax.measure.unit.SI;
 import javax.measure.unit.NonSI;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 import javax.measure.unit.UnitFormat;
 import javax.measure.quantity.Angle;
 import javax.measure.quantity.Dimensionless;

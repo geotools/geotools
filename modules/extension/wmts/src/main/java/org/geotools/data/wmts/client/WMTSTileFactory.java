@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 import javax.measure.converter.UnitConverter;
 import javax.measure.unit.NonSI;
 import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 import org.geotools.data.wmts.model.TileMatrixSet;
 import org.geotools.data.wmts.model.TileMatrixSetLink;
 

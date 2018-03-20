@@ -37,7 +37,7 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Set;
 
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 import org.geotools.TestData;
 import org.geotools.factory.Hints;

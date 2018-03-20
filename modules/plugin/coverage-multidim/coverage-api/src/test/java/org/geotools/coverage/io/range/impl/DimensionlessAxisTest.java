@@ -17,7 +17,7 @@
 package org.geotools.coverage.io.range.impl;
 
 import javax.measure.Measure;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 import javax.media.jai.RenderedOp;
 import javax.media.jai.operator.ConstantDescriptor;
 

@@ -23,7 +23,7 @@ import java.util.List;
 
 import javax.measure.Measure;
 import javax.measure.quantity.Dimensionless;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 import org.opengis.util.CodeList;
 

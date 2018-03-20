@@ -21,7 +21,7 @@ import java.util.List;
 import javax.measure.Measurable;
 import javax.measure.Measure;
 import javax.measure.quantity.Quantity;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 import org.opengis.feature.type.Name;
 import org.opengis.referencing.crs.SingleCRS;

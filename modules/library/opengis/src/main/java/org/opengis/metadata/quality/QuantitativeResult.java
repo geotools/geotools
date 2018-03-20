@@ -10,7 +10,7 @@
 package org.opengis.metadata.quality;
 
 import java.util.Collection;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 import org.opengis.util.InternationalString;
 import org.opengis.util.Record;
 import org.opengis.util.RecordType;

@@ -50,7 +50,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageReadParam;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.Interpolation;
 import javax.media.jai.JAI;
@@ -120,7 +120,7 @@ import org.opengis.referencing.operation.TransformException;
 import org.opengis.util.InternationalString;
 
 import javax.imageio.ImageReadParam;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 import javax.media.jai.*;
 import javax.media.jai.operator.ConstantDescriptor;
 import javax.media.jai.operator.MosaicDescriptor;

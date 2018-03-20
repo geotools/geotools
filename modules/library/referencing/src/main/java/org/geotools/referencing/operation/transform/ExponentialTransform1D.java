@@ -17,7 +17,7 @@
 package org.geotools.referencing.operation.transform;
 
 import java.io.Serializable;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptorGroup;

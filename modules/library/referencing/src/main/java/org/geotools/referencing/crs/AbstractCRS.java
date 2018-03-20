@@ -21,7 +21,7 @@ package org.geotools.referencing.crs;
 
 import java.util.Map;
 import java.util.HashMap;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 import org.opengis.referencing.cs.CoordinateSystem;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;

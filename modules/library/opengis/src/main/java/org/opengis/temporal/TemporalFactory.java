@@ -11,7 +11,7 @@ package org.opengis.temporal;
 
 import java.util.Collection;
 import java.util.Date;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 import org.opengis.metadata.extent.Extent;
 import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.util.InternationalString;

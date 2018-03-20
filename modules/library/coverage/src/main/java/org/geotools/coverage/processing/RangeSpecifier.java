@@ -19,7 +19,7 @@ package org.geotools.coverage.processing;
 import java.awt.Color;
 import java.io.Serializable;
 import java.util.Arrays;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 import org.opengis.util.Cloneable;
 import org.opengis.referencing.operation.MathTransform1D;

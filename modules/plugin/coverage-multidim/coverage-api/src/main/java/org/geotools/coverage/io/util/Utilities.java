@@ -45,7 +45,7 @@ import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.ImageInputStream;
 import javax.measure.quantity.Quantity;
 import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 

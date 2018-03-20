@@ -26,7 +26,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Locale;
 
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 import org.geotools.referencing.wkt.UnformattableObjectException;
 import org.geotools.resources.Classes;

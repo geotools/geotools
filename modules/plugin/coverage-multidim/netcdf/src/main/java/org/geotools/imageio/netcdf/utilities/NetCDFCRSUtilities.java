@@ -30,7 +30,7 @@ import java.util.logging.Logger;
 
 import javax.measure.unit.NonSI;
 import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 import javax.measure.unit.UnitFormat;
 
 import org.geotools.factory.GeoTools;

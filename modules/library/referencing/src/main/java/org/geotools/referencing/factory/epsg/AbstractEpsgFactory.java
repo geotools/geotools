@@ -51,7 +51,7 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 import javax.measure.unit.NonSI;
 import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 import org.geotools.factory.GeoTools;
 import org.geotools.factory.Hints;

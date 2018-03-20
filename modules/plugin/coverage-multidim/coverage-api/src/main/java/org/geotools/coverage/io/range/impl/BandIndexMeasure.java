@@ -20,7 +20,7 @@ import javax.measure.Measurable;
 import javax.measure.Measure;
 import javax.measure.converter.ConversionException;
 import javax.measure.quantity.Dimensionless;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 /**
  * {@link Measurable} subclass suitable for modeling a band index in a multiband

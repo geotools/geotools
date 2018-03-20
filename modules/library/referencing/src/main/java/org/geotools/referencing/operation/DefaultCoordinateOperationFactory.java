@@ -33,7 +33,7 @@ import javax.measure.quantity.Angle;
 import javax.measure.quantity.Duration;
 import javax.measure.unit.NonSI;
 import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 import org.geotools.factory.Hints;
 import org.geotools.referencing.AbstractIdentifiedObject;

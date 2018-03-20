@@ -21,7 +21,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 
 import javax.measure.converter.ConversionException;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 import org.geotools.metadata.iso.spatial.PixelTranslation;
 import org.geotools.referencing.CRS;

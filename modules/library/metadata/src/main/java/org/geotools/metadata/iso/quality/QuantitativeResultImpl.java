@@ -21,7 +21,7 @@ package org.geotools.metadata.iso.quality;
 
 import java.util.List;
 import java.util.Arrays;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 import org.opengis.metadata.quality.QuantitativeResult;
 import org.opengis.util.InternationalString;

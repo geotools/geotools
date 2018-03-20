@@ -19,7 +19,7 @@ package org.geotools.parameter;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 import org.opengis.parameter.GeneralParameterDescriptor;
 import org.opengis.parameter.GeneralParameterValue;

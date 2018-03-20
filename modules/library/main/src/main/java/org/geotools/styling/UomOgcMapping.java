@@ -19,7 +19,7 @@ package org.geotools.styling;
 import javax.measure.quantity.Length;
 import javax.measure.unit.NonSI;
 import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 /**
  * Defines the Units of Measure (UOMs) specified by the OGC SE standard and their mappings to Java

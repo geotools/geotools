@@ -21,7 +21,7 @@ package org.geotools.referencing.factory;
 
 import java.util.Set;
 
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 import org.geotools.factory.BufferedFactory;
 import org.geotools.factory.FactoryRegistryException;

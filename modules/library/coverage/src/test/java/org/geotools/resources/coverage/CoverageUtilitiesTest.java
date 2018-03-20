@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 import javax.imageio.ImageReadParam;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 import javax.media.jai.ImageFunction;
 
 import org.geotools.coverage.Category;

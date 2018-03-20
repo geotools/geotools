@@ -22,7 +22,7 @@ import java.util.List;
 
 import javax.measure.Measure;
 import javax.measure.quantity.Quantity;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 import org.geotools.coverage.io.range.Axis;
 import org.geotools.feature.NameImpl;

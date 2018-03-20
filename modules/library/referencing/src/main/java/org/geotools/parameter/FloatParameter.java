@@ -20,7 +20,7 @@
 package org.geotools.parameter;
 
 import java.net.URI;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 import org.opengis.parameter.InvalidParameterTypeException;
 import org.opengis.parameter.InvalidParameterValueException;

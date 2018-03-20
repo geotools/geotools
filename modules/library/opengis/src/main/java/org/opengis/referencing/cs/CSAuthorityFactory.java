@@ -9,7 +9,7 @@
  */
 package org.opengis.referencing.cs;
 
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 import org.opengis.referencing.AuthorityFactory;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;

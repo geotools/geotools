@@ -19,7 +19,7 @@ package org.geotools.referencing.operation.projection;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.util.Collection;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 import javax.measure.unit.NonSI;
 import org.opengis.parameter.GeneralParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptor;

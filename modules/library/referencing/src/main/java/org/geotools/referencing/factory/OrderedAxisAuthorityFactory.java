@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import javax.measure.unit.SI;
 import javax.measure.unit.NonSI;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 import org.opengis.referencing.cs.*;
 import org.opengis.referencing.crs.CRSAuthorityFactory;

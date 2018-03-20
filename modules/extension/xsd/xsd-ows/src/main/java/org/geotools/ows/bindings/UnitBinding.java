@@ -22,7 +22,7 @@ import javax.measure.unit.BaseUnit;
 import javax.measure.unit.DerivedUnit;
 import javax.measure.unit.NonSI;
 import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 import javax.measure.unit.UnitFormat;
 import javax.xml.namespace.QName;
 

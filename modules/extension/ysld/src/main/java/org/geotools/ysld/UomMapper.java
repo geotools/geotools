@@ -25,7 +25,7 @@ import java.util.Map;
 import javax.measure.quantity.Length;
 import javax.measure.unit.NonSI;
 import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 import org.geotools.styling.UomOgcMapping;
 

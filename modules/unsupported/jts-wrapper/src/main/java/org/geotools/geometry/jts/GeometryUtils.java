@@ -30,7 +30,7 @@ import java.util.List;
 
 import javax.measure.converter.UnitConverter;
 import javax.measure.unit.NonSI;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 //apache dependencies
 import org.apache.commons.logging.Log;

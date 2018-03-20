@@ -22,7 +22,7 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 import org.geotools.factory.Hints;
 import org.geotools.measure.Measure;

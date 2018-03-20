@@ -18,7 +18,7 @@ package org.geotools.referencing.operation;
 
 import java.util.Random;
 import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 import javax.measure.quantity.Length;
 
 import org.opengis.parameter.ParameterValueGroup;

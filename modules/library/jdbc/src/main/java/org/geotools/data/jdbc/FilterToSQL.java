@@ -104,7 +104,7 @@ import org.opengis.temporal.Period;
 
 import javax.measure.converter.UnitConverter;
 import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;

@@ -17,7 +17,7 @@
 package org.geotools.temporal.object;
 
 import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

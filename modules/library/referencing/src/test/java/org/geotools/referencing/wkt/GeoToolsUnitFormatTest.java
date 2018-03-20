@@ -21,7 +21,7 @@ import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 
 import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 import javax.measure.unit.UnitFormat;
 
 import org.geotools.metadata.iso.citation.Citations;

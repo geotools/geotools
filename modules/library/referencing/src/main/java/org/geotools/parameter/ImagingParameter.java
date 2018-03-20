@@ -17,7 +17,7 @@
 package org.geotools.parameter;
 
 import java.net.URI;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 import javax.media.jai.ParameterList;
 
 import org.opengis.parameter.ParameterValue;

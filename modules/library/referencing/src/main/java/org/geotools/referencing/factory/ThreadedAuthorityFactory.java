@@ -27,7 +27,7 @@ import java.util.Collections;
 import java.util.WeakHashMap;
 import java.util.logging.LogRecord;
 import java.util.logging.Level;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 import org.opengis.metadata.extent.Extent;
 import org.opengis.metadata.citation.Citation;

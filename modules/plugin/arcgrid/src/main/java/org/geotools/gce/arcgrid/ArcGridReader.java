@@ -44,7 +44,7 @@ import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.FileCacheImageInputStream;
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.MemoryCacheImageInputStream;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 import javax.media.jai.JAI;
 import javax.media.jai.RenderedOp;
 

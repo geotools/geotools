@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 
 import javax.measure.converter.UnitConverter;
 import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;

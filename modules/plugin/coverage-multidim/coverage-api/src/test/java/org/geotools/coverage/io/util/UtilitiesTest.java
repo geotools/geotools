@@ -22,7 +22,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.operator.ConstantDescriptor;
 

@@ -22,7 +22,7 @@ package org.geotools.referencing.datum;
 import java.util.Collections;
 import java.util.Map;
 import javax.measure.unit.NonSI;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 import javax.measure.quantity.Angle;
 
 import org.opengis.referencing.datum.PrimeMeridian;

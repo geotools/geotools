@@ -80,7 +80,7 @@ import ucar.nc2.dataset.CoordinateAxis.AxisComparator;
 import ucar.nc2.dataset.CoordinateSystem;
 import ucar.nc2.dataset.VariableDS;
 
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;

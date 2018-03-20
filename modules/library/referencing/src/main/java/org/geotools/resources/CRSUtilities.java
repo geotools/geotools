@@ -23,7 +23,7 @@ import java.util.Collections;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 import org.opengis.referencing.IdentifiedObject;
 import org.opengis.referencing.FactoryException;

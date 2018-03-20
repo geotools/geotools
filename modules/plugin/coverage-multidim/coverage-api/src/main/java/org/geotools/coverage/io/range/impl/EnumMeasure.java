@@ -22,7 +22,7 @@ import java.util.List;
 
 import javax.measure.Measure;
 import javax.measure.quantity.Dimensionless;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 /**
  * Used to create Axis keys based on a fixed set of machine readable strings.

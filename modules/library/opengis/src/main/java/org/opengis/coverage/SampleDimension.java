@@ -12,7 +12,7 @@ package org.opengis.coverage;
 import static org.opengis.annotation.Obligation.MANDATORY;
 import static org.opengis.annotation.Specification.OGC_01004;
 
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 import org.opengis.annotation.UML;
 import org.opengis.util.InternationalString;

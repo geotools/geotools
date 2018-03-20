@@ -268,7 +268,7 @@ public interface SimpleFeature extends Feature {
      * <p>
      * This method is convenience for:
      * <pre>
-     * return getDefaultGeometry().getValue();
+     * return getDefaultGeometryProperty().getValue();
      * </pre>
      * </p>
      * @return The default geometry, or <code>null</code> if no default geometry
@@ -282,7 +282,7 @@ public interface SimpleFeature extends Feature {
      * <p>
      * This method is convenience for:
      * <pre>
-     * getDefaultGeometry().setValue(geometry);
+     * getDefaultGeometryProperty().setValue(geometry);
      * </pre>
      * </p>
      * @param geometry The new default geometry value.

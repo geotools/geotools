@@ -17,15 +17,19 @@
 package org.geotools.util;
 
 import java.util.Date;
-import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
-import javax.measure.quantity.Duration;
-import javax.measure.converter.UnitConverter;
-import javax.measure.converter.ConversionException;
 
-import org.geotools.resources.i18n.Errors;
+import javax.measure.IncommensurableException;
+import javax.measure.Quantity;
+import javax.measure.UnconvertibleException;
+import javax.measure.Unit;
+import javax.measure.UnitConverter;
+import javax.measure.quantity.Time;
+
 import org.geotools.resources.i18n.ErrorKeys;
+import org.geotools.resources.i18n.Errors;
 
+import si.uom.SI;
+import tec.uom.se.unit.MetricPrefix;
 
 /**
  * A range of dates.
@@ -46,7 +50,10 @@ public class DateRange extends Range<Date> {
     /**
      * The unit used for time representation in a date.
      */
-    private static final Unit<Duration> MILLISECOND = SI.MILLI(SI.SECOND);
+    private static final Unit<? extends Quantity> MILLISECONDb = MetricPrefix.MILLI(SI.SECOND);
+
+    private static final Unit<Time> MILLISECOND = MetricPrefix.MILLI(SI.SECOND);
+    // private static final Unit<Duration> MILLISECOND = MetricPrefix.MILLI(SI.SECOND);
 
     /**
      * Creates a new date range for the given dates. Start time and end time are inclusive.
@@ -78,10 +85,11 @@ public class DateRange extends Range<Date> {
      *
      * @param range The range to convert.
      * @param origin The date to use as the origin.
-     * @throws ConversionException if the given range doesn't have a
-     *         {@linkplain MeasurementRange#getUnits unit} compatible with milliseconds.
+     * @throws IncommensurableException
+     * @throws ConversionException if the given range doesn't have a {@linkplain MeasurementRange#getUnits unit} compatible with milliseconds.
      */
-    public DateRange(final MeasurementRange<?> range, final Date origin) throws ConversionException {
+    public DateRange(final MeasurementRange<?> range, final Date origin)
+            throws IncommensurableException {
         this(range, getConverter(range.getUnits()), origin.getTime());
     }
 
@@ -90,7 +98,6 @@ public class DateRange extends Range<Date> {
      * call in constructors").
      */
     private DateRange(final MeasurementRange<?> range, final UnitConverter converter, final long origin)
-            throws ConversionException
     {
         super(Date.class,
               new Date(origin + Math.round(converter.convert(range.getMinimum()))), range.isMinIncluded(),
@@ -105,14 +112,16 @@ public class DateRange extends Range<Date> {
     }
 
     /**
-     * Workaround for RFE #4093999 ("Relax constraint on placement of this()/super()
-     * call in constructors").
+     * Workaround for RFE #4093999 ("Relax constraint on placement of this()/super() call in constructors").
+     * 
+     * @throws IncommensurableException
      */
-    private static UnitConverter getConverter(final Unit<?> source) throws ConversionException {
+    private static UnitConverter getConverter(final Unit<?> source)
+            throws IncommensurableException {
         if (source == null) {
-            throw new ConversionException(Errors.format(ErrorKeys.NO_UNIT));
+            throw new UnconvertibleException(Errors.format(ErrorKeys.NO_UNIT));
         }
-        return source.getConverterTo(MILLISECOND);
+        return source.getConverterToAny(MILLISECOND);
     }
 
     /**

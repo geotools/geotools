@@ -25,9 +25,13 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>net.java.dev.jsr-275</groupId>
-      <artifactId>jsr-275</artifactId>
-    </dependency>    
+      <groupId>tec.uom</groupId>
+      <artifactId>uom-se</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>si.uom</groupId>
+      <artifactId>si-units-java8</artifactId>
+    </dependency>  
   </dependencies>
 
 

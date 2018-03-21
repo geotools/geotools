@@ -20,7 +20,8 @@ import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 import java.util.Arrays;
 
-import javax.measure.converter.ConversionException;
+import javax.measure.IncommensurableException;
+import javax.measure.UnconvertibleException;
 import javax.measure.Unit;
 
 import org.geotools.metadata.iso.spatial.PixelTranslation;
@@ -660,25 +661,25 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
     /**
      * Returns the envelope span along the specified dimension, in terms of the given units.
      * 
-     * @param dimension
-     *            The dimension to query.
-     * @param unit
-     *            The unit for the return value.
+     * @param dimension The dimension to query.
+     * @param unit The unit for the return value.
      * @return The span in terms of the given unit.
-     * @throws IndexOutOfBoundsException
-     *             If the given index is out of bounds.
-     * @throws ConversionException
-     *             if the length can't be converted to the specified units.
-     * 
+     * @throws IndexOutOfBoundsException If the given index is out of bounds.
+     * @throws ConversionException if the length can't be converted to the specified units.
+     * @throws IllegalArgumentException if the target units are not compatible with the units of the provided {@code dimension}
      * @since 2.5
      */
     public double getSpan(final int dimension, final Unit<?> unit)
-            throws IndexOutOfBoundsException, ConversionException {
+            throws IndexOutOfBoundsException {
         double value = getSpan(dimension);
         if (crs != null) {
             final Unit<?> source = crs.getCoordinateSystem().getAxis(dimension).getUnit();
             if (source != null) {
-                value = source.getConverterTo(unit).convert(value);
+                try {
+                    value = source.getConverterToAny(unit).convert(value);
+                } catch (UnconvertibleException | IncommensurableException e) {
+                    throw new IllegalArgumentException(e);
+                }
             }
         }
         return value;

@@ -17,9 +17,12 @@
 package org.geotools.measure;
 
 import java.io.ObjectStreamException;
-import javax.measure.UnitConverter;
-import javax.measure.converter.ConversionException;
+import java.math.BigDecimal;
+import java.math.MathContext;
 
+import javax.measure.UnitConverter;
+
+import tec.uom.se.AbstractConverter;
 
 /**
  * A converter from fractional degrees to sexagesimal degrees.
@@ -35,7 +38,7 @@ import javax.measure.converter.ConversionException;
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
-class SexagesimalConverter extends UnitConverter {
+class SexagesimalConverter extends AbstractConverter {
     /**
      * Serial number for compatibility with different versions.
      */
@@ -66,7 +69,7 @@ class SexagesimalConverter extends UnitConverter {
     /**
      * The inverse of this converter.
      */
-    private final UnitConverter inverse;
+    private final SexagesimalConverter inverse;
 
     /**
      * Constructs a converter for sexagesimal units.
@@ -84,7 +87,7 @@ class SexagesimalConverter extends UnitConverter {
      * Constructs a converter for sexagesimal units.
      * This constructor is for {@link Inverse} usage only.
      */
-    private SexagesimalConverter(final int divider, final UnitConverter inverse) {
+    private SexagesimalConverter(final int divider, final SexagesimalConverter inverse) {
         this.divider = divider;
         this.inverse = inverse;
     }
@@ -92,14 +95,14 @@ class SexagesimalConverter extends UnitConverter {
     /**
      * Returns the inverse of this converter.
      */
-    public final UnitConverter inverse() {
+    public final SexagesimalConverter inverse() {
         return inverse;
     }
 
     /**
      * Performs a conversion from fractional degrees to sexagesimal degrees.
      */
-    public double convert(double value) throws ConversionException {
+    public double convert(double value) {
         final int deg,min,sec;  deg = (int) value; // Round toward 0
         value = (value-deg)*60; min = (int) value; // Round toward 0
         value = (value-min)*60; sec = (int) value; // Round toward 0
@@ -174,9 +177,11 @@ class SexagesimalConverter extends UnitConverter {
 
         /**
          * Performs a conversion from sexagesimal degrees to fractional degrees.
+         * 
+         * @throws ArithmeticException if the value is out of the valid range for minutes or seconds
          */
         @Override
-        public double convert(double value) throws ConversionException {
+        public double convert(double value) {
             value *= this.divider;
             int deg,min;
             deg = (int) (value/10000); value -= 10000*deg;
@@ -186,7 +191,7 @@ class SexagesimalConverter extends UnitConverter {
                     if (min >= 0) deg++; else deg--;
                     min = 0;
                 } else {
-                    throw new ConversionException("Invalid minutes: "+min);
+                    throw new ArithmeticException("Invalid minutes: " + min);
                 }
             }
             if (value<=-60 || value>=60) { // Accepts NaN
@@ -194,7 +199,7 @@ class SexagesimalConverter extends UnitConverter {
                     if (value >= 0) min++; else min--;
                     value = 0;
                 } else {
-                    throw new ConversionException("Invalid secondes: "+value);
+                    throw new ArithmeticException("Invalid secondes: " + value);
                 }
             }
             value = ((value/60) + min)/60 + deg;
@@ -208,5 +213,22 @@ class SexagesimalConverter extends UnitConverter {
         public int hashCode() {
             return (int) serialVersionUID + divider;
         }
+    }
+
+
+    @Override
+    public Number convert(Number value) {
+        return convert(value);
+    }
+
+    @Override
+    public BigDecimal convert(BigDecimal value, MathContext ctx) throws ArithmeticException {
+        double valueAsDouble = value.doubleValue();
+        if (valueAsDouble == Double.NEGATIVE_INFINITY
+                || valueAsDouble == Double.POSITIVE_INFINITY) {
+            throw new ArithmeticException(
+                    "Bigdecimal value magnitude too great to fit in double: " + value);
+        }
+        return new BigDecimal(convert(valueAsDouble));
     }
 }

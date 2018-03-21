@@ -115,7 +115,7 @@ public final class AbstractCSTest {
         assertNull("Should detect that no axis change is needed",
                    DefaultCartesianCS.PROJECTED.axisUsingUnit(SI.METRE));
 
-        final Unit<Length> KILOMETER = SI.KILO(SI.METRE);
+        final Unit<Length> KILOMETER = MetricPrefix.KILO(SI.METRE);
         final CoordinateSystemAxis[] axis =
                 DefaultCartesianCS.PROJECTED.axisUsingUnit(KILOMETER);
         assertNotNull(axis);

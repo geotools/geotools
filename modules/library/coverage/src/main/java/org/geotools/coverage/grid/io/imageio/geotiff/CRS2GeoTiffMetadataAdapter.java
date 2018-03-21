@@ -327,7 +327,7 @@ public final class CRS2GeoTiffMetadataAdapter {
                         metadata.addGeoDoubleParam(GeoTiffPCSCodes.ProjLinearUnitSizeGeoKey, linearUnit
                                 .getConverterTo(SI.METRE).convert(1));
                 } else
-                    if (NonSI.YARD.equals(linearUnit)) {
+                    if (USCustomary.YARD.equals(linearUnit)) {
                         metadata.addGeoShortParam(GeoTiffPCSCodes.ProjLinearUnitsGeoKey,
                                 GeoTiffUoMCodes.Linear_Yard_Sears);// ??
                         metadata.addGeoDoubleParam(GeoTiffPCSCodes.ProjLinearUnitSizeGeoKey, linearUnit

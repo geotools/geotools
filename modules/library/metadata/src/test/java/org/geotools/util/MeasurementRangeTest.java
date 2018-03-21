@@ -17,6 +17,8 @@
 package org.geotools.util;
 
 import si.uom.SI;
+import tec.uom.se.unit.MetricPrefix;
+
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
 
@@ -42,7 +44,7 @@ public final class MeasurementRangeTest {
     public void testConversion() {
         final MeasurementRange<Float> range = MeasurementRange.create(1000f, 2000f, SI.METRE);
         assertSame(range, range.convertTo(SI.METRE));
-        final Unit<Length> KILOMETER = SI.KILO(SI.METRE);
+        final Unit<Length> KILOMETER = MetricPrefix.KILO(SI.METRE);
         assertEquals(MeasurementRange.create(1f, 2f, KILOMETER), range.convertTo(KILOMETER));
     }
 
@@ -126,7 +128,7 @@ public final class MeasurementRangeTest {
      */
     @Test
     public void testIntersectWithConversion() {
-        final Unit<Length> KILOMETER = SI.KILO(SI.METRE);
+        final Unit<Length> KILOMETER = MetricPrefix.KILO(SI.METRE);
         NumberRange<Float> r1 = MeasurementRange.create(1000f, 2000f, SI.METRE);
         NumberRange<Float> r2 = MeasurementRange.create(1.5f, 3f, KILOMETER);
         assertEquals(Float.class, r1.getElementClass());
@@ -142,7 +144,7 @@ public final class MeasurementRangeTest {
      */
     @Test
     public void testToString() {
-        final MeasurementRange<Float> range = MeasurementRange.create(10f, 20f, SI.KILO(SI.METRE));
+        final MeasurementRange<Float> range = MeasurementRange.create(10f, 20f, MetricPrefix.KILO(SI.METRE));
         assertEquals("[10.0, 20.0] km", range.toString());
     }
 }

@@ -48,8 +48,8 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
-import si.uom.NonSI;
-import si.uom.SI;
+import javax.measure.IncommensurableException;
+import javax.measure.UnconvertibleException;
 import javax.measure.Unit;
 import javax.sql.DataSource;
 
@@ -144,6 +144,12 @@ import org.opengis.referencing.operation.Transformation;
 import org.opengis.util.GenericName;
 import org.opengis.util.InternationalString;
 
+import si.uom.NonSI;
+import si.uom.SI;
+import systems.uom.common.USCustomary;
+import tec.uom.se.AbstractUnit;
+import tec.uom.se.unit.MetricPrefix;
+
 
 /**
  * A coordinate reference system factory backed by the EPSG database tables.
@@ -200,26 +206,42 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
      */
     private static Unit<?> getUnit(final int code) {
         switch (code) {
-            case 9001: return    SI.METRE;
-            case 9002: return USCustomary.FOOT;
-            case 9030: return USCustomary.NAUTICAL_MILE;
-            case 9036: return    MetricPrefix.KILO(SI.METRE);
-            case 9101: return    SI.RADIAN;
-            case 9122: // Fall through
-            case 9102: return NonSI.DEGREE_ANGLE;
-            case 9103: return NonSI.MINUTE_ANGLE;
-            case 9104: return NonSI.SECOND_ANGLE;
-            case 9105: return NonSI.GRADE;
+        case 9001:
+            return SI.METRE;
+        case 9002:
+            return USCustomary.FOOT;
+        case 9030:
+            return USCustomary.NAUTICAL_MILE;
+        case 9036:
+            return MetricPrefix.KILO(SI.METRE);
+        case 9101:
+            return SI.RADIAN;
+        case 9122: // Fall through
+        case 9102:
+            return NonSI.DEGREE_ANGLE;
+        case 9103:
+            return NonSI.MINUTE_ANGLE;
+        case 9104:
+            return NonSI.SECOND_ANGLE;
+        case 9105:
+            return USCustomary.GRADE;
             // DMS is a way to format information but not a real unit, decode towards DEGREE instead
-            case 9107: return NonSI.DEGREE_ANGLE;// return Units.DEGREE_MINUTE_SECOND;
-            case 9108: return NonSI.DEGREE_ANGLE; // return Units.DEGREE_MINUTE_SECOND;
-            case 9109: return    SI.MICRO(SI.RADIAN);
-            case 9110: return Units.SEXAGESIMAL_DMS;
-//TODO      case 9111: return NonSI.SEXAGESIMAL_DM;
-            case 9203: // Fall through
-            case 9201: return  AbstractUnit.ONE;
-            case 9202: return Units.PPM;
-            default  : return null;
+        case 9107:
+            return NonSI.DEGREE_ANGLE;// return Units.DEGREE_MINUTE_SECOND;
+        case 9108:
+            return NonSI.DEGREE_ANGLE; // return Units.DEGREE_MINUTE_SECOND;
+        case 9109:
+            return MetricPrefix.MICRO(SI.RADIAN);
+        case 9110:
+            return Units.SEXAGESIMAL_DMS;
+        // TODO case 9111: return NonSI.SEXAGESIMAL_DM;
+        case 9203: // Fall through
+        case 9201:
+            return AbstractUnit.ONE;
+        case 9202:
+            return Units.PPM;
+        default:
+            return null;
         }
     }
 
@@ -238,12 +260,19 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
     {
         Unit<?> target = unit;
         if (code >= 8605) {
-            if      (code <= 8607) target = SI   .METER;
-            else if (code == 8611) target = Units.PPM;
-            else if (code <= 8710) target = NonSI.SECOND_ANGLE;
+            if (code <= 8607)
+                target = SI.METRE;
+            else if (code == 8611)
+                target = Units.PPM;
+            else if (code <= 8710)
+                target = NonSI.SECOND_ANGLE;
         }
         if (target != unit) {
-            value = unit.getConverterTo(target).convert(value);
+            try {
+                value = unit.getConverterToAny(target).convert(value);
+            } catch (UnconvertibleException | IncommensurableException e) {
+                throw new IllegalArgumentException();
+            }
         }
         switch (code) {
             case 8605: parameters.dx  = value; break;
@@ -1225,7 +1254,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                 if (unit != null) {
                     // TODO: check unit consistency here.
                 } else if (b!=0 && c!=0) {
-                    unit = (b == c) ? base : base.times(b / c);
+                    unit = (b == c) ? base : base.multiply(b / c);
                 } else {
                     // TODO: provide a localized message.
                     throw new FactoryException("Unsupported unit: " + code);

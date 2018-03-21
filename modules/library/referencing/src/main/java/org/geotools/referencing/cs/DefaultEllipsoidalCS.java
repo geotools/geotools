@@ -20,19 +20,22 @@
 package org.geotools.referencing.cs;
 
 import java.util.Map;
-import javax.measure.UnitConverter;
-import si.uom.NonSI;
-import si.uom.SI;
-import javax.measure.Unit;
 
-import org.opengis.referencing.cs.EllipsoidalCS;
+import javax.measure.IncommensurableException;
+import javax.measure.UnconvertibleException;
+import javax.measure.Unit;
+import javax.measure.UnitConverter;
+
+import org.geotools.resources.i18n.ErrorKeys;
+import org.geotools.resources.i18n.Errors;
+import org.geotools.resources.i18n.VocabularyKeys;
+import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.cs.AxisDirection;
 import org.opengis.referencing.cs.CoordinateSystemAxis;
-import org.opengis.geometry.MismatchedDimensionException;
+import org.opengis.referencing.cs.EllipsoidalCS;
 
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.VocabularyKeys;
+import si.uom.NonSI;
+import si.uom.SI;
 
 
 /**
@@ -214,26 +217,35 @@ public class DefaultEllipsoidalCS extends AbstractCS implements EllipsoidalCS {
 
     /**
      * Update the converters.
+     * 
+     * @throws MismatchedDimensionException if any of the axis doesn't have the expected dimension
      */
     private void update() {
         for (int i=getDimension(); --i>=0;) {
             final CoordinateSystemAxis axis = getAxis(i);
             final AxisDirection   direction = axis.getDirection().absolute();
-            final Unit<?>              unit = axis.getUnit();
-            if (AxisDirection.EAST.equals(direction)) {
-                longitudeAxis      = i;
-                longitudeConverter = unit.getConverterTo(NonSI.DEGREE_ANGLE);
-                continue;
-            }
-            if (AxisDirection.NORTH.equals(direction)) {
-                latitudeAxis      = i;
-                latitudeConverter = unit.getConverterTo(NonSI.DEGREE_ANGLE);
-                continue;
-            }
-            if (AxisDirection.UP.equals(direction)) {
-                heightAxis      = i;
-                heightConverter = unit.getConverterTo(SI.METRE);
-                continue;
+            final Unit<?> unit = axis.getUnit();
+            try {
+                if (AxisDirection.EAST.equals(direction)) {
+                    longitudeAxis = i;
+
+                    longitudeConverter = unit.getConverterToAny(NonSI.DEGREE_ANGLE);
+
+                    continue;
+                }
+                if (AxisDirection.NORTH.equals(direction)) {
+                    latitudeAxis = i;
+                    latitudeConverter = unit.getConverterToAny(NonSI.DEGREE_ANGLE);
+                    continue;
+                }
+                if (AxisDirection.UP.equals(direction)) {
+                    heightAxis = i;
+                    heightConverter = unit.getConverterToAny(SI.METRE);
+                    continue;
+                }
+            } catch (UnconvertibleException | IncommensurableException e) {
+                throw new MismatchedDimensionException(
+                        "The axis unit is not convertible to the expected dimension", e);
             }
             // Should not happen, since 'isCompatibleDirection'
             // has already checked axis directions.

@@ -24,26 +24,29 @@ import java.util.HashMap;
 import java.util.Locale;  // For javadoc
 import java.util.Map;
 import java.util.NoSuchElementException;
-import javax.measure.UnitConverter;
-import si.uom.NonSI;
-import si.uom.SI;
-import javax.measure.Unit;
 
+import javax.measure.IncommensurableException;
+import javax.measure.UnconvertibleException;
+import javax.measure.Unit;
+import javax.measure.UnitConverter;
+
+import org.geotools.referencing.AbstractIdentifiedObject;
+import org.geotools.referencing.wkt.Formatter;
+import org.geotools.resources.i18n.ErrorKeys;
+import org.geotools.resources.i18n.Errors;
+import org.geotools.resources.i18n.Vocabulary;
+import org.geotools.resources.i18n.VocabularyKeys;
+import org.geotools.util.NameFactory;
+import org.geotools.util.SimpleInternationalString;
+import org.geotools.util.Utilities;
 import org.opengis.referencing.cs.AxisDirection;
 import org.opengis.referencing.cs.CoordinateSystemAxis;
 import org.opengis.referencing.cs.RangeMeaning;
 import org.opengis.util.InternationalString;
 
-import org.geotools.referencing.AbstractIdentifiedObject;
-import org.geotools.referencing.wkt.Formatter;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Vocabulary;
-import org.geotools.resources.i18n.VocabularyKeys;
-import org.geotools.util.SimpleInternationalString;
-import org.geotools.util.NameFactory;
-import org.geotools.util.Utilities;
-
+import si.uom.NonSI;
+import si.uom.SI;
+import tec.uom.se.AbstractUnit;
 
 /**
  * Definition of a coordinate system axis. This is used to label axes, and indicate the orientation.
@@ -501,7 +504,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * The abbreviation is lower case "<var>t</var>".
      */
     public static final DefaultCoordinateSystemAxis TIME = new DefaultCoordinateSystemAxis(
-            VocabularyKeys.TIME, "t", AxisDirection.FUTURE, NonSI.DAY);
+            VocabularyKeys.TIME, "t", AxisDirection.FUTURE, SI.DAY);
 
     /**
      * A default axis for column indices in a {@linkplain org.opengis.coverage.grid.GridCoverage
@@ -727,7 +730,13 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
         ensureNonNull("direction",    direction);
         ensureNonNull("unit",         unit);
         if (unit.isCompatible(NonSI.DEGREE_ANGLE)) {
-            final UnitConverter fromDegrees = NonSI.DEGREE_ANGLE.getConverterTo(unit);
+            UnitConverter fromDegrees;
+            try {
+                fromDegrees = NonSI.DEGREE_ANGLE.getConverterToAny(unit);
+            } catch (UnconvertibleException | IncommensurableException e) {
+                throw new IllegalArgumentException(
+                        "The provided unit is not compatible with DEGREE_ANGLE unit", e);
+            }
             final AxisDirection dir = direction.absolute();
             if (dir.equals(AxisDirection.NORTH)) {
                 final double range = Math.abs(fromDegrees.convert(90));

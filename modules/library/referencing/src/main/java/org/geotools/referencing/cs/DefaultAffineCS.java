@@ -20,13 +20,15 @@
 package org.geotools.referencing.cs;
 
 import java.util.Map;
-import si.uom.SI;
+
 import javax.measure.Unit;
 
 import org.opengis.referencing.cs.AffineCS;
 import org.opengis.referencing.cs.AxisDirection;
 import org.opengis.referencing.cs.CoordinateSystemAxis;
 
+import si.uom.SI;
+import tec.uom.se.AbstractUnit;
 
 /**
  * A two- or three-dimensional coordinate system with straight axes that are not necessarily

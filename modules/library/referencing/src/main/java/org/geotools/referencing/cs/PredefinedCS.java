@@ -16,16 +16,30 @@
  */
 package org.geotools.referencing.cs;
 
-import java.util.List;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
-import si.uom.SI;
+
 import javax.measure.Unit;
 
-import org.opengis.referencing.cs.*;
-import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.i18n.ErrorKeys;
+import org.geotools.resources.i18n.Errors;
+import org.opengis.referencing.cs.AffineCS;
+import org.opengis.referencing.cs.CartesianCS;
+import org.opengis.referencing.cs.CoordinateSystem;
+import org.opengis.referencing.cs.CoordinateSystemAxis;
+import org.opengis.referencing.cs.CylindricalCS;
+import org.opengis.referencing.cs.EllipsoidalCS;
+import org.opengis.referencing.cs.LinearCS;
+import org.opengis.referencing.cs.PolarCS;
+import org.opengis.referencing.cs.SphericalCS;
+import org.opengis.referencing.cs.TimeCS;
+import org.opengis.referencing.cs.UserDefinedCS;
+import org.opengis.referencing.cs.VerticalCS;
+
+import si.uom.SI;
+import tec.uom.se.AbstractUnit;
 
 
 /**

@@ -19,31 +19,34 @@
  */
 package org.geotools.referencing.cs;
 
-import java.util.Map;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Collections;
-import si.uom.SI;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.measure.IncommensurableException;
+import javax.measure.UnconvertibleException;
 import javax.measure.Unit;
 import javax.measure.UnitConverter;
-import javax.measure.converter.ConversionException;
 
-import org.opengis.referencing.cs.AxisDirection;
-import org.opengis.referencing.cs.CoordinateSystem;
-import org.opengis.referencing.cs.CoordinateSystemAxis;
-import org.opengis.referencing.operation.Matrix;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.util.InternationalString;
-
-import org.geotools.util.Utilities;
 import org.geotools.measure.Measure;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
 import org.geotools.referencing.wkt.Formatter;
 import org.geotools.resources.Classes;
-import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.i18n.ErrorKeys;
+import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.i18n.Vocabulary;
+import org.geotools.util.Utilities;
+import org.opengis.geometry.MismatchedDimensionException;
+import org.opengis.referencing.cs.AxisDirection;
+import org.opengis.referencing.cs.CoordinateSystem;
+import org.opengis.referencing.cs.CoordinateSystemAxis;
+import org.opengis.referencing.operation.Matrix;
+import org.opengis.util.InternationalString;
+
+import si.uom.NonSI;
+import si.uom.SI;
 
 
 /**
@@ -322,7 +325,7 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
      */
     public static Matrix swapAndScaleAxis(final CoordinateSystem sourceCS,
                                           final CoordinateSystem targetCS)
-            throws IllegalArgumentException, ConversionException
+            throws IllegalArgumentException
     {
         if (!Classes.sameInterfaces(sourceCS.getClass(), targetCS.getClass(), CoordinateSystem.class)) {
             throw new IllegalArgumentException(Errors.format(
@@ -366,13 +369,17 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
                     // between source[i] and target[j].
                     continue;
                 }
-                final UnitConverter converter = sourceUnit.getConverterTo(targetUnit);
+                UnitConverter converter;
+                try {
+                    converter = sourceUnit.getConverterToAny(targetUnit);
+                } catch (UnconvertibleException | IncommensurableException e) {
+                    throw new IllegalArgumentException("Can't convert to the candidate unit", e);
+                }
                 if (!converter.isLinear()) {
-                    throw new ConversionException(Errors.format(
+                    throw new IllegalArgumentException(Errors.format(
                               ErrorKeys.NON_LINEAR_UNIT_CONVERSION_$2, sourceUnit, targetUnit));
                 }
                 final double offset = converter.convert(0);
-// JSR-275      final double scale  = converter.derivative(0);
                 final double scale  = converter.convert(1) - offset;
                 matrix.setElement(j,i, element*scale);
                 matrix.setElement(j,sourceDim, matrix.getElement(j,sourceDim) + element*offset);
@@ -419,16 +426,14 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
     }
 
     /**
-     * Suggests an unit for measuring distances in this coordinate system. The default
-     * implementation scans all {@linkplain CoordinateSystemAxis#getUnit axis units},
-     * ignoring angular ones (this also implies ignoring {@linkplain Unit#ONE dimensionless} ones).
-     * If more than one non-angular unit is found, the default implementation returns the "largest"
-     * one (e.g. kilometers instead of meters).
+     * Suggests an unit for measuring distances in this coordinate system. The default implementation scans all
+     * {@linkplain CoordinateSystemAxis#getUnit axis units}, ignoring angular ones (this also implies ignoring {@linkplain Unit#ONE dimensionless}
+     * ones). If more than one non-angular unit is found, the default implementation returns the "largest" one (e.g. kilometers instead of meters).
      *
      * @return Suggested distance unit.
-     * @throws ConversionException if some non-angular units are incompatibles.
+     * @throws IllegalArgumentException if some non-angular units are incompatibles.
      */
-    final Unit<?> getDistanceUnit() throws ConversionException {
+    final Unit<?> getDistanceUnit() {
         Unit<?> unit = distanceUnit;  // Avoid the need for synchronization.
         if (unit == null) {
             for (int i=0; i<axis.length; i++) {
@@ -436,13 +441,18 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
                 if (candidate!=null && !candidate.isCompatible(SI.RADIAN)) {
                     // TODO: checks the unit scale type (keeps RATIO only).
                     if (unit != null) {
-                        final UnitConverter converter = candidate.getConverterTo(unit);
+                        UnitConverter converter;
+                        try {
+                            converter = candidate.getConverterToAny(unit);
+                        } catch (UnconvertibleException | IncommensurableException e) {
+                            throw new IllegalArgumentException(
+                                    "Can't convert to the candidate unit", e);
+                        }
                         if (!converter.isLinear()) {
                             // TODO: use the localization provided in 'swapAxis'. We could also
                             //       do a more intelligent work by checking the unit scale type.
-                            throw new ConversionException("Unit conversion is non-linear");
+                            throw new IllegalArgumentException("Unit conversion is non-linear");
                         }
-// JSR-275              final double scale = converter.derivative(0);
                         final double scale = converter.convert(1) - converter.convert(0);
                         if (Math.abs(scale) <= 1) {
                             // The candidate is a "smaller" unit than the current one

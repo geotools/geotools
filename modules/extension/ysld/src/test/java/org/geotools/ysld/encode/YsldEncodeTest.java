@@ -1317,7 +1317,7 @@ public class YsldEncodeTest {
     public void testSymbolizerUoMOther() throws Exception {
         PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
         FeatureTypeStyle fts = fts(p);
-        p.setUnitOfMeasure(NonSI.LIGHT_YEAR);
+        p.setUnitOfMeasure(NonSI.ASTRONOMICAL_UNIT);
 
         StringWriter out = new StringWriter();
 

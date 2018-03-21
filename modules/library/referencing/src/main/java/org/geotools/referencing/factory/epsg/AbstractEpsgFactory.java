@@ -2842,7 +2842,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
             case 9001: return    SI.METRE;
             case 9002: return NonSI.FOOT;
             case 9030: return NonSI.NAUTICAL_MILE;
-            case 9036: return    SI.KILO(SI.METRE);
+            case 9036: return    MetricPrefix.KILO(SI.METRE);
             case 9101: return    SI.RADIAN;
             case 9122: // Fall through
             case 9102: return NonSI.DEGREE_ANGLE;

@@ -104,7 +104,7 @@ public final class GeodeticCalculatorTest {
             180.00, 10000,  14142
         };
         final double             R          = 20000/Math.PI;
-        final DefaultEllipsoid   ellipsoid  = DefaultEllipsoid.createEllipsoid("Test",R,R,SI.KILO(SI.METRE));
+        final DefaultEllipsoid   ellipsoid  = DefaultEllipsoid.createEllipsoid("Test",R,R,MetricPrefix.KILO(SI.METRE));
         final GeodeticCalculator calculator = new GeodeticCalculator(ellipsoid);
         calculator.setStartingGeographicPoint(0, 45);
         for (int i=0; i<DATA.length; i+=3) {

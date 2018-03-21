@@ -16,15 +16,25 @@
  */
 package org.geotools.measure;
 
-import java.io.*;
-import javax.measure.Unit;
-import javax.measure.quantity.Quantity;
-import javax.measure.UnitConverter;
-import static javax.measure.unit.NonSI.DEGREE_ANGLE;
-import static org.geotools.measure.Units.*;
+import static org.geotools.measure.Units.DEGREE_MINUTE_SECOND;
+import static org.geotools.measure.Units.PPM;
+import static org.geotools.measure.Units.SEXAGESIMAL_DMS;
+import static org.junit.Assert.assertEquals;
 
-import org.junit.*;
-import static org.junit.Assert.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
+import javax.measure.Quantity;
+import javax.measure.Unit;
+import javax.measure.UnitConverter;
+
+import org.junit.Ignore;
+import org.junit.Test;
+
+import si.uom.NonSI;
 
 
 /**
@@ -40,7 +50,7 @@ public class UnitsTest {
     /**
      * Compares two values for equality.
      */
-    private static <Q extends Quantity> void checkConversion(
+    private static <Q extends Quantity<Q>> void checkConversion(
             final double expected, final Unit<Q> unitExpected,
             final double actual,   final Unit<Q> unitActual)
     {
@@ -55,10 +65,10 @@ public class UnitsTest {
      */
     @Test
     public void testSexagesimal() {
-        checkConversion(10.00, DEGREE_ANGLE, 10.0000, SEXAGESIMAL_DMS);
-        checkConversion(10.01, DEGREE_ANGLE, 10.0036, SEXAGESIMAL_DMS);
-        checkConversion(10.50, DEGREE_ANGLE, 10.3000, SEXAGESIMAL_DMS);
-        checkConversion(10.99, DEGREE_ANGLE, 10.5924, SEXAGESIMAL_DMS);
+        checkConversion(10.00, NonSI.DEGREE_ANGLE, 10.0000, SEXAGESIMAL_DMS);
+        checkConversion(10.01, NonSI.DEGREE_ANGLE, 10.0036, SEXAGESIMAL_DMS);
+        checkConversion(10.50, NonSI.DEGREE_ANGLE, 10.3000, SEXAGESIMAL_DMS);
+        checkConversion(10.99, NonSI.DEGREE_ANGLE, 10.5924, SEXAGESIMAL_DMS);
     }
 
     /**
@@ -91,7 +101,7 @@ public class UnitsTest {
     @Test
     @Ignore
     public void testSerialization() throws IOException, ClassNotFoundException {
-        assertEquals(DEGREE_ANGLE,         serialize(DEGREE_ANGLE));
+        assertEquals(NonSI.DEGREE_ANGLE, serialize(NonSI.DEGREE_ANGLE));
         assertEquals(SEXAGESIMAL_DMS,      serialize(SEXAGESIMAL_DMS));
         assertEquals(DEGREE_MINUTE_SECOND, serialize(DEGREE_MINUTE_SECOND));
         assertEquals(PPM,                  serialize(PPM));

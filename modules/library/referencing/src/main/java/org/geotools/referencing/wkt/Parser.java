@@ -400,7 +400,7 @@ public class Parser extends MathTransformParser {
      * @todo Authority code is currently ignored. We may consider to create a subclass of
      *       {@link Unit} which implements {@link IdentifiedObject} in a future version.
      */
-    private <T extends Quantity> Unit<T> parseUnit(final Element parent, final Unit<T> unit)
+    private <T extends Quantity<T>> Unit<T> parseUnit(final Element parent, final Unit<T> unit)
             throws ParseException
     {
         final Element element = parent.pullElement("UNIT");
@@ -408,7 +408,7 @@ public class Parser extends MathTransformParser {
         final double   factor = element.pullDouble("factor");
         final Map<String,?> properties = parseAuthority(element, name);
         element.close();
-        return (factor != 1) ? unit.times(factor) : unit;
+        return (factor != 1) ? unit.multiply(factor) : unit;
     }
 
     /**

@@ -31,8 +31,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 
-import si.uom.SI;
-
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.cs.DefaultCoordinateSystemAxis;
@@ -48,6 +46,8 @@ import org.opengis.referencing.operation.TransformException;
 
 import com.csvreader.CsvReader;
 
+import si.uom.SI;
+import tec.uom.se.unit.MetricPrefix;
 
 /**
  * Tests the geodetic calculator.

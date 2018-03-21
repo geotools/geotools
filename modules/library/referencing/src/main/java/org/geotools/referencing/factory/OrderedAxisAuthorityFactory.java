@@ -18,19 +18,24 @@ package org.geotools.referencing.factory;
 
 import java.util.Arrays;
 import java.util.Comparator;
-import si.uom.SI;
-import si.uom.NonSI;
+
 import javax.measure.Unit;
 
-import org.opengis.referencing.cs.*;
-import org.opengis.referencing.crs.CRSAuthorityFactory;
-
-import org.geotools.factory.Hints;
 import org.geotools.factory.FactoryRegistryException;
+import org.geotools.factory.Hints;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.cs.DefaultCoordinateSystemAxis;
-import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.i18n.ErrorKeys;
+import org.geotools.resources.i18n.Errors;
+import org.opengis.referencing.crs.CRSAuthorityFactory;
+import org.opengis.referencing.cs.AxisDirection;
+import org.opengis.referencing.cs.CSAuthorityFactory;
+import org.opengis.referencing.cs.CoordinateSystem;
+import org.opengis.referencing.cs.CoordinateSystemAxis;
+
+import si.uom.NonSI;
+import si.uom.SI;
+import systems.uom.common.USCustomary;
 
 
 /**
@@ -336,7 +341,7 @@ public class OrderedAxisAuthorityFactory extends TransformedAuthorityFactory
             if (units.isCompatible(SI.METRE)) {
                 return SI.METRE;
             }
-            if (units.equals(SI.RADIAN) || units.equals(NonSI.GRADE)) {
+            if (units.equals(SI.RADIAN) || units.equals(USCustomary.GRADE)) {
                 return NonSI.DEGREE_ANGLE;
             }
         }

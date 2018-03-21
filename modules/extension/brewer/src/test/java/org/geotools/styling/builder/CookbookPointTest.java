@@ -8,7 +8,7 @@ import static org.junit.Assert.assertTrue;
 import java.awt.Color;
 import java.util.List;
 
-import javax.measure.unit.SI;
+import si.uom.SI;
 
 import org.geotools.filter.function.CategorizeFunction;
 import org.geotools.styling.AnchorPoint;
@@ -410,7 +410,7 @@ public class CookbookPointTest extends AbstractStyleTest {
 
     @Test
     public void testUomPoint() {
-        Style style = new PointSymbolizerBuilder().uom(SI.METER).graphic().size(50).mark()
+        Style style = new PointSymbolizerBuilder().uom(SI.METRE).graphic().size(50).mark()
                 .name("circle").fill().color(Color.RED).buildStyle();
         // print(style);
 
@@ -419,7 +419,7 @@ public class CookbookPointTest extends AbstractStyleTest {
         assertSimpleStyle(collector);
 
         PointSymbolizer ps = (PointSymbolizer) collector.symbolizers.get(0);
-        assertEquals(SI.METER, ps.getUnitOfMeasure());
+        assertEquals(SI.METRE, ps.getUnitOfMeasure());
     }
 
 }

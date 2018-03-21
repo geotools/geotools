@@ -21,8 +21,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
+iimport si.uom.NonSI;
+import si.uom.SI;
 
 import org.geotools.factory.GeoTools;
 import org.geotools.factory.Hints;
@@ -252,9 +252,9 @@ public class ProjectionBuilder {
             }
         }
         if (semiMinor != null) {
-            return DefaultEllipsoid.createEllipsoid(name, semiMajor.doubleValue(), semiMinor.doubleValue(), SI.METER);
+            return DefaultEllipsoid.createEllipsoid(name, semiMajor.doubleValue(), semiMinor.doubleValue(), SI.METRE);
         } else {
-            return DefaultEllipsoid.createFlattenedSphere(name, semiMajor.doubleValue(), inverseFlattening.doubleValue(), SI.METER);
+            return DefaultEllipsoid.createFlattenedSphere(name, semiMajor.doubleValue(), inverseFlattening.doubleValue(), SI.METRE);
         }
     }
 

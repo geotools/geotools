@@ -16,6 +16,8 @@
  */
 package org.geotools.util;
 
+import javax.measure.IncommensurableException;
+import javax.measure.UnconvertibleException;
 import javax.measure.Unit;
 import javax.measure.UnitConverter;
 
@@ -181,10 +183,10 @@ public class MeasurementRange<T extends Number & Comparable<? super T>> extends 
      *
      * @param  targetUnits the target units.
      * @return The converted range, or {@code this} if no conversion is needed.
-     * @throws ConversionException if the target units are not compatible with
+     * @throws IllegalArgumentException if the target units are not compatible with
      *         this {@linkplain #getUnits range units}.
      */
-    public MeasurementRange convertTo(final Unit<?> targetUnits) throws ConversionException {
+    public MeasurementRange convertTo(final Unit<?> targetUnits) throws IllegalArgumentException {
         return convertAndCast(elementClass, targetUnits);
     }
 
@@ -196,9 +198,10 @@ public class MeasurementRange<T extends Number & Comparable<? super T>> extends 
      *              {@link Integer}, {@link Long}, {@link Float} or {@link Double}.
      * @return The casted range, or {@code this} if this range already uses the specified type.
      */
+    @SuppressWarnings("unchecked")
     @Override
     public <N extends Number & Comparable<? super N>> MeasurementRange<N> castTo(Class<N> type) {
-        return (MeasurementRange) damnJava5(this, type);
+        return (MeasurementRange<N>) this;
     }
 
     /**
@@ -216,11 +219,10 @@ public class MeasurementRange<T extends Number & Comparable<? super T>> extends 
             throws IllegalArgumentException
     {
         if (range instanceof MeasurementRange) {
-            final MeasurementRange<?> casted = (MeasurementRange) range;
+            final MeasurementRange<?> casted = (MeasurementRange<?>) range;
             return casted.convertAndCast(type, units);
         }
-        // TODO: Remove the (Range) cast when we will be allowed to compile for Java 6.
-        return new MeasurementRange<N>(type, (Range) range, units);
+        return new MeasurementRange<N>(type, range, units);
     }
 
     /**
@@ -230,11 +232,11 @@ public class MeasurementRange<T extends Number & Comparable<? super T>> extends 
      *             {@link Integer}, {@link Long}, {@link Float} or {@link Double}.
      * @param  targetUnit the target units.
      * @return The casted range, or {@code this}.
-     * @throws ConversionException if the target units are not compatible with
+     * @throws IllegalArgumentException if the target units are not compatible with
      *         this {@linkplain #getUnits range units}.
      */
     private <N extends Number & Comparable<? super N>> MeasurementRange<N>
-            convertAndCast(final Class<N> type, final Unit<?> targetUnits) throws ConversionException
+            convertAndCast(final Class<N> type, final Unit<?> targetUnits) 
     {
         if (targetUnits == null || targetUnits.equals(units)) {
             if (type.equals(elementClass)) {
@@ -248,8 +250,13 @@ public class MeasurementRange<T extends Number & Comparable<? super T>> extends 
         if (units == null) {
             return new MeasurementRange<N>(type, this, targetUnits);
         }
-        final UnitConverter converter = units.getConverterTo(targetUnits);
-        if (converter.equals(UnitConverter.IDENTITY)) {
+        UnitConverter converter;
+		try {
+			converter = units.getConverterToAny(targetUnits);
+		} catch (UnconvertibleException | IncommensurableException e) {
+			throw new IllegalArgumentException( e );
+		}
+        if (converter.isIdentity()) {
             return new MeasurementRange<N>(type, this, targetUnits);
         }
         boolean isMinIncluded = isMinIncluded();

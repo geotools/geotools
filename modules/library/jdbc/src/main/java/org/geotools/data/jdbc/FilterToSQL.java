@@ -102,8 +102,8 @@ import org.opengis.referencing.crs.GeographicCRS;
 import org.opengis.temporal.Instant;
 import org.opengis.temporal.Period;
 
-import javax.measure.converter.UnitConverter;
-import javax.measure.unit.SI;
+import javax.measure.UnitConverter;
+import si.uom.SI;
 import javax.measure.Unit;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -1913,7 +1913,7 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
                 if(unit == null) {
                     return distanceMeters;
                 } else {
-                    UnitConverter converter = SI.METER.getConverterTo(unit);
+                    UnitConverter converter = SI.METRE.getConverterTo(unit);
                     return converter.convert(distanceMeters);
                 }
             }

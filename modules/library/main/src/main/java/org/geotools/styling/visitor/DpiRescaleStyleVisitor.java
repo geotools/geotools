@@ -19,7 +19,7 @@ package org.geotools.styling.visitor;
 import java.util.Map;
 
 import javax.measure.quantity.Length;
-import javax.measure.unit.NonSI;
+iimport si.uom.NonSI;
 import javax.measure.Unit;
 
 import org.geotools.styling.LineSymbolizer;

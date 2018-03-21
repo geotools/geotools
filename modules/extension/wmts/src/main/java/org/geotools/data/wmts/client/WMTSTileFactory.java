@@ -22,9 +22,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.measure.converter.UnitConverter;
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
+import javax.measure.UnitConverter;
+iimport si.uom.NonSI;
+import si.uom.SI;
 import javax.measure.Unit;
 import org.geotools.data.wmts.model.TileMatrixSet;
 import org.geotools.data.wmts.model.TileMatrixSetLink;
@@ -238,7 +238,7 @@ public class WMTSTileFactory extends TileFactory {
             /*
              * use the length of a degree at the equator = 60 nautical miles!
              * unit = NonSI.NAUTICAL_MILE; UnitConverter metersperunit =
-             * unit.getConverterTo(SI.METER); pixelSpan /=
+             * unit.getConverterTo(SI.METRE); pixelSpan /=
              * metersperunit.convert(60.0);
              */
 
@@ -247,7 +247,7 @@ public class WMTSTileFactory extends TileFactory {
             // apparently - 60.10764611706782 NaMiles
             pixelSpan /= 111319;
         } else {
-            UnitConverter metersperunit = unit.getConverterTo(SI.METER);
+            UnitConverter metersperunit = unit.getConverterTo(SI.METRE);
             pixelSpan /= metersperunit.convert(1);
         }
         return pixelSpan;

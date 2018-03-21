@@ -16,7 +16,7 @@
  */
 package org.geotools.referencing.cs;
 
-import javax.measure.unit.SI;
+import si.uom.SI;
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
 
@@ -113,9 +113,9 @@ public final class AbstractCSTest {
     @Test
     public void testAxisUsingUnit() {
         assertNull("Should detect that no axis change is needed",
-                   DefaultCartesianCS.PROJECTED.axisUsingUnit(SI.METER));
+                   DefaultCartesianCS.PROJECTED.axisUsingUnit(SI.METRE));
 
-        final Unit<Length> KILOMETER = SI.KILO(SI.METER);
+        final Unit<Length> KILOMETER = SI.KILO(SI.METRE);
         final CoordinateSystemAxis[] axis =
                 DefaultCartesianCS.PROJECTED.axisUsingUnit(KILOMETER);
         assertNotNull(axis);

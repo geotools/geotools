@@ -27,11 +27,12 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import javax.measure.converter.UnitConverter;
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
+import javax.measure.UnitConverter;
+import si.uom.NonSI;
+import si.uom.SI;
 import javax.measure.Unit;
-import javax.measure.unit.UnitFormat;
+import javax.measure.format.UnitFormat;
+import javax.measure.quantity.Time;
 
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.cs.AxisDirection;
@@ -247,13 +248,16 @@ public class CoordinateFormat extends Format {
             ////  Date  ////
             ////////////////
             if (SI.SECOND.isCompatible(unit)) {
+                @SuppressWarnings("unchecked")
+                Unit<Time> timeUnit = (Unit<Time>) unit;
+                
                 final Datum datum = CRSUtilities.getDatum(CRSUtilities.getSubCRS(crs, i, i+1));
                 if (datum instanceof TemporalDatum) {
                     if (toMillis == null) {
                         toMillis = new UnitConverter[formats.length];
                         epochs   = new long[formats.length];
                     }
-                    toMillis[i] = unit.getConverterTo(DefaultTemporalCRS.MILLISECOND);
+                    toMillis[i] = timeUnit.getConverterTo(DefaultTemporalCRS.MILLISECOND);
                     epochs  [i] = ((TemporalDatum) datum).getOrigin().getTime();
                     if (dateFormat == null) {
                         dateFormat = DateFormat.getDateInstance(DateFormat.DEFAULT, locale);

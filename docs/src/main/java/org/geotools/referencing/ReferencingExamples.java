@@ -7,12 +7,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
-
 import org.geotools.factory.GeoTools;
 import org.geotools.factory.Hints;
-import org.geotools.geometry.GeneralDirectPosition;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.datum.BursaWolfParameters;
@@ -44,6 +40,9 @@ import org.opengis.util.GenericName;
 
 import com.vividsolutions.jts.geom.Coordinate;
 
+import si.uom.NonSI;
+import si.uom.SI;
+
 /**
  * The following examples are taken from CTSTutorial provided by Rueben Schulz. The examples were
  * constructed for a wiki page and have been repurposed for our sphinx documentation.
@@ -52,8 +51,10 @@ import com.vividsolutions.jts.geom.Coordinate;
  */
 public class ReferencingExamples {
 
+@SuppressWarnings("unused")
 private ProjectedCRS utm10NCRS;
 
+@SuppressWarnings("unused")
 private GeographicCRS nad27CRS;
 
 ReferencingExamples() {
@@ -77,6 +78,7 @@ ReferencingExamples() {
     }
 }
 
+@SuppressWarnings("unused")
 void factories() {
     // factories start
     Hints hints = null; // configure hints for the group of factories
@@ -87,6 +89,7 @@ void factories() {
     // factories end
 }
 
+@SuppressWarnings("unused")
 void referencingFactoryContainer() {
     Object datumFactory = null;
     Object csFactory = null;
@@ -122,6 +125,7 @@ void referencingFactoryContainer2() {
 /**
  * A method with some examples of premade static objects.
  */
+@SuppressWarnings("unused")
 void premadeObjects() {
     // premadeObjects start
     GeographicCRS geoCRS = org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
@@ -279,7 +283,7 @@ void createCRSByHand2() throws Exception {
     map.put("name", "Clarke 1866");
     
     Ellipsoid clark1866ellipse = datumFactory.createFlattenedSphere(map, 6378206.4,
-            294.978698213901, SI.METER);
+            294.978698213901, SI.METRE);
     
     PrimeMeridian greenwichMeridian = org.geotools.referencing.datum.DefaultPrimeMeridian.GREENWICH;
     
@@ -353,7 +357,7 @@ void createCRSByHand3() throws FactoryException {
     map.clear();
     map.put("name", "WGS 84 Ellipsoid Datum");
     Ellipsoid wgs84Ellipsoid = datumFactory.createFlattenedSphere(map, 6378137, 298.257223563,
-            SI.METER);
+            SI.METRE);
     
     map.clear();
     map.put("name", "WGS84 Height Datum");
@@ -367,17 +371,17 @@ void createCRSByHand3() throws FactoryException {
     map.clear();
     map.put("name", "Cartesian X axis");
     CoordinateSystemAxis xAxis = csFactory.createCoordinateSystemAxis(map, "X",
-            AxisDirection.GEOCENTRIC_X, SI.METER);
+            AxisDirection.GEOCENTRIC_X, SI.METRE);
     
     map.clear();
     map.put("name", "Cartesian Y axis");
     CoordinateSystemAxis yAxis = csFactory.createCoordinateSystemAxis(map, "Y",
-            AxisDirection.GEOCENTRIC_Y, SI.METER);
+            AxisDirection.GEOCENTRIC_Y, SI.METRE);
     
     map.clear();
     map.put("name", "Cartesian Z axis");
     CoordinateSystemAxis zAxis = csFactory.createCoordinateSystemAxis(map, "Z",
-            AxisDirection.GEOCENTRIC_Z, SI.METER);
+            AxisDirection.GEOCENTRIC_Z, SI.METRE);
     
     map.clear();
     map.put("name", "Rendered Cartesian CS");
@@ -396,7 +400,7 @@ void createCRSByHand3() throws FactoryException {
     // map.clear();
     // map.put("name", "Airy 1830");
     // Ellipsoid airyEllipse =
-    // datumFactory.createFlattenedSphere(map, 6377563.396, 299.3249646, SI.METER);
+    // datumFactory.createFlattenedSphere(map, 6377563.396, 299.3249646, SI.METRE);
     
     map.clear();
     map.put("name", "Geodetic North axis");
@@ -411,7 +415,7 @@ void createCRSByHand3() throws FactoryException {
     map.clear();
     map.put("name", "Geodetic Height axis");
     CoordinateSystemAxis heightAxis = csFactory.createCoordinateSystemAxis(map, "Up",
-            AxisDirection.UP, SI.METER);
+            AxisDirection.UP, SI.METRE);
     
     map.clear();
     map.put("name", "<long>,<lat> Airy 1830 geodetic");
@@ -520,6 +524,7 @@ public void toWKT() throws Exception {
     // toWKT end
 }
 
+@SuppressWarnings("unused")
 public void toWKTFormat() throws Exception {
     // toWKTFormat start
     CoordinateReferenceSystem crs = CRS.decode("EPSG:32735");

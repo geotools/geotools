@@ -59,12 +59,12 @@ public class BandIndexMeasure extends Measure<String, Dimensionless>
 	}
 
 	public int compareTo(Measurable<Dimensionless> o) {
-		return this.index.compareTo(o.longValue(Unit.ONE));
+		return this.index.compareTo(o.longValue(AbstractUnit.ONE));
 	}
 
 	@Override
 	public Unit<Dimensionless> getUnit() {
-		return Unit.ONE;
+		return AbstractUnit.ONE;
 	}
 
 	@Override
@@ -74,12 +74,12 @@ public class BandIndexMeasure extends Measure<String, Dimensionless>
 
 	@Override
 	public Measure<String, Dimensionless> to(Unit<Dimensionless> target) {
-		if (target.isCompatible(Unit.ONE))
+		if (target.isCompatible(AbstractUnit.ONE))
 			return new BandIndexMeasure(this.index.intValue(),
 					this.bandMnemonic);
 		final StringBuilder buffer = new StringBuilder();
 		buffer.append("Unable to perform requested conversion");
-		buffer.append("\nsource UoM:").append("  ").append(Unit.ONE.toString());
+		buffer.append("\nsource UoM:").append("  ").append(AbstractUnit.ONE.toString());
 		buffer.append("\ntarget UoM:").append("  ").append(target.toString());
 		throw new ConversionException(buffer.toString());
 

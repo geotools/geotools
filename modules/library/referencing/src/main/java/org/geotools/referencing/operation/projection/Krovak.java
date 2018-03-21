@@ -20,7 +20,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.util.Collection;
 import javax.measure.Unit;
-import javax.measure.unit.NonSI;
+iimport si.uom.NonSI;
 import org.opengis.parameter.GeneralParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptorGroup;
@@ -453,7 +453,7 @@ public class Krovak extends MapProjection {
                     new NamedIdentifier(Citations.EPSG, "Scale factor on pseudo standard parallel"),
                     new NamedIdentifier(Citations.GEOTIFF, "ScaleAtCenter"),
                     new NamedIdentifier(Citations.OGC,  "Scale_Factor")
-                }, 0.9999, 0, Double.POSITIVE_INFINITY, Unit.ONE);             
+                }, 0.9999, 0, Double.POSITIVE_INFINITY, AbstractUnit.ONE);             
        
   	    /**
          * ESRI Parameter for scale of X axis in projected coordinate system.
@@ -462,7 +462,7 @@ public class Krovak extends MapProjection {
                 new NamedIdentifier[] {
                     new NamedIdentifier(Citations.ESRI,"X_Scale"),            
                 },
-                Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Unit.ONE);
+                Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, AbstractUnit.ONE);
         
         /**
          * ESRI Parameter for scale of Y axis in projected coordinate system.
@@ -471,7 +471,7 @@ public class Krovak extends MapProjection {
                 new NamedIdentifier[] {
                     new NamedIdentifier(Citations.ESRI,"Y_Scale"),            
                 },
-               Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Unit.ONE);
+               Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, AbstractUnit.ONE);
         
         /**
          * ESRI Parameter for rotation of projected coordinate system.

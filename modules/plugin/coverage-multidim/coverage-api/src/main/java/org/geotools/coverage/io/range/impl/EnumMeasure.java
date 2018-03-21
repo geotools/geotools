@@ -58,7 +58,7 @@ public class EnumMeasure<V extends Enum<V>> extends Measure<V, Dimensionless> {
 
 	@Override
 	public Unit<Dimensionless> getUnit() {
-		return Unit.ONE;
+		return AbstractUnit.ONE;
 	}
 
 	@Override

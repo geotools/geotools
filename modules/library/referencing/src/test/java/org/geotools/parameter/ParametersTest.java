@@ -30,8 +30,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
+iimport si.uom.NonSI;
+import si.uom.SI;
 import javax.measure.Unit;
 
 import org.opengis.parameter.InvalidParameterCardinalityException;
@@ -75,7 +75,7 @@ public final class ParametersTest {
         for (int i=-1000; i<=1000; i++) {
             assertEquals("new (Integer, ...)", i, Parameter.create("Integer", i          ).intValue());
             assertEquals("new (Double, ...)",  i, Parameter.create("Double",  i, null    ).doubleValue(), 0.0);
-            assertEquals("new (Double, ...)",  i,  Parameter.create("Double",  i, Unit.ONE).doubleValue(), 0.0);
+            assertEquals("new (Double, ...)",  i,  Parameter.create("Double",  i, AbstractUnit.ONE).doubleValue(), 0.0);
             assertEquals("new (Double, ...)",  Math.toRadians(i),
             		 Parameter.create("Double", i, NonSI.DEGREE_ANGLE).doubleValue(SI.RADIAN), 1E-6);
         }
@@ -198,21 +198,21 @@ public final class ParametersTest {
         ParameterDescriptor<Integer> iDescriptor;
         ParameterValue<Double>      parameter;
 
-        dDescriptor = DefaultParameterDescriptor.create("Test", 12, 4, 20, SI.METER);
+        dDescriptor = DefaultParameterDescriptor.create("Test", 12, 4, 20, SI.METRE);
         parameter  = dDescriptor.createValue();
         assertEquals("name",         "Test",       dDescriptor.getName().getCode());
-        assertEquals("unit",         SI.METER,     dDescriptor.getUnit());
+        assertEquals("unit",         SI.METRE,     dDescriptor.getUnit());
         assertEquals("class",        Double.class, dDescriptor.getValueClass());
         assertEquals("defaultValue", 12.0,         dDescriptor.getDefaultValue().doubleValue(), 0.0);
         assertEquals("minimum",       4.0,         dDescriptor.getMinimumValue());
         assertEquals("maximum",      20.0,         dDescriptor.getMaximumValue());
         assertEquals("value",        12,           parameter.intValue());
-        assertEquals("unit",         SI.METER,     parameter.getUnit());
+        assertEquals("unit",         SI.METRE,     parameter.getUnit());
         for (int i=4; i<=20; i++) {
             parameter.setValue(i);
             assertEquals("value", Double.valueOf(i), parameter.getValue());
-            assertEquals("unit",  SI.METER,          parameter.getUnit());
-            assertEquals("value", i,                 parameter.doubleValue(SI.METER), 0);
+            assertEquals("unit",  SI.METRE,          parameter.getUnit());
+            assertEquals("value", i,                 parameter.doubleValue(SI.METRE), 0);
         }
         try {
             parameter.setValue(3.0);
@@ -229,10 +229,10 @@ public final class ParametersTest {
             assertEquals("Test", exception.getParameterName());
         }
         for (int i=400; i<=2000; i+=100) {
-            parameter.setValue(i, SI.CENTI(SI.METER));
+            parameter.setValue(i, SI.CENTI(SI.METRE));
             assertEquals("value", Double.valueOf(i),  parameter.getValue());
-            assertEquals("unit",  SI.CENTI(SI.METER), parameter.getUnit());
-            assertEquals("value", i/100,              parameter.doubleValue(SI.METER), 0);
+            assertEquals("unit",  SI.CENTI(SI.METRE), parameter.getUnit());
+            assertEquals("value", i/100,              parameter.doubleValue(SI.METRE), 0);
         }
         try {
         	iDescriptor = DefaultParameterDescriptor.create("Test", 3, 4, 20);
@@ -271,7 +271,7 @@ public final class ParametersTest {
         assertNull  ("unit",                        descriptor.getUnit());
         assertNull  ("validValues",                 descriptor.getValidValues());
         try {
-            parameter.doubleValue(SI.METER);
+            parameter.doubleValue(SI.METRE);
             fail("doubleValue(METER)");
         } catch (IllegalStateException exception) {
             // This is the expected exception.
@@ -285,13 +285,13 @@ public final class ParametersTest {
         }
         serialize(parameter);
 
-        parameter  = Parameter.create("Test", 3, SI.METER);
+        parameter  = Parameter.create("Test", 3, SI.METRE);
         descriptor = (ParameterDescriptor)       parameter.getDescriptor();
         assertEquals("intValue",       3,        parameter.intValue());
         assertEquals("doubleValue",    3,        parameter.doubleValue(), 0);
-        assertEquals("doubleValue",  300,        parameter.doubleValue(SI.CENTI(SI.METER)), 0);
+        assertEquals("doubleValue",  300,        parameter.doubleValue(SI.CENTI(SI.METRE)), 0);
         assertEquals("name",         "Test",    descriptor.getName().getCode());
-        assertEquals("unit",         SI.METER,  descriptor.getUnit());
+        assertEquals("unit",         SI.METRE,  descriptor.getUnit());
         assertNull  ("defaultValue",            descriptor.getDefaultValue());
         assertNull  ("minimum",                 descriptor.getMinimumValue());
         assertNull  ("maximum",                 descriptor.getMaximumValue());

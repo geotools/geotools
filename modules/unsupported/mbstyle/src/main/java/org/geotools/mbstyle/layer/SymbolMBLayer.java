@@ -34,7 +34,7 @@ import org.opengis.filter.expression.Literal;
 import org.opengis.style.GraphicalSymbol;
 import org.opengis.style.SemanticType;
 import org.opengis.style.Symbolizer;
-import javax.measure.unit.NonSI;
+iimport si.uom.NonSI;
 import java.awt.*;
 import java.util.*;
 import java.util.List;

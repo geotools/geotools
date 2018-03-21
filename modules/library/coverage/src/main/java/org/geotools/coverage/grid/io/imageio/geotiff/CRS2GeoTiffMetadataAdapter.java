@@ -21,8 +21,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
+iimport si.uom.NonSI;
+import si.uom.SI;
 import javax.measure.Unit;
 
 import org.geotools.coverage.grid.io.imageio.geotiff.codes.GeoTiffCoordinateTransformationsCodes;
@@ -306,11 +306,11 @@ public final class CRS2GeoTiffMetadataAdapter {
 
 		// getting the linear unit
 		final Unit<?> linearUnit = CRSUtilities.getUnit(projectedCRS.getCoordinateSystem());
-		if (linearUnit != null && !SI.METER.isCompatible(linearUnit)) {
+		if (linearUnit != null && !SI.METRE.isCompatible(linearUnit)) {
 			throw new IllegalArgumentException(Errors.format(
 					ErrorKeys.NON_LINEAR_UNIT_$1, linearUnit));
 		}
-                if (SI.METER.equals(linearUnit)) {
+                if (SI.METRE.equals(linearUnit)) {
                     metadata.addGeoShortParam(GeoTiffPCSCodes.ProjLinearUnitsGeoKey,
                             GeoTiffUoMCodes.Linear_Meter);
                     metadata.addGeoDoubleParam(GeoTiffPCSCodes.ProjLinearUnitSizeGeoKey, 1.0);
@@ -319,25 +319,25 @@ public final class CRS2GeoTiffMetadataAdapter {
                         metadata.addGeoShortParam(GeoTiffPCSCodes.ProjLinearUnitsGeoKey,
                                 GeoTiffUoMCodes.Linear_Mile_International_Nautical);
                         metadata.addGeoDoubleParam(GeoTiffPCSCodes.ProjLinearUnitSizeGeoKey, linearUnit
-                                .getConverterTo(SI.METER).convert(1));
+                                .getConverterTo(SI.METRE).convert(1));
                 }else
                     if (NonSI.FOOT.equals(linearUnit)) {
                         metadata.addGeoShortParam(GeoTiffPCSCodes.ProjLinearUnitsGeoKey,
                                 GeoTiffUoMCodes.Linear_Foot);
                         metadata.addGeoDoubleParam(GeoTiffPCSCodes.ProjLinearUnitSizeGeoKey, linearUnit
-                                .getConverterTo(SI.METER).convert(1));
+                                .getConverterTo(SI.METRE).convert(1));
                 } else
                     if (NonSI.YARD.equals(linearUnit)) {
                         metadata.addGeoShortParam(GeoTiffPCSCodes.ProjLinearUnitsGeoKey,
                                 GeoTiffUoMCodes.Linear_Yard_Sears);// ??
                         metadata.addGeoDoubleParam(GeoTiffPCSCodes.ProjLinearUnitSizeGeoKey, linearUnit
-                                .getConverterTo(SI.METER).convert(1));
+                                .getConverterTo(SI.METRE).convert(1));
                 } else
                     if (NonSI.FOOT_SURVEY_US.equals(linearUnit)) {
                         metadata.addGeoShortParam(GeoTiffPCSCodes.ProjLinearUnitsGeoKey,
                                 GeoTiffUoMCodes.Linear_Foot_US_Survey);// ??
                         metadata.addGeoDoubleParam(GeoTiffPCSCodes.ProjLinearUnitSizeGeoKey, linearUnit
-                                .getConverterTo(SI.METER).convert(1));  
+                                .getConverterTo(SI.METRE).convert(1));  
                     }
 	}
 
@@ -970,7 +970,7 @@ public final class CRS2GeoTiffMetadataAdapter {
                 default:
                     throw new IllegalStateException("Unable to map model "+model+" for this unit");
 	        }
-	        if(unit.equals(SI.METER)){
+	        if(unit.equals(SI.METRE)){
 	            metadata.addGeoShortParam(key1, GeoTiffUoMCodes.Linear_Meter);
 	        } else if(unit.equals(NonSI.FOOT)){
 	            metadata.addGeoShortParam(key1, GeoTiffUoMCodes.Linear_Foot);
@@ -997,12 +997,12 @@ public final class CRS2GeoTiffMetadataAdapter {
                     
                     // Size with respect to base UoM
                     Unit<?> base = null;
-                    if (SI.METER.isCompatible(unit)) {
-                            base = SI.METER;
+                    if (SI.METRE.isCompatible(unit)) {
+                            base = SI.METRE;
                     } else if (SI.SECOND.isCompatible(unit)) {
                             base = SI.SECOND;
                     } else if (SI.RADIAN.isCompatible(unit)) {
-                            if (!Unit.ONE.equals(unit)) {
+                            if (!AbstractUnit.ONE.equals(unit)) {
                                     base = SI.RADIAN;
                             }
                     }

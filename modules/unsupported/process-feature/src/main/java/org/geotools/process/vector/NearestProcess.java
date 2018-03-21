@@ -20,8 +20,8 @@ package org.geotools.process.vector;
 import java.util.Iterator;
 import java.util.logging.Logger;
 
-import javax.measure.converter.UnitConverter;
-import javax.measure.unit.SI;
+import javax.measure.UnitConverter;
+import si.uom.SI;
 import javax.measure.Unit;
 
 import org.geotools.feature.DefaultFeatureCollection;
@@ -106,7 +106,7 @@ public class NearestProcess implements VectorProcess {
 
             DefaultFeatureCollection results = new DefaultFeatureCollection();
             FeatureType targetFeatureType = createTargetFeatureType(featureCollection.getSchema());
-            Unit fromUnit = SI.METER;
+            Unit fromUnit = SI.METRE;
             Unit toUnit = Unit.valueOf("mi");
             UnitConverter unitConvert = fromUnit.getConverterTo(toUnit);
             Feature nearestFeature = null;

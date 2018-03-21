@@ -17,8 +17,8 @@
 package org.geotools.styling.visitor;
 
 import javax.measure.quantity.Length;
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
+iimport si.uom.NonSI;
+import si.uom.SI;
 import javax.measure.Unit;
 
 import org.geotools.factory.CommonFactoryFinder;
@@ -112,7 +112,7 @@ class Measure {
             uom = NonSI.FOOT;
         } else if (value.endsWith("m")) {
             unitless = value.substring(0, value.length() - 1);
-            uom = SI.METER;
+            uom = SI.METRE;
         }
         Double measure = Converters.convert(unitless, Double.class);
         if (measure == null) {

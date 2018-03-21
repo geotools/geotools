@@ -22,7 +22,7 @@ import java.util.Map;
 
 import javax.measure.Measure;
 import javax.measure.quantity.Dimensionless;
-import javax.measure.unit.SI;
+import si.uom.SI;
 import javax.measure.Unit;
 
 import org.geotools.feature.NameImpl;
@@ -57,7 +57,7 @@ public class EnumMeasureTest extends Assert {
     public void testLandsatAxis() {
         CoordinateSystemAxis csAxis = new DefaultCoordinateSystemAxis(
                 new SimpleInternationalString("light"), "light", AxisDirection.OTHER,
-                SI.MICRO(SI.METER));
+                SI.MICRO(SI.METRE));
 
         DefaultLinearCS lightCS = new DefaultLinearCS("light", csAxis);
         Map<String, Object> datumProperties = new HashMap<String, Object>();
@@ -71,7 +71,7 @@ public class EnumMeasureTest extends Assert {
 
         DefaultAxis<Band, Dimensionless> axis = new DefaultAxis<Band, Dimensionless>(new NameImpl(
                 "Bands"), new SimpleInternationalString("Landsat bands by wavelength"), keys,
-                Unit.ONE);
+                AbstractUnit.ONE);
 
         Map<Measure<Integer, Dimensionless>, SampleDimension> samples = new HashMap<Measure<Integer, Dimensionless>, SampleDimension>();
         
@@ -89,7 +89,7 @@ public class EnumMeasureTest extends Assert {
         assertSame(keys.get(0), keys.get(0).to(null));
         
         // Ensure the Unit is one
-        assertEquals(Unit.ONE, keys.get(0).getUnit());
+        assertEquals(AbstractUnit.ONE, keys.get(0).getUnit());
     }
 
 }

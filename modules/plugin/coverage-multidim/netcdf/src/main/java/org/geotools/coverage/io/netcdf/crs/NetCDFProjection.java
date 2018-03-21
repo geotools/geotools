@@ -26,7 +26,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.measure.quantity.Length;
-import javax.measure.unit.SI;
+import si.uom.SI;
 import javax.measure.Unit;
 
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
@@ -406,7 +406,7 @@ public class NetCDFProjection {
         ParameterValueGroup ogcParameters = projection.getOgcParameters(netcdfParameters);
 
         // Ellipsoid
-        Ellipsoid ellipsoid = buildEllipsoid(var, SI.METER);
+        Ellipsoid ellipsoid = buildEllipsoid(var, SI.METRE);
         return ProjectionBuilder.buildCRS(java.util.Collections.singletonMap(NetCDFUtilities.NAME, projectionName), ogcParameters, ellipsoid);
     }
 

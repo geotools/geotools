@@ -141,7 +141,7 @@ public final class CoverageUtilitiesTest{
     	
     	// test grid sampledimension no data property
     	final Category noDataCategory= new Category(CoverageUtilities.NODATA,new Color[]{Color.black},NumberRange.create(Double.valueOf(-9999.0),Double.valueOf(-9999.0)),false);
-    	final GridSampleDimension gsd = new GridSampleDimension("test", new Category[]{noDataCategory},Unit.ONE);
+    	final GridSampleDimension gsd = new GridSampleDimension("test", new Category[]{noDataCategory},AbstractUnit.ONE);
     	gc= CoverageFactoryFinder.getGridCoverageFactory(null).
     	create(
     			"test", 

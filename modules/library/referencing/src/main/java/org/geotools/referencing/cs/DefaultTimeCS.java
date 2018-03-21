@@ -20,7 +20,7 @@
 package org.geotools.referencing.cs;
 
 import java.util.Map;
-import javax.measure.unit.SI;
+import si.uom.SI;
 import javax.measure.Unit;
 
 import org.opengis.referencing.cs.TimeCS;

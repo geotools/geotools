@@ -5,7 +5,7 @@ import static org.junit.Assert.assertNull;
 
 import java.awt.Color;
 
-import javax.measure.unit.SI;
+import si.uom.SI;
 
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.Font;
@@ -243,11 +243,11 @@ public class CookbookPolygonTest extends AbstractStyleTest {
     public void testUomBased() {
         FeatureTypeStyleBuilder fts = new FeatureTypeStyleBuilder();
         PolygonSymbolizerBuilder pb = fts.rule().polygon();
-        pb.uom(SI.METER);
+        pb.uom(SI.METRE);
         pb.fill().colorHex("#0000CC");
         pb.stroke().color(Color.BLACK).width(7);
         RuleBuilder rb = fts.rule().name("TextLarge").max(100000000);
-        TextSymbolizerBuilder tb = rb.text().label("name").uom(SI.METER);
+        TextSymbolizerBuilder tb = rb.text().label("name").uom(SI.METRE);
         tb.newFont().familyName("Arial").size(14).styleName("normal").weightName("bold");
         tb.pointPlacement().anchor().x(0.5).y(0.5);
         tb.fill().color(Color.WHITE);
@@ -260,7 +260,7 @@ public class CookbookPolygonTest extends AbstractStyleTest {
         assertEquals(2, collector.rules.size());
         assertEquals(2, collector.symbolizers.size());
         
-        assertEquals(SI.METER, collector.symbolizers.get(0).getUnitOfMeasure());
+        assertEquals(SI.METRE, collector.symbolizers.get(0).getUnitOfMeasure());
         // happy that it built, does not really add anything that we don't have already tested
     }
 

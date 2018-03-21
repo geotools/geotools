@@ -23,7 +23,7 @@ import java.awt.Color;
 import java.awt.Polygon;
 import java.util.Arrays;
 
-import javax.measure.unit.SI;
+import si.uom.SI;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.IllegalFilterException;
@@ -242,7 +242,7 @@ public class RescaleStyleVisitorTest {
         Stroke stroke = sb.createStroke(Color.RED, 2, new float[] {5, 10});
         stroke.setWidth(ff.literal("2px"));
         LineSymbolizer ls = sb.createLineSymbolizer(stroke);
-        ls.setUnitOfMeasure(SI.METER);
+        ls.setUnitOfMeasure(SI.METRE);
         ls.accept(visitor);
         LineSymbolizer clone = (LineSymbolizer) visitor.getCopy();
         

@@ -23,8 +23,8 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.measure.quantity.Length;
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
+iimport si.uom.NonSI;
+import si.uom.SI;
 import javax.measure.Unit;
 
 import org.geotools.styling.UomOgcMapping;

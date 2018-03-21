@@ -30,7 +30,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 
-import javax.measure.unit.SI;
+import si.uom.SI;
 
 import java.awt.geom.Point2D;
 import java.util.Collection;
@@ -315,7 +315,7 @@ public abstract class GeostationarySatellite extends MapProjection {
                 35785831, // default
                 0.0, // minimum
                 Double.POSITIVE_INFINITY, // maximum
-                SI.METER);
+                SI.METRE);
 
         final static ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
                 new NamedIdentifier[]{

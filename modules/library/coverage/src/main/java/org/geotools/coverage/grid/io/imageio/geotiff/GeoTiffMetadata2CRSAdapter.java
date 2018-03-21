@@ -42,8 +42,8 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
+iimport si.uom.NonSI;
+import si.uom.SI;
 import javax.measure.Unit;
 
 import org.geotools.coverage.grid.io.imageio.geotiff.codes.GeoTiffCoordinateTransformationsCodes;
@@ -255,8 +255,8 @@ public final class GeoTiffMetadata2CRSAdapter {
 			linearUnit = createUnit(
 			        GeoTiffPCSCodes.ProjLinearUnitsGeoKey,
 			        GeoTiffPCSCodes.ProjLinearUnitSizeGeoKey,
-			        SI.METER,
-			        SI.METER,
+			        SI.METRE,
+			        SI.METRE,
 			        metadata);
 		} catch (GeoTiffException e) {
 			linearUnit = null;
@@ -290,7 +290,7 @@ public final class GeoTiffMetadata2CRSAdapter {
 			//
 			// //
                         boolean isDefaultUnit = metadata.getGeoKey(GeoTiffPCSCodes.ProjLinearUnitsGeoKey) == null
-                                && linearUnit != null && linearUnit.equals(SI.METER);
+                                && linearUnit != null && linearUnit.equals(SI.METRE);
 			if (linearUnit == null || isDefaultUnit
 			        || linearUnit.equals(pcrs.getCoordinateSystem().getAxis(0).getUnit())){
 			    return pcrs;
@@ -355,7 +355,7 @@ public final class GeoTiffMetadata2CRSAdapter {
 		// linear unit
 		Unit<?> linearUnit = null;
 		try {
-			linearUnit = createUnit(GeoTiffGCSCodes.GeogLinearUnitsGeoKey,GeoTiffGCSCodes.GeogLinearUnitSizeGeoKey, SI.METER, SI.METER, metadata);
+			linearUnit = createUnit(GeoTiffGCSCodes.GeogLinearUnitsGeoKey,GeoTiffGCSCodes.GeogLinearUnitSizeGeoKey, SI.METRE, SI.METRE, metadata);
 		} catch (GeoTiffException e) {
                     if(LOGGER.isLoggable(Level.FINE)){
                         LOGGER.log(Level.FINE,e.getLocalizedMessage(),e);
@@ -363,7 +363,7 @@ public final class GeoTiffMetadata2CRSAdapter {
 			linearUnit = null;
 		}
                 if(linearUnit==null){
-                    linearUnit=SI.METER;
+                    linearUnit=SI.METRE;
                 }		
 		// if it's user defined, there's a lot of work to do
 		if (tempCode == null
@@ -756,7 +756,7 @@ public final class GeoTiffMetadata2CRSAdapter {
 
 
                         // standard unit of measure
-			if (linearUnit != null && linearUnit.equals(SI.METER)){
+			if (linearUnit != null && linearUnit.equals(SI.METRE)){
 	                        return new DefaultProjectedCRS(
 	                                java.util.Collections.singletonMap("name",projectedCrsName),
 	                                conversionFromBase,
@@ -776,7 +776,7 @@ public final class GeoTiffMetadata2CRSAdapter {
 		}
 		
 		// standard projection
-		if (linearUnit != null && !linearUnit.equals(SI.METER)){
+		if (linearUnit != null && !linearUnit.equals(SI.METRE)){
 		    return new DefaultProjectedCRS(
 	                        Collections.singletonMap("name",projectedCrsName), 
 	                        conversionFromBase,
@@ -849,7 +849,7 @@ public final class GeoTiffMetadata2CRSAdapter {
 		if (linearUnit == null)
 			throw new NullPointerException(
 					"Error when trying to create a PCS using this linear UoM ");
-		if (!linearUnit.isCompatible(SI.METER))
+		if (!linearUnit.isCompatible(SI.METRE))
 			throw new IllegalArgumentException(
 					"Error when trying to create a PCS using this linear UoM "
 							+ linearUnit.toString());

@@ -281,7 +281,7 @@ public class DimensionlessAxis implements Axis<String,Dimensionless> {
      * @see org.geotools.coverage.io.range.Axis#getUnitOfMeasure()
      */
     public Unit<Dimensionless> getUnitOfMeasure() {
-        return Unit.ONE;
+        return AbstractUnit.ONE;
     }
 
 }

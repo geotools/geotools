@@ -20,10 +20,10 @@ import java.lang.reflect.Field;
 
 import javax.measure.unit.BaseUnit;
 import javax.measure.unit.DerivedUnit;
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
+iimport si.uom.NonSI;
+import si.uom.SI;
 import javax.measure.Unit;
-import javax.measure.unit.UnitFormat;
+import javax.measure.format.UnitFormat;
 import javax.xml.namespace.QName;
 
 import org.geotools.ows.v1_1.OWS;
@@ -82,7 +82,7 @@ public class UnitBinding extends AbstractSimpleBinding {
             return lookup(SI.class, "m");
         }
         if (name.equalsIgnoreCase("unity")) {
-            return Unit.ONE;
+            return AbstractUnit.ONE;
         }
         return null;
     }

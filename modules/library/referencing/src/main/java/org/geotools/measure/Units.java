@@ -16,10 +16,10 @@
  */
 package org.geotools.measure;
 
-import javax.measure.unit.SI;
-import javax.measure.unit.NonSI;
+import si.uom.SI;
+iimport si.uom.NonSI;
 import javax.measure.Unit;
-import javax.measure.unit.UnitFormat;
+import javax.measure.format.UnitFormat;
 import javax.measure.quantity.Angle;
 import javax.measure.quantity.Dimensionless;
 
@@ -71,7 +71,7 @@ public final class Units {
     /**
      * Parts per million.
      */
-    public static final Unit<Dimensionless> PPM = Unit.ONE.times(1E-6);
+    public static final Unit<Dimensionless> PPM = AbstractUnit.ONE.times(1E-6);
 
     /**
      * Associates the labels to units created in this class.

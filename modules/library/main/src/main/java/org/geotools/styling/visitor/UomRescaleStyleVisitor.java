@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.measure.quantity.Length;
-import javax.measure.unit.NonSI;
+iimport si.uom.NonSI;
 import javax.measure.Unit;
 
 import org.geotools.styling.Displacement;
@@ -44,7 +44,7 @@ import org.opengis.style.GraphicalSymbol;
 
 /**
  * Visitor used for rescaling a Style given a map scale (e.g., meters per pixel) and taking into
- * consideration the Unit of Measure (UOM, e.g., SI.METER, NonSI.FOOT) of each symbolizer. The
+ * consideration the Unit of Measure (UOM, e.g., SI.METRE, NonSI.FOOT) of each symbolizer. The
  * resulting Style's Symbolizer sizes will all be given in PIXELS, so that they can be directly used
  * by a renderer that is unaware of units of measure or the current map scale. For example, points
  * with size == 100 meters could be rescaled to 10 pixels for higher levels of zoom and 2 pixels for
@@ -67,7 +67,7 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
     /**
      * Constructor: requires the current mapScale to inform the window to viewport (world to screen)
      * relation in order to correctly rescaleDashArray sizes according to units of measure given in world
-     * units (e.g., SI.METER, NonSI.FOOT, etc).
+     * units (e.g., SI.METRE, NonSI.FOOT, etc).
      * 
      * @param mapScale The specified map scale, given in pixels per meter.
      */

@@ -22,7 +22,7 @@ package org.geotools.referencing.operation.projection;
 
 import java.awt.geom.Point2D;
 import java.util.Collection;
-import javax.measure.unit.NonSI;
+iimport si.uom.NonSI;
 import org.opengis.util.InternationalString;
 import org.opengis.parameter.GeneralParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptor;

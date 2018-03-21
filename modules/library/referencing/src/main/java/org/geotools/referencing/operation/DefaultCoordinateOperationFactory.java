@@ -31,8 +31,8 @@ import java.util.Set;
 
 import javax.measure.quantity.Angle;
 import javax.measure.quantity.Duration;
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
+iimport si.uom.NonSI;
+import si.uom.SI;
 import javax.measure.Unit;
 
 import org.geotools.factory.Hints;
@@ -120,7 +120,7 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
     /**
      * A unit of one millisecond.
      */
-    private static final Unit<Duration> MILLISECOND = SI.MILLI(SI.SECOND);
+    private static final Unit<Time> MILLISECOND = SI.MILLI(SI.SECOND);
 
     /**
      * The operation to use by {@link #createTransformationStep(GeographicCRS,GeographicCRS)} for

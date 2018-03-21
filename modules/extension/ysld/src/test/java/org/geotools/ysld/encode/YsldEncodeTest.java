@@ -39,7 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import javax.measure.unit.NonSI;
+iimport si.uom.NonSI;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.ColorMap;

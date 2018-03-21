@@ -25,8 +25,8 @@ import java.awt.Color;
 import java.util.Map;
 
 import javax.measure.quantity.Length;
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
+iimport si.uom.NonSI;
+import si.uom.SI;
 import javax.measure.Unit;
 
 import org.geotools.factory.CommonFactoryFinder;
@@ -340,13 +340,13 @@ public class UomRescaleStyleVisitorTest
     @Test
     public void testVisitPointSymbolizer_ScaleMeter1()
     {
-        visitPointSymbolizerTest(1, SI.METER);
+        visitPointSymbolizerTest(1, SI.METRE);
     }
     
     @Test
     public void testVisitPointSymbolizer_ScaleMeter10()
     {
-        visitPointSymbolizerTest(10, SI.METER);
+        visitPointSymbolizerTest(10, SI.METRE);
     }
     
     @Test
@@ -378,13 +378,13 @@ public class UomRescaleStyleVisitorTest
     @Test
     public void testVisitLineSymbolizer_ScaleMeter1()
     {
-        visitLineSymbolizerTest(1, SI.METER);
+        visitLineSymbolizerTest(1, SI.METRE);
     }
     
     @Test
     public void testVisitLineSymbolizer_ScaleMeter10()
     {
-        visitLineSymbolizerTest(10, SI.METER);
+        visitLineSymbolizerTest(10, SI.METRE);
     }
     
     @Test
@@ -414,13 +414,13 @@ public class UomRescaleStyleVisitorTest
     
     public void testVisitLineSymbolizerDynamicDashArray_ScaleMeter1()
     {
-        visitLineSymbolizerTestDynamicDashArray(1, SI.METER);
+        visitLineSymbolizerTestDynamicDashArray(1, SI.METRE);
     }
     
     
     public void testVisitLineSymbolizerDynamicDashArray_ScaleMeter10()
     {
-        visitLineSymbolizerTestDynamicDashArray(10, SI.METER);
+        visitLineSymbolizerTestDynamicDashArray(10, SI.METRE);
     }
     
     
@@ -451,13 +451,13 @@ public class UomRescaleStyleVisitorTest
     @Test
     public void testVisitPolygonSymbolizer_ScaleMeter1()
     {
-        visitPolygonSymbolizerTest(1, SI.METER);
+        visitPolygonSymbolizerTest(1, SI.METRE);
     }
     
     @Test
     public void testVisitPolygonSymbolizer_ScaleMeter10()
     {
-        visitPolygonSymbolizerTest(10, SI.METER);
+        visitPolygonSymbolizerTest(10, SI.METRE);
     }
     
     @Test
@@ -489,13 +489,13 @@ public class UomRescaleStyleVisitorTest
     @Test
     public void testVisitTextSymbolizer_ScaleMeter1()
     {
-        visitTextSymbolizerTest(1, SI.METER);
+        visitTextSymbolizerTest(1, SI.METRE);
     }
     
     @Test
     public void testVisitTextSymbolizer_ScaleMeter10()
     {
-        visitTextSymbolizerTest(10, SI.METER);
+        visitTextSymbolizerTest(10, SI.METRE);
     }
     
     @Test
@@ -523,7 +523,7 @@ public class UomRescaleStyleVisitorTest
 
             Stroke stroke = null;
             LineSymbolizerImpl lineSymb = (LineSymbolizerImpl) styleBuilder.createLineSymbolizer(stroke);
-            lineSymb.setUnitOfMeasure(SI.METER);
+            lineSymb.setUnitOfMeasure(SI.METRE);
             
             visitor = new UomRescaleStyleVisitor(10);
 
@@ -575,7 +575,7 @@ public class UomRescaleStyleVisitorTest
         {
             UomRescaleStyleVisitor visitor = null;
             
-            Unit<Length> uom = SI.METER;
+            Unit<Length> uom = SI.METRE;
             int fontSize = 100;
             double perpOffset = 13;
             double gap = 7;
@@ -631,7 +631,7 @@ public class UomRescaleStyleVisitorTest
         {
             double widthValue = 13;
             double scaleMetersToPixel = 17;
-            Unit<Length> uom = SI.METER;
+            Unit<Length> uom = SI.METRE;
         	
             StyleBuilder styleBuilder = new StyleBuilder();
             UomRescaleStyleVisitor visitor = null;
@@ -675,7 +675,7 @@ public class UomRescaleStyleVisitorTest
             
             assertEquals(stroke.getColor(), rescaledStroke.getColor());
             assertEquals(expectedRescaledWidthValue, rescaledWidthValue, 0d);
-            assertNotSame(SI.METER, rescaledLineSymb.getUnitOfMeasure());
+            assertNotSame(SI.METRE, rescaledLineSymb.getUnitOfMeasure());
             assertNotSame(rescaledLineSymb, lineSymb);
         }
         catch (Exception e2)
@@ -702,7 +702,7 @@ public class UomRescaleStyleVisitorTest
         
         // a polygon and line symbolizer using them
         PolygonSymbolizer ps = sb.createPolygonSymbolizer(stroke, fill);
-        ps.setUnitOfMeasure(SI.METER);
+        ps.setUnitOfMeasure(SI.METRE);
         
         // rescale it
         UomRescaleStyleVisitor visitor = new UomRescaleStyleVisitor(10);
@@ -716,7 +716,7 @@ public class UomRescaleStyleVisitorTest
         
         // a line symbolizer that uses a graphic stroke
         LineSymbolizer ls = sb.createLineSymbolizer(stroke);
-        ls.setUnitOfMeasure(SI.METER);
+        ls.setUnitOfMeasure(SI.METRE);
         
         // rescale it
         ls.accept(visitor);
@@ -748,7 +748,7 @@ public class UomRescaleStyleVisitorTest
         assertEquals(1524.0, rm.getStroke().getWidth().evaluate(null, Double.class), 0d);
         
         // now let's see the same in meters
-        ps.setUnitOfMeasure(SI.METER);
+        ps.setUnitOfMeasure(SI.METRE);
         
         // rescale it
         visitor = new UomRescaleStyleVisitor(10);
@@ -764,7 +764,7 @@ public class UomRescaleStyleVisitorTest
         UomRescaleStyleVisitor visitor = null;
         double size = 100;
         double scaleMetersToPixel = 10;
-        double expectedRescaledSize = computeExpectedRescaleSize(size, scaleMetersToPixel, SI.METER);
+        double expectedRescaledSize = computeExpectedRescaleSize(size, scaleMetersToPixel, SI.METRE);
 
         StyleBuilder styleBuilder = new StyleBuilder();
         LineSymbolizerImpl lineSymb = (LineSymbolizerImpl) styleBuilder.createLineSymbolizer();
@@ -785,7 +785,7 @@ public class UomRescaleStyleVisitorTest
         UomRescaleStyleVisitor visitor = null;
         double size = 100;
         double scaleMetersToPixel = 10;
-        double expectedRescaledSize = computeExpectedRescaleSize(size, scaleMetersToPixel, SI.METER);
+        double expectedRescaledSize = computeExpectedRescaleSize(size, scaleMetersToPixel, SI.METRE);
 
         StyleBuilder styleBuilder = new StyleBuilder();
         LineSymbolizerImpl lineSymb = (LineSymbolizerImpl) styleBuilder.createLineSymbolizer();
@@ -810,7 +810,7 @@ public class UomRescaleStyleVisitorTest
 
         StyleBuilder styleBuilder = new StyleBuilder();
         LineSymbolizerImpl lineSymb = (LineSymbolizerImpl) styleBuilder.createLineSymbolizer();
-        lineSymb.setUnitOfMeasure(SI.METER);
+        lineSymb.setUnitOfMeasure(SI.METRE);
         lineSymb.getStroke().setWidth(ff.literal(size + "px"));
 
         visitor = new UomRescaleStyleVisitor(scaleMetersToPixel);

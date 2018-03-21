@@ -21,7 +21,7 @@ package org.geotools.referencing.cs;
 
 import java.util.Map;
 import javax.measure.Unit;
-import javax.measure.converter.UnitConverter;
+import javax.measure.UnitConverter;
 
 import org.opengis.referencing.cs.AxisDirection;
 import org.opengis.referencing.cs.CartesianCS;

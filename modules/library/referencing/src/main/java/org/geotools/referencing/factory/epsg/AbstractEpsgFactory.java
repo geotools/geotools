@@ -49,8 +49,8 @@ import java.awt.RenderingHints;
 
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
+iimport si.uom.NonSI;
+import si.uom.SI;
 import javax.measure.Unit;
 
 import org.geotools.factory.GeoTools;
@@ -2316,7 +2316,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                     // TODO: Need to invoke something equivalent to:
                     // accuracyResult.setValueType(Float.class);
                     // This is the type declared in the MS-Access database.
-                    accuracyResult.setValueUnit(SI.METER); // In meters by definition in the EPSG database.
+                    accuracyResult.setValueUnit(SI.METRE); // In meters by definition in the EPSG database.
                     accuracyElement = new AbsoluteExternalPositionalAccuracyImpl(accuracyResult);
                     accuracyElement.setMeasureDescription(TRANSFORMATION_ACCURACY);
                     accuracyElement.setEvaluationMethodType(EvaluationMethodType.DIRECT_EXTERNAL);
@@ -2839,10 +2839,10 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
      */
     private static Unit<?> getUnit(final int code) {
         switch (code) {
-            case 9001: return    SI.METER;
+            case 9001: return    SI.METRE;
             case 9002: return NonSI.FOOT;
             case 9030: return NonSI.NAUTICAL_MILE;
-            case 9036: return    SI.KILO(SI.METER);
+            case 9036: return    SI.KILO(SI.METRE);
             case 9101: return    SI.RADIAN;
             case 9122: // Fall through
             case 9102: return NonSI.DEGREE_ANGLE;
@@ -2855,7 +2855,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
             case 9110: return Units.SEXAGESIMAL_DMS;
 //TODO      case 9111: return NonSI.SEXAGESIMAL_DM;
             case 9203: // Fall through
-            case 9201: return  Unit.ONE;
+            case 9201: return  AbstractUnit.ONE;
             case 9202: return Units.PPM;
             default  : return null;
         }

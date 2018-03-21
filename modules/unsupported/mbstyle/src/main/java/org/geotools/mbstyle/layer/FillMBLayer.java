@@ -31,7 +31,7 @@ import org.opengis.style.Displacement;
 import org.opengis.style.GraphicFill;
 import org.opengis.style.SemanticType;
 
-import javax.measure.unit.NonSI;
+iimport si.uom.NonSI;
 import java.awt.*;
 import java.util.List;
 import java.util.*;

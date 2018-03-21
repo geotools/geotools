@@ -22,18 +22,20 @@ package org.geotools.referencing.crs;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
-import javax.measure.unit.SI;
-import javax.measure.Unit;
-import javax.measure.quantity.Duration;
-import javax.measure.converter.UnitConverter;
 
-import org.opengis.referencing.cs.TimeCS;
+import javax.measure.Unit;
+import javax.measure.UnitConverter;
+import javax.measure.quantity.Time;
+
+import org.geotools.referencing.AbstractReferenceSystem;
+import org.geotools.referencing.cs.DefaultTimeCS;
+import org.geotools.referencing.datum.DefaultTemporalDatum;
 import org.opengis.referencing.crs.TemporalCRS;
+import org.opengis.referencing.cs.TimeCS;
 import org.opengis.referencing.datum.TemporalDatum;
 
-import org.geotools.referencing.cs.DefaultTimeCS;
-import org.geotools.referencing.AbstractReferenceSystem;
-import org.geotools.referencing.datum.DefaultTemporalDatum;
+import si.uom.SI;
+import tec.uom.se.unit.MetricPrefix;
 
 
 /**
@@ -135,7 +137,7 @@ public class DefaultTemporalCRS extends AbstractSingleCRS implements TemporalCRS
      *
      * @todo Should probably move elswhere. To be revisited after the move to JSR-275.
      */
-    public static Unit<Duration> MILLISECOND = SI.MILLI(SI.SECOND);
+    public static final Unit<Time> MILLISECOND = MetricPrefix.MILLI(SI.SECOND);
 
     /**
      * A converter from values in this CRS to values in milliseconds.
@@ -228,9 +230,11 @@ public class DefaultTemporalCRS extends AbstractSingleCRS implements TemporalCRS
     /**
      * Initialize the fields required for {@link #toDate} and {@link #toValue} operations.
      */
+    @SuppressWarnings("unchecked")
     private void initializeConverter() {
         origin   = ((TemporalDatum)datum).getOrigin().getTime();
-        toMillis = coordinateSystem.getAxis(0).getUnit().getConverterTo(MILLISECOND);
+        Unit<Time> time = (Unit<Time>) coordinateSystem.getAxis(0).getUnit();
+        toMillis = time.getConverterTo(MILLISECOND);
     }
 
     /**

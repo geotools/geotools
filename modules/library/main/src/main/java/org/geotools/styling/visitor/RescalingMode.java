@@ -19,10 +19,10 @@ package org.geotools.styling.visitor;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.measure.converter.UnitConverter;
+import javax.measure.UnitConverter;
 import javax.measure.quantity.Length;
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
+iimport si.uom.NonSI;
+import si.uom.SI;
 import javax.measure.Unit;
 
 import org.opengis.filter.expression.Expression;
@@ -106,12 +106,12 @@ enum RescalingMode {
             if (uom == null || uom.equals(NonSI.PIXEL))
                 return 1;
 
-            if (uom == SI.METER) {
+            if (uom == SI.METRE) {
                 return mapScale;
             }
 
             // converts value from meters to given UOM
-            UnitConverter converter = uom.getConverterTo(SI.METER);
+            UnitConverter converter = uom.getConverterTo(SI.METRE);
             return converter.convert(mapScale);
         }
 
@@ -150,7 +150,7 @@ enum RescalingMode {
         {
             put(NonSI.PIXEL, "px");
             put(NonSI.FOOT, "ft");
-            put(SI.METER, "m");
+            put(SI.METRE, "m");
         }
     };
 

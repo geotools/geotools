@@ -65,7 +65,7 @@ public class CodeMeasure<V extends CodeList<V>> extends Measure<V, Dimensionless
 
 	@Override
 	public Unit<Dimensionless> getUnit() {
-		return Unit.ONE;
+		return AbstractUnit.ONE;
 	}
 
 	@Override

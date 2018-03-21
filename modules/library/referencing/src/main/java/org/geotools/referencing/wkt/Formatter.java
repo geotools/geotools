@@ -25,9 +25,12 @@ import java.text.NumberFormat;
 import java.util.Collection;
 import java.util.Locale;
 
-import javax.measure.unit.SI;
+import si.uom.NonSI;
+import si.uom.SI;
+import tec.uom.se.AbstractUnit;
+
 import javax.measure.Unit;
-import javax.measure.unit.UnitFormat;
+import javax.measure.format.UnitFormat;
 import javax.measure.quantity.Angle;
 import javax.measure.quantity.Length;
 
@@ -499,7 +502,8 @@ public class Formatter {
             final ParameterDescriptor<?> descriptor = param.getDescriptor();
             final Unit<?> valueUnit = descriptor.getUnit();
             Unit<?> unit = valueUnit;
-            if (unit!=null && !Unit.ONE.equals(unit)) {
+            
+            if (unit!=null && !AbstractUnit.ONE.equals(unit)) {
                 if (linearUnit!=null && unit.isCompatible(linearUnit)) {
                     unit = linearUnit;
                 } else if (angularUnit!=null && unit.isCompatible(angularUnit)) {
@@ -605,12 +609,12 @@ public class Formatter {
             buffer.append(symbols.quote);
             resetColor();
             Unit<?> base = null;
-            if (SI.METER.isCompatible(unit)) {
-                base = SI.METER;
+            if (SI.METRE.isCompatible(unit)) {
+                base = SI.METRE;
             } else if (SI.SECOND.isCompatible(unit)) {
                 base = SI.SECOND;
             } else if (SI.RADIAN.isCompatible(unit)) {
-                if (!Unit.ONE.equals(unit)) {
+                if (!AbstractUnit.ONE.equals(unit)) {
                     base = SI.RADIAN;
                 }
             }
@@ -791,7 +795,7 @@ public class Formatter {
      * @param unit The new unit, or {@code null}.
      */
     public void setLinearUnit(final Unit<Length> unit) {
-        if (unit!=null && !SI.METER.isCompatible(unit)) {
+        if (unit!=null && !SI.METRE.isCompatible(unit)) {
             throw new IllegalArgumentException(Errors.format(ErrorKeys.NON_LINEAR_UNIT_$1, unit));
         }
         linearUnit = unit;
@@ -814,7 +818,7 @@ public class Formatter {
      * @param unit The new unit, or {@code null}.
      */
     public void setAngularUnit(final Unit<Angle> unit) {
-        if (unit!=null && (!SI.RADIAN.isCompatible(unit) || Unit.ONE.equals(unit))) {
+        if (unit!=null && (!SI.RADIAN.isCompatible(unit) || AbstractUnit.ONE.equals(unit))) {
             throw new IllegalArgumentException(Errors.format(ErrorKeys.NON_ANGULAR_UNIT_$1, unit));
         }
         angularUnit = unit;

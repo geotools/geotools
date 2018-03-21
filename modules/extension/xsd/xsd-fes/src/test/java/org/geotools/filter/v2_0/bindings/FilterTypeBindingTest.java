@@ -40,6 +40,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import com.vividsolutions.jts.geom.Polygon;
+import org.xml.sax.helpers.NamespaceSupport;
 
 public class FilterTypeBindingTest extends FESTestSupport {
 
@@ -84,6 +85,39 @@ public class FilterTypeBindingTest extends FESTestSupport {
         PropertyName e1 = (PropertyName) f.getExpression1();
         assertEquals("Geometry", e1.getPropertyName());
         
+        Literal e2 = (Literal) f.getExpression2();
+        assertTrue(e2.getValue() instanceof Polygon);
+    }
+
+    public void testParseSpatialLocalNamespace() throws Exception {
+        String xml =
+                "<fes:Filter" +
+                        "   xmlns:fes='http://www.opengis.net/fes/2.0' " +
+                        "   xmlns:gml='http://www.opengis.net/gml/3.2' " +
+                        "   xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' " +
+                        "   xsi:schemaLocation='http://www.opengis.net/fes/2.0 http://schemas.opengis.net/filter/2.0/filterAll.xsd" +
+                        " http://www.opengis.net/gml/3.2 http://schemas.opengis.net/gml/3.2.1/gml.xsd'> " +
+                        "   <fes:Overlaps> " +
+                        "      <fes:ValueReference xmlns:ns44=\"http://www.geootools.org/example\">ns44:Geometry</fes:ValueReference> " +
+                        "      <gml:Polygon gml:id='P1' srsName='urn:ogc:def:crs:EPSG::4326'> " +
+                        "         <gml:exterior> " +
+                        "            <gml:LinearRing> " +
+                        "               <gml:posList>10 10 20 20 30 30 40 40 10 10</gml:posList> " +
+                        "            </gml:LinearRing> " +
+                        "         </gml:exterior> " +
+                        "      </gml:Polygon> " +
+                        "   </fes:Overlaps> " +
+                        "</fes:Filter> ";
+        buildDocument(xml);
+
+        Overlaps f = (Overlaps) parse();
+        assertNotNull(f);
+
+        PropertyName e1 = (PropertyName) f.getExpression1();
+        assertEquals("ns44:Geometry", e1.getPropertyName());
+        NamespaceSupport ns = e1.getNamespaceContext();
+        assertEquals("http://www.geootools.org/example", ns.getURI("ns44"));
+
         Literal e2 = (Literal) f.getExpression2();
         assertTrue(e2.getValue() instanceof Polygon);
     }

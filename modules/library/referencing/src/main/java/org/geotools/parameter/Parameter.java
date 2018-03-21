@@ -20,27 +20,30 @@
 package org.geotools.parameter;
 
 import java.io.File;
-import java.net.URL;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Set;
 
-import javax.measure.UnitConverter;
-import si.uom.NonSI;
-import si.uom.SI;
+import javax.measure.IncommensurableException;
+import javax.measure.UnconvertibleException;
 import javax.measure.Unit;
+import javax.measure.UnitConverter;
 
+import org.geotools.measure.Units;
+import org.geotools.resources.Classes;
+import org.geotools.resources.i18n.ErrorKeys;
+import org.geotools.resources.i18n.Errors;
+import org.geotools.util.Utilities;
 import org.opengis.parameter.InvalidParameterTypeException;
 import org.opengis.parameter.InvalidParameterValueException;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.util.CodeList;
 
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.Classes;
-import org.geotools.measure.Units;
-import org.geotools.util.Utilities;
+import si.uom.NonSI;
+import si.uom.SI;
+import tec.uom.se.AbstractUnit;
 
 
 /**
@@ -203,7 +206,8 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
         // Normalizes the specified unit into one of "standard" units used in projections.
         if (unit != null) {
                  if (SI.METRE          .isCompatible(unit)) unit = SI.METRE;
-            else if (NonSI.DAY         .isCompatible(unit)) unit = NonSI.DAY;
+            else if (SI.DAY.isCompatible(unit))
+                unit = SI.DAY;
             else if (NonSI.DEGREE_ANGLE.isCompatible(unit)) unit = NonSI.DEGREE_ANGLE;
         }
         final ParameterDescriptor<Double> descriptor = DefaultParameterDescriptor.create(
@@ -368,7 +372,11 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
         if (getUnitMessageID(unit) != expectedID) {
             throw new IllegalArgumentException(Errors.format(expectedID, unit));
         }
-        return this.unit.getConverterTo(unit).convert(doubleValue());
+        try {
+            return this.unit.getConverterToAny(unit).convert(doubleValue());
+        } catch (UnconvertibleException | IncommensurableException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 
     /**
@@ -480,7 +488,13 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
         if (getUnitMessageID(unit) != expectedID) {
             throw new IllegalArgumentException(Errors.format(expectedID, unit));
         }
-        final UnitConverter converter = this.unit.getConverterTo(unit);
+        UnitConverter converter;
+        try {
+            converter = this.unit.getConverterToAny(unit);
+        } catch (UnconvertibleException | IncommensurableException e) {
+            throw new IllegalArgumentException("The value can't be converted to the provided Unit",
+                    e);
+        }
         final double[] values = doubleValueList().clone();
         for (int i=0; i<values.length; i++) {
             values[i] = converter.convert(values[i]);
@@ -616,7 +630,12 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
             throw new InvalidParameterValueException(Errors.format(expectedID, unit),
                       descriptor.getName().getCode(), value);
         }
-        final Double converted = unit.getConverterTo(targetUnit).convert(value);
+        Double converted;
+        try {
+            converted = unit.getConverterToAny(targetUnit).convert(value);
+        } catch (UnconvertibleException | IncommensurableException e) {
+            throw new IllegalArgumentException("Value can't be converted to target unit", e);
+        }
         ensureValidValue(descriptor, converted);
         // Really store the original value, not the converted one,
         // because we store the unit as well.
@@ -721,7 +740,13 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
             throw new IllegalArgumentException(Errors.format(expectedID, unit));
         }
         final double[] converted = values.clone();
-        final UnitConverter converter = unit.getConverterTo(targetUnit);
+        UnitConverter converter;
+        try {
+            converter = unit.getConverterToAny(targetUnit);
+        } catch (UnconvertibleException | IncommensurableException e) {
+            // TODO Auto-generated catch block
+            throw new IllegalArgumentException("Value can't be converted to the target unit", e);
+        }
         for (int i=0; i<converted.length; i++) {
             converted[i] = converter.convert(converted[i]);
         }

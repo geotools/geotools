@@ -24,6 +24,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 
 import javax.measure.Unit;
+import javax.measure.quantity.Length;
 import javax.xml.parsers.ParserConfigurationException;
 
 import net.opengis.wps10.ExecuteResponseType;
@@ -32,6 +33,7 @@ import net.opengis.wps10.ProcessDescriptionsType;
 import net.opengis.wps10.UOMsType;
 import net.opengis.wps10.WPSCapabilitiesType;
 import net.opengis.wps10.impl.Wps10FactoryImpl;
+import si.uom.SI;
 
 import org.geotools.TestData;
 import org.geotools.wps.WPSConfiguration;
@@ -238,7 +240,7 @@ public class ParsingTest
         }
 
         UOMsType uoMsType = Wps10FactoryImpl.eINSTANCE.createUOMsType();
-        Unit newValue = Unit.valueOf("m");
+        Unit<Length> newValue = SI.METRE;
         EMFUtils.add(uoMsType, "UOM", newValue);
 
         // uoMsType.eSet(Wps10Package.UO_MS_TYPE__UOM, newValue);

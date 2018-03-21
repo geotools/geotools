@@ -23,6 +23,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.measure.UnitConverter;
+import javax.measure.quantity.Length;
+
 import si.uom.NonSI;
 import si.uom.SI;
 import javax.measure.Unit;
@@ -230,7 +232,7 @@ public class WMTSTileFactory extends TileFactory {
      */
     private static double getPixelSpan(TileMatrix tileMatrix) {
         CoordinateSystem coordinateSystem = tileMatrix.getCrs().getCoordinateSystem();
-        Unit<?> unit = coordinateSystem.getAxis(0).getUnit();
+        Unit unit = coordinateSystem.getAxis(0).getUnit();
 
         // now divide by meters per unit!
         double pixelSpan = tileMatrix.getDenominator() * PixelSizeMeters;

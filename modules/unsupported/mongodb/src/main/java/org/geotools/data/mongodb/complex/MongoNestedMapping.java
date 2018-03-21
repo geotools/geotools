@@ -110,7 +110,8 @@ public class MongoNestedMapping extends NestedAttributeMapping {
         collection.addAll(features);
         MongoStaticFeatureSource staticSource = new MongoStaticFeatureSource(collection, mapping.getSource());
         FeatureTypeMapping staticMapping = new FeatureTypeMapping(staticSource, mapping.getTargetFeature(),
-                mapping.getAttributeMappings(), mapping.getNamespaces(), mapping.isDenormalised());
+                mapping.getDefaultGeometryXPath(), mapping.getAttributeMappings(), mapping.getNamespaces(),
+                mapping.isDenormalised());
         return new MappingFeatureSource(dataAccess, staticMapping);
     }
 

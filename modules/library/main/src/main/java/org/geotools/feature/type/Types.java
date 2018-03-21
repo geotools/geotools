@@ -579,6 +579,35 @@ public class Types {
     }
 
     /**
+     * Converts a {@link Name} to a prefixed name (i.e. p:Foo), by looking up the right prefix in the
+     * provided {@link NamespaceSupport}. If no prefix is found, the return value will be the same
+     * as that of {@link Name#getLocalPart()}.
+     * 
+     * @param name the name to translate in prefixed form
+     * @param ns namespace context, relates namespaces to prefixes
+     * @return
+     */
+    public static String toPrefixedName(Name name, NamespaceSupport ns) {
+        StringBuilder sb = new StringBuilder();
+
+        if (name == null) {
+            return null;
+        }
+
+        String prefix = null;
+        if (ns != null) {
+            prefix = ns.getPrefix(name.getNamespaceURI());
+        }
+        if (prefix != null && !prefix.isEmpty()) {
+            sb.append(prefix);
+            sb.append(name.getSeparator());
+        }
+        sb.append(name.getLocalPart());
+
+        return sb.toString();
+    }
+
+    /**
      * 
      * @param name
      * @return

@@ -83,21 +83,29 @@ public class FeatureTypeMapping {
     private boolean isDenormalised;
 
     /**
+     * User-provided XPath expression specifying a property to be used as default geometry for the
+     * target feature type.
+     */
+    private String defaultGeometryXPath;
+
+    /**
      * No parameters constructor for use by the digester configuration engine as a JavaBean
      */
     public FeatureTypeMapping() {
-        this(null, null, new LinkedList<AttributeMapping>(), new NamespaceSupport(), false);
+        this(null, null, null, new LinkedList<AttributeMapping>(), new NamespaceSupport(), false);
     }
 
     public FeatureTypeMapping(FeatureSource<? extends FeatureType, ? extends Feature> source,
             AttributeDescriptor target, List<AttributeMapping> mappings, NamespaceSupport namespaces) {
-        this(source, target, mappings, namespaces, false);
+        this(source, target, null, mappings, namespaces, false);
     }
 
     public FeatureTypeMapping(FeatureSource<? extends FeatureType, ? extends Feature> source,
-            AttributeDescriptor target, List<AttributeMapping> mappings, NamespaceSupport namespaces, boolean isDenormalised) {
+            AttributeDescriptor target, String defaultGeometryXPath,
+            List<AttributeMapping> mappings, NamespaceSupport namespaces, boolean isDenormalised) {
         this.source = source;
         this.target = target;
+        this.defaultGeometryXPath = defaultGeometryXPath;
         this.attributeMappings = new LinkedList<AttributeMapping>(mappings);
         this.namespaces = namespaces;
         this.isDenormalised = isDenormalised;
@@ -386,6 +394,39 @@ public class FeatureTypeMapping {
 
     public void setDenormalised(boolean isDenormalised) {
         this.isDenormalised = isDenormalised;
+    }
+
+    /**
+     * Returns the default geometry XPath expression that was specified in the mapping configuration,
+     * or {@code null} if none was set.
+     * 
+     * @see FeatureTypeMapping#setDefaultGeometryXPath(String)
+     * 
+     * @return XPath expression identifying the default geometry property
+     */
+    public String getDefaultGeometryXPath() {
+        return defaultGeometryXPath;
+    }
+
+    /**
+     * Specifies which property should be used as default geometry for the target feature type.
+     * 
+     * <p>
+     * This is especially useful when automatic detection of the default geometry is difficult or
+     * impossible to do, e.g. when the geometry property is nested inside another property, or
+     * multiple geometry properties are present.
+     * </p> 
+     * 
+     * <p>
+     * The specified geometry property may be a direct child of the target feature type, or may be
+     * nested inside another property. If the evaluation of the provided expression yields multiple
+     * values, an exception will be thrown at runtime.
+     * </p>
+     * 
+     * @param defaultGeometryXPath XPath expression identifying the default geometry property
+     */
+    public void setDefaultGeometryXPath(String defaultGeometryXPath) {
+        this.defaultGeometryXPath = defaultGeometryXPath;
     }
 
     public void setSource(FeatureSource<? extends FeatureType, ? extends Feature> source) {

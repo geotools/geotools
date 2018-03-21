@@ -27,6 +27,9 @@ import javax.measure.Unit;
 import org.geotools.factory.Hints;
 import org.geotools.measure.Measure;
 
+import tec.uom.se.format.SimpleUnitFormat;
+import tec.uom.se.internal.format.UnitFormatParser;
+
 /**
  * ConverterFactory which converts between the {@link Measure} and String.
  * 
@@ -76,7 +79,7 @@ public class MeasureConverterFactory implements ConverterFactory {
                     // this will throw an exception in case of failure
                     String group = matcher.group(2).trim();
                     if (!group.isEmpty()) {
-                        unit = Unit.valueOf(group);
+                        unit = SimpleUnitFormat.getInstance().parse(group);
                     }
                 }
                 return (T) new Measure(value, unit);

@@ -19,14 +19,17 @@ package org.geotools.styling.visitor;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.measure.Unit;
 import javax.measure.UnitConverter;
 import javax.measure.quantity.Length;
-import si.uom.NonSI;
-import si.uom.SI;
-import javax.measure.Unit;
 
+import org.geotools.measure.Units;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
+
+import si.uom.NonSI;
+import si.uom.SI;
+import systems.uom.common.USCustomary;
 
 /**
  * Helper class that allows rescaling to pixels numbers that might carry a unit specification along
@@ -103,7 +106,7 @@ enum RescalingMode {
          */
         double computeRescaleMultiplier(double mapScale, Unit<Length> uom) {
             // no scaling to do if UOM is PIXEL (or null, which stands for PIXEL as well)
-            if (uom == null || uom.equals(NonSI.PIXEL))
+            if (uom == null || uom.equals(Units.PIXEL))
                 return 1;
 
             if (uom == SI.METRE) {
@@ -148,7 +151,7 @@ enum RescalingMode {
      */
     final Map<Unit, String> UNIT_SYMBOLS = new HashMap<Unit, String>() {
         {
-            put(NonSI.PIXEL, "px");
+            put(Units.PIXEL, "px");
             put(USCustomary.FOOT, "ft");
             put(SI.METRE, "m");
         }

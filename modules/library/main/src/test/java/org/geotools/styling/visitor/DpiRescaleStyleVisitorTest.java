@@ -22,6 +22,7 @@ import java.awt.Color;
 
 import si.uom.NonSI;
 import si.uom.SI;
+import systems.uom.common.USCustomary;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.LineSymbolizer;

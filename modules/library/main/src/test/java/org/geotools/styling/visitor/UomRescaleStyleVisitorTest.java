@@ -22,17 +22,17 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 import java.awt.Color;
+import java.util.Arrays;
 import java.util.Map;
 
-import javax.measure.quantity.Length;
-import si.uom.NonSI;
-import si.uom.SI;
 import javax.measure.Unit;
+import javax.measure.quantity.Length;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.filter.FilterFactoryImpl;
+import org.geotools.measure.Units;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.styling.Fill;
 import org.geotools.styling.Font;
@@ -63,7 +63,10 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
-import java.util.Arrays;
+
+import si.uom.NonSI;
+import si.uom.SI;
+import systems.uom.common.USCustomary;
 
 
 /**
@@ -117,7 +120,7 @@ public class UomRescaleStyleVisitorTest
             double scaleUomToMeters = 1;
             if (uom.equals(USCustomary.FOOT))
                 scaleUomToMeters *= 0.3048006096012;
-            if (!uom.equals(NonSI.PIXEL))
+            if (!uom.equals(Units.PIXEL))
                 expectedRescaledSize *= scaleUomToMeters * scaleMetersToPixel;
         }
         
@@ -334,7 +337,7 @@ public class UomRescaleStyleVisitorTest
     @Test
     public void testVisitPointSymbolizer_ScalePixelExplicit()
     {
-        visitPointSymbolizerTest(10, NonSI.PIXEL);
+        visitPointSymbolizerTest(10, Units.PIXEL);
     }
     
     @Test
@@ -372,7 +375,7 @@ public class UomRescaleStyleVisitorTest
     @Test
     public void testVisitLineSymbolizer_ScalePixelExplicit()
     {
-        visitLineSymbolizerTest(10, NonSI.PIXEL);
+        visitLineSymbolizerTest(10, Units.PIXEL);
     }
     
     @Test
@@ -408,7 +411,7 @@ public class UomRescaleStyleVisitorTest
     
     public void testVisitLineSymbolizerDynamicDashArray_ScalePixelExplicit()
     {
-        visitLineSymbolizerTestDynamicDashArray(10, NonSI.PIXEL);
+        visitLineSymbolizerTestDynamicDashArray(10, Units.PIXEL);
     }
     
     
@@ -445,7 +448,7 @@ public class UomRescaleStyleVisitorTest
     @Test
     public void testVisitPolygonSymbolizer_ScalePixelExplicit()
     {
-        visitPolygonSymbolizerTest(10, NonSI.PIXEL);
+        visitPolygonSymbolizerTest(10, Units.PIXEL);
     }
     
     @Test
@@ -483,7 +486,7 @@ public class UomRescaleStyleVisitorTest
     @Test
     public void testVisitTextSymbolizer_ScalePixelExplicit()
     {
-        visitTextSymbolizerTest(10, NonSI.PIXEL);
+        visitTextSymbolizerTest(10, Units.PIXEL);
     }
     
     @Test

@@ -16,10 +16,12 @@
  */
 package org.geotools.styling;
 
+import javax.measure.Unit;
 import javax.measure.quantity.Length;
+
 import si.uom.NonSI;
 import si.uom.SI;
-import javax.measure.Unit;
+import systems.uom.common.USCustomary;
 
 /**
  * Defines the Units of Measure (UOMs) specified by the OGC SE standard and their mappings to Java
@@ -32,7 +34,7 @@ import javax.measure.Unit;
 public enum UomOgcMapping {
 
     METRE(SI.METRE, "http://www.opengeospatial.org/se/units/metre"), FOOT(USCustomary.FOOT,
-            "http://www.opengeospatial.org/se/units/foot"), PIXEL(NonSI.PIXEL,
+            "http://www.opengeospatial.org/se/units/foot"), PIXEL(org.geotools.measure.Units.PIXEL,
             "http://www.opengeospatial.org/se/units/pixel");
 
     private String seString;

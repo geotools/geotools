@@ -1,13 +1,16 @@
 package org.geotools.filter.v2_0.bindings;
 
 import org.geotools.filter.v2_0.FES;
-import org.geotools.xml.*;
+import org.geotools.gml3.bindings.GML3EncodingUtils;
+import org.geotools.xml.AbstractSimpleBinding;
+import org.geotools.xml.InstanceComponent;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.PropertyName;
 import org.xml.sax.helpers.NamespaceSupport;
 
 import javax.xml.namespace.QName;
+import java.util.Enumeration;
 
 /**
  * Binding object for the element http://www.opengis.net/fes/2.0:ValueReference.
@@ -58,7 +61,8 @@ public class ValueReferenceBinding extends AbstractSimpleBinding {
      * @generated modifiable
      */
     public Object parse(InstanceComponent instance, Object value) throws Exception {
-        return ((FilterFactory2) filterFactory).property((String)value, namespaceSupport);
+        return ((FilterFactory2) filterFactory).property((String)value, GML3EncodingUtils.copyNamespaceSupport(
+                (namespaceSupport)));
     }
 
 }

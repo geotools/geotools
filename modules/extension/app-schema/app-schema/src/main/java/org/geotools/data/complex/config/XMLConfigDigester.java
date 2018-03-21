@@ -216,6 +216,8 @@ public class XMLConfigDigester {
         digester.addCallParam(typeMapping + "/sourceType", 0);
         digester.addCallMethod(typeMapping + "/targetElement", "setTargetElementName", 1);
         digester.addCallParam(typeMapping + "/targetElement", 0);
+        digester.addCallMethod(typeMapping + "/defaultGeometry", "setDefaultGeometryXPath", 1);
+        digester.addCallParam(typeMapping + "/defaultGeometry", 0);
         digester.addCallMethod(typeMapping + "/itemXpath", "setItemXpath", 1);
         digester.addCallParam(typeMapping + "/itemXpath", 0);
 
@@ -228,7 +230,6 @@ public class XMLConfigDigester {
         // maxFeatures limit when constructing SQL queries (isDenormalsed = false).
         digester.addCallMethod(typeMapping + "/isDenormalised", "setIsDenormalised", 1);
         digester.addCallParam(typeMapping + "/isDenormalised", 0);
-
 
         // create attribute mappings
         final String attMappings = typeMapping + "/attributeMappings";

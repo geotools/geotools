@@ -23,6 +23,7 @@ import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -47,19 +48,28 @@ import org.geotools.data.DataSourceException;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.complex.AppSchemaDataAccessRegistry;
 import org.geotools.data.complex.AttributeMapping;
+import org.geotools.data.complex.ComplexFeatureConstants;
 import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.data.complex.FeatureTypeMappingFactory;
 import org.geotools.data.complex.NestedAttributeMapping;
 import org.geotools.data.complex.filter.XPath;
+import org.geotools.data.complex.filter.XPathUtil;
 import org.geotools.data.complex.filter.XPathUtil.Step;
 import org.geotools.data.complex.filter.XPathUtil.StepList;
 import org.geotools.data.complex.spi.CustomImplementationsFinder;
 import org.geotools.data.complex.xml.XmlFeatureSource;
 import org.geotools.data.joining.JoiningNestedAttributeMapping;
 import org.geotools.factory.Hints;
+import org.geotools.feature.NameImpl;
+import org.geotools.feature.type.AttributeDescriptorImpl;
+import org.geotools.feature.type.ComplexFeatureTypeFactoryImpl;
+import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.geotools.filter.AttributeExpressionImpl;
 import org.geotools.filter.FilterFactoryImplReportInvalidProperty;
 import org.geotools.filter.expression.FeaturePropertyAccessorFactory;
+import org.geotools.filter.expression.PropertyAccessor;
+import org.geotools.filter.expression.PropertyAccessorFactory;
+import org.geotools.filter.expression.PropertyAccessors;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.jdbc.JDBCFeatureSource;
@@ -70,10 +80,13 @@ import org.geotools.xml.resolver.SchemaCache;
 import org.geotools.xml.resolver.SchemaCatalog;
 import org.geotools.xml.resolver.SchemaResolver;
 import org.opengis.feature.Feature;
+import org.opengis.feature.GeometryAttribute;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.FeatureType;
+import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.Name;
+import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -304,8 +317,9 @@ public class AppSchemaDataAccessConfigurator {
 
                 FeatureTypeMapping mapping;
 
-                mapping = FeatureTypeMappingFactory.getInstance(featureSource, target, attMappings,
-                        namespaces, dto.getItemXpath(), dto.isXmlDataStore(), dto.isDenormalised());
+                mapping = FeatureTypeMappingFactory.getInstance(featureSource, target,
+                        dto.getDefaultGeometryXPath(), attMappings, namespaces, dto.getItemXpath(),
+                        dto.isXmlDataStore(), dto.isDenormalised());
 
                 String mappingName = dto.getMappingName();
                 if (mappingName != null) {
@@ -329,10 +343,75 @@ public class AppSchemaDataAccessConfigurator {
 
         AttributeDescriptor targetDescriptor = typeRegistry.getDescriptor(targetNodeName, crs);
         if (targetDescriptor == null) {
-            throw new NoSuchElementException("descriptor " + targetNodeName
-                    + " not found in parsed schema");
+            throw new NoSuchElementException(
+                    "descriptor " + targetNodeName + " not found in parsed schema");
         }
+
+        // check if default geometry was set in FeatureTypeMapping
+        // NOTE: if a default geometry is already set, it will be overridden
+        String defaultGeomXPath = dto.getDefaultGeometryXPath();
+        if (defaultGeomXPath != null && !defaultGeomXPath.isEmpty()) {
+            targetDescriptor = retypeAddingDefaultGeometry(targetDescriptor, defaultGeomXPath);
+        }
+
         return targetDescriptor;
+    }
+
+    private AttributeDescriptor retypeAddingDefaultGeometry(AttributeDescriptor descriptor,
+            String defaultGeomXPath) {
+        AttributeDescriptor newDescriptor = descriptor;
+        FeatureType type = (FeatureType) descriptor.getType();
+
+        GeometryDescriptor geom = getDefaultGeometryDescriptor(type, defaultGeomXPath);
+        if (geom != null) {
+            FeatureTypeFactoryImpl ftf = new ComplexFeatureTypeFactoryImpl();
+
+            String defGeomNamespace = type.getName().getNamespaceURI();
+            String defGeomLocalName = ComplexFeatureConstants.DEFAULT_GEOMETRY_LOCAL_NAME;
+            GeometryDescriptor defGeom = ftf.createGeometryDescriptor(geom.getType(),
+                    new NameImpl(defGeomNamespace, defGeomLocalName), geom.getMinOccurs(),
+                    geom.getMaxOccurs(), geom.isNillable(), geom.getDefaultValue());
+
+            Collection<PropertyDescriptor> descriptors = new HashSet<>(type.getDescriptors());
+            descriptors.add(defGeom);
+
+            FeatureType newType = ftf.createFeatureType(type.getName(), descriptors, defGeom,
+                    type.isAbstract(), type.getRestrictions(), type.getSuper(),
+                    type.getDescription());
+            newType.getUserData().putAll(type.getUserData());
+
+            newDescriptor = new AttributeDescriptorImpl(newType, descriptor.getName(),
+                    descriptor.getMinOccurs(), descriptor.getMaxOccurs(), descriptor.isNillable(),
+                    descriptor.getDefaultValue());
+            newDescriptor.getUserData().putAll(descriptor.getUserData());
+        } else {
+            throw new IllegalArgumentException(String.format(
+                    "Default geometry descriptor could not be found for type \"%s\" at x-path \"%s\"",
+                    descriptor.getName().toString(), defaultGeomXPath));
+        }
+
+        return newDescriptor;
+    }
+
+    private GeometryDescriptor getDefaultGeometryDescriptor(FeatureType featureType, String xpath) {
+        // directly instantiating the factory I need instead of scanning the registry improves perf.
+        FeaturePropertyAccessorFactory accessorFactory = new FeaturePropertyAccessorFactory();
+        Hints hints = new Hints(PropertyAccessorFactory.NAMESPACE_CONTEXT, namespaces);
+        PropertyAccessor accessor = accessorFactory.createPropertyAccessor(featureType.getClass(),
+                xpath, GeometryAttribute.class, hints);
+
+        GeometryDescriptor geom = null;
+        if (accessor != null) {
+            try {
+                geom = accessor.get(featureType, xpath, GeometryDescriptor.class);
+            } catch (Exception e) {
+                LOGGER.finest(
+                        String.format("Exception occurred retrieving geometry descriptor "
+                                + "at x-path \"%s\": %s", xpath, e.getMessage()));
+            }
+        }
+
+        return geom;
     }
 
     /**

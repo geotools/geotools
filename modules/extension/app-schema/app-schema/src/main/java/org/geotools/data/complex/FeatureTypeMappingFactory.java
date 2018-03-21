@@ -32,14 +32,14 @@ import org.xml.sax.helpers.NamespaceSupport;
 public class FeatureTypeMappingFactory {
 
    public static  FeatureTypeMapping getInstance(FeatureSource source, AttributeDescriptor target,
-           List<AttributeMapping> mappings, NamespaceSupport namespaces,
+           String defaultGeometryXPath, List<AttributeMapping> mappings, NamespaceSupport namespaces,
            String itemXpath, boolean isXmlDataStore, boolean isDenormalised) {
        
        if(isXmlDataStore) {
            return new XmlFeatureTypeMapping(source, target,
                    mappings, namespaces, itemXpath);           
        } else {
-           return new FeatureTypeMapping(source, target,
+           return new FeatureTypeMapping(source, target, defaultGeometryXPath,
                    mappings, namespaces, isDenormalised);
        }       
    }

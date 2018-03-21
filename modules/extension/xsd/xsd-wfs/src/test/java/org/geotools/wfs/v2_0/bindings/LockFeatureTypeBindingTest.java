@@ -5,8 +5,14 @@ import javax.xml.namespace.QName;
 import net.opengis.wfs20.LockFeatureType;
 import net.opengis.wfs20.QueryType;
 
+import org.geotools.filter.v1_1.OGCConfiguration;
+import org.geotools.wfs.v2_0.WFSConfiguration;
 import org.geotools.wfs.v2_0.WFSTestSupport;
+import org.geotools.xml.Parser;
+import org.junit.Test;
 import org.opengis.filter.Id;
+
+import java.io.StringReader;
 
 public class LockFeatureTypeBindingTest extends WFSTestSupport {
 
@@ -45,5 +51,18 @@ public class LockFeatureTypeBindingTest extends WFSTestSupport {
         assertTrue(q.getTypeNames().contains(new QName("http://www.someserver.com/myns", "InWaterA_1M")));
         Id f = (Id) q.getFilter();
         assertEquals(5, f.getIDs().size());
+    }
+    
+    @Test
+    public void testParseEmptyLock() throws Exception {
+        String xml = "<wfs:LockFeature xmlns:wfs=\"http://www.opengis.net/wfs/2.0\" " +
+                "lockId=\"GeoServer_eb5fd6b6b6024d5\" service=\"WFS\" version=\"2.0.0\"> " +
+                "</wfs:LockFeature>";
+
+        Parser p = new Parser(new WFSConfiguration());
+        p.validate(new StringReader(xml));
+
+        assertTrue(p.getValidationErrors().isEmpty());
+
     }
 }

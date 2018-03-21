@@ -17,6 +17,7 @@
 package org.geotools.renderer.windbarbs;
 
 import si.uom.NonSI;
+import systems.uom.common.USCustomary;
 
 import org.junit.Assert;
 import org.junit.Test;

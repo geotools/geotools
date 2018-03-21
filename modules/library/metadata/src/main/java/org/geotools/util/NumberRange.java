@@ -389,8 +389,8 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
             throws IllegalArgumentException
     {
         if (type.equals(range.getElementClass())) {
-            @SuppressWarnings("unchecked") // Safe because we checked in the line just above.
-            final NumberRange<N> cast = (NumberRange<N>) wrap(range);
+            @SuppressWarnings({ "unchecked", "rawtypes" }) // Safe because we checked in the line just above.
+            final NumberRange<N> cast = (NumberRange) wrap((Range)range);
             return cast;
         }
         return new NumberRange<N>(type,range);

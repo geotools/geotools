@@ -605,6 +605,12 @@
         <artifactId>systems-common</artifactId>
         <version>0.7.2</version>
       </dependency>
+    <dependency>
+      <groupId>systems.uom</groupId>
+      <artifactId>systems-ucum-java8</artifactId>
+      <version>0.7.2</version>
+    </dependency>
+    
       <!-- Java Advanced Imaging (JAI) -->
       <dependency>
         <groupId>javax.media</groupId>

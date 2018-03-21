@@ -21,6 +21,8 @@ import java.util.logging.Logger;
 
 import javax.measure.UnitConverter;
 import si.uom.SI;
+import systems.uom.common.USCustomary;
+
 import javax.measure.Unit;
 
 import org.geotools.feature.DefaultFeatureCollection;
@@ -121,7 +123,7 @@ public class LRSMeasureProcess implements VectorProcess {
 
             FeatureType targetFeatureType = createTargetFeatureType(featureCollection.getSchema());
             Unit fromUnit = SI.METRE;
-            Unit toUnit = Unit.valueOf("mi");
+            Unit toUnit = USCustomary.MILE;
             UnitConverter unitConvert = fromUnit.getConverterTo(toUnit);
             Feature nearestFeature = null;
             double nearestDistance = 9e9;

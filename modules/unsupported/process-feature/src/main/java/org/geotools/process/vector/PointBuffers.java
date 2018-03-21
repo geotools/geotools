@@ -21,6 +21,8 @@ import java.awt.geom.Point2D;
 
 import javax.measure.UnitConverter;
 import si.uom.SI;
+import tec.uom.se.AbstractConverter;
+
 import javax.measure.Unit;
 
 import org.geotools.data.collection.ListFeatureCollection;
@@ -83,7 +85,7 @@ public class PointBuffers implements VectorProcess {
                 generator = new MetricGenerator(center, quadrantSegments, converter);
             }
         } else {
-            generator = new MetricGenerator(center, quadrantSegments, UnitConverter.IDENTITY);
+            generator = new MetricGenerator(center, quadrantSegments, AbstractConverter.IDENTITY);
         }
 
         // we don't expect million of directions, so we use a simple in memory collection

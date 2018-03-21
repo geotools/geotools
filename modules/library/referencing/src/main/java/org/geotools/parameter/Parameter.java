@@ -25,9 +25,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Set;
 
-import javax.measure.converter.UnitConverter;
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
+import javax.measure.UnitConverter;
+iimport si.uom.NonSI;
+import si.uom.SI;
 import javax.measure.Unit;
 
 import org.opengis.parameter.InvalidParameterTypeException;
@@ -202,7 +202,7 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
     public static Parameter<Double> create(final String name, final double value, Unit<?> unit) {
         // Normalizes the specified unit into one of "standard" units used in projections.
         if (unit != null) {
-                 if (SI.METER          .isCompatible(unit)) unit = SI.METER;
+                 if (SI.METRE          .isCompatible(unit)) unit = SI.METRE;
             else if (NonSI.DAY         .isCompatible(unit)) unit = NonSI.DAY;
             else if (NonSI.DEGREE_ANGLE.isCompatible(unit)) unit = NonSI.DEGREE_ANGLE;
         }
@@ -332,14 +332,14 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
      *       and all of them maps to {@link Unit#ONE} or {@link Units#PPM}. Consequently, they
      *       are hard-coded and treated especially by this method.
      *
-     * @todo Provides a better way to differentiate scale units (currently Unit.ONE)
+     * @todo Provides a better way to differentiate scale units (currently AbstractUnit.ONE)
      *       and angular units. Both are dimensionless...
      */
     static int getUnitMessageID(final Unit<?> unit) {
         // Note: ONE must be tested before RADIAN.
-        if (Unit.ONE .equals      (unit) ||
+        if (AbstractUnit.ONE .equals      (unit) ||
             Units.PPM.equals      (unit)) return ErrorKeys.NON_SCALE_UNIT_$1;
-        if (SI.METER .isCompatible(unit)) return ErrorKeys.NON_LINEAR_UNIT_$1;
+        if (SI.METRE .isCompatible(unit)) return ErrorKeys.NON_LINEAR_UNIT_$1;
         if (SI.SECOND.isCompatible(unit)) return ErrorKeys.NON_TEMPORAL_UNIT_$1;
         if (SI.RADIAN.isCompatible(unit)) return ErrorKeys.NON_ANGULAR_UNIT_$1;
         return ErrorKeys.INCOMPATIBLE_UNIT_$1;

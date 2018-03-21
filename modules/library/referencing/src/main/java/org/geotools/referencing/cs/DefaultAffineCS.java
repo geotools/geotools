@@ -20,7 +20,7 @@
 package org.geotools.referencing.cs;
 
 import java.util.Map;
-import javax.measure.unit.SI;
+import si.uom.SI;
 import javax.measure.Unit;
 
 import org.opengis.referencing.cs.AffineCS;
@@ -158,7 +158,7 @@ public class DefaultAffineCS extends AbstractCS implements AffineCS {
      */
     @Override
     protected boolean isCompatibleUnit(final AxisDirection direction, final Unit<?> unit) {
-        return SI.METER.isCompatible(unit) || Unit.ONE.equals(unit);
+        return SI.METRE.isCompatible(unit) || AbstractUnit.ONE.equals(unit);
         // Note: this condition is also coded in PredefinedCS.rightHanded(AffineCS).
     }
 

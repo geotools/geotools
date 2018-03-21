@@ -16,7 +16,7 @@
  */
 package org.geotools.renderer.windbarbs;
 
-import javax.measure.unit.NonSI;
+iimport si.uom.NonSI;
 
 import org.junit.Assert;
 import org.junit.Test;

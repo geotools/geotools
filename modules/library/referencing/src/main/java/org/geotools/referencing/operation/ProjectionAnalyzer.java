@@ -26,7 +26,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.LogRecord;
 import javax.measure.Unit;
-import javax.measure.unit.SI;
+import si.uom.SI;
 
 import org.opengis.parameter.ParameterValue;
 import org.opengis.parameter.ParameterValueGroup;
@@ -257,10 +257,10 @@ final class ProjectionAnalyzer {
                         } else {
                             continue;
                         }
-                        final double offset = value.doubleValue(SI.METER);
+                        final double offset = value.doubleValue(SI.METRE);
                         if (!Double.isNaN(offset) && offset != value.doubleValue()) {
                             // See the above comment about units. The above check could have been
-                            // replaced by "if (!SI.METER.equals(unit))", but the above avoid the
+                            // replaced by "if (!SI.METRE.equals(unit))", but the above avoid the
                             // warning in the very common case where 'offset == 0'.
                             unit = value.getUnit();
                             warning = descriptor.getName().getCode();
@@ -273,7 +273,7 @@ final class ProjectionAnalyzer {
         }
         if (warning != null) {
             final LogRecord record = Loggings.format(Level.WARNING,
-                    LoggingKeys.APPLIED_UNIT_CONVERSION_$3, warning, unit, SI.METER);
+                    LoggingKeys.APPLIED_UNIT_CONVERSION_$3, warning, unit, SI.METRE);
             record.setSourceClassName(getClass().getName());
             record.setSourceMethodName("createLinearConversion"); // This is the public method.
             final Logger logger = ReferencingFactory.LOGGER;

@@ -24,7 +24,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.HashMap;
 import java.util.Map;
-import javax.measure.unit.SI;
+import si.uom.SI;
 import javax.measure.Unit;
 
 import org.opengis.metadata.extent.Extent;
@@ -412,12 +412,12 @@ public class AbstractCoordinateOperation extends AbstractIdentifiedObject
                     final Collection<? extends Record> records = quantity.getValues();
                     if (records != null) {
                         final Unit<?> unit = quantity.getValueUnit();
-                        if (unit!=null && SI.METER.isCompatible(unit)) {
+                        if (unit!=null && SI.METRE.isCompatible(unit)) {
                             for (final Record record : records) {
                                 for (final Object value : record.getAttributes().values()) {
                                     if (value instanceof Number) {
                                         double v = ((Number) value).doubleValue();
-                                        v = unit.getConverterTo(SI.METER).convert(v);
+                                        v = unit.getConverterTo(SI.METRE).convert(v);
                                         return v;
                                     }
                                 }

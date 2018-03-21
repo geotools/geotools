@@ -20,9 +20,9 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 
-import javax.measure.unit.SI;
+import si.uom.SI;
 import javax.measure.Unit;
-import javax.measure.unit.UnitFormat;
+import javax.measure.format.UnitFormat;
 
 import org.geotools.metadata.iso.citation.Citations;
 import org.junit.Test;

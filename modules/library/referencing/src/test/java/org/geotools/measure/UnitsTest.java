@@ -19,7 +19,7 @@ package org.geotools.measure;
 import java.io.*;
 import javax.measure.Unit;
 import javax.measure.quantity.Quantity;
-import javax.measure.converter.UnitConverter;
+import javax.measure.UnitConverter;
 import static javax.measure.unit.NonSI.DEGREE_ANGLE;
 import static org.geotools.measure.Units.*;
 

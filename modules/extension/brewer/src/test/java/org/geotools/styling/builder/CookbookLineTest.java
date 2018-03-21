@@ -6,7 +6,7 @@ import java.awt.Color;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.measure.unit.SI;
+import si.uom.SI;
 
 import org.geotools.filter.function.RecodeFunction;
 import org.geotools.styling.FeatureTypeStyle;
@@ -349,7 +349,7 @@ public class CookbookLineTest extends AbstractStyleTest {
 
     @Test
     public void testUomLine() {
-        Style style = new LineSymbolizerBuilder().uom(SI.METER).stroke().width(50)
+        Style style = new LineSymbolizerBuilder().uom(SI.METRE).stroke().width(50)
                 .colorHex("#009933").buildStyle();
         // print(style);
 
@@ -358,6 +358,6 @@ public class CookbookLineTest extends AbstractStyleTest {
         assertSimpleStyle(collector);
 
         LineSymbolizer ls = (LineSymbolizer) collector.symbolizers.get(0);
-        assertEquals(SI.METER, ls.getUnitOfMeasure());
+        assertEquals(SI.METRE, ls.getUnitOfMeasure());
     }
 }

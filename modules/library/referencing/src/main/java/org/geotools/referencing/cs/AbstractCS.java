@@ -23,9 +23,9 @@ import java.util.Map;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Collections;
-import javax.measure.unit.SI;
+import si.uom.SI;
 import javax.measure.Unit;
-import javax.measure.converter.UnitConverter;
+import javax.measure.UnitConverter;
 import javax.measure.converter.ConversionException;
 
 import org.opengis.referencing.cs.AxisDirection;

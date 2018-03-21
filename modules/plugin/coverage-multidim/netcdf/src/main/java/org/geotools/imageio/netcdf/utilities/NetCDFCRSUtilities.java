@@ -28,10 +28,10 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
+iimport si.uom.NonSI;
+import si.uom.SI;
 import javax.measure.Unit;
-import javax.measure.unit.UnitFormat;
+import javax.measure.format.UnitFormat;
 
 import org.geotools.factory.GeoTools;
 import org.geotools.imageio.Identification;
@@ -468,7 +468,7 @@ public class NetCDFCRSUtilities {
      */
     static Unit< ? > getUnit( final String unitName ) throws FactoryException {
         if (contains(unitName, METERS)) {
-            return SI.METER;
+            return SI.METRE;
         } else if (contains(unitName, DEGREES)) {
             return NonSI.DEGREE_ANGLE;
         } else if (contains(unitName, SECONDS)) {

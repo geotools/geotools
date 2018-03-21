@@ -19,7 +19,7 @@ package org.geotools.referencing.operation.transform;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
-import javax.measure.unit.SI;
+import si.uom.SI;
 import static java.lang.Math.*;
 
 import org.opengis.util.GenericName;
@@ -620,7 +620,7 @@ public class MolodenskiTransform extends AbstractMathTransform implements Serial
          */
         public static final ParameterDescriptor<Double> SRC_SEMI_MAJOR = createDescriptor(
                 identifiers(GeocentricTranslation.Provider.SRC_SEMI_MAJOR),
-                Double.NaN, 0.0, Double.POSITIVE_INFINITY, SI.METER);
+                Double.NaN, 0.0, Double.POSITIVE_INFINITY, SI.METRE);
 
         /**
          * The operation parameter descriptor for the "src_semi_minor" parameter value.
@@ -628,7 +628,7 @@ public class MolodenskiTransform extends AbstractMathTransform implements Serial
          */
         public static final ParameterDescriptor<Double> SRC_SEMI_MINOR = createDescriptor(
                 identifiers(GeocentricTranslation.Provider.SRC_SEMI_MINOR),
-                Double.NaN, 0.0, Double.POSITIVE_INFINITY, SI.METER);
+                Double.NaN, 0.0, Double.POSITIVE_INFINITY, SI.METRE);
 
         /**
          * The operation parameter descriptor for the "tgt_semi_major" parameter value.
@@ -636,7 +636,7 @@ public class MolodenskiTransform extends AbstractMathTransform implements Serial
          */
         public static final ParameterDescriptor<Double> TGT_SEMI_MAJOR = createDescriptor(
                 identifiers(GeocentricTranslation.Provider.TGT_SEMI_MAJOR),
-                Double.NaN, 0.0, Double.POSITIVE_INFINITY, SI.METER);
+                Double.NaN, 0.0, Double.POSITIVE_INFINITY, SI.METRE);
 
         /**
          * The operation parameter descriptor for the "tgt_semi_minor" parameter value.
@@ -644,7 +644,7 @@ public class MolodenskiTransform extends AbstractMathTransform implements Serial
          */
         public static final ParameterDescriptor<Double> TGT_SEMI_MINOR = createDescriptor(
                 identifiers(GeocentricTranslation.Provider.TGT_SEMI_MINOR),
-                Double.NaN, 0.0, Double.POSITIVE_INFINITY, SI.METER);
+                Double.NaN, 0.0, Double.POSITIVE_INFINITY, SI.METRE);
 
         /** Helper method for parameter descriptor creation. */
         private static final NamedIdentifier[] identifiers(final ParameterDescriptor parameter) {

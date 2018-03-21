@@ -50,10 +50,7 @@ public class DateRange extends Range<Date> {
     /**
      * The unit used for time representation in a date.
      */
-    private static final Unit<? extends Quantity> MILLISECONDb = MetricPrefix.MILLI(SI.SECOND);
-
     private static final Unit<Time> MILLISECOND = MetricPrefix.MILLI(SI.SECOND);
-    // private static final Unit<Duration> MILLISECOND = MetricPrefix.MILLI(SI.SECOND);
 
     /**
      * Creates a new date range for the given dates. Start time and end time are inclusive.
@@ -90,7 +87,7 @@ public class DateRange extends Range<Date> {
      */
     public DateRange(final MeasurementRange<?> range, final Date origin)
             throws IncommensurableException {
-        this(range, getConverter(range.getUnits()), origin.getTime());
+        this(range, getConverter( (Unit<Time>) range.getUnits()), origin.getTime());
     }
 
     /**
@@ -116,12 +113,12 @@ public class DateRange extends Range<Date> {
      * 
      * @throws IncommensurableException
      */
-    private static UnitConverter getConverter(final Unit<?> source)
+    private static UnitConverter getConverter(final Unit<Time> source)
             throws IncommensurableException {
         if (source == null) {
             throw new UnconvertibleException(Errors.format(ErrorKeys.NO_UNIT));
         }
-        return source.getConverterToAny(MILLISECOND);
+        return source.getConverterTo(MILLISECOND);
     }
 
     /**

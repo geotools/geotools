@@ -17,8 +17,8 @@
 package org.geotools.styling;
 
 import javax.measure.quantity.Length;
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
+iimport si.uom.NonSI;
+import si.uom.SI;
 import javax.measure.Unit;
 
 /**
@@ -31,7 +31,7 @@ import javax.measure.Unit;
  */
 public enum UomOgcMapping {
 
-    METRE(SI.METER, "http://www.opengeospatial.org/se/units/metre"), FOOT(NonSI.FOOT,
+    METRE(SI.METRE, "http://www.opengeospatial.org/se/units/metre"), FOOT(NonSI.FOOT,
             "http://www.opengeospatial.org/se/units/foot"), PIXEL(NonSI.PIXEL,
             "http://www.opengeospatial.org/se/units/pixel");
 
@@ -44,7 +44,7 @@ public enum UomOgcMapping {
      * corresponding OGC SE string.
      * 
      * @param unit
-     *            a Java Unit (e.g., <code>SI.METER</code>).
+     *            a Java Unit (e.g., <code>SI.METRE</code>).
      * @param seString
      *            a String that follows the OGC SE specification.
      */
@@ -70,7 +70,7 @@ public enum UomOgcMapping {
     /**
      * Returns the Java Unit that corresponds to the unit of measure.
      * 
-     * @return a Java Unit (e.g., <code>SI.METER</code>).
+     * @return a Java Unit (e.g., <code>SI.METRE</code>).
      */
     public Unit<Length> getUnit() {
         return unit;
@@ -98,7 +98,7 @@ public enum UomOgcMapping {
      * Returns the appropriate UOM mapping for a given Java Unit.
      * 
      * @param unit
-     *            a Java Unit (e.g., <code>SI.METER</code>).
+     *            a Java Unit (e.g., <code>SI.METRE</code>).
      * @return the corresponding UnitOfMeasure.
      * @throws IllegalArgumentException
      *             if the provided Unit is not part of the OGC SE specification.

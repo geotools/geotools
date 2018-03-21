@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Map;
-import javax.measure.unit.SI;
+import si.uom.SI;
 import javax.measure.Unit;
 
 import org.opengis.referencing.cs.*;
@@ -187,11 +187,11 @@ final class PredefinedCS implements Comparator<CoordinateSystem> {
              * DefaultAffineCS.isCompatibleUnit(Unit).
              */
             final Unit<?> unit = axe.getUnit();
-            if (!Unit.ONE.equals(unit) && !SI.METER.equals(unit)) {
+            if (!AbstractUnit.ONE.equals(unit) && !SI.METRE.equals(unit)) {
                 if (!(axe instanceof DefaultCoordinateSystemAxis)) {
                     axe = new DefaultCoordinateSystemAxis(axe);
                 }
-                axe = ((DefaultCoordinateSystemAxis) axe).usingUnit(SI.METER);
+                axe = ((DefaultCoordinateSystemAxis) axe).usingUnit(SI.METRE);
             }
             changed |= (axe != axis[i]);
             axis[i] = axe;

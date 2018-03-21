@@ -22,10 +22,10 @@ package org.geotools.referencing.wkt;
 import java.lang.reflect.Modifier;
 import java.util.Set;
 
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
+iimport si.uom.NonSI;
+import si.uom.SI;
 import javax.measure.Unit;
-import javax.measure.unit.UnitFormat;
+import javax.measure.format.UnitFormat;
 
 import org.geotools.measure.Units;
 import org.geotools.metadata.iso.citation.Citations;
@@ -116,8 +116,8 @@ abstract class GeoToolsUnitFormat extends UnitFormat {
 
         public ESRIFormat() {
             label(NonSI.DEGREE_ANGLE, "Degree");
-            label(SI.METER, "Meter");
-            label(SI.METER.times(0.3047997101815088), "Foot_Gold_Coast");
+            label(SI.METRE, "Meter");
+            label(SI.METRE.times(0.3047997101815088), "Foot_Gold_Coast");
             label(NonSI.FOOT, "Foot");
             label(NonSI.FOOT_SURVEY_US, "Foot_US");
         }

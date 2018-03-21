@@ -20,9 +20,9 @@
 package org.geotools.referencing.cs;
 
 import java.util.Map;
-import javax.measure.converter.UnitConverter;
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
+import javax.measure.UnitConverter;
+iimport si.uom.NonSI;
+import si.uom.SI;
 import javax.measure.Unit;
 
 import org.opengis.referencing.cs.EllipsoidalCS;
@@ -208,7 +208,7 @@ public class DefaultEllipsoidalCS extends AbstractCS implements EllipsoidalCS {
     @Override
     protected boolean isCompatibleUnit(AxisDirection direction, final Unit<?> unit) {
         direction = direction.absolute();
-        final Unit<?> expected = AxisDirection.UP.equals(direction) ? SI.METER : NonSI.DEGREE_ANGLE;
+        final Unit<?> expected = AxisDirection.UP.equals(direction) ? SI.METRE : NonSI.DEGREE_ANGLE;
         return expected.isCompatible(unit);
     }
 
@@ -232,7 +232,7 @@ public class DefaultEllipsoidalCS extends AbstractCS implements EllipsoidalCS {
             }
             if (AxisDirection.UP.equals(direction)) {
                 heightAxis      = i;
-                heightConverter = unit.getConverterTo(SI.METER);
+                heightConverter = unit.getConverterTo(SI.METRE);
                 continue;
             }
             // Should not happen, since 'isCompatibleDirection'

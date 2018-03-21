@@ -296,7 +296,7 @@ public class MatrixParameterDescriptors extends DefaultParameterDescriptorGroup 
         param = new DefaultParameterDescriptor<Double>(
                 Collections.singletonMap(NAME_KEY, prefix + row + separator + column),
                 Double.class, null, (row == column) ? 1.0 : 0.0,
-                null, null, Unit.ONE, true);
+                null, null, AbstractUnit.ONE, true);
         if (index >= 0) {
             parameters[index] = param;
         }

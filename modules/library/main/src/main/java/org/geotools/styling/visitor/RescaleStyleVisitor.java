@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.measure.quantity.Length;
-import javax.measure.unit.NonSI;
+iimport si.uom.NonSI;
 import javax.measure.Unit;
 
 import org.geotools.factory.CommonFactoryFinder;

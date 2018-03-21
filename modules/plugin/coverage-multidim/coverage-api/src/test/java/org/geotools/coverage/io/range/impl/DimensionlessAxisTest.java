@@ -46,7 +46,7 @@ public class DimensionlessAxisTest extends Assert {
         DimensionlessAxis TOY = new DimensionlessAxis(new String[] { "A", "B", "C" }, new NameImpl(
                 "Color"), new SimpleInternationalString("Toy Example"));
 
-        assertEquals(Unit.ONE, TOY.getUnitOfMeasure());
+        assertEquals(AbstractUnit.ONE, TOY.getUnitOfMeasure());
         BandIndexMeasure key = TOY.getKey(0);
         assertEquals("A", key.getValue());
         assertNull(TOY.getCoordinateReferenceSystem());
@@ -59,15 +59,15 @@ public class DimensionlessAxisTest extends Assert {
     public void testElevation() {
         DimensionlessAxis HEIGHT = new DimensionlessAxis(1, new NameImpl("height"),
                 new SimpleInternationalString("Height from sealevel"));
-        assertEquals(Unit.ONE, HEIGHT.getUnitOfMeasure());
+        assertEquals(AbstractUnit.ONE, HEIGHT.getUnitOfMeasure());
         BandIndexMeasure key = HEIGHT.getKey(0);
         assertEquals("0", key.getValue());
 
         // Make sure we can discover everything we need via the Axis API
         Axis axis = HEIGHT;
-        assertEquals(Unit.ONE, axis.getUnitOfMeasure());
+        assertEquals(AbstractUnit.ONE, axis.getUnitOfMeasure());
         Measure measure = axis.getKey(0);
-        assertEquals(Unit.ONE, measure.getUnit());
+        assertEquals(AbstractUnit.ONE, measure.getUnit());
         assertEquals("0", key.getValue());
     }
     

@@ -17,7 +17,7 @@
 package org.geotools.measure;
 
 import java.io.ObjectStreamException;
-import javax.measure.converter.UnitConverter;
+import javax.measure.UnitConverter;
 import javax.measure.converter.ConversionException;
 
 

@@ -24,7 +24,7 @@ import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import javax.measure.unit.SI;
+import si.uom.SI;
 
 import org.opengis.referencing.datum.VerticalDatumType;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -132,7 +132,7 @@ public final class PredefinedObjectsTest {
         properties.put("remarks_fr",    "Voici des remarques");
 
         DefaultGeodeticDatum datum = new DefaultGeodeticDatum(properties,
-                DefaultEllipsoid.createEllipsoid("Test", 1000, 1000, SI.METER),
+                DefaultEllipsoid.createEllipsoid("Test", 1000, 1000, SI.METRE),
                 new DefaultPrimeMeridian("Test", 12));
 
         assertEquals("name",          "This is a name",         datum.getName   ().getCode());

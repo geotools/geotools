@@ -24,9 +24,9 @@ import java.util.HashMap;
 import java.util.Locale;  // For javadoc
 import java.util.Map;
 import java.util.NoSuchElementException;
-import javax.measure.converter.UnitConverter;
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
+import javax.measure.UnitConverter;
+iimport si.uom.NonSI;
+import si.uom.SI;
 import javax.measure.Unit;
 
 import org.opengis.referencing.cs.AxisDirection;
@@ -186,7 +186,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * @see #DEPTH
      */
     public static final DefaultCoordinateSystemAxis ELLIPSOIDAL_HEIGHT = new DefaultCoordinateSystemAxis(
-            VocabularyKeys.ELLIPSOIDAL_HEIGHT, "h", AxisDirection.UP, SI.METER);
+            VocabularyKeys.ELLIPSOIDAL_HEIGHT, "h", AxisDirection.UP, SI.METRE);
 
     /**
      * The default axis for height values measured from gravity.
@@ -203,7 +203,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * @see #DEPTH
      */
     public static final DefaultCoordinateSystemAxis GRAVITY_RELATED_HEIGHT = new DefaultCoordinateSystemAxis(
-            VocabularyKeys.GRAVITY_RELATED_HEIGHT, "H", AxisDirection.UP, SI.METER);
+            VocabularyKeys.GRAVITY_RELATED_HEIGHT, "H", AxisDirection.UP, SI.METRE);
 
     /**
      * The default axis for altitude values.
@@ -221,7 +221,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * @see #DEPTH
      */
     public static final DefaultCoordinateSystemAxis ALTITUDE = new DefaultCoordinateSystemAxis(
-            VocabularyKeys.ALTITUDE, "h", AxisDirection.UP, SI.METER);
+            VocabularyKeys.ALTITUDE, "h", AxisDirection.UP, SI.METRE);
 
     /**
      * The default axis for depth.
@@ -237,7 +237,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * @see #GRAVITY_RELATED_HEIGHT
      */
     public static final DefaultCoordinateSystemAxis DEPTH = new DefaultCoordinateSystemAxis(
-            VocabularyKeys.DEPTH, "d", AxisDirection.DOWN, SI.METER);
+            VocabularyKeys.DEPTH, "d", AxisDirection.DOWN, SI.METRE);
     static {
         ALTITUDE.opposite = DEPTH;
         DEPTH.opposite = ALTITUDE;
@@ -263,7 +263,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * @see #DEPTH
      */
     public static final DefaultCoordinateSystemAxis GEOCENTRIC_RADIUS = new DefaultCoordinateSystemAxis(
-            VocabularyKeys.GEOCENTRIC_RADIUS, "r", AxisDirection.UP, SI.METER);
+            VocabularyKeys.GEOCENTRIC_RADIUS, "r", AxisDirection.UP, SI.METRE);
 
     /**
      * Default axis info for longitudes in a
@@ -325,7 +325,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * @see #COLUMN
      */
     public static final DefaultCoordinateSystemAxis X = new DefaultCoordinateSystemAxis(
-            -1, "x", AxisDirection.EAST, SI.METER);
+            -1, "x", AxisDirection.EAST, SI.METRE);
 
     /**
      * Default axis info for <var>y</var> values in a
@@ -345,7 +345,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * @see #ROW
      */
     public static final DefaultCoordinateSystemAxis Y = new DefaultCoordinateSystemAxis(
-            -1, "y", AxisDirection.NORTH, SI.METER);
+            -1, "y", AxisDirection.NORTH, SI.METRE);
 
     /**
      * Default axis info for <var>z</var> values in a
@@ -359,7 +359,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * This axis is usually part of a {@link #X}, {@link #Y}, {@link #Z} set.
      */
     public static final DefaultCoordinateSystemAxis Z = new DefaultCoordinateSystemAxis(
-            -1, "z", AxisDirection.UP, SI.METER);
+            -1, "z", AxisDirection.UP, SI.METRE);
 
     /**
      * Default axis info for <var>x</var> values in a
@@ -376,7 +376,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * {@link #GEOCENTRIC_Z} set.
      */
     public static final DefaultCoordinateSystemAxis GEOCENTRIC_X = new DefaultCoordinateSystemAxis(
-            VocabularyKeys.GEOCENTRIC_X, "X", AxisDirection.OTHER, SI.METER);
+            VocabularyKeys.GEOCENTRIC_X, "X", AxisDirection.OTHER, SI.METRE);
 
     /**
      * Default axis info for <var>y</var> values in a
@@ -393,7 +393,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * {@link #GEOCENTRIC_Z} set.
      */
     public static final DefaultCoordinateSystemAxis GEOCENTRIC_Y = new DefaultCoordinateSystemAxis(
-            VocabularyKeys.GEOCENTRIC_Y, "Y", AxisDirection.EAST, SI.METER);
+            VocabularyKeys.GEOCENTRIC_Y, "Y", AxisDirection.EAST, SI.METRE);
 
     /**
      * Default axis info for <var>z</var> values in a
@@ -410,7 +410,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * {@link #GEOCENTRIC_Z} set.
      */
     public static final DefaultCoordinateSystemAxis GEOCENTRIC_Z = new DefaultCoordinateSystemAxis(
-            VocabularyKeys.GEOCENTRIC_Z, "Z", AxisDirection.NORTH, SI.METER);
+            VocabularyKeys.GEOCENTRIC_Z, "Z", AxisDirection.NORTH, SI.METRE);
 
     /**
      * Default axis info for Easting values in a
@@ -429,7 +429,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * @see #WESTING
      */
     public static final DefaultCoordinateSystemAxis EASTING = new DefaultCoordinateSystemAxis(
-            VocabularyKeys.EASTING, "E", AxisDirection.EAST, SI.METER);
+            VocabularyKeys.EASTING, "E", AxisDirection.EAST, SI.METRE);
 
     /**
      * Default axis info for Westing values in a
@@ -446,7 +446,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * @see #WESTING
      */
     public static final DefaultCoordinateSystemAxis WESTING = new DefaultCoordinateSystemAxis(
-            VocabularyKeys.WESTING, "W", AxisDirection.WEST, SI.METER);
+            VocabularyKeys.WESTING, "W", AxisDirection.WEST, SI.METRE);
     static {
         EASTING.opposite = WESTING;
         WESTING.opposite = EASTING;
@@ -469,7 +469,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * @see #SOUTHING
      */
     public static final DefaultCoordinateSystemAxis NORTHING = new DefaultCoordinateSystemAxis(
-            VocabularyKeys.NORTHING, "N", AxisDirection.NORTH, SI.METER);
+            VocabularyKeys.NORTHING, "N", AxisDirection.NORTH, SI.METRE);
 
     /**
      * Default axis info for Southing values in a
@@ -486,7 +486,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * @see #SOUTHING
      */
     public static final DefaultCoordinateSystemAxis SOUTHING = new DefaultCoordinateSystemAxis(
-            VocabularyKeys.SOUTHING, "S", AxisDirection.SOUTH, SI.METER);
+            VocabularyKeys.SOUTHING, "S", AxisDirection.SOUTH, SI.METRE);
     static {
         NORTHING.opposite = SOUTHING;
         SOUTHING.opposite = NORTHING;
@@ -511,7 +511,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * The abbreviation is lower case "<var>i</var>".
      */
     public static final DefaultCoordinateSystemAxis COLUMN = new DefaultCoordinateSystemAxis(
-            VocabularyKeys.COLUMN, "i", AxisDirection.COLUMN_POSITIVE, Unit.ONE);
+            VocabularyKeys.COLUMN, "i", AxisDirection.COLUMN_POSITIVE, AbstractUnit.ONE);
 
     /**
      * A default axis for row indices in a {@linkplain org.opengis.coverage.grid.GridCoverage grid
@@ -521,7 +521,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * The abbreviation is lower case "<var>j</var>".
      */
     public static final DefaultCoordinateSystemAxis ROW = new DefaultCoordinateSystemAxis(
-            VocabularyKeys.ROW, "j", AxisDirection.ROW_POSITIVE, Unit.ONE);
+            VocabularyKeys.ROW, "j", AxisDirection.ROW_POSITIVE, AbstractUnit.ONE);
 
     /**
      * A default axis for <var>x</var> values in a display device. Increasing values go toward
@@ -532,7 +532,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * @since 2.2
      */
     public static final DefaultCoordinateSystemAxis DISPLAY_X = new DefaultCoordinateSystemAxis(
-            -1, "x", AxisDirection.DISPLAY_RIGHT, Unit.ONE);
+            -1, "x", AxisDirection.DISPLAY_RIGHT, AbstractUnit.ONE);
 
     /**
      * A default axis for <var>y</var> values in a display device. Increasing values go toward
@@ -543,7 +543,7 @@ public class DefaultCoordinateSystemAxis extends AbstractIdentifiedObject
      * @since 2.2
      */
     public static final DefaultCoordinateSystemAxis DISPLAY_Y = new DefaultCoordinateSystemAxis(
-            -1, "y", AxisDirection.DISPLAY_DOWN, Unit.ONE);
+            -1, "y", AxisDirection.DISPLAY_DOWN, AbstractUnit.ONE);
 
     /**
      * Some names to be treated as equivalent. This is needed because axis names are the primary

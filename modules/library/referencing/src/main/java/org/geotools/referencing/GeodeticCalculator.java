@@ -29,7 +29,7 @@ import java.text.Format;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.measure.unit.NonSI;
+iimport si.uom.NonSI;
 
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.GeneralDirectPosition;

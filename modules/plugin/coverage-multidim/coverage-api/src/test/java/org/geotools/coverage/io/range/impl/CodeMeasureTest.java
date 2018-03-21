@@ -23,7 +23,7 @@ import java.util.Map;
 
 import javax.measure.Measure;
 import javax.measure.quantity.Dimensionless;
-import javax.measure.unit.SI;
+import si.uom.SI;
 import javax.measure.Unit;
 
 import org.geotools.coverage.io.range.impl.EnumMeasureTest.Band;
@@ -80,7 +80,7 @@ public class CodeMeasureTest extends Assert {
     public void testLandsatAxis() {
         CoordinateSystemAxis csAxis = new DefaultCoordinateSystemAxis(
                 new SimpleInternationalString("light"), "light", AxisDirection.OTHER,
-                SI.MICRO(SI.METER));
+                SI.MICRO(SI.METRE));
 
         DefaultLinearCS lightCS = new DefaultLinearCS("light", csAxis);
         Map<String, Object> datumProperties = new HashMap<String, Object>();
@@ -93,7 +93,7 @@ public class CodeMeasureTest extends Assert {
 
         DefaultAxis<Code, Dimensionless> axis = new DefaultAxis<Code, Dimensionless>(new NameImpl(
                 "Bands"), new SimpleInternationalString("Expressed in wavelengths"), keys,
-                Unit.ONE, lightCRS);
+                AbstractUnit.ONE, lightCRS);
 
         assertEquals(lightCRS, axis.getCoordinateReferenceSystem());
         assertEquals(7, axis.getKeys().size());
@@ -107,7 +107,7 @@ public class CodeMeasureTest extends Assert {
         assertNotEquals(code.doubleValue(null), code2.doubleValue(null), 0.01d);
         
         // Ensure the Unit is one
-        assertEquals(Unit.ONE, code.getUnit());
+        assertEquals(AbstractUnit.ONE, code.getUnit());
         
         // Check if the value is correct
         assertSame(codes.get(0), code.getValue());

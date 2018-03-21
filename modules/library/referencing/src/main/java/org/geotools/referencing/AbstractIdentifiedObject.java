@@ -33,7 +33,7 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.LogRecord;
-import javax.measure.unit.SI;
+import si.uom.SI;
 import javax.measure.Unit;
 
 import org.opengis.metadata.Identifier;
@@ -1113,7 +1113,7 @@ NEXT_KEY: for (final Map.Entry<String,?> entry : properties.entrySet()) {
      * @throws IllegalArgumentException if {@code unit} is not a linear unit.
      */
     protected static void ensureLinearUnit(final Unit<?> unit) throws IllegalArgumentException {
-        if (!SI.METER.isCompatible(unit)) {
+        if (!SI.METRE.isCompatible(unit)) {
             throw new IllegalArgumentException(Errors.format(ErrorKeys.NON_LINEAR_UNIT_$1, unit));
         }
     }
@@ -1126,7 +1126,7 @@ NEXT_KEY: for (final Map.Entry<String,?> entry : properties.entrySet()) {
      * @throws IllegalArgumentException if {@code unit} is not an angular unit.
      */
     protected static void ensureAngularUnit(final Unit<?> unit) throws IllegalArgumentException {
-        if (!SI.RADIAN.isCompatible(unit) && !Unit.ONE.equals(unit)) {
+        if (!SI.RADIAN.isCompatible(unit) && !AbstractUnit.ONE.equals(unit)) {
             throw new IllegalArgumentException(Errors.format(ErrorKeys.NON_ANGULAR_UNIT_$1, unit));
         }
     }

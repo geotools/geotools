@@ -348,7 +348,7 @@ public class ExponentialTransform1D extends AbstractMathTransform
          * Valid values range is unrestricted. The default value is 1.
          */
         public static final ParameterDescriptor SCALE = DefaultParameterDescriptor.create(
-                "scale", 1, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Unit.ONE);
+                "scale", 1, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, AbstractUnit.ONE);
 
         /**
          * The parameters group.

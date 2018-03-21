@@ -19,8 +19,8 @@ package org.geotools.process.vector;
 
 import java.awt.geom.Point2D;
 
-import javax.measure.converter.UnitConverter;
-import javax.measure.unit.SI;
+import javax.measure.UnitConverter;
+import si.uom.SI;
 import javax.measure.Unit;
 
 import org.geotools.data.collection.ListFeatureCollection;
@@ -79,7 +79,7 @@ public class PointBuffers implements VectorProcess {
                 generator = new GeographicGenerator(center, quadrantSegments, crs);
             } else {
                 Unit unit = hor.getCoordinateSystem().getAxis(0).getUnit();
-                UnitConverter converter = SI.METER.getConverterTo(unit);
+                UnitConverter converter = SI.METRE.getConverterTo(unit);
                 generator = new MetricGenerator(center, quadrantSegments, converter);
             }
         } else {

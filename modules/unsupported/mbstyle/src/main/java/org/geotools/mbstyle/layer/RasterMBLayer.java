@@ -28,7 +28,7 @@ import org.opengis.style.ContrastMethod;
 import org.opengis.style.Rule;
 import org.opengis.style.SemanticType;
 
-import javax.measure.unit.NonSI;
+iimport si.uom.NonSI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;

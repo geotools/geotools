@@ -25,8 +25,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
+iimport si.uom.NonSI;
+import si.uom.SI;
 import javax.measure.Unit;
 import javax.measure.quantity.Angle;
 import javax.measure.quantity.Length;
@@ -254,7 +254,7 @@ public class Parser extends MathTransformParser {
             final String keyword = ((Element) key).keyword.trim().toUpperCase(symbols.locale);
             Object r = null;
             try {
-                if (       "AXIS".equals(keyword)) return r=parseAxis      (element, SI.METER, true);
+                if (       "AXIS".equals(keyword)) return r=parseAxis      (element, SI.METRE, true);
                 if (     "PRIMEM".equals(keyword)) return r=parsePrimem    (element, NonSI.DEGREE_ANGLE);
                 if (    "TOWGS84".equals(keyword)) return r=parseToWGS84   (element);
                 if (   "SPHEROID".equals(keyword)) return r=parseSpheroid  (element);
@@ -558,7 +558,7 @@ public class Parser extends MathTransformParser {
         }
         try {
             return datumFactory.createFlattenedSphere(properties,
-                    semiMajorAxis, inverseFlattening, SI.METER);
+                    semiMajorAxis, inverseFlattening, SI.METRE);
         } catch (FactoryException exception) {
             throw element.parseFailed(exception, null);
         }
@@ -616,8 +616,8 @@ public class Parser extends MathTransformParser {
                 final double paramValue = param.pullDouble("value");
                 final ParameterValue<?> parameter = parameters.parameter(paramName);
                 final Unit<?> expected = parameter.getDescriptor().getUnit();
-                if (expected!=null && !Unit.ONE.equals(expected)) {
-                    if (linearUnit!=null && SI.METER.isCompatible(expected)) {
+                if (expected!=null && !AbstractUnit.ONE.equals(expected)) {
+                    if (linearUnit!=null && SI.METRE.isCompatible(expected)) {
                         parameter.setValue(paramValue, linearUnit);
                         continue;
                     }
@@ -754,7 +754,7 @@ public class Parser extends MathTransformParser {
         Element           element = parent.pullElement("LOCAL_CS");
         String               name = element.pullString("name");
         EngineeringDatum    datum = parseLocalDatum(element);
-        Unit<Length>   linearUnit = parseUnit(element, SI.METER);
+        Unit<Length>   linearUnit = parseUnit(element, SI.METRE);
         CoordinateSystemAxis axis = parseAxis(element, linearUnit, true);
         List<CoordinateSystemAxis> list = new ArrayList<CoordinateSystemAxis>();
         do {
@@ -792,7 +792,7 @@ public class Parser extends MathTransformParser {
         final Map<String,?> properties = parseAuthority(element, name);
         final PrimeMeridian   meridian = parsePrimem   (element, NonSI.DEGREE_ANGLE);
         final GeodeticDatum      datum = parseDatum    (element, meridian);
-        final Unit<Length>  linearUnit = parseUnit     (element, SI.METER);
+        final Unit<Length>  linearUnit = parseUnit     (element, SI.METRE);
         CoordinateSystemAxis axis0, axis1, axis2;
         axis0 = parseAxis(element, linearUnit, false);
         try {
@@ -832,7 +832,7 @@ public class Parser extends MathTransformParser {
         }
         String               name = element.pullString("name");
         VerticalDatum       datum = parseVertDatum(element);
-        Unit<Length>   linearUnit = parseUnit(element, SI.METER);
+        Unit<Length>   linearUnit = parseUnit(element, SI.METRE);
         CoordinateSystemAxis axis = parseAxis(element, linearUnit, false);
         Map<String,?>  properties = parseAuthority(element, name);
         element.close();
@@ -872,7 +872,7 @@ public class Parser extends MathTransformParser {
             if (axis0 != null) {
                 axis1 = parseAxis(element, angularUnit, true);
                 if(axis1 != null) {
-                    axis2 = parseAxis(element, SI.METER, false);
+                    axis2 = parseAxis(element, SI.METRE, false);
                 } 
             } else {
                 // Those default values are part of WKT specification.
@@ -912,7 +912,7 @@ public class Parser extends MathTransformParser {
         Map<String,?>       properties = parseAuthority(element, name);
         GeographicCRS           geoCRS = parseGeoGCS(element);
         Ellipsoid            ellipsoid = geoCRS.getDatum().getEllipsoid();
-        Unit<Length>        linearUnit = parseUnit(element, SI.METER);
+        Unit<Length>        linearUnit = parseUnit(element, SI.METRE);
         Unit<Angle>        angularUnit = geoCRS.getCoordinateSystem().getAxis(0).getUnit().asType(Angle.class);
         ParameterValueGroup projection = parseProjection(element, ellipsoid, linearUnit, angularUnit);
         CoordinateSystemAxis     axis0 = parseAxis(element, linearUnit, false);
@@ -998,7 +998,7 @@ public class Parser extends MathTransformParser {
                 buffer.append(number);
                 axis[i] = csFactory.createCoordinateSystemAxis(
                     singletonMap(IdentifiedObject.NAME_KEY, buffer.toString()),
-                    number, AxisDirection.OTHER, Unit.ONE);
+                    number, AxisDirection.OTHER, AbstractUnit.ONE);
             }
             final Conversion conversion = new DefiningConversion(
                     singletonMap(IdentifiedObject.NAME_KEY, method.getName().getCode()),

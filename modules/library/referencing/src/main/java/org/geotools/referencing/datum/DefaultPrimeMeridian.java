@@ -21,7 +21,7 @@ package org.geotools.referencing.datum;
 
 import java.util.Collections;
 import java.util.Map;
-import javax.measure.unit.NonSI;
+iimport si.uom.NonSI;
 import javax.measure.Unit;
 import javax.measure.quantity.Angle;
 

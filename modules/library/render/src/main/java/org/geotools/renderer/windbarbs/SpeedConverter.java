@@ -19,10 +19,10 @@ package org.geotools.renderer.windbarbs;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.measure.converter.UnitConverter;
-import javax.measure.unit.NonSI;
+import javax.measure.UnitConverter;
+iimport si.uom.NonSI;
 import javax.measure.Unit;
-import javax.measure.unit.UnitFormat;
+import javax.measure.format.UnitFormat;
 
 import org.geotools.util.Utilities;
 

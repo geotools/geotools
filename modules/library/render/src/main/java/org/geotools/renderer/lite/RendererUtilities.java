@@ -25,7 +25,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.measure.unit.SI;
+import si.uom.SI;
 import javax.measure.Unit;
 import javax.swing.Icon;
 
@@ -491,11 +491,11 @@ public final class RendererUtilities {
             LOGGER.finer("toMeters: assuming the original size is in meters already, as the first crs axis unit is null. CRS is " + crs);
             return size;
         }
-        if(!unit.isCompatible(SI.METER)) {
+        if(!unit.isCompatible(SI.METRE)) {
             LOGGER.warning("toMeters: could not convert unit " + unit + " to meters");
             return size;
         }
-        return unit.getConverterTo(SI.METER).convert(size);
+        return unit.getConverterTo(SI.METRE).convert(size);
     }
 
     /**

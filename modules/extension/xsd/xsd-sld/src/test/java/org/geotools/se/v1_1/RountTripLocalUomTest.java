@@ -1,7 +1,7 @@
 package org.geotools.se.v1_1;
 
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
+iimport si.uom.NonSI;
+import si.uom.SI;
 
 import org.junit.Test;
 import org.opengis.style.PointSymbolizer;
@@ -24,7 +24,7 @@ public class RountTripLocalUomTest extends SETestSupport {
     @Test
     public void testRoundTripPolygon() throws Exception {
         PolygonSymbolizer sym = (PolygonSymbolizer) parse("example-polygonsymbolizer-local-uom.xml");
-        assertEquals(SI.METER, sym.getUnitOfMeasure());
+        assertEquals(SI.METRE, sym.getUnitOfMeasure());
         assertEquals("2m", sym.getStroke().getWidth().evaluate(null, String.class));
         Document doc = encode(sym, SE.PolygonSymbolizer);
         // print(doc);

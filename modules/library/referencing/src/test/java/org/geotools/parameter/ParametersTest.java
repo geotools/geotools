@@ -16,6 +16,15 @@
  */
 package org.geotools.parameter;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.awt.geom.AffineTransform;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -30,29 +39,27 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
-import si.uom.NonSI;
-import si.uom.SI;
-import javax.measure.Unit;
 
+import org.geotools.referencing.operation.matrix.GeneralMatrix;
+import org.geotools.referencing.operation.transform.ProjectiveTransform;
+import org.geotools.referencing.wkt.Formatter;
+import org.junit.Test;
 import org.opengis.parameter.InvalidParameterCardinalityException;
 import org.opengis.parameter.InvalidParameterNameException;
 import org.opengis.parameter.InvalidParameterTypeException;
 import org.opengis.parameter.InvalidParameterValueException;
-import org.opengis.parameter.ParameterNotFoundException;
-import org.opengis.parameter.ParameterDescriptorGroup;
 import org.opengis.parameter.ParameterDescriptor;
+import org.opengis.parameter.ParameterDescriptorGroup;
+import org.opengis.parameter.ParameterNotFoundException;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.cs.AxisDirection;
 import org.opengis.referencing.datum.VerticalDatumType;
 import org.opengis.referencing.operation.MathTransform;
 
-import org.geotools.referencing.operation.transform.ProjectiveTransform;
-import org.geotools.referencing.operation.matrix.GeneralMatrix;
-import org.geotools.referencing.wkt.Formatter;
-
-import org.junit.*;
-
-import static org.junit.Assert.*;
+import si.uom.NonSI;
+import si.uom.SI;
+import tec.uom.se.AbstractUnit;
+import tec.uom.se.unit.MetricPrefix;
 
 
 /**
@@ -229,9 +236,9 @@ public final class ParametersTest {
             assertEquals("Test", exception.getParameterName());
         }
         for (int i=400; i<=2000; i+=100) {
-            parameter.setValue(i, SI.CENTI(SI.METRE));
+            parameter.setValue(i, MetricPrefix.CENTI(SI.METRE));
             assertEquals("value", Double.valueOf(i),  parameter.getValue());
-            assertEquals("unit",  SI.CENTI(SI.METRE), parameter.getUnit());
+            assertEquals("unit", MetricPrefix.CENTI(SI.METRE), parameter.getUnit());
             assertEquals("value", i/100,              parameter.doubleValue(SI.METRE), 0);
         }
         try {
@@ -289,7 +296,7 @@ public final class ParametersTest {
         descriptor = (ParameterDescriptor)       parameter.getDescriptor();
         assertEquals("intValue",       3,        parameter.intValue());
         assertEquals("doubleValue",    3,        parameter.doubleValue(), 0);
-        assertEquals("doubleValue",  300,        parameter.doubleValue(SI.CENTI(SI.METRE)), 0);
+        assertEquals("doubleValue", 300, parameter.doubleValue(MetricPrefix.CENTI(SI.METRE)), 0);
         assertEquals("name",         "Test",    descriptor.getName().getCode());
         assertEquals("unit",         SI.METRE,  descriptor.getUnit());
         assertNull  ("defaultValue",            descriptor.getDefaultValue());

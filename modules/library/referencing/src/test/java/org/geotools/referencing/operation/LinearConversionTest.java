@@ -16,11 +16,35 @@
  */
 package org.geotools.referencing.operation;
 
+import static org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
+import static org.geotools.referencing.cs.DefaultCartesianCS.PROJECTED;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.opengis.referencing.cs.AxisDirection.DOWN;
+import static org.opengis.referencing.cs.AxisDirection.EAST;
+import static org.opengis.referencing.cs.AxisDirection.GEOCENTRIC_X;
+import static org.opengis.referencing.cs.AxisDirection.NORTH;
+import static org.opengis.referencing.cs.AxisDirection.SOUTH;
+import static org.opengis.referencing.cs.AxisDirection.UP;
+import static org.opengis.referencing.cs.AxisDirection.WEST;
+
 import java.util.Random;
-import si.uom.SI;
+
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
 
+import org.geotools.referencing.crs.DefaultProjectedCRS;
+import org.geotools.referencing.cs.AbstractCS;
+import org.geotools.referencing.cs.DefaultCartesianCS;
+import org.geotools.referencing.cs.DefaultCoordinateSystemAxis;
+import org.geotools.referencing.datum.DefaultEllipsoid;
+import org.geotools.referencing.operation.matrix.GeneralMatrix;
+import org.geotools.referencing.operation.matrix.Matrix2;
+import org.geotools.referencing.operation.matrix.Matrix3;
+import org.junit.Test;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.cs.AxisDirection;
@@ -28,20 +52,8 @@ import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransformFactory;
 import org.opengis.referencing.operation.Matrix;
 
-import org.geotools.referencing.crs.DefaultProjectedCRS;
-import org.geotools.referencing.cs.AbstractCS;
-import org.geotools.referencing.cs.DefaultCartesianCS;
-import org.geotools.referencing.cs.DefaultCoordinateSystemAxis;
-import org.geotools.referencing.datum.DefaultEllipsoid;
-import org.geotools.referencing.operation.matrix.Matrix2;
-import org.geotools.referencing.operation.matrix.Matrix3;
-import org.geotools.referencing.operation.matrix.GeneralMatrix;
-import static org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
-import static org.geotools.referencing.cs.DefaultCartesianCS.PROJECTED;
-import static org.opengis.referencing.cs.AxisDirection.*;
-
-import org.junit.*;
-import static org.junit.Assert.*;
+import si.uom.SI;
+import tec.uom.se.unit.MetricPrefix;
 
 
 /**
@@ -138,8 +150,8 @@ public final class LinearConversionTest {
      */
     @Test
     public void testScaleAndSwapAxis() {
-        final Unit<Length> cm = SI.CENTI(SI.METRE);
-        final Unit<Length> mm = SI.MILLI(SI.METRE);
+        final Unit<Length> cm = MetricPrefix.CENTI(SI.METRE);
+        final Unit<Length> mm = MetricPrefix.MILLI(SI.METRE);
         final AbstractCS cs = new DefaultCartesianCS("Test",
               new DefaultCoordinateSystemAxis("y", SOUTH, cm),
               new DefaultCoordinateSystemAxis("x", EAST,  mm));

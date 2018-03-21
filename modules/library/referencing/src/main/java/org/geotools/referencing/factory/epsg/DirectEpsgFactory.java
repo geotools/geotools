@@ -48,7 +48,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
-iimport si.uom.NonSI;
+import si.uom.NonSI;
 import si.uom.SI;
 import javax.measure.Unit;
 import javax.sql.DataSource;

@@ -17,7 +17,7 @@
  */
 package org.geotools.process.vector;
 
-iimport si.uom.NonSI;
+import si.uom.NonSI;
 import si.uom.SI;
 import javax.measure.Unit;
 

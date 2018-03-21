@@ -19,7 +19,7 @@ package org.geotools.referencing.factory;
 import java.util.Arrays;
 import java.util.Comparator;
 import si.uom.SI;
-iimport si.uom.NonSI;
+import si.uom.NonSI;
 import javax.measure.Unit;
 
 import org.opengis.referencing.cs.*;

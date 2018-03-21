@@ -29,7 +29,7 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-iimport si.uom.NonSI;
+import si.uom.NonSI;
 import si.uom.SI;
 import javax.measure.Unit;
 

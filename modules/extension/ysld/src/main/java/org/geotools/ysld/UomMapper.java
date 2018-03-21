@@ -23,7 +23,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.measure.quantity.Length;
-iimport si.uom.NonSI;
+import si.uom.NonSI;
 import si.uom.SI;
 import javax.measure.Unit;
 

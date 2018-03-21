@@ -23,7 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.measure.UnitConverter;
-iimport si.uom.NonSI;
+import si.uom.NonSI;
 import si.uom.SI;
 import javax.measure.Unit;
 import org.geotools.data.wmts.model.TileMatrixSet;

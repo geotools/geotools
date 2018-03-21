@@ -20,7 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.measure.UnitConverter;
-iimport si.uom.NonSI;
+import si.uom.NonSI;
 import javax.measure.Unit;
 import javax.measure.format.UnitFormat;
 

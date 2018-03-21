@@ -11,7 +11,7 @@ package org.geotools.geometry.jts.spatialschema.geometry;
 
 import org.geotools.geometry.jts.GeometryUtils;
 
-iimport si.uom.NonSI;
+import si.uom.NonSI;
 
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.geometry.DirectPosition;

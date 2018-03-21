@@ -18,7 +18,7 @@ package org.geotools.util;
 
 import static org.junit.Assert.assertEquals;
 
-iimport si.uom.NonSI;
+import si.uom.NonSI;
 import si.uom.SI;
 
 import org.geotools.measure.Measure;

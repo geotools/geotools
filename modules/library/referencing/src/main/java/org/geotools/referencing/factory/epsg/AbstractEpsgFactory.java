@@ -49,7 +49,7 @@ import java.awt.RenderingHints;
 
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-iimport si.uom.NonSI;
+import si.uom.NonSI;
 import si.uom.SI;
 import javax.measure.Unit;
 

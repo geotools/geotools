@@ -23,7 +23,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import javax.measure.Unit;
-iimport si.uom.NonSI;
+import si.uom.NonSI;
 import javax.measure.quantity.Angle;
 
 import org.opengis.referencing.cs.AxisDirection;

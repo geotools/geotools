@@ -27,7 +27,7 @@ import java.awt.geom.PathIterator;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.IllegalPathStateException;
 
-iimport si.uom.NonSI;
+import si.uom.NonSI;
 import si.uom.SI;
 
 import org.opengis.metadata.Identifier;

@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-iimport si.uom.NonSI;
+import si.uom.NonSI;
 import si.uom.SI;
 
 import org.geotools.factory.GeoTools;

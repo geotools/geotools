@@ -33,7 +33,7 @@ import org.opengis.style.GraphicFill;
 import org.opengis.style.SemanticType;
 import org.opengis.style.Symbolizer;
 
-iimport si.uom.NonSI;
+import si.uom.NonSI;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;

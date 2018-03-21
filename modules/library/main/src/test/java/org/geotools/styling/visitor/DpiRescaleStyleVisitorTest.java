@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.awt.Color;
 
-iimport si.uom.NonSI;
+import si.uom.NonSI;
 import si.uom.SI;
 
 import org.geotools.factory.CommonFactoryFinder;

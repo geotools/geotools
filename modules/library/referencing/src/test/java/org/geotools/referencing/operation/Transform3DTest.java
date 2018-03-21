@@ -19,7 +19,7 @@ package org.geotools.referencing.operation;
 import java.util.Collections;
 import java.util.Map;
 import si.uom.SI;
-iimport si.uom.NonSI;
+import si.uom.NonSI;
 
 import org.opengis.referencing.cs.*;
 import org.opengis.referencing.crs.*;

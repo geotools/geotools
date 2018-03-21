@@ -27,6 +27,7 @@ import java.util.logging.Logger;
 
 import si.uom.SI;
 import javax.measure.Unit;
+import javax.measure.quantity.Length;
 import javax.swing.Icon;
 
 import com.vividsolutions.jts.geom.prep.PreparedGeometry;
@@ -486,7 +487,8 @@ public final class RendererUtilities {
         if(horizontal != null) {
             crs = horizontal;
         }
-        Unit<?> unit = crs.getCoordinateSystem().getAxis(0).getUnit();
+        @SuppressWarnings("unchecked")
+        Unit<Length> unit = (Unit<Length>) crs.getCoordinateSystem().getAxis(0).getUnit();
         if(unit == null) {
             LOGGER.finer("toMeters: assuming the original size is in meters already, as the first crs axis unit is null. CRS is " + crs);
             return size;

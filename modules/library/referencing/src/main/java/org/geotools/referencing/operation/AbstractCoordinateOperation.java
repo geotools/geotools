@@ -21,38 +21,39 @@ package org.geotools.referencing.operation;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
-import si.uom.SI;
-import javax.measure.Unit;
 
-import org.opengis.metadata.extent.Extent;
-import org.opengis.metadata.quality.Result;
-import org.opengis.metadata.quality.QuantitativeResult;
-import org.opengis.metadata.quality.PositionalAccuracy;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.ConcatenatedOperation;
-import org.opengis.referencing.operation.CoordinateOperation;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.Transformation;
-import org.opengis.referencing.operation.Operation;
-import org.opengis.referencing.operation.Conversion;
-import org.opengis.referencing.operation.Projection;
-import org.opengis.referencing.operation.PlanarProjection;
-import org.opengis.referencing.operation.CylindricalProjection;
-import org.opengis.referencing.operation.ConicProjection;
-import org.opengis.referencing.IdentifiedObject;
-import org.opengis.util.InternationalString;
-import org.opengis.util.Record;
+import javax.measure.Unit;
 
 import org.geotools.metadata.iso.quality.PositionalAccuracyImpl;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.crs.AbstractDerivedCRS;
 import org.geotools.referencing.wkt.Formatter;
-import org.geotools.util.Utilities;
-import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.i18n.ErrorKeys;
+import org.geotools.resources.i18n.Errors;
+import org.geotools.util.Utilities;
+import org.opengis.metadata.extent.Extent;
+import org.opengis.metadata.quality.PositionalAccuracy;
+import org.opengis.metadata.quality.QuantitativeResult;
+import org.opengis.metadata.quality.Result;
+import org.opengis.referencing.IdentifiedObject;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.ConcatenatedOperation;
+import org.opengis.referencing.operation.ConicProjection;
+import org.opengis.referencing.operation.Conversion;
+import org.opengis.referencing.operation.CoordinateOperation;
+import org.opengis.referencing.operation.CylindricalProjection;
+import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.Operation;
+import org.opengis.referencing.operation.PlanarProjection;
+import org.opengis.referencing.operation.Projection;
+import org.opengis.referencing.operation.Transformation;
+import org.opengis.util.InternationalString;
+import org.opengis.util.Record;
+
+import si.uom.SI;
 
 
 /**
@@ -411,7 +412,7 @@ public class AbstractCoordinateOperation extends AbstractIdentifiedObject
                     final QuantitativeResult quantity = (QuantitativeResult) result;
                     final Collection<? extends Record> records = quantity.getValues();
                     if (records != null) {
-                        final Unit<?> unit = quantity.getValueUnit();
+                        final Unit unit = quantity.getValueUnit();
                         if (unit!=null && SI.METRE.isCompatible(unit)) {
                             for (final Record record : records) {
                                 for (final Object value : record.getAttributes().values()) {

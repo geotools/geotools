@@ -22,8 +22,6 @@ package org.geotools.referencing.wkt;
 import java.lang.reflect.Modifier;
 import java.util.Set;
 
-import si.uom.NonSI;
-import si.uom.SI;
 import javax.measure.Unit;
 import javax.measure.format.UnitFormat;
 
@@ -32,11 +30,16 @@ import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
 import org.opengis.metadata.citation.Citation;
 
+import si.uom.NonSI;
+import si.uom.SI;
+import systems.uom.common.USCustomary;
+import tec.uom.se.format.SimpleUnitFormat;
+
 /**
  * Provides unit formatting for EPSG and ESRI WKT dialects
  * @author Andrea Aime - GeoSolutions
  */
-abstract class GeoToolsUnitFormat extends UnitFormat {
+abstract class GeoToolsUnitFormat extends SimpleUnitFormat {
 
     public static UnitFormat getInstance(Citation citation) {
         if (CRS.equalsIgnoreMetadata(Citations.ESRI, citation)) {
@@ -56,12 +59,12 @@ abstract class GeoToolsUnitFormat extends UnitFormat {
             // make sure Units registers the extar units in the default format
             Unit<?> forceInit = Units.SEXAGESIMAL_DMS;
 
-            DefaultFormat base = (DefaultFormat) UnitFormat.getInstance();
+            DefaultFormat base = (DefaultFormat) SimpleUnitFormat.getInstance();
 
             // clone non si units
             Set<Unit<?>> nonSiUnits = NonSI.getInstance().getUnits();
             for (Unit<?> unit : nonSiUnits) {
-                String name = base.nameFor(unit);
+                String name = unit.getName();
                 if (name != null) {
                     label(unit, name);
                 }
@@ -69,7 +72,7 @@ abstract class GeoToolsUnitFormat extends UnitFormat {
             // clone si units
             Set<Unit<?>> siUnits = SI.getInstance().getUnits();
             for (Unit<?> unit : siUnits) {
-                String name = base.nameFor(unit);
+                String name = unit.getName();
                 if (name != null) {
                     label(unit, name);
                 }
@@ -82,7 +85,7 @@ abstract class GeoToolsUnitFormat extends UnitFormat {
                     try {
                         field.setAccessible(true);
                         Unit unit = (Unit) field.get(null);
-                        String name = base.nameFor(unit);
+                        String name = unit.getName();
                         if (name != null) {
                             label(unit, name);
                         }
@@ -117,7 +120,7 @@ abstract class GeoToolsUnitFormat extends UnitFormat {
         public ESRIFormat() {
             label(NonSI.DEGREE_ANGLE, "Degree");
             label(SI.METRE, "Meter");
-            label(SI.METRE.times(0.3047997101815088), "Foot_Gold_Coast");
+            label(SI.METRE.multiply(0.3047997101815088), "Foot_Gold_Coast");
             label(USCustomary.FOOT, "Foot");
             label(USCustomary.FOOT_SURVEY, "Foot_US");
         }

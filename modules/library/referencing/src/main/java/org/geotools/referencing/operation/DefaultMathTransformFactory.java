@@ -22,35 +22,19 @@ package org.geotools.referencing.operation;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Predicate;
 
 import javax.measure.Unit;
 import javax.measure.quantity.Length;
-import javax.measure.converter.ConversionException;
 
-import org.opengis.metadata.citation.Citation;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchIdentifierException;
-import org.opengis.referencing.datum.Ellipsoid;
-import org.opengis.referencing.cs.CoordinateSystem;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.Conversion;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.MathTransformFactory;
-import org.opengis.referencing.operation.Matrix;
-import org.opengis.referencing.operation.Operation;
-import org.opengis.referencing.operation.OperationMethod;
-import org.opengis.referencing.operation.Projection;
-
-import org.geotools.metadata.iso.citation.Citations;
-import org.geotools.factory.Hints;
 import org.geotools.factory.FactoryRegistry;
-import org.geotools.parameter.Parameters;
+import org.geotools.factory.Hints;
+import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.parameter.ParameterWriter;
+import org.geotools.parameter.Parameters;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.cs.AbstractCS;
 import org.geotools.referencing.factory.ReferencingFactory;
@@ -61,11 +45,25 @@ import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.referencing.wkt.MathTransformParser;
 import org.geotools.referencing.wkt.Symbols;
 import org.geotools.resources.Arguments;
-import org.geotools.resources.LazySet;
 import org.geotools.resources.CRSUtilities;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.resources.LazySet;
 import org.geotools.resources.i18n.ErrorKeys;
+import org.geotools.resources.i18n.Errors;
 import org.geotools.util.CanonicalSet;
+import org.opengis.metadata.citation.Citation;
+import org.opengis.parameter.ParameterValueGroup;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.NoSuchIdentifierException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.cs.CoordinateSystem;
+import org.opengis.referencing.datum.Ellipsoid;
+import org.opengis.referencing.operation.Conversion;
+import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.MathTransformFactory;
+import org.opengis.referencing.operation.Matrix;
+import org.opengis.referencing.operation.Operation;
+import org.opengis.referencing.operation.OperationMethod;
+import org.opengis.referencing.operation.Projection;
 
 
 /**
@@ -390,9 +388,6 @@ public class DefaultMathTransformFactory extends ReferencingFactory implements M
             swap3 = AbstractCS.swapAndScaleAxis(AbstractCS.standard(derivedCS), derivedCS);
         } catch (IllegalArgumentException cause) {
             // User-specified axis don't match.
-            throw new FactoryException(cause);
-        } catch (ConversionException cause) {
-            // A Unit conversion is non-linear.
             throw new FactoryException(cause);
         }
         /*

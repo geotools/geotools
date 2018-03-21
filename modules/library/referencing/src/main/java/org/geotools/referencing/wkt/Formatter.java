@@ -19,21 +19,27 @@
  */
 package org.geotools.referencing.wkt;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.text.FieldPosition;
 import java.text.NumberFormat;
 import java.util.Collection;
 import java.util.Locale;
 
-import si.uom.NonSI;
-import si.uom.SI;
-import tec.uom.se.AbstractUnit;
-
+import javax.measure.IncommensurableException;
+import javax.measure.UnconvertibleException;
 import javax.measure.Unit;
 import javax.measure.format.UnitFormat;
 import javax.measure.quantity.Angle;
 import javax.measure.quantity.Length;
 
+import org.geotools.math.XMath;
+import org.geotools.metadata.iso.citation.Citations;
+import org.geotools.resources.Arguments;
+import org.geotools.resources.X364;
+import org.geotools.resources.i18n.ErrorKeys;
+import org.geotools.resources.i18n.Errors;
+import org.geotools.util.Utilities;
 import org.opengis.metadata.Identifier;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.parameter.GeneralParameterValue;
@@ -41,21 +47,16 @@ import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.IdentifiedObject;
-import org.opengis.referencing.datum.Datum;
 import org.opengis.referencing.cs.CoordinateSystemAxis;
+import org.opengis.referencing.datum.Datum;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.OperationMethod;
 import org.opengis.util.CodeList;
 import org.opengis.util.GenericName;
 import org.opengis.util.InternationalString;
 
-import org.geotools.math.XMath;
-import org.geotools.metadata.iso.citation.Citations;
-import org.geotools.resources.Arguments;
-import org.geotools.util.Utilities;
-import org.geotools.resources.X364;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.ErrorKeys;
+import si.uom.SI;
+import tec.uom.se.AbstractUnit;
 
 
 /**
@@ -598,28 +599,33 @@ public class Formatter {
      * can append "<code>UNIT["km", 1000]</code>" to the WKT.
      *
      * @param unit The unit to append.
+     * @throws IllegalArgumentException if the provided unit is not  
      */
     public void append(final Unit<?> unit) {
         if (unit != null) {
-            appendSeparator(lineChanged);
-            buffer.append("UNIT").append(symbols.open);
-            setColor(UNIT_COLOR);
-            buffer.append(symbols.quote);
-            unitFormat.format(unit, buffer, dummy);
-            buffer.append(symbols.quote);
-            resetColor();
-            Unit<?> base = null;
-            if (SI.METRE.isCompatible(unit)) {
-                base = SI.METRE;
-            } else if (SI.SECOND.isCompatible(unit)) {
-                base = SI.SECOND;
-            } else if (SI.RADIAN.isCompatible(unit)) {
-                if (!AbstractUnit.ONE.equals(unit)) {
-                    base = SI.RADIAN;
+            try {
+                appendSeparator(lineChanged);
+                buffer.append("UNIT").append(symbols.open);
+                setColor(UNIT_COLOR);
+                buffer.append(symbols.quote);
+                unitFormat.format(unit, buffer);
+                buffer.append(symbols.quote);
+                resetColor();
+                Unit<?> base = null;
+                if (SI.METRE.isCompatible(unit)) {
+                    base = SI.METRE;
+                } else if (SI.SECOND.isCompatible(unit)) {
+                    base = SI.SECOND;
+                } else if (SI.RADIAN.isCompatible(unit)) {
+                    if (!AbstractUnit.ONE.equals(unit)) {
+                        base = SI.RADIAN;
+                    }
                 }
-            }
-            if (base != null) {
-                append(unit.getConverterTo(base).convert(1));
+                if (base != null) {
+                    append(unit.getConverterToAny(base).convert(1));
+                }
+            } catch (IOException | UnconvertibleException | IncommensurableException e) {
+                throw new IllegalArgumentException("The provided unit is not compatible", e);
             }
             buffer.append(symbols.close);
         }

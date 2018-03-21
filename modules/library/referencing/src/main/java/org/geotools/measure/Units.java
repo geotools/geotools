@@ -20,9 +20,12 @@ import javax.measure.Unit;
 import javax.measure.format.UnitFormat;
 import javax.measure.quantity.Angle;
 import javax.measure.quantity.Dimensionless;
+import javax.measure.quantity.Length;
+import javax.measure.quantity.Time;
 
 import si.uom.NonSI;
 import si.uom.SI;
+import systems.uom.common.USCustomary;
 import tec.uom.se.AbstractUnit;
 import tec.uom.se.format.SimpleUnitFormat;
 
@@ -43,7 +46,16 @@ public final class Units {
      */
     private Units() {
     }
-
+    /**
+     * Length of <code>1/72</code> of a {@link USCustomary#INCH}
+     */
+    public static final Unit<Length> PIXEL = USCustomary.INCH.divide(72);
+    
+    /**
+     * Time duration of <code>1/12</code> of a {@link SI#YEAR}.
+     */
+    public static final Unit<Time> MONTH = SI.YEAR.divide(12);
+    
     /**
      * Pseudo-unit for sexagesimal degree. Numbers in this pseudo-unit has the following format:
      *

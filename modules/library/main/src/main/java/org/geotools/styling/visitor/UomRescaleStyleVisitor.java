@@ -20,10 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.measure.quantity.Length;
-import si.uom.NonSI;
 import javax.measure.Unit;
+import javax.measure.quantity.Length;
 
+import org.geotools.measure.Units;
 import org.geotools.styling.Displacement;
 import org.geotools.styling.Fill;
 import org.geotools.styling.Font;
@@ -41,6 +41,8 @@ import org.geotools.styling.TextSymbolizer2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.style.GraphicalSymbol;
+
+import si.uom.NonSI;
 
 /**
  * Visitor used for rescaling a Style given a map scale (e.g., meters per pixel) and taking into
@@ -159,7 +161,7 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
         Unit<Length> uom = copy.getUnitOfMeasure();
         Graphic copyGraphic = copy.getGraphic();
         rescale(copyGraphic, uom);
-        copy.setUnitOfMeasure(NonSI.PIXEL);
+        copy.setUnitOfMeasure(Units.PIXEL);
     }
 
     private void rescale(Graphic graphic, Unit<Length> unit) {
@@ -194,7 +196,7 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
         Stroke copyStroke = copy.getStroke();
         rescaleStroke(copyStroke, uom);
         copy.setPerpendicularOffset(rescale(copy.getPerpendicularOffset(), uom));
-        copy.setUnitOfMeasure(NonSI.PIXEL);
+        copy.setUnitOfMeasure(Units.PIXEL);
     }
 
     @Override
@@ -206,7 +208,7 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
         rescaleStroke(copy.getStroke(), uom);
         rescaleFill(copy.getFill(), uom);
         scaleIntArrayOption(copy.getOptions(), PolygonSymbolizer.GRAPHIC_MARGIN_KEY, uom);
-        copy.setUnitOfMeasure(NonSI.PIXEL);
+        copy.setUnitOfMeasure(Units.PIXEL);
     }
 
     private void rescaleFill(Fill copyFill, Unit<Length> unit) {
@@ -269,7 +271,7 @@ public class UomRescaleStyleVisitor extends DuplicatingStyleVisitor {
         scaleIntOption(options, TextSymbolizer.AUTO_WRAP_KEY, uom);
         scaleIntArrayOption(options, TextSymbolizer.GRAPHIC_MARGIN_KEY, uom);
 
-        copy.setUnitOfMeasure(NonSI.PIXEL);
+        copy.setUnitOfMeasure(Units.PIXEL);
     }
 
     private void scaleIntOption(Map<String, String> options, String optionName, Unit<Length> uom) {

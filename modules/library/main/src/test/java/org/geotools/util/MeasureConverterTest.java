@@ -18,11 +18,12 @@ package org.geotools.util;
 
 import static org.junit.Assert.assertEquals;
 
-import si.uom.NonSI;
-import si.uom.SI;
-
 import org.geotools.measure.Measure;
 import org.junit.Test;
+
+import si.uom.NonSI;
+import si.uom.SI;
+import systems.uom.common.USCustomary;
 
 public class MeasureConverterTest {
     

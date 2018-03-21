@@ -1,6 +1,6 @@
 package org.geotools.se.v1_1;
 
-iimport si.uom.NonSI;
+import si.uom.NonSI;
 import si.uom.SI;
 
 import org.junit.Test;

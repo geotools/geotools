@@ -20,7 +20,7 @@ import java.lang.reflect.Field;
 
 import javax.measure.unit.BaseUnit;
 import javax.measure.unit.DerivedUnit;
-iimport si.uom.NonSI;
+import si.uom.NonSI;
 import si.uom.SI;
 import javax.measure.Unit;
 import javax.measure.format.UnitFormat;

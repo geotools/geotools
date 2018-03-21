@@ -23,7 +23,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-iimport si.uom.NonSI;
+import si.uom.NonSI;
 
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.parameter.ParameterGroup;

@@ -31,7 +31,7 @@ import java.util.Set;
 
 import javax.measure.quantity.Angle;
 import javax.measure.quantity.Duration;
-iimport si.uom.NonSI;
+import si.uom.NonSI;
 import si.uom.SI;
 import javax.measure.Unit;
 

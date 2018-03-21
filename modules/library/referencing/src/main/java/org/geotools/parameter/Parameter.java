@@ -26,7 +26,7 @@ import java.net.URISyntaxException;
 import java.util.Set;
 
 import javax.measure.UnitConverter;
-iimport si.uom.NonSI;
+import si.uom.NonSI;
 import si.uom.SI;
 import javax.measure.Unit;
 

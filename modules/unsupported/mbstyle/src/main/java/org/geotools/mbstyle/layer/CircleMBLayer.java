@@ -29,7 +29,7 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.style.Displacement;
 import org.opengis.style.SemanticType;
 
-iimport si.uom.NonSI;
+import si.uom.NonSI;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;

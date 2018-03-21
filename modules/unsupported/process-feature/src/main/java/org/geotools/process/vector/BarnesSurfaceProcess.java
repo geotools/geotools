@@ -20,7 +20,7 @@ package org.geotools.process.vector;
 import java.util.ArrayList;
 import java.util.List;
 
-iimport si.uom.NonSI;
+import si.uom.NonSI;
 import si.uom.SI;
 import javax.measure.Unit;
 

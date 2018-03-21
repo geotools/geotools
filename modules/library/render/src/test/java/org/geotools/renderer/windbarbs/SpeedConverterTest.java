@@ -16,7 +16,7 @@
  */
 package org.geotools.renderer.windbarbs;
 
-iimport si.uom.NonSI;
+import si.uom.NonSI;
 
 import org.junit.Assert;
 import org.junit.Test;

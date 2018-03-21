@@ -22,7 +22,7 @@ package org.geotools.referencing.wkt;
 import java.lang.reflect.Modifier;
 import java.util.Set;
 
-iimport si.uom.NonSI;
+import si.uom.NonSI;
 import si.uom.SI;
 import javax.measure.Unit;
 import javax.measure.format.UnitFormat;

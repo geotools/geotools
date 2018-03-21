@@ -25,7 +25,7 @@ import java.util.Locale;  // For javadoc
 import java.util.Map;
 import java.util.NoSuchElementException;
 import javax.measure.UnitConverter;
-iimport si.uom.NonSI;
+import si.uom.NonSI;
 import si.uom.SI;
 import javax.measure.Unit;
 

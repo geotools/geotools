@@ -16,12 +16,15 @@
  */
 package org.geotools.measure;
 
-import si.uom.SI;
-import si.uom.NonSI;
 import javax.measure.Unit;
 import javax.measure.format.UnitFormat;
 import javax.measure.quantity.Angle;
 import javax.measure.quantity.Dimensionless;
+
+import si.uom.NonSI;
+import si.uom.SI;
+import tec.uom.se.AbstractUnit;
+import tec.uom.se.format.SimpleUnitFormat;
 
 
 /**
@@ -71,13 +74,13 @@ public final class Units {
     /**
      * Parts per million.
      */
-    public static final Unit<Dimensionless> PPM = AbstractUnit.ONE.times(1E-6);
+    public static final Unit<Dimensionless> PPM = AbstractUnit.ONE.multiply(1E-6);
 
     /**
      * Associates the labels to units created in this class.
      */
     static {
-        final UnitFormat format = UnitFormat.getInstance();
+        final UnitFormat format = SimpleUnitFormat.getInstance();
         format.label(SEXAGESIMAL_DMS,      "D.MS");
         format.label(DEGREE_MINUTE_SECOND, "DMS" );
         format.label(PPM,                  "ppm" );

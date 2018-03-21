@@ -30,8 +30,6 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
-import javax.measure.converter.ConversionException;
-
 import org.geotools.factory.Hints;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.metadata.iso.quality.PositionalAccuracyImpl;
@@ -290,8 +288,6 @@ public abstract class AbstractCoordinateOperationFactory extends ReferencingFact
         try {
             return AbstractCS.swapAndScaleAxis(sourceCS,targetCS);
         } catch (IllegalArgumentException exception) {
-            throw new OperationNotFoundException(getErrorMessage(sourceCS, targetCS), exception);
-        } catch (ConversionException exception) {
             throw new OperationNotFoundException(getErrorMessage(sourceCS, targetCS), exception);
         }
         // No attempt to catch ClassCastException since such

@@ -20,7 +20,18 @@
  */
 package org.geotools.referencing.operation.projection;
 
-import static java.lang.Math.*;
+import static java.lang.Math.PI;
+import static java.lang.Math.abs;
+import static java.lang.Math.acos;
+import static java.lang.Math.asin;
+import static java.lang.Math.atan;
+import static java.lang.Math.cos;
+import static java.lang.Math.pow;
+import static java.lang.Math.sin;
+import static java.lang.Math.sqrt;
+import static java.lang.Math.tan;
+import static java.lang.Math.toDegrees;
+import static java.lang.Math.toRadians;
 
 import java.awt.geom.Point2D;
 import java.io.Serializable;
@@ -28,10 +39,6 @@ import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-
-import si.uom.NonSI;
-import si.uom.SI;
-import javax.measure.Unit;
 
 import org.geotools.math.XMath;
 import org.geotools.measure.Latitude;
@@ -55,6 +62,9 @@ import org.opengis.referencing.operation.NoninvertibleTransformException;
 import org.opengis.referencing.operation.Projection;
 import org.opengis.referencing.operation.TransformException;
 
+import si.uom.NonSI;
+import si.uom.SI;
+import tec.uom.se.AbstractUnit;
 
 /**
  * Base class for transformation services between ellipsoidal and cartographic projections.

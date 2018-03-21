@@ -109,7 +109,7 @@ class Measure {
             uom = NonSI.PIXEL;
         } else if (value.endsWith("ft")) {
             unitless = value.substring(0, value.length() - 2);
-            uom = NonSI.FOOT;
+            uom = USCustomary.FOOT;
         } else if (value.endsWith("m")) {
             unitless = value.substring(0, value.length() - 1);
             uom = SI.METRE;

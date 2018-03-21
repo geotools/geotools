@@ -81,7 +81,7 @@ public class SpeedConverterTest extends Assert {
         }
 
         // feet/s
-        speed = SpeedConverter.toKnots(1, NonSI.FOOT.toString() + "/s");
+        speed = SpeedConverter.toKnots(1, USCustomary.FOOT.toString() + "/s");
         assertEquals(0.592483801, speed, 1E-6);
 
         try {

@@ -31,7 +31,7 @@ import javax.measure.Unit;
  */
 public enum UomOgcMapping {
 
-    METRE(SI.METRE, "http://www.opengeospatial.org/se/units/metre"), FOOT(NonSI.FOOT,
+    METRE(SI.METRE, "http://www.opengeospatial.org/se/units/metre"), FOOT(USCustomary.FOOT,
             "http://www.opengeospatial.org/se/units/foot"), PIXEL(NonSI.PIXEL,
             "http://www.opengeospatial.org/se/units/pixel");
 

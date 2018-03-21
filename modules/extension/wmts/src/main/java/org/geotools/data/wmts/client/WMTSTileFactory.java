@@ -237,7 +237,7 @@ public class WMTSTileFactory extends TileFactory {
         if (unit.equals(NonSI.DEGREE_ANGLE)) {
             /*
              * use the length of a degree at the equator = 60 nautical miles!
-             * unit = NonSI.NAUTICAL_MILE; UnitConverter metersperunit =
+             * unit = USCustomary.NAUTICAL_MILE; UnitConverter metersperunit =
              * unit.getConverterTo(SI.METRE); pixelSpan /=
              * metersperunit.convert(60.0);
              */

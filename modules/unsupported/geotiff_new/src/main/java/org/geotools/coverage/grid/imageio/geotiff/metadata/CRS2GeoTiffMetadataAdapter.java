@@ -330,7 +330,7 @@ public final class CRS2GeoTiffMetadataAdapter {
 				metadata.addGeoDoubleParam(
 						GeoTiffPCSCodes.ProjLinearUnitSizeGeoKey, 1.0);
 			}
-			if (NonSI.NAUTICAL_MILE.equals(linearUnit)) {
+			if (USCustomary.NAUTICAL_MILE.equals(linearUnit)) {
 				metadata.addGeoShortParam(
 						GeoTiffPCSCodes.ProjLinearUnitsGeoKey,
 						GeoTiffUoMCodes.Linear_Mile_International_Nautical);
@@ -338,7 +338,7 @@ public final class CRS2GeoTiffMetadataAdapter {
 						GeoTiffPCSCodes.ProjLinearUnitSizeGeoKey, linearUnit
 								.getConverterTo(SI.METER).convert(1));
 			}
-			if (NonSI.FOOT.equals(linearUnit)) {
+			if (USCustomary.FOOT.equals(linearUnit)) {
 				metadata.addGeoShortParam(
 						GeoTiffPCSCodes.ProjLinearUnitsGeoKey,
 						GeoTiffUoMCodes.Linear_Foot);

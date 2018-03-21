@@ -100,7 +100,7 @@ public class DpiRescaleStyleVisitorTest {
     public void testAllFeet() throws Exception {
         Stroke original = sb.createStroke(Color.RED, 2, new float[] { 5, 10 });
         LineSymbolizer ls = sb.createLineSymbolizer(original);
-        ls.setUnitOfMeasure(NonSI.FOOT);
+        ls.setUnitOfMeasure(USCustomary.FOOT);
         ls.accept(visitor);
         Stroke clone = ((LineSymbolizer) visitor.getCopy()).getStroke();
 
@@ -110,7 +110,7 @@ public class DpiRescaleStyleVisitorTest {
         
         TextSymbolizer ts = sb.createTextSymbolizer();
         ts.getOptions().put(TextSymbolizer.SPACE_AROUND_KEY, "10");
-        ts.setUnitOfMeasure(NonSI.FOOT);
+        ts.setUnitOfMeasure(USCustomary.FOOT);
         ts.accept(visitor);
         TextSymbolizer clonedTs = (TextSymbolizer)visitor.getCopy();
         assertEquals("10.0", clonedTs.getOptions().get(TextSymbolizer.SPACE_AROUND_KEY));

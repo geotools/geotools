@@ -431,7 +431,7 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
      * ones). If more than one non-angular unit is found, the default implementation returns the "largest" one (e.g. kilometers instead of meters).
      *
      * @return Suggested distance unit.
-     * @throws IllegalArgumentException if some non-angular units are incompatibles.
+     * @throws IllegalArgumentException if some non-angular units are incompatible.
      */
     final Unit<?> getDistanceUnit() {
         Unit<?> unit = distanceUnit;  // Avoid the need for synchronization.

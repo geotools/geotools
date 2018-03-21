@@ -30,6 +30,8 @@ import java.util.logging.Logger;
 
 import si.uom.NonSI;
 import si.uom.SI;
+import tec.uom.se.format.SimpleUnitFormat;
+
 import javax.measure.Unit;
 import javax.measure.format.UnitFormat;
 
@@ -61,6 +63,7 @@ import ucar.nc2.constants.AxisType;
 import ucar.nc2.constants.CF;
 import ucar.nc2.dataset.CoordinateAxis;
 import ucar.nc2.dataset.VariableDS;
+import ucar.nc2.units.SimpleUnit;
 
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.PrecisionModel;
@@ -153,7 +156,7 @@ public class NetCDFCRSUtilities {
     /**
      * The object to use for parsing and formatting units.
      */
-    private final static UnitFormat UNIT_FORMAT = UnitFormat.getInstance();
+    private final static UnitFormat UNIT_FORMAT = SimpleUnitFormat.getInstance();
 
     /**
      * Adds a mapping between UCAR type and ISO direction.
@@ -474,15 +477,15 @@ public class NetCDFCRSUtilities {
         } else if (contains(unitName, SECONDS)) {
             return SI.SECOND;
         } else if (contains(unitName, MINUTES)) {
-            return NonSI.MINUTE;
+            return SI.MINUTE;
         } else if (contains(unitName, HOURS)) {
-            return NonSI.HOUR;
+            return SI.HOUR;
         } else if (contains(unitName, DAYS)) {
-            return NonSI.DAY;
+            return SI.DAY;
         } else {
             try {
-                return (Unit< ? >) UNIT_FORMAT.parseObject(unitName);
-            } catch (ParseException e) {
+                return (Unit< ? >) UNIT_FORMAT.parse(unitName);
+            } catch (UnsupportedOperationException e) {
                 throw new FactoryException("Unit not known : " + unitName, e);
             }
         }

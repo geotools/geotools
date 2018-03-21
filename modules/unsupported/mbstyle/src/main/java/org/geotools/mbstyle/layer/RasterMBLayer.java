@@ -20,6 +20,7 @@ package org.geotools.mbstyle.layer;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.parse.MBFilter;
 import org.geotools.mbstyle.parse.MBObjectParser;
+import org.geotools.measure.Units;
 import org.geotools.styling.*;
 import org.geotools.text.Text;
 import org.json.simple.JSONObject;
@@ -226,7 +227,7 @@ public class RasterMBLayer extends MBLayer {
         // Use of builder is easier for code examples; but fills in SLD defaults
         // Currently only applies the opacity.
         RasterSymbolizer symbolizer = sf.rasterSymbolizer(getId(), null,
-                sf.description(Text.text("raster"), null), NonSI.PIXEL, opacity(), null,
+                sf.description(Text.text("raster"), null), Units.PIXEL, opacity(), null,
                 null, null, ce, null, null);
 
         List<Rule> rules = new ArrayList<>();

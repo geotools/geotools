@@ -23,6 +23,7 @@ import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.mbstyle.sprite.SpriteGraphicFactory;
 import org.geotools.mbstyle.transform.MBStyleTransformer;
+import org.geotools.measure.Units;
 import org.geotools.styling.*;
 import org.geotools.styling.Font;
 import org.geotools.styling.Stroke;
@@ -1729,7 +1730,7 @@ public class SymbolMBLayer extends MBLayer {
         textExpression = ff.function("StringTransform", textExpression, textTransform());
 
         TextSymbolizer2 symbolizer = (TextSymbolizer2) sf.textSymbolizer(getId(),
-                ff.property((String) null), sf.description(Text.text("text"), null), NonSI.PIXEL,
+                ff.property((String) null), sf.description(Text.text("text"), null), Units.PIXEL,
                 textExpression, font, labelPlacement, halo, fill);
 
         Number symbolSpacing = transformer.requireLiteral(symbolSpacing(), Number.class, 250,
@@ -1828,7 +1829,7 @@ public class SymbolMBLayer extends MBLayer {
             // This enables adjusting the text placement without moving the icon.
             if ("point".equalsIgnoreCase(symbolPlacementVal.trim())) {
                 org.geotools.styling.PointSymbolizer pointSymbolizer = sf.pointSymbolizer(getId(),
-                        ff.property((String) null), sf.description(Text.text("text"), null), NonSI.PIXEL,
+                        ff.property((String) null), sf.description(Text.text("text"), null), Units.PIXEL,
                         getGraphic(transformer, styleContext));
                 symbolizers.add(pointSymbolizer);
             } else {

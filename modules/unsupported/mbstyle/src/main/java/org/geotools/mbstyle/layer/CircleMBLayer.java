@@ -21,6 +21,7 @@ import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.parse.MBFilter;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
+import org.geotools.measure.Units;
 import org.geotools.styling.*;
 import org.geotools.styling.Stroke;
 import org.geotools.text.Text;
@@ -350,7 +351,7 @@ public class CircleMBLayer extends MBLayer {
                 .pointSymbolizer(getId(), ff.property((String) null),
                         sf.description(Text.text("MBStyle " + getId()),
                                 Text.text("Generated for " + getSourceLayer())),
-                        NonSI.PIXEL, gr);
+                        Units.PIXEL, gr);
 
         MBFilter filter = getFilter();
         

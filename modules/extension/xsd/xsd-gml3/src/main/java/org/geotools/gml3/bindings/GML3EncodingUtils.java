@@ -20,6 +20,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -56,6 +57,7 @@ import org.xml.sax.Attributes;
 import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.LineString;
+import org.xml.sax.helpers.NamespaceSupport;
 
 /**
  * Utility class for gml3 encoding.
@@ -395,4 +397,28 @@ public class GML3EncodingUtils {
         }
     }
 
+
+    /**
+     * Deep clones a {@link NamespaceSupport} so that it can be used outside of this parse
+     * (as its state changes during the parse, and we need to keep all namespace mapping present
+     * at this point for later usage)
+     * @param namespaceSupport
+     * @return
+     */
+    public static NamespaceSupport copyNamespaceSupport(NamespaceSupport namespaceSupport) {
+        NamespaceSupport copy = new NamespaceSupport();
+        Enumeration prefixes = namespaceSupport.getPrefixes();
+        while (prefixes.hasMoreElements()) {
+            String prefix = (String) prefixes.nextElement();
+            String uri = namespaceSupport.getURI(prefix);
+            copy.declarePrefix(prefix, uri);
+        }
+        // the above did not cover the default prefix
+        String defaultUri = namespaceSupport.getURI("");
+        if (defaultUri != null) {
+            copy.declarePrefix("", defaultUri);
+        }
+
+        return copy;
+    }
 }

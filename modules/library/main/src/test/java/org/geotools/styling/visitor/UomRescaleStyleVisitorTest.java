@@ -115,7 +115,7 @@ public class UomRescaleStyleVisitorTest
         if (uom != null)
         {
             double scaleUomToMeters = 1;
-            if (uom.equals(NonSI.FOOT))
+            if (uom.equals(USCustomary.FOOT))
                 scaleUomToMeters *= 0.3048006096012;
             if (!uom.equals(NonSI.PIXEL))
                 expectedRescaledSize *= scaleUomToMeters * scaleMetersToPixel;
@@ -352,13 +352,13 @@ public class UomRescaleStyleVisitorTest
     @Test
     public void testVisitPointSymbolizer_ScaleFoot1()
     {
-        visitPointSymbolizerTest(1, NonSI.FOOT);
+        visitPointSymbolizerTest(1, USCustomary.FOOT);
     }
     
     @Test
     public void testVisitPointSymbolizer_ScaleFoot10()
     {
-        visitPointSymbolizerTest(10, NonSI.FOOT);
+        visitPointSymbolizerTest(10, USCustomary.FOOT);
     }
 
 
@@ -390,13 +390,13 @@ public class UomRescaleStyleVisitorTest
     @Test
     public void testVisitLineSymbolizer_ScaleFoot1()
     {
-        visitLineSymbolizerTest(1, NonSI.FOOT);
+        visitLineSymbolizerTest(1, USCustomary.FOOT);
     }
     
     @Test
     public void testVisitLineSymbolizer_ScaleFoot10()
     {
-        visitLineSymbolizerTest(10, NonSI.FOOT);
+        visitLineSymbolizerTest(10, USCustomary.FOOT);
     }
     
     // LINE SYMBOLIZER TESTS with dynamic dash arrays
@@ -426,13 +426,13 @@ public class UomRescaleStyleVisitorTest
     
     public void testVisitLineSymbolizerDynamicDashArray_ScaleFoot1()
     {
-        visitLineSymbolizerTestDynamicDashArray(1, NonSI.FOOT);
+        visitLineSymbolizerTestDynamicDashArray(1, USCustomary.FOOT);
     }
     
     
     public void testVisitLineSymbolizerDynamicDashArray_ScaleFoot10()
     {
-        visitLineSymbolizerTestDynamicDashArray(10, NonSI.FOOT);
+        visitLineSymbolizerTestDynamicDashArray(10, USCustomary.FOOT);
     }
     
     // POLYGON SYMBOLIZER TESTS
@@ -463,13 +463,13 @@ public class UomRescaleStyleVisitorTest
     @Test
     public void testVisitPolygonSymbolizer_ScaleFoot1()
     {
-        visitPolygonSymbolizerTest(1, NonSI.FOOT);
+        visitPolygonSymbolizerTest(1, USCustomary.FOOT);
     }
     
     @Test
     public void testVisitPolygonSymbolizer_ScaleFoot10()
     {
-        visitPolygonSymbolizerTest(10, NonSI.FOOT);
+        visitPolygonSymbolizerTest(10, USCustomary.FOOT);
     }
 
     
@@ -501,13 +501,13 @@ public class UomRescaleStyleVisitorTest
     @Test
     public void testVisitTextSymbolizer_ScaleFoot1()
     {
-        visitTextSymbolizerTest(1, NonSI.FOOT);
+        visitTextSymbolizerTest(1, USCustomary.FOOT);
     }
     
     @Test
     public void testVisitTextSymbolizer_ScaleFoot10()
     {
-        visitTextSymbolizerTest(10, NonSI.FOOT);
+        visitTextSymbolizerTest(10, USCustomary.FOOT);
     }
 
 
@@ -738,7 +738,7 @@ public class UomRescaleStyleVisitorTest
         PointSymbolizer ps = sb.createPointSymbolizer(g);
         
         // first see it in feet
-        ps.setUnitOfMeasure(NonSI.FOOT);
+        ps.setUnitOfMeasure(USCustomary.FOOT);
         
         // rescale it
         UomRescaleStyleVisitor visitor = new UomRescaleStyleVisitor(10);
@@ -789,7 +789,7 @@ public class UomRescaleStyleVisitorTest
 
         StyleBuilder styleBuilder = new StyleBuilder();
         LineSymbolizerImpl lineSymb = (LineSymbolizerImpl) styleBuilder.createLineSymbolizer();
-        lineSymb.setUnitOfMeasure(NonSI.FOOT);
+        lineSymb.setUnitOfMeasure(USCustomary.FOOT);
         lineSymb.getStroke().setWidth(ff.literal(size + "m"));
 
         visitor = new UomRescaleStyleVisitor(scaleMetersToPixel);

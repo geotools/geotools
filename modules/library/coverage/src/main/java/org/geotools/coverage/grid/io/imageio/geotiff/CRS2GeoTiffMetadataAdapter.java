@@ -21,8 +21,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import si.uom.NonSI;
-import si.uom.SI;
 import javax.measure.Unit;
 
 import org.geotools.coverage.grid.io.imageio.geotiff.codes.GeoTiffCoordinateTransformationsCodes;
@@ -68,6 +66,11 @@ import org.opengis.referencing.datum.PrimeMeridian;
 import org.opengis.referencing.operation.Conversion;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.OperationMethod;
+
+import si.uom.NonSI;
+import si.uom.SI;
+import systems.uom.common.USCustomary;
+import tec.uom.se.AbstractUnit;
 
 /**
  * This class implements a simple reusable adapter to adapt a
@@ -315,13 +318,13 @@ public final class CRS2GeoTiffMetadataAdapter {
                             GeoTiffUoMCodes.Linear_Meter);
                     metadata.addGeoDoubleParam(GeoTiffPCSCodes.ProjLinearUnitSizeGeoKey, 1.0);
                 }else
-                    if (NonSI.NAUTICAL_MILE.equals(linearUnit)) {
+                    if (USCustomary.NAUTICAL_MILE.equals(linearUnit)) {
                         metadata.addGeoShortParam(GeoTiffPCSCodes.ProjLinearUnitsGeoKey,
                                 GeoTiffUoMCodes.Linear_Mile_International_Nautical);
                         metadata.addGeoDoubleParam(GeoTiffPCSCodes.ProjLinearUnitSizeGeoKey, linearUnit
                                 .getConverterTo(SI.METRE).convert(1));
                 }else
-                    if (NonSI.FOOT.equals(linearUnit)) {
+                    if (USCustomary.FOOT.equals(linearUnit)) {
                         metadata.addGeoShortParam(GeoTiffPCSCodes.ProjLinearUnitsGeoKey,
                                 GeoTiffUoMCodes.Linear_Foot);
                         metadata.addGeoDoubleParam(GeoTiffPCSCodes.ProjLinearUnitSizeGeoKey, linearUnit
@@ -333,7 +336,7 @@ public final class CRS2GeoTiffMetadataAdapter {
                         metadata.addGeoDoubleParam(GeoTiffPCSCodes.ProjLinearUnitSizeGeoKey, linearUnit
                                 .getConverterTo(SI.METRE).convert(1));
                 } else
-                    if (NonSI.FOOT_SURVEY_US.equals(linearUnit)) {
+                    if (USCustomary.FOOT_SURVEY.equals(linearUnit)) {
                         metadata.addGeoShortParam(GeoTiffPCSCodes.ProjLinearUnitsGeoKey,
                                 GeoTiffUoMCodes.Linear_Foot_US_Survey);// ??
                         metadata.addGeoDoubleParam(GeoTiffPCSCodes.ProjLinearUnitSizeGeoKey, linearUnit
@@ -972,9 +975,9 @@ public final class CRS2GeoTiffMetadataAdapter {
 	        }
 	        if(unit.equals(SI.METRE)){
 	            metadata.addGeoShortParam(key1, GeoTiffUoMCodes.Linear_Meter);
-	        } else if(unit.equals(NonSI.FOOT)){
+	        } else if(unit.equals(USCustomary.FOOT)){
 	            metadata.addGeoShortParam(key1, GeoTiffUoMCodes.Linear_Foot);
-	        } else if(unit.equals(NonSI.FOOT_SURVEY_US)){
+	        } else if(unit.equals(USCustomary.FOOT_SURVEY)){
                     metadata.addGeoShortParam(key1, GeoTiffUoMCodes.Linear_Foot_US_Survey);
                 } else if(unit.equals(NonSI.GRADE)){
                     metadata.addGeoShortParam(key1, GeoTiffUoMCodes.Angular_Grad);

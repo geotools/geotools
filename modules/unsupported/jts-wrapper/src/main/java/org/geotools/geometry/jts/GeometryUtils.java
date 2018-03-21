@@ -875,7 +875,7 @@ public final class GeometryUtils {
         Unit[] targetUnits = new Unit[] {
                 //SI.RADIAN,
                 //SI.RADIAN,
-                //NonSI.FOOT
+                //USCustomary.FOOT
                 NonSI.DEGREE_ANGLE,
                 NonSI.DEGREE_ANGLE,
                 SI.METRE

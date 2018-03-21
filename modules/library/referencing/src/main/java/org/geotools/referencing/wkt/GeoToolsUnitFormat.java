@@ -118,8 +118,8 @@ abstract class GeoToolsUnitFormat extends UnitFormat {
             label(NonSI.DEGREE_ANGLE, "Degree");
             label(SI.METRE, "Meter");
             label(SI.METRE.times(0.3047997101815088), "Foot_Gold_Coast");
-            label(NonSI.FOOT, "Foot");
-            label(NonSI.FOOT_SURVEY_US, "Foot_US");
+            label(USCustomary.FOOT, "Foot");
+            label(USCustomary.FOOT_SURVEY, "Foot_US");
         }
     }
 }

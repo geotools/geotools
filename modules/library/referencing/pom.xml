@@ -215,7 +215,7 @@
     	<scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>si.uom</groupId>
+      <groupId>systems.uom</groupId>
       <artifactId>systems-common</artifactId>
       <version>0.7.2</version>
     </dependency>

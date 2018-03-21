@@ -201,8 +201,8 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
     private static Unit<?> getUnit(final int code) {
         switch (code) {
             case 9001: return    SI.METRE;
-            case 9002: return NonSI.FOOT;
-            case 9030: return NonSI.NAUTICAL_MILE;
+            case 9002: return USCustomary.FOOT;
+            case 9030: return USCustomary.NAUTICAL_MILE;
             case 9036: return    MetricPrefix.KILO(SI.METRE);
             case 9101: return    SI.RADIAN;
             case 9122: // Fall through

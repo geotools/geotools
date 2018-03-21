@@ -149,7 +149,7 @@ enum RescalingMode {
     final Map<Unit, String> UNIT_SYMBOLS = new HashMap<Unit, String>() {
         {
             put(NonSI.PIXEL, "px");
-            put(NonSI.FOOT, "ft");
+            put(USCustomary.FOOT, "ft");
             put(SI.METRE, "m");
         }
     };

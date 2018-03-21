@@ -29,6 +29,7 @@ import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.parse.MBFilter;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.mbstyle.transform.MBStyleTransformer;
+import org.geotools.measure.Units;
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Fill;
@@ -171,7 +172,7 @@ public class BackgroundMBLayer extends MBLayer {
                 getId(),
                 ff.property((String) null),
                 sf.description(Text.text("fill"), null),
-                NonSI.PIXEL,
+                Units.PIXEL,
                 null, // stroke
                 fill,
                 null,

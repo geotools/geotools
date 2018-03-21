@@ -27,28 +27,29 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import javax.measure.UnitConverter;
-import si.uom.NonSI;
-import si.uom.SI;
 import javax.measure.Unit;
+import javax.measure.UnitConverter;
 import javax.measure.format.UnitFormat;
 import javax.measure.quantity.Time;
 
+import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.referencing.crs.DefaultTemporalCRS;
+import org.geotools.resources.CRSUtilities;
+import org.geotools.resources.i18n.ErrorKeys;
+import org.geotools.resources.i18n.Errors;
+import org.opengis.geometry.DirectPosition;
+import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.cs.AxisDirection;
 import org.opengis.referencing.cs.CoordinateSystem;
 import org.opengis.referencing.cs.CoordinateSystemAxis;
 import org.opengis.referencing.datum.Datum;
 import org.opengis.referencing.datum.TemporalDatum;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.geometry.MismatchedDimensionException;
 
-import org.geotools.referencing.CRS;
-import org.geotools.referencing.crs.DefaultTemporalCRS;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.resources.CRSUtilities;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import si.uom.NonSI;
+import si.uom.SI;
+import tec.units.ri.format.SimpleUnitFormat;
 
 
 /**
@@ -465,7 +466,7 @@ public class CoordinateFormat extends Format {
                 final Unit<?> unit = cs.getAxis(i).getUnit();
                 if (unit != null) {
                     if (unitFormat == null) {
-                        unitFormat = UnitFormat.getInstance();
+                        unitFormat = SimpleUnitFormat.getInstance();
                     }
                     final String asText = unitFormat.format(unit);
                     if (asText.length() != 0) {

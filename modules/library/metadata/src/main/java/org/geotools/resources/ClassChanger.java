@@ -245,8 +245,8 @@ public abstract class ClassChanger<S extends Comparable<S>, T extends Number> {
      * @param  classe The desired classe for return value.
      * @throws ClassNotFoundException if {@code classe} is not a registered class.
      */
-    @SuppressWarnings("unchecked")
-    public static <C extends Comparable<C>> C toComparable(final Number value, final Class<C> classe)
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public static <C extends Comparable> C toComparable(final Number value, final Class<C> classe)
             throws ClassNotFoundException
     {
         if (value != null) {

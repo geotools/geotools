@@ -93,18 +93,18 @@
             }
         },
         {
-          "id": "allStringExpressions",
-          "type": "symbol",
-          "source": "composite",
-          "source-layer": "waterway",
-          "layout": {
-            "text-field": [
-              "concat",
-              ["upcase", "c"],
-              ["downcase","A"],
-              "t"
-            ]
-          }
+            "id": "allStringExpressions",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+              "text-field": [
+                "concat",
+                ["upcase", "c"],
+                ["downcase","A"],
+                "t"
+              ]
+            }
         },
         {
             "id": "upcaseConcat",
@@ -118,6 +118,42 @@
                     ["upcase", "c"],
                     ["downcase","A"],
                     "t"]]
+            }
+        },
+        {
+            "id": "rgbExpression",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+              "text-field": "testrgb"
+              },
+            "paint": {
+              "text-color": ["rgb", 0, 111, 222]
+            }
+        },
+        {
+            "id": "rgbaExpression",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+              "text-field": "testrgba"
+            },
+            "paint": {
+              "text-color": ["rgba", 0, 111, 222, 0.1]
+            }
+        },
+        {
+            "id": "toRgbaExpression",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+              "text-field": "testrgba"
+            },
+            "paint": {
+              "text-color": ["to-rgba", "#006fde"]
             }
         }
     ]

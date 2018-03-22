@@ -961,7 +961,7 @@
       <dependency>
         <groupId>mysql</groupId>
         <artifactId>mysql-connector-java</artifactId>
-        <version>5.1.17</version>
+        <version>5.1.40</version>
       </dependency>
       <dependency>
         <groupId>org.hsqldb</groupId>

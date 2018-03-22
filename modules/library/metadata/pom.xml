@@ -142,6 +142,10 @@
       <groupId>javax.measure</groupId>
       <artifactId>unit-api</artifactId>
     </dependency>
+    <dependency>
+      <groupId>systems.uom</groupId>
+      <artifactId>systems-common-java8</artifactId>
+    </dependency>
   </dependencies>
 
   <build>

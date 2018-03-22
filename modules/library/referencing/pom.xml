@@ -209,14 +209,19 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-    	<groupId>net.sourceforge.javacsv</groupId>
-    	<artifactId>javacsv</artifactId>
-    	<version>2.0</version>
-    	<scope>test</scope>
+      <groupId>net.sourceforge.javacsv</groupId>
+      <artifactId>javacsv</artifactId>
+      <version>2.0</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>systems.uom</groupId>
-      <artifactId>systems-common</artifactId>
+      <artifactId>systems-ucum-java8</artifactId>
+        <version>0.7.2</version>
+    </dependency>
+    <dependency>
+      <groupId>systems.uom</groupId>
+      <artifactId>systems-common-java8</artifactId>
       <version>0.7.2</version>
     </dependency>
   </dependencies>

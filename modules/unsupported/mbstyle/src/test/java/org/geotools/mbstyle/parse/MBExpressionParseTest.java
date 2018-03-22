@@ -1,8 +1,30 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2018, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.mbstyle.parse;
 
+import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.MapboxTestUtils;
+import org.geotools.mbstyle.expression.MBColor;
 import org.geotools.mbstyle.expression.MBExpression;
 import org.geotools.mbstyle.expression.MBString;
+import org.geotools.mbstyle.layer.SymbolMBLayer;
+import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.SLDTransformer;
+import org.geotools.styling.TextSymbolizer;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
@@ -15,10 +37,12 @@ import org.opengis.filter.expression.Function;
 import java.awt.*;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 
@@ -26,11 +50,12 @@ public class MBExpressionParseTest {
     Map<String, JSONObject> testLayersById = new HashMap<>();
     MBObjectParser parse;
     FilterFactory2 ff;
+    JSONObject mbstyle;
 
     @Before
     public void setUp() throws IOException, ParseException {
-        JSONObject jsonObject = MapboxTestUtils.parseTestStyle("expressionParseTest.json");
-        JSONArray layers = (JSONArray) jsonObject.get("layers");
+        mbstyle = MapboxTestUtils.parseTestStyle("expressionParseTest.json");
+        JSONArray layers = (JSONArray) mbstyle.get("layers");
         for (Object o : layers) {
             JSONObject layer = (JSONObject) o;
             testLayersById.put((String) layer.get("id"), layer);
@@ -157,7 +182,69 @@ public class MBExpressionParseTest {
     }
 
     // ---- COLOR EXPRESSIONS ---------------------------------------------------------
+    @Test
+    public void testParseRgb() {
 
+        JSONObject layer = testLayersById.get("rgbExpression");
+        Optional<JSONObject> o = traverse(layer, JSONObject.class, "paint");
+        JSONObject j = o.get();
+        assertEquals(JSONArray.class, j.get("text-color").getClass());
+        JSONArray arr = (JSONArray) j.get("text-color");
+        assertEquals(MBColor.class, MBExpression.create(arr).getClass());
+        Expression rgb = MBExpression.transformExpression(arr);
+        Object c = rgb.evaluate(rgb);
+        assertEquals(new Color(0, 111, 222), c);
+    }
+
+    @Test
+    public void testParseRgba() {
+
+        JSONObject layer = testLayersById.get("toRgbaExpression");
+        Optional<JSONObject> o = traverse(layer, JSONObject.class, "paint");
+        JSONObject j = o.get();
+        assertEquals(JSONArray.class, j.get("text-color").getClass());
+        JSONArray arr = (JSONArray) j.get("text-color");
+        assertEquals(MBColor.class, MBExpression.create(arr).getClass());
+        try {
+            MBExpression.transformExpression(arr);
+            fail("expected exception due to \"to-rgba\" function being unsupported");
+        }
+        catch (UnsupportedOperationException expected){
+        }
+    }
+
+    @Test
+    public void testParseToRgba() {
+
+        JSONObject layer = testLayersById.get("rgbaExpression");
+        Optional<JSONObject> o = traverse(layer, JSONObject.class, "paint");
+        JSONObject j = o.get();
+        assertEquals(JSONArray.class, j.get("text-color").getClass());
+        JSONArray arr = (JSONArray) j.get("text-color");
+        assertEquals(MBColor.class, MBExpression.create(arr).getClass());
+        try {
+            MBExpression.transformExpression(arr);
+            fail("expected exception due to \"rgba\" function being unsupported");
+        } catch (UnsupportedOperationException expected) {
+        }
+    }
+
+    @Test
+    public void testRgbSldTransformation() {
+        MBStyle rgbTest = MBStyle.create(mbstyle);
+        SymbolMBLayer rgbLayer = (SymbolMBLayer) rgbTest.layer("rgbExpression");
+        List<FeatureTypeStyle> rgbFeatures = rgbLayer.transformInternal(rgbTest);
+        Color sldColor = (((TextSymbolizer) rgbFeatures.get(0).rules().get(0).getSymbolizers()[0]).getFill().getColor().
+                evaluate(null, Color.class));
+        assertEquals(new Color(0, 111, 222), sldColor);
+        try {
+            String xml = new SLDTransformer().transform(rgbFeatures.get(0));
+            assertTrue(xml.contains("<sld:Fill><sld:CssParameter name=\"fill\"><ogc:Function name=\"torgb\">" +
+                    "<ogc:Function name=\"round_2\"><ogc:Literal>0</ogc:Literal></ogc:Function>" +
+                    "<ogc:Function name=\"round_2\"><ogc:Literal>111</ogc:Literal></ogc:Function><ogc:Function name=\"round_2\">" +
+                    "<ogc:Literal>222</ogc:Literal></ogc:Function></ogc:Function></sld:CssParameter></sld:Fill>"));
+        } catch(Exception e) { }
+    }
 
     // ---- DECISION EXPRESSIONS ---------------------------------------------------------
 

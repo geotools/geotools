@@ -60,7 +60,7 @@ public class ComplexFeatureConstants {
      * is generated at runtime and will be the same as the namespace URI of the feature containing
      * the geometry attribute.
      */
-    public static final String DEFAULT_GEOMETRY_LOCAL_NAME = "";
+    public static final String DEFAULT_GEOMETRY_LOCAL_NAME = "__DEFAULT_GEOMETRY__";
 
     /**
      * Name representation of xlink:href

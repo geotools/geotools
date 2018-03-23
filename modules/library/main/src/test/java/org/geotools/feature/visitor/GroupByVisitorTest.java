@@ -23,6 +23,7 @@ import static org.junit.Assert.*;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.geotools.data.DataUtilities;
@@ -293,6 +294,47 @@ public class GroupByVisitorTest {
     }
     
     @Test
+    public void testMergingGroupByResultsWithNull() throws Exception {
+        // creating the features collections that will be used to test the merge behavior
+        FeatureCollection featureCollectionA = featureCollection;
+        FeatureCollection featureCollectionB = DataUtilities.collection(new SimpleFeature[]{
+                SimpleFeatureBuilder.build(buildingType, new Object[]{1, "SCHOOL_C", "SCHOOL", "NUCLEAR", 100.0, wktParser.read("POINT(-15 -15)")}, null),
+                SimpleFeatureBuilder.build(buildingType, new Object[]{1, "SCHOOL_C", "SCHOOL", "FUEL", 15.0, wktParser.read("POINT(-15 -15)")}, null),
+                SimpleFeatureBuilder.build(buildingType, new Object[]{2, "FABRIC_C", "FABRIC", "NUCLEAR", 250.0, wktParser.read("POINT(-25 -25)")}, null),
+                SimpleFeatureBuilder.build(buildingType, new Object[]{2, "FABRIC_C", "FABRIC", "WIND", 75.0, wktParser.read("POINT(-25 -25)")}, null),
+                SimpleFeatureBuilder.build(buildingType, new Object[]{2, "HOUSE_C", "HOUSE", "WIND", 10.0, wktParser.read("POINT(-35 -35)")}, null),
+                SimpleFeatureBuilder.build(buildingType, new Object[]{2, "HOUSE_C", "HOUSE", "DARK_MATTER", 850.0, wktParser.read("POINT(-35 -35)")}, null),
+                SimpleFeatureBuilder.build(buildingType, new Object[]{2, "THEATER_A", "THEATER", "WIND", 200.0, wktParser.read("POINT(-45 -45)")}, null),
+                SimpleFeatureBuilder.build(buildingType, new Object[]{13, "MALL_A", "MALL", "GRAVITY", null, wktParser.read("POINT(-45 -45)")}, null),
+                SimpleFeatureBuilder.build(buildingType, new Object[]{13, "MALL_B", "MALL", "GRAVITY", null, wktParser.read("POINT(-45 -45)")}, null)
+        });
+        // we visit the first feature collection calculating the energy consumption average by building type
+        GroupByVisitor visitorA = executeVisitor(featureCollectionA, "energy_consumption", "Average", new String[]{"building_type"});
+        checkResults(visitorA.getResult(), new Object[][]{
+                new Object[]{"SCHOOL", 30.0},
+                new Object[]{"FABRIC", 175.0},
+                new Object[]{"HOUSE", 5.0}
+        });
+        // we visit the second feature collection calculating the energy consumption average by building type
+        GroupByVisitor visitorB = executeVisitor(featureCollectionB, "energy_consumption", "Average", new String[]{"building_type"});
+        checkResults(visitorB.getResult(), new Object[][]{
+                new Object[]{"SCHOOL", 57.5},
+                new Object[]{"FABRIC", 162.5},
+                new Object[]{"HOUSE", 430.0},
+                new Object[]{"THEATER", 200.0},
+                new Object[]{"MALL", null}
+        });
+        // we merge the result of the two previous visitors
+        checkResults(visitorA.getResult().merge(visitorB.getResult()), new Object[][]{
+                new Object[]{"SCHOOL", 36.875},
+                new Object[]{"FABRIC", 170.833},
+                new Object[]{"HOUSE", 217.5},
+                new Object[]{"THEATER", 200.0},
+                new Object[]{"MALL", null}
+        });
+    }
+    
+    @Test
     public void testFeatureAttributeVisitor() {
         GroupByVisitor visitor = buildVisitor("energy_consumption", "Average", new String[]{"building_type"});
         List<Expression> expressions = visitor.getExpressions();
@@ -353,6 +395,8 @@ public class GroupByVisitorTest {
         assertThat(calcResult, notNullValue());
         Object[] results = calcResult.toArray();
         assertThat(results.length, is(expectedResults.length));
+        Map resultMap = calcResult.toMap();
+        assertThat(resultMap.entrySet().size(), is(expectedResults.length));
         for (Object[] expectedResult : expectedResults) {
             assertThat(contains(results, expectedResult), is(true));
         }
@@ -382,18 +426,18 @@ public class GroupByVisitorTest {
             return false;
         }
         for (int i = 0; i < arrayA.length; i++) {
-            assertThat(arrayA[i], notNullValue());
-            assertThat(arrayB[i], notNullValue());
-            if (!arrayA[i].getClass().equals(arrayB[i].getClass())) {
-                return false;
-            }
-            if (arrayA[i] instanceof Double) {
-                double difference = Math.abs((double) arrayA[i] - (double) arrayB[i]);
-                if (difference > 0.001) {
+            if( !(arrayA[i]==null && arrayB[i]==null) ){
+                if (!arrayA[i].getClass().equals(arrayB[i].getClass())) {
                     return false;
                 }
-            } else if (!arrayA[i].equals(arrayB[i])) {
-                return false;
+                if (arrayA[i] instanceof Double) {
+                    double difference = Math.abs((double) arrayA[i] - (double) arrayB[i]);
+                    if (difference > 0.001) {
+                        return false;
+                    }
+                } else if (!arrayA[i].equals(arrayB[i])) {
+                    return false;
+                }
             }
         }
         return true;

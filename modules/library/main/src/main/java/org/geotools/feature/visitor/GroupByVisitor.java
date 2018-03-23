@@ -331,10 +331,11 @@ public class GroupByVisitor implements FeatureCalc, FeatureAttributeVisitor {
          */
         @Override
         public Map toMap() {
-            return results.entrySet().stream().collect(Collectors.toMap(
-                    Map.Entry::getKey,
-                    entry -> entry.getValue().getValue())
-            );
+            Map<List<Object>, Object> result = new HashMap<>();
+            for(Map.Entry<List<Object>, CalcResult> item : results.entrySet()){
+                result.put(item.getKey(), item.getValue().getValue());
+            }
+            return result;
         }
 
         private Object[] entryToArray(Map.Entry<List<Object>, CalcResult> entry) {

@@ -16,7 +16,6 @@
  */
 package org.geotools.referencing.factory.wms;
 
-// J2SE dependencies
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.Iterator;
@@ -24,7 +23,6 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.LinkedHashSet;
 
-// OpenGIS dependencies
 import org.opengis.util.InternationalString;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.FactoryException;
@@ -34,7 +32,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.crs.CRSAuthorityFactory;
 import org.opengis.referencing.crs.ProjectedCRS;
 
-// Geotools dependencies
 import org.geotools.factory.Hints;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.metadata.iso.citation.Citations;

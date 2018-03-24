@@ -16,10 +16,8 @@
  */
 package org.geotools.referencing.factory.wms;
 
-// OpenGIS dependencies
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 
-// Geotools dependencies
 import org.geotools.measure.Latitude;
 import org.geotools.measure.Longitude;
 import org.geotools.resources.i18n.Errors;

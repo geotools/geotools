@@ -16,10 +16,8 @@
  */
 package org.geotools.coverage.processing.operation;
 
-// JAI dependencies (for javadoc)
 import javax.media.jai.operator.ConvolveDescriptor;
 
-// Geotools dependencies
 import org.geotools.coverage.processing.OperationJAI;
 
 

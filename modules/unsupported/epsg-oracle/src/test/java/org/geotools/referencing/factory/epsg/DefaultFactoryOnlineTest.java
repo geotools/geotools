@@ -16,7 +16,6 @@
  */
 package org.geotools.referencing.factory.epsg;
 
-// J2SE dependencies and extensions
 import java.io.*;
 import java.util.*;
 import java.util.logging.Level;
@@ -24,12 +23,10 @@ import java.sql.SQLException;
 import java.awt.geom.AffineTransform;
 import javax.measure.Unit;
 
-// JUnit dependencies
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-// OpenGIS dependencies
 import org.opengis.referencing.*;
 import org.opengis.referencing.cs.*;
 import org.opengis.referencing.crs.*;
@@ -40,7 +37,6 @@ import org.opengis.metadata.extent.GeographicBoundingBox;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.geometry.Envelope;
 
-// Geotools dependencies
 import org.geotools.TestData;
 import org.geotools.factory.Hints;
 import org.geotools.referencing.CRS;

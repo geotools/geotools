@@ -16,13 +16,11 @@
  */
 package org.geotools.referencing.factory.epsg;
 
-// JSE dependencies
 import java.util.Set;
 import java.util.Iterator;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-// OpenGIS dependencies
 import org.opengis.metadata.Identifier;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.IdentifiedObject;
@@ -30,12 +28,10 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-// Geotools dependencies
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.metadata.iso.citation.Citations;
 
-// JUnit dependencies
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

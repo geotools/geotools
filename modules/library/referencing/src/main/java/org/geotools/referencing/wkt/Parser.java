@@ -65,8 +65,6 @@ import org.opengis.referencing.crs.GeocentricCRS;
 import org.opengis.referencing.crs.GeographicCRS;
 import org.opengis.referencing.crs.ProjectedCRS;
 import org.opengis.referencing.crs.VerticalCRS;
-// While start import is usually a deprecated practice, we use such a large amount
-// of interfaces in those packages that it we choose to exceptionnaly use * here.
 import org.opengis.referencing.cs.AxisDirection;
 import org.opengis.referencing.cs.CSFactory;
 import org.opengis.referencing.cs.CoordinateSystem;

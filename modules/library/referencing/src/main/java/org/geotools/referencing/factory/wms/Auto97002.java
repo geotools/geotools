@@ -17,7 +17,6 @@
 package org.geotools.referencing.factory.wms;
 
 import org.geotools.referencing.datum.DefaultEllipsoid;
-// OpenGIS dependencies
 import org.opengis.parameter.ParameterValueGroup;
 
 

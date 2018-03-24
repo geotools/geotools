@@ -17,10 +17,8 @@
 package org.geotools.geometry.jts;
 
 
-// JTS dependencies
 import com.vividsolutions.jts.geom.CoordinateSequence;
 
-// OpenGIS dependencies
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 

@@ -16,13 +16,11 @@
  */
 package org.geotools.referencing.factory.epsg;
 
-// J2SE dependencies and extensions
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
 import javax.sql.DataSource;
 
-// Geotools dependencies
 import org.geotools.factory.Hints;
 
 

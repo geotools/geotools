@@ -9,10 +9,8 @@
  */
 package org.opengis.filter.spatial;
 
-// OpenGIS direct dependencies
 import org.opengis.filter.expression.Expression;
 
-// Annotations
 import org.opengis.annotation.XmlElement;
 
 

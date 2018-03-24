@@ -16,14 +16,11 @@
  */
 package org.geotools.coverage.processing;
 
-// J2SE and JAI dependencies
 import java.util.Arrays;
 import javax.media.jai.operator.BinarizeDescriptor;
 
-// OpenGIS dependencies
 import org.opengis.coverage.processing.OperationNotFoundException;
 
-// Geotools dependencies
 import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
 

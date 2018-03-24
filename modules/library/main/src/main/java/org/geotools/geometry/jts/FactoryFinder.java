@@ -16,23 +16,13 @@
  */
 package org.geotools.geometry.jts;
 
-// J2SE dependencies
-import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.Set;
-
-// JTS dependencies
 import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.PrecisionModel;
-
-// Geotools dependencies
-import org.geotools.factory.GeoTools;
-import org.geotools.factory.Hints;
-import org.geotools.factory.FactoryCreator;
-import org.geotools.factory.FactoryRegistry;
 import org.geotools.factory.FactoryRegistryException;
-import org.geotools.resources.LazySet;
+import org.geotools.factory.Hints;
+
+import java.util.Set;
 
 
 /**

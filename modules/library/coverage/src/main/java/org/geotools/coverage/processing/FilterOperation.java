@@ -16,10 +16,8 @@
  */
 package org.geotools.coverage.processing;
 
-// OpenGIS dependencies
 import org.opengis.coverage.processing.OperationNotFoundException;
 
-// Geotools dependencies
 import org.geotools.coverage.GridSampleDimension;
 
 

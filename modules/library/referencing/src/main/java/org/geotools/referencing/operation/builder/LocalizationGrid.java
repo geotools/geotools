@@ -21,22 +21,22 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
-import java.awt.image.WritableRaster;  // For javadoc
+import java.awt.image.WritableRaster;  
 import java.util.Arrays;
 
-import javax.media.jai.Warp;           // For javadoc
-import javax.media.jai.WarpGrid;       // For javadoc
-import javax.media.jai.WarpPolynomial; // For javadoc
-import javax.media.jai.RasterFactory;  // For javadoc
+import javax.media.jai.Warp;           
+import javax.media.jai.WarpGrid;       
+import javax.media.jai.WarpPolynomial; 
+import javax.media.jai.RasterFactory;  
 
-import org.opengis.coverage.grid.GridGeometry;  // For javadoc
+import org.opengis.coverage.grid.GridGeometry;  
 import org.opengis.referencing.operation.MathTransform2D;
 
-import org.geotools.referencing.crs.DefaultDerivedCRS;            // For javadoc
-import org.geotools.referencing.crs.DefaultGeographicCRS;         // For javadoc
-import org.geotools.referencing.cs.DefaultCartesianCS;            // For javadoc
-import org.geotools.referencing.datum.DefaultGeodeticDatum;       // For javadoc
-import org.geotools.referencing.operation.DefaultOperationMethod; // For javadoc
+import org.geotools.referencing.crs.DefaultDerivedCRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.referencing.cs.DefaultCartesianCS;   
+import org.geotools.referencing.datum.DefaultGeodeticDatum;
+import org.geotools.referencing.operation.DefaultOperationMethod; 
 import org.geotools.referencing.operation.transform.WarpTransform2D;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 

@@ -16,11 +16,9 @@
  */
 package org.geotools.referencing.factory.epsg;
 
-// J2SE dependencies
 import java.util.HashMap;
 import java.util.Map;
 
-// OpenGIS dependencies
 import org.opengis.referencing.AuthorityFactory;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.IdentifiedObject;
@@ -28,7 +26,6 @@ import org.opengis.referencing.crs.CRSAuthorityFactory;
 import org.opengis.referencing.operation.CoordinateOperation; // For javadoc
 import org.opengis.referencing.operation.CoordinateOperationAuthorityFactory;
 
-// Geotools dependencies
 import org.geotools.referencing.factory.IdentifiedObjectSet;
 
 

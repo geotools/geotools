@@ -9,17 +9,14 @@
  */
 package org.opengis.filter.spatial;
 
-// OpenGIS direct dependencies
 import org.opengis.filter.MultiValuedFilter;
 
-// Annotations
 import org.opengis.annotation.XmlElement;
 
 
 /**
  * Abstract base class for operators that perform a spatial comparison on
  * geometric attributes of a feature.
- *
  *
  *
  * @source $URL$

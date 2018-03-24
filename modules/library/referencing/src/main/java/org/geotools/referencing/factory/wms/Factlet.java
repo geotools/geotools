@@ -16,16 +16,13 @@
  */
 package org.geotools.referencing.factory.wms;
 
-// J2SE dependencies
 import java.util.Collections;
 
-// OpenGIS dependencies
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.IdentifiedObject;
 import org.opengis.referencing.crs.ProjectedCRS;
 
-// Geotools dependencies
 import org.geotools.referencing.factory.ReferencingFactoryContainer;
 import org.geotools.referencing.cs.DefaultCartesianCS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;

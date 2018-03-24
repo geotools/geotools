@@ -19,13 +19,11 @@
  */
 package org.geotools.referencing.factory;
 
-// J2SE dependencies
 import java.util.Set;
 import java.util.Arrays;
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
 
-// OpenGIS dependencies
 import org.opengis.referencing.*;
 import org.opengis.referencing.cs.*;
 import org.opengis.referencing.crs.*;
@@ -33,7 +31,6 @@ import org.opengis.referencing.datum.*;
 import org.opengis.referencing.operation.*;
 import org.opengis.parameter.ParameterDescriptor;
 
-// Geotools dependencies
 import org.geotools.resources.Classes;
 import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.i18n.ErrorKeys;

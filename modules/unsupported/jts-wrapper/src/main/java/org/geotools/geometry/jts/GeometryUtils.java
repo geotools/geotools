@@ -16,12 +16,6 @@
  */
 package org.geotools.geometry.jts;
 
-/*import com.polexis.go.FactoryManager;
-import com.polexis.go.typical.coord.LatLonAlt;
-import com.polexis.referencing.crs.CRSUtils;
-import com.polexis.referencing.cs.CSUtils;
-import com.polexis.units.UnitUtils;*/
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -32,11 +26,9 @@ import javax.measure.UnitConverter;
 import si.uom.NonSI;
 import javax.measure.Unit;
 
-//apache dependencies
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-//openGIS dependencies
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -64,7 +56,6 @@ import org.opengis.geometry.primitive.PrimitiveFactory;
 import org.opengis.geometry.primitive.Ring;
 import org.opengis.geometry.primitive.SurfaceBoundary;
 
-//geotools dpendencies
 import org.geotools.factory.BasicFactories;
 import org.geotools.referencing.CRS;
 

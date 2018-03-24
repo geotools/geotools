@@ -16,17 +16,14 @@
  */
 package org.geotools.referencing.factory;
 
-// J2SE dependencies
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
-// JUnit dependencies
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-// OpenGIS dependencies
 import org.opengis.referencing.IdentifiedObject;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.SingleCRS;
@@ -38,7 +35,6 @@ import org.opengis.referencing.operation.CoordinateOperationFactory;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.Matrix;
 
-// Geotools dependencies
 import org.geotools.factory.Hints;
 import org.geotools.resources.Arguments;
 import org.geotools.referencing.CRS;

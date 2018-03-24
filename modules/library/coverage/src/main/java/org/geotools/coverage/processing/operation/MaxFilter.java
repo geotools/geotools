@@ -16,11 +16,9 @@
  */
 package org.geotools.coverage.processing.operation;
 
-// JAI dependencies (for javadoc)
 import javax.media.jai.operator.MaxFilterDescriptor;
 import javax.media.jai.operator.MaxFilterShape;
 
-// Geotools dependencies
 import org.geotools.coverage.processing.OperationJAI;
 
 

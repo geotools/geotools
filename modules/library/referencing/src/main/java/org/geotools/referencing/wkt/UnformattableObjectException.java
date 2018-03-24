@@ -16,10 +16,8 @@
  */
 package org.geotools.referencing.wkt;
 
-// J2SE dependencies
 import java.lang.reflect.Modifier;
 
-// Geotools dependencies
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
 

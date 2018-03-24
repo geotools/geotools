@@ -16,11 +16,9 @@
  */
 package org.geotools.coverage.processing.operation;
 
-// JAI dependencies (for javadoc)
 import javax.media.jai.operator.MinFilterDescriptor;
 import javax.media.jai.operator.MinFilterShape;
 
-// Geotools dependencies
 import org.geotools.coverage.processing.OperationJAI;
 
 

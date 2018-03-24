@@ -16,12 +16,6 @@
  */
 package org.geotools.geometry.jts;
 
-/*import com.polexis.go.FactoryManager;
-import com.polexis.go.typical.coord.LatLonAlt;
-import com.polexis.referencing.cs.CSUtils;
-*/
-
-// there are many more vividsolutions JTS depedecies further in the code
 import com.vividsolutions.jts.geom.Coordinate;
 
 import java.util.ArrayList;
@@ -48,13 +42,6 @@ import org.opengis.geometry.primitive.Ring;
 import org.opengis.geometry.primitive.SurfaceBoundary;
 import org.geotools.geometry.jts.spatialschema.geometry.DirectPositionImpl;
 
-//**This comment is left from the polexis implementation**
-// This class depends on only two non-GO1 objects.  FactoryManager is used to
-// get the factories we need to create the objects.  CSUtils is used to get
-// the right axis (for EAST, NORTH, and UP) when assigning the ordinates of
-// a result DiretPosition.
-
-//geotools dependencies
 import org.geotools.factory.BasicFactories;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.GeometryFactoryFinder;

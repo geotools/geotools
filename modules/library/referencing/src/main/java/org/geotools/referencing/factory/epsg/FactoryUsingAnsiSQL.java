@@ -16,7 +16,6 @@
  */
 package org.geotools.referencing.factory.epsg;
 
-// J2SE dependencies
 import java.sql.Connection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -24,7 +23,6 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
-// Geotools dependencies
 import org.geotools.factory.Hints;
 
 

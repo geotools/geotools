@@ -9,11 +9,9 @@
  *************************************************************************************************/
 package org.geotools.geometry.jts.spatialschema.geometry.primitive;
 
-//J2SE dependencies
 import java.util.Collections;
 import java.util.Set;
 
-// OpenGIS direct dependencies
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.crs.GeographicCRS;
@@ -31,10 +29,8 @@ import org.opengis.geometry.primitive.Point;
 import org.opengis.geometry.primitive.PrimitiveBoundary;
 import org.opengis.geometry.complex.Composite;
 
-//geotools dependencies
 import org.geotools.factory.BasicFactories;
 
-//import com.polexis.lite.referencing.operation.CoordinateOperationFactoryImpl;
 import org.geotools.geometry.jts.spatialschema.geometry.DirectPositionImpl;
 import org.geotools.geometry.jts.spatialschema.geometry.GeometryImpl;
 import org.geotools.geometry.jts.JTSUtils;

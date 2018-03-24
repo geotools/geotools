@@ -104,7 +104,6 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.util.AffineTransformation;
 
-// J2SE dependencies
 import it.geosolutions.jaiext.range.Range;
 
 /**

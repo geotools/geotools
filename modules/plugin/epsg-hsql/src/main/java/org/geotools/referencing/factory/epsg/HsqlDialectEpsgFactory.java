@@ -16,14 +16,11 @@
  */
 package org.geotools.referencing.factory.epsg;
 
-// J2SE dependencies
 import java.sql.Statement;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
-// Geotools dependencies
 import org.geotools.factory.Hints;
 
 

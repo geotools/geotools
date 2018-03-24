@@ -9,12 +9,10 @@
  *************************************************************************************************/
 package org.geotools.geometry.jts.spatialschema.geometry;
 
-//J2SE dependencies
 import java.awt.geom.Point2D;
 import java.io.Serializable;
 import java.util.Arrays;
 
-//openGIS dependencies
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.coordinate.Position;

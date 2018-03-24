@@ -36,7 +36,6 @@ import org.geotools.geometry.jts.spatialschema.geometry.primitive.SurfaceBoundar
 import org.geotools.geometry.jts.JTSGeometry;
 import org.geotools.geometry.jts.JTSUtils;
 
-//geotools dependencies
 import org.geotools.factory.BasicFactories;
 
 /**

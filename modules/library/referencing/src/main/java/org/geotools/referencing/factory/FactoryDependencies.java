@@ -23,7 +23,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-// The following are just data structure, not dependencies to the whole Swing framework.
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.DefaultMutableTreeNode;

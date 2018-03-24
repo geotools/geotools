@@ -16,10 +16,8 @@
  */
 package org.geotools.image;
 
-// J2SE dependencies
 import java.awt.image.RasterFormatException;
 
-// JAI dependencies
 import javax.media.jai.iterator.RectIter;
 import javax.media.jai.iterator.WritableRectIter;
 

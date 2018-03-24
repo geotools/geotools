@@ -16,12 +16,10 @@
  */
 package org.geotools.referencing.factory;
 
-// OpenGIS dependencies
 import org.opengis.referencing.AuthorityFactory;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-// Geotools dependencies
 import org.geotools.util.Version;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.factory.epsg.oracle.OracleOnlineTestCase;

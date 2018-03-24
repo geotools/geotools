@@ -21,16 +21,12 @@
  */
 package org.geotools.geometry.jts.spatialschema.geometry;
 
-//J2SE dependencies
 import java.io.Serializable;
 
-// OpenGIS dependencies
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.MismatchedDimensionException;
 
-
-//geotools JTS wrappers dependency
 import org.geotools.geometry.jts.GeometryUtils;
 
 /**

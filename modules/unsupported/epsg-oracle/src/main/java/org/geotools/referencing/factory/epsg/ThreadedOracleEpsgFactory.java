@@ -16,7 +16,6 @@
  */
 package org.geotools.referencing.factory.epsg;
 
-// J2SE dependencies
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,7 +25,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import javax.sql.DataSource;
 
-// Geotools dependencies
 import org.geotools.util.logging.Logging;
 import org.geotools.factory.Hints;
 import org.geotools.referencing.factory.AbstractAuthorityFactory;

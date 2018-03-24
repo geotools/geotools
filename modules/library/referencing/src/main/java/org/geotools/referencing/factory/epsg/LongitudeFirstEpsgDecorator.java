@@ -16,7 +16,6 @@
  */
 package org.geotools.referencing.factory.epsg;
 
-// OpenGIS dependencies
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.cs.CSAuthorityFactory;
@@ -24,7 +23,6 @@ import org.opengis.referencing.crs.CRSAuthorityFactory;
 import org.opengis.referencing.datum.DatumAuthorityFactory;
 import org.opengis.referencing.operation.CoordinateOperationAuthorityFactory;
 
-// Geotools dependencies
 import org.geotools.factory.Hints;
 import org.geotools.factory.GeoTools;
 import org.geotools.factory.FactoryRegistryException;

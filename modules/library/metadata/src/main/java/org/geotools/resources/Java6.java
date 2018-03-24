@@ -17,7 +17,6 @@
 package org.geotools.resources;
 
 import java.util.Arrays;
-//import java.io.Console;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.lang.reflect.Method;

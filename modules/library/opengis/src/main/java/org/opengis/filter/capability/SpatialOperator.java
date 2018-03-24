@@ -21,9 +21,6 @@ package org.opengis.filter.capability;
 
 import java.util.Collection;
 
-// OpenGIS direct dependencies
-
-
 /**
  * Indicates support for the named spatial operator.
  * <p>

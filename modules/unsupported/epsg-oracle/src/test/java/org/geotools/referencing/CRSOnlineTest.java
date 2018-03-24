@@ -16,12 +16,10 @@
  */
 package org.geotools.referencing;
 
-// J2SE dependencies
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Set;
 
-// OpenGIS dependencies
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
@@ -30,7 +28,6 @@ import org.opengis.referencing.cs.CoordinateSystemAxis;
 import org.opengis.referencing.crs.CRSAuthorityFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-// Geotools dependencies
 import org.geotools.factory.Hints;
 import org.geotools.factory.GeoTools;
 import org.geotools.metadata.iso.citation.Citations;

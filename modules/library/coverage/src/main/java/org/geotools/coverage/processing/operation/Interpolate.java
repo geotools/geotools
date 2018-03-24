@@ -16,18 +16,14 @@
  */
 package org.geotools.coverage.processing.operation;
 
-// J2SE dependencies
 import java.lang.reflect.Array;
 
-// JAI dependencies
 import javax.media.jai.Interpolation;
 
-// OpenGIS dependencies
 import org.opengis.coverage.Coverage;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterValueGroup;
 
-// Geotools dependencies
 import org.geotools.factory.Hints;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.Interpolator2D;

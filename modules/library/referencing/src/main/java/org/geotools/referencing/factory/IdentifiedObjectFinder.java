@@ -19,14 +19,12 @@
  */
 package org.geotools.referencing.factory;
 
-// J2SE dependencies
 import java.util.Set;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-// OpenGIS dependencies
 import org.opengis.util.GenericName;
 import org.opengis.metadata.Identifier;
 import org.opengis.metadata.citation.Citation;
@@ -36,7 +34,6 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 
-// Geotools dependencies
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.metadata.iso.citation.Citations;

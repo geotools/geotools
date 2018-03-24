@@ -15,7 +15,6 @@
  */
 package org.geotools.maven;
 
-// J2SE dependencies
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -28,11 +27,9 @@ import java.util.List;
 import java.util.Set;
 import java.io.IOException;
 
-// JavaCC dependencies
 import org.javacc.parser.Main;
 import org.javacc.jjtree.JJTree;
 
-// Maven and Plexus dependencies
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.MojoExecutionException;

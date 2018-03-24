@@ -16,7 +16,6 @@
  */
 package org.geotools.referencing.crs;
 
-// J2SE dependencies
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -27,7 +26,6 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-// OpenGIS dependencies
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.IdentifiedObject;
@@ -40,7 +38,6 @@ import org.opengis.referencing.crs.GeographicCRS;
 import org.opengis.referencing.crs.ProjectedCRS;
 import org.opengis.util.InternationalString;
 
-// Geotools dependencies
 import org.geotools.util.logging.Logging;
 import org.geotools.factory.AbstractFactory;
 import org.geotools.metadata.iso.citation.Citations;

@@ -16,7 +16,6 @@
  */
 package org.geotools.referencing.factory.epsg;
 
-// J2SE dependencies
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -28,10 +27,8 @@ import javax.sql.DataSource;
 
 import org.geotools.factory.Hints;
 import org.geotools.referencing.factory.AbstractAuthorityFactory;
-// Geotools dependencies
 import org.geotools.util.logging.Logging;
 import org.postgresql.ds.PGSimpleDataSource;
-// PostgreSQL dependencies
 import org.postgresql.ds.common.BaseDataSource;
 
 

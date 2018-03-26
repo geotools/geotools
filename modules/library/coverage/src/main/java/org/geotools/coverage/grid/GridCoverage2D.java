@@ -406,7 +406,7 @@ public class GridCoverage2D extends AbstractGridCoverage {
     }
 
     /**
-     * Returns a sequence of inteeger values for a given location (world coordinates).
+     * Returns a sequence of integer values for a given location (world coordinates).
      *
      * @param  coord World coordinates of the location to evaluate.
      * @param  dest  An array in which to store values, or {@code null}.

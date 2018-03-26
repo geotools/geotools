@@ -1626,7 +1626,7 @@
 
           <!-- Enables the Javadoc tool to interpret a simple, one-argument -->
           <!-- custom block tag tagname in doc comments. Note: <placement/> -->
-          <!-- should be a combinaison of the letters Xaoptcmf.             -->
+          <!-- should be a combination of the letters Xaoptcmf.             -->
           <tags>
             <tag>
               <name>todo</name>
@@ -1823,7 +1823,7 @@
 
           <!-- Enables the Javadoc tool to interpret a simple, one-argument -->
           <!-- custom block tag tagname in doc comments. Note: <placement/> -->
-          <!-- should be a combinaison of the letters Xaoptcmf.             -->
+          <!-- should be a combination of the letters Xaoptcmf.             -->
           <tags>
             <tag>
               <name>todo</name>

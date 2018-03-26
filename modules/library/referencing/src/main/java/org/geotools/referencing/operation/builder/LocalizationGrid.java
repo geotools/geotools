@@ -379,13 +379,13 @@ public class LocalizationGrid {
      * @param offset The first element to test.
      * @param num    The number of elements to test.
      * @param step   The amount to increment {@code offset} in order to reach the next element.
-     * @param flags  A combinaison of {@link #INCREASING}, {@link #DECREASING} and {@link #EQUALS}
+     * @param flags  A combination of {@link #INCREASING}, {@link #DECREASING} and {@link #EQUALS}
      *               that specify which ordering are accepted.
      * @return       0 if the array is unordered. Otherwise, returns {@code flags} with maybe
      *               one of {@link #INCREASING} or {@link #DECREASING} flags cleared.
      */
     private static int testOrder(final double[] grid, int offset, int num, final int step, int flags) {
-        // We will check (num-1) combinaisons of coordinates.
+        // We will check (num-1) combinations of coordinates.
         for (--num; --num>=0; offset += step) {
             final double v1 = grid[offset];
             if (Double.isNaN(v1)) continue;

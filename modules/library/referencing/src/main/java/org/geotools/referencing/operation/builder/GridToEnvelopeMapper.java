@@ -107,7 +107,7 @@ public class GridToEnvelopeMapper {
     public static final int REVERSE_AXIS = 2;
 
     /**
-     * A combinaison of bit masks telling which property were user-defined.
+     * A combination of bit masks telling which property were user-defined.
      *
      * @see #isAutomatic
      * @see #setAutomatic
@@ -501,7 +501,7 @@ public class GridToEnvelopeMapper {
      * Returns {@code true} if all properties designed by the specified bit mask
      * will be computed automatically.
      *
-     * @param mask Any combinaison of {@link #REVERSE_AXIS} or {@link #SWAP_XY}.
+     * @param mask Any combination of {@link #REVERSE_AXIS} or {@link #SWAP_XY}.
      * @return {@code true} if all properties given by the mask will be computed automatically.
      */
     public boolean isAutomatic(final int mask) {
@@ -514,7 +514,7 @@ public class GridToEnvelopeMapper {
      * {@link #getReverseAxis}, {@link #getSwapXY}). By default, all properties
      * are automatic.
      *
-     * @param mask Any combinaison of {@link #REVERSE_AXIS} or {@link #SWAP_XY}.
+     * @param mask Any combination of {@link #REVERSE_AXIS} or {@link #SWAP_XY}.
      */
     public void setAutomatic(final int mask) {
         defined &= ~mask;

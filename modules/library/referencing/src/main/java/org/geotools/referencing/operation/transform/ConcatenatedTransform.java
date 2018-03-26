@@ -181,9 +181,9 @@ public class ConcatenatedTransform extends AbstractMathTransform implements Seri
          *   Try k=1  :  ((A * B) * C) * D     Implies (A * (B * C)) * D through recursivity.
          *   Try k=2  :                        Tried only if try k=1 changed something.
          *
-         * TODO: The same combinaison may be computed more than once (e.g. (B * C) above).
+         * TODO: The same combination may be computed more than once (e.g. (B * C) above).
          *       Should not be a big deal if there is not two many steps. In the even where
-         *       it would appears a performance issue, we could maintains a Map of combinaisons
+         *       it would appears a performance issue, we could maintains a Map of combinations
          *       already computed. The map would be local to a "create" method execution.
          */
         int stepCount = getStepCount(tr1) + getStepCount(tr2);

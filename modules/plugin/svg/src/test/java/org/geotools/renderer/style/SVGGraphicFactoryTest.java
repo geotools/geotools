@@ -20,8 +20,16 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertThat;
 
 import java.awt.RenderingHints.Key;
+import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.swing.Icon;
 
@@ -33,6 +41,8 @@ import org.geotools.factory.Hints;
 import org.geotools.xml.NullEntityResolver;
 import org.geotools.xml.PreventLocalEntityResolver;
 import org.opengis.filter.FilterFactory;
+import org.opengis.filter.expression.Literal;
+import org.xml.sax.SAXException;
 
 /**
  * 
@@ -142,5 +152,49 @@ public class SVGGraphicFactoryTest extends TestCase {
 
         ((GraphicCache) svg).clearCache();
         assertTrue(svg.glyphCache.isEmpty());
+    }
+    
+    public void testConcurrentLoad() throws Exception {
+        URL url = SVGGraphicFactory.class.getResource("gradient.svg");
+        assertNotNull(url);
+        Literal expression = ff.literal(url);
+
+        // create N threads and have them load the same SVG over a graphic factory. Do it a number
+        // of times with a new factory and a clear cache, trying to make sure the run was not just
+        // a lucky one
+        int THREADS = Runtime.getRuntime().availableProcessors();
+        ExecutorService executorService = Executors.newFixedThreadPool(THREADS);
+        for (int i = 0; i < 50; i++) {
+            // check that we are going to load the same path just once
+            AtomicInteger counter = new AtomicInteger();
+            SVGGraphicFactory svg = new SVGGraphicFactory() {
+                @Override
+                protected SVGGraphicFactory.RenderableSVG toRenderableSVG(String svgfile, URL svgUrl) throws SAXException, IOException {
+                    int value = counter.incrementAndGet();
+                    assertEquals(1, value);
+                    return super.toRenderableSVG(svgfile, svgUrl);
+                }
+            };
+            
+            // if all goes well, only one thread will actually load the SVG
+            List<Future<Void>> futures = new ArrayList<>();
+            for (int j = 0; j < THREADS * 4; j++) {
+                executorService.submit(() -> {
+                    Icon icon = svg.getIcon(null, expression, "image/svg", 20);
+                    assertNotNull(icon);
+                    assertEquals(20, icon.getIconHeight());
+                    assertTrue(SVGGraphicFactory.glyphCache.containsKey(url.toString()));
+                    return null;
+                });
+            }
+            // get all
+            for (Future<Void> future : futures) {
+                future.get();
+            }
+            // clear the cache
+            SVGGraphicFactory.glyphCache.clear();
+        }
+
+
     }
 }

@@ -49,7 +49,7 @@ import org.opengis.referencing.datum.TemporalDatum;
 
 import si.uom.NonSI;
 import si.uom.SI;
-import tec.units.ri.format.SimpleUnitFormat;
+import tec.uom.se.format.SimpleUnitFormat;
 
 
 /**

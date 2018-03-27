@@ -130,22 +130,6 @@
       <scope>provided</scope>  <!-- Not required for default execution. -->
       <optional>true</optional>
     </dependency>
-    <dependency>
-      <groupId>tec.uom</groupId>
-      <artifactId>uom-se</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>si.uom</groupId>
-      <artifactId>si-units-java8</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>javax.measure</groupId>
-      <artifactId>unit-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>systems.uom</groupId>
-      <artifactId>systems-common-java8</artifactId>
-    </dependency>
   </dependencies>
 
   <build>

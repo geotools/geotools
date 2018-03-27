@@ -102,10 +102,6 @@
       <artifactId>gt-cql</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <dependency>
-      <groupId>systems.uom</groupId>
-      <artifactId>systems-ucum-java8</artifactId>
-    </dependency>
     
     <!-- Test dependencies -->
     <dependency>

@@ -165,16 +165,20 @@
   <!--     Dependency Management                                   -->
   <!-- =========================================================== -->
   <dependencies>
-    
-    <dependency>
-      <groupId>javax.measure</groupId>
-      <artifactId>unit-api</artifactId>
-    </dependency>
-    
+  
     <dependency>
       <groupId>commons-pool</groupId>
       <artifactId>commons-pool</artifactId>
       <!-- The version number is specified in the parent POM. -->
+    </dependency>
+    
+    <dependency>
+      <groupId>systems.uom</groupId>
+      <artifactId>systems-ucum-java8</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>systems.uom</groupId>
+      <artifactId>systems-common-java8</artifactId>
     </dependency>
     
     <!-- Test dependencies -->

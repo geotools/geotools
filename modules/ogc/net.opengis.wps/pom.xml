@@ -24,14 +24,6 @@
       <artifactId>net.opengis.ows</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <dependency>
-      <groupId>tec.uom</groupId>
-      <artifactId>uom-se</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>si.uom</groupId>
-      <artifactId>si-units-java8</artifactId>
-    </dependency>  
   </dependencies>
 
 

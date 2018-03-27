@@ -124,14 +124,7 @@
       <artifactId>jts-core</artifactId>
       <!-- The version number is specified in the parent POM. -->
     </dependency>
-    <dependency>
-      <groupId>tec.uom</groupId>
-      <artifactId>uom-se</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>si.uom</groupId>
-      <artifactId>si-units-java8</artifactId>
-    </dependency>
+    
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-epsg-hsql</artifactId>

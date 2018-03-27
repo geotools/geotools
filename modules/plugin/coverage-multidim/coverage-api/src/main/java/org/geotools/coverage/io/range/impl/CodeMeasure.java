@@ -21,11 +21,13 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import javax.measure.Measure;
-import javax.measure.quantity.Dimensionless;
 import javax.measure.Unit;
+import javax.measure.quantity.Dimensionless;
 
+import org.geotools.coverage.io.range.Measure;
 import org.opengis.util.CodeList;
+
+import tec.uom.se.AbstractUnit;
 
 /**
  * Used to create Axis keys based on an open set of machine readable strings.

@@ -44,6 +44,8 @@ import java.util.logging.Logger;
 
 import si.uom.NonSI;
 import si.uom.SI;
+
+import javax.measure.Quantity;
 import javax.measure.Unit;
 
 import org.geotools.coverage.grid.io.imageio.geotiff.codes.GeoTiffCoordinateTransformationsCodes;
@@ -1775,7 +1777,7 @@ public final class GeoTiffMetadata2CRSAdapter {
 	}
 
 	/**
-	 * This code creates an <code>javax.Units.Unit</code> object out of the
+	 * This code creates an <code>javax.measure.Unit</code> object out of the
 	 * <code>ProjLinearUnitsGeoKey</code> and the
 	 * <code>ProjLinearUnitSizeGeoKey</code>. The unit may either be
 	 * specified as a standard EPSG recognized unit, or may be user defined.
@@ -1798,7 +1800,7 @@ public final class GeoTiffMetadata2CRSAdapter {
 	 *             <code>ProjLinearUnitSizeGeoKey</code> is either not defined
 	 *             or does not contain a number.
 	 */
-	private Unit<?> createUnit(int key, int userDefinedKey, Unit<?> base, Unit<?> def,
+	private <Q extends Quantity<Q>> Unit<Q> createUnit(int key, int userDefinedKey, Unit<Q> base, Unit<Q> def,
 			final GeoTiffIIOMetadataDecoder metadata) throws IOException {
 		final String unitCode = metadata.getGeoKey(key);
 
@@ -1831,7 +1833,7 @@ public final class GeoTiffMetadata2CRSAdapter {
 				}
 
 				double sz = Double.parseDouble(unitSize);
-				return base.times(sz);
+				return base.multiply(sz);
 			} catch (NumberFormatException nfe) {
 				final IOException ioe = new GeoTiffException(metadata, nfe
 						.getLocalizedMessage(), nfe);
@@ -1840,7 +1842,7 @@ public final class GeoTiffMetadata2CRSAdapter {
 		} else {
 			try {
 				// using epsg code for this unit
-				return (Unit<?>) this.allAuthoritiesFactory.createUnit("EPSG:"+unitCode);
+				return (Unit<Q>) this.allAuthoritiesFactory.createUnit("EPSG:"+unitCode);
 			} catch (FactoryException fe) {
 				final IOException io = new GeoTiffException(metadata, fe.getLocalizedMessage(), fe);
 				throw io;

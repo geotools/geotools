@@ -20,11 +20,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.measure.Measure;
-import javax.measure.quantity.Quantity;
+import javax.measure.Quantity;
 import javax.measure.Unit;
 
 import org.geotools.coverage.io.range.Axis;
+import org.geotools.coverage.io.range.Measure;
 import org.geotools.feature.NameImpl;
 import org.geotools.util.SimpleInternationalString;
 import org.opengis.feature.type.Name;
@@ -39,7 +39,7 @@ import org.opengis.util.InternationalString;
  *
  * @source $URL$
  */
-public class DefaultAxis<V,Q extends Quantity> implements Axis<V,Q> {
+public class DefaultAxis<V,Q extends Quantity<Q>> implements Axis<V,Q> {
 	private SingleCRS crs;
 	private InternationalString description;
 	private List<Measure<V,Q>> keys;

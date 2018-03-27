@@ -16,7 +16,9 @@
  */
 package org.geotools.resources.coverage;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 import java.awt.Rectangle;
@@ -25,7 +27,6 @@ import java.util.HashMap;
 import java.util.Random;
 
 import javax.imageio.ImageReadParam;
-import javax.measure.Unit;
 import javax.media.jai.ImageFunction;
 
 import org.geotools.coverage.Category;
@@ -36,6 +37,8 @@ import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.image.ImageWorker;
 import org.geotools.util.NumberRange;
 import org.junit.Test;
+
+import tec.uom.se.AbstractUnit;
 
 
 /**

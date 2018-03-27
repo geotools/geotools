@@ -16,11 +16,13 @@
  */
 package org.geotools.coverage.io.range.impl;
 
-import javax.measure.Measurable;
-import javax.measure.Measure;
-import javax.measure.converter.ConversionException;
-import javax.measure.quantity.Dimensionless;
 import javax.measure.Unit;
+import javax.measure.quantity.Dimensionless;
+
+import org.apache.commons.beanutils.ConversionException;
+import org.geotools.coverage.io.range.Measure;
+
+import tec.uom.se.AbstractUnit;
 
 /**
  * {@link Measurable} subclass suitable for modeling a band index in a multiband
@@ -36,8 +38,7 @@ import javax.measure.Unit;
  *
  * @source $URL$
  */
-public class BandIndexMeasure extends Measure<String, Dimensionless>
-		implements Measurable<Dimensionless> {
+public class BandIndexMeasure extends Measure<String, Dimensionless> {
 	private static final long serialVersionUID = 3895010709415779953L;
 
 	private Long index = null;
@@ -49,16 +50,27 @@ public class BandIndexMeasure extends Measure<String, Dimensionless>
 		this.bandMnemonic = bandMnemonic != null ? bandMnemonic : Long
 				.toString(this.index);
 	}
-
+	
+	/** 
+	 * Returns the value of this band index (dimensionless) as a double
+	 * @param value
+	 * @return value of this band index
+	 */
 	public double doubleValue(Unit<Dimensionless> value) {
 		return index;
 	}
-
+	
+	/**
+	 * Returns the estimated integral value of this ban index (dimensionless) as a long.
+	 * @param value
+	 * @return
+	 * @throws ArithmeticException
+	 */
 	public long longValue(Unit<Dimensionless> value) throws ArithmeticException {
 		return index;
 	}
 
-	public int compareTo(Measurable<Dimensionless> o) {
+	public int compareTo( o) {
 		return this.index.compareTo(o.longValue(AbstractUnit.ONE));
 	}
 

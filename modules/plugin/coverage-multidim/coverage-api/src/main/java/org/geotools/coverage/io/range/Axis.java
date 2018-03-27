@@ -18,9 +18,7 @@ package org.geotools.coverage.io.range;
 
 import java.util.List;
 
-import javax.measure.Measurable;
-import javax.measure.Measure;
-import javax.measure.quantity.Quantity;
+import javax.measure.Quantity;
 import javax.measure.Unit;
 
 import org.opengis.feature.type.Name;
@@ -46,7 +44,7 @@ import org.opengis.util.InternationalString;
  *
  * @source $URL$
  */
-public interface Axis<V,QA extends Quantity> {
+public interface Axis<V extends Number,QA extends Quantity<QA>> {
     /**
      * Retrieves the {@link Axis} name
      * 

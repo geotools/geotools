@@ -18,7 +18,7 @@ package org.geotools.coverage.io.range;
 
 import java.util.Set;
 
-import javax.measure.quantity.Quantity;
+import javax.measure.Quantity;
 
 import org.opengis.coverage.SampleDimension;
 import org.opengis.feature.type.Name;

@@ -24,7 +24,11 @@
       <artifactId>net.opengis.ows</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-opengis</artifactId>
+      <version>${project.version}</version>
+    </dependency>
   </dependencies>
-
 
 </project>

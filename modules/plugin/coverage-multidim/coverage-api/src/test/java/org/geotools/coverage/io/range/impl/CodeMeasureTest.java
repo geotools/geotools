@@ -24,6 +24,8 @@ import java.util.Map;
 import javax.measure.Measure;
 import javax.measure.quantity.Dimensionless;
 import si.uom.SI;
+import tec.uom.se.AbstractUnit;
+
 import javax.measure.Unit;
 
 import org.geotools.coverage.io.range.impl.EnumMeasureTest.Band;

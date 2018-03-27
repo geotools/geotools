@@ -24,8 +24,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.measure.quantity.Dimensionless;
 import javax.measure.Unit;
+import javax.measure.quantity.Dimensionless;
 import javax.media.jai.IHSColorSpace;
 
 import org.geotools.coverage.TypeMap;
@@ -37,6 +37,8 @@ import org.opengis.coverage.SampleDimension;
 import org.opengis.feature.type.Name;
 import org.opengis.referencing.crs.SingleCRS;
 import org.opengis.util.InternationalString;
+
+import tec.uom.se.AbstractUnit;
 
 /**
  * Implementation of {@link Axis} for multibands images.

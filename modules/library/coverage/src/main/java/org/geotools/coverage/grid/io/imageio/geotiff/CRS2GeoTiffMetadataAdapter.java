@@ -22,6 +22,10 @@ import java.util.List;
 import java.util.Set;
 
 import javax.measure.Unit;
+import javax.measure.UnitConverter;
+import javax.measure.quantity.Angle;
+import javax.measure.quantity.Length;
+import javax.measure.quantity.Time;
 
 import org.geotools.coverage.grid.io.imageio.geotiff.codes.GeoTiffCoordinateTransformationsCodes;
 import org.geotools.coverage.grid.io.imageio.geotiff.codes.GeoTiffGCSCodes;
@@ -305,14 +309,15 @@ public final class CRS2GeoTiffMetadataAdapter {
 	 * @param metadata
 	 */
 	private void parseLinearUnit(final ProjectedCRS projectedCRS,
-			GeoTiffIIOMetadataEncoder metadata) {
+            GeoTiffIIOMetadataEncoder metadata) {
 
-		// getting the linear unit
-		final Unit<?> linearUnit = CRSUtilities.getUnit(projectedCRS.getCoordinateSystem());
-		if (linearUnit != null && !SI.METRE.isCompatible(linearUnit)) {
-			throw new IllegalArgumentException(Errors.format(
-					ErrorKeys.NON_LINEAR_UNIT_$1, linearUnit));
-		}
+            // getting the linear unit
+            final Unit<?> unit = CRSUtilities.getUnit(projectedCRS.getCoordinateSystem());
+            if (unit != null && !SI.METRE.isCompatible(unit)) {
+                throw new IllegalArgumentException(Errors.format(ErrorKeys.NON_LINEAR_UNIT_$1, unit));
+            }
+            @SuppressWarnings("unchecked")
+            Unit<Length> linearUnit = (Unit<Length>) unit;
                 if (SI.METRE.equals(linearUnit)) {
                     metadata.addGeoShortParam(GeoTiffPCSCodes.ProjLinearUnitsGeoKey,
                             GeoTiffUoMCodes.Linear_Meter);
@@ -979,7 +984,7 @@ public final class CRS2GeoTiffMetadataAdapter {
 	            metadata.addGeoShortParam(key1, GeoTiffUoMCodes.Linear_Foot);
 	        } else if(unit.equals(USCustomary.FOOT_SURVEY)){
                     metadata.addGeoShortParam(key1, GeoTiffUoMCodes.Linear_Foot_US_Survey);
-                } else if(unit.equals(NonSI.GRADE)){
+                } else if(unit.equals(USCustomary.GRADE)){
                     metadata.addGeoShortParam(key1, GeoTiffUoMCodes.Angular_Grad);
                 } else if(unit.equals(SI.RADIAN)){
                     metadata.addGeoShortParam(key1, GeoTiffUoMCodes.Angular_Radian);
@@ -999,19 +1004,20 @@ public final class CRS2GeoTiffMetadataAdapter {
 
                     
                     // Size with respect to base UoM
-                    Unit<?> base = null;
+                    UnitConverter converter = null;
                     if (SI.METRE.isCompatible(unit)) {
-                            base = SI.METRE;
+                            converter = ((Unit<Length>) unit).getConverterTo(SI.METRE);
                     } else if (SI.SECOND.isCompatible(unit)) {
-                            base = SI.SECOND;
+                        converter = ((Unit<Time>) unit).getConverterTo(SI.SECOND);
                     } else if (SI.RADIAN.isCompatible(unit)) {
-                            if (!AbstractUnit.ONE.equals(unit)) {
-                                    base = SI.RADIAN;
-                            }
+                        if (!AbstractUnit.ONE.equals(unit)) {
+                            // or SI.RADIAN
+                            converter = ((Unit<Angle>) unit).getConverterTo(NonSI.SECOND_ANGLE);
+                        }
                     }
             
-                    if (base != null) {
-                            metadata.addGeoDoubleParam(key2, unit.getConverterTo(base).convert(1));
+                    if (converter != null) {
+                            metadata.addGeoDoubleParam(key2, converter.convert(1));
                     } else
                             metadata.addGeoDoubleParam(key2, 1);                    
                 }

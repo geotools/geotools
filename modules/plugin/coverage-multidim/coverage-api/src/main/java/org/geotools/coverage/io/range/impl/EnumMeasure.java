@@ -20,8 +20,11 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-import javax.measure.Measure;
+import javax.measure.Quantity;
 import javax.measure.quantity.Dimensionless;
+
+import tec.uom.se.AbstractUnit;
+
 import javax.measure.Unit;
 
 /**
@@ -43,7 +46,7 @@ import javax.measure.Unit;
  *
  * @source $URL$
  */
-public class EnumMeasure<V extends Enum<V>> extends Measure<V, Dimensionless> {
+public class EnumMeasure<V extends Enum<V>> extends Quantity<V, Dimensionless> {
 	private static final long serialVersionUID = 2403097126807167994L;
 	private V value;
 
@@ -103,12 +106,12 @@ public class EnumMeasure<V extends Enum<V>> extends Measure<V, Dimensionless> {
 	public static <E extends Enum<E>> EnumMeasure<E> valueOf( E enumeration ){
 		return new EnumMeasure<E>( enumeration );
 	}
-	public static <E extends Enum<E>> List<Measure<E,Dimensionless>> valueOf( Class<E> elementType ){
+	public static <E extends Enum<E>> List<Quantity<E,Dimensionless>> valueOf( Class<E> elementType ){
 		return valueOf( EnumSet.allOf( elementType ));
 	}
 	
-	public static <E extends Enum<E>> List<Measure<E,Dimensionless>> valueOf( EnumSet<E> set ){
-		List<Measure<E,Dimensionless>> list = new ArrayList<Measure<E,Dimensionless>>();
+	public static <E extends Enum<E>> List<Quantity<E,Dimensionless>> valueOf( EnumSet<E> set ){
+		List<Quantity<E,Dimensionless>> list = new ArrayList<Quantity<E,Dimensionless>>();
 		for( E entry : set ){
 			list.add( new EnumMeasure<E>( entry ));
 		}

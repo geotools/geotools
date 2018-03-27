@@ -48,6 +48,7 @@ import javax.imageio.ImageTypeSpecifier;
 import javax.imageio.stream.ImageInputStream;
 import javax.measure.Unit;
 import javax.measure.format.UnitFormat;
+import javax.measure.quantity.Length;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
 import javax.media.jai.RenderedOp;
@@ -89,6 +90,9 @@ import org.opengis.referencing.operation.TransformException;
 import com.sun.media.imageio.stream.RawImageInputStream;
 import com.sun.media.imageioimpl.plugins.raw.RawImageReader;
 import com.sun.media.imageioimpl.plugins.raw.RawImageReaderSpi;
+
+import si.uom.SI;
+import tec.uom.se.AbstractUnit;
 
 /**
  * This class provides a GridCoverageReader for the GTopo30Format.
@@ -645,16 +649,9 @@ public final class GTopo30Reader extends AbstractGridCoverage2DReader implements
 			final int min) {
 		// Create the SampleDimension, with colors and byte transformation
 		// needed for visualization
-		UnitFormat unitFormat = UnitFormat.getInstance();
-		Unit uom = null;
-
-		try {
-			// unit of measure is meter
-			uom = (Unit) unitFormat.parseObject("m");
-		} catch (ParseException ex1) {
-			uom = null;
-		}
-
+        
+                // unit of measure is meter
+                Unit<Length> uom = SI.METRE;
 		
 		final Category nan =
 		    new Category(Vocabulary.format(VocabularyKeys.NODATA), new Color[] { new Color(0, 0, 0, 0) },

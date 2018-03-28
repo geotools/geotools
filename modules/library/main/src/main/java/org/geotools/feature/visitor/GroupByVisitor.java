@@ -62,7 +62,7 @@ public class GroupByVisitor implements FeatureCalc, FeatureAttributeVisitor {
     }
 
     public boolean wasOptimized() {
-        return optimizationResult != null;
+        return optimizationResult != null && optimizationResult != CalcResult.NULL_RESULT;
     }
 
     public boolean wasVisited() {

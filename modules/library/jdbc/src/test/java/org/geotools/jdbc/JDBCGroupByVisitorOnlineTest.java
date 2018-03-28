@@ -22,9 +22,12 @@ import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.visitor.Aggregate;
 import org.geotools.feature.visitor.GroupByVisitor;
 import org.geotools.feature.visitor.GroupByVisitorBuilder;
+import org.geotools.filter.expression.InternalVolatileFunction;
+import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
+import org.opengis.filter.expression.Function;
 
 import java.io.IOException;
 import java.util.List;
@@ -37,6 +40,36 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
         checkValueContains(value, "HOUSE", "6.0");
         checkValueContains(value, "FABRIC", "500.0");
         checkValueContains(value, "SCHOOL", "60.0");
+    }
+    
+    public void testAvoidOptimization() throws Exception {
+        // use a made up function that cannot be possibly known by JDBCDataStore,
+        // and is not subject to cloning or modifications of any kind 
+        Function aggregateFunction = new InternalVolatileFunction() {
+
+            @Override
+            public Object evaluate(Object object) {
+                return ((SimpleFeature) object).getAttribute("building_type") + "_foo";
+            }
+        };
+
+        ContentFeatureSource featureSource = dataStore.getFeatureSource(tname("buildings_group_by_tests"));
+        SimpleFeatureType featureType = featureSource.getSchema();
+        GroupByVisitorBuilder visitorBuilder = new GroupByVisitorBuilder()
+                .withAggregateAttribute("energy_consumption", featureType)
+                .withAggregateVisitor(Aggregate.MAX);
+        visitorBuilder.withGroupByAttribute(aggregateFunction);
+        GroupByVisitor visitor = visitorBuilder.build();
+        featureSource.accepts(Query.ALL, visitor, null);
+        assertFalse(visitor.wasOptimized());
+        assertTrue(visitor.wasVisited());
+        List<Object[]> value = visitor.getResult().toList();
+        assertNotNull(value);
+
+        assertTrue(value.size() == 3);
+        checkValueContains(value, "HOUSE_foo", "6.0");
+        checkValueContains(value, "FABRIC_foo", "500.0");
+        checkValueContains(value, "SCHOOL_foo", "60.0");
     }
 
     public void testMultipleGroupByWithMax() throws Exception {

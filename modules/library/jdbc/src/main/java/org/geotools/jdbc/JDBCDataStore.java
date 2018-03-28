@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
+import java.security.acl.Group;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
@@ -1467,8 +1468,9 @@ public final class JDBCDataStore extends ContentDataStore
      */
     protected Object getAggregateValue(FeatureVisitor visitor, SimpleFeatureType featureType, Query query, Connection cx)
             throws IOException {
-        // check if group by is supported by the udnerlign store
-        if(isGroupByVisitor(visitor) && !dialect.isGroupBySupported()) {
+        // check if group by is supported by the underlying store
+        if (isGroupByVisitor(visitor) && 
+                (!dialect.isGroupBySupported() || !isSupportedGroupBy((GroupByVisitor) visitor))) {
             return null;
         }
         // try to match the visitor with an aggregate function
@@ -1555,6 +1557,18 @@ public final class JDBCDataStore extends ContentDataStore
         catch( SQLException e ) {
             throw (IOException) new IOException().initCause(e);
         }
+    }
+
+    /**
+     * Checks if the groupby is a supported one, that is, if it's possible to turn to SQL the
+     * various {@link Expression} it's using
+     * @param visitor
+     * @return
+     */
+    private boolean isSupportedGroupBy(GroupByVisitor visitor) {
+        // right now everything must be an attribute
+        return visitor.getExpressions().stream().allMatch(xp -> xp instanceof AttributeDescriptor) 
+            && visitor.getGroupByAttributes().stream().allMatch(xp -> xp instanceof AttributeDescriptor); 
     }
 
     // Helper method that checks if the visitor is of type count visitor.

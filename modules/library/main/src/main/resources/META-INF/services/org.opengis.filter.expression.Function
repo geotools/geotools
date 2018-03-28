@@ -188,3 +188,4 @@ org.geotools.filter.function.color.ShadeFunction
 org.geotools.filter.function.color.GrayscaleFunction
 org.geotools.filter.function.color.ConstrastFunction
 org.geotools.filter.function.BoundedByFunction
+org.geotools.filter.function.DateDifferenceFunction

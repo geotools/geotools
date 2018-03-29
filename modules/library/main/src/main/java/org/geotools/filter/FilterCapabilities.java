@@ -215,7 +215,6 @@ public class FilterCapabilities {
         intTypeToOpenGisTypeMap.put(new Long(SPATIAL_BEYOND), Beyond.class);
         intTypeToOpenGisTypeMap.put(new Long(SPATIAL_DWITHIN), DWithin.class);
         intTypeToOpenGisTypeMap.put(new Long(SIMPLE_ARITHMETIC), new Class[] {Add.class, Subtract.class, Multiply.class, Divide.class});
-        intTypeToOpenGisTypeMap.put(new Long(FUNCTIONS), Function.class);
         intTypeToOpenGisTypeMap.put(new Long(COMPARE_EQUALS), PropertyIsEqualTo.class);
         intTypeToOpenGisTypeMap.put(new Long(COMPARE_NOT_EQUALS), PropertyIsNotEqualTo.class);
         intTypeToOpenGisTypeMap.put(new Long(COMPARE_GREATER_THAN), PropertyIsGreaterThan.class);
@@ -232,7 +231,7 @@ public class FilterCapabilities {
     
     private long ops = NO_OP;
 
-	private Set functions=new HashSet();
+	private Set<Class> functions = new HashSet<>();
 
     public FilterCapabilities(long filterCapabilitiesType) {
 		addType(filterCapabilitiesType);
@@ -437,7 +436,16 @@ public class FilterCapabilities {
 	}
     
     public boolean supports(Class type){
-    	return functions.contains(type);
+    	if (functions.contains(type)) {
+            return true;
+        }
+        for (Class functionClass : functions) {
+            if (functionClass.isAssignableFrom(type)) {
+                return true;
+            }
+        }
+        
+        return false;
     }
     
     public long getScalarOps() {

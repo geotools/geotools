@@ -81,8 +81,6 @@ import com.vividsolutions.jts.io.WKTWriter;
  */
 public class PostGISDialect extends BasicSQLDialect {
 
-    private static final String AREA_FUNCTION = "ST_Area";
-
     public static final String BIGDATE_UDT = "bigdate";
 
 	//geometry type to class map
@@ -1266,12 +1264,4 @@ public class PostGISDialect extends BasicSQLDialect {
                 ? "ST_EstimatedExtent" : "ST_Estimated_Extent";
     }
 
-    @Override
-    public void registerFunctions(Map<String, String> functions) {
-        super.registerFunctions(functions);
-        functions.put(FilterFunction_area.NAME.getName(), AREA_FUNCTION);
-    }
-
-    
-    
 }

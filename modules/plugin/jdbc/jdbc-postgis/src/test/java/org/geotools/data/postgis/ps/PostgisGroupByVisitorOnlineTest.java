@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2016, Open Source Geospatial Foundation (OSGeo)
+ *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -14,26 +14,38 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-package org.geotools.data.postgis;
+package org.geotools.data.postgis.ps;
 
 import org.geotools.data.Query;
+import org.geotools.data.postgis.PostGISAggregateTestSetup;
+import org.geotools.data.postgis.PostGISDialect;
+import org.geotools.data.postgis.PostGISPSDialect;
+import org.geotools.data.postgis.PostgisGroupByVisitorTestSetup;
 import org.geotools.feature.visitor.Aggregate;
+import org.geotools.jdbc.JDBCAggregateFunctionOnlineTest;
+import org.geotools.jdbc.JDBCAggregateTestSetup;
 import org.geotools.jdbc.JDBCGroupByVisitorOnlineTest;
+import org.geotools.jdbc.JDBCTestSetup;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Function;
 
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * 
+ *
+ * @source $URL$
+ */
 public class PostgisGroupByVisitorOnlineTest extends JDBCGroupByVisitorOnlineTest {
 
     @Override
-    protected PostgisGroupByVisitorTestSetup createTestSetup() {
-        return new PostgisGroupByVisitorTestSetup(new PostGISTestSetup());
+    protected JDBCTestSetup createTestSetup() {
+        return new PostgisGroupByVisitorTestSetup(new PostGISPSTestSetup());
     }
 
     public void testAggregateOnNonEncodableFunction() throws Exception {
-        PostGISDialect sqlDialect = (PostGISDialect) dataStore.getSQLDialect();
+        PostGISPSDialect sqlDialect = ((PostGISPSDialect) dataStore.getSQLDialect());
         boolean oldValue = sqlDialect.isFunctionEncodingEnabled();
         sqlDialect.setFunctionEncodingEnabled(false);
         try {
@@ -44,7 +56,7 @@ public class PostgisGroupByVisitorOnlineTest extends JDBCGroupByVisitorOnlineTes
     }
 
     public void testAggregateOnEncodableFunction() throws Exception {
-        PostGISDialect sqlDialect = (PostGISDialect) dataStore.getSQLDialect();
+        PostGISPSDialect sqlDialect = (PostGISPSDialect) dataStore.getSQLDialect();
         boolean oldValue = sqlDialect.isFunctionEncodingEnabled();
         sqlDialect.setFunctionEncodingEnabled(true);
         try {
@@ -56,7 +68,7 @@ public class PostgisGroupByVisitorOnlineTest extends JDBCGroupByVisitorOnlineTes
 
     public void testAggregateOnFunction(boolean expectOptimized) throws IOException {
         FilterFactory ff = dataStore.getFilterFactory();
-        Function buildingTypeSub = ff.function("strSubstring", 
+        Function buildingTypeSub = ff.function("strSubstring",
                 ff.property("building_type"), ff.literal(0), ff.literal(3));
 
 

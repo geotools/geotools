@@ -62,7 +62,9 @@ import org.opengis.filter.PropertyIsLike;
 import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.expression.Add;
 import org.opengis.filter.expression.Divide;
+import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.Multiply;
+import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.expression.Subtract;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -143,6 +145,10 @@ public abstract class SQLDialect {
             addType(Subtract.class);
             addType(Multiply.class);
             addType(Divide.class);
+            
+            //properties and literals
+            addType(PropertyName.class);
+            addType(Literal.class);
             
             //simple comparisons
             addType(PropertyIsNull.class);
@@ -390,6 +396,7 @@ public abstract class SQLDialect {
      * related function.
      * 
      * @param functions mappings from GT FilterFunction name to sql function name
+     * @deprecated No longer needed, use FilterToSQL to handle function encoding                 
      */
     public void registerFunctions(Map<String ,String> functions) {
         
@@ -1476,16 +1483,19 @@ public abstract class SQLDialect {
         return dataStore.getPrimaryKey(featureType);
     }
     
+    @Deprecated
     protected void encodeAggregateFunction( String function, String column, StringBuffer sql ) {
         encodeAggregateFunctionPrefix(function, sql);
         sql.append(column);
         encodeAggregateFunctionPostfix(function, sql);
     }
 
+    @Deprecated
     public void encodeAggregateFunctionPrefix(String function, StringBuffer sql) {
         sql.append(function).append("(");
     }
 
+    @Deprecated
     public void encodeAggregateFunctionPostfix(String function, StringBuffer sql) {
         sql.append(")");
     }

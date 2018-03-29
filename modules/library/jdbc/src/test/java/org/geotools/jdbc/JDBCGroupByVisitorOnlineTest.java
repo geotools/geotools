@@ -16,9 +16,11 @@
  */
 package org.geotools.jdbc;
 
+import org.easymock.internal.Results;
 import org.geotools.data.Query;
 import org.geotools.data.Query;
 import org.geotools.data.store.ContentFeatureSource;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.visitor.Aggregate;
 import org.geotools.feature.visitor.GroupByVisitor;
 import org.geotools.feature.visitor.GroupByVisitorBuilder;
@@ -27,7 +29,10 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
+import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
+import org.opengis.filter.expression.Multiply;
+import org.opengis.filter.expression.PropertyName;
 
 import java.io.IOException;
 import java.util.List;
@@ -42,34 +47,58 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
         checkValueContains(value, "SCHOOL", "60.0");
     }
     
-    public void testAvoidOptimization() throws Exception {
+    public void testUnkonwnFunction() throws Exception {
         // use a made up function that cannot be possibly known by JDBCDataStore,
         // and is not subject to cloning or modifications of any kind 
         Function aggregateFunction = new InternalVolatileFunction() {
 
             @Override
             public Object evaluate(Object object) {
-                return ((SimpleFeature) object).getAttribute("building_type") + "_foo";
+                return ((SimpleFeature) object).getAttribute(aname("building_type")) + "_foo";
             }
         };
 
-        ContentFeatureSource featureSource = dataStore.getFeatureSource(tname("buildings_group_by_tests"));
-        SimpleFeatureType featureType = featureSource.getSchema();
-        GroupByVisitorBuilder visitorBuilder = new GroupByVisitorBuilder()
-                .withAggregateAttribute("energy_consumption", featureType)
-                .withAggregateVisitor(Aggregate.MAX);
-        visitorBuilder.withGroupByAttribute(aggregateFunction);
-        GroupByVisitor visitor = visitorBuilder.build();
-        featureSource.accepts(Query.ALL, visitor, null);
-        assertFalse(visitor.wasOptimized());
-        assertTrue(visitor.wasVisited());
-        List<Object[]> value = visitor.getResult().toList();
+        List<Object[]> value  = genericGroupByTestTest(Query.ALL, Aggregate.MAX, false, aggregateFunction);
         assertNotNull(value);
 
         assertTrue(value.size() == 3);
         checkValueContains(value, "HOUSE_foo", "6.0");
         checkValueContains(value, "FABRIC_foo", "500.0");
         checkValueContains(value, "SCHOOL_foo", "60.0");
+    }
+
+    public void testAggregateOnMathExpression() throws Exception {
+        FilterFactory ff = dataStore.getFilterFactory();
+        PropertyName pn = ff.property("energy_consumption");
+        Multiply expression = ff.multiply(pn, ff.literal(10));
+
+        List<Object[]> value  = genericGroupByTestTest(Query.ALL, Aggregate.COUNT, expression);
+        assertNotNull(value);
+
+        assertTrue(value.size() == 9);
+        checkValueContains(value, "40.0", "1");
+        checkValueContains(value, "200.0", "2");
+        checkValueContains(value, "600.0", "1");
+        checkValueContains(value, "5000.0", "1");
+        checkValueContains(value, "60.0", "1");
+        checkValueContains(value, "100.0", "2");
+        checkValueContains(value, "300.0", "2");
+        checkValueContains(value, "500.0", "1");
+        checkValueContains(value, "1500.0", "1");
+    }
+
+    public void testComputeOnMathExpression() throws Exception {
+        FilterFactory ff = dataStore.getFilterFactory();
+        PropertyName pn = ff.property(aname("energy_consumption"));
+        Multiply computeAttribute = ff.multiply(pn, ff.literal(10));
+        PropertyName groupAttribute = ff.property(aname("building_type"));
+        List<Object[]> value  = genericGroupByTestTest(Query.ALL, Aggregate.MAX, computeAttribute, true, groupAttribute);
+        assertNotNull(value);
+
+        assertTrue(value.size() == 3);
+        checkValueContains(value, "HOUSE", "60.0");
+        checkValueContains(value, "FABRIC" , "5000.0");
+        checkValueContains(value, "SCHOOL", "600.0");
     }
 
     public void testMultipleGroupByWithMax() throws Exception {
@@ -243,37 +272,69 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
         return new Query(tname("buildings"), filter);
     }
 
-    private List<Object[]> genericGroupByTestTest(Aggregate aggregateVisitor,
-                                                  String... groupByAttributes) throws IOException {
+    protected List<Object[]> genericGroupByTestTest(Aggregate aggregateVisitor,
+                                                    String... groupByAttributes) throws IOException {
         return genericGroupByTestTest(Query.ALL, aggregateVisitor, groupByAttributes);
     }
 
     private List<Object[]> genericGroupByTestTest(Query query, Aggregate aggregateVisitor,
                                                   String... groupByAttributes) throws IOException {
+        Expression[] expressions = new Expression[groupByAttributes != null ? groupByAttributes.length : 0];
+        if (groupByAttributes != null) {
+            int i = 0;
+            for (String attribute : groupByAttributes) {
+                PropertyName property = dataStore.getFilterFactory().property(aname(attribute));
+                expressions[i++] = property;
+            }
+        }
+        
+        return genericGroupByTestTest(query, aggregateVisitor, expressions);
+    }
+
+    private List<Object[]> genericGroupByTestTest(Query query, Aggregate aggregateVisitor,
+                                                  Expression... groupByAttributes) throws IOException {
+        return genericGroupByTestTest(query, aggregateVisitor, true, groupByAttributes);
+    }
+
+    protected List<Object[]> genericGroupByTestTest(Query query, Aggregate aggregateVisitor, 
+                                                    boolean expectOptimized,
+                                                    Expression... groupByAttributes) throws IOException {
+        PropertyName aggregateAttribute = CommonFactoryFinder.getFilterFactory().property(aname("energy_consumption"));
+        return genericGroupByTestTest(query, aggregateVisitor, aggregateAttribute, expectOptimized, groupByAttributes);
+    }
+
+    private List<Object[]> genericGroupByTestTest(Query query, Aggregate aggregateVisitor, 
+                                                  Expression aggregateAttribute, 
+                                                  boolean expectOptimized, 
+                                                  Expression... groupByAttributes) throws IOException {
         ContentFeatureSource featureSource = dataStore.getFeatureSource(tname("buildings_group_by_tests"));
-        SimpleFeatureType featureType = featureSource.getSchema();
+        
         GroupByVisitorBuilder visitorBuilder = new GroupByVisitorBuilder()
-                .withAggregateAttribute("energy_consumption", featureType)
+                .withAggregateAttribute(aggregateAttribute)
                 .withAggregateVisitor(aggregateVisitor);
-        for (String groupByAttribute : groupByAttributes) {
-            visitorBuilder.withGroupByAttribute(groupByAttribute, featureType);
+        for (Expression groupByAttribute : groupByAttributes) {
+            visitorBuilder.withGroupByAttribute(groupByAttribute);
         }
         GroupByVisitor visitor = visitorBuilder.build();
         featureSource.accepts(query, visitor, null);
-        assertTrue(visitor.wasOptimized());
-        assertFalse(visitor.wasVisited());
+        assertEquals(expectOptimized, visitor.wasOptimized());
+        assertEquals(!expectOptimized, visitor.wasVisited());
         List<Object[]> value = visitor.getResult().toList();
         assertNotNull(value);
         return value;
     }
 
-    private void checkValueContains(List<Object[]> value, String... expectedResult) {
+    protected void checkValueContains(List<Object[]> value, String... expectedResult) {
         assertTrue(value.stream().anyMatch(result -> {
             if (result.length != expectedResult.length) {
                 return false;
             }
             for (int i = 0; i < result.length; i++) {
-                if (!result[i].toString().equals(expectedResult[i])) {
+                if (result[i] instanceof Number) {
+                    double r = ((Number) result[i]).doubleValue();
+                    double e = Double.parseDouble(expectedResult[i]);
+                    return r == e;
+                } else if (!result[i].toString().equals(expectedResult[i])) {
                     return false;
                 }
             }

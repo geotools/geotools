@@ -1526,8 +1526,11 @@ public final class JDBCDataStore extends ContentDataStore
                 closeSafe( rs );
                 closeSafe( st );
             }
-            
-            if ( setResult(visitor, results.size() > 1 ? results : result) ){
+
+            if (groupByExpressions != null && !groupByExpressions.isEmpty()) {
+                setResult(visitor, results);
+                return results;
+            } else if ( setResult(visitor, results.size() > 1 ? results : result) ){
                 return result == null ? results : result;
             }
             
@@ -3939,15 +3942,14 @@ public final class JDBCDataStore extends ContentDataStore
         
         if (join != null) {
             toSQL.addAll(encodeWhereJoin(featureType, join, sql));
-        }
-        else {
+        } else {
             Filter filter = query.getFilter();
             if (filter != null && !Filter.INCLUDE.equals(filter)) {
                 sql.append(" WHERE ");
                 toSQL.add(filter(featureType, filter, sql));
             }
         }
-        if(dialect.isAggregatedSortSupported(function)) {
+        if (dialect.isAggregatedSortSupported(function)) {
             sort(featureType, query.getSortBy(), null, sql);
         }
 

@@ -33,6 +33,8 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Multiply;
 import org.opengis.filter.expression.PropertyName;
+import org.opengis.filter.sort.SortBy;
+import org.opengis.filter.sort.SortOrder;
 
 import java.io.IOException;
 import java.util.List;
@@ -99,6 +101,18 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
         checkValueContains(value, "HOUSE", "60.0");
         checkValueContains(value, "FABRIC" , "5000.0");
         checkValueContains(value, "SCHOOL", "600.0");
+    }
+
+    public void testComputeOnMathExpressionWithLimit() throws Exception {
+        FilterFactory ff = dataStore.getFilterFactory();
+        // aggregate on expression
+        PropertyName pn = ff.property(aname("energy_consumption"));
+        Multiply computeAttribute = ff.multiply(pn, ff.literal(10));
+        PropertyName groupAttribute = ff.property(aname("building_type"));
+        List<Object[]> value  = genericGroupByTestTest(queryWithLimits(3, 2), Aggregate.MAX, computeAttribute, true, groupAttribute);
+        assertNotNull(value);
+
+        assertTrue(value.size() >= 1 && value.size() <= 2);
     }
 
     public void testMultipleGroupByWithMax() throws Exception {

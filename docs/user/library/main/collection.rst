@@ -596,6 +596,25 @@ As showed in the examples multiple group by attributes can be used but only one 
 function and only one aggregate attribute can be used. To compute several aggregations
 multiple group by visitors need to be created and executed.
 
+* Histogram by energy consumption classes
+
+    FilterFactory ff = dataStore.getFilterFactory();
+    PropertyName pn = ff.property("energy_consumption"));
+    Expression expression = ff.function("floor", ff.divide(pn, ff.literal(100)));
+    GroupByVisitor visitor = new GroupByVisitorBuilder()
+                      .withAggregateAttribute("energy_consumption", buildingType)
+                      .withAggregateVisitor("Count")
+                      .withGroupByAttribute(expression)
+                      .build();
+
+  The expression creates buckets of size 100 and gives each one an integer index, 0 for the
+  first bucket [0-100[, 1 for the second [100-200[, and so on. A bucket with no results will be skipped.
+  The result is:
+
+    List(0)  ->  3
+    List(1)  ->  2
+    List(2)  ->  1
+    List(5)  ->  1
 
 Classifier Functions
 ''''''''''''''''''''

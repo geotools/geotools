@@ -510,7 +510,15 @@ function is mapped to a correspondent visitor and for each features group a diff
 will be applied.
 
 For SQL data stores that support group by statements and are able to handle the aggregation function this visitor 
-will be translated to raw SQL optimizing significantly is execution.
+will be translated to raw SQL optimizing significantly is execution. In particular, the following conditions apply
+to JDBC data stores:
+
+* Aggregations and grouping on property names is support
+* Simple math expressions of the above are also supported (substract, add, multiply, divide)
+* Functions may be supported, or not, depending on the filter capabilities of the data store. At the time
+  of writing only PostgreSQL supports a small set of functions (e.g., dateDifference, floor, ceil, 
+  string concatenation and the like).
+
 
 Here are the currently supported aggregate functions:
 
@@ -587,6 +595,7 @@ Fabric            Wind            150.0
 As showed in the examples multiple group by attributes can be used but only one aggregate 
 function and only one aggregate attribute can be used. To compute several aggregations
 multiple group by visitors need to be created and executed.
+
 
 Classifier Functions
 ''''''''''''''''''''

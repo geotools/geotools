@@ -20,10 +20,13 @@ import org.geotools.filter.FilterCapabilities;
 import org.geotools.jdbc.PreparedFilterToSQL;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BinarySpatialOperator;
 import org.opengis.filter.spatial.DistanceBufferOperator;
+
+import java.io.IOException;
 
 /**
  * 
@@ -93,4 +96,21 @@ public class PostgisPSFilterToSql extends PreparedFilterToSQL {
         return super.getDistanceInNativeUnits(operator);
     }
 
+    @Override
+    public Object visit(Function function, Object extraData) throws RuntimeException {
+        helper.out = out;
+        try {
+            encodingFunction = true;
+            boolean encoded = helper.visitFunction(function, extraData);
+            encodingFunction = false;
+
+            if(encoded) {
+                return extraData;
+            } else {
+                return super.visit(function, extraData);
+            }
+        } catch(IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

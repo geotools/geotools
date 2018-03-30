@@ -29,7 +29,7 @@ public class CopyingHandler extends DefaultHandler {
 
     protected StringBuffer buffer;
     protected NamespaceSupport namespaceContext;
-    protected boolean root = true;
+    protected int root = 0;
 
     public CopyingHandler() {
         this(null);
@@ -42,9 +42,10 @@ public class CopyingHandler extends DefaultHandler {
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes)
             throws SAXException {
-        
+
         if (buffer == null) {
             buffer = new StringBuffer();
+            root++;
         }
 
         buffer.append("<");
@@ -65,7 +66,7 @@ public class CopyingHandler extends DefaultHandler {
             }
         }
         
-        if (root) {
+        if (root > 0) {
             if (namespaceContext != null) {
                 // dump out namespace context (mind, it may contain duplicates)
                 Set<String> mappedPrefixes = new HashSet<>();
@@ -89,7 +90,7 @@ public class CopyingHandler extends DefaultHandler {
                     mappedPrefixes.add(prefix);
                 }
             }
-            root = false;
+            root--;
         }
         buffer.append(">");
     }
@@ -98,20 +99,21 @@ public class CopyingHandler extends DefaultHandler {
     public void characters(char[] ch, int start, int length) throws SAXException {
         if (buffer == null) {
             buffer = new StringBuffer();
+            root++;
         }
-
         buffer.append(ch, start, length);
     }
-    
+
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
         if (buffer != null) {
             buffer.append("</").append(qName).append(">");
         }
     }
-    
+
     @Override
     public void endDocument() throws SAXException {
         buffer = null;
     }
+
 }

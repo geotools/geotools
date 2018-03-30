@@ -143,7 +143,7 @@ public class PostgisFilterToSQL extends FilterToSQL {
             if (literal.getValue() instanceof Date) {
                 return super.visit(filterFactory.literal(((Date) literal.getValue()).getTime()), Long.class);
             }
-        }
+        } 
         return super.visit(literal, extraData);
     }
 

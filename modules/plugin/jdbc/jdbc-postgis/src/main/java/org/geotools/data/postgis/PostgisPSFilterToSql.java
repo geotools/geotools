@@ -85,7 +85,12 @@ public class PostgisPSFilterToSql extends PreparedFilterToSQL {
     public void setFunctionEncodingEnabled(boolean functionEncodingEnabled) {
         this.functionEncodingEnabled = functionEncodingEnabled;
     }
-    
+
+    @Override
+    protected String getFunctionName(Function function) {
+        return helper.getFunctionName(function);
+    }
+
     @Override
     public double getDistanceInMeters(DistanceBufferOperator operator) {
         return super.getDistanceInMeters(operator);

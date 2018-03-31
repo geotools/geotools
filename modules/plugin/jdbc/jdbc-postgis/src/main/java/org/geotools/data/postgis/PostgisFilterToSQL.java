@@ -138,23 +138,11 @@ public class PostgisFilterToSQL extends FilterToSQL {
 
     @Override
     public Object visit(Literal literal, Object extraData) {
-        try {
-            // handle BigDate udt, encode it as a long
-            if (extraData instanceof Class && BigDate.class.isAssignableFrom((Class<?>) extraData)) {
-                if (literal.getValue() instanceof Date) {
-                    return super.visit(filterFactory.literal(((Date) literal.getValue()).getTime()), Long.class);
-                }
-            } else if (extraData instanceof Class && java.sql.Date.class.isAssignableFrom((Class<?>) extraData)) {
-                Object result = super.visit(literal, extraData);
-                out.write("::date");
-                return result;
-            } else if (extraData instanceof Class && Date.class.isAssignableFrom((Class<?>) extraData)) {
-                Object result = super.visit(literal, extraData);
-                out.write("::timestamp");
-                return result;
+        // handle BigDate udt, encode it as a long
+        if (extraData instanceof Class && BigDate.class.isAssignableFrom((Class<?>) extraData)) {
+            if (literal.getValue() instanceof Date) {
+                return super.visit(filterFactory.literal(((Date) literal.getValue()).getTime()), Long.class);
             }
-        } catch(IOException e) {
-            throw new RuntimeException(e);
         }
         return super.visit(literal, extraData);
     }

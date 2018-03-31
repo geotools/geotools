@@ -16,17 +16,17 @@
  */
 package org.geotools.jdbc;
 
+import org.easymock.internal.Results;
+import org.geotools.data.Query;
 import org.geotools.data.Query;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.visitor.Aggregate;
 import org.geotools.feature.visitor.GroupByVisitor;
 import org.geotools.feature.visitor.GroupByVisitorBuilder;
-import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.expression.InternalVolatileFunction;
-import org.geotools.filter.function.DateDifferenceFunction;
-import org.geotools.filter.function.math.FilterFunction_floor;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
@@ -37,8 +37,6 @@ import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
@@ -111,52 +109,10 @@ public abstract class JDBCGroupByVisitorOnlineTest extends JDBCTestSupport {
         PropertyName pn = ff.property(aname("energy_consumption"));
         Multiply computeAttribute = ff.multiply(pn, ff.literal(10));
         PropertyName groupAttribute = ff.property(aname("building_type"));
-        List<Object[]> value = genericGroupByTestTest(queryWithLimits(3, 2), Aggregate.MAX, computeAttribute, true, groupAttribute);
+        List<Object[]> value  = genericGroupByTestTest(queryWithLimits(3, 2), Aggregate.MAX, computeAttribute, true, groupAttribute);
         assertNotNull(value);
 
         assertTrue(value.size() >= 1 && value.size() <= 2);
-    }
-    
-    public void testNumericHistogram() throws Exception {
-        // buckets with a size of 100, the function returns an integer from 0 onwards, which
-        // is a zero based bucket number in the bucket sequence 
-        FilterFactory ff = dataStore.getFilterFactory();
-        PropertyName pn = ff.property(aname("energy_consumption"));
-        Expression expression = ff.function("floor", ff.divide(pn, ff.literal(100)));
-
-        boolean expectOptimized = dataStore.getFilterCapabilities().supports(FilterFunction_floor.class);
-        List<Object[]> value  = genericGroupByTestTest(Query.ALL, Aggregate.COUNT, expectOptimized, expression);
-        assertNotNull(value);
-
-        assertEquals(value.size(), 3);
-        checkValueContains(value, "0", "10");
-        checkValueContains(value, "1", "1");
-        checkValueContains(value, "5", "1");
-    }
-
-    public void testTimestampHistogram() throws Exception {
-        // buckets with a size of one day, the function returns an integer from 0 onwards, which
-        // is a zero based bucket number in the bucket sequence 
-        FilterFactory ff = dataStore.getFilterFactory();
-        PropertyName pn = ff.property(aname("last_update"));
-        Date baseDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2016-06-03 00:00:00");
-        Expression difference = ff.function("dateDifference", pn, ff.literal(baseDate));
-        int dayInMs = 1000 * 60 * 60 * 24;
-        Expression expression = ff.function("floor", ff.divide(difference, ff.literal(dayInMs)));
-
-        FilterCapabilities capabilities = dataStore.getFilterCapabilities();
-        boolean expectOptimized = capabilities.supports(FilterFunction_floor.class) &&
-                capabilities.supports(DateDifferenceFunction.class);
-        List<Object[]> value = genericGroupByTestTest(Query.ALL, Aggregate.COUNT, 
-                expectOptimized, expression);
-        assertNotNull(value);
-
-        assertEquals(5, value.size());
-        checkValueContains(value, "0", "3"); // 2016-06-03
-        checkValueContains(value, "2", "1"); // 2016-06-05
-        checkValueContains(value, "3", "2"); // 2016-06-06
-        checkValueContains(value, "4", "3"); // 2016-06-07
-        checkValueContains(value, "12", "3"); // 2016-06-15
     }
 
     public void testMultipleGroupByWithMax() throws Exception {

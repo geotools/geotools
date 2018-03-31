@@ -20,12 +20,14 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 
-import si.uom.SI;
 import javax.measure.Unit;
 import javax.measure.format.UnitFormat;
 
 import org.geotools.metadata.iso.citation.Citations;
 import org.junit.Test;
+
+import si.uom.NonSI;
+import si.uom.SI;
 
 /**
  * @author ian
@@ -33,7 +35,9 @@ import org.junit.Test;
  */
 public class GeoToolsUnitFormatTest {
 
-    private UnitFormat unitFormat = GeoToolsUnitFormat.getInstance(Citations.EPSG);
+    private UnitFormat epsgUnitFormat = GeoToolsUnitFormat.getInstance(Citations.EPSG);
+
+    private UnitFormat esriUnitFormat = GeoToolsUnitFormat.getInstance(Citations.ESRI);
 
     /**
      * Test method for {@link javax.measure.unit.UnitFormat#format(javax.measure.unit.Unit, java.lang.Appendable)}.
@@ -42,8 +46,23 @@ public class GeoToolsUnitFormatTest {
      */
     @Test
     public void testFormatUnitOfQAppendable() throws IOException {
+        dotestModifiedUnits(SI.CELSIUS, epsgUnitFormat);
+        doTestModifiedUnits(NonSI.DEGREE_ANGLE, epsgUnitFormat, "degree");
 
-        Unit<?> u = SI.CELSIUS;
+        dotestModifiedUnits(SI.CELSIUS, esriUnitFormat);
+        doTestModifiedUnits(NonSI.DEGREE_ANGLE, esriUnitFormat, "Degree");
+        doTestModifiedUnits(SI.METRE, esriUnitFormat, "Meter");
+
+    }
+
+    protected void doTestModifiedUnits(Unit<?> u, UnitFormat unitFormat, String expected)
+            throws IOException {
+        Appendable appendable = new StringBuilder();
+        unitFormat.format(u, appendable);
+        assertEquals("Missing symbol formats", expected, appendable.toString());
+    }
+
+    protected void dotestModifiedUnits(Unit<?> u, UnitFormat unitFormat) throws IOException {
         Appendable appendable = new StringBuilder();
         unitFormat.format(u, appendable);
         assertEquals("Missing symbol formats", u.toString(), appendable.toString());

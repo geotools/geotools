@@ -33,6 +33,7 @@ import javax.measure.Unit;
 import javax.measure.quantity.Angle;
 import javax.measure.quantity.Length;
 
+import org.geotools.measure.Units;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.referencing.ReferencingFactoryFinder;
@@ -408,7 +409,11 @@ public class Parser extends MathTransformParser {
         final double   factor = element.pullDouble("factor");
         final Map<String,?> properties = parseAuthority(element, name);
         element.close();
-        return (factor != 1) ? unit.multiply(factor) : unit;
+        Unit<T> finalUnit = (factor != 1) ? unit.multiply(factor) : unit;
+        if (Units.isDegreeAngle(finalUnit)) {
+            return (Unit<T>) NonSI.DEGREE_ANGLE;
+        }
+        return finalUnit;
     }
 
     /**

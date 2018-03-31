@@ -17,6 +17,7 @@
 package org.geotools.measure;
 
 import javax.measure.Unit;
+import javax.measure.UnitConverter;
 import javax.measure.format.UnitFormat;
 import javax.measure.quantity.Angle;
 import javax.measure.quantity.Dimensionless;
@@ -28,6 +29,8 @@ import si.uom.SI;
 import systems.uom.common.USCustomary;
 import tec.uom.se.AbstractUnit;
 import tec.uom.se.format.SimpleUnitFormat;
+import tec.uom.se.function.MultiplyConverter;
+import tec.uom.se.unit.TransformedUnit;
 
 
 /**
@@ -96,5 +99,28 @@ public final class Units {
         format.label(SEXAGESIMAL_DMS,      "D.MS");
         format.label(DEGREE_MINUTE_SECOND, "DMS" );
         format.label(PPM,                  "ppm" );
+    }
+
+    /**
+     * Recognize representation of NonSI.DEEGREE_ANGLE to prevent unnecessary conversion.
+     * 
+     * @param unit
+     * @return true if MultiplyConverter is close to PI/180.0
+     */
+    public static final boolean isDegreeAngle(Unit<?> unit) {
+        if (unit.getSystemUnit() == SI.RADIAN && unit instanceof TransformedUnit<?>) {
+            @SuppressWarnings("unchecked")
+            TransformedUnit<Angle> transformed = (TransformedUnit<Angle>) unit;
+            UnitConverter converter = transformed.getConverter();
+            if (converter instanceof MultiplyConverter) {
+                MultiplyConverter multiplyConverter = (MultiplyConverter) converter;
+                double factor = multiplyConverter.getFactor();
+                if (factor == 0.017453292519943295 || factor == 0.0174532925199433
+                        || factor == 0.01745329251994328) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

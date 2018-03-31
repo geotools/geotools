@@ -79,7 +79,7 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
             "Due to differences in the type systems the result might not be the same as evaluating " +
             "them in memory, including the SQL failing with errors while the in memory version works fine. " +
             "However this allows to push more of the filter into the database, increasing performance." +
-            "the postgis table.", false, new Boolean(false),
+            "the postgis table.", false, new Boolean(true),
             new KVP( Param.LEVEL, "advanced"));
     
     /**
@@ -147,7 +147,7 @@ public class PostgisNGDataStoreFactory extends JDBCDataStoreFactory {
         
         // check if we can encode functions in sql
         Boolean encodeFunctions = (Boolean) ENCODE_FUNCTIONS.lookUp(params);
-        dialect.setFunctionEncodingEnabled(encodeFunctions != null && encodeFunctions);
+        dialect.setFunctionEncodingEnabled(encodeFunctions == null || encodeFunctions);
         
         // setup the ps dialect if need be
         Boolean usePs = (Boolean) PREPARED_STATEMENTS.lookUp(params);

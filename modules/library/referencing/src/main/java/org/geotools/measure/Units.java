@@ -116,6 +116,8 @@ public final class Units {
         format.label(Units.PPM, "ppm");
     }
 
+    private static final double RADIAN_TO_DEGREE_RATIO = Math.PI/180.0; // 0.017453292519943295
+    
     /**
      * Recognize representation of NonSI.DEEGREE_ANGLE to prevent unnecessary conversion.
      * 
@@ -130,8 +132,7 @@ public final class Units {
             if (converter instanceof MultiplyConverter) {
                 MultiplyConverter multiplyConverter = (MultiplyConverter) converter;
                 double factor = multiplyConverter.getFactor();
-                if (factor == 0.017453292519943295 || factor == 0.0174532925199433
-                        || factor == 0.01745329251994328) {
+                if (Math.abs(RADIAN_TO_DEGREE_RATIO - factor) < 1.0e-17) {
                     return true;
                 }
             }

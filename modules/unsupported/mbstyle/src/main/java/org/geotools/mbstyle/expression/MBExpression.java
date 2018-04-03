@@ -137,6 +137,20 @@ public abstract class MBExpression extends FunctionImpl {
         throw new MBFormatException("Requires a string name of the expression at position 0");
     }
 
+    public static boolean canCreate(final String name) {
+        return colors.contains(name) ||
+            decisions.contains(name) ||
+            featureData.contains(name) ||
+            heatMap.contains(name) ||
+            lookUp.contains(name) ||
+            math.contains(name) ||
+            ramps.contains(name) ||
+            string.contains(name) ||
+            types.contains(name) ||
+            variableBindings.contains(name) ||
+            zoom.contains(name);
+    }
+
     /**
      * Determines which expression to use.
      */

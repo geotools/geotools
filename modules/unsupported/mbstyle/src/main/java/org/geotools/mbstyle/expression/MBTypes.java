@@ -19,6 +19,7 @@ package org.geotools.mbstyle.expression;
 
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
 
 /**
@@ -70,8 +71,20 @@ public class MBTypes extends MBExpression {
      *   ["literal", {...} (JSON object literal)]: Object
      * @return
      */
-    public Expression typesLiteral(){
-        return null;
+    private Expression typesLiteral(){
+        if (json.size() == 2) {
+            if (json.get(1) instanceof JSONObject) {
+                JSONObject object = (JSONObject) json.get(1);
+                return ff.literal(object);
+            } else if (json.get(1) instanceof JSONArray) {
+                JSONArray arr = (JSONArray) json.get(1);
+                return ff.literal(arr);
+            } else {
+                throw new MBFormatException("The \"literal\" expression requires a JSONObject or JSONArray but was " +
+                        json.get(1).getClass());
+            }
+        }
+        throw new MBFormatException("The \"literal\" expression requires exactly 1 argument");
     }
 
     /**

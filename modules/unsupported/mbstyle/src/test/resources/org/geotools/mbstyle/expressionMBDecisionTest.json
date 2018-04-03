@@ -1,0 +1,267 @@
+{
+    "version": 8,
+    "name": "expressions",
+    "metadata": {
+        "mapbox:autocomposite": true,
+        "mapbox:type": "template"
+    },
+    "center": [
+        -482.37277069238866,
+        37.59758909587205
+    ],
+    "zoom": 12.367375686228195,
+    "bearing": 0,
+    "pitch": 0,
+    "sources": {
+        "composite": {
+            "url": "mapbox://mapbox.mapbox-streets-v7",
+            "type": "vector"
+        },
+        "mapbox://mapbox.satellite": {
+            "url": "mapbox://mapbox.satellite",
+            "type": "raster",
+            "tileSize": 256
+        }
+    },
+    "sprite": "mapbox://sprites/testuser/ciz723a3y000g2so5l675lmz8",
+    "glyphs": "mapbox://fonts/testuser/{fontstack}/{range}.pbf",
+    "layers": [
+        {
+            "id": "decisionNot",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+              "notFalse-field": ["!", false],
+              "notTrue-field": ["!", true],
+              "chainedNot-field": ["!", ["!", true]]
+            }
+        },
+        {
+            "id": "decisionNotEqualTo",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+              "compareStrings-equal": ["!=", "aString", "aString"],
+              "compareStrings-notEqual": ["!=", "aString", "bString"],
+              "compareNumbers-equal": ["!=", 4, 4],
+              "compareNumbers-notEqual": ["!=", 4, 5],
+              "compareBooleans-equal": ["!=", true, true],
+              "compareBooleans-notEqual": ["!=", false, true],
+              "compareBooleans-chainedNotEqual": ["!=", false, ["!=", "aString", "bString"]],
+              "compareTypes-notEqual": ["!=", "false", false],
+              "compareNull-equal": ["!=", null, null],
+              "compareNull-notEqual": ["!=", "false", null]
+            }
+        },
+        {
+            "id": "decisionEqualTo",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+              "compareStrings-equal": ["==", "aString", "aString"],
+              "compareStrings-notEqual": ["==", "aString", "bString"],
+              "compareNumbers-equal": ["==", 4, 4],
+              "compareNumbers-notEqual": ["==", 4, 5],
+              "compareBooleans-equal": ["==", true, true],
+              "compareBooleans-notEqual": ["==", false, true],
+              "compareBooleans-chainedNotEqual": ["==", false, ["!=", "aString", "bString"]],
+              "compareTypes-notEqual": ["==", "false", false],
+              "compareNull-equal": ["==", null, null],
+              "compareNull-notEqual": ["==", "false", null]
+            }
+        },
+        {
+            "id": "decisionLessThan",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+              "lessThan-numericField": ["<", 3, 4],
+              "lessThan-stringField": ["<", "alpha", "beta"],
+              "equalTo-numericField": ["<", 5, 5],
+              "equalTo-stringField": ["<", "gamma", "gamma"],
+              "greaterThan-numericField": ["<", 6, 3],
+              "greaterThan-stringField": ["<", "epsilon", "delta"]
+            }
+        },
+        {
+            "id": "decisionLessThanEquals",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+              "lessThan-numericField": ["<=", 3, 4],
+              "lessThan-stringField": ["<=", "alpha", "beta"],
+              "equalTo-numericField": ["<=", 5, 5],
+              "equalTo-stringField": ["<=", "gamma", "gamma"],
+              "greaterThan-numericField": ["<=", 6, 3],
+              "greaterThan-stringField": ["<=", "epsilon", "delta"]
+            }
+        },
+        {
+            "id": "decisionGreaterThan",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+              "lessThan-numericField": [">", 3, 4],
+              "lessThan-stringField": [">", "alpha", "beta"],
+              "equalTo-numericField": [">", 5, 5],
+              "equalTo-stringField": [">", "gamma", "gamma"],
+              "greaterThan-numericField": [">", 6, 3],
+              "greaterThan-stringField": [">", "epsilon", "delta"]
+            }
+        },
+        {
+            "id": "decisionGreaterThanEquals",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+              "lessThan-numericField": [">=", 3, 4],
+              "lessThan-stringField": [">=", "alpha", "beta"],
+              "equalTo-numericField": [">=", 5, 5],
+              "equalTo-stringField": [">=", "gamma", "gamma"],
+              "greaterThan-numericField": [">=", 6, 3],
+              "greaterThan-stringField": [">=", "epsilon", "delta"]
+            }
+        },
+        {
+            "id": "decisionAny",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+              "any-trueFalseFalse": ["any", true, false, false],
+              "any-falseFalseTrue": ["any", false, false, true],
+              "any-allFalse": ["any", false, false, false],
+              "any-allTrue": ["any", true, true, true],
+              "any-nullFalseFalse": ["all", null, false, false],
+              "any-chainedFalseTrueFalse": ["any", [">", 4, 5], ["==", "aString", "aString"], ["!=", 5, 5]],
+              "any-chainedAllFalse": ["any", [">", 4, 5], ["==", "aString", "bString"], ["!=", 5, 5]],
+              "any-chainedAllTrue": ["any", ["<=", 4, 5], ["==", "aString", "aString"], ["!=", 5, 6]]
+            }
+        },
+        {
+            "id": "decisionAll",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+              "all-trueFalseFalse": ["all", true, false, false],
+              "all-falseFalseTrue": ["all", false, false, true],
+              "all-allFalse": ["all", false, false, false],
+              "all-allTrue": ["all", true, true, true],
+              "all-nullFalseFalse": ["all", null, false, false],
+              "all-chained": ["all", null, false, ["all", null, false, false], ["all", null, false, ["all", null, false, false]]],
+              "all-chainedFalseTrueFalse": ["all", [">", 4, 5], ["==", "aString", "aString"], ["!=", 5, 5]],
+              "all-chainedAllFalse": ["all", [">", 4, 5], ["==", "aString", "bString"], ["!=", 5, 5]],
+              "all-chainedAllTrue": ["all", ["<=", 4, 5], ["==", "aString", "aString"], ["!=", 5, 6]]
+            }
+        },
+        {
+            "id": "decisionCase",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+              "case-trueFalseDefault": ["case", true, 10, false, "aString", true],
+              "case-falseTrueDefault": ["case", false, 10, true, "aString", true],
+              "case-falseFalseDefault": ["case", false, 10, false, "aString", true],
+              "case-chainedTrueFalseDefault": ["case", ["any", false, true, false], 10, ["all", false, true, false], "aString", true],
+              "case-chainedFalseTrueDefault": ["case", ["all", false, true, false], 10, ["any", false, true, false], "aString", true],
+              "case-chainedFalseFalseDefault": ["case", ["all", false, true, false], 10, ["any", false, false, false], "aString", true]
+            }
+        },
+        {
+            "id": "decisionCoalesce",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+              "coalesce-stringNull": ["coalesce", "aString", null],
+              "coalesce-nullNumber": ["coalesce", null, 5],
+              "coalesce-stringNullNumber": ["coalesce", "aString", null, 5],
+              "coalesce-nullNumberString": ["coalesce", null, 5, "aString"],
+              "coalesce-chainedNullStringNumber": ["coalesce",
+                  null,
+                    ["case",
+                        ["all", false, true, false], 10,
+                        ["any", false, true, false], "aString",
+                        true
+                    ],
+                    ["case",
+                        ["any", false, true, false], 10,
+                        ["all", false, true, false], "aString",
+                        true
+                    ]
+                ]
+            }
+        },
+        {
+            "id": "decisionMatch",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+              "match-thirdLabel": ["match",
+                  "myLabel",
+                  "aLabel", "firstLabel",
+                  "bLabel", "secondLabel",
+                  "myLabel", "thirdLabel",
+                  "defaultLabel"
+                  ],
+              "match-noMatchingLabel": ["match",
+                  "noMatching",
+                  "aLabel", "firstLabel",
+                  "bLabel", "secondLabel",
+                  "myLabel", "thirdLabel",
+                  "defaultLabel"
+                  ],
+              "match-arrayLabel": ["match",
+                  "labelInArray",
+                  "aLabel", "firstLabel",
+                  "bLabel", "secondLabel",
+                  ["literal", ["myLabel", "yourLabel", "labelInArray"]], "arrayLabel",
+                  "defaultLabel"
+                  ],
+              "match-expressionThirdLabel": ["match",
+                  ["case", ["all", false, true, false], 10, ["any", false, true, false], "myLabel", true],
+                  "aLabel", "firstLabel",
+                  "bLabel", "secondLabel",
+                  "myLabel", "thirdLabel",
+                  "defaultLabel"
+                  ],
+              "match-expressionArrayLabel": ["match",
+                  ["case", ["all", false, true, false], 10, ["any", false, true, false], "labelInArray", true],
+                  "aLabel", "firstLabel",
+                  "bLabel", "secondLabel",
+                  ["literal", ["myLabel", "yourLabel", "labelInArray"]], "arrayLabel",
+                  "defaultLabel"
+                  ],
+              "match-expressionLabelThirdLabel": ["match",
+                  ["case", ["all", false, true, false], 10, ["any", false, true, false], "myLabel", true],
+                  ["case", ["all", false, true, false], 10, ["any", false, true, false], "aLabel", true], "firstLabel",
+                  ["case", ["all", false, true, false], 10, ["any", false, true, false], "bLabel", true], "secondLabel",
+                  ["case", ["all", false, true, false], 10, ["any", false, true, false], "myLabel", true], "thirdLabel",
+                  "defaultLabel"
+                  ],
+              "match-expressionLabelArrayLabel": ["match",
+                  ["case", ["all", false, true, false], 10, ["any", false, true, false], "labelInArray", true],
+                  ["case", ["all", false, true, false], 10, ["any", false, true, false], "aLabel", true], "firstLabel",
+                  ["case", ["all", false, true, false], 10, ["any", false, true, false], "bLabel", true], "secondLabel",
+                  ["literal", [
+                      ["case",
+                          ["all", false, true, false], 10, ["any", false, true, false], "myLabel", true],
+                          "yourLabel",
+                          "labelInArray"
+                  ]], "arrayLabel",
+                  "defaultLabel"
+                  ]
+            }
+        }
+    ]
+}

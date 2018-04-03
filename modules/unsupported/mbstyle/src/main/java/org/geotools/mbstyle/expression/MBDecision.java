@@ -18,9 +18,9 @@
 package org.geotools.mbstyle.expression;
 
 import org.geotools.mbstyle.parse.MBFormatException;
-import org.geotools.mbstyle.parse.MBObjectParser;
 import org.json.simple.JSONArray;
 import org.opengis.filter.expression.Expression;
+
 
 /**
  * The expressions in this section can be used to add conditional logic to your styles. For example, the 'case'
@@ -28,6 +28,20 @@ import org.opengis.filter.expression.Expression;
  * expression to different output expressions.
  */
 public class MBDecision extends MBExpression {
+
+    // static String operators
+    private static final String NOT = "!";
+    private static final String NOT_EQUALS = "!=";
+    private static final String LESS_THAN = "<";
+    private static final String LESS_THAN_EQUALS = "<=";
+    private static final String EQUALS = "==";
+    private static final String GREATER_THAN = ">";
+    private static final String GREATER_THAN_EQUALS = ">=";
+    private static final String ALL = "all";
+    private static final String ANY = "any";
+    private static final String CASE = "case";
+    private static final String COALESCE = "coalesce";
+    private static final String MATCH = "match";
 
     public MBDecision(JSONArray json) {
         super(json);
@@ -38,8 +52,15 @@ public class MBDecision extends MBExpression {
      * Example: ["!", boolean]: boolean
      * @return
      */
-    public Expression decisionNot(){
-        return null;
+    private Expression decisionNot() {
+        // validate the arg list
+        if (json.size() != 2) {
+            throwUnexpectedArgumentCount(NOT, 1);
+        }
+        // second argument better be a Boolean, or another expression that results in a Boolean
+        Expression boolArg = parse.string(json, 1);
+        // return the opposite of the arg
+        return ff.function("not", boolArg);
     }
 
 
@@ -52,8 +73,15 @@ public class MBDecision extends MBExpression {
      *          ["!=", null, null]: boolean
      * @return
      */
-    public Expression decisionNotEqual(){
-        return null;
+    private Expression decisionNotEqual() {
+        // validate the arg list
+        if (json.size() != 3) {
+            throwUnexpectedArgumentCount(NOT_EQUALS, 2);
+        }
+        // get the comparables
+        Expression comparable1 = parse.string(json, 1);
+        Expression comparable2 = parse.string(json, 2);
+        return ff.function("mbNotEqualTo", comparable1, comparable2);
     }
 
     /**
@@ -63,8 +91,14 @@ public class MBDecision extends MBExpression {
      *           ["<", string, string]: boolean
      * @return
      */
-    public Expression decisionLessThan(){
-        return null;
+    private Expression decisionLessThan() {
+        // validate the arg list
+        if (json.size() != 3) {
+            throwUnexpectedArgumentCount(LESS_THAN, 2);
+        }
+        Expression firstArgument = parse.string(json, 1);
+        Expression secondArgument = parse.string(json, 2);
+        return ff.function("lessThan", firstArgument, secondArgument);
     }
 
     /**
@@ -74,8 +108,14 @@ public class MBDecision extends MBExpression {
      *           ["<=", string, string]: boolean
      * @return
      */
-    public Expression decisionLessEqualThan(){
-        return null;
+    private Expression decisionLessEqualThan() {
+        // validate the arg list
+        if (json.size() != 3) {
+            throwUnexpectedArgumentCount(LESS_THAN_EQUALS, 2);
+        }
+        Expression firstArgument = parse.string(json, 1);
+        Expression secondArgument = parse.string(json, 2);
+        return ff.function("lessEqualThan", firstArgument, secondArgument);
     }
 
     /**
@@ -87,8 +127,15 @@ public class MBDecision extends MBExpression {
      *           ["==", null, null]: boolean
      * @return
      */
-    public Expression decisionEqualTo(){
-        return null;
+    private Expression decisionEqualTo() {
+        // validate the arg list
+        if (json.size() != 3) {
+            throwUnexpectedArgumentCount(EQUALS, 2);
+        }
+        // get the comparables
+        Expression comparable1 = parse.string(json, 1);
+        Expression comparable2 = parse.string(json, 2);
+        return ff.function("mbEqualTo", comparable1, comparable2);
     }
 
     /**
@@ -98,8 +145,14 @@ public class MBDecision extends MBExpression {
      *          [">", string, string]: boolean
      * @return
      */
-    public Expression decisionGreaterThan(){
-        return null;
+    private Expression decisionGreaterThan() {
+        // validate the arg list
+        if (json.size() != 3) {
+            throwUnexpectedArgumentCount(GREATER_THAN, 2);
+        }
+        Expression firstArgument = parse.string(json, 1);
+        Expression secondArgument = parse.string(json, 2);
+        return ff.function("greaterThan", firstArgument, secondArgument);
     }
 
     /**
@@ -109,8 +162,14 @@ public class MBDecision extends MBExpression {
      *          [">=", string, string]: boolean
      * @return
      */
-    public Expression decisionGreaterEqualThan(){
-        return null;
+    private Expression decisionGreaterEqualThan() {
+        // validate the arg list
+        if (json.size() != 3) {
+            throwUnexpectedArgumentCount(GREATER_THAN_EQUALS, 2);
+        }
+        Expression firstArgument = parse.string(json, 1);
+        Expression secondArgument = parse.string(json, 2);
+        return ff.function("greaterEqualThan", firstArgument, secondArgument);
     }
 
     /**
@@ -121,8 +180,17 @@ public class MBDecision extends MBExpression {
      *          [""all"", boolean, boolean, ...]: boolean
      * @return
      */
-    public Expression decisionAll(){
-        return null;
+    private Expression decisionAll() {
+        // validate the arg list
+        if (json.size() < 2) {
+            throwInsufficientArgumentCount(ALL, 1);
+        }
+        Expression[] expressions = new Expression[json.size()-1];
+        for (int i = 1; i < json.size(); ++i) {
+            Expression expression = parse.string(json, i);
+            expressions[i-1] = expression;
+        }
+        return ff.function("mbAll", expressions);
     }
 
     /**
@@ -133,8 +201,17 @@ public class MBDecision extends MBExpression {
      *          [""any"", boolean, boolean, ...]: boolean
      * @return
      */
-    public Expression decisionAny(){
-        return null;
+    private Expression decisionAny() {
+        // validate the arg list
+        if (json.size() < 2) {
+            throwInsufficientArgumentCount(ALL, 1);
+        }
+        Expression[] expressions = new Expression[json.size()-1];
+        for (int i = 1; i < json.size(); ++i) {
+            Expression expression = parse.string(json, i);
+            expressions[i-1] = expression;
+        }
+        return ff.function("mbAny", expressions);
     }
 
     /**
@@ -144,8 +221,17 @@ public class MBDecision extends MBExpression {
      *              ...default: OutputType]: OutputType
      * @return
      */
-    public Expression decisionCase(){
-        return null;
+    private Expression decisionCase() {
+        // validate the arg list
+        if (json.size() < 3) {
+            throwInsufficientArgumentCount(ALL, 2);
+        }
+        Expression[] expressions = new Expression[json.size()-1];
+        for (int i = 1; i < json.size(); ++i) {
+            Expression expression = parse.string(json, i);
+            expressions[i-1] = expression;
+        }
+        return ff.function("mbCase", expressions);
     }
 
     /**
@@ -153,8 +239,17 @@ public class MBDecision extends MBExpression {
      * Example: ["coalesce", OutputType, OutputType, ...]: OutputType
      * @return
      */
-    public Expression decisionCoalesce(){
-        return null;
+    private Expression decisionCoalesce() {
+        // validate the arg list
+        if (json.size() < 2) {
+            throwInsufficientArgumentCount(COALESCE, 1);
+        }
+        Expression[] expressions = new Expression[json.size()-1];
+        for (int i = 1; i < json.size(); ++i) {
+            Expression expression = parse.string(json, i);
+            expressions[i-1] = expression;
+        }
+        return ff.function("mbCoalesce", expressions);
     }
 
     /**
@@ -168,36 +263,58 @@ public class MBDecision extends MBExpression {
      *               ..., default: OutputType]: OutputType
      * @return
      */
-    public Expression decisionMatch(){
-        return null;
+    private Expression decisionMatch() {
+        // validate the arg list
+        if (json.size() < 4) {
+            throwInsufficientArgumentCount(COALESCE, 3);
+        }
+        Expression[] expressions = new Expression[json.size()-1];
+        for (int i = 1; i < json.size(); ++i) {
+            Expression expression = parse.string(json, i);
+            expressions[i-1] = expression;
+        }
+        return ff.function("mbMatch", expressions);
     }
 
+    @Override
     public Expression getExpression()throws MBFormatException {
             switch (name) {
-                case "!":
+                case NOT:
                     return decisionNot();
-                case "!=":
+                case NOT_EQUALS:
                     return decisionNotEqual();
-                case "<":
+                case LESS_THAN:
                     return decisionLessThan();
-                case "<=":
+                case LESS_THAN_EQUALS:
                     return decisionLessEqualThan();
-                case "==":
+                case EQUALS:
                     return decisionEqualTo();
-                case ">":
+                case GREATER_THAN:
                     return decisionGreaterThan();
-                case ">=":
+                case GREATER_THAN_EQUALS:
                     return decisionGreaterEqualThan();
-                case "all":
+                case ALL:
                     return decisionAll();
-                case "case":
+                case ANY:
+                    return decisionAny();
+                case CASE:
                     return decisionCase();
-                case "coalesce":
+                case COALESCE:
                     return decisionCoalesce();
-                case "match":
+                case MATCH:
                     return decisionMatch();
                 default:
                     throw new MBFormatException(name + " is an unsupported decision expression");
             }
+    }
+
+    private void throwUnexpectedArgumentCount(String decisionOp, int argCount) throws MBFormatException {
+        throw new MBFormatException(String.format("Decision \"%s\" should have exactly %d argument(s)",
+            decisionOp, argCount));
+    }
+
+    private void throwInsufficientArgumentCount(String decisionOp, int argCount) throws MBFormatException {
+        throw new MBFormatException(String.format("Decision \"%s\" should have at least %d argument(s)",
+            decisionOp, argCount));
     }
 }

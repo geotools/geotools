@@ -42,6 +42,13 @@ public class MBFunctionFactory implements FunctionFactory {
         functionList.add(CSSFunction.NAME);
         functionList.add(DefaultIfNullFunction.NAME);
         functionList.add(ToRgb.NAME);
+        functionList.add(MBFunction_equalTo.NAME);
+        functionList.add(MBFunction_notEqualTo.NAME);
+        functionList.add(MBFunction_all.NAME);
+        functionList.add(MBFunction_any.NAME);
+        functionList.add(MBFunction_case.NAME);
+        functionList.add(MBFunction_coalesce.NAME);
+        functionList.add(MBFunction_match.NAME);
         return Collections.unmodifiableList(functionList);
     }
 
@@ -86,6 +93,48 @@ public class MBFunctionFactory implements FunctionFactory {
         }
         if (ToRgb.NAME.getFunctionName().equals(name)){
             ToRgb f = new ToRgb();
+            f.setParameters(args);
+            f.setFallbackValue(fallback);
+            return f;
+        }
+        if (MBFunction_equalTo.NAME.getFunctionName().equals(name)) {
+            MBFunction_equalTo f = new MBFunction_equalTo();
+            f.setParameters(args);
+            f.setFallbackValue(fallback);
+            return f;
+        }
+        if (MBFunction_notEqualTo.NAME.getFunctionName().equals(name)) {
+            MBFunction_notEqualTo f = new MBFunction_notEqualTo();
+            f.setParameters(args);
+            f.setFallbackValue(fallback);
+            return f;
+        }
+        if (MBFunction_all.NAME.getFunctionName().equals(name)) {
+            MBFunction_all f = new MBFunction_all();
+            f.setParameters(args);
+            f.setFallbackValue(fallback);
+            return f;
+        }
+        if (MBFunction_any.NAME.getFunctionName().equals(name)) {
+            MBFunction_any f = new MBFunction_any();
+            f.setParameters(args);
+            f.setFallbackValue(fallback);
+            return f;
+        }
+        if (MBFunction_case.NAME.getFunctionName().equals(name)) {
+            MBFunction_case f = new MBFunction_case();
+            f.setParameters(args);
+            f.setFallbackValue(fallback);
+            return f;
+        }
+        if (MBFunction_coalesce.NAME.getFunctionName().equals(name)) {
+            MBFunction_coalesce f = new MBFunction_coalesce();
+            f.setParameters(args);
+            f.setFallbackValue(fallback);
+            return f;
+        }
+        if (MBFunction_match.NAME.getFunctionName().equals(name)) {
+            MBFunction_match f = new MBFunction_match();
             f.setParameters(args);
             f.setFallbackValue(fallback);
             return f;

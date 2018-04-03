@@ -16,12 +16,15 @@
  */
 package org.geotools.data;
 
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.styling.Style;
+import org.geotools.styling.StyledLayerDescriptor;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+
 import java.net.URI;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-
-import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Default implementation of ResourceInfo; a simple java bean.
@@ -41,6 +44,8 @@ public class DefaultResourceInfo implements ResourceInfo {
     private String description;
     private CoordinateReferenceSystem crs;
     private ReferencedEnvelope bounds;
+    private List<String> styles;
+    private Style defaultStyle;
 
     public DefaultResourceInfo(){        
     }
@@ -56,6 +61,7 @@ public class DefaultResourceInfo implements ResourceInfo {
         this.description = copy.getDescription();
         this.crs = copy.getCRS();
         this.bounds = copy.getBounds();                
+        this.styles = copy.getNativeStyles();
     }
     /**
      * @return the title
@@ -105,6 +111,25 @@ public class DefaultResourceInfo implements ResourceInfo {
     public CoordinateReferenceSystem getCRS() {
         return crs;
     }
+
+    /**
+     * @return the list of available native styles, if any
+     */
+    public List<String> getNativeStyles() {
+        return styles;
+    }
+
+
+    /**
+     * @return the default native style, if any.
+     */
+    public StyledLayerDescriptor getDefaultStyle() { return null; }
+
+    /**
+     * @param name of the style to get.
+     * @return the native style, if any.
+     */
+    public StyledLayerDescriptor getNativeStyle(String name) { return null; }
 
     /**
      * @param crs the crs to set

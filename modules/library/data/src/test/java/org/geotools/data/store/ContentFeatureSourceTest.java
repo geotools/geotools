@@ -21,6 +21,7 @@ import static org.junit.Assert.assertFalse;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.geotools.data.DataStore;
@@ -34,6 +35,8 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.styling.Style;
+import org.geotools.styling.StyledLayerDescriptor;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -157,6 +160,23 @@ public class ContentFeatureSourceTest {
                     protected boolean canSort() {
                         return false;
                     }
+
+                    @Override
+                    protected List<String> getNativeStyles() {
+                        List<String> emptyList = Collections.emptyList();
+                        return emptyList;
+                    }
+
+                    @Override
+                    protected StyledLayerDescriptor getDefaultStyle() {
+                        return null;
+                    }
+
+                    @Override
+                    protected StyledLayerDescriptor getNativeStyle(String name) {
+                        return null;
+                    }
+
                 };
             }
 

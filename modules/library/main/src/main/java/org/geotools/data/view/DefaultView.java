@@ -16,15 +16,6 @@
  */
 package org.geotools.data.view;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Logger;
-
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
@@ -43,11 +34,22 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.SchemaException;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.styling.StyledLayerDescriptor;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Logger;
 
 /**
  * Wrapper for SimpleFeatureSource constrained by a Query.
@@ -515,7 +517,20 @@ public class DefaultView implements SimpleFeatureSource {
                 Name name = DefaultView.this.getSchema().getName();
                 return name.getLocalPart();
             }
-            
+
+            public StyledLayerDescriptor getDefaultStyle()  {
+                return null;
+            }
+
+            public List<String> getNativeStyles() {
+                List<String> emptyList = Collections.emptyList();
+                return emptyList;
+            }
+
+            public StyledLayerDescriptor getNativeStyle(String styleName) {
+                return null;
+            }
+
         };
     }
     

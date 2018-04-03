@@ -16,21 +16,7 @@
  */
 package org.geotools.jdbc;
 
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Types;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import com.vividsolutions.jts.geom.Geometry;
 
 import org.geotools.data.DefaultQuery;
 import org.geotools.data.FeatureReader;
@@ -51,11 +37,13 @@ import org.geotools.feature.visitor.MaxVisitor;
 import org.geotools.feature.visitor.MinVisitor;
 import org.geotools.feature.visitor.NearestVisitor;
 import org.geotools.filter.FilterAttributeExtractor;
-import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
+import org.geotools.sld.SLDConfiguration;
+import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.util.logging.Logging;
+import org.geotools.xml.Parser;
 import org.opengis.feature.Association;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
@@ -67,7 +55,24 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import com.vividsolutions.jts.geom.Geometry;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Types;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * 
@@ -908,5 +913,145 @@ public class JDBCFeatureSource extends ContentFeatureSource {
         
         return result;
     }
-    
+
+    @Override
+    protected List<String> getNativeStyles() {
+        List<String> list = new ArrayList<>();
+        String featureName = this.getName().toString();
+        Boolean layerstylesexist = false;
+        try {
+            JDBCState state = getState();
+            Connection cx = getDataStore().getConnection(state);
+            DatabaseMetaData metaData = cx.getMetaData();
+            String[] queryTypes = {"TABLE"};
+            ResultSet tables = metaData.getTables(null, null, "layer_styles", queryTypes);
+            if (tables.next()) {
+                layerstylesexist = true;
+            }
+            tables.close();
+            if (layerstylesexist) {
+                Statement st = cx.createStatement();
+                String sql = null;
+                String styleNameColumnName = null;
+                // GeoPackage DataSource class org.sqlite.javax.SQLiteConnectionPoolDataSource
+                // PostGIS    DataSource class org.geotools.data.jdbc.datasource.DBCPDataSource
+                if (getDataStore().getSQLDialect() instanceof PreparedStatementSQLDialect) {
+                    // GeoPackage
+                    sql = "select * from layer_styles where f_table_name = '" + featureName + "'";
+                    styleNameColumnName = "styleName";
+                } else {
+                    // Postgresql
+                    sql = "select * from public.layer_styles where f_table_name = '" + featureName + "'";
+                    styleNameColumnName = "stylename";
+                }
+                getDataStore().getLogger().fine(sql);
+                ResultSet rows = st.executeQuery(sql);
+                while (rows.next()) {
+                    String styleName = rows.getString(styleNameColumnName);
+                    list.add(styleName);
+                }
+                getDataStore().closeSafe(rows);
+                getDataStore().closeSafe(st);
+            }
+        } catch (Exception e) {
+            // do nothing
+        }
+        return list;
+    }
+
+    @Override
+    protected StyledLayerDescriptor getDefaultStyle() {
+        StyledLayerDescriptor sld = null;
+        String featureName = this.getName().toString();
+        Boolean layerstylesexist = false;
+        try {
+            JDBCState state = getState();
+            Connection cx = getDataStore().getConnection(state);
+            DatabaseMetaData metaData = cx.getMetaData();
+            String[] queryTypes = {"TABLE"};
+            ResultSet tables = metaData.getTables(null, null, "layer_styles", queryTypes);
+            if (tables.next()) {
+                layerstylesexist = true;
+            }
+            tables.close();
+            if (layerstylesexist) {
+                Statement st = cx.createStatement();
+                String sql = null;
+                String styleColumnName = null;
+                if (getDataStore().getSQLDialect() instanceof PreparedStatementSQLDialect) {
+                    sql = "select * from layer_styles where f_table_name = \"" + featureName
+                            + "\" and useAsDefault";
+                    styleColumnName = "styleSLD";
+                } else {
+                    sql = "select * from public.layer_styles where f_table_name = \"" + featureName
+                            + "\" and useasdefault";
+                    styleColumnName = "stylesld";
+                }
+                getDataStore().getLogger().fine(sql);
+                ResultSet rows = st.executeQuery(sql);
+                if (rows.next()) {
+                    String styleSld = rows.getString(styleColumnName);
+                    InputStream stream = new ByteArrayInputStream(styleSld.getBytes(
+                            StandardCharsets.UTF_8));
+                    SLDConfiguration configuration = new SLDConfiguration();
+                    Parser parser = new Parser(configuration);
+                    sld = (StyledLayerDescriptor) parser.parse(stream);
+                }
+                getDataStore().closeSafe(rows);
+                getDataStore().closeSafe(st);
+            }
+        } catch (Exception e) {
+            // do nothing
+        }
+        return sld;
+    }
+
+    @Override
+    protected StyledLayerDescriptor getNativeStyle(String styleName) {
+        StyledLayerDescriptor sld = null;
+        String featureName = this.getName().toString();
+        Boolean layerstylesexist = false;
+        try {
+            JDBCState state = getState();
+            Connection cx = getDataStore().getConnection(state);
+            DatabaseMetaData metaData = cx.getMetaData();
+            String[] queryTypes = {"TABLE"};
+            ResultSet tables = metaData.getTables(null, null, "layer_styles", queryTypes);
+            if (tables.next()) {
+                layerstylesexist = true;
+            }
+            tables.close();
+            if (layerstylesexist) {
+                Statement st = cx.createStatement();
+
+                String sql = null;
+                String styleColumnName = null;
+                if (getDataStore().getSQLDialect() instanceof PreparedStatementSQLDialect) {
+                    sql = "select * from layer_styles where f_table_name = '" + featureName
+                            + "' and styleName = '" + styleName + "'";
+                    styleColumnName = "styleSLD";
+                } else {
+                    sql = "select * from public.layer_styles where f_table_name = '" + featureName
+                            + "' and stylename = '" + styleName + "'";
+                    styleColumnName = "stylesld";
+                }
+                getDataStore().getLogger().fine(sql);
+                ResultSet rows = st.executeQuery(sql);
+                if (rows.next()) {
+                    String styleSld = rows.getString(styleColumnName);
+                    InputStream stream = new ByteArrayInputStream(
+                            styleSld.getBytes(StandardCharsets.UTF_8));
+                    SLDConfiguration configuration = new SLDConfiguration();
+                    Parser parser = new Parser(configuration);
+                    sld = (StyledLayerDescriptor) parser.parse(stream);
+                }
+                getDataStore().closeSafe(rows);
+                getDataStore().closeSafe(st);
+            }
+        } catch (Exception e) {
+            // do nothing
+        }
+        return sld;
+    }
+
 }

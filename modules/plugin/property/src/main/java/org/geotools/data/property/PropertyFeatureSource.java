@@ -20,6 +20,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 import org.geotools.data.DataSourceException;
@@ -33,6 +35,7 @@ import org.geotools.factory.Hints;
 import org.geotools.feature.SchemaException;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.geometry.jts.WKTReader2;
+import org.geotools.styling.StyledLayerDescriptor;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -187,4 +190,21 @@ public class PropertyFeatureSource extends ContentFeatureSource {
     protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {
         return super.handleVisitor(query, visitor);
     }
+
+    @Override
+    protected List<String> getNativeStyles() {
+        List<String> emptyList = Collections.emptyList();
+        return emptyList;
+    }
+
+    @Override
+    protected StyledLayerDescriptor getDefaultStyle() {
+        return null;
+    }
+
+    @Override
+    protected StyledLayerDescriptor getNativeStyle(String name) {
+        return null;
+    }
+
 }

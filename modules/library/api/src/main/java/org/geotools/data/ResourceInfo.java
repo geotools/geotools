@@ -16,11 +16,14 @@
  */
 package org.geotools.data;
 
-import java.net.URI;
-import java.util.Set;
-
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.styling.StyledLayerDescriptor;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+
+import java.io.IOException;
+import java.net.URI;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -157,4 +160,21 @@ public interface ResourceInfo {
      * </p>
      */
     // ReferencedEnvelope getLatLongBbox();
+
+    /**
+     * @return list of native styles, if any.
+     */
+    List<String> getNativeStyles();
+
+    /**
+     * @return return the default native style, if there is one. For shapefiles, if the style exists, it is the default one.
+     */
+    StyledLayerDescriptor getDefaultStyle() throws IOException;
+
+    /**
+     * @param name of the native style.
+     * @return return the native style called name.
+     */
+    StyledLayerDescriptor getNativeStyle(String name) throws IOException;
+
 }

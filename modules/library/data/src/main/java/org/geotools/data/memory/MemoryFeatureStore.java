@@ -16,8 +16,6 @@
  */
 package org.geotools.data.memory;
 
-import java.io.IOException;
-
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
@@ -26,9 +24,14 @@ import org.geotools.data.Transaction;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureStore;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.styling.StyledLayerDescriptor;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 
 public class MemoryFeatureStore extends ContentFeatureStore {
     
@@ -105,4 +108,21 @@ public class MemoryFeatureStore extends ContentFeatureStore {
             }
         };
     }
+
+    @Override
+    protected List<String> getNativeStyles() {
+        List<String> emptyList = Collections.emptyList();
+        return emptyList;
+    }
+
+    @Override
+    protected StyledLayerDescriptor getDefaultStyle() {
+        return null;
+    }
+
+    @Override
+    protected StyledLayerDescriptor getNativeStyle(String name) {
+        return null;
+    }
+
 }

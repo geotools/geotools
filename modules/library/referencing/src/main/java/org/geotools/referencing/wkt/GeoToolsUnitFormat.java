@@ -19,15 +19,10 @@
  */
 package org.geotools.referencing.wkt;
 
-import java.io.IOException;
-import java.lang.reflect.Modifier;
-import java.text.ParsePosition;
 import java.util.HashMap;
-import java.util.Set;
+import java.util.Map;
 
-import javax.measure.Quantity;
 import javax.measure.Unit;
-import javax.measure.format.ParserException;
 import javax.measure.format.UnitFormat;
 
 import org.geotools.measure.Units;
@@ -47,6 +42,7 @@ import tec.uom.se.format.SimpleUnitFormat;
 abstract class GeoToolsUnitFormat extends SimpleUnitFormat {
 
     public static UnitFormat getInstance(Citation citation) {
+        // FIXME: creating the format is an expensive operation, we might consider storing the formats as static final variables
         if (CRS.equalsIgnoreMetadata(Citations.ESRI, citation)) {
             return new ESRIFormat();
         } else {
@@ -56,108 +52,47 @@ abstract class GeoToolsUnitFormat extends SimpleUnitFormat {
 
     /**
      * Base class that just copies {@link UnitFormat} default instance contents
+     * 
      * @author Andrea Aime - GeoSolutions
      */
     static abstract class BaseGT2Format extends DefaultFormat {
-        // We will delegate on DEFAULT instead of trying to clone its definition
-        private static final DefaultFormat DEFAULT = (DefaultFormat) SimpleUnitFormat.getInstance();
-
-        /**
-         * Holds the name to unit mapping.
-         */
-        final HashMap<String, Unit<?>> _nameToUnit = new HashMap<>();
-
-        /**
-         * Holds the unit to name mapping.
-         */
-        final HashMap<Unit<?>, String> _unitToName = new HashMap<>();
-
         public BaseGT2Format() {
-            //FIXME: this constructor is apparently not useful. Should we remove it?
-            
-            // make sure Units registers the extar units in the default format
-            Unit<?> forceInit = Units.SEXAGESIMAL_DMS;
+            super();
 
+            /**
+             * Labels and alias are only defined on the DEFAULT format instance, so these definitions are not inherited by subclassing DefaultFormat.
+             * Therefore, we need to clone these definitions in our GT formats
+             */
             DefaultFormat base = (DefaultFormat) SimpleUnitFormat.getInstance();
+            try {
 
-            // clone non si units
-            Set<Unit<?>> nonSiUnits = NonSI.getInstance().getUnits();
-            for (Unit<?> unit : nonSiUnits) {
-                String name = unit.getName();
-                if (name != null) {
-                    label(unit, name);
-                }
-            }
-            // clone si units
-            Set<Unit<?>> siUnits = SI.getInstance().getUnits();
-            for (Unit<?> unit : siUnits) {
-                String name = unit.getName();
-                if (name != null) {
-                    label(unit, name);
-                }
-            }
+                java.lang.reflect.Field nameToUnitField = DefaultFormat.class
+                        .getDeclaredField("_nameToUnit");
+                nameToUnitField.setAccessible(true);
+                HashMap<String, Unit<?>> nameToUnitMap = (HashMap<String, Unit<?>>) nameToUnitField
+                        .get(base);
 
-            // clone extra gt units
-            for (java.lang.reflect.Field field : Units.class.getFields()) {
-                if (Modifier.isStatic(field.getModifiers())
-                        && Unit.class.isAssignableFrom(field.getType())) {
-                    try {
-                        field.setAccessible(true);
-                        Unit unit = (Unit) field.get(null);
-                        String name = unit.getName();
-                        if (name != null) {
-                            label(unit, name);
-                        }
-                    } catch (Throwable t) {
-                        // we tried...
+                java.lang.reflect.Field unitToNameField = DefaultFormat.class
+                        .getDeclaredField("_unitToName");
+                unitToNameField.setAccessible(true);
+                HashMap<String, Unit<?>> unitToNameMap = (HashMap<String, Unit<?>>) unitToNameField
+                        .get(base);
+                for (Map.Entry<String, Unit<?>> entry : nameToUnitMap.entrySet()) {
+                    String name = entry.getKey();
+                    Unit<?> unit = entry.getValue();
+                    if (unitToNameMap.containsKey(unit)
+                            && name.equals(unitToNameMap.get(unit))) {
+                        label(unit, name);
+                    } else {
+                        alias(unit, name);
                     }
                 }
+            } catch (Throwable t) {
+                // we tried...
             }
 
-        }
-
-        @Override
-        public Appendable format(Unit<?> unit, Appendable appendable) throws IOException {
-            // use our name if defined, otherwise delegate on DEFAULT
-            String name = nameFor(unit);
-            if (name != null) {
-                return super.format(unit, appendable);
-            } else {
-                return DEFAULT.format(unit, appendable);
-            }
-        }
-        
-        @Override
-        public void label(Unit<?> unit, String label) {
-            if (!isValidIdentifier(label))
-                throw new IllegalArgumentException(
-                        "Label: " + label + " is not a valid identifier.");
-            synchronized (this) {
-                _nameToUnit.put(label, unit);
-                _unitToName.put(unit, label);
-            }
-        }
-
-        // //////////////////////////
-        // Parsing.
-        @SuppressWarnings({ "rawtypes", "unchecked" })
-        public Unit<? extends Quantity> parseSingleUnit(CharSequence csq, ParsePosition pos) throws ParserException {
-            Unit<? extends Quantity> unit = super.parseSingleUnit(csq, pos);
-            // if the unit is defined by us, we should be able to get it by name. Otherwise delegate on DEFAULT
-            if (unit == unitFor(unit.getName())) {
-                return unit;
-            }
-            return DEFAULT.parseSingleUnit(csq, pos);
-        }
-
-        protected String nameFor(Unit<?> unit) {
-            // First search if specific ASCII name should be used.
-            return _unitToName.get(unit);
-        }
-
-        @Override
-        protected Unit<?> unitFor(String name) {
-            return _nameToUnit.get(name);
+            // labels and aliases for custom GT units
+            Units.registerCustomUnits(this);
         }
     }
 
@@ -169,6 +104,7 @@ abstract class GeoToolsUnitFormat extends SimpleUnitFormat {
         private static final long serialVersionUID = -1207705344688824557L;
 
         public EPSGFormat() {
+            super();
             label(NonSI.DEGREE_ANGLE, "degree");
         }
     }
@@ -181,6 +117,7 @@ abstract class GeoToolsUnitFormat extends SimpleUnitFormat {
         private static final long serialVersionUID = 5769662824845469523L;
 
         public ESRIFormat() {
+            super();
             label(NonSI.DEGREE_ANGLE, "Degree");
             label(SI.METRE, "Meter");
             label(SI.METRE.multiply(0.3047997101815088), "Foot_Gold_Coast");

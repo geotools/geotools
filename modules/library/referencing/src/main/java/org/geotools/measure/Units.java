@@ -96,9 +96,24 @@ public final class Units {
      */
     static {
         final UnitFormat format = SimpleUnitFormat.getInstance();
-        format.label(SEXAGESIMAL_DMS,      "D.MS");
-        format.label(DEGREE_MINUTE_SECOND, "DMS" );
-        format.label(PPM,                  "ppm" );
+        registerCustomUnits((SimpleUnitFormat) format);
+    }
+
+    /**
+     * Registers the labels and aliases for the custom units defined by Geotools.
+     * 
+     * @param format The UnitFormat in which the labels and aliases must be registered.
+     */
+    public static void registerCustomUnits(SimpleUnitFormat format) {
+        format.label(Units.DEGREE_MINUTE_SECOND, "DMS");
+        format.alias(Units.DEGREE_MINUTE_SECOND, "degree minute second");
+
+        format.label(Units.SEXAGESIMAL_DMS, "D.MS");
+        format.alias(Units.SEXAGESIMAL_DMS, "sexagesimal DMS");
+        format.alias(Units.SEXAGESIMAL_DMS, "DDD.MMSSsss");
+        format.alias(Units.SEXAGESIMAL_DMS, "sexagesimal degree DDD.MMSSsss");
+
+        format.label(Units.PPM, "ppm");
     }
 
     /**

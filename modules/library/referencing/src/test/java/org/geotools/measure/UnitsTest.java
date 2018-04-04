@@ -20,6 +20,8 @@ import static org.geotools.measure.Units.DEGREE_MINUTE_SECOND;
 import static org.geotools.measure.Units.PPM;
 import static org.geotools.measure.Units.SEXAGESIMAL_DMS;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static tec.uom.se.unit.Units.RADIAN;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -30,11 +32,18 @@ import java.io.ObjectOutputStream;
 import javax.measure.Quantity;
 import javax.measure.Unit;
 import javax.measure.UnitConverter;
+import javax.measure.quantity.Angle;
+import javax.measure.quantity.Length;
 
 import org.junit.Ignore;
 import org.junit.Test;
 
 import si.uom.NonSI;
+import si.uom.SI;
+import tec.uom.se.function.MultiplyConverter;
+import tec.uom.se.function.PiMultiplierConverter;
+import tec.uom.se.function.RationalConverter;
+import tec.uom.se.unit.TransformedUnit;
 
 
 /**
@@ -95,15 +104,27 @@ public class UnitsTest {
      *
      * @throws IOException Should never occurs.
      * @throws ClassNotFoundException Should never occurs.
-     *
-     * @todo Disabled for now. Needs JSR-275 fix.
      */
     @Test
-    @Ignore
     public void testSerialization() throws IOException, ClassNotFoundException {
         assertEquals(NonSI.DEGREE_ANGLE, serialize(NonSI.DEGREE_ANGLE));
         assertEquals(SEXAGESIMAL_DMS,      serialize(SEXAGESIMAL_DMS));
         assertEquals(DEGREE_MINUTE_SECOND, serialize(DEGREE_MINUTE_SECOND));
         assertEquals(PPM,                  serialize(PPM));
+    }
+    
+    @Test
+    public void testUnitsMatch() {
+        Unit<Angle> degree = new TransformedUnit<Angle>(SI.RADIAN,
+                new MultiplyConverter((Math.PI * 2.0) / 360.0));
+        assertTrue("jsr275 deegree definition", Units.isDegreeAngle(degree));
+
+        // UNIT["degree", 0.017453292519943295],
+        degree = new TransformedUnit<Angle>(SI.RADIAN, new MultiplyConverter(0.017453292519943295));
+        assertTrue("deegree definition from EsriLookupTest", Units.isDegreeAngle(degree));
+
+        Unit<Length> feet = new TransformedUnit<Length>(SI.METRE,
+                new MultiplyConverter(0.3048006096012192));
+        assertTrue("survey foot definition from EsriLookupTest", Units.isUSSurveyFoot(feet));
     }
 }

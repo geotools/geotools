@@ -29,6 +29,7 @@ import org.junit.Test;
 
 import si.uom.NonSI;
 import si.uom.SI;
+import systems.uom.common.USCustomary;
 import tec.uom.se.format.SimpleUnitFormat;
 
 /**
@@ -52,6 +53,15 @@ public class GeoToolsUnitFormatTest {
     public void testFormatUnitOfQAppendable() throws IOException {
         doTestNotModifiedUnits(SI.CELSIUS, epsgUnitFormat);
         doTestNotModifiedUnits(SI.CELSIUS, esriUnitFormat);
+    }
+    /**
+     * Test ESRI representation of {@link USCustomary#FOOT_SURVEY) for formatting and parsing.
+     */
+    @Test
+    public void testFootSurvey() {
+        assertEquals("Foot_US", esriUnitFormat.format(USCustomary.FOOT_SURVEY));
+        Unit<?> unit = esriUnitFormat.parse("Foot_US");
+        assertEquals( USCustomary.FOOT_SURVEY, unit );
     }
 
     /**

@@ -70,7 +70,7 @@ public class EsriLookupTest {
     public void testCodeLookup() throws FactoryException {
         CoordinateReferenceSystem crs = CRS.parseWKT(wkt);
         Integer actualCode = CRS.lookupEpsgCode(crs, false);
-        assertNotNull("Could not find code for " + expectedCode + "\n" + wkt + "\n" + crs.toWKT(), actualCode);
+        assertNotNull("Could not find code for " + expectedCode + "\nsource wkt:\n" + wkt + "\nparsed wkt:\n" + crs.toWKT(), actualCode);
         assertEquals(expectedCode, actualCode);
         
     }

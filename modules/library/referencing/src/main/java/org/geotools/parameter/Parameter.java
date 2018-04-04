@@ -631,9 +631,7 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
                       descriptor.getName().getCode(), value);
         }
         Double converted;
-        if (Units.isDegreeAngle(unit)) {
-           unit = NonSI.DEGREE_ANGLE;  // more accurate representation of PI/180
-        }
+        unit = Units.autoCorrect(unit); // auto-correct DEGREE_ANGLE and FOOT_SURVEY
         try {
             converted = unit.getConverterToAny(targetUnit).convert(value);
         } catch (UnconvertibleException | IncommensurableException e) {

@@ -1255,6 +1255,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                     // TODO: check unit consistency here.
                 } else if (b!=0 && c!=0) {
                     unit = (b == c) ? base : base.multiply(b / c);
+                    unit = Units.autoCorrect(unit); // auto-correct DEGREE_ANGLE and FOOT_SURVEY
                 } else {
                     // TODO: provide a localized message.
                     throw new FactoryException("Unsupported unit: " + code);

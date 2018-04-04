@@ -115,9 +115,26 @@ public final class Units {
 
         format.label(Units.PPM, "ppm");
     }
+    /**
+     * Detects and auto-corrects units defined with a multiplication factor that is close, but not exactly, as expected.
+     * <p>
+     * This is used to handle {@link NonSI#DEGREE_ANGLE} and {@link USCustomary#FOOT_SURVEY} matches.
+     * <p>
+     * @param unit 
+     * @return Unit, possibly auto-corrected based on multiplication factor match
+     */
+    public static Unit<?> autoCorrect(Unit<?> unit) {
+        if( isDegreeAngle(unit)) {
+            return NonSI.DEGREE_ANGLE;
+        }
+        if( isUSSurveyFoot(unit)) {
+            return USCustomary.FOOT_SURVEY;
+        }
+        return unit;
+    }
 
     private static final double RADIAN_TO_DEGREE_RATIO = Math.PI/180.0; // 0.017453292519943295
-    
+    private static final double DEEGREE_RATIO_COMPARISON_EPSILON = 1.0e-15;
     /**
      * Recognize representation of NonSI.DEEGREE_ANGLE to prevent unnecessary conversion.
      * 
@@ -125,6 +142,11 @@ public final class Units {
      * @return true if MultiplyConverter is close to PI/180.0
      */
     public static final boolean isDegreeAngle(Unit<?> unit) {
+        if (unit == null) {
+            return false;
+        } else if (NonSI.DEGREE_ANGLE.equals(unit)) {
+            return true;
+        }
         if (unit.getSystemUnit() == SI.RADIAN && unit instanceof TransformedUnit<?>) {
             @SuppressWarnings("unchecked")
             TransformedUnit<Angle> transformed = (TransformedUnit<Angle>) unit;
@@ -132,7 +154,31 @@ public final class Units {
             if (converter instanceof MultiplyConverter) {
                 MultiplyConverter multiplyConverter = (MultiplyConverter) converter;
                 double factor = multiplyConverter.getFactor();
-                if (Math.abs(RADIAN_TO_DEGREE_RATIO - factor) < 1.0e-17) {
+                if (Math.abs(RADIAN_TO_DEGREE_RATIO - factor) < DEEGREE_RATIO_COMPARISON_EPSILON) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+    private static double US_SURVEY_FOOT_FACTORY = 1200.0/3937.0; // 0.3048006096
+    private static final double US_SURVEY_FOOT_COMPARISON_EPSILON = 1.0e-10;
+    public static final boolean isUSSurveyFoot(Unit<?> unit) {
+        if (unit == null) {
+            return false;
+        } else if (USCustomary.FOOT_SURVEY.equals(unit)) {
+            return true;
+        } else if (unit.getSystemUnit() == SI.METRE && unit instanceof TransformedUnit<?>) {
+            @SuppressWarnings("unchecked")
+            TransformedUnit<Length> transformed = (TransformedUnit<Length>) unit;
+            UnitConverter converter = transformed.getConverter();
+            if (converter instanceof MultiplyConverter) {
+                MultiplyConverter multiplyConverter = (MultiplyConverter) converter;
+                double factor = multiplyConverter.getFactor();
+                // 0.3048006096012192  // observed
+                // 0.3048006096        // expected
+                if (Math.abs(US_SURVEY_FOOT_FACTORY - factor) < US_SURVEY_FOOT_COMPARISON_EPSILON) {
                     return true;
                 }
             }

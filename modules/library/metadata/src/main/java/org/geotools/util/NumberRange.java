@@ -442,7 +442,8 @@ public class NumberRange<T extends Number & Comparable<? super T>> extends Range
      * @throws IllegalArgumentException if the given value is not a subclass of {@link Number}.
      */
     @Override
-    public boolean contains(@SuppressWarnings("rawtypes") Comparable value) throws IllegalArgumentException {
+    public boolean contains(@SuppressWarnings("rawtypes") Comparable<?> value)
+            throws IllegalArgumentException {
         if (value == null) {
             return false;
         }

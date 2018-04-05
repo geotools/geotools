@@ -286,12 +286,13 @@ public class Range<T extends Comparable<? super T>> implements Serializable  {
      * @throws IllegalArgumentException is the given value can not be converted to a valid type
      *         through widening conversion.
      */
-    public boolean contains(final Comparable<T> value) throws IllegalArgumentException {
+    @SuppressWarnings("unchecked")
+    public boolean contains(final Comparable<?> value) throws IllegalArgumentException {
         if (value == null) {
             return false;
         }
         ensureCompatible(value.getClass());
-        return containsNC(value);
+        return containsNC((Comparable<T>) value);
     }
 
     /**

@@ -82,6 +82,7 @@ import ucar.nc2.dataset.CoordinateSystem;
 import ucar.nc2.dataset.VariableDS;
 
 import javax.measure.Unit;
+import javax.measure.format.ParserException;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -883,7 +884,7 @@ public class VariableAdapter extends CoverageSourceDescriptor {
                 }
                 unit = SimpleUnitFormat.getInstance().parse(unitString);
                
-            } catch (IllegalArgumentException iae) {
+            } catch (ParserException parseException) {
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine("Unable to parse the unit:" + unitString + "\nNo unit will be assigned");
                 }

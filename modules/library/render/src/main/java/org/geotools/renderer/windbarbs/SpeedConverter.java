@@ -22,8 +22,7 @@ import java.util.logging.Logger;
 import javax.measure.UnitConverter;
 import si.uom.NonSI;
 import systems.uom.common.USCustomary;
-import systems.uom.ucum.format.UCUMFormat;
-import systems.uom.ucum.format.UCUMFormat.Variant;
+import tec.uom.se.format.SimpleUnitFormat;
 
 import javax.measure.Unit;
 import javax.measure.format.UnitFormat;
@@ -42,7 +41,7 @@ class SpeedConverter {
             .getLogger(SpeedConverter.class);
 
     /** UCUM_FORMAT_INSTANCE */
-    private static final UnitFormat UCUM_FORMAT_INSTANCE = UCUMFormat.getInstance(Variant.CASE_INSENSITIVE);
+    //private static final UnitFormat UCUM_FORMAT_INSTANCE = UCUMFormat.getInstance(Variant.CASE_INSENSITIVE);
 
     private static final double SECONDS_IN_HOUR = 3600d;
 
@@ -109,7 +108,7 @@ class SpeedConverter {
 
         // ok let's try harder --> this is going to be slower
         try {
-            Unit unit = (Unit) SpeedConverter.UCUM_FORMAT_INSTANCE.parse(uom);
+            Unit unit = (Unit) SimpleUnitFormat.getInstance().parse(uom);
             UnitConverter converter = unit.getConverterTo(USCustomary.KNOT);
             return converter.convert(speed);
         } catch (Exception e) {

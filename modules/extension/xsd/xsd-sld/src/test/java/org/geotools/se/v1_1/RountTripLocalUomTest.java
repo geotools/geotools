@@ -1,10 +1,9 @@
 package org.geotools.se.v1_1;
 
-import si.uom.NonSI;
 import si.uom.SI;
+import tec.uom.se.format.SimpleUnitFormat;
 
-import javax.measure.quantity.Length;
-
+import org.geotools.measure.Units;
 import org.junit.Test;
 import org.opengis.style.PointSymbolizer;
 import org.opengis.style.PolygonSymbolizer;
@@ -16,7 +15,8 @@ public class RountTripLocalUomTest extends SETestSupport {
     @Test
     public void testRoundTripPoint() throws Exception {
         PointSymbolizer sym = (PointSymbolizer) parse("example-pointsymbolizer-local-uom.xml");
-        assertEquals("pixel", sym.getUnitOfMeasure().getName());
+        assertEquals("pixel", Units.toName( sym.getUnitOfMeasure() ));
+        
         assertEquals("8m", sym.getGraphic().getSize().evaluate(null, String.class));
         Document doc = encode(sym, SE.PointSymbolizer);
         // print(doc);
@@ -36,7 +36,9 @@ public class RountTripLocalUomTest extends SETestSupport {
     @Test
     public void testRoundTripText() throws Exception {
         TextSymbolizer sym = (TextSymbolizer) parse("example-textsymbolizer-local-uom.xml");
-        assertEquals("pixel", sym.getUnitOfMeasure().getName());
+        
+        assertEquals("pixel", Units.toName( sym.getUnitOfMeasure() ));
+        
         assertEquals("10m", sym.getFont().getSize().evaluate(null, String.class));
         Document doc = encode(sym, SE.TextSymbolizer);
         // print(doc);

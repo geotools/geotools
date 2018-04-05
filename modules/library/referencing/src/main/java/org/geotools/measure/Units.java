@@ -16,6 +16,7 @@
  */
 package org.geotools.measure;
 
+import javax.measure.Quantity;
 import javax.measure.Unit;
 import javax.measure.UnitConverter;
 import javax.measure.format.UnitFormat;
@@ -114,6 +115,24 @@ public final class Units {
         format.alias(Units.SEXAGESIMAL_DMS, "sexagesimal degree DDD.MMSSsss");
 
         format.label(Units.PPM, "ppm");
+        
+        format.label(NonSI.DEGREE_ANGLE, "°");
+        format.label(Units.PIXEL, "pixel");
+    }
+    
+    /**
+     * Unit name, willing to use {@link SimpleUnitFormat} to look up appropriate alias if required.
+     * <p>
+     * This allows us to recognize units like {@link Units#PIXEL} by name.
+     */
+    public static String toName(Unit<?> unit) {
+        if( unit.getName() != null) {
+            return unit.getName();
+        }
+        unit = autoCorrect(unit);
+        
+        SimpleUnitFormat format = SimpleUnitFormat.getInstance();
+        return format.format(unit);
     }
     /**
      * Detects and auto-corrects units defined with a multiplication factor that is close, but not exactly, as expected.
@@ -123,12 +142,13 @@ public final class Units {
      * @param unit 
      * @return Unit, possibly auto-corrected based on multiplication factor match
      */
-    public static Unit<?> autoCorrect(Unit<?> unit) {
+    @SuppressWarnings("unchecked")
+    public static <Q extends Quantity<Q>> Unit<Q> autoCorrect(Unit<Q> unit) {
         if( isDegreeAngle(unit)) {
-            return NonSI.DEGREE_ANGLE;
+            return (Unit<Q>) NonSI.DEGREE_ANGLE;
         }
         if( isUSSurveyFoot(unit)) {
-            return USCustomary.FOOT_SURVEY;
+            return (Unit<Q>) USCustomary.FOOT_SURVEY;
         }
         return unit;
     }

@@ -26,6 +26,7 @@ import javax.measure.Unit;
 
 import org.geotools.factory.Hints;
 import org.geotools.measure.Measure;
+import org.geotools.measure.Units;
 
 import si.uom.NonSI;
 import tec.uom.se.format.SimpleUnitFormat;
@@ -42,10 +43,6 @@ public class MeasureConverterFactory implements ConverterFactory {
     static final Pattern MEASURE_PATTERN = Pattern
             .compile("\\s*([-\\+]?[0-9]*\\.?[0-9]*(?:[eE][-\\+]?[0-9]+)?)(.*)?");
     
-    static {
-        SimpleUnitFormat.getInstance().label(NonSI.DEGREE_ANGLE, "°");
-    }
-
     public static final Converter CONVERTER = new Converter() {
         @Override
         public <T> T convert(Object source, Class<T> target) throws Exception {

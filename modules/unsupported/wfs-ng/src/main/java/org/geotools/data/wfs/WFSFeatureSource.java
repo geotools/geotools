@@ -16,12 +16,9 @@
  */
 package org.geotools.data.wfs;
 
-import java.io.IOException;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.xml.namespace.QName;
+import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
 
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
@@ -51,6 +48,7 @@ import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.gml2.bindings.GML2EncodingUtils;
+import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
@@ -61,9 +59,14 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.xml.namespace.QName;
 
 class WFSFeatureSource extends ContentFeatureSource {
 
@@ -419,6 +422,22 @@ class WFSFeatureSource extends ContentFeatureSource {
             LOGGER.log(Level.WARNING, "Unexpected error getting ResourceInfo: ", e);
             return super.getInfo();
         }
+    }
+
+    @Override
+    protected List<String> getNativeStyles() {
+        List<String> emptyList = Collections.emptyList();
+        return emptyList;
+    }
+
+    @Override
+    protected StyledLayerDescriptor getDefaultStyle() {
+        return null;
+    }
+
+    @Override
+    protected StyledLayerDescriptor getNativeStyle(String name) {
+        return null;
     }
 
 }

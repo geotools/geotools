@@ -16,6 +16,22 @@
  */
 package org.geotools.data.wfs.internal.v1_x;
 
+import net.opengis.ows10.KeywordsType;
+import net.opengis.ows10.WGS84BoundingBoxType;
+import net.opengis.wfs.FeatureTypeType;
+import net.opengis.wfs.OutputFormatListType;
+
+import org.geotools.data.wfs.internal.FeatureTypeInfo;
+import org.geotools.data.wfs.internal.Loggers;
+import org.geotools.data.wfs.internal.WFSConfig;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.styling.StyledLayerDescriptor;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.TransformException;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
@@ -25,22 +41,6 @@ import java.util.Set;
 import java.util.logging.Level;
 
 import javax.xml.XMLConstants;
-
-import net.opengis.ows10.KeywordsType;
-import net.opengis.ows10.WGS84BoundingBoxType;
-import net.opengis.wfs.FeatureTypeType;
-import net.opengis.wfs.OutputFormatListType;
-
-import org.geotools.data.wfs.WFSDataStore;
-import org.geotools.data.wfs.internal.FeatureTypeInfo;
-import org.geotools.data.wfs.internal.Loggers;
-import org.geotools.data.wfs.internal.WFSConfig;
-import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.referencing.CRS;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.TransformException;
 
 public class FeatureTypeInfoImpl implements FeatureTypeInfo {
 
@@ -187,6 +187,22 @@ public class FeatureTypeInfoImpl implements FeatureTypeInfo {
     @Override
     public String getAbstract() {
         return eType.getAbstract();
+    }
+
+    @Override
+    public List<String> getNativeStyles() {
+        List<String> emptyList = Collections.emptyList();
+        return emptyList;
+    }
+
+    @Override
+    public StyledLayerDescriptor getDefaultStyle() {
+        return null;
+    }
+
+    @Override
+    public StyledLayerDescriptor getNativeStyle(String name) {
+        return null;
     }
 
 }

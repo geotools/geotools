@@ -16,17 +16,20 @@
  */
 package org.geotools.data.transform;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.geotools.data.FeatureSource;
 import org.geotools.data.ResourceInfo;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.styling.StyledLayerDescriptor;
 import org.opengis.feature.type.Name;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * A default implementaiton of a {@link ResourceInfo} based solely on the information that can be
@@ -94,6 +97,22 @@ class DefaultResourceInfo implements ResourceInfo {
     public String getTitle() {
         Name name = fs.getSchema().getName();
         return name.getLocalPart();
+    }
+
+    @Override
+    public List<String> getNativeStyles() {
+        List<String> emptyList = Collections.emptyList();
+        return emptyList;
+    }
+
+    @Override
+    public StyledLayerDescriptor getDefaultStyle() {
+        return null;
+    }
+
+    @Override
+    public StyledLayerDescriptor getNativeStyle(String name) {
+        return null;
     }
 
 }

@@ -53,6 +53,7 @@ import org.geotools.coverage.grid.io.imageio.geotiff.codes.GeoTiffGCSCodes;
 import org.geotools.coverage.grid.io.imageio.geotiff.codes.GeoTiffPCSCodes;
 import org.geotools.factory.GeoTools;
 import org.geotools.factory.Hints;
+import org.geotools.measure.Units;
 import org.geotools.metadata.iso.citation.CitationImpl;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -1833,7 +1834,9 @@ public final class GeoTiffMetadata2CRSAdapter {
 				}
 
 				double sz = Double.parseDouble(unitSize);
-				return base.multiply(sz);
+				Unit<Q> factor = base.multiply(sz);
+				
+				return Units.autoCorrect(factor);
 			} catch (NumberFormatException nfe) {
 				final IOException ioe = new GeoTiffException(metadata, nfe
 						.getLocalizedMessage(), nfe);

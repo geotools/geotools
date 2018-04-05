@@ -31,6 +31,7 @@ import org.geotools.coverage.grid.io.imageio.geotiff.codes.GeoTiffCoordinateTran
 import org.geotools.coverage.grid.io.imageio.geotiff.codes.GeoTiffGCSCodes;
 import org.geotools.coverage.grid.io.imageio.geotiff.codes.GeoTiffPCSCodes;
 import org.geotools.coverage.grid.io.imageio.geotiff.codes.GeoTiffUoMCodes;
+import org.geotools.measure.Units;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -978,6 +979,8 @@ public final class CRS2GeoTiffMetadataAdapter {
                 default:
                     throw new IllegalStateException("Unable to map model "+model+" for this unit");
 	        }
+	        unit = Units.autoCorrect(unit); // auto-correct DEGREE_ANGLE and FOOT_SURVEY
+	        
 	        if(unit.equals(SI.METRE)){
 	            metadata.addGeoShortParam(key1, GeoTiffUoMCodes.Linear_Meter);
 	        } else if(unit.equals(USCustomary.FOOT)){

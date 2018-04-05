@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.Collections;
 
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
@@ -39,6 +40,7 @@ import org.geotools.filter.SortByImpl;
 import org.geotools.filter.visitor.PostPreProcessFilterSplittingVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.util.logging.Logging;
+import org.geotools.styling.StyledLayerDescriptor;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -371,6 +373,22 @@ public class MongoFeatureSource extends ContentFeatureSource {
         };
         f.accept(splitter, null);
         return new Filter[] { splitter.getFilterPre(), splitter.getFilterPost() };
+    }
+
+    @Override
+    protected List<String> getNativeStyles() {
+        List<String> emptyList = Collections.emptyList();
+        return emptyList;
+    }
+
+    @Override
+    protected StyledLayerDescriptor getDefaultStyle() {
+        return null;
+    }
+
+    @Override
+    protected StyledLayerDescriptor getNativeStyle(String name) {
+        return null;
     }
 
 }

@@ -25,10 +25,13 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.geotools.styling.StyledLayerDescriptor;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
+import java.util.Collections;
 
 public class GeobufFeatureSource extends ContentFeatureSource {
 
@@ -88,4 +91,21 @@ public class GeobufFeatureSource extends ContentFeatureSource {
     protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {
         return super.handleVisitor(query, visitor);
     }
+
+    @Override
+    protected List<String> getNativeStyles() {
+        List<String> emptyList = Collections.emptyList();
+        return emptyList;
+    }
+
+    @Override
+    protected StyledLayerDescriptor getDefaultStyle() {
+        return null;
+    }
+
+    @Override
+    protected StyledLayerDescriptor getNativeStyle(String name) {
+        return null;
+    }
+
 }

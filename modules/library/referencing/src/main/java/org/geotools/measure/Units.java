@@ -118,6 +118,9 @@ public final class Units {
         
         format.label(NonSI.DEGREE_ANGLE, "°");
         format.label(Units.PIXEL, "pixel");
+        
+        format.label(tec.uom.se.unit.Units.KELVIN, "kelvin");
+        //format.alias(tec.uom.se.unit.Units.KELVIN, "kelvin");
     }
     
     /**

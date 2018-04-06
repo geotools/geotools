@@ -115,6 +115,6 @@ public class MBString extends MBExpression{
                 return stringUpcase();
             default:
                 throw new MBFormatException(name + " is an unsupported string function");
-            }
         }
+    }
 }

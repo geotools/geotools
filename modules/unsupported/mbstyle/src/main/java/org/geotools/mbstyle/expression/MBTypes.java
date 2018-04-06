@@ -71,7 +71,7 @@ public class MBTypes extends MBExpression {
      *   ["literal", {...} (JSON object literal)]: Object
      * @return
      */
-    private Expression typesLiteral(){
+    private Expression typesLiteral() {
         if (json.size() == 2) {
             if (json.get(1) instanceof JSONObject) {
                 JSONObject object = (JSONObject) json.get(1);

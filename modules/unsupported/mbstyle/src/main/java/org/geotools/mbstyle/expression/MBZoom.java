@@ -32,12 +32,16 @@ public class MBZoom extends MBExpression {
 
     /**
      * Gets the current zoom level. Note that in style layout and paint properties, ["zoom"] may only appear as the
-     *input to a top-level "step" or "interpolate" expression.
+     * input to a top-level "step" or "interpolate" expression.
      *
      * Example: ["zoom]: number
+     *
+     * Note: MBStyle is currently only supporting srid ESPG:3857
      */
-    public Expression mbZoom(){
-        return null;
+    private Expression mbZoom(){
+        return ff.function("zoomLevel",
+                ff.function("env", ff.literal("wms_scale_denominator")),
+                ff.literal("EPSG:3857"));
     }
 
     @Override

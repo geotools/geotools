@@ -278,43 +278,43 @@ public class MBDecision extends MBExpression {
 
     @Override
     public Expression getExpression()throws MBFormatException {
-            switch (name) {
-                case NOT:
-                    return decisionNot();
-                case NOT_EQUALS:
-                    return decisionNotEqual();
-                case LESS_THAN:
-                    return decisionLessThan();
-                case LESS_THAN_EQUALS:
-                    return decisionLessEqualThan();
-                case EQUALS:
-                    return decisionEqualTo();
-                case GREATER_THAN:
-                    return decisionGreaterThan();
-                case GREATER_THAN_EQUALS:
-                    return decisionGreaterEqualThan();
-                case ALL:
-                    return decisionAll();
-                case ANY:
-                    return decisionAny();
-                case CASE:
-                    return decisionCase();
-                case COALESCE:
-                    return decisionCoalesce();
-                case MATCH:
-                    return decisionMatch();
-                default:
-                    throw new MBFormatException(name + " is an unsupported decision expression");
-            }
+        switch (name) {
+            case NOT:
+                return decisionNot();
+            case NOT_EQUALS:
+                return decisionNotEqual();
+            case LESS_THAN:
+                return decisionLessThan();
+            case LESS_THAN_EQUALS:
+                return decisionLessEqualThan();
+            case EQUALS:
+                return decisionEqualTo();
+            case GREATER_THAN:
+                return decisionGreaterThan();
+            case GREATER_THAN_EQUALS:
+                return decisionGreaterEqualThan();
+            case ALL:
+                return decisionAll();
+            case ANY:
+                return decisionAny();
+            case CASE:
+                return decisionCase();
+            case COALESCE:
+                return decisionCoalesce();
+            case MATCH:
+                return decisionMatch();
+            default:
+                throw new MBFormatException(name + " is an unsupported decision expression");
+        }
     }
 
     private void throwUnexpectedArgumentCount(String decisionOp, int argCount) throws MBFormatException {
         throw new MBFormatException(String.format("Decision \"%s\" should have exactly %d argument(s)",
-            decisionOp, argCount));
+                decisionOp, argCount));
     }
 
     private void throwInsufficientArgumentCount(String decisionOp, int argCount) throws MBFormatException {
         throw new MBFormatException(String.format("Decision \"%s\" should have at least %d argument(s)",
-            decisionOp, argCount));
+                decisionOp, argCount));
     }
 }

@@ -20,6 +20,7 @@ import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.MapboxTestUtils;
 import org.geotools.mbstyle.expression.MBColor;
 import org.geotools.mbstyle.expression.MBExpression;
+import org.geotools.mbstyle.expression.MBLookup;
 import org.geotools.mbstyle.expression.MBString;
 import org.geotools.mbstyle.layer.SymbolMBLayer;
 import org.geotools.styling.FeatureTypeStyle;
@@ -292,7 +293,7 @@ public class MBExpressionParseTest {
                 if (m.containsKey(key)) {
                     value = m.get(key);
                 }
-                    } else {
+            } else {
                 return Optional.empty();
             }
         }

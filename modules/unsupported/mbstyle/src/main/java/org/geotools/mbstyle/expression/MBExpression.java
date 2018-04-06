@@ -80,7 +80,7 @@ public abstract class MBExpression extends FunctionImpl {
     public static List heatMap = Arrays.asList("heatmap-density");
 
     /* A list of lookup expression names */
-    public static List lookUp = Arrays.asList("at", "length", "has", "length");
+    public static List lookUp = Arrays.asList("at", "length", "has", "get");
 
     /* A list of math expression names */
     public static List math = Arrays.asList("-", "*", "/", "%", "^", "+", "acos", "asin", "atan", "cos", "e", "ln",
@@ -139,16 +139,16 @@ public abstract class MBExpression extends FunctionImpl {
 
     public static boolean canCreate(final String name) {
         return colors.contains(name) ||
-            decisions.contains(name) ||
-            featureData.contains(name) ||
-            heatMap.contains(name) ||
-            lookUp.contains(name) ||
-            math.contains(name) ||
-            ramps.contains(name) ||
-            string.contains(name) ||
-            types.contains(name) ||
-            variableBindings.contains(name) ||
-            zoom.contains(name);
+                decisions.contains(name) ||
+                featureData.contains(name) ||
+                heatMap.contains(name) ||
+                lookUp.contains(name) ||
+                math.contains(name) ||
+                ramps.contains(name) ||
+                string.contains(name) ||
+                types.contains(name) ||
+                variableBindings.contains(name) ||
+                zoom.contains(name);
     }
 
     /**
@@ -177,6 +177,5 @@ public abstract class MBExpression extends FunctionImpl {
      */
     public static Expression transformExpression(JSONArray json) {
         return create(json).getExpression();
-        }
     }
-
+}

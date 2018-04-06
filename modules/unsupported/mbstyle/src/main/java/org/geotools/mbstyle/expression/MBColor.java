@@ -53,7 +53,7 @@ public class MBColor extends MBExpression{
             Expression eb = parse.string(json, 3);
             eb = transformLiteral(eb);
             Function roundb = ff.function("round_2", eb);
-            
+
             Function color = ff.function("torgb", roundr, roundg, roundb);
             return color;
         } else {
@@ -69,7 +69,7 @@ public class MBColor extends MBExpression{
      */
     // Currently unsupported
     public Expression colorRGBA(){
-            throw new UnsupportedOperationException("RGBA colors are currently unsupported");
+        throw new UnsupportedOperationException("RGBA colors are currently unsupported");
 //        }
     }
 

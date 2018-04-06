@@ -19,6 +19,7 @@ package org.geotools.data.shapefile;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.geotools.TestData;
 import org.geotools.data.FeatureSource;
@@ -30,6 +31,7 @@ import org.geotools.styling.Style;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.junit.Test;
 
+import java.io.File;
 import java.net.URL;
 import java.util.List;
 
@@ -54,12 +56,35 @@ public class ShapefileWithSideCarStyleFileTest extends TestCaseSupport {
     }
 
     @Test
+    public void testFileExist() throws Exception {
+        final URL url = TestData.url(STATEPOP);
+        String shppath = url.toString().substring(5);
+        String sldpath = shppath.replace(".shp", ".sld");
+        File shpfile = new File(shppath);
+        if(shpfile.exists() && !shpfile.isDirectory()) {
+            System.out.println(shpfile + " file exist");
+        } else {
+            System.out.println(shpfile + " file does NOT exist");
+        }
+        File sldfile = new File(sldpath);
+        if(sldfile.exists() && !sldfile.isDirectory()) {
+            System.out.println(sldpath + " file exist");
+        } else {
+            System.out.println(sldpath + " file does NOT exist");
+        }
+        assertTrue(shpfile.exists() && !shpfile.isDirectory());
+        assertTrue(sldfile.exists() && !sldfile.isDirectory());
+    }
+
+    @Test
     public void testGetNativeStyles() throws Exception {
         final URL url = TestData.url(STATEPOP);
+        System.out.println(url.toString());
         FileDataStore store = FileDataStoreFinder.getDataStore(url);
         FeatureSource featureSource = store.getFeatureSource();
         ResourceInfo rinfo = featureSource.getInfo();
         List<String> nativeStylesList = rinfo.getNativeStyles();
+        System.out.println(nativeStylesList.size());
         assertEquals(1, nativeStylesList.size());
         assertEquals("statepop", nativeStylesList.get(0));
     }

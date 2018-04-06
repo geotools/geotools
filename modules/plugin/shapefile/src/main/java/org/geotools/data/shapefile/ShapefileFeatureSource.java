@@ -612,8 +612,10 @@ class ShapefileFeatureSource extends ContentFeatureSource {
     @Override
     protected List<String> getNativeStyles() {
         List<String> list = new ArrayList<>();
-        if (this.shpFiles.exists(SLD)) {
-            list.add(this.shpFiles.getTypeName());
+        if (this.shpFiles.isLocal()) {
+            if (this.shpFiles.exists(SLD)) {
+                list.add(this.shpFiles.getTypeName());
+            }
         }
         return list;
     }

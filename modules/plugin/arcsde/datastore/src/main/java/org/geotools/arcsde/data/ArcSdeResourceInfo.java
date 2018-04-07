@@ -17,15 +17,18 @@
 
 package org.geotools.arcsde.data;
 
-import java.io.IOException;
-import java.net.URI;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.geotools.data.ResourceInfo;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.styling.StyledLayerDescriptor;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.util.InternationalString;
+
+import java.io.IOException;
+import java.net.URI;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * {@link ResourceInfo} adapter for a {@link FeatureTypeInfo} and {@link ArcSdeFeatureSource}
@@ -169,4 +172,18 @@ public final class ArcSdeResourceInfo implements ResourceInfo {
     public boolean isInProcessView() {
         return info.isInProcessView();
     }
+
+    public List<String> getNativeStyles() {
+        List<String> emptyList = Collections.emptyList();
+        return emptyList;
+    }
+
+    public StyledLayerDescriptor getDefaultStyle() {
+        return null;
+    }
+
+    public StyledLayerDescriptor getNativeStyle(String name) {
+        return null;
+    }
+
 }

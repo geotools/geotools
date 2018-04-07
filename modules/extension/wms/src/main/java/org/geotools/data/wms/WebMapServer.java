@@ -16,20 +16,6 @@
  */
 package org.geotools.data.wms;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.ServiceInfo;
 import org.geotools.data.ows.AbstractOpenWebService;
@@ -59,10 +45,25 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.ows.ServiceException;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.xml.XMLHandlerHints;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+
+import javax.swing.*;
 
 
 /**
@@ -344,6 +345,20 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities,Layer> 
                 return getCapabilities().getService().getTitle();
             }
         }
+
+        public List<String> getNativeStyles() {
+            List<String> emptyList = Collections.emptyList();
+            return emptyList;
+        }
+
+        public StyledLayerDescriptor getDefaultStyle() {
+            return null;
+        }
+
+        public StyledLayerDescriptor getNativeStyle(String name) {
+            return null;
+        }
+
     }
 
     /** 

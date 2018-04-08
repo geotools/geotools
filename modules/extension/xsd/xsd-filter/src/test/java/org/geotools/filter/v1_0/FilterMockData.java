@@ -88,7 +88,7 @@ public class FilterMockData {
         return propertyName("foo");
     }
     
-    private static Expression propertyNameFunc() {
+    private static Expression propertyNameIsFunc() {
 
         return f.function("strToLowerCase", propertyName("foo"));
     }
@@ -156,6 +156,10 @@ public class FilterMockData {
         return f.greater(propertyName(), literal());
     }
 
+    static PropertyIsGreaterThan propertyFuncIsGreaterThan() {
+        return f.greater(propertyNameIsFunc(), literal());
+    }
+    
     static Element propertyIsGreaterThanOrEqualTo(Document document, Node parent) {
         return binaryComparisonOp(document, parent, OGC.PropertyIsGreaterThanOrEqualTo);
     }
@@ -206,7 +210,7 @@ public class FilterMockData {
     }
     
     static PropertyIsLike propertyIsLike2() {
-        return f.like(propertyNameFunc(), "strToLowerCase(STATE_NAME)", "x", "y", "z");
+        return f.like(propertyNameIsFunc(), "foo", "x", "y", "z");
     }
 
    

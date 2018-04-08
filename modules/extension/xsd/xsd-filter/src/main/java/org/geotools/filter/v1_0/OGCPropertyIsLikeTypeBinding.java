@@ -22,6 +22,7 @@ import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.PropertyIsLike;
+import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 
@@ -83,7 +84,7 @@ public class OGCPropertyIsLikeTypeBinding extends AbstractComplexBinding {
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        PropertyName name = (PropertyName) node.getChildValue(PropertyName.class);
+        Expression name = (Expression) node.getChildValue(Expression.class);
         Literal literal = (Literal) node.getChildValue(Literal.class);
 
         String wildcard = (String) node.getAttributeValue("wildCard");

@@ -17,6 +17,8 @@
 package org.geotools.wfs.v2_0.bindings;
 
 import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -27,6 +29,7 @@ public class CopyingHandler extends DefaultHandler {
 
     protected StringBuffer buffer;
     protected NamespaceSupport namespaceContext;
+    protected int root = 0;
 
     public CopyingHandler() {
         this(null);
@@ -39,11 +42,10 @@ public class CopyingHandler extends DefaultHandler {
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes)
             throws SAXException {
-        
-        boolean root = false;
+
         if (buffer == null) {
             buffer = new StringBuffer();
-            root = true;
+            root++;
         }
 
         buffer.append("<");
@@ -52,25 +54,43 @@ public class CopyingHandler extends DefaultHandler {
         } else {
             buffer.append(qName);
         }
+        Set<String> xmlnsAttributes = new HashSet<>();
         if (attributes.getLength() > 0) {
             for (int i = 0; i < attributes.getLength(); i++) {
-                buffer.append(" ").append(attributes.getQName(i)).append("=\"")
+                String attributeName = attributes.getQName(i);
+                if (attributeName.startsWith("xmlns")) {
+                    xmlnsAttributes.add(attributeName);
+                }
+                buffer.append(" ").append(attributeName).append("=\"")
                     .append(attributes.getValue(i)).append("\"");
             }
         }
         
-        if (root && namespaceContext != null) {
-            //dump out namespace context
-            for (Enumeration e = namespaceContext.getPrefixes(); e.hasMoreElements(); ) {
-                String prefix = (String) e.nextElement();
-                if ("".equals(prefix)) {
-                    buffer.append(" xmlns");    
+        if (root > 0) {
+            if (namespaceContext != null) {
+                // dump out namespace context (mind, it may contain duplicates)
+                Set<String> mappedPrefixes = new HashSet<>();
+                for (Enumeration e = namespaceContext.getPrefixes(); e.hasMoreElements(); ) {
+                    String prefix = (String) e.nextElement();
+                    if (mappedPrefixes.contains(prefix)) {
+                        continue;
+                    }
+                    if ("".equals(prefix)) {
+                        if (xmlnsAttributes.contains("xmlns")) {
+                            continue;
+                        }
+                        buffer.append(" xmlns");
+                    } else {
+                        if (xmlnsAttributes.contains("xmlns:" + prefix)) {
+                            continue;
+                        }
+                        buffer.append(" xmlns:").append(prefix);
+                    }
+                    buffer.append("=\"").append(namespaceContext.getURI(prefix)).append("\"");
+                    mappedPrefixes.add(prefix);
                 }
-                else {
-                    buffer.append(" xmlns:").append(prefix);
-                }
-                buffer.append("='").append(namespaceContext.getURI(prefix)).append("'");
             }
+            root--;
         }
         buffer.append(">");
     }
@@ -79,20 +99,21 @@ public class CopyingHandler extends DefaultHandler {
     public void characters(char[] ch, int start, int length) throws SAXException {
         if (buffer == null) {
             buffer = new StringBuffer();
+            root++;
         }
-
         buffer.append(ch, start, length);
     }
-    
+
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
         if (buffer != null) {
             buffer.append("</").append(qName).append(">");
         }
     }
-    
+
     @Override
     public void endDocument() throws SAXException {
         buffer = null;
     }
+
 }

@@ -1,0 +1,40 @@
+{
+  "version": 8,
+  "name": "expressions",
+  "metadata": {
+    "mapbox:autocomposite": true,
+    "mapbox:type": "template"
+  },
+  "center": [
+    -482.37277069238866,
+    37.59758909587205
+  ],
+  "zoom": 12.367375686228195,
+  "bearing": 0,
+  "pitch": 0,
+  "sources": {
+    "composite": {
+      "url": "mapbox://mapbox.mapbox-streets-v7",
+      "type": "vector"
+    },
+    "mapbox://mapbox.satellite": {
+      "url": "mapbox://mapbox.satellite",
+      "type": "raster",
+      "tileSize": 256
+    }
+  },
+  "sprite": "mapbox://sprites/testuser/ciz723a3y000g2so5l675lmz8",
+  "glyphs": "mapbox://fonts/testuser/{fontstack}/{range}.pbf",
+  "layers": [
+    {
+      "id": "zoomExpression",
+      "type": "circle",
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "circle-radius": ["zoom"]
+      }
+    }
+  ]
+}

@@ -1015,8 +1015,8 @@ public class MBObjectParser {
             Boolean bool = (Boolean) obj;
             return ff.literal(bool.toString());
         } else if (obj instanceof JSONObject) {
-            JSONObject jobj = (JSONObject) obj;
-            return ff.literal(jobj);
+            MBFunction function = new MBFunction(this, (JSONObject) obj);
+            return function.function(String.class);
         } else if (obj instanceof JSONArray) {
             if (((JSONArray) obj).get(0) instanceof String) {
                 return MBExpression.transformExpression((JSONArray)obj);

@@ -18,11 +18,11 @@
 package org.geotools.mbstyle.expression;
 
 import org.geotools.mbstyle.parse.MBFormatException;
-import org.geotools.mbstyle.parse.MBObjectParser;
 import org.json.simple.JSONArray;
 import org.opengis.filter.expression.Expression;
 
 public class MBLookup extends MBExpression {
+
     public MBLookup(JSONArray json) {
         super(json);
     }
@@ -33,7 +33,16 @@ public class MBLookup extends MBExpression {
      *   ["at", number, array]: ItemType
      * @return
      */
-    public Expression lookupAt(){ return null;}
+    public Expression lookupAt(){
+        // requires an instance of a "literal" array expression ie. non-expression array
+        if (json.size() == 3 && parse.string(json,2) != null){
+            Expression e = parse.string(json,2);
+            Expression at = parse.string(json, 1);
+            return ff.function("mbAt", e, at);
+        }
+        throw new MBFormatException("The \"at\" expression requires an integer value at index 1, and a literal" +
+                " array value at index 2");
+    }
 
     /**
      * Retrieves a property value from the current feature's properties, or from another object if a second argument
@@ -41,9 +50,24 @@ public class MBLookup extends MBExpression {
      * Example:
      *   ["get", string]: value
      *   ["get", string, object]: value
+     *
+     *   As a note, the mbstyle requires json objects for lookup, and evaluates the object as such.
      * @return
      */
-    public Expression lookupGet(){ return null;}
+    public Expression lookupGet() {
+        if (json.size() == 2 || json.size() == 3) {
+            if (json.size() == 2) {
+                Expression property = parse.string(json, 1);
+                return ff.function("property", property);
+            }
+            if (json.size() == 3) {
+                Expression value = parse.string(json, 1);
+                Expression object = parse.string(json, 2);
+                return ff.function("mbGet", value, object);
+            }
+        }
+        throw new MBFormatException("Expression \"get\" requires a maximum of 2 arguments.");
+    }
 
     /**
      * Tests for the presence of an property value in the current feature's properties, or from another object
@@ -51,9 +75,24 @@ public class MBLookup extends MBExpression {
      * Example:
      *   ["has", string]: boolean
      *   ["has", string, object]: boolean
+     *
+     * As a note, the mbstyle requires json objects for lookup, and evaluates the object as such.
      * @return
      */
-    public Expression lookupHas(){ return null;}
+    public Expression lookupHas() {
+        if (json.size() == 2 || json.size() == 3) {
+            if (json.size() == 2) {
+                Expression value = parse.string(json, 1);
+                return ff.function("PropertyExists", value);
+            }
+            if (json.size() == 3) {
+                Expression value = parse.string(json, 1);
+                Expression object = parse.string(json, 2);
+                return ff.function("mbHas", value, object);
+            }
+        }
+        throw new MBFormatException("Expression \"has\" requires 1 or 2 arguments " + json.size() + " arguments found");
+    }
 
     /**
      * Gets the length of an array or string.
@@ -62,7 +101,10 @@ public class MBLookup extends MBExpression {
      *   ["length", array]: number
      * @return
      */
-    public Expression lookupLength(){ return null;}
+    public Expression lookupLength() {
+        Expression e = parse.string(json,1);
+            return ff.function("mbLength", e);
+    }
 
     @Override
     public Expression getExpression() throws MBFormatException {

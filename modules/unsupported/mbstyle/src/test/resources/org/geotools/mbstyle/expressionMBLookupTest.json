@@ -1,0 +1,83 @@
+{
+    "version": 8,
+    "name": "expressions",
+    "metadata": {
+        "mapbox:autocomposite": true,
+        "mapbox:type": "template"
+    },
+    "center": [
+        -482.37277069238866,
+        37.59758909587205
+    ],
+    "zoom": 12.367375686228195,
+    "bearing": 0,
+    "pitch": 0,
+    "sources": {
+        "composite": {
+            "url": "mapbox://mapbox.mapbox-streets-v7",
+            "type": "vector"
+        },
+        "mapbox://mapbox.satellite": {
+            "url": "mapbox://mapbox.satellite",
+            "type": "raster",
+            "tileSize": 256
+        }
+    },
+    "sprite": "mapbox://sprites/testuser/ciz723a3y000g2so5l675lmz8",
+    "glyphs": "mapbox://fonts/testuser/{fontstack}/{range}.pbf",
+    "layers": [
+        {
+            "id": "getExpression",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+                "text-field": ["get", "Name"]
+            },
+            "paint": {
+                "text-color": ["get", "color",["literal", {"color": "#006fde"}]],
+                "halo-color": ["get", "text-color", ["at", 0, ["literal",[{"text-color": "RED"}, {"other-object": "test"}]]]]
+            }
+        },
+        {
+            "id": "hasExpression",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+                "text-field": ["has", "name"]
+            },
+            "paint": {
+                "text-color": ["has", "color", ["literal", {"color":"#006fde", "text":"text"}]],
+                "halo-color": ["has", "text-color", ["at", 1, ["get", "text",["literal",{"text":[{"unused": "test"},
+                  {"text-color": ["length", "123456789"]}]}]]]]
+            }
+        },
+        {
+            "id": "atExpression",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+                "text-field": "testrgba"
+            },
+            "paint": {
+                "text-color": ["at", 0, ["literal", ["#006fde", "green", "blue"]]],
+                "halo-color": ["at", 0, ["get", "text-color", ["literal",{"text-color": ["length", "123456789"]}]]]
+            }
+        },
+        {
+            "id": "lengthExpression",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+                "text-field": ["length", ["literal", [1, 2, 3, 4, 5, 6, 7, 8, 9]]]
+            },
+            "paint": {
+                "text-color": ["length", "123456789"],
+                "halo-color": ["length", ["at", 1, ["get", "text-color", ["literal", {"text-color": ["length", "123456789"]}]]]]
+            }
+        }
+    ]
+}

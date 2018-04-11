@@ -49,6 +49,11 @@ public class MBFunctionFactory implements FunctionFactory {
         functionList.add(MBFunction_case.NAME);
         functionList.add(MBFunction_coalesce.NAME);
         functionList.add(MBFunction_match.NAME);
+        functionList.add(ListSizeFunction.NAME);
+        functionList.add(MBFunction_length.NAME);
+        functionList.add(MBFunction_at.NAME);
+        functionList.add(MBFunction_get.NAME);
+        functionList.add(MBFunction_has.NAME);
         return Collections.unmodifiableList(functionList);
     }
 
@@ -135,6 +140,36 @@ public class MBFunctionFactory implements FunctionFactory {
         }
         if (MBFunction_match.NAME.getFunctionName().equals(name)) {
             MBFunction_match f = new MBFunction_match();
+            f.setParameters(args);
+            f.setFallbackValue(fallback);
+            return f;
+        }
+        if (ListSizeFunction.NAME.getFunctionName().equals(name)){
+            ListSizeFunction f = new ListSizeFunction();
+            f.setParameters(args);
+            f.setFallbackValue(fallback);
+            return f;
+        }
+        if (MBFunction_length.NAME.getFunctionName().equals(name)){
+            MBFunction_length f = new MBFunction_length();
+            f.setParameters(args);
+            f.setFallbackValue(fallback);
+            return f;
+        }
+        if (MBFunction_at.NAME.getFunctionName().equals(name)){
+            MBFunction_at f = new MBFunction_at();
+            f.setParameters(args);
+            f.setFallbackValue(fallback);
+            return f;
+        }
+        if (MBFunction_get.NAME.getFunctionName().equals(name)){
+            MBFunction_get f = new MBFunction_get();
+            f.setParameters(args);
+            f.setFallbackValue(fallback);
+            return f;
+        }
+        if (MBFunction_has.NAME.getFunctionName().equals(name)){
+            MBFunction_has f = new MBFunction_has();
             f.setParameters(args);
             f.setFallbackValue(fallback);
             return f;

@@ -41,12 +41,21 @@ import tec.uom.se.format.SimpleUnitFormat;
  */
 abstract class GeoToolsUnitFormat extends SimpleUnitFormat {
 
+    /**
+     * Holds the standard unit format.
+     */
+    private static final ESRIFormat ESRI = new ESRIFormat();
+
+    /**
+     * Holds the ASCIIFormat unit format.
+     */
+    private static final EPSGFormat EPSG = new EPSGFormat();
+
     public static UnitFormat getInstance(Citation citation) {
-        // FIXME: creating the format is an expensive operation, we might consider storing the formats as static final variables
         if (CRS.equalsIgnoreMetadata(Citations.ESRI, citation)) {
-            return new ESRIFormat();
+            return ESRI;
         } else {
-            return new EPSGFormat();
+            return EPSG;
         }
     }
 

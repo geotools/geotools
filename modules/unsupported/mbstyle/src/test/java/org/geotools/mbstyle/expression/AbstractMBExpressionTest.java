@@ -17,17 +17,23 @@
 package org.geotools.mbstyle.expression;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+
+import org.geotools.data.DataUtilities;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.mbstyle.MapboxTestUtils;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.ParseException;
 import org.junit.Before;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -55,17 +61,39 @@ public abstract class AbstractMBExpressionTest {
     protected MBObjectParser parse;
     protected FilterFactory2 ff;
     protected JSONObject mbstyle;
+    protected SimpleFeature[] testFeatures;
+    protected final GeometryFactory geometryFactory = new GeometryFactory();
+    protected final int[] intVals = new int[] { 4, 90, 20, 43, 29, -61, 8, 12 };
+    protected final double[] doubleVals = new double[] {11.11, 22.22, 99.9, 78.654, 0.01, 100.0, -4.2, 44.44};
 
     @Before
-    public void setUp() throws IOException, ParseException {
+    public void setUp() throws Exception {
         mbstyle = MapboxTestUtils.parseTestStyle(getTestResourceName());
-        JSONArray layers = (JSONArray) mbstyle.get("layers");
+        final JSONArray layers = (JSONArray) mbstyle.get("layers");
         for (Object o : layers) {
             JSONObject layer = (JSONObject) o;
             testLayersById.put((String) layer.get("id"), layer);
         }
         parse = new MBObjectParser(MBExpression.class);
         ff = parse.getFilterFactory();
+        // setup test features
+        final SimpleFeatureType dataType = DataUtilities.createType("mbexpression.test",
+            "anIntField:int,anotherIntField:int,doubleField:double,geom:Point,name:String");
+        testFeatures = new SimpleFeature[intVals.length];
+        for (int i = 0; i < intVals.length; ++i) {
+            final SimpleFeature simpleFeature = SimpleFeatureBuilder.build(dataType,
+                new Object[] {Integer.valueOf(i), Integer.valueOf(intVals[i]), Double.valueOf(doubleVals[i]),
+                    geometryFactory.createPoint(new Coordinate(intVals[i], intVals[i])),
+                    "name_" + intVals[i]},
+                "mbexpression."+(i+1));
+            testFeatures[i] = simpleFeature;
+        }
+        // finally, do any subclass setup steps
+        setupInternal();
+    }
+
+    protected void setupInternal() throws Exception {
+        // do nothing, subclass can override to provide more setup steps
     }
 
     /**
@@ -123,8 +151,25 @@ public abstract class AbstractMBExpressionTest {
      * @return The Expression evaluation of the supplied tectField value.
      */
     protected Object getExpressionEvaluation(JSONObject json, String jsonTextField) {
+        return getExpressionEvaluation(json, jsonTextField, testFeatures[0]);
+    }
+
+    /**
+     * Helper method to create an Expression object from a JSON text field and evaluate the Expression.
+     *
+     * @param json JSONObject to parse.
+     * @param jsonTextField Name of the text field to retrieve.
+     * @param feature Feature to which the expression should be evaluated.
+     *
+     * @return The Expression evaluation of the supplied tectField value.
+     */
+    protected Object getExpressionEvaluation(JSONObject json, String jsonTextField, SimpleFeature feature) {
         // get the Object from the supplied JSON
         final Object textFieldObj = json.get(jsonTextField);
+        // make sure we got a field
+        assertNotNull(
+            String.format("JSON Text Field not extracted. Is the field name spelled correctly? \"%s\"", jsonTextField),
+            textFieldObj);
         // assert the field is a JSONArray
         assertEquals(JSONArray.class, textFieldObj.getClass());
         // cast to a JSONArray
@@ -136,13 +181,15 @@ public abstract class AbstractMBExpressionTest {
         // transform the expression
         final Expression transformExpression = MBExpression.transformExpression(arr);
         // evaluate and return the result
-        return transformExpression.evaluate(transformExpression);
+        return transformExpression.evaluate(feature);
     }
 
     /**
      * Retrieves the JSON object from the test resource identified by the supplied layer and field Ids.
+     *
      * @param layerId String representation of the layer for which the JSON object should be retrieved.
      * @param fieldId String representation of the field in the layer to retrieve.
+     *
      * @return A JSONObject instance that represents the test JSON for the supplied layer and field Ids.
      */
     protected JSONObject getObjectByLayerId(final String layerId, String fieldId) {

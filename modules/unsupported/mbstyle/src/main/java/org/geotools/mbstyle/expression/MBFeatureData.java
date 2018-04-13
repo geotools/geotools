@@ -14,54 +14,65 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-
 package org.geotools.mbstyle.expression;
 
 import org.geotools.mbstyle.parse.MBFormatException;
-import org.geotools.mbstyle.parse.MBObjectParser;
 import org.json.simple.JSONArray;
 import org.opengis.filter.expression.Expression;
 
 public class MBFeatureData extends MBExpression {
+
+    // static String operators
+    private static final String GEOMETRY_TYPE = "geometry-type";
+    private static final String ID = "id";
+    private static final String PROPERTIES = "properties";
+
     public MBFeatureData(JSONArray json) {
         super(json);
     }
+
     /**
-     * Gets the feature's geometry type: Point, MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon.
-     * Example: ["geometry-type"]: string
+     * Gets the feature's geometry type: Point, MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon.Example:
+     * ["geometry-type"]: string
+     *
+     * @return
      */
 
-    public Expression featureGeometryType(){
-        return null;
+    public Expression featureGeometryType() {
+        return ff.function("geometryType", ff.function("geometry", ff.literal(true)));
     }
 
     /**
      * Gets the feature's id, if it has one.
      * Example: ["id"]: value
+     *
      * @return
      */
-    public Expression featureId(){
-        return null;
+    public Expression featureId() {
+        return ff.function("id");
     }
 
     /**
      * Gets the feature properties object.
      * Note that in some cases, it may be more efficient to use ["get", "property_name"] directly.
      * Example: ["properties"]: object
+     *
      * @return
      */
-    public Expression featureProperties(){
-        return null;
+    public Expression featureProperties() {
+        // not supported
+        throw new UnsupportedOperationException(
+            "FeatureData \"properties\" is not currently supported, please use \"[\"get\", <propertyName>]\"");
     }
 
     @Override
     public Expression getExpression() throws MBFormatException {
         switch (name) {
-            case "geometry-type":
+            case GEOMETRY_TYPE:
                 return featureGeometryType();
-            case "id":
+            case ID:
                 return featureId();
-            case "properties":
+            case PROPERTIES:
                 return featureProperties();
             default:
                 throw new MBFormatException(name + " is an unsupported string expression");

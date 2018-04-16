@@ -16,7 +16,9 @@
  */
 package org.geotools.measure;
 
+import javax.measure.IncommensurableException;
 import javax.measure.Quantity;
+import javax.measure.UnconvertibleException;
 import javax.measure.Unit;
 import javax.measure.UnitConverter;
 import javax.measure.format.UnitFormat;
@@ -92,12 +94,22 @@ public final class Units {
      */
     public static final Unit<Dimensionless> PPM = AbstractUnit.ONE.multiply(1E-6);
 
-    /**
-     * Associates the labels to units created in this class.
-     */
+    static final UnitFormat format = SimpleUnitFormat.getInstance();
     static {
-        final UnitFormat format = SimpleUnitFormat.getInstance();
+        /**
+         * Associates the labels to units created in this class.
+         */
         registerCustomUnits((SimpleUnitFormat) format);
+    }
+    /**
+     * Gets an instance of the default system-wide Unit format. Use this method
+     * instead of SimpleUnitFormat.getInstance(), since custom Geotools units might
+     * not get registered if SimpleUnitFormat.getInstance() is directly accessed.
+     * 
+     * @see GeoToolsUnitFormat#getInstance() 
+     */
+    public static UnitFormat getDefaultFormat() {
+        return format;
     }
 
     /**
@@ -105,7 +117,7 @@ public final class Units {
      * 
      * @param format The UnitFormat in which the labels and aliases must be registered.
      */
-    public static void registerCustomUnits(SimpleUnitFormat format) {
+    static void registerCustomUnits(SimpleUnitFormat format) {
         format.label(Units.DEGREE_MINUTE_SECOND, "DMS");
         format.alias(Units.DEGREE_MINUTE_SECOND, "degree minute second");
 
@@ -207,5 +219,22 @@ public final class Units {
             }
         }
         return false;
+    }
+    
+    /**
+     * Gets a UnitConverter between two units, wrapping any raised exception in a
+     * IllegalArgumentException.
+     * 
+     * @param fromUnit
+     * @param toUnit
+     * @return
+     * @throws IllegalArgumentException if unit1 can't be converter to unit2
+     */
+    public static UnitConverter getConverterToAny(Unit<?> fromUnit, Unit<?> toUnit) {
+        try {
+            return fromUnit.getConverterToAny(toUnit);
+        } catch (UnconvertibleException | IncommensurableException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 }

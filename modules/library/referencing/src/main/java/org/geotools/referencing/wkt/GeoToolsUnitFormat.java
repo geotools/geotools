@@ -72,7 +72,7 @@ abstract class GeoToolsUnitFormat extends SimpleUnitFormat {
              * Labels and alias are only defined on the DEFAULT format instance, so these definitions are not inherited by subclassing DefaultFormat.
              * Therefore, we need to clone these definitions in our GT formats
              */
-            DefaultFormat base = (DefaultFormat) SimpleUnitFormat.getInstance();
+            DefaultFormat base = (DefaultFormat) Units.getDefaultFormat();
             try {
 
                 java.lang.reflect.Field nameToUnitField = DefaultFormat.class
@@ -99,9 +99,6 @@ abstract class GeoToolsUnitFormat extends SimpleUnitFormat {
             } catch (Throwable t) {
                 // we tried...
             }
-
-            // labels and aliases for custom GT units
-            Units.registerCustomUnits(this);
         }
     }
 

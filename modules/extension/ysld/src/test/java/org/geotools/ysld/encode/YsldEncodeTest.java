@@ -39,8 +39,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import si.uom.NonSI;
-
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.ColorMap;
 import org.geotools.styling.ColorMapEntry;
@@ -77,6 +75,8 @@ import org.opengis.style.ContrastMethod;
 import org.opengis.style.Graphic;
 import org.opengis.style.GraphicalSymbol;
 import org.yaml.snakeyaml.Yaml;
+
+import systems.uom.common.USCustomary;
 
 public class YsldEncodeTest {
 
@@ -1317,7 +1317,7 @@ public class YsldEncodeTest {
     public void testSymbolizerUoMOther() throws Exception {
         PointSymbolizer p = CommonFactoryFinder.getStyleFactory().createPointSymbolizer();
         FeatureTypeStyle fts = fts(p);
-        p.setUnitOfMeasure(NonSI.ASTRONOMICAL_UNIT);
+        p.setUnitOfMeasure(USCustomary.LIGHT_YEAR);
 
         StringWriter out = new StringWriter();
 

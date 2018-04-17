@@ -840,6 +840,9 @@ public final class ImageUtilities {
                     		LOGGER.log(Level.FINE, e.getLocalizedMessage());
                     	}
                     }
+                } else if (param instanceof ImageReader) {
+                    ImageReader reader = (ImageReader) param;
+                    reader.dispose();
                 }
             }
         }

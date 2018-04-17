@@ -88,7 +88,6 @@ import org.opengis.referencing.operation.OperationMethod;
 
 import si.uom.NonSI;
 import si.uom.SI;
-import systems.uom.common.USCustomary;
 import tec.uom.se.AbstractUnit;
 
 
@@ -412,7 +411,7 @@ public class Parser extends MathTransformParser {
         final Map<String,?> properties = parseAuthority(element, name);
         element.close();
         Unit<T> finalUnit = (factor != 1) ? unit.multiply(factor) : unit;
-        return (Unit<T>) Units.autoCorrect(finalUnit); // auto-correct DEGREE_ANGLE and FOOT_SURVEY
+        return Units.autoCorrect(finalUnit);
     }
 
     /**

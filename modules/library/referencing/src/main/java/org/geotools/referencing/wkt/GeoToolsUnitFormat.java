@@ -65,9 +65,7 @@ abstract class GeoToolsUnitFormat extends SimpleUnitFormat {
      * @author Andrea Aime - GeoSolutions
      */
     static abstract class BaseGT2Format extends DefaultFormat {
-        public BaseGT2Format() {
-            super();
-
+        protected void initUnits() {
             /**
              * Labels and alias are only defined on the DEFAULT format instance, so these definitions are not inherited by subclassing DefaultFormat.
              * Therefore, we need to clone these definitions in our GT formats
@@ -92,6 +90,7 @@ abstract class GeoToolsUnitFormat extends SimpleUnitFormat {
                     if (unitToNameMap.containsKey(unit)
                             && name.equals(unitToNameMap.get(unit))) {
                         label(unit, name);
+                        addUnit(unit);
                     } else {
                         alias(unit, name);
                     }
@@ -100,6 +99,20 @@ abstract class GeoToolsUnitFormat extends SimpleUnitFormat {
                 // we tried...
             }
         }
+        
+        protected static void esriLabelsAndAliases(BaseGT2Format format) {
+            format.label(NonSI.DEGREE_ANGLE, "Degree");
+            format.label(SI.METRE, "Meter");
+            format.label(SI.METRE.multiply(0.3047997101815088), "Foot_Gold_Coast");
+            format.label(USCustomary.FOOT, "Foot");
+            format.label(USCustomary.FOOT_SURVEY, "Foot_US");
+        }
+        
+        protected static void epsgLabelsAndAliases(BaseGT2Format format) {
+            format.label(NonSI.DEGREE_ANGLE, "degree");
+        }
+        
+        protected abstract void addUnit(Unit<?> unit);
     }
 
     /**
@@ -111,8 +124,12 @@ abstract class GeoToolsUnitFormat extends SimpleUnitFormat {
 
         public EPSGFormat() {
             super();
-            label(NonSI.DEGREE_ANGLE, "degree");
+            initUnits();
+            epsgLabelsAndAliases(this);
         }
+
+        @Override
+        protected void addUnit(Unit<?> unit) {}
     }
 
     /**
@@ -124,11 +141,11 @@ abstract class GeoToolsUnitFormat extends SimpleUnitFormat {
 
         public ESRIFormat() {
             super();
-            label(NonSI.DEGREE_ANGLE, "Degree");
-            label(SI.METRE, "Meter");
-            label(SI.METRE.multiply(0.3047997101815088), "Foot_Gold_Coast");
-            label(USCustomary.FOOT, "Foot");
-            label(USCustomary.FOOT_SURVEY, "Foot_US");
+            initUnits();
+            esriLabelsAndAliases(this);
         }
+        
+        @Override
+        protected void addUnit(Unit<?> unit) {}
     }
 }

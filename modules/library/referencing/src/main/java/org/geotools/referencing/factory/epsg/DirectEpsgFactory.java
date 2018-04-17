@@ -48,8 +48,6 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
-import javax.measure.IncommensurableException;
-import javax.measure.UnconvertibleException;
 import javax.measure.Unit;
 import javax.sql.DataSource;
 
@@ -268,11 +266,7 @@ public abstract class DirectEpsgFactory extends DirectAuthorityFactory
                 target = NonSI.SECOND_ANGLE;
         }
         if (target != unit) {
-            try {
-                value = unit.getConverterToAny(target).convert(value);
-            } catch (UnconvertibleException | IncommensurableException e) {
-                throw new IllegalArgumentException();
-            }
+            value = Units.getConverterToAny(unit, target).convert(value);
         }
         switch (code) {
             case 8605: parameters.dx  = value; break;

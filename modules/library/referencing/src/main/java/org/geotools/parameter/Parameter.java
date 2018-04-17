@@ -25,8 +25,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Set;
 
-import javax.measure.IncommensurableException;
-import javax.measure.UnconvertibleException;
 import javax.measure.Unit;
 import javax.measure.UnitConverter;
 
@@ -372,11 +370,7 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
         if (getUnitMessageID(unit) != expectedID) {
             throw new IllegalArgumentException(Errors.format(expectedID, unit));
         }
-        try {
-            return this.unit.getConverterToAny(unit).convert(doubleValue());
-        } catch (UnconvertibleException | IncommensurableException e) {
-            throw new IllegalArgumentException(e);
-        }
+        return Units.getConverterToAny(this.unit, unit).convert(doubleValue());
     }
 
     /**
@@ -488,13 +482,7 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
         if (getUnitMessageID(unit) != expectedID) {
             throw new IllegalArgumentException(Errors.format(expectedID, unit));
         }
-        UnitConverter converter;
-        try {
-            converter = this.unit.getConverterToAny(unit);
-        } catch (UnconvertibleException | IncommensurableException e) {
-            throw new IllegalArgumentException("The value can't be converted to the provided Unit",
-                    e);
-        }
+        UnitConverter converter = Units.getConverterToAny(this.unit, unit);
         final double[] values = doubleValueList().clone();
         for (int i=0; i<values.length; i++) {
             values[i] = converter.convert(values[i]);
@@ -630,12 +618,7 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
             throw new InvalidParameterValueException(Errors.format(expectedID, unit),
                       descriptor.getName().getCode(), value);
         }
-        Double converted;
-        try {
-            converted = unit.getConverterToAny(targetUnit).convert(value);
-        } catch (UnconvertibleException | IncommensurableException e) {
-            throw new IllegalArgumentException("Value can't be converted to target unit", e);
-        }
+        Double converted = Units.getConverterToAny(unit, targetUnit).convert(value);
         ensureValidValue(descriptor, converted);
         // Really store the original value, not the converted one,
         // because we store the unit as well.
@@ -740,13 +723,7 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
             throw new IllegalArgumentException(Errors.format(expectedID, unit));
         }
         final double[] converted = values.clone();
-        UnitConverter converter;
-        try {
-            converter = unit.getConverterToAny(targetUnit);
-        } catch (UnconvertibleException | IncommensurableException e) {
-            // TODO Auto-generated catch block
-            throw new IllegalArgumentException("Value can't be converted to the target unit", e);
-        }
+        UnitConverter converter = Units.getConverterToAny(unit, targetUnit);
         for (int i=0; i<converted.length; i++) {
             converted[i] = converter.convert(converted[i]);
         }

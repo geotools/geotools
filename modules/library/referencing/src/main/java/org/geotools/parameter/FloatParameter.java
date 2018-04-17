@@ -21,10 +21,9 @@ package org.geotools.parameter;
 
 import java.net.URI;
 
-import javax.measure.IncommensurableException;
-import javax.measure.UnconvertibleException;
 import javax.measure.Unit;
 
+import org.geotools.measure.Units;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
 import org.opengis.parameter.InvalidParameterTypeException;
@@ -136,11 +135,7 @@ public class FloatParameter extends AbstractParameter implements ParameterValue<
         if (Parameter.getUnitMessageID(unit) != expectedID) {
             throw new IllegalArgumentException(Errors.format(expectedID, unit));
         }
-        try {
-            return thisUnit.getConverterToAny(unit).convert(value);
-        } catch (UnconvertibleException | IncommensurableException e) {
-            throw new IllegalArgumentException(e);
-        }
+        return Units.getConverterToAny(thisUnit, unit).convert(value);
     }
 
     /**
@@ -256,11 +251,7 @@ public class FloatParameter extends AbstractParameter implements ParameterValue<
         if (Parameter.getUnitMessageID(unit) != expectedID) {
             throw new IllegalArgumentException(Errors.format(expectedID, unit));
         }
-        try {
-            value = unit.getConverterToAny(thisUnit).convert(value);
-        } catch (UnconvertibleException | IncommensurableException e) {
-            throw new IllegalArgumentException(e);
-        }
+        value = Units.getConverterToAny(unit, thisUnit).convert(value);
         this.value = Parameter.ensureValidValue(descriptor, Double.valueOf(value));
     }
 

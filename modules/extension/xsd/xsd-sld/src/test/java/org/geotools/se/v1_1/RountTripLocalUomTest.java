@@ -1,8 +1,5 @@
 package org.geotools.se.v1_1;
 
-import si.uom.SI;
-import tec.uom.se.format.SimpleUnitFormat;
-
 import org.geotools.measure.Units;
 import org.junit.Test;
 import org.opengis.style.PointSymbolizer;
@@ -10,12 +7,15 @@ import org.opengis.style.PolygonSymbolizer;
 import org.opengis.style.TextSymbolizer;
 import org.w3c.dom.Document;
 
+import si.uom.SI;
+
 public class RountTripLocalUomTest extends SETestSupport {
 
     @Test
     public void testRoundTripPoint() throws Exception {
         PointSymbolizer sym = (PointSymbolizer) parse("example-pointsymbolizer-local-uom.xml");
         assertEquals("pixel", Units.toName( sym.getUnitOfMeasure() ));
+        assertEquals(Units.PIXEL, sym.getUnitOfMeasure() );
         
         assertEquals("8m", sym.getGraphic().getSize().evaluate(null, String.class));
         Document doc = encode(sym, SE.PointSymbolizer);

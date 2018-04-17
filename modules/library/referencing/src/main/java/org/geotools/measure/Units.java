@@ -218,7 +218,7 @@ public final class Units {
         try {
             return fromUnit.getConverterToAny(toUnit);
         } catch (UnconvertibleException | IncommensurableException e) {
-            throw new IllegalArgumentException(e);
+            throw new IllegalArgumentException("Can't convert to the candidate unit", e);
         }
     }
     

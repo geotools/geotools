@@ -43,11 +43,10 @@ public class SpatialConditionEncoder {
     }
 
     public static double convert(GeometryDescriptor descriptor, double distance, String unit) {
-        Unit<?> fromUnit = Units.getDefaultFormat().parse(unit);
+        Unit<?> fromUnit = Units.parseUnit(unit);
         Unit<?> toUnit = getUnit(descriptor);
         UnitConverter c = Units.getConverterToAny(fromUnit, toUnit);
         return c.convert(distance);
-
     }
 
     // ----------------------------------------------------- 

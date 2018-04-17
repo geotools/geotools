@@ -21,7 +21,6 @@ import static org.geotools.measure.Units.PPM;
 import static org.geotools.measure.Units.SEXAGESIMAL_DMS;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static tec.uom.se.unit.Units.RADIAN;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -35,14 +34,12 @@ import javax.measure.UnitConverter;
 import javax.measure.quantity.Angle;
 import javax.measure.quantity.Length;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import si.uom.NonSI;
 import si.uom.SI;
+import systems.uom.common.USCustomary;
 import tec.uom.se.function.MultiplyConverter;
-import tec.uom.se.function.PiMultiplierConverter;
-import tec.uom.se.function.RationalConverter;
 import tec.uom.se.unit.TransformedUnit;
 
 
@@ -115,16 +112,72 @@ public class UnitsTest {
     
     @Test
     public void testUnitsMatch() {
-        Unit<Angle> degree = new TransformedUnit<Angle>(SI.RADIAN,
-                new MultiplyConverter((Math.PI * 2.0) / 360.0));
-        assertTrue("jsr275 deegree definition", Units.isDegreeAngle(degree));
+        Unit<Angle> degree = Units.autoCorrect(new TransformedUnit<Angle>(SI.RADIAN,
+                new MultiplyConverter((Math.PI * 2.0) / 360.0)));
+        assertEquals("autocorrection of degree definition from jsr275", NonSI.DEGREE_ANGLE, degree);
+        assertTrue("jsr275 deegree definition", isDegreeAngle(degree));
 
         // UNIT["degree", 0.017453292519943295],
-        degree = new TransformedUnit<Angle>(SI.RADIAN, new MultiplyConverter(0.017453292519943295));
-        assertTrue("deegree definition from EsriLookupTest", Units.isDegreeAngle(degree));
+        degree = Units.autoCorrect(new TransformedUnit<Angle>(SI.RADIAN, new MultiplyConverter(0.017453292519943295)));
+        assertEquals("autocorrection of deegree definition from EsriLookupTest", NonSI.DEGREE_ANGLE, degree);
+        assertTrue("deegree definition from EsriLookupTest", isDegreeAngle(degree));
 
-        Unit<Length> feet = new TransformedUnit<Length>(SI.METRE,
-                new MultiplyConverter(0.3048006096012192));
-        assertTrue("survey foot definition from EsriLookupTest", Units.isUSSurveyFoot(feet));
+        Unit<Length> feet = Units.autoCorrect(new TransformedUnit<Length>(SI.METRE,
+                new MultiplyConverter(0.3048006096012192)));
+        assertEquals("autocorrection of US Survey definition from EsriLookupTest", USCustomary.FOOT_SURVEY, feet);
+        assertTrue("survey foot definition from EsriLookupTest", isUSSurveyFoot(feet));
     }
+    
+    private static double US_SURVEY_FOOT_FACTORY = 1200.0/3937.0; // 0.3048006096
+    private static final double US_SURVEY_FOOT_COMPARISON_EPSILON = 1.0e-10;
+    public static final boolean isUSSurveyFoot(Unit<?> unit) {
+        if (unit == null) {
+            return false;
+        } else if (USCustomary.FOOT_SURVEY.equals(unit)) {
+            return true;
+        } else if (unit.getSystemUnit() == SI.METRE && unit instanceof TransformedUnit<?>) {
+            @SuppressWarnings("unchecked")
+            TransformedUnit<Length> transformed = (TransformedUnit<Length>) unit;
+            UnitConverter converter = transformed.getConverter();
+            if (converter instanceof MultiplyConverter) {
+                MultiplyConverter multiplyConverter = (MultiplyConverter) converter;
+                double factor = multiplyConverter.getFactor();
+                // 0.3048006096012192  // observed
+                // 0.3048006096        // expected
+                if (Math.abs(US_SURVEY_FOOT_FACTORY - factor) < US_SURVEY_FOOT_COMPARISON_EPSILON) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+    private static final double RADIAN_TO_DEGREE_RATIO = Math.PI/180.0; // 0.017453292519943295
+    private static final double DEEGREE_RATIO_COMPARISON_EPSILON = 1.0e-15;
+    /**
+     * Recognize representation of NonSI.DEEGREE_ANGLE to prevent unnecessary conversion.
+     * 
+     * @param unit
+     * @return true if MultiplyConverter is close to PI/180.0
+     */
+    public static final boolean isDegreeAngle(Unit<?> unit) {
+        if (unit == null) {
+            return false;
+        } else if (NonSI.DEGREE_ANGLE.equals(unit)) {
+            return true;
+        }
+        if (unit.getSystemUnit() == SI.RADIAN && unit instanceof TransformedUnit<?>) {
+            @SuppressWarnings("unchecked")
+            TransformedUnit<Angle> transformed = (TransformedUnit<Angle>) unit;
+            UnitConverter converter = transformed.getConverter();
+            if (converter instanceof MultiplyConverter) {
+                MultiplyConverter multiplyConverter = (MultiplyConverter) converter;
+                double factor = multiplyConverter.getFactor();
+                if (Math.abs(RADIAN_TO_DEGREE_RATIO - factor) < DEEGREE_RATIO_COMPARISON_EPSILON) {
+                    return true;
+                }
+            }
+        }
+        return false;
+}
 }

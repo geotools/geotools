@@ -17,6 +17,7 @@
 package org.geotools.measure;
 
 import javax.measure.Unit;
+
 import org.geotools.util.Utilities;
 
 
@@ -54,7 +55,7 @@ public final class Measure extends Number {
      */
     public Measure(final double value, final Unit<?> unit) {
         this.value = value;
-        this.unit  = Units.autoCorrect(unit);
+        this.unit  = unit;
     }
 
     /** Returns the scalar value. */           public double doubleValue() {return         value;}

@@ -21,18 +21,20 @@ import javax.measure.Quantity;
 import javax.measure.UnconvertibleException;
 import javax.measure.Unit;
 import javax.measure.UnitConverter;
+import javax.measure.format.ParserException;
 import javax.measure.format.UnitFormat;
 import javax.measure.quantity.Angle;
 import javax.measure.quantity.Dimensionless;
 import javax.measure.quantity.Length;
 import javax.measure.quantity.Time;
 
+import org.geotools.referencing.wkt.DefaultUnitParser;
+
 import si.uom.NonSI;
 import si.uom.SI;
 import systems.uom.common.USCustomary;
 import tec.uom.se.AbstractUnit;
 import tec.uom.se.format.SimpleUnitFormat;
-import tec.uom.se.function.MultiplyConverter;
 import tec.uom.se.unit.TransformedUnit;
 
 
@@ -132,7 +134,8 @@ public final class Units {
         format.label(Units.PIXEL, "pixel");
         
         format.label(tec.uom.se.unit.Units.KELVIN, "kelvin");
-        //format.alias(tec.uom.se.unit.Units.KELVIN, "kelvin");
+        format.label(USCustomary.GRADE, "grad");
+        format.alias(USCustomary.GRADE, "grade");
     }
     
     /**
@@ -143,80 +146,61 @@ public final class Units {
     public static String toName(Unit<?> unit) {
         if( unit.getName() != null) {
             return unit.getName();
-        }
-        unit = autoCorrect(unit);
-        
+        }     
         SimpleUnitFormat format = SimpleUnitFormat.getInstance();
         return format.format(unit);
     }
     /**
-     * Detects and auto-corrects units defined with a multiplication factor that is close, but not exactly, as expected.
-     * <p>
-     * This is used to handle {@link NonSI#DEGREE_ANGLE} and {@link USCustomary#FOOT_SURVEY} matches.
-     * <p>
-     * @param unit 
-     * @return Unit, possibly auto-corrected based on multiplication factor match
+     * Returns an equivalent unit instance based on the provided unit.
+     * First, it tries to get one of the reference units defined in the JSR363 implementation
+     * in use. Units are considered 
+     * equivalent if the {@link Units#equals(Unit, Unit)} method returns true.
+     * If no equivalent reference unit is defined, it returns the provided unit.
+     * 
+     * @param unit
+     * @return
      */
     @SuppressWarnings("unchecked")
     public static <Q extends Quantity<Q>> Unit<Q> autoCorrect(Unit<Q> unit) {
-        if( isDegreeAngle(unit)) {
-            return (Unit<Q>) NonSI.DEGREE_ANGLE;
-        }
-        if( isUSSurveyFoot(unit)) {
-            return (Unit<Q>) USCustomary.FOOT_SURVEY;
-        }
-        return unit;
-    }
-
-    private static final double RADIAN_TO_DEGREE_RATIO = Math.PI/180.0; // 0.017453292519943295
-    private static final double DEEGREE_RATIO_COMPARISON_EPSILON = 1.0e-15;
-    /**
-     * Recognize representation of NonSI.DEEGREE_ANGLE to prevent unnecessary conversion.
-     * 
-     * @param unit
-     * @return true if MultiplyConverter is close to PI/180.0
-     */
-    public static final boolean isDegreeAngle(Unit<?> unit) {
-        if (unit == null) {
-            return false;
-        } else if (NonSI.DEGREE_ANGLE.equals(unit)) {
-            return true;
-        }
-        if (unit.getSystemUnit() == SI.RADIAN && unit instanceof TransformedUnit<?>) {
-            @SuppressWarnings("unchecked")
-            TransformedUnit<Angle> transformed = (TransformedUnit<Angle>) unit;
-            UnitConverter converter = transformed.getConverter();
-            if (converter instanceof MultiplyConverter) {
-                MultiplyConverter multiplyConverter = (MultiplyConverter) converter;
-                double factor = multiplyConverter.getFactor();
-                if (Math.abs(RADIAN_TO_DEGREE_RATIO - factor) < DEEGREE_RATIO_COMPARISON_EPSILON) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return DefaultUnitParser.getInstance().getEquivalentUnit(unit);
     }
     
-    private static double US_SURVEY_FOOT_FACTORY = 1200.0/3937.0; // 0.3048006096
-    private static final double US_SURVEY_FOOT_COMPARISON_EPSILON = 1.0e-10;
-    public static final boolean isUSSurveyFoot(Unit<?> unit) {
-        if (unit == null) {
-            return false;
-        } else if (USCustomary.FOOT_SURVEY.equals(unit)) {
+    /**
+     * Checks whether two units can be considered equivalent. TransformedUnits are
+     * considered equivalent if they have the same system unit and their conversion
+     * factors to the system unit produce the identity converter when the inverse of
+     * the second factor is concatenated with the first factor, considering the precision
+     * of a float number. For other types of units, the comparison is delegated to their
+     * normal equals method.
+     * 
+     * @param unit1
+     * @param unit2
+     * @return
+     */
+    public static final boolean equals(Unit<?> unit1, Unit<?> unit2) {
+        if (unit1 == unit2) {
             return true;
-        } else if (unit.getSystemUnit() == SI.METRE && unit instanceof TransformedUnit<?>) {
-            @SuppressWarnings("unchecked")
-            TransformedUnit<Length> transformed = (TransformedUnit<Length>) unit;
-            UnitConverter converter = transformed.getConverter();
-            if (converter instanceof MultiplyConverter) {
-                MultiplyConverter multiplyConverter = (MultiplyConverter) converter;
-                double factor = multiplyConverter.getFactor();
-                // 0.3048006096012192  // observed
-                // 0.3048006096        // expected
-                if (Math.abs(US_SURVEY_FOOT_FACTORY - factor) < US_SURVEY_FOOT_COMPARISON_EPSILON) {
-                    return true;
+        }
+        if (unit1 != null) {
+            if (unit1 instanceof TransformedUnit<?> && unit2 != null
+                    && unit2 instanceof TransformedUnit<?>) {
+                TransformedUnit<?> tunit1 = (TransformedUnit<?>) unit1;
+                TransformedUnit<?> tunit2 = (TransformedUnit<?>) unit2;
+                if (unit1.getSystemUnit().equals(unit2.getSystemUnit())) {
+                    try {
+                        float factor = (float) tunit1.getSystemConverter()
+                                .concatenate(tunit2.getSystemConverter().inverse()).convert(1.0f);
+                        // FIXME: old JSR-275 library converted to float to compare factors to provide some tolerance
+                        // Should we use a configurable tolerance or a smaller tolerance using doubles?
+                        if (factor == 1.0f) {
+                            return true;
+                        }
+                        return false;
+                    }
+                    catch (Exception e) {}
                 }
             }
+            return unit1.equals(unit2);
         }
         return false;
     }
@@ -236,5 +220,20 @@ public final class Units {
         } catch (UnconvertibleException | IncommensurableException e) {
             throw new IllegalArgumentException(e);
         }
+    }
+    
+    /**
+     * Parses the text into an instance of unit
+     * 
+     * @param name
+     * @see UnitFormat#parse(CharSequence)
+     * @throws ParserException
+     *           if any problem occurs while parsing the specified character sequence (e.g. illegal syntax).
+     * @throws UnsupportedOperationException
+     *           if the {@link UnitFormat} is unable to parse.
+     * @return A unit instance
+     */
+    public static Unit<?> parseUnit(String name) {
+        return Units.autoCorrect(DefaultUnitParser.getInstance().parse(name));
     }
 }

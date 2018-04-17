@@ -1014,8 +1014,7 @@ public final class CRS2GeoTiffMetadataAdapter {
                         converter = ((Unit<Time>) unit).getConverterTo(SI.SECOND);
                     } else if (SI.RADIAN.isCompatible(unit)) {
                         if (!AbstractUnit.ONE.equals(unit)) {
-                            // or SI.RADIAN
-                            converter = ((Unit<Angle>) unit).getConverterTo(NonSI.SECOND_ANGLE);
+                            converter = ((Unit<Angle>) unit).getConverterTo(SI.RADIAN);
                         }
                     }
             

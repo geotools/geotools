@@ -19,15 +19,13 @@ package org.geotools.renderer.windbarbs;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.measure.UnitConverter;
-import si.uom.NonSI;
-import systems.uom.common.USCustomary;
-import tec.uom.se.format.SimpleUnitFormat;
-
 import javax.measure.Unit;
-import javax.measure.format.UnitFormat;
+import javax.measure.UnitConverter;
 
 import org.geotools.util.Utilities;
+
+import systems.uom.common.USCustomary;
+import tec.uom.se.format.SimpleUnitFormat;
 
 /**
  * Utility class doing speed conversion since windBarbs are based on knots
@@ -39,9 +37,6 @@ class SpeedConverter {
     /** The logger. */
     private static final Logger LOGGER = org.geotools.util.logging.Logging
             .getLogger(SpeedConverter.class);
-
-    /** UCUM_FORMAT_INSTANCE */
-    //private static final UnitFormat UCUM_FORMAT_INSTANCE = UCUMFormat.getInstance(Variant.CASE_INSENSITIVE);
 
     private static final double SECONDS_IN_HOUR = 3600d;
 

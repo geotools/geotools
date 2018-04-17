@@ -24,12 +24,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.measure.IncommensurableException;
-import javax.measure.UnconvertibleException;
 import javax.measure.Unit;
 import javax.measure.UnitConverter;
 
 import org.geotools.measure.Measure;
+import org.geotools.measure.Units;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.operation.matrix.GeneralMatrix;
 import org.geotools.referencing.wkt.Formatter;
@@ -369,12 +368,7 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
                     // between source[i] and target[j].
                     continue;
                 }
-                UnitConverter converter;
-                try {
-                    converter = sourceUnit.getConverterToAny(targetUnit);
-                } catch (UnconvertibleException | IncommensurableException e) {
-                    throw new IllegalArgumentException("Can't convert to the candidate unit", e);
-                }
+                UnitConverter converter =  Units.getConverterToAny(sourceUnit, targetUnit);
                 if (!converter.isLinear()) {
                     throw new IllegalArgumentException(Errors.format(
                               ErrorKeys.NON_LINEAR_UNIT_CONVERSION_$2, sourceUnit, targetUnit));
@@ -441,13 +435,7 @@ public class AbstractCS extends AbstractIdentifiedObject implements CoordinateSy
                 if (candidate!=null && !candidate.isCompatible(SI.RADIAN)) {
                     // TODO: checks the unit scale type (keeps RATIO only).
                     if (unit != null) {
-                        UnitConverter converter;
-                        try {
-                            converter = candidate.getConverterToAny(unit);
-                        } catch (UnconvertibleException | IncommensurableException e) {
-                            throw new IllegalArgumentException(
-                                    "Can't convert to the candidate unit", e);
-                        }
+                        UnitConverter converter = Units.getConverterToAny(candidate, unit);
                         if (!converter.isLinear()) {
                             // TODO: use the localization provided in 'swapAxis'. We could also
                             //       do a more intelligent work by checking the unit scale type.

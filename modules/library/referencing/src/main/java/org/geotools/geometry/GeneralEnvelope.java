@@ -20,10 +20,9 @@ import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 import java.util.Arrays;
 
-import javax.measure.IncommensurableException;
-import javax.measure.UnconvertibleException;
 import javax.measure.Unit;
 
+import org.geotools.measure.Units;
 import org.geotools.metadata.iso.spatial.PixelTranslation;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -675,11 +674,7 @@ public class GeneralEnvelope extends AbstractEnvelope implements Cloneable, Seri
         if (crs != null) {
             final Unit<?> source = crs.getCoordinateSystem().getAxis(dimension).getUnit();
             if (source != null) {
-                try {
-                    value = source.getConverterToAny(unit).convert(value);
-                } catch (UnconvertibleException | IncommensurableException e) {
-                    throw new IllegalArgumentException(e);
-                }
+                value = Units.getConverterToAny(source, unit).convert(value);
             }
         }
         return value;

@@ -1216,6 +1216,11 @@
         <version>${jaiext.version}</version>
       </dependency>
       <dependency>
+        <groupId>it.geosolutions.jaiext.scale2</groupId>
+        <artifactId>jt-scale2</artifactId>
+        <version>${jaiext.version}</version>
+      </dependency>
+      <dependency>
         <groupId>it.geosolutions.jaiext.stats</groupId>
         <artifactId>jt-stats</artifactId>
         <version>${jaiext.version}</version>

@@ -426,18 +426,21 @@ public class GroupByVisitorTest {
             return false;
         }
         for (int i = 0; i < arrayA.length; i++) {
-            if( !(arrayA[i]==null && arrayB[i]==null) ){
-                if (!arrayA[i].getClass().equals(arrayB[i].getClass())) {
+            if(arrayA[i]==null && arrayB[i]==null){
+                continue;
+            }
+            assertThat(arrayA[i], notNullValue());
+            assertThat(arrayB[i], notNullValue());
+            if (!arrayA[i].getClass().equals(arrayB[i].getClass())) {
+                return false;
+            }
+            if (arrayA[i] instanceof Double) {
+                double difference = Math.abs((double) arrayA[i] - (double) arrayB[i]);
+                if (difference > 0.001) {
                     return false;
                 }
-                if (arrayA[i] instanceof Double) {
-                    double difference = Math.abs((double) arrayA[i] - (double) arrayB[i]);
-                    if (difference > 0.001) {
-                        return false;
-                    }
-                } else if (!arrayA[i].equals(arrayB[i])) {
-                    return false;
-                }
+            } else if (!arrayA[i].equals(arrayB[i])) {
+                return false;
             }
         }
         return true;

@@ -190,8 +190,7 @@ public final class Units {
                     try {
                         float factor = (float) tunit1.getSystemConverter()
                                 .concatenate(tunit2.getSystemConverter().inverse()).convert(1.0f);
-                        // FIXME: old JSR-275 library converted to float to compare factors to provide some tolerance
-                        // Should we use a configurable tolerance or a smaller tolerance using doubles?
+                        // NOTE: Matching old JSR-275 library practice, converting to float to compare factors to provide some tolerance
                         if (factor == 1.0f) {
                             return true;
                         }

@@ -393,10 +393,13 @@ public class GroupByVisitorTest {
      */
     private void checkResults(CalcResult calcResult, Object[][] expectedResults) {
         assertThat(calcResult, notNullValue());
+        // check that the array conversion looks sane
         Object[] results = calcResult.toArray();
         assertThat(results.length, is(expectedResults.length));
+        // check that map conversion looks sane
         Map resultMap = calcResult.toMap();
         assertThat(resultMap.entrySet().size(), is(expectedResults.length));
+        // check that the obtained values correspond to the expected ones
         for (Object[] expectedResult : expectedResults) {
             assertThat(contains(results, expectedResult), is(true));
         }

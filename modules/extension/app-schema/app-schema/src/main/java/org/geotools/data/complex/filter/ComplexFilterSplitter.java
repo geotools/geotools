@@ -320,6 +320,10 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
                         }
                     }
                 }
+            } else {
+                // we may have a direct match, so lets push this filter to the post stack right away
+                postStack.push(expression);
+                return null;
             }
         }
 

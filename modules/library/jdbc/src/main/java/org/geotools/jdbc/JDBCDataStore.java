@@ -16,6 +16,65 @@
  */
 package org.geotools.jdbc;
 
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.Point;
+import org.geotools.data.DataStore;
+import org.geotools.data.DefaultQuery;
+import org.geotools.data.DefaultTransaction;
+import org.geotools.data.FeatureStore;
+import org.geotools.data.GmlObjectStore;
+import org.geotools.data.InProcessLockingManager;
+import org.geotools.data.Query;
+import org.geotools.data.Transaction;
+import org.geotools.data.Transaction.State;
+import org.geotools.data.jdbc.FilterToSQL;
+import org.geotools.data.jdbc.FilterToSQLException;
+import org.geotools.data.jdbc.datasource.ManageableDataSource;
+import org.geotools.data.jdbc.fidmapper.FIDMapper;
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.data.store.ContentDataStore;
+import org.geotools.data.store.ContentEntry;
+import org.geotools.data.store.ContentFeatureSource;
+import org.geotools.data.store.ContentState;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.factory.Hints;
+import org.geotools.feature.NameImpl;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.feature.visitor.CountVisitor;
+import org.geotools.feature.visitor.GroupByVisitor;
+import org.geotools.feature.visitor.LimitingVisitor;
+import org.geotools.filter.FilterCapabilities;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.jdbc.JoinInfo.JoinPart;
+import org.geotools.referencing.CRS;
+import org.geotools.util.Converters;
+import org.geotools.util.SoftValueHashMap;
+import org.opengis.feature.FeatureVisitor;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.GeometryDescriptor;
+import org.opengis.feature.type.Name;
+import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.Id;
+import org.opengis.filter.PropertyIsLessThanOrEqualTo;
+import org.opengis.filter.expression.BinaryExpression;
+import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Function;
+import org.opengis.filter.expression.Literal;
+import org.opengis.filter.expression.PropertyName;
+import org.opengis.filter.identity.FeatureId;
+import org.opengis.filter.identity.GmlObjectId;
+import org.opengis.filter.sort.SortBy;
+import org.opengis.filter.sort.SortOrder;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.TransformException;
+
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
@@ -43,69 +102,6 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
-import java.util.stream.Collectors;
-
-import javax.sql.DataSource;
-
-import org.geotools.data.DataStore;
-import org.geotools.data.DefaultQuery;
-import org.geotools.data.DefaultTransaction;
-import org.geotools.data.FeatureStore;
-import org.geotools.data.GmlObjectStore;
-import org.geotools.data.InProcessLockingManager;
-import org.geotools.data.Query;
-import org.geotools.data.Transaction;
-import org.geotools.data.Transaction.State;
-import org.geotools.data.jdbc.FilterToSQL;
-import org.geotools.data.jdbc.FilterToSQLException;
-import org.geotools.data.jdbc.datasource.ManageableDataSource;
-import org.geotools.data.jdbc.fidmapper.FIDMapper;
-import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.data.store.ContentDataStore;
-import org.geotools.data.store.ContentEntry;
-import org.geotools.data.store.ContentFeatureSource;
-import org.geotools.data.store.ContentState;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.Hints;
-import org.geotools.feature.NameImpl;
-import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.geotools.feature.visitor.CountVisitor;
-import org.geotools.feature.visitor.GroupByVisitor;
-import org.geotools.feature.visitor.LimitingVisitor;
-import org.geotools.filter.FilterAttributeExtractor;
-import org.geotools.filter.FilterCapabilities;
-import org.geotools.filter.FunctionExpression;
-import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.jdbc.JoinInfo.JoinPart;
-import org.geotools.referencing.CRS;
-import org.geotools.util.Converters;
-import org.geotools.util.SoftValueHashMap;
-import org.opengis.feature.FeatureVisitor;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.GeometryDescriptor;
-import org.opengis.feature.type.Name;
-import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.Id;
-import org.opengis.filter.PropertyIsLessThanOrEqualTo;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
-import org.opengis.filter.expression.Literal;
-import org.opengis.filter.expression.PropertyName;
-import org.opengis.filter.identity.FeatureId;
-import org.opengis.filter.identity.GmlObjectId;
-import org.opengis.filter.sort.SortBy;
-import org.opengis.filter.sort.SortOrder;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.TransformException;
-
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Point;
 
 
 /**
@@ -1467,8 +1463,9 @@ public final class JDBCDataStore extends ContentDataStore
      */
     protected Object getAggregateValue(FeatureVisitor visitor, SimpleFeatureType featureType, Query query, Connection cx)
             throws IOException {
-        // check if group by is supported by the udnerlign store
-        if(isGroupByVisitor(visitor) && !dialect.isGroupBySupported()) {
+        // check if group by is supported by the underlying store
+        if (isGroupByVisitor(visitor) && 
+                (!dialect.isGroupBySupported() || !isSupportedGroupBy((GroupByVisitor) visitor))) {
             return null;
         }
         // try to match the visitor with an aggregate function
@@ -1478,18 +1475,11 @@ public final class JDBCDataStore extends ContentDataStore
             return null;
         }
         // try to extract an aggregate attribute from the visitor
-        Expression aggregateExpression = getAggregateExpression(visitor);
-        AttributeDescriptor att = null;
-        // check if aggregation expression is supported
-        if (aggregateExpression instanceof FunctionExpression) {
-            FunctionExpression func = (FunctionExpression) aggregateExpression;
-            if (!getSupportedFunctions().containsKey(func.getFunctionName().getName())) {
+        Expression aggregateExpression = null;
+        if (!isCountVisitor(visitor)) {
+            aggregateExpression = getAggregateExpression(visitor);
+            if (aggregateExpression != null && !fullySupports(aggregateExpression)) {
                 return null;
-            }
-        } else {
-            att = extractAggregateAttribute(visitor, featureType);
-            if (att == null && !isCountVisitor(visitor)) {
-                 return null; // aggregate function optimization only supported for PropertyName expression
             }
         }
         
@@ -1500,8 +1490,8 @@ public final class JDBCDataStore extends ContentDataStore
             limitingVisitor = (LimitingVisitor) visitor;
         }
         // if the visitor is a group by visitor we extract the group by attributes
-        List<AttributeDescriptor> groupByAttributes = extractGroupByAttributes(visitor, featureType);
-        //result of the function
+        List<Expression> groupByExpressions = extractGroupByExpressions(visitor);
+        // result of the function
         try {
             Object result = null;
             List results = new ArrayList();
@@ -1510,20 +1500,11 @@ public final class JDBCDataStore extends ContentDataStore
             
             try {
                 if ( dialect instanceof PreparedStatementSQLDialect ) {
-                    if (att == null) {
-                        st = selectAggregateSQLPS(function, aggregateExpression, groupByAttributes, featureType, query, limitingVisitor,  cx);
-                    } else {
-                        st = selectAggregateSQLPS(function, att, groupByAttributes, featureType, query, limitingVisitor,  cx);
-                    }
+                    st = selectAggregateSQLPS(function, aggregateExpression, groupByExpressions, featureType, query, limitingVisitor,  cx);
                     rs = ((PreparedStatement)st).executeQuery();
                 } 
                 else {
-                    String sql;
-                    if (att == null) {
-                        sql = selectAggregateSQL(function, aggregateExpression, groupByAttributes, featureType, query, limitingVisitor);
-                    } else {
-                        sql = selectAggregateSQL(function, att, groupByAttributes, featureType, query, limitingVisitor);
-                    }
+                    String sql = selectAggregateSQL(function, aggregateExpression, groupByExpressions, featureType, query, limitingVisitor);
                     LOGGER.fine( sql );
                     
                     st = cx.createStatement();
@@ -1532,21 +1513,24 @@ public final class JDBCDataStore extends ContentDataStore
                 }
              
                 while(rs.next()) {
-                    if (groupByAttributes == null || groupByAttributes.isEmpty()) {
+                    if (groupByExpressions == null || groupByExpressions.isEmpty()) {
                         Object value = rs.getObject(1);
                         result = value;
                         results.add(value);
                     }
                     else {
-                        results.add(extractValuesFromResultSet(rs, groupByAttributes.size()));
+                        results.add(extractValuesFromResultSet(rs, groupByExpressions.size()));
                     }
                 }
             } finally {
                 closeSafe( rs );
                 closeSafe( st );
             }
-            
-            if ( setResult(visitor, results.size() > 1 ? results : result) ){
+
+            if (groupByExpressions != null && !groupByExpressions.isEmpty()) {
+                setResult(visitor, results);
+                return results;
+            } else if ( setResult(visitor, results.size() > 1 ? results : result) ){
                 return result == null ? results : result;
             }
             
@@ -1556,6 +1540,56 @@ public final class JDBCDataStore extends ContentDataStore
             throw (IOException) new IOException().initCause(e);
         }
     }
+
+    /**
+     * Checks if the groupBy is a supported one, that is, if it's possible to turn to SQL the
+     * various {@link Expression} it's using
+     * @param visitor
+     * @return
+     */
+    private boolean isSupportedGroupBy(GroupByVisitor visitor) {
+        return visitor.getGroupByAttributes().stream().allMatch(xp -> fullySupports(xp)); 
+    }
+
+    /**
+     * Determines if the expression and all its sub expressions are supported.  
+     *
+     * @param expression the expression to be tested.
+     *
+     * @return true if all sub filters are supported, false otherwise.
+     *
+     * @throws IllegalArgumentException If a null filter is passed in.  As this
+     *         function is recursive a null in a logic filter will also cause
+     *         an error.
+     */
+    private boolean fullySupports(Expression expression) {
+        if (expression  == null) {
+            throw new IllegalArgumentException("Null expression can not be unpacked");
+        }
+
+        FilterCapabilities filterCapabilities = getFilterCapabilities();
+
+        if (!filterCapabilities.supports(expression.getClass())) {
+            return false;
+        }
+
+        // check the known composite expressions
+        if (expression instanceof BinaryExpression) {
+            BinaryExpression be = (BinaryExpression) expression;
+            return fullySupports(be.getExpression1()) && fullySupports(be.getExpression2());
+        } else if (expression instanceof Function) {
+            Function function = (Function) expression;
+            for (Expression fe : function.getParameters()) {
+                if (!fullySupports(fe)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+   
 
     // Helper method that checks if the visitor is of type count visitor.
     protected boolean isCountVisitor(FeatureVisitor visitor) {
@@ -1601,46 +1635,6 @@ public final class JDBCDataStore extends ContentDataStore
         return function;
     }
 
-    /**
-     * Helper method that extract the attribute that will be used by the aggregate function.
-     *
-     * @param visitor the feature visitor
-     * @param featureType the feature type
-     * @return the aggregate attribute or NULL if the visitor don't contains an aggregate attribute
-     */
-    protected AttributeDescriptor extractAggregateAttribute(FeatureVisitor visitor,
-            SimpleFeatureType featureType) {
-        Expression expression = getAggregateExpression(visitor);
-        if (expression != null) {
-            Object result = expression.evaluate(featureType);
-            if (result instanceof AttributeDescriptor) {
-                return (AttributeDescriptor) result;
-            }
-        }
-        return null;
-    }
-    
-    /**
-     * Helper method that extract the attribute that will be used by the aggregate function.
-     *
-     * @param expression expression to extract the attribute from
-     * @param featureType the feature type
-     * @return the aggregate attribute or NULL if the visitor don't contains an aggregate attribute
-     */
-    protected AttributeDescriptor extractAggregateAttribute(Expression expression,
-            SimpleFeatureType featureType) {
-        if (expression == null) {
-            return null;
-        }
-        FilterAttributeExtractor extractor = new FilterAttributeExtractor(featureType);
-        expression.accept(extractor, null);
-        if (extractor.getPropertyNameSet().isEmpty()) {
-            return null;
-        }
-        PropertyName pName = extractor.getPropertyNameSet().iterator().next();
-        return (AttributeDescriptor) pName.evaluate(featureType);
-    }
-
     private Expression getAggregateExpression(FeatureVisitor visitor) {
         // if is a group by visitor we need to use the internal aggregate visitor
         FeatureVisitor aggregateVisitor = isGroupByVisitor(visitor) ? ((GroupByVisitor) visitor).getAggregateVisitor() : visitor;
@@ -1658,17 +1652,13 @@ public final class JDBCDataStore extends ContentDataStore
      * If the visitor is not a group by visitor an empty list will be returned.
      *
      * @param visitor     the feature visitor
-     * @param featureType the feature type
      * @return the list of the group by attributes or an empty list
      */
-    protected List<AttributeDescriptor> extractGroupByAttributes(FeatureVisitor visitor, SimpleFeatureType featureType) {
+    protected List<Expression> extractGroupByExpressions(FeatureVisitor visitor) {
         // if is a group by visitor we get the list of attributes expressions otherwise we get an empty list
         List<Expression> expressions = isGroupByVisitor(visitor) ?
                 ((GroupByVisitor) visitor).getGroupByAttributes() : new ArrayList<>();
-        // we convert the list of attributes expressions to a list of attributes descriptors
-        return expressions.stream()
-                .map(expression -> (AttributeDescriptor) expression.evaluate(featureType))
-                .collect(Collectors.toList());
+        return expressions;
     }
 
     /**
@@ -1689,6 +1679,9 @@ public final class JDBCDataStore extends ContentDataStore
      * See GEOT-2325 for details.
      */
     Expression getExpression(FeatureVisitor visitor) {
+        if (visitor instanceof CountVisitor) {
+            return null;
+        }
         try {
             Method g = visitor.getClass().getMethod( "getExpression", null );
             if ( g != null ) {
@@ -3479,19 +3472,27 @@ public final class JDBCDataStore extends ContentDataStore
     }
 
     FilterToSQL filter(SimpleFeatureType featureType, Filter filter, StringBuffer sql) throws IOException {
-        
+        SimpleFeatureType fullSchema = getSchema(featureType.getTypeName());
+        FilterToSQL toSQL = getFilterToSQL(fullSchema);
+        return filter(featureType, filter, sql, toSQL);
+    }
+
+    FilterToSQL filter(SimpleFeatureType featureType, Filter filter, StringBuffer sql, FilterToSQL toSQL) throws IOException {
         try {
             // grab the full feature type, as we might be encoding a filter
             // that uses attributes that aren't returned in the results
             SimpleFeatureType fullSchema = getSchema(featureType.getTypeName());
-            FilterToSQL toSQL = dialect instanceof PreparedStatementSQLDialect ? 
-                createPreparedFilterToSQL(fullSchema) : createFilterToSQL(fullSchema);
             toSQL.setInline(true);
             sql.append(" ").append(toSQL.encodeToString(filter));
             return toSQL;
         } catch (FilterToSQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private FilterToSQL getFilterToSQL(SimpleFeatureType fullSchema) {
+        return dialect instanceof PreparedStatementSQLDialect ? 
+                    createPreparedFilterToSQL(fullSchema) : createFilterToSQL(fullSchema);
     }
 
     /**
@@ -3837,92 +3838,24 @@ public final class JDBCDataStore extends ContentDataStore
         sql.setLength(sql.length() - 1);
     }
     
-    /**
-     * Generates a 'SELECT count(*) FROM' sql statement. In case limit/offset is 
-     * used, we'll need to apply them on a <code>select *<code>
-     * as limit/offset usually alters the number of returned rows 
-     * (and a count returns just one), and then count on the result of that first select
-     */
-    protected String selectCountSQL(SimpleFeatureType featureType, Query query, LimitingVisitor visitor) throws SQLException, IOException {
-        //JD: this method should not be called anymore
-        return selectAggregateSQL("count", (Expression) null, featureType, query, visitor);
-    }
-
-    /**
-     * Generates a 'SELECT count(*) FROM' prepared statement.
-     */
-    protected PreparedStatement selectCountSQLPS(SimpleFeatureType featureType, Query query, LimitingVisitor visitor, Connection cx ) 
-        throws SQLException, IOException {
-        //JD: this method shold not be called anymore
-        return selectAggregateSQLPS("count", (Expression) null,featureType,query,visitor,cx);
-    }
-    
-    /**
-     * Generates a 'SELECT <function>() FROM' statement.
-     */
-    protected String selectAggregateSQL(String function, AttributeDescriptor att,
-            SimpleFeatureType featureType, Query query, LimitingVisitor visitor) throws SQLException, IOException {
-        return selectAggregateSQL(function, att, null, featureType, query, visitor);
-    }
-    
-    /**
-     * Generates a 'SELECT <function>() FROM' statement.
-     */
-    protected String selectAggregateSQL(String function, Expression att,
-            SimpleFeatureType featureType, Query query, LimitingVisitor visitor) throws SQLException, IOException {
-        return selectAggregateSQL(function, att, null, featureType, query, visitor);
-    }
-
-    protected String selectAggregateSQL(String function, AttributeDescriptor att,
-            List<AttributeDescriptor> groupByAttributes, SimpleFeatureType featureType, Query query,
-            LimitingVisitor visitor) throws SQLException, IOException {
-        StringBuffer sql = new StringBuffer();
-        doSelectAggregateSQL(function, expressionFromAttribute(att), groupByAttributes, featureType, query, visitor, sql);
-        return sql.toString();
-    }
-    
-    protected String selectAggregateSQL(String function, Expression att, List<AttributeDescriptor> groupByAttributes,
+    protected String selectAggregateSQL(String function, Expression att, List<Expression> groupByExpressions,
                                         SimpleFeatureType featureType, Query query, LimitingVisitor visitor) throws SQLException, IOException {
         StringBuffer sql = new StringBuffer();
-        doSelectAggregateSQL(function, att, groupByAttributes, featureType, query, visitor, sql);
+        doSelectAggregateSQL(function, att, groupByExpressions, featureType, query, visitor, sql);
         return sql.toString();
     }
     
-    /**
-     * Generates a 'SELECT <function>() FROM' prepared statement.
-     */
     
-    protected PreparedStatement selectAggregateSQLPS(String function, AttributeDescriptor att,
-            SimpleFeatureType featureType, Query query, LimitingVisitor visitor, Connection cx)
-                    throws SQLException, IOException {
-
-        return selectAggregateSQLPS(function, att, null, featureType, query, visitor, cx);
-    }
-    
-    protected PreparedStatement selectAggregateSQLPS(String function, Expression att,
-                                                     SimpleFeatureType featureType, Query query, LimitingVisitor visitor, Connection cx)
-            throws SQLException, IOException {
-
-        return selectAggregateSQLPS(function, att, null, featureType, query, visitor, cx);
-    }
-
-    protected PreparedStatement selectAggregateSQLPS(String function, AttributeDescriptor att,
-            List<AttributeDescriptor> groupByAttributes, SimpleFeatureType featureType, Query query,
-            LimitingVisitor visitor, Connection cx) throws SQLException, IOException {
-        return selectAggregateSQLPS(function, expressionFromAttribute(att), groupByAttributes,
-                featureType, query, visitor, cx);
-    }
-
     private Expression expressionFromAttribute(AttributeDescriptor att) {
         return FF2.property(att.getName());
     }
 
-    protected PreparedStatement selectAggregateSQLPS(String function, Expression att, List<AttributeDescriptor> groupByAttributes,
+    protected PreparedStatement selectAggregateSQLPS(String function, Expression att, List<Expression> groupByExpressions,
                                                      SimpleFeatureType featureType, Query query, LimitingVisitor visitor, Connection cx)
         throws SQLException, IOException {
         
         StringBuffer sql = new StringBuffer();
-        List<FilterToSQL> toSQL = doSelectAggregateSQL(function, att, groupByAttributes, featureType, query, visitor, sql);
+        List<FilterToSQL> toSQL = doSelectAggregateSQL(function, att, groupByExpressions, featureType, query, visitor, sql);
         
         LOGGER.fine( sql.toString() );
           
@@ -3937,18 +3870,18 @@ public final class JDBCDataStore extends ContentDataStore
     /**
      * Helper method to factor out some commonalities between selectAggregateSQL, and selectAggregateSQLPS 
      */
-    List<FilterToSQL> doSelectAggregateSQL(String function, Expression expr, List<AttributeDescriptor> groupByAttributes,
+    List<FilterToSQL> doSelectAggregateSQL(String function, Expression expr, List<Expression> groupByExpressions,
             SimpleFeatureType featureType, Query query, LimitingVisitor visitor, StringBuffer sql) throws SQLException, IOException {
-
-        AttributeDescriptor att = extractAggregateAttribute(expr, featureType);
-
         JoinInfo join = !query.getJoins().isEmpty() 
             ? JoinInfo.create(query, featureType, this) : null;
 
+        List<FilterToSQL> toSQL = new ArrayList();
         boolean queryLimitOffset = checkLimitOffset(query.getStartIndex(), query.getMaxFeatures());
         boolean visitorLimitOffset = visitor == null ? false : visitor.hasLimits()
                 && dialect.isLimitOffsetSupported();
-        if(queryLimitOffset && !visitorLimitOffset) {
+        // grouping over expressions is complex, as we need 
+        boolean groupByComplexExpressions = hasComplexExpressions(groupByExpressions);
+        if(queryLimitOffset && !visitorLimitOffset && !groupByComplexExpressions) {
             if (join != null) {
                 //don't select * to avoid ambigous result set
                 sql.append("SELECT ");
@@ -3960,12 +3893,42 @@ public final class JDBCDataStore extends ContentDataStore
             }
         } else {
             sql.append("SELECT ");
-            if (groupByAttributes != null && !groupByAttributes.isEmpty()) {
-                encodeGroupByAttributes(groupByAttributes, query, sql);
-                sql.append(",");
+            FilterToSQL filterToSQL = getFilterToSQL(featureType);
+            if (groupByExpressions != null && !groupByExpressions.isEmpty()) {
+                try {
+                    // we encode all the group by attributes as columns names
+                    int i = 1;
+                    for (Expression expression : groupByExpressions) {
+                        sql.append(filterToSQL.encodeToString(expression));
+                        // if we are using complex group by, we have to given them an alias
+                        if (groupByComplexExpressions) {
+                            sql.append(" as ").append(getAggregateExpressionAlias(i++));
+                        }
+                        sql.append(", ");
+                    }
+                } catch (FilterToSQLException e) {
+                    throw new RuntimeException("Failed to encode group by expressions", e);
+                }
             }
 
-            encodeFunction(function, att, expr, query, sql);
+            if (groupByComplexExpressions) {
+                // if encoding a sub-query, the source of the aggregation function must
+                // also be given an alias (we could use * too, but there is a risk of conflicts)
+                if (expr != null) {
+                    try {
+                        sql.append(filterToSQL.encodeToString(expr));
+                        sql.append(" as gt_agg_src");
+                    } catch (FilterToSQLException e) {
+                        throw new RuntimeException("Failed to encode group by expressions", e);
+                    }
+                } else {
+                    // remove the last comma and space
+                    sql.setLength(sql.length() - 2);
+                }
+            } else {
+                encodeFunction(function, expr, sql, filterToSQL);
+            }
+            toSQL.add(filterToSQL);
             sql.append( " FROM ");
         }
         
@@ -3976,124 +3939,133 @@ public final class JDBCDataStore extends ContentDataStore
             encodeTableName(featureType.getTypeName(), sql, query.getHints());
         }
 
-        List<FilterToSQL> toSQL = new ArrayList();
+        
         if (join != null) {
             toSQL.addAll(encodeWhereJoin(featureType, join, sql));
-        }
-        else {
+        } else {
             Filter filter = query.getFilter();
             if (filter != null && !Filter.INCLUDE.equals(filter)) {
                 sql.append(" WHERE ");
                 toSQL.add(filter(featureType, filter, sql));
             }
         }
-        if(dialect.isAggregatedSortSupported(function)) {
+        if (dialect.isAggregatedSortSupported(function)) {
             sort(featureType, query.getSortBy(), null, sql);
         }
-        
-        
-        if(visitorLimitOffset) {
+
+        // apply limits
+        if (visitorLimitOffset) {
             applyLimitOffset(sql, visitor.getStartIndex(), visitor.getMaxFeatures());
+        } else if (queryLimitOffset) {
+            applyLimitOffset(sql, query.getStartIndex(), query.getMaxFeatures()); 
         }
-        else if(queryLimitOffset) {
-            applyLimitOffset(sql, query.getStartIndex(), query.getMaxFeatures());
-            
+
+        // if the limits were in query or there is a group by with complex expressions 
+        // we need to roll what was built so far in a sub-query
+        if (queryLimitOffset || groupByComplexExpressions) {
             StringBuffer sql2 = new StringBuffer("SELECT ");
-            if (groupByAttributes != null && !groupByAttributes.isEmpty()) {
-                encodeGroupByAttributes(groupByAttributes, query, sql2);
-                sql2.append(",");
+            try {
+                if (groupByExpressions != null && !groupByExpressions.isEmpty()) {
+                    FilterToSQL filterToSQL = getFilterToSQL(featureType);
+                    int i = 1;
+                    for (Expression expression : groupByExpressions) {
+                        if (groupByComplexExpressions) {
+                            sql2.append(getAggregateExpressionAlias(i++));
+                        } else {
+                            sql2.append(filterToSQL.encodeToString(expression));
+                        }
+                        sql2.append(",");
+                    }
+                    toSQL.add(filterToSQL);
+                }
+            } catch (FilterToSQLException e) {
+                throw new RuntimeException("Failed to encode group by expressions", e);
             }
-            encodeFunction(function, att, expr, query, sql2);
+            FilterToSQL filterToSQL = getFilterToSQL(featureType);
+            if (groupByComplexExpressions) {
+                if ("count".equals(function)) {
+                    sql2.append("count(*)");
+                } else {
+                    sql2.append(function).append("(").append("gt_agg_src").append(")");
+                }
+            } else {
+                encodeFunction(function, expr, sql2, filterToSQL);
+            }
+            toSQL.add(filterToSQL);
             sql2.append(" AS gt_result_");
             sql2.append(" FROM (");
-            sql.insert(0,sql2.toString());
+            sql.insert(0, sql2.toString());
             sql.append(") gt_limited_");
         }
 
-        encodeGroupByStatement(groupByAttributes, query, sql);
+        FilterToSQL filterToSQL = getFilterToSQL(featureType);
+        encodeGroupByStatement(groupByExpressions, sql, filterToSQL, groupByComplexExpressions);
+        toSQL.add(filterToSQL);
 
         // add search hints if the dialect supports them
         applySearchHints(featureType, query, sql);
 
         return toSQL;
     }
+    
+    private String getAggregateExpressionAlias(int idx) {
+        return "gt_agg_" + idx;
+    }
 
-    protected void encodeGroupByAttributes(List<AttributeDescriptor> attributes, Query query, StringBuffer sql) {
-        // we encode all the group by attributes as columns names
-        attributes.forEach(attribute -> {
-            encodeAttribute(attribute, query, sql);
-            sql.append(",");
-        });
-        // removes the extra comma added during the attributes encoding
-        sql.setLength(sql.length() - 1);
+    /**
+     * Returns true if the expressions have anything but property names
+     * @param expressions
+     * @return
+     */
+    private boolean hasComplexExpressions(List<Expression> expressions) {
+        if (expressions == null || expressions.isEmpty()) {
+            return false;
+        }
+        
+        return expressions.stream().anyMatch(x -> !(x instanceof PropertyName));
     }
 
     /**
      * Helper method that adds a group by statement to the SQL query. If the list of group by attributes
      * is empty or NULL no group by statement is add.
-     *
-     * @param attributes the group by attributes to be encoded
-     * @param query      the query information
+     *  @param attributes the group by attributes to be encoded
      * @param sql        the sql query buffer
      */
-    protected void encodeGroupByStatement(List<AttributeDescriptor> attributes, Query query, StringBuffer sql) {
-        if (attributes == null || attributes.isEmpty()) {
+    protected void encodeGroupByStatement(List<Expression> groupByExpressions, StringBuffer sql, FilterToSQL filterToSQL, boolean aggregateOnExpression) {
+        if (groupByExpressions == null || groupByExpressions.isEmpty()) {
             // there is not group by attributes to encode so nothing to do
             return;
         }
         sql.append(" GROUP BY ");
-        encodeGroupByAttributes(attributes, query, sql);
-    }
-
-    /**
-     * Helper method that adds an attribute to SQL query with a special handling for geometry descriptor.
-     *
-     * @param attribute the attribute descriptor to be encoded
-     * @param query     the query information
-     * @param sql       the sql query buffer
-     */
-    protected void encodeAttribute(AttributeDescriptor attribute, Query query, StringBuffer sql) {
-        if (attribute instanceof GeometryDescriptor) {
-            encodeGeometryColumn((GeometryDescriptor) attribute, sql, query.getHints());
-        } else {
-            dialect.encodeColumnName(attribute.getLocalName(), sql);
+        int i = 1;
+        for (Expression groupByExpression : groupByExpressions) {
+            if (aggregateOnExpression) {
+                sql.append("gt_agg_" + i++);
+            } else {
+                try {
+                    sql.append(filterToSQL.encodeToString(groupByExpression));
+                } catch (FilterToSQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            sql.append(", ");
         }
+        sql.setLength(sql.length() - 2);
     }
 
-    protected void encodeFunction(String function, AttributeDescriptor att, Query query,
-            StringBuffer sql) {
+    
+    protected void encodeFunction(String function,  Expression expression, StringBuffer sql, FilterToSQL filterToSQL) {
         sql.append(function).append("(");
-        if (att == null) {
+        if (expression == null) {
             sql.append("*");
         } else {
-            if (att instanceof GeometryDescriptor) {
-                encodeGeometryColumn((GeometryDescriptor) att, sql, query.getHints());
-            } else {
-                dialect.encodeColumnName(att.getLocalName(), sql);
+            try {
+                sql.append(filterToSQL.encodeToString(expression));
+            } catch (FilterToSQLException e) {
+                throw new RuntimeException(e);
             }
         }
         sql.append(")");
-    }
-    
-    protected void encodeFunction(String function,  AttributeDescriptor att, Expression expression, Query query,
-            StringBuffer sql) {
-        if (expression instanceof PropertyName) {
-            encodeFunction (function, att, query, sql);
-        } else {
-            sql.append(function).append("(");
-            if (expression instanceof FunctionExpression) {
-                dialect.encodeAggregateFunction(getFunctionName(((FunctionExpression) expression).getName()),
-                        att.getLocalName(), sql);
-            } else {
-                sql.append("*");
-            }
-
-            sql.append(")");
-        }
-    }
-
-    private String getFunctionName(String function) {
-        return getSupportedFunctions().get(function);
     }
 
     /**
@@ -4620,8 +4592,7 @@ public final class JDBCDataStore extends ContentDataStore
 
             Filter j = part.getJoinFilter();
 
-            FilterToSQL toSQL = dialect instanceof PreparedStatementSQLDialect ? 
-                createPreparedFilterToSQL(null) : createFilterToSQL(null);
+            FilterToSQL toSQL = getFilterToSQL(null);
             toSQL.setInline(true);
             try {
                 sql.append(" ").append(toSQL.encodeToString(j));
@@ -4631,6 +4602,7 @@ public final class JDBCDataStore extends ContentDataStore
             }
         }
     }
+
 
     protected List<FilterToSQL> encodeWhereJoin(SimpleFeatureType featureType, 
         JoinInfo join, StringBuffer sql) throws IOException {

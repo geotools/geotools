@@ -52,7 +52,7 @@ import org.opengis.referencing.operation.MathTransform;
 
 /**
  * A factory for {@linkplain GridCoverage2D grid coverage} objects. This factory expects various
- * combinaisons of the following informations:
+ * combinations of the following informations:
  * <p>
  * <ul>
  *   <li>A name as a {@linkplain CharSequence character sequence}.</li>

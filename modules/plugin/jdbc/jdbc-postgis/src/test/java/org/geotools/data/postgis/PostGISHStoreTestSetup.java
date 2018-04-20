@@ -16,9 +16,18 @@
  */
 package org.geotools.data.postgis;
 
+import java.util.logging.Logger;
+
 import org.geotools.jdbc.JDBCDelegatingTestSetup;
+import org.postgresql.util.PSQLException;
 
 public class PostGISHStoreTestSetup extends JDBCDelegatingTestSetup {
+
+    private final static Logger LOGGER = Logger.getLogger(PostGISHStoreTestSetup.class.getName());
+
+    protected boolean hasException = false;
+
+    static boolean LOGGED = false;
 
     protected PostGISHStoreTestSetup() {
         super(new PostGISTestSetup());
@@ -27,7 +36,19 @@ public class PostGISHStoreTestSetup extends JDBCDelegatingTestSetup {
     @Override
     protected void setUpData() throws Exception {
         dropTestHStoreTable();
-        createHStoreExtension();
+        try {
+            createHStoreExtension();
+        } catch (PSQLException psqle) {
+            // Catching the org.postgresql.util.PSQLException:
+            // Typically: ERROR: permission denied to create extension "hstore"
+            // when creating the extension
+            if (!LOGGED) {
+                LOGGER.warning("HSTORE tests will be skipped due to:\n >>>> " + psqle.getLocalizedMessage());
+                LOGGED = true;
+            }
+            hasException = true;
+            return;
+        }
         createTestHStoreTable();
     }
 

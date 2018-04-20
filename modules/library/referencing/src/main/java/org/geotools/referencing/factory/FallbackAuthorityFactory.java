@@ -1042,9 +1042,9 @@ public class FallbackAuthorityFactory extends AuthorityFactoryAdapter {
         assert (mask & ~(interfaceMask(primary) | interfaceMask(fallback))) == 0 : mask;
         final AuthorityFactory factory;
         /*
-         * In the 'switch' statement below, we do not implement all possible combinaisons
-         * of authority factories. Only a few common combinaisons are listed. Other
-         * combinaisons will fallback on some reasonable default. We may complete the
+         * In the 'switch' statement below, we do not implement all possible combinations
+         * of authority factories. Only a few common combinations are listed. Other
+         * combinations will fallback on some reasonable default. We may complete the
          * list later if there is a need for that.
          */
         switch (mask) {

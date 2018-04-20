@@ -1,0 +1,10 @@
+!table
+!version 300
+!charset Neutral
+
+Definition Table
+  Type NATIVE Charset "Neutral"
+  Fields 3
+    byte_field Integer (3) ;
+    short_field Integer (5) ;
+    int_field_0 Integer ;

@@ -50,7 +50,7 @@ public class FilterFunction_floor extends FunctionExpressionImpl {
         } catch (Exception e) {
             // probably a type error
             throw new IllegalArgumentException(
-                    "Filter Function problem for function floor argument #0 - expected type double");
+                    "Filter Function problem for function floor argument #0 - expected type double", e);
         }
         return new Double(Math.floor(arg0));
     }

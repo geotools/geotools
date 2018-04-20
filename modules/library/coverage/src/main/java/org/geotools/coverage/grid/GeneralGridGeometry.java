@@ -668,11 +668,11 @@ public class GeneralGridGeometry implements GridGeometry, Serializable {
     /**
      * Returns {@code true} if all the parameters specified by the argument are set.
      *
-     * @param  bitmask Any combinaison of {@link #CRS_BITMASK}, {@link #ENVELOPE_BITMASK}, {@link #GRID_RANGE_BITMASK}
+     * @param  bitmask Any combination of {@link #CRS_BITMASK}, {@link #ENVELOPE_BITMASK}, {@link #GRID_RANGE_BITMASK}
      *         and {@link #GRID_TO_CRS_BITMASK}.
      * @return {@code true} if all specified attributes are defined (i.e. invoking the
      *         corresponding method will not thrown an {@link InvalidGridGeometryException}).
-     * @throws IllegalArgumentException if the specified bitmask is not a combinaison of known
+     * @throws IllegalArgumentException if the specified bitmask is not a combination of known
      *         masks.
      *
      * @since 2.2

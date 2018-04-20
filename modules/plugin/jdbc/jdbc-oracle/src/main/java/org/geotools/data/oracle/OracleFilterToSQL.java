@@ -26,6 +26,7 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
 import org.geotools.filter.FilterCapabilities;
 import org.geotools.filter.FilterFactoryImpl;
+import org.geotools.filter.function.FilterFunction_area;
 import org.geotools.filter.function.FilterFunction_sdonn;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
@@ -165,6 +166,9 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
         
         caps.addType(FilterFunction_sdonn.class);
         
+        // replaces the OracleDialect.registerFunction support
+        caps.addType(FilterFunction_area.class);
+        
         //temporal filters
         caps.addType(After.class);
         caps.addType(Before.class);
@@ -223,6 +227,16 @@ public class OracleFilterToSQL extends PreparedFilterToSQL {
         if (function instanceof FilterFunction_sdonn) {
             throw new UnsupportedOperationException(
                     "Unsupported usage of SDO_NN Oracle function: must be used in a Equals Filter");
+        } else if (function instanceof FilterFunction_area) {
+            try {
+                Expression s1 = getParameter(function, 0, true);
+                out.write("SDO_GEOM.SDO_AREA(");
+                s1.accept(this, String.class);
+                out.write(",0.05)");
+                return extraData;
+            } catch (IOException ioe) {
+                throw new RuntimeException(IO_ERROR, ioe);
+            }
         }
 
         return super.visit(function, extraData);

@@ -23,6 +23,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URL;
 import java.util.Date;
+import java.util.List;
 
 import org.geotools.TestData;
 import org.geotools.data.DataStore;
@@ -30,6 +31,7 @@ import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.FeatureWriter;
+import org.geotools.data.MapInfoFileReader;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.collection.ListFeatureCollection;
@@ -45,6 +47,7 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.type.BasicFeatureTypes;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
+import org.geotools.util.URLs;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -752,6 +755,37 @@ public abstract class OGRDataStoreTest extends TestCaseSupport {
         // mix in an attribute filter
         f = ff.and(f, ff.greater(ff.property("PERSONS"), ff.literal("10000000")));
         assertEquals(6, fs.getFeatures(f).size());   
+    }
+
+    public void testGeot5588() throws Exception {
+        // Definition Table
+        //   Type NATIVE Charset "Neutral"
+        //   Fields 3
+        //     byte_field Integer (3) ;
+        //     short_field Integer (5) ;
+        //     int_field_0 Integer ;
+
+        String tabFile = getAbsolutePath("geot5588/geot5588a.tab");
+        OGRDataStore s = new OGRDataStore(tabFile, "MapInfo File", null, ogr);
+
+        SimpleFeatureType schema = s.getSchema("geot5588a");
+        assertEquals(Short.class, schema.getDescriptor("byte_field").getType().getBinding());
+        assertEquals(Integer.class, schema.getDescriptor("short_field").getType().getBinding());
+        assertEquals(BigInteger.class, schema.getDescriptor("int_field_0").getType().getBinding());
+
+        // Check contents
+        FeatureSource<SimpleFeatureType, SimpleFeature> fs = s.getFeatureSource("geot5588a");
+        try (FeatureIterator<SimpleFeature> iterator = fs.getFeatures().features()) {
+            // Test data should contain one feature
+            assertTrue(iterator.hasNext());
+            SimpleFeature feature = iterator.next();
+            assertEquals((short)999, feature.getAttribute("byte_field"));
+            assertEquals(99999, feature.getAttribute("short_field"));
+            assertEquals(BigInteger.valueOf(257), feature.getAttribute("int_field_0"));
+
+            // There shouldn't be any more features from here
+            assertFalse(iterator.hasNext());
+        }
     }
 
     // ---------------------------------------------------------------------------------------

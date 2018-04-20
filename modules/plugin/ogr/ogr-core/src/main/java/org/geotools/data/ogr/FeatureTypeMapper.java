@@ -123,17 +123,20 @@ class FeatureTypeMapper {
         long type = ogr.FieldGetType(field);
         int width = ogr.FieldGetWidth(field);
         
+        // Find the narrowest integer data type which will safely hold the declared width 
         if (ogr.FieldIsIntegerType(type)) {
-            if (width <= 3) {
+            if (width == 0) {
+                return BigInteger.class;
+            } else if (width < 3) {
                 return Byte.class;
-            } else if (width <= 5) {
+            } else if (width < 5) {
                 return Short.class;
-            } else if (width <= 9) {
+            } else if (width < 10) {
                 return Integer.class;
-            } else if (width <= 19) {
+            } else if (width < 19) {
                 return Long.class;
             } else {
-                return BigDecimal.class;
+                return BigInteger.class;
             }
         } else if (ogr.FieldIsIntegerListType(type)) {
             return int[].class;

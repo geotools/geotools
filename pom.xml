@@ -94,7 +94,7 @@
     <test.args></test.args>
     <src.output>${basedir}/target</src.output>
     <imageio.ext.version>1.1.20</imageio.ext.version>
-    <jaiext.version>1.0.20</jaiext.version>
+    <jaiext.version>1.0.22</jaiext.version>
     <netcdf.version>4.6.6</netcdf.version>
     <jt.version>1.4.0</jt.version>
     <java.awt.headless>true</java.awt.headless>
@@ -961,7 +961,7 @@
       <dependency>
         <groupId>mysql</groupId>
         <artifactId>mysql-connector-java</artifactId>
-        <version>5.1.17</version>
+        <version>5.1.46</version>
       </dependency>
       <dependency>
         <groupId>org.hsqldb</groupId>
@@ -1213,6 +1213,11 @@
       <dependency>
         <groupId>it.geosolutions.jaiext.scale</groupId>
         <artifactId>jt-scale</artifactId>
+        <version>${jaiext.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>it.geosolutions.jaiext.scale2</groupId>
+        <artifactId>jt-scale2</artifactId>
         <version>${jaiext.version}</version>
       </dependency>
       <dependency>
@@ -1626,7 +1631,7 @@
 
           <!-- Enables the Javadoc tool to interpret a simple, one-argument -->
           <!-- custom block tag tagname in doc comments. Note: <placement/> -->
-          <!-- should be a combinaison of the letters Xaoptcmf.             -->
+          <!-- should be a combination of the letters Xaoptcmf.             -->
           <tags>
             <tag>
               <name>todo</name>
@@ -1823,7 +1828,7 @@
 
           <!-- Enables the Javadoc tool to interpret a simple, one-argument -->
           <!-- custom block tag tagname in doc comments. Note: <placement/> -->
-          <!-- should be a combinaison of the letters Xaoptcmf.             -->
+          <!-- should be a combination of the letters Xaoptcmf.             -->
           <tags>
             <tag>
               <name>todo</name>

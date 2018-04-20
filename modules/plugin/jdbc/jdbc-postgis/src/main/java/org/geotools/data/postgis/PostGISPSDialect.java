@@ -240,6 +240,7 @@ public class PostGISPSDialect extends PreparedStatementSQLDialect {
     @Override
     public PreparedFilterToSQL createPreparedFilterToSQL() {
         PostgisPSFilterToSql fts = new PostgisPSFilterToSql(this);
+        fts.setFunctionEncodingEnabled(delegate.isFunctionEncodingEnabled());
         fts.setLooseBBOXEnabled(delegate.isLooseBBOXEnabled());
         fts.setEncodeBBOXFilterAsEnvelope(delegate.isEncodeBBOXFilterAsEnvelope());
         return fts;
@@ -259,5 +260,13 @@ public class PostGISPSDialect extends PreparedStatementSQLDialect {
     public int getGeometryDimension(String schemaName, String tableName, String columnName,
             Connection cx) throws SQLException {
         return delegate.getGeometryDimension(schemaName, tableName, columnName, cx);
+    }
+
+    public boolean isFunctionEncodingEnabled() {
+        return delegate.isFunctionEncodingEnabled();
+    }
+
+    public void setFunctionEncodingEnabled(boolean functionEncodingEnabled) {
+        delegate.setFunctionEncodingEnabled(functionEncodingEnabled);
     }
 }

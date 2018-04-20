@@ -30,7 +30,10 @@ import java.util.Map;
 
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.filter.AreaFunction;
 import org.geotools.filter.FilterCapabilities;
+import org.geotools.filter.function.DateDifferenceFunction;
+import org.geotools.filter.function.FilterFunction_area;
 import org.geotools.filter.function.FilterFunction_strConcat;
 import org.geotools.filter.function.FilterFunction_strEndsWith;
 import org.geotools.filter.function.FilterFunction_strEqualsIgnoreCase;
@@ -151,6 +154,9 @@ class FilterToSqlHelper {
         caps.addType(Ends.class);
         caps.addType(EndedBy.class);
         caps.addType(TEquals.class);
+        
+        // replacement for area function that was in deprecated dialect registerFunction
+        caps.addType(FilterFunction_area.class);
 
         if(encodeFunctions) {
             // add support for string functions
@@ -175,6 +181,9 @@ class FilterToSqlHelper {
             caps.addType(FilterFunction_abs_4.class);
             caps.addType(FilterFunction_ceil.class);
             caps.addType(FilterFunction_floor.class);
+            
+            // time related functions
+            caps.addType(DateDifferenceFunction.class);
         }
 
         return caps;
@@ -500,7 +509,21 @@ class FilterToSqlHelper {
      * @return
      */
     public boolean visitFunction(Function function, Object extraData) throws IOException {
-        if(function instanceof FilterFunction_strConcat) {
+        if(function instanceof DateDifferenceFunction) {
+            Expression d1 = getParameter(function, 0, true);
+            Expression d2 = getParameter(function, 1, true);
+            // extract epoch returns seconds, DateDifference is defined in ms instead
+            out.write("(extract(epoch from ");
+            d1.accept(delegate, java.util.Date.class);
+            out.write(" - ");
+            d2.accept(delegate, java.util.Date.class);
+            out.write(") * 1000)");
+        } else if(function instanceof FilterFunction_area) {
+            Expression s1 = getParameter(function, 0, true);
+            out.write("ST_Area(");
+            s1.accept(delegate, String.class);
+            out.write(")");
+        } else if(function instanceof FilterFunction_strConcat) {
             Expression s1 = getParameter(function, 0, true);
             Expression s2 = getParameter(function, 1, true);
             out.write("(");

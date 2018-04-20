@@ -24,6 +24,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.geotools.data.collection.ListFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureVisitor;
@@ -60,7 +62,7 @@ public class GroupByVisitor implements FeatureCalc, FeatureAttributeVisitor {
     }
 
     public boolean wasOptimized() {
-        return optimizationResult != null;
+        return optimizationResult != null && optimizationResult != CalcResult.NULL_RESULT;
     }
 
     public boolean wasVisited() {
@@ -150,7 +152,7 @@ public class GroupByVisitor implements FeatureCalc, FeatureAttributeVisitor {
     private class InMemoryGroupBy {
 
         // feature collections grouped by the group by attributes
-        private final Map<List<Object>, DefaultFeatureCollection> groupByIndexes = new HashMap<>();
+        private final Map<List<Object>, FeatureCalc> groupByIndexes = new HashMap<>();
 
         /**
          * Add a feature to the appropriate group by feature collection.
@@ -161,14 +163,14 @@ public class GroupByVisitor implements FeatureCalc, FeatureAttributeVisitor {
             // list of group by attributes values
             List<Object> groupByValues = groupByAttributes.stream()
                     .map(expression -> expression.evaluate(feature)).collect(Collectors.toList());
-            // check if a feature collection already for the group by values
-            DefaultFeatureCollection featureCollection = groupByIndexes.get(groupByValues);
-            if (featureCollection == null) {
-                // we create a feature collection for the group by values
-                featureCollection = new DefaultFeatureCollection();
-                groupByIndexes.put(groupByValues, featureCollection);
+            // check if a feature collection already for the group by values (using a list
+            // feature collection to allow duplicates)
+            FeatureCalc calc = groupByIndexes.get(groupByValues);
+            if (calc == null) {
+                calc = aggregate.create(expression);
+                groupByIndexes.put(groupByValues, calc);
             }
-            featureCollection.add(feature);
+            calc.visit(feature);
         }
 
         /**
@@ -178,17 +180,9 @@ public class GroupByVisitor implements FeatureCalc, FeatureAttributeVisitor {
          */
         Map<List<Object>, CalcResult> visit() {
             Map<List<Object>, CalcResult> results = new HashMap<>();
-            for (Map.Entry<List<Object>, DefaultFeatureCollection> entry : groupByIndexes.entrySet()) {
-                // creating a new aggregation visitor for the current feature collection
-                FeatureCalc visitor = aggregate.create(expression);
-                try {
-                    // visiting the feature collection with the aggregation visitor
-                    entry.getValue().accepts(visitor, progressListener);
-                } catch (Exception exception) {
-                    throw new RuntimeException("Error visiting features collections.", exception);
-                }
+            for (Map.Entry<List<Object>, FeatureCalc> entry : groupByIndexes.entrySet()) {
                 // we add the aggregation visitor to the results
-                results.put(entry.getKey(), visitor.getResult());
+                results.put(entry.getKey(), entry.getValue().getResult());
             }
             return results;
         }

@@ -64,16 +64,22 @@ public class S3ImageInputStreamImpl extends ImageInputStreamImpl {
         this.url = input;
         String urlWithoutQueryString = input.split("\\?")[0];
         String parts[] = urlWithoutQueryString.split("/");
-        StringBuilder keyBuilder = new StringBuilder();
-        this.bucket = parts[2];
-        for (int i = 3; i < parts.length; i++) {
-            keyBuilder.append("/").append(parts[i]);
-        }
-        this.key = keyBuilder.toString();
+        if (input.startsWith("http")) {
+            this.bucket = parts[parts.length-2];
+            this.key = parts[parts.length-1];
+        } else {
+            StringBuilder keyBuilder = new StringBuilder();
+            this.bucket = parts[2];
+            for (int i = 3; i < parts.length; i++) {
+                keyBuilder.append("/").append(parts[i]);
+            }
+            this.key = keyBuilder.toString();
         /* Strip leading slash */
-        this.key = this.key.startsWith("/") ? this.key.substring(1) : this.key;
+            this.key = this.key.startsWith("/") ? this.key.substring(1) : this.key;
+        }
 
-        S3Object object = this.getS3Client().getObject(new GetObjectRequest(this.bucket, this.key));
+        AmazonS3 s3Client = this.getS3Client();
+        S3Object object = s3Client.getObject(new GetObjectRequest(this.bucket, this.key));
         ObjectMetadata meta = object.getObjectMetadata();
 
         this.fileName = nameFromKey(this.key);

@@ -1569,7 +1569,7 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
             final List<SingleCRS> sources, final CoordinateReferenceSystem targetCRS,
             final List<SingleCRS> targets) throws FactoryException {
         /*
-         * Try to find operations from source CRSs to target CRSs. All pairwise combinaisons are tried, but the preference is given to CRS in the same
+         * Try to find operations from source CRSs to target CRSs. All pairwise combinations are tried, but the preference is given to CRS in the same
          * order (source[0] with target[0], source[1] with target[1], etc.). Operations found are stored in 'steps', but are not yet given to pass
          * through transforms. We need to know first if some ordinate values need reordering (for matching the order of target CRS) if any ordinates
          * reordering and source ordinates drops are required.

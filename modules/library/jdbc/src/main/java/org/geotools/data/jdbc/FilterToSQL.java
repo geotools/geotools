@@ -421,7 +421,16 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
         if (inEncodingEnabled) {
             capabilities.addAll(InFunction.getInCapabilities());
         }
+        
+        // basic expressions
+        capabilities.addType(Add.class);
+        capabilities.addType(Subtract.class);
+        capabilities.addType(Divide.class);
+        capabilities.addType(Multiply.class);
+        capabilities.addType(PropertyName.class);
+        capabilities.addType(Literal.class);
 
+        // basic filters
         capabilities.addAll(FilterCapabilities.LOGICAL_OPENGIS);
         capabilities.addAll(FilterCapabilities.SIMPLE_COMPARISONS_OPENGIS);
         capabilities.addType(PropertyIsNull.class);

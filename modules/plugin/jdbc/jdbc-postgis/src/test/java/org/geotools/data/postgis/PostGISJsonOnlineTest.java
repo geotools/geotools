@@ -32,9 +32,12 @@ import org.opengis.filter.PropertyIsEqualTo;
 
 public class PostGISJsonOnlineTest extends JDBCTestSupport {
 
+    PostGISJsonTestSetup pgJsonTestSetup;
+
     @Override
     protected JDBCTestSetup createTestSetup() {
-        return new PostGISJsonTestSetup();
+        pgJsonTestSetup = new PostGISJsonTestSetup();
+        return pgJsonTestSetup;
     }
 
     @Test
@@ -44,23 +47,27 @@ public class PostGISJsonOnlineTest extends JDBCTestSupport {
         SimpleFeatureType featureType = feature.getFeatureType();
         AttributeDescriptor descriptor = featureType.getDescriptor("jsonColumn");
         assertTrue(String.class.equals(descriptor.getType().getBinding()));
-        
-        descriptor = featureType.getDescriptor("jsonbColumn");
-        assertTrue(String.class.equals(descriptor.getType().getBinding()));
+
+        if (pgJsonTestSetup.supportJsonB) {
+            descriptor = featureType.getDescriptor("jsonbColumn");
+            assertTrue(String.class.equals(descriptor.getType().getBinding()));
+        }
     }
-    
+
     @Test
     public void testNumberEntry() throws Exception {
         String name = "numberEntry";
         SimpleFeature feature = getSingleFeatureByName(name);
         String jsonColumnValue = (String) feature.getAttribute("jsonColumn");
-        String jsonbColumnValue = (String) feature.getAttribute("jsonbColumn");
-        
+
         assertTrue(jsonColumnValue.contains("1e-3"));
 
-        // in JSONB, numbers will be printed according to the behavior of the underlying numeric type. 
-        // In practice this means that numbers entered with E notation will be printed without it
-        assertTrue(jsonbColumnValue.contains("0.001"));
+        if (pgJsonTestSetup.supportJsonB) {
+            String jsonbColumnValue = (String) feature.getAttribute("jsonbColumn");
+            // in JSONB, numbers will be printed according to the behavior of the underlying numeric type.
+            // In practice this means that numbers entered with E notation will be printed without it
+            assertTrue(jsonbColumnValue.contains("0.001"));
+        }
     }
 
     @Test
@@ -68,7 +75,9 @@ public class PostGISJsonOnlineTest extends JDBCTestSupport {
         SimpleFeature feature = getSingleFeatureByName("entryWithSpaces");
         assertEquals("{\"title\"    :    \"Title\" }", feature.getAttribute("jsonColumn"));
         // JSONB does not preserve white spaces
-        assertEquals("{\"title\": \"Title\"}", feature.getAttribute("jsonbColumn"));
+        if (pgJsonTestSetup.supportJsonB) {
+            assertEquals("{\"title\": \"Title\"}", feature.getAttribute("jsonbColumn"));
+        }
     }
 
     @Test
@@ -76,16 +85,17 @@ public class PostGISJsonOnlineTest extends JDBCTestSupport {
         String name = "duppedKeyEntry";
         SimpleFeature feature = getSingleFeatureByName(name);
         String jsonColumnValue = (String) feature.getAttribute("jsonColumn");
-        String jsonbColumnValue = (String) feature.getAttribute("jsonbColumn");
-        
         assertTrue(jsonColumnValue.contains("Title1"));
         assertTrue(jsonColumnValue.contains("Title2"));
-        
+
         // JSONB does not keep duplicate object keys
-        assertFalse(jsonbColumnValue.contains("Title1"));
-        assertTrue(jsonbColumnValue.contains("Title2"));
+        if (pgJsonTestSetup.supportJsonB) {
+            String jsonbColumnValue = (String) feature.getAttribute("jsonbColumn");
+            assertFalse(jsonbColumnValue.contains("Title1"));
+            assertTrue(jsonbColumnValue.contains("Title2"));
+        }
     }
-    
+
     @Test
     public void testNullKeyEntry() throws Exception {
         String name = "nullKey";
@@ -99,10 +109,11 @@ public class PostGISJsonOnlineTest extends JDBCTestSupport {
         String name = "nullEntry";
         SimpleFeature feature = getSingleFeatureByName(name);
         String jsonColumnValue = (String) feature.getAttribute("jsonColumn");
-        String jsonbColumnValue = (String) feature.getAttribute("jsonbColumn");
-
         assertNull(jsonColumnValue);
-        assertNull(jsonbColumnValue);
+        if (pgJsonTestSetup.supportJsonB) {
+            String jsonbColumnValue = (String) feature.getAttribute("jsonbColumn");
+            assertNull(jsonbColumnValue);
+        }
     }
 
     private SimpleFeature getSingleFeatureByName(String name) throws IOException {

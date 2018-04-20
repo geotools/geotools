@@ -23,26 +23,25 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.opengis.parameter.ParameterDescriptorGroup;
-import org.opengis.referencing.operation.Matrix;
-import org.opengis.referencing.operation.Operation;
-import org.opengis.referencing.operation.Projection;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.OperationMethod;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.util.InternationalString;
-
 import org.geotools.parameter.Parameters;
 import org.geotools.referencing.AbstractIdentifiedObject;
 import org.geotools.referencing.operation.transform.AbstractMathTransform;
 import org.geotools.referencing.operation.transform.ConcatenatedTransform;
 import org.geotools.referencing.operation.transform.PassThroughTransform;
 import org.geotools.referencing.wkt.Formatter;
-import org.geotools.util.Utilities;
-import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.i18n.ErrorKeys;
+import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.i18n.Vocabulary;
 import org.geotools.resources.i18n.VocabularyKeys;
+import org.geotools.util.Utilities;
+import org.opengis.geometry.MismatchedDimensionException;
+import org.opengis.parameter.ParameterDescriptorGroup;
+import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.Matrix;
+import org.opengis.referencing.operation.Operation;
+import org.opengis.referencing.operation.OperationMethod;
+import org.opengis.referencing.operation.Projection;
+import org.opengis.util.InternationalString;
 
 
 /**
@@ -112,14 +111,13 @@ public class DefaultOperationMethod extends AbstractIdentifiedObject implements 
      */
     private static Map<String,?> getProperties(final MathTransform transform) {
         ensureNonNull("transform", transform);
-        final Map<String,?> properties;
         if (transform instanceof AbstractMathTransform) {
             final AbstractMathTransform mt = (AbstractMathTransform) transform;
-            properties = getProperties(mt.getParameterDescriptors(), null);
-        } else {
-            properties = Collections.singletonMap(NAME_KEY, Vocabulary.format(VocabularyKeys.UNKNOWN));
+            if (mt.getParameterDescriptors() != null) {
+                return getProperties(mt.getParameterDescriptors(), null);
+            }
         }
-        return properties;
+        return Collections.singletonMap(NAME_KEY, Vocabulary.format(VocabularyKeys.UNKNOWN));
     }
 
     /**

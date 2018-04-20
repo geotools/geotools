@@ -26,6 +26,137 @@ But first to upgrade - change your dependency to |release| (or an appropriate st
         ....
     </dependencies>
 
+GeoTools 20.x
+-------------
+
+This releases upgrades from the unofficial JSR-275 units library to the official JSR-363 units API.
+
+* Maven transitive dependency will correctly bring in the required jars::
+   
+    <dependency>
+       <groupId>systems.uom</groupId>
+       <artifactId>systems-common-java8</artifactId>
+       <version>0.7.2</version>
+    </dependency>
+
+* Package names have changed, resulting in some common search and replaces when upgrading:
+  
+  * Search ``javax.measure.unit.Unit`` replace ``javax.measure.Unit``
+  * Search ``ConversionException`` replace  ``IncommensurableException``
+    
+    This is a checked exception, in areas of the GeoTools library where this was found we now return an IllegalArgument exception.
+    
+  * Search ``converter == UnitConverter.IDENTITY`` replace ``converter.isIdentity()``
+  * Search ``javax.measure.unit.NonSI`` replace ``import si.uom.NonSI``
+  * Search ``javax.measure.unit.SI`` replace ``import si.uom.SI``
+  * Search ``SI.METER`` replace ``SI.METRE``
+  * Search ``javax.measure.converter.UnitConverter`` replace ``javax.measure.UnitConverter``
+  * Search ``javax.measure.unit.UnitFormat`` replace ``import javax.measure.format.UnitFormat``
+  * Search ``Unit.ONE`` replace ``AbstractUnit.ONE``
+  * Search ``Dimensionless.UNIT`` replace ``AbstractUnit.ONE``
+  * Search ``Unit.valueOf(unitString)`` replace ``Units.parseUnit(unitString)``
+  
+* Getting Unit instances
+
+  If you know the unit to use at compile time, use one of the Unit instances defined as static variables in ``org.geotools.measure.Units``, ``si.uom.SI``, ``si.uom.NonSI`` or ``systems.uom.common.USCustomary``.
+
+  If you need to define new Units at runtime, it is important to immediately try to convert the new unit to one of the existing instances using Units.autocorrect method. Autocorrect applies some tolerance to locate an equivalent Unit. Skipping autocorrect will produce unexpected results and errors due to small differences in units definition.
+  
+  .. code-block:: java
+
+     // the result should be NonSI.DEGREE_ANGLE:
+     Unit<?> deg = Units.autoCorrect(SI.RADIAN.multiply(0.0174532925199433));
+     Unit<?> halfMetre = SI.METRE.divide(2);
+
+  .. code-block:: java
+  
+     // the result should be SI.METRE
+     Unit<?> unit = Units.autocorrect(halfMetre.multiply(4).divide(2));
+     
+  .. code-block:: java
+     
+     public <T extends Quantity<T>> Unit<T> deriveUnit(Unit<T>  baseUnit, double factor) {
+        return Units.autocorrect(baseUnit.multiply(factor);)
+     }
+
+  Use a specific Quantity whenever possible to get type-safety checks at compile time:
+
+  .. code-block:: java
+  
+     Unit<Length> halfMetre = SI.METRE.divide(2);
+     Unit<Length> stupidUnit = Units.autocorrect(halfMetre.multiply(4).divide(2));
+     
+* Formatting units
+
+  Use ``org.geotools.measure.Units.toName(unit)`` to get the unit name (or unit label if name is not defined).
+  Use ``org.geotools.measure.Units.getDefaultFormat().format()`` to get the unit label (ignoring the name).
+
+  .. code-block:: java
+  
+     Unit<?> unit = ...
+     System.out.println(Units.toName(unit)):
+
+  .. code-block:: java
+
+     // prints "Litre"
+     System.out.println(Units.toName(SI.LITRE))
+     // prints "l"
+     System.out.println(Units.getDefaultFormat().format(SI.LITRE))
+
+  .. code-block:: java
+
+     // Most units don't define a name, so it does not make a difference
+     // prints "m"
+     System.out.println(Units.toName(SI.METRE))
+     // prints "m"
+     System.out.println(Units.getDefaultFormat().format(SI.METRE))
+  
+* Converting units
+
+  If the unit Quantity type is known, use the type-safe getConverterTo() method:
+
+  .. code-block:: java
+  
+     Unit<Angle> unit = ...
+     UnitConverter converter = unit.getConverterTo(SI.RADIAN);
+     double convertedQuantity = converter.convert(3.1415);
+  
+  If the Quantity type is undefined, use the convenience method ``org.geotools.measure.Units.getConverterToAny()``. Note that this method throws an IllegalArgumentException if units can't be converted:
+
+  .. code-block:: java
+
+     Unit<?> unit = ...
+     UnitConverter converter = Units.getConverterToAny(unit, SI.RADIAN);
+     double convertedQuantity = converter.convert(3.1415);
+
+GeoTools 19.x
+-------------
+
+GeoTools is built and tested with Java 8 at this time, to use this library in a Java 9 or Java 10 environment additional JVM runtime arguments are required::
+
+    --add-modules=java.xml.bind --add-modules=java.activation -XX:+IgnoreUnrecognizedVMOptions
+
+These settings turn on several JRE modules that have been disabled by default in Java 9 onward.
+
+GeoTools 15.x
+-------------
+
+GeoTools 15.x requires Java 8::
+
+    <build>
+        <plugins>
+            <plugin>
+                <inherited>true</inherited>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
 GeoTools 14.x
 -------------
 From 14.x version, the `JAI-EXT Project <https://github.com/geosolutions-it/jai-ext>`_ has been integrated in GeoTools. This project provides a high scalable Java API for image processing with support for NoData and ROI. 

@@ -110,10 +110,10 @@ public class SimplifyProcess implements VectorProcess {
             for (Object attribute : f.getAttributes()) {
                 if (attribute instanceof Geometry) {
                     if (preserveTopology) {
-                        attribute = DouglasPeuckerSimplifier.simplify((Geometry) attribute,
+                        attribute = TopologyPreservingSimplifier.simplify((Geometry) attribute,
                                 distance);
                     } else {
-                        attribute = TopologyPreservingSimplifier.simplify((Geometry) attribute,
+                        attribute = DouglasPeuckerSimplifier.simplify((Geometry) attribute,
                                 distance);
                     }
                 }

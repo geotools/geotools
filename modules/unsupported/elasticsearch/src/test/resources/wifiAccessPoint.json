@@ -406,14 +406,11 @@
       "vendor_s": "Asus"
     },
     {
-      "geo2": {
-        "coordinates": [[1,1],[1,2]],
-        "type": "linestring"
-      },
       "geo3": {
         "coordinates": [[[1,1],[5,1],[5,5],[1,5],[1,1]]],
         "type": "polygon"
       },
+      "geo6": "POLYGON ((1 1, 5 1, 5 5, 1 5, 1 1))",
       "id": "12",
       "installed_td": 10,
       "modem_b": true,
@@ -427,10 +424,6 @@
       "vendor_s": "Asus"
     },
     {
-      "geo2": {
-        "coordinates": [[3,2],[3,3]],
-        "type": "linestring"
-      },
       "geo3": {
         "coordinates": [[[3,2],[6,2],[6,7],[3,7],[3,2]]],
         "type": "polygon"
@@ -439,6 +432,7 @@
         "coordinates": [3.0,2.5],
         "type": "POINT"
       },
+      "geo6": "POLYGON ((3 2, 6 2, 6 7, 3 7, 3 2))",
       "id": "13",
       "installed_td": 10,
       "modem_b": true,
@@ -456,10 +450,6 @@
         "coordinates": [[-179,45],[-179,46]],
         "type": "linestring"
       },
-      "geo5": [
-        -179,
-        45
-      ],
       "id": "100",
       "status_s": "not-active"
     },
@@ -469,10 +459,6 @@
         "coordinates": [[179,45],[179,46]],
         "type": "linestring"
       },
-      "geo5": [
-        179,
-        45
-      ],
       "id": "101",
       "status_s": "not-active"
     }

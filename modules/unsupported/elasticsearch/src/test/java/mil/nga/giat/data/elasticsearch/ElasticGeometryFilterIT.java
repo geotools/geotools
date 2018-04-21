@@ -320,4 +320,29 @@ public class ElasticGeometryFilterIT extends ElasticTestSupport {
         assertEquals(1, features.size());
     }
 
+    @Test
+    public void testGeoShapeAsWkt() throws Exception {
+        if (client.getVersion() < 6.2) {
+            // wkt unsupported prior to v6.2
+            return;
+        }
+        init("not-active","geo6");
+        FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
+        GeometryFactory gf = new GeometryFactory();
+        PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
+        LineString ls = gf.createLineString(sf.create(new double[] { 0, 0, 2, 2 }, 2));
+        Crosses f = ff.crosses(ff.property("geo3"), ff.literal(ls));
+        SimpleFeatureCollection features = featureSource.getFeatures(f);
+        assertEquals(1, features.size());
+        SimpleFeatureIterator fsi = features.features();
+        assertTrue(fsi.hasNext());
+        assertEquals(fsi.next().getID(), "active.12");
+
+        sf = new PackedCoordinateSequenceFactory();
+        ls = gf.createLineString(sf.create(new double[] { 0, 0, 1, 1 }, 2));
+        f = ff.crosses(ff.property("geo5"), ff.literal(ls));
+        features = featureSource.getFeatures(f);
+        assertEquals(0, features.size());
+    }
+
 }

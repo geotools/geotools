@@ -27,6 +27,8 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.io.ParseException;
+import com.vividsolutions.jts.io.WKTReader;
 import java.awt.geom.Point2D;
 import org.geotools.referencing.GeodeticCalculator;
 import org.geotools.referencing.datum.DefaultEllipsoid;
@@ -65,7 +67,14 @@ public class ElasticParserUtil {
 
     private final GeodeticCalculator geodeticCalculator;
 
+    private static final Pattern WKT_PATTERN;
+    static {
+        WKT_PATTERN = Pattern.compile("POINT.*|LINESTRING.*|POLYGON.*|MULTIPOINT.*|MULTILINESTRING.*|MULTIPOLYGON.*|GEOMETRYCOLLECTION.*");
+    }
+
     private final GeometryFactory geometryFactory;
+
+    private final WKTReader wktReader;
 
     private boolean unsupportedEncodingMessage;
 
@@ -73,6 +82,7 @@ public class ElasticParserUtil {
         this.geometryFactory = new GeometryFactory();
         this.unsupportedEncodingMessage = false;
         this.geodeticCalculator = new GeodeticCalculator(DefaultEllipsoid.WGS84);
+        this.wktReader = new WKTReader(); 
     }
 
     /**
@@ -101,6 +111,15 @@ public class ElasticParserUtil {
                 final double lat = geoPoint.y;
                 final double lon = geoPoint.x;
                 geometry = geometryFactory.createPoint(new Coordinate(lon, lat));
+            } else if (WKT_PATTERN.matcher((String) obj).matches()) {
+                // geoshape wkt
+                Geometry geom;
+                try {
+                    geom = wktReader.read((String) obj);
+                } catch (ParseException e) {
+                    geom = null;
+                }
+                geometry = geom;
             } else {
                 geometry = null;
             }

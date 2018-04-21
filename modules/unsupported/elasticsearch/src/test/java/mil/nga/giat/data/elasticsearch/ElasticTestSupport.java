@@ -31,8 +31,6 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.TimeZone;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -60,6 +58,8 @@ public class ElasticTestSupport {
     private static final String TEST_FILE = "wifiAccessPoint.json";
 
     private static final String LEGACY_ACTIVE_MAPPINGS_FILE = "active_mappings_legacy.json";
+
+    private static final String NG_ACTIVE_MAPPINGS_FILE = "active_mappings_ng.json";
 
     private static final String ACTIVE_MAPPINGS_FILE = "active_mappings.json";
 
@@ -120,7 +120,14 @@ public class ElasticTestSupport {
         settings.put("settings", ImmutableMap.of("number_of_shards", numShards, "number_of_replicas", numReplicas));
         Map<String,Object> mappings = new HashMap<>();
         settings.put("mappings", mappings);
-        final String filename = client.getMajorVersion() < 5 ? LEGACY_ACTIVE_MAPPINGS_FILE : ACTIVE_MAPPINGS_FILE;
+        final String filename;
+        if (client.getVersion() < 5) {
+            filename = LEGACY_ACTIVE_MAPPINGS_FILE;
+        } else if (client.getVersion() > 6.1) {
+            filename = NG_ACTIVE_MAPPINGS_FILE;
+        } else {
+            filename = ACTIVE_MAPPINGS_FILE;
+        }
         try (Scanner s = new Scanner(ClassLoader.getSystemResourceAsStream(filename))) {
             s.useDelimiter("\\A");
             Map<String,Object> source = mapReader.readValue(s.next());

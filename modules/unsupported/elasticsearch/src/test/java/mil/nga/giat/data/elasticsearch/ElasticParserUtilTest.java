@@ -193,9 +193,21 @@ public class ElasticParserUtilTest {
     }
 
     @Test
+    public void testGeoShapePointWkt() throws JsonParseException, JsonMappingException, IOException {
+        Point geom = rgb.createRandomPoint();
+        assertTrue(parserUtil.createGeometry(rgb.toWkt(geom)).equalsExact(geom, 1e-9));
+    }
+
+    @Test
     public void testGeoShapeLineString() throws JsonParseException, JsonMappingException, IOException {
         LineString geom = rgb.createRandomLineString();
         assertTrue(parserUtil.createGeometry(rgb.toMap(geom)).equalsExact(geom, 1e-9));
+    }
+
+    @Test
+    public void testGeoShapeLineStringWkt() throws JsonParseException, JsonMappingException, IOException {
+        LineString geom = rgb.createRandomLineString();
+        assertTrue(parserUtil.createGeometry(rgb.toWkt(geom)).equalsExact(geom, 1e-9));
     }
 
     @Test
@@ -218,10 +230,21 @@ public class ElasticParserUtilTest {
         assertNotNull(geometry);
     }
 
+    public void testGeoShapePolygonWkt() throws JsonParseException, JsonMappingException, IOException {
+        Polygon geom = rgb.createRandomPolygon();
+        assertTrue(parserUtil.createGeometry(rgb.toWkt(geom)).equalsExact(geom, 1e-9));
+    }
+
     @Test
     public void testGeoShapeMultiPoint() throws JsonParseException, JsonMappingException, IOException {
         MultiPoint geom = rgb.createRandomMultiPoint();
         assertTrue(parserUtil.createGeometry(rgb.toMap(geom)).equalsExact(geom, 1e-9));
+    }
+
+    @Test
+    public void testGeoShapeMultiPointWkt() throws JsonParseException, JsonMappingException, IOException {
+        MultiPoint geom = rgb.createRandomMultiPoint();
+        assertTrue(parserUtil.createGeometry(rgb.toWkt(geom)).equalsExact(geom, 1e-9));
     }
 
     @Test
@@ -231,9 +254,21 @@ public class ElasticParserUtilTest {
     }
 
     @Test
+    public void testGeoShapeMultiLineStringWkt() throws JsonParseException, JsonMappingException, IOException {
+        MultiLineString geom = rgb.createRandomMultiLineString();
+        assertTrue(parserUtil.createGeometry(rgb.toWkt(geom)).equalsExact(geom, 1e-9));
+    }
+
+    @Test
     public void testGeoShapeMultiPolygon() throws JsonParseException, JsonMappingException, IOException {
         MultiPolygon geom = rgb.createRandomMultiPolygon();
         assertTrue(parserUtil.createGeometry(rgb.toMap(geom)).equalsExact(geom, 1e-9));
+    }
+
+    @Test
+    public void testGeoShapeMultiPolygonWkt() throws JsonParseException, JsonMappingException, IOException {
+        MultiPolygon geom = rgb.createRandomMultiPolygon();
+        assertTrue(parserUtil.createGeometry(rgb.toWkt(geom)).equalsExact(geom, 1e-9));
     }
 
     @Test
@@ -241,6 +276,13 @@ public class ElasticParserUtilTest {
         rgb.setNumGeometries(5);
         GeometryCollection geom = rgb.createRandomGeometryCollection();
         assertTrue(parserUtil.createGeometry(rgb.toMap(geom)).equalsExact(geom, 1e-9));
+    }
+
+    @Test
+    public void testGeoShapeGeometryCollectionWkt() throws JsonParseException, JsonMappingException, IOException {
+        rgb.setNumGeometries(5);
+        GeometryCollection geom = rgb.createRandomGeometryCollection();
+        assertTrue(parserUtil.createGeometry(rgb.toWkt(geom)).equalsExact(geom, 1e-9));
     }
 
     @Test

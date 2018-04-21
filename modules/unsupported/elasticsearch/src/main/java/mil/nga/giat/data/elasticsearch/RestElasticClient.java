@@ -42,13 +42,13 @@ public class RestElasticClient implements ElasticClient {
 
     private final static DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
-    private final static int DEFAULT_MAJOR_VERSION = 5;
+    private final static double DEFAULT_VERSION = 6.0;
 
     private RestClient client;
 
     private ObjectMapper mapper;
 
-    private Integer majorVersion;
+    private Double version;
 
     public RestElasticClient(RestClient client) {
         this.client = client;
@@ -57,31 +57,31 @@ public class RestElasticClient implements ElasticClient {
     }
 
     @Override
-    public int getMajorVersion() {
-        if (majorVersion != null) {
-            return majorVersion;
+    public double getVersion() {
+        if (version != null) {
+            return version;
         }
 
-        final Pattern pattern = Pattern.compile("(\\d+)\\.\\d+\\.\\d+");
+        final Pattern pattern = Pattern.compile("(\\d+\\.\\d+)\\.\\d+");
         try {
             final Response response = performRequest("GET", "/", null);
             try (final InputStream inputStream = response.getEntity().getContent()) {
                 Map<String,Object> info = mapper.readValue(inputStream, new TypeReference<Map<String, Object>>() {});
                 @SuppressWarnings("unchecked")
-                Map<String,Object> version = (Map<String,Object>) info.getOrDefault("version", Collections.EMPTY_MAP);
-                final Matcher m = pattern.matcher((String) version.get("number"));
+                Map<String,Object> ver = (Map<String,Object>) info.getOrDefault("version", Collections.EMPTY_MAP);
+                final Matcher m = pattern.matcher((String) ver.get("number"));
                 if (!m.find()) {
-                    majorVersion = DEFAULT_MAJOR_VERSION;
+                    version = DEFAULT_VERSION;
                 } else {
-                    majorVersion = Integer.valueOf(m.group(1));
+                    version = Double.valueOf(m.group(1));
                 }
             }
         } catch (Exception e) {
             LOGGER.warning("Error getting server version: " + e);
-            majorVersion = DEFAULT_MAJOR_VERSION;
+            version = DEFAULT_VERSION;
         }
 
-        return majorVersion;
+        return version;
     }
 
     @Override
@@ -163,7 +163,7 @@ public class RestElasticClient implements ElasticClient {
         }
 
         if (!request.getFields().isEmpty()) {
-            final String key = getMajorVersion() > 2 ? "stored_fields" : "fields";
+            final String key = getVersion() >= 5 ? "stored_fields" : "fields";
             requestBody.put(key, request.getFields());
         }
 

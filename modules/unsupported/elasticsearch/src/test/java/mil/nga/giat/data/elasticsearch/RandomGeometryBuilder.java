@@ -29,6 +29,7 @@ import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.io.WKTWriter;
 
 public class RandomGeometryBuilder {
 
@@ -44,6 +45,8 @@ public class RandomGeometryBuilder {
 
     private int numGeometries;
 
+    private WKTWriter wktWriter;
+
     public RandomGeometryBuilder() {
         geometryFactory = new GeometryFactory();
         random = new Random(123456789l);
@@ -51,6 +54,7 @@ public class RandomGeometryBuilder {
         numPoints = 10;
         numGeometries = 2;
         geometryJson = new GeometryJSON(decimals);
+        wktWriter = new WKTWriter();
     }
 
     public Point createRandomPoint() {
@@ -140,6 +144,10 @@ public class RandomGeometryBuilder {
     public Map<String,Object> toMap(Geometry geometry) throws JsonParseException, JsonMappingException, IOException {
         final String json = geometryJson.toString(geometry);
         return new ObjectMapper().readValue(json, new TypeReference<Map<String, Object>>() {});
+    }
+
+    public String toWkt(Geometry geometry) {
+        return wktWriter.write(geometry);
     }
 
     public Map<String,Object> toMap(Envelope envelope) throws JsonParseException, JsonMappingException, IOException {

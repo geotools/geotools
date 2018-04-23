@@ -307,14 +307,4 @@ public class MBDecision extends MBExpression {
                 throw new MBFormatException(name + " is an unsupported decision expression");
         }
     }
-
-    private void throwUnexpectedArgumentCount(String decisionOp, int argCount) throws MBFormatException {
-        throw new MBFormatException(String.format("Decision \"%s\" should have exactly %d argument(s)",
-                decisionOp, argCount));
-    }
-
-    private void throwInsufficientArgumentCount(String decisionOp, int argCount) throws MBFormatException {
-        throw new MBFormatException(String.format("Decision \"%s\" should have at least %d argument(s)",
-                decisionOp, argCount));
-    }
 }

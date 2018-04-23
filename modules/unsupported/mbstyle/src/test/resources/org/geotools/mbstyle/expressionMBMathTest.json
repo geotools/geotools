@@ -1,0 +1,241 @@
+{
+    "version": 8,
+    "name": "expressions",
+    "metadata": {
+        "mapbox:autocomposite": true,
+        "mapbox:type": "template"
+    },
+    "center": [
+        -482.37277069238866,
+        37.59758909587205
+    ],
+    "zoom": 12.367375686228195,
+    "bearing": 0,
+    "pitch": 0,
+    "sources": {
+        "composite": {
+            "url": "mapbox://mapbox.mapbox-streets-v7",
+            "type": "vector"
+        },
+        "mapbox://mapbox.satellite": {
+            "url": "mapbox://mapbox.satellite",
+            "type": "raster",
+            "tileSize": 256
+        }
+    },
+    "sprite": "mapbox://sprites/testuser/ciz723a3y000g2so5l675lmz8",
+    "glyphs": "mapbox://fonts/testuser/{fontstack}/{range}.pbf",
+    "layers": [
+        {
+            "id": "mathPi",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+              "pi": ["pi"]
+            }
+        },
+        {
+            "id": "mathE",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+              "e": ["e"]
+            }
+        },
+        {
+            "id": "mathln2",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+              "naturalLog2": ["ln2"]
+            }
+        },
+        {
+            "id": "mathln",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+              "naturalLog": ["ln", ["get", "anotherIntField"]]
+            }
+        },
+        {
+            "id": "mathlog10",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+              "logBase10": ["log10", ["get", "anotherIntField"]]
+            }
+        },
+        {
+            "id": "mathlog2",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+              "logBase2": ["log2", ["get", "anotherIntField"]]
+            }
+        },
+        {
+            "id": "mathSqrt",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+              "sqrt4": ["sqrt", 4],
+              "sqrt100": ["sqrt", 100],
+              "sqrtWithFeature": ["sqrt", ["get", "anotherIntField"]]
+            }
+        },
+        {
+            "id": "mathAdd",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+              "add1": ["+", 100],
+              "add2": ["+", 1, 2],
+              "add3": ["+", 1, 2, 4],
+              "addNegative": ["+", -1, -4],
+              "addWithFeature": ["+", ["get", "anotherIntField"], 2, 3, 4, 5, 6, 7, 8, 9, 10]
+            }
+        },
+        {
+            "id": "mathSubtract",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+              "subtract": ["-", 10, 4],
+              "subtractLargeFromSmall": ["-", 2, 4],
+              "subtractNegative": ["-", -1, -4],
+              "subtractWithFeature": ["-", ["get", "anotherIntField"], 10]
+            }
+        },
+        {
+            "id": "mathMultiply",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+              "multiply": ["*", 2, 3],
+              "multiply3": ["*", 2, 3, 4],
+              "multiplyNegative": ["*", -3, -4],
+              "multiplyWithFeature": ["*", ["get", "anotherIntField"], 8, 9, 10]
+            }
+        },
+        {
+            "id": "mathDivide",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+              "divide": ["/", 10, 4],
+              "divideNegative": ["/", -1, -4],
+              "divideWithFeature": ["/", ["get", "anotherIntField"], 10]
+            }
+        },
+        {
+            "id": "mathRemainder",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+              "remainder": ["%", 10, 4],
+              "remainderNegative": ["%", -1, -4],
+              "remainderWithFeature": ["%", ["get", "anotherIntField"], 10]
+            }
+        },
+        {
+            "id": "mathMin",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+              "min": ["min", 10, 4],
+              "minOf10": ["min", 9, 4, -2, 6, 18, -20, 7, 2.3, -9, 3],
+              "minWithFeature": ["min", ["get", "anotherIntField"], 5]
+            }
+        },
+        {
+            "id": "mathMax",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+              "max": ["max", 10, 4],
+              "maxOf10": ["max", 9, 4, -2, 6, 18, -20, 7, 2.3, -9, 3],
+              "maxWithFeature": ["max", ["get", "anotherIntField"], 5]
+            }
+        },
+        {
+            "id": "mathExponent",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+              "exponent": ["^", 10, 4],
+              "exponentNegative": ["^", 10, -4],
+              "exponentWithFeature": ["^", ["get", "anotherIntField"], 5]
+            }
+        },
+        {
+            "id": "mathSin",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+              "sin": ["sin", ["get", "anotherIntField"], 5]
+            }
+        },
+        {
+            "id": "mathAsin",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+              "asin": ["asin", ["get", "anotherIntField"], 5]
+            }
+        },
+        {
+            "id": "mathCos",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+              "cos": ["cos", ["get", "anotherIntField"], 5]
+            }
+        },
+        {
+            "id": "mathAcos",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+              "acos": ["acos", ["get", "anotherIntField"], 5]
+            }
+        },
+        {
+            "id": "mathTan",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+              "tan": ["tan", ["get", "anotherIntField"], 5]
+            }
+        },
+        {
+            "id": "mathAtan",
+            "type": "symbol",
+            "source": "composite",
+            "source-layer": "waterway",
+            "layout": {
+              "atan": ["atan", ["get", "anotherIntField"], 5]
+            }
+        }
+    ]
+}

@@ -178,4 +178,14 @@ public abstract class MBExpression extends FunctionImpl {
     public static Expression transformExpression(JSONArray json) {
         return create(json).getExpression();
     }
+
+    protected void throwUnexpectedArgumentCount(String expression, int argCount) throws MBFormatException {
+        throw new MBFormatException(String.format("Expression \"%s\" should have exactly %d argument(s)",
+                expression, argCount));
+    }
+
+    protected void throwInsufficientArgumentCount(String expression, int argCount) throws MBFormatException {
+        throw new MBFormatException(String.format("Expression \"%s\" should have at least %d argument(s)",
+                expression, argCount));
+    }
 }

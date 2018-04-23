@@ -22,9 +22,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 import java.util.logging.Logger;
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
+
+import javax.measure.Unit;
+
+import org.geotools.measure.Units;
 import org.geotools.temporal.reference.DefaultTemporalCoordinateSystem;
 import org.opengis.temporal.CalendarDate;
 import org.opengis.temporal.DateAndTime;
@@ -33,6 +34,9 @@ import org.opengis.temporal.JulianDate;
 import org.opengis.temporal.OrdinalPosition;
 import org.opengis.temporal.TemporalCoordinate;
 import org.opengis.temporal.TemporalCoordinateSystem;
+
+import si.uom.NonSI;
+import si.uom.SI;
 
 /**
  * This is a tool class to convert DateTime from ISO8601 to Date object.
@@ -404,27 +408,27 @@ public class Utils {
         long mills = duration_.getTimeInMillis();
         long temp = mills / yearMS;
         if (temp >= 1) {
-            return NonSI.YEAR;
+            return SI.YEAR;
         }
         temp = mills / monthMS;
         if (temp >= 1) {
-            return NonSI.MONTH;
+            return Units.MONTH;
         }
         temp = mills / weekMS;
         if (temp >= 1) {
-            return NonSI.WEEK;
+            return SI.WEEK;
         }
         temp = mills / dayMS;
         if (temp >= 1) {
-            return NonSI.DAY;
+            return SI.DAY;
         }
         temp = mills / hourMS;
         if (temp >= 1) {
-            return NonSI.HOUR;
+            return SI.HOUR;
         }
         temp = mills / minMS;
         if (temp >= 1) {
-            return NonSI.MINUTE;
+            return SI.MINUTE;
         }
         temp = mills / secondMS;
         if (temp >= 1) {

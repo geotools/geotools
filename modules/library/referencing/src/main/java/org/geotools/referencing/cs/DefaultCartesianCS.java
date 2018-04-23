@@ -20,18 +20,20 @@
 package org.geotools.referencing.cs;
 
 import java.util.Map;
-import javax.measure.unit.Unit;
-import javax.measure.converter.UnitConverter;
 
+import javax.measure.IncommensurableException;
+import javax.measure.UnconvertibleException;
+import javax.measure.Unit;
+import javax.measure.UnitConverter;
+
+import org.geotools.measure.Measure;
+import org.geotools.resources.i18n.ErrorKeys;
+import org.geotools.resources.i18n.Errors;
+import org.geotools.resources.i18n.VocabularyKeys;
+import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.cs.AxisDirection;
 import org.opengis.referencing.cs.CartesianCS;
 import org.opengis.referencing.cs.CoordinateSystemAxis;
-import org.opengis.geometry.MismatchedDimensionException;
-
-import org.geotools.measure.Measure;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.VocabularyKeys;
 
 
 /**
@@ -275,7 +277,13 @@ public class DefaultCartesianCS extends DefaultAffineCS implements CartesianCS {
         if (converters == null) {
             converters = new UnitConverter[getDimension()];
             for (int i=0; i<converters.length; i++) {
-                converters[i] = getAxis(i).getUnit().getConverterTo(unit);
+                try {
+                    converters[i] = getAxis(i).getUnit().getConverterToAny(unit);
+                } catch (UnconvertibleException | IndexOutOfBoundsException
+                        | IncommensurableException e) {
+                    throw new MismatchedDimensionException(
+                            "Axis units are not mutually convertible", e);
+                }
             }
             this.converters = converters;
         }

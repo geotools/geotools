@@ -17,8 +17,15 @@
 package org.geotools.referencing.operation.transform;
 
 import java.io.Serializable;
-import javax.measure.unit.Unit;
 
+import org.geotools.metadata.iso.citation.Citations;
+import org.geotools.parameter.DefaultParameterDescriptor;
+import org.geotools.parameter.FloatParameter;
+import org.geotools.referencing.NamedIdentifier;
+import org.geotools.referencing.operation.LinearTransform;
+import org.geotools.referencing.operation.MathTransformProvider;
+import org.geotools.resources.i18n.Vocabulary;
+import org.geotools.resources.i18n.VocabularyKeys;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptorGroup;
 import org.opengis.parameter.ParameterNotFoundException;
@@ -28,14 +35,7 @@ import org.opengis.referencing.operation.Conversion;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform1D;
 
-import org.geotools.metadata.iso.citation.Citations;
-import org.geotools.parameter.DefaultParameterDescriptor;
-import org.geotools.parameter.FloatParameter;
-import org.geotools.referencing.NamedIdentifier;
-import org.geotools.referencing.operation.LinearTransform;
-import org.geotools.referencing.operation.MathTransformProvider;
-import org.geotools.resources.i18n.VocabularyKeys;
-import org.geotools.resources.i18n.Vocabulary;
+import tec.uom.se.AbstractUnit;
 
 
 /**
@@ -348,7 +348,7 @@ public class ExponentialTransform1D extends AbstractMathTransform
          * Valid values range is unrestricted. The default value is 1.
          */
         public static final ParameterDescriptor SCALE = DefaultParameterDescriptor.create(
-                "scale", 1, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Unit.ONE);
+                "scale", 1, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, AbstractUnit.ONE);
 
         /**
          * The parameters group.

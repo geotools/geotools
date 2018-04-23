@@ -21,8 +21,8 @@ import java.awt.geom.AffineTransform;
 import java.io.File;
 import java.io.IOException;
 
-import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
+import si.uom.SI;
+import javax.measure.Unit;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.operator.ConstantDescriptor;
 
@@ -79,7 +79,7 @@ public class UtilitiesTest extends Assert {
 
         // Test basic units parsing
         Unit unit = Utilities.parseUnit("m");
-        assertEquals(unit, SI.METER);
+        assertEquals(unit, SI.METRE);
 
         unit = Utilities.parseUnit("s");
         assertEquals(unit, SI.SECOND);
@@ -91,7 +91,7 @@ public class UtilitiesTest extends Assert {
         final double inverseFlattening = 298.257223563;
         final double equatorialRadius = 6378137;
         final DefaultGeodeticDatum datum = Utilities.getDefaultGeodeticDatum("WGS84",
-                equatorialRadius, inverseFlattening, SI.METER);
+                equatorialRadius, inverseFlattening, SI.METRE);
         final PrimeMeridian primeMeridian = datum.getPrimeMeridian();
         assertEquals(0, primeMeridian.getGreenwichLongitude(), DELTA);
         final Ellipsoid ellipsoid = datum.getEllipsoid();

@@ -22,7 +22,7 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 import org.opengis.referencing.cs.*;
 import org.opengis.referencing.crs.*;

@@ -25,7 +25,7 @@ import static java.lang.Math.*;
 import java.awt.geom.Point2D;
 import java.util.Collection;
 
-import javax.measure.unit.NonSI;
+import si.uom.NonSI;
 
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;

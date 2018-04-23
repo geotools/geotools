@@ -18,7 +18,7 @@ package org.geotools.referencing.operation;
 
 import java.util.HashMap;
 import java.util.Map;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 import org.opengis.parameter.GeneralParameterDescriptor;
 import org.opengis.parameter.GeneralParameterValue;
@@ -146,8 +146,8 @@ public abstract class MathTransformProvider extends DefaultOperationMethod {
      * Subclasses can implements this method as in the example below:
      *
      * <blockquote><pre>
-     * double semiMajor = values.parameter("semi_major").doubleValue(SI.METER);
-     * double semiMinor = values.parameter("semi_minor").doubleValue(SI.METER);
+     * double semiMajor = values.parameter("semi_major").doubleValue(SI.METRE);
+     * double semiMinor = values.parameter("semi_minor").doubleValue(SI.METRE);
      * // etc...
      * return new MyTransform(semiMajor, semiMinor, ...);
      * </pre></blockquote>

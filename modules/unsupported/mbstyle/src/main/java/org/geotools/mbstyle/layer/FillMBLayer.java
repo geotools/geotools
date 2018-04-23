@@ -22,6 +22,7 @@ import org.geotools.mbstyle.parse.MBFilter;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.mbstyle.transform.MBStyleTransformer;
+import org.geotools.measure.Units;
 import org.geotools.styling.*;
 import org.geotools.text.Text;
 import org.json.simple.JSONObject;
@@ -31,7 +32,7 @@ import org.opengis.style.Displacement;
 import org.opengis.style.GraphicFill;
 import org.opengis.style.SemanticType;
 
-import javax.measure.unit.NonSI;
+import si.uom.NonSI;
 import java.awt.*;
 import java.util.List;
 import java.util.*;
@@ -300,7 +301,7 @@ public class FillMBLayer extends MBLayer {
                 getId(),
                 ff.property((String)null),
                 sf.description(Text.text("fill"),null),
-                NonSI.PIXEL,
+                Units.PIXEL,
                 stroke,
                 fill,
                 fillTranslateDisplacement(),

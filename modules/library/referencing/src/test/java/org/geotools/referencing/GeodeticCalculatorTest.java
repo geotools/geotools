@@ -31,8 +31,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 
-import javax.measure.unit.SI;
-
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.cs.DefaultCoordinateSystemAxis;
@@ -48,6 +46,8 @@ import org.opengis.referencing.operation.TransformException;
 
 import com.csvreader.CsvReader;
 
+import si.uom.SI;
+import tec.uom.se.unit.MetricPrefix;
 
 /**
  * Tests the geodetic calculator.
@@ -104,7 +104,7 @@ public final class GeodeticCalculatorTest {
             180.00, 10000,  14142
         };
         final double             R          = 20000/Math.PI;
-        final DefaultEllipsoid   ellipsoid  = DefaultEllipsoid.createEllipsoid("Test",R,R,SI.KILO(SI.METER));
+        final DefaultEllipsoid   ellipsoid  = DefaultEllipsoid.createEllipsoid("Test",R,R,MetricPrefix.KILO(SI.METRE));
         final GeodeticCalculator calculator = new GeodeticCalculator(ellipsoid);
         calculator.setStartingGeographicPoint(0, 45);
         for (int i=0; i<DATA.length; i+=3) {

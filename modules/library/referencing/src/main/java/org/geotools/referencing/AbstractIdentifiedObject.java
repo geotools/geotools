@@ -25,17 +25,27 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.HashMap;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.logging.LogRecord;
-import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
+import java.util.logging.Logger;
 
+import javax.measure.Unit;
+
+import org.geotools.metadata.iso.citation.Citations;
+import org.geotools.referencing.wkt.Formattable;
+import org.geotools.resources.i18n.ErrorKeys;
+import org.geotools.resources.i18n.Errors;
+import org.geotools.resources.i18n.LoggingKeys;
+import org.geotools.resources.i18n.Loggings;
+import org.geotools.util.GrowableInternationalString;
+import org.geotools.util.NameFactory;
+import org.geotools.util.Utilities;
+import org.geotools.util.logging.Logging;
 import org.opengis.metadata.Identifier;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.parameter.InvalidParameterValueException;
@@ -43,18 +53,9 @@ import org.opengis.referencing.IdentifiedObject;
 import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.util.GenericName;
 import org.opengis.util.InternationalString;
-import org.opengis.util.ScopedName;
 
-import org.geotools.metadata.iso.citation.Citations;
-import org.geotools.referencing.wkt.Formattable;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Loggings;
-import org.geotools.resources.i18n.LoggingKeys;
-import org.geotools.util.logging.Logging;
-import org.geotools.util.GrowableInternationalString;
-import org.geotools.util.NameFactory;
-import org.geotools.util.Utilities;
+import si.uom.SI;
+import tec.uom.se.AbstractUnit;
 
 
 /**
@@ -1113,7 +1114,7 @@ NEXT_KEY: for (final Map.Entry<String,?> entry : properties.entrySet()) {
      * @throws IllegalArgumentException if {@code unit} is not a linear unit.
      */
     protected static void ensureLinearUnit(final Unit<?> unit) throws IllegalArgumentException {
-        if (!SI.METER.isCompatible(unit)) {
+        if (!SI.METRE.isCompatible(unit)) {
             throw new IllegalArgumentException(Errors.format(ErrorKeys.NON_LINEAR_UNIT_$1, unit));
         }
     }
@@ -1126,7 +1127,7 @@ NEXT_KEY: for (final Map.Entry<String,?> entry : properties.entrySet()) {
      * @throws IllegalArgumentException if {@code unit} is not an angular unit.
      */
     protected static void ensureAngularUnit(final Unit<?> unit) throws IllegalArgumentException {
-        if (!SI.RADIAN.isCompatible(unit) && !Unit.ONE.equals(unit)) {
+        if (!SI.RADIAN.isCompatible(unit) && !AbstractUnit.ONE.equals(unit)) {
             throw new IllegalArgumentException(Errors.format(ErrorKeys.NON_ANGULAR_UNIT_$1, unit));
         }
     }

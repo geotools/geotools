@@ -20,27 +20,28 @@
 package org.geotools.parameter;
 
 import java.io.File;
-import java.net.URL;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Set;
 
-import javax.measure.converter.UnitConverter;
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
+import javax.measure.UnitConverter;
 
+import org.geotools.measure.Units;
+import org.geotools.resources.Classes;
+import org.geotools.resources.i18n.ErrorKeys;
+import org.geotools.resources.i18n.Errors;
+import org.geotools.util.Utilities;
 import org.opengis.parameter.InvalidParameterTypeException;
 import org.opengis.parameter.InvalidParameterValueException;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.util.CodeList;
 
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.Classes;
-import org.geotools.measure.Units;
-import org.geotools.util.Utilities;
+import si.uom.NonSI;
+import si.uom.SI;
+import tec.uom.se.AbstractUnit;
 
 
 /**
@@ -202,8 +203,9 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
     public static Parameter<Double> create(final String name, final double value, Unit<?> unit) {
         // Normalizes the specified unit into one of "standard" units used in projections.
         if (unit != null) {
-                 if (SI.METER          .isCompatible(unit)) unit = SI.METER;
-            else if (NonSI.DAY         .isCompatible(unit)) unit = NonSI.DAY;
+                 if (SI.METRE          .isCompatible(unit)) unit = SI.METRE;
+            else if (SI.DAY.isCompatible(unit))
+                unit = SI.DAY;
             else if (NonSI.DEGREE_ANGLE.isCompatible(unit)) unit = NonSI.DEGREE_ANGLE;
         }
         final ParameterDescriptor<Double> descriptor = DefaultParameterDescriptor.create(
@@ -332,14 +334,14 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
      *       and all of them maps to {@link Unit#ONE} or {@link Units#PPM}. Consequently, they
      *       are hard-coded and treated especially by this method.
      *
-     * @todo Provides a better way to differentiate scale units (currently Unit.ONE)
+     * @todo Provides a better way to differentiate scale units (currently AbstractUnit.ONE)
      *       and angular units. Both are dimensionless...
      */
     static int getUnitMessageID(final Unit<?> unit) {
         // Note: ONE must be tested before RADIAN.
-        if (Unit.ONE .equals      (unit) ||
+        if (AbstractUnit.ONE .equals      (unit) ||
             Units.PPM.equals      (unit)) return ErrorKeys.NON_SCALE_UNIT_$1;
-        if (SI.METER .isCompatible(unit)) return ErrorKeys.NON_LINEAR_UNIT_$1;
+        if (SI.METRE .isCompatible(unit)) return ErrorKeys.NON_LINEAR_UNIT_$1;
         if (SI.SECOND.isCompatible(unit)) return ErrorKeys.NON_TEMPORAL_UNIT_$1;
         if (SI.RADIAN.isCompatible(unit)) return ErrorKeys.NON_ANGULAR_UNIT_$1;
         return ErrorKeys.INCOMPATIBLE_UNIT_$1;
@@ -368,7 +370,7 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
         if (getUnitMessageID(unit) != expectedID) {
             throw new IllegalArgumentException(Errors.format(expectedID, unit));
         }
-        return this.unit.getConverterTo(unit).convert(doubleValue());
+        return Units.getConverterToAny(this.unit, unit).convert(doubleValue());
     }
 
     /**
@@ -480,7 +482,7 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
         if (getUnitMessageID(unit) != expectedID) {
             throw new IllegalArgumentException(Errors.format(expectedID, unit));
         }
-        final UnitConverter converter = this.unit.getConverterTo(unit);
+        UnitConverter converter = Units.getConverterToAny(this.unit, unit);
         final double[] values = doubleValueList().clone();
         for (int i=0; i<values.length; i++) {
             values[i] = converter.convert(values[i]);
@@ -601,7 +603,7 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
      * @see #setValue(double)
      * @see #doubleValue(Unit)
      */
-    public void setValue(final double value, final Unit<?> unit)
+    public void setValue(final double value, Unit<?> unit)
             throws InvalidParameterValueException
     {
         ensureNonNull("unit", unit);
@@ -616,7 +618,7 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
             throw new InvalidParameterValueException(Errors.format(expectedID, unit),
                       descriptor.getName().getCode(), value);
         }
-        final Double converted = unit.getConverterTo(targetUnit).convert(value);
+        Double converted = Units.getConverterToAny(unit, targetUnit).convert(value);
         ensureValidValue(descriptor, converted);
         // Really store the original value, not the converted one,
         // because we store the unit as well.
@@ -721,7 +723,7 @@ public class Parameter<T> extends AbstractParameter implements ParameterValue<T>
             throw new IllegalArgumentException(Errors.format(expectedID, unit));
         }
         final double[] converted = values.clone();
-        final UnitConverter converter = unit.getConverterTo(targetUnit);
+        UnitConverter converter = Units.getConverterToAny(unit, targetUnit);
         for (int i=0; i<converted.length; i++) {
             converted[i] = converter.convert(converted[i]);
         }

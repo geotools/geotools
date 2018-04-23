@@ -10,7 +10,7 @@
 package org.opengis.parameter;
 
 import java.net.URI;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 import org.opengis.annotation.UML;
 
 import static org.opengis.annotation.Obligation.*;

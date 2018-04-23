@@ -16,13 +16,12 @@
  */
 package org.geotools.styling.visitor;
 
+import javax.measure.Unit;
 import javax.measure.quantity.Length;
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor;
+import org.geotools.measure.Units;
 import org.geotools.util.Converters;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
@@ -30,6 +29,10 @@ import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.NilExpression;
+
+import si.uom.NonSI;
+import si.uom.SI;
+import systems.uom.common.USCustomary;
 
 /**
  * Helper class that parses a measure with eventual local unit of measure and helps the
@@ -84,7 +87,7 @@ class Measure {
 
     private void setDefaultUnit(Unit<Length> defaultUnit) {
         if (defaultUnit == null) {
-            this.defaultUnit = NonSI.PIXEL;
+            this.defaultUnit = Units.PIXEL;
         } else {
             this.defaultUnit = defaultUnit;
         }
@@ -106,13 +109,13 @@ class Measure {
 
         if (value.endsWith("px")) {
             unitless = value.substring(0, value.length() - 2);
-            uom = NonSI.PIXEL;
+            uom = Units.PIXEL;
         } else if (value.endsWith("ft")) {
             unitless = value.substring(0, value.length() - 2);
-            uom = NonSI.FOOT;
+            uom = USCustomary.FOOT;
         } else if (value.endsWith("m")) {
             unitless = value.substring(0, value.length() - 1);
-            uom = SI.METER;
+            uom = SI.METRE;
         }
         Double measure = Converters.convert(unitless, Double.class);
         if (measure == null) {
@@ -130,7 +133,7 @@ class Measure {
      * @return
      */
     boolean isRealWorldUnit() {
-        return uom != null && uom != NonSI.PIXEL;
+        return uom != null && uom != Units.PIXEL;
     }
 
     /**
@@ -141,14 +144,14 @@ class Measure {
      */
     boolean isPixelInPixelDefault() {
         return (uom == null || uom == defaultUnit)
-                && (defaultUnit == null || defaultUnit == NonSI.PIXEL);
+                && (defaultUnit == null || defaultUnit == Units.PIXEL);
     }
 
     /**
      * @return true, if the uom is a real world unit within a symbolizer whose default unit is pixel.
      */
     public boolean isRealWorldUnitInPixelDefault() {
-        return isRealWorldUnit() && (defaultUnit == null || defaultUnit == NonSI.PIXEL);
+        return isRealWorldUnit() && (defaultUnit == null || defaultUnit == Units.PIXEL);
     }
 
 }

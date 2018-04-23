@@ -17,10 +17,6 @@
 package org.geotools.coverage.grid;
 
 import static java.awt.Color.decode;
-import static javax.measure.unit.SI.CELSIUS;
-import static javax.measure.unit.SI.CUBIC_METRE;
-import static javax.measure.unit.SI.GRAM;
-import static javax.measure.unit.SI.MILLI;
 import static org.geotools.util.NumberRange.create;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotSame;
@@ -57,6 +53,10 @@ import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.test.TestData;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+
+import si.uom.SI;
+import si.uom.SI.*;
+import tec.uom.se.unit.MetricPrefix;
 
 
 /**
@@ -112,7 +112,7 @@ public class GridCoverageTestBase extends CoverageTestBase {
             new Category("Land",        null, 1),
             new Category("Cloud",       null, 2),
             new Category("Temperature", null, BEGIN_VALID, 256)
-        }, CELSIUS);
+        }, SI.CELSIUS);
         image  = new BufferedImage(120, 80, BufferedImage.TYPE_BYTE_INDEXED);
         raster = image.getRaster();
         for (int i=raster.getWidth(); --i>=0;) {
@@ -231,7 +231,7 @@ public class GridCoverageTestBase extends CoverageTestBase {
                     };
                     bounds = new Rectangle2D.Double(35, -41, 45, 46);
                     bands = new GridSampleDimension[] {
-                        new GridSampleDimension("Measure", categories, CELSIUS)
+                        new GridSampleDimension("Measure", categories, SI.CELSIUS)
                     };
                     break;
                 }
@@ -256,8 +256,10 @@ public class GridCoverageTestBase extends CoverageTestBase {
                         new Category("Chl-a",   null,              create(  1, 254), true)
                     };
                     bounds = new Rectangle2D.Double(-7, 34, 19, 11);
+                    
                     bands = new GridSampleDimension[] {
-                        new GridSampleDimension("Measure", categories, MILLI(GRAM).divide(CUBIC_METRE))
+                        new GridSampleDimension("Measure",
+                                categories, MetricPrefix.MILLI(SI.GRAM).divide( SI.CUBIC_METRE ))
                     };
                     break;
                 }

@@ -578,12 +578,46 @@
   <!-- =========================================================== -->
   <dependencyManagement>
     <dependencies>
+      <!--
       <dependency>
         <groupId>net.java.dev.jsr-275</groupId>
         <artifactId>jsr-275</artifactId>
         <version>1.0-beta-2</version>
       </dependency>
-
+       -->
+      <!--dependency>
+        <groupId>javax.measure</groupId>
+        <artifactId>unit-api</artifactId>
+        <version>1.0</version>
+      </dependency>
+      <dependency>
+        <groupId>tec.uom</groupId>
+        <artifactId>uom-se</artifactId>
+        <version>1.0.9</version>
+      </dependency>
+      <dependency>
+        <groupId>si.uom</groupId>
+        <artifactId>si-units-java8</artifactId>
+        <version>0.8</version>
+      </dependency-->
+      <dependency>
+          <groupId>systems.uom</groupId>
+          <artifactId>systems-common-java8</artifactId>
+          <version>0.7.2</version>
+      </dependency>
+      <!-- inconsistent cannot load due to missing drag quantity -->
+      <!--dependency>
+        <groupId>systems.uom</groupId>
+        <artifactId>systems-ucum-java8</artifactId>
+        <version>0.7.2</version>
+      </dependency-->
+      
+      <dependency>
+        <groupId>systems.uom</groupId>
+        <artifactId>systems-common-java8</artifactId>
+        <version>0.7.2</version>
+      </dependency>
+    
       <!-- Java Advanced Imaging (JAI) -->
       <dependency>
         <groupId>javax.media</groupId>
@@ -748,8 +782,9 @@
         <groupId>org.jaitools</groupId>
         <artifactId>jt-zonalstats</artifactId>
         <version>${jt.version}</version>
-       </dependency>
-      
+      </dependency>
+
+       
       <!-- Mathematic, geometries, SVG... -->
       <dependency>
         <groupId>org.ejml</groupId>

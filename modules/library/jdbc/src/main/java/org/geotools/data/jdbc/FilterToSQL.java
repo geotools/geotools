@@ -102,9 +102,11 @@ import org.opengis.referencing.crs.GeographicCRS;
 import org.opengis.temporal.Instant;
 import org.opengis.temporal.Period;
 
-import javax.measure.converter.UnitConverter;
-import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
+import javax.measure.UnitConverter;
+import javax.measure.quantity.Length;
+
+import si.uom.SI;
+import javax.measure.Unit;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -1909,11 +1911,12 @@ public class FilterToSQL implements FilterVisitor, ExpressionVisitor {
                 
                 return distanceMeters / sizeDegree;
             } else {
-                Unit<?> unit = crs.getCoordinateSystem().getAxis(0).getUnit();
+                @SuppressWarnings("unchecked")
+                Unit<Length> unit = (Unit<Length>) crs.getCoordinateSystem().getAxis(0).getUnit();
                 if(unit == null) {
                     return distanceMeters;
                 } else {
-                    UnitConverter converter = SI.METER.getConverterTo(unit);
+                    UnitConverter converter = SI.METRE.getConverterTo(unit);
                     return converter.convert(distanceMeters);
                 }
             }

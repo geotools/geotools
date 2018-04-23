@@ -20,8 +20,9 @@ import static org.junit.Assert.assertEquals;
 
 import java.awt.Color;
 
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
+import si.uom.NonSI;
+import si.uom.SI;
+import systems.uom.common.USCustomary;
 
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.styling.LineSymbolizer;
@@ -80,7 +81,7 @@ public class DpiRescaleStyleVisitorTest {
     public void testAllMeters() throws Exception {
         Stroke original = sb.createStroke(Color.RED, 2, new float[] { 5, 10 });
         LineSymbolizer ls = sb.createLineSymbolizer(original);
-        ls.setUnitOfMeasure(SI.METER);
+        ls.setUnitOfMeasure(SI.METRE);
         ls.accept(visitor);
         Stroke clone = ((LineSymbolizer) visitor.getCopy()).getStroke();
 
@@ -90,7 +91,7 @@ public class DpiRescaleStyleVisitorTest {
         
         TextSymbolizer ts = sb.createTextSymbolizer();
         ts.getOptions().put(TextSymbolizer.SPACE_AROUND_KEY, "10");
-        ts.setUnitOfMeasure(SI.METER);
+        ts.setUnitOfMeasure(SI.METRE);
         ts.accept(visitor);
         TextSymbolizer clonedTs = (TextSymbolizer)visitor.getCopy();
         assertEquals("10.0", clonedTs.getOptions().get(TextSymbolizer.SPACE_AROUND_KEY));
@@ -100,7 +101,7 @@ public class DpiRescaleStyleVisitorTest {
     public void testAllFeet() throws Exception {
         Stroke original = sb.createStroke(Color.RED, 2, new float[] { 5, 10 });
         LineSymbolizer ls = sb.createLineSymbolizer(original);
-        ls.setUnitOfMeasure(NonSI.FOOT);
+        ls.setUnitOfMeasure(USCustomary.FOOT);
         ls.accept(visitor);
         Stroke clone = ((LineSymbolizer) visitor.getCopy()).getStroke();
 
@@ -110,7 +111,7 @@ public class DpiRescaleStyleVisitorTest {
         
         TextSymbolizer ts = sb.createTextSymbolizer();
         ts.getOptions().put(TextSymbolizer.SPACE_AROUND_KEY, "10");
-        ts.setUnitOfMeasure(NonSI.FOOT);
+        ts.setUnitOfMeasure(USCustomary.FOOT);
         ts.accept(visitor);
         TextSymbolizer clonedTs = (TextSymbolizer)visitor.getCopy();
         assertEquals("10.0", clonedTs.getOptions().get(TextSymbolizer.SPACE_AROUND_KEY));
@@ -121,7 +122,7 @@ public class DpiRescaleStyleVisitorTest {
         Stroke original = sb.createStroke(Color.RED, 2, new float[] { 5, 10 });
         original.setWidth(ff.literal("2px"));
         LineSymbolizer ls = sb.createLineSymbolizer(original);
-        ls.setUnitOfMeasure(SI.METER);
+        ls.setUnitOfMeasure(SI.METRE);
         ls.accept(visitor);
         Stroke clone = ((LineSymbolizer) visitor.getCopy()).getStroke();
 
@@ -133,7 +134,7 @@ public class DpiRescaleStyleVisitorTest {
         
         TextSymbolizer ts = sb.createTextSymbolizer();
         ts.getOptions().put(TextSymbolizer.SPACE_AROUND_KEY, "10px");
-        ts.setUnitOfMeasure(SI.METER);
+        ts.setUnitOfMeasure(SI.METRE);
         ts.accept(visitor);
         TextSymbolizer clonedTs = (TextSymbolizer)visitor.getCopy();
         // this one has been rescaled

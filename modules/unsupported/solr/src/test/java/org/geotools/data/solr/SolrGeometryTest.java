@@ -17,7 +17,7 @@
 
 package org.geotools.data.solr;
 
-import javax.measure.unit.SI;
+import si.uom.SI;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;

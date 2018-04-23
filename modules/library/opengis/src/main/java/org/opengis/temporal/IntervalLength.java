@@ -9,7 +9,7 @@
  */
 package org.opengis.temporal;
 
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 import org.opengis.util.InternationalString;
 import org.opengis.annotation.UML;
 

@@ -72,6 +72,7 @@ import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.util.InternationalString;
 import org.opengis.util.ProgressListener;
 
+import tec.uom.se.format.SimpleUnitFormat;
 import ucar.nc2.Dimension;
 import ucar.nc2.Variable;
 import ucar.nc2.constants.AxisType;
@@ -80,7 +81,8 @@ import ucar.nc2.dataset.CoordinateAxis.AxisComparator;
 import ucar.nc2.dataset.CoordinateSystem;
 import ucar.nc2.dataset.VariableDS;
 
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
+import javax.measure.format.ParserException;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -880,8 +882,9 @@ public class VariableAdapter extends CoverageSourceDescriptor {
                 for (UnitCharReplacement replacement: UNIT_CHARS_REPLACEMENTS) {
                     unitString = replacement.replace(unitString);
                 }
-                unit = Unit.valueOf(unitString);
-            } catch (IllegalArgumentException iae) {
+                unit = SimpleUnitFormat.getInstance().parse(unitString);
+               
+            } catch (ParserException parseException) {
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine("Unable to parse the unit:" + unitString + "\nNo unit will be assigned");
                 }

@@ -18,8 +18,8 @@ package org.geotools.referencing.operation;
 
 import java.util.Collections;
 import java.util.Map;
-import javax.measure.unit.SI;
-import javax.measure.unit.NonSI;
+import si.uom.SI;
+import si.uom.NonSI;
 
 import org.opengis.referencing.cs.*;
 import org.opengis.referencing.crs.*;
@@ -80,7 +80,7 @@ public final class Transform3DTest {
         final PrimeMeridian greenwichMeridian = datumFactory.createPrimeMeridian(
                     name("Greenwich Meridian"), 0, NonSI.DEGREE_ANGLE);
         final Ellipsoid wgs84Ellipsoid = datumFactory.createFlattenedSphere(
-                    name("WGS84 Ellipsoid"), 6378137, 298.257223563, SI.METER);
+                    name("WGS84 Ellipsoid"), 6378137, 298.257223563, SI.METRE);
         final GeodeticDatum wgs84 = datumFactory.createGeodeticDatum(
                     name("WGS84 Datum"), wgs84Ellipsoid, greenwichMeridian);
         final VerticalDatum wgs84_height = datumFactory.createVerticalDatum(
@@ -90,11 +90,11 @@ public final class Transform3DTest {
         // Creates non-standard (in geodesy) geocentric axis
         // ----------------------------------------------------------
         final CoordinateSystemAxis x_axis = csFactory.createCoordinateSystemAxis(
-                    name("X"), "X", AxisDirection.OTHER, SI.METER);
+                    name("X"), "X", AxisDirection.OTHER, SI.METRE);
         final CoordinateSystemAxis y_axis = csFactory.createCoordinateSystemAxis(
-                    name("Y"), "Y", AxisDirection.WEST, SI.METER);
+                    name("Y"), "Y", AxisDirection.WEST, SI.METRE);
         final CoordinateSystemAxis z_axis = csFactory.createCoordinateSystemAxis(
-                    name("Z"), "Z", AxisDirection.NORTH, SI.METER);
+                    name("Z"), "Z", AxisDirection.NORTH, SI.METRE);
 
         // ----------------------------------------------------------
         // Creates target CRS
@@ -112,11 +112,11 @@ public final class Transform3DTest {
         final CoordinateSystemAxis longitude_axis = csFactory.createCoordinateSystemAxis(
                     name("Geodetic Longitude"), "lon", AxisDirection.EAST, NonSI.DEGREE_ANGLE);
         final CoordinateSystemAxis northing_axis = csFactory.createCoordinateSystemAxis(
-                    name("Northing"), "N", AxisDirection.NORTH, SI.METER);
+                    name("Northing"), "N", AxisDirection.NORTH, SI.METRE);
         final CoordinateSystemAxis easting_axis = csFactory.createCoordinateSystemAxis(
-                    name("Easting"), "E", AxisDirection.EAST, SI.METER);
+                    name("Easting"), "E", AxisDirection.EAST, SI.METRE);
         final CoordinateSystemAxis height_axis = csFactory.createCoordinateSystemAxis(
-                    name("Ellipsoidal height"), "Up", AxisDirection.UP, SI.METER);
+                    name("Ellipsoidal height"), "Up", AxisDirection.UP, SI.METRE);
 
         // ----------------------------------------------------------
         // Creates the geographic CRS

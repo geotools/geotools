@@ -16,6 +16,7 @@
  */
 package org.geotools.referencing.factory.epsg;
 
+import java.awt.RenderingHints;
 import java.io.File;
 import java.io.ObjectStreamException;
 import java.io.Serializable;
@@ -45,13 +46,10 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
-import java.awt.RenderingHints;
 
+import javax.measure.Unit;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
 
 import org.geotools.factory.GeoTools;
 import org.geotools.factory.Hints;
@@ -81,8 +79,8 @@ import org.geotools.referencing.operation.DefiningConversion;
 import org.geotools.resources.CRSUtilities;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.Loggings;
 import org.geotools.resources.i18n.LoggingKeys;
+import org.geotools.resources.i18n.Loggings;
 import org.geotools.resources.i18n.Vocabulary;
 import org.geotools.resources.i18n.VocabularyKeys;
 import org.geotools.util.LocalName;
@@ -139,6 +137,11 @@ import org.opengis.referencing.operation.Transformation;
 import org.opengis.util.GenericName;
 import org.opengis.util.InternationalString;
 
+import si.uom.NonSI;
+import si.uom.SI;
+import systems.uom.common.USCustomary;
+import tec.uom.se.AbstractUnit;
+import tec.uom.se.unit.MetricPrefix;
 
 /**
  * A coordinate reference system factory backed by the EPSG database tables.
@@ -944,7 +947,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                 if (unit != null) {
                     // TODO: check unit consistency here.
                 } else if (b!=0 && c!=0) {
-                    unit = (b == c) ? base : base.times(b / c);
+                    unit = (b == c) ? base : base.multiply(b / c);
                 } else {
                     // TODO: provide a localized message.
                     throw new FactoryException("Unsupported unit: " + code);
@@ -2316,7 +2319,7 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
                     // TODO: Need to invoke something equivalent to:
                     // accuracyResult.setValueType(Float.class);
                     // This is the type declared in the MS-Access database.
-                    accuracyResult.setValueUnit(SI.METER); // In meters by definition in the EPSG database.
+                    accuracyResult.setValueUnit(SI.METRE); // In meters by definition in the EPSG database.
                     accuracyElement = new AbsoluteExternalPositionalAccuracyImpl(accuracyResult);
                     accuracyElement.setMeasureDescription(TRANSFORMATION_ACCURACY);
                     accuracyElement.setEvaluationMethodType(EvaluationMethodType.DIRECT_EXTERNAL);
@@ -2839,36 +2842,53 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
      */
     private static Unit<?> getUnit(final int code) {
         switch (code) {
-            case 9001: return    SI.METER;
-            case 9002: return NonSI.FOOT;
-            case 9030: return NonSI.NAUTICAL_MILE;
-            case 9036: return    SI.KILO(SI.METER);
-            case 9101: return    SI.RADIAN;
-            case 9122: // Fall through
-            case 9102: return NonSI.DEGREE_ANGLE;
-            case 9103: return NonSI.MINUTE_ANGLE;
-            case 9104: return NonSI.SECOND_ANGLE;
-            case 9105: return NonSI.GRADE;
-            case 9107: return Units.DEGREE_MINUTE_SECOND;
-            case 9108: return Units.DEGREE_MINUTE_SECOND;
-            case 9109: return    SI.MICRO(SI.RADIAN);
-            case 9110: return Units.SEXAGESIMAL_DMS;
-//TODO      case 9111: return NonSI.SEXAGESIMAL_DM;
-            case 9203: // Fall through
-            case 9201: return  Unit.ONE;
-            case 9202: return Units.PPM;
-            default  : return null;
+        case 9001:
+            return SI.METRE;
+        case 9002:
+            return USCustomary.FOOT;
+        case 9030:
+            return USCustomary.NAUTICAL_MILE;
+        case 9036:
+            return MetricPrefix.KILO(SI.METRE);
+        case 9101:
+            return SI.RADIAN;
+        case 9122: // Fall through
+        case 9102:
+            return NonSI.DEGREE_ANGLE;
+        case 9103:
+            return NonSI.MINUTE_ANGLE;
+        case 9104:
+            return NonSI.SECOND_ANGLE;
+        case 9105:
+            return USCustomary.GRADE;
+        case 9107:
+            return Units.DEGREE_MINUTE_SECOND;
+        case 9108:
+            return Units.DEGREE_MINUTE_SECOND;
+        case 9109:
+            return MetricPrefix.MICRO(SI.RADIAN);
+        case 9110:
+            return Units.SEXAGESIMAL_DMS;
+        // TODO case 9111: return NonSI.SEXAGESIMAL_DM;
+        case 9203: // Fall through
+        case 9201:
+            return AbstractUnit.ONE;
+        case 9202:
+            return Units.PPM;
+        default:
+            return null;
         }
     }
 
     /**
      * Set a Bursa-Wolf parameter from an EPSG parameter.
      *
-     * @param  parameters The Bursa-Wolf parameters to modify.
-     * @param  code       The EPSG code for a parameter   from [PARAMETER_CODE]  column.
-     * @param  value      The value of the parameter      from [PARAMETER_VALUE] column.
-     * @param  unit       The unit of the parameter value from [UOM_CODE]        column.
+     * @param parameters The Bursa-Wolf parameters to modify.
+     * @param code The EPSG code for a parameter from [PARAMETER_CODE] column.
+     * @param value The value of the parameter from [PARAMETER_VALUE] column.
+     * @param unit The unit of the parameter value from [UOM_CODE] column.
      * @throws FactoryException if the code is unrecognized.
+     * @throws IllegalArgumentException if the value could not be converted to the provided Unit
      */
     private static void setBursaWolfParameter(final BursaWolfParameters parameters,
                                               final int code, double value, final Unit<?> unit)
@@ -2876,12 +2896,13 @@ public abstract class AbstractEpsgFactory extends AbstractCachedAuthorityFactory
     {
         Unit<?> target = unit;
         if (code >= 8605) {
-            if      (code <= 8607) target = SI   .METER;
+            if (code <= 8607)
+                target = SI.METRE;
             else if (code <= 8710) target = NonSI.SECOND_ANGLE;
             else if (code == 8611) target = Units.PPM;
         }
         if (target != unit) {
-            value = unit.getConverterTo(target).convert(value);
+            value = Units.getConverterToAny(unit, target).convert(value);
         }
         switch (code) {
             case 8605: parameters.dx  = value; break;

@@ -22,9 +22,9 @@ import java.io.StringWriter;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
+import si.uom.NonSI;
+import si.uom.SI;
+import javax.measure.Unit;
 import javax.measure.quantity.Angle;
 import javax.measure.quantity.Length;
 
@@ -105,7 +105,7 @@ public final class FactoriesTest {
         final MathTransformFactory    mtFactory = ReferencingFactoryFinder.getMathTransformFactory(null);
 
         final Ellipsoid airy1830;
-        final Unit<Length> meters = SI.METER;
+        final Unit<Length> meters = SI.METRE;
         airy1830 = datumFactory.createEllipsoid(name("Airy1830"), 6377563.396, 6356256.910, meters);
         out.println();
         out.println("create Coodinate Reference System....2: ");

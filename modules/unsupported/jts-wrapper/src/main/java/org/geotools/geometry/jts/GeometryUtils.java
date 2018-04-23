@@ -28,9 +28,9 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.measure.converter.UnitConverter;
-import javax.measure.unit.NonSI;
-import javax.measure.unit.Unit;
+import javax.measure.UnitConverter;
+import si.uom.NonSI;
+import javax.measure.Unit;
 
 //apache dependencies
 import org.apache.commons.logging.Log;
@@ -875,10 +875,10 @@ public final class GeometryUtils {
         Unit[] targetUnits = new Unit[] {
                 //SI.RADIAN,
                 //SI.RADIAN,
-                //NonSI.FOOT
+                //USCustomary.FOOT
                 NonSI.DEGREE_ANGLE,
                 NonSI.DEGREE_ANGLE,
-                SI.METER
+                SI.METRE
         };
         System.out.println("units      "+targetUnits[0]+", "+targetUnits[1]+", "+targetUnits[2]);
         

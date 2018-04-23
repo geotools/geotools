@@ -20,17 +20,19 @@
 package org.geotools.referencing.cs;
 
 import java.util.Map;
-import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
 
-import org.opengis.referencing.cs.TimeCS;
-import org.opengis.referencing.cs.AxisDirection;
-import org.opengis.util.InternationalString;
-import org.opengis.referencing.cs.CoordinateSystemAxis;
-import org.opengis.geometry.MismatchedDimensionException;
+import javax.measure.Unit;
 
 import org.geotools.measure.Measure;
 import org.geotools.resources.i18n.VocabularyKeys;
+import org.opengis.geometry.MismatchedDimensionException;
+import org.opengis.referencing.cs.AxisDirection;
+import org.opengis.referencing.cs.CoordinateSystemAxis;
+import org.opengis.referencing.cs.TimeCS;
+import org.opengis.util.InternationalString;
+
+import si.uom.SI;
+import tec.uom.se.unit.MetricPrefix;
 
 
 /**
@@ -101,7 +103,8 @@ public class DefaultTimeCS extends AbstractCS implements TimeCS {
         final InternationalString name = axis.getAlias().iterator().next().toInternationalString();
         axis = new DefaultCoordinateSystemAxis(name, "t", AxisDirection.FUTURE, SI.SECOND);
         SECONDS = new DefaultTimeCS(properties, axis);
-        axis = new DefaultCoordinateSystemAxis(name, "t", AxisDirection.FUTURE, SI.MILLI(SI.SECOND));
+        axis = new DefaultCoordinateSystemAxis(name, "t", AxisDirection.FUTURE,
+                MetricPrefix.MILLI(SI.SECOND));
         MILLISECONDS = new DefaultTimeCS(properties, axis);
     }
 

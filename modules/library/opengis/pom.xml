@@ -165,16 +165,16 @@
   <!--     Dependency Management                                   -->
   <!-- =========================================================== -->
   <dependencies>
-    
-    <dependency>
-      <groupId>net.java.dev.jsr-275</groupId>
-      <artifactId>jsr-275</artifactId>
-    </dependency>
-    
+  
     <dependency>
       <groupId>commons-pool</groupId>
       <artifactId>commons-pool</artifactId>
       <!-- The version number is specified in the parent POM. -->
+    </dependency>
+    
+    <dependency>
+      <groupId>systems.uom</groupId>
+      <artifactId>systems-common-java8</artifactId>
     </dependency>
     
     <!-- Test dependencies -->

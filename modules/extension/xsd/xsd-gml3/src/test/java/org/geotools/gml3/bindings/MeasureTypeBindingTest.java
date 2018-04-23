@@ -17,8 +17,7 @@
 
 package org.geotools.gml3.bindings;
 
-import javax.measure.unit.BaseUnit;
-
+import tec.uom.se.unit.BaseUnit;
 import org.geotools.gml3.ComplexAttributeTestSupport;
 import org.geotools.gml3.GML;
 import org.geotools.measure.Measure;
@@ -39,6 +38,7 @@ public class MeasureTypeBindingTest extends ComplexAttributeTestSupport {
         Measure measure = (Measure) parse();
         assertNotNull(measure);
         assertEquals(1234, measure.doubleValue(), 0.1);
+        
         assertEquals("http://someuri", ((BaseUnit) measure.getUnit()).getSymbol());
     }
 

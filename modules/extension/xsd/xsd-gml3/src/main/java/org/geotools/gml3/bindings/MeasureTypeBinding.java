@@ -18,7 +18,6 @@ package org.geotools.gml3.bindings;
 
 import java.net.URI;
 
-import javax.measure.unit.BaseUnit;
 import javax.xml.namespace.QName;
 
 import org.geotools.gml3.GML;
@@ -28,6 +27,8 @@ import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import tec.uom.se.unit.BaseUnit;
 
 
 /**
@@ -88,8 +89,7 @@ public class MeasureTypeBinding extends AbstractComplexBinding {
         URI uom = (URI) node.getAttributeValue(URI.class);
 
         if (uom != null) {
-            return new Measure(d.doubleValue(), new BaseUnit(uom.toString()) {
-                });
+            return new Measure(d.doubleValue(), new BaseUnit(uom.toString()));
         }
 
         return new Measure(d.doubleValue(), null);

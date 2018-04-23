@@ -72,7 +72,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import javax.measure.unit.SI;
+import si.uom.SI;
 
 import static org.easymock.EasyMock.expect;
 import static org.easymock.classextension.EasyMock.createMock;

@@ -22,10 +22,12 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.measure.converter.UnitConverter;
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
+import javax.measure.UnitConverter;
+import javax.measure.quantity.Length;
+
+import si.uom.NonSI;
+import si.uom.SI;
+import javax.measure.Unit;
 import org.geotools.data.wmts.model.TileMatrixSet;
 import org.geotools.data.wmts.model.TileMatrixSetLink;
 
@@ -230,15 +232,15 @@ public class WMTSTileFactory extends TileFactory {
      */
     private static double getPixelSpan(TileMatrix tileMatrix) {
         CoordinateSystem coordinateSystem = tileMatrix.getCrs().getCoordinateSystem();
-        Unit<?> unit = coordinateSystem.getAxis(0).getUnit();
+        Unit unit = coordinateSystem.getAxis(0).getUnit();
 
         // now divide by meters per unit!
         double pixelSpan = tileMatrix.getDenominator() * PixelSizeMeters;
         if (unit.equals(NonSI.DEGREE_ANGLE)) {
             /*
              * use the length of a degree at the equator = 60 nautical miles!
-             * unit = NonSI.NAUTICAL_MILE; UnitConverter metersperunit =
-             * unit.getConverterTo(SI.METER); pixelSpan /=
+             * unit = USCustomary.NAUTICAL_MILE; UnitConverter metersperunit =
+             * unit.getConverterTo(SI.METRE); pixelSpan /=
              * metersperunit.convert(60.0);
              */
 
@@ -247,7 +249,7 @@ public class WMTSTileFactory extends TileFactory {
             // apparently - 60.10764611706782 NaMiles
             pixelSpan /= 111319;
         } else {
-            UnitConverter metersperunit = unit.getConverterTo(SI.METER);
+            UnitConverter metersperunit = unit.getConverterTo(SI.METRE);
             pixelSpan /= metersperunit.convert(1);
         }
         return pixelSpan;

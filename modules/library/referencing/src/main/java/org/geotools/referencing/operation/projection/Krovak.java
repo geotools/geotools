@@ -16,11 +16,25 @@
  */
 package org.geotools.referencing.operation.projection;
 
+import static java.lang.Math.abs;
+import static java.lang.Math.asin;
+import static java.lang.Math.atan;
+import static java.lang.Math.atan2;
+import static java.lang.Math.cos;
+import static java.lang.Math.hypot;
+import static java.lang.Math.pow;
+import static java.lang.Math.sin;
+import static java.lang.Math.sqrt;
+import static java.lang.Math.tan;
+
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.util.Collection;
-import javax.measure.unit.Unit;
-import javax.measure.unit.NonSI;
+
+import org.geotools.metadata.iso.citation.Citations;
+import org.geotools.referencing.NamedIdentifier;
+import org.geotools.referencing.operation.transform.AffineTransform2D;
+import org.geotools.resources.i18n.ErrorKeys;
 import org.opengis.parameter.GeneralParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptorGroup;
@@ -29,15 +43,9 @@ import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.operation.ConicProjection;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
-import org.geotools.metadata.iso.citation.Citations;
-import org.geotools.referencing.NamedIdentifier;
-import org.geotools.referencing.operation.projection.ObliqueMercator.Provider;
-import org.geotools.referencing.operation.projection.ObliqueMercator.Provider_TwoPoint;
-import org.geotools.referencing.operation.transform.AffineTransform2D;
-import org.geotools.referencing.operation.transform.ConcatenatedTransform;
-import org.geotools.resources.i18n.ErrorKeys;
 
-import static java.lang.Math.*;
+import si.uom.NonSI;
+import tec.uom.se.AbstractUnit;
 
 
 /**
@@ -453,7 +461,7 @@ public class Krovak extends MapProjection {
                     new NamedIdentifier(Citations.EPSG, "Scale factor on pseudo standard parallel"),
                     new NamedIdentifier(Citations.GEOTIFF, "ScaleAtCenter"),
                     new NamedIdentifier(Citations.OGC,  "Scale_Factor")
-                }, 0.9999, 0, Double.POSITIVE_INFINITY, Unit.ONE);             
+                }, 0.9999, 0, Double.POSITIVE_INFINITY, AbstractUnit.ONE);             
        
   	    /**
          * ESRI Parameter for scale of X axis in projected coordinate system.
@@ -462,7 +470,7 @@ public class Krovak extends MapProjection {
                 new NamedIdentifier[] {
                     new NamedIdentifier(Citations.ESRI,"X_Scale"),            
                 },
-                Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Unit.ONE);
+                Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, AbstractUnit.ONE);
         
         /**
          * ESRI Parameter for scale of Y axis in projected coordinate system.
@@ -471,7 +479,7 @@ public class Krovak extends MapProjection {
                 new NamedIdentifier[] {
                     new NamedIdentifier(Citations.ESRI,"Y_Scale"),            
                 },
-               Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Unit.ONE);
+               Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, AbstractUnit.ONE);
         
         /**
          * ESRI Parameter for rotation of projected coordinate system.

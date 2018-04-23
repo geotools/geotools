@@ -22,10 +22,15 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 import org.geotools.factory.Hints;
 import org.geotools.measure.Measure;
+import org.geotools.measure.Units;
+
+import si.uom.NonSI;
+import tec.uom.se.format.SimpleUnitFormat;
+import tec.uom.se.internal.format.UnitFormatParser;
 
 /**
  * ConverterFactory which converts between the {@link Measure} and String.
@@ -37,7 +42,7 @@ public class MeasureConverterFactory implements ConverterFactory {
 
     static final Pattern MEASURE_PATTERN = Pattern
             .compile("\\s*([-\\+]?[0-9]*\\.?[0-9]*(?:[eE][-\\+]?[0-9]+)?)(.*)?");
-
+    
     public static final Converter CONVERTER = new Converter() {
         @Override
         public <T> T convert(Object source, Class<T> target) throws Exception {
@@ -76,7 +81,7 @@ public class MeasureConverterFactory implements ConverterFactory {
                     // this will throw an exception in case of failure
                     String group = matcher.group(2).trim();
                     if (!group.isEmpty()) {
-                        unit = Unit.valueOf(group);
+                        unit = SimpleUnitFormat.getInstance().parse(group);
                     }
                 }
                 return (T) new Measure(value, unit);

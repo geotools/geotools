@@ -19,8 +19,13 @@ package org.geotools.parameter;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import javax.measure.unit.Unit;
 
+import org.geotools.referencing.AbstractIdentifiedObject;
+import org.geotools.referencing.operation.matrix.MatrixFactory;
+import org.geotools.resources.UnmodifiableArrayList;
+import org.geotools.resources.i18n.ErrorKeys;
+import org.geotools.resources.i18n.Errors;
+import org.geotools.util.Utilities;
 import org.opengis.parameter.GeneralParameterDescriptor;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.InvalidParameterNameException;
@@ -30,12 +35,7 @@ import org.opengis.parameter.ParameterValue;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.operation.Matrix;
 
-import org.geotools.referencing.AbstractIdentifiedObject;
-import org.geotools.referencing.operation.matrix.MatrixFactory;
-import org.geotools.resources.UnmodifiableArrayList;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.util.Utilities;
+import tec.uom.se.AbstractUnit;
 
 
 /**
@@ -296,7 +296,7 @@ public class MatrixParameterDescriptors extends DefaultParameterDescriptorGroup 
         param = new DefaultParameterDescriptor<Double>(
                 Collections.singletonMap(NAME_KEY, prefix + row + separator + column),
                 Double.class, null, (row == column) ? 1.0 : 0.0,
-                null, null, Unit.ONE, true);
+                null, null, AbstractUnit.ONE, true);
         if (index >= 0) {
             parameters[index] = param;
         }

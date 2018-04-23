@@ -17,9 +17,9 @@
  */
 package org.geotools.process.vector;
 
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
+import si.uom.NonSI;
+import si.uom.SI;
+import javax.measure.Unit;
 
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -228,9 +228,9 @@ public class HeatmapProcess implements VectorProcess {
         Unit<?> dstUnit = dstCRS.getCoordinateSystem().getAxis(0).getUnit();
         if (srcUnit == dstUnit) {
             return 1;
-        } else if (srcUnit == NonSI.DEGREE_ANGLE && dstUnit == SI.METER) {
+        } else if (srcUnit == NonSI.DEGREE_ANGLE && dstUnit == SI.METRE) {
             return METRES_PER_DEGREE;
-        } else if (srcUnit == SI.METER && dstUnit == NonSI.DEGREE_ANGLE) {
+        } else if (srcUnit == SI.METRE && dstUnit == NonSI.DEGREE_ANGLE) {
             return 1.0 / METRES_PER_DEGREE;
         }
         throw new IllegalStateException("Unable to convert distances from " + srcUnit + " to "

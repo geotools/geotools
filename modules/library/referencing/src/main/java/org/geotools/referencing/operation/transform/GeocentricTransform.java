@@ -23,10 +23,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Collections;
-import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
+import si.uom.SI;
+import javax.measure.Unit;
 import javax.measure.quantity.Length;
-import javax.measure.converter.UnitConverter;
+import javax.measure.UnitConverter;
 
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptorGroup;
@@ -157,7 +157,7 @@ public class GeocentricTransform extends AbstractMathTransform implements Serial
                                final boolean hasHeight)
     {
         this.hasHeight = hasHeight;
-        final UnitConverter converter = units.getConverterTo(SI.METER);
+        final UnitConverter converter = units.getConverterTo(SI.METRE);
         a   = converter.convert(semiMajor);
         b   = converter.convert(semiMinor);
         a2  = a*a;
@@ -589,7 +589,7 @@ public class GeocentricTransform extends AbstractMathTransform implements Serial
                     new NamedIdentifier(Citations.OGC,  "semi_major"),
                     new NamedIdentifier(Citations.EPSG, "semi-major axis")   //epsg does not specifically define this parameter
                 },
-                Double.NaN, 0, Double.POSITIVE_INFINITY, SI.METER);
+                Double.NaN, 0, Double.POSITIVE_INFINITY, SI.METRE);
 
         /**
          * The operation parameter descriptor for the "semi_minor" parameter value.
@@ -600,7 +600,7 @@ public class GeocentricTransform extends AbstractMathTransform implements Serial
                     new NamedIdentifier(Citations.OGC,  "semi_minor"),
                     new NamedIdentifier(Citations.EPSG, "semi-minor axis")   //epsg does not specifically define this parameter
                 },
-                Double.NaN, 0, Double.POSITIVE_INFINITY, SI.METER);
+                Double.NaN, 0, Double.POSITIVE_INFINITY, SI.METRE);
 
         /**
          * The number of geographic dimension (2 or 3). This is a Geotools-specific argument.
@@ -685,7 +685,7 @@ public class GeocentricTransform extends AbstractMathTransform implements Serial
             final double  semiMajor = doubleValue(SEMI_MAJOR, values);
             final double  semiMinor = doubleValue(SEMI_MINOR, values);
             final boolean hasHeight = (dimGeographic != 2); // Value may be 0, which default as 3.
-            MathTransform transform = new GeocentricTransform(semiMajor, semiMinor, SI.METER, hasHeight);
+            MathTransform transform = new GeocentricTransform(semiMajor, semiMinor, SI.METRE, hasHeight);
             if (!hasHeight) {
                 if (noHeight == null) {
                     noHeight = new Provider(2, 3, PARAMETERS);
@@ -758,7 +758,7 @@ public class GeocentricTransform extends AbstractMathTransform implements Serial
             final double  semiMajor = doubleValue(SEMI_MAJOR, values);
             final double  semiMinor = doubleValue(SEMI_MINOR, values);
             final boolean hasHeight = (dimGeographic != 2); // Value may be 0, which default as 3.
-            MathTransform transform = new GeocentricTransform(semiMajor, semiMinor, SI.METER, hasHeight).inverse();
+            MathTransform transform = new GeocentricTransform(semiMajor, semiMinor, SI.METRE, hasHeight).inverse();
             if (!hasHeight) {
                 if (noHeight == null) {
                     noHeight = new ProviderInverse(3, 2, PARAMETERS);

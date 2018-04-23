@@ -16,7 +16,8 @@
  */
 package org.geotools.measure;
 
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
+
 import org.geotools.util.Utilities;
 
 

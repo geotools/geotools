@@ -43,9 +43,9 @@ import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.spi.ImageReaderSpi;
 import javax.imageio.stream.ImageInputStream;
-import javax.measure.quantity.Quantity;
-import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
+import javax.measure.Quantity;
+import si.uom.SI;
+import javax.measure.Unit;
 import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 
@@ -96,6 +96,8 @@ import org.w3c.dom.Node;
 
 import sun.awt.OSInfo;
 import sun.awt.OSInfo.OSType;
+import tec.uom.se.AbstractUnit;
+import tec.uom.se.format.SimpleUnitFormat;
 
 /**
  * @author Daniele Romagnoli, GeoSolutions
@@ -236,7 +238,7 @@ public class Utilities {
     public static GeographicCRS getBaseCRS(final double equatorialRadius,
             final double inverseFlattening) {
         final DefaultGeodeticDatum datum = Utilities.getDefaultGeodeticDatum("WGS84",
-                equatorialRadius, inverseFlattening, SI.METER);
+                equatorialRadius, inverseFlattening, SI.METRE);
         final GeographicCRS sourceCRS = new DefaultGeographicCRS("WGS-84", datum,
                 DefaultGeographicCRS.WGS84.getCoordinateSystem());
         return sourceCRS;
@@ -266,14 +268,14 @@ public class Utilities {
      * @return
      */
     public static Unit<? extends Quantity> parseUnit(final String uom) {
-        Unit<? extends Quantity> unit = Unit.ONE;
+        Unit<? extends Quantity> unit = AbstractUnit.ONE;
         if (uom != null && uom.trim().length() > 0) {
             // TODO: Add more well known cases
             if (uom.equalsIgnoreCase("temp_deg_c") || uom.equalsIgnoreCase("Celsius"))
-                unit = javax.measure.unit.SI.CELSIUS;
+                unit = SI.CELSIUS;
             else {
                 try {
-                    unit = Unit.valueOf(uom);
+                    unit = SimpleUnitFormat.getInstance().parse(uom);
                 } catch (IllegalArgumentException iae) {
                     if (LOGGER.isLoggable(Level.FINE)) {
                         LOGGER.log(Level.FINE, "Unable to parse the provided unit " + uom);

@@ -20,13 +20,15 @@
 package org.geotools.referencing.cs;
 
 import java.util.Map;
-import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
+
+import javax.measure.Unit;
 
 import org.opengis.referencing.cs.AffineCS;
 import org.opengis.referencing.cs.AxisDirection;
 import org.opengis.referencing.cs.CoordinateSystemAxis;
 
+import si.uom.SI;
+import tec.uom.se.AbstractUnit;
 
 /**
  * A two- or three-dimensional coordinate system with straight axes that are not necessarily
@@ -158,7 +160,7 @@ public class DefaultAffineCS extends AbstractCS implements AffineCS {
      */
     @Override
     protected boolean isCompatibleUnit(final AxisDirection direction, final Unit<?> unit) {
-        return SI.METER.isCompatible(unit) || Unit.ONE.equals(unit);
+        return SI.METRE.isCompatible(unit) || AbstractUnit.ONE.equals(unit);
         // Note: this condition is also coded in PredefinedCS.rightHanded(AffineCS).
     }
 

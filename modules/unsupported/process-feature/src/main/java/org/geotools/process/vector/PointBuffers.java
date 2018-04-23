@@ -19,9 +19,11 @@ package org.geotools.process.vector;
 
 import java.awt.geom.Point2D;
 
-import javax.measure.converter.UnitConverter;
-import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
+import javax.measure.UnitConverter;
+import si.uom.SI;
+import tec.uom.se.AbstractConverter;
+
+import javax.measure.Unit;
 
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -79,11 +81,11 @@ public class PointBuffers implements VectorProcess {
                 generator = new GeographicGenerator(center, quadrantSegments, crs);
             } else {
                 Unit unit = hor.getCoordinateSystem().getAxis(0).getUnit();
-                UnitConverter converter = SI.METER.getConverterTo(unit);
+                UnitConverter converter = SI.METRE.getConverterTo(unit);
                 generator = new MetricGenerator(center, quadrantSegments, converter);
             }
         } else {
-            generator = new MetricGenerator(center, quadrantSegments, UnitConverter.IDENTITY);
+            generator = new MetricGenerator(center, quadrantSegments, AbstractConverter.IDENTITY);
         }
 
         // we don't expect million of directions, so we use a simple in memory collection

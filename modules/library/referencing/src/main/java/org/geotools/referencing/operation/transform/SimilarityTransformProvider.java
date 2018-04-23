@@ -16,19 +16,18 @@
  */
 package org.geotools.referencing.operation.transform;
 
-import javax.measure.quantity.Dimensionless;
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
-
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.referencing.operation.MathTransformProvider;
-import org.geotools.referencing.operation.transform.AffineTransform2D;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptorGroup;
 import org.opengis.parameter.ParameterNotFoundException;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.operation.MathTransform;
+
+import si.uom.NonSI;
+import si.uom.SI;
+import tec.uom.se.AbstractUnit;
 
 /**
  * The provider for the "<cite>Similarity transformation</cite>" (EPSG 9621).
@@ -43,7 +42,7 @@ public class SimilarityTransformProvider extends MathTransformProvider {
 
     private static final long serialVersionUID = -7413519919588731455L;
 
-    // TODO: TRANSLATION_1 and TRANSLATION_2 should be expressed in "target CRS units", not necessarily SI.METER.
+    // TODO: TRANSLATION_1 and TRANSLATION_2 should be expressed in "target CRS units", not necessarily SI.METRE.
     
     /**
      * "Ordinate 1 of evaluation point in target CRS" EPSG::8621
@@ -53,7 +52,7 @@ public class SimilarityTransformProvider extends MathTransformProvider {
             new NamedIdentifier(Citations.EPSG, "Ordinate 1 of evaluation point in target CRS"),
             new NamedIdentifier(Citations.EPSG, "8621")
         },
-        0, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, SI.METER); 
+        0, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, SI.METRE); 
 
     /**
      * "Ordinate 2 of evaluation point in target CRS" EPSG::8622
@@ -63,7 +62,7 @@ public class SimilarityTransformProvider extends MathTransformProvider {
             new NamedIdentifier(Citations.EPSG, "Ordinate 2 of evaluation point in target CRS"),
             new NamedIdentifier(Citations.EPSG, "8622")
         },
-        0, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, SI.METER);
+        0, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, SI.METRE);
     
     /**
      * "Scale difference" EPSG::8611
@@ -73,7 +72,7 @@ public class SimilarityTransformProvider extends MathTransformProvider {
             new NamedIdentifier(Citations.EPSG, "Scale difference"),
             new NamedIdentifier(Citations.EPSG, "8611")
         },
-        1, Double.MIN_NORMAL, Double.POSITIVE_INFINITY, Dimensionless.UNIT);
+        1, Double.MIN_NORMAL, Double.POSITIVE_INFINITY, AbstractUnit.ONE);
     
     /**
      * "Rotation angle of source coordinate reference system axes" EPSG::8614

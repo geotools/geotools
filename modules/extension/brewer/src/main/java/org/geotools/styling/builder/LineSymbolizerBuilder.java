@@ -17,7 +17,7 @@
 package org.geotools.styling.builder;
 
 import javax.measure.quantity.Length;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.Stroke;

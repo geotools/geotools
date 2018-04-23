@@ -18,7 +18,7 @@ package org.geotools.util;
 
 import java.io.Serializable;
 
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
@@ -286,21 +286,21 @@ public class Range<T extends Comparable<? super T>> implements Serializable  {
      * @throws IllegalArgumentException is the given value can not be converted to a valid type
      *         through widening conversion.
      */
+    @SuppressWarnings("unchecked")
     public boolean contains(final Comparable<?> value) throws IllegalArgumentException {
         if (value == null) {
             return false;
         }
         ensureCompatible(value.getClass());
-        @SuppressWarnings("unchecked")
-        final T c = (T) value;
-        return containsNC(c);
+        return containsNC((Comparable<T>) value);
     }
 
     /**
      * Implementation of {@link #contains(T)} to be invoked directly by subclasses.
      * "NC" stands for "No Cast" - this method do not try to cast the value to a compatible type.
      */
-    final boolean containsNC(final Comparable value) {
+    @SuppressWarnings("unchecked")
+	final boolean containsNC(final Comparable<T> value) {
         if (minValue != null) {
             final int c = minValue.compareTo((T)value);
             if (c >= 0) {
@@ -578,7 +578,7 @@ public class Range<T extends Comparable<? super T>> implements Serializable  {
             return true;
         }
         if (object != null && object.getClass().equals(getClass())) {
-            final Range<?> other = (Range) object;
+            final Range<?> other = (Range<?>) object;
             if (Utilities.equals(elementClass, other.elementClass)) {
                 if (isEmpty()) {
                     return other.isEmpty();

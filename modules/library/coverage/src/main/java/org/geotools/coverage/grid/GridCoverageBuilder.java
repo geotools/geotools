@@ -29,7 +29,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
 import javax.imageio.ImageIO;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 import org.opengis.geometry.Envelope;
 import org.opengis.referencing.FactoryException;

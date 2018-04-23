@@ -16,13 +16,19 @@
  */
 package org.geotools.temporal.object;
 
-import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import javax.measure.Unit;
+import javax.measure.quantity.Time;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.temporal.IntervalLength;
-import static org.junit.Assert.*;
+
+import si.uom.SI;
 
 
 /**
@@ -40,7 +46,7 @@ public class DefaultIntervalLengthTest {
 
     @Before
     public void setUp() {
-        Unit unit1 = SI.SECOND, unit2 = SI.SECOND.times(3600);
+        Unit<Time> unit1 = SI.SECOND, unit2 = SI.SECOND.multiply(3600);
         int radix1 = 10, radix2 = 10;
         int factor1 = 3, factor2 = 6;
         int value1 = 7, value2 = 12;

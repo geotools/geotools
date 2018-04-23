@@ -26,7 +26,7 @@ import org.opengis.parameter.*;
 import org.opengis.referencing.operation.ConicProjection;
 import org.opengis.referencing.operation.MathTransform;
 
-import javax.measure.unit.NonSI;
+import si.uom.NonSI;
 
 
 /**

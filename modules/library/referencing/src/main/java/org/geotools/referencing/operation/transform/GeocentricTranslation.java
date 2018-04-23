@@ -17,8 +17,8 @@
 package org.geotools.referencing.operation.transform;
 
 import java.util.Collections;
-import javax.measure.unit.SI;
-import javax.measure.unit.NonSI;
+import si.uom.SI;
+import si.uom.NonSI;
 
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptorGroup;
@@ -235,7 +235,7 @@ public class GeocentricTranslation extends ProjectiveTransform {
                 new NamedIdentifier[] {
                     new NamedIdentifier(Citations.OGC, "src_semi_major")
                 },
-                0.0, Double.POSITIVE_INFINITY, SI.METER);
+                0.0, Double.POSITIVE_INFINITY, SI.METRE);
 
         /**
          * The operation parameter descriptor for the "src_semi_minor" optional parameter value.
@@ -247,7 +247,7 @@ public class GeocentricTranslation extends ProjectiveTransform {
                 new NamedIdentifier[] {
                     new NamedIdentifier(Citations.OGC, "src_semi_minor"),
                 },
-                0.0, Double.POSITIVE_INFINITY, SI.METER);
+                0.0, Double.POSITIVE_INFINITY, SI.METRE);
 
         /**
          * The operation parameter descriptor for the "tgt_semi_major" optional parameter value.
@@ -259,7 +259,7 @@ public class GeocentricTranslation extends ProjectiveTransform {
                 new NamedIdentifier[] {
                     new NamedIdentifier(Citations.OGC, "tgt_semi_major")
                 },
-                0.0, Double.POSITIVE_INFINITY, SI.METER);
+                0.0, Double.POSITIVE_INFINITY, SI.METRE);
 
         /**
          * The operation parameter descriptor for the "tgt_semi_minor" optional parameter value.
@@ -271,7 +271,7 @@ public class GeocentricTranslation extends ProjectiveTransform {
                 new NamedIdentifier[] {
                     new NamedIdentifier(Citations.OGC, "tgt_semi_minor")
                 },
-                0.0, Double.POSITIVE_INFINITY, SI.METER);
+                0.0, Double.POSITIVE_INFINITY, SI.METRE);
 
         /**
          * The operation parameter descriptor for the <cite>X-axis translation</cite> ("dx")
@@ -282,7 +282,7 @@ public class GeocentricTranslation extends ProjectiveTransform {
                     new NamedIdentifier(Citations.OGC,  "dx"),
                     new NamedIdentifier(Citations.EPSG, "X-axis translation")
                 },
-                0.0, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, SI.METER);
+                0.0, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, SI.METRE);
 
         /**
          * The operation parameter descriptor for the <cite>Y-axis translation</cite> ("dy")
@@ -293,7 +293,7 @@ public class GeocentricTranslation extends ProjectiveTransform {
                     new NamedIdentifier(Citations.OGC,  "dy"),
                     new NamedIdentifier(Citations.EPSG, "Y-axis translation")
                 },
-                0.0, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, SI.METER);
+                0.0, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, SI.METRE);
 
         /**
          * The operation parameter descriptor for the <cite>Z-axis translation</cite> ("dz")
@@ -304,7 +304,7 @@ public class GeocentricTranslation extends ProjectiveTransform {
                     new NamedIdentifier(Citations.OGC,  "dz"),
                     new NamedIdentifier(Citations.EPSG, "Z-axis translation")
                 },
-                0.0, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, SI.METER);
+                0.0, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, SI.METRE);
 
         /**
          * The parameters group.
@@ -395,7 +395,7 @@ public class GeocentricTranslation extends ProjectiveTransform {
             ensureValid(major, semiMajor);
             ensureValid(minor, semiMinor);
             final GeocentricTransform step;
-            step = new GeocentricTransform(semiMajor, semiMinor, SI.METER, dimension==3);
+            step = new GeocentricTransform(semiMajor, semiMinor, SI.METRE, dimension==3);
             // Note: dimension may be 0 if not user-provided, which is treated as 2.
             if (dim == SRC_DIM) {
                 return ConcatenatedTransform.create(step, transform);

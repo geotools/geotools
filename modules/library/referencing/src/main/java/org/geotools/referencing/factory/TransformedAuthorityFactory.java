@@ -23,7 +23,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Comparator;
 import java.util.LinkedHashSet;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.IdentifiedObject;

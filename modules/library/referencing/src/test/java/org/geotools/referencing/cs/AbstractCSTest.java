@@ -16,18 +16,24 @@
  */
 package org.geotools.referencing.cs;
 
-import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+
+import javax.measure.Unit;
 import javax.measure.quantity.Length;
 
+import org.geotools.referencing.operation.matrix.GeneralMatrix;
+import org.junit.Test;
 import org.opengis.referencing.cs.AxisDirection;
 import org.opengis.referencing.cs.CoordinateSystem;
 import org.opengis.referencing.cs.CoordinateSystemAxis;
 import org.opengis.referencing.operation.Matrix;
-import org.geotools.referencing.operation.matrix.GeneralMatrix;
 
-import org.junit.*;
-import static org.junit.Assert.*;
+import si.uom.SI;
+import tec.uom.se.unit.MetricPrefix;
 
 
 /**
@@ -113,9 +119,9 @@ public final class AbstractCSTest {
     @Test
     public void testAxisUsingUnit() {
         assertNull("Should detect that no axis change is needed",
-                   DefaultCartesianCS.PROJECTED.axisUsingUnit(SI.METER));
+                   DefaultCartesianCS.PROJECTED.axisUsingUnit(SI.METRE));
 
-        final Unit<Length> KILOMETER = SI.KILO(SI.METER);
+        final Unit<Length> KILOMETER = MetricPrefix.KILO(SI.METRE);
         final CoordinateSystemAxis[] axis =
                 DefaultCartesianCS.PROJECTED.axisUsingUnit(KILOMETER);
         assertNotNull(axis);

@@ -10,7 +10,7 @@
 package org.opengis.style;
 
 import javax.measure.quantity.Length;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 import org.opengis.annotation.Extension;
 import org.opengis.annotation.UML;

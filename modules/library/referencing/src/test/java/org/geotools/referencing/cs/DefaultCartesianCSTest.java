@@ -16,7 +16,7 @@
  */
 package org.geotools.referencing.cs;
 
-import javax.measure.unit.SI;
+import si.uom.SI;
 
 import org.opengis.referencing.cs.AxisDirection;
 import org.opengis.referencing.cs.CoordinateSystem;
@@ -83,7 +83,7 @@ public final class DefaultCartesianCSTest {
         try {
             cs = new DefaultCartesianCS("Test",
                     DefaultCoordinateSystemAxis.EASTING,
-                    new DefaultCoordinateSystemAxis("Northing", AxisDirection.SOUTH, SI.METER));
+                    new DefaultCoordinateSystemAxis("Northing", AxisDirection.SOUTH, SI.METRE));
         } catch (IllegalArgumentException e) {
             // Expected exception: inconsistent direction.
         }
@@ -127,7 +127,7 @@ public final class DefaultCartesianCSTest {
         if (direction.equals(AxisDirection.WEST)) {
             return DefaultCoordinateSystemAxis.WESTING;
         }
-        return new DefaultCoordinateSystemAxis("Test", direction, SI.METER);
+        return new DefaultCoordinateSystemAxis("Test", direction, SI.METRE);
     }
 
     /**

@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.logging.Logger;
 
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 import org.geotools.resources.ClassChanger;
 import org.geotools.resources.Classes;

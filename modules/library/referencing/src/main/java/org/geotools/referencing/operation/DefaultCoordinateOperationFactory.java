@@ -29,11 +29,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.measure.Unit;
 import javax.measure.quantity.Angle;
-import javax.measure.quantity.Duration;
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
+import javax.measure.quantity.Time;
 
 import org.geotools.factory.Hints;
 import org.geotools.referencing.AbstractIdentifiedObject;
@@ -89,6 +87,10 @@ import org.opengis.referencing.operation.OperationMethod;
 import org.opengis.referencing.operation.OperationNotFoundException;
 import org.opengis.referencing.operation.Transformation;
 
+import si.uom.NonSI;
+import si.uom.SI;
+import tec.uom.se.unit.MetricPrefix;
+
 
 /**
  * Creates {@linkplain CoordinateOperation coordinate operations}. This factory is capable to find
@@ -120,7 +122,7 @@ public class DefaultCoordinateOperationFactory extends AbstractCoordinateOperati
     /**
      * A unit of one millisecond.
      */
-    private static final Unit<Duration> MILLISECOND = SI.MILLI(SI.SECOND);
+    private static final Unit<Time> MILLISECOND = MetricPrefix.MILLI(SI.SECOND);
 
     /**
      * The operation to use by {@link #createTransformationStep(GeographicCRS,GeographicCRS)} for

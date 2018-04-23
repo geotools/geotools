@@ -19,9 +19,9 @@ package org.geotools.referencing.datum;
 import java.awt.geom.Point2D;
 import java.util.Collections;
 import java.util.Map;
-import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
-import javax.measure.converter.UnitConverter;
+import si.uom.SI;
+import javax.measure.Unit;
+import javax.measure.UnitConverter;
 import javax.measure.quantity.Length;
 
 import org.opengis.referencing.datum.Ellipsoid;
@@ -65,7 +65,7 @@ public class DefaultEllipsoid extends AbstractIdentifiedObject implements Ellips
      * in GPS systems and is the default for most {@code org.geotools} packages.
      */
     public static final DefaultEllipsoid WGS84 =
-            createFlattenedSphere("WGS84", 6378137.0, 298.257223563, SI.METER);
+            createFlattenedSphere("WGS84", 6378137.0, 298.257223563, SI.METRE);
 
     /**
      * GRS 80 ellipsoid with axis in {@linkplain SI#METER metres}.
@@ -73,13 +73,13 @@ public class DefaultEllipsoid extends AbstractIdentifiedObject implements Ellips
      * @since 2.2
      */
     public static final DefaultEllipsoid GRS80 =
-            createFlattenedSphere("GRS80", 6378137.0, 298.257222101, SI.METER);
+            createFlattenedSphere("GRS80", 6378137.0, 298.257222101, SI.METRE);
 
     /**
      * International 1924 ellipsoid with axis in {@linkplain SI#METER metres}.
      */
     public static final DefaultEllipsoid INTERNATIONAL_1924 =
-            createFlattenedSphere("International 1924", 6378388.0, 297.0, SI.METER);
+            createFlattenedSphere("International 1924", 6378388.0, 297.0, SI.METRE);
 
     /**
      * Clarke 1866 ellipsoid with axis in {@linkplain SI#METER metres}.
@@ -87,7 +87,7 @@ public class DefaultEllipsoid extends AbstractIdentifiedObject implements Ellips
      * @since 2.2
      */
     public static final DefaultEllipsoid CLARKE_1866 =
-            createFlattenedSphere("Clarke 1866", 6378206.4, 294.9786982, SI.METER);
+            createFlattenedSphere("Clarke 1866", 6378206.4, 294.9786982, SI.METRE);
 
     /**
      * A sphere with a radius of 6371000 {@linkplain SI#METER metres}. Spheres use a simplier
@@ -95,7 +95,7 @@ public class DefaultEllipsoid extends AbstractIdentifiedObject implements Ellips
      * may be faster and more robust.
      */
     public static final DefaultEllipsoid SPHERE =
-            createEllipsoid("SPHERE", 6371000, 6371000, SI.METER);
+            createEllipsoid("SPHERE", 6371000, 6371000, SI.METRE);
 
     /**
      * The equatorial radius.
@@ -495,7 +495,7 @@ public class DefaultEllipsoid extends AbstractIdentifiedObject implements Ellips
     @Override
     protected String formatWKT(final Formatter formatter) {
         final double ivf = getInverseFlattening();
-        formatter.append(getAxisUnit().getConverterTo(SI.METER).convert(getSemiMajorAxis()));
+        formatter.append(getAxisUnit().getConverterTo(SI.METRE).convert(getSemiMajorAxis()));
         formatter.append(Double.isInfinite(ivf) ? 0 : ivf);
         return "SPHEROID";
     }

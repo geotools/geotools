@@ -27,27 +27,29 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import javax.measure.converter.UnitConverter;
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
-import javax.measure.unit.UnitFormat;
+import javax.measure.Unit;
+import javax.measure.UnitConverter;
+import javax.measure.format.UnitFormat;
+import javax.measure.quantity.Time;
 
+import org.geotools.referencing.CRS;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.referencing.crs.DefaultTemporalCRS;
+import org.geotools.resources.CRSUtilities;
+import org.geotools.resources.i18n.ErrorKeys;
+import org.geotools.resources.i18n.Errors;
+import org.opengis.geometry.DirectPosition;
+import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.cs.AxisDirection;
 import org.opengis.referencing.cs.CoordinateSystem;
 import org.opengis.referencing.cs.CoordinateSystemAxis;
 import org.opengis.referencing.datum.Datum;
 import org.opengis.referencing.datum.TemporalDatum;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.geometry.MismatchedDimensionException;
 
-import org.geotools.referencing.CRS;
-import org.geotools.referencing.crs.DefaultTemporalCRS;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.resources.CRSUtilities;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
+import si.uom.NonSI;
+import si.uom.SI;
+import tec.uom.se.format.SimpleUnitFormat;
 
 
 /**
@@ -247,13 +249,16 @@ public class CoordinateFormat extends Format {
             ////  Date  ////
             ////////////////
             if (SI.SECOND.isCompatible(unit)) {
+                @SuppressWarnings("unchecked")
+                Unit<Time> timeUnit = (Unit<Time>) unit;
+                
                 final Datum datum = CRSUtilities.getDatum(CRSUtilities.getSubCRS(crs, i, i+1));
                 if (datum instanceof TemporalDatum) {
                     if (toMillis == null) {
                         toMillis = new UnitConverter[formats.length];
                         epochs   = new long[formats.length];
                     }
-                    toMillis[i] = unit.getConverterTo(DefaultTemporalCRS.MILLISECOND);
+                    toMillis[i] = timeUnit.getConverterTo(DefaultTemporalCRS.MILLISECOND);
                     epochs  [i] = ((TemporalDatum) datum).getOrigin().getTime();
                     if (dateFormat == null) {
                         dateFormat = DateFormat.getDateInstance(DateFormat.DEFAULT, locale);
@@ -461,7 +466,7 @@ public class CoordinateFormat extends Format {
                 final Unit<?> unit = cs.getAxis(i).getUnit();
                 if (unit != null) {
                     if (unitFormat == null) {
-                        unitFormat = UnitFormat.getInstance();
+                        unitFormat = SimpleUnitFormat.getInstance();
                     }
                     final String asText = unitFormat.format(unit);
                     if (asText.length() != 0) {

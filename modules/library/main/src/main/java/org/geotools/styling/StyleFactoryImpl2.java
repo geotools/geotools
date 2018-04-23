@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.measure.quantity.Length;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 import javax.swing.Icon;
 
 import org.geotools.factory.CommonFactoryFinder;

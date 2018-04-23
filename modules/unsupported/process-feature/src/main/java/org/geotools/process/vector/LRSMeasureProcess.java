@@ -19,9 +19,11 @@ package org.geotools.process.vector;
 
 import java.util.logging.Logger;
 
-import javax.measure.converter.UnitConverter;
-import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
+import javax.measure.UnitConverter;
+import si.uom.SI;
+import systems.uom.common.USCustomary;
+
+import javax.measure.Unit;
 
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
@@ -120,8 +122,8 @@ public class LRSMeasureProcess implements VectorProcess {
             MathTransform crsTransform = CRS.findMathTransform(crs, epsg4326);
 
             FeatureType targetFeatureType = createTargetFeatureType(featureCollection.getSchema());
-            Unit fromUnit = SI.METER;
-            Unit toUnit = Unit.valueOf("mi");
+            Unit fromUnit = SI.METRE;
+            Unit toUnit = USCustomary.MILE;
             UnitConverter unitConvert = fromUnit.getConverterTo(toUnit);
             Feature nearestFeature = null;
             double nearestDistance = 9e9;

@@ -23,6 +23,7 @@ import org.geotools.mbstyle.parse.MBFilter;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.mbstyle.transform.MBStyleTransformer;
+import org.geotools.measure.Units;
 import org.geotools.styling.*;
 import org.geotools.styling.Stroke;
 import org.geotools.text.Text;
@@ -33,7 +34,7 @@ import org.opengis.style.GraphicFill;
 import org.opengis.style.SemanticType;
 import org.opengis.style.Symbolizer;
 
-import javax.measure.unit.NonSI;
+import si.uom.NonSI;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -524,7 +525,7 @@ public class LineMBLayer extends MBLayer {
 
         stroke.setDashArray(lineDasharray());
         LineSymbolizer ls = sf.lineSymbolizer(getId(), null,
-                sf.description(Text.text("line"), null), NonSI.PIXEL, stroke, lineOffset());
+                sf.description(Text.text("line"), null), Units.PIXEL, stroke, lineOffset());
 
         if (hasLinePattern()) {
             ExternalGraphic eg = transformer.createExternalGraphicForSprite(linePattern(), styleContext);
@@ -537,9 +538,9 @@ public class LineMBLayer extends MBLayer {
             Double bottomOffset = getLineOffset().doubleValue() - (getLineGapWidth().doubleValue() / 2d) - getLineWidth().doubleValue()/2d ;
 
             ls = sf.lineSymbolizer(getId(), null,
-                    sf.description(Text.text("line"), null), NonSI.PIXEL, stroke, ff.literal(topOffset));
+                    sf.description(Text.text("line"), null), Units.PIXEL, stroke, ff.literal(topOffset));
             LineSymbolizer bottomLine = sf.lineSymbolizer(getId(), null,
-                    sf.description(Text.text("line"), null), NonSI.PIXEL, stroke, ff.literal(bottomOffset));
+                    sf.description(Text.text("line"), null), Units.PIXEL, stroke, ff.literal(bottomOffset));
             symbolizers.add(bottomLine);
         }
         symbolizers.add(ls);

@@ -1,12 +1,13 @@
 package org.geotools.data.efeature.query;
 
-import javax.measure.converter.UnitConverter;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
+import javax.measure.UnitConverter;
 
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.query.conditions.Condition;
 import org.geotools.data.efeature.DataBuilder;
 import org.geotools.data.efeature.DataTypes;
+import org.geotools.measure.Units;
 import org.geotools.resources.CRSUtilities;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.expression.Literal;
@@ -16,6 +17,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.operation.distance.DistanceOp;
+
+
 
 /**
  * 
@@ -40,11 +43,10 @@ public class SpatialConditionEncoder {
     }
 
     public static double convert(GeometryDescriptor descriptor, double distance, String unit) {
-        Unit<?> fromUnit = Unit.valueOf(unit);
+        Unit<?> fromUnit = Units.parseUnit(unit);
         Unit<?> toUnit = getUnit(descriptor);
-        UnitConverter c = fromUnit.getConverterTo(toUnit);
+        UnitConverter c = Units.getConverterToAny(fromUnit, toUnit);
         return c.convert(distance);
-
     }
 
     // ----------------------------------------------------- 

@@ -20,14 +20,16 @@
 package org.geotools.parameter;
 
 import java.net.URI;
-import javax.measure.unit.Unit;
 
+import javax.measure.Unit;
+
+import org.geotools.measure.Units;
+import org.geotools.resources.i18n.ErrorKeys;
+import org.geotools.resources.i18n.Errors;
 import org.opengis.parameter.InvalidParameterTypeException;
 import org.opengis.parameter.InvalidParameterValueException;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterValue;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.ErrorKeys;
 
 
 /**
@@ -133,7 +135,7 @@ public class FloatParameter extends AbstractParameter implements ParameterValue<
         if (Parameter.getUnitMessageID(unit) != expectedID) {
             throw new IllegalArgumentException(Errors.format(expectedID, unit));
         }
-        return thisUnit.getConverterTo(unit).convert(value);
+        return Units.getConverterToAny(thisUnit, unit).convert(value);
     }
 
     /**
@@ -249,7 +251,7 @@ public class FloatParameter extends AbstractParameter implements ParameterValue<
         if (Parameter.getUnitMessageID(unit) != expectedID) {
             throw new IllegalArgumentException(Errors.format(expectedID, unit));
         }
-        value = unit.getConverterTo(thisUnit).convert(value);
+        value = Units.getConverterToAny(unit, thisUnit).convert(value);
         this.value = Parameter.ensureValidValue(descriptor, Double.valueOf(value));
     }
 

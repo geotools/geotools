@@ -17,7 +17,7 @@
 package org.geotools.referencing.cs;
 
 import java.util.Arrays;
-import javax.measure.unit.SI;
+import si.uom.SI;
 
 import org.opengis.referencing.cs.AxisDirection;
 import org.opengis.referencing.cs.CoordinateSystemAxis;
@@ -143,7 +143,7 @@ public final class ComparableAxisWrapperTest {
     private static CoordinateSystemAxis[] toAxis(final AxisDirection[] directions) {
         final CoordinateSystemAxis[] axis = new CoordinateSystemAxis[directions.length];
         for (int i=0; i<directions.length; i++) {
-            axis[i] = new DefaultCoordinateSystemAxis("Test", directions[i], SI.METER);
+            axis[i] = new DefaultCoordinateSystemAxis("Test", directions[i], SI.METRE);
         }
         return axis;
     }

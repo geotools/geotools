@@ -6,7 +6,7 @@
  */
 package net.opengis.wps10.util;
 
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 import net.opengis.ows11.CapabilitiesBaseType;
 
 import net.opengis.wps10.*;

@@ -20,7 +20,18 @@
  */
 package org.geotools.referencing.operation.projection;
 
-import static java.lang.Math.*;
+import static java.lang.Math.PI;
+import static java.lang.Math.abs;
+import static java.lang.Math.acos;
+import static java.lang.Math.asin;
+import static java.lang.Math.atan;
+import static java.lang.Math.cos;
+import static java.lang.Math.pow;
+import static java.lang.Math.sin;
+import static java.lang.Math.sqrt;
+import static java.lang.Math.tan;
+import static java.lang.Math.toDegrees;
+import static java.lang.Math.toRadians;
 
 import java.awt.geom.Point2D;
 import java.io.Serializable;
@@ -28,10 +39,6 @@ import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
 
 import org.geotools.math.XMath;
 import org.geotools.measure.Latitude;
@@ -55,6 +62,9 @@ import org.opengis.referencing.operation.NoninvertibleTransformException;
 import org.opengis.referencing.operation.Projection;
 import org.opengis.referencing.operation.TransformException;
 
+import si.uom.NonSI;
+import si.uom.SI;
+import tec.uom.se.AbstractUnit;
 
 /**
  * Base class for transformation services between ellipsoidal and cartographic projections.
@@ -1452,7 +1462,7 @@ public abstract class MapProjection extends AbstractMathTransform
                     new NamedIdentifier(Citations.EPSG, "semi-major axis")
                     // EPSG does not specifically define the above parameter
                 },
-                Double.NaN, 0, Double.POSITIVE_INFINITY, SI.METER);
+                Double.NaN, 0, Double.POSITIVE_INFINITY, SI.METRE);
 
         /**
          * The operation parameter descriptor for the {@linkplain #semiMinor semi minor} parameter
@@ -1466,7 +1476,7 @@ public abstract class MapProjection extends AbstractMathTransform
                     new NamedIdentifier(Citations.EPSG, "semi-minor axis")
                     // EPSG does not specifically define the above parameter
                 },
-                Double.NaN, 0, Double.POSITIVE_INFINITY, SI.METER);
+                Double.NaN, 0, Double.POSITIVE_INFINITY, SI.METRE);
 
         /**
          * The operation parameter descriptor for the {@linkplain #centralMeridian central meridian}
@@ -1578,7 +1588,7 @@ public abstract class MapProjection extends AbstractMathTransform
                     new NamedIdentifier(Citations.ESRI,    "Scale_Factor"),
                     new NamedIdentifier(Citations.ESRI,    "scale_factor"),
                 },
-                1, 0, Double.POSITIVE_INFINITY, Unit.ONE);
+                1, 0, Double.POSITIVE_INFINITY, AbstractUnit.ONE);
 
         /**
          * The operation parameter descriptor for the {@link #falseEasting falseEasting}
@@ -1593,7 +1603,7 @@ public abstract class MapProjection extends AbstractMathTransform
                     new NamedIdentifier(Citations.GEOTIFF, "FalseEasting"),
                     new NamedIdentifier(Citations.ESRI,    "False_Easting")
                 },
-                0, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, SI.METER);
+                0, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, SI.METRE);
 
         /**
          * The operation parameter descriptor for the {@link #falseNorthing falseNorthing}
@@ -1609,7 +1619,7 @@ public abstract class MapProjection extends AbstractMathTransform
                     new NamedIdentifier(Citations.ESRI,    "False_Northing"),
                     new NamedIdentifier(Citations.ESRI,    "false_northing")
                 },
-                0, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, SI.METER);
+                0, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, SI.METRE);
 
         /**
          * Constructs a math transform provider from a set of parameters. The provider

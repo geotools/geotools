@@ -8,7 +8,7 @@ package net.opengis.wps10.impl;
 
 import java.util.Collection;
 
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 import net.opengis.wps10.UOMsType;
 import net.opengis.wps10.Wps10Package;

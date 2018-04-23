@@ -1,15 +1,18 @@
 package org.geotools.styling.visitor;
 
-import javax.measure.converter.UnitConverter;
+import javax.measure.Unit;
+import javax.measure.UnitConverter;
 import javax.measure.quantity.Length;
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
 
+import org.geotools.measure.Units;
 import org.geotools.util.Converters;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
+
+import si.uom.NonSI;
+import si.uom.SI;
+import systems.uom.common.USCustomary;
 
 class UomRescaleHelper {
 
@@ -34,15 +37,15 @@ class UomRescaleHelper {
      */
     protected double computeRescaleMultiplier(Unit<Length> uom) {
         // no scaling to do if UOM is PIXEL (or null, which stands for PIXEL as well)
-        if (uom == null || uom.equals(NonSI.PIXEL))
+        if (uom == null || uom.equals(Units.PIXEL))
             return 1;
         
-        if(uom == SI.METER) {
+        if(uom == SI.METRE) {
             return mapScale;
         }
 
         // converts value from meters to given UOM
-        UnitConverter converter = uom.getConverterTo(SI.METER);
+        UnitConverter converter = uom.getConverterTo(SI.METRE);
         return converter.convert(mapScale);
     }
 
@@ -72,10 +75,10 @@ class UomRescaleHelper {
             } else {
                 if (value.endsWith("ft")) {
                     value = value.substring(0, value.length() - 2);
-                    uom = NonSI.FOOT;
+                    uom = USCustomary.FOOT;
                 } else if (value.endsWith("m")) {
                     value = value.substring(0, value.length() - 1);
-                    uom = SI.METER;
+                    uom = SI.METRE;
                 }
                 Double measure = Converters.convert(value, Double.class);
                 if (measure != null) {
@@ -104,7 +107,7 @@ class UomRescaleHelper {
     protected float[] rescale(float[] dashArray, Unit<Length> unitOfMeasure) {
         if (dashArray == null)
             return null;
-        if (unitOfMeasure == null || unitOfMeasure.equals(NonSI.PIXEL))
+        if (unitOfMeasure == null || unitOfMeasure.equals(Units.PIXEL))
             return dashArray;
 
         float[] rescaledDashArray = new float[dashArray.length];

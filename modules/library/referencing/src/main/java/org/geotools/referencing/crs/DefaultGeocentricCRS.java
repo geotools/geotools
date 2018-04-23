@@ -21,7 +21,7 @@ package org.geotools.referencing.crs;
 
 import java.util.Collections;
 import java.util.Map;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 import org.opengis.referencing.cs.CartesianCS;
 import org.opengis.referencing.cs.SphericalCS;

@@ -22,6 +22,7 @@ import org.geotools.mbstyle.parse.MBFilter;
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.geotools.mbstyle.transform.MBStyleTransformer;
+import org.geotools.measure.Units;
 import org.geotools.styling.*;
 import org.geotools.text.Text;
 import org.json.simple.JSONObject;
@@ -29,7 +30,7 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.style.GraphicFill;
 import org.opengis.style.SemanticType;
 
-import javax.measure.unit.NonSI;
+import si.uom.NonSI;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -264,7 +265,7 @@ public class FillExtrusionMBLayer extends MBLayer {
         shadowSymbolizer.setName("shadow");
         shadowSymbolizer.setGeometry(ff.function("offset", ff.property((String) null), ff.literal(0.005), ff.literal(-0.005)));
         shadowSymbolizer.setDescription(sf.description(Text.text("fill"),null));
-        shadowSymbolizer.setUnitOfMeasure(NonSI.PIXEL);
+        shadowSymbolizer.setUnitOfMeasure(Units.PIXEL);
         shadowSymbolizer.setStroke(null);
         shadowSymbolizer.setFill(fill);
         shadowSymbolizer.setDisplacement(null);
@@ -273,7 +274,7 @@ public class FillExtrusionMBLayer extends MBLayer {
         sidesSymbolizer.setName("sides");
         sidesSymbolizer.setGeometry(ff.function("isometric", ff.property((String) null), ff.literal(fillExtrusionHeight())));
         sidesSymbolizer.setDescription(sf.description(Text.text("fill"),null));
-        sidesSymbolizer.setUnitOfMeasure(NonSI.PIXEL);
+        sidesSymbolizer.setUnitOfMeasure(Units.PIXEL);
         sidesSymbolizer.setStroke(null);
         sidesSymbolizer.setFill(fill);
         sidesSymbolizer.setDisplacement(null);
@@ -282,7 +283,7 @@ public class FillExtrusionMBLayer extends MBLayer {
         roofSymbolizer.setName("roof");
         roofSymbolizer.setGeometry(ff.function("offset", ff.property((String) null), ff.literal(fillExtrusionBase()), ff.literal(fillExtrusionHeight())));
         roofSymbolizer.setDescription(sf.description(Text.text("fill"),null));
-        roofSymbolizer.setUnitOfMeasure(NonSI.PIXEL);
+        roofSymbolizer.setUnitOfMeasure(Units.PIXEL);
         roofSymbolizer.setStroke(null);
         roofSymbolizer.setFill(fill);
         roofSymbolizer.setDisplacement(null);
@@ -291,7 +292,7 @@ public class FillExtrusionMBLayer extends MBLayer {
 //        PolygonSymbolizer shadowSymbolizer = sf.polygonSymbolizer("shadow",
 //                ff.function("offset", ff.property("the_geom"), ff.literal(0.005), ff.literal(-0.005)),
 //                sf.description(Text.text("fill"),null),
-//                NonSI.PIXEL,
+//                Units.PIXEL,
 //                null,
 //                fill,
 //                null,
@@ -300,7 +301,7 @@ public class FillExtrusionMBLayer extends MBLayer {
 //        PolygonSymbolizer sidesSymbolizer = sf.polygonSymbolizer("sides",
 //                ff.function("isometric", ff.property("the_geom"), ff.literal(fillExtrusionHeight())),
 //                sf.description(Text.text("fill"),null),
-//                NonSI.PIXEL,
+//                Units.PIXEL,
 //                null,
 //                fill,
 //                null,
@@ -309,7 +310,7 @@ public class FillExtrusionMBLayer extends MBLayer {
 //        PolygonSymbolizer roofSymbolizer = sf.polygonSymbolizer("shadow",
 //                ff.function("offset", ff.property("the_geom"), ff.literal(fillExtrusionBase()), ff.literal(fillExtrusionHeight())),
 //                sf.description(Text.text("fill"),null),
-//                NonSI.PIXEL,
+//                Units.PIXEL,
 //                null,
 //                fill,
 //                null,

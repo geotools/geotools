@@ -9,7 +9,7 @@
  */
 package org.opengis.referencing.cs;
 
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 import org.opengis.referencing.IdentifiedObject;
 import org.opengis.annotation.UML;
 

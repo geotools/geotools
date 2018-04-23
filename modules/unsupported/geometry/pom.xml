@@ -100,10 +100,6 @@
   <!-- =========================================================== -->
   <dependencies>
     <dependency>
-      <groupId>net.java.dev.jsr-275</groupId>
-      <artifactId>jsr-275</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-main</artifactId>
       <version>${project.version}</version>  

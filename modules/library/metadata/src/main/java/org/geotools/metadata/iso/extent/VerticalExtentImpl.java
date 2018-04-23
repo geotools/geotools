@@ -19,7 +19,7 @@
  */
 package org.geotools.metadata.iso.extent;
 
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 import org.opengis.metadata.extent.VerticalExtent;
 import org.opengis.referencing.crs.VerticalCRS;
 import org.opengis.referencing.datum.VerticalDatum;

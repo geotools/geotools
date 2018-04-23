@@ -18,12 +18,14 @@ package org.geotools.ows.bindings;
 
 import java.lang.reflect.Field;
 
-import javax.measure.unit.BaseUnit;
-import javax.measure.unit.DerivedUnit;
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
-import javax.measure.unit.UnitFormat;
+import si.uom.NonSI;
+import si.uom.SI;
+import tec.uom.se.AbstractUnit;
+import tec.uom.se.unit.AlternateUnit;
+import tec.uom.se.unit.BaseUnit;
+
+import javax.measure.Unit;
+import javax.measure.format.UnitFormat;
 import javax.xml.namespace.QName;
 
 import org.geotools.ows.v1_1.OWS;
@@ -82,23 +84,23 @@ public class UnitBinding extends AbstractSimpleBinding {
             return lookup(SI.class, "m");
         }
         if (name.equalsIgnoreCase("unity")) {
-            return Unit.ONE;
+            return AbstractUnit.ONE;
         }
         return null;
     }
 
-	private Unit lookup(Class class1, String name) {
-		Unit unit = null;
+	private Unit<?> lookup(Class<?> class1, String name) {
+		Unit<?> unit = null;
 		Field[] fields = class1.getDeclaredFields();
 		for (int i=0; i<fields.length; i++) {
 			Field field = fields[i];
 			String name2 = field.getName();
 			if ( (field.getType().isAssignableFrom(BaseUnit.class) ||
-					field.getType().isAssignableFrom(DerivedUnit.class)) &&
+					field.getType().isAssignableFrom(AlternateUnit.class)) &&
 					name2.equalsIgnoreCase(name) ) {
 
 				try {
-					unit = (Unit) field.get(unit);
+					unit = (Unit<?>) field.get(unit);
 					return unit;
 				} catch (Exception e) {
 					// continue searching

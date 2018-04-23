@@ -16,6 +16,8 @@
  */
 package org.geotools.referencing.wkt;
 
+import static java.util.Collections.singletonMap;
+
 import java.io.BufferedReader;
 import java.text.ParseException;
 import java.text.ParsePosition;
@@ -25,14 +27,28 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
+
+import javax.measure.Quantity;
+import javax.measure.Unit;
 import javax.measure.quantity.Angle;
 import javax.measure.quantity.Length;
-import javax.measure.quantity.Quantity;
-import static java.util.Collections.singletonMap;
 
+import org.geotools.measure.Units;
+import org.geotools.metadata.iso.citation.Citations;
+import org.geotools.referencing.NamedIdentifier;
+import org.geotools.referencing.ReferencingFactoryFinder;
+import org.geotools.referencing.cs.AbstractCS;
+import org.geotools.referencing.cs.DefaultCoordinateSystemAxis;
+import org.geotools.referencing.cs.DirectionAlongMeridian;
+import org.geotools.referencing.datum.BursaWolfParameters;
+import org.geotools.referencing.datum.DefaultGeodeticDatum;
+import org.geotools.referencing.datum.DefaultPrimeMeridian;
+import org.geotools.referencing.datum.DefaultVerticalDatum;
+import org.geotools.referencing.factory.ReferencingFactoryContainer;
+import org.geotools.referencing.operation.DefiningConversion;
+import org.geotools.resources.Arguments;
+import org.geotools.resources.i18n.ErrorKeys;
+import org.geotools.resources.i18n.Errors;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.parameter.ParameterNotFoundException;
 import org.opengis.parameter.ParameterValue;
@@ -40,30 +56,39 @@ import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.IdentifiedObject;
 import org.opengis.referencing.NoSuchIdentifierException;
-
+import org.opengis.referencing.crs.CRSFactory;
+import org.opengis.referencing.crs.CompoundCRS;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.crs.DerivedCRS;
+import org.opengis.referencing.crs.EngineeringCRS;
+import org.opengis.referencing.crs.GeocentricCRS;
+import org.opengis.referencing.crs.GeographicCRS;
+import org.opengis.referencing.crs.ProjectedCRS;
+import org.opengis.referencing.crs.VerticalCRS;
 // While start import is usually a deprecated practice, we use such a large amount
 // of interfaces in those packages that it we choose to exceptionnaly use * here.
-import org.opengis.referencing.cs.*;
-import org.opengis.referencing.crs.*;
-import org.opengis.referencing.datum.*;
-import org.opengis.referencing.operation.*;
+import org.opengis.referencing.cs.AxisDirection;
+import org.opengis.referencing.cs.CSFactory;
+import org.opengis.referencing.cs.CoordinateSystem;
+import org.opengis.referencing.cs.CoordinateSystemAxis;
+import org.opengis.referencing.cs.EllipsoidalCS;
+import org.opengis.referencing.datum.Datum;
+import org.opengis.referencing.datum.DatumFactory;
+import org.opengis.referencing.datum.Ellipsoid;
+import org.opengis.referencing.datum.EngineeringDatum;
+import org.opengis.referencing.datum.GeodeticDatum;
+import org.opengis.referencing.datum.PrimeMeridian;
+import org.opengis.referencing.datum.VerticalDatum;
+import org.opengis.referencing.datum.VerticalDatumType;
+import org.opengis.referencing.operation.Conversion;
+import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.MathTransformFactory;
+import org.opengis.referencing.operation.NoninvertibleTransformException;
+import org.opengis.referencing.operation.OperationMethod;
 
-import org.geotools.factory.Hints;
-import org.geotools.metadata.iso.citation.Citations;
-import org.geotools.referencing.ReferencingFactoryFinder;
-import org.geotools.referencing.NamedIdentifier;
-import org.geotools.referencing.datum.BursaWolfParameters;
-import org.geotools.referencing.datum.DefaultGeodeticDatum;
-import org.geotools.referencing.datum.DefaultPrimeMeridian;
-import org.geotools.referencing.datum.DefaultVerticalDatum;
-import org.geotools.referencing.cs.AbstractCS;
-import org.geotools.referencing.cs.DefaultCoordinateSystemAxis;
-import org.geotools.referencing.cs.DirectionAlongMeridian;
-import org.geotools.referencing.factory.ReferencingFactoryContainer;
-import org.geotools.referencing.operation.DefiningConversion;
-import org.geotools.resources.Arguments;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.ErrorKeys;
+import si.uom.NonSI;
+import si.uom.SI;
+import tec.uom.se.AbstractUnit;
 
 
 /**
@@ -254,7 +279,7 @@ public class Parser extends MathTransformParser {
             final String keyword = ((Element) key).keyword.trim().toUpperCase(symbols.locale);
             Object r = null;
             try {
-                if (       "AXIS".equals(keyword)) return r=parseAxis      (element, SI.METER, true);
+                if (       "AXIS".equals(keyword)) return r=parseAxis      (element, SI.METRE, true);
                 if (     "PRIMEM".equals(keyword)) return r=parsePrimem    (element, NonSI.DEGREE_ANGLE);
                 if (    "TOWGS84".equals(keyword)) return r=parseToWGS84   (element);
                 if (   "SPHEROID".equals(keyword)) return r=parseSpheroid  (element);
@@ -376,7 +401,8 @@ public class Parser extends MathTransformParser {
      * @todo Authority code is currently ignored. We may consider to create a subclass of
      *       {@link Unit} which implements {@link IdentifiedObject} in a future version.
      */
-    private <T extends Quantity> Unit<T> parseUnit(final Element parent, final Unit<T> unit)
+    @SuppressWarnings("unchecked")
+    private <T extends Quantity<T>> Unit<T> parseUnit(final Element parent, final Unit<T> unit)
             throws ParseException
     {
         final Element element = parent.pullElement("UNIT");
@@ -384,7 +410,8 @@ public class Parser extends MathTransformParser {
         final double   factor = element.pullDouble("factor");
         final Map<String,?> properties = parseAuthority(element, name);
         element.close();
-        return (factor != 1) ? unit.times(factor) : unit;
+        Unit<T> finalUnit = (factor != 1) ? unit.multiply(factor) : unit;
+        return Units.autoCorrect(finalUnit);
     }
 
     /**
@@ -558,7 +585,7 @@ public class Parser extends MathTransformParser {
         }
         try {
             return datumFactory.createFlattenedSphere(properties,
-                    semiMajorAxis, inverseFlattening, SI.METER);
+                    semiMajorAxis, inverseFlattening, SI.METRE);
         } catch (FactoryException exception) {
             throw element.parseFailed(exception, null);
         }
@@ -616,8 +643,8 @@ public class Parser extends MathTransformParser {
                 final double paramValue = param.pullDouble("value");
                 final ParameterValue<?> parameter = parameters.parameter(paramName);
                 final Unit<?> expected = parameter.getDescriptor().getUnit();
-                if (expected!=null && !Unit.ONE.equals(expected)) {
-                    if (linearUnit!=null && SI.METER.isCompatible(expected)) {
+                if (expected!=null && !AbstractUnit.ONE.equals(expected)) {
+                    if (linearUnit!=null && SI.METRE.isCompatible(expected)) {
                         parameter.setValue(paramValue, linearUnit);
                         continue;
                     }
@@ -754,7 +781,7 @@ public class Parser extends MathTransformParser {
         Element           element = parent.pullElement("LOCAL_CS");
         String               name = element.pullString("name");
         EngineeringDatum    datum = parseLocalDatum(element);
-        Unit<Length>   linearUnit = parseUnit(element, SI.METER);
+        Unit<Length>   linearUnit = parseUnit(element, SI.METRE);
         CoordinateSystemAxis axis = parseAxis(element, linearUnit, true);
         List<CoordinateSystemAxis> list = new ArrayList<CoordinateSystemAxis>();
         do {
@@ -792,7 +819,7 @@ public class Parser extends MathTransformParser {
         final Map<String,?> properties = parseAuthority(element, name);
         final PrimeMeridian   meridian = parsePrimem   (element, NonSI.DEGREE_ANGLE);
         final GeodeticDatum      datum = parseDatum    (element, meridian);
-        final Unit<Length>  linearUnit = parseUnit     (element, SI.METER);
+        final Unit<Length>  linearUnit = parseUnit     (element, SI.METRE);
         CoordinateSystemAxis axis0, axis1, axis2;
         axis0 = parseAxis(element, linearUnit, false);
         try {
@@ -832,7 +859,7 @@ public class Parser extends MathTransformParser {
         }
         String               name = element.pullString("name");
         VerticalDatum       datum = parseVertDatum(element);
-        Unit<Length>   linearUnit = parseUnit(element, SI.METER);
+        Unit<Length>   linearUnit = parseUnit(element, SI.METRE);
         CoordinateSystemAxis axis = parseAxis(element, linearUnit, false);
         Map<String,?>  properties = parseAuthority(element, name);
         element.close();
@@ -872,7 +899,7 @@ public class Parser extends MathTransformParser {
             if (axis0 != null) {
                 axis1 = parseAxis(element, angularUnit, true);
                 if(axis1 != null) {
-                    axis2 = parseAxis(element, SI.METER, false);
+                    axis2 = parseAxis(element, SI.METRE, false);
                 } 
             } else {
                 // Those default values are part of WKT specification.
@@ -912,7 +939,7 @@ public class Parser extends MathTransformParser {
         Map<String,?>       properties = parseAuthority(element, name);
         GeographicCRS           geoCRS = parseGeoGCS(element);
         Ellipsoid            ellipsoid = geoCRS.getDatum().getEllipsoid();
-        Unit<Length>        linearUnit = parseUnit(element, SI.METER);
+        Unit<Length>        linearUnit = parseUnit(element, SI.METRE);
         Unit<Angle>        angularUnit = geoCRS.getCoordinateSystem().getAxis(0).getUnit().asType(Angle.class);
         ParameterValueGroup projection = parseProjection(element, ellipsoid, linearUnit, angularUnit);
         CoordinateSystemAxis     axis0 = parseAxis(element, linearUnit, false);
@@ -998,7 +1025,7 @@ public class Parser extends MathTransformParser {
                 buffer.append(number);
                 axis[i] = csFactory.createCoordinateSystemAxis(
                     singletonMap(IdentifiedObject.NAME_KEY, buffer.toString()),
-                    number, AxisDirection.OTHER, Unit.ONE);
+                    number, AxisDirection.OTHER, AbstractUnit.ONE);
             }
             final Conversion conversion = new DefiningConversion(
                     singletonMap(IdentifiedObject.NAME_KEY, method.getName().getCode()),

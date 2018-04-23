@@ -22,8 +22,8 @@ package org.geotools.referencing.crs;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import javax.measure.unit.Unit;
-import javax.measure.unit.NonSI;
+import javax.measure.Unit;
+import si.uom.NonSI;
 import javax.measure.quantity.Angle;
 
 import org.opengis.referencing.cs.AxisDirection;

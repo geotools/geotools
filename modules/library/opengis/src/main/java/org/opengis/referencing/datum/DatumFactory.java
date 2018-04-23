@@ -11,7 +11,7 @@ package org.opengis.referencing.datum;
 
 import java.util.Map;
 import java.util.Date;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 import javax.measure.quantity.Angle;
 import javax.measure.quantity.Length;
 import org.opengis.referencing.ObjectFactory;

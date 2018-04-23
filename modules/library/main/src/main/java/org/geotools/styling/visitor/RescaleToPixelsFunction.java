@@ -20,7 +20,7 @@ package org.geotools.styling.visitor;
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 import javax.measure.quantity.Length;
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;

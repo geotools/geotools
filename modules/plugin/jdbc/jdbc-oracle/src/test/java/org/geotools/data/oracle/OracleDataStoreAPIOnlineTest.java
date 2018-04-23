@@ -56,4 +56,19 @@ public class OracleDataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest {
         SequencedPrimaryKeyColumn seqPk = (SequencedPrimaryKeyColumn) pk;
         assertEquals("ROAD_FID_SEQ", seqPk.getSequenceName());
     }
+
+    /**
+     * Test if tables that should be hidden are absent in the list of type names.
+     *
+     * @throws IOException if any
+     * @see org.geotools.data.oracle.OracleDialect#includeTable(String, String, java.sql.Connection)
+     */
+    public void testHiddenTables() throws IOException {
+        String[] typenames = dataStore.getTypeNames();
+        for (String name:typenames) {
+            assertFalse("Name should not end with 'MDXT_'",name.startsWith("MDXT_"));
+            assertFalse("Name should not end with '$_BKTS'",name.endsWith("$_BKTS"));
+            assertFalse("Name should not end with '$'",name.endsWith("$"));
+        }
+    }
 }

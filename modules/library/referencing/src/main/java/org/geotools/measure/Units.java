@@ -133,15 +133,15 @@ public final class Units {
         format.label(NonSI.DEGREE_ANGLE, "°");
         format.label(Units.PIXEL, "pixel");
         
-        format.label(tec.uom.se.unit.Units.KELVIN, "kelvin");
         format.label(USCustomary.GRADE, "grad");
         format.alias(USCustomary.GRADE, "grade");
     }
     
     /**
-     * Unit name, willing to use {@link SimpleUnitFormat} to look up appropriate alias if required.
+     * Unit name, willing to use {@link SimpleUnitFormat} to look up appropriate label if a name has
+     * not been not defined.
      * <p>
-     * This allows us to recognize units like {@link Units#PIXEL} by name.
+     * This allows us to format units like {@link Units#PIXEL}.
      */
     public static String toName(Unit<?> unit) {
         if( unit.getName() != null) {
@@ -150,6 +150,16 @@ public final class Units {
         SimpleUnitFormat format = SimpleUnitFormat.getInstance();
         return format.format(unit);
     }
+    /**
+     * Unit symbol, willing to use {@link SimpleUnitFormat} to look up appropriate label if required.
+     * <p>
+     * This allows us to format units like {@link Units#PIXEL}.
+     */
+    public static String toSymbol(Unit<?> unit) {   
+        SimpleUnitFormat format = SimpleUnitFormat.getInstance();
+        return format.format(unit);
+    }
+    
     /**
      * Returns an equivalent unit instance based on the provided unit.
      * First, it tries to get one of the reference units defined in the JSR363 implementation

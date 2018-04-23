@@ -69,21 +69,28 @@ class FilterToElasticHelper {
     /**
      * Conversion factor from common units to meter
      */
-    protected static final Map<String, Double> UNITS_MAP = new HashMap<String, Double>() {
+    static final Map<String, Double> UNITS_MAP = new HashMap<String, Double>() {
 
         private static final long serialVersionUID = 1L;
 
         {
+            // Metric
+            put("millimeter", 0.001);
+            put("mm", 0.001);
+            put("cm", 0.01);
+            put("m", 1.0);
             put("kilometers", 1000.0);
             put("kilometer", 1000.0);
-            put("mm", 0.001);
-            put("millimeter", 0.001);
+            put("km", 1000.0);
+            // Other
+            put("in", 0.0254);
+            put("ft", 0.3048);
+            put("feet", 0.3048);
+            put("yd", 0.9144);
             put("mi", 1609.344);
             put("miles", 1609.344);
             put("NM", 1852d);
-            put("feet", 0.3048);
-            put("ft", 0.3048);
-            put("in", 0.0254);
+            put("nmi", 1852d);
         }
     };
 

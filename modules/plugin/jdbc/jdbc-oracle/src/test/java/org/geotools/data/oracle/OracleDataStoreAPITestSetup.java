@@ -45,6 +45,8 @@ public class OracleDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
         run("INSERT INTO lake (fid,id,geom,name) VALUES (lake_fid_seq.nextval, 0,"
             + "MDSYS.SDO_GEOMETRY( 2003, 4326, NULL, SDO_ELEM_INFO_ARRAY(1,1003,1), "
             + "SDO_ORDINATE_ARRAY(12,6, 14,8, 16,6, 16,4, 14,4, 12,6)), 'muddy')");
+
+        run ("ANALYZE INDEX LAKE_GEOM_IDX compute statistics");
     }
     
 
@@ -67,6 +69,8 @@ public class OracleDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
         run("INSERT INTO river (fid, id,geom,river, flow ) VALUES (river_fid_seq.nextval, 1,"
                 + "MDSYS.SDO_GEOMETRY( 2002, 4326, NULL, MDSYS.SDO_ELEM_INFO_ARRAY(1,2,1), "
                 + "MDSYS.SDO_ORDINATE_ARRAY(4,6, 4,8, 6,10))," + "'rv2', 3.0)");
+
+        run ("ANALYZE INDEX RIVER_GEOM_IDX compute statistics");
     }
 
     @Override
@@ -91,6 +95,8 @@ public class OracleDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
         run("INSERT INTO road (fid,id,geom,name) VALUES (road_fid_seq.nextval, 3,"
                 + "MDSYS.SDO_GEOMETRY( 2002, 4326, NULL, MDSYS.SDO_ELEM_INFO_ARRAY(1,2,1), "
                 + "MDSYS.SDO_ORDINATE_ARRAY(3,2, 4,2, 5,3))," + "'r3')");
+
+        run ("ANALYZE INDEX ROAD_GEOM_IDX compute statistics");
     }
 
     @Override

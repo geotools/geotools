@@ -476,6 +476,8 @@ public class OracleDialect extends PreparedStatementSQLDialect {
             return false;
         } else if (tableName.startsWith("DM$"))  {
             return false;
+        } else if (tableName.startsWith("MDXT_") && (tableName.endsWith("$_BKTS") || tableName.endsWith("$_MBR"))) {
+            return false;
         } 
         
         return true;

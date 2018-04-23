@@ -55,6 +55,12 @@ public class MBFunctionFactory implements FunctionFactory {
         functionList.add(MBFunction_get.NAME);
         functionList.add(MBFunction_has.NAME);
         functionList.add(MBFunction_remainder.NAME);
+        functionList.add(MBFunction_typeOf.NAME);
+        functionList.add(MBFunction_type.NAME);
+        functionList.add(MBFunction_toBool.NAME);
+        functionList.add(MBFunction_toString.NAME);
+        functionList.add(MBFunction_toNumber.NAME);
+        functionList.add(MBFunction_toColor.NAME);
         return Collections.unmodifiableList(functionList);
     }
 
@@ -177,6 +183,42 @@ public class MBFunctionFactory implements FunctionFactory {
         }
         if (MBFunction_remainder.NAME.getFunctionName().equals(name)){
             MBFunction_remainder f = new MBFunction_remainder();
+            f.setParameters(args);
+            f.setFallbackValue(fallback);
+            return f;
+        }
+        if (MBFunction_typeOf.NAME.getFunctionName().equals(name)) {
+            MBFunction_typeOf f = new MBFunction_typeOf();
+            f.setParameters(args);
+            f.setFallbackValue(fallback);
+            return f;
+        }
+        if (MBFunction_type.NAME.getFunctionName().equals(name)) {
+            MBFunction_type f = new MBFunction_type();
+            f.setParameters(args);
+            f.setFallbackValue(fallback);
+            return f;
+        }
+        if (MBFunction_toBool.NAME.getFunctionName().equals(name)) {
+            MBFunction_toBool f = new MBFunction_toBool();
+            f.setParameters(args);
+            f.setFallbackValue(fallback);
+            return f;
+        }
+        if (MBFunction_toString.NAME.getFunctionName().equals(name)) {
+            MBFunction_toString f = new MBFunction_toString();
+            f.setParameters(args);
+            f.setFallbackValue(fallback);
+            return f;
+        }
+        if (MBFunction_toNumber.NAME.getFunctionName().equals(name)) {
+            MBFunction_toNumber f = new MBFunction_toNumber();
+            f.setParameters(args);
+            f.setFallbackValue(fallback);
+            return f;
+        }
+        if (MBFunction_toColor.NAME.getFunctionName().equals(name)) {
+            MBFunction_toColor f = new MBFunction_toColor();
             f.setParameters(args);
             f.setFallbackValue(fallback);
             return f;

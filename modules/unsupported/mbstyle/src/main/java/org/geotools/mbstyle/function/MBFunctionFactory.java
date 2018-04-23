@@ -54,6 +54,7 @@ public class MBFunctionFactory implements FunctionFactory {
         functionList.add(MBFunction_at.NAME);
         functionList.add(MBFunction_get.NAME);
         functionList.add(MBFunction_has.NAME);
+        functionList.add(MBFunction_remainder.NAME);
         return Collections.unmodifiableList(functionList);
     }
 
@@ -170,6 +171,12 @@ public class MBFunctionFactory implements FunctionFactory {
         }
         if (MBFunction_has.NAME.getFunctionName().equals(name)){
             MBFunction_has f = new MBFunction_has();
+            f.setParameters(args);
+            f.setFallbackValue(fallback);
+            return f;
+        }
+        if (MBFunction_remainder.NAME.getFunctionName().equals(name)){
+            MBFunction_remainder f = new MBFunction_remainder();
             f.setParameters(args);
             f.setFallbackValue(fallback);
             return f;

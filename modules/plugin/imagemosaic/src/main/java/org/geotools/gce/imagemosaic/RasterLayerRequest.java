@@ -88,6 +88,8 @@ public class RasterLayerRequest {
 
     private double artifactsFilterPTileThreshold;
 
+    private double[] virtualNativeResolution;
+
     private boolean heterogeneousGranules = false;
 
     RasterManager rasterManager;
@@ -435,6 +437,12 @@ public class RasterLayerRequest {
                 continue;
             }
 
+            if (name.equals(ImageMosaicFormat.VIRTUAL_NATIVE_RESOLUTION.getName())) {
+                if (value == null) continue;
+                virtualNativeResolution = (double[]) value;
+                return;
+            }
+
             if (name.equals(ImageMosaicFormat.ALLOW_MULTITHREADING.getName())) {
                 if (value == null) continue;
                 multithreadingAllowed = ((Boolean) value).booleanValue();
@@ -676,6 +684,13 @@ public class RasterLayerRequest {
             return;
         }
 
+        if (name.equals(ImageMosaicFormat.VIRTUAL_NATIVE_RESOLUTION.getName())) {
+            final Object value = param.getValue();
+            if (value == null) return;
+            virtualNativeResolution = (double[]) value;
+            return;
+        }
+
         if (name.equals(ImageMosaicFormat.ALLOW_MULTITHREADING.getName())) {
             final Object value = param.getValue();
             if (value == null) return;
@@ -859,6 +874,10 @@ public class RasterLayerRequest {
         //
         // //
         readType = ReadType.getDefault();
+    }
+
+    public double[] getVirtualNativeResolution() {
+        return virtualNativeResolution;
     }
 
     public Color getInputTransparentColor() {

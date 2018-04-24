@@ -885,6 +885,7 @@ public class GranuleDescriptor {
         }
         ImageReadParam readParameters = null;
         int imageIndex;
+        final double[] virtualNativeResolution = request.getVirtualNativeResolution();
         final boolean useFootprint =
                 roiProvider != null && request.getFootprintBehavior() != FootprintBehavior.None;
         Geometry inclusionGeometry = useFootprint ? roiProvider.getFootprint() : null;
@@ -994,7 +995,8 @@ public class GranuleDescriptor {
                                 request.getDecimationPolicy(),
                                 readParameters,
                                 request.rasterManager,
-                                overviewsController);
+                                overviewsController,
+                                virtualNativeResolution);
             } else {
                 imageIndex = index;
                 readParameters = imageReadParameters;
@@ -1209,6 +1211,15 @@ public class GranuleDescriptor {
             // image sizes.
             //
             // place it in the mosaic using the coords created above;
+            if (virtualNativeResolution != null
+                    && !Double.isNaN(virtualNativeResolution[0])
+                    && !Double.isNaN(virtualNativeResolution[1])) {
+                // Note that virtualNativeResolution may have been set to NaN by overviewController
+                raster =
+                        forceVirtualNativeResolution(
+                                raster, request, virtualNativeResolution, selectedlevel, hints);
+            }
+
             double decimationScaleX = ((1.0 * sourceArea.width) / raster.getWidth());
             double decimationScaleY = ((1.0 * sourceArea.height) / raster.getHeight());
             final AffineTransform decimationScaleTranform =
@@ -1454,6 +1465,62 @@ public class GranuleDescriptor {
                     reader.dispose();
                 }
             }
+        }
+    }
+
+    private RenderedImage forceVirtualNativeResolution(
+            RenderedImage raster,
+            final RasterLayerRequest request,
+            final double[] virtualNativeResolution,
+            final GranuleOverviewLevelDescriptor selectedlevel,
+            final Hints hints) {
+
+        // Setup affine transformation to force the read raster to the requested virtual native
+        // resolution
+        final AffineTransform virtualTransform =
+                XAffineTransform.getScaleInstance(
+                        XAffineTransform.getScaleX0(selectedlevel.gridToWorldTransformCorner)
+                                / virtualNativeResolution[0],
+                        XAffineTransform.getScaleY0(selectedlevel.gridToWorldTransformCorner)
+                                / virtualNativeResolution[1]);
+
+        final Dimension tileDimensions = request.getTileDimensions();
+        RenderingHints localHints = null;
+        if (tileDimensions != null && request.getReadType().equals(ReadType.DIRECT_READ)) {
+            final ImageLayout layout = new ImageLayout();
+            layout.setTileHeight(tileDimensions.width).setTileWidth(tileDimensions.height);
+            localHints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout);
+        } else {
+            if (hints != null && hints.containsKey(JAI.KEY_IMAGE_LAYOUT)) {
+                final Object layout = hints.get(JAI.KEY_IMAGE_LAYOUT);
+                if (layout != null && layout instanceof ImageLayout) {
+                    final ImageLayout originalLayout = (ImageLayout) layout;
+                    final ImageLayout localLayout = new ImageLayout();
+                    localLayout.setTileHeight(originalLayout.getTileHeight(null));
+                    localLayout.setTileWidth(originalLayout.getTileWidth(null));
+                    localHints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, localLayout);
+                }
+            }
+        }
+        updateLocalHints(hints, localHints);
+        localHints.add(ImageUtilities.BORDER_EXTENDER_HINTS);
+        ImageWorker worker = new ImageWorker(raster).setRenderingHints(localHints);
+        return worker.affine(
+                        virtualTransform, request.getInterpolation(), request.getBackgroundValues())
+                .getRenderedImage();
+    }
+
+    private void updateLocalHints(Hints hints, RenderingHints localHints) {
+        if (hints != null && hints.containsKey(JAI.KEY_TILE_CACHE)) {
+            final Object cache = hints.get(JAI.KEY_TILE_CACHE);
+            if (cache != null && cache instanceof TileCache)
+                localHints.add(new RenderingHints(JAI.KEY_TILE_CACHE, (TileCache) cache));
+        }
+        if (hints != null && hints.containsKey(JAI.KEY_TILE_SCHEDULER)) {
+            final Object scheduler = hints.get(JAI.KEY_TILE_SCHEDULER);
+            if (scheduler != null && scheduler instanceof TileScheduler)
+                localHints.add(
+                        new RenderingHints(JAI.KEY_TILE_SCHEDULER, (TileScheduler) scheduler));
         }
     }
 

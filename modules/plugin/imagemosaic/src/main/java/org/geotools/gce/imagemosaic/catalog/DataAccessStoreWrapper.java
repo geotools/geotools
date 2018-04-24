@@ -115,7 +115,12 @@ class DataAccessStoreWrapper implements DataStore {
     @Override
     public SimpleFeatureType getSchema(String typeName) throws IOException {
         Name name = getNameFromLocal(typeName);
-        return (SimpleFeatureType) delegate.getSchema(name);
+        FeatureType schema = delegate.getSchema(name);
+        if (schema instanceof SimpleFeatureType) {
+            return (SimpleFeatureType) schema;
+        } else {
+            return null;
+        }
     }
 
     @Override

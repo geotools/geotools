@@ -1,3 +1,19 @@
+/*
+ *    GeoTools - The Open Source Java GIS Toolkit
+ *    http://geotools.org
+ *
+ *    (C) 2017, Open Source Geospatial Foundation (OSGeo)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ */
 package org.geotools.data.wmts.client;
 
 import org.geotools.data.wmts.model.TileMatrixSet;
@@ -11,43 +27,39 @@ import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.swing.SingleLayerMapContent;
 import org.geotools.tile.util.AsyncTileLayer;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.opengis.referencing.FactoryException;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static org.geotools.data.wmts.client.WMTSTileFactory4326Test.createCapabilities;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 /**
- * @author peck7 on 21/12/2017.
+ * @author Ludovic Pecquot (E-IS) on 21/12/2017.
+ * @link {org.geotools.tile.util.TileLayer}
  */
 public class WMTSTransparentTileTest {
 
-    WMTSTileService service;
-
-    @BeforeClass
-    public static void init() {
-        Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools");
-        LOGGER.setLevel(Level.FINE);
-    }
+    private WMTSTileService service;
 
     @Before
     public void setup() throws Exception {
         service = createKVPService();
+    }
+
+    @After
+    public void tearDown() {
+        service = null;
     }
 
     private WMTSTileService createKVPService() throws Exception {
@@ -74,10 +86,9 @@ public class WMTSTransparentTileTest {
     }
 
     @Test
-    public void testTransparentTile() throws IOException, FactoryException {
+    public void testTransparentTile() {
 
-        Layer layer = new AsyncTileLayer(service);
-//        Layer layer = new TileLayer(service);
+        Layer layer = new AsyncTileLayer(service); // or new TileLayer(service);
 
         MapContent map = new SingleLayerMapContent(layer);
 
@@ -100,26 +111,21 @@ public class WMTSTransparentTileTest {
 
         // render tiles
         renderer.paint(gr, imageBounds, mapBounds);
-//        File fileToSave = new File("d:\\test.bmp");
-//        ImageIO.write(image, "bmp", fileToSave);
 
         // get first pixel
         int argb = image.getRGB(0, 0);
         boolean hasAlphaChannel = image.getAlphaRaster() != null;
         Color c = new Color(argb, hasAlphaChannel);
-        System.out.println(String.format("First pixel : alpha=%s red=%s green=%s blue=%s", c.getAlpha(), c.getRed(), c.getGreen(), c.getBlue()));
         Assert.assertEquals("Color should be RED (background)", Color.RED, c);
 
         // get a rendered pixel
         argb = image.getRGB(69, 49);
         c = new Color(argb, hasAlphaChannel);
-        System.out.println(String.format("Rendered pixel : alpha=%s red=%s green=%s blue=%s", c.getAlpha(), c.getRed(), c.getGreen(), c.getBlue()));
         Assert.assertEquals("Color should be black", Color.BLACK, c);
 
         // get another rendered pixel
         argb = image.getRGB(154, 64);
         c = new Color(argb, hasAlphaChannel);
-        System.out.println(String.format("Rendered pixel : alpha=%s red=%s green=%s blue=%s", c.getAlpha(), c.getRed(), c.getGreen(), c.getBlue()));
         Assert.assertEquals("Color should be very dark red", new Color(44, 0, 0), c);
     }
 }

@@ -2190,7 +2190,7 @@ public class Utils {
     public static boolean isValidMosaicSchema(SimpleFeatureType schema,
             String locationAttributeName) {
         // does it have a geometry?
-        if (schema.getGeometryDescriptor() == null) {
+        if (schema == null || schema.getGeometryDescriptor() == null) {
             return false;
         }
 

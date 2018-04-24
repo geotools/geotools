@@ -16,20 +16,6 @@
  */
 package org.geotools.gce.imagemosaic;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.Serializable;
-import java.net.URL;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -41,17 +27,43 @@ import org.geotools.data.FeatureSource;
 import org.geotools.data.ServiceInfo;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
+import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Hints;
+import org.geotools.feature.AttributeTypeBuilder;
 import org.geotools.feature.NameImpl;
+import org.geotools.feature.TypeBuilder;
 import org.geotools.test.TestData;
 import org.geotools.util.URLs;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.AttributeType;
+import org.opengis.feature.type.ComplexType;
 import org.opengis.feature.type.FeatureType;
+import org.opengis.feature.type.GeometryDescriptor;
+import org.opengis.feature.type.GeometryType;
 import org.opengis.feature.type.Name;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.Serializable;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class ImageMosaicRepositoryTest {
 
@@ -121,9 +133,29 @@ public class ImageMosaicRepositoryTest {
         coverage.dispose(true);
         reader.dispose();
     }
+    
+    
 
     @Test
     public void createFromExistingDataAccess() throws Exception {
+        createFromExistingDataAccess((ds, name) -> new TestDataAccess(name, ds));    
+    }
+
+    @Test
+    public void createFromExistingDataAccessWithComplex() throws Exception {
+        createFromExistingDataAccess((ds, name) -> {
+            try {
+                SimpleFeatureType schema = ds.getSchema(name);
+                FeatureType featureType = buildComplexTypeFromSimple(schema);
+                return new TestDataAccessWithComplex(name, featureType, ds);
+            } catch (IOException e) {
+                throw new RuntimeException(e); 
+            }
+            
+        });
+    }
+        
+    public void createFromExistingDataAccess(BiFunction<DataStore, Name, DataAccess> dataAccessProvider) throws Exception {
         // setup mosaic
         URL storeUrl = TestData.url(this, "rgba");
         File testDataFolder = new File(storeUrl.toURI());
@@ -166,7 +198,7 @@ public class ImageMosaicRepositoryTest {
         ShapefileDataStore ds = new ShapefileDataStore(
                 URLs.fileToUrl(new File(testDirectory, "test.shp")));
         Name name = new NameImpl("foo", "test");
-        TestDataAccess dataAccess = new TestDataAccess(name, ds);
+        DataAccess dataAccess = dataAccessProvider.apply(ds, name);
         repository.register(name, dataAccess);
 
         // now re-init from the existing shapefile data store
@@ -242,7 +274,7 @@ public class ImageMosaicRepositoryTest {
 
         private DataStore delegate;
 
-        private Name name;
+        protected Name name;
 
         public TestDataAccess(Name name, DataStore delegate) {
             this.name = name;
@@ -298,4 +330,107 @@ public class ImageMosaicRepositoryTest {
         }
 
     }
+
+    /**
+     * A DataAccess that actually has a complex source. Won't return a FeatureSource, but it's enough
+     * to test 
+     */
+    private static class TestDataAccessWithComplex extends TestDataAccess {
+
+        private final FeatureType complexType;
+
+        public TestDataAccessWithComplex(Name baseName, FeatureType complexType, DataStore delegate) {
+            super(baseName, delegate);
+            this.complexType = complexType;
+        }
+
+        @Override
+        public List<Name> getNames() throws IOException {
+            return Arrays.asList(name, complexType.getName());
+        }
+
+        @Override
+        public FeatureType getSchema(Name name) throws IOException {
+            if (name.equals(complexType.getName())) {
+                return complexType;
+            } else {
+                return super.getSchema(name);
+            }
+        }
+    }
+
+    /**
+     * Builds a complex feature type by decorating a simple one with some extras, code borrowed by
+     * GeoServer OpenSearch for EO
+     *
+     * @param base
+     * @return
+     */
+    FeatureType buildComplexTypeFromSimple(SimpleFeatureType base) {
+        TypeBuilder typeBuilder = new TypeBuilder(CommonFactoryFinder.getFeatureTypeFactory(null));
+        String nsURI = "http://www.geotools.org/test";
+
+        // map the source attributes
+        AttributeTypeBuilder ab = new AttributeTypeBuilder();
+        for (AttributeDescriptor ad : base.getAttributeDescriptors()) {
+            String name = ad.getLocalName();
+            String namespaceURI = nsURI;
+
+            // map into output type
+            ab.init(ad);
+            ab.setMinOccurs(0);
+            AttributeDescriptor mappedDescriptor;
+            if (ad instanceof GeometryDescriptor) {
+                GeometryType at = ab.buildGeometryType();
+                ab.setCRS(((GeometryDescriptor) ad).getCoordinateReferenceSystem());
+                mappedDescriptor = ab.buildDescriptor(new NameImpl(namespaceURI, name), at);
+            } else {
+                AttributeType at = ab.buildType();
+                mappedDescriptor = ab.buildDescriptor(new NameImpl(namespaceURI, name), at);
+            }
+
+            typeBuilder.add(mappedDescriptor);
+        }
+        // adding the metadata property
+        AttributeDescriptor metadataDescriptor =
+                buildSimpleDescriptor(new NameImpl("metadata"), String.class);
+        typeBuilder.add(metadataDescriptor);
+
+        // adding the quicklook property
+        AttributeDescriptor quicklookDescriptor =
+                buildSimpleDescriptor(new NameImpl("quicklook"), byte[].class);
+        typeBuilder.add(quicklookDescriptor);
+
+        // map OGC links
+        AttributeDescriptor linksDescriptor =
+                buildFeatureListDescriptor(new NameImpl("ogcLinks"), base);
+        typeBuilder.add(linksDescriptor);
+
+        typeBuilder.setName("product");
+        typeBuilder.setNamespaceURI(nsURI);
+        return typeBuilder.feature();
+    }
+
+    private AttributeDescriptor buildSimpleDescriptor(Name name, Class binding) {
+        AttributeTypeBuilder ab = new AttributeTypeBuilder();
+        ab.name(name.getLocalPart()).namespaceURI(name.getNamespaceURI());
+        ab.setBinding(binding);
+        AttributeDescriptor descriptor = ab.buildDescriptor(name, ab.buildType());
+        return descriptor;
+    }
+
+    private AttributeDescriptor buildFeatureListDescriptor(Name name, SimpleFeatureType schema) {
+        return buildFeatureDescriptor(name, schema, 0, Integer.MAX_VALUE);
+    }
+
+    private AttributeDescriptor buildFeatureDescriptor(
+            Name name, SimpleFeatureType schema, int minOccurs, int maxOccurs) {
+        AttributeTypeBuilder ab = new AttributeTypeBuilder();
+        ab.name(name.getLocalPart()).namespaceURI(name.getNamespaceURI());
+        ab.setMinOccurs(minOccurs);
+        ab.setMaxOccurs(maxOccurs);
+        AttributeDescriptor descriptor = ab.buildDescriptor(name, schema);
+        return descriptor;
+    }
+    
 }

@@ -143,6 +143,17 @@ public final class ImageMosaicFormat extends AbstractGridFormat implements Forma
             "ArtifactsFilterPtileThreshold", Double.class, null,
             Double.valueOf(DEFAULT_ARTIFACTS_FILTER_PTILE_THRESHOLD));
 
+    /** 
+     *  Defines a virtual native resolution. It virtually represents the native resolution to be used after reading a dataset
+     *  before doing any other operation. It could be useful to limit somehow the data quality offered to the final user.
+     *  As an instance if we have data at resolutions 0.5m, 1m, 2m, 4m, 8m and the virtual native resolution is 4m, and the request
+     *  is looking for data at 2m resolution we should downsample the best nearest level to 4m and then get back at 2m.
+     *  This will result in potentially pixellated output.
+     *  When specified, values should be always positive. 
+     */
+    public static final ParameterDescriptor<double[]> VIRTUAL_NATIVE_RESOLUTION = new DefaultParameterDescriptor<double[]>(
+            "VirtualNativeResolution", double[].class, null, null);
+
     /**
      * Control the threading behavior for this plugin.
      */

@@ -55,6 +55,7 @@ import org.geotools.geometry.jts.JTS;
 import org.geotools.image.ImageWorker;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.URLs;
+import org.opengis.feature.simple.SimpleFeature;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
@@ -372,7 +373,8 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
     }
 
     protected boolean acceptGranule(GranuleDescriptor granuleDescriptor) {
-        Object imageIndex = granuleDescriptor.getOriginator().getAttribute("imageindex");
+        SimpleFeature originator = granuleDescriptor.getOriginator(); 
+        Object imageIndex = originator != null ? originator.getAttribute("imageindex") : null;
 
         if (imageIndex != null && imageIndex instanceof Integer) {
             rasterLayerResponse.setImageChoice((Integer) imageIndex);

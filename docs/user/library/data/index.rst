@@ -59,6 +59,7 @@ DataStore plugins:
    pregeneralized
    property
    geopackage
+   mongodb
 
 Unsupported plugins:
 
@@ -72,7 +73,6 @@ Unsupported plugins:
    excel
    georest
    kml
-   mongodb
    sfs
    solr
    wfs-ng

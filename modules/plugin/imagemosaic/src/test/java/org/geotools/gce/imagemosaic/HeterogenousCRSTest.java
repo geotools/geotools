@@ -19,6 +19,7 @@ package org.geotools.gce.imagemosaic;
 
 import com.vividsolutions.jts.geom.Geometry;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -38,6 +39,7 @@ import org.geotools.image.test.ImageAssert;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.projection.MapProjection;
+import org.geotools.resources.image.ImageUtilities;
 import org.geotools.test.TestData;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -48,16 +50,17 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
-import org.opengis.metadata.spatial.Dimension;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.operation.TransformException;
 
 import javax.media.jai.Interpolation;
-import java.awt.*;
+import javax.media.jai.PlanarImage;
+import java.awt.Color;
 import java.awt.image.RenderedImage;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -71,7 +74,6 @@ import java.util.stream.Collectors;
 import static org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -496,6 +498,40 @@ public class HeterogenousCRSTest {
             }
         }
     }
-    
 
+    @Test
+    public void testExistingSchemaWithCrsAttribute() throws Exception {
+        // prepare test data and let it run once
+        String testLocation = "hetero_utm";
+        URL storeUrl = TestData.url(this, testLocation);
+
+        File testDataFolder = new File(storeUrl.toURI());
+        File testDirectory = crsMosaicFolder.newFolder(testLocation);
+        FileUtils.copyDirectory(testDataFolder, testDirectory);
+
+        ImageMosaicReader imReader = new ImageMosaicReader(testDirectory, null);
+        GridCoverage2D coverage = imReader.read(null);
+        if (coverage.getRenderedImage() instanceof PlanarImage) {
+            ImageUtilities.disposePlanarImageChain((PlanarImage) coverage.getRenderedImage());
+        }
+        coverage.dispose(true);
+        imReader.dispose();
+
+        // append the CrsAttribute to the indexer.properties
+        FileWriter out = null;
+        try {
+            out = new FileWriter(new File(testDirectory, "hetero_utm.properties"),true);
+            out.write("UseExistingSchema=true\n");
+            out.write("CrsAttribute=crs\n");
+            out.flush();
+        } finally {
+            if (out != null) {
+                IOUtils.closeQuietly(out);
+            }
+        }
+        
+        // now rebuild mosaic (used to fail)
+        imReader = new ImageMosaicReader(testDirectory, null);
+        imReader.dispose();
+    }
 }

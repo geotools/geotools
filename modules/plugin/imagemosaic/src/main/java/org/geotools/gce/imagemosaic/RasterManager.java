@@ -1101,7 +1101,7 @@ public class RasterManager implements Cloneable {
 
     private void addExtraAttribute(SimpleFeatureType schema, String attributeName, String domainName) {
         if (attributeName != null ) {
-            if (domainsManager != null) {
+            if (domainsManager == null) {
                 domainsManager = new DomainManager(Collections.singletonMap(domainName, attributeName), schema);
                 dimensionDescriptors.addAll(domainsManager .dimensions);
             } else {

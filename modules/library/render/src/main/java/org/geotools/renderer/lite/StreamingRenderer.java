@@ -127,6 +127,7 @@ import org.opengis.coverage.processing.OperationNotFoundException;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.Name;
@@ -1670,20 +1671,23 @@ public class StreamingRenderer implements GTRenderer {
         
         Filter filter = Filter.INCLUDE;
         final int length = attributes.size();
-        Object attType;
+        AttributeDescriptor attType;
 
         for (int j = 0; j < length; j++) {
             //NC - support nested attributes -> use evaluation for getting descriptor
             //result is not necessary a descriptor, is Name in case of @attribute
-            attType =  attributes.get(j).evaluate(schema);
+            attType =  (AttributeDescriptor) attributes.get(j).evaluate(schema);
 
-            // the attribute type might be missing because of rendering transformations, skip it
             if (attType == null) {
-                continue;
+                // the attribute type might be missing because of rendering transformations
+                // use the default since that is what BarnesSurfaceProcess works with
+                attType = schema.getGeometryDescriptor();
             }
 
             if (attType instanceof GeometryDescriptor) {
-                Filter gfilter = new FastBBOX(attributes.get(j), bboxes.get(0), filterFactory);
+                PropertyName propertyName = filterFactory.property(attType.getName());
+                
+                Filter gfilter = new FastBBOX(propertyName, bboxes.get(0), filterFactory);
 
                 if (filter == Filter.INCLUDE) {
                     filter = gfilter;
@@ -1693,8 +1697,7 @@ public class StreamingRenderer implements GTRenderer {
 
                 if(bboxes.size() > 0) {
                     for (int k = 1; k < bboxes.size(); k++) {
-                        //filter = filterFactory.or( filter, new FastBBOX(localName, bboxes.get(k), filterFactory) );
-                        filter = filterFactory.or( filter, new FastBBOX(attributes.get(j), bboxes.get(k), filterFactory) );
+                        filter = filterFactory.or( filter, new FastBBOX( propertyName, bboxes.get(k), filterFactory) );
                     }
                 }
             }

@@ -40,6 +40,7 @@ import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
 import org.geotools.referencing.CRS;
+import org.opengis.coverage.grid.GridCoordinates;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.coverage.grid.GridGeometry;
 import org.opengis.feature.simple.SimpleFeature;
@@ -360,6 +361,9 @@ public class BarnesSurfaceProcess implements VectorProcess {
         double queryBuffer = 0;
         if (argQueryBuffer != null) {
             queryBuffer = argQueryBuffer;
+            if( targetQuery.getFilter() == Filter.INCLUDE ){
+                return null;
+            }
         }
 
         targetQuery.setFilter(expandBBox(targetQuery.getFilter(), queryBuffer));

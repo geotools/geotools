@@ -16,7 +16,7 @@
  */
 package org.geotools.data.ogr;
 
-import java.io.IOException;
+import com.vividsolutions.jts.geom.GeometryFactory;
 
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
@@ -28,12 +28,15 @@ import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureStore;
 import org.geotools.data.store.ContentState;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.styling.StyledLayerDescriptor;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * FeatureStore for the OGR store, based on the {@link ContentFeatureStore} framework
@@ -162,6 +165,22 @@ class OGRFeatureStore extends ContentFeatureStore {
     @Override
     protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {
         return delegate.handleVisitor(query, visitor);
+    }
+
+    @Override
+    public List<String> getNativeStyles() {
+        List<String> emptyList = Collections.emptyList();
+        return emptyList;
+    }
+
+    @Override
+    public StyledLayerDescriptor getDefaultStyle() {
+        return null;
+    }
+
+    @Override
+    public StyledLayerDescriptor getNativeStyle(String name) {
+        return null;
     }
 
 }

@@ -139,6 +139,11 @@
       <artifactId>mockito-core</artifactId>
       <scope>test</scope>
     </dependency>
+      <dependency>
+          <groupId>org.geotools.xsd</groupId>
+          <artifactId>gt-xsd-sld</artifactId>
+          <version>20-SNAPSHOT</version>
+      </dependency>
   </dependencies>
 
   <build>

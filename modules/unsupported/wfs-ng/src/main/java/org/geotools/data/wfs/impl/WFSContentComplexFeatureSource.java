@@ -16,16 +16,6 @@
  */
 package org.geotools.data.wfs.impl;
 
-import java.awt.RenderingHints.Key;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.xml.namespace.QName;
-
 import org.geotools.data.DataAccess;
 import org.geotools.data.FeatureListener;
 import org.geotools.data.FeatureSource;
@@ -37,11 +27,23 @@ import org.geotools.data.wfs.internal.GetFeatureRequest;
 import org.geotools.data.wfs.internal.WFSClient;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.styling.StyledLayerDescriptor;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+
+import java.awt.RenderingHints.Key;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.xml.namespace.QName;
 
 /**
  * Combines the WFSClient and DataAccess objects and exposes methods to access the features by using the XmlComplexFeatureParser.
@@ -178,6 +180,19 @@ public class WFSContentComplexFeatureSource implements FeatureSource<FeatureType
             public String getTitle() {
                 Name name = WFSContentComplexFeatureSource.this.getSchema().getName();
                 return name.getLocalPart();
+            }
+
+            public List<String> getNativeStyles() {
+                List<String> emptyList = Collections.emptyList();
+                return emptyList;
+            }
+
+            public StyledLayerDescriptor getDefaultStyle() {
+                return null;
+            }
+
+            public StyledLayerDescriptor getNativeStyle(String name) {
+                return null;
             }
 
         };

@@ -8,6 +8,8 @@
  */
 package org.geotools.data.csv;
 
+import java.util.List;
+import java.util.Collections;
 import java.io.IOException;
 
 import org.geotools.data.FeatureReader;
@@ -24,6 +26,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
+import org.geotools.styling.StyledLayerDescriptor;
 
 /**
  * Read-write access to CSV File.
@@ -138,5 +141,21 @@ public class CSVFeatureStore extends ContentFeatureStore {
         return delegate.getQueryCapabilities();
     }
     // public start
+
+    @Override
+    protected List<String> getNativeStyles() {
+        List<String> emptyList = Collections.emptyList();
+        return emptyList;
+    }
+
+    @Override
+    protected StyledLayerDescriptor getDefaultStyle() {
+        return null;
+    }
+
+    @Override
+    protected StyledLayerDescriptor getNativeStyle(String name) {
+        return null;
+    }
 
 }

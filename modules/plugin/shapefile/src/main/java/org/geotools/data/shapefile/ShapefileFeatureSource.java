@@ -17,19 +17,17 @@
 package org.geotools.data.shapefile;
 
 import static org.geotools.data.shapefile.files.ShpFileType.SHP;
+import static org.geotools.data.shapefile.files.ShpFileType.SLD;
 
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.channels.ReadableByteChannel;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.MultiLineString;
+import com.vividsolutions.jts.geom.MultiPoint;
+import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
 
 import org.geotools.data.CloseableIterator;
 import org.geotools.data.DataSourceException;
@@ -63,7 +61,10 @@ import org.geotools.filter.visitor.ExtractBoundsFilterVisitor;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.renderer.ScreenMap;
 import org.geotools.resources.Classes;
+import org.geotools.sld.SLDConfiguration;
+import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.util.logging.Logging;
+import org.geotools.xml.Parser;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -84,16 +85,25 @@ import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.temporal.TOverlaps;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.xml.sax.SAXException;
 
-import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.ByteBuffer;
+import java.nio.channels.ReadableByteChannel;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.xml.parsers.ParserConfigurationException;
 
 /**
  * A {@link FeatureSource} for shapefiles based on {@link ContentFeatureSource}
@@ -597,6 +607,71 @@ class ShapefileFeatureSource extends ContentFeatureSource {
     @Override
     protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {
         return super.handleVisitor(query, visitor);
+    }
+
+    @Override
+    protected List<String> getNativeStyles() {
+        List<String> list = new ArrayList<>();
+        if (this.shpFiles.isLocal()) {
+            if (this.shpFiles.exists(SLD)) {
+                list.add(this.shpFiles.getTypeName());
+            }
+        }
+        return list;
+    }
+
+    @Override
+    protected StyledLayerDescriptor getDefaultStyle() {
+        StyledLayerDescriptor result = null;
+        try {
+            result = getNativeStyle("");
+        } catch (Exception e) {
+            // do nothing
+        }
+        return result;
+    }
+
+    @Override
+    protected StyledLayerDescriptor getNativeStyle(String name) throws IOException {
+        ReadableByteChannel in = null;
+        try {
+            ByteBuffer buffer = ByteBuffer.allocate(4*1024);
+            FileReader reader = new FileReader() {
+                public String id() {
+                    return "Shapefile's getStyle method to read sidecar style file";
+                }
+            };
+            in = this.shpFiles.getReadChannel(SLD, reader);
+            try {
+                String sldstr = "";
+                while (in.read(buffer) > 0) {
+                    buffer.flip();
+                    sldstr += StandardCharsets.UTF_8.decode(buffer).toString();
+                    buffer.clear();
+                }
+                InputStream stream = new ByteArrayInputStream(sldstr.getBytes(StandardCharsets.UTF_8));
+                SLDConfiguration configuration = new SLDConfiguration();
+                Parser parser = new Parser(configuration);
+                StyledLayerDescriptor sld = (StyledLayerDescriptor) parser.parse(stream);
+                return sld;
+            } finally {
+                in.close();
+            }
+        } catch (IOException ioe) {
+            throw new DataSourceException("Problem getting style file " + this.shpFiles.get(SLD), ioe);
+        } catch (SAXException saxe) {
+            throw new DataSourceException("Problem getting style file " + this.shpFiles.get(SLD), saxe);
+        } catch (ParserConfigurationException pce) {
+            throw new DataSourceException("Problem getting style file " + this.shpFiles.get(SLD), pce);
+        } finally {
+            try {
+                if (in != null) {
+                    in.close();
+                }
+            } catch (IOException ioe) {
+                // do nothing
+            }
+        }
     }
 
 }

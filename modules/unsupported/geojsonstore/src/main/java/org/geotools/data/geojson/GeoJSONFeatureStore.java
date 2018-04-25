@@ -17,6 +17,8 @@ package org.geotools.data.geojson;
  *    Lesser General Public License for more details.
  */
 import java.io.IOException;
+import java.util.List;
+import java.util.Collections;
 
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
@@ -34,6 +36,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.util.ProgressListener;
+import org.geotools.styling.StyledLayerDescriptor;
 
 public class GeoJSONFeatureStore extends ContentFeatureStore {
 
@@ -127,6 +130,22 @@ public class GeoJSONFeatureStore extends ContentFeatureStore {
 
     public QueryCapabilities getQueryCapabilities() {
         return delegate.getQueryCapabilities();
+    }
+
+    @Override
+    protected List<String> getNativeStyles() {
+        List<String> emptyList = Collections.emptyList();
+        return emptyList;
+    }
+
+    @Override
+    protected StyledLayerDescriptor getDefaultStyle() {
+        return null;
+    }
+
+    @Override
+    protected StyledLayerDescriptor getNativeStyle(String name) {
+        return null;
     }
 
 }

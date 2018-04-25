@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Collections;
 import java.util.logging.Level;
 
 import org.apache.solr.client.solrj.SolrQuery;
@@ -60,6 +61,8 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
+
+import org.geotools.styling.StyledLayerDescriptor;
 
 /**
  * Feature source for SOLR datastore
@@ -425,4 +428,21 @@ public class SolrFeatureSource extends ContentFeatureSource {
 
         return true;
     }
+
+    @Override
+    protected List<String> getNativeStyles() {
+        List<String> emptyList = Collections.emptyList();
+        return emptyList;
+    }
+
+    @Override
+    protected StyledLayerDescriptor getDefaultStyle() {
+        return null;
+    }
+
+    @Override
+    protected StyledLayerDescriptor getNativeStyle(String name) {
+        return null;
+    }
+
 }

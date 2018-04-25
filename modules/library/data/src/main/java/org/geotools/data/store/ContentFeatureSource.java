@@ -16,21 +16,6 @@
  */
 package org.geotools.data.store;
 
-import java.awt.RenderingHints;
-import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Diff;
 import org.geotools.data.DiffFeatureReader;
@@ -66,6 +51,7 @@ import org.geotools.filter.function.Collection_MinFunction;
 import org.geotools.filter.function.Collection_SumFunction;
 import org.geotools.filter.function.Collection_UniqueFunction;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.util.NullProgressListener;
 import org.opengis.feature.Feature;
 import org.opengis.feature.FeatureVisitor;
@@ -80,6 +66,21 @@ import org.opengis.filter.identity.FeatureId;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.geometry.BoundingBox;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+
+import java.awt.*;
+import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -247,7 +248,7 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      * @return description of features contents
      */
     public ResourceInfo getInfo() {
-        return new ResourceInfo(){
+        return new ResourceInfo() {
             final Set<String> words = new HashSet<String>();
             {
                 words.add("features");
@@ -291,7 +292,27 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
                 Name name = ContentFeatureSource.this.getSchema().getName();
                 return name.getLocalPart();
             }
-            
+
+            public List<String> getNativeStyles() {
+                List<String> styles = ContentFeatureSource.this.getNativeStyles();
+                return styles;
+            }
+
+            public StyledLayerDescriptor getDefaultStyle() {
+                StyledLayerDescriptor result = null;
+                try {
+                    result = ContentFeatureSource.this.getNativeStyle("");
+                } catch (Exception e) {
+                    // do nothing
+                }
+                return result;
+            }
+
+            public StyledLayerDescriptor getNativeStyle(String name) throws IOException {
+                StyledLayerDescriptor style = ContentFeatureSource.this.getNativeStyle(name);
+                return style;
+            }
+
         };
     }
     
@@ -481,7 +502,26 @@ public abstract class ContentFeatureSource implements SimpleFeatureSource {
      * method.
      */
     protected abstract ReferencedEnvelope getBoundsInternal(Query query) throws IOException;
-    
+
+    /**
+     * Returns the list of available native styles, if any.
+     * Subclasses must implement this method.
+     */
+    protected abstract List<String> getNativeStyles();
+
+    /**
+     * @return The default native style
+     * Subclasses must implement this method.
+     */
+    protected abstract StyledLayerDescriptor getDefaultStyle();
+
+    /**
+     * @param name of the style to get
+     * @return The named native style
+     * Subclasses must implement this method.
+     */
+    protected abstract StyledLayerDescriptor getNativeStyle(String name) throws IOException;
+
     /**
      * Returns the count of the number of features of the feature source.
      * <p>

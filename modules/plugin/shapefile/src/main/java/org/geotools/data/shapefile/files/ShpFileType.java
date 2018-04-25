@@ -56,6 +56,10 @@ public enum ShpFileType {
      */
     FIX("fix"),
     /**
+     * the .sld file with styling (SLD or SE)
+     */
+    SLD("sld"),
+    /**
      * the .shp.xml file, it contains the metadata about the shapefile
      */
     SHP_XML("shp.xml");

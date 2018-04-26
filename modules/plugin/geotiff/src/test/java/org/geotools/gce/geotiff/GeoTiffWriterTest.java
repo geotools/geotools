@@ -17,6 +17,7 @@
 package org.geotools.gce.geotiff;
 
 import it.geosolutions.imageio.plugins.tiff.BaselineTIFFTagSet;
+import it.geosolutions.jaiext.range.NoDataContainer;
 
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -25,11 +26,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.media.jai.PlanarImage;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -742,6 +744,58 @@ public class GeoTiffWriterTest extends Assert {
         org.junit.Assert.assertTrue(wkt.contains("PARAMETER[\"longitude_of_center\", 16.16]"));
         org.junit.Assert.assertTrue(wkt.contains("PARAMETER[\"false_easting\", 100000.0]"));
         org.junit.Assert.assertTrue(wkt.contains("PARAMETER[\"false_northing\", 200000.0]"));
+    }
+
+    @Test
+    public void testWriteNoData() throws Exception {
+
+        // Input geotiff including noData information
+        final File input = TestData.file(GeoTiffReaderTest.class, "nodata.tiff");
+
+        // reading the coverage, checking it has nodata
+        GeoTiffReader reader = new GeoTiffReader(input);
+        GridCoverage2D coverage = (GridCoverage2D) reader.read(null);
+        Map props = coverage.getProperties();
+
+        assertTrue(props.containsKey(NoDataContainer.GC_NODATA));
+        NoDataContainer nodata = (NoDataContainer) props.get(NoDataContainer.GC_NODATA);
+        assertEquals(-9999, nodata.getAsSingleValue(), 1e-6);
+        reader.dispose();
+
+        // Writing it, including noData
+        final File output = new File(TestData.file(GeoTiffReaderTest.class, "."),
+                "outNoData.tif");
+        GeoTiffWriter writer = new GeoTiffWriter(output);
+        writer.write(coverage, null);
+        writer.dispose();
+        coverage.dispose(true);
+
+        // Reding it back, checking noData has been preserved
+        reader = new GeoTiffReader(output);
+        coverage = (GridCoverage2D) reader.read(null);
+        props = coverage.getProperties();
+        assertTrue(props.containsKey(NoDataContainer.GC_NODATA));
+        nodata = (NoDataContainer) props.get(NoDataContainer.GC_NODATA);
+        assertEquals(-9999, nodata.getAsSingleValue(), 1e-6);
+        reader.dispose();
+
+        // Writing it again, excluding noData this time
+        final File output2 = new File(TestData.file(GeoTiffReaderTest.class, "."),
+                "outNoData2.tif");
+        writer = new GeoTiffWriter(output2);
+        
+        ParameterValue<Boolean> writeNodata = GeoTiffFormat.WRITE_NODATA.createValue();
+        writeNodata.setValue(false);
+
+        writer.write(coverage, new GeneralParameterValue[]{writeNodata});
+        writer.dispose();
+        coverage.dispose(true);
+
+        // Reading the latest file, checking noData is now missing
+        reader = new GeoTiffReader(output2);
+        coverage = (GridCoverage2D) reader.read(null);
+        props = coverage.getProperties();
+        assertFalse(props.containsKey(NoDataContainer.GC_NODATA));
     }
 
 }

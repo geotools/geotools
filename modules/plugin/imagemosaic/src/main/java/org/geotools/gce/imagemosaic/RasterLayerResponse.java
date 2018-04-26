@@ -521,6 +521,8 @@ public class RasterLayerResponse {
 
     private boolean needsReprojection;
 
+    private double[] virtualNativeResolution;
+
     private double[] backgroundValues;
 
     private Hints hints;
@@ -560,6 +562,7 @@ public class RasterLayerResponse {
         needsReprojection = request.spatialRequestHelper.isNeedsReprojection();
         defaultArtifactsFilterThreshold = request.getDefaultArtifactsFilterThreshold();
         artifactsFilterPTileThreshold = request.getArtifactsFilterPTileThreshold();
+        virtualNativeResolution = request.getVirtualNativeResolution();
     }
 
     /**
@@ -821,7 +824,15 @@ public class RasterLayerResponse {
             if ((requestRes[0] < resX || requestRes[1] < resY)) {
                 // Using the best available resolution
                 oversampledRequest = true;
-            } else {
+            } 
+            if (virtualNativeResolution!= null && !Double.isNaN(virtualNativeResolution[0]) && !Double.isNaN(virtualNativeResolution[1])){
+                if (virtualNativeResolution[0] < resX || virtualNativeResolution[1] < resY){
+                    oversampledRequest = true;
+                } else {
+                    oversampledRequest = false;
+                }
+            }
+            if (!oversampledRequest) {
                 // SG going back to working on a per level basis to do the composition
                 // g2w = new AffineTransform(request.getRequestedGridToWorld());
                 g2w.concatenate(AffineTransform.getScaleInstance(selectedLevel.scaleFactor,
@@ -881,7 +892,8 @@ public class RasterLayerResponse {
             imageChoice = ReadParamsController.setReadParams(
                     request.spatialRequestHelper.getComputedResolution(),
                     request.getOverviewPolicy(), request.getDecimationPolicy(), baseReadParameters,
-                    request.rasterManager, request.rasterManager.overviewsController); // use general overviews controller
+                    request.rasterManager, request.rasterManager.overviewsController,
+                    virtualNativeResolution); // use general overviews controller
         } else {
             imageChoice = 0;
         }

@@ -69,7 +69,8 @@ final class OverviewsController {
      * @param request
      * @return the OverviewLevel index
      */
-    int pickOverviewLevel(final OverviewPolicy policy, final double[] requestedResolution) {
+    int pickOverviewLevel(final OverviewPolicy policy, final double[] requestedResolution,
+            final double[] virtualNativeResolution) {
 
         // //
         //
@@ -89,29 +90,58 @@ final class OverviewsController {
         // requested scale factor for least reduced axis
         final OverviewLevel max = (OverviewLevel) resolutionsLevels.get(0);
 
+        // the requested resolutions (even virtual)
+        boolean useVirtual = false;
+        if (virtualNativeResolution != null){
+            useVirtual = true;
+        }
+
         // the requested resolutions
-        final double requestedScaleFactorX;
-        final double requestedScaleFactorY;
+        double requestedScaleFactorX;
+        double requestedScaleFactorY;
+        double virtualRequestedScaleFactorX;
+        double virtualRequestedScaleFactorY;
+        double virtualRequestedScaleFactor = Double.NaN;
+        double reqx = 0;
+        double reqy = 0;
         if (requestedResolution != null) {
-            final double reqx = requestedResolution[0];
-            final double reqy = requestedResolution[1];
-            requestedScaleFactorX = reqx / max.resolutionX;
-            requestedScaleFactorY = reqy / max.resolutionY;
-        } else {
+            reqx = requestedResolution[0];
+            reqy = requestedResolution[1];
+            if (useVirtual) {
+                virtualRequestedScaleFactorX = virtualNativeResolution[0] / max.resolutionX;
+                virtualRequestedScaleFactorY = virtualNativeResolution[1] / max.resolutionY;
+                virtualRequestedScaleFactor = (virtualRequestedScaleFactorX <= virtualRequestedScaleFactorY) ? 
+                        virtualRequestedScaleFactorX : virtualRequestedScaleFactorY;
+
+            }
+        }
+        if (!useVirtual && requestedResolution == null){
+            // When no virtualResolution is specified, null requestedResolution means high resolution so imageIndex = 0
+            // When virtualResolution is set, we may need to force a different imageIndex 
+            // even in case no requestedResolution has been specified
             return 0;
         }
+
+        requestedScaleFactorX = reqx / max.resolutionX;
+        requestedScaleFactorY = reqy / max.resolutionY;
+
         final int leastReduceAxis = requestedScaleFactorX <= requestedScaleFactorY ? 0 : 1;
-        final double requestedScaleFactor = leastReduceAxis == 0 ? requestedScaleFactorX
-                : requestedScaleFactorY;
+        final double requestedScaleFactor = leastReduceAxis == 0 ? requestedScaleFactorX : requestedScaleFactorY;
 
         // are we looking for a resolution even higher than the native one?
-        if (requestedScaleFactor <= 1) {
+        if (requestedScaleFactor <= 1 && !useVirtual) {
             return max.imageChoice;
         }
-        // are we looking for a resolution even lower than the smallest overview?
+
         final OverviewLevel min = (OverviewLevel) resolutionsLevels
                 .get(resolutionsLevels.size() - 1);
         if (requestedScaleFactor >= min.scaleFactor) {
+            // are we looking for a resolution even lower than the smallest overview?
+            if (useVirtual && min.imageChoice != 0){
+                // unset virtualNativeResolution since the requested resolution is below 
+                virtualNativeResolution[0] = Double.NaN;
+                virtualNativeResolution[1] = Double.NaN;
+            }
             return min.imageChoice;
         }
         // Ok, so we know the overview is between min and max, skip the first
@@ -119,11 +149,18 @@ final class OverviewsController {
         // that one and the one from the previous step will bound the searched resolution
         OverviewLevel prev = max;
         final int size = resolutionsLevels.size();
-        for (int i = 1; i < size; i++) {
+        int i = 1;
+        for (; i < size; i++) {
             final OverviewLevel curr = resolutionsLevels.get(i);
             // perfect match check
             if (curr.scaleFactor == requestedScaleFactor) {
-                return curr.imageChoice;
+                if (!useVirtual){
+                    return curr.imageChoice;
+                } else {
+                    if (curr.scaleFactor == virtualRequestedScaleFactor){
+                        return curr.imageChoice;
+                    }
+                }
             }
 
             // middle check. The first part of the condition should be sufficient, but
@@ -132,8 +169,33 @@ final class OverviewsController {
             // different than the one of the overviews), and we would end up going out of the
             // loop since not even the lowest can "top" the request for one axis
             if (curr.scaleFactor > requestedScaleFactor || i == size - 1) {
-                if (policy == OverviewPolicy.QUALITY) {
-                    return prev.imageChoice;
+                if (policy == OverviewPolicy.QUALITY || useVirtual) {
+                    if (useVirtual) {
+                        if (curr.scaleFactor > virtualRequestedScaleFactor) {
+                            if (requestedScaleFactor > virtualRequestedScaleFactor){
+                                // Before using virtual native resolution, make sure we are not
+                                // asking for a resolution being greater than virtual.
+                                // Examples:
+                                // 1) requested RES is 0.8. Available is 0.6, 1.2, 2.4. Virtual is 1.
+                                //      => Use virtual. Read at 0.6 and move to 1, then to 0.8.
+                                // 2) requested RES is 1.1. Available is 0.6, 1.2, 2.4. Virtual is 1.
+                                //      => Use virtual. Read at 0.6 and move to 1, then to 1.1.
+                                // 3) requested RES is 3.0. Available is 0.6, 1.2, 2.4. Virtual is 1.
+                                //      => Don't use virtual. Read at 2.4 then scale to 3.0.
+                                useVirtual = false;
+                                virtualNativeResolution[0] = Double.NaN;
+                                virtualNativeResolution[1] = Double.NaN;
+                                return prev.imageChoice;
+                            } else {
+                                return prev.imageChoice;
+                            }
+                        } else {
+                            prev = curr;
+                            continue;
+                        }
+                    } else {
+                        return prev.imageChoice;
+                    }
                 } else if (policy == OverviewPolicy.SPEED) {
                     return curr.imageChoice;
                 } else if (requestedScaleFactor - prev.scaleFactor < curr.scaleFactor

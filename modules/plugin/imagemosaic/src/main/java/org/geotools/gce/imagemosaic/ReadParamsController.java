@@ -17,6 +17,8 @@
 package org.geotools.gce.imagemosaic;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
@@ -41,6 +43,10 @@ import org.opengis.referencing.operation.TransformException;
  */
 public class ReadParamsController {
 
+    /** Logger. */
+    private final static Logger LOGGER = org.geotools.util.logging.Logging
+            .getLogger(ReadParamsController.class);
+
     /**
      * This method is responsible for evaluating possible subsampling factors once the best resolution level has been found, in case we have support
      * for overviews, or starting from the original coverage in case there are no overviews available.
@@ -54,7 +60,8 @@ public class ReadParamsController {
      */
     private static void performDecimation(final SpatialDomainManager spatialDomainManager,
             final double[] requestedResolution, final int levelIndex,
-            final ImageReadParam readParameters, final OverviewsController overviewsController) {
+            final ImageReadParam readParameters, final OverviewsController overviewsController,
+            final double[] virtualNativeResolution) {
 
         // the read parameters cannot be null
         Utilities.ensureNonNull("readParameters", readParameters);
@@ -69,16 +76,33 @@ public class ReadParamsController {
             return;
         }
 
+        boolean useVirtual = false;
+        if (virtualNativeResolution != null && !Double.isNaN(virtualNativeResolution[0]) && !Double.isNaN(virtualNativeResolution[1])){
+            useVirtual = true;
+        }
+
         double selectedRes[] = new double[2];
+        double requestedRes[] = new double[2];
         final OverviewLevel level = overviewsController.resolutionsLevels.get(levelIndex);
         selectedRes[0] = level.resolutionX;
         selectedRes[1] = level.resolutionY;
+        requestedRes[0] = requestedResolution[0];
+        requestedRes[1] = requestedResolution[1];
 
         final int rasterWidth, rasterHeight;
         if (levelIndex == 0) {
             // highest resolution
             rasterWidth = spatialDomainManager.coverageRasterArea.width;
             rasterHeight = spatialDomainManager.coverageRasterArea.height;
+            if (useVirtual){
+                if (virtualNativeResolution[0] > requestedResolution[0] && virtualNativeResolution[1] > requestedResolution[1]){
+                    requestedRes[0] = virtualNativeResolution[0];
+                    requestedRes[1] = virtualNativeResolution[1];
+                } else {
+                    virtualNativeResolution[0] = Double.NaN;
+                    virtualNativeResolution[1] = Double.NaN;
+                }
+            }
         } else {
             // work on overviews
             // TODO this is bad side effect of how the Overviews are managed
@@ -101,14 +125,14 @@ public class ReadParamsController {
         // 2) the subsampling factors cannot be such that the w or h are
         // zero
         // /////////////////////////////////////////////////////////////////////
-        int subSamplingFactorX = (int) Math.floor(requestedResolution[0] / selectedRes[0]);
+        int subSamplingFactorX = (int) Math.floor(requestedRes[0] / selectedRes[0]);
         subSamplingFactorX = subSamplingFactorX == 0 ? 1 : subSamplingFactorX;
 
         while (subSamplingFactorX > 0 && rasterWidth / subSamplingFactorX <= 0)
             subSamplingFactorX--;
         subSamplingFactorX = subSamplingFactorX <= 0 ? 1 : subSamplingFactorX;
 
-        int subSamplingFactorY = (int) Math.floor(requestedResolution[1] / selectedRes[1]);
+        int subSamplingFactorY = (int) Math.floor(requestedRes[1] / selectedRes[1]);
         subSamplingFactorY = subSamplingFactorY == 0 ? 1 : subSamplingFactorY;
 
         while (subSamplingFactorY > 0 && rasterHeight / subSamplingFactorY <= 0)
@@ -135,7 +159,8 @@ public class ReadParamsController {
      */
     static int setReadParams(final double[] requestedResolution, OverviewPolicy overviewPolicy,
             DecimationPolicy decimationPolicy, final ImageReadParam readParams,
-            final RasterManager rasterManager, final OverviewsController overviewController)
+            final RasterManager rasterManager, final OverviewsController overviewController,
+            final double[] virtualNativeResolution)
             throws IOException, TransformException {
 
         Utilities.ensureNonNull("readParams", readParams);
@@ -157,17 +182,24 @@ public class ReadParamsController {
 
         // requested to ignore overviews
         if (overviewPolicy.equals(OverviewPolicy.IGNORE)
-                && decimationPolicy.equals(DecimationPolicy.DISALLOW))
+                && decimationPolicy.equals(DecimationPolicy.DISALLOW)
+                && virtualNativeResolution == null)
             return imageChoice;
 
         if (!overviewPolicy.equals(OverviewPolicy.IGNORE)) {
-            imageChoice = overviewController.pickOverviewLevel(overviewPolicy, requestedResolution);
+            imageChoice = overviewController.pickOverviewLevel(overviewPolicy, requestedResolution, virtualNativeResolution);
+            if (virtualNativeResolution != null && !Double.isNaN(virtualNativeResolution[0]) && !Double.isNaN(virtualNativeResolution[1])){
+                if (LOGGER.isLoggable(Level.FINE)){
+                    LOGGER.fine("Specified Resolution is: resX=" + virtualNativeResolution[0] + " ; resY=" + virtualNativeResolution[1]
+                    + " . Choosing imageIndex = " + imageChoice);
+                }
+            }
         }
 
         // DECIMATION ON READING
         if (!decimationPolicy.equals(DecimationPolicy.DISALLOW)) {
             ReadParamsController.performDecimation(rasterManager.spatialDomainManager,
-                    requestedResolution, imageChoice, readParams, overviewController);
+                    requestedResolution, imageChoice, readParams, overviewController, virtualNativeResolution);
         }
         return imageChoice;
 

@@ -192,6 +192,7 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements
                 boolean writeTfw=GeoTiffFormat.WRITE_TFW.getDefaultValue();
                 ProgressListener listener=null;
                 boolean retainAxesOrder = false;
+                boolean writeNodata = GeoTiffFormat.WRITE_NODATA.getDefaultValue();
                 if (params != null) {
                         // /////////////////////////////////////////////////////////////////////
                         //
@@ -219,7 +220,11 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements
                                         if (name.equals(GeoTiffFormat.RETAIN_AXES_ORDER.getName())) {
                                             retainAxesOrder = (Boolean) param.getValue();
                                             continue;
-                                        }                                        
+                                        }
+                                        if (name.equals(GeoTiffFormat.WRITE_NODATA.getName())) {
+                                            writeNodata = (Boolean) param.getValue();
+                                            continue;
+                                        }
                                 }
                         }
                 }
@@ -259,8 +264,9 @@ public class GeoTiffWriter extends AbstractGridCoverageWriter implements
         
                 // handling noData
                 final double inNoData = CoverageUtilities.getBackgroundValues((GridCoverage2D) gc)[0];
-                if (!Double.isNaN(inNoData))
+                if (!Double.isNaN(inNoData) && writeNodata) {
                     metadata.setNoData(inNoData);
+                }
                 if (metadataKeyValue != null && !metadataKeyValue.isEmpty()) {
                     metadata.setTiffTagsMetadata(metadataKeyValue);
                 }

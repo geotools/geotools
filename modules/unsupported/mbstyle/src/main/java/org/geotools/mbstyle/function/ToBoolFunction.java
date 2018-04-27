@@ -44,7 +44,7 @@ class ToBoolFunction extends FunctionExpressionImpl {
             arg0 = getExpression(0).evaluate(feature);
         } catch (Exception e) { // probably a type error
             throw new IllegalArgumentException(
-                    "Filter Function problem for function mbToBool argument #0 - expected type Object");
+                    "Filter Function problem for function \"toBool\" argument #0 - expected type Object");
         }
         if (arg0 == null) {
             return Boolean.FALSE;

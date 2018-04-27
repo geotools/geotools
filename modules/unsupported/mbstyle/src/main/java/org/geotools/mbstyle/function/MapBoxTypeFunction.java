@@ -59,7 +59,7 @@ class MapBoxTypeFunction extends FunctionExpressionImpl {
             }
         }
         // couldn't find a JSONObject value
-        throw new IllegalArgumentException("Function mbObject failed with no arguments of type JSONObject");
+        throw new IllegalArgumentException("Function \"mbType\" failed with no arguments of type JSONObject");
     }
 
     public Class type(String string) {

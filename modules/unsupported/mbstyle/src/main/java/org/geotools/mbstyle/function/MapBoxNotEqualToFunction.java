@@ -79,14 +79,14 @@ class MapBoxNotEqualToFunction extends FunctionExpressionImpl {
             arg0 = (Object) getExpression(0).evaluate(feature);
         } catch (Exception e) { // probably a type error
             throw new IllegalArgumentException(
-                    "Filter Function problem for function equalTo argument #0 - expected type Object");
+                    "Filter Function problem for function \"mbNotEqualTo\" argument #0 - expected type Object");
         }
 
         try { // attempt to get value and perform conversion
             arg1 = (Object) getExpression(1).evaluate(feature);
         } catch (Exception e) { // probably a type error
             throw new IllegalArgumentException(
-                    "Filter Function problem for function equalTo argument #1 - expected type Object");
+                    "Filter Function problem for function \"mbNotEqualTo\" argument #1 - expected type Object");
         }
 
         return !MBFunctionUtil.argsEqual(arg0, arg1);

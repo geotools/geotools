@@ -48,7 +48,7 @@ class ToStringFunction extends FunctionExpressionImpl {
             arg0 = getExpression(0).evaluate(feature);
         } catch (Exception e) { // probably a type error
             throw new IllegalArgumentException(
-                    "Filter Function problem for function mbToString argument #0 - expected type Object");
+                    "Filter Function problem for function \"toString\" argument #0 - expected type Object");
         }
         if (arg0 == null){
             return NULL;

@@ -144,6 +144,14 @@ class MergeSortDumper {
                     features.clear();
                 }
             }
+            // if we got to file storing, store residual features to file too
+            if (count > 0 && io != null) {
+                Collections.sort(features, comparator);
+                file = File.createTempFile("sorted", ".features");
+                file.delete();
+                FeatureBlockReader fbr = storeToFile(io, features);
+                readers.add(fbr);
+            }
 
             // return the appropriate reader
             if (io == null) {

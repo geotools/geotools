@@ -25,18 +25,19 @@ import org.opengis.filter.capability.FunctionName;
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 /**
- * Returns the value of a given object key in a JSONObject.
+ * Evaluate to TRUE if a JSONObject contains a given key value or FALSE if it does not.
  */
-public class MBFunction_get extends FunctionExpressionImpl {
-    public static FunctionName NAME = new FunctionNameImpl("mbGet",
+public class HasFunction extends FunctionExpressionImpl {
+    public static FunctionName NAME = new FunctionNameImpl("has",
             parameter("value", String.class),
             parameter("object", JSONObject.class),
             parameter("fallback", Object.class));
 
-    public MBFunction_get() {
+    public HasFunction() {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
         String arg0;
         JSONObject arg1;
@@ -44,19 +45,18 @@ public class MBFunction_get extends FunctionExpressionImpl {
         try { // attempt to get value and perform conversion
             arg0 = getExpression(0).evaluate(feature, String.class);
 
-        } catch (Exception e) // probably a type error
-        {
+        } catch (Exception e) { // probably a type error
             throw new IllegalArgumentException(
-                    "Filter Function problem for function mbGet argument #0 - expected type String");
+                    "Filter Function problem for function mbHas argument #1 - expected type String");
         }
         try { // attempt to get value and perform conversion
             arg1 = getExpression(1).evaluate(feature, JSONObject.class);
 
-        } catch (Exception e) // probably a type error
-        {
+        } catch (Exception e) { // probably a type error
             throw new IllegalArgumentException(
-                    "Filter Function problem for function mbGet argument #1 - expected type JSONObject");
+                    "Filter Function problem for function mbHas argument #0 - expected type JSONObject");
         }
-        return arg1.get(arg0);
+
+        return arg1.containsKey(arg0);
     }
 }

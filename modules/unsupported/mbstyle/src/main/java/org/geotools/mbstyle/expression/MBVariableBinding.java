@@ -14,7 +14,6 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-
 package org.geotools.mbstyle.expression;
 
 import org.geotools.mbstyle.parse.MBFormatException;
@@ -22,6 +21,7 @@ import org.json.simple.JSONArray;
 import org.opengis.filter.expression.Expression;
 
 public class MBVariableBinding extends MBExpression {
+
     public MBVariableBinding(JSONArray json) {
         super(json);
     }

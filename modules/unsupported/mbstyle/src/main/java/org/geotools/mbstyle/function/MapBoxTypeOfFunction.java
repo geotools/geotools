@@ -23,21 +23,21 @@ import org.opengis.filter.capability.FunctionName;
 /**
  * Takes an object as an argument and returns the class as a string value.
  */
-class MBFunction_typeOf extends FunctionExpressionImpl {
+class MapBoxTypeOfFunction extends FunctionExpressionImpl {
 
     public static FunctionName NAME = new FunctionNameImpl("mbTypeOf");
 
-    MBFunction_typeOf() {
+    MapBoxTypeOfFunction() {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
         Object arg0;
 
         try { // attempt to get value and perform conversion
             arg0 = getExpression(0).evaluate(feature);
-        } catch (Exception e) // probably a type error
-        {
+        } catch (Exception e) { // probably a type error
             throw new IllegalArgumentException(
                     "Filter Function problem for function equalTo argument #0 - expected type Object");
         }

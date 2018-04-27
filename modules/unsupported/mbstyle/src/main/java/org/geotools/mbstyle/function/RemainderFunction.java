@@ -49,11 +49,11 @@ import org.opengis.filter.capability.FunctionName;
  * </table>
  * </p>
  */
-class MBFunction_remainder extends FunctionExpressionImpl {
+class RemainderFunction extends FunctionExpressionImpl {
 
-    public static FunctionName NAME = new FunctionNameImpl("mbRemainder");
+    public static FunctionName NAME = new FunctionNameImpl("remainder");
 
-    MBFunction_remainder() {
+    RemainderFunction() {
         super(NAME);
     }
 
@@ -68,18 +68,18 @@ class MBFunction_remainder extends FunctionExpressionImpl {
             dividend = getExpression(0).evaluate(feature, Integer.class);
         } catch (Exception ex) {
             throw new IllegalArgumentException(
-                "Filter Function problem for function mbRemainder argument #0 - expected type Integer", ex);
+                "Filter Function problem for function remainder argument #0 - expected type Integer", ex);
         }
         try {
             divisor = getExpression(1).evaluate(feature, Integer.class);
         } catch (Exception ex) {
             throw new IllegalArgumentException(
-                "Filter Function problem for function mbRemainder argument #1 - expected type Integer", ex);
+                "Filter Function problem for function remainder argument #1 - expected type Integer", ex);
         }
         // can't divide by 0
         if (divisor.compareTo(0) == 0) {
             throw new IllegalArgumentException(
-                "Filter Function problem for function mbRemainder argument #1 - expected non-zero Integer");
+                "Filter Function problem for function remainder argument #1 - expected non-zero Integer");
         }
         // get the remainder
         return Integer.valueOf(dividend.intValue() % divisor.intValue());

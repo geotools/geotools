@@ -18,8 +18,6 @@
 package org.geotools.mbstyle.expression;
 
 import org.geotools.mbstyle.parse.MBFormatException;
-import org.geotools.mbstyle.parse.MBObjectParser;
-import org.geotools.mbstyle.transform.MBStyleTransformer;
 import org.json.simple.JSONArray;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
@@ -34,12 +32,9 @@ import java.util.List;
  */
 
 public class MBString extends MBExpression{
-    MBObjectParser parse;
-    MBStyleTransformer transformer;
+
     public MBString(JSONArray json){
         super(json);
-        parse = new MBObjectParser(MBString.class);
-        transformer = new MBStyleTransformer(parse);
     }
 
     /**

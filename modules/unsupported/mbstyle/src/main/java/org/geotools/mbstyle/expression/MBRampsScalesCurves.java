@@ -18,11 +18,11 @@
 package org.geotools.mbstyle.expression;
 
 import org.geotools.mbstyle.parse.MBFormatException;
-import org.geotools.mbstyle.parse.MBObjectParser;
 import org.json.simple.JSONArray;
 import org.opengis.filter.expression.Expression;
 
 public class MBRampsScalesCurves extends MBExpression {
+
     public MBRampsScalesCurves(JSONArray json) {
         super(json);
     }
@@ -40,7 +40,9 @@ public class MBRampsScalesCurves extends MBExpression {
      *   ]: OutputType (number, array<number>, or Color)"
      * @return
      */
-    public Expression rscInterpolate(){ return null; }
+    public Expression rscInterpolate() {
+        return null;
+    }
 
     /**
      * Produces discrete, stepped results by evaluating a piecewise-constant function defined by pairs of input and
@@ -49,7 +51,9 @@ public class MBRampsScalesCurves extends MBExpression {
      * or the first input if the input is less than the first stop.
      * @return
      */
-    public Expression rscStep(){ return null; }
+    public Expression rscStep() {
+        return null;
+    }
 
     @Override
     public Expression getExpression() throws MBFormatException {

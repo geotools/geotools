@@ -30,11 +30,11 @@ import java.util.List;
  * provided, each one is evaluated in order until the first successful conversion is obtained.
  * If none of the inputs can be converted, the expression is an error.
  */
-class MBFunction_toNumber extends FunctionExpressionImpl {
+class ToNumberFunction extends FunctionExpressionImpl {
 
-    public static FunctionName NAME = new FunctionNameImpl("mbToNumber");
+    public static FunctionName NAME = new FunctionNameImpl("toNumber");
 
-    MBFunction_toNumber() {
+    ToNumberFunction() {
         super(NAME);
     }
 

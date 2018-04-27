@@ -30,16 +30,17 @@ import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 /**
  * Returns the size of a list or the length of a string
  */
-public class MBFunction_length extends FunctionExpressionImpl {
+public class MapBoxLengthFunction extends FunctionExpressionImpl {
     public FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
     public static FunctionName NAME = new FunctionNameImpl("mbLength",
             parameter("object", Object.class),
             parameter("fallback", Object.class));
 
-    public MBFunction_length() {
+    public MapBoxLengthFunction() {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
         Object arg0;
         Function f = null;
@@ -52,8 +53,7 @@ public class MBFunction_length extends FunctionExpressionImpl {
             if (arg0 instanceof String) {
                 f = ff.function("strLength", getExpression(0));
             }
-        } catch (Exception e) // probably a type error
-        {
+        } catch (Exception e) { // probably a type error
             throw new IllegalArgumentException(
                     "Filter Function problem for function listSize argument #0 - expected type List");
         }

@@ -16,8 +16,6 @@
  */
 package org.geotools.mbstyle.function;
 
-import static org.geotools.filter.capability.FunctionNameImpl.parameter;
-
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
@@ -35,7 +33,7 @@ import java.util.List;
  * Format:
  * </p>
  * <pre>
- *     ["mbAny", &lt;condition expression&gt;, &lt;condition expression&gt;, ...]
+ *     ["any", &lt;condition expression&gt;, &lt;condition expression&gt;, ...]
  * </pre>
  * <p>
  * Examples:
@@ -47,26 +45,25 @@ import java.util.List;
  *     <th align="center">Output</th>
  *   </tr>
  *   <tr>
- *     <td>["mbAny", true, true, true]</td>
+ *     <td>["any", true, true, true]</td>
  *     <td align="center">true</td>
  *   </tr>
  *   <tr>
- *     <td>["mbAny", true, true, false]</td>
+ *     <td>["any", true, true, false]</td>
  *     <td align="center">true</td>
  *   </tr>
  *   <tr>
- *     <td>["mbAny", false, false, false, false]</td>
+ *     <td>["any", false, false, false, false]</td>
  *     <td align="center">false</td>
  *   </tr>
  * </table>
  * </p>
- */class MBFunction_any extends FunctionExpressionImpl {
+ */
+class AnyFunction extends FunctionExpressionImpl {
 
-    public static FunctionName NAME = new FunctionNameImpl("mbAny",
-        parameter("mbAny", Boolean.class),
-        parameter("unused", Object.class));
+    public static FunctionName NAME = new FunctionNameImpl("any");
 
-    MBFunction_any() {
+    AnyFunction() {
         super(NAME);
     }
 

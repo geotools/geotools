@@ -79,7 +79,7 @@ public class MBMath extends MBExpression {
     public Expression mathRemainder() {
         Expression e1 = parse.string(json, 1);
         Expression e2 = parse.string(json, 2);
-        return ff.function("mbRemainder", e1, e2);
+        return ff.function("remainder", e1, e2);
     }
 
     /**

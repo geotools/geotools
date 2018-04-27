@@ -16,8 +16,6 @@
  */
 package org.geotools.mbstyle.function;
 
-import static org.geotools.filter.capability.FunctionNameImpl.parameter;
-
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
@@ -36,7 +34,7 @@ import java.util.List;
  * Format:
  * </p>
  * <pre>
- *     ["mbCase", &lt;condition expression&gt;, &lt;output expression&gt;, &lt;condition expression&gt;, &lt;output expression&gt;, ..., &lt;default expression&gt;]
+ *     ["case", &lt;condition expression&gt;, &lt;output expression&gt;, &lt;condition expression&gt;, &lt;output expression&gt;, ..., &lt;default expression&gt;]
  * </pre>
  * <p>
  * Examples:
@@ -48,27 +46,25 @@ import java.util.List;
  *     <th align="center">Output</th>
  *   </tr>
  *   <tr>
- *     <td>["mbCase", false, "output1", true, "output2", "default"]</td>
+ *     <td>["case", false, "output1", true, "output2", "default"]</td>
  *     <td align="center">"output2"</td>
  *   </tr>
  *   <tr>
- *     <td>["mbCase", false, "output1", false, "output2", "default"]</td>
+ *     <td>["case", false, "output1", false, "output2", "default"]</td>
  *     <td align="center">"default"</td>
  *   </tr>
  *   <tr>
- *     <td>["mbCase", false, "output1", false, "output2"]</td>
+ *     <td>["case", false, "output1", false, "output2"]</td>
  *     <td align="center">null</td>
  *   </tr>
  * </table>
  * </p>
  */
-class MBFunction_case extends FunctionExpressionImpl {
+class CaseFunction extends FunctionExpressionImpl {
 
-    public static FunctionName NAME = new FunctionNameImpl("mbCase",
-        parameter("mbCase", Object.class),
-        parameter("unused", Object.class));
+    public static FunctionName NAME = new FunctionNameImpl("case");
 
-    MBFunction_case() {
+    CaseFunction() {
         super(NAME);
     }
 

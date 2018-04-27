@@ -14,7 +14,6 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-
 package org.geotools.mbstyle.function;
 
 import org.geotools.filter.FunctionExpressionImpl;
@@ -27,16 +26,17 @@ import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 /**
  * Returns the value in a JSONArray at a given index.
  */
-public class MBFunction_at extends FunctionExpressionImpl {
-    public static FunctionName NAME = new FunctionNameImpl("mbAt",
+public class AtFunction extends FunctionExpressionImpl {
+    public static FunctionName NAME = new FunctionNameImpl("at",
             parameter("array", JSONArray.class),
             parameter("index", Integer.class),
             parameter("fallback", Object.class));
 
-    public MBFunction_at() {
+    public AtFunction() {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
         JSONArray arg0;
         Integer arg1;
@@ -44,16 +44,14 @@ public class MBFunction_at extends FunctionExpressionImpl {
         try { // attempt to get value and perform conversion
             arg0 = getExpression(0).evaluate(feature, JSONArray.class);
 
-        } catch (Exception e) // probably a type error
-        {
+        } catch (Exception e) { // probably a type error
             throw new IllegalArgumentException(
                     "Filter Function problem for function mbAt argument #0 - expected type JSONArray");
         }
         try { // attempt to get value and perform conversion
             arg1 = getExpression(1).evaluate(feature, Integer.class);
 
-        } catch (Exception e) // probably a type error
-        {
+        } catch (Exception e) { // probably a type error
             throw new IllegalArgumentException(
                     "Filter Function problem for function mbAt argument #1 - expected type Integer");
         }

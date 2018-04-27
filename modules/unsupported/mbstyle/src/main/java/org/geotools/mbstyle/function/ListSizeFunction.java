@@ -1,4 +1,3 @@
-package org.geotools.mbstyle.function;
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
@@ -15,6 +14,7 @@ package org.geotools.mbstyle.function;
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
+package org.geotools.mbstyle.function;
 
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
@@ -23,7 +23,6 @@ import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Returns the size of a given list
@@ -38,14 +37,14 @@ public class ListSizeFunction extends FunctionExpressionImpl {
         super(NAME);
     }
 
+    @Override
     public Object evaluate(Object feature) {
         Collection arg0;
 
         try { // attempt to get value and perform conversion
             arg0 = getExpression(0).evaluate(feature, Collection.class);
 
-        } catch (Exception e) // probably a type error
-        {
+        } catch (Exception e) { // probably a type error
             throw new IllegalArgumentException(
                     "Filter Function problem for function listSize argument #0 - expected type List");
         }

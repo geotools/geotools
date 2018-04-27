@@ -131,7 +131,7 @@ public class MBTypes extends MBExpression {
      * @return
      */
     public Expression typesToBoolean(){
-        return ff.function("mbToBool", parse.string(json, 1));
+        return ff.function("toBool", parse.string(json, 1));
     }
 
     /**
@@ -142,7 +142,7 @@ public class MBTypes extends MBExpression {
      * @return
      */
     public Expression typesToColor(){
-        return ff.function("mbToColor", exprList());
+        return ff.function("toColor", exprList());
     }
 
     /**
@@ -156,7 +156,7 @@ public class MBTypes extends MBExpression {
      * @return
      */
     public Expression typesToNumber(){
-        return ff.function("mbToNumber", exprList());
+        return ff.function("toNumber", exprList());
     }
 
     /**
@@ -171,7 +171,7 @@ public class MBTypes extends MBExpression {
      * @return
      */
     public Expression typesToString(){
-        return ff.function("mbToString", parse.string(json, 1));
+        return ff.function("toString", parse.string(json, 1));
     }
 
     /**

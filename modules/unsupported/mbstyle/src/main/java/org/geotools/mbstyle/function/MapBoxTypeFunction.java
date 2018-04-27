@@ -29,12 +29,12 @@ import java.util.List;
  * Takes one or more arguments and returns the the first argument of type specified by the first string argument,
  * throws an exception if no arguments are of type specified.
  */
-class MBFunction_type extends FunctionExpressionImpl {
+class MapBoxTypeFunction extends FunctionExpressionImpl {
     Class type;
 
     public static FunctionName NAME = new FunctionNameImpl("mbType");
 
-    MBFunction_type() {
+    MapBoxTypeFunction() {
         super(NAME);
     }
 
@@ -52,28 +52,29 @@ class MBFunction_type extends FunctionExpressionImpl {
         // loop over the arguments and ensure at least one evaluates to a JSONObject
         String arg = (this.params.get(0).evaluate(feature, String.class));
         type = type(arg);
-        for (Integer i =1; i<= this.params.size() -1; i++) {
+        for (int i = 1; i <= this.params.size() - 1; i++) {
             Object evaluation = this.params.get(i).evaluate(feature);
             if (type.isAssignableFrom(evaluation.getClass())) {
                 return evaluation;
             }
-            }
-            // couldn't find a JSONObject value
-            throw new IllegalArgumentException("Function mbObject failed with no arguments of type JSONObject");
         }
-        public Class type(String string){
-            switch (string) {
-                case "array":
-                    return Collection.class;
-                case "boolean":
-                    return Boolean.class;
-                case "number":
-                    return Number.class;
-                case "object":
-                    return JSONObject.class;
-                case "string":
-                    return String.class;
-            }
-            throw new IllegalArgumentException("Requires argument of array, boolean, number, object or string");
-        }
+        // couldn't find a JSONObject value
+        throw new IllegalArgumentException("Function mbObject failed with no arguments of type JSONObject");
     }
+
+    public Class type(String string) {
+        switch (string) {
+            case "array":
+                return Collection.class;
+            case "boolean":
+                return Boolean.class;
+            case "number":
+                return Number.class;
+            case "object":
+                return JSONObject.class;
+            case "string":
+                return String.class;
+        }
+        throw new IllegalArgumentException("Requires argument of array, boolean, number, object or string");
+    }
+}

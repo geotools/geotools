@@ -23,7 +23,7 @@ import org.junit.Test;
 
 
 /**
- *
+ * Tests the various MapBox Math expressions.
  */
 public class MBMathTest extends AbstractMBExpressionTest {
 

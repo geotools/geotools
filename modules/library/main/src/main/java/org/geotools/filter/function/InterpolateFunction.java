@@ -244,6 +244,9 @@ public class InterpolateFunction implements Function {
          * TODO: is this the correct way to handle the rasterdata option ?
          */
         String lookupString = lookup.evaluate(object, String.class);
+        if (lookupString == null) {
+            return null;
+        }
         if (lookupString.equalsIgnoreCase(RASTER_DATA)) {
             lookupValue = ((Number) object).doubleValue();
         } else {

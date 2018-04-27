@@ -18,6 +18,8 @@ package org.geotools.mbstyle.function;
 
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
+import org.geotools.mbstyle.expression.MBExpression;
+import org.geotools.mbstyle.parse.MBObjectParser;
 import org.json.simple.JSONArray;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
@@ -39,6 +41,7 @@ import java.util.List;
  * The double value should be between 0-1, and is converted to a 0-255 alpha value.
  */
 class ToColorFunction extends FunctionExpressionImpl {
+    MBObjectParser parse = new MBObjectParser(ToColorFunction.class);
 
     public static FunctionName NAME = new FunctionNameImpl("toColor");
 
@@ -89,14 +92,6 @@ class ToColorFunction extends FunctionExpressionImpl {
             }
             if (evaluation instanceof String) {
                 if (((String) evaluation).startsWith("#")) {
-                    if (((String) evaluation).length() == 7) {
-                        try {
-                            c = Color.decode((String) evaluation);
-                            return c;
-                        } catch (Exception e) {
-                        }
-
-                    }
                     if (((String) evaluation).length() == 4) {
                         String[] split = ((String) evaluation).split("");
                         StringBuilder builder = new StringBuilder();
@@ -112,30 +107,9 @@ class ToColorFunction extends FunctionExpressionImpl {
                         }
                     }
                 }
-                if (((String) evaluation).startsWith("rgb(") ||
-                        ((String) evaluation).startsWith("rgba(") &&
-                                ((String) evaluation).endsWith(")")){
-                    String[] split = ((String) evaluation).split("\\(");
-                    String[] split2 = split[1].split("\\)");
-                    String[] splitfinal = split2[0].split(",");
-                    if (splitfinal.length == 3) {
-                        try {
-                            c = new Color(Integer.valueOf(splitfinal[0]), Integer.valueOf(splitfinal[1]),
-                                    Integer.valueOf(splitfinal[2]));
-                            return c;
-                        } catch (Exception e) {
-                        }
-                    }
-                    if (splitfinal.length == 4){
-                        try{
-                            Double alpha = Double.valueOf(splitfinal[3]);
-                            Long converted = (Math.round(alpha * 255));
-                            c = new Color(Integer.valueOf(splitfinal[0]), Integer.valueOf(splitfinal[1]),
-                                    Integer.valueOf(splitfinal[2]), Integer.valueOf(converted.intValue()));
-                            return c;
-                        } catch (Exception e) {
-                        }
-                    }
+                try {
+                    return parse.convertToColor(evaluation.toString());
+                } catch (Exception e) {
                 }
             }
         }

@@ -384,4 +384,24 @@ public class InterpolateFunctionTest extends SEFunctionTestBase {
 
         return y;
     }
+
+    @Test
+    public void testNullSafeColor() throws Exception {
+        setupParameters(data, values);
+        parameters.add(ff2.literal(InterpolateFunction.METHOD_COLOR));
+
+        Function fn = finder.findFunction("interpolate", parameters);
+        Object result = fn.evaluate(null, Color.class);
+        assertNull(result);
+    }
+
+    @Test
+    public void testNullSafeNumeric() throws Exception {
+        setupParameters(data, values);
+        parameters.add(ff2.literal(InterpolateFunction.METHOD_NUMERIC));
+
+        Function fn = finder.findFunction("interpolate", parameters);
+        Object result = fn.evaluate(null, Double.class);
+        assertNull(result);
+    }
 }

@@ -1190,6 +1190,16 @@ public class MBObjectParser {
         } else if ("blue".equalsIgnoreCase(color)) {
             return Color.BLUE;
         }
+        if (color.startsWith("#") && color.length() == 4) {
+                String[] split = color.split("");
+                StringBuilder builder = new StringBuilder();
+                builder.append(split[0]);
+                for (Integer j = 1; j < split.length; j++) {
+                    builder.append(split[j]).append(split[j]);
+                }
+                String cstring = builder.toString();
+                return Color.decode(cstring);
+            }
         Hints h = new Hints(Hints.COLOR_DEFINITION, "CSS");
         return Converters.convert(color, Color.class, h);
     }

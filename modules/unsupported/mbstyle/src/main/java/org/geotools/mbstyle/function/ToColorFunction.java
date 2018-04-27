@@ -91,28 +91,12 @@ class ToColorFunction extends FunctionExpressionImpl {
                 }
             }
             if (evaluation instanceof String) {
-                if (((String) evaluation).startsWith("#")) {
-                    if (((String) evaluation).length() == 4) {
-                        String[] split = ((String) evaluation).split("");
-                        StringBuilder builder = new StringBuilder();
-                        builder.append(split[0]);
-                        for (Integer j = 1; j < split.length; j++) {
-                            builder.append(split[j]).append(split[j]);
-                        }
-                        String cstring = builder.toString();
-                        try {
-                            c = Color.decode(cstring);
-                            return c;
-                        } catch (Exception e) {
-                        }
-                    }
-                }
                 try {
                     return parse.convertToColor(evaluation.toString());
                 } catch (Exception e) {
                 }
             }
         }
-        throw new IllegalArgumentException("No arguments provided to \"mbToColor\" can be converted to a Color value");
+        throw new IllegalArgumentException("No arguments provided to the \"toColor\" function can be converted to a Color value");
     }
 }

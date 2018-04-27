@@ -47,14 +47,14 @@ public class GetFunction extends FunctionExpressionImpl {
 
         } catch (Exception e) { // probably a type error
             throw new IllegalArgumentException(
-                    "Filter Function problem for function mbGet argument #0 - expected type String");
+                    "Filter Function problem for function \"get\" argument #0 - expected type String");
         }
         try { // attempt to get value and perform conversion
             arg1 = getExpression(1).evaluate(feature, JSONObject.class);
 
         } catch (Exception e) { // probably a type error
             throw new IllegalArgumentException(
-                    "Filter Function problem for function mbGet argument #1 - expected type JSONObject");
+                    "Filter Function problem for function \"get\" argument #1 - expected type JSONObject");
         }
         return arg1.get(arg0);
     }

@@ -55,7 +55,7 @@ public class MapBoxLengthFunction extends FunctionExpressionImpl {
             }
         } catch (Exception e) { // probably a type error
             throw new IllegalArgumentException(
-                    "Filter Function problem for function listSize argument #0 - expected type List");
+                    "Filter Function problem for function \"mbLength\" argument #0 - expected type List");
         }
         if (f != null) {
             return f.evaluate(feature);

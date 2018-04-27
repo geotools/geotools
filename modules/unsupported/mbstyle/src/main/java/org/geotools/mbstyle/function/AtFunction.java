@@ -46,14 +46,14 @@ public class AtFunction extends FunctionExpressionImpl {
 
         } catch (Exception e) { // probably a type error
             throw new IllegalArgumentException(
-                    "Filter Function problem for function mbAt argument #0 - expected type JSONArray");
+                    "Filter Function problem for function \"at\" argument #0 - expected type JSONArray");
         }
         try { // attempt to get value and perform conversion
             arg1 = getExpression(1).evaluate(feature, Integer.class);
 
         } catch (Exception e) { // probably a type error
             throw new IllegalArgumentException(
-                    "Filter Function problem for function mbAt argument #1 - expected type Integer");
+                    "Filter Function problem for function \"at\" argument #1 - expected type Integer");
         }
         return arg0.get(arg1);
     }

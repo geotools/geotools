@@ -39,7 +39,7 @@ class MapBoxTypeOfFunction extends FunctionExpressionImpl {
             arg0 = getExpression(0).evaluate(feature);
         } catch (Exception e) { // probably a type error
             throw new IllegalArgumentException(
-                    "Filter Function problem for function equalTo argument #0 - expected type Object");
+                    "Filter Function problem for function \"mbTypeOf\" argument #0 - expected type Object");
         }
         return arg0.getClass().toString();
     }

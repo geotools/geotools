@@ -1158,8 +1158,6 @@ public class ImageMosaicConfigHandler {
 
         // envelope
         final Properties properties = new Properties();
-        //properties.setProperty(Utils.Prop.ABSOLUTE_PATH,
-        //        Boolean.toString(catalogConfigurationBean.isAbsolutePath()));
         properties.setProperty(Utils.Prop.PATH_TYPE,
                 catalogConfigurationBean.getPathType().toString());
         properties.setProperty(Utils.Prop.LOCATION_ATTRIBUTE,

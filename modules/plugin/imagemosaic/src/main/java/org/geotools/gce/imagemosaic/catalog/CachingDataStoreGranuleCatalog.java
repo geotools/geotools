@@ -171,7 +171,8 @@ class CachingDataStoreGranuleCatalog extends GranuleCatalog {
                         MultiLevelROI footprint = getGranuleFootprint(sf);
                         if (footprint == null || !footprint.isEmpty()) {
                             // caching only if the footprint is either absent or present and NON-empty
-                            granule = new GranuleDescriptor(sf, adaptee.suggestedRasterSPI,
+                            granule = new GranuleDescriptor(sf, adaptee.suggestedFormat,
+                                    adaptee.suggestedRasterSPI, adaptee.suggestedIsSPI,
                                     adaptee.pathType, adaptee.locationAttribute,
                                     adaptee.parentLocation, footprint, adaptee.heterogeneous,
                                     adaptee.hints); // retain hints since this may contain a reader or anything

@@ -108,6 +108,25 @@ public enum PathType {
             }
         }
 
+    },
+    
+    URL {
+        @Override
+        URL resolvePath(final String parentLocation, final String location) {
+            Utilities.ensureNonNull("location", location);
+            if (LOGGER.isLoggable(Level.FINE)) {
+                final StringBuilder builder = new StringBuilder();
+                builder.append("Trying to resolve path:").append("\n");
+                builder.append("type:").append(this.toString()).append("\n");
+                LOGGER.fine(builder.toString());
+            }
+            try {
+               return new URL(location);
+            } catch (MalformedURLException e) {
+                return null;
+            }
+        }
+
     };
 
     /** Logger. */

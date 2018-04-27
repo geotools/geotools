@@ -59,6 +59,7 @@ public class StyleTransformTest {
 
     Map<String, JSONObject> testLayersById = new HashMap<>();
 
+
     @Before
     public void setUp() throws IOException, ParseException {
         JSONObject jsonObject = MapboxTestUtils.parseTestStyle("functionParseTest.json");
@@ -114,6 +115,7 @@ public class StyleTransformTest {
     @Test
     public void testFillExtrusion() throws IOException, ParseException {
         JSONObject jsonObject = parseTestStyle("fillExtrusionTest.json");
+        MBObjectParser parse = new MBObjectParser(StyleTransformTest.class);
 
         // Parse to MBStyle
         MBStyle mbStyle = new MBStyle(jsonObject);
@@ -150,7 +152,7 @@ public class StyleTransformTest {
 
         Expression expr =  psym.getFill().getColor();
         assertNotNull("fillColor set", expr);
-        assertEquals( Color.decode("#aaa"), expr.evaluate(null,Color.class) );
+        assertEquals( parse.convertToColor("#aaa"), expr.evaluate(null,Color.class) );
         assertEquals(Double.valueOf(0.6),
                 psym.getFill().getOpacity().evaluate(null, Double.class));
     }

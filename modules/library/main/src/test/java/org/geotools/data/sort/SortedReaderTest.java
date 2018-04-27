@@ -1,5 +1,6 @@
 package org.geotools.data.sort;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -7,6 +8,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.NoSuchElementException;
 
+import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.DelegateSimpleFeatureReader;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureReader;
@@ -154,7 +156,7 @@ public class SortedReaderTest {
     
     @Test
     public void testFileSortDate() throws IOException {
-        // make it so that we are not going to hit the disk
+        // make it so that we are going to hit the disk
         SimpleFeatureReader sr = null;
         try {
             sr = new SortedFeatureReader(fr, dateAsc, 100);
@@ -168,7 +170,7 @@ public class SortedReaderTest {
 
     @Test
     public void testFileSortPeople() throws IOException {
-        // make it so that we are not going to hit the disk
+        // make it so that we are going to hit the disk
         SimpleFeatureReader sr = null;
         try {
             sr = new SortedFeatureReader(fr, peopleAsc, 5);
@@ -201,9 +203,9 @@ public class SortedReaderTest {
         try {
             sr = new SortedFeatureReader(fr, peopleDesc, 1000);
             double prev = -1;
-            while (fr.hasNext()) {
-                SimpleFeature f = fr.next();
-                double curr = (Double) f.getAttribute("PERSONS");
+            while (sr.hasNext()) {
+                SimpleFeature f = sr.next();
+                int curr = (Integer) f.getAttribute("PERSONS");
                 if (prev > 0) {
                     assertTrue(curr <= prev);
                 }
@@ -223,14 +225,42 @@ public class SortedReaderTest {
         try {
             sr = new SortedFeatureReader(fr, fidAsc, 1000);
             String prev = null;
-            while (fr.hasNext()) {
-                SimpleFeature f = fr.next();
+            while (sr.hasNext()) {
+                SimpleFeature f = sr.next();
                 String id = f.getID();
                 if (prev != null) {
                     assertTrue(id.compareTo(prev) >= 0);
                 }
                 prev = id;
             }
+        } finally {
+            if (sr != null) {
+                sr.close();
+            }
+        }
+    }
+
+    @Test
+    public void testSortNaturalPartialLastPage() throws IOException {
+        // make it so that we are not going to hit the disk, but 
+        // some of the data won't fit in the last page, used to be
+        // left in memory and forgotten
+        SimpleFeatureReader sr = null;
+        try {
+            final int PRIME = 173;
+            sr = new SortedFeatureReader(fr, fidAsc, PRIME);
+            String prev = null;
+            int count = 0;
+            while (sr.hasNext()) {
+                SimpleFeature f = sr.next();
+                String id = f.getID();
+                if (prev != null) {
+                    assertTrue(id.compareTo(prev) >= 0);
+                }
+                prev = id;
+                count++;
+            }
+            assertEquals(fc.size(), count);
         } finally {
             if (sr != null) {
                 sr.close();

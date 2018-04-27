@@ -14,7 +14,6 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-
 package org.geotools.mbstyle.expression;
 
 import org.geotools.mbstyle.MBStyle;
@@ -59,7 +58,8 @@ public class MBLookupTest extends AbstractMBExpressionTest{
         try {
             String xml = new SLDTransformer().transform(getFeatures.get(0));
             assertTrue(xml.contains("<ogc:Function name=\"property\"><ogc:Literal>Name</ogc:Literal></ogc:Function>"));
-        } catch(Exception e) { }
+        } catch (Exception e) {
+        }
         // test nested "get expression
         final JSONObject jn = getObjectByLayerId("getExpression", "paint");
         Object on = getExpressionEvaluation(jn, "halo-color");

@@ -35,6 +35,9 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import java.util.Arrays;
 import java.util.Collection;
 
+/**
+ * Tests the MapBox Feature Data expressions.
+ */
 public class MBFeatureDataTest extends AbstractMBExpressionTest {
 
     private SimpleFeature[] lineStringFeatures;

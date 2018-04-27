@@ -38,11 +38,11 @@ import java.util.List;
  * The integer values should be between 0-255, for red, green, and blue color values.
  * The double value should be between 0-1, and is converted to a 0-255 alpha value.
  */
-class MBFunction_toColor extends FunctionExpressionImpl {
+class ToColorFunction extends FunctionExpressionImpl {
 
-    public static FunctionName NAME = new FunctionNameImpl("mbToColor");
+    public static FunctionName NAME = new FunctionNameImpl("toColor");
 
-    MBFunction_toColor() {
+    ToColorFunction() {
         super(NAME);
     }
 
@@ -93,7 +93,8 @@ class MBFunction_toColor extends FunctionExpressionImpl {
                         try {
                             c = Color.decode((String) evaluation);
                             return c;
-                        } catch (Exception e){}
+                        } catch (Exception e) {
+                        }
 
                     }
                     if (((String) evaluation).length() == 4) {
@@ -101,13 +102,14 @@ class MBFunction_toColor extends FunctionExpressionImpl {
                         StringBuilder builder = new StringBuilder();
                         builder.append(split[0]);
                         for (Integer j = 1; j < split.length; j++) {
-                            builder.append(split[j] + split[j]);
+                            builder.append(split[j]).append(split[j]);
                         }
                         String cstring = builder.toString();
                         try {
                             c = Color.decode(cstring);
                             return c;
-                        } catch (Exception e){}
+                        } catch (Exception e) {
+                        }
                     }
                 }
                 if (((String) evaluation).startsWith("rgb(") ||
@@ -121,7 +123,8 @@ class MBFunction_toColor extends FunctionExpressionImpl {
                             c = new Color(Integer.valueOf(splitfinal[0]), Integer.valueOf(splitfinal[1]),
                                     Integer.valueOf(splitfinal[2]));
                             return c;
-                        } catch (Exception e){}
+                        } catch (Exception e) {
+                        }
                     }
                     if (splitfinal.length == 4){
                         try{
@@ -130,7 +133,8 @@ class MBFunction_toColor extends FunctionExpressionImpl {
                             c = new Color(Integer.valueOf(splitfinal[0]), Integer.valueOf(splitfinal[1]),
                                     Integer.valueOf(splitfinal[2]), Integer.valueOf(converted.intValue()));
                             return c;
-                        } catch (Exception e){}
+                        } catch (Exception e) {
+                        }
                     }
                 }
             }

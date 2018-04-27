@@ -43,30 +43,30 @@ import org.opengis.filter.expression.Literal;
  * Helper class used to perform JSON traversal of {@link JSONObject} and perform Expression and Filter
  * conversions. These utilities are used by the MBStyle to convert JSON to simple Java objects,
  * process functions and perform common JSON manipulation tasks.
- *
+ * 
  * <h2>Access methods</h2>
  * Example of transformation to Expression, using the fallback value if provided:
- *
+ * 
  * <pre><code> MBObjectParser parse = new MBObjectParser( ff );
- *
+ * 
  * Expression fillOpacity = parse.percent( json, "fill-opacity", 1.0 );
  * Expression fillColor = parse.color( json, "fill-color", Color.BLACK );
  * </code></pre>
- *
+ * 
  * <h2>Get Methods</h2>
- *
+ * 
  * Generic "get" methods are also available for safely accessing required fields. These methods will throw a
  * validation error if the required tag was is not available.
- *
+ * 
  * <pre><code> String id = parse.get("id");
  * String visibility = parse.getBoolean("visibility");
  * String source = parse.get("source");
  * </code></pre>
- *
+ * 
  * Non generic "get" methods, like {@link #paint(JSONObject)}, are in position to provide an appropriate default value.
  * <pre><code> JSONObject paint = parse.paint( layer );
  * </code></pre>
- *
+ * 
  * @author Torben Barsballe (Boundless)
  */
 public class MBObjectParser {
@@ -75,10 +75,10 @@ public class MBObjectParser {
     final FilterFactory2 ff;
     final StyleFactory2 sf;
     private static final Logger LOGGER = Logging.getLogger(MBObjectParser.class);
-
+    
     /**
      * Parser used to in the provided context.
-     *
+     * 
      * @param context Context this parser is being used in (for better error reporting)
      */
     public MBObjectParser(Class<?> context) {
@@ -89,7 +89,7 @@ public class MBObjectParser {
 
     /**
      * Copy constructor allowing reuse of factories, while returning correct {@link #context}.
-     *
+     * 
      * @param context Context this parser is being used in (for better error reporting)
      * @param parse Parent parser used to configure factories consistently
      */
@@ -136,7 +136,7 @@ public class MBObjectParser {
             }
         } else {
             // paint is optional, having a value here prevents need for null checks
-            return new JSONObject();
+            return new JSONObject(); 
         }
     }
     /** Safely look up layout in provided layer json.
@@ -160,7 +160,7 @@ public class MBObjectParser {
             }
         } else {
             // paint is optional, having a value here prevents need for null checks
-            return new JSONObject();
+            return new JSONObject(); 
         }
     }
 
@@ -169,7 +169,7 @@ public class MBObjectParser {
      * <p>
      * Confirms json contains the provided tag as a JSONObject, correctly
      * throwing {@link MBFormatException} if not available.
-     *
+     * 
      * @param json The JSONObject in which to lookup the provided tag and return a JSONObject
      * @param tag The tag to look up in the provided JSONObject
      * @return The JSONObject at the provided tag
@@ -188,10 +188,10 @@ public class MBObjectParser {
             throw new MBFormatException("\""+tag+"\" requires JSONObject");
         }
     }
-
+    
     /**
      * Access JSONObject for the indicated tag, with the provided fallback if the the json does not contain a JSONObject for that tag.
-     *
+     * 
      * @param json The JSONObject in which to lookup the provided tag and return a JSONObject
      * @param tag The tag to look up in the provided JSONObject
      * @param fallback The JSONObject to return if the provided json does not contain a JSONObject for that tag.
@@ -215,10 +215,10 @@ public class MBObjectParser {
      * <p>
      * Confirms json contains the provided tag as a JSONArray, correctly
      * throwing {@link MBFormatException} if not available.
-     *
+     * 
      * @param json
      * @param tag
-     * @return JSONObject
+     * @return JSONObject 
      * @throws MBFormatException If JSONObject not available for the provided tag
      */
     public JSONArray getJSONArray(JSONObject json, String tag) {
@@ -234,15 +234,15 @@ public class MBObjectParser {
             throw new MBFormatException("\""+tag+"\" requires JSONArray");
         }
     }
-
+    
     /**
      * Access a JSONArray at the provided tag in the provided JSONObject, with a fallback if no JSONArray is found at that tag.
-     *
+     * 
      * @param json The JSONObject in which to lookup the provided tag and return a JSONArray
      * @param tag The tag to look up in the provided JSONObject
      * @param fallback The JSONArray to return if the provided json does not contain a JSONArray for that tag.
      * @return The JSONArray at the provided tag, or the fallback JSONArray.
-     */
+     */    
     public JSONArray getJSONArray(JSONObject json, String tag, JSONArray fallback) {
         if (json == null) {
             throw new IllegalArgumentException("json required");
@@ -256,7 +256,7 @@ public class MBObjectParser {
             throw new MBFormatException("\""+tag+"\" requires JSONArray");
         }
     }
-
+    
     /**
      * Access a literal value (string, numeric, or boolean).
      *
@@ -279,10 +279,9 @@ public class MBObjectParser {
         }
         throw new MBFormatException(context.getSimpleName() + " requires [" + index + "] string, numeric or boolean");
     }
-
     /**
      * Access a literal value (string, numeric, or boolean).
-     *
+     * 
      * @param tag
      * @return required string, numeric or boolean
      * @throws MBFormatException if required tag not available.
@@ -304,7 +303,7 @@ public class MBObjectParser {
 
     /**
      * Quickly access required json index (as a String).
-     *
+     * 
      * @param index
      * @return required string
      * @throws MBFormatException if required index not available.
@@ -326,7 +325,7 @@ public class MBObjectParser {
 
     /**
      * Quickly access required json tag (as a String).
-     *
+     * 
      * @param tag
      * @return required string
      * @throws MBFormatException if required tag not available.
@@ -345,13 +344,13 @@ public class MBObjectParser {
                     context.getSimpleName() + " requires \"" + tag + "\" string field");
         }
     }
-
+    
     /**
      * Quickly access required json tag.
-     *
+     * 
      * @param json
-     * @param tag
-     * @param fallback
+     * @param tag 
+     * @param fallback 
      * @return required string, or fallback if unavailable
      */
     public String get(JSONObject json, String tag, String fallback) {
@@ -371,7 +370,7 @@ public class MBObjectParser {
 
     /**
      * Look up a double in the provided {@link JSONArray} at the provided index, or throw an {@link MBFormatException}.
-     *
+     * 
      * @param json The array in which to look up the double
      * @param index The index at which to look up the double
      * @return The double from the array at index.
@@ -387,10 +386,10 @@ public class MBObjectParser {
                     context.getSimpleName() + " requires [" + index + "] numeric value");
         }
     }
-
+    
     /**
      * Look up a Double in the provided {@link JSONObject} at the provided 'tag', or thrown an {@link MBFormatException}.
-     *
+     * 
      * @param json The object in which to look up the Double
      * @param tag The tag at which to look up the Double
      * @return The Double from the object at 'tag'
@@ -409,10 +408,10 @@ public class MBObjectParser {
                     context.getSimpleName() + " requires \"" + tag + "\" numeric field");
         }
     }
-
+    
     /**
      * Look up a Boolean in the provided {@link JSONArray} at the provided index, or throw an {@link MBFormatException}.
-     *
+     * 
      * @param json The array in which to look up the Boolean
      * @param index The index at which to look up the Boolean
      * @return The Boolean from the array at index.
@@ -428,10 +427,10 @@ public class MBObjectParser {
                     context.getSimpleName() + " requires [" + index + "] boolean");
         }
     }
-
+    
     /**
      * Look up a Boolean in the provided {@link JSONObject} at the provided 'tag', or thrown an {@link MBFormatException}.
-     *
+     * 
      * @param json The object in which to look up the Boolean
      * @param tag The tag at which to look up the Boolean
      * @return The Boolean from the object at 'tag'
@@ -450,11 +449,11 @@ public class MBObjectParser {
                     context.getSimpleName() + " requires \"" + tag + "\" boolean field");
         }
     }
-
+    
     /**
      * Look up a Boolean in the provided {@link JSONObject} at the provided 'tag', or thrown an {@link MBFormatException},
      * with a fallback if the json is null or contains no such 'tag'.
-     *
+     * 
      * @param json The object in which to look up the Boolean
      * @param tag  The tag at which to look up the Boolean
      * @param fallback The value to return if the json is null or contains no such 'tag'.
@@ -473,11 +472,11 @@ public class MBObjectParser {
             throw new MBFormatException(context.getSimpleName() + " requires \"" + tag + "\" boolean field");
         }
     }
-
+    
     /**
-     * Retrieve an object of the provided type in the JSONArray at this index, throwing an {@link MBFormatException} if
+     * Retrieve an object of the provided type in the JSONArray at this index, throwing an {@link MBFormatException} if 
      * no object of that type is found at that index of the array.
-     *
+     * 
      * @param type The type of the object to retrieve.
      * @param json The JSONArray in which to retrieve the object.
      * @param index The index in the JSONArray at which to retrieve the object.
@@ -493,11 +492,11 @@ public class MBObjectParser {
             throw new MBFormatException(context.getSimpleName() + " requires [" + index + "] "+type.getSimpleName());
         }
     }
-
+    
     /**
-     * Retrieve an object of the provided type in the JSONObject at this tag, throwing an {@link MBFormatException} if
+     * Retrieve an object of the provided type in the JSONObject at this tag, throwing an {@link MBFormatException} if 
      * no object of that type is found at that tag in the object.
-     *
+     * 
      * @param type  The type of the object to retrieve.
      * @param json The JSONObject in which to retrieve the object.
      * @param tag The index in the JSONObject at which to retrieve the object.
@@ -519,7 +518,7 @@ public class MBObjectParser {
 
     /**
      * Optional lookup, will return fallback if not available.
-     *
+     * 
      * @param type Type to lookup
      * @param json The JSONObject in which to lookup the value
      * @param tag The tag at which to lookupthe value in the JSONObject
@@ -552,9 +551,9 @@ public class MBObjectParser {
             }
         }
     }
-
+    
     /**
-     *
+     * 
      * Convert a String value to an enum value, ignoring case, with the provided fallback.
      *
      * @param json The json object to parse the value from
@@ -565,7 +564,7 @@ public class MBObjectParser {
      * @throws MBFormatException if the value is not a String, or it is not a valid value for the enumeration.
      */
     public <T extends Enum<?>> T getEnum(JSONObject json, String tag, Class<T> enumeration,
-                                         T fallback) {
+            T fallback) {
         Object value = json.get(tag);
 
         if (value == null) {
@@ -589,15 +588,15 @@ public class MBObjectParser {
         }
 
     }
-
+    
     /**
-     *
+     * 
      * <p>Parse a Mapbox enumeration property to a GeoTools Expression that evaluates to a GeoTools constant (supports the property being specified as a
      * mapbox function). </p>
-     *
+     * 
      * <p>For example, converts {@link LineJoin#BEVEL} to an expression that evaluates to the String value "bevel", or
      * {@link LineJoin#MITER} to an expression that evaluates to "mitre".</p>
-     *
+     * 
      * @param json The json object containing the property
      * @param tag The json key corresponding to the property
      * @param enumeration The Mapbox enumeration that the value should be an instance of
@@ -605,7 +604,7 @@ public class MBObjectParser {
      * @return A GeoTools expression corresponding to the Mapbox enumeration value, evaluating to a GeoTools constant.
      */
     public <T extends Enum<?>> Expression enumToExpression(JSONObject json, String tag,
-                                                           Class<T> enumeration, T fallback) {
+            Class<T> enumeration, T fallback) {
         // Function name is inconsistent because "enum" is not a valid function name.
         Object value = json.get(tag);
         if (value == null) {
@@ -621,7 +620,7 @@ public class MBObjectParser {
                 LOGGER.log(Level.WARNING, "\"" + stringVal + "\" Exception parsing value for enumeration "
                         + enumeration.getSimpleName() + ", falling back to default value.");
                 return constant(fallback.toString(), enumeration);
-            }
+            }  
         } else if (value instanceof JSONObject) {
             MBFunction function = new MBFunction(this, (JSONObject) value);
             return function.enumeration(enumeration);
@@ -631,12 +630,12 @@ public class MBObjectParser {
                             + " to " + enumeration.getSimpleName() + " not supported.");
         }
     }
-
+    
     /**
      * Utility method used to convert enumerations to an appropriate GeoTools literal string.
      * <p>
      * Any conversion between mapbox constants and geotools constants will be done here.
-     *
+     * 
      * @param value The value to be converted to the appropriate GeoTools literal
      * @param enumeration The type of the mapbox enumeration
      * @return Literal, or null if unavailable
@@ -660,26 +659,26 @@ public class MBObjectParser {
             }
             if( enumValue == null ){
                 throw new MBFormatException("\"" + stringVal + "\" invalid value for enumeration "
-                        + enumeration.getSimpleName());
+                    + enumeration.getSimpleName());
             }
-
+                        
             // step 2 - convert to geotools constant
             // (Converting the string value to lowercase takes care of most cases).
             if (enumValue instanceof LineJoin && LineJoin.MITER.equals(enumValue)) {
                 return ff.literal("mitre");
             }
-            String literal = enumValue.toString().toLowerCase();
+            String literal = enumValue.toString().toLowerCase();            
             return ff.literal(literal);
         }
         return null;
     }
 
     /**
-     * Casts the provided obj to a JSONObject (safely reporting format exception
-     *
+     * Casts the provided obj to a JSONObject (safely reporting format exception 
+     * 
      * @param obj
      * @return JSONObject
-     * @throws MBFormatException
+     * @throws MBFormatException 
      */
     public JSONObject jsonObject(Object obj) throws MBFormatException {
         if (obj instanceof JSONObject) {
@@ -690,10 +689,10 @@ public class MBObjectParser {
             throw new MBFormatException("Not a JSONObject: " + obj.toString());
         }
     }
-
+    
     /**
      * Casts the provided obj to a JSONObject (safely reporting format exception, with the provided message).
-     *
+     * 
      * @param obj The object to cast
      * @param message The message for the exception of the object is not a JSONObject
      * @return The object, cast to JSONObject
@@ -709,7 +708,7 @@ public class MBObjectParser {
 
     /**
      * Casts the provided obj to a JSONArray (otherwise throws an {@link MBFormatException}).
-     *
+     * 
      * @param obj The object to cast
      * @return The object, cast to JSONArray
      * @throws MBFormatException
@@ -726,7 +725,7 @@ public class MBObjectParser {
 
     /**
      * Casts the provided obj to a JSONArray (otherwise throws an {@link MBFormatException} with the provided message).
-     *
+     * 
      * @param obj The object to cast
      * @param message The message for the exception of the object is not a JSONArray
      * @return The object, cast to JSONArray
@@ -743,7 +742,7 @@ public class MBObjectParser {
     /**
      * Lookup an array of the provided type in the provided JSONObject at 'tag', with a fallback if that tag is not found. Throws an exception if
      * that tag is something other than an array, or if its contents cannot be cast to type.
-     *
+     * 
      * @param type The type of the array
      * @param json The JSONObject in which to look up the array
      * @param tag The tag at which to look up the array
@@ -755,7 +754,7 @@ public class MBObjectParser {
         if (json.containsKey(tag)) {
             Object obj = json.get(tag);
             if (obj instanceof JSONArray) {
-                JSONArray array = (JSONArray) obj;
+                JSONArray array = (JSONArray) obj;                
                 T[] returnArray = (T[]) Array.newInstance(type, array.size());
                 for (int i = 0; i < array.size(); i++) {
                     Object value = array.get(i);
@@ -795,7 +794,7 @@ public class MBObjectParser {
 
     /**
      * Convert json to Expression number between 0 and 1, or a function.
-     *
+     * 
      * @param json json representation
      * @return Expression based on provided json, or null if not provided
      * @throws MBFormatException
@@ -806,7 +805,7 @@ public class MBObjectParser {
 
     /**
      * Convert json to Expression number between 0 and 1, or a function.
-     *
+     * 
      * @param json json representation
      * @param fallback default value if json is null
      * @return Expression based on provided json, or literal if json was null.
@@ -820,7 +819,7 @@ public class MBObjectParser {
         Object obj = json.get(tag);
 
         if (obj == null) {
-            return ff.literal(fallback);
+            return ff.literal(fallback);  
         } else if (obj instanceof String) {
             String str = (String) obj;
             return ff.literal(str);
@@ -892,14 +891,14 @@ public class MBObjectParser {
     //
     // NUMBER
     //
-
+    
     /**
      * Convert the provided object to a numeric Expression (or function), with a fallback value if the object is null.
-     *
+     * 
      * @param context The json context of the object, used for error messages.
      * @param obj The object to convert
      * @param fallback The fallback value, used when the provided object is null.
-     * @return A numeric expression for the provided object
+     * @return A numeric expression for the provided object 
      */
     private Expression number(String context, Object obj, Number fallback) {
         if (obj == null) {
@@ -933,7 +932,7 @@ public class MBObjectParser {
 
     /**
      * Convert the value at 'index' in the provided JSONArray to a numeric Expression or a Function.
-     *
+     * 
      * @param json The JSONArray in which to look up a value
      * @param index The index in the JSONArray
      * @return Numeric Expression based on provided json, or null.
@@ -945,7 +944,7 @@ public class MBObjectParser {
 
     /**
      * Convert the value in the provided JSONArray at index to a numeric Expression, or a function, with a fallback if the json is null.
-     *
+     * 
      * @param json The JSONArray in which to look up the value
      * @param index The index in the JSONArray at which to look up the value
      * @param fallback default value if json is null
@@ -963,7 +962,7 @@ public class MBObjectParser {
 
     /**
      * Convert the value in the provided JSONObject at 'tag' to a numeric Expression, or a function.
-     *
+     * 
      * @param json The JSONObject in which to look up the value
      * @param tag The tag in the JSONObject at which to look up the value
      * @return Expression based on provided json, or null
@@ -975,7 +974,7 @@ public class MBObjectParser {
 
     /**
      * Convert the value in the provided JSONObject at 'tag' to a numeric Expression, or a function, with a fallback if the json is null.
-     *
+     * 
      * @param json The JSONObject in which to look up the value
      * @param tag The tag in the JSONObject at which to look up the value
      * @param fallback default value if the JSONObject is null
@@ -993,8 +992,8 @@ public class MBObjectParser {
 
     //
     // STRING
-    //
-
+    //    
+    
     /**
      * Convert the provided object to a string Expression (or function), with a fallback value if the object is null.
      * @param context The json context of the object, used for error messages.
@@ -1070,7 +1069,7 @@ public class MBObjectParser {
 
     /**
      * Convert json to Expression string, or a function.
-     *
+     * 
      * @param json json representation
      * @param fallback default value if json is null
      * @return Expression based on provided json, or literal if json was null.
@@ -1102,10 +1101,10 @@ public class MBObjectParser {
         Object obj = json.get(tag);
         return color( "\""+tag+"\"", obj, fallback );
     }
-
+    
     /**
      * Handles literal color definitions supplied as a string, returning a {@link Literal}.
-     *
+     * 
      * <ul>
      * <li><pre>{"line-color": "yellow"</pre> named: a few have been put in pass test cases, prnding: plan to use {@link Hints#COLOR_DEFINITION} to allow for web colors.</li>
      * <li><pre>{"line-color": "#ffff00"}</pre> hex: hex color conversion are supplied by {@link ColorConverterFactory}</li>
@@ -1116,9 +1115,9 @@ public class MBObjectParser {
      * <li><pre>{"line-color": "hsla(100, 50%, 50%, 1)"}</pre> - we will need to special case this </li>
      * <li>
      * </ul>
-     *
+     * 
      * This method uses {@link Hints#COLOR_DEFINITION} "CSS" to support the use of web colors names.
-     *
+     * 
      * @param color name of color (CSS or "web" colors)
      * @return appropriate java color, or null if not available.
      */
@@ -1128,10 +1127,10 @@ public class MBObjectParser {
         }
         return ff.literal(convertToColor(color));
     }
-
+    
     /**
      * Parse obj into a color expression (literal or function).
-     *
+     * 
      * @param context
      * @param obj
      * @param fallback
@@ -1161,10 +1160,10 @@ public class MBObjectParser {
                     + " limited to String or JSONObject but was " + obj.getClass().getSimpleName());
         }
     }
-
+    
     /**
      * Converts color definitions supplied as a string to Color objects:
-     *
+     * 
      * <ul>
      * <li><pre>{"line-color": "yellow"</pre> named: a few have been put in pass test cases, prnding: plan to use {@link Hints#COLOR_DEFINITION} to allow for web colors.</li>
      * <li><pre>{"line-color": "#ffff00"}</pre> hex: hex color conversion are supplied by {@link ColorConverterFactory}</li>
@@ -1175,9 +1174,9 @@ public class MBObjectParser {
      * <li><pre>{"line-color": "hsla(100, 50%, 50%, 1)"}</pre> - we will need to special case this </li>
      * <li>
      * </ul>
-     *
+     * 
      * This method uses {@link Hints#COLOR_DEFINITION} "CSS" to support the use of web colors names.
-     *
+     * 
      * @param color name of color (CSS or "web" colors)
      * @return appropriate java color, or null if not available.
      */
@@ -1194,10 +1193,10 @@ public class MBObjectParser {
         Hints h = new Hints(Hints.COLOR_DEFINITION, "CSS");
         return Converters.convert(color, Color.class, h);
     }
-
+    
     /**
      * Convert json to Expression boolean, or a function.
-     *
+     * 
      * @param json json representation
      * @param fallback default value if json is null
      * @return Expression based on provided json, or literal if json was null.
@@ -1235,11 +1234,11 @@ public class MBObjectParser {
                     + obj.getClass().getSimpleName());
         }
     }
-
+    
 
     /**
      * Maps a json value at 'tag' in the provided JSONObject to a {@link Displacement}.
-     *
+     * 
      * @param json The JSONObject in which to look up a displacement value
      * @param tag The tag in the JSONObject
      * @param fallback The fallback displacement, if no value is found at that tag.
@@ -1253,7 +1252,7 @@ public class MBObjectParser {
             JSONArray array = (JSONArray) defn;
             return sf.displacement(number(array, 0, 0), number(array, 1, 0));
         } else if (defn instanceof JSONObject) {
-            // Function case
+            // Function case 
             MBFunction function = new MBFunction(this, (JSONObject) defn);
             if (!function.isArrayFunction()) {
                 throw new MBFormatException("\"" + tag
@@ -1279,7 +1278,7 @@ public class MBObjectParser {
                 throw new MBFormatException("\"" + tag
                         + "\": Exception parsing displacement from Mapbox function: function values must all be arrays with length 2.");
             }
-
+            
             Expression xFn = functionForEachDimension.get(0).numeric();
             Expression yFn = functionForEachDimension.get(1).numeric();
             return sf.displacement(xFn, yFn);
@@ -1288,9 +1287,9 @@ public class MBObjectParser {
                     + defn.getClass().getSimpleName());
         }
     }
-
+    
     /**
-     *
+     * 
      * @return True if the layer has the provided property explicitly provided, False otherwise.
      */
     public boolean isPropertyDefined(JSONObject json, String propertyName) throws MBFormatException {

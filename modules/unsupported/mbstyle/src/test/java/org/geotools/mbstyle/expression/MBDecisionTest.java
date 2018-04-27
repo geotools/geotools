@@ -23,6 +23,9 @@ import static org.junit.Assert.assertTrue;
 import org.json.simple.JSONObject;
 import org.junit.Test;
 
+/**
+ * Tests the MapBox Decision expressions.
+ */
 public class MBDecisionTest extends AbstractMBExpressionTest {
 
     @Override

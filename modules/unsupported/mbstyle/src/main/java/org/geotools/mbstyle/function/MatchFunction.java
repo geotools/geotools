@@ -16,8 +16,6 @@
  */
 package org.geotools.mbstyle.function;
 
-import static org.geotools.filter.capability.FunctionNameImpl.parameter;
-
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.mbstyle.parse.MBFormatException;
@@ -38,7 +36,7 @@ import java.util.List;
  * Format:
  * </p>
  * <pre>
- *     ["mbMatch", &lt;Input expression&gt;,
+ *     ["match", &lt;Input expression&gt;,
  *                 &lt;Label expression&gt;, &lt;Output expression&gt;,
  *                 [&lt;Label expression&gt;, &lt;Label expression&gt;, ...], &lt;Output expression&gt;,
  *                 &lt;Default expression&gt;]
@@ -53,31 +51,29 @@ import java.util.List;
  *     <th align="center">Output</th>
  *   </tr>
  *   <tr>
- *     <td>["mbMatch", "anInput", "label1", "output1", "anInput", "output2", "defaultOutput"]</td>
+ *     <td>["match", "anInput", "label1", "output1", "anInput", "output2", "defaultOutput"]</td>
  *     <td align="center">"output2"</td>
  *   </tr>
  *   <tr>
- *     <td>["mbMatch", "anInput", "label1", "output1", "label2", "output2", ["literal", ["anInput", "anotherInput"]], "output3", "defaultOutput"]</td>
+ *     <td>["match", "anInput", "label1", "output1", "label2", "output2", ["literal", ["anInput", "anotherInput"]], "output3", "defaultOutput"]</td>
  *     <td align="center">"output3"</td>
  *   </tr>
  *   <tr>
- *     <td>["mbMatch", "anInput", "label1", "output1", "label2", "output2", "defaultOutput"]</td>
+ *     <td>["match", "anInput", "label1", "output1", "label2", "output2", "defaultOutput"]</td>
  *     <td align="center">"defaultOutput"</td>
  *   </tr>
  *   <tr>
- *     <td>["mbMatch", "anInput", "label1", "output1", "label2", "output2", "label2", "output3"]</td>
+ *     <td>["match", "anInput", "label1", "output1", "label2", "output2", "label2", "output3"]</td>
  *     <td align="center">null</td>
  *   </tr>
  * </table>
  * </p>
  */
-class MBFunction_match extends FunctionExpressionImpl {
+class MatchFunction extends FunctionExpressionImpl {
 
-    public static FunctionName NAME = new FunctionNameImpl("mbMatch",
-        parameter("mbMatch", Object.class),
-        parameter("unused", Object.class));
+    public static FunctionName NAME = new FunctionNameImpl("match");
 
-    MBFunction_match() {
+    MatchFunction() {
         super(NAME);
     }
 

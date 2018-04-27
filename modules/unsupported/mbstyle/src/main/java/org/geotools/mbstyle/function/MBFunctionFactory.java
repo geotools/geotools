@@ -42,25 +42,25 @@ public class MBFunctionFactory implements FunctionFactory {
         functionList.add(CSSFunction.NAME);
         functionList.add(DefaultIfNullFunction.NAME);
         functionList.add(ToRgb.NAME);
-        functionList.add(MBFunction_equalTo.NAME);
-        functionList.add(MBFunction_notEqualTo.NAME);
-        functionList.add(MBFunction_all.NAME);
-        functionList.add(MBFunction_any.NAME);
-        functionList.add(MBFunction_case.NAME);
-        functionList.add(MBFunction_coalesce.NAME);
-        functionList.add(MBFunction_match.NAME);
+        functionList.add(MapBoxEqualToFunction.NAME);
+        functionList.add(MapBoxNotEqualToFunction.NAME);
+        functionList.add(AllFunction.NAME);
+        functionList.add(AnyFunction.NAME);
+        functionList.add(CaseFunction.NAME);
+        functionList.add(CoalesceFunction.NAME);
+        functionList.add(MatchFunction.NAME);
         functionList.add(ListSizeFunction.NAME);
-        functionList.add(MBFunction_length.NAME);
-        functionList.add(MBFunction_at.NAME);
-        functionList.add(MBFunction_get.NAME);
-        functionList.add(MBFunction_has.NAME);
-        functionList.add(MBFunction_remainder.NAME);
-        functionList.add(MBFunction_typeOf.NAME);
-        functionList.add(MBFunction_type.NAME);
-        functionList.add(MBFunction_toBool.NAME);
-        functionList.add(MBFunction_toString.NAME);
-        functionList.add(MBFunction_toNumber.NAME);
-        functionList.add(MBFunction_toColor.NAME);
+        functionList.add(MapBoxLengthFunction.NAME);
+        functionList.add(AtFunction.NAME);
+        functionList.add(GetFunction.NAME);
+        functionList.add(HasFunction.NAME);
+        functionList.add(RemainderFunction.NAME);
+        functionList.add(MapBoxTypeOfFunction.NAME);
+        functionList.add(MapBoxTypeFunction.NAME);
+        functionList.add(ToBoolFunction.NAME);
+        functionList.add(ToStringFunction.NAME);
+        functionList.add(ToNumberFunction.NAME);
+        functionList.add(ToColorFunction.NAME);
         return Collections.unmodifiableList(functionList);
     }
 
@@ -109,44 +109,44 @@ public class MBFunctionFactory implements FunctionFactory {
             f.setFallbackValue(fallback);
             return f;
         }
-        if (MBFunction_equalTo.NAME.getFunctionName().equals(name)) {
-            MBFunction_equalTo f = new MBFunction_equalTo();
+        if (MapBoxEqualToFunction.NAME.getFunctionName().equals(name)) {
+            MapBoxEqualToFunction f = new MapBoxEqualToFunction();
             f.setParameters(args);
             f.setFallbackValue(fallback);
             return f;
         }
-        if (MBFunction_notEqualTo.NAME.getFunctionName().equals(name)) {
-            MBFunction_notEqualTo f = new MBFunction_notEqualTo();
+        if (MapBoxNotEqualToFunction.NAME.getFunctionName().equals(name)) {
+            MapBoxNotEqualToFunction f = new MapBoxNotEqualToFunction();
             f.setParameters(args);
             f.setFallbackValue(fallback);
             return f;
         }
-        if (MBFunction_all.NAME.getFunctionName().equals(name)) {
-            MBFunction_all f = new MBFunction_all();
+        if (AllFunction.NAME.getFunctionName().equals(name)) {
+            AllFunction f = new AllFunction();
             f.setParameters(args);
             f.setFallbackValue(fallback);
             return f;
         }
-        if (MBFunction_any.NAME.getFunctionName().equals(name)) {
-            MBFunction_any f = new MBFunction_any();
+        if (AnyFunction.NAME.getFunctionName().equals(name)) {
+            AnyFunction f = new AnyFunction();
             f.setParameters(args);
             f.setFallbackValue(fallback);
             return f;
         }
-        if (MBFunction_case.NAME.getFunctionName().equals(name)) {
-            MBFunction_case f = new MBFunction_case();
+        if (CaseFunction.NAME.getFunctionName().equals(name)) {
+            CaseFunction f = new CaseFunction();
             f.setParameters(args);
             f.setFallbackValue(fallback);
             return f;
         }
-        if (MBFunction_coalesce.NAME.getFunctionName().equals(name)) {
-            MBFunction_coalesce f = new MBFunction_coalesce();
+        if (CoalesceFunction.NAME.getFunctionName().equals(name)) {
+            CoalesceFunction f = new CoalesceFunction();
             f.setParameters(args);
             f.setFallbackValue(fallback);
             return f;
         }
-        if (MBFunction_match.NAME.getFunctionName().equals(name)) {
-            MBFunction_match f = new MBFunction_match();
+        if (MatchFunction.NAME.getFunctionName().equals(name)) {
+            MatchFunction f = new MatchFunction();
             f.setParameters(args);
             f.setFallbackValue(fallback);
             return f;
@@ -157,68 +157,68 @@ public class MBFunctionFactory implements FunctionFactory {
             f.setFallbackValue(fallback);
             return f;
         }
-        if (MBFunction_length.NAME.getFunctionName().equals(name)){
-            MBFunction_length f = new MBFunction_length();
+        if (MapBoxLengthFunction.NAME.getFunctionName().equals(name)){
+            MapBoxLengthFunction f = new MapBoxLengthFunction();
             f.setParameters(args);
             f.setFallbackValue(fallback);
             return f;
         }
-        if (MBFunction_at.NAME.getFunctionName().equals(name)){
-            MBFunction_at f = new MBFunction_at();
+        if (AtFunction.NAME.getFunctionName().equals(name)){
+            AtFunction f = new AtFunction();
             f.setParameters(args);
             f.setFallbackValue(fallback);
             return f;
         }
-        if (MBFunction_get.NAME.getFunctionName().equals(name)){
-            MBFunction_get f = new MBFunction_get();
+        if (GetFunction.NAME.getFunctionName().equals(name)){
+            GetFunction f = new GetFunction();
             f.setParameters(args);
             f.setFallbackValue(fallback);
             return f;
         }
-        if (MBFunction_has.NAME.getFunctionName().equals(name)){
-            MBFunction_has f = new MBFunction_has();
+        if (HasFunction.NAME.getFunctionName().equals(name)){
+            HasFunction f = new HasFunction();
             f.setParameters(args);
             f.setFallbackValue(fallback);
             return f;
         }
-        if (MBFunction_remainder.NAME.getFunctionName().equals(name)){
-            MBFunction_remainder f = new MBFunction_remainder();
+        if (RemainderFunction.NAME.getFunctionName().equals(name)){
+            RemainderFunction f = new RemainderFunction();
             f.setParameters(args);
             f.setFallbackValue(fallback);
             return f;
         }
-        if (MBFunction_typeOf.NAME.getFunctionName().equals(name)) {
-            MBFunction_typeOf f = new MBFunction_typeOf();
+        if (MapBoxTypeOfFunction.NAME.getFunctionName().equals(name)) {
+            MapBoxTypeOfFunction f = new MapBoxTypeOfFunction();
             f.setParameters(args);
             f.setFallbackValue(fallback);
             return f;
         }
-        if (MBFunction_type.NAME.getFunctionName().equals(name)) {
-            MBFunction_type f = new MBFunction_type();
+        if (MapBoxTypeFunction.NAME.getFunctionName().equals(name)) {
+            MapBoxTypeFunction f = new MapBoxTypeFunction();
             f.setParameters(args);
             f.setFallbackValue(fallback);
             return f;
         }
-        if (MBFunction_toBool.NAME.getFunctionName().equals(name)) {
-            MBFunction_toBool f = new MBFunction_toBool();
+        if (ToBoolFunction.NAME.getFunctionName().equals(name)) {
+            ToBoolFunction f = new ToBoolFunction();
             f.setParameters(args);
             f.setFallbackValue(fallback);
             return f;
         }
-        if (MBFunction_toString.NAME.getFunctionName().equals(name)) {
-            MBFunction_toString f = new MBFunction_toString();
+        if (ToStringFunction.NAME.getFunctionName().equals(name)) {
+            ToStringFunction f = new ToStringFunction();
             f.setParameters(args);
             f.setFallbackValue(fallback);
             return f;
         }
-        if (MBFunction_toNumber.NAME.getFunctionName().equals(name)) {
-            MBFunction_toNumber f = new MBFunction_toNumber();
+        if (ToNumberFunction.NAME.getFunctionName().equals(name)) {
+            ToNumberFunction f = new ToNumberFunction();
             f.setParameters(args);
             f.setFallbackValue(fallback);
             return f;
         }
-        if (MBFunction_toColor.NAME.getFunctionName().equals(name)) {
-            MBFunction_toColor f = new MBFunction_toColor();
+        if (ToColorFunction.NAME.getFunctionName().equals(name)) {
+            ToColorFunction f = new ToColorFunction();
             f.setParameters(args);
             f.setFallbackValue(fallback);
             return f;

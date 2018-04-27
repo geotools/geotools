@@ -190,7 +190,7 @@ public class MBDecision extends MBExpression {
             Expression expression = parse.string(json, i);
             expressions[i-1] = expression;
         }
-        return ff.function("mbAll", expressions);
+        return ff.function("all", expressions);
     }
 
     /**
@@ -211,7 +211,7 @@ public class MBDecision extends MBExpression {
             Expression expression = parse.string(json, i);
             expressions[i-1] = expression;
         }
-        return ff.function("mbAny", expressions);
+        return ff.function("any", expressions);
     }
 
     /**
@@ -231,7 +231,7 @@ public class MBDecision extends MBExpression {
             Expression expression = parse.string(json, i);
             expressions[i-1] = expression;
         }
-        return ff.function("mbCase", expressions);
+        return ff.function("case", expressions);
     }
 
     /**
@@ -249,7 +249,7 @@ public class MBDecision extends MBExpression {
             Expression expression = parse.string(json, i);
             expressions[i-1] = expression;
         }
-        return ff.function("mbCoalesce", expressions);
+        return ff.function("coalesce", expressions);
     }
 
     /**
@@ -273,7 +273,7 @@ public class MBDecision extends MBExpression {
             Expression expression = parse.string(json, i);
             expressions[i-1] = expression;
         }
-        return ff.function("mbMatch", expressions);
+        return ff.function("match", expressions);
     }
 
     @Override

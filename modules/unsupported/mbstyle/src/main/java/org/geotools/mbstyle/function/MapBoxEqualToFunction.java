@@ -16,8 +16,6 @@
  */
 package org.geotools.mbstyle.function;
 
-import static org.geotools.filter.capability.FunctionNameImpl.parameter;
-
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
@@ -61,14 +59,11 @@ import org.opengis.filter.capability.FunctionName;
  * </table>
  * </p>
  */
-class MBFunction_equalTo extends FunctionExpressionImpl {
+class MapBoxEqualToFunction extends FunctionExpressionImpl {
 
-    public static FunctionName NAME = new FunctionNameImpl("mbEqualTo",
-            parameter("mbEqualTo", Boolean.class),
-            parameter("a", Object.class),
-            parameter("b", Object.class));
+    public static FunctionName NAME = new FunctionNameImpl("mbEqualTo");
 
-    MBFunction_equalTo() {
+    MapBoxEqualToFunction() {
         super(NAME);
     }
 
@@ -82,16 +77,14 @@ class MBFunction_equalTo extends FunctionExpressionImpl {
 
         try { // attempt to get value and perform conversion
             arg0 = (Object) getExpression(0).evaluate(feature);
-        } catch (Exception e) // probably a type error
-        {
+        } catch (Exception e) { // probably a type error
             throw new IllegalArgumentException(
                     "Filter Function problem for function equalTo argument #0 - expected type Object");
         }
 
         try { // attempt to get value and perform conversion
             arg1 = (Object) getExpression(1).evaluate(feature);
-        } catch (Exception e) // probably a type error
-        {
+        } catch (Exception e) { // probably a type error
             throw new IllegalArgumentException(
                     "Filter Function problem for function equalTo argument #1 - expected type Object");
         }

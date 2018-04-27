@@ -14,18 +14,18 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-
 package org.geotools.mbstyle.expression;
 
 import org.geotools.mbstyle.parse.MBFormatException;
-import org.geotools.mbstyle.parse.MBObjectParser;
 import org.json.simple.JSONArray;
 import org.opengis.filter.expression.Expression;
 
 public class MBHeatmap extends MBExpression {
+
     public MBHeatmap(JSONArray json) {
         super(json);
     }
+
     //TODO The MBHeatmap layer needs to be implemented
 
     /**

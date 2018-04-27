@@ -35,10 +35,10 @@ public class MBLookup extends MBExpression {
      */
     public Expression lookupAt(){
         // requires an instance of a "literal" array expression ie. non-expression array
-        if (json.size() == 3 && parse.string(json,2) != null){
-            Expression e = parse.string(json,2);
+        if (json.size() == 3 && parse.string(json, 2) != null) {
+            Expression e = parse.string(json, 2);
             Expression at = parse.string(json, 1);
-            return ff.function("mbAt", e, at);
+            return ff.function("at", e, at);
         }
         throw new MBFormatException("The \"at\" expression requires an integer value at index 1, and a literal" +
                 " array value at index 2");
@@ -63,7 +63,7 @@ public class MBLookup extends MBExpression {
             if (json.size() == 3) {
                 Expression value = parse.string(json, 1);
                 Expression object = parse.string(json, 2);
-                return ff.function("mbGet", value, object);
+                return ff.function("get", value, object);
             }
         }
         throw new MBFormatException("Expression \"get\" requires a maximum of 2 arguments.");
@@ -88,7 +88,7 @@ public class MBLookup extends MBExpression {
             if (json.size() == 3) {
                 Expression value = parse.string(json, 1);
                 Expression object = parse.string(json, 2);
-                return ff.function("mbHas", value, object);
+                return ff.function("has", value, object);
             }
         }
         throw new MBFormatException("Expression \"has\" requires 1 or 2 arguments " + json.size() + " arguments found");

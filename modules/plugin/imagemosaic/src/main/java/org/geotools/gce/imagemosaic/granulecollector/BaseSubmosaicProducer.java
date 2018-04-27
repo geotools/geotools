@@ -187,14 +187,17 @@ public class BaseSubmosaicProducer implements SubmosaicProducer {
                 }
 
                 // path management
+                String fileCanonicalPath = null;
                 File inputFile = URLs.urlToFile(result.getGranuleUrl());
-                String canonicalPath = inputFile.getCanonicalPath();
-                // Remove ovr extension if present
-                String fileCanonicalPath = canonicalPath;
-                if (canonicalPath.endsWith(".ovr")) {
-                    fileCanonicalPath = canonicalPath.substring(0, canonicalPath.length() - 4);
+                if (inputFile != null) {
+                    String canonicalPath = inputFile.getCanonicalPath();
+                    // Remove ovr extension if present
+                    fileCanonicalPath = canonicalPath;
+                    if (canonicalPath.endsWith(".ovr")) {
+                        fileCanonicalPath = canonicalPath.substring(0, canonicalPath.length() - 4);
+                    }
+                    paths.append(canonicalPath).append(",");
                 }
-                paths.append(canonicalPath).append(",");
                 // take only the first source URL found
                 if (sourceUrl == null) {
                     sourceUrl = result.getGranuleUrl();

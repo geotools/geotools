@@ -35,6 +35,7 @@ import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.gce.imagemosaic.Utils.Prop;
+import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -259,7 +260,7 @@ class FootprintUtils {
         Utilities.ensureNonNull("footprintsLocationGeometryMap", footprintsLocationGeometryMap);
         if (footprintsLocationGeometryMap.isEmpty())
             return;
-        final ShapefileDataStore store = new ShapefileDataStore(indexFile.toURI().toURL());
+        final ShapefileDataStore store = new ShapefileDataStore(URLs.fileToUrl(indexFile));
 
         if (footprintsLocationGeometryMap.isEmpty())
             return;

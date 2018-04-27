@@ -247,6 +247,10 @@ public class Utils {
 
         public static final String RESOLUTION_Y_ATTRIBUTE = "ResolutionYAttribute";
         
+        public final static String SUGGESTED_IS_SPI = "SuggestedIsSPI";
+        
+        public final static String SUGGESTED_FORMAT = "SuggestedFormat";
+        
         /**
          * Sets if the target schema should be used to locate granules (default is FALSE)<br/>
          * {@value TRUE|FALSE}
@@ -662,6 +666,26 @@ public class Utils {
         }
 
         //
+        // suggested format is optional
+        //
+        if (!ignoreSome || !ignorePropertiesSet.contains(Prop.SUGGESTED_FORMAT)) {
+            if (properties.containsKey(Prop.SUGGESTED_FORMAT)) {
+                final String suggestedFormat = properties.getProperty(Prop.SUGGESTED_FORMAT).trim();
+                catalogConfigurationBean.setSuggestedFormat(suggestedFormat);
+            }
+        }
+
+        //
+        // suggested IS Spi is optional
+        //
+        if (!ignoreSome || !ignorePropertiesSet.contains(Prop.SUGGESTED_IS_SPI)) {
+            if (properties.containsKey(Prop.SUGGESTED_IS_SPI)) {
+                final String suggestedIsSpi = properties.getProperty(Prop.SUGGESTED_IS_SPI).trim();
+                catalogConfigurationBean.setSuggestedIsSPI(suggestedIsSpi);
+            }
+        }
+
+        //
         // time attribute is optional
         //
         if (properties.containsKey(Prop.TIME_ATTRIBUTE)) {
@@ -778,6 +802,13 @@ public class Utils {
                     .getProperty(Prop.ABSOLUTE_PATH, Boolean.toString(Utils.DEFAULT_PATH_BEHAVIOR))
                     .trim());
             catalogConfigurationBean.setAbsolutePath(absolutePath);
+        }
+        
+        if (!ignoreSome || !ignorePropertiesSet.contains(Prop.PATH_TYPE)) {
+            final String pathType = properties.getProperty(Prop.PATH_TYPE);
+            if (pathType != null) {
+                catalogConfigurationBean.setPathType(PathType.valueOf(pathType.trim()));
+            }
         }
 
         //

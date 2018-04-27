@@ -19,7 +19,6 @@ package org.geotools.gce.imagemosaic.catalog;
 import java.lang.reflect.InvocationTargetException;
 
 import org.apache.commons.beanutils.BeanUtils;
-import org.geotools.gce.imagemosaic.PathType;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.util.Utilities;
 
@@ -35,12 +34,6 @@ public class CatalogConfigurationBean {
 
     /** Suggested SPI for the various tiles. May be null. **/
     private String suggestedSPI;
-
-    /** Suggested Format for the various tiles. May be null. **/
-    private String suggestedFormat;
-
-    /** Suggested InputStreamSPI for the various tiles. May be null. **/
-    private String suggestedIsSPI;
 
     /** we want to use caching for our index. */
     private boolean caching = Utils.DEFAULT_CONFIGURATION_CACHING;
@@ -58,8 +51,6 @@ public class CatalogConfigurationBean {
      * <code>true</code> it tells us if the mosaic points to absolute paths or to relative ones. (in case of <code>false</code>).
      */
     private boolean absolutePath = Utils.DEFAULT_PATH_BEHAVIOR;
-
-    private PathType pathType;
 
     public CatalogConfigurationBean() {
 
@@ -134,25 +125,12 @@ public class CatalogConfigurationBean {
         this.heterogeneousCRS = heterogeneousCRS;
     }
 
-    @Deprecated
     public boolean isAbsolutePath() {
         return absolutePath;
     }
 
-    @Deprecated
     public void setAbsolutePath(final boolean absolutePath) {
         this.absolutePath = absolutePath;
-    }
-    
-    public PathType getPathType() {
-        if (pathType == null) {
-            return isAbsolutePath() ? PathType.ABSOLUTE : PathType.RELATIVE;
-        }
-        return pathType;
-    }
-    
-    public void setPathType(PathType pathType) {
-        this.pathType = pathType;
     }
 
     public boolean isWrapStore() {
@@ -162,23 +140,4 @@ public class CatalogConfigurationBean {
     public void setWrapStore(boolean wrapStore) {
         this.wrapStore = wrapStore;
     }
-
-    public String getSuggestedFormat() {
-        return suggestedFormat;
-    }
-
-    public void setSuggestedFormat(String suggestedFormat) {
-        this.suggestedFormat = suggestedFormat;
-    }
-
-    public String getSuggestedIsSPI() {
-        return suggestedIsSPI;
-    }
-
-    public void setSuggestedIsSPI(String suggestedIsSPI) {
-        this.suggestedIsSPI = suggestedIsSPI;
-    }
-
-    
-    
 }

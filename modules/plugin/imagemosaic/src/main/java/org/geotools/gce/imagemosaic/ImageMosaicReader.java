@@ -744,7 +744,8 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
         heterogeneousGranules = catalogConfigurationBean.isHeterogeneous();
 
         // absolute or relative path
-        pathType = configuration.getCatalogConfigurationBean().getPathType();
+        pathType = catalogConfigurationBean.isAbsolutePath() ? PathType.ABSOLUTE
+                : PathType.RELATIVE;
 
         //
         // location attribute

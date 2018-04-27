@@ -88,7 +88,7 @@ public abstract class GranuleCatalogFactory {
         final Properties params = new Properties();
 
         params.put(Utils.Prop.PATH_TYPE,
-                catalogConfigurationBean.getPathType());
+                catalogConfigurationBean.isAbsolutePath() ? PathType.ABSOLUTE : PathType.RELATIVE);
 
         if (catalogConfigurationBean.getLocationAttribute() != null)
             params.put(Utils.Prop.LOCATION_ATTRIBUTE,
@@ -97,12 +97,6 @@ public abstract class GranuleCatalogFactory {
         if (catalogConfigurationBean.getSuggestedSPI() != null)
             params.put(Utils.Prop.SUGGESTED_SPI, catalogConfigurationBean.getSuggestedSPI());
 
-        if (catalogConfigurationBean.getSuggestedFormat() != null)
-            params.put(Utils.Prop.SUGGESTED_FORMAT, catalogConfigurationBean.getSuggestedFormat());
-
-        if (catalogConfigurationBean.getSuggestedIsSPI() != null)
-            params.put(Utils.Prop.SUGGESTED_IS_SPI, catalogConfigurationBean.getSuggestedIsSPI());
-        
         params.put(Utils.Prop.HETEROGENEOUS, catalogConfigurationBean.isHeterogeneous());
         params.put(Utils.Prop.WRAP_STORE, catalogConfigurationBean.isWrapStore());
         if (sourceURL != null) {

@@ -97,74 +97,62 @@ public class MaskOverviewProvider {
     private ImageInputStreamSpi maskOvrStreamSpi;
 
     private ImageReaderSpi maskOvrReaderSpi;
-    
+
     public MaskOverviewProvider(DatasetLayout layout, File inputFile) throws IOException {
         this(layout, inputFile, (ImageReaderSpi) null);
     }
 
     public MaskOverviewProvider(DatasetLayout layout, File inputFile, ImageReaderSpi suggestedSPI)
             throws IOException {
-        this (layout, inputFile, new SpiHelper(inputFile.toURI().toURL(), suggestedSPI));
-    }
-
-    public MaskOverviewProvider(DatasetLayout layout, URL inputFile) throws IOException {
-        this(layout, inputFile, (ImageReaderSpi) null);
-    }
-
-    public MaskOverviewProvider(DatasetLayout layout, URL inputFile, ImageReaderSpi suggestedSPI)
-            throws IOException {
         this (layout, inputFile, new SpiHelper(inputFile, suggestedSPI));
     }
-    
-    public MaskOverviewProvider(DatasetLayout layout, File inputFile, SpiHelper spiProvider) throws IOException {
-        this(layout, inputFile.toURI().toURL(), spiProvider);
-        
-    }
 
-    public MaskOverviewProvider(DatasetLayout layout, URL inputFile, SpiHelper spiProvider) throws IOException {
+    public MaskOverviewProvider(DatasetLayout layout, File inputFile, SpiHelper spiProvider) throws IOException {
         ImageReaderSpi suggestedSPI = spiProvider.getSuggestedSpi();
-        ImageInputStreamSpi suggestedStreamSPI = spiProvider.getSuggestedStreamSpi();
         readerSpi = spiProvider.getReaderSpi();
         streamSpi = spiProvider.getStreamSpi();
         this.fileURL = spiProvider.getFileURL();
         this.layout = layout;
 
         // Handling Overviews
-        ovrURL = new URL(inputFile.toString() + OVR_EXTENSION);
+        File overviewFile = new File(inputFile.getAbsolutePath() + OVR_EXTENSION);
         hasDatasetLayout = layout != null;
         if (hasDatasetLayout && layout.getExternalOverviews() != null) {
-            ovrURL = layout.getExternalOverviews().toURI().toURL();
+            overviewFile = layout.getExternalOverviews();
         }
-        // Creating overview file URL
-        // ovrURL = URLs.fileToUrl(overviewFile);
-        // Creating cached SPIs
-        overviewStreamSpi = suggestedStreamSPI == null ? getInputStreamSPIFromURL(ovrURL) : suggestedStreamSPI;
-        ImageInputStream ovrStream = null;
-        try {
-            ovrStream = overviewStreamSpi.createInputStreamInstance(ovrURL, ImageIO.getUseCache(),
-                    ImageIO.getCacheDirectory());
-            if (ovrStream == null) {
-                // No Overview file so we fall back to the original file spis
-                overviewStreamSpi = streamSpi;
-                overviewReaderSpi = readerSpi;
-            } else {
+        if (overviewFile.exists() && overviewFile.canRead()) {
+            // Creating overview file URL
+            ovrURL = URLs.fileToUrl(overviewFile);
+            // Creating cached SPIs
+            overviewStreamSpi = getInputStreamSPIFromURL(ovrURL);
+            ImageInputStream ovrStream = null;
+            try {
+                ovrStream = overviewStreamSpi.createInputStreamInstance(ovrURL,
+                        ImageIO.getUseCache(), ImageIO.getCacheDirectory());
                 overviewReaderSpi = getReaderSpiFromStream(null, ovrStream);
-            }
-        } catch (Exception e) {
-            if (LOGGER.isLoggable(Level.WARNING)) {
-                LOGGER.log(Level.WARNING, "Unable to create a Reader for File: " + ovrURL, e);
-            }
-            throw new IllegalArgumentException(e);
-        } finally {
-            if (ovrStream != null) {
-                try {
-                    ovrStream.close();
-                } catch (Exception e) {
-                    if (LOGGER.isLoggable(Level.SEVERE)) {
-                        LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            } catch (Exception e) {
+                if (LOGGER.isLoggable(Level.WARNING)) {
+                    LOGGER.log(
+                            Level.WARNING,
+                            "Unable to create a Reader for File: "
+                                    + overviewFile.getCanonicalPath(), e);
+                }
+                throw new IllegalArgumentException(e);
+            } finally {
+                if (ovrStream != null) {
+                    try {
+                        ovrStream.close();
+                    } catch (Exception e) {
+                        if (LOGGER.isLoggable(Level.SEVERE)) {
+                            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                        }
                     }
                 }
             }
+        } else {
+            // No Overview file so we fall back to the original file spis
+            overviewStreamSpi = streamSpi;
+            overviewReaderSpi = readerSpi;
         }
 
         // Getting number of Overviews
@@ -194,7 +182,7 @@ public class MaskOverviewProvider {
             } catch (Exception e) {
                 if (LOGGER.isLoggable(Level.WARNING)) {
                     LOGGER.log(Level.WARNING,
-                            "Unable to create a Reader for File: " + inputFile,
+                            "Unable to create a Reader for File: " + inputFile.getCanonicalPath(),
                             e);
                 }
                 throw new IllegalArgumentException(e);
@@ -712,8 +700,6 @@ public class MaskOverviewProvider {
 
         private ImageReaderSpi readerSpi;
 
-        private ImageInputStreamSpi suggestedStreamSpi;
-
         private ImageInputStreamSpi streamSpi;
 
         private URL fileURL;
@@ -723,22 +709,13 @@ public class MaskOverviewProvider {
          * GRIB/NetCDF and other multidim format doesn't have overviews 
          */
         private boolean isMultidim;
-        
-        public SpiHelper(URL inputFile, ImageReaderSpi suggestedSPI) throws IOException {
-            this(inputFile, suggestedSPI, null);
-        }
 
-        public SpiHelper(URL inputFile, ImageReaderSpi suggestedSPI, ImageInputStreamSpi suggestedStreamSpi) throws IOException {
+        public SpiHelper(File inputFile, ImageReaderSpi suggestedSPI) throws IOException {
             this.suggestedSpi = suggestedSPI;
-            this.fileURL = inputFile; //URLs.fileToUrl(inputFile);
+            this.fileURL = URLs.fileToUrl(inputFile);
 
             // Creating cached SPIs
-            this.suggestedStreamSpi = suggestedStreamSpi;
-            if (suggestedStreamSpi == null) {
-                streamSpi = getInputStreamSPIFromURL(fileURL);
-            } else {
-                streamSpi = suggestedStreamSpi;
-            }
+            streamSpi = getInputStreamSPIFromURL(fileURL);
             ImageInputStream stream = null;
             try {
                 stream = streamSpi.createInputStreamInstance(fileURL, ImageIO.getUseCache(),
@@ -748,7 +725,7 @@ public class MaskOverviewProvider {
             } catch (Exception e) {
                 if (LOGGER.isLoggable(Level.WARNING)) {
                     LOGGER.log(Level.WARNING,
-                            "Unable to create a Reader for File: " + inputFile, e);
+                            "Unable to create a Reader for File: " + inputFile.getCanonicalPath(), e);
                 }
                 throw new IllegalArgumentException(e);
             } finally {
@@ -782,10 +759,6 @@ public class MaskOverviewProvider {
 
         public ImageReaderSpi getSuggestedSpi() {
             return suggestedSpi;
-        }
-
-        public ImageInputStreamSpi getSuggestedStreamSpi() {
-            return suggestedStreamSpi;
         }
     }
 }

@@ -951,7 +951,8 @@ public class RasterManager implements Cloneable {
         this.coverageFactory = parentReader.getGridCoverageFactory();
         this.coverageIdentifier = configuration != null ? configuration.getName()
                 : ImageMosaicReader.UNSPECIFIED;
-        pathType = configuration.getCatalogConfigurationBean().getPathType();
+        this.pathType = configuration.getCatalogConfigurationBean().isAbsolutePath()
+                ? PathType.ABSOLUTE : PathType.RELATIVE;
 
         extractOverviewPolicy();
         extractDecimationPolicy();

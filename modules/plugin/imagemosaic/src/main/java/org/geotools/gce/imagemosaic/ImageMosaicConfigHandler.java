@@ -1158,10 +1158,8 @@ public class ImageMosaicConfigHandler {
 
         // envelope
         final Properties properties = new Properties();
-        //properties.setProperty(Utils.Prop.ABSOLUTE_PATH,
-        //        Boolean.toString(catalogConfigurationBean.isAbsolutePath()));
-        properties.setProperty(Utils.Prop.PATH_TYPE,
-                catalogConfigurationBean.getPathType().toString());
+        properties.setProperty(Utils.Prop.ABSOLUTE_PATH,
+                Boolean.toString(catalogConfigurationBean.isAbsolutePath()));
         properties.setProperty(Utils.Prop.LOCATION_ATTRIBUTE,
                 catalogConfigurationBean.getLocationAttribute());
 
@@ -1471,7 +1469,6 @@ public class ImageMosaicConfigHandler {
             CatalogConfigurationBean bean = mosaicConfiguration.getCatalogConfigurationBean();
             catalogConfig.setParameter(Prop.LOCATION_ATTRIBUTE, (bean.getLocationAttribute()));
             catalogConfig.setParameter(Prop.ABSOLUTE_PATH, Boolean.toString(bean.isAbsolutePath()));
-            catalogConfig.setParameter(Prop.PATH_TYPE, bean.getPathType().toString());
             catalogConfig.setParameter(Prop.ROOT_MOSAIC_DIR/* setRootMosaicDirectory( */,
                     getRunConfiguration().getParameter(Prop.ROOT_MOSAIC_DIR));
 

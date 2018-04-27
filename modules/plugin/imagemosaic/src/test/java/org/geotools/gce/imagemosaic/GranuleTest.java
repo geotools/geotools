@@ -96,7 +96,7 @@ public class GranuleTest extends Assert {
 		
 		//Create a GranuleDescriptor
 		final GranuleDescriptor granuleDescriptor = new GranuleDescriptor(URLs.urlToFile(testUrl).getAbsolutePath()
-		        , TEST_BBOX,  null, spi, null, (MultiLevelROI) null);
+		        , TEST_BBOX, spi, (MultiLevelROI) null);
 		assertNotNull(granuleDescriptor.toString());
 		
 		//Get a GranuleOverviewLevelDescriptor
@@ -151,7 +151,7 @@ public class GranuleTest extends Assert {
 		testUrl.openStream().close();
 		
 		final GranuleDescriptor granuleDescriptor = new GranuleDescriptor(URLs.urlToFile(testUrl).getAbsolutePath()
-                        , TEST_BBOX, null, spi, null, (MultiLevelROI) null);
+                        , TEST_BBOX, spi, (MultiLevelROI) null);
 		final GranuleOverviewLevelDescriptor granuleOverviewLevelDescriptor = granuleDescriptor.getLevel(0);
 		assertNotNull(granuleOverviewLevelDescriptor);
 		

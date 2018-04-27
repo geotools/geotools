@@ -189,9 +189,9 @@ public class OverviewsControllerTest extends Assert {
         int imageIndexG2 = 0;
         
         final GranuleDescriptor granuleDescriptor1 = new GranuleDescriptor(g1File.getAbsolutePath(),
-                TEST_BBOX_A, null, spi, null, (MultiLevelROI) null, -1, true, false, hints);
+                TEST_BBOX_A, spi, (MultiLevelROI) null, -1, true, false, hints);
         final GranuleDescriptor granuleDescriptor2 = new GranuleDescriptor(g2File.getAbsolutePath(),
-                TEST_BBOX_B, null, spi, null, (MultiLevelROI) null, -1, true, false, hints);
+                TEST_BBOX_B, spi, (MultiLevelROI) null, -1, true, false, hints);
         assertNotNull(granuleDescriptor1.toString());
         assertNotNull(granuleDescriptor2.toString());
 

@@ -30,10 +30,8 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.imageio.spi.ImageInputStreamSpi;
 import javax.imageio.spi.ImageReaderSpi;
 
-import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROI;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
@@ -93,10 +91,6 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
     String locationAttribute;
 
     ImageReaderSpi suggestedRasterSPI;
-    
-    AbstractGridFormat suggestedFormat;
-
-    ImageInputStreamSpi suggestedIsSPI;
 
     String parentLocation;
 
@@ -107,7 +101,6 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
     protected Properties params;
 
     private DataStoreFactorySpi spi;
-
 
     public AbstractGTDataStoreGranuleCatalog(final Properties params, final boolean create,
             final DataStoreFactorySpi spi, final Hints hints) {
@@ -122,13 +115,6 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
             final String temp = (String) params.get(Utils.Prop.SUGGESTED_SPI);
             this.suggestedRasterSPI = temp != null
                     ? (ImageReaderSpi) Class.forName(temp).newInstance() : null;
-            final String temp2 = (String) params.get(Utils.Prop.SUGGESTED_FORMAT);
-            this.suggestedFormat = temp2 != null
-                    ? (AbstractGridFormat) Class.forName(temp2).newInstance() : null;
-            final String temp3 = (String) params.get(Utils.Prop.SUGGESTED_IS_SPI);
-            this.suggestedIsSPI = temp3 != null
-                    ? (ImageInputStreamSpi) Class.forName(temp3).newInstance()
-                    : null;
             this.parentLocation = (String) params.get(Utils.Prop.PARENT_LOCATION);
             if (params.containsKey(Utils.Prop.HETEROGENEOUS)) {
                 this.heterogeneous = (Boolean) params.get(Utils.Prop.HETEROGENEOUS);
@@ -471,8 +457,7 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
                     if (footprint == null || !footprint.isEmpty()) {
                         try {
                             final GranuleDescriptor granule = new GranuleDescriptor(sf,
-                                    suggestedFormat, suggestedRasterSPI, suggestedIsSPI,
-                                    pathType, locationAttribute,
+                                    suggestedRasterSPI, pathType, locationAttribute,
                                     parentLocation, footprint, heterogeneous, q.getHints());
 
                             visitor.visit(granule, sf);

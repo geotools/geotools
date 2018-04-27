@@ -110,7 +110,7 @@ public enum PathType {
 
     },
     
-    URL {
+    CUSTOM {
         @Override
         URL resolvePath(final String parentLocation, final String location) {
             Utilities.ensureNonNull("location", location);
@@ -118,6 +118,8 @@ public enum PathType {
                 final StringBuilder builder = new StringBuilder();
                 builder.append("Trying to resolve path:").append("\n");
                 builder.append("type:").append(this.toString()).append("\n");
+                if (parentLocation != null)
+                    builder.append("parentLocation:").append(parentLocation).append("\n");
                 LOGGER.fine(builder.toString());
             }
             try {

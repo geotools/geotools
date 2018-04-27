@@ -104,7 +104,7 @@ public class MaskOverviewProvider {
 
     public MaskOverviewProvider(DatasetLayout layout, File inputFile, ImageReaderSpi suggestedSPI)
             throws IOException {
-        this (layout, inputFile, new SpiHelper(URLs.fileToUrl(inputFile), suggestedSPI));
+        this (layout, inputFile, new SpiHelper(inputFile.toURI().toURL(), suggestedSPI));
     }
 
     public MaskOverviewProvider(DatasetLayout layout, URL inputFile) throws IOException {
@@ -117,7 +117,7 @@ public class MaskOverviewProvider {
     }
     
     public MaskOverviewProvider(DatasetLayout layout, File inputFile, SpiHelper spiProvider) throws IOException {
-        this(layout, URLs.fileToUrl(inputFile), spiProvider);
+        this(layout, inputFile.toURI().toURL(), spiProvider);
         
     }
 
@@ -133,9 +133,11 @@ public class MaskOverviewProvider {
         ovrURL = new URL(inputFile.toString() + OVR_EXTENSION);
         hasDatasetLayout = layout != null;
         if (hasDatasetLayout && layout.getExternalOverviews() != null) {
-            ovrURL = URLs.fileToUrl(layout.getExternalOverviews());
+            ovrURL = layout.getExternalOverviews().toURI().toURL();
         }
         // Creating overview file URL
+        // ovrURL = URLs.fileToUrl(overviewFile);
+        // Creating cached SPIs
         overviewStreamSpi = suggestedStreamSPI == null ? getInputStreamSPIFromURL(ovrURL) : suggestedStreamSPI;
         ImageInputStream ovrStream = null;
         try {

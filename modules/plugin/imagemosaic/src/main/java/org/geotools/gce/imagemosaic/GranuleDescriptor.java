@@ -353,6 +353,7 @@ public class GranuleDescriptor {
         filterMe = handleArtifactsFiltering && roiProvider != null;
 
         // When looking for formats which may parse this file, make sure to exclude the ImageMosaicFormat as return
+        //File granuleFile = URLs.urlToFile(granuleUrl);
         AbstractGridFormat format = suggestedFormat == null ?
                 GridFormatFinder.findFormat(granuleUrl, EXCLUDE_MOSAIC) :
                     suggestedFormat;

@@ -16,6 +16,7 @@
  */
 package org.geotools.graph.util;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -29,6 +30,7 @@ import org.geotools.graph.path.Path;
 import org.geotools.graph.structure.Edge;
 import org.geotools.graph.structure.Node;
 import org.geotools.graph.traverse.standard.DijkstraIterator;
+import static org.junit.Assert.*;
 
 /**
  * 
@@ -126,6 +128,141 @@ public class DijkstraShortestPathFinderTest extends TestCase {
       }  
     }
   }
+  
+  /**
+   * This tests the functionality of the NodeWeighter with equal node cost.
+   * 
+   * The test creates a graph with 4 nodes that consists of a single bifurcation.
+   * <BR><BR>
+   * 
+   * The shortest path is via the bifurcation (4 nodes), this is tested in the first stage. 
+   * In the second stage the bifurcation path is forbidden by increasing the node cost for the bifurcation node 
+   * if the outgoing edge is towards the bifurcation (new path consists of 99 nodes).
+   * 
+   * <BR><BR>
+   * Expected: <BR>
+   * 1. The node cost should be 0 for the source, 1 for the bifurcation and 3 for the two leafs.
+   */
+  public void test_3() {
+	    int nnodes = 4;
+	    
+	    // Creating a single bifurcation graph.
+	    Object[] singleBif = GraphTestUtil.buildSingleBifurcation(builder(), nnodes, 1);
+	    
+	    // Getting the source.
+	    Node source = (Node) singleBif[0];
+
+        // Creating a path finder and calculates the paths.
+        DijkstraShortestPathFinder pf = new DijkstraShortestPathFinder(builder().getGraph(), 
+        															   source, 
+        															   costFunction(), 
+        															   tcostFunction());
+
+        pf.calculate();
+
+        // Testing if the actual node cost is the same as the expected.
+        for (Iterator it = builder().getGraph().getNodes().iterator() ; it.hasNext();)
+        {
+
+        	Node d = (Node) it.next();
+
+            Path path = pf.getPath(d);
+
+            double actual = pf.getCost(d);
+            double expected = 3;
+            if (d == source)
+            {
+            	expected = 0;
+            }
+            else if(d == singleBif[2])
+            {
+            	expected = 1;
+            }
+
+            assertEquals(expected, actual);
+
+        }
+
+	  }
+  
+  /**
+   * This tests the functionality of the NodeWeighter that forbids turning by increasing the node cost.
+   * 
+   * The test creates a graph with 100 nodes that consists of a single bifurcation and 
+   * the bifurcation is connected to the end of the graph.
+   * <BR><BR>
+   * 
+   * The shortest path is via the bifurcation (4 nodes), this is tested in the first stage. 
+   * In the second stage the bifurcation path is forbidden by increasing the node cost for the bifurcation node 
+   * if the outgoing edge is towards the bifurcation (new path consists of 99 nodes).
+   * 
+   * <BR>
+   * Expected: <BR>
+   * 1. Path should contain 4 nodes when the NodeWeighter is not used.<BR>
+   * 2. Path should contain 99 nodes when the NodeWeighter is used. 
+   */
+  public void test_4()
+  {
+	  int nnodes = 100;
+	  int bifurcationId = 1;
+	  
+	  // Creating a single bifurcation graph and connects the bifurcation to the end of the graph.
+	  Object[] singleBif = GraphTestUtil.buildSingleBifurcation(builder(), nnodes, bifurcationId);
+	  Node source = (Node)singleBif[0];
+	  Node destination = (Node) singleBif[1];
+	  Node bifurcation = (Node) singleBif[2];
+	  Edge splitEdge = null;
+	  
+	  for (Iterator it = bifurcation.getEdges().iterator() ; it.hasNext();)
+	  {
+		  Edge edge = (Edge) it.next();
+		  Node otherNode = edge.getOtherNode(bifurcation);
+		  
+		  if (otherNode != source && otherNode.getEdges().size() == 1)
+		  {
+			  splitEdge = edge;
+			  builder().addEdge(builder().buildEdge(otherNode, destination));
+		  }
+	  }
+	  
+	  final Edge finalSplitEdge = splitEdge;
+	  
+	  // Testing the path finder without the NodeWeighter
+	  DijkstraShortestPathFinder pfinder = new DijkstraShortestPathFinder(builder().getGraph(), source, costFunction());
+	  
+	  pfinder.calculate();
+	  
+	  Path path = pfinder.getPath(destination);
+	  
+	  assertEquals("Shortest path without turning restriction", 4, path.size());
+	  
+	  
+	  // Creating a NodeWeighter that forbids the use of the bifurcation.
+	  DijkstraIterator.NodeWeighter nodeWeighted = new DijkstraIterator.NodeWeighter() 
+	  {
+		@Override
+		public double getWeight(Node n, Edge e1, Edge e2) 
+		{
+			if (n == bifurcation && e1 == source.getEdge(bifurcation) && e2 == finalSplitEdge)
+			{
+				return Double.MAX_VALUE;
+			}
+			else
+			{
+				return 0;
+			}
+		}
+	  };
+
+	  // Testing the path finder with the NodeWeighter
+	  pfinder = new DijkstraShortestPathFinder(builder().getGraph(), source, costFunction(), nodeWeighted);
+	  
+	  pfinder.calculate();
+	  
+	  path = pfinder.getPath(destination);
+	  
+	  assertEquals("Shortest path without turning restriction", 99, path.size());
+  }
 
   protected DijkstraIterator.EdgeWeighter costFunction() {
     return(
@@ -135,6 +272,14 @@ public class DijkstraShortestPathFinderTest extends TestCase {
         }
       }
     );
+  }
+  
+  protected DijkstraIterator.NodeWeighter tcostFunction() {
+      return (new DijkstraIterator.NodeWeighter() {
+          public double getWeight(Node n, Edge e1, Edge e2) {
+              return 1.0;
+          }
+      });
   }
   
   protected GraphBuilder createBuilder() {

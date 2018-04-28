@@ -16,18 +16,19 @@
  */
 package org.geotools.mbstyle.function;
 
+import java.awt.*;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
-import java.awt.*;
 
 /**
- * Converts the input value to a string. If the input is null, the result is "null". If the input is a boolean,
- * the result is "true" or "false". If the input is a number, it is converted to a string as specified by the
- * "NumberToString" algorithm of the ECMAScript Language Specification. If the input is a color, it is converted to
- * a string of the form "rgba(r,g,b,a)", where r, g, and b are numerals ranging from 0 to 255, and a ranges from
- * 0 to 1. Otherwise, the input is converted to a string in the format specified by the JSON.stringify function of
- * the ECMAScript Language Specification.
+ * Converts the input value to a string. If the input is null, the result is "null". If the input is
+ * a boolean, the result is "true" or "false". If the input is a number, it is converted to a string
+ * as specified by the "NumberToString" algorithm of the ECMAScript Language Specification. If the
+ * input is a color, it is converted to a string of the form "rgba(r,g,b,a)", where r, g, and b are
+ * numerals ranging from 0 to 255, and a ranges from 0 to 1. Otherwise, the input is converted to a
+ * string in the format specified by the JSON.stringify function of the ECMAScript Language
+ * Specification.
  */
 class ToStringFunction extends FunctionExpressionImpl {
     private static final String NULL = "null";
@@ -50,10 +51,10 @@ class ToStringFunction extends FunctionExpressionImpl {
             throw new IllegalArgumentException(
                     "Filter Function problem for function \"toString\" argument #0 - expected type Object");
         }
-        if (arg0 == null){
+        if (arg0 == null) {
             return NULL;
         }
-        if (arg0 instanceof Boolean){
+        if (arg0 instanceof Boolean) {
             if (arg0 == Boolean.TRUE) {
                 return TRUE;
             }
@@ -61,17 +62,24 @@ class ToStringFunction extends FunctionExpressionImpl {
                 return FALSE;
             }
         }
-        if (arg0 instanceof Number){
+        if (arg0 instanceof Number) {
             return String.valueOf(arg0);
         }
-        if (arg0 instanceof Color){
+        if (arg0 instanceof Color) {
             Color c = (Color) arg0;
-            return "rgba(" + c.getRed() + "," + c.getGreen() + "," + c.getBlue() + "," + Double.valueOf(c.getAlpha() / 255) + ")";
+            return "rgba("
+                    + c.getRed()
+                    + ","
+                    + c.getGreen()
+                    + ","
+                    + c.getBlue()
+                    + ","
+                    + Double.valueOf(c.getAlpha() / 255)
+                    + ")";
         }
-        if (arg0 instanceof String){
+        if (arg0 instanceof String) {
             return String.valueOf(arg0);
-        }
-        else {
+        } else {
             return arg0.toString();
         }
     }

@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -21,7 +21,6 @@ import static org.geotools.ysld.TestUtils.rangeContains;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.*;
 
-import org.geotools.ysld.TestUtils;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
@@ -98,5 +97,4 @@ public class RatioZoomContextTest {
         assertThat(result, not(rangeContains(5_000_000d * 2)));
         assertThat(result, not(rangeContains(5_000_000d / 8)));
     }
-
 }

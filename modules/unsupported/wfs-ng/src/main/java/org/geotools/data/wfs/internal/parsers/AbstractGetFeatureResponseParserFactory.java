@@ -19,7 +19,7 @@ package org.geotools.data.wfs.internal.parsers;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-
+import net.opengis.wfs.GetFeatureType;
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.wfs.internal.GetFeatureParser;
 import org.geotools.data.wfs.internal.GetFeatureRequest;
@@ -30,17 +30,11 @@ import org.geotools.data.wfs.internal.WFSResponse;
 import org.geotools.data.wfs.internal.WFSResponseFactory;
 import org.geotools.ows.ServiceException;
 
-import net.opengis.wfs.GetFeatureType;
-
-/**
- * An abstract WFS response parser factory for GetFeature requests in GML output formats.
- */
+/** An abstract WFS response parser factory for GetFeature requests in GML output formats. */
 @SuppressWarnings("nls")
 public abstract class AbstractGetFeatureResponseParserFactory extends AbstractWFSResponseFactory {
 
-    /**
-     * @see WFSResponseFactory#isAvailable()
-     */
+    /** @see WFSResponseFactory#isAvailable() */
     public boolean isAvailable() {
         return true;
     }
@@ -48,12 +42,11 @@ public abstract class AbstractGetFeatureResponseParserFactory extends AbstractWF
     /**
      * Checks if this factory can create a parser for the potential responses of the given WFS
      * request.
-     * <p>
-     * For instance, this factory can create a parser as long as the request is a
-     * {@link GetFeatureType GetFeature} request and the request output format matches
-     * {@code "text/xml; subtype=gml/3.1.1"}.
-     * </p>
-     * 
+     *
+     * <p>For instance, this factory can create a parser as long as the request is a {@link
+     * GetFeatureType GetFeature} request and the request output format matches {@code "text/xml;
+     * subtype=gml/3.1.1"}.
+     *
      * @see WFSResponseFactory#canProcess(WFSOperationType, String)
      */
     public boolean canProcess(final WFSRequest request, final String contentType) {
@@ -77,8 +70,8 @@ public abstract class AbstractGetFeatureResponseParserFactory extends AbstractWF
         return matches;
     }
 
-    protected WFSResponse createResponseImpl(WFSRequest request, HTTPResponse response,
-            InputStream in) throws IOException {
+    protected WFSResponse createResponseImpl(
+            WFSRequest request, HTTPResponse response, InputStream in) throws IOException {
         GetFeatureParser parser = parser((GetFeatureRequest) request, in);
         try {
             return new GetFeatureResponse(request, response, parser);
@@ -88,21 +81,20 @@ public abstract class AbstractGetFeatureResponseParserFactory extends AbstractWF
     }
 
     /**
-     * 
      * @param head The first couple of characters from the response, typically the first 512
      * @return
      */
     protected boolean isValidResponseHead(String head) {
         return head.indexOf("FeatureCollection") > 0;
     }
-        
+
     @Override
     public boolean canProcess(WFSOperationType operation) {
         return WFSOperationType.GET_FEATURE.equals(operation);
     }
 
-    protected abstract GetFeatureParser parser(GetFeatureRequest request, InputStream in) throws IOException;   
-    
+    protected abstract GetFeatureParser parser(GetFeatureRequest request, InputStream in)
+            throws IOException;
+
     protected abstract List<String> getSupportedVersions();
-    
 }

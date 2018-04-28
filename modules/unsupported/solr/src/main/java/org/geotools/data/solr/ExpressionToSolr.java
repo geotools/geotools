@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -17,13 +17,15 @@
 
 package org.geotools.data.solr;
 
+import com.vividsolutions.jts.densify.Densifier;
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
 import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.geometry.jts.JTS;
 import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Add;
@@ -45,24 +47,18 @@ import org.opengis.filter.temporal.Ends;
 import org.opengis.filter.temporal.TContains;
 import org.opengis.temporal.Period;
 
-import com.vividsolutions.jts.densify.Densifier;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-
 /**
  * Encodes a OGC expression into a SOLR query syntax
- * 
+ *
  * @see {@link FilterToSolr}
  */
-
 public class ExpressionToSolr implements ExpressionVisitor {
-    private static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(ExpressionToSolr.class);
-    private static final Envelope WORLD = new Envelope(-180,180,-90,90);
+    private static Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(ExpressionToSolr.class);
+    private static final Envelope WORLD = new Envelope(-180, 180, -90, 90);
     private static final double SOLR_DISTANCE_TOLERANCE = 180;
 
-    /**
-     * Default format used to SOLR to compare date type fields, timezone will set to UTC
-     */
+    /** Default format used to SOLR to compare date type fields, timezone will set to UTC */
     protected SimpleDateFormat dateFormatUTC = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
     /*
@@ -79,9 +75,7 @@ public class ExpressionToSolr implements ExpressionVisitor {
         dateFormatUTC.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
 
-    /**
-     * Construct an expression encoder with parent Filter
-     */
+    /** Construct an expression encoder with parent Filter */
     public ExpressionToSolr(Filter filter) {
         this();
         this.filter = filter;
@@ -129,32 +123,38 @@ public class ExpressionToSolr implements ExpressionVisitor {
         Object literal = expression.getValue();
         if (literal instanceof Geometry) {
             if (spatialStrategy == null) {
-                throw new IllegalStateException("Attempt to encode geometry literal but spatialStrategy is null");
+                throw new IllegalStateException(
+                        "Attempt to encode geometry literal but spatialStrategy is null");
             }
 
             Geometry geometry = (Geometry) literal;
-            if (!WORLD.contains(geometry.getEnvelopeInternal()) && !WORLD.equals(geometry.getEnvelopeInternal())) {
-                if(LOGGER.isLoggable(Level.FINE)){
-                    LOGGER.fine("SOLR cannot deal with filters using geometries that span beyond the whole world, clip feature geometry to world");
+            if (!WORLD.contains(geometry.getEnvelopeInternal())
+                    && !WORLD.equals(geometry.getEnvelopeInternal())) {
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine(
+                            "SOLR cannot deal with filters using geometries that span beyond the whole world, clip feature geometry to world");
                 }
                 geometry = geometry.intersection(JTS.toGeometry(WORLD));
             }
-            //Splits segments exceeds the 180 degrees longitude limit to conforms to SOLR WKT manager specification
-            //Using JTS Densify, all segments exceeds the 180 degrees length will be densified, not only the one exceeds it in longitude!
+            // Splits segments exceeds the 180 degrees longitude limit to conforms to SOLR WKT
+            // manager specification
+            // Using JTS Densify, all segments exceeds the 180 degrees length will be densified, not
+            // only the one exceeds it in longitude!
             Envelope env = geometry.getEnvelopeInternal();
-            if(env.getWidth() > SOLR_DISTANCE_TOLERANCE){
-                if(LOGGER.isLoggable(Level.FINE)){
-                    LOGGER.fine("Split segment exceeds the 180 degree longitude limit to conform to SOLR WKT manager specification");
+            if (env.getWidth() > SOLR_DISTANCE_TOLERANCE) {
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine(
+                            "Split segment exceeds the 180 degree longitude limit to conform to SOLR WKT manager specification");
                 }
                 Densifier densifier = new Densifier(geometry);
                 densifier.setDistanceTolerance(SOLR_DISTANCE_TOLERANCE);
-                if(LOGGER.isLoggable(Level.FINE)){
+                if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine("Original geometry: " + geometry.toText());
                 }
                 geometry = densifier.getResultGeometry();
-                if(LOGGER.isLoggable(Level.FINE)){
+                if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine("Densified geometry: " + geometry.toText());
-                }               
+                }
             }
 
             temp.append(spatialStrategy.encode(geometry));
@@ -170,23 +170,31 @@ public class ExpressionToSolr implements ExpressionVisitor {
             }
             if (filter instanceof Before || filter instanceof Begins || filter instanceof BegunBy) {
                 Period period = (Period) literal;
-                temp.append("\""
-                        + dateFormatUTC.format(period.getBeginning().getPosition().getDate())
-                        + "\"");
+                temp.append(
+                        "\""
+                                + dateFormatUTC.format(
+                                        period.getBeginning().getPosition().getDate())
+                                + "\"");
             }
             if (filter instanceof Ends || filter instanceof EndedBy) {
                 Period period = (Period) literal;
-                temp.append("\"" + dateFormatUTC.format(period.getEnding().getPosition().getDate())
-                        + "\"");
+                temp.append(
+                        "\""
+                                + dateFormatUTC.format(period.getEnding().getPosition().getDate())
+                                + "\"");
             }
             if (filter instanceof During || filter instanceof TContains) {
                 Period period = (Period) literal;
-                temp.append("\""
-                        + dateFormatUTC.format(period.getBeginning().getPosition().getDate())
-                        + "\"");
+                temp.append(
+                        "\""
+                                + dateFormatUTC.format(
+                                        period.getBeginning().getPosition().getDate())
+                                + "\"");
                 temp.append(" TO ");
-                temp.append("\"" + dateFormatUTC.format(period.getEnding().getPosition().getDate())
-                        + "\"");
+                temp.append(
+                        "\""
+                                + dateFormatUTC.format(period.getEnding().getPosition().getDate())
+                                + "\"");
             }
         } else {
             String escaped = FilterToSolr.escapeSpecialCharacters(literal.toString());
@@ -205,5 +213,4 @@ public class ExpressionToSolr implements ExpressionVisitor {
         output.append(temp);
         return temp;
     }
-
 }

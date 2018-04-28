@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,28 +16,22 @@
  */
 package org.geotools.swing.wizard;
 
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.io.WKTReader;
+import com.vividsolutions.jts.io.WKTWriter;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-
 import org.geotools.data.Parameter;
 import org.geotools.swing.wizard.JWizard.Controller;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.WKTReader;
-import com.vividsolutions.jts.io.WKTWriter;
-
 /**
  * Text field for filling in a Geometry parameter using WKT.
- *
- *
- *
  *
  * @source $URL$
  */
@@ -50,15 +44,19 @@ public class JGeometryField extends ParamField {
 
     public JComponent doLayout() {
         text = new JTextArea(40, 3);
-        text.addKeyListener(new KeyAdapter() {
-            public void keyReleased(KeyEvent e) {
-                validate();
-            }
-        });
+        text.addKeyListener(
+                new KeyAdapter() {
+                    public void keyReleased(KeyEvent e) {
+                        validate();
+                    }
+                });
         text.setWrapStyleWord(true);
 
-        JScrollPane scroll = new JScrollPane(text, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        JScrollPane scroll =
+                new JScrollPane(
+                        text,
+                        JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                        JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scroll.setPreferredSize(new Dimension(400, 80));
         return scroll;
     }
@@ -79,19 +77,19 @@ public class JGeometryField extends ParamField {
 
     /**
      * Determine the number of dimensions based on the CRS metadata.
-     * 
+     *
      * @return Number of dimensions expected based on metadata, default of 2
      */
     int getD() {
         try {
-            CoordinateReferenceSystem crs = (CoordinateReferenceSystem) parameter.metadata
-                    .get(Parameter.CRS);
+            CoordinateReferenceSystem crs =
+                    (CoordinateReferenceSystem) parameter.metadata.get(Parameter.CRS);
             if (crs == null) {
                 return 2;
             } else {
                 return crs.getCoordinateSystem().getDimension();
             }
-        } catch (Throwable t){
+        } catch (Throwable t) {
             return 2;
         }
     }
@@ -112,7 +110,7 @@ public class JGeometryField extends ParamField {
     public void removeListener(Controller controller) {
         text.addKeyListener(controller);
     }
-    
+
     public boolean validate() {
         WKTReader reader = new WKTReader();
         String wkt = text.getText();
@@ -137,5 +135,4 @@ public class JGeometryField extends ParamField {
             return false;
         }
     }
-
 }

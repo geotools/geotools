@@ -23,10 +23,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Iterator;
 import java.util.logging.Logger;
-
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
-
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -48,21 +46,15 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
 /**
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
- *
- * Testing {@link ErdasImgReader}
- *
- *
- *
+ *     <p>Testing {@link ErdasImgReader}
  * @source $URL$
  */
 public final class ErdasImgTest extends GDALTestCase {
-    protected final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(
-    "org.geotools.coverageio.gdal.erdasimg");
-    
-    /**
-     * file name of a valid Erdas Imagine sample data to be used for tests. 
-     */
-    private final static String fileName = "sample.img";
+    protected static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.gdal.erdasimg");
+
+    /** file name of a valid Erdas Imagine sample data to be used for tests. */
+    private static final String fileName = "sample.img";
 
     /**
      * Creates a new instance of {@code IDRISIImgTest}
@@ -72,8 +64,6 @@ public final class ErdasImgTest extends GDALTestCase {
     public ErdasImgTest() {
         super("ErdasImagine", new ErdasImgFormatFactory());
     }
-
-  
 
     @Test
     public void testIsAvailable() throws NoSuchAuthorityCodeException, FactoryException {
@@ -101,6 +91,7 @@ public final class ErdasImgTest extends GDALTestCase {
         Assert.assertTrue("ErdasImgFormatFactory not available", fac.isAvailable());
         Assert.assertNotNull(new ErdasImgFormatFactory().createFormat());
     }
+
     @Test
     public void test() throws Exception {
         if (!testingEnabled()) {
@@ -115,13 +106,13 @@ public final class ErdasImgTest extends GDALTestCase {
         hints.add(new RenderingHints(JAI.KEY_IMAGE_LAYOUT, l));
 
         File file = null;
-        try{
+        try {
             file = TestData.file(this, fileName);
-        }catch (FileNotFoundException fnfe){
+        } catch (FileNotFoundException fnfe) {
             LOGGER.warning("test-data not found: " + fileName + "\nTests are skipped");
             return;
         }
-        
+
         final BaseGDALGridCoverage2DReader reader = new ErdasImgReader(file, hints);
 
         // /////////////////////////////////////////////////////////////////////
@@ -140,28 +131,35 @@ public final class ErdasImgTest extends GDALTestCase {
         final double cropFactor = 2.0;
         final int oldW = gc.getRenderedImage().getWidth();
         final int oldH = gc.getRenderedImage().getHeight();
-        final Rectangle range = ((GridEnvelope2D)reader.getOriginalGridRange());
+        final Rectangle range = ((GridEnvelope2D) reader.getOriginalGridRange());
         final GeneralEnvelope oldEnvelope = reader.getOriginalEnvelope();
-        final GeneralEnvelope cropEnvelope = new GeneralEnvelope(new double[] {
-                    oldEnvelope.getLowerCorner().getOrdinate(0)
-                    + (oldEnvelope.getSpan(0) / cropFactor),
-                    
-                oldEnvelope.getLowerCorner().getOrdinate(1)
-                    + (oldEnvelope.getSpan(1) / cropFactor)
-                },
-                new double[] {
-                    oldEnvelope.getUpperCorner().getOrdinate(0),
-                    oldEnvelope.getUpperCorner().getOrdinate(1)
-                });
+        final GeneralEnvelope cropEnvelope =
+                new GeneralEnvelope(
+                        new double[] {
+                            oldEnvelope.getLowerCorner().getOrdinate(0)
+                                    + (oldEnvelope.getSpan(0) / cropFactor),
+                            oldEnvelope.getLowerCorner().getOrdinate(1)
+                                    + (oldEnvelope.getSpan(1) / cropFactor)
+                        },
+                        new double[] {
+                            oldEnvelope.getUpperCorner().getOrdinate(0),
+                            oldEnvelope.getUpperCorner().getOrdinate(1)
+                        });
         cropEnvelope.setCoordinateReferenceSystem(reader.getCrs());
 
-        final ParameterValue gg = (ParameterValue) ((AbstractGridFormat) reader.getFormat()).READ_GRIDGEOMETRY2D
-            .createValue();
-        gg.setValue(new GridGeometry2D(
-                new GridEnvelope2D(
-                    new Rectangle(0, 0, (int) (range.width / 2.0 / cropFactor),
-                        (int) (range.height / 2.0 / cropFactor))), cropEnvelope));
-        gc = (GridCoverage2D) reader.read(new GeneralParameterValue[] { gg });
+        final ParameterValue gg =
+                (ParameterValue)
+                        ((AbstractGridFormat) reader.getFormat()).READ_GRIDGEOMETRY2D.createValue();
+        gg.setValue(
+                new GridGeometry2D(
+                        new GridEnvelope2D(
+                                new Rectangle(
+                                        0,
+                                        0,
+                                        (int) (range.width / 2.0 / cropFactor),
+                                        (int) (range.height / 2.0 / cropFactor))),
+                        cropEnvelope));
+        gc = (GridCoverage2D) reader.read(new GeneralParameterValue[] {gg});
         forceDataLoading(gc);
     }
 }

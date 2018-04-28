@@ -17,47 +17,33 @@
 package org.geotools.geometry;
 
 import java.io.Serializable;
-import org.opengis.util.Cloneable;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.MismatchedDimensionException;
-
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.util.Cloneable;
 
 /**
  * Holds the coordinates for a one-dimensional position within some coordinate reference system.
  *
  * @since 2.0
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
- *
  * @see DirectPosition2D
  * @see GeneralPosition
  */
 public class DirectPosition1D extends AbstractDirectPosition implements Serializable, Cloneable {
-    /**
-     * Serial number for interoperability with different versions.
-     */
+    /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 3235094562875693710L;
 
-    /**
-     * The coordinate reference system for this position;
-     */
+    /** The coordinate reference system for this position; */
     private CoordinateReferenceSystem crs;
 
-    /**
-     * The ordinate value.
-     */
+    /** The ordinate value. */
     public double ordinate;
 
-    /**
-     * Constructs a position initialized to (0) with a {@code null}
-     * coordinate reference system.
-     */
-    public DirectPosition1D() {
-    }
+    /** Constructs a position initialized to (0) with a {@code null} coordinate reference system. */
+    public DirectPosition1D() {}
 
     /**
      * Constructs a position with the specified coordinate reference system.
@@ -87,10 +73,9 @@ public class DirectPosition1D extends AbstractDirectPosition implements Serializ
     }
 
     /**
-     * Returns the coordinate reference system in which the coordinate is given.
-     * May be {@code null} if this particular {@code DirectPosition} is included
-     * in a larger object with such a reference to a {@linkplain CoordinateReferenceSystem
-     * coordinate reference system}.
+     * Returns the coordinate reference system in which the coordinate is given. May be {@code null}
+     * if this particular {@code DirectPosition} is included in a larger object with such a
+     * reference to a {@linkplain CoordinateReferenceSystem coordinate reference system}.
      *
      * @return The coordinate reference system, or {@code null}.
      */
@@ -109,8 +94,8 @@ public class DirectPosition1D extends AbstractDirectPosition implements Serializ
     }
 
     /**
-     * The length of coordinate sequence (the number of entries).
-     * This is always 1 for <code>DirectPosition1D</code> objects.
+     * The length of coordinate sequence (the number of entries). This is always 1 for <code>
+     * DirectPosition1D</code> objects.
      *
      * @return The dimensionality of this position.
      */
@@ -119,8 +104,8 @@ public class DirectPosition1D extends AbstractDirectPosition implements Serializ
     }
 
     /**
-     * Returns a sequence of numbers that hold the coordinate of this position in its
-     * reference system.
+     * Returns a sequence of numbers that hold the coordinate of this position in its reference
+     * system.
      *
      * @return The coordinates.
      */
@@ -132,10 +117,9 @@ public class DirectPosition1D extends AbstractDirectPosition implements Serializ
     /**
      * Returns the ordinate at the specified dimension.
      *
-     * @param  dimension The dimension, which must be 0.
+     * @param dimension The dimension, which must be 0.
      * @return The {@linkplain #ordinate}.
      * @throws IndexOutOfBoundsException if the specified dimension is out of bounds.
-     *
      * @todo Provides a more detailled error message.
      */
     public final double getOrdinate(final int dimension) throws IndexOutOfBoundsException {
@@ -149,10 +133,9 @@ public class DirectPosition1D extends AbstractDirectPosition implements Serializ
     /**
      * Sets the ordinate value along the specified dimension.
      *
-     * @param  dimension The dimension, which must be 0.
-     * @param  value the ordinate value.
+     * @param dimension The dimension, which must be 0.
+     * @param value the ordinate value.
      * @throws IndexOutOfBoundsException if the specified dimension is out of bounds.
-     *
      * @todo Provides a more detailled error message.
      */
     public final void setOrdinate(int dimension, double value) throws IndexOutOfBoundsException {
@@ -164,11 +147,11 @@ public class DirectPosition1D extends AbstractDirectPosition implements Serializ
     }
 
     /**
-     * Set this coordinate to the specified direct position. If the specified position
-     * contains a {@linkplain CoordinateReferenceSystem coordinate reference system},
-     * then the CRS for this position will be set to the CRS of the specified position.
+     * Set this coordinate to the specified direct position. If the specified position contains a
+     * {@linkplain CoordinateReferenceSystem coordinate reference system}, then the CRS for this
+     * position will be set to the CRS of the specified position.
      *
-     * @param  position The new position for this point.
+     * @param position The new position for this point.
      * @throws MismatchedDimensionException if this point doesn't have the expected dimension.
      */
     public void setLocation(final DirectPosition position) throws MismatchedDimensionException {
@@ -177,13 +160,11 @@ public class DirectPosition1D extends AbstractDirectPosition implements Serializ
         ordinate = position.getOrdinate(0);
     }
 
-    /**
-     * Returns a hash value for this coordinate.
-     */
+    /** Returns a hash value for this coordinate. */
     @Override
     public int hashCode() {
         final long value = Double.doubleToLongBits(ordinate);
-        int code = 31 + ((int)value ^ (int)(value >>> 32));
+        int code = 31 + ((int) value ^ (int) (value >>> 32));
         if (crs != null) {
             code += crs.hashCode();
         }
@@ -191,9 +172,7 @@ public class DirectPosition1D extends AbstractDirectPosition implements Serializ
         return code;
     }
 
-    /**
-     * Returns a copy of this position.
-     */
+    /** Returns a copy of this position. */
     @Override
     public DirectPosition1D clone() {
         try {

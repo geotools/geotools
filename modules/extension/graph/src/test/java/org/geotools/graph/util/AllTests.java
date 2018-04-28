@@ -18,17 +18,13 @@ package org.geotools.graph.util;
 
 import junit.framework.TestSuite;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class AllTests extends TestSuite {
-  public AllTests() {
-    super();
-    addTest(new TestSuite(CycleDetectorTest.class));
-    addTest(new TestSuite(DijkstraShortestPathFinderTest.class));
-    addTest(new TestSuite(GraphPartitionerTest.class));
-    addTest(new TestSuite(GraphFuserTest.class));
-  } 	
+    public AllTests() {
+        super();
+        addTest(new TestSuite(CycleDetectorTest.class));
+        addTest(new TestSuite(DijkstraShortestPathFinderTest.class));
+        addTest(new TestSuite(GraphPartitionerTest.class));
+        addTest(new TestSuite(GraphFuserTest.class));
+    }
 }

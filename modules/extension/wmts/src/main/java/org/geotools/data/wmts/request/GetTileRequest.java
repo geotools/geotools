@@ -19,7 +19,6 @@ package org.geotools.data.wmts.request;
 
 import java.util.Map;
 import java.util.Set;
-
 import org.geotools.data.ows.Request;
 import org.geotools.data.wmts.model.WMTSLayer;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -30,11 +29,10 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 /**
  * Construct a WMTS getTile request.
  *
- * (Based on existing work by rgould for WMS service)
- * 
+ * <p>(Based on existing work by rgould for WMS service)
+ *
  * @author ian
  * @author Emanuele Tajariol (etj at geo-solutions dot it)
- *
  */
 public interface GetTileRequest extends Request {
 
@@ -54,6 +52,6 @@ public interface GetTileRequest extends Request {
 
     void setCRS(CoordinateReferenceSystem coordinateReferenceSystem);
 
-    /** HTTP headers required for some WMTS **/
+    /** HTTP headers required for some WMTS * */
     Map<String, String> getHeaders();
 }

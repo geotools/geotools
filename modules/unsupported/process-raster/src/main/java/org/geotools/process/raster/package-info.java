@@ -15,7 +15,5 @@
  *    Lesser General Public License for more details.
  */
 
-/**
- * Raster processing support for the GeoTools library.
- */
+/** Raster processing support for the GeoTools library. */
 package org.geotools.process.raster;

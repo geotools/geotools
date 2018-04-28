@@ -22,24 +22,20 @@ import org.geotools.data.efeature.query.EGeometryValueWithin;
 
 /**
  * @author kengu - 14. juni 2011
- *
- *
  * @source $URL$
  */
 public class EGeometryValueWithinTest extends AbstractEGeometryValueTest {
-    
-    // ----------------------------------------------------- 
+
+    // -----------------------------------------------------
     //  Constructors
     // -----------------------------------------------------
-    
-    /**
-     * @param name
-     */
+
+    /** @param name */
     public EGeometryValueWithinTest(String name) {
-        super(name,WITHIN);
+        super(name, WITHIN);
     }
 
-    // ----------------------------------------------------- 
+    // -----------------------------------------------------
     //  AbstractEAttributeValueTest implementation
     // -----------------------------------------------------
 
@@ -50,5 +46,4 @@ public class EGeometryValueWithinTest extends AbstractEGeometryValueTest {
         //
         return new EGeometryValueWithin(eAttribute, filter, false);
     }
-
 }

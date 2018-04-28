@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,6 +16,8 @@
  */
 package org.geotools.temporal.object;
 
+import static org.junit.Assert.*;
+
 import java.util.GregorianCalendar;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
@@ -27,15 +29,9 @@ import org.junit.Test;
 import org.opengis.temporal.IndeterminateValue;
 import org.opengis.temporal.TemporalCoordinate;
 import org.opengis.temporal.TemporalCoordinateSystem;
-import static org.junit.Assert.*;
-
 
 /**
- *
  * @author Mehdi Sidhoum (Geomatys)
- *
- *
- *
  * @source $URL$
  */
 public class DefaultTemporalCoordinateTest {
@@ -48,12 +44,24 @@ public class DefaultTemporalCoordinateTest {
         NamedIdentifier name = new NamedIdentifier(Citations.CRS, "Gregorian calendar");
         GregorianCalendar gc = new GregorianCalendar(-4713, 1, 1);
         Number coordinateValue = 100;
-        TemporalCoordinateSystem frame1 = new DefaultTemporalCoordinateSystem(new NamedIdentifier(Citations.CRS, new SimpleInternationalString("Julian calendar")),
-                null, gc.getTime(), new SimpleInternationalString("day"));
-        TemporalCoordinateSystem frame2 = new DefaultTemporalCoordinateSystem(new NamedIdentifier(Citations.CRS, new SimpleInternationalString("Julian calendar")),
-                null, gc.getTime(), new SimpleInternationalString("hour"));
-        temporalCoordinate1 = new DefaultTemporalCoordinate(frame1, IndeterminateValue.NOW, coordinateValue);
-        temporalCoordinate2 = new DefaultTemporalCoordinate(frame2, IndeterminateValue.AFTER, coordinateValue);
+        TemporalCoordinateSystem frame1 =
+                new DefaultTemporalCoordinateSystem(
+                        new NamedIdentifier(
+                                Citations.CRS, new SimpleInternationalString("Julian calendar")),
+                        null,
+                        gc.getTime(),
+                        new SimpleInternationalString("day"));
+        TemporalCoordinateSystem frame2 =
+                new DefaultTemporalCoordinateSystem(
+                        new NamedIdentifier(
+                                Citations.CRS, new SimpleInternationalString("Julian calendar")),
+                        null,
+                        gc.getTime(),
+                        new SimpleInternationalString("hour"));
+        temporalCoordinate1 =
+                new DefaultTemporalCoordinate(frame1, IndeterminateValue.NOW, coordinateValue);
+        temporalCoordinate2 =
+                new DefaultTemporalCoordinate(frame2, IndeterminateValue.AFTER, coordinateValue);
     }
 
     @After
@@ -62,18 +70,14 @@ public class DefaultTemporalCoordinateTest {
         temporalCoordinate2 = null;
     }
 
-    /**
-     * Test of getCoordinateValue method, of class DefaultTemporalCoordinate.
-     */
+    /** Test of getCoordinateValue method, of class DefaultTemporalCoordinate. */
     @Test
     public void testGetCoordinateValue() {
         Number result = temporalCoordinate1.getCoordinateValue();
         assertTrue(temporalCoordinate2.getCoordinateValue() == result);
     }
 
-    /**
-     * Test of setCoordinateValue method, of class DefaultTemporalCoordinate.
-     */
+    /** Test of setCoordinateValue method, of class DefaultTemporalCoordinate. */
     @Test
     public void testSetCoordinateValue() {
         Number result = temporalCoordinate1.getCoordinateValue();
@@ -81,9 +85,7 @@ public class DefaultTemporalCoordinateTest {
         assertFalse(temporalCoordinate1.getCoordinateValue() == result);
     }
 
-    /**
-     * Test of equals method, of class DefaultTemporalCoordinate.
-     */
+    /** Test of equals method, of class DefaultTemporalCoordinate. */
     @Test
     public void testEquals() {
         assertFalse(temporalCoordinate1.equals(null));
@@ -91,18 +93,14 @@ public class DefaultTemporalCoordinateTest {
         assertFalse(temporalCoordinate1.equals(temporalCoordinate2));
     }
 
-    /**
-     * Test of hashCode method, of class DefaultTemporalCoordinate.
-     */
+    /** Test of hashCode method, of class DefaultTemporalCoordinate. */
     @Test
     public void testHashCode() {
         int result = temporalCoordinate1.hashCode();
         assertFalse(temporalCoordinate2.hashCode() == result);
     }
 
-    /**
-     * Test of toString method, of class DefaultTemporalCoordinate.
-     */
+    /** Test of toString method, of class DefaultTemporalCoordinate. */
     @Test
     public void testToString() {
         String result = temporalCoordinate1.toString();

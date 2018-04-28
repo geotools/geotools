@@ -16,36 +16,33 @@
  */
 package org.geotools.jdbc;
 
-import org.geotools.data.Query;
 import org.geotools.data.FeatureReader;
+import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public abstract class JDBCBooleanOnlineTest extends JDBCTestSupport {
 
     @Override
     protected abstract JDBCBooleanTestSetup createTestSetup();
 
     public void testGetSchema() throws Exception {
-        SimpleFeatureType ft = dataStore.getSchema( tname("b") );
-        assertEquals( Boolean.class, ft.getDescriptor("boolProperty").getType().getBinding() );
+        SimpleFeatureType ft = dataStore.getSchema(tname("b"));
+        assertEquals(Boolean.class, ft.getDescriptor("boolProperty").getType().getBinding());
     }
-    
+
     public void testGetFeatures() throws Exception {
-        try(FeatureReader r = dataStore.getFeatureReader( new Query( tname("b") ), Transaction.AUTO_COMMIT )) {
+        try (FeatureReader r =
+                dataStore.getFeatureReader(new Query(tname("b")), Transaction.AUTO_COMMIT)) {
             r.hasNext();
             SimpleFeature f = (SimpleFeature) r.next();
-            assertEquals( Boolean.FALSE, f.getAttribute( "boolProperty" ) );
-            
+            assertEquals(Boolean.FALSE, f.getAttribute("boolProperty"));
+
             r.hasNext();
             f = (SimpleFeature) r.next();
-            assertEquals( Boolean.TRUE, f.getAttribute( "boolProperty" ) );
+            assertEquals(Boolean.TRUE, f.getAttribute("boolProperty"));
         }
     }
 }

@@ -17,20 +17,17 @@
 package org.geotools.image.test;
 
 import java.awt.image.RenderedImage;
-
 import javax.media.jai.PlanarImage;
 import javax.media.jai.iterator.RandomIter;
 import javax.media.jai.iterator.RandomIterFactory;
-
 import org.geotools.image.ImageWorker;
 
 /**
  * Utility to compare two images and verify if the are equal to the human eye, or not. See the
  * {@link Mode} enumeration for comparison modes. The image comparison logic has been ported to Java
  * from Resemble.js, https://github.com/Huddle/Resemble.js
- * 
+ *
  * @author Andrea Aime - GeoSolutions
- * 
  */
 public class ImageComparator {
 
@@ -45,9 +42,7 @@ public class ImageComparator {
          * compared, instead of the full color component
          */
         IgnoreAntialiasing,
-        /**
-         * Ignores the colors and compares only the brightness
-         */
+        /** Ignores the colors and compares only the brightness */
         IgnoreColors
     };
 
@@ -64,8 +59,7 @@ public class ImageComparator {
 
         private double hue;
 
-        public Pixel() {
-        }
+        public Pixel() {}
 
         public void init(int[] px) {
             if (bands < 2) {
@@ -125,19 +119,19 @@ public class ImageComparator {
             if (a != other.a) {
                 return false;
             }
-            if (b != other.b)
-                return false;
-            if (g != other.g)
-                return false;
-            if (r != other.r)
-                return false;
+            if (b != other.b) return false;
+            if (g != other.g) return false;
+            if (r != other.r) return false;
             return true;
         }
 
         public boolean isSimilar(Pixel other) {
-            return isColorSimilar(r, other.r, RED) && //
-                    isColorSimilar(g, other.g, GREEN) && //
-                    isColorSimilar(b, other.b, BLUE) && //
+            return isColorSimilar(r, other.r, RED)
+                    && //
+                    isColorSimilar(g, other.g, GREEN)
+                    && //
+                    isColorSimilar(b, other.b, BLUE)
+                    && //
                     isColorSimilar(a, other.a, ALPHA);
         }
 
@@ -163,7 +157,6 @@ public class ImageComparator {
         public String toString() {
             return "Pixel [r=" + r + ", g=" + g + ", b=" + b + ", a=" + a + "]";
         }
-
     }
 
     static final int RED = 0;
@@ -212,27 +205,27 @@ public class ImageComparator {
 
         this.mode = mode;
         switch (mode) {
-        case IgnoreNothing:
-            tolerance[RED] = 16;
-            tolerance[GREEN] = 16;
-            tolerance[BLUE] = 16;
-            tolerance[ALPHA] = 16;
-            tolerance[MIN_BRIGHTNESS] = 16;
-            tolerance[MAX_BRIGHTNESS] = 240;
-            break;
-        case IgnoreAntialiasing:
-            tolerance[RED] = 32;
-            tolerance[GREEN] = 32;
-            tolerance[BLUE] = 32;
-            tolerance[ALPHA] = 128;
-            tolerance[MIN_BRIGHTNESS] = 64;
-            tolerance[MAX_BRIGHTNESS] = 98;
-            break;
-        case IgnoreColors:
-            tolerance[ALPHA] = 16;
-            tolerance[MIN_BRIGHTNESS] = 16;
-            tolerance[MAX_BRIGHTNESS] = 240;
-            break;
+            case IgnoreNothing:
+                tolerance[RED] = 16;
+                tolerance[GREEN] = 16;
+                tolerance[BLUE] = 16;
+                tolerance[ALPHA] = 16;
+                tolerance[MIN_BRIGHTNESS] = 16;
+                tolerance[MAX_BRIGHTNESS] = 240;
+                break;
+            case IgnoreAntialiasing:
+                tolerance[RED] = 32;
+                tolerance[GREEN] = 32;
+                tolerance[BLUE] = 32;
+                tolerance[ALPHA] = 128;
+                tolerance[MIN_BRIGHTNESS] = 64;
+                tolerance[MAX_BRIGHTNESS] = 98;
+                break;
+            case IgnoreColors:
+                tolerance[ALPHA] = 16;
+                tolerance[MIN_BRIGHTNESS] = 16;
+                tolerance[MAX_BRIGHTNESS] = 240;
+                break;
         }
 
         computeDifference(image1, image2);
@@ -241,13 +234,16 @@ public class ImageComparator {
 
     /**
      * Forces the image to start in the origin and have a rgb/rbga/gray/gray+alpha structure
-     * 
+     *
      * @param image1
      * @return
      */
     private RenderedImage normalizeImage(RenderedImage image1) {
-        image1 = new ImageWorker(image1).forceColorSpaceRGB().forceComponentColorModel()
-                .getRenderedImage();
+        image1 =
+                new ImageWorker(image1)
+                        .forceColorSpaceRGB()
+                        .forceComponentColorModel()
+                        .getRenderedImage();
         if (image1.getMinX() != 0 || image1.getMinY() != 0) {
             image1 = PlanarImage.wrapRenderedImage(image1).getAsBufferedImage();
         }
@@ -287,8 +283,8 @@ public class ImageComparator {
                     } else if (!px1.isSimilar(px2)) {
                         if (mode == Mode.IgnoreAntialiasing) {
                             if (isAntialised(px1, it1, r, c, width, height, components, cursor)
-                                    || isAntialised(px2, it2, r, c, width, height, components,
-                                            cursor)) {
+                                    || isAntialised(
+                                            px2, it2, r, c, width, height, components, cursor)) {
                                 if (!px1.isBrightnessSimilar(px2)) {
                                     mismatchCount++;
                                 }
@@ -305,11 +301,17 @@ public class ImageComparator {
             it1.done();
             it2.done();
         }
-
     }
 
-    private boolean isAntialised(Pixel source, RandomIter it, int row, int col, int width,
-            int height, int[] pixel, Pixel cursor) {
+    private boolean isAntialised(
+            Pixel source,
+            RandomIter it,
+            int row,
+            int col,
+            int width,
+            int height,
+            int[] pixel,
+            Pixel cursor) {
         final int DISTANCE = 1;
 
         int highContrastSibling = 0;
@@ -343,7 +345,6 @@ public class ImageComparator {
                         return true;
                     }
                 }
-
             }
         }
 
@@ -352,7 +353,5 @@ public class ImageComparator {
         }
 
         return false;
-
     }
-
 }

@@ -24,16 +24,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.util.logging.Logging;
 
 /**
- * A selector identifies which features are going to be matched by a certain feature, possibly including one or more scale ranges in which the rule is
- * valid. A subclass of selectors, known as pseudo-selectors, are used to specify how to fill/stroke the innards of a mark used to depict points,
- * lines and fills.
- * 
+ * A selector identifies which features are going to be matched by a certain feature, possibly
+ * including one or more scale ranges in which the rule is valid. A subclass of selectors, known as
+ * pseudo-selectors, are used to specify how to fill/stroke the innards of a mark used to depict
+ * points, lines and fills.
+ *
  * @author Andrea Aime - GeoSolutions
- * 
  */
 public abstract class Selector implements Comparable<Selector> {
 
@@ -52,13 +51,15 @@ public abstract class Selector implements Comparable<Selector> {
     private static List<AndCombiner> AND_COMBINERS;
 
     static {
-        Class[] baseClasses = new Class[] { TypeName.class, ScaleRange.class, Id.class, Data.class,
-                PseudoClass.class };
+        Class[] baseClasses =
+                new Class[] {
+                    TypeName.class, ScaleRange.class, Id.class, Data.class, PseudoClass.class
+                };
         AND_COMBINERS = new ArrayList<>();
         for (Class baseClass : baseClasses) {
             try {
-                Method combineAnd = baseClass.getDeclaredMethod("combineAnd", List.class,
-                        Object.class);
+                Method combineAnd =
+                        baseClass.getDeclaredMethod("combineAnd", List.class, Object.class);
                 AND_COMBINERS.add(new AndCombiner(baseClass, combineAnd));
             } catch (NoSuchMethodException | SecurityException e) {
                 throw new RuntimeException(e);
@@ -130,14 +131,15 @@ public abstract class Selector implements Comparable<Selector> {
             if (classSelectors.size() > 1) {
                 try {
 
-                    Selector result = (Selector) combiner.andMethod.invoke(null, classSelectors,
-                            context);
+                    Selector result =
+                            (Selector) combiner.andMethod.invoke(null, classSelectors, context);
                     if (result == REJECT) {
                         return REJECT;
                     } else if (result == ACCEPT) {
                         classifieds.remove(combiner.clazz);
                     } else if (result instanceof And) {
-                        classifieds.put(combiner.clazz,
+                        classifieds.put(
+                                combiner.clazz,
                                 new ArrayList<>(((Composite) result).getChildren()));
                     } else {
                         classifieds.put(combiner.clazz, Collections.singletonList(result));
@@ -186,12 +188,11 @@ public abstract class Selector implements Comparable<Selector> {
             flatten(selectors, child, Or.class);
         }
         return new Or(selectors);
-
     }
 
     /**
      * Combines in or and simplifies the two given selectors
-     * 
+     *
      * @param s1
      * @param s2
      * @param context
@@ -243,8 +244,8 @@ public abstract class Selector implements Comparable<Selector> {
         }
     }
 
-    private static void flatten(List<Selector> selectors, Selector s,
-            Class<? extends Composite> clazz) {
+    private static void flatten(
+            List<Selector> selectors, Selector s, Class<? extends Composite> clazz) {
         if (!clazz.isInstance(s)) {
             selectors.add(s);
         } else {
@@ -253,7 +254,6 @@ public abstract class Selector implements Comparable<Selector> {
                 flatten(selectors, child, clazz);
             }
         }
-
     }
 
     private static Map<Class, List<Selector>> mapByClass(List<Selector> selectors) {
@@ -274,7 +274,7 @@ public abstract class Selector implements Comparable<Selector> {
 
     /**
      * Returns the specificity of this selector
-     * 
+     *
      * @return
      */
     public abstract Specificity getSpecificity();
@@ -285,5 +285,4 @@ public abstract class Selector implements Comparable<Selector> {
     }
 
     public abstract Object accept(SelectorVisitor visitor);
-
 }

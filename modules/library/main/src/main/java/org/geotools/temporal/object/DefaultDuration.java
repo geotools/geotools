@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -22,9 +22,6 @@ import org.opengis.temporal.Duration;
  * A data type to be used for describing length or distance in the temporal dimension.
  *
  * @author Mehdi Sidhoum (Geomatys)
- *
- *
- *
  * @source $URL$
  */
 public abstract class DefaultDuration implements Duration {

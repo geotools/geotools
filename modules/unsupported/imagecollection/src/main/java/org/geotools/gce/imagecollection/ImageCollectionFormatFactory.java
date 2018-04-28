@@ -19,19 +19,16 @@ package org.geotools.gce.imagecollection;
 import java.awt.RenderingHints;
 import java.util.Collections;
 import java.util.Map;
-
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 import org.opengis.coverage.grid.Format;
 
 /**
  * Implementation of the {@link Format} service provider interface for image collections.
+ *
  * @author Simone Giannecchini, GeoSolutions SAS
  * @author Daniele Romagnoli, GeoSolutions SAS
  * @author Simone Giannecchini, GeoSolutions SAS
  * @author Daniele Romagnoli, GeoSolutions SAS
- *
- *
- *
  * @source $URL$
  */
 public final class ImageCollectionFormatFactory implements GridFormatFactorySpi {
@@ -54,11 +51,7 @@ public final class ImageCollectionFormatFactory implements GridFormatFactorySpi 
         return available;
     }
 
-    /**
-     * Returns the implementation hints. The default implementation returns en
-     * empty map.
-     * 
-     */
+    /** Returns the implementation hints. The default implementation returns en empty map. */
     public Map<RenderingHints.Key, ?> getImplementationHints() {
         return Collections.emptyMap();
     }

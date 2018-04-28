@@ -16,21 +16,19 @@
  */
 package org.geotools.data.mongodb.complex;
 
+import static org.geotools.filter.capability.FunctionNameImpl.parameter;
+
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.AttributeExpressionImpl;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
 
-import static org.geotools.filter.capability.FunctionNameImpl.parameter;
-
-/**
- * Extracts all the values of a given JSON path.
- */
+/** Extracts all the values of a given JSON path. */
 public class JsonSelectAllFunction extends FunctionExpressionImpl {
 
-    public static FunctionName DEFINITION = new FunctionNameImpl(
-            "jsonSelectAll", parameter("path", String.class));
+    public static FunctionName DEFINITION =
+            new FunctionNameImpl("jsonSelectAll", parameter("path", String.class));
 
     public JsonSelectAllFunction() {
         super(DEFINITION);

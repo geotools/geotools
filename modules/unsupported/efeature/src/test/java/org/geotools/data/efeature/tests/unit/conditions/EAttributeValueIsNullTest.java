@@ -22,24 +22,20 @@ import org.geotools.data.efeature.query.EFeatureEncoderException;
 
 /**
  * @author kengu - 14. juni 2011
- *
- *
  * @source $URL$
  */
 public class EAttributeValueIsNullTest extends AbstractEAttributeValueTest {
-    
-    // ----------------------------------------------------- 
+
+    // -----------------------------------------------------
     //  Constructors
     // -----------------------------------------------------
-    
-    /**
-     * @param name
-     */
+
+    /** @param name */
     public EAttributeValueIsNullTest(String name) {
-        super(name,IS_NULL);
+        super(name, IS_NULL);
     }
 
-    // ----------------------------------------------------- 
+    // -----------------------------------------------------
     //  AbstractEAttributeValueTest implementation
     // -----------------------------------------------------
 
@@ -50,5 +46,4 @@ public class EAttributeValueIsNullTest extends AbstractEAttributeValueTest {
         //
         return new EAttributeValueIsNull(eAttribute);
     }
-
 }

@@ -17,81 +17,66 @@
 package org.geotools.gml3.v3_2.gts;
 
 import java.util.Set;
-
 import javax.xml.namespace.QName;
-
 import org.geotools.gml3.v3_2.GML;
 import org.geotools.gml3.v3_2.gco.GCO;
 import org.opengis.feature.type.Schema;
 
 /**
- * This interface contains the qualified names of all the types,elements, and 
- * attributes in the http://www.isotc211.org/2005/gts schema.
+ * This interface contains the qualified names of all the types,elements, and attributes in the
+ * http://www.isotc211.org/2005/gts schema.
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public final class GTS extends GML.DelegatingXSD {
 
     /** singleton instance */
     private static final GTS instance = new GTS();
-    
-    /**
-     * Returns the singleton instance.
-     */
+
+    /** Returns the singleton instance. */
     public static final GTS getInstance() {
-       return instance;
+        return instance;
     }
-    
-    /**
-     * private constructor
-     */
-    private GTS() {
-    }
-    
+
+    /** private constructor */
+    private GTS() {}
+
     protected void addDependencies(Set dependencies) {
-        dependencies.add( GCO.getInstance() );
+        dependencies.add(GCO.getInstance());
     }
 
     @Override
     protected Schema buildTypeSchema() {
         return new GTSSchema();
     }
-    
-    /**
-     * Returns 'http://www.isotc211.org/2005/gts'.
-     */
+
+    /** Returns 'http://www.isotc211.org/2005/gts'. */
     public String getNamespaceURI() {
-       return NAMESPACE;
+        return NAMESPACE;
     }
-    
-    /**
-     * Returns the location of 'gts.xsd.'.
-     */
+
+    /** Returns the location of 'gts.xsd.'. */
     public String getSchemaLocation() {
-       return getClass().getResource("gts.xsd").toString();
+        return getClass().getResource("gts.xsd").toString();
     }
-    
+
     /** @generated */
     public static final String NAMESPACE = "http://www.isotc211.org/2005/gts";
-    
+
     /* Type Definitions */
     /** @generated */
-    public static final QName TM_PeriodDuration_PropertyType = 
-        new QName("http://www.isotc211.org/2005/gts","TM_PeriodDuration_PropertyType");
+    public static final QName TM_PeriodDuration_PropertyType =
+            new QName("http://www.isotc211.org/2005/gts", "TM_PeriodDuration_PropertyType");
     /** @generated */
-    public static final QName TM_Primitive_PropertyType = 
-        new QName("http://www.isotc211.org/2005/gts","TM_Primitive_PropertyType");
+    public static final QName TM_Primitive_PropertyType =
+            new QName("http://www.isotc211.org/2005/gts", "TM_Primitive_PropertyType");
 
     /* Elements */
     /** @generated */
-    public static final QName TM_PeriodDuration = 
-        new QName("http://www.isotc211.org/2005/gts","TM_PeriodDuration");
+    public static final QName TM_PeriodDuration =
+            new QName("http://www.isotc211.org/2005/gts", "TM_PeriodDuration");
 
     /* Attributes */
 
 }
-    

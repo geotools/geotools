@@ -20,19 +20,14 @@ package org.geotools.swing.action;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
-
 import org.geotools.swing.MapPane;
 
-
 /**
- * Base class for map pane actions; just provides a common initializing method and
- * a reference to the map pane being serviced.
- * 
+ * Base class for map pane actions; just provides a common initializing method and a reference to
+ * the map pane being serviced.
+ *
  * @author Michael Bedward
  * @since 2.6
- *
- *
- *
  * @source $URL$
  * @version $Id$
  */
@@ -42,8 +37,7 @@ public abstract class MapAction extends AbstractAction {
     private MapPane mapPane;
 
     /**
-     * Called by sub-classes to set the map pane field and initialize
-     * the control action properties
+     * Called by sub-classes to set the map pane field and initialize the control action properties
      *
      * @param mapPane the map pane that this action is working with
      * @param toolName short (single word) tool name; may be {@code null}

@@ -1,17 +1,15 @@
 package org.geotools.data.db2;
 
 import java.io.IOException;
-
 import org.geotools.jdbc.JDBCFunctionOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
 /**
- * 
- *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/jdbc/jdbc-db2/src/test/java/org/geotools/data/db2/DB2FunctionTest.java $
+ * @source $URL:
+ *     http://svn.osgeo.org/geotools/trunk/modules/plugin/jdbc/jdbc-db2/src/test/java/org/geotools/data/db2/DB2FunctionTest.java
+ *     $
  */
 public class DB2FunctionOnlineTest extends JDBCFunctionOnlineTest {
-
 
     @Override
     protected JDBCTestSetup createTestSetup() {
@@ -20,18 +18,15 @@ public class DB2FunctionOnlineTest extends JDBCFunctionOnlineTest {
 
     @Override
     public void testStrEndsWithOtherProperty() throws IOException {
-        // TODO 
+        // TODO
         // skip this test because the test uses numerical columns
         // instead of strings
     }
 
     @Override
     public void testStrStartsWithOtherProperty() throws IOException {
-        // TODO 
+        // TODO
         // skip this test because the test uses numerical columns
         // instead of strings
     }
-    
-    
-
 }

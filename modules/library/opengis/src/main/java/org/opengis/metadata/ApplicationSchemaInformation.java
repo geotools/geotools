@@ -4,37 +4,34 @@
  *
  *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2004-2005, Open Geospatial Consortium Inc.
- *    
+ *
  *    All Rights Reserved. http://www.opengis.org/legal/
  */
 package org.opengis.metadata;
 
-import java.net.URI;
-import org.opengis.metadata.citation.Citation;
-import org.opengis.annotation.UML;
-
 import static org.opengis.annotation.Obligation.*;
 import static org.opengis.annotation.Specification.*;
 
+import java.net.URI;
+import org.opengis.annotation.UML;
+import org.opengis.metadata.citation.Citation;
 
 /**
  * Information about the application schema used to build the dataset.
  *
- *
- *
  * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as#01-111">ISO 19115</A>
- * @author  Martin Desruisseaux (IRD)
- * @since   GeoAPI 2.0
+ * @author Martin Desruisseaux (IRD)
+ * @since GeoAPI 2.0
  */
-@UML(identifier="MD_ApplicationSchemaInformation", specification=ISO_19115)
+@UML(identifier = "MD_ApplicationSchemaInformation", specification = ISO_19115)
 public interface ApplicationSchemaInformation {
     /**
      * Name of the application schema used.
      *
      * @return Name of the application schema.
      */
-    @UML(identifier="name", obligation=MANDATORY, specification=ISO_19115)
+    @UML(identifier = "name", obligation = MANDATORY, specification = ISO_19115)
     Citation getName();
 
     /**
@@ -42,7 +39,7 @@ public interface ApplicationSchemaInformation {
      *
      * @return The schema language used.
      */
-    @UML(identifier="schemaLanguage", obligation=MANDATORY, specification=ISO_19115)
+    @UML(identifier = "schemaLanguage", obligation = MANDATORY, specification = ISO_19115)
     String getSchemaLanguage();
 
     /**
@@ -50,18 +47,17 @@ public interface ApplicationSchemaInformation {
      *
      * @return Formal language used in Application Schema.
      */
-    @UML(identifier="constraintLanguage", obligation=MANDATORY, specification=ISO_19115)
+    @UML(identifier = "constraintLanguage", obligation = MANDATORY, specification = ISO_19115)
     String getConstraintLanguage();
 
     /**
      * Full application schema given as an ASCII file.
      *
      * @return Application schema as an ASCII file.
-     *
-     * @todo In UML, the type was {@code CharacterString}. It is not clear if
-     *       it should be the file name or the file content.
+     * @todo In UML, the type was {@code CharacterString}. It is not clear if it should be the file
+     *     name or the file content.
      */
-    @UML(identifier="schemaAscii", obligation=OPTIONAL, specification=ISO_19115)
+    @UML(identifier = "schemaAscii", obligation = OPTIONAL, specification = ISO_19115)
     URI getSchemaAscii();
 
     /**
@@ -69,18 +65,17 @@ public interface ApplicationSchemaInformation {
      *
      * @return Application schema as a graphics file.
      */
-    @UML(identifier="graphicsFile", obligation=OPTIONAL, specification=ISO_19115)
+    @UML(identifier = "graphicsFile", obligation = OPTIONAL, specification = ISO_19115)
     URI getGraphicsFile();
 
     /**
      * Full application schema given as a software development file.
      *
      * @return Application schema as a software development file.
-     *
-     * @todo In UML, the type was {@code binary}. It is not clear if
-     *       it was intented to be the file content.
+     * @todo In UML, the type was {@code binary}. It is not clear if it was intented to be the file
+     *     content.
      */
-    @UML(identifier="softwareDevelopmentFile", obligation=OPTIONAL, specification=ISO_19115)
+    @UML(identifier = "softwareDevelopmentFile", obligation = OPTIONAL, specification = ISO_19115)
     URI getSoftwareDevelopmentFile();
 
     /**
@@ -88,17 +83,24 @@ public interface ApplicationSchemaInformation {
      *
      * @return Format used for the application schema software file.
      */
-    @UML(identifier="softwareDevelopmentFileFormat", obligation=OPTIONAL, specification=ISO_19115)
+    @UML(
+        identifier = "softwareDevelopmentFileFormat",
+        obligation = OPTIONAL,
+        specification = ISO_19115
+    )
     String getSoftwareDevelopmentFileFormat();
 
     /**
      * Information about the spatial attributes in the application schema for the feature types.
      *
      * @return The spatial attributes in the application schema for the feature types.
-     *
      * @deprecated removed from ISO_19115
      */
     @Deprecated
-    @UML(identifier="featureCatalogueSupplement", obligation=OPTIONAL, specification=ISO_19115)
+    @UML(
+        identifier = "featureCatalogueSupplement",
+        obligation = OPTIONAL,
+        specification = ISO_19115
+    )
     SpatialAttributeSupplement getFeatureCatalogueSupplement();
 }

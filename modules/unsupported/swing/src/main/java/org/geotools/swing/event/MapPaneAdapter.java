@@ -18,40 +18,29 @@
 package org.geotools.swing.event;
 
 /**
- * An adapter class that implements all of the methods defined by
- * {@code MapPaneListener} as empty methods, allowing sub-classes
- * to just override the methods they need. 
+ * An adapter class that implements all of the methods defined by {@code MapPaneListener} as empty
+ * methods, allowing sub-classes to just override the methods they need.
  *
  * @author Michael Bedward
  * @since 2.6
- *
  * @source $URL$
  * @version $Id$
  */
 public class MapPaneAdapter implements MapPaneListener {
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void onNewMapContent(MapPaneEvent ev) {}
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void onDisplayAreaChanged(MapPaneEvent ev) {}
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void onRenderingStarted(MapPaneEvent ev) {}
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void onRenderingStopped(MapPaneEvent ev) {}
-
 }

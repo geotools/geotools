@@ -20,7 +20,6 @@ import java.io.File;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.gce.imagemosaic.Utils.SourceGetter;
@@ -28,7 +27,6 @@ import org.geotools.gce.imagemosaic.Utils.SourceGetter;
 /**
  * A {@link CoverageNameCollectorSPI} implementation setting up the coverage name based on a regex
  * applied to the fileName.
- *
  */
 public class FileNameRegexNameCollectorSPI implements CoverageNameCollectorSPI {
 
@@ -39,8 +37,9 @@ public class FileNameRegexNameCollectorSPI implements CoverageNameCollectorSPI {
         if (map != null && map.containsKey(REGEX) && ((regex = map.get(REGEX)) != null)) {
             return new FileNameRegexBasedCoverageNameCollector(regex);
         }
-        throw new IllegalArgumentException("FileNameRegexNameCollectorSPI should have "
-                + "a defined REGEX property in the map");
+        throw new IllegalArgumentException(
+                "FileNameRegexNameCollectorSPI should have "
+                        + "a defined REGEX property in the map");
     }
 
     /**
@@ -61,8 +60,8 @@ public class FileNameRegexNameCollectorSPI implements CoverageNameCollectorSPI {
             SourceGetter sourceGetter = new SourceGetter(source);
             final File file = sourceGetter.getFile();
             if (file == null) {
-                throw new IllegalArgumentException("Unable to retrieve a valid source file"
-                        + " for the specified reader");
+                throw new IllegalArgumentException(
+                        "Unable to retrieve a valid source file" + " for the specified reader");
             }
             String baseName = FilenameUtils.getBaseName(file.getAbsolutePath());
             final Matcher matcher = pattern.matcher(baseName);

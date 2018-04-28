@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -24,23 +24,21 @@ import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.Rectangle2D.Double;
 import java.util.logging.Logger;
-
 import org.geotools.renderer.style.shape.ExplicitBoundsShape;
 import org.opengis.feature.Feature;
 import org.opengis.filter.expression.Expression;
 
 /**
  * Factory with additional "well known" marks for compatibility with other applications.
- * <p>
- * We are doubling up on these providing an aleais to make things easier:
- * <ul>
- * <li>qgis://star</li>
- * <li>qgis://regular_star and regular_star</li>
- * </ul>
- * 
- * 
- * @author Jonathan Moules (LightPear)
  *
+ * <p>We are doubling up on these providing an aleais to make things easier:
+ *
+ * <ul>
+ *   <li>qgis://star
+ *   <li>qgis://regular_star and regular_star
+ * </ul>
+ *
+ * @author Jonathan Moules (LightPear)
  * @source $URL$
  */
 public class QGISMarkFactory implements MarkFactory {
@@ -48,8 +46,8 @@ public class QGISMarkFactory implements MarkFactory {
     private static final String PREFIX = "qgis://";
 
     /** The logger for the rendering module. */
-    private static final Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger("org.geotools.rendering");
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.rendering");
 
     /** Tall star for QGIS compatibility */
     private static Shape star = star();
@@ -58,7 +56,7 @@ public class QGISMarkFactory implements MarkFactory {
     private static Shape triangle = triangle();
 
     /** Upward facing arrow for QGIS compatibility */
-    private final static Shape arrow = arrow();
+    private static final Shape arrow = arrow();
 
     private static Shape arrowhead = arrowHead();
 
@@ -125,8 +123,7 @@ public class QGISMarkFactory implements MarkFactory {
     public Shape getShape(Graphics2D graphics, Expression symbolUrl, Feature feature)
             throws Exception {
         // cannot handle a null url
-        if (symbolUrl == null)
-            return null;
+        if (symbolUrl == null) return null;
 
         String wellKnownName = symbolUrl.evaluate(feature, String.class);
 
@@ -333,7 +330,7 @@ public class QGISMarkFactory implements MarkFactory {
         starPath.lineTo(-0.5f, 0.1f);
         starPath.lineTo(-0.2f, 0.1f);
         starPath.lineTo(0f, 0.5f);
-        
+
         ExplicitBoundsShape shape = new ExplicitBoundsShape(starPath);
         shape.setBounds(new Rectangle2D.Double(-.5, .5, 1., 1.));
 
@@ -477,8 +474,8 @@ public class QGISMarkFactory implements MarkFactory {
 
     private static Shape semiCircle() {
         // Top half
-        Arc2D.Double d = new Arc2D.Double(new Rectangle2D.Double(-.5, -.5, 1., 1.), 180., 180.,
-                Arc2D.PIE);
+        Arc2D.Double d =
+                new Arc2D.Double(new Rectangle2D.Double(-.5, -.5, 1., 1.), 180., 180., Arc2D.PIE);
 
         ExplicitBoundsShape shape = new ExplicitBoundsShape(d);
         shape.setBounds(new Rectangle2D.Double(-.5, .5, 1., 1.));
@@ -488,8 +485,8 @@ public class QGISMarkFactory implements MarkFactory {
 
     private static Shape thirdCircle() {
         // Top-left third
-        Arc2D.Double d = new Arc2D.Double(new Rectangle2D.Double(-.5, -.5, 1., 1.), 150., 120.,
-                Arc2D.PIE);
+        Arc2D.Double d =
+                new Arc2D.Double(new Rectangle2D.Double(-.5, -.5, 1., 1.), 150., 120., Arc2D.PIE);
 
         ExplicitBoundsShape shape = new ExplicitBoundsShape(d);
         shape.setBounds(new Rectangle2D.Double(-.5, .5, 1., 1.));
@@ -516,5 +513,4 @@ public class QGISMarkFactory implements MarkFactory {
 
         return shape;
     }
-     
 }

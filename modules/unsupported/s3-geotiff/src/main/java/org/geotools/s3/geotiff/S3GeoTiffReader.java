@@ -19,13 +19,12 @@ package org.geotools.s3.geotiff;
 import org.geotools.data.DataSourceException;
 import org.geotools.factory.Hints;
 import org.geotools.gce.geotiff.GeoTiffReader;
-
 import org.geotools.s3.S3ImageInputStreamImpl;
 import org.geotools.s3.S3ImageInputStreamImplSpi;
 
 /**
- * Very simple wrapper around GeoTIff reader in order to support S3 geotiff. The goal is to have this
- * go away eventually and to be able to support S3 with just the original GeoTiff reader
+ * Very simple wrapper around GeoTIff reader in order to support S3 geotiff. The goal is to have
+ * this go away eventually and to be able to support S3 with just the original GeoTiff reader
  */
 public class S3GeoTiffReader extends GeoTiffReader {
     public S3GeoTiffReader(Object input) throws DataSourceException {
@@ -37,7 +36,7 @@ public class S3GeoTiffReader extends GeoTiffReader {
          * subsequent calls that rely on it pass.
          */
         this.inStreamSPI = new S3ImageInputStreamImplSpi();
-        //Needs close me, since we're using a stream and it should not be reused.
+        // Needs close me, since we're using a stream and it should not be reused.
         closeMe = true;
     }
 

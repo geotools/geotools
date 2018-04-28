@@ -20,18 +20,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-
 /**
  * TestConfig purpose.
- * 
- * <p>
- * Description of TestConfig ...
- * </p>
+ *
+ * <p>Description of TestConfig ...
  *
  * @author dzwiers, Refractions Research, Inc.
  * @author $Author: dmzwiers $ (last modification)
- *
- *
  * @source $URL$
  * @version $Id$
  */
@@ -42,34 +37,23 @@ public class TestDTO {
     /** the test description */
     private String description;
 
-    /**
-     * The plug-in which contains the class definition and default runtime
-     * values
-     */
+    /** The plug-in which contains the class definition and default runtime values */
     private PlugInDTO plugIn;
 
-    /**
-     * The set of runtime args for this particular test to override the
-     * defaults in the plug-in
-     */
+    /** The set of runtime args for this particular test to override the defaults in the plug-in */
     private Map args;
 
     /**
      * TestConfig constructor.
-     * 
-     * <p>
-     * Does nothing
-     * </p>
+     *
+     * <p>Does nothing
      */
-    public TestDTO() {
-    }
+    public TestDTO() {}
 
     /**
      * TestConfig constructor.
-     * 
-     * <p>
-     * Creates a copy from the TestConfig specified.
-     * </p>
+     *
+     * <p>Creates a copy from the TestConfig specified.
      *
      * @param t the data to copy
      */
@@ -85,9 +69,8 @@ public class TestDTO {
             while (i.hasNext()) {
                 String key = (String) i.next();
 
-                //TODO clone value.
-                args.put(key,
-                    new ArgumentDTO((ArgumentDTO) t.getArgs().get(key)));
+                // TODO clone value.
+                args.put(key, new ArgumentDTO((ArgumentDTO) t.getArgs().get(key)));
             }
         }
     }
@@ -96,7 +79,6 @@ public class TestDTO {
      * Implementation of clone.
      *
      * @return A copy of this TestConfig
-     *
      * @see java.lang.Object#clone()
      */
     public Object clone() {
@@ -107,9 +89,7 @@ public class TestDTO {
      * Implementation of equals.
      *
      * @param obj
-     *
      * @return true when they have the same data.
-     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     public boolean equals(Object obj) {
@@ -159,7 +139,6 @@ public class TestDTO {
      * Implementation of hashCode.
      *
      * @return int hashcode
-     *
      * @see java.lang.Object#hashCode()
      */
     public int hashCode() {

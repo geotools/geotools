@@ -16,27 +16,26 @@
  */
 package org.geotools.kml.v22;
 
+import com.vividsolutions.jts.geom.Point;
 import java.util.List;
-
 import org.geotools.xml.Parser;
 import org.opengis.feature.simple.SimpleFeature;
-
-import com.vividsolutions.jts.geom.Point;
 
 public class KMLPlacemarkLookAtTest extends KMLTestSupport {
 
     public void testParseDocument() throws Exception {
         Parser parser = new Parser(createConfiguration());
-        SimpleFeature doc = (SimpleFeature) parser.parse(getClass().getResourceAsStream("geot5666.kml"));
+        SimpleFeature doc =
+                (SimpleFeature) parser.parse(getClass().getResourceAsStream("geot5666.kml"));
         assertNotNull(doc);
         assertEquals("document", doc.getType().getTypeName());
         assertEquals("GEOT-5666", doc.getAttribute("name"));
-        List features = (List)doc.getAttribute("Feature");
+        List features = (List) doc.getAttribute("Feature");
         assertEquals(1, features.size());
         SimpleFeature placemark = (SimpleFeature) features.get(0);
-        
+
         assertEquals("Placemark with LookAt", placemark.getAttribute("name"));
-        
+
         Point lookat = (Point) placemark.getAttribute("LookAt");
         assertEquals(149.1717, lookat.getX(), 0.0001);
         assertEquals(-35.3446, lookat.getY(), 0.0001);
@@ -44,7 +43,5 @@ public class KMLPlacemarkLookAtTest extends KMLTestSupport {
         Point geometry = (Point) placemark.getDefaultGeometry();
         assertEquals(149.2884, geometry.getX(), 0.0001);
         assertEquals(-35.1779, geometry.getY(), 0.0001);
-
     }
-
 }

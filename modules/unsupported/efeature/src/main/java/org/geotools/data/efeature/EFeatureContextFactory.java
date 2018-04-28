@@ -22,9 +22,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
-
 import javax.imageio.spi.ServiceRegistry;
-
 import org.geotools.data.efeature.impl.EFeatureContextImpl;
 import org.geotools.data.efeature.impl.EFeatureIDFactoryImpl;
 import org.geotools.factory.BufferedFactory;
@@ -32,177 +30,154 @@ import org.geotools.util.logging.Logging;
 
 /**
  * This class implements a cache of {@link EFeatureContext} instances.
- * <p>
- * Each {@link EFeatureContext instance} is associated with a factory ID. The 
- * reference to each cached {@link EFeatureContext is} is strong (ordinary Java
- * object reference), ensuring that instances can not be garbage collected, even
- * if more memory is needed.   
- * </p>
- * 
+ *
+ * <p>Each {@link EFeatureContext instance} is associated with a factory ID. The reference to each
+ * cached {@link EFeatureContext is} is strong (ordinary Java object reference), ensuring that
+ * instances can not be garbage collected, even if more memory is needed.
+ *
  * @author kengu
- *
- *
  * @source $URL$
  */
 public class EFeatureContextFactory implements BufferedFactory {
 
-    /**
-     * Cached {@link Logger} instance for this class
-     */
+    /** Cached {@link Logger} instance for this class */
     private static final Logger LOGGER = Logging.getLogger(EFeatureContextFactory.class);
-    
-    /**
-     * Weak reference to instance cached by the 
-     * {@link ServiceRegistry service registry}.
-     */
-    private static WeakReference<EFeatureContextFactory> eInstance;
-    
-    /**
-     * {@link Map} containing {@link EFeatureContext} instances.
-     */
-    private final Map<String, EFeatureContext> 
-        eContextMap = new HashMap<String, EFeatureContext>();
-    
-    /**
-     * {@link Map} containing {@link EFeatureContextInfo} instances.
-     */
-    private final Map<String, EFeatureContextInfo> 
-        eContextInfoMap = new HashMap<String, EFeatureContextInfo>();
 
-    // ----------------------------------------------------- 
+    /** Weak reference to instance cached by the {@link ServiceRegistry service registry}. */
+    private static WeakReference<EFeatureContextFactory> eInstance;
+
+    /** {@link Map} containing {@link EFeatureContext} instances. */
+    private final Map<String, EFeatureContext> eContextMap = new HashMap<String, EFeatureContext>();
+
+    /** {@link Map} containing {@link EFeatureContextInfo} instances. */
+    private final Map<String, EFeatureContextInfo> eContextInfoMap =
+            new HashMap<String, EFeatureContextInfo>();
+
+    // -----------------------------------------------------
     //  Constructors
     // -----------------------------------------------------
-    
-    /**
-     * Default construction (required by SPI)
-     */
-    public EFeatureContextFactory() { /*NOP*/ }
-    
-    
-    // ----------------------------------------------------- 
+
+    /** Default construction (required by SPI) */
+    public EFeatureContextFactory() {
+        /*NOP*/
+    }
+
+    // -----------------------------------------------------
     //  Static helper methods
     // -----------------------------------------------------
 
-    /**
-     * Get instance cached by {@link EFeatureFactoryFinder}
-     */
-    public static EFeatureContextFactory eDefault(){
-        if(eInstance==null || eInstance.get()==null)
-        {
-            eInstance = new WeakReference<EFeatureContextFactory>(
-                    EFeatureFactoryFinder.getContextFactory());
+    /** Get instance cached by {@link EFeatureFactoryFinder} */
+    public static EFeatureContextFactory eDefault() {
+        if (eInstance == null || eInstance.get() == null) {
+            eInstance =
+                    new WeakReference<EFeatureContextFactory>(
+                            EFeatureFactoryFinder.getContextFactory());
         }
         return eInstance.get();
     }
-    
+
     /**
      * Check to see if {@link EFeatureDataStore}s can be created.
+     *
+     * <p>This factory is only available if at least one {@link EFeatureContext} instance is
+     * registered.
+     *
      * <p>
-     * This factory is only available if at least one 
-     * {@link EFeatureContext} instance is registered.
-     * <p>
-     * 
-     * @return <code>true</code> if and only if this factory is available to create
-     *         {@link EFeatureDataStore}s.
-     * 
+     *
+     * @return <code>true</code> if and only if this factory is available to create {@link
+     *     EFeatureDataStore}s.
      */
     public boolean isAvailable() {
         return EFeatureUtils.isAvailable(eContextInfoMap);
     }
-    
+
     /**
      * Check if given {@link EFeatureContext} instance is created by this factory.
-     * <p>
-     * This method checks for {@link Map#containsValue(Object) value equality}
-     * between given instance and cached instances. 
-     * </p>
+     *
+     * <p>This method checks for {@link Map#containsValue(Object) value equality} between given
+     * instance and cached instances.
+     *
      * @param eContext - a {@link EFeatureContext} instance
      * @return <code>true</code> if found.
      * @see {@link #contains(String)}
      */
-    public boolean contains(EFeatureContext eContext)
-    {
+    public boolean contains(EFeatureContext eContext) {
         return eContextMap.containsValue(eContext);
     }
-    
+
     /**
      * Check if a {@link EFeatureContext} instance with given ID is created by this factory.
-     * <p>
-     * This method checks for {@link Map#containsKey(Object) key equality}
-     * between given ID and cached IDs. 
-     * </p>
+     *
+     * <p>This method checks for {@link Map#containsKey(Object) key equality} between given ID and
+     * cached IDs.
+     *
      * @param eContextID - {@link EFeature} context {@link EFeatureContext#get id}
      * @return <code>true</code> if found.
      */
-    public boolean contains(String eContextID)
-    {
+    public boolean contains(String eContextID) {
         return eContextMap.containsKey(eContextID);
     }
-    
+
     /**
      * Create a {@link EFeatureContext} instance with given ID.
-     * </p>
+     *
      * @return a {@link EFeatureContext} instance.
-     * @throws IllegalArgumentException If an another instance with 
-     * same eContextID already exist. 
-     * {@link EFeatureContext instance}. 
+     * @throws IllegalArgumentException If an another instance with same eContextID already exist.
+     *     {@link EFeatureContext instance}.
      */
-    public EFeatureContext create(String eContextID) throws IllegalArgumentException
-    {
-        return create(eContextID,new EFeatureIDFactoryImpl(), new EFeatureHints());
+    public EFeatureContext create(String eContextID) throws IllegalArgumentException {
+        return create(eContextID, new EFeatureIDFactoryImpl(), new EFeatureHints());
     }
-    
+
     /**
-     * Create a {@link EFeatureContextInfo} instance from given 
-     * {@link EFeatureContext} instance and cache both instances.
-     * <p>
-     * If instance has already joined this factory, this method returns the cached 
-     * {@link EFeatureContextInfo} instance. 
-     * </p>
+     * Create a {@link EFeatureContextInfo} instance from given {@link EFeatureContext} instance and
+     * cache both instances.
+     *
+     * <p>If instance has already joined this factory, this method returns the cached {@link
+     * EFeatureContextInfo} instance.
+     *
      * @param eContextID
      * @param eHints - {@link EFeatureHints} instance
      * @return a {@link EFeatureContextInfo} instance.
-     * @throws IllegalArgumentException If an another instance with 
-     * same eContextID already exist. 
-     * {@link EFeatureContext instance}. 
+     * @throws IllegalArgumentException If an another instance with same eContextID already exist.
+     *     {@link EFeatureContext instance}.
      */
-    public EFeatureContext create(String eContextID, EFeatureHints eHints) throws IllegalArgumentException
-    {
-        return create(eContextID,new EFeatureIDFactoryImpl(),eHints);
+    public EFeatureContext create(String eContextID, EFeatureHints eHints)
+            throws IllegalArgumentException {
+        return create(eContextID, new EFeatureIDFactoryImpl(), eHints);
     }
-    
+
     /**
-     * Create a {@link EFeatureContextInfo} instance from given 
-     * {@link EFeatureContext} instance and cache both instances.
-     * <p>
-     * If instance has already joined this factory, this method returns the cached 
-     * {@link EFeatureContextInfo} instance. 
-     * </p>
+     * Create a {@link EFeatureContextInfo} instance from given {@link EFeatureContext} instance and
+     * cache both instances.
+     *
+     * <p>If instance has already joined this factory, this method returns the cached {@link
+     * EFeatureContextInfo} instance.
+     *
      * @param eContextID
      * @param eIDFactory
      * @param eHints - {@link EFeatureHints} instance
      * @return a {@link EFeatureContextInfo} instance.
-     * @throws IllegalArgumentException If an another instance with 
-     * same eContextID already exist. 
-     * {@link EFeatureContext instance}. 
+     * @throws IllegalArgumentException If an another instance with same eContextID already exist.
+     *     {@link EFeatureContext instance}.
      */
-    public EFeatureContext create(String eContextID, EFeatureIDFactory eIDFactory, EFeatureHints eHints) throws IllegalArgumentException
-    {
+    public EFeatureContext create(
+            String eContextID, EFeatureIDFactory eIDFactory, EFeatureHints eHints)
+            throws IllegalArgumentException {
         try {
             //
             // Use default factory?
             //
-            if(eIDFactory==null) eIDFactory = new EFeatureIDFactoryImpl();
+            if (eIDFactory == null) eIDFactory = new EFeatureIDFactoryImpl();
             //
             // Use default hints?
             //
-            if(eHints==null) eHints = new EFeatureHints();
+            if (eHints == null) eHints = new EFeatureHints();
             //
             // Another instance already registered with given ID?
             //
             EFeatureContextInfo eContextInfo = eContextInfoMap.get(eContextID);
-            if(eContextInfo != null)
-            {
+            if (eContextInfo != null) {
                 throw new IllegalArgumentException(
                         "EFeatureContext " + eContextID + "' already exists");
             }
@@ -217,31 +192,32 @@ public class EFeatureContextFactory implements BufferedFactory {
             //
             // Create structure info object
             //
-            eContextInfo = EFeatureContextInfo.create(this,eContextID, eHints);
+            eContextInfo = EFeatureContextInfo.create(this, eContextID, eHints);
             //
             // Map structure to id
             //
             eContextInfoMap.put(eContextID, eContextInfo);
             //
             // -----------------------------------------------------
-            //  Add EFeature as prototype. 
+            //  Add EFeature as prototype.
             // -----------------------------------------------------
             //  This is an important step. It allows the context to
-            //  filter on any EFeature implementation, and enables 
-            //  _ANY_ EFeature implementation to be adapted into 
-            //  this context. 
+            //  filter on any EFeature implementation, and enables
+            //  _ANY_ EFeature implementation to be adapted into
+            //  this context.
             // -----------------------------------------------------
             //
             EFeaturePackage ePackage = EFeaturePackage.eINSTANCE;
             eContext.eAdd(ePackage);
-            EFeatureInfo eFeatureInfo = EFeatureInfo.create(eContext, ePackage.getEFeature(), eHints);
+            EFeatureInfo eFeatureInfo =
+                    EFeatureInfo.create(eContext, ePackage.getEFeature(), eHints);
             //
             // -----------------------------------------------------
             //  Validate structure (required)
             // -----------------------------------------------------
-            //  This is an important step. If not done, 
-            //  access to methods like getFeatureType() and 
-            //  getSRID() will return null or throw exceptions. 
+            //  This is an important step. If not done,
+            //  access to methods like getFeatureType() and
+            //  getSRID() will return null or throw exceptions.
             // -----------------------------------------------------
             //
             eFeatureInfo.validate(ePackage, null);
@@ -249,8 +225,7 @@ public class EFeatureContextFactory implements BufferedFactory {
             // Success!
             //
             return eContext;
-        } 
-        catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             //
             // Remove context and structure from cache
             //
@@ -266,19 +241,19 @@ public class EFeatureContextFactory implements BufferedFactory {
             throw e;
         }
     }
-    
+
     /**
      * Dispose given {@link EFeatureContext context}.
-     * </p>
+     *
      * @param eContext - the {@link EFeatureContext} instance.
-     * @throws IllegalArgumentException If given context is not
-     * created by this factory.
+     * @throws IllegalArgumentException If given context is not created by this factory.
      */
     public void dispose(EFeatureContext eContext) {
-        if(!contains(eContext)) {
-            throw new IllegalArgumentException("Context " 
-                    + (eContext !=null ? eContext.eContextID() : "null") 
-                    + " is not created by this factory");
+        if (!contains(eContext)) {
+            throw new IllegalArgumentException(
+                    "Context "
+                            + (eContext != null ? eContext.eContextID() : "null")
+                            + " is not created by this factory");
         }
         //
         // Get ID
@@ -297,58 +272,51 @@ public class EFeatureContextFactory implements BufferedFactory {
         //
         Runtime.getRuntime().gc();
     }
-    
+
     /**
      * Dispose {@link EFeatureContext context} with given id.
-     * </p>
+     *
      * @param eContextID - the {@link EFeatureContext} id.
-     * @throws IllegalArgumentException If given context is not
-     * created by this factory.
+     * @throws IllegalArgumentException If given context is not created by this factory.
      */
     public void dispose(String eContextID) {
-        if(!contains(eContextID)) {
-            throw new IllegalArgumentException("Context " 
-                    + eContextID + " is not created by this factory");
+        if (!contains(eContextID)) {
+            throw new IllegalArgumentException(
+                    "Context " + eContextID + " is not created by this factory");
         }
-        dispose(eContextMap.get(eContextID));        
+        dispose(eContextMap.get(eContextID));
     }
 
     /**
      * Get a EFeature {@link EFeatureContextInfo registry info} instance.
-     * <p>
-     * <strong>NOTE</strong>: If no instance was found, a 
-     * {@link IllegalArgumentException} it thrown.    
-     * </p>
-     * @param eContextID - id of requested {@link EFeatureContextInfo} instance  
+     *
+     * <p><strong>NOTE</strong>: If no instance was found, a {@link IllegalArgumentException} it
+     * thrown.
+     *
+     * @param eContextID - id of requested {@link EFeatureContextInfo} instance
      * @return a {@link EFeatureContextInfo} instance.
-     * @throws IllegalArgumentException If no {@link EFeatureContext} instance with
-     * given ID was found.
+     * @throws IllegalArgumentException If no {@link EFeatureContext} instance with given ID was
+     *     found.
      */
-    public EFeatureContextInfo eStructure(String eContextID) throws IllegalArgumentException
-    {
-        EFeatureContextInfo eContextInfo =  eContextInfoMap.get(eContextID);
-        if(eContextInfo == null)
-        {
-            throw new IllegalArgumentException("EFeatureContext instance with ID " 
-                    + eContextID + " was not found");
+    public EFeatureContextInfo eStructure(String eContextID) throws IllegalArgumentException {
+        EFeatureContextInfo eContextInfo = eContextInfoMap.get(eContextID);
+        if (eContextInfo == null) {
+            throw new IllegalArgumentException(
+                    "EFeatureContext instance with ID " + eContextID + " was not found");
         }
         return eContextInfo;
-        
     }
-    
+
     /**
-     * Get a EFeature {@link EFeatureContext context} instance. 
-     * </p>
-     * @param eContextID - id of requested {@link EFeatureContext} instance 
+     * Get a EFeature {@link EFeatureContext context} instance.
+     *
+     * @param eContextID - id of requested {@link EFeatureContext} instance
      * @return a {@link EFeatureContextInfo} instance.
-     * @throws IllegalArgumentException If no {@link EFeatureContext} 
-     * instance was found.
+     * @throws IllegalArgumentException If no {@link EFeatureContext} instance was found.
      */
-    public EFeatureContext eContext(String eContextID)
-    {
+    public EFeatureContext eContext(String eContextID) {
         EFeatureContext eContext = eContextMap.get(eContextID);
-        if(eContext == null)
-        {
+        if (eContext == null) {
             throw new IllegalArgumentException(
                     "EFeatureContext '" + eContextID + "' does not exist");
         }
@@ -362,6 +330,4 @@ public class EFeatureContextFactory implements BufferedFactory {
         //
         return Collections.emptyMap();
     }
-    
-
 }

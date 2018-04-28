@@ -20,16 +20,11 @@ import org.geotools.data.postgis.PostgisPrimaryKeyTestSetup;
 import org.geotools.jdbc.JDBCPrimaryKeyOnlineTest;
 import org.geotools.jdbc.JDBCPrimaryKeyTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class PostgisPrimaryKeyOnlineTest extends JDBCPrimaryKeyOnlineTest {
 
     @Override
     protected JDBCPrimaryKeyTestSetup createTestSetup() {
         return new PostgisPrimaryKeyTestSetup(new PostGISPSTestSetup());
     }
-
 }

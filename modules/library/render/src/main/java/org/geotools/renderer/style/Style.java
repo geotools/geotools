@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,15 +16,11 @@
  */
 package org.geotools.renderer.style;
 
-import javax.swing.text.html.HTMLDocument.RunElement;
-
 /**
- * Base class for resolved styles. Styles are resolved according a particular rendering context.
- * The base class make no assumption about the output device (AWT, SWT, <i>etc.</i>). However, a
+ * Base class for resolved styles. Styles are resolved according a particular rendering context. The
+ * base class make no assumption about the output device (AWT, SWT, <i>etc.</i>). However, a
  * particular output device may need to be choosen for concrete subclasses, for example {@link
  * Style2D} for targeting <A HREF="http://java.sun.com/products/java-media/2D/">Java2D</A>.
- *
- *
  *
  * @source $URL$
  * @version $Id$
@@ -55,12 +51,11 @@ public abstract class Style implements Cloneable {
     }
 
     /**
-     * Sets minimum and maximum scale, and performs integrity checks on these value  (will throw
-     * and IllegalArgumentException in minScale > maxScale)
+     * Sets minimum and maximum scale, and performs integrity checks on these value (will throw and
+     * IllegalArgumentException in minScale > maxScale)
      *
      * @param minScale
      * @param maxScale
-     *
      * @throws IllegalArgumentException DOCUMENT ME!
      */
     public void setMinMaxScale(double minScale, double maxScale) {
@@ -83,12 +78,12 @@ public abstract class Style implements Cloneable {
     public boolean isScaleInRange(double scale) {
         return (scale >= minScale) && (scale <= maxScale);
     }
-    
+
     @Override
     public Style clone() {
         try {
             return (Style) super.clone();
-        } catch(CloneNotSupportedException e) {
+        } catch (CloneNotSupportedException e) {
             // can't happen, we implement cloneable
             throw new RuntimeException(e);
         }

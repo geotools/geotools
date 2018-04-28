@@ -15,55 +15,60 @@
  *    Lesser General Public License for more details.
  */
 
-
 package org.geotools.data.db2;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class DB2DialectInfo {
-    private int MajorVersion,MinorVersion;
-    private String ProductName,ProductVersion;
-    private boolean  hasOGCWkbZTyps = false;
-    private boolean supportingPrecalculatedExtents=false;
-    
+    private int MajorVersion, MinorVersion;
+    private String ProductName, ProductVersion;
+    private boolean hasOGCWkbZTyps = false;
+    private boolean supportingPrecalculatedExtents = false;
+
     public boolean isSupportingPrecalculatedExtents() {
         return supportingPrecalculatedExtents;
     }
+
     public void setSupportingPrecalculatedExtents(boolean supportingPrecalculatedExtents) {
         this.supportingPrecalculatedExtents = supportingPrecalculatedExtents;
     }
+
     public int getMajorVersion() {
         return MajorVersion;
     }
+
     public void setMajorVersion(int majorVersion) {
         MajorVersion = majorVersion;
     }
+
     public int getMinorVersion() {
         return MinorVersion;
     }
+
     public void setMinorVersion(int minorVersion) {
         MinorVersion = minorVersion;
     }
+
     public String getProductName() {
         return ProductName;
     }
+
     public void setProductName(String productName) {
         ProductName = productName;
     }
+
     public String getProductVersion() {
         return ProductVersion;
     }
+
     public void setProductVersion(String productVersion) {
         ProductVersion = productVersion;
     }
+
     public boolean isHasOGCWkbZTyps() {
         return hasOGCWkbZTyps;
     }
+
     public void setHasOGCWkbZTyps(boolean hasOGCWkbZTyps) {
         this.hasOGCWkbZTyps = hasOGCWkbZTyps;
     }
-
 }

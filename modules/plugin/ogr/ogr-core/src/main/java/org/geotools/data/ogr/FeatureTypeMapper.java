@@ -16,19 +16,6 @@
  */
 package org.geotools.data.ogr;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-
-import org.geotools.feature.FeatureTypes;
-import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.geotools.feature.type.BasicFeatureTypes;
-import org.geotools.referencing.CRS;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.AttributeDescriptor;
-import org.opengis.feature.type.GeometryDescriptor;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.LineString;
@@ -38,10 +25,21 @@ import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import org.geotools.feature.FeatureTypes;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.geotools.feature.type.BasicFeatureTypes;
+import org.geotools.referencing.CRS;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.AttributeDescriptor;
+import org.opengis.feature.type.GeometryDescriptor;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Helper mapping between geotools and OGR feature types
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 class FeatureTypeMapper {
@@ -54,7 +52,7 @@ class FeatureTypeMapper {
 
     /**
      * Returns the geotools feature type equivalent from the native OGR one
-     * 
+     *
      * @param layer
      * @param typeName
      * @param namespaceURI
@@ -89,7 +87,7 @@ class FeatureTypeMapper {
                 Object field = ogr.LayerGetFieldDefn(definition, i);
                 String name = ogr.FieldGetName(field);
                 Class binding = getBinding(field);
-               int width = ogr.FieldGetWidth(field);
+                int width = ogr.FieldGetWidth(field);
                 if (width > 0) {
                     tb.length(width);
                 }
@@ -115,15 +113,15 @@ class FeatureTypeMapper {
 
     /**
      * Maps the OGR field type to a java class
-     * 
+     *
      * @param field
      * @return
      */
     private Class getBinding(Object field) {
         long type = ogr.FieldGetType(field);
         int width = ogr.FieldGetWidth(field);
-        
-        // Find the narrowest integer data type which will safely hold the declared width 
+
+        // Find the narrowest integer data type which will safely hold the declared width
         if (ogr.FieldIsIntegerType(type)) {
             if (width == 0) {
                 return BigInteger.class;
@@ -166,13 +164,14 @@ class FeatureTypeMapper {
 
     /**
      * Returns a OGR field definition compatible with the specified attribute descriptor where:
+     *
      * <ul>
-     * <li>width is the number of chars needed to format the strings equivalent of the number
-     * <li>
-     * <li>precision is the number of chars after decimal pont</li>
-     * <li>justification: right or left (in outputs)</li>
+     *   <li>width is the number of chars needed to format the strings equivalent of the number
+     *   <li>
+     *   <li>precision is the number of chars after decimal pont
+     *   <li>justification: right or left (in outputs)
      * </ul>
-     * 
+     *
      * @param ad
      * @throws IOException
      */
@@ -225,7 +224,7 @@ class FeatureTypeMapper {
                 length = 255;
             }
             ogr.FieldSetWidth(def, length);
-            
+
         } else if (byte[].class.equals(type)) {
             def = ogr.CreateBinaryField(name);
         } else if (java.sql.Date.class.isAssignableFrom(type)) {
@@ -243,13 +242,12 @@ class FeatureTypeMapper {
 
     /**
      * Returns the OGR geometry type constant given a geometry attribute type
-     * 
+     *
      * @param descriptor
      * @return
      * @throws IOException
      */
-    public long getOGRGeometryType(GeometryDescriptor descriptor)
-            throws IOException {
+    public long getOGRGeometryType(GeometryDescriptor descriptor) throws IOException {
         Class binding = descriptor.getType().getBinding();
         if (GeometryCollection.class.isAssignableFrom(binding)) {
             if (MultiPoint.class.isAssignableFrom(binding)) {
@@ -278,20 +276,19 @@ class FeatureTypeMapper {
 
     /**
      * Returns the JTS geometry type equivalent to the layer native one
-     * 
+     *
      * @param definition
      * @return
      * @throws IOException
      */
     private Class<? extends Geometry> getGeometryBinding(Object definition) throws IOException {
         long value = ogr.LayerGetGeometryType(definition);
-        
+
         // for line and polygon we return multi in any case since OGR will declare simple for
         // multigeom
         // anyways and then return simple or multi in the actual geoemtries depending on
         // what it finds
-        if (value == ogr.GetPointType()
-                || value == ogr.GetPoint25DType()) {
+        if (value == ogr.GetPointType() || value == ogr.GetPoint25DType()) {
             return Point.class;
         } else if (value == ogr.GetLinearRingType()) {
             return LinearRing.class;
@@ -319,7 +316,7 @@ class FeatureTypeMapper {
 
     /**
      * Returns the GeoTools {@link CoordinateReferenceSystem} equivalent to the layer native one
-     * 
+     *
      * @param layer
      * @return
      * @throws IOException
@@ -358,7 +355,7 @@ class FeatureTypeMapper {
 
     /**
      * Returns a Pointer to a OGR spatial reference object equivalent to the specified GeoTools CRS
-     * 
+     *
      * @param crs
      * @return
      */
@@ -371,5 +368,4 @@ class FeatureTypeMapper {
         String wkt = crs.toString();
         return ogr.NewSpatialRef(wkt);
     }
-
 }

@@ -17,24 +17,17 @@
 package org.geotools.data.directory;
 
 import java.io.IOException;
-
 import org.geotools.data.FeatureLock;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureLocking;
 import org.opengis.filter.Filter;
 
-/**
- * 
- *
- * @source $URL$
- */
-public class DirectoryFeatureLocking extends DirectoryFeatureStore implements
-        SimpleFeatureLocking {
+/** @source $URL$ */
+public class DirectoryFeatureLocking extends DirectoryFeatureStore implements SimpleFeatureLocking {
 
     SimpleFeatureLocking flocking;
 
-    public DirectoryFeatureLocking(
-            SimpleFeatureLocking locking) {
+    public DirectoryFeatureLocking(SimpleFeatureLocking locking) {
         super(locking);
         this.flocking = locking;
     }
@@ -66,10 +59,9 @@ public class DirectoryFeatureLocking extends DirectoryFeatureStore implements
     public void unLockFeatures(Query query) throws IOException {
         flocking.unLockFeatures(query);
     }
-    
+
     @Override
     public SimpleFeatureLocking unwrap() {
         return flocking;
     }
-
 }

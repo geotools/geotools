@@ -27,7 +27,6 @@ import java.awt.event.WindowEvent;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Set;
-
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -36,7 +35,7 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
-
+import net.miginfocom.swing.MigLayout;
 import org.geotools.map.MapContent;
 import org.geotools.swing.action.InfoAction;
 import org.geotools.swing.action.NoToolAction;
@@ -47,13 +46,12 @@ import org.geotools.swing.action.ZoomOutAction;
 import org.geotools.swing.control.JMapStatusBar;
 import org.geotools.swing.tool.ScrollWheelTool;
 
-import net.miginfocom.swing.MigLayout;
-
 /**
- * A Swing frame containing a map display pane and (optionally) a toolbar,
- * status bar and map layer table.
- * <p>
- * Simplest use is with the static {@link #showMap(MapContent)} method:
+ * A Swing frame containing a map display pane and (optionally) a toolbar, status bar and map layer
+ * table.
+ *
+ * <p>Simplest use is with the static {@link #showMap(MapContent)} method:
+ *
  * <pre>{@code \u0000
  * MapContent content = new MapContent();
  * content.setTitle("My beautiful map");
@@ -65,21 +63,19 @@ import net.miginfocom.swing.MigLayout;
  *
  * @see MapLayerTable
  * @see StatusBar
- *
  * @author Michael Bedward
  * @since 2.6
- *
  * @source $URL$
  * @version $Id$
  */
 public class JMapFrame extends JFrame {
-    
-    /* 
+
+    /*
      * The following toolbar button names are primarily for unit testing
      * but could also be useful for applications wanting to control appearance
      * and behaviour at run-time.
      */
-    
+
     /** Name assigned to toolbar button for feature info queries. */
     public static final String TOOLBAR_INFO_BUTTON_NAME = "ToolbarInfoButton";
     /** Name assigned to toolbar button for map panning. */
@@ -93,39 +89,23 @@ public class JMapFrame extends JFrame {
     /** Name assigned to toolbar button for map zoom out. */
     public static final String TOOLBAR_ZOOMOUT_BUTTON_NAME = "ToolbarZoomOutButton";
 
-    /**
-     * Constants for available toolbar buttons used with the
-     * {@link #enableTool} method.
-     */
+    /** Constants for available toolbar buttons used with the {@link #enableTool} method. */
     public enum Tool {
-        /**
-         * Simple mouse cursor, used to unselect previous cursor tool.
-         */
+        /** Simple mouse cursor, used to unselect previous cursor tool. */
         POINTER,
 
-        /**
-         * The feature info cursor tool
-         */
+        /** The feature info cursor tool */
         INFO,
 
-        /**
-         * The panning cursor tool.
-         */
+        /** The panning cursor tool. */
         PAN,
 
-        /**
-         * The reset map extent cursor tool.
-         */
+        /** The reset map extent cursor tool. */
         RESET,
 
-        /**
-         * The zoom display cursor tools.
-         */
-        ZOOM, 
-        /**
-         * The map should zoom with the mouse wheel.
-         * No button shown for this.
-         */    
+        /** The zoom display cursor tools. */
+        ZOOM,
+        /** The map should zoom with the mouse wheel. No button shown for this. */
         SCROLLWHEEL;
     }
 
@@ -144,12 +124,11 @@ public class JMapFrame extends JFrame {
     private boolean uiSet;
 
     /**
-     * Creates a new map frame with a toolbar, map pane and status
-     * bar; sets the supplied {@code MapContent}; and displays the frame.
-     * If {@linkplain MapContent#getTitle()} returns a non-empty string,
-     * this is used as the frame's title.
-     * <p>
-     * This method can be called safely from any thread.
+     * Creates a new map frame with a toolbar, map pane and status bar; sets the supplied {@code
+     * MapContent}; and displays the frame. If {@linkplain MapContent#getTitle()} returns a
+     * non-empty string, this is used as the frame's title.
+     *
+     * <p>This method can be called safely from any thread.
      *
      * @param content the map content
      */
@@ -157,16 +136,17 @@ public class JMapFrame extends JFrame {
         if (SwingUtilities.isEventDispatchThread()) {
             doShowMap(content);
         } else {
-            SwingUtilities.invokeLater(new Runnable() {
+            SwingUtilities.invokeLater(
+                    new Runnable() {
 
-                @Override
-                public void run() {
-                    doShowMap(content);
-                }
-            });
+                        @Override
+                        public void run() {
+                            doShowMap(content);
+                        }
+                    });
         }
     }
-    
+
     private static void doShowMap(MapContent content) {
         final JMapFrame frame = new JMapFrame(content);
         frame.enableStatusBar(true);
@@ -176,10 +156,7 @@ public class JMapFrame extends JFrame {
         frame.setVisible(true);
     }
 
-    /**
-     * Default constructor. Creates a {@code JMapFrame} with
-     * no map content or renderer set
-     */
+    /** Default constructor. Creates a {@code JMapFrame} with no map content or renderer set */
     public JMapFrame() {
         this(null);
     }
@@ -202,43 +179,44 @@ public class JMapFrame extends JFrame {
         mapPane = new JMapPane(content);
         mapPane.setBackground(Color.WHITE);
         mapPane.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        
+
         // give keyboard focus to the map pane
-        addWindowFocusListener(new WindowAdapter() {
-            @Override
-            public void windowGainedFocus(WindowEvent e) {
-                mapPane.requestFocusInWindow();
-            }
-        });
-        
-        mapPane.addFocusListener(new FocusAdapter() {
+        addWindowFocusListener(
+                new WindowAdapter() {
+                    @Override
+                    public void windowGainedFocus(WindowEvent e) {
+                        mapPane.requestFocusInWindow();
+                    }
+                });
 
-            @Override
-            public void focusGained(FocusEvent e) {
-                mapPane.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-            }
+        mapPane.addFocusListener(
+                new FocusAdapter() {
 
-            @Override
-            public void focusLost(FocusEvent e) {
-                mapPane.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-            }
-        });
-        
-        mapPane.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void focusGained(FocusEvent e) {
+                        mapPane.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                    }
 
-            @Override
-            public void mousePressed(MouseEvent e) {
-                mapPane.requestFocusInWindow();
-            }
-        });
+                    @Override
+                    public void focusLost(FocusEvent e) {
+                        mapPane.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+                    }
+                });
+
+        mapPane.addMouseListener(
+                new MouseAdapter() {
+
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+                        mapPane.requestFocusInWindow();
+                    }
+                });
     }
 
     /**
-     * Sets whether to display the default toolbar (default is false). 
-     * Calling this with state == true is equivalent to
-     * calling {@link #enableTool} with all {@link JMapFrame.Tool}
-     * constants.
-     * 
+     * Sets whether to display the default toolbar (default is false). Calling this with state ==
+     * true is equivalent to calling {@link #enableTool} with all {@link JMapFrame.Tool} constants.
+     *
      * @param enabled whether the toolbar is required
      */
     public void enableToolBar(boolean enabled) {
@@ -251,20 +229,15 @@ public class JMapFrame extends JFrame {
     }
 
     /**
-     * This method is an alternative to {@link #enableToolBar(boolean)}.
-     * It requests that a tool bar be created with specific tools, identified
-     * by {@link JMapFrame.Tool} constants.
-     * 
-     * <code><pre>
+     * This method is an alternative to {@link #enableToolBar(boolean)}. It requests that a tool bar
+     * be created with specific tools, identified by {@link JMapFrame.Tool} constants. <code><pre>
      * myMapFrame.enableTool(Tool.PAN, Tool.ZOOM);
-     * </pre></code>
-     * 
-     * Calling this method with no arguments or {@code null} is equivalent
-     * to {@code enableToolBar(false)}.
+     * </pre></code> Calling this method with no arguments or {@code null} is equivalent to {@code
+     * enableToolBar(false)}.
      *
      * @param tool tools to display on the toolbar
      */
-    public void enableTool(Tool ...tool) {
+    public void enableTool(Tool... tool) {
         if (tool == null || tool.length == 0) {
             enableToolBar(false);
         } else {
@@ -274,8 +247,7 @@ public class JMapFrame extends JFrame {
     }
 
     /**
-     * Set whether a status bar will be displayed to display cursor position
-     * and map bounds.
+     * Set whether a status bar will be displayed to display cursor position and map bounds.
      *
      * @param enabled whether the status bar is required.
      */
@@ -284,9 +256,8 @@ public class JMapFrame extends JFrame {
     }
 
     /**
-     * Set whether a map layer table will be displayed to show the list
-     * of layers in the map content and set their order, visibility and
-     * selected status.
+     * Set whether a map layer table will be displayed to show the list of layers in the map content
+     * and set their order, visibility and selected status.
      *
      * @param enabled whether the map layer table is required.
      */
@@ -295,8 +266,8 @@ public class JMapFrame extends JFrame {
     }
 
     /**
-     * Calls {@link #initComponents()} if it has not already been called explicitly
-     * to construct the frame's components before showing the frame.
+     * Calls {@link #initComponents()} if it has not already been called explicitly to construct the
+     * frame's components before showing the frame.
      *
      * @param state true to show the frame; false to hide.
      */
@@ -310,10 +281,9 @@ public class JMapFrame extends JFrame {
     }
 
     /**
-     * Creates and lays out the frame's components that have been
-     * specified with the enable methods (e.g. {@link #enableToolBar(boolean)} ).
-     * If not called explicitly by the client this method will be invoked by
-     * {@link #setVisible(boolean) } when the frame is first shown.
+     * Creates and lays out the frame's components that have been specified with the enable methods
+     * (e.g. {@link #enableToolBar(boolean)} ). If not called explicitly by the client this method
+     * will be invoked by {@link #setVisible(boolean) } when the frame is first shown.
      */
     public void initComponents() {
         if (uiSet) {
@@ -334,12 +304,13 @@ public class JMapFrame extends JFrame {
             sb.append("[min!]"); // status bar height
         }
 
-        JPanel panel = new JPanel(new MigLayout(
-                "wrap 1, insets 0", // layout constrains: 1 component per row, no insets
-
-                "[grow]", // column constraints: col grows when frame is resized
-
-                sb.toString() ));
+        JPanel panel =
+                new JPanel(
+                        new MigLayout(
+                                "wrap 1, insets 0", // layout constrains: 1 component per row, no
+                                // insets
+                                "[grow]", // column constraints: col grows when frame is resized
+                                sb.toString()));
 
         /*
          * A toolbar with buttons for zooming in, zooming out,
@@ -357,8 +328,8 @@ public class JMapFrame extends JFrame {
 
             JButton btn;
             ButtonGroup cursorToolGrp = new ButtonGroup();
-            if(toolSet.contains(Tool.SCROLLWHEEL)) {
-               mapPane.addMouseListener(new ScrollWheelTool(mapPane));
+            if (toolSet.contains(Tool.SCROLLWHEEL)) {
+                mapPane.addMouseListener(new ScrollWheelTool(mapPane));
             }
             if (toolSet.contains(Tool.POINTER)) {
                 btn = new JButton(new NoToolAction(mapPane));
@@ -418,10 +389,8 @@ public class JMapFrame extends JFrame {
              * JSplitPane divider
              */
             mapLayerTable.setPreferredSize(new Dimension(200, -1));
-            JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, 
-                    false, 
-                    mapLayerTable, 
-                    mapPane);
+            JSplitPane splitPane =
+                    new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, false, mapLayerTable, mapPane);
             panel.add(splitPane, "grow");
 
         } else {
@@ -440,9 +409,8 @@ public class JMapFrame extends JFrame {
     }
 
     /**
-     * Get the map content associated with this frame.
-     * Returns {@code null} if no map content has been set explicitly with the
-     * constructor or {@link #setMapContent}.
+     * Get the map content associated with this frame. Returns {@code null} if no map content has
+     * been set explicitly with the constructor or {@link #setMapContent}.
      *
      * @return the current {@code MapContent} object
      */
@@ -465,8 +433,7 @@ public class JMapFrame extends JFrame {
     }
 
     /**
-     * Provides access to the instance of {@code JMapPane} being used
-     * by this frame.
+     * Provides access to the instance of {@code JMapPane} being used by this frame.
      *
      * @return the {@code JMapPane} object
      */
@@ -475,9 +442,8 @@ public class JMapFrame extends JFrame {
     }
 
     /**
-     * Provides access to the toolbar being used by this frame.
-     * If {@link #initComponents} has not been called yet
-     * this method will invoke it.
+     * Provides access to the toolbar being used by this frame. If {@link #initComponents} has not
+     * been called yet this method will invoke it.
      *
      * @return the toolbar or null if the toolbar was not enabled
      */
@@ -486,4 +452,3 @@ public class JMapFrame extends JFrame {
         return toolBar;
     }
 }
-

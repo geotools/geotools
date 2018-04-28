@@ -3,15 +3,12 @@ package org.geotools.wfs.v1_0;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import javax.xml.namespace.QName;
-
 import net.opengis.ows10.DCPType;
 import net.opengis.ows10.DomainType;
 import net.opengis.ows10.OperationType;
 import net.opengis.ows10.OperationsMetadataType;
 import net.opengis.ows10.Ows10Factory;
-
 import org.geotools.xml.AbstractComplexEMFBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.InstanceComponent;
@@ -48,7 +45,7 @@ public class CapabilityBinding extends AbstractComplexEMFBinding {
 
         operation = getFeature(request.getChild("GetFeature"), ows10Factory);
         addOperation(om, operation);
-        
+
         Node nodeOp = request.getChild("Transaction");
         if (nodeOp != null) {
             operation = createOperation("Transaction", nodeOp, ows10Factory);
@@ -83,7 +80,8 @@ public class CapabilityBinding extends AbstractComplexEMFBinding {
         return operationType;
     }
 
-    private OperationType createOperation(String opetationName, Node node, Ows10Factory ows10Factory) {
+    private OperationType createOperation(
+            String opetationName, Node node, Ows10Factory ows10Factory) {
         if (node == null) {
             return null;
         }
@@ -94,7 +92,10 @@ public class CapabilityBinding extends AbstractComplexEMFBinding {
     }
 
     @SuppressWarnings("unchecked")
-    private void addParameter(Node node, Ows10Factory ows10Factory, OperationType operationType,
+    private void addParameter(
+            Node node,
+            Ows10Factory ows10Factory,
+            OperationType operationType,
             String parameterName) {
         Node paramParentNode = node.getChild(parameterName);
         List<String> paramValues = childNames(paramParentNode);
@@ -148,5 +149,4 @@ public class CapabilityBinding extends AbstractComplexEMFBinding {
             om.getOperation().add(operation);
         }
     }
-
 }

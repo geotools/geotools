@@ -7,9 +7,7 @@ import java.awt.RenderingHints;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-
 import junit.framework.TestCase;
-
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -19,11 +17,7 @@ import org.geotools.renderer.label.LabelCacheImpl;
 import org.geotools.styling.Style;
 import org.geotools.test.TestData;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class LabelOrientationTest extends TestCase {
 
     private static final long TIME = 10000;
@@ -38,7 +32,7 @@ public class LabelOrientationTest extends TestCase {
         PropertyDataStore ds = new PropertyDataStore(property.getParentFile());
         fs = ds.getFeatureSource("diaglines");
         bounds = new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
-        
+
         renderer = new StreamingRenderer();
         Map rendererParams = new HashMap();
         LabelCacheImpl labelCache = new LabelCacheImpl();
@@ -46,31 +40,28 @@ public class LabelOrientationTest extends TestCase {
         renderer.setRendererHints(rendererParams);
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
 
-        
-//        System.setProperty("org.geotools.test.interactive", "true");
+        //        System.setProperty("org.geotools.test.interactive", "true");
     }
-    
+
     public void testLabelNatural() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "textNaturalOrientation.sld");
-        
+
         DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
         mc.addLayer(fs, style);
-        
+
         renderer.setContext(mc);
-        
+
         RendererBaseTest.showRender("Lines with circle stroke", renderer, TIME, bounds);
     }
-    
+
     public void testLabelLineOrientation() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "textLineOrientation.sld");
-        
+
         DefaultMapContext mc = new DefaultMapContext(DefaultGeographicCRS.WGS84);
         mc.addLayer(fs, style);
-        
+
         renderer.setContext(mc);
-        
+
         RendererBaseTest.showRender("Lines with circl stroke", renderer, TIME, bounds);
     }
-    
-    
 }

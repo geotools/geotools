@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- *    
+ *
  * 	  (c) 2014 - 2015 Open Source Geospatial Foundation - all rights reserved
  * 	  (c) 2012 - 2014 OpenPlans
  *
@@ -17,19 +17,18 @@
  */
 package org.geotools.data.csv.parse;
 
+import com.csvreader.CsvReader;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.geotools.data.csv.CSVFileState;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-import com.csvreader.CsvReader;
-
+// docs start CSVStrategy
 public abstract class CSVStrategy {
 
     protected final CSVFileState csvFileState;
@@ -37,17 +36,18 @@ public abstract class CSVStrategy {
     public CSVStrategy(CSVFileState csvFileState) {
         this.csvFileState = csvFileState;
     }
-    
+
     public CSVIterator iterator() throws IOException {
         return new CSVIterator(csvFileState, this);
     }
+    // docs end CSVStrategy
 
     protected abstract SimpleFeatureType buildFeatureType();
-    
+
     public abstract void createSchema(SimpleFeatureType featureType) throws IOException;
 
     public abstract SimpleFeature decode(String recordId, String[] csvRecord);
-    
+
     public abstract String[] encode(SimpleFeature feature);
 
     protected volatile SimpleFeatureType featureType = null;
@@ -63,9 +63,10 @@ public abstract class CSVStrategy {
         return featureType;
     }
 
-    /** 
-     * Originally in a strategy support class - giving a chance to override them to
-     * improve efficiency and utilize the different strategies
+    // docs start createBuilder
+    /**
+     * Originally in a strategy support class - giving a chance to override them to improve
+     * efficiency and utilize the different strategies
      */
     public static SimpleFeatureTypeBuilder createBuilder(CSVFileState csvFileState) {
         CsvReader csvReader = null;
@@ -85,8 +86,8 @@ public abstract class CSVStrategy {
         return createBuilder(csvFileState, headers, typesFromData);
     }
 
-    public static SimpleFeatureTypeBuilder createBuilder(CSVFileState csvFileState,
-            String[] headers, Map<String, Class<?>> typesFromData) {
+    public static SimpleFeatureTypeBuilder createBuilder(
+            CSVFileState csvFileState, String[] headers, Map<String, Class<?>> typesFromData) {
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
         builder.setName(csvFileState.getTypeName());
         builder.setCRS(csvFileState.getCrs());
@@ -100,13 +101,12 @@ public abstract class CSVStrategy {
         return builder;
     }
 
-    /** 
-     * Performs a full file scan attempting to guess the type of each column
-     * Specific strategy implementations will expand this functionality by
-     * overriding the buildFeatureType() method.
+    /**
+     * Performs a full file scan attempting to guess the type of each column Specific strategy
+     * implementations will expand this functionality by overriding the buildFeatureType() method.
      */
-    protected static Map<String, Class<?>> findMostSpecificTypesFromData(CsvReader csvReader,
-            String[] headers) throws IOException {
+    protected static Map<String, Class<?>> findMostSpecificTypesFromData(
+            CsvReader csvReader, String[] headers) throws IOException {
         Map<String, Class<?>> result = new HashMap<String, Class<?>>();
         // start off assuming Integers for everything
         for (String header : headers) {
@@ -123,7 +123,7 @@ public abstract class CSVStrategy {
             for (String value : values) {
                 String header = headers[i];
                 Class<?> type = result.get(header);
-                // For each value in the row, ensure we can still parse it as the 
+                // For each value in the row, ensure we can still parse it as the
                 // defined type for this column; if not, make it more general
                 if (type == Integer.class) {
                     try {
@@ -149,4 +149,5 @@ public abstract class CSVStrategy {
         }
         return result;
     }
+    // docs end findMostSpecificTypesFromData
 }

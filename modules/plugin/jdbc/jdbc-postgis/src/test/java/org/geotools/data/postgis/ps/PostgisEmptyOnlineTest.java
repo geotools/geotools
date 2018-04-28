@@ -20,16 +20,11 @@ import org.geotools.data.postgis.PostgisEmptyTestSetup;
 import org.geotools.jdbc.JDBCEmptyOnlineTest;
 import org.geotools.jdbc.JDBCEmptyTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class PostgisEmptyOnlineTest extends JDBCEmptyOnlineTest {
 
     @Override
     protected JDBCEmptyTestSetup createTestSetup() {
         return new PostgisEmptyTestSetup(new PostGISPSTestSetup());
     }
-
 }

@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2013 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,6 +16,7 @@
  */
 package org.geotools.gce.imagemosaic;
 
+import com.vividsolutions.jts.geom.Polygon;
 import java.awt.image.ColorModel;
 import java.awt.image.IndexColorModel;
 import java.awt.image.SampleModel;
@@ -40,10 +41,8 @@ import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-
 import javax.imageio.spi.ImageReaderSpi;
 import javax.media.jai.ImageLayout;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
@@ -115,34 +114,32 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 
-import com.vividsolutions.jts.geom.Polygon;
-
 /**
- * This class is in responsible for creating and managing the catalog and the configuration of the mosaic
- * 
- * @author Carlo Cancellieri - GeoSolutions SAS
+ * This class is in responsible for creating and managing the catalog and the configuration of the
+ * mosaic
  *
+ * @author Carlo Cancellieri - GeoSolutions SAS
  */
 public class ImageMosaicConfigHandler {
 
     /** Default Logger * */
-    final static Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger(ImageMosaicConfigHandler.class);
+    static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(ImageMosaicConfigHandler.class);
 
     /*
      * Used to check if we can use memory mapped buffers safely. In case the OS cannot be detected, we act as if it was Windows and do not use memory
      * mapped buffers
      */
-    private final static Boolean USE_MEMORY_MAPPED_BUFFERS = !System
-            .getProperty("os.name", "Windows").contains("Windows");
+    private static final Boolean USE_MEMORY_MAPPED_BUFFERS =
+            !System.getProperty("os.name", "Windows").contains("Windows");
 
     private List<PropertiesCollector> propertiesCollectors = null;
 
     private Map<String, MosaicConfigurationBean> configurations = new HashMap<>();
 
     /**
-     * Proper way to stop a thread is not by calling Thread.stop() but by using a shared variable that can be checked in order to notify a terminating
-     * condition.
+     * Proper way to stop a thread is not by calling Thread.stop() but by using a shared variable
+     * that can be checked in order to notify a terminating condition.
      */
     private volatile boolean stop = false;
 
@@ -168,14 +165,16 @@ public class ImageMosaicConfigHandler {
 
     private GranuleHandler granuleHandler = new DefaultGranuleHandler();
 
-    private CoverageNameHandler coverageNameHandler = new CoverageNameHandler(new DefaultCoverageNameCollectorSPI());
+    private CoverageNameHandler coverageNameHandler =
+            new CoverageNameHandler(new DefaultCoverageNameCollectorSPI());
 
     /**
      * Default constructor
      *
      * @throws IllegalArgumentException
      */
-    public ImageMosaicConfigHandler(final CatalogBuilderConfiguration configuration,
+    public ImageMosaicConfigHandler(
+            final CatalogBuilderConfiguration configuration,
             final ImageMosaicEventHandlers eventHandler) {
         Utilities.ensureNonNull("runConfiguration", configuration);
         Utilities.ensureNonNull("eventHandler", eventHandler);
@@ -205,13 +204,13 @@ public class ImageMosaicConfigHandler {
         if (indexer != null) {
             // Overwrite default indexer only when indexer is available
             configuration.setIndexer(indexer);
-            String auxiliaryFileParam = IndexerUtils.getParameter(Utils.Prop.AUXILIARY_FILE,
-                    indexer);
+            String auxiliaryFileParam =
+                    IndexerUtils.getParameter(Utils.Prop.AUXILIARY_FILE, indexer);
             if (auxiliaryFileParam != null) {
                 ancillaryFile = auxiliaryFileParam;
             }
-            String datastoreFileParam = IndexerUtils
-                    .getParameter(Utils.Prop.AUXILIARY_DATASTORE_FILE, indexer);
+            String datastoreFileParam =
+                    IndexerUtils.getParameter(Utils.Prop.AUXILIARY_DATASTORE_FILE, indexer);
             if (datastoreFileParam != null) {
                 datastoreFile = datastoreFileParam;
             }
@@ -227,7 +226,11 @@ public class ImageMosaicConfigHandler {
         initializeGranuleHandler(indexer);
         initializeCoverageNameHandler(indexer);
 
-        updateConfigurationHints(configuration, hints, ancillaryFile, datastoreFile,
+        updateConfigurationHints(
+                configuration,
+                hints,
+                ancillaryFile,
+                datastoreFile,
                 IndexerUtils.getParam(params, Prop.ROOT_MOSAIC_DIR));
 
         // check config
@@ -246,19 +249,21 @@ public class ImageMosaicConfigHandler {
 
         // do we wnat/need something different
         if (indexer != null) {
-            String granuleAcceptorsString = IndexerUtils.getParameter(Prop.GRANULE_ACCEPTORS,
-                    indexer);
+            String granuleAcceptorsString =
+                    IndexerUtils.getParameter(Prop.GRANULE_ACCEPTORS, indexer);
             if (granuleAcceptorsString != null && granuleAcceptorsString.length() > 0) {
                 // parsing indicated granule acceptors
-                Map<String, GranuleAcceptorFactorySPI> granuleAcceptorsMap = GranuleAcceptorFactorySPIFinder
-                        .getGranuleAcceptorFactorySPI();
-                Arrays.stream(granuleAcceptorsString.split(",")).forEach((factoryImpl) -> {
-                    if (granuleAcceptorsMap.containsKey(factoryImpl)) {
-                        granuleAcceptors.addAll(granuleAcceptorsMap.get(factoryImpl).create());
-                    }
-                });
+                Map<String, GranuleAcceptorFactorySPI> granuleAcceptorsMap =
+                        GranuleAcceptorFactorySPIFinder.getGranuleAcceptorFactorySPI();
+                Arrays.stream(granuleAcceptorsString.split(","))
+                        .forEach(
+                                (factoryImpl) -> {
+                                    if (granuleAcceptorsMap.containsKey(factoryImpl)) {
+                                        granuleAcceptors.addAll(
+                                                granuleAcceptorsMap.get(factoryImpl).create());
+                                    }
+                                });
             }
-
         }
 
         // if we didn't find any granule acceptors in the index configuration, use the default
@@ -275,8 +280,9 @@ public class ImageMosaicConfigHandler {
         if (indexer != null) {
             String granuleHandlerString = IndexerUtils.getParameter(Prop.GEOMETRY_HANDLER, indexer);
             if (granuleHandlerString != null && granuleHandlerString.length() > 0) {
-                GranuleHandlerFactorySPI factory = GranuleHandlerFactoryFinder
-                        .getGranuleHandlersSPI().get(granuleHandlerString);
+                GranuleHandlerFactorySPI factory =
+                        GranuleHandlerFactoryFinder.getGranuleHandlersSPI()
+                                .get(granuleHandlerString);
                 if (factory != null) {
                     granuleHandler = factory.create();
                 }
@@ -288,9 +294,10 @@ public class ImageMosaicConfigHandler {
         // we initialized at construction time with the default handler
         // ok, do we need/want something different?
         if (indexer != null) {
-            String coverageNameCollectorString = IndexerUtils.getParameter(Prop.COVERAGE_NAME_COLLECTOR_SPI, indexer);
+            String coverageNameCollectorString =
+                    IndexerUtils.getParameter(Prop.COVERAGE_NAME_COLLECTOR_SPI, indexer);
             if (coverageNameCollectorString != null && coverageNameCollectorString.length() > 0) {
-                //Override default handling machinery
+                // Override default handling machinery
                 coverageNameHandler = new CoverageNameHandler(coverageNameCollectorString);
             }
         }
@@ -304,14 +311,14 @@ public class ImageMosaicConfigHandler {
      * @return a new GranuleCatalog built from the configuration
      * @throws IOException
      */
-    private GranuleCatalog createCatalog(CatalogBuilderConfiguration runConfiguration,
-            boolean create) throws IOException {
+    private GranuleCatalog createCatalog(
+            CatalogBuilderConfiguration runConfiguration, boolean create) throws IOException {
         //
         // create the index
         //
         // do we have a datastore.properties file?
         final File parent = new File(runConfiguration.getParameter(Prop.ROOT_MOSAIC_DIR));
-        
+
         GranuleCatalog catalog;
 
         // Consider checking that from the indexer if any
@@ -325,14 +332,22 @@ public class ImageMosaicConfigHandler {
             if (indexerTypeName != null && properties.getProperty(Prop.TYPENAME) == null) {
                 properties.put(Prop.TYPENAME, indexerTypeName);
             }
-            catalog = createGranuleCatalogFromDatastore(parent, properties, create,
-                    Boolean.parseBoolean(runConfiguration.getParameter(Prop.WRAP_STORE)),
-                    runConfiguration.getHints());
+            catalog =
+                    createGranuleCatalogFromDatastore(
+                            parent,
+                            properties,
+                            create,
+                            Boolean.parseBoolean(runConfiguration.getParameter(Prop.WRAP_STORE)),
+                            runConfiguration.getHints());
         } else {
 
-            // we do not have a datastore properties file therefore we continue with a shapefile datastore
-            final URL file = URLs.fileToUrl(new File(parent,
-                    runConfiguration.getParameter(Prop.INDEX_NAME) + ".shp"));
+            // we do not have a datastore properties file therefore we continue with a shapefile
+            // datastore
+            final URL file =
+                    URLs.fileToUrl(
+                            new File(
+                                    parent,
+                                    runConfiguration.getParameter(Prop.INDEX_NAME) + ".shp"));
             final Properties params = new Properties();
             params.put(ShapefileDataStoreFactory.URLP.key, file);
             if (file.getProtocol().equalsIgnoreCase("file")) {
@@ -340,12 +355,14 @@ public class ImageMosaicConfigHandler {
             }
             params.put(ShapefileDataStoreFactory.MEMORY_MAPPED.key, USE_MEMORY_MAPPED_BUFFERS);
             params.put(ShapefileDataStoreFactory.DBFTIMEZONE.key, TimeZone.getTimeZone("UTC"));
-            params.put(Prop.LOCATION_ATTRIBUTE,
+            params.put(
+                    Prop.LOCATION_ATTRIBUTE,
                     runConfiguration.getParameter(Prop.LOCATION_ATTRIBUTE));
-            catalog = GranuleCatalogFactory.createGranuleCatalog(params, false, create,
-                    Utils.SHAPE_SPI, runConfiguration.getHints());
-            MultiLevelROIProvider roi = MultiLevelROIProviderMosaicFactory
-                    .createFootprintProvider(parent);
+            catalog =
+                    GranuleCatalogFactory.createGranuleCatalog(
+                            params, false, create, Utils.SHAPE_SPI, runConfiguration.getHints());
+            MultiLevelROIProvider roi =
+                    MultiLevelROIProviderMosaicFactory.createFootprintProvider(parent);
             catalog.setMultiScaleROIProvider(roi);
         }
 
@@ -353,8 +370,8 @@ public class ImageMosaicConfigHandler {
     }
 
     static Properties createGranuleCatalogProperties(File datastoreProperties) throws IOException {
-        Properties properties = CoverageUtilities
-                .loadPropertiesFromURL(URLs.fileToUrl(datastoreProperties));
+        Properties properties =
+                CoverageUtilities.loadPropertiesFromURL(URLs.fileToUrl(datastoreProperties));
         if (properties == null) {
             throw new IOException(
                     "Unable to load properties from:" + datastoreProperties.getAbsolutePath());
@@ -362,28 +379,27 @@ public class ImageMosaicConfigHandler {
         return properties;
     }
 
-    static GranuleCatalog createGranuleCatalogFromDatastore(File parent, File datastoreProperties,
-            boolean create, Hints hints) throws IOException {
+    static GranuleCatalog createGranuleCatalogFromDatastore(
+            File parent, File datastoreProperties, boolean create, Hints hints) throws IOException {
         return createGranuleCatalogFromDatastore(parent, datastoreProperties, create, false, hints);
     }
 
-    /**
-     * Create a granule catalog from a datastore properties file
-     */
-    private static GranuleCatalog createGranuleCatalogFromDatastore(File parent,
-            File datastoreProperties, boolean create, boolean wraps, Hints hints)
+    /** Create a granule catalog from a datastore properties file */
+    private static GranuleCatalog createGranuleCatalogFromDatastore(
+            File parent, File datastoreProperties, boolean create, boolean wraps, Hints hints)
             throws IOException {
         Utilities.ensureNonNull("datastoreProperties", datastoreProperties);
         Properties properties = createGranuleCatalogProperties(datastoreProperties);
         return createGranuleCatalogFromDatastore(parent, properties, create, wraps, hints);
     }
 
-    private static GranuleCatalog createGranuleCatalogFromDatastore(File parent,
-            Properties properties, boolean create, boolean wraps, Hints hints) throws IOException {
+    private static GranuleCatalog createGranuleCatalogFromDatastore(
+            File parent, Properties properties, boolean create, boolean wraps, Hints hints)
+            throws IOException {
         GranuleCatalog catalog = null;
         // SPI
         final String SPIClass = properties.getProperty("SPI");
-        DataStoreFactorySpi spi = null; 
+        DataStoreFactorySpi spi = null;
         try {
             if (SPIClass == null) {
                 if (properties.get(Utils.Prop.STORE_NAME) == null) {
@@ -394,17 +410,19 @@ public class ImageMosaicConfigHandler {
                 // create a datastore as instructed
                 spi = (DataStoreFactorySpi) Class.forName(SPIClass).newInstance();
             }
-            // set ParentLocation parameter since for embedded database like H2 we must change the database
+            // set ParentLocation parameter since for embedded database like H2 we must change the
+            // database
             // to incorporate the path where to write the db
             properties.put("ParentLocation", URLs.fileToUrl(parent).toExternalForm());
             if (wraps) {
                 properties.put(Prop.WRAP_STORE, wraps);
             }
 
-            catalog = GranuleCatalogFactory.createGranuleCatalog(properties, false, create, spi,
-                    hints);
-            MultiLevelROIProvider rois = MultiLevelROIProviderMosaicFactory
-                    .createFootprintProvider(parent);
+            catalog =
+                    GranuleCatalogFactory.createGranuleCatalog(
+                            properties, false, create, spi, hints);
+            MultiLevelROIProvider rois =
+                    MultiLevelROIProviderMosaicFactory.createFootprintProvider(parent);
             catalog.setMultiScaleROIProvider(rois);
 
         } catch (Exception e) {
@@ -416,10 +434,13 @@ public class ImageMosaicConfigHandler {
 
     /**
      * Create a {@link SimpleFeatureType} from the specified configuration.
+     *
      * @return the schema for the mosaic
      */
-    private SimpleFeatureType createSchema(CatalogBuilderConfiguration runConfiguration,
-            String name, CoordinateReferenceSystem actualCRS) {
+    private SimpleFeatureType createSchema(
+            CatalogBuilderConfiguration runConfiguration,
+            String name,
+            CoordinateReferenceSystem actualCRS) {
         SimpleFeatureType indexSchema = null;
         SchemaType schema = null;
         String schemaAttributes = null;
@@ -449,8 +470,9 @@ public class ImageMosaicConfigHandler {
             try {
                 indexSchema = DataUtilities.createType(name, schemaAttributes);
                 // override the crs in case the provided one was wrong or absent
-                indexSchema = DataUtilities.createSubType(indexSchema,
-                        DataUtilities.attributeNames(indexSchema), actualCRS);
+                indexSchema =
+                        DataUtilities.createSubType(
+                                indexSchema, DataUtilities.attributeNames(indexSchema), actualCRS);
                 if (actualCRS != null) {
                     Set<ReferenceIdentifier> identifiers = actualCRS.getIdentifiers();
                     if (identifiers == null || identifiers.isEmpty()) {
@@ -476,8 +498,8 @@ public class ImageMosaicConfigHandler {
             String typeName = runConfiguration.getParameter(Prop.TYPENAME);
             featureBuilder.setName(typeName != null ? typeName : name);
             featureBuilder.setNamespaceURI("http://www.geo-solutions.it/");
-            featureBuilder.add(runConfiguration.getParameter(Prop.LOCATION_ATTRIBUTE).trim(),
-                    String.class);
+            featureBuilder.add(
+                    runConfiguration.getParameter(Prop.LOCATION_ATTRIBUTE).trim(), String.class);
             featureBuilder.add("the_geom", Polygon.class, actualCRS);
             featureBuilder.setDefaultGeometry("the_geom");
             String timeAttribute = runConfiguration.getTimeAttribute();
@@ -494,8 +516,8 @@ public class ImageMosaicConfigHandler {
      * @param featureBuilder
      * @param classType TODO: Remove that once reworking on the dimension stuff
      */
-    private static void addAttributes(String attribute, SimpleFeatureTypeBuilder featureBuilder,
-            Class classType) {
+    private static void addAttributes(
+            String attribute, SimpleFeatureTypeBuilder featureBuilder, Class classType) {
         if (attribute != null) {
             if (!attribute.contains(Utils.RANGE_SPLITTER_CHAR)) {
                 featureBuilder.add(attribute, classType);
@@ -511,12 +533,12 @@ public class ImageMosaicConfigHandler {
                 }
             }
         }
-
     }
 
     /**
-     * Get a {@link GranuleSource} related to a specific coverageName from an inputReader and put the related granules into a {@link GranuleStore}
-     * related to the same coverageName of the mosaicReader.
+     * Get a {@link GranuleSource} related to a specific coverageName from an inputReader and put
+     * the related granules into a {@link GranuleStore} related to the same coverageName of the
+     * mosaicReader.
      *
      * @param coverageName the name of the coverage to be managed
      * @param fileBeingProcessed the reference input file
@@ -528,9 +550,13 @@ public class ImageMosaicConfigHandler {
      * @param propertiesCollectors list of properties collectors to use
      * @throws IOException
      */
-    private void updateCatalog(final String coverageName, final File fileBeingProcessed,
-            final GridCoverage2DReader inputReader, final ImageMosaicReader mosaicReader,
-            final CatalogBuilderConfiguration configuration, final GeneralEnvelope envelope,
+    private void updateCatalog(
+            final String coverageName,
+            final File fileBeingProcessed,
+            final GridCoverage2DReader inputReader,
+            final ImageMosaicReader mosaicReader,
+            final CatalogBuilderConfiguration configuration,
+            final GeneralEnvelope envelope,
             final DefaultTransaction transaction,
             final List<PropertiesCollector> propertiesCollectors)
             throws IOException, GranuleHandlingException {
@@ -542,8 +568,8 @@ public class ImageMosaicConfigHandler {
                     "No valid granule store has been found for: " + coverageName);
         }
         final SimpleFeatureType indexSchema = store.getSchema();
-        final SimpleFeature feature = new ShapefileCompatibleFeature(
-                DataUtilities.template(indexSchema));
+        final SimpleFeature feature =
+                new ShapefileCompatibleFeature(DataUtilities.template(indexSchema));
         store.setTransaction(transaction);
 
         final ListFeatureCollection collection = new ListFeatureCollection(indexSchema);
@@ -555,41 +581,63 @@ public class ImageMosaicConfigHandler {
         // getting input granules
         if (inputReader instanceof StructuredGridCoverage2DReader) {
             //
-            // Case A: input reader is a StructuredGridCoverage2DReader. We can get granules from a source
+            // Case A: input reader is a StructuredGridCoverage2DReader. We can get granules from a
+            // source
             //
             handleStructuredGridCoverage(
                     ((StructuredGridCoverage2DReader) inputReader).getGranules(coverageName, true),
-                    fileBeingProcessed, inputReader, propertiesCollectors, indexSchema, feature,
-                    collection, fileLocation, locationAttribute, mosaicConfiguration);
+                    fileBeingProcessed,
+                    inputReader,
+                    propertiesCollectors,
+                    indexSchema,
+                    feature,
+                    collection,
+                    fileLocation,
+                    locationAttribute,
+                    mosaicConfiguration);
 
         } else {
             //
             // Case B: old style reader, proceed with classic way, using properties collectors
             //
-            geometryHandler.handleGranule(fileBeingProcessed, inputReader, feature, indexSchema,
-                    null, null, mosaicConfiguration);
+            geometryHandler.handleGranule(
+                    fileBeingProcessed,
+                    inputReader,
+                    feature,
+                    indexSchema,
+                    null,
+                    null,
+                    mosaicConfiguration);
             feature.setAttribute(locationAttribute, fileLocation);
 
-            updateAttributesFromCollectors(feature, fileBeingProcessed, inputReader,
-                    propertiesCollectors);
+            updateAttributesFromCollectors(
+                    feature, fileBeingProcessed, inputReader, propertiesCollectors);
             collection.add(feature);
         }
 
         // drop all the granules associated to the same
-        Filter filter = Utils.FF.equal(Utils.FF.property(locationAttribute),
-                Utils.FF.literal(fileLocation), !isCaseSensitiveFileSystem(fileBeingProcessed));
+        Filter filter =
+                Utils.FF.equal(
+                        Utils.FF.property(locationAttribute),
+                        Utils.FF.literal(fileLocation),
+                        !isCaseSensitiveFileSystem(fileBeingProcessed));
         store.removeGranules(filter);
 
         // Add the granules collection to the store
         store.addGranules(collection);
     }
 
-    private void handleStructuredGridCoverage(GranuleSource granules, final File fileBeingProcessed,
+    private void handleStructuredGridCoverage(
+            GranuleSource granules,
+            final File fileBeingProcessed,
             final GridCoverage2DReader inputReader,
             final List<PropertiesCollector> propertiesCollectors,
-            final SimpleFeatureType indexSchema, SimpleFeature feature,
-            final ListFeatureCollection collection, final String fileLocation,
-            final String locationAttribute, final MosaicConfigurationBean mosaicConfiguration)
+            final SimpleFeatureType indexSchema,
+            SimpleFeature feature,
+            final ListFeatureCollection collection,
+            final String fileLocation,
+            final String locationAttribute,
+            final MosaicConfigurationBean mosaicConfiguration)
             throws IOException {
 
         // Getting granule source and its input granules
@@ -606,59 +654,72 @@ public class ImageMosaicConfigHandler {
 
         // Collecting granules
         final GranuleHandler geometryHandler = this.granuleHandler;
-        originCollection.accepts(new AbstractFeatureVisitor() {
-            public void visit(Feature feature) {
-                if (feature instanceof SimpleFeature) {
-                    // get the feature
-                    final SimpleFeature sourceFeature = (SimpleFeature) feature;
-                    final SimpleFeature destFeature = DataUtilities.template(indexSchema);
-                    Collection<Property> props = sourceFeature.getProperties();
-                    Name propName = null;
-                    Object propValue = null;
+        originCollection.accepts(
+                new AbstractFeatureVisitor() {
+                    public void visit(Feature feature) {
+                        if (feature instanceof SimpleFeature) {
+                            // get the feature
+                            final SimpleFeature sourceFeature = (SimpleFeature) feature;
+                            final SimpleFeature destFeature = DataUtilities.template(indexSchema);
+                            Collection<Property> props = sourceFeature.getProperties();
+                            Name propName = null;
+                            Object propValue = null;
 
-                    // Assigning value to dest feature for matching attributes
-                    for (Property prop : props) {
-                        Name geometryName = sourceFeature.getFeatureType().getGeometryDescriptor()
-                                .getName();
-                        if (prop.getName().equals(geometryName)) {
-                            try {
-                                geometryHandler.handleGranule(fileBeingProcessed,
-                                        (StructuredGridCoverage2DReader) inputReader, destFeature,
-                                        destFeature.getFeatureType(), sourceFeature,
-                                        sourceFeature.getFeatureType(), mosaicConfiguration);
-                            } catch (GranuleHandlingException e) {
-                                throw new RuntimeException(
-                                        "Error handling structured coverage granule", e);
+                            // Assigning value to dest feature for matching attributes
+                            for (Property prop : props) {
+                                Name geometryName =
+                                        sourceFeature
+                                                .getFeatureType()
+                                                .getGeometryDescriptor()
+                                                .getName();
+                                if (prop.getName().equals(geometryName)) {
+                                    try {
+                                        geometryHandler.handleGranule(
+                                                fileBeingProcessed,
+                                                (StructuredGridCoverage2DReader) inputReader,
+                                                destFeature,
+                                                destFeature.getFeatureType(),
+                                                sourceFeature,
+                                                sourceFeature.getFeatureType(),
+                                                mosaicConfiguration);
+                                    } catch (GranuleHandlingException e) {
+                                        throw new RuntimeException(
+                                                "Error handling structured coverage granule", e);
+                                    }
+                                } else {
+                                    propName = prop.getName();
+                                    propValue = prop.getValue();
+
+                                    // Matching attributes are set
+                                    if (destAttributes.contains(propName)) {
+                                        destFeature.setAttribute(propName, propValue);
+                                    }
+                                }
                             }
-                        } else {
-                            propName = prop.getName();
-                            propValue = prop.getValue();
 
-                            // Matching attributes are set
-                            if (destAttributes.contains(propName)) {
-                                destFeature.setAttribute(propName, propValue);
+                            // Set location
+                            destFeature.setAttribute(locationAttribute, fileLocation);
+
+                            // delegate remaining attributes set to properties collector
+                            updateAttributesFromCollectors(
+                                    destFeature,
+                                    fileBeingProcessed,
+                                    inputReader,
+                                    propertiesCollectors);
+                            collection.add(destFeature);
+
+                            // check if something bad occurred
+                            if (listener.isCanceled() || listener.hasExceptions()) {
+                                if (listener.hasExceptions())
+                                    throw new RuntimeException(listener.getExceptions().peek());
+                                else
+                                    throw new IllegalStateException(
+                                            "Feature visitor has been canceled");
                             }
                         }
                     }
-
-                    // Set location
-                    destFeature.setAttribute(locationAttribute, fileLocation);
-
-                    // delegate remaining attributes set to properties collector
-                    updateAttributesFromCollectors(destFeature, fileBeingProcessed, inputReader,
-                            propertiesCollectors);
-                    collection.add(destFeature);
-
-                    // check if something bad occurred
-                    if (listener.isCanceled() || listener.hasExceptions()) {
-                        if (listener.hasExceptions())
-                            throw new RuntimeException(listener.getExceptions().peek());
-                        else
-                            throw new IllegalStateException("Feature visitor has been canceled");
-                    }
-                }
-            }
-        }, listener);
+                },
+                listener);
     }
 
     private GranuleHandler getGeometryHandler() {
@@ -666,17 +727,23 @@ public class ImageMosaicConfigHandler {
     }
 
     /**
-     * Checks if the file system is case sensitive or not using File.exists (the only method that also works on OSX too according to
-     * http://stackoverflow.com/questions/1288102/how-do-i-detect-whether-the-file-system-is-case-sensitive )
+     * Checks if the file system is case sensitive or not using File.exists (the only method that
+     * also works on OSX too according to
+     * http://stackoverflow.com/questions/1288102/how-do-i-detect-whether-the-file-system-is-case-sensitive
+     * )
      *
      * @param fileBeingProcessed
      * @return
      */
     private static boolean isCaseSensitiveFileSystem(File fileBeingProcessed) {
-        File loCase = new File(fileBeingProcessed.getParentFile(),
-                fileBeingProcessed.getName().toLowerCase());
-        File upCase = new File(fileBeingProcessed.getParentFile(),
-                fileBeingProcessed.getName().toUpperCase());
+        File loCase =
+                new File(
+                        fileBeingProcessed.getParentFile(),
+                        fileBeingProcessed.getName().toLowerCase());
+        File upCase =
+                new File(
+                        fileBeingProcessed.getParentFile(),
+                        fileBeingProcessed.getName().toUpperCase());
         return loCase.exists() && upCase.exists();
     }
 
@@ -688,8 +755,10 @@ public class ImageMosaicConfigHandler {
      * @param inputReader
      * @param propertiesCollectors
      */
-    private static void updateAttributesFromCollectors(final SimpleFeature feature,
-            final File fileBeingProcessed, final GridCoverage2DReader inputReader,
+    private static void updateAttributesFromCollectors(
+            final SimpleFeature feature,
+            final File fileBeingProcessed,
+            final GridCoverage2DReader inputReader,
             final List<PropertiesCollector> propertiesCollectors) {
         // collect and dump properties
         if (propertiesCollectors != null && propertiesCollectors.size() > 0)
@@ -697,7 +766,6 @@ public class ImageMosaicConfigHandler {
                 pc.collect(fileBeingProcessed).collect(inputReader).setProperties(feature);
                 pc.reset();
             }
-
     }
 
     /**
@@ -708,8 +776,9 @@ public class ImageMosaicConfigHandler {
      * @return
      * @throws IOException
      */
-    private static String prepareLocation(CatalogBuilderConfiguration runConfiguration,
-            final File fileBeingProcessed) throws IOException {
+    private static String prepareLocation(
+            CatalogBuilderConfiguration runConfiguration, final File fileBeingProcessed)
+            throws IOException {
         // absolute
         if (Boolean.valueOf(runConfiguration.getParameter(Prop.ABSOLUTE_PATH))) {
             return fileBeingProcessed.getAbsolutePath();
@@ -718,22 +787,28 @@ public class ImageMosaicConfigHandler {
         // relative
         String targetPath = fileBeingProcessed.getCanonicalPath();
         String basePath = runConfiguration.getParameter(Prop.ROOT_MOSAIC_DIR);
-        String relative = getRelativePath(targetPath, basePath, File.separator); // TODO: Remove this replace after fixing the quote escaping
+        String relative =
+                getRelativePath(
+                        targetPath,
+                        basePath,
+                        File.separator); // TODO: Remove this replace after fixing the quote
+        // escaping
         return relative;
     }
 
     /**
-     * Get the relative path from one file to another, specifying the directory separator. If one of the provided resources does not exist, it is
-     * assumed to be a file unless it ends with '/' or '\'.
+     * Get the relative path from one file to another, specifying the directory separator. If one of
+     * the provided resources does not exist, it is assumed to be a file unless it ends with '/' or
+     * '\'.
      *
      * @param targetPath targetPath is calculated to this file
      * @param basePath basePath is calculated from this file
-     * @param pathSeparator directory separator. The platform default is not assumed so that we can test Unix behaviour when running on Windows (for
-     *        example)
+     * @param pathSeparator directory separator. The platform default is not assumed so that we can
+     *     test Unix behaviour when running on Windows (for example)
      * @return
      */
-    private static String getRelativePath(String targetPath, String basePath,
-            String pathSeparator) {
+    private static String getRelativePath(
+            String targetPath, String basePath, String pathSeparator) {
 
         // Normalize the paths
         String normalizedTargetPath = FilenameUtils.normalizeNoEndSeparator(targetPath);
@@ -761,7 +836,8 @@ public class ImageMosaicConfigHandler {
         StringBuilder common = new StringBuilder();
 
         int commonIndex = 0;
-        while (commonIndex < target.length && commonIndex < base.length
+        while (commonIndex < target.length
+                && commonIndex < base.length
                 && target[commonIndex].equals(base[commonIndex])) {
             common.append(target[commonIndex] + pathSeparator);
             commonIndex++;
@@ -771,11 +847,16 @@ public class ImageMosaicConfigHandler {
             // No single common path element. This most
             // likely indicates differing drive letters, like C: and D:.
             // These paths cannot be relativized.
-            throw new RuntimeException("No common path element found for '" + normalizedTargetPath
-                    + "' and '" + normalizedBasePath + "'");
+            throw new RuntimeException(
+                    "No common path element found for '"
+                            + normalizedTargetPath
+                            + "' and '"
+                            + normalizedBasePath
+                            + "'");
         }
 
-        // The number of directories we have to backtrack depends on whether the base is a file or a dir
+        // The number of directories we have to backtrack depends on whether the base is a file or a
+        // dir
         // For example, the relative path from
         //
         // /foo/bar/baz/gg/ff to /foo/bar/baz
@@ -783,7 +864,8 @@ public class ImageMosaicConfigHandler {
         // ".." if ff is a file
         // "../.." if ff is a directory
         //
-        // The following is a heuristic to figure out if the base refers to a file or dir. It's not perfect, because
+        // The following is a heuristic to figure out if the base refers to a file or dir. It's not
+        // perfect, because
         // the resource referred to by this path may not actually exist, but it's the best I can do
         boolean baseIsFile = true;
 
@@ -810,7 +892,8 @@ public class ImageMosaicConfigHandler {
     }
 
     /**
-     * Make sure a proper type name is specified in the catalogBean, it will be used to create the {@link GranuleCatalog}
+     * Make sure a proper type name is specified in the catalogBean, it will be used to create the
+     * {@link GranuleCatalog}
      *
      * @param sourceURL
      * @param configuration
@@ -841,8 +924,9 @@ public class ImageMosaicConfigHandler {
      * @return
      * @throws IOException
      */
-    static GranuleCatalog createCatalog(final URL sourceURL,
-            final MosaicConfigurationBean configuration, Hints hints) throws IOException {
+    static GranuleCatalog createCatalog(
+            final URL sourceURL, final MosaicConfigurationBean configuration, Hints hints)
+            throws IOException {
         CatalogConfigurationBean catalogBean = configuration.getCatalogConfigurationBean();
 
         // Check the typeName
@@ -854,11 +938,11 @@ public class ImageMosaicConfigHandler {
             }
         }
         // Create the catalog
-        GranuleCatalog catalog = GranuleCatalogFactory.createGranuleCatalog(sourceURL, catalogBean,
-                null, hints);
+        GranuleCatalog catalog =
+                GranuleCatalogFactory.createGranuleCatalog(sourceURL, catalogBean, null, hints);
         File parent = URLs.urlToFile(sourceURL).getParentFile();
-        MultiLevelROIProvider rois = MultiLevelROIProviderMosaicFactory
-                .createFootprintProvider(parent);
+        MultiLevelROIProvider rois =
+                MultiLevelROIProviderMosaicFactory.createFootprintProvider(parent);
         catalog.setMultiScaleROIProvider(rois);
 
         return catalog;
@@ -879,20 +963,40 @@ public class ImageMosaicConfigHandler {
         }
     }
 
-    private void updateConfigurationHints(final CatalogBuilderConfiguration configuration,
-            Hints hints, final String ancillaryFile, final String datastoreFile,
+    private void updateConfigurationHints(
+            final CatalogBuilderConfiguration configuration,
+            Hints hints,
+            final String ancillaryFile,
+            final String datastoreFile,
             final String rootMosaicDir) {
-        final boolean isAbsolutePath = Boolean
-                .parseBoolean(configuration.getParameter(Prop.ABSOLUTE_PATH));
-        hints = updateHints(ancillaryFile, isAbsolutePath, rootMosaicDir, configuration, hints,
-                Utils.AUXILIARY_FILES_PATH);
-        hints = updateHints(datastoreFile, isAbsolutePath, rootMosaicDir, configuration, hints,
-                Utils.AUXILIARY_DATASTORE_PATH);
+        final boolean isAbsolutePath =
+                Boolean.parseBoolean(configuration.getParameter(Prop.ABSOLUTE_PATH));
+        hints =
+                updateHints(
+                        ancillaryFile,
+                        isAbsolutePath,
+                        rootMosaicDir,
+                        configuration,
+                        hints,
+                        Utils.AUXILIARY_FILES_PATH);
+        hints =
+                updateHints(
+                        datastoreFile,
+                        isAbsolutePath,
+                        rootMosaicDir,
+                        configuration,
+                        hints,
+                        Utils.AUXILIARY_DATASTORE_PATH);
         setReader(hints, true);
     }
 
-    private Hints updateHints(String filePath, boolean isAbsolutePath, String rootMosaicDir,
-            CatalogBuilderConfiguration configuration, Hints hints, Key key) {
+    private Hints updateHints(
+            String filePath,
+            boolean isAbsolutePath,
+            String rootMosaicDir,
+            CatalogBuilderConfiguration configuration,
+            Hints hints,
+            Key key) {
         String updatedFilePath = null;
         if (filePath != null) {
             if (isAbsolutePath && !filePath.startsWith(rootMosaicDir)) {
@@ -916,10 +1020,9 @@ public class ImageMosaicConfigHandler {
 
     /**
      * Perform proper clean up.
-     * 
-     * <p>
-     * Make sure to call this method when you are not running the {@link ImageMosaicConfigHandler} or bad things can happen. If it is running, please
-     * stop it first.
+     *
+     * <p>Make sure to call this method when you are not running the {@link
+     * ImageMosaicConfigHandler} or bad things can happen. If it is running, please stop it first.
      */
     public void reset() {
         eventHandler.removeAllProcessingEventListeners();
@@ -928,7 +1031,6 @@ public class ImageMosaicConfigHandler {
 
         // fileIndex = 0;
         runConfiguration = null;
-
     }
 
     public boolean getStop() {
@@ -967,16 +1069,15 @@ public class ImageMosaicConfigHandler {
         return catalog;
     }
 
-    /**
-     * Load properties collectors from the configuration
-     */
+    /** Load properties collectors from the configuration */
     private void loadPropertyCollectors() {
         // load property collectors
         Indexer indexer = runConfiguration.getIndexer();
         Collectors collectors = indexer.getCollectors();
-        // check whether this indexer allows heterogeneous CRS, then we know we need the CRS collector
-        Boolean heterogeneousCRS = Boolean
-            .valueOf(IndexerUtils.getParameter(Prop.HETEROGENEOUS_CRS, indexer));
+        // check whether this indexer allows heterogeneous CRS, then we know we need the CRS
+        // collector
+        Boolean heterogeneousCRS =
+                Boolean.valueOf(IndexerUtils.getParameter(Prop.HETEROGENEOUS_CRS, indexer));
         if (collectors == null) {
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("No properties collector have been found");
@@ -993,8 +1094,8 @@ public class ImageMosaicConfigHandler {
         List<Collector> collectorList = collectors.getCollector();
 
         // load the SPI set
-        final Set<PropertiesCollectorSPI> pcSPIs = PropertiesCollectorFinder
-                .getPropertiesCollectorSPI();
+        final Set<PropertiesCollectorSPI> pcSPIs =
+                PropertiesCollectorFinder.getPropertiesCollectorSPI();
 
         // parse the string
         final List<PropertiesCollector> pcs = new ArrayList<>();
@@ -1029,8 +1130,8 @@ public class ImageMosaicConfigHandler {
             }
 
             // create the PropertiesCollector
-            final PropertiesCollector pc = selectedSPI.create(config,
-                    Arrays.asList(collector.getMapped()));
+            final PropertiesCollector pc =
+                    selectedSPI.create(config, Arrays.asList(collector.getMapped()));
             if (pc != null) {
                 hasCRSCollector |= pc instanceof CRSExtractor;
                 pcs.add(pc);
@@ -1040,8 +1141,8 @@ public class ImageMosaicConfigHandler {
                 }
             }
         }
-        
-        if(heterogeneousCRS && !hasCRSCollector) {
+
+        if (heterogeneousCRS && !hasCRSCollector) {
             pcs.add(new CRSExtractor());
         }
 
@@ -1078,25 +1179,41 @@ public class ImageMosaicConfigHandler {
                 final String base = FilenameUtils.getName(parent.getAbsolutePath());
                 // we create a root properties file if we have more than one coverage, or if the
                 // one coverage does not have the default name
-                if (supportsEmpty || keySize > 1
+                if (supportsEmpty
+                        || keySize > 1
                         || (keySize > 0 && !base.equals(keys.iterator().next()))) {
                     File mosaicFile = null;
                     File originFile = null;
                     if (indexerFile.getAbsolutePath().endsWith("xml")) {
-                        mosaicFile = new File(indexerFile.getAbsolutePath()
-                                .replace(IndexerUtils.INDEXER_XML, (base + ".xml")));
+                        mosaicFile =
+                                new File(
+                                        indexerFile
+                                                .getAbsolutePath()
+                                                .replace(
+                                                        IndexerUtils.INDEXER_XML, (base + ".xml")));
                         originFile = indexerFile;
                     } else if (indexerFile.getAbsolutePath().endsWith("properties")) {
-                        mosaicFile = new File(indexerFile.getAbsolutePath()
-                                .replace(IndexerUtils.INDEXER_PROPERTIES, (base + ".properties")));
+                        mosaicFile =
+                                new File(
+                                        indexerFile
+                                                .getAbsolutePath()
+                                                .replace(
+                                                        IndexerUtils.INDEXER_PROPERTIES,
+                                                        (base + ".properties")));
                         originFile = indexerFile;
                     } else {
-                        final String source = runConfiguration.getParameter(Prop.ROOT_MOSAIC_DIR)
-                                + File.separatorChar
-                                + configurations.get(keys.iterator().next()).getName()
-                                + ".properties";
-                        mosaicFile = new File(indexerFile.getAbsolutePath()
-                                .replace(IndexerUtils.INDEXER_PROPERTIES, (base + ".properties")));
+                        final String source =
+                                runConfiguration.getParameter(Prop.ROOT_MOSAIC_DIR)
+                                        + File.separatorChar
+                                        + configurations.get(keys.iterator().next()).getName()
+                                        + ".properties";
+                        mosaicFile =
+                                new File(
+                                        indexerFile
+                                                .getAbsolutePath()
+                                                .replace(
+                                                        IndexerUtils.INDEXER_PROPERTIES,
+                                                        (base + ".properties")));
                         originFile = new File(source);
                     }
                     if (!mosaicFile.exists()) {
@@ -1117,11 +1234,9 @@ public class ImageMosaicConfigHandler {
         }
     }
 
-    /**
-     * Store a sample image frmo which we can derive the default SM and CM
-     */
-    private void createSampleImage(final MosaicConfigurationBean mosaicConfiguration,
-            final boolean useName) {
+    /** Store a sample image frmo which we can derive the default SM and CM */
+    private void createSampleImage(
+            final MosaicConfigurationBean mosaicConfiguration, final boolean useName) {
         // create a sample image to store SM and CM
         Utilities.ensureNonNull("mosaicConfiguration", mosaicConfiguration);
         String filePath = null;
@@ -1131,10 +1246,14 @@ public class ImageMosaicConfigHandler {
             // sample image file
             // TODO: Consider revisit this using different name/folder
             final String baseName = runConfiguration.getParameter(Prop.ROOT_MOSAIC_DIR) + "/";
-            filePath = baseName + (useName ? mosaicConfiguration.getName() : "")
-                    + Utils.SAMPLE_IMAGE_NAME;
+            filePath =
+                    baseName
+                            + (useName ? mosaicConfiguration.getName() : "")
+                            + Utils.SAMPLE_IMAGE_NAME;
             try {
-                Utils.storeSampleImage(new File(filePath), mosaicConfiguration.getSampleModel(),
+                Utils.storeSampleImage(
+                        new File(filePath),
+                        mosaicConfiguration.getSampleModel(),
                         mosaicConfiguration.getColorModel());
             } catch (IOException e) {
                 eventHandler.fireEvent(Level.SEVERE, e.getLocalizedMessage(), 0);
@@ -1142,9 +1261,7 @@ public class ImageMosaicConfigHandler {
         }
     }
 
-    /**
-     * Creates the final properties file.
-     */
+    /** Creates the final properties file. */
     private void createPropertiesFiles(MosaicConfigurationBean mosaicConfiguration) {
 
         //
@@ -1153,42 +1270,42 @@ public class ImageMosaicConfigHandler {
         // CREATING GENERAL INFO FILE
         //
 
-        CatalogConfigurationBean catalogConfigurationBean = mosaicConfiguration
-                .getCatalogConfigurationBean();
+        CatalogConfigurationBean catalogConfigurationBean =
+                mosaicConfiguration.getCatalogConfigurationBean();
 
         // envelope
         final Properties properties = new Properties();
-        properties.setProperty(Utils.Prop.PATH_TYPE,
-                catalogConfigurationBean.getPathType().toString());
-        properties.setProperty(Utils.Prop.LOCATION_ATTRIBUTE,
-                catalogConfigurationBean.getLocationAttribute());
+        properties.setProperty(
+                Utils.Prop.PATH_TYPE, catalogConfigurationBean.getPathType().toString());
+        properties.setProperty(
+                Utils.Prop.LOCATION_ATTRIBUTE, catalogConfigurationBean.getLocationAttribute());
 
         // Time
         final String timeAttribute = mosaicConfiguration.getTimeAttribute();
         if (timeAttribute != null) {
-            properties.setProperty(Utils.Prop.TIME_ATTRIBUTE,
-                    mosaicConfiguration.getTimeAttribute());
+            properties.setProperty(
+                    Utils.Prop.TIME_ATTRIBUTE, mosaicConfiguration.getTimeAttribute());
         }
 
         // Elevation
         final String elevationAttribute = mosaicConfiguration.getElevationAttribute();
         if (elevationAttribute != null) {
-            properties.setProperty(Utils.Prop.ELEVATION_ATTRIBUTE,
-                    mosaicConfiguration.getElevationAttribute());
+            properties.setProperty(
+                    Utils.Prop.ELEVATION_ATTRIBUTE, mosaicConfiguration.getElevationAttribute());
         }
-        
+
         // CRS
         final String crsAttribute = mosaicConfiguration.getCRSAttribute();
         if (crsAttribute != null) {
-            properties.setProperty(Utils.Prop.CRS_ATTRIBUTE,
-                    mosaicConfiguration.getCRSAttribute());
+            properties.setProperty(Utils.Prop.CRS_ATTRIBUTE, mosaicConfiguration.getCRSAttribute());
         }
 
         // Additional domains
-        final String additionalDomainAttribute = mosaicConfiguration
-                .getAdditionalDomainAttributes();
+        final String additionalDomainAttribute =
+                mosaicConfiguration.getAdditionalDomainAttributes();
         if (additionalDomainAttribute != null) {
-            properties.setProperty(Utils.Prop.ADDITIONAL_DOMAIN_ATTRIBUTES,
+            properties.setProperty(
+                    Utils.Prop.ADDITIONAL_DOMAIN_ATTRIBUTES,
                     mosaicConfiguration.getAdditionalDomainAttributes());
         }
 
@@ -1197,7 +1314,8 @@ public class ImageMosaicConfigHandler {
         properties.setProperty(Utils.Prop.LEVELS_NUM, Integer.toString(numberOfLevels));
         final StringBuilder levels = new StringBuilder();
         for (int k = 0; k < numberOfLevels; k++) {
-            levels.append(Double.toString(resolutionLevels[k][0])).append(",")
+            levels.append(Double.toString(resolutionLevels[k][0]))
+                    .append(",")
                     .append(Double.toString(resolutionLevels[k][1]));
             if (k < numberOfLevels - 1) {
                 levels.append(" ");
@@ -1210,13 +1328,16 @@ public class ImageMosaicConfigHandler {
             typeName = mosaicConfiguration.getName();
         }
         properties.setProperty(Utils.Prop.TYPENAME, typeName);
-        properties.setProperty(Utils.Prop.EXP_RGB,
-                Boolean.toString(mosaicConfiguration.isExpandToRGB()));
-        properties.setProperty(Utils.Prop.CHECK_AUXILIARY_METADATA,
+        properties.setProperty(
+                Utils.Prop.EXP_RGB, Boolean.toString(mosaicConfiguration.isExpandToRGB()));
+        properties.setProperty(
+                Utils.Prop.CHECK_AUXILIARY_METADATA,
                 Boolean.toString(mosaicConfiguration.isCheckAuxiliaryMetadata()));
-        properties.setProperty(Utils.Prop.HETEROGENEOUS,
+        properties.setProperty(
+                Utils.Prop.HETEROGENEOUS,
                 Boolean.toString(catalogConfigurationBean.isHeterogeneous()));
-        properties.setProperty(Utils.Prop.HETEROGENEOUS_CRS,
+        properties.setProperty(
+                Utils.Prop.HETEROGENEOUS_CRS,
                 Boolean.toString(catalogConfigurationBean.isHeterogeneousCRS()));
 
         boolean wrapStore = catalogConfigurationBean.isWrapStore();
@@ -1232,22 +1353,30 @@ public class ImageMosaicConfigHandler {
 
         // write down imposed bbox
         if (imposedBBox != null) {
-            properties.setProperty(Utils.Prop.ENVELOPE2D,
-                    imposedBBox.getMinX() + "," + imposedBBox.getMinY() + " "
-                            + imposedBBox.getMaxX() + "," + imposedBBox.getMaxY());
+            properties.setProperty(
+                    Utils.Prop.ENVELOPE2D,
+                    imposedBBox.getMinX()
+                            + ","
+                            + imposedBBox.getMinY()
+                            + " "
+                            + imposedBBox.getMaxX()
+                            + ","
+                            + imposedBBox.getMaxY());
         }
-        properties.setProperty(Utils.Prop.CACHING,
-                Boolean.toString(catalogConfigurationBean.isCaching()));
+        properties.setProperty(
+                Utils.Prop.CACHING, Boolean.toString(catalogConfigurationBean.isCaching()));
         if (mosaicConfiguration.getAuxiliaryFilePath() != null) {
-            properties.setProperty(Utils.Prop.AUXILIARY_FILE,
-                    mosaicConfiguration.getAuxiliaryFilePath());
+            properties.setProperty(
+                    Utils.Prop.AUXILIARY_FILE, mosaicConfiguration.getAuxiliaryFilePath());
         }
         if (mosaicConfiguration.getAuxiliaryDatastorePath() != null) {
-            properties.setProperty(Utils.Prop.AUXILIARY_DATASTORE_FILE,
+            properties.setProperty(
+                    Utils.Prop.AUXILIARY_DATASTORE_FILE,
                     mosaicConfiguration.getAuxiliaryDatastorePath());
         }
-        if (mosaicConfiguration.getCoverageNameCollectorSpi() != null){
-            properties.setProperty(Utils.Prop.COVERAGE_NAME_COLLECTOR_SPI,
+        if (mosaicConfiguration.getCoverageNameCollectorSpi() != null) {
+            properties.setProperty(
+                    Utils.Prop.COVERAGE_NAME_COLLECTOR_SPI,
                     mosaicConfiguration.getCoverageNameCollectorSpi());
         }
 
@@ -1260,9 +1389,12 @@ public class ImageMosaicConfigHandler {
         }
 
         OutputStream outStream = null;
-        String filePath = runConfiguration.getParameter(Prop.ROOT_MOSAIC_DIR) + "/"
-        // + runConfiguration.getIndexName() + ".properties"));
-                + mosaicConfiguration.getName() + ".properties";
+        String filePath =
+                runConfiguration.getParameter(Prop.ROOT_MOSAIC_DIR)
+                        + "/"
+                        // + runConfiguration.getIndexName() + ".properties"));
+                        + mosaicConfiguration.getName()
+                        + ".properties";
         try {
             outStream = new BufferedOutputStream(new FileOutputStream(filePath));
             properties.store(outStream, "-Automagically created from GeoTools-");
@@ -1276,9 +1408,9 @@ public class ImageMosaicConfigHandler {
     }
 
     /**
-     * Check whether the specified coverage already exist in the reader. This allows to get the rasterManager associated with that coverage instead of
-     * creating a new one.
-     * 
+     * Check whether the specified coverage already exist in the reader. This allows to get the
+     * rasterManager associated with that coverage instead of creating a new one.
+     *
      * @param coverageName the name of the coverage to be searched
      * @return {@code true} in case that coverage already exists
      * @throws IOException
@@ -1294,9 +1426,10 @@ public class ImageMosaicConfigHandler {
     }
 
     /**
-     * Use the passed coverageReader to create or update the all the needed configurations<br/>
-     * It not responsible of the passed coverageReader which should be disposed outside (in the caller).
-     * 
+     * Use the passed coverageReader to create or update the all the needed configurations<br>
+     * It not responsible of the passed coverageReader which should be disposed outside (in the
+     * caller).
+     *
      * @param coverageReader
      * @param inputCoverageName
      * @param fileBeingProcessed
@@ -1304,13 +1437,19 @@ public class ImageMosaicConfigHandler {
      * @param numFiles
      * @param transaction
      * @throws IOException
-     * @throws FactoryException 
-     * @throws NoSuchAuthorityCodeException 
-     * @throws TransformException 
+     * @throws FactoryException
+     * @throws NoSuchAuthorityCodeException
+     * @throws TransformException
      */
-    public void updateConfiguration(GridCoverage2DReader coverageReader,
-            final String inputCoverageName, File fileBeingProcessed, int fileIndex, double numFiles,
-            DefaultTransaction transaction) throws IOException, GranuleHandlingException, NoSuchAuthorityCodeException, FactoryException, TransformException {
+    public void updateConfiguration(
+            GridCoverage2DReader coverageReader,
+            final String inputCoverageName,
+            File fileBeingProcessed,
+            int fileIndex,
+            double numFiles,
+            DefaultTransaction transaction)
+            throws IOException, GranuleHandlingException, NoSuchAuthorityCodeException,
+                    FactoryException, TransformException {
 
         final String targetCoverageName = getTargetCoverageName(coverageReader, inputCoverageName);
 
@@ -1334,15 +1473,16 @@ public class ImageMosaicConfigHandler {
         final MosaicBeanBuilder configBuilder = new MosaicBeanBuilder();
 
         final GeneralEnvelope envelope = coverageReader.getOriginalEnvelope(inputCoverageName);
-        final CoordinateReferenceSystem actualCRS = coverageReader
-                .getCoordinateReferenceSystem(inputCoverageName);
+        final CoordinateReferenceSystem actualCRS =
+                coverageReader.getCoordinateReferenceSystem(inputCoverageName);
 
         SampleModel sm = null;
         ColorModel cm = null;
         int numberOfLevels = 1;
         double[][] resolutionLevels = null;
         CatalogBuilderConfiguration catalogConfig;
-        Boolean heterogeneousCRS = Boolean.valueOf(IndexerUtils.getParameter(Prop.HETEROGENEOUS_CRS, indexer));
+        Boolean heterogeneousCRS =
+                Boolean.valueOf(IndexerUtils.getParameter(Prop.HETEROGENEOUS_CRS, indexer));
         if (mosaicConfiguration == null) {
             catalogConfig = getRunConfiguration();
             // We don't have a configuration for this configuration
@@ -1369,7 +1509,7 @@ public class ImageMosaicConfigHandler {
                 byte[][] defaultPalette = Utils.extractPalette(icm);
                 configBuilder.setPalette(defaultPalette);
             }
-            
+
             // STEP 2.A
             // Preparing configuration
             String mosaicCrs = IndexerUtils.getParameter(Utils.Prop.MOSAIC_CRS, indexer);
@@ -1380,20 +1520,21 @@ public class ImageMosaicConfigHandler {
             }
 
             String noData = IndexerUtils.getParameter(Prop.NO_DATA, indexer);
-            if(noData != null && !noData.isEmpty()) {
+            if (noData != null && !noData.isEmpty()) {
                 try {
                     double noDataValue = Double.parseDouble(noData);
                     configBuilder.setNoData(noDataValue);
                 } catch (NumberFormatException e) {
-                    String error = "Invalid NoData specification " + noData + ", was expecting a number";
+                    String error =
+                            "Invalid NoData specification " + noData + ", was expecting a number";
                     LOGGER.log(Level.WARNING, error);
                     throw new RuntimeException(error, e);
                 }
-
             }
 
             // get/compute the resolution levels
-            resolutionLevels = getResolutionLevels(coverageReader, inputCoverageName, configBuilder.getCrs());
+            resolutionLevels =
+                    getResolutionLevels(coverageReader, inputCoverageName, configBuilder.getCrs());
             numberOfLevels = resolutionLevels.length;
             configBuilder.setLevels(resolutionLevels);
             configBuilder.setLevelsNum(numberOfLevels);
@@ -1404,8 +1545,9 @@ public class ImageMosaicConfigHandler {
                     IndexerUtils.getAttribute(targetCoverageName, Prop.CRS_ATTRIBUTE, indexer));
             configBuilder.setElevationAttribute(
                     IndexerUtils.getAttribute(targetCoverageName, Utils.ELEVATION_DOMAIN, indexer));
-            configBuilder.setAdditionalDomainAttributes(IndexerUtils
-                    .getAttribute(targetCoverageName, Utils.ADDITIONAL_DOMAIN, indexer));
+            configBuilder.setAdditionalDomainAttributes(
+                    IndexerUtils.getAttribute(
+                            targetCoverageName, Utils.ADDITIONAL_DOMAIN, indexer));
 
             final Hints runHints = getRunConfiguration().getHints();
             if (runHints != null) {
@@ -1416,8 +1558,8 @@ public class ImageMosaicConfigHandler {
                     }
                 }
                 if (runHints.containsKey(Utils.AUXILIARY_DATASTORE_PATH)) {
-                    String auxiliaryDatastorePath = (String) runHints
-                            .get(Utils.AUXILIARY_DATASTORE_PATH);
+                    String auxiliaryDatastorePath =
+                            (String) runHints.get(Utils.AUXILIARY_DATASTORE_PATH);
                     if (auxiliaryDatastorePath != null
                             && auxiliaryDatastorePath.trim().length() > 0) {
                         configBuilder.setAuxiliaryDatastorePath(auxiliaryDatastorePath);
@@ -1425,16 +1567,17 @@ public class ImageMosaicConfigHandler {
                 }
             }
 
-            final CatalogConfigurationBean catalogConfigurationBean = new CatalogConfigurationBean();
-            catalogConfigurationBean
-                    .setCaching(IndexerUtils.getParameterAsBoolean(Prop.CACHING, indexer));
+            final CatalogConfigurationBean catalogConfigurationBean =
+                    new CatalogConfigurationBean();
+            catalogConfigurationBean.setCaching(
+                    IndexerUtils.getParameterAsBoolean(Prop.CACHING, indexer));
             catalogConfigurationBean.setAbsolutePath(
                     IndexerUtils.getParameterAsBoolean(Prop.ABSOLUTE_PATH, indexer));
 
             catalogConfigurationBean.setLocationAttribute(
                     IndexerUtils.getParameter(Prop.LOCATION_ATTRIBUTE, indexer));
-            catalogConfigurationBean
-                    .setWrapStore(IndexerUtils.getParameterAsBoolean(Prop.WRAP_STORE, indexer));
+            catalogConfigurationBean.setWrapStore(
+                    IndexerUtils.getParameterAsBoolean(Prop.WRAP_STORE, indexer));
 
             String configuredTypeName = IndexerUtils.getParameter(Prop.TYPENAME, indexer);
             if (configuredTypeName != null) {
@@ -1447,7 +1590,7 @@ public class ImageMosaicConfigHandler {
                     IndexerUtils.getParameterAsBoolean(Prop.CHECK_AUXILIARY_METADATA, indexer));
 
             currentConfigurationBean = configBuilder.getMosaicConfigurationBean();
-            if(heterogeneousCRS) {
+            if (heterogeneousCRS) {
                 currentConfigurationBean.getCatalogConfigurationBean().setHeterogeneous(true);
                 currentConfigurationBean.getCatalogConfigurationBean().setHeterogeneousCRS(true);
             }
@@ -1458,8 +1601,11 @@ public class ImageMosaicConfigHandler {
             // Creating a granuleStore
             if (!useExistingSchema) {
                 // creating the schema
-                SimpleFeatureType indexSchema = createSchema(getRunConfiguration(),
-                        currentConfigurationBean.getName(), configBuilder.getCrs());
+                SimpleFeatureType indexSchema =
+                        createSchema(
+                                getRunConfiguration(),
+                                currentConfigurationBean.getName(),
+                                configBuilder.getCrs());
                 getParentReader().createCoverage(targetCoverageName, indexSchema);
             }
             getConfigurations().put(currentConfigurationBean.getName(), currentConfigurationBean);
@@ -1470,7 +1616,8 @@ public class ImageMosaicConfigHandler {
             catalogConfig.setParameter(Prop.LOCATION_ATTRIBUTE, (bean.getLocationAttribute()));
             catalogConfig.setParameter(Prop.ABSOLUTE_PATH, Boolean.toString(bean.isAbsolutePath()));
             catalogConfig.setParameter(Prop.PATH_TYPE, bean.getPathType().toString());
-            catalogConfig.setParameter(Prop.ROOT_MOSAIC_DIR/* setRootMosaicDirectory( */,
+            catalogConfig.setParameter(
+                    Prop.ROOT_MOSAIC_DIR /* setRootMosaicDirectory( */,
                     getRunConfiguration().getParameter(Prop.ROOT_MOSAIC_DIR));
 
             // We already have a Configuration for this coverage.
@@ -1479,13 +1626,17 @@ public class ImageMosaicConfigHandler {
             CatalogConfigurationBean catalogConfigurationBean = bean;
 
             // make sure we pick the same resolution irrespective of order of harvest
-            resolutionLevels = getResolutionLevels(coverageReader, inputCoverageName, mosaicConfiguration.getCrs());
+            resolutionLevels =
+                    getResolutionLevels(
+                            coverageReader, inputCoverageName, mosaicConfiguration.getCrs());
             numberOfLevels = resolutionLevels.length;
 
             int originalNumberOfLevels = mosaicConfiguration.getLevelsNum();
             boolean needUpdate = false;
-            if (Utils.homogeneousCheck(Math.min(numberOfLevels, originalNumberOfLevels),
-                    resolutionLevels, mosaicConfiguration.getLevels())) {
+            if (Utils.homogeneousCheck(
+                    Math.min(numberOfLevels, originalNumberOfLevels),
+                    resolutionLevels,
+                    mosaicConfiguration.getLevels())) {
                 if (numberOfLevels != originalNumberOfLevels) {
                     catalogConfigurationBean.setHeterogeneous(true);
                     if (numberOfLevels > originalNumberOfLevels) {
@@ -1509,41 +1660,58 @@ public class ImageMosaicConfigHandler {
         // STEP 3
         if (!useExistingSchema) {
             // create and store features
-            updateCatalog(targetCoverageName, fileBeingProcessed, coverageReader, getParentReader(),
-                    catalogConfig, envelope, transaction, getPropertiesCollectors());
+            updateCatalog(
+                    targetCoverageName,
+                    fileBeingProcessed,
+                    coverageReader,
+                    getParentReader(),
+                    catalogConfig,
+                    envelope,
+                    transaction,
+                    getPropertiesCollectors());
         }
     }
 
-    private double[][] getResolutionLevels(GridCoverage2DReader coverageReader,
-            final String inputCoverageName, CoordinateReferenceSystem mosaicCRS)
+    private double[][] getResolutionLevels(
+            GridCoverage2DReader coverageReader,
+            final String inputCoverageName,
+            CoordinateReferenceSystem mosaicCRS)
             throws IOException, FactoryException, TransformException {
         double[][] resolutionLevels;
         resolutionLevels = coverageReader.getResolutionLevels(inputCoverageName);
         final CoordinateReferenceSystem readerCRS = coverageReader.getCoordinateReferenceSystem();
-        if (mosaicCRS != null && readerCRS != null
+        if (mosaicCRS != null
+                && readerCRS != null
                 && !CRS.equalsIgnoreMetadata(mosaicCRS, readerCRS)) {
-            resolutionLevels = transformResolutionLevels(resolutionLevels, readerCRS, mosaicCRS,
-                    coverageReader.getOriginalEnvelope());
+            resolutionLevels =
+                    transformResolutionLevels(
+                            resolutionLevels,
+                            readerCRS,
+                            mosaicCRS,
+                            coverageReader.getOriginalEnvelope());
         }
         return resolutionLevels;
     }
 
     /**
-     * Transforms the given resolution levels from a start CRS to a target one.  
-     * 
+     * Transforms the given resolution levels from a start CRS to a target one.
+     *
      * @param resolutionLevels
      * @param fromCRS
      * @param toCRS
      * @param sourceEnvelope
      * @return
-     * @throws FactoryException 
-     * @throws TransformException 
+     * @throws FactoryException
+     * @throws TransformException
      */
-    private double[][] transformResolutionLevels(double[][] resolutionLevels,
-            CoordinateReferenceSystem fromCRS, CoordinateReferenceSystem toCRS,
-            GeneralEnvelope sourceEnvelope) throws FactoryException, TransformException {
-        
-        // prepare a set of points at middle of the envelope and their 
+    private double[][] transformResolutionLevels(
+            double[][] resolutionLevels,
+            CoordinateReferenceSystem fromCRS,
+            CoordinateReferenceSystem toCRS,
+            GeneralEnvelope sourceEnvelope)
+            throws FactoryException, TransformException {
+
+        // prepare a set of points at middle of the envelope and their
         // corresponding offsets based on resolutions
         final int numLevels = resolutionLevels.length;
         double[] points = new double[numLevels * 8];
@@ -1561,11 +1729,11 @@ public class ImageMosaicConfigHandler {
             points[j++] = baseX;
             points[j++] = baseY + resolutionLevels[i][1];
         }
-        
+
         // transform to get offsets in the target CRS
         MathTransform mt = CRS.findMathTransform(fromCRS, toCRS);
         mt.transform(points, 0, points, 0, numLevels * 4);
-        
+
         // compute back the offsets
         double[][] result = new double[numLevels][2];
         for (int i = 0; i < numLevels; i++) {
@@ -1582,15 +1750,16 @@ public class ImageMosaicConfigHandler {
     }
 
     /**
-     * Get the name of the target coverage for a given reader. For most input coverages, the target coverage is simply the default coverage. For
-     * structured coverages the target coverage has the same name as the input coverage.
+     * Get the name of the target coverage for a given reader. For most input coverages, the target
+     * coverage is simply the default coverage. For structured coverages the target coverage has the
+     * same name as the input coverage.
      *
      * @param inputCoverageReader the coverage being added to the index
      * @param inputCoverageName the name of the input coverage
      * @return the target coverage name for the input coverage
      */
-    public String getTargetCoverageName(GridCoverage2DReader inputCoverageReader,
-            String inputCoverageName) {
+    public String getTargetCoverageName(
+            GridCoverage2DReader inputCoverageReader, String inputCoverageName) {
         Map<String, String> map = new HashMap<String, String>();
         map.put(Prop.INDEX_NAME, getRunConfiguration().getParameter(Prop.INDEX_NAME));
         map.put(Prop.INPUT_COVERAGE_NAME, inputCoverageName);

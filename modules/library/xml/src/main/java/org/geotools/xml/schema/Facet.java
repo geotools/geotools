@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,13 +17,9 @@
 package org.geotools.xml.schema;
 
 /**
- * <p>
  * DOCUMENT ME!
- * </p>
  *
  * @author dzwiers
- *
- *
  * @source $URL$
  */
 public interface Facet {
@@ -63,15 +59,9 @@ public interface Facet {
     /** DOCUMENT ME! */
     public static int WHITESPACE = 12;
 
-    /**
-     * The Facet Type -- selected from one of the above constant values
-     *
-     */
+    /** The Facet Type -- selected from one of the above constant values */
     public int getFacetType();
 
-    /**
-     * The facet's constraint
-     *
-     */
+    /** The facet's constraint */
     public String getValue();
 }

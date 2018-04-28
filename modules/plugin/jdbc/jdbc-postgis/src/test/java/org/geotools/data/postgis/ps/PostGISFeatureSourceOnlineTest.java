@@ -15,20 +15,15 @@
  *    Lesser General Public License for more details.
  */
 package org.geotools.data.postgis.ps;
+
 import org.geotools.jdbc.JDBCFeatureSourceOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class PostGISFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest {
 
     @Override
     protected JDBCTestSetup createTestSetup() {
         return new PostGISPSTestSetup();
     }
-
 }

@@ -21,11 +21,11 @@ import org.geotools.data.complex.NestedAttributeMapping;
 import org.geotools.data.complex.filter.XPathUtil;
 import org.opengis.filter.expression.Expression;
 
-/**
- * Allow extensions to build custom nested expressions for chained entities.
- */
+/** Allow extensions to build custom nested expressions for chained entities. */
 public interface CustomAttributeExpressionFactory {
 
-    Expression createNestedAttributeExpression(FeatureTypeMapping mappings, XPathUtil.StepList xpath,
-                                               NestedAttributeMapping nestedMapping);
+    Expression createNestedAttributeExpression(
+            FeatureTypeMapping mappings,
+            XPathUtil.StepList xpath,
+            NestedAttributeMapping nestedMapping);
 }

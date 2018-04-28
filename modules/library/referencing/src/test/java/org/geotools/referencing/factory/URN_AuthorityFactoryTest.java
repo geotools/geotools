@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2006-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,58 +16,52 @@
  */
 package org.geotools.referencing.factory;
 
-import org.geotools.factory.Hints;
-import org.opengis.referencing.AuthorityFactory;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
-import org.opengis.referencing.crs.GeographicCRS;
-import org.opengis.referencing.crs.CRSAuthorityFactory;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import static org.junit.Assert.*;
 
+import org.geotools.factory.FactoryNotFoundException;
+import org.geotools.factory.Hints;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.factory.FactoryNotFoundException;
-
 import org.junit.*;
-import static org.junit.Assert.*;
-
+import org.opengis.referencing.AuthorityFactory;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.NoSuchAuthorityCodeException;
+import org.opengis.referencing.crs.CRSAuthorityFactory;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.crs.GeographicCRS;
 
 /**
  * Tests the {@link URN_AuthorityFactory} class backed by WMS or AUTO factories.
- *
- *
  *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */
 public final class URN_AuthorityFactoryTest {
-    /**
-     * Make sure that a singleton instance is registered.
-     */
+    /** Make sure that a singleton instance is registered. */
     @Test
     public void testRegistration() {
         String authority = "URN:OGC:DEF";
-        final AuthorityFactory factory = ReferencingFactoryFinder.getCRSAuthorityFactory(authority, null);
-        assertSame(factory, ReferencingFactoryFinder.getCRSAuthorityFactory  (authority, null));
-        assertSame(factory, ReferencingFactoryFinder.getCSAuthorityFactory   (authority, null));
+        final AuthorityFactory factory =
+                ReferencingFactoryFinder.getCRSAuthorityFactory(authority, null);
+        assertSame(factory, ReferencingFactoryFinder.getCRSAuthorityFactory(authority, null));
+        assertSame(factory, ReferencingFactoryFinder.getCSAuthorityFactory(authority, null));
         assertSame(factory, ReferencingFactoryFinder.getDatumAuthorityFactory(authority, null));
         /*
          * Tests the X-OGC namespace, which should be synonymous.
          */
         authority = "URN:X-OGC:DEF";
-        assertSame(factory, ReferencingFactoryFinder.getCRSAuthorityFactory  (authority, null));
-        assertSame(factory, ReferencingFactoryFinder.getCSAuthorityFactory   (authority, null));
+        assertSame(factory, ReferencingFactoryFinder.getCRSAuthorityFactory(authority, null));
+        assertSame(factory, ReferencingFactoryFinder.getCSAuthorityFactory(authority, null));
         assertSame(factory, ReferencingFactoryFinder.getDatumAuthorityFactory(authority, null));
     }
 
-    /**
-     * Tests the CRS factory.
-     */
+    /** Tests the CRS factory. */
     @Test
     public void testCRS() throws FactoryException {
-        CRSAuthorityFactory factory = ReferencingFactoryFinder.getCRSAuthorityFactory("URN:OGC:DEF", null);
+        CRSAuthorityFactory factory =
+                ReferencingFactoryFinder.getCRSAuthorityFactory("URN:OGC:DEF", null);
         GeographicCRS crs;
         try {
             crs = factory.createGeographicCRS("CRS:84");
@@ -76,7 +70,7 @@ public final class URN_AuthorityFactoryTest {
             // This is the expected exception.
             assertEquals("CRS:84", exception.getAuthorityCode());
         }
-        crs =           factory.createGeographicCRS("urn:ogc:def:crs:CRS:WMS1.3:84");
+        crs = factory.createGeographicCRS("urn:ogc:def:crs:CRS:WMS1.3:84");
         assertSame(crs, factory.createGeographicCRS("urn:ogc:def:crs:CRS:1.3:84"));
         assertSame(crs, factory.createGeographicCRS("URN:OGC:DEF:CRS:CRS:1.3:84"));
         assertSame(crs, factory.createGeographicCRS("URN:OGC:DEF:CRS:CRS:84"));
@@ -93,9 +87,7 @@ public final class URN_AuthorityFactoryTest {
         assertFalse(CRS.equalsIgnoreMetadata(DefaultGeographicCRS.WGS84, crs));
     }
 
-    /**
-     * Tests fetching the URN authority when the "longitude first axis order" hint is set.
-     */
+    /** Tests fetching the URN authority when the "longitude first axis order" hint is set. */
     @Test
     public void testWhenForceXY() throws FactoryException {
         try {

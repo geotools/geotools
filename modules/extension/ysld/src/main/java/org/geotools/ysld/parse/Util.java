@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,6 +17,14 @@
  */
 package org.geotools.ysld.parse;
 
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.annotation.Nullable;
 import org.geotools.filter.function.FilterFunction_strConcat;
 import org.geotools.filter.function.string.ConcatenateFunction;
 import org.geotools.renderer.style.ExpressionExtractor;
@@ -30,46 +38,25 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.annotation.Nullable;
-
-/**
- * Parsing utilities
- */
+/** Parsing utilities */
 public class Util {
 
-    /**
-     * Pattern to catch attribute expressions.
-     */
+    /** Pattern to catch attribute expressions. */
     static final Pattern ATTRIBUTE_PATTERN = Pattern.compile("\\[.+\\]");
 
-    /**
-     * Pattern to catch url style well known names
-     */
+    /** Pattern to catch url style well known names */
     static final Pattern WELLKNOWNNAME_PATTERN = Pattern.compile("\\w+://.+");
 
-    /**
-     * Pattern to catch 6 digit hex colors.
-     */
+    /** Pattern to catch 6 digit hex colors. */
     static final Pattern COLOR_PATTERN = Pattern.compile("#\\p{XDigit}{6}");
 
-    /**
-     * Parses an expression from its string representation.
-     */
+    /** Parses an expression from its string representation. */
     public static Expression expression(String value, Factory factory) {
         return expression(value, false, factory);
     }
 
     private static void collectExpressions(List<Expression> list, Expression expr) {
-        if (expr == null)
-            return;
+        if (expr == null) return;
         if (expr instanceof ConcatenateFunction || expr instanceof FilterFunction_strConcat) {
             for (Expression param : ((Function) expr).getParameters()) {
                 collectExpressions(list, param);
@@ -78,21 +65,20 @@ public class Util {
         } else {
             if (expr instanceof Literal) {
                 Object value = ((Literal) expr).getValue();
-                if (value == null)
-                    return;
-                if (value instanceof String && ((String) value).isEmpty())
-                    return;
+                if (value == null) return;
+                if (value instanceof String && ((String) value).isEmpty()) return;
             }
             list.add(expr);
         }
     }
 
     /**
-     * Simplifies an {@link Expression} which may contain multiple {@link ConcatenateFunction} into a single top-level
-     * {@link ConcatenateFunction} with a flat list of parameters.
+     * Simplifies an {@link Expression} which may contain multiple {@link ConcatenateFunction} into
+     * a single top-level {@link ConcatenateFunction} with a flat list of parameters.
      *
-     * If the passed {@link Expression} performs no concatenation, it is returned as-is.
-     * If the passed {@link Expression} represents an empty value, a {@link Literal} expression with value null is returned.
+     * <p>If the passed {@link Expression} performs no concatenation, it is returned as-is. If the
+     * passed {@link Expression} represents an empty value, a {@link Literal} expression with value
+     * null is returned.
      *
      * @param expr
      * @param factory Function factory
@@ -110,9 +96,9 @@ public class Util {
     }
 
     /**
-     * Splits an {@link Expression} into a list of expressions by removing {@link ConcatenateFunction} and
-     * {@link FilterFunction_strConcat} Functions, and listing the children of those functions.
-     * This is applied recursively, so nested Expressions are also handled.
+     * Splits an {@link Expression} into a list of expressions by removing {@link
+     * ConcatenateFunction} and {@link FilterFunction_strConcat} Functions, and listing the children
+     * of those functions. This is applied recursively, so nested Expressions are also handled.
      * Null-valued or empty {@link Literal} Expressions are removed.
      *
      * @param expr
@@ -126,10 +112,11 @@ public class Util {
 
     /**
      * Parses an expression from its string representation.
-     * <p>
-     * The <tt>safe</tt> parameter when set to true will cause null to be returned when the string can not be parsed as a ECQL expression. When false
-     * it will result in an exception thrown back.
-     * </p>
+     *
+     * <p>The <tt>safe</tt> parameter when set to true will cause null to be returned when the
+     * string can not be parsed as a ECQL expression. When false it will result in an exception
+     * thrown back.
+     *
      * @return The parsed expression, or null if the string value was empty.
      */
     public static Expression expression(String value, boolean safe, Factory factory) {
@@ -147,9 +134,7 @@ public class Util {
         return expr;
     }
 
-    /**
-     * Parses an anchor tuple.
-     */
+    /** Parses an anchor tuple. */
     public static AnchorPoint anchor(Object value, Factory factory) {
         Tuple t = null;
         try {
@@ -159,16 +144,14 @@ public class Util {
                     String.format("Bad anchor: '%s', must be of form (<x>,<y>)", value), e);
         }
 
-        Expression x = t.at(0) != null ? expression(t.strAt(0), factory)
-                : factory.filter.literal(0);
-        Expression y = t.at(1) != null ? expression(t.strAt(1), factory)
-                : factory.filter.literal(0);
+        Expression x =
+                t.at(0) != null ? expression(t.strAt(0), factory) : factory.filter.literal(0);
+        Expression y =
+                t.at(1) != null ? expression(t.strAt(1), factory) : factory.filter.literal(0);
         return factory.style.createAnchorPoint(x, y);
     }
 
-    /**
-     * Parses an displacement tuple.
-     */
+    /** Parses an displacement tuple. */
     public static Displacement displacement(Object value, Factory factory) {
         Tuple t = null;
         try {
@@ -178,23 +161,22 @@ public class Util {
                     String.format("Bad displacement: '%s', must be of form (<x>,<y>)", value), e);
         }
 
-        Expression x = t.at(0) != null ? expression(t.strAt(0), factory)
-                : factory.filter.literal(0);
-        Expression y = t.at(1) != null ? expression(t.strAt(1), factory)
-                : factory.filter.literal(0);
+        Expression x =
+                t.at(0) != null ? expression(t.strAt(0), factory) : factory.filter.literal(0);
+        Expression y =
+                t.at(1) != null ? expression(t.strAt(1), factory) : factory.filter.literal(0);
         return factory.style.createDisplacement(x, y);
     }
 
-    static final Pattern HEX_PATTERN = Pattern
-            .compile("\\s*(?:(?:0x)|#)?([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})\\s*");
+    static final Pattern HEX_PATTERN =
+            Pattern.compile("\\s*(?:(?:0x)|#)?([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})\\s*");
 
-    static final Pattern RGB_PATTERN = Pattern.compile(
-            "\\s*rgb\\s*\\(\\s*(\\d{1,3})\\s*,\\s*(\\d{1,3})\\s*,\\s*(\\d{1,3})\\s*\\)\\s*",
-            Pattern.CASE_INSENSITIVE);
+    static final Pattern RGB_PATTERN =
+            Pattern.compile(
+                    "\\s*rgb\\s*\\(\\s*(\\d{1,3})\\s*,\\s*(\\d{1,3})\\s*,\\s*(\\d{1,3})\\s*\\)\\s*",
+                    Pattern.CASE_INSENSITIVE);
 
-    /**
-     * Parses a color from string representation.
-     */
+    /** Parses a color from string representation. */
     public static Expression color(Object value, Factory factory) {
         Color color = null;
         if (value instanceof String) {
@@ -215,8 +197,7 @@ public class Util {
             color = new Color((int) value);
         }
 
-        if (value != null)
-            value = value.toString();
+        if (value != null) value = value.toString();
 
         return color != null ? factory.filter.literal(color) : expression((String) value, factory);
     }
@@ -224,24 +205,26 @@ public class Util {
     static Color parseColorAsHex(Matcher m) {
         String hex = m.group(1);
         if (hex.length() == 3) {
-            return new Color(0x11 * Integer.parseInt(hex.substring(0, 1), 16),
+            return new Color(
+                    0x11 * Integer.parseInt(hex.substring(0, 1), 16),
                     0x11 * Integer.parseInt(hex.substring(1, 2), 16),
                     0x11 * Integer.parseInt(hex.substring(2, 3), 16));
         }
 
-        return new Color(Integer.parseInt(hex.substring(0, 2), 16),
+        return new Color(
+                Integer.parseInt(hex.substring(0, 2), 16),
                 Integer.parseInt(hex.substring(2, 4), 16),
                 Integer.parseInt(hex.substring(4, 6), 16));
     }
 
     static Color parseColorAsRGB(Matcher m) {
-        return new Color(Integer.parseInt(m.group(1)), Integer.parseInt(m.group(2)),
+        return new Color(
+                Integer.parseInt(m.group(1)),
+                Integer.parseInt(m.group(2)),
                 Integer.parseInt(m.group(3)));
     }
 
-    /**
-     * Parses a float array from a space delimited list.
-     */
+    /** Parses a float array from a space delimited list. */
     public static float[] floatArray(String value) {
         List<Float> list = new ArrayList<Float>();
         for (String str : value.split(" ")) {
@@ -256,40 +239,36 @@ public class Util {
         return array;
     }
 
-    /**
-     * Returns the first non-null parameter or null.
-     */
+    /** Returns the first non-null parameter or null. */
     @SafeVarargs
     @Nullable
     public static <T> T defaultForNull(@Nullable T... options) {
         for (T o : options) {
-            if (o != null)
-                return o;
+            if (o != null) return o;
         }
         return null;
     }
 
-    /**
-     * Returns the first non-null parameter or throws NullPointerException.
-     */
+    /** Returns the first non-null parameter or throws NullPointerException. */
     @SafeVarargs
     public static <T> T forceDefaultForNull(@Nullable T... options) {
         for (T o : options) {
-            if (o != null)
-                return o;
+            if (o != null) return o;
         }
         throw new NullPointerException();
     }
 
     /**
      * Finds an applicable {@link ZoomContext} based on a name
+     *
      * @param name Name of the ZoomContext.
      * @param zCtxtFinders List of finders for the {@link ZoomContext}
-     * @throws IllegalArgumentException If name is "EPSG:4326", "EPSG:3857", or "EPSG:900913" (These names cause ambiguities).
+     * @throws IllegalArgumentException If name is "EPSG:4326", "EPSG:3857", or "EPSG:900913" (These
+     *     names cause ambiguities).
      * @return {@link ZoomContext} matching the name.
      */
-    public static @Nullable ZoomContext getNamedZoomContext(String name,
-            List<ZoomContextFinder> zCtxtFinders) {
+    public static @Nullable ZoomContext getNamedZoomContext(
+            String name, List<ZoomContextFinder> zCtxtFinders) {
         if (name.equalsIgnoreCase("EPSG:4326")) {
             throw new IllegalArgumentException(
                     "Should not use EPSG code to refer to WGS84 zoom levels as it causes ambiguities");
@@ -312,8 +291,8 @@ public class Util {
     static final Pattern EMBEDED_FILTER = Pattern.compile("^\\s*\\$\\{(.*?)\\}\\s*$");
 
     /**
-     * Removes up to one set of ${ } expression brackets from a YSLD string.
-     * Escape sequences for the characters $}\ within the brackets are unescaped.
+     * Removes up to one set of ${ } expression brackets from a YSLD string. Escape sequences for
+     * the characters $}\ within the brackets are unescaped.
      *
      * @param s
      * @return s with brackets and escape sequences removed.
@@ -327,12 +306,11 @@ public class Util {
     }
 
     /**
-     * 
-     * @return A number parsed from the provided string, or the string itself if parsing failed. Also returns null if the string was null.
+     * @return A number parsed from the provided string, or the string itself if parsing failed.
+     *     Also returns null if the string was null.
      */
     public static Object makeNumberIfPossible(String str) {
-        if (str == null)
-            return null;
+        if (str == null) return null;
 
         try {
             return Long.parseLong(str);
@@ -359,8 +337,8 @@ public class Util {
     }
 
     /**
-     * 
-     * @return The string with quotes (') stripped from the beginning and end, or null if the string was null.
+     * @return The string with quotes (') stripped from the beginning and end, or null if the string
+     *     was null.
      */
     public static String stripQuotes(String str) {
         if (str == null) {
@@ -378,11 +356,11 @@ public class Util {
 
     /**
      * Parse all vendor options (keys starting with 'x-')
-     * 
+     *
      * @param sourceMap YamlMap to parse
      * @return A map of the vendor options
      */
-    static public Map<String, String> vendorOptions(YamlMap sourceMap) {
+    public static Map<String, String> vendorOptions(YamlMap sourceMap) {
         Map<String, String> optionMap = new HashMap<>();
         for (String key : sourceMap) {
             if (key.startsWith(Ysld.OPTION_PREFIX)) {

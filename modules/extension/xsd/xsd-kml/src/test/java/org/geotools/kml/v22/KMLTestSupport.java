@@ -9,5 +9,4 @@ public abstract class KMLTestSupport extends XMLTestSupport {
     protected Configuration createConfiguration() {
         return new KMLConfiguration();
     }
-
 }

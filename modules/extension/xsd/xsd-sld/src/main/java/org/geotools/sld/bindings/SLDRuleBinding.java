@@ -17,9 +17,7 @@
 package org.geotools.sld.bindings;
 
 import java.util.List;
-
 import javax.xml.namespace.QName;
-
 import org.geotools.styling.Graphic;
 import org.geotools.styling.Rule;
 import org.geotools.styling.StyleFactory;
@@ -31,12 +29,12 @@ import org.opengis.filter.Filter;
 import org.opengis.util.InternationalString;
 import org.picocontainer.MutablePicoContainer;
 
-
 /**
  * Binding object for the element http://www.opengis.net/sld:Rule.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:element name="Rule"&gt;
  *      &lt;xsd:annotation&gt;
@@ -63,12 +61,8 @@ import org.picocontainer.MutablePicoContainer;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class SLDRuleBinding extends AbstractComplexBinding {
@@ -78,14 +72,13 @@ public class SLDRuleBinding extends AbstractComplexBinding {
         this.styleFactory = styleFactory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return SLD.RULE;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -96,6 +89,7 @@ public class SLDRuleBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -106,69 +100,67 @@ public class SLDRuleBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {
-    }
+    public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Rule rule = styleFactory.createRule();
 
-        //&lt;xsd:element ref="sld:Name" minOccurs="0"/&gt;
+        // &lt;xsd:element ref="sld:Name" minOccurs="0"/&gt;
         if (node.hasChild("Name")) {
             rule.setName((String) node.getChildValue("Name"));
         }
 
-        //&lt;xsd:element ref="sld:Title" minOccurs="0"/&gt;
+        // &lt;xsd:element ref="sld:Title" minOccurs="0"/&gt;
         if (node.hasChild("Title")) {
-            rule.getDescription().setTitle(
-                    (InternationalString) node.getChildValue("Title"));
+            rule.getDescription().setTitle((InternationalString) node.getChildValue("Title"));
         }
 
-        //&lt;xsd:element ref="sld:Abstract" minOccurs="0"/&gt;
+        // &lt;xsd:element ref="sld:Abstract" minOccurs="0"/&gt;
         if (node.hasChild("Abstract")) {
-            rule.getDescription().setAbstract(
-                    (InternationalString) node.getChildValue("Abstract"));
+            rule.getDescription().setAbstract((InternationalString) node.getChildValue("Abstract"));
         }
 
-        //&lt;xsd:element ref="sld:LegendGraphic" minOccurs="0"/&gt;
+        // &lt;xsd:element ref="sld:LegendGraphic" minOccurs="0"/&gt;
         if (node.hasChild("LegendGraphic")) {
-            rule.setLegendGraphic(new Graphic[] { (Graphic) node.getChildValue("LegendGraphic") });
+            rule.setLegendGraphic(new Graphic[] {(Graphic) node.getChildValue("LegendGraphic")});
         }
 
-        //&lt;xsd:choice minOccurs="0"&gt;
+        // &lt;xsd:choice minOccurs="0"&gt;
         //	 &lt;xsd:element ref="ogc:Filter"/&gt;
         //	 &lt;xsd:element ref="sld:ElseFilter"/&gt;
-        //&lt;/xsd:choice&gt;
+        // &lt;/xsd:choice&gt;
         if (node.hasChild(Filter.class)) {
             rule.setFilter((Filter) node.getChildValue(Filter.class));
         } else if (node.hasChild("ElseFilter")) {
             rule.setIsElseFilter(true);
         }
 
-        //&lt;xsd:element ref="sld:MinScaleDenominator" minOccurs="0"/&gt;
+        // &lt;xsd:element ref="sld:MinScaleDenominator" minOccurs="0"/&gt;
         if (node.hasChild("MinScaleDenominator")) {
-            rule.setMinScaleDenominator(((Double) node.getChildValue("MinScaleDenominator"))
-                .doubleValue());
+            rule.setMinScaleDenominator(
+                    ((Double) node.getChildValue("MinScaleDenominator")).doubleValue());
         }
 
-        //&lt;xsd:element ref="sld:MaxScaleDenominator" minOccurs="0"/&gt;
+        // &lt;xsd:element ref="sld:MaxScaleDenominator" minOccurs="0"/&gt;
         if (node.hasChild("MaxScaleDenominator")) {
-            rule.setMaxScaleDenominator(((Double) node.getChildValue("MaxScaleDenominator"))
-                .doubleValue());
+            rule.setMaxScaleDenominator(
+                    ((Double) node.getChildValue("MaxScaleDenominator")).doubleValue());
         }
 
-        //&lt;xsd:element ref="sld:Symbolizer" maxOccurs="unbounded"/&gt;
+        // &lt;xsd:element ref="sld:Symbolizer" maxOccurs="unbounded"/&gt;
         List syms = node.getChildValues(Symbolizer.class);
         rule.setSymbolizers((Symbolizer[]) syms.toArray(new Symbolizer[syms.size()]));
 

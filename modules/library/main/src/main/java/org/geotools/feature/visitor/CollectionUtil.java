@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -21,21 +21,16 @@ import org.geotools.data.simple.SimpleFeatureIterator;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 
-
 /**
  * DOCUMENT ME!
  *
  * @author Cory Horner, Refractions
- *
  * @since 2.2.M2
- *
- *
  * @source $URL$
  */
 public class CollectionUtil {
     /**
-     * Navigate the collection and call vistor.visit( Feature ) for each
-     * element in the collection.
+     * Navigate the collection and call vistor.visit( Feature ) for each element in the collection.
      *
      * @param collection the SimpleFeatureCollection containing the features we want to visit
      * @param visitor the visitor which already knows which attributes it wants to meet
@@ -43,12 +38,11 @@ public class CollectionUtil {
     static void accept(SimpleFeatureCollection collection, FeatureVisitor visitor) {
         SimpleFeatureIterator iterator = collection.features();
         try {
-            while( iterator.hasNext()) {
+            while (iterator.hasNext()) {
                 SimpleFeature feature = (SimpleFeature) iterator.next();
                 visitor.visit(feature);
             }
-        }
-        finally {
+        } finally {
             iterator.close();
         }
     }
@@ -56,9 +50,9 @@ public class CollectionUtil {
     static void accept(SimpleFeatureCollection collection, FeatureVisitor[] visitors) {
         SimpleFeatureIterator iterator = collection.features();
         try {
-            while( iterator.hasNext()) {
-            	SimpleFeature feature = (SimpleFeature) iterator.next();
-    
+            while (iterator.hasNext()) {
+                SimpleFeature feature = (SimpleFeature) iterator.next();
+
                 for (int i = 0; i < visitors.length; i++) {
                     FeatureVisitor visitor = visitors[i];
                     visitor.visit(feature);
@@ -69,8 +63,7 @@ public class CollectionUtil {
         }
     }
 
-    public static Object calc(SimpleFeatureCollection collection,
-        FeatureCalc calculator) {
+    public static Object calc(SimpleFeatureCollection collection, FeatureCalc calculator) {
         accept(collection, calculator);
 
         return calculator.getResult();

@@ -16,20 +16,20 @@
  */
 package org.geotools.xs.bindings;
 
-import org.picocontainer.MutablePicoContainer;
 import java.util.Map;
 import javax.xml.namespace.QName;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 import org.geotools.xs.XS;
-
+import org.picocontainer.MutablePicoContainer;
 
 /**
  * Binding object for the type http://www.w3.org/2001/XMLSchema:complexType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xs:complexType name="complexType" abstract="true"&gt;
  *      &lt;xs:complexContent&gt;
@@ -58,23 +58,18 @@ import org.geotools.xs.XS;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class XSComplexTypeBinding extends AbstractComplexBinding {
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return XS.COMPLEXTYPE;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -85,9 +80,9 @@ public class XSComplexTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
-     * This binding delegates to its parent binding, which returns objects of
-     * type {@link Map}.
+     * This binding delegates to its parent binding, which returns objects of type {@link Map}.
      * <!-- end-user-doc -->
      *
      * @generated modifiable
@@ -97,24 +92,23 @@ public class XSComplexTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {
-    }
+    public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
+     *
      * <!-- begin-user-doc -->
-     * This binding delegates to its parent binding, which returns objects of
-     * type {@link Map}.
+     * This binding delegates to its parent binding, which returns objects of type {@link Map}.
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
-        return value; //all work done by super type
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
+        return value; // all work done by super type
     }
 }

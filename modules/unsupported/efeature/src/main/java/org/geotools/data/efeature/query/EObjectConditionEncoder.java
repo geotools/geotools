@@ -7,7 +7,6 @@ import java.util.Set;
 import java.util.Stack;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.query.conditions.Condition;
 import org.eclipse.emf.query.conditions.Not;
@@ -83,39 +82,32 @@ import org.opengis.filter.temporal.TOverlaps;
 
 /**
  * Encodes a {@link Filter} into an {@link EObjectCondition} statement.
- * <p>
- * This class is based on the org.geotools.data.jdbc.FilterToSQL source code by Chris Holmes (TOPP)
- * and Saul Farber (MassGIS)
- * 
- * @author kengu
- * 
  *
+ * <p>This class is based on the org.geotools.data.jdbc.FilterToSQL source code by Chris Holmes
+ * (TOPP) and Saul Farber (MassGIS)
+ *
+ * @author kengu
  * @source $URL$
  */
 public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor {
-    
+
     /** {@link Logger} instance for this class */
     private Logger LOGGER = Logging.getLogger(EObjectConditionEncoder.class);
 
-    /**
-     * The srid of the schema, so the BBOX conforms.
-     */
+    /** The srid of the schema, so the BBOX conforms. */
     private String srid;
 
-    /**
-     * Cached {@link SimpleFeatureType} instance
-     */
+    /** Cached {@link SimpleFeatureType} instance */
     private SimpleFeatureType featureType;
 
-    /**
-     * The geometry attribute to use if none is specified.
-     */
+    /** The geometry attribute to use if none is specified. */
     // private String defaultGeom;
 
     /**
      * Cached {@link EFeatureInfo} instance. The following information is used:
+     *
      * <ol>
-     * <li>Name of default geometry attribute, used if none is specified</li>
+     *   <li>Name of default geometry attribute, used if none is specified
      * </ol>
      */
     private EFeatureInfo eFeatureInfo;
@@ -126,30 +118,24 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
      */
     private boolean looseBBox = false;
 
-    /**
-     * Cached {@link FilterCapabilities} supported by {@link EFeatureQuery}
-     */
+    /** Cached {@link FilterCapabilities} supported by {@link EFeatureQuery} */
     private Capabilities capabilities;
 
-    /**
-     * Cached {@link EObjectCondition} built during encoding
-     */
+    /** Cached {@link EObjectCondition} built during encoding */
     private Condition eCondition;
 
-    /**
-     * Stack of {@link Condition}s waiting to be logically combined
-     */
+    /** Stack of {@link Condition}s waiting to be logically combined */
     private Stack<Condition> eConditionStack = new Stack<Condition>();
 
     /**
-     * Stack of {@link Expression} evaluation results waiting to be combined into an
-     * {@link EFeatureFilter} expression
+     * Stack of {@link Expression} evaluation results waiting to be combined into an {@link
+     * EFeatureFilter} expression
      */
     private Stack<Object> eExpressionStack = new Stack<Object>();
 
     /**
      * {@link EObjectConditionEncoder} constructor
-     * 
+     *
      * @param eFeatureInfo - {@link EFeatureInfo} instance
      * @param looseBBox -
      */
@@ -169,7 +155,7 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
 
     /**
      * Determines if specific filter passed in is supported.
-     * 
+     *
      * @param filter - the Filter to be tested.
      * @return true if supported, false otherwise.
      * @see IsSupportedFilterVisitor
@@ -180,8 +166,9 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
 
     /**
      * Determines if the filter and all its sub filters and expressions are supported.
+     *
      * <p>
-     * 
+     *
      * @param filter - the filter to be tested.
      * @return true if all sub filters are supported, false otherwise.
      * @see IsFullySupportedFilterVisitor
@@ -192,8 +179,9 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
 
     /**
      * Determines if the expression and all its sub expressions is supported.
+     *
      * <p>
-     * 
+     *
      * @param filter the filter to be tested.
      * @return true if all sub filters are supported, false otherwise.
      * @see IsFullySupportedFilterVisitor
@@ -205,7 +193,7 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
     /**
      * Gets whether the Filter.BBOX query will be strict and use an intersects or 'loose' and just
      * operate against the geometry envelopes.
-     * 
+     *
      * @return <tt>true</tt> if this encoder is going to do loose filtering.
      */
     public boolean isLooseBBox() {
@@ -217,7 +205,7 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
      * bounding box against the envelope. If set to <tt>false</tt> then the BBOX query will perform
      * a full intersects against the geometry, ensuring that it is exactly correct. If <tt>true</tt>
      * then the query will likely perform faster, but may not be exactly correct.
-     * 
+     *
      * @param isLooseBBox - whether the BBOX should be loose or strict.
      */
     public void setLooseBBox(boolean isLooseBBox) {
@@ -231,7 +219,7 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
     /**
      * Sets a spatial reference system ESPG number, so that the geometry can be properly encoded for
      * {@link EFeature}.
-     * 
+     *
      * @param srid - the code for the spatial reference system.
      */
     public void setSRID(String srid) {
@@ -240,7 +228,7 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
 
     /**
      * Get feature type which EMF Queries are encoded for.
-     * 
+     *
      * @return a {@link SimpleFeatureType} instance.
      */
     public SimpleFeatureType getFeatureType() {
@@ -249,11 +237,10 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
 
     /**
      * Sets the {@link FeatureType} the encoder is encoding {@link EFeatureFilter} for.
-     * <p>
-     * This is used in the context for attribute expressions when encoding to
-     * {@link EObjectCondition}s.
-     * </p>
-     * 
+     *
+     * <p>This is used in the context for attribute expressions when encoding to {@link
+     * EObjectCondition}s.
+     *
      * @param featureType - given {@link FeatureType} instance
      */
     public void setFeatureType(SimpleFeatureType featureType) {
@@ -262,19 +249,16 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
 
     /**
      * Encode given {@link Filter} into an {@link EObjectCondition}.
-     * 
+     *
      * @param filter - the {@link Filter} to be encoded.
-     * 
-     * 
-     * 
      * @throws EFeatureEncoderException If filter type not supported.
      */
     public EObjectCondition encode(Filter filter) throws EFeatureEncoderException {
         try {
             eCondition = null;
             eConditionStack.clear();
-            Condition condition = (Condition)filter.accept(this, null);
-            if(condition instanceof EObjectCondition) {
+            Condition condition = (Condition) filter.accept(this, null);
+            if (condition instanceof EObjectCondition) {
                 eCondition = condition;
             } else {
                 eCondition = new EObjectConditionAdapter(condition);
@@ -288,9 +272,8 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
 
     /**
      * Encode given {@link Expression} into an {@link Condition}.
-     * 
+     *
      * @param expression the {@link Expression} to be encoded.
-     * 
      * @throws EFeatureEncoderException If filter type not supported.
      */
     public Condition encode(Expression expression) throws EFeatureEncoderException {
@@ -305,19 +288,18 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
         return eCondition;
     }
 
-    // ----------------------------------------------------- 
+    // -----------------------------------------------------
     //  FilterVisitor implementation
     // -----------------------------------------------------
 
     /**
      * Push {@link EObjectCondition#E_FALSE} to {@link EObjectCondition} stack
+     *
      * <p>
-     * 
+     *
      * @param filter - the {@link Filter} instance to be visited
      * @param extraData - not in use
-     * 
      * @return a {@link Condition} instance
-     * 
      * @see {@link FilterVisitor#visit(ExcludeFilter, Object)}
      */
     @Override
@@ -328,15 +310,13 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
 
     /**
      * Push {@link EObjectCondition#E_TRUE} to {@link EObjectCondition} stack
+     *
      * <p>
-     * 
+     *
      * @param filter - the {@link Filter} instance to be visited
      * @param extraData - not in use
-     * 
      * @return a {@link Condition} instance
-     * 
      * @see {@link FilterVisitor#visit(IncludeFilter, Object)}
-     * 
      */
     @Override
     public Condition visit(IncludeFilter filter, Object extraData) {
@@ -347,16 +327,13 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
     /**
      * Create EMF query compatible {@link EAttributeValueIsBetween BETWEEN condition} from given
      * {@link PropertyIsBetween BETWEEN filter} and push it to {@link EObjectCondition} stack.
-     * <p>
-     * Literal values {@link Number}, {@link java.util.Date} and {@link String} are supported. Any
-     * other {@link Literal} value will throw an {@link RuntimeException}.
-     * </p>
-     * 
+     *
+     * <p>Literal values {@link Number}, {@link java.util.Date} and {@link String} are supported.
+     * Any other {@link Literal} value will throw an {@link RuntimeException}.
+     *
      * @param filter - the {@link Filter} instance to be visited
      * @param extraData - not in use
-     * 
      * @return a {@link EAttributeValueIsBetween} instance
-     * 
      * @throws RuntimeException If one or more expressions are not supported
      */
     @Override
@@ -393,14 +370,21 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
         // 2) Cast expression result to expected type
         //
         expr.accept(this, false);
-        PropertyName name = toType(eExpressionStack.pop(), PropertyName.class,
-                "PropertyIsBetween expression is not a PropertyName");
+        PropertyName name =
+                toType(
+                        eExpressionStack.pop(),
+                        PropertyName.class,
+                        "PropertyIsBetween expression is not a PropertyName");
         lowerbounds.accept(this, type);
-        Literal lower = toLiteral(eExpressionStack.pop(),
-                "PropertyIsBetween lower bound expression is not a Literal");
+        Literal lower =
+                toLiteral(
+                        eExpressionStack.pop(),
+                        "PropertyIsBetween lower bound expression is not a Literal");
         upperbounds.accept(this, type);
-        Literal upper = toLiteral(eExpressionStack.pop(),
-                "PropertyIsBetween upper bound expression is not a Literal");
+        Literal upper =
+                toLiteral(
+                        eExpressionStack.pop(),
+                        "PropertyIsBetween upper bound expression is not a Literal");
         //
         // Get EAttribute instance from definition
         //
@@ -409,16 +393,16 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
         // Found attribute?
         //
         if (eAttribute == null) {
-            throw new IllegalArgumentException("EAttribute " + name.getPropertyName()
-                    + " not found");
+            throw new IllegalArgumentException(
+                    "EAttribute " + name.getPropertyName() + " not found");
         }
 
         try {
             //
             // Create EObjectCondition instance and push it to condition stack
             //
-            EAttributeValueIsBetween eCondition = new EAttributeValueIsBetween(eAttribute, lower,
-                    upper);
+            EAttributeValueIsBetween eCondition =
+                    new EAttributeValueIsBetween(eAttribute, lower, upper);
             //
             // Push to stack
             //
@@ -431,26 +415,21 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
         } catch (EFeatureEncoderException e) {
             throw new RuntimeException("Failed to create BETWEEN condition", e);
         }
-
     }
 
     /**
-     * Create EMF query compatible {@link EAttributeValueIsLike LIKE condition} from given
-     * {@link PropertyIsLike LIKE filter} and push it to {@link EObjectCondition} stack.
-     * <p>
-     * Only {@link String} literal values are supported. Any other {@link Literal} value will throw
-     * a {@link RuntimeException}.
-     * <p>
-     * String pattern must comply with {@link Pattern} specification. An invalid pattern will throw
-     * a {@link RuntimeException}.
-     * </p>
-     * 
+     * Create EMF query compatible {@link EAttributeValueIsLike LIKE condition} from given {@link
+     * PropertyIsLike LIKE filter} and push it to {@link EObjectCondition} stack.
+     *
+     * <p>Only {@link String} literal values are supported. Any other {@link Literal} value will
+     * throw a {@link RuntimeException}.
+     *
+     * <p>String pattern must comply with {@link Pattern} specification. An invalid pattern will
+     * throw a {@link RuntimeException}.
+     *
      * @param filter - the LIKE Filter to be visited.
-     * 
      * @return a {@link EAttributeValueIsLike} instance
-     * 
      * @throws RuntimeException If one or more expressions are not supported
-     * 
      */
     @Override
     public EAttributeValueIsLike visit(PropertyIsLike filter, Object extraData) {
@@ -490,8 +469,11 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
 
         // Cast expression to PropertyName
         //
-        PropertyName name = toType(eExpressionStack.pop(), PropertyName.class,
-                "PropertyIsLike expression is not a PropertyName");
+        PropertyName name =
+                toType(
+                        eExpressionStack.pop(),
+                        PropertyName.class,
+                        "PropertyIsLike expression is not a PropertyName");
 
         // Get EAttribute instance from definition
         //
@@ -500,8 +482,8 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
         // Found attribute?
         //
         if (eAttribute == null) {
-            throw new IllegalArgumentException("EAttribute " + name.getPropertyName()
-                    + " not found");
+            throw new IllegalArgumentException(
+                    "EAttribute " + name.getPropertyName() + " not found");
         }
 
         try {
@@ -520,27 +502,23 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
         } catch (EFeatureEncoderException e) {
             throw new RuntimeException("Failed to create LIKE condition", e);
         }
-
     }
 
     /**
-     * Create EMF Query compatible {@link Not <code>NOT</code> condition} from given Geotools
-     * {@link org.opengis.filter.Not NOT filter} and push it to {@link EObjectCondition} stack.
-     * 
+     * Create EMF Query compatible {@link Not <code>NOT</code> condition} from given Geotools {@link
+     * org.opengis.filter.Not NOT filter} and push it to {@link EObjectCondition} stack.
+     *
      * @param filter - the filter to visit
      * @param extraData - not in use
-     * 
      * @return a {@link Condition} instance
-     * 
      * @throws RuntimeException If one or more expressions are not supported
-     * 
      */
     @Override
     public Condition visit(org.opengis.filter.Not filter, Object extraData) {
         //
         // Build filter recursively and put onto condition stack
         //
-        filter.getFilter().accept(this,extraData);
+        filter.getFilter().accept(this, extraData);
         //
         // Invert condition
         //
@@ -555,10 +533,9 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
      * Create EMF Query compatible {@link Condition#AND(Condition) AND condition}  from given
      * Geotools {@link org.opengis.filter.And AND filter} and push it to {@link EObjectCondition}
      * stack.
-     * 
+     *
      * @param filter - the filter to visit
      * @param extraData - not in use
-     * 
      * @return a {@link Condition} instance
      */
     @Override
@@ -569,14 +546,11 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
     /**
      * Create EMF Query compatible {@link Condition#OR(Condition) OR condition}  from given Geotools
      * {@link org.opengis.filter.Or OR filter} and push it to {@link EObjectCondition} stack.
-     * 
+     *
      * @param filter - the filter to visit
      * @param extraData - not in use
-     * 
      * @return a {@link Condition} instance
-     * 
      * @throws RuntimeException If one or more expressions are not supported
-     * 
      */
     @Override
     public Condition visit(org.opengis.filter.Or filter, Object extraData) {
@@ -586,22 +560,19 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
     /**
      * Common implementation for {@link BinaryLogicOperator binary logic operator} filters. This way
      * they're all handled centrally.
-     * <p>
-     * This method iterate over all filter children, concatenating them into a single EMF Query
+     *
+     * <p>This method iterate over all filter children, concatenating them into a single EMF Query
      * {@link Condition logical operator condition} and push it to {@link EObjectCondition} stack.
-     * <p>
-     * Only {@link Not NOT}, {@link Condition#OR(Condition) OR} and {@link Condition#OR(Condition)
-     * AND} operator filters are supported. Any other {@link BinaryLogicOperator binary logic
-     * operator} filter instance will throw a {@link RuntimeException}.
-     * </p>
-     * 
+     *
+     * <p>Only {@link Not NOT}, {@link Condition#OR(Condition) OR} and {@link
+     * Condition#OR(Condition) AND} operator filters are supported. Any other {@link
+     * BinaryLogicOperator binary logic operator} filter instance will throw a {@link
+     * RuntimeException}.
+     *
      * @param filter - the logic statement.
      * @param extraData - extra filter data. Not modified directly by this method.
-     * 
      * @return a {@link Condition} instance
-     * 
      * @throws RuntimeException If one or more expressions are not supported
-     * 
      */
     protected Condition visit(BinaryLogicOperator filter, Object extraData) {
 
@@ -633,7 +604,6 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
                 } else {
                     eCondition = eCondition.OR(eConditionStack.pop());
                 }
-
             }
         } else if ("AND".equals(operator)) {
             while (list.hasNext()) {
@@ -649,18 +619,17 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
                 } else {
                     eCondition = eCondition.AND(eConditionStack.pop());
                 }
-
             }
         } else {
-            throw new RuntimeException("Binary logical " + "operator " + operator
-                    + " filter not supported");
+            throw new RuntimeException(
+                    "Binary logical " + "operator " + operator + " filter not supported");
         }
 
         // No condition created?
         //
         if (eCondition == null) {
-            throw new NullPointerException("Binary logical " + "operator " + operator
-                    + " filter not supported");
+            throw new NullPointerException(
+                    "Binary logical " + "operator " + operator + " filter not supported");
         }
 
         // Push concatenated condition to stack
@@ -675,12 +644,10 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
     /**
      * Create EMF Query compatible {@link EAttributeValueIsEqual EQ (==) condition}  from given
      * Geotools {@link PropertyIsEqualTo EQ filter} and push it to {@link EObjectCondition} stack.
-     * 
+     *
      * @param filter - the filter to visit
      * @param extraData - not in use
-     * 
      * @return a {@link Condition} instance
-     * 
      * @throws RuntimeException If one or more expressions are not supported
      */
     @Override
@@ -690,16 +657,13 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
 
     /**
      * Create EMF Query compatible {@link EAttributeValueIsGreaterEqual GE (>=) condition}  from
-     * given Geotools {@link PropertyIsGreaterThanOrEqualTo GE filter} and push it to
-     * {@link EObjectCondition} stack.
-     * 
+     * given Geotools {@link PropertyIsGreaterThanOrEqualTo GE filter} and push it to {@link
+     * EObjectCondition} stack.
+     *
      * @param filter - the filter to visit
      * @param extraData - not in use
-     * 
      * @return a {@link Condition} instance
-     * 
      * @throws RuntimeException If one or more expressions are not supported
-     * 
      */
     @Override
     public Condition visit(PropertyIsGreaterThanOrEqualTo filter, Object extraData) {
@@ -710,14 +674,11 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
      * Create EMF Query compatible {@link EAttributeValueIsGreaterThan GE (>) condition}  from given
      * Geotools {@link PropertyIsGreaterThan GT filter} and push it to {@link EObjectCondition}
      * stack.
-     * 
+     *
      * @param filter - the filter to visit
      * @param extraData - not in use
-     * 
      * @return a {@link Condition} instance
-     * 
      * @throws RuntimeException If one or more expressions are not supported
-     * 
      */
     @Override
     public Condition visit(PropertyIsGreaterThan filter, Object extraData) {
@@ -727,14 +688,11 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
     /**
      * Create EMF Query compatible {@link EAttributeValueIsLessThan LE (<) condition}  from given
      * Geotools {@link PropertyIsLessThan LT filter} and push it to {@link EObjectCondition} stack.
-     * 
+     *
      * @param filter - the filter to visit
      * @param extraData - not in use
-     * 
      * @return a {@link Condition} instance
-     * 
      * @throws RuntimeException If one or more expressions are not supported
-     * 
      */
     @Override
     public Condition visit(PropertyIsLessThan filter, Object extraData) {
@@ -743,16 +701,13 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
 
     /**
      * Create EMF Query compatible {@link EAttributeValueIsLessEqual LE (<=) condition}  from given
-     * Geotools {@link PropertyIsLessThanOrEqualTo LE filter} and push it to
-     * {@link EObjectCondition} stack.
-     * 
+     * Geotools {@link PropertyIsLessThanOrEqualTo LE filter} and push it to {@link
+     * EObjectCondition} stack.
+     *
      * @param filter - the filter to visit
      * @param extraData - not in use
-     * 
      * @return a {@link Condition} instance
-     * 
      * @throws RuntimeException If one or more expressions are not supported
-     * 
      */
     @Override
     public Condition visit(PropertyIsLessThanOrEqualTo filter, Object extraData) {
@@ -763,14 +718,11 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
      * Create EMF Query compatible {@link EAttributeValueIsNotEqual NE (!=) condition }  from given
      * Geotools {@link PropertyIsNotEqualTo NE filter} and push it to {@link EObjectCondition}
      * stack.
-     * 
+     *
      * @param filter - the filter to visit
      * @param extraData - not in use
-     * 
      * @return a {@link Condition} instance
-     * 
      * @throws RuntimeException If one or more expressions are not supported
-     * 
      */
     @Override
     public Object visit(PropertyIsNotEqualTo filter, Object extraData) {
@@ -781,27 +733,23 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
     /**
      * Common implementation for {@link BinaryComparisonOperator binary comparison operator}
      * filters. This way they're all handled centrally.
-     * <p>
-     * This method iterate over all filter children, concatenating them into a single EMF Query
+     *
+     * <p>This method iterate over all filter children, concatenating them into a single EMF Query
      * {@link Condition logical comparison condition} and push it to {@link EObjectCondition} stack.
-     * <p>
-     * Only {@link EAttributeValueIsEqual EQ (==)}, {@link EAttributeValueIsNotEqual NE (>)},
-     * {@link EAttributeValueIsLessThan LT (<)}, {@link EAttributeValueIsLessThan LE (<=)},
-     * {@link EAttributeValueIsGreaterThan GT (>)} and {@link EAttributeValueIsLessThan GE (>=)}
-     * logical comparison filters are supported. Any other {@link BinaryLogicOperator binary logic
-     * operator} filter instance will throw a {@link RuntimeException}.
-     * </p>
-     * 
+     *
+     * <p>Only {@link EAttributeValueIsEqual EQ (==)}, {@link EAttributeValueIsNotEqual NE (>)},
+     * {@link EAttributeValueIsLessThan LT (<)}, {@link EAttributeValueIsLessThan LE (<=)}, {@link
+     * EAttributeValueIsGreaterThan GT (>)} and {@link EAttributeValueIsLessThan GE (>=)} logical
+     * comparison filters are supported. Any other {@link BinaryLogicOperator binary logic operator}
+     * filter instance will throw a {@link RuntimeException}.
+     *
      * @param filter - the logic statement.
      * @param extraData - extra filter data. Not modified directly by this method.
-     * 
      * @return a {@link Condition} instance
-     * 
      * @throws RuntimeException If one or more expressions are not supported
-     * 
      */
-    protected Condition visitBinaryComparisonOperator(BinaryComparisonOperator filter,
-            Object extraData) throws RuntimeException {
+    protected Condition visitBinaryComparisonOperator(
+            BinaryComparisonOperator filter, Object extraData) throws RuntimeException {
         // LOGGER.finer("exporting SQL ComparisonFilter");
         //
         // Initialize
@@ -817,8 +765,8 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
         //
         // Detect functions
         //
-        if(left instanceof Function || right instanceof Function) {
-            throw new IllegalArgumentException("Functions are not supported");            
+        if (left instanceof Function || right instanceof Function) {
+            throw new IllegalArgumentException("Functions are not supported");
         }
         //
         // Detect implicit inner join
@@ -896,20 +844,16 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
         // Finished
         //
         return eCondition;
-
     }
 
     /**
      * Create EMF Query compatible {@link EAttributeValueIsNull IS NULL condition}  from given
      * Geotools {@link PropertyIsNull IS NULL filter} and push it to {@link EObjectCondition} stack.
-     * 
+     *
      * @param filter - the filter to visit
      * @param extraData - not in use
-     * 
      * @return a {@link EAttributeValueIsNull} instance
-     * 
      * @throws RuntimeException If one expression is not supported
-     * 
      */
     @Override
     public EAttributeValueIsNull visit(PropertyIsNull filter, Object extraData)
@@ -926,8 +870,11 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
 
         // Get PropertyName instance
         //
-        PropertyName name = toType(eExpressionStack.pop(), PropertyName.class,
-                "PropertyIsNull expression is not a PropertyName");
+        PropertyName name =
+                toType(
+                        eExpressionStack.pop(),
+                        PropertyName.class,
+                        "PropertyIsNull expression is not a PropertyName");
 
         // Get EAttribute instance from definition
         //
@@ -936,8 +883,8 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
         // Found attribute?
         //
         if (eAttribute == null) {
-            throw new IllegalArgumentException("EAttribute " + name.getPropertyName()
-                    + " not found");
+            throw new IllegalArgumentException(
+                    "EAttribute " + name.getPropertyName() + " not found");
         }
 
         // Create EObjectCondition instance and push to stack
@@ -951,22 +898,17 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
         // Finished
         //
         return eCondition;
-
     }
 
     /**
      * Create EMF Query compatible {@link EAttributeValueIsID ID condition}  from given Geotools
      * {@link Id ID filter} and push it to {@link EObjectCondition} stack.
-     * 
+     *
      * @param filter - the filter to visit
      * @param extraData - not in use
-     * 
      * @param filter - the {@link Id identifier} filter
-     * 
      * @return a {@link EAttributeValueIsID} instance
-     * 
      * @throws RuntimeException - if no or more than one {@link Identifier identifier}s are given.
-     * 
      */
     @Override
     public EAttributeValueIsID visit(Id filter, Object extraData) {
@@ -1020,14 +962,11 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
     /**
      * Create EMF Query compatible {@link EGeometryValueBBox BBOX condition}  from given Geotools
      * {@link BBOX BBOX filter} and push it to {@link EObjectCondition} stack.
-     * 
+     *
      * @param filter - the filter to visit
      * @param extraData - not in use
-     * 
      * @return a {@link Condition} instance
-     * 
      * @throws RuntimeException If one or more expressions are not supported
-     * 
      */
     @Override
     public Condition visit(BBOX filter, Object extraData) {
@@ -1037,14 +976,11 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
     /**
      * Create EMF Query compatible {@link EGeometryValueBeyond BEYOND condition}  from given
      * Geotools {@link Beyond BEYOND filter} and push it to {@link EObjectCondition} stack.
-     * 
+     *
      * @param filter - the filter to visit
      * @param extraData - not in use
-     * 
      * @return a {@link Condition} instance
-     * 
      * @throws RuntimeException If one or more expressions are not supported
-     * 
      */
     @Override
     public Condition visit(Beyond filter, Object extraData) {
@@ -1054,14 +990,11 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
     /**
      * Create EMF Query compatible {@link EGeometryValueContains CONTAINS condition}  from given
      * Geotools {@link Contains CONTAINS filter} and push it to {@link EObjectCondition} stack.
-     * 
+     *
      * @param filter - the filter to visit
      * @param extraData - not in use
-     * 
      * @return a {@link Condition} instance
-     * 
      * @throws RuntimeException If one or more expressions are not supported
-     * 
      */
     @Override
     public Condition visit(Contains filter, Object extraData) {
@@ -1071,14 +1004,11 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
     /**
      * Create EMF Query compatible {@link EGeometryValueCrosses CROSSES condition}  from given
      * Geotools {@link Crosses CROSSES filter} and push it to {@link EObjectCondition} stack.
-     * 
+     *
      * @param filter - the filter to visit
      * @param extraData - not in use
-     * 
      * @return a {@link Condition} instance
-     * 
      * @throws RuntimeException If one or more expressions are not supported
-     * 
      */
     @Override
     public Condition visit(Crosses filter, Object extraData) {
@@ -1088,14 +1018,11 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
     /**
      * Create EMF Query compatible {@link EGeometryValueDisjoint DISJOINT condition}  from given
      * Geotools {@link Disjoint DISJOINT filter} and push it to {@link EObjectCondition} stack.
-     * 
+     *
      * @param filter - the filter to visit
      * @param extraData - not in use
-     * 
      * @return a {@link Condition} instance
-     * 
      * @throws RuntimeException If one or more expressions are not supported
-     * 
      */
     @Override
     public Condition visit(Disjoint filter, Object extraData) {
@@ -1105,14 +1032,11 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
     /**
      * Create EMF Query compatible {@link EGeometryValueDWithin DWITHIN condition}  from given
      * Geotools {@link DWithin DWITHIN filter} and push it to {@link EObjectCondition} stack.
-     * 
+     *
      * @param filter - the filter to visit
      * @param extraData - not in use
-     * 
      * @return a {@link Condition} instance
-     * 
      * @throws RuntimeException If one or more expressions are not supported
-     * 
      */
     @Override
     public Condition visit(DWithin filter, Object extraData) {
@@ -1122,14 +1046,11 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
     /**
      * Create EMF Query compatible {@link EGeometryValueEquals EQUALS condition}  from given
      * Geotools {@link Equals EQUALS filter} and push it to {@link EObjectCondition} stack.
-     * 
+     *
      * @param filter - the filter to visit
      * @param extraData - not in use
-     * 
      * @return a {@link Condition} instance
-     * 
      * @throws RuntimeException If one or more expressions are not supported
-     * 
      */
     @Override
     public Condition visit(Equals filter, Object extraData) {
@@ -1139,14 +1060,11 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
     /**
      * Create EMF Query compatible {@link EGeometryValueIntersects INTERSECTS condition}  from given
      * Geotools {@link Intersects INTERSECTS filter} and push it to {@link EObjectCondition} stack.
-     * 
+     *
      * @param filter - the filter to visit
      * @param extraData - not in use
-     * 
      * @return a {@link Condition} instance
-     * 
      * @throws RuntimeException If one or more expressions are not supported
-     * 
      */
     @Override
     public Condition visit(Intersects filter, Object extraData) {
@@ -1156,14 +1074,11 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
     /**
      * Create EMF Query compatible {@link EGeometryValueOverlaps OVERLAPS condition}  from given
      * Geotools {@link Overlaps OVERLAPS filter} and push it to {@link EObjectCondition} stack.
-     * 
+     *
      * @param filter - the filter to visit
      * @param extraData - not in use
-     * 
      * @return a {@link Condition} instance
-     * 
      * @throws RuntimeException If one or more expressions are not supported
-     * 
      */
     @Override
     public Condition visit(Overlaps filter, Object extraData) {
@@ -1173,14 +1088,11 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
     /**
      * Create EMF Query compatible {@link EGeometryValueTouches TOUCHES condition}  from given
      * Geotools {@link Touches TOUCHES filter} and push it to {@link EObjectCondition} stack.
-     * 
+     *
      * @param filter - the filter to visit
      * @param extraData - not in use
-     * 
      * @return a {@link Condition} instance
-     * 
      * @throws RuntimeException If one or more expressions are not supported
-     * 
      */
     @Override
     public Object visit(Touches filter, Object extraData) {
@@ -1190,14 +1102,11 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
     /**
      * Create EMF Query compatible {@link EGeometryValueWithin WITHIN condition}  from given
      * Geotools {@link Within WITHIN filter} and push it to {@link EObjectCondition} stack.
-     * 
+     *
      * @param filter - the filter to visit
      * @param extraData - not in use
-     * 
      * @return a {@link Condition} instance
-     * 
      * @throws RuntimeException If one or more expressions are not supported
-     * 
      */
     @Override
     public Condition visit(Within filter, Object extraData) {
@@ -1207,18 +1116,14 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
     /**
      * Common implementation for {@link BinarySpatialOperator binary spatial operator} filters. This
      * way they're all handled centrally.
-     * <p>
-     * This method extracts property name, geometry literal and descriptor and evaluates if property
-     * name and geometry literal arguments are swapped.
-     * </p>
-     * 
+     *
+     * <p>This method extracts property name, geometry literal and descriptor and evaluates if
+     * property name and geometry literal arguments are swapped.
+     *
      * @param filter - binary spatial operator statement
      * @param name - operator name
-     * 
      * @return a {@link Condition} instance
-     * 
      * @throws RuntimeException - if one or more expressions are not supported
-     * 
      */
     protected Condition visitBinarySpatialOperator(BinarySpatialOperator filter, String name) {
         // Perform some sanity checks
@@ -1242,8 +1147,9 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
             property = (PropertyName) op.getExpression2();
             geometry = (Literal) op.getExpression1();
         } else {
-            throw new IllegalArgumentException("Can only encode spatial filters that do "
-                    + "compare a property name and a geometry");
+            throw new IllegalArgumentException(
+                    "Can only encode spatial filters that do "
+                            + "compare a property name and a geometry");
         }
 
         // Get EAttribute instance
@@ -1257,29 +1163,33 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
 
             // Forward
             //
-            return visitBinarySpatialOperator(filter, name, eAttribute,
-                    (GeometryDescriptor) descriptor, geometry, swapped);
+            return visitBinarySpatialOperator(
+                    filter, name, eAttribute, (GeometryDescriptor) descriptor, geometry, swapped);
 
-        } else if(descriptor == null){
-            throw new IllegalArgumentException("Attribute '" + 
-                    property.getPropertyName() + "' not found in '" + 
-                    featureType.getTypeName() + "'");
+        } else if (descriptor == null) {
+            throw new IllegalArgumentException(
+                    "Attribute '"
+                            + property.getPropertyName()
+                            + "' not found in '"
+                            + featureType.getTypeName()
+                            + "'");
         } else {
-            throw new IllegalArgumentException("Attribute '" + 
-                    property.getPropertyName() + "' is not a geometry in " + 
-                    featureType.getTypeName() + "'");
+            throw new IllegalArgumentException(
+                    "Attribute '"
+                            + property.getPropertyName()
+                            + "' is not a geometry in "
+                            + featureType.getTypeName()
+                            + "'");
         }
-
     }
 
     /**
      * Common implementation for {@link BinarySpatialOperator binary spatial operator} filters. This
      * way they're all handled centrally.
-     * <p>
-     * This method extracts property name, geometry literal and descriptor and evaluates if property
-     * name and geometry literal arguments are swapped.
-     * </p>
-     * 
+     *
+     * <p>This method extracts property name, geometry literal and descriptor and evaluates if
+     * property name and geometry literal arguments are swapped.
+     *
      * @param filter - the binary spatial operator statement
      * @param name - operator name
      * @param property - property name expression
@@ -1287,14 +1197,16 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
      * @param swapped - true if geometry literal is left expression (first)
      * @param eAttribute - EAttribute instance
      * @param descriptor - geometry descriptor
-     * 
      * @return a {@link Condition} instance
-     * 
      * @throws RuntimeException - if one or more expressions are not supported
-     * 
      */
-    protected Condition visitBinarySpatialOperator(BinarySpatialOperator filter, String name,
-            EAttribute eAttribute, GeometryDescriptor descriptor, Literal geometry, boolean swapped) {
+    protected Condition visitBinarySpatialOperator(
+            BinarySpatialOperator filter,
+            String name,
+            EAttribute eAttribute,
+            GeometryDescriptor descriptor,
+            Literal geometry,
+            boolean swapped) {
         try {
             if (BBOX.NAME.equals(name)) {
                 return new EGeometryValueBBox(eAttribute, geometry, swapped);
@@ -1335,24 +1247,22 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
         return extraData;
     }
 
-    // ----------------------------------------------------- 
+    // -----------------------------------------------------
     //  ExpressionVisitor
     // -----------------------------------------------------
 
     /**
-     * Validate property against current {@link #getFeatureType() feature} and push it or the
-     * {@link AttributeDescriptor} to the {@link Expression} stack.
-     * 
+     * Validate property against current {@link #getFeatureType() feature} and push it or the {@link
+     * AttributeDescriptor} to the {@link Expression} stack.
+     *
      * @param expression - the expression to visit
-     * @param toAttribute - if {@link Boolean#TRUE TRUE}, push and return
-     *        {@link AttributeDescriptor} found in current {@link #getFeatureType() feature type},
-     *        otherwise return {@link PropertyName} instance.
-     * 
+     * @param toAttribute - if {@link Boolean#TRUE TRUE}, push and return {@link
+     *     AttributeDescriptor} found in current {@link #getFeatureType() feature type}, otherwise
+     *     return {@link PropertyName} instance.
      * @return a {@link AttributeDescriptor} or {@link PropertyName} instance depending on
-     *         'toAttribute' flag
-     * 
-     * @throws RuntimeException If {@link #getFeatureType()} does not define a
-     *         {@link AttributeDescriptor} with given property name.
+     *     'toAttribute' flag
+     * @throws RuntimeException If {@link #getFeatureType()} does not define a {@link
+     *     AttributeDescriptor} with given property name.
      */
     @Override
     public Object visit(PropertyName expression, Object toAttribute) throws RuntimeException {
@@ -1372,14 +1282,14 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
         } catch (Exception e) {
             // Property name not supported
             //
-            throw new IllegalArgumentException("Error occured mapping " + expression
-                    + " to feature type", e);
+            throw new IllegalArgumentException(
+                    "Error occured mapping " + expression + " to feature type", e);
         }
         // Verify
         //
         if (attribute == null) {
-            throw new NullPointerException("Attribute with name " +
-            		"[" + expression.getPropertyName() + "] not found");
+            throw new NullPointerException(
+                    "Attribute with name " + "[" + expression.getPropertyName() + "] not found");
         }
 
         // Push to stack
@@ -1389,20 +1299,18 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
         // Finished
         //
         return eExpressionStack.peek();
-
     }
 
     /**
      * Get literal or it's value.
+     *
      * <p>
-     * 
+     *
      * @param expression - the expression to visit
      * @param toValue - if {@link Boolean#TRUE TRUE}, push and return {@link Literal#getValue()
-     *        literal value}, otherwise push and return the {@link Literal} itself.
-     * 
+     *     literal value}, otherwise push and return the {@link Literal} itself.
      * @return a {@link Object value} or the {@link Literal itself} instance depending on 'toValue'
-     *         flag
-     * 
+     *     flag
      */
     @Override
     public Object visit(Literal expression, Object toValue) {
@@ -1439,39 +1347,30 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
         // Finished
         //
         return literal;
-
     }
 
-    /**
-     * Binary expression ADD is not supported.
-     */
+    /** Binary expression ADD is not supported. */
     @Override
     public Object visit(Add expression, Object extraData) {
         throw new IllegalArgumentException("Binary expression ADD is not supported");
         // return visit((BinaryExpression)expression, "+", extraData);
     }
 
-    /**
-     * Binary expression DIVIDE is not supported.
-     */
+    /** Binary expression DIVIDE is not supported. */
     @Override
     public Object visit(Divide expression, Object extraData) {
         throw new IllegalArgumentException("Binary expression DIVIDE is not supported");
         // return visit((BinaryExpression)expression, "/", extraData);
     }
 
-    /**
-     * Binary expression MULTIPLY is not supported.
-     */
+    /** Binary expression MULTIPLY is not supported. */
     @Override
     public Object visit(Multiply expression, Object extraData) {
         throw new IllegalArgumentException("Binary expression MULTIPLY is not supported");
         // return visit((BinaryExpression)expression, "*", extraData);
     }
 
-    /**
-     * Binary expression SUBSTRACT is not supported.
-     */
+    /** Binary expression SUBSTRACT is not supported. */
     @Override
     public Object visit(Subtract expression, Object extraData) {
         throw new IllegalArgumentException("Binary expression SUBSTRACT is not supported");
@@ -1500,9 +1399,7 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
     // return extraData;
     // }
 
-    /**
-     * {@link Function}s are not supported.
-     */
+    /** {@link Function}s are not supported. */
     @Override
     public Object visit(Function function, Object extraData) throws RuntimeException {
 
@@ -1809,11 +1706,10 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
     // }
     // }
 
-    // ----------------------------------------------------- 
+    // -----------------------------------------------------
     //  Private helper methods
     // -----------------------------------------------------
-    
-    
+
     @Override
     public Object visit(After arg0, Object extraData) {
         // TODO Auto-generated method stub
@@ -1896,23 +1792,23 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
     public Object visit(TOverlaps expression, Object extraData) {
         // TODO Auto-generated method stub
         return null;
-    }    
-    
-    // ----------------------------------------------------- 
+    }
+
+    // -----------------------------------------------------
     //  Private helper methods
     // -----------------------------------------------------
-    
+
     private static <T> T toType(Object object, Class<T> type, String message) {
         if (!type.isInstance(object)) {
             throw new IllegalArgumentException(message);
         }
         return type.cast(object);
     }
-    
+
     private static Literal toLiteral(Object object, String message) {
-        return toType(object,Literal.class,message);
+        return toType(object, Literal.class, message);
     }
-    
+
     private static Capabilities createFilterCapabilities() {
 
         // Create Capabilities helper class
@@ -1960,7 +1856,6 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
         // Finished
         //
         return capabilities;
-
     }
 
     @Override
@@ -1968,5 +1863,4 @@ public class EObjectConditionEncoder implements FilterVisitor, ExpressionVisitor
         // TODO Auto-generated method stub
         return null;
     }
-
 }

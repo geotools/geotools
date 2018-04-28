@@ -21,13 +21,12 @@ import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
  * Tests data reading when we expose primary keys as attributes
+ *
  * @author Andrea Aime
- *
- *
  * @source $URL$
  */
 public abstract class JDBCFeatureSourceExposePkOnlineTest extends JDBCFeatureSourceOnlineTest {
-    
+
     @Override
     protected void connect() throws Exception {
         super.connect();

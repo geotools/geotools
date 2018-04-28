@@ -4,7 +4,6 @@ import java.io.IOException;
 
 /**
  * @author Anders Bakkevold, Bouvet
- *
  * @source $URL$
  */
 public class SqlServerBinaryParseException extends IOException {

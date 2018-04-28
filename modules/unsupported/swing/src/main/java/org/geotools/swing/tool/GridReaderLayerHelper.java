@@ -18,7 +18,6 @@ package org.geotools.swing.tool;
 
 import java.awt.Rectangle;
 import java.lang.ref.WeakReference;
-
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -36,14 +35,12 @@ import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
 
-
 /**
- * Helper class used by {@linkplain InfoTool} to query values in a
- * {@linkplain org.geotools.map.GridReaderLayer}.
+ * Helper class used by {@linkplain InfoTool} to query values in a {@linkplain
+ * org.geotools.map.GridReaderLayer}.
  *
  * @author Michael Bedward
  * @since 8.0
- *
  * @source $URL$
  * @version $URL$
  */
@@ -53,8 +50,7 @@ public class GridReaderLayerHelper extends InfoToolHelper {
     private WeakReference<GridCoverage2DReader> sourceRef;
     private GridCoverage2D cachedCoverage;
 
-    public GridReaderLayerHelper() {
-    }
+    public GridReaderLayerHelper() {}
 
     @Override
     public boolean isSupportedLayer(Layer layer) {
@@ -68,10 +64,9 @@ public class GridReaderLayerHelper extends InfoToolHelper {
         }
 
         super.setLayer(layer);
-        sourceRef = new WeakReference<GridCoverage2DReader>(
-                ((GridReaderLayer) layer).getReader());
+        sourceRef = new WeakReference<GridCoverage2DReader>(((GridReaderLayer) layer).getReader());
     }
-    
+
     @Override
     public boolean isValid() {
         return super.isValid() && sourceRef != null && sourceRef.get() != null;
@@ -117,16 +112,18 @@ public class GridReaderLayerHelper extends InfoToolHelper {
         }
 
         final GridCoverage2DReader reader = sourceRef.get();
-        GeneralParameterValue parameter = new Parameter(
-                AbstractGridFormat.READ_GRIDGEOMETRY2D,
-                new GridGeometry2D(new GridEnvelope2D(queryRect),
-                reader.getOriginalGridToWorld(PixelInCell.CELL_CENTER),
-                reader.getCoordinateReferenceSystem()));
-        
+        GeneralParameterValue parameter =
+                new Parameter(
+                        AbstractGridFormat.READ_GRIDGEOMETRY2D,
+                        new GridGeometry2D(
+                                new GridEnvelope2D(queryRect),
+                                reader.getOriginalGridToWorld(PixelInCell.CELL_CENTER),
+                                reader.getCoordinateReferenceSystem()));
+
         try {
-            cachedCoverage = (GridCoverage2D) reader.read(new GeneralParameterValue[]{parameter});
+            cachedCoverage = (GridCoverage2D) reader.read(new GeneralParameterValue[] {parameter});
             return cachedCoverage != null;
-            
+
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -143,14 +140,15 @@ public class GridReaderLayerHelper extends InfoToolHelper {
             int y = (int) midPos.getOrdinate(1);
             int halfWidth = CACHED_RASTER_WIDTH / 2;
 
-            final Rectangle queryRect = new Rectangle(
-                    x - halfWidth, y - halfWidth,
-                    CACHED_RASTER_WIDTH, CACHED_RASTER_WIDTH);
+            final Rectangle queryRect =
+                    new Rectangle(
+                            x - halfWidth, y - halfWidth, CACHED_RASTER_WIDTH, CACHED_RASTER_WIDTH);
 
             GridEnvelope gridEnv = reader.getOriginalGridRange();
-                Rectangle rect = new Rectangle(
-                        gridEnv.getLow(0), gridEnv.getLow(1),
-                        gridEnv.getSpan(0), gridEnv.getSpan(1));
+            Rectangle rect =
+                    new Rectangle(
+                            gridEnv.getLow(0), gridEnv.getLow(1),
+                            gridEnv.getSpan(0), gridEnv.getSpan(1));
 
             XRectangle2D.intersect(queryRect, rect, queryRect);
             return queryRect;
@@ -159,5 +157,4 @@ public class GridReaderLayerHelper extends InfoToolHelper {
             throw new RuntimeException(ex);
         }
     }
-
 }

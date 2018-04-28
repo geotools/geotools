@@ -17,19 +17,17 @@
 package org.geotools.wfs.bindings;
 
 import javax.xml.namespace.QName;
-
 import net.opengis.wfs.TransactionResponseType;
 import net.opengis.wfs.WfsFactory;
-
 import org.geotools.wfs.v1_1.WFS;
 import org.geotools.xml.AbstractComplexEMFBinding;
-
 
 /**
  * Binding object for the type http://www.opengis.net/wfs:TransactionResponseType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:complexType name="TransactionResponseType"&gt;
  *      &lt;xsd:annotation&gt;
@@ -84,12 +82,8 @@ import org.geotools.xml.AbstractComplexEMFBinding;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class TransactionResponseTypeBinding extends AbstractComplexEMFBinding {
@@ -97,14 +91,13 @@ public class TransactionResponseTypeBinding extends AbstractComplexEMFBinding {
         super(factory);
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return WFS.TransactionResponseType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *

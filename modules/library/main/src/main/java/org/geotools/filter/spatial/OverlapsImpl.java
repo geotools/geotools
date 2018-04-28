@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2006-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -16,43 +16,34 @@
  */
 package org.geotools.filter.spatial;
 
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
 import org.geotools.filter.GeometryFilterImpl;
 import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.spatial.Overlaps;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class OverlapsImpl extends GeometryFilterImpl implements Overlaps {
 
-    public OverlapsImpl( Expression e1, Expression e2) {
+    public OverlapsImpl(Expression e1, Expression e2) {
         super(e1, e2);
     }
 
-    public OverlapsImpl( Expression e1, Expression e2,
-            MatchAction matchAction) {
+    public OverlapsImpl(Expression e1, Expression e2, MatchAction matchAction) {
         super(e1, e2, matchAction);
     }
-	
-	@Override
-        public boolean evaluateInternal(Geometry left, Geometry right) {
-		Envelope envLeft = left.getEnvelopeInternal();
-		Envelope envRight = right.getEnvelopeInternal();
-		
-		 if(envLeft.intersects(envRight))
-             return left.overlaps(right);
-         else
-             return false;
-	}
-	
-	public Object accept(FilterVisitor visitor, Object extraData) {
-		return visitor.visit(this,extraData);
-	}
 
+    @Override
+    public boolean evaluateInternal(Geometry left, Geometry right) {
+        Envelope envLeft = left.getEnvelopeInternal();
+        Envelope envRight = right.getEnvelopeInternal();
+
+        if (envLeft.intersects(envRight)) return left.overlaps(right);
+        else return false;
+    }
+
+    public Object accept(FilterVisitor visitor, Object extraData) {
+        return visitor.visit(this, extraData);
+    }
 }

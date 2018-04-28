@@ -23,21 +23,20 @@ import org.geotools.swt.utils.ImageCache;
 
 /**
  * Action that activates the Pan tool for the current {@link SwtMapPane map pane}.
- * 
+ *
  * @author Andrea Antonello (www.hydrologis.com)
- *
- *
- *
  * @source $URL$
  */
 public class PanAction extends MapAction {
 
     public PanAction() {
-        super(PanTool.TOOL_NAME + "@P", PanTool.TOOL_TIP, ImageCache.getInstance().getImage(ImageCache.IMAGE_PAN));
+        super(
+                PanTool.TOOL_NAME + "@P",
+                PanTool.TOOL_TIP,
+                ImageCache.getInstance().getImage(ImageCache.IMAGE_PAN));
     }
 
     public void run() {
         getMapPane().setCursorTool(new PanTool());
     }
-
 }

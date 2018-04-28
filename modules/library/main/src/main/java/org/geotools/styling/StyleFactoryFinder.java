@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -20,13 +20,8 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.FactoryRegistryException;
 import org.geotools.factory.GeoTools;
 
-
 /**
- *
- *
- *
  * @source $URL$
- *
  * @deprecated Replaced by {@link org.geotools.factory.CommonFactoryFinder#getStyleFactory}.
  */
 public class StyleFactoryFinder {
@@ -35,13 +30,12 @@ public class StyleFactoryFinder {
     /**
      * Create an instance of the factory.
      *
-     * @return An instance of the Factory, or null if the Factory could not be
-     *         created.
+     * @return An instance of the Factory, or null if the Factory could not be created.
      * @throws FactoryRegistryException If the factory is not found.
      */
     public static StyleFactory createStyleFactory() throws FactoryRegistryException {
         if (factory == null) {
-            factory = CommonFactoryFinder.getStyleFactory( GeoTools.getDefaultHints() );
+            factory = CommonFactoryFinder.getStyleFactory(GeoTools.getDefaultHints());
         }
         return factory;
     }

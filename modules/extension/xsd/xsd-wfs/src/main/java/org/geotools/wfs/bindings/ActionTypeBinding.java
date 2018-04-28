@@ -17,19 +17,17 @@
 package org.geotools.wfs.bindings;
 
 import javax.xml.namespace.QName;
-
 import net.opengis.wfs.ActionType;
 import net.opengis.wfs.WfsFactory;
-
 import org.geotools.wfs.WFS;
 import org.geotools.xml.AbstractComplexEMFBinding;
-
 
 /**
  * Binding object for the type http://www.opengis.net/wfs:ActionType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:complexType name="ActionType"&gt;
  *      &lt;xsd:sequence&gt;
@@ -72,12 +70,8 @@ import org.geotools.xml.AbstractComplexEMFBinding;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class ActionTypeBinding extends AbstractComplexEMFBinding {
@@ -85,14 +79,13 @@ public class ActionTypeBinding extends AbstractComplexEMFBinding {
         super(factory);
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return WFS.ActionType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -101,5 +94,4 @@ public class ActionTypeBinding extends AbstractComplexEMFBinding {
     public Class getType() {
         return ActionType.class;
     }
-
 }

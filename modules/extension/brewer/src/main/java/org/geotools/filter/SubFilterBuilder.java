@@ -1,19 +1,14 @@
 package org.geotools.filter;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class SubFilterBuilder<P> extends FilterBuilder {
     P parent;
-    
-    public SubFilterBuilder( P parent ){
+
+    public SubFilterBuilder(P parent) {
         this.parent = parent;
     }
-    P end(){
+
+    P end() {
         return parent;
     }
-
 }

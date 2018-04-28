@@ -16,19 +16,14 @@
  */
 package org.geotools.filter.v1_0;
 
-import org.w3c.dom.Document;
+import org.geotools.xml.Binding;
 import org.opengis.filter.PropertyIsBetween;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
-import org.geotools.xml.Binding;
+import org.w3c.dom.Document;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class OGCPropertyIsBetweenTypeBindingTest extends FilterTestSupport {
     public void testLowerBoundaryType() {
         assertEquals(Expression.class, binding(OGC.LowerBoundaryType).getType());
@@ -66,17 +61,21 @@ public class OGCPropertyIsBetweenTypeBindingTest extends FilterTestSupport {
 
     public void testEncode() throws Exception {
         Document doc = encode(FilterMockData.propertyIsBetween(), OGC.PropertyIsBetween);
-        assertEquals(1,
-            doc.getElementsByTagNameNS(OGC.NAMESPACE, OGC.PropertyName.getLocalPart()).getLength());
+        assertEquals(
+                1,
+                doc.getElementsByTagNameNS(OGC.NAMESPACE, OGC.PropertyName.getLocalPart())
+                        .getLength());
         assertEquals(1, doc.getElementsByTagNameNS(OGC.NAMESPACE, "LowerBoundary").getLength());
         assertEquals(1, doc.getElementsByTagNameNS(OGC.NAMESPACE, "UpperBoundary").getLength());
     }
-    
+
     public void testEncodeAsFilter() throws Exception {
         Document doc = encode(FilterMockData.propertyIsBetween(), OGC.Filter);
 
-        assertEquals(1,
-            doc.getElementsByTagNameNS(OGC.NAMESPACE, OGC.PropertyName.getLocalPart()).getLength());
+        assertEquals(
+                1,
+                doc.getElementsByTagNameNS(OGC.NAMESPACE, OGC.PropertyName.getLocalPart())
+                        .getLength());
         assertEquals(1, doc.getElementsByTagNameNS(OGC.NAMESPACE, "LowerBoundary").getLength());
         assertEquals(1, doc.getElementsByTagNameNS(OGC.NAMESPACE, "UpperBoundary").getLength());
     }

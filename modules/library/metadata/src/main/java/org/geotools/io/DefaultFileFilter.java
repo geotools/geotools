@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -21,34 +21,25 @@ import java.io.FileFilter;
 import java.io.FilenameFilter;
 import java.util.regex.Pattern;
 
-
 /**
  * A {@link FileFilter} implementation using Unix-style wildcards.
- *
- *
  *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
- *
  * @since 2.0
  */
 public class DefaultFileFilter extends javax.swing.filechooser.FileFilter
-        implements FileFilter, FilenameFilter
-{
-    /**
-     * The description of this filter, usually for graphical user interfaces.
-     */
+        implements FileFilter, FilenameFilter {
+    /** The description of this filter, usually for graphical user interfaces. */
     private final String description;
 
-    /**
-     * The pattern to matchs to filenames.
-     */
+    /** The pattern to matchs to filenames. */
     private final Pattern pattern;
 
     /**
-     * Constructs a file filter for the specified pattern.
-     * The pattern can contains the {@code "*"} and {@code "?"} wildcards.
+     * Constructs a file filter for the specified pattern. The pattern can contains the {@code "*"}
+     * and {@code "?"} wildcards.
      *
      * @param pattern The pattern (e.g. {@code "*.png"}).
      */
@@ -57,8 +48,8 @@ public class DefaultFileFilter extends javax.swing.filechooser.FileFilter
     }
 
     /**
-     * Constructs a file filter for the specified pattern and description.
-     * The pattern can contains the {@code "*"} and {@code "?"} wildcards.
+     * Constructs a file filter for the specified pattern and description. The pattern can contains
+     * the {@code "*"} and {@code "?"} wildcards.
      *
      * @param pattern The pattern (e.g. {@code "*.png"}).
      * @param description The description of this filter, usually for graphical user interfaces.
@@ -67,13 +58,19 @@ public class DefaultFileFilter extends javax.swing.filechooser.FileFilter
         this.description = description.trim();
         final int length = pattern.length();
         final StringBuilder buffer = new StringBuilder(length + 8);
-        for (int i=0; i<length; i++) {
+        for (int i = 0; i < length; i++) {
             final char c = pattern.charAt(i);
             if (!Character.isLetterOrDigit(c)) {
                 switch (c) {
-                    case '?': buffer.append('.' ); continue;
-                    case '*': buffer.append(".*"); continue;
-                    default : buffer.append('\\'); break;
+                    case '?':
+                        buffer.append('.');
+                        continue;
+                    case '*':
+                        buffer.append(".*");
+                        continue;
+                    default:
+                        buffer.append('\\');
+                        break;
                 }
             }
             buffer.append(c);
@@ -81,9 +78,7 @@ public class DefaultFileFilter extends javax.swing.filechooser.FileFilter
         this.pattern = Pattern.compile(buffer.toString());
     }
 
-    /**
-     * Returns the description of this filter. For example: {@code "PNG images"}.
-     */
+    /** Returns the description of this filter. For example: {@code "PNG images"}. */
     public String getDescription() {
         return description;
     }
@@ -91,7 +86,7 @@ public class DefaultFileFilter extends javax.swing.filechooser.FileFilter
     /**
      * Tests if a specified file matches the pattern.
      *
-     * @param  file The file to be tested.
+     * @param file The file to be tested.
      * @return {@code true} if and only if the name matches the pattern.
      */
     public boolean accept(final File file) {
@@ -101,8 +96,8 @@ public class DefaultFileFilter extends javax.swing.filechooser.FileFilter
     /**
      * Tests if a specified file matches the pattern.
      *
-     * @param  directory The directory in which the file was found.
-     * @param  name The name of the file.
+     * @param directory The directory in which the file was found.
+     * @param name The name of the file.
      * @return {@code true} if and only if the name matches the pattern.
      */
     public boolean accept(final File directory, final String name) {

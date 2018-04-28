@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,16 +16,14 @@
  */
 package org.geotools.styling;
 
-
-
 /**
- * The "LabelPlacement" specifies where and how a text label should be rendered
- * relative to a geometry.
+ * The "LabelPlacement" specifies where and how a text label should be rendered relative to a
+ * geometry.
  *
- * <p>
- * The details of this object are taken from the <a
- * href="https://portal.opengeospatial.org/files/?artifact_id=1188"> OGC
- * Styled-Layer Descriptor Report (OGC 02-070) version 1.0.0.</a>:
+ * <p>The details of this object are taken from the <a
+ * href="https://portal.opengeospatial.org/files/?artifact_id=1188">OGC Styled-Layer Descriptor
+ * Report (OGC 02-070) version 1.0.0.</a>:
+ *
  * <pre><code>
  * &lt;xsd:element name="LabelPlacement"&gt;
  *   &lt;xsd:annotation&gt;
@@ -43,16 +41,13 @@ package org.geotools.styling;
  *   &lt;/xsd:complexType&gt;
  * &lt;/xsd:element&gt;
  * </code></pre>
- * </p>
  *
- * <p></p>
+ * <p>
  *
  * @author Ian Turton, CCG
- *
- *
  * @source $URL$
  */
-public interface LabelPlacement extends org.opengis.style.LabelPlacement{
-    
+public interface LabelPlacement extends org.opengis.style.LabelPlacement {
+
     void accept(StyleVisitor visitor);
 }

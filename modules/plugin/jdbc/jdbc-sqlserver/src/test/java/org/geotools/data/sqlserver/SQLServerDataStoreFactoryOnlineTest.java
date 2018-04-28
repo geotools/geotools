@@ -22,17 +22,12 @@ import static org.geotools.jdbc.JDBCDataStoreFactory.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-
 import org.geotools.data.sqlserver.jtds.JTDSSqlServerDataStoreFactory;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
 
-/**
- *
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class SQLServerDataStoreFactoryOnlineTest extends JDBCTestSupport {
 
     @Override
@@ -72,8 +67,8 @@ public class SQLServerDataStoreFactoryOnlineTest extends JDBCTestSupport {
         params.put(PASSWD.key, password);
         // since we use the same test for SQLServer and JTDSSQLServer
         SQLServerDataStoreFactory factory = null;
-        if (db.getProperty("driver").equalsIgnoreCase(
-                "com.microsoft.sqlserver.jdbc.SQLServerDriver")) {
+        if (db.getProperty("driver")
+                .equalsIgnoreCase("com.microsoft.sqlserver.jdbc.SQLServerDriver")) {
             factory = new SQLServerDataStoreFactory();
 
         } else {
@@ -96,5 +91,4 @@ public class SQLServerDataStoreFactoryOnlineTest extends JDBCTestSupport {
             store.dispose();
         }
     }
-
 }

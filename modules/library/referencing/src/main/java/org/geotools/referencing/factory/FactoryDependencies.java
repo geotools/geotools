@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -22,136 +22,129 @@ import java.io.Writer;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.swing.tree.TreeNode;
-import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.DefaultMutableTreeNode;
-
-import org.opengis.metadata.Identifier;
-import org.opengis.metadata.citation.Citation;
-import org.opengis.referencing.Factory;
-import org.opengis.referencing.AuthorityFactory;
-import org.opengis.referencing.crs.CRSFactory;
-import org.opengis.referencing.crs.CRSAuthorityFactory;
-import org.opengis.referencing.cs.CSFactory;
-import org.opengis.referencing.cs.CSAuthorityFactory;
-import org.opengis.referencing.datum.DatumFactory;
-import org.opengis.referencing.datum.DatumAuthorityFactory;
-import org.opengis.referencing.operation.CoordinateOperationAuthorityFactory;
-import org.opengis.referencing.operation.CoordinateOperationFactory;
-
+import javax.swing.tree.MutableTreeNode;
+import javax.swing.tree.TreeNode;
 import org.geotools.factory.BufferedFactory;
 import org.geotools.factory.OptionalFactory;
 import org.geotools.referencing.ReferencingFactoryFinder;
-import org.geotools.resources.OptionalDependencies;
 import org.geotools.resources.Classes;
+import org.geotools.resources.OptionalDependencies;
 import org.geotools.resources.X364;
-
+import org.opengis.metadata.Identifier;
+import org.opengis.metadata.citation.Citation;
+import org.opengis.referencing.AuthorityFactory;
+import org.opengis.referencing.Factory;
+import org.opengis.referencing.crs.CRSAuthorityFactory;
+import org.opengis.referencing.crs.CRSFactory;
+import org.opengis.referencing.cs.CSAuthorityFactory;
+import org.opengis.referencing.cs.CSFactory;
+import org.opengis.referencing.datum.DatumAuthorityFactory;
+import org.opengis.referencing.datum.DatumFactory;
+import org.opengis.referencing.operation.CoordinateOperationAuthorityFactory;
+import org.opengis.referencing.operation.CoordinateOperationFactory;
 
 /**
  * Build a tree of factory dependencies.
  *
  * @since 2.4
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */
 public class FactoryDependencies {
     /**
-     * A list of interfaces that may be implemented by this class. Used for
-     * the properties printed between parenthesis by {@link #createTree()}.
+     * A list of interfaces that may be implemented by this class. Used for the properties printed
+     * between parenthesis by {@link #createTree()}.
      */
     private static final Class[] TYPES = {
-        CRSFactory                          .class,
-        CRSAuthorityFactory                 .class,
-        CSFactory                           .class,
-        CSAuthorityFactory                  .class,
-        DatumFactory                        .class,
-        DatumAuthorityFactory               .class,
-        CoordinateOperationFactory          .class,
-        CoordinateOperationAuthorityFactory .class,
-        BufferedFactory                     .class,
-        OptionalFactory                     .class,
-        Factory                             .class  // Processed in a special way.
+        CRSFactory.class,
+        CRSAuthorityFactory.class,
+        CSFactory.class,
+        CSAuthorityFactory.class,
+        DatumFactory.class,
+        DatumAuthorityFactory.class,
+        CoordinateOperationFactory.class,
+        CoordinateOperationAuthorityFactory.class,
+        BufferedFactory.class,
+        OptionalFactory.class,
+        Factory.class // Processed in a special way.
     };
 
-    /**
-     * Labels for {@link #TYPES}.
-     */
+    /** Labels for {@link #TYPES}. */
     private static final String[] TYPE_LABELS = {
-        "crs", "crs", "cs", "cs", "datum", "datum", "operation", "operation",
-        "buffered", "optional", "registered"
+        "crs",
+        "crs",
+        "cs",
+        "cs",
+        "datum",
+        "datum",
+        "operation",
+        "operation",
+        "buffered",
+        "optional",
+        "registered"
     };
 
     /**
-     * The number of elements in {@link #TYPES} which are referencing factories.
-     * They are printed in a different color than the last elements.
+     * The number of elements in {@link #TYPES} which are referencing factories. They are printed in
+     * a different color than the last elements.
      */
     private static final int FACTORY_COUNT = TYPES.length - 3;
 
-    /**
-     * The factory to format.
-     */
+    /** The factory to format. */
     private final Factory factory;
 
     /**
-     * {@code true} for applying colors on a ANSI X3.64 (aka ECMA-48 and ISO/IEC 6429)
-     * compliant output device.
+     * {@code true} for applying colors on a ANSI X3.64 (aka ECMA-48 and ISO/IEC 6429) compliant
+     * output device.
      */
     private boolean colorEnabled;
 
     /**
-     * {@code true} for printing attributes {@link #TYPE_LABELS} between parenthesis
-     * after the factory name.
+     * {@code true} for printing attributes {@link #TYPE_LABELS} between parenthesis after the
+     * factory name.
      */
     private boolean attributes;
 
-    /**
-     * Creates a new dependency tree for the specified factory.
-     */
+    /** Creates a new dependency tree for the specified factory. */
     public FactoryDependencies(final Factory factory) {
         this.factory = factory;
     }
 
     /**
-     * Returns {@code true} if syntax coloring is enabled.
-     * Syntax coloring is disabled by default.
+     * Returns {@code true} if syntax coloring is enabled. Syntax coloring is disabled by default.
      */
     public boolean isColorEnabled() {
         return colorEnabled;
     }
 
     /**
-     * Enables or disables syntax coloring on ANSI X3.64 (aka ECMA-48 and ISO/IEC 6429)
-     * compatible terminal. By default, syntax coloring is disabled.
+     * Enables or disables syntax coloring on ANSI X3.64 (aka ECMA-48 and ISO/IEC 6429) compatible
+     * terminal. By default, syntax coloring is disabled.
      */
     public void setColorEnabled(final boolean enabled) {
         colorEnabled = enabled;
     }
 
     /**
-     * Returns {@code true} if attributes are to be printed.
-     * By default, attributes are not printed.
+     * Returns {@code true} if attributes are to be printed. By default, attributes are not printed.
      */
     public boolean isAttributeEnabled() {
         return attributes;
     }
 
     /**
-     * Enables or disables the addition of attributes after factory names. Attributes
-     * are labels like "{@code crs}", "{@code datum}", <cite>etc.</cite> put between
-     * parenthesis. They give indications on the services implemented by the factory
-     * (e.g. {@link CRSAuthorityFactory}, {@link DatumAuthorityFactory}, <cite>etc.</cite>).
+     * Enables or disables the addition of attributes after factory names. Attributes are labels
+     * like "{@code crs}", "{@code datum}", <cite>etc.</cite> put between parenthesis. They give
+     * indications on the services implemented by the factory (e.g. {@link CRSAuthorityFactory},
+     * {@link DatumAuthorityFactory}, <cite>etc.</cite>).
      */
     public void setAttributeEnabled(final boolean enabled) {
         attributes = enabled;
     }
 
-    /**
-     * Prints the dependencies as a tree to the specified printer.
-     */
+    /** Prints the dependencies as a tree to the specified printer. */
     public void print(final PrintWriter out) {
         out.print(OptionalDependencies.toString(asTree()));
     }
@@ -159,23 +152,19 @@ public class FactoryDependencies {
     /**
      * Prints the dependencies as a tree to the specified writer.
      *
-     * @param  out The writer where to print the tree.
+     * @param out The writer where to print the tree.
      * @throws IOException if an error occured while writting to the stream.
      */
     public void print(final Writer out) throws IOException {
         out.write(OptionalDependencies.toString(asTree()));
     }
 
-    /**
-     * Returns the dependencies as a tree.
-     */
+    /** Returns the dependencies as a tree. */
     public TreeNode asTree() {
         return createTree(factory, new HashSet<Factory>());
     }
 
-    /**
-     * Returns the dependencies for the specified factory.
-     */
+    /** Returns the dependencies for the specified factory. */
     private MutableTreeNode createTree(final Factory factory, final Set<Factory> done) {
         final DefaultMutableTreeNode root = createNode(factory);
         if (factory instanceof ReferencingFactory) {
@@ -193,7 +182,9 @@ public class FactoryDependencies {
                             throw new AssertionError(); // Should never happen.
                         }
                     } else {
-                        child = OptionalDependencies.createTreeNode(String.valueOf(element), element, false);
+                        child =
+                                OptionalDependencies.createTreeNode(
+                                        String.valueOf(element), element, false);
                     }
                     root.add(child);
                 }
@@ -202,9 +193,7 @@ public class FactoryDependencies {
         return root;
     }
 
-    /**
-     * Creates a single node for the specified factory.
-     */
+    /** Creates a single node for the specified factory. */
     private DefaultMutableTreeNode createNode(final Factory factory) {
         final StringBuilder buffer =
                 new StringBuilder(Classes.getShortClassName(factory)).append('[');
@@ -233,7 +222,7 @@ public class FactoryDependencies {
         buffer.append(']');
         if (attributes) {
             boolean hasFound = false;
-            for (int i=0; i<TYPES.length; i++) {
+            for (int i = 0; i < TYPES.length; i++) {
                 final Class type = TYPES[i];
                 if (!type.isInstance(factory)) {
                     continue;
@@ -260,9 +249,7 @@ public class FactoryDependencies {
         return OptionalDependencies.createTreeNode(buffer.toString(), factory, true);
     }
 
-    /**
-     * Appends an identifier to the specified buffer.
-     */
+    /** Appends an identifier to the specified buffer. */
     private void appendIdentifier(final StringBuilder buffer, final CharSequence identifier) {
         if (colorEnabled) buffer.append(X364.MAGENTA);
         buffer.append('"').append(identifier).append('"');

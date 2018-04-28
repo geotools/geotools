@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2009-2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,10 +16,11 @@
  */
 package org.geotools.filter.expression;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
@@ -33,25 +34,18 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
-
 /**
  * ToEnvelope function can take in the following set of parameters and return as either Envelope or
  * ReferencedEnvelope type:
+ *
  * <ol>
- * <li>Option 1 (1D Envelope) : <OCQL>ToEnvelope(minx,maxx)</OCQL>
- * <li>Option 2 (1D Envelope with crsname): <OCQL>ToEnvelope(minx,maxx,crsname)</OCQL>
- * <li>Option 3 (2D Envelope) : <OCQL>ToEnvelope(minx,maxx,miny,maxy)</OCQL>
- * <li>Option 4 (2D Envelope with crsname): <OCQL>ToEnvelope(minx,maxx,miny,maxy,crsname)</OCQL>
+ *   <li>Option 1 (1D Envelope) : <OCQL>ToEnvelope(minx,maxx)</OCQL>
+ *   <li>Option 2 (1D Envelope with crsname): <OCQL>ToEnvelope(minx,maxx,crsname)</OCQL>
+ *   <li>Option 3 (2D Envelope) : <OCQL>ToEnvelope(minx,maxx,miny,maxy)</OCQL>
+ *   <li>Option 4 (2D Envelope with crsname): <OCQL>ToEnvelope(minx,maxx,miny,maxy,crsname)</OCQL>
  * </ol>
- * 
+ *
  * @author Florence Tan (Curtin University of Technology)
- * 
- *
- *
- *
- *
  * @source $URL$
  */
 public class ToEnvelopeFunction implements Function {
@@ -60,10 +54,12 @@ public class ToEnvelopeFunction implements Function {
 
     private final Literal fallback;
 
-    public static final FunctionName NAME = new FunctionNameImpl("ToEnvelope",
-            FunctionNameImpl.parameter("return", Envelope.class), FunctionNameImpl.parameter(
-                    "parameter", Object.class, 2, 5));
- 
+    public static final FunctionName NAME =
+            new FunctionNameImpl(
+                    "ToEnvelope",
+                    FunctionNameImpl.parameter("return", Envelope.class),
+                    FunctionNameImpl.parameter("parameter", Object.class, 2, 5));
+
     public ToEnvelopeFunction() {
         this(new ArrayList<Expression>(), null);
     }
@@ -76,7 +72,7 @@ public class ToEnvelopeFunction implements Function {
     public String getName() {
         return NAME.getName();
     }
-    
+
     public FunctionName getFunctionName() {
         return NAME;
     }
@@ -114,10 +110,12 @@ public class ToEnvelopeFunction implements Function {
                 } catch (NoSuchAuthorityCodeException e) {
                     throw new IllegalArgumentException(
                             "Invalid or unsupported SRS name detected for toEnvelope function: "
-                                    + crsvalue + ". Cause: " + e.getMessage());
+                                    + crsvalue
+                                    + ". Cause: "
+                                    + e.getMessage());
                 } catch (FactoryException e) {
-                    throw new RuntimeException("Unable to decode SRS name. Cause: "
-                            + e.getMessage());
+                    throw new RuntimeException(
+                            "Unable to decode SRS name. Cause: " + e.getMessage());
                 }
             }
             Coordinate coordinate = new Coordinate(xvalue, yvalue);
@@ -145,10 +143,12 @@ public class ToEnvelopeFunction implements Function {
                 } catch (NoSuchAuthorityCodeException e) {
                     throw new IllegalArgumentException(
                             "Invalid or unsupported SRS name detected for toEnvelope function: "
-                                    + crsvalue + ". Cause: " + e.getMessage());
+                                    + crsvalue
+                                    + ". Cause: "
+                                    + e.getMessage());
                 } catch (FactoryException e) {
-                    throw new RuntimeException("Unable to decode SRS name. Cause: "
-                            + e.getMessage());
+                    throw new RuntimeException(
+                            "Unable to decode SRS name. Cause: " + e.getMessage());
                 }
             }
             envelope = new Envelope(minxvalue, maxxvalue, minyvalue, maxyvalue);
@@ -164,11 +164,9 @@ public class ToEnvelopeFunction implements Function {
             // return new Envelope
             return Converters.convert(envelope, context);
         }
-
     }
 
     public Literal getFallbackValue() {
         return fallback;
     }
-
 }

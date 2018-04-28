@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -22,25 +22,17 @@ import org.opengis.geometry.primitive.Curve;
 import org.opengis.geometry.primitive.Surface;
 import org.opengis.referencing.FactoryException;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class IntersectionTest extends AbstractGeometryTest {
 
-    /**
-     * Prepare the test environment
-     */
+    /** Prepare the test environment */
     public void setUp() throws FactoryException {
         super.setUp();
     }
-    public void testNotYet(){        
-    }
-    
-    /**
-     * test the simple intersection of two polygons
-     */
+
+    public void testNotYet() {}
+
+    /** test the simple intersection of two polygons */
     public void XtestSimpleIntersection() {
         DirectPosition[] pointsA = new DirectPosition[4];
         pointsA[0] = createDirectPosition(0.0, 0.0);
@@ -64,7 +56,7 @@ public class IntersectionTest extends AbstractGeometryTest {
 
         TransfiniteSet result = sA.intersection(sB);
         assertTrue(result instanceof Surface);
-        Surface surfaceResult = (Surface)result;
+        Surface surfaceResult = (Surface) result;
         assertEquals(1.0 + Math.sqrt(2.0), surfaceResult.getPerimeter());
     }
 
@@ -91,9 +83,8 @@ public class IntersectionTest extends AbstractGeometryTest {
 
         TransfiniteSet result = sA.intersection(sB);
         assertTrue(result instanceof Curve);
-        Curve curveResult = (Curve)result;
+        Curve curveResult = (Curve) result;
         assertEquals(0.0, curveResult.getStartParam(), 1.0e-8);
         assertEquals(Math.sqrt(2.0), curveResult.getEndParam(), 1.0e-8);
     }
-
 }

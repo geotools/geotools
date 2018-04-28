@@ -17,20 +17,14 @@
 package org.geotools.gce.gtopo30;
 
 import java.util.Iterator;
-
 import junit.framework.TestCase;
-
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 import org.geotools.coverage.grid.io.GridFormatFinder;
-
 
 /**
  * DOCUMENT ME!
  *
  * @author Simone Giannecchini
- *
- *
- *
  * @source $URL$
  */
 public class GT30ServiceTest extends TestCase {

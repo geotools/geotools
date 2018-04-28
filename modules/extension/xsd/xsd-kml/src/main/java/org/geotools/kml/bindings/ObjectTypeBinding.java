@@ -22,12 +22,12 @@ import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 
-
 /**
  * Binding object for the type http://earth.google.com/kml/2.1:ObjectType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;complexType abstract="true" name="ObjectType"&gt;
  *      &lt;attributeGroup ref="kml:idAttributes"/&gt;
@@ -35,23 +35,18 @@ import org.geotools.xml.Node;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class ObjectTypeBinding extends AbstractComplexBinding {
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return KML.ObjectType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -62,14 +57,14 @@ public class ObjectTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
-        //TODO: implement
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
+        // TODO: implement
         return null;
     }
 }

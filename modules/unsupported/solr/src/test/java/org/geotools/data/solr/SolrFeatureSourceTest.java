@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2014-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -20,7 +20,6 @@ package org.geotools.data.solr;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -104,8 +103,8 @@ public class SolrFeatureSourceTest extends SolrTestSupport {
     public void testGetFeaturesWithAndLogicFilter() throws Exception {
         init();
         FilterFactory ff = dataStore.getFilterFactory();
-        PropertyIsEqualTo property = ff.equals(ff.property("standard_ss"),
-                ff.literal("IEEE 802.11b"));
+        PropertyIsEqualTo property =
+                ff.equals(ff.property("standard_ss"), ff.literal("IEEE 802.11b"));
         BBOX bbox = ff.bbox("geo", -1, -1, 10, 10, "EPSG:" + SOURCE_SRID);
         And filter = ff.and(property, bbox);
         SimpleFeatureCollection features = featureSource.getFeatures(filter);
@@ -123,8 +122,9 @@ public class SolrFeatureSourceTest extends SolrTestSupport {
         SimpleFeatureIterator iterator = features.features();
         while (iterator.hasNext()) {
             SimpleFeature f = iterator.next();
-            assertTrue(f.getAttribute("vendor_s").equals("D-Link")
-                    || f.getAttribute("vendor_s").equals("Linksys"));
+            assertTrue(
+                    f.getAttribute("vendor_s").equals("D-Link")
+                            || f.getAttribute("vendor_s").equals("Linksys"));
         }
     }
 
@@ -145,8 +145,12 @@ public class SolrFeatureSourceTest extends SolrTestSupport {
     public void testGetFeaturesWithIdFilter() throws Exception {
         init();
         FilterFactory ff = dataStore.getFilterFactory();
-        Id id = ff.id(new HashSet<FeatureId>(Arrays.asList(ff.featureId(this.layerName + ".1"),
-                ff.featureId(this.layerName + ".7"))));
+        Id id =
+                ff.id(
+                        new HashSet<FeatureId>(
+                                Arrays.asList(
+                                        ff.featureId(this.layerName + ".1"),
+                                        ff.featureId(this.layerName + ".7"))));
         SimpleFeatureCollection features = featureSource.getFeatures(id);
         assertEquals(2, features.size());
         SimpleFeatureIterator iterator = features.features();
@@ -161,8 +165,8 @@ public class SolrFeatureSourceTest extends SolrTestSupport {
     public void testGetFeaturesWithBetweenFilter() throws Exception {
         init();
         FilterFactory ff = dataStore.getFilterFactory();
-        PropertyIsBetween between = ff.between(ff.property("speed_is"), ff.literal(0),
-                ff.literal(150));
+        PropertyIsBetween between =
+                ff.between(ff.property("speed_is"), ff.literal(0), ff.literal(150));
         SimpleFeatureCollection features = featureSource.getFeatures(between);
         assertEquals(9, features.size());
         SimpleFeatureIterator iterator = features.features();
@@ -214,7 +218,7 @@ public class SolrFeatureSourceTest extends SolrTestSupport {
         PropertyIsEqualTo filter = ff.equals(ff.property("modem_b"), ff.literal(true));
 
         Query query = new Query();
-        query.setPropertyNames(new String[] { "standard_ss", "security_ss" });
+        query.setPropertyNames(new String[] {"standard_ss", "security_ss"});
         query.setFilter(filter);
 
         SimpleFeatureCollection features = featureSource.getFeatures(query);
@@ -237,7 +241,7 @@ public class SolrFeatureSourceTest extends SolrTestSupport {
         FilterFactory ff = dataStore.getFilterFactory();
         SortBy sort = ff.sort("vendor_s", SortOrder.ASCENDING);
         Query query = new Query();
-        query.setSortBy(new SortBy[] { sort });
+        query.setSortBy(new SortBy[] {sort});
 
         SimpleFeatureCollection features = featureSource.getFeatures(query);
         assertEquals(11, features.size());
@@ -259,7 +263,7 @@ public class SolrFeatureSourceTest extends SolrTestSupport {
         }
 
         sort = ff.sort("vendor_s", SortOrder.DESCENDING);
-        query.setSortBy(new SortBy[] { sort });
+        query.setSortBy(new SortBy[] {sort});
         features = featureSource.getFeatures(query);
         iterator = features.features();
         try {
@@ -304,13 +308,12 @@ public class SolrFeatureSourceTest extends SolrTestSupport {
     public void testNaturalSortingAsc() throws Exception {
         init();
         Query q = new Query(featureSource.getSchema().getTypeName());
-        q.setSortBy(new SortBy[] { SortBy.NATURAL_ORDER });
+        q.setSortBy(new SortBy[] {SortBy.NATURAL_ORDER});
         SimpleFeatureIterator features = featureSource.getFeatures(q).features();
         String prevId = null;
         while (features.hasNext()) {
             String currId = features.next().getID();
-            if (prevId != null)
-                assertTrue(prevId.compareTo(currId) <= 0);
+            if (prevId != null) assertTrue(prevId.compareTo(currId) <= 0);
             prevId = currId;
         }
         features.close();
@@ -319,13 +322,12 @@ public class SolrFeatureSourceTest extends SolrTestSupport {
     public void testNaturalSortingDesc() throws Exception {
         init();
         Query q = new Query(featureSource.getSchema().getTypeName());
-        q.setSortBy(new SortBy[] { SortBy.REVERSE_ORDER });
+        q.setSortBy(new SortBy[] {SortBy.REVERSE_ORDER});
         SimpleFeatureIterator features = featureSource.getFeatures(q).features();
         String prevId = null;
         while (features.hasNext()) {
             String currId = features.next().getID();
-            if (prevId != null)
-                assertTrue(prevId.compareTo(currId) >= 0);
+            if (prevId != null) assertTrue(prevId.compareTo(currId) >= 0);
             prevId = currId;
         }
         features.close();
@@ -342,8 +344,8 @@ public class SolrFeatureSourceTest extends SolrTestSupport {
     public void testGetFeaturesWithIsGreaterThanOrEqualToFilter() throws Exception {
         init();
         FilterFactory ff = dataStore.getFilterFactory();
-        PropertyIsGreaterThanOrEqualTo f = ff.greaterOrEqual(ff.property("speed_is"),
-                ff.literal(300));
+        PropertyIsGreaterThanOrEqualTo f =
+                ff.greaterOrEqual(ff.property("speed_is"), ff.literal(300));
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(5, features.size());
     }
@@ -392,11 +394,10 @@ public class SolrFeatureSourceTest extends SolrTestSupport {
         assertEquals(ids.length, features.size());
 
         Set<Integer> s = new HashSet<>(Arrays.asList(ids));
-        for (SimpleFeatureIterator it = features.features(); it.hasNext();) {
+        for (SimpleFeatureIterator it = features.features(); it.hasNext(); ) {
             SimpleFeature f = it.next();
             s.remove(Integer.parseInt(f.getAttribute("id").toString()));
         }
         assertTrue(s.isEmpty());
     }
-
 }

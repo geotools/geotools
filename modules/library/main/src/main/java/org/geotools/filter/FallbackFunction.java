@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -17,21 +17,17 @@
 package org.geotools.filter;
 
 import java.util.List;
-
 import org.opengis.feature.type.Name;
 import org.opengis.filter.expression.Literal;
 
 /**
- * A placeholder class used to track a function the user requested
- * that is not supported by our java implementation.
- * <p>
- * This can be used to construct expressions that are to be executed
- * by another systems (say as SQL or as a WFS request).
- * 
+ * A placeholder class used to track a function the user requested that is not supported by our java
+ * implementation.
+ *
+ * <p>This can be used to construct expressions that are to be executed by another systems (say as
+ * SQL or as a WFS request).
+ *
  * @author Jody Garnett
- *
- *
- *
  * @source $URL$
  */
 public class FallbackFunction extends FunctionExpressionImpl {
@@ -50,9 +46,10 @@ public class FallbackFunction extends FunctionExpressionImpl {
     public Object evaluate(Object object) {
         return fallback.evaluate(object);
     }
+
     @SuppressWarnings("unchecked")
     @Override
     public Object evaluate(Object object, Class context) {
-        return fallback.evaluate( object, context );
+        return fallback.evaluate(object, context);
     }
 }

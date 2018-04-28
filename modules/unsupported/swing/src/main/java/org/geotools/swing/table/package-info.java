@@ -15,7 +15,5 @@
  *    Lesser General Public License for more details.
  */
 
-/**
- * Table model for feature data.
- */
+/** Table model for feature data. */
 package org.geotools.swing.table;

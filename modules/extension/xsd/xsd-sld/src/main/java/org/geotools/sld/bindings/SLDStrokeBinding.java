@@ -17,9 +17,7 @@
 package org.geotools.sld.bindings;
 
 import java.util.Iterator;
-
 import javax.xml.namespace.QName;
-
 import org.geotools.filter.Filters;
 import org.geotools.sld.CssParameter;
 import org.geotools.styling.Graphic;
@@ -32,12 +30,12 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.picocontainer.MutablePicoContainer;
 
-
 /**
  * Binding object for the element http://www.opengis.net/sld:Stroke.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:element name="Stroke"&gt;
  *      &lt;xsd:annotation&gt;
@@ -63,12 +61,8 @@ import org.picocontainer.MutablePicoContainer;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class SLDStrokeBinding extends AbstractComplexBinding {
@@ -80,14 +74,13 @@ public class SLDStrokeBinding extends AbstractComplexBinding {
         this.filterFactory = filterFactory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return SLD.STROKE;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -98,6 +91,7 @@ public class SLDStrokeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -108,66 +102,66 @@ public class SLDStrokeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {
-    }
+    public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
-        //The following CssParameters may be used: 
-        //&quot;stroke&quot; (color),
-        //&quot;stroke-opacity&quot;
-        //&quot;stroke-width&quot;,
-        //&quot;stroke-linejoin&quot; 
-        //&quot;stroke-linecap&quot;,
-        //&quot;stroke-dasharray&quot;, 
-        //&quot;stroke-dashoffset&quot;.
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
+        // The following CssParameters may be used:
+        // &quot;stroke&quot; (color),
+        // &quot;stroke-opacity&quot;
+        // &quot;stroke-width&quot;,
+        // &quot;stroke-linejoin&quot;
+        // &quot;stroke-linecap&quot;,
+        // &quot;stroke-dasharray&quot;,
+        // &quot;stroke-dashoffset&quot;.
         Expression color = null;
 
-        //The following CssParameters may be used: 
-        //&quot;stroke&quot; (color),
-        //&quot;stroke-opacity&quot;
-        //&quot;stroke-width&quot;,
-        //&quot;stroke-linejoin&quot; 
-        //&quot;stroke-linecap&quot;,
-        //&quot;stroke-dasharray&quot;, 
-        //&quot;stroke-dashoffset&quot;.
+        // The following CssParameters may be used:
+        // &quot;stroke&quot; (color),
+        // &quot;stroke-opacity&quot;
+        // &quot;stroke-width&quot;,
+        // &quot;stroke-linejoin&quot;
+        // &quot;stroke-linecap&quot;,
+        // &quot;stroke-dasharray&quot;,
+        // &quot;stroke-dashoffset&quot;.
         Expression opacity = null;
 
-        //The following CssParameters may be used: 
-        //&quot;stroke&quot; (color),
-        //&quot;stroke-opacity&quot;
-        //&quot;stroke-width&quot;,
-        //&quot;stroke-linejoin&quot; 
-        //&quot;stroke-linecap&quot;,
-        //&quot;stroke-dasharray&quot;, 
-        //&quot;stroke-dashoffset&quot;.
+        // The following CssParameters may be used:
+        // &quot;stroke&quot; (color),
+        // &quot;stroke-opacity&quot;
+        // &quot;stroke-width&quot;,
+        // &quot;stroke-linejoin&quot;
+        // &quot;stroke-linecap&quot;,
+        // &quot;stroke-dasharray&quot;,
+        // &quot;stroke-dashoffset&quot;.
         Expression width = null;
 
-        //The following CssParameters may be used: 
-        //&quot;stroke&quot; (color),
-        //&quot;stroke-opacity&quot;
-        //&quot;stroke-width&quot;,
-        //&quot;stroke-linejoin&quot; 
-        //&quot;stroke-linecap&quot;,
-        //&quot;stroke-dasharray&quot;, 
-        //&quot;stroke-dashoffset&quot;.
+        // The following CssParameters may be used:
+        // &quot;stroke&quot; (color),
+        // &quot;stroke-opacity&quot;
+        // &quot;stroke-width&quot;,
+        // &quot;stroke-linejoin&quot;
+        // &quot;stroke-linecap&quot;,
+        // &quot;stroke-dasharray&quot;,
+        // &quot;stroke-dashoffset&quot;.
         Expression lineJoin = null;
         Expression lineCap = null;
         Expression dashArray = null;
         Expression dashOffset = null;
 
-        for (Iterator i = node.getChildValues(CssParameter.class).iterator(); i.hasNext();) {
+        for (Iterator i = node.getChildValues(CssParameter.class).iterator(); i.hasNext(); ) {
             CssParameter css = (CssParameter) i.next();
             Expression exp = css.getExpression();
             if (exp == null) {
@@ -202,14 +196,22 @@ public class SLDStrokeBinding extends AbstractComplexBinding {
             }
         }
 
-        //&lt;xsd:choice minOccurs="0"&gt;
+        // &lt;xsd:choice minOccurs="0"&gt;
         //   &lt;xsd:element ref="sld:GraphicFill"/&gt;
         //   &lt;xsd:element ref="sld:GraphicStroke"/&gt;
-        //&lt;/xsd:choice&gt;
+        // &lt;/xsd:choice&gt;
         Graphic graphicFill = (Graphic) node.getChildValue("GraphicFill");
         Graphic graphicStroke = (Graphic) node.getChildValue("GraphicStroke");
 
-        return styleFactory.createStroke(color, width, opacity, lineJoin, lineCap, dash,
-            dashOffset, graphicFill, graphicStroke);
+        return styleFactory.createStroke(
+                color,
+                width,
+                opacity,
+                lineJoin,
+                lineCap,
+                dash,
+                dashOffset,
+                graphicFill,
+                graphicStroke);
     }
 }

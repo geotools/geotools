@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -18,23 +18,17 @@ package org.geotools.geometry.iso.util.topology;
 
 /**
  * @author roehrig
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
- *
- *
- *
- *
+ *     <p>TODO To change the template for this generated type comment go to Window - Preferences -
+ *     Java - Code Style - Code Templates
  * @source $URL$
  */
 public class BdryNode2D extends BRepNode2D {
 
-	/**
-	 * @param x
-	 * @param y
-	 */
-	public BdryNode2D(double x, double y) {
-		super(x, y);
-	}
-
+    /**
+     * @param x
+     * @param y
+     */
+    public BdryNode2D(double x, double y) {
+        super(x, y);
+    }
 }

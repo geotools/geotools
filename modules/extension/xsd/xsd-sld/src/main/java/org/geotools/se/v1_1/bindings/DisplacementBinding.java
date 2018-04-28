@@ -16,18 +16,17 @@
  */
 package org.geotools.se.v1_1.bindings;
 
+import javax.xml.namespace.QName;
 import org.geotools.se.v1_1.SE;
 import org.geotools.sld.bindings.SLDDisplacementBinding;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xml.*;
 
-import javax.xml.namespace.QName;
-
 /**
  * Binding object for the element http://www.opengis.net/se:Displacement.
- * 
+ *
  * <p>
- * 
+ *
  * <pre>
  *  <code>
  *  &lt;xsd:element name="Displacement" type="se:DisplacementType"&gt;
@@ -37,16 +36,12 @@ import javax.xml.namespace.QName;
  *          rendering a text label, graphic or other Symbolizernear a point.
  *        &lt;/xsd:documentation&gt;
  *      &lt;/xsd:annotation&gt;
- *  &lt;/xsd:element&gt; 
- * 	
+ *  &lt;/xsd:element&gt;
+ *
  *   </code>
  * </pre>
- * 
- * </p>
- * 
+ *
  * @generated
- *
- *
  * @source $URL$
  */
 public class DisplacementBinding extends SLDDisplacementBinding {
@@ -55,9 +50,7 @@ public class DisplacementBinding extends SLDDisplacementBinding {
         super(styleFactory);
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return SE.Displacement;
     }

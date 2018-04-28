@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,6 +17,10 @@
  */
 package org.geotools.ysld;
 
+import java.lang.reflect.Method;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.geotools.data.Parameter;
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.FunctionFactory;
@@ -25,14 +29,7 @@ import org.geotools.util.logging.Logging;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.expression.Expression;
 
-import java.lang.reflect.Method;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-/**
- * Utilities for working with process api, not meant to be public.
- */
+/** Utilities for working with process api, not meant to be public. */
 public class ProcessUtil {
 
     static Logger LOG = Logging.getLogger(ProcessUtil.class);
@@ -46,15 +43,12 @@ public class ProcessUtil {
         return new NameImpl(split[0], split[1]);
     }
 
-    /**
-     * 
-     * @return The loaded {@link FunctionFactory}, or null if it could not be loaded.
-     */
+    /** @return The loaded {@link FunctionFactory}, or null if it could not be loaded. */
     public static FunctionFactory loadProcessFunctionFactory() {
         Class<?> functionFactoryClass = null;
         try {
-            functionFactoryClass = Class
-                    .forName("org.geotools.process.function.ProcessFunctionFactory");
+            functionFactoryClass =
+                    Class.forName("org.geotools.process.function.ProcessFunctionFactory");
         } catch (ClassNotFoundException e) {
             LOG.log(Level.WARNING, "Error creating process function factory", e);
             return null;
@@ -89,20 +83,15 @@ public class ProcessUtil {
         } catch (Exception e) {
             throw new RuntimeException("Error looking up process info", e);
         }
-
     }
 
-    private static boolean hasWMSParam(Map<String, Parameter<?>> processInfo, String name,
-            Class<?> type) {
+    private static boolean hasWMSParam(
+            Map<String, Parameter<?>> processInfo, String name, Class<?> type) {
         Parameter<?> param = processInfo.get(name);
-        if (param == null)
-            return false;
-        if (!param.getName().equals(name))
-            return false;
-        if (!param.isRequired())
-            return false;
-        if (!type.isAssignableFrom(param.getType()))
-            return false;
+        if (param == null) return false;
+        if (!param.getName().equals(name)) return false;
+        if (!param.isRequired()) return false;
+        if (!type.isAssignableFrom(param.getType())) return false;
         return true;
     }
 

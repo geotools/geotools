@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -28,16 +28,13 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Arrays;
-
 import javax.imageio.ImageIO;
 
 /**
  * A shape wrapper that generates a stroked version of the shape without actually holding it all in
  * memory (it is streamed through the path iterator)
- * 
+ *
  * @author Andrea Aime - OpenGeo
- *
- *
  * @source $URL$
  */
 public class DashedShape implements Shape {
@@ -102,85 +99,57 @@ public class DashedShape implements Shape {
 
     /**
      * The iterator that generates the dashed segments in a streaming fashion
+     *
      * @author Andrea Aime - OpenGeo
      */
     public class DashedIterator implements PathIterator {
         static final float EPS = 1e-3f;
 
-        /**
-         * The original iterator
-         */
+        /** The original iterator */
         PathIterator delegate;
 
-        /**
-         * The offsets at which each dash segment ends compared to the beginning of the sequence
-         */
+        /** The offsets at which each dash segment ends compared to the beginning of the sequence */
         float[] dashOffsets;
 
-        /**
-         * The current dash offset
-         */
+        /** The current dash offset */
         int dashIndex = 0;
 
-        /**
-         * The offset from the beginning of the sequence
-         */
+        /** The offset from the beginning of the sequence */
         float dashOffset;
 
-        /**
-         * The previous coordinates
-         */
+        /** The previous coordinates */
         float[] prevCoords = new float[2];
 
-        /**
-         * The current coordinates
-         */
+        /** The current coordinates */
         float[] currCoords = new float[2];
 
-        /**
-         * The length of the current segment
-         */
+        /** The length of the current segment */
         float segmentLength;
 
-        /**
-         * The current position from the beginning of the current segment
-         */
+        /** The current position from the beginning of the current segment */
         float segmentOffset;
 
-        /**
-         * The segment type returned by the last call to the delegates currentSegment(...)
-         */
+        /** The segment type returned by the last call to the delegates currentSegment(...) */
         int lastType;
 
-        /**
-         * The coordinate of the next dash segment returned
-         */
+        /** The coordinate of the next dash segment returned */
         float[] dashedSegment = new float[2];
 
-        /**
-         * The type of the next dash segment returned
-         */
+        /** The type of the next dash segment returned */
         int dashedType;
 
-        /**
-         * Are we done?
-         */
+        /** Are we done? */
         boolean done;
 
-        /**
-         * Delta X of curr and prev coordinates
-         */
+        /** Delta X of curr and prev coordinates */
         private float dy;
 
-        /**
-         * Delta Y of the curr and prev coordinates
-         */
+        /** Delta Y of the curr and prev coordinates */
         private float dx;
 
-        /**
-         * Both used to reset the dash state when doing a MOVE_TO 
-         */
+        /** Both used to reset the dash state when doing a MOVE_TO */
         float dashPhase;
+
         int baseDashIndex;
 
         public DashedIterator(PathIterator delegate, float[] dashArray, float dashPhase) {
@@ -236,11 +205,11 @@ public class DashedShape implements Shape {
         public void next() {
             // have we exhausted the previous segment?
             if (segmentLength == 0) {
-                if(!delegate.isDone()) {
+                if (!delegate.isDone()) {
                     prevCoords[0] = currCoords[0];
                     prevCoords[1] = currCoords[1];
                     lastType = delegate.currentSegment(currCoords);
-                    if(lastType == PathIterator.SEG_MOVETO) {
+                    if (lastType == PathIterator.SEG_MOVETO) {
                         // start over and move to the next value
                         segmentOffset = 0;
                         dashOffset = dashPhase;
@@ -253,7 +222,7 @@ public class DashedShape implements Shape {
                         delegate.next();
                         // if no segment after move we're done
                         done = delegate.isDone();
-                    } else { 
+                    } else {
                         // prepare for the next round of dash array application
                         dx = currCoords[0] - prevCoords[0];
                         dy = currCoords[1] - prevCoords[1];
@@ -277,8 +246,8 @@ public class DashedShape implements Shape {
                 // if the lastType is a line to we need to decide if we're pen down or pen
                 // up depending on what of the dash segments we're in
                 if (lastType == PathIterator.SEG_LINETO) {
-                    dashedType = dashIndex % 2 == 0 ? PathIterator.SEG_LINETO
-                            : PathIterator.SEG_MOVETO;
+                    dashedType =
+                            dashIndex % 2 == 0 ? PathIterator.SEG_LINETO : PathIterator.SEG_MOVETO;
                 } else {
                     dashedType = lastType;
                 }
@@ -303,7 +272,6 @@ public class DashedShape implements Shape {
                 }
             }
         }
-
     }
 
     // a small main useful for interactive testing
@@ -311,8 +279,7 @@ public class DashedShape implements Shape {
         BufferedImage image = new BufferedImage(800, 600, BufferedImage.TYPE_3BYTE_BGR);
         Graphics2D graphics = image.createGraphics();
 
-        Shape stroked = new DashedShape(new Rectangle2D.Double(0, 0, 4, 4),
-                new float[] { 2, 2}, 0);
+        Shape stroked = new DashedShape(new Rectangle2D.Double(0, 0, 4, 4), new float[] {2, 2}, 0);
         graphics.draw(stroked);
 
         graphics.dispose();
@@ -326,5 +293,4 @@ public class DashedShape implements Shape {
             pi.next();
         }
     }
-
 }

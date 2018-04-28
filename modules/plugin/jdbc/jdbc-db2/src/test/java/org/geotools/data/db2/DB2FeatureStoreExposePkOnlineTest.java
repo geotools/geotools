@@ -19,16 +19,11 @@ package org.geotools.data.db2;
 import org.geotools.jdbc.JDBCFeatureStoreExposePkOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class DB2FeatureStoreExposePkOnlineTest extends JDBCFeatureStoreExposePkOnlineTest {
 
     @Override
     protected JDBCTestSetup createTestSetup() {
         return new DB2TestSetup();
     }
-
 }

@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- *    
+ *
  * 	  (c) 2014 - 2015 Open Source Geospatial Foundation - all rights reserved
  * 	  (c) 2012 - 2014 OpenPlans
  *
@@ -17,14 +17,12 @@
  */
 package org.geotools.data.csv.parse;
 
+import com.csvreader.CsvReader;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-
 import org.geotools.data.csv.CSVFileState;
 import org.opengis.feature.simple.SimpleFeature;
-
-import com.csvreader.CsvReader;
 
 public class CSVIterator implements Iterator<SimpleFeature> {
 
@@ -63,6 +61,7 @@ public class CSVIterator implements Iterator<SimpleFeature> {
         return next != null;
     }
 
+    // docs start readFeature
     private SimpleFeature readFeature() throws IOException {
         if (csvReader.readRecord()) {
             String[] csvRecord = csvReader.getValues();
@@ -70,6 +69,7 @@ public class CSVIterator implements Iterator<SimpleFeature> {
         }
         return null;
     }
+    // docs end readFeature
 
     @Override
     public SimpleFeature next() {
@@ -98,5 +98,4 @@ public class CSVIterator implements Iterator<SimpleFeature> {
     public void close() {
         csvReader.close();
     }
-
 }

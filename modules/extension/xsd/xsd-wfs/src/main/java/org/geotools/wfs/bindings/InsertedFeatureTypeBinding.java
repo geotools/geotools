@@ -17,19 +17,17 @@
 package org.geotools.wfs.bindings;
 
 import javax.xml.namespace.QName;
-
 import net.opengis.wfs.InsertedFeatureType;
 import net.opengis.wfs.WfsFactory;
-
 import org.geotools.wfs.WFS;
 import org.geotools.xml.AbstractComplexEMFBinding;
-
 
 /**
  * Binding object for the type http://www.opengis.net/wfs:InsertedFeatureType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:complexType name="InsertedFeatureType"&gt;
  *      &lt;xsd:sequence&gt;
@@ -59,12 +57,8 @@ import org.geotools.xml.AbstractComplexEMFBinding;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class InsertedFeatureTypeBinding extends AbstractComplexEMFBinding {
@@ -72,14 +66,13 @@ public class InsertedFeatureTypeBinding extends AbstractComplexEMFBinding {
         super(factory);
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return WFS.InsertedFeatureType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *

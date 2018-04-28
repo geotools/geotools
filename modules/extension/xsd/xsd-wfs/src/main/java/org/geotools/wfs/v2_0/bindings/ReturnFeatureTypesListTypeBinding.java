@@ -17,50 +17,46 @@
 package org.geotools.wfs.v2_0.bindings;
 
 import java.util.List;
-
+import javax.xml.namespace.NamespaceContext;
+import javax.xml.namespace.QName;
 import org.geotools.wfs.v2_0.WFS;
 import org.geotools.xml.*;
 import org.geotools.xs.bindings.XSQNameBinding;
 
-import javax.xml.namespace.NamespaceContext;
-import javax.xml.namespace.QName;
-
 /**
  * Binding object for the type http://www.opengis.net/wfs/2.0:ReturnFeatureTypesListType.
- * 
+ *
  * <p>
- * 
+ *
  * <pre>
  *  <code>
  *  &lt;xsd:simpleType name="ReturnFeatureTypesListType"&gt;
  *      &lt;xsd:list itemType="xsd:QName"/&gt;
- *  &lt;/xsd:simpleType&gt; 
- * 	
+ *  &lt;/xsd:simpleType&gt;
+ *
  *   </code>
  * </pre>
- * 
- * </p>
- * 
+ *
  * @generated
  */
 public class ReturnFeatureTypesListTypeBinding extends AbstractSimpleBinding {
 
     NamespaceContext namespaceContext;
-    
+
     public ReturnFeatureTypesListTypeBinding(NamespaceContext namespaceContext) {
         this.namespaceContext = namespaceContext;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return WFS.ReturnFeatureTypesListType;
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Class getType() {
@@ -71,16 +67,18 @@ public class ReturnFeatureTypesListTypeBinding extends AbstractSimpleBinding {
     public int getExecutionMode() {
         return OVERRIDE;
     }
-    
+
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         return super.parse(instance, value);
     }
-    
+
     @Override
     public String encode(Object object, String value) throws Exception {
         StringBuffer sb = new StringBuffer();
@@ -89,10 +87,9 @@ public class ReturnFeatureTypesListTypeBinding extends AbstractSimpleBinding {
             for (Object o : l) {
                 sb.append(new XSQNameBinding(namespaceContext).encode(o, null)).append(" ");
             }
-            sb.setLength(sb.length()-1);
+            sb.setLength(sb.length() - 1);
         }
-        
+
         return sb.toString();
     }
-
 }

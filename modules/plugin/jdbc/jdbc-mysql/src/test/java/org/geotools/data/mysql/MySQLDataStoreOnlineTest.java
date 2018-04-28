@@ -18,24 +18,18 @@ package org.geotools.data.mysql;
 
 import org.geotools.jdbc.JDBCDataStoreOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
-import org.junit.Ignore;
-
 
 /**
  * Data store test for mysql.
  *
  * @author Justin Deoliveira, The Open Planning Project
- *
- *
- *
- *
  * @source $URL$
  */
 public class MySQLDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
     protected JDBCTestSetup createTestSetup() {
         return new MySQLTestSetup();
     }
-    
+
     public void testCreateSchemaWithConstraints() throws Exception {
         // MySql does not complain if the string is too long, so we cannot run this test
     }

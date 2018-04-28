@@ -19,15 +19,14 @@ package org.geotools.xs.bindings;
 import javax.xml.namespace.QName;
 import org.geotools.xml.AbstractSimpleBinding;
 import org.geotools.xml.InstanceComponent;
-import org.geotools.xml.SimpleBinding;
 import org.geotools.xs.XS;
-
 
 /**
  * Binding object for the type http://www.w3.org/2001/XMLSchema:NCName.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xs:simpleType name="NCName" id="NCName"&gt;
  *      &lt;xs:annotation&gt;
@@ -47,23 +46,18 @@ import org.geotools.xs.XS;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class XSNCNameBinding extends AbstractSimpleBinding {
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return XS.NCNAME;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -74,6 +68,7 @@ public class XSNCNameBinding extends AbstractSimpleBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -84,14 +79,14 @@ public class XSNCNameBinding extends AbstractSimpleBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(InstanceComponent instance, Object value)
-        throws Exception {
-        //TODO need to implement a pattern facet. Simply return string value for now    
+    public Object parse(InstanceComponent instance, Object value) throws Exception {
+        // TODO need to implement a pattern facet. Simply return string value for now
         return value;
     }
 }

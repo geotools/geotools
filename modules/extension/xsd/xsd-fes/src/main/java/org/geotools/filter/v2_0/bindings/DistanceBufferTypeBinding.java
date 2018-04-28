@@ -17,20 +17,17 @@
 package org.geotools.filter.v2_0.bindings;
 
 import java.util.List;
-
+import javax.xml.namespace.QName;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.geotools.filter.v2_0.FES;
 import org.geotools.xml.*;
-import org.opengis.filter.spatial.BinarySpatialOperator;
 import org.opengis.filter.spatial.DistanceBufferOperator;
-
-import javax.xml.namespace.QName;
 
 /**
  * Binding object for the type http://www.opengis.net/fes/2.0:DistanceBufferType.
- * 
+ *
  * <p>
- * 
+ *
  * <pre>
  *  <code>
  *  &lt;xsd:complexType name="DistanceBufferType"&gt;
@@ -43,41 +40,38 @@ import javax.xml.namespace.QName;
  *              &lt;/xsd:sequence&gt;
  *          &lt;/xsd:extension&gt;
  *      &lt;/xsd:complexContent&gt;
- *  &lt;/xsd:complexType&gt; 
- * 	
+ *  &lt;/xsd:complexType&gt;
+ *
  *   </code>
  * </pre>
- * 
- * </p>
- * 
+ *
  * @generated
  */
 public class DistanceBufferTypeBinding extends AbstractComplexBinding {
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return FES.DistanceBufferType;
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Class getType() {
         return DistanceBufferOperator.class;
     }
 
-//    @Override
-//    public Object getProperty(Object object, QName name) throws Exception {
-//        return FESParseEncodeUtil.getProperty((DistanceBufferOperator) object, name);
-//    }
+    //    @Override
+    //    public Object getProperty(Object object, QName name) throws Exception {
+    //        return FESParseEncodeUtil.getProperty((DistanceBufferOperator) object, name);
+    //    }
 
     @Override
     public List getProperties(Object object, XSDElementDeclaration element) throws Exception {
-        return FESParseEncodeUtil.getProperties((DistanceBufferOperator)object);
+        return FESParseEncodeUtil.getProperties((DistanceBufferOperator) object);
     }
-
 }

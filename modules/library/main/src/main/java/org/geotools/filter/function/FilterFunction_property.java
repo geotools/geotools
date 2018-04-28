@@ -3,9 +3,9 @@ package org.geotools.filter.function;
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -30,21 +30,21 @@ import org.opengis.filter.expression.VolatileFunction;
 
 /**
  * Extracts a property from a feature, taking the property name as a parameter
- * 
+ *
  * @author Andrea Aime - GeoSolutions
- * 
  * @source $URL$
  */
 public class FilterFunction_property extends FunctionExpressionImpl implements VolatileFunction {
 
     FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
 
-    public static FunctionName NAME = new FunctionNameImpl("property", parameter("propertyValue",
-            Object.class), parameter("propertyName", String.class));
+    public static FunctionName NAME =
+            new FunctionNameImpl(
+                    "property",
+                    parameter("propertyValue", Object.class),
+                    parameter("propertyName", String.class));
 
-    /**
-     * Cache the last PropertyName used in a thead safe way
-     */
+    /** Cache the last PropertyName used in a thead safe way */
     volatile PropertyName lastPropertyName;
 
     public FilterFunction_property() {

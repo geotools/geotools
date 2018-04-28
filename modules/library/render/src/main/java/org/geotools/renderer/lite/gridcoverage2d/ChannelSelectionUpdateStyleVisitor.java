@@ -24,56 +24,53 @@ import org.geotools.styling.SelectedChannelType;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
 
 /**
- * ChannelSelectionUpdateStyleVisitor is a {@link DuplicatingStyleVisitor} that is used 
- * to "reset" style symbolizer's selection channel order when the GridCoverageReader 
- * used to read a coverage supports band selection. If a reader supports band selection
- * then channel ordering is done by band selection from the reader, so symbolizer does
- * not need to re-apply selection channel order.
- * 
- * Also, see {@link AbstractGridFormat#BANDS} for the reader band selection parameter 
+ * ChannelSelectionUpdateStyleVisitor is a {@link DuplicatingStyleVisitor} that is used to "reset"
+ * style symbolizer's selection channel order when the GridCoverageReader used to read a coverage
+ * supports band selection. If a reader supports band selection then channel ordering is done by
+ * band selection from the reader, so symbolizer does not need to re-apply selection channel order.
+ *
+ * <p>Also, see {@link AbstractGridFormat#BANDS} for the reader band selection parameter
  * description.
- * 
+ *
  * @source $URL$
  * @version $Id$
- *
  */
-
-public class ChannelSelectionUpdateStyleVisitor extends DuplicatingStyleVisitor{
+public class ChannelSelectionUpdateStyleVisitor extends DuplicatingStyleVisitor {
 
     private SelectedChannelType[] channels;
-    
-    public ChannelSelectionUpdateStyleVisitor(SelectedChannelType[] channels){
+
+    public ChannelSelectionUpdateStyleVisitor(SelectedChannelType[] channels) {
         super();
         this.channels = channels;
     }
-    
-	@Override
-	protected ChannelSelection copy(ChannelSelection channelSelection) {
-		if (channels.length != 3) {
-			return sf.createChannelSelection(new SelectedChannelType[] { channels[0] });
-		} else {
-			return sf.createChannelSelection(channels);
-		}
-	}
+
+    @Override
+    protected ChannelSelection copy(ChannelSelection channelSelection) {
+        if (channels.length != 3) {
+            return sf.createChannelSelection(new SelectedChannelType[] {channels[0]});
+        } else {
+            return sf.createChannelSelection(channels);
+        }
+    }
 
     /**
      * Returns an int[] containing the indices of the coverage bands that are used for the
      * symbolizer's selection channels
+     *
      * @param symbolizer The input symbolizer
      * @return the band indices array (null if no channel selection was present in symbolizer)
      */
-    
-    public static int[] getBandIndicesFromSelectionChannels(RasterSymbolizer symbolizer){
+    public static int[] getBandIndicesFromSelectionChannels(RasterSymbolizer symbolizer) {
         int[] bandIndices = null;
         ChannelSelection channelSelection = symbolizer.getChannelSelection();
-        if (channelSelection!=null){
+        if (channelSelection != null) {
             SelectedChannelType[] channels = channelSelection.getSelectedChannels();
-            if (channels!=null){
-                    bandIndices = new int[channels.length];
-                    for (int i=0;i<channels.length;i++){
-                        //Note that in channel selection, channels start at index 1
-                        bandIndices[i]= Integer.parseInt(channels[i].getChannelName())-1;
-                    }
+            if (channels != null) {
+                bandIndices = new int[channels.length];
+                for (int i = 0; i < channels.length; i++) {
+                    // Note that in channel selection, channels start at index 1
+                    bandIndices[i] = Integer.parseInt(channels[i].getChannelName()) - 1;
+                }
             }
         }
         return bandIndices;

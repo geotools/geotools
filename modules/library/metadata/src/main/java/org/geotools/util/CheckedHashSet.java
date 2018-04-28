@@ -16,47 +16,37 @@
  */
 package org.geotools.util;
 
-import java.util.Iterator;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
-
-import org.opengis.util.Cloneable;
-import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.i18n.ErrorKeys;
-
+import org.geotools.resources.i18n.Errors;
+import org.opengis.util.Cloneable;
 
 /**
  * A {@linkplain Collections#checkedSet checked} and {@linkplain Collections#synchronizedSet
  * synchronized} {@link java.util.Set}. Type checks are performed at run-time in addition of
- * compile-time checks. The synchronization lock can be modified at runtime by overriding the
- * {@link #getLock} method.
- * <p>
- * This class is similar to using the wrappers provided in {@link Collections}, minus the cost
- * of indirection levels and with the addition of overrideable methods.
+ * compile-time checks. The synchronization lock can be modified at runtime by overriding the {@link
+ * #getLock} method.
+ *
+ * <p>This class is similar to using the wrappers provided in {@link Collections}, minus the cost of
+ * indirection levels and with the addition of overrideable methods.
  *
  * @param <E> The type of elements in the set.
- *
  * @since 2.1
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Jody Garnett (Refractions Research)
  * @author Martin Desruisseaux (IRD)
- *
  * @see Collections#checkedSet
  * @see Collections#synchronizedSet
  */
 public class CheckedHashSet<E> extends LinkedHashSet<E> implements CheckedCollection<E>, Cloneable {
-    /**
-     * Serial version UID for compatibility with different versions.
-     */
+    /** Serial version UID for compatibility with different versions. */
     private static final long serialVersionUID = -9014541457174735097L;
 
-    /**
-     * The element type.
-     */
+    /** The element type. */
     private final Class<E> type;
 
     /**
@@ -75,7 +65,6 @@ public class CheckedHashSet<E> extends LinkedHashSet<E> implements CheckedCollec
      *
      * @param type The element type (should not be null).
      * @param capacity The initial capacity.
-     *
      * @since 2.4
      */
     public CheckedHashSet(final Class<E> type, final int capacity) {
@@ -84,9 +73,7 @@ public class CheckedHashSet<E> extends LinkedHashSet<E> implements CheckedCollec
         ensureNonNull();
     }
 
-    /**
-     * Make sure that {@link #type} is non-null.
-     */
+    /** Make sure that {@link #type} is non-null. */
     private void ensureNonNull() {
         if (type == null) {
             throw new IllegalArgumentException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "type"));
@@ -103,26 +90,27 @@ public class CheckedHashSet<E> extends LinkedHashSet<E> implements CheckedCollec
     }
 
     /**
-     * Checks the type of the specified object. The default implementation ensure
-     * that the object is assignable to the type specified at construction time.
+     * Checks the type of the specified object. The default implementation ensure that the object is
+     * assignable to the type specified at construction time.
      *
-     * @param  element the object to check, or {@code null}.
+     * @param element the object to check, or {@code null}.
      * @throws IllegalArgumentException if the specified element is not of the expected type.
      */
     protected void ensureValidType(final E element) throws IllegalArgumentException {
-        if (element!=null && !type.isInstance(element)) {
-            throw new IllegalArgumentException(Errors.format(
-                    ErrorKeys.ILLEGAL_CLASS_$2, element.getClass(), type));
+        if (element != null && !type.isInstance(element)) {
+            throw new IllegalArgumentException(
+                    Errors.format(ErrorKeys.ILLEGAL_CLASS_$2, element.getClass(), type));
         }
     }
 
     /**
      * Checks the type of all elements in the specified collection.
      *
-     * @param  collection the collection to check, or {@code null}.
+     * @param collection the collection to check, or {@code null}.
      * @throws IllegalArgumentException if at least one element is not of the expected type.
      */
-    private void ensureValid(final Collection<? extends E> collection) throws IllegalArgumentException {
+    private void ensureValid(final Collection<? extends E> collection)
+            throws IllegalArgumentException {
         if (collection != null) {
             for (final E element : collection) {
                 ensureValidType(element);
@@ -131,35 +119,29 @@ public class CheckedHashSet<E> extends LinkedHashSet<E> implements CheckedCollec
     }
 
     /**
-     * Checks if changes in this collection are allowed. This method is automatically invoked
-     * after this collection got the {@linkplain #getLock lock} and before any operation that
-     * may change the content. The default implementation does nothing (i.e. this collection
-     * is modifiable). Subclasses should override this method if they want to control write
-     * access.
+     * Checks if changes in this collection are allowed. This method is automatically invoked after
+     * this collection got the {@linkplain #getLock lock} and before any operation that may change
+     * the content. The default implementation does nothing (i.e. this collection is modifiable).
+     * Subclasses should override this method if they want to control write access.
      *
      * @throws UnsupportedOperationException if this collection is unmodifiable.
-     *
      * @since 2.5
      */
-    protected void checkWritePermission() throws UnsupportedOperationException {
-    }
+    protected void checkWritePermission() throws UnsupportedOperationException {}
 
     /**
-     * Returns the synchronization lock. The default implementation returns {@code this}.
-     * Subclasses that override this method should be careful to update the lock reference
-     * when this set is {@linkplain #clone cloned}.
+     * Returns the synchronization lock. The default implementation returns {@code this}. Subclasses
+     * that override this method should be careful to update the lock reference when this set is
+     * {@linkplain #clone cloned}.
      *
      * @return The synchronization lock.
-     *
      * @since 2.5
      */
     protected Object getLock() {
         return this;
     }
 
-    /**
-     * Returns an iterator over the elements in this set.
-     */
+    /** Returns an iterator over the elements in this set. */
     @Override
     public Iterator<E> iterator() {
         final Object lock = getLock();
@@ -168,32 +150,26 @@ public class CheckedHashSet<E> extends LinkedHashSet<E> implements CheckedCollec
         }
     }
 
-    /**
-     * Returns the number of elements in this set.
-     */
+    /** Returns the number of elements in this set. */
     @Override
     public int size() {
-	synchronized (getLock()) {
+        synchronized (getLock()) {
             return super.size();
         }
     }
 
-    /**
-     * Returns {@code true} if this set contains no elements.
-     */
+    /** Returns {@code true} if this set contains no elements. */
     @Override
     public boolean isEmpty() {
-	synchronized (getLock()) {
+        synchronized (getLock()) {
             return super.isEmpty();
         }
     }
 
-    /**
-     * Returns {@code true} if this set contains the specified element.
-     */
+    /** Returns {@code true} if this set contains the specified element. */
     @Override
     public boolean contains(final Object o) {
-	synchronized (getLock()) {
+        synchronized (getLock()) {
             return super.contains(o);
         }
     }
@@ -201,17 +177,16 @@ public class CheckedHashSet<E> extends LinkedHashSet<E> implements CheckedCollec
     /**
      * Adds the specified element to this set if it is not already present.
      *
-     * @param  element element to be added to this set.
+     * @param element element to be added to this set.
      * @return {@code true} if the set did not already contain the specified element.
      * @throws IllegalArgumentException if the specified element is not of the expected type.
      * @throws UnsupportedOperationException if this collection is unmodifiable.
      */
     @Override
     public boolean add(final E element)
-            throws IllegalArgumentException, UnsupportedOperationException
-    {
+            throws IllegalArgumentException, UnsupportedOperationException {
         ensureValidType(element);
-	synchronized (getLock()) {
+        synchronized (getLock()) {
             checkWritePermission();
             return super.add(element);
         }
@@ -227,8 +202,7 @@ public class CheckedHashSet<E> extends LinkedHashSet<E> implements CheckedCollec
      */
     @Override
     public boolean addAll(final Collection<? extends E> collection)
-            throws IllegalArgumentException, UnsupportedOperationException
-    {
+            throws IllegalArgumentException, UnsupportedOperationException {
         ensureValid(collection);
         synchronized (getLock()) {
             checkWritePermission();
@@ -288,9 +262,7 @@ public class CheckedHashSet<E> extends LinkedHashSet<E> implements CheckedCollec
         }
     }
 
-    /**
-     * Returns an array containing all of the elements in this set.
-     */
+    /** Returns an array containing all of the elements in this set. */
     @Override
     public Object[] toArray() {
         synchronized (getLock()) {
@@ -310,9 +282,7 @@ public class CheckedHashSet<E> extends LinkedHashSet<E> implements CheckedCollec
         }
     }
 
-    /**
-     * Returns a string representation of this set.
-     */
+    /** Returns a string representation of this set. */
     @Override
     public String toString() {
         synchronized (getLock()) {
@@ -320,9 +290,7 @@ public class CheckedHashSet<E> extends LinkedHashSet<E> implements CheckedCollec
         }
     }
 
-    /**
-     * Compares the specified object with this set for equality.
-     */
+    /** Compares the specified object with this set for equality. */
     @Override
     public boolean equals(Object o) {
         synchronized (getLock()) {
@@ -330,9 +298,7 @@ public class CheckedHashSet<E> extends LinkedHashSet<E> implements CheckedCollec
         }
     }
 
-    /**
-     * Returns the hash code value for this set.
-     */
+    /** Returns the hash code value for this set. */
     @Override
     public int hashCode() {
         synchronized (getLock()) {

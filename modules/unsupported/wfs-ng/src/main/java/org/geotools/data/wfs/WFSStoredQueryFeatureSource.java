@@ -19,14 +19,12 @@ package org.geotools.data.wfs;
 
 import java.io.IOException;
 import java.util.logging.Logger;
-
 import net.opengis.wfs20.StoredQueryDescriptionType;
-
 import org.geotools.data.Query;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.wfs.internal.GetFeatureRequest;
-import org.geotools.data.wfs.internal.WFSClient;
 import org.geotools.data.wfs.internal.GetFeatureRequest.ResultType;
+import org.geotools.data.wfs.internal.WFSClient;
 import org.geotools.util.logging.Logging;
 
 public class WFSStoredQueryFeatureSource extends WFSFeatureSource {
@@ -35,16 +33,15 @@ public class WFSStoredQueryFeatureSource extends WFSFeatureSource {
 
     private final StoredQueryDescriptionType desc;
 
-    public WFSStoredQueryFeatureSource(final ContentEntry entry, final WFSClient client,
-            StoredQueryDescriptionType desc) {
+    public WFSStoredQueryFeatureSource(
+            final ContentEntry entry, final WFSClient client, StoredQueryDescriptionType desc) {
         super(entry, client);
         this.desc = desc;
     }
 
     @Override
-    protected GetFeatureRequest createGetFeature(Query query,
-            ResultType resultType) throws IOException
-    {
+    protected GetFeatureRequest createGetFeature(Query query, ResultType resultType)
+            throws IOException {
         GetFeatureRequest request = super.createGetFeature(query, resultType);
         request.setStoredQuery(true);
         request.setStoredQueryDescriptionType(desc);

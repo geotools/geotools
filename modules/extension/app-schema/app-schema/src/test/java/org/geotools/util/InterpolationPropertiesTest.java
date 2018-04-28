@@ -17,66 +17,53 @@
 
 package org.geotools.util;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.Properties;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.complex.config.XMLConfigDigester;
 import org.geotools.test.AppSchemaTestSupport;
-import org.geotools.util.InterpolationProperties;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertNotNull;
-
 /**
  * Tests for {@link PropertyInterpolationUtils}.
- * 
+ *
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
- *
- *
- *
- *
  * @source $URL$
  */
 public class InterpolationPropertiesTest extends AppSchemaTestSupport {
 
-    /**
-     * Base string used for properties and filenames.
-     */
+    /** Base string used for properties and filenames. */
     public static final String IDENTIFIER = "interpolation-properties-test";
 
-    /**
-     * Test property set in the property files.
-     */
+    /** Test property set in the property files. */
     public static final String TEST_PROPERTY = IDENTIFIER + ".test.property";
 
-    /**
-     * Test property set in system properties.
-     */
+    /** Test property set in system properties. */
     public static final String TEST_SYSTEM_PROPERTY = IDENTIFIER + ".test.system.property";
 
-    /**
-     * Value of property set in system properties.
-     */
+    /** Value of property set in system properties. */
     public static final String TEST_SYSTEM_PROPERTY_VALUE = "system";
 
-    /**
-     * System property set to trigger file (not classpath) loading.
-     */
-    public static final String TEST_FILE_SYSTEM_PROPERTY = IDENTIFIER + "-file-identifier"
-            + ".properties";
+    /** System property set to trigger file (not classpath) loading. */
+    public static final String TEST_FILE_SYSTEM_PROPERTY =
+            IDENTIFIER + "-file-identifier" + ".properties";
 
     @Before
     public void setUp() throws Exception {
         System.setProperty(TEST_SYSTEM_PROPERTY, TEST_SYSTEM_PROPERTY_VALUE);
-        System.setProperty(TEST_FILE_SYSTEM_PROPERTY, URLs.urlToFile(
-                InterpolationProperties.class.getResource("/" + IDENTIFIER
-                        + ".file.properties")).getPath());
+        System.setProperty(
+                TEST_FILE_SYSTEM_PROPERTY,
+                URLs.urlToFile(
+                                InterpolationProperties.class.getResource(
+                                        "/" + IDENTIFIER + ".file.properties"))
+                        .getPath());
     }
 
     /**
@@ -91,9 +78,10 @@ public class InterpolationPropertiesTest extends AppSchemaTestSupport {
         properties.put("foo.y", "abc");
         properties.put("foo.z", "bar");
         InterpolationProperties props = new InterpolationProperties(properties);
-        String result = props.interpolate(
-                "123ajh${foo.z} akl ${foo.y}${foo.y} laskj ${foo.x}\n"
-                        + "foo.x${foo.x}${foo.x} ${foo.z}${foo.y}");
+        String result =
+                props.interpolate(
+                        "123ajh${foo.z} akl ${foo.y}${foo.y} laskj ${foo.x}\n"
+                                + "foo.x${foo.x}${foo.x} ${foo.z}${foo.y}");
         assertEquals("123ajhbar akl abcabc laskj 123\nfoo.x123123 barabc", result);
     }
 
@@ -131,7 +119,7 @@ public class InterpolationPropertiesTest extends AppSchemaTestSupport {
      */
     @Test
     public void testLoadPropertiesDoesNotExist() {
-        InterpolationProperties props = new InterpolationProperties(IDENTIFIER+ ".does-not-exist");
+        InterpolationProperties props = new InterpolationProperties(IDENTIFIER + ".does-not-exist");
         assertNull(props.getProperty(TEST_PROPERTY));
         checkSystemProperties(props);
     }
@@ -143,17 +131,17 @@ public class InterpolationPropertiesTest extends AppSchemaTestSupport {
     @Test
     public void testLoadPropertiesFromFile() {
         // note that the identifier does *not* match the filename
-        InterpolationProperties props = new InterpolationProperties(TEST_FILE_SYSTEM_PROPERTY
-                .replace(".properties", ""));
+        InterpolationProperties props =
+                new InterpolationProperties(TEST_FILE_SYSTEM_PROPERTY.replace(".properties", ""));
         assertEquals("found-in-file", props.getProperty(TEST_PROPERTY));
         checkSystemProperties(props);
     }
 
     /**
      * Check that the system properties are as expected.
-     * 
+     *
      * @param properties
-     */    
+     */
     private void checkSystemProperties(InterpolationProperties properties) {
         // check that synthetic system property is loaded
         assertNotNull(properties.getProperty(TEST_SYSTEM_PROPERTY));
@@ -163,17 +151,12 @@ public class InterpolationPropertiesTest extends AppSchemaTestSupport {
         // system properties should override this
         assertFalse(properties.getProperty("java.version").equals("should-be-overridden"));
     }
-    
 
-    
-    /**
-     * Test for {@link XMLConfigDigester#readAll(InputStream)}.
-     */
+    /** Test for {@link XMLConfigDigester#readAll(InputStream)}. */
     @Test
     public void testReadAll() {
         String s = "line one\nline two\n";
         InputStream input = new ByteArrayInputStream("line one\nline two\n".getBytes());
         assertEquals(s, InterpolationProperties.readAll(input));
     }
-
 }

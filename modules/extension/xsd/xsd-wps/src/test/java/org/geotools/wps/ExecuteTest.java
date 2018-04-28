@@ -17,10 +17,7 @@
 package org.geotools.wps;
 
 import java.math.BigInteger;
-
 import javax.xml.namespace.QName;
-
-import junit.framework.TestCase;
 import net.opengis.ows11.CodeType;
 import net.opengis.ows11.LanguageStringType;
 import net.opengis.ows11.Ows11Factory;
@@ -38,7 +35,6 @@ import net.opengis.wps10.ProcessOutputsType1;
 import net.opengis.wps10.ProcessStartedType;
 import net.opengis.wps10.StatusType;
 import net.opengis.wps10.Wps10Factory;
-
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.Encoder;
@@ -50,11 +46,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class ExecuteTest extends XMLTestSupport {
 
     public void testExecuteEncode() throws Exception {
@@ -77,7 +69,7 @@ public class ExecuteTest extends XMLTestSupport {
         ComplexDataType cd = f.createComplexDataType();
         data.setComplexData(cd);
 
-        //cd.getData().add(new GeometryFactory().createPoint(new Coordinate(1, 2)));
+        // cd.getData().add(new GeometryFactory().createPoint(new Coordinate(1, 2)));
 
         Encoder e = new Encoder(new WPSConfiguration());
         e.setIndenting(true);
@@ -103,13 +95,13 @@ public class ExecuteTest extends XMLTestSupport {
 
         ComplexDataType cdata = f.createComplexDataType();
         data.setComplexData(cdata);
-        //cdata.getData().add(new GeometryFactory().createPoint(new Coordinate(1, 1)));
+        // cdata.getData().add(new GeometryFactory().createPoint(new Coordinate(1, 1)));
 
         Encoder e = new Encoder(new WPSConfiguration());
         e.setIndenting(true);
         e.encode(response, WPS.ExecuteResponse, System.out);
     }
-    
+
     public void testExecuteResponseProgress() throws Exception {
         Wps10Factory f = Wps10Factory.eINSTANCE;
         ExecuteResponseType response = f.createExecuteResponseType();
@@ -128,11 +120,14 @@ public class ExecuteTest extends XMLTestSupport {
         assertEquals("Working really hard here", psNode.getTextContent());
     }
 
-
     public void testParserDelegateNamespaces() throws Exception {
         Parser p = new Parser(new WPSConfiguration());
-        ExecuteType exec = (ExecuteType) 
-            p.parse(getClass().getResourceAsStream("wpsExecute_inlineGetFeature_request.xml"));
+        ExecuteType exec =
+                (ExecuteType)
+                        p.parse(
+                                getClass()
+                                        .getResourceAsStream(
+                                                "wpsExecute_inlineGetFeature_request.xml"));
         assertNotNull(exec);
         assertEquals(1, exec.getDataInputs().getInput().size());
 
@@ -143,15 +138,15 @@ public class ExecuteTest extends XMLTestSupport {
         assertTrue(ref.getBody() instanceof GetFeatureType);
         GetFeatureType gft = (GetFeatureType) ref.getBody();
 
-        QName typeName = (QName) ((QueryType)gft.getQuery().get(0)).getTypeName().get(0);
+        QName typeName = (QName) ((QueryType) gft.getQuery().get(0)).getTypeName().get(0);
         assertEquals("states", typeName.getLocalPart());
         assertEquals("http://usa.org", typeName.getNamespaceURI());
     }
-    
+
     public void testFilterParserDelegate() throws Exception {
         Parser p = new Parser(new WPSConfiguration());
-        ExecuteType exec = (ExecuteType) 
-            p.parse(getClass().getResourceAsStream("wpsExecuteFilterInline.xml"));
+        ExecuteType exec =
+                (ExecuteType) p.parse(getClass().getResourceAsStream("wpsExecuteFilterInline.xml"));
         assertNotNull(exec);
         assertEquals(1, exec.getDataInputs().getInput().size());
 
@@ -160,7 +155,10 @@ public class ExecuteTest extends XMLTestSupport {
         assertNotNull(cd);
         Filter filter = (Filter) cd.getData().get(0);
         FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-        Filter expected = ff.or(ff.greaterOrEqual(ff.property("PERSONS"), ff.literal("10000000")), ff.lessOrEqual(ff.property("PERSONS"), ff.literal("20000000")));
+        Filter expected =
+                ff.or(
+                        ff.greaterOrEqual(ff.property("PERSONS"), ff.literal("10000000")),
+                        ff.lessOrEqual(ff.property("PERSONS"), ff.literal("20000000")));
         assertEquals(expected, filter);
     }
 

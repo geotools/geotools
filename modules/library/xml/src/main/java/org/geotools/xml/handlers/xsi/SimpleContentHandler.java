@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -21,15 +21,10 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotRecognizedException;
 
-
 /**
- * <p>
  * represtents a simpleContent element
- * </p>
  *
  * @author dzwiers www.refractions.net
- *
- *
  * @source $URL$
  */
 public class SimpleContentHandler extends XSIElementHandler {
@@ -39,28 +34,21 @@ public class SimpleContentHandler extends XSIElementHandler {
     //    private String id;
     private Object child;
 
-    /**
-     * @see java.lang.Object#hashCode()
-     */
+    /** @see java.lang.Object#hashCode() */
     public int hashCode() {
         return LOCALNAME.hashCode() * ((child == null) ? 1 : child.hashCode());
     }
 
     /**
-     * @see org.geotools.xml.XSIElementHandler#startElement(java.lang.String,
-     *      java.lang.String, org.xml.sax.Attributes)
+     * @see org.geotools.xml.XSIElementHandler#startElement(java.lang.String, java.lang.String,
+     *     org.xml.sax.Attributes)
      */
-    public void startElement(String namespaceURI, String localName,
-        Attributes atts){
+    public void startElement(String namespaceURI, String localName, Attributes atts) {
         // do nothing
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String,
-     *      java.lang.String)
-     */
-    public XSIElementHandler getHandler(String namespaceURI, String localName)
-        throws SAXException {
+    /** @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String, java.lang.String) */
+    public XSIElementHandler getHandler(String namespaceURI, String localName) throws SAXException {
         if (SchemaHandler.namespaceURI.equalsIgnoreCase(namespaceURI)) {
             // child types
             //
@@ -71,8 +59,8 @@ public class SimpleContentHandler extends XSIElementHandler {
                 if (child == null) {
                     child = lh;
                 } else {
-                    throw new SAXNotRecognizedException(getLocalName()
-                        + " may only have one child declaration.");
+                    throw new SAXNotRecognizedException(
+                            getLocalName() + " may only have one child declaration.");
                 }
 
                 return lh;
@@ -85,8 +73,8 @@ public class SimpleContentHandler extends XSIElementHandler {
                 if (child == null) {
                     child = lh;
                 } else {
-                    throw new SAXNotRecognizedException(getLocalName()
-                        + " may only have one child declaration.");
+                    throw new SAXNotRecognizedException(
+                            getLocalName() + " may only have one child declaration.");
                 }
 
                 return lh;
@@ -96,9 +84,7 @@ public class SimpleContentHandler extends XSIElementHandler {
         return null;
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#getLocalName()
-     */
+    /** @see org.geotools.xml.XSIElementHandler#getLocalName() */
     public String getLocalName() {
         return LOCALNAME;
     }
@@ -112,18 +98,13 @@ public class SimpleContentHandler extends XSIElementHandler {
         return child;
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#getHandlerType()
-     */
+    /** @see org.geotools.xml.XSIElementHandler#getHandlerType() */
     public int getHandlerType() {
         return DEFAULT;
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#endElement(java.lang.String,
-     *      java.lang.String)
-     */
-    public void endElement(String namespaceURI, String localName){
+    /** @see org.geotools.xml.XSIElementHandler#endElement(java.lang.String, java.lang.String) */
+    public void endElement(String namespaceURI, String localName) {
         // do nothing
     }
 }

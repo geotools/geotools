@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
-
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
@@ -37,16 +36,17 @@ import org.geotools.util.Utilities;
 public class GTDataStoreGranuleCatalog extends AbstractGTDataStoreGranuleCatalog {
 
     private DataStore tileIndexStore;
-    
+
     private Set<String> validTypeNames;
 
-    public GTDataStoreGranuleCatalog(Properties params, boolean create, DataStoreFactorySpi spi,
-            Hints hints) {
+    public GTDataStoreGranuleCatalog(
+            Properties params, boolean create, DataStoreFactorySpi spi, Hints hints) {
         super(params, create, spi, hints);
     }
 
-    protected void initTileIndexStore(final Properties params, final boolean create,
-            final DataStoreFactorySpi spi) throws IOException, MalformedURLException {
+    protected void initTileIndexStore(
+            final Properties params, final boolean create, final DataStoreFactorySpi spi)
+            throws IOException, MalformedURLException {
         Utilities.ensureNonNull("spi", spi);
 
         // creating a store, this might imply creating it for an existing underlying store or
@@ -76,16 +76,18 @@ public class GTDataStoreGranuleCatalog extends AbstractGTDataStoreGranuleCatalog
         }
 
         if (isPostgis && wrapstore) {
-            this.tileIndexStore = new PostgisDatastoreWrapper(getTileIndexStore(),
-                    FilenameUtils.getFullPath(parentLocation));
+            this.tileIndexStore =
+                    new PostgisDatastoreWrapper(
+                            getTileIndexStore(), FilenameUtils.getFullPath(parentLocation));
         } else if (Utils.isOracleStore(spi)) {
-            this.tileIndexStore = new OracleDatastoreWrapper(getTileIndexStore(),
-                    FilenameUtils.getFullPath(parentLocation));
+            this.tileIndexStore =
+                    new OracleDatastoreWrapper(
+                            getTileIndexStore(), FilenameUtils.getFullPath(parentLocation));
         }
-        
+
         // this init must be here as it's getting called by the parent class constructor
         this.validTypeNames = new HashSet<String>();
-        
+
         // is this a new store? If so we do not set any properties
         if (create) {
             return;
@@ -95,11 +97,9 @@ public class GTDataStoreGranuleCatalog extends AbstractGTDataStoreGranuleCatalog
 
     protected void handleInitializationException(Throwable t) {
         try {
-            if (tileIndexStore != null)
-                tileIndexStore.dispose();
+            if (tileIndexStore != null) tileIndexStore.dispose();
         } catch (Throwable e1) {
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.log(Level.FINE, e1.getLocalizedMessage(), e1);
+            if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, e1.getLocalizedMessage(), e1);
         } finally {
             this.tileIndexStore = null;
         }
@@ -128,5 +128,4 @@ public class GTDataStoreGranuleCatalog extends AbstractGTDataStoreGranuleCatalog
     protected Set<String> getValidTypeNames() {
         return this.validTypeNames;
     }
-
 }

@@ -16,9 +16,14 @@
  */
 package org.geotools.jdbc;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.LinearRing;
+import com.vividsolutions.jts.geom.MultiLineString;
+import com.vividsolutions.jts.geom.Polygon;
 import java.util.Collections;
 import java.util.HashSet;
-
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -29,32 +34,20 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.Polygon;
-
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class TestData {
-    
+
     public String ROAD = "road";
     public String ROAD_ID = "id";
     public String ROAD_GEOM = "geom";
     public String ROAD_NAME = "name";
-    
+
     public String RIVER = "river";
     public String RIVER_ID = "id";
     public String RIVER_GEOM = "geom";
     public String RIVER_RIVER = "river";
     public String RIVER_FLOW = "flow";
-    
+
     public int initialFidValue = 0;
     public GeometryFactory gf;
     public FilterFactory ff;
@@ -85,12 +78,17 @@ public class TestData {
 
     public void build() throws Exception {
         createRoadData();
-        createRiverData();    
+        createRiverData();
     }
-    
+
     void createRoadData() throws Exception {
-        roadType = DataUtilities.createType(namespace + "." + ROAD, ROAD_ID+":0," + ROAD_GEOM+":LineString," + ROAD_NAME+":String");
-        subRoadType = DataUtilities.createType(namespace + ROAD, ROAD_ID+":0,"+ ROAD_GEOM+":LineString");
+        roadType =
+                DataUtilities.createType(
+                        namespace + "." + ROAD,
+                        ROAD_ID + ":0," + ROAD_GEOM + ":LineString," + ROAD_NAME + ":String");
+        subRoadType =
+                DataUtilities.createType(
+                        namespace + ROAD, ROAD_ID + ":0," + ROAD_GEOM + ":LineString");
         gf = new GeometryFactory();
 
         roadFeatures = new SimpleFeature[3];
@@ -99,25 +97,35 @@ public class TestData {
         //  2,2 +-----+-----+ 4,2
         //     /     rd1     \
         // 1,1+               +5,1
-        roadFeatures[0] = SimpleFeatureBuilder.build(roadType,
-                new Object[] { new Integer(1), line(new int[] { 1, 1, 2, 2, 4, 2, 5, 1 }), "r1", },
-                ROAD + "." + (initialFidValue));
+        roadFeatures[0] =
+                SimpleFeatureBuilder.build(
+                        roadType,
+                        new Object[] {
+                            new Integer(1), line(new int[] {1, 1, 2, 2, 4, 2, 5, 1}), "r1",
+                        },
+                        ROAD + "." + (initialFidValue));
 
         //       + 3,4
         //       + 3,3
         //  rd2  + 3,2
         //       |
         //    3,0+
-        roadFeatures[1] = SimpleFeatureBuilder.build(roadType,
-                new Object[] { new Integer(2), line(new int[] { 3, 0, 3, 2, 3, 3, 3, 4 }), "r2" },
-                ROAD + "." + (initialFidValue + 1));
+        roadFeatures[1] =
+                SimpleFeatureBuilder.build(
+                        roadType,
+                        new Object[] {
+                            new Integer(2), line(new int[] {3, 0, 3, 2, 3, 3, 3, 4}), "r2"
+                        },
+                        ROAD + "." + (initialFidValue + 1));
 
         //     rd3     + 5,3
-        //            / 
+        //            /
         //  3,2 +----+ 4,2
-        roadFeatures[2] = SimpleFeatureBuilder.build(roadType,
-                new Object[] { new Integer(3), line(new int[] { 3, 2, 4, 2, 5, 3 }), "r3" },
-                ROAD +"." + (initialFidValue + 2));
+        roadFeatures[2] =
+                SimpleFeatureBuilder.build(
+                        roadType,
+                        new Object[] {new Integer(3), line(new int[] {3, 2, 4, 2, 5, 3}), "r3"},
+                        ROAD + "." + (initialFidValue + 2));
         roadBounds = new ReferencedEnvelope(CRS.decode("EPSG:4326", forceLongitudeFirst));
         roadBounds.expandToInclude(new ReferencedEnvelope(roadFeatures[0].getBounds()));
         roadBounds.expandToInclude(new ReferencedEnvelope(roadFeatures[1].getBounds()));
@@ -137,15 +145,28 @@ public class TestData {
         //   + 2,3
         //  / rd4
         // + 1,2
-        newRoad = SimpleFeatureBuilder.build(roadType,
-                new Object[] { new Integer(4), line(new int[] { 1, 2, 2, 3 }), "r4" },
-                ROAD + "." + (initialFidValue + 3));
+        newRoad =
+                SimpleFeatureBuilder.build(
+                        roadType,
+                        new Object[] {new Integer(4), line(new int[] {1, 2, 2, 3}), "r4"},
+                        ROAD + "." + (initialFidValue + 3));
     }
 
     void createRiverData() throws Exception {
-        riverType = DataUtilities.createType(namespace + "." + RIVER,
-                RIVER_ID + ":0," + RIVER_GEOM + ":MultiLineString," + RIVER_RIVER + ":String," + RIVER_FLOW + ":0.0");
-        subRiverType = DataUtilities.createType(namespace + "." + RIVER, RIVER_RIVER + ":String," + RIVER_FLOW + ":0.0");
+        riverType =
+                DataUtilities.createType(
+                        namespace + "." + RIVER,
+                        RIVER_ID
+                                + ":0,"
+                                + RIVER_GEOM
+                                + ":MultiLineString,"
+                                + RIVER_RIVER
+                                + ":String,"
+                                + RIVER_FLOW
+                                + ":0.0");
+        subRiverType =
+                DataUtilities.createType(
+                        namespace + "." + RIVER, RIVER_RIVER + ":String," + RIVER_FLOW + ":0.0");
         gf = new GeometryFactory();
         riverFeatures = new SimpleFeature[2];
 
@@ -155,27 +176,37 @@ public class TestData {
         //  +---+ rv1
         //   7,5 \
         //    9,3 +----+ 11,3
-        riverFeatures[0] = SimpleFeatureBuilder.build(riverType,
-                new Object[] {
-                    new Integer(1),
-                    lines(new int[][] {
-                            { 5, 5, 7, 4 },
-                            { 7, 5, 9, 7, 13, 7 },
-                            { 7, 5, 9, 3, 11, 3 }
-                        }), "rv1", new Double(4.5)
-                }, RIVER + "." + (initialFidValue));
+        riverFeatures[0] =
+                SimpleFeatureBuilder.build(
+                        riverType,
+                        new Object[] {
+                            new Integer(1),
+                            lines(
+                                    new int[][] {
+                                        {5, 5, 7, 4},
+                                        {7, 5, 9, 7, 13, 7},
+                                        {7, 5, 9, 3, 11, 3}
+                                    }),
+                            "rv1",
+                            new Double(4.5)
+                        },
+                        RIVER + "." + (initialFidValue));
 
-        //         + 6,10    
+        //         + 6,10
         //        /
         //    rv2+ 4,8
         //       |
         //   4,6 +
-        riverFeatures[1] = SimpleFeatureBuilder.build(riverType,
-                new Object[] {
-                    new Integer(2), lines(new int[][] {
-                            { 4, 6, 4, 8, 6, 10 }
-                        }), "rv2", new Double(3.0)
-                }, RIVER +"." + (initialFidValue + 1));
+        riverFeatures[1] =
+                SimpleFeatureBuilder.build(
+                        riverType,
+                        new Object[] {
+                            new Integer(2),
+                            lines(new int[][] {{4, 6, 4, 8, 6, 10}}),
+                            "rv2",
+                            new Double(3.0)
+                        },
+                        RIVER + "." + (initialFidValue + 1));
         riverBounds = new ReferencedEnvelope(CRS.decode("EPSG:4326", forceLongitudeFirst));
         riverBounds.expandToInclude(ReferencedEnvelope.reference(riverFeatures[0].getBounds()));
         riverBounds.expandToInclude(ReferencedEnvelope.reference(riverFeatures[1].getBounds()));
@@ -183,22 +214,26 @@ public class TestData {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         rv1Filter = ff.id(Collections.singleton(ff.featureId(RIVER + ".rv1")));
 
-        //  9,5   11,5   
+        //  9,5   11,5
         //   +-----+
-        //     rv3  \ 
+        //     rv3  \
         //           + 13,3
-        //                     
-        newRiver = SimpleFeatureBuilder.build(riverType,
-                new Object[] {
-                    new Integer(3), lines(new int[][] {
-                            { 9, 5, 11, 5, 13, 3 }
-                        }), "rv3", new Double(1.5)
-                }, RIVER + "." + (initialFidValue + 2));
+        //
+        newRiver =
+                SimpleFeatureBuilder.build(
+                        riverType,
+                        new Object[] {
+                            new Integer(3),
+                            lines(new int[][] {{9, 5, 11, 5, 13, 3}}),
+                            "rv3",
+                            new Double(1.5)
+                        },
+                        RIVER + "." + (initialFidValue + 2));
     }
 
     /**
-     * Creates a line from the specified (<var>x</var>,<var>y</var>) coordinates.
-     * The coordinates are stored in a flat array.
+     * Creates a line from the specified (<var>x</var>,<var>y</var>) coordinates. The coordinates
+     * are stored in a flat array.
      */
     public LineString line(int[] xy) {
         Coordinate[] coords = new Coordinate[xy.length / 2];
@@ -210,9 +245,7 @@ public class TestData {
         return gf.createLineString(coords);
     }
 
-    /**
-     * Creates a multiline from the specified (<var>x</var>,<var>y</var>) coordinates.
-     */
+    /** Creates a multiline from the specified (<var>x</var>,<var>y</var>) coordinates. */
     public MultiLineString lines(int[][] xy) {
         LineString[] lines = new LineString[xy.length];
 
@@ -224,8 +257,8 @@ public class TestData {
     }
 
     /**
-     * Creates a polygon from the specified (<var>x</var>,<var>y</var>) coordinates.
-     * The coordinates are stored in a flat array.
+     * Creates a polygon from the specified (<var>x</var>,<var>y</var>) coordinates. The coordinates
+     * are stored in a flat array.
      */
     public Polygon polygon(int[] xy) {
         LinearRing shell = ring(xy);
@@ -234,8 +267,8 @@ public class TestData {
     }
 
     /**
-     * Creates a line from the specified (<var>x</var>,<var>y</var>) coordinates and
-     * an arbitrary amount of holes.
+     * Creates a line from the specified (<var>x</var>,<var>y</var>) coordinates and an arbitrary
+     * amount of holes.
      */
     public Polygon polygon(int[] xy, int[][] holes) {
         if ((holes == null) || (holes.length == 0)) {
@@ -254,8 +287,8 @@ public class TestData {
     }
 
     /**
-     * Creates a ring from the specified (<var>x</var>,<var>y</var>) coordinates.
-     * The coordinates are stored in a flat array.
+     * Creates a ring from the specified (<var>x</var>,<var>y</var>) coordinates. The coordinates
+     * are stored in a flat array.
      */
     public LinearRing ring(int[] xy) {
         Coordinate[] coords = new Coordinate[xy.length / 2];

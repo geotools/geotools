@@ -16,6 +16,7 @@
  */
 package org.geotools.gml2.bindings;
 
+import com.vividsolutions.jts.geom.Point;
 import org.geotools.gml2.GML;
 import org.geotools.gml2.TEST;
 import org.geotools.gml2.TestConfiguration;
@@ -25,14 +26,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import com.vividsolutions.jts.geom.Point;
-
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class GMLAbstractFeatureTypeBindingTest extends GMLTestSupport {
     protected Configuration createConfiguration() {
         return new TestConfiguration();
@@ -73,7 +67,7 @@ public class GMLAbstractFeatureTypeBindingTest extends GMLTestSupport {
     public void testEncode() throws Exception {
         Document dom = encode(GML2MockData.feature(), TEST.TestFeature);
         // print(dom);
-        
+
         assertEquals(1, dom.getElementsByTagName("gml:boundedBy").getLength());
         assertEquals(1, dom.getElementsByTagName("test:geom").getLength());
         assertEquals(1, dom.getElementsByTagName("test:count").getLength());

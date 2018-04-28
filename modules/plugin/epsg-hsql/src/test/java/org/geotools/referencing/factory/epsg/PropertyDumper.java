@@ -13,13 +13,11 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
-
 import org.geotools.referencing.CRS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Dumps the contents of the EPSG database out to a java property file for use by the wkt plugin.
- *
  *
  * @source $URL$
  */
@@ -28,39 +26,43 @@ public class PropertyDumper {
         String filename = "/tmp/wkt.properties";
         Properties diff = new Properties();
         String compare = null;
-        if( args.length > 0 ){
+        if (args.length > 0) {
             filename = args[0];
         }
-        
+
         File original;
-        if( args.length > 1 ){
-            original = new File( args[1] );
+        if (args.length > 1) {
+            original = new File(args[1]);
         } else {
-            original = new File("../epsg-wkt/src/main/resources/org/geotools/referencing/crs/epsg.properties");
+            original =
+                    new File(
+                            "../epsg-wkt/src/main/resources/org/geotools/referencing/crs/epsg.properties");
         }
-        if( original.exists() ){
-            InputStream in = new FileInputStream( original );
-            diff.load( in );
+        if (original.exists()) {
+            InputStream in = new FileInputStream(original);
+            diff.load(in);
         }
-        
-        FileOutputStream out = new FileOutputStream( filename );
+
+        FileOutputStream out = new FileOutputStream(filename);
         Writer writer = new BufferedWriter(new OutputStreamWriter(out, "8859_1"));
-        writer.append("Generate from EPSG database version "+ThreadedHsqlEpsgFactory.VERSION );
-        
+        writer.append("Generate from EPSG database version " + ThreadedHsqlEpsgFactory.VERSION);
+
         Properties props = new Properties();
         List<String> codes = new ArrayList(CRS.getSupportedCodes("EPSG"));
-        Collections.sort(codes, new Comparator<String>() {
+        Collections.sort(
+                codes,
+                new Comparator<String>() {
 
-            public int compare(String c1, String c2) {
-                try {
-                    Long n1 = new Long(c1);
-                    Long n2 = new Long(c2);
-                    return n1.compareTo(n2);
-                } catch(NumberFormatException e) {
-                    return c1.compareTo(c2);
-                }
-            }
-        });
+                    public int compare(String c1, String c2) {
+                        try {
+                            Long n1 = new Long(c1);
+                            Long n2 = new Long(c2);
+                            return n1.compareTo(n2);
+                        } catch (NumberFormatException e) {
+                            return c1.compareTo(c2);
+                        }
+                    }
+                });
         for (String code : codes) {
             try {
                 CoordinateReferenceSystem crs = CRS.decode("EPSG:" + code, true);
@@ -68,24 +70,27 @@ public class PropertyDumper {
                 String wkt = crs.toString().replaceAll("\n", "").replaceAll("  ", "");
                 // make sure we can parse back what we generated
                 CRS.parseWKT(wkt);
-                
+
                 props.put(code, wkt);
-                
+
                 diff.remove(code);
-                
+
             } catch (Exception e) {
                 // we cannot actually decode all codes, but let's list what we can't
                 String desc = "";
                 try {
-                    desc = CRS.getAuthorityFactory(true).getDescriptionText("EPSG:" + code).toString(Locale.ENGLISH);
-                } catch(Exception ex) {
+                    desc =
+                            CRS.getAuthorityFactory(true)
+                                    .getDescriptionText("EPSG:" + code)
+                                    .toString(Locale.ENGLISH);
+                } catch (Exception ex) {
                     // fine, it's just to have a nicer description of the error
                 }
-                System.out.println("#"+code +  "(" + desc + ")" +" -> " + e.getMessage());
+                System.out.println("#" + code + "(" + desc + ")" + " -> " + e.getMessage());
             }
         }
-        props.store(out,"Generated from EPSG database version " + ThreadedHsqlEpsgFactory.VERSION);
-        if(!diff.isEmpty() ){
+        props.store(out, "Generated from EPSG database version " + ThreadedHsqlEpsgFactory.VERSION);
+        if (!diff.isEmpty()) {
             diff.store(out, "Extra Definitions Supplied from Community");
         }
         out.close();

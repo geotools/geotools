@@ -19,9 +19,6 @@ package org.geotools.data;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
-
-import org.geotools.feature.CollectionListener;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -34,22 +31,19 @@ import org.opengis.util.ProgressListener;
 
 /**
  * Collection of features from a {@link SampleDataAccess}.
- * 
+ *
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  * @version $Id$
- * 
- * 
- *
  * @source $URL$
  * @since 2.6
  */
 @SuppressWarnings("serial")
-public class SampleDataAccessFeatureCollection extends ArrayList<Feature> implements
-        FeatureCollection<FeatureType, Feature> {
+public class SampleDataAccessFeatureCollection extends ArrayList<Feature>
+        implements FeatureCollection<FeatureType, Feature> {
 
     /**
      * @see org.geotools.feature.FeatureCollection#accepts(org.opengis.feature.FeatureVisitor,
-     *      org.opengis.util.ProgressListener)
+     *     org.opengis.util.ProgressListener)
      */
     public void accepts(FeatureVisitor visitor, ProgressListener progress) throws IOException {
         DataUtilities.visit(this, visitor, progress);
@@ -57,7 +51,7 @@ public class SampleDataAccessFeatureCollection extends ArrayList<Feature> implem
 
     /**
      * Get an iterator over the features.
-     * 
+     *
      * @see org.geotools.feature.FeatureCollection#features()
      */
     public FeatureIterator<Feature> features() {
@@ -66,7 +60,7 @@ public class SampleDataAccessFeatureCollection extends ArrayList<Feature> implem
 
     /**
      * Not yet implemented.
-     * 
+     *
      * @see org.geotools.feature.FeatureCollection#getBounds()
      */
     public ReferencedEnvelope getBounds() {
@@ -76,7 +70,7 @@ public class SampleDataAccessFeatureCollection extends ArrayList<Feature> implem
 
     /**
      * Not yet implemented.
-     * 
+     *
      * @see org.geotools.feature.FeatureCollection#getID()
      */
     public String getID() {
@@ -86,7 +80,7 @@ public class SampleDataAccessFeatureCollection extends ArrayList<Feature> implem
 
     /**
      * Return type of features.
-     * 
+     *
      * @see org.geotools.feature.FeatureCollection#getSchema()
      */
     public FeatureType getSchema() {
@@ -95,7 +89,7 @@ public class SampleDataAccessFeatureCollection extends ArrayList<Feature> implem
 
     /**
      * Unsupported operation.
-     * 
+     *
      * @see org.geotools.feature.FeatureCollection#sort(org.opengis.filter.sort.SortBy)
      */
     public FeatureCollection<FeatureType, Feature> sort(SortBy order) {
@@ -104,11 +98,10 @@ public class SampleDataAccessFeatureCollection extends ArrayList<Feature> implem
 
     /**
      * Unsupported operation.
-     * 
+     *
      * @see org.geotools.feature.FeatureCollection#subCollection(org.opengis.filter.Filter)
      */
     public FeatureCollection<FeatureType, Feature> subCollection(Filter filter) {
         throw new UnsupportedOperationException();
     }
-
 }

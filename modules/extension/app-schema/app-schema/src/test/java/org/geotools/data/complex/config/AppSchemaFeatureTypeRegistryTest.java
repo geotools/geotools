@@ -1,17 +1,14 @@
 package org.geotools.data.complex.config;
 
-import java.io.IOException;
+import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import org.geotools.feature.NameImpl;
 import org.geotools.gml3.v3_2.GML;
 import org.geotools.test.AppSchemaTestSupport;
 import org.geotools.xml.SchemaIndex;
 import org.geotools.xml.resolver.SchemaResolver;
-
-import static org.junit.Assert.assertTrue;
-
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.FeatureType;
@@ -20,9 +17,8 @@ import org.xml.sax.helpers.NamespaceSupport;
 
 /**
  * This is to test GMLHandler in AppSchemaFeatureTypeRegistry.
- * 
+ *
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
- * 
  */
 public class AppSchemaFeatureTypeRegistryTest extends AppSchemaTestSupport {
     private static final String BOREHOLE_NS = "http://xmlns.geosciml.org/Borehole/3.2";
@@ -36,8 +32,9 @@ public class AppSchemaFeatureTypeRegistryTest extends AppSchemaTestSupport {
     @BeforeClass
     public static void oneTimeSetUp() throws IOException {
         SchemaResolver resolver = new SchemaResolver();
-        String schemalocation = SchemaResolver
-                .resolveClasspathLocation("http://schemas.geosciml.org/borehole/3.2/borehole.xsd");
+        String schemalocation =
+                SchemaResolver.resolveClasspathLocation(
+                        "http://schemas.geosciml.org/borehole/3.2/borehole.xsd");
         EmfComplexFeatureReader schemaParser = EmfComplexFeatureReader.newInstance();
         schemaParser.setResolver(resolver);
         schemaIndex = schemaParser.parse(BOREHOLE_NS, schemalocation);
@@ -64,5 +61,4 @@ public class AppSchemaFeatureTypeRegistryTest extends AppSchemaTestSupport {
         AttributeType type = registry.getAttributeType(BOREHOLE_TYPE);
         assertTrue(type instanceof FeatureType);
     }
-
 }

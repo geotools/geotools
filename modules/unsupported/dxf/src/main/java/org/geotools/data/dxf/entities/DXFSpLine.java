@@ -1,26 +1,21 @@
 package org.geotools.data.dxf.entities;
 
 import java.io.EOFException;
-import java.util.Vector;
-import org.geotools.data.dxf.parser.DXFLineNumberReader;
 import java.io.IOException;
-
-import org.geotools.data.GeometryType;
-import org.geotools.data.dxf.parser.DXFUnivers;
-import org.geotools.data.dxf.header.DXFLayer;
-import org.geotools.data.dxf.header.DXFTables;
-import org.geotools.data.dxf.header.DXFLineType;
-import org.geotools.data.dxf.parser.DXFCodeValuePair;
-import org.geotools.data.dxf.parser.DXFGroupCode;
-import org.geotools.data.dxf.parser.DXFParseException;
+import java.util.Vector;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.geotools.data.GeometryType;
+import org.geotools.data.dxf.header.DXFLayer;
+import org.geotools.data.dxf.header.DXFLineType;
+import org.geotools.data.dxf.header.DXFTables;
+import org.geotools.data.dxf.parser.DXFCodeValuePair;
+import org.geotools.data.dxf.parser.DXFGroupCode;
+import org.geotools.data.dxf.parser.DXFLineNumberReader;
+import org.geotools.data.dxf.parser.DXFParseException;
+import org.geotools.data.dxf.parser.DXFUnivers;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class DXFSpLine extends DXFPolyline {
 
     private static final Log log = LogFactory.getLog(DXFSpLine.class);
@@ -32,14 +27,32 @@ public class DXFSpLine extends DXFPolyline {
         setName("DXFSpLine");
     }
 
-    public DXFSpLine(String name, int flag, int c, DXFLayer l, Vector<DXFVertex> v, int visibility, DXFLineType lineType, double thickness) {
+    public DXFSpLine(
+            String name,
+            int flag,
+            int c,
+            DXFLayer l,
+            Vector<DXFVertex> v,
+            int visibility,
+            DXFLineType lineType,
+            double thickness) {
         super(name, flag, c, l, v, visibility, lineType, thickness);
         setName("DXFSpLine");
     }
-    public DXFSpLine(String name, int flag, int c, DXFLayer l, Vector<DXFVertex> v, int visibility, DXFLineType lineType, double thickness, DXFExtendedData extData) {
-    	super(name, flag, c, l, v, visibility, lineType, thickness);
-    	_extendedData = extData;
-    	setName("DXFSpLine");
+
+    public DXFSpLine(
+            String name,
+            int flag,
+            int c,
+            DXFLayer l,
+            Vector<DXFVertex> v,
+            int visibility,
+            DXFLineType lineType,
+            double thickness,
+            DXFExtendedData extData) {
+        super(name, flag, c, l, v, visibility, lineType, thickness);
+        _extendedData = extData;
+        setName("DXFSpLine");
     }
 
     public static DXFSpLine read(DXFLineNumberReader br, DXFUnivers univers) throws IOException {
@@ -69,7 +82,8 @@ public class DXFSpLine extends DXFPolyline {
             }
 
             // Unsupported GroupCodes:
-            // HANDLE, SOFT_POINTER_HANDLE_1, SUBCLASS_DATA_MARKER, INT_1, INT_2, INT_3, INT_4, INT_5, DOUBLE_3, DOUBLE_4, DOUBLE_1, Z_1
+            // HANDLE, SOFT_POINTER_HANDLE_1, SUBCLASS_DATA_MARKER, INT_1, INT_2, INT_3, INT_4,
+            // INT_5, DOUBLE_3, DOUBLE_4, DOUBLE_1, Z_1
 
             switch (gc) {
                 case TYPE:
@@ -77,7 +91,7 @@ public class DXFSpLine extends DXFPolyline {
                     br.reset();
                     doLoop = false;
                     break;
-                case LAYER_NAME: //"8"
+                case LAYER_NAME: // "8"
                     l = univers.findLayer(cvp.getStringValue());
                     break;
                 case X_1:
@@ -90,19 +104,36 @@ public class DXFSpLine extends DXFPolyline {
                     lv.set(lastIndex, lastCoord);
                     break;
                 default:
-                	String appName = cvp.getStringValue();
-            		_extData = DXFExtendedData.getExtendedData(br);
-            		_extData.setAppName(appName);
+                    String appName = cvp.getStringValue();
+                    _extData = DXFExtendedData.getExtendedData(br);
+                    _extData.setAppName(appName);
                     break;
             }
         }
 
-        DXFSpLine e = new DXFSpLine(name, 4, c, l, lv, visibility, lineType, DXFTables.defaultThickness, _extData);
+        DXFSpLine e =
+                new DXFSpLine(
+                        name,
+                        4,
+                        c,
+                        l,
+                        lv,
+                        visibility,
+                        lineType,
+                        DXFTables.defaultThickness,
+                        _extData);
         e.setType(GeometryType.LINE);
         e.setStartingLineNumber(sln);
         e.setUnivers(univers);
 
-        log.debug(e.toString(lv.get(0).X(), lv.get(0).Y(), lv.get(lv.size() - 1).X(), lv.get(lv.size() - 1).Y(), c, visibility));
+        log.debug(
+                e.toString(
+                        lv.get(0).X(),
+                        lv.get(0).Y(),
+                        lv.get(lv.size() - 1).X(),
+                        lv.get(lv.size() - 1).Y(),
+                        c,
+                        visibility));
         log.debug(">Exit at line: " + br.getLineNumber());
         return e;
     }

@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -24,7 +24,7 @@ import com.vividsolutions.jts.geom.CoordinateSequence;
 
 /**
  * Utility class for the test, represents a circle in the origin with a given radius
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 class Circle {
@@ -89,8 +89,14 @@ class Circle {
             double d = Math.sqrt(dx * dx + dy * dy);
             double distanceFromCircle = Math.abs(radius - d);
             if (distanceFromCircle > tolerance) {
-                fail("Found a point " + x + "," + y + " that's not on the circle with distance "
-                        + distanceFromCircle + " from it");
+                fail(
+                        "Found a point "
+                                + x
+                                + ","
+                                + y
+                                + " that's not on the circle with distance "
+                                + distanceFromCircle
+                                + " from it");
             }
             assertEquals(radius, d, tolerance);
             double angle = atan2(dy, dx);
@@ -106,8 +112,12 @@ class Circle {
                 double apothem = Math.sqrt(radius * radius - halfChordLength * halfChordLength);
                 double distance = radius - apothem;
                 if (distance > tolerance) {
-                    fail("Max tolerance is " + tolerance + " but found a chord that is at "
-                            + distance + " from the circle");
+                    fail(
+                            "Max tolerance is "
+                                    + tolerance
+                                    + " but found a chord that is at "
+                                    + distance
+                                    + " from the circle");
                 }
             }
             prevAngle = angle;
@@ -120,5 +130,4 @@ class Circle {
         double ea = atan2(ordinates[5] - cx, ordinates[3] - cy);
         return (sa > ma && ma > ea) || (sa < ma && sa > ea) || (ma < ea && sa > ea);
     }
-
 }

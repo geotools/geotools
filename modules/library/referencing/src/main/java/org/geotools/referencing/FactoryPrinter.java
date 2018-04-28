@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,26 +16,23 @@
  */
 package org.geotools.referencing;
 
+import static java.util.stream.Collectors.toList;
+
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.Iterator;
-import java.util.Comparator;
-
-import org.opengis.metadata.Identifier;
-import org.opengis.metadata.citation.Citation;
-import org.opengis.referencing.Factory;
-import org.opengis.referencing.AuthorityFactory;
-
 import org.geotools.factory.FactoryRegistry;
 import org.geotools.io.TableWriter;
 import org.geotools.resources.Classes;
 import org.geotools.resources.i18n.Vocabulary;
 import org.geotools.resources.i18n.VocabularyKeys;
-
-import static java.util.stream.Collectors.toList;
-
+import org.opengis.metadata.Identifier;
+import org.opengis.metadata.citation.Citation;
+import org.opengis.referencing.AuthorityFactory;
+import org.opengis.referencing.Factory;
 
 /**
  * Prints a list of factory. This is used for {@link ReferencingFactoryFinder#listProviders}
@@ -46,15 +43,12 @@ import static java.util.stream.Collectors.toList;
  * @author Desruisseaux
  */
 final class FactoryPrinter implements Comparator<Class<?>> {
-    /**
-     * Constructs a default instance of this printer.
-     */
-    public FactoryPrinter() {
-    }
+    /** Constructs a default instance of this printer. */
+    public FactoryPrinter() {}
 
     /**
-     * Compares two factories for order. This is used for sorting out the factories
-     * before to display them.
+     * Compares two factories for order. This is used for sorting out the factories before to
+     * display them.
      */
     public int compare(final Class<?> factory1, final Class<?> factory2) {
         if (false) {
@@ -66,8 +60,8 @@ final class FactoryPrinter implements Comparator<Class<?>> {
             return 0;
         } else {
             // Or sort by name
-            return Classes.getShortName(factory1).compareToIgnoreCase(
-                   Classes.getShortName(factory2));
+            return Classes.getShortName(factory1)
+                    .compareToIgnoreCase(Classes.getShortName(factory2));
         }
     }
 
@@ -76,26 +70,23 @@ final class FactoryPrinter implements Comparator<Class<?>> {
      * the first implementation listed is the default one. This method provides a way to check the
      * state of a system, usually for debugging purpose.
      *
-     * @param  FactoryRegistry Where the factories are registered.
-     * @param  out The output stream where to format the list.
-     * @param  locale The locale for the list, or {@code null}.
+     * @param FactoryRegistry Where the factories are registered.
+     * @param out The output stream where to format the list.
+     * @param locale The locale for the list, or {@code null}.
      * @throws IOException if an error occurs while writing to {@code out}.
      */
     public void list(final FactoryRegistry registry, final Writer out, final Locale locale)
-            throws IOException
-    {
+            throws IOException {
         /*
          * Gets the categories in some sorted order.
          */
-        final List<Class<?>> categories = registry
-                .streamCategories()
-                .sorted(this)
-                .collect(toList());
+        final List<Class<?>> categories =
+                registry.streamCategories().sorted(this).collect(toList());
         /*
          * Prints the table header.
          */
         final Vocabulary resources = Vocabulary.getResources(locale);
-        final TableWriter table  = new TableWriter(out, TableWriter.SINGLE_VERTICAL_LINE);
+        final TableWriter table = new TableWriter(out, TableWriter.SINGLE_VERTICAL_LINE);
         table.setMultiLinesCells(true);
         table.writeHorizontalSeparator();
         table.write(resources.getString(VocabularyKeys.FACTORY));
@@ -107,9 +98,9 @@ final class FactoryPrinter implements Comparator<Class<?>> {
         table.write(resources.getString(VocabularyKeys.IMPLEMENTATIONS));
         table.nextLine();
         table.nextLine(TableWriter.DOUBLE_HORIZONTAL_LINE);
-        final StringBuilder vendors         = new StringBuilder();
+        final StringBuilder vendors = new StringBuilder();
         final StringBuilder implementations = new StringBuilder();
-        for (final Iterator<Class<?>> it=categories.iterator(); it.hasNext();) {
+        for (final Iterator<Class<?>> it = categories.iterator(); it.hasNext(); ) {
             /*
              * Writes the category name (CRSFactory, DatumFactory, etc.)
              */
@@ -122,8 +113,8 @@ final class FactoryPrinter implements Comparator<Class<?>> {
             final Iterator<?> providers = registry.getFactories(category, null, null).iterator();
             while (providers.hasNext()) {
                 if (implementations.length() != 0) {
-                    table          .write ('\n');
-                    vendors        .append('\n');
+                    table.write('\n');
+                    vendors.append('\n');
                     implementations.append('\n');
                 }
                 final Factory provider = (Factory) providers.next();
@@ -134,9 +125,10 @@ final class FactoryPrinter implements Comparator<Class<?>> {
                     final Citation authority = ((AuthorityFactory) provider).getAuthority();
                     final Iterator<? extends Identifier> identifiers =
                             authority.getIdentifiers().iterator();
-                    final String identifier = identifiers.hasNext()
-                            ? identifiers.next().getCode().toString()
-                            : authority.getTitle().toString(locale);
+                    final String identifier =
+                            identifiers.hasNext()
+                                    ? identifiers.next().getCode().toString()
+                                    : authority.getTitle().toString(locale);
                     table.write(identifier);
                 }
             }

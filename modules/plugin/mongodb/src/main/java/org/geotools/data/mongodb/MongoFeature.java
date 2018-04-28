@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2015, Boundless
  *
@@ -31,7 +31,8 @@ public class MongoFeature extends SimpleFeatureImpl {
         this(null, values, featureType, id);
     }
 
-    public MongoFeature(DBObject mongoObject, Object[] values, SimpleFeatureType featureType, String id) {
+    public MongoFeature(
+            DBObject mongoObject, Object[] values, SimpleFeatureType featureType, String id) {
         super(values, featureType, new FeatureIdImpl(id), false);
         this.values = values;
         this.mongoObject = mongoObject;

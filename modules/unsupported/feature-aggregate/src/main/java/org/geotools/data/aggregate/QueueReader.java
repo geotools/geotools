@@ -18,17 +18,14 @@ package org.geotools.data.aggregate;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
-
-import org.geotools.data.FeatureReader;
 import org.geotools.data.simple.SimpleFeatureReader;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
  * Returns all the features stored in a {@link FeatureQueue}
- * 
- * @author Andrea Aime - GeoSolutions
  *
+ * @author Andrea Aime - GeoSolutions
  * @source $URL$
  */
 public class QueueReader implements SimpleFeatureReader {
@@ -51,15 +48,15 @@ public class QueueReader implements SimpleFeatureReader {
 
     @Override
     public boolean hasNext() throws IOException {
-        if(next != null && next != FeatureQueue.END_MARKER) {
+        if (next != null && next != FeatureQueue.END_MARKER) {
             return true;
         }
-        
+
         checkException();
 
         // loop and see if we can grab a feature, or if we just get the end markers
         try {
-            while(next == null || next == FeatureQueue.END_MARKER) {
+            while (next == null || next == FeatureQueue.END_MARKER) {
                 if (queue.isDone()) {
                     return false;
                 }
@@ -74,6 +71,7 @@ public class QueueReader implements SimpleFeatureReader {
 
     /**
      * Checks if the queue contains an exception, if so rethrows it
+     *
      * @throws IOException
      */
     void checkException() throws IOException {
@@ -85,8 +83,8 @@ public class QueueReader implements SimpleFeatureReader {
     }
 
     @Override
-    public SimpleFeature next() throws IOException, IllegalArgumentException,
-            NoSuchElementException {
+    public SimpleFeature next()
+            throws IOException, IllegalArgumentException, NoSuchElementException {
         if (next == null) {
             if (!hasNext()) {
                 throw new NoSuchElementException("No more features to be read");
@@ -105,7 +103,7 @@ public class QueueReader implements SimpleFeatureReader {
         queue.shutDown();
         // wait for all the workers to get out of dodge, they might be blocked
         // on a full queue for example
-        while(!queue.isDone()) {
+        while (!queue.isDone()) {
             queue.clear();
             try {
                 Thread.sleep(10);
@@ -115,5 +113,4 @@ public class QueueReader implements SimpleFeatureReader {
             }
         }
     }
-
 }

@@ -18,7 +18,6 @@ package org.geotools.gce.imagemosaic.remote;
 
 import java.io.IOException;
 import java.net.URL;
-
 import org.geotools.TestData;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.imageio.GeoToolsWriteParams;
@@ -30,7 +29,7 @@ import org.opengis.coverage.grid.Format;
 import org.opengis.coverage.grid.GridCoverageWriter;
 
 public class RemoteImageFormat extends AbstractGridFormat implements Format {
-    
+
     private WorldImageFormat delegate = new WorldImageFormat();
 
     @Override
@@ -41,13 +40,14 @@ public class RemoteImageFormat extends AbstractGridFormat implements Format {
     @Override
     public WorldImageReader getReader(Object source, Hints hints) {
         try {
-            return /*new RemoteImageReader(*/delegate.getReader(
-                    TestData.file(RemoteTest.class, "remote_test" + ((URL) source).getPath()), hints)/*)*/;
+            return /*new RemoteImageReader(*/ delegate.getReader(
+                    TestData.file(RemoteTest.class, "remote_test" + ((URL) source).getPath()),
+                    hints) /*)*/;
         } catch (IOException e) {
             return null;
         }
-                
     }
+
     @Override
     public boolean accepts(Object source, Hints hints) {
         return (source instanceof URL)
@@ -70,5 +70,4 @@ public class RemoteImageFormat extends AbstractGridFormat implements Format {
     public GridCoverageWriter getWriter(Object destination, Hints hints) {
         throw new UnsupportedOperationException();
     }
-
 }

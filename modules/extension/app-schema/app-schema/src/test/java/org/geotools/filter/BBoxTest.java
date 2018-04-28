@@ -25,7 +25,6 @@ import java.io.Serializable;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
 import org.geotools.data.FeatureSource;
@@ -43,11 +42,8 @@ import org.xml.sax.helpers.NamespaceSupport;
 
 /**
  * This is to test bounding box query that previously didn't work for app-schema.
- * 
+ *
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
- *
- *
- *
  * @source $URL$
  */
 public class BBoxTest extends AppSchemaTestSupport {
@@ -61,17 +57,13 @@ public class BBoxTest extends AppSchemaTestSupport {
     public static void onetimeSetUp() throws Exception {
 
         final String GSML_URI = "urn:cgi:xmlns:CGI:GeoSciML:2.0";
-        /**
-         * Set up filter factory
-         */
+        /** Set up filter factory */
         NamespaceSupport namespaces = new NamespaceSupport();
         namespaces.declarePrefix("gsml", GSML_URI);
         namespaces.declarePrefix("gml", "http://www.opengis.net/gml");
         ff = new FilterFactoryImplNamespaceAware(namespaces);
 
-        /**
-         * Load data access
-         */
+        /** Load data access */
         final Name FEATURE_TYPE = Types.typeName(GSML_URI, "MappedFeature");
         final String schemaBase = "/test-data/";
         Map<String, Serializable> dsParams = new HashMap<String, Serializable>();
@@ -99,8 +91,7 @@ public class BBoxTest extends AppSchemaTestSupport {
             assertEquals("mf1", f.getIdentifier().toString());
             f = iterator.next();
             assertEquals("mf3", f.getIdentifier().toString());
-        }
-        finally {
+        } finally {
             iterator.close();
         }
         // prove that it would fail when property name is not a geometry attribute
@@ -128,8 +119,7 @@ public class BBoxTest extends AppSchemaTestSupport {
             assertEquals(f.getIdentifier().toString(), "mf1");
             f = iterator.next();
             assertEquals(f.getIdentifier().toString(), "mf3");
-        }
-        finally {
+        } finally {
             iterator.close();
         }
     }
@@ -141,8 +131,7 @@ public class BBoxTest extends AppSchemaTestSupport {
             for (; i.hasNext(); i.next()) {
                 size++;
             }
-        }
-        finally {
+        } finally {
             i.close();
         }
         return size;

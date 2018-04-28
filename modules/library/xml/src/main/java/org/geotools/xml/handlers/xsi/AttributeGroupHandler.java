@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -20,7 +20,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-
 import org.geotools.xml.XSIElementHandler;
 import org.geotools.xml.schema.Attribute;
 import org.geotools.xml.schema.AttributeGroup;
@@ -29,24 +28,20 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotRecognizedException;
 
-
 /**
  * AttributeGroupHandler purpose.
- * 
- * <p>
- * Represents an 'attributeGroup' element.
- * </p>
+ *
+ * <p>Represents an 'attributeGroup' element.
  *
  * @author dzwiers, Refractions Research, Inc. http://www.refractions.net
  * @author $Author:$ (last modification)
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public class AttributeGroupHandler extends XSIElementHandler {
     /** 'attributeGroup' */
-    public final static String LOCALNAME = "attributeGroup";
+    public static final String LOCALNAME = "attributeGroup";
+
     private static int offset = 0;
     private String id;
     private String name;
@@ -63,21 +58,17 @@ public class AttributeGroupHandler extends XSIElementHandler {
         return offset++;
     }
 
-    /**
-     * @see java.lang.Object#hashCode()
-     */
+    /** @see java.lang.Object#hashCode() */
     public int hashCode() {
-        return (LOCALNAME.hashCode() * ((id == null) ? 1 : id.hashCode()) * ((ref == null)
-        ? 1 : ref.hashCode()) * ((name == null) ? 1 : name.hashCode()))
-        + hashCodeOffset;
+        return (LOCALNAME.hashCode()
+                        * ((id == null) ? 1 : id.hashCode())
+                        * ((ref == null) ? 1 : ref.hashCode())
+                        * ((name == null) ? 1 : name.hashCode()))
+                + hashCodeOffset;
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String,
-     *      java.lang.String)
-     */
-    public XSIElementHandler getHandler(String namespaceURI, String localName)
-        throws SAXException {
+    /** @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String, java.lang.String) */
+    public XSIElementHandler getHandler(String namespaceURI, String localName) throws SAXException {
         if (SchemaHandler.namespaceURI.equalsIgnoreCase(namespaceURI)) {
             // child types
             //
@@ -112,8 +103,8 @@ public class AttributeGroupHandler extends XSIElementHandler {
                 if (anyAttribute == null) {
                     anyAttribute = sth;
                 } else {
-                    throw new SAXNotRecognizedException(LOCALNAME
-                        + " may only have one child declaration.");
+                    throw new SAXNotRecognizedException(
+                            LOCALNAME + " may only have one child declaration.");
                 }
 
                 return sth;
@@ -124,11 +115,10 @@ public class AttributeGroupHandler extends XSIElementHandler {
     }
 
     /**
-     * @see org.geotools.xml.XSIElementHandler#startElement(java.lang.String,
-     *      java.lang.String, org.xml.sax.Attributes)
+     * @see org.geotools.xml.XSIElementHandler#startElement(java.lang.String, java.lang.String,
+     *     org.xml.sax.Attributes)
      */
-    public void startElement(String namespaceURI, String localName,
-        Attributes atts){
+    public void startElement(String namespaceURI, String localName, Attributes atts) {
         id = atts.getValue("", "id");
 
         if (id == null) {
@@ -148,40 +138,28 @@ public class AttributeGroupHandler extends XSIElementHandler {
         }
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#getLocalName()
-     */
+    /** @see org.geotools.xml.XSIElementHandler#getLocalName() */
     public String getLocalName() {
         return LOCALNAME;
     }
 
-    /**
-     * returns the 'name' attribute
-     *
-     */
+    /** returns the 'name' attribute */
     public String getName() {
         return name;
     }
 
     /**
-     * <p>
      * Reduces the memory imprint returning a smaller object
-     * </p>
      *
      * @param parent
-     *
-     *
      * @throws SAXException
      */
-    protected AttributeGroup compress(SchemaHandler parent)
-        throws SAXException {
+    protected AttributeGroup compress(SchemaHandler parent) throws SAXException {
         if (cache != null) {
             return cache;
         }
 
-        String anyAttributeNamespace = (anyAttribute == null) ? null
-                                                              : anyAttribute
-            .getNamespace();
+        String anyAttributeNamespace = (anyAttribute == null) ? null : anyAttribute.getNamespace();
         Attribute[] attributes = null;
 
         if (attrDecs != null) {
@@ -200,8 +178,7 @@ public class AttributeGroupHandler extends XSIElementHandler {
                     if ((ag != null) && (ag.getAttributes() != null)) {
                         Attribute[] aa = ag.getAttributes();
 
-                        for (int j = 0; j < aa.length; j++)
-                            h.add(aa[j]);
+                        for (int j = 0; j < aa.length; j++) h.add(aa[j]);
                     }
                 }
             }
@@ -215,43 +192,36 @@ public class AttributeGroupHandler extends XSIElementHandler {
             AttributeGroup ag = parent.lookUpAttributeGroup(ref);
 
             if (ag == null) {
-                throw new SAXException("AttributeGroup '" + ref
-                    + "' was refered and not found");
+                throw new SAXException("AttributeGroup '" + ref + "' was refered and not found");
             }
 
             name1 = ag.getName();
 
-            if ((anyAttribute == null)
-                    || "".equalsIgnoreCase(anyAttribute.getNamespace())) {
+            if ((anyAttribute == null) || "".equalsIgnoreCase(anyAttribute.getNamespace())) {
                 anyAttributeNamespace = ag.getAnyAttributeNameSpace();
             }
 
             if (attributes != null) {
-                throw new SAXException(
-                    "Cannot have a ref and children for an AttributeGroup");
+                throw new SAXException("Cannot have a ref and children for an AttributeGroup");
             }
 
             attributes = ag.getAttributes();
         }
 
-        cache = new AttributeGroupGT(id, name1,
-                parent.getTargetNamespace(), attributes, anyAttributeNamespace);
+        cache =
+                new AttributeGroupGT(
+                        id, name1, parent.getTargetNamespace(), attributes, anyAttributeNamespace);
 
         return cache;
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#getHandlerType()
-     */
+    /** @see org.geotools.xml.XSIElementHandler#getHandlerType() */
     public int getHandlerType() {
         return DEFAULT;
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#endElement(java.lang.String,
-     *      java.lang.String)
-     */
-    public void endElement(String namespaceURI, String localName){
+    /** @see org.geotools.xml.XSIElementHandler#endElement(java.lang.String, java.lang.String) */
+    public void endElement(String namespaceURI, String localName) {
         // do nothing
     }
 }

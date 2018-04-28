@@ -16,22 +16,16 @@
  */
 package org.geotools.data.ogr;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public abstract class OGRDataStoreFactoryTest extends TestCaseSupport {
 
     protected OGRDataStoreFactoryTest(Class<? extends OGRDataStoreFactory> dataStoreFactoryClass) {
@@ -65,19 +59,19 @@ public abstract class OGRDataStoreFactoryTest extends TestCaseSupport {
         DataStore store = null;
         try {
             store = dataStoreFactory.createDataStore(map);
-            SimpleFeatureType schema = store.getSchema(
-                    STATE_POP.substring(STATE_POP.lastIndexOf('/') + 1,
-                            STATE_POP.lastIndexOf('.')));
+            SimpleFeatureType schema =
+                    store.getSchema(
+                            STATE_POP.substring(
+                                    STATE_POP.lastIndexOf('/') + 1, STATE_POP.lastIndexOf('.')));
             assertEquals(namespace.toString(), schema.getName().getNamespaceURI());
         } finally {
             disposeQuietly(store);
         }
     }
-    
+
     public void testNames() throws Exception {
         Set<String> drivers = dataStoreFactory.getAvailableDrivers();
         assertTrue(drivers.size() > 0);
         assertTrue(drivers.contains("ESRI Shapefile"));
     }
-
 }

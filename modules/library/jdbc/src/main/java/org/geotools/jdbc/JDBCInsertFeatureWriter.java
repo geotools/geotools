@@ -22,44 +22,44 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collection;
-
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureStore;
 import org.geotools.data.store.ContentState;
-import org.geotools.factory.Hints;
 import org.geotools.filter.identity.FeatureIdImpl;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
- * Inserts features in the database. Buffers the insertions until BUFFER_SIZE is reached or
- * the writer is closed.
+ * Inserts features in the database. Buffers the insertions until BUFFER_SIZE is reached or the
+ * writer is closed.
  *
  * @source $URL$
  */
-public class JDBCInsertFeatureWriter extends JDBCFeatureReader implements FeatureWriter<SimpleFeatureType, SimpleFeature> {
-    /**
-     * Grouping elements together in order to have a decent batch size.
-     */
+public class JDBCInsertFeatureWriter extends JDBCFeatureReader
+        implements FeatureWriter<SimpleFeatureType, SimpleFeature> {
+    /** Grouping elements together in order to have a decent batch size. */
     private final ResultSetFeature[] buffer;
+
     private int curBufferPos = 0;
-    
-    public JDBCInsertFeatureWriter(String sql, Connection cx,
-            JDBCFeatureSource featureSource, Query query) throws SQLException, IOException {
+
+    public JDBCInsertFeatureWriter(
+            String sql, Connection cx, JDBCFeatureSource featureSource, Query query)
+            throws SQLException, IOException {
         super(sql, cx, featureSource, featureSource.getSchema(), query);
         md = rs.getMetaData();
         buffer = new ResultSetFeature[dataStore.getBatchInsertSize()];
     }
 
-    public JDBCInsertFeatureWriter(PreparedStatement ps, Connection cx, JDBCFeatureSource featureSource, Query query)
-        throws SQLException, IOException {
-        super( ps, cx, featureSource, featureSource.getSchema(), query );
+    public JDBCInsertFeatureWriter(
+            PreparedStatement ps, Connection cx, JDBCFeatureSource featureSource, Query query)
+            throws SQLException, IOException {
+        super(ps, cx, featureSource, featureSource.getSchema(), query);
         md = rs.getMetaData();
         buffer = new ResultSetFeature[dataStore.getBatchInsertSize()];
     }
-    
+
     public JDBCInsertFeatureWriter(JDBCUpdateFeatureWriter other) throws IOException {
         super(other);
         buffer = new ResultSetFeature[dataStore.getBatchInsertSize()];
@@ -83,7 +83,7 @@ public class JDBCInsertFeatureWriter extends JDBCFeatureReader implements Featur
     }
 
     public SimpleFeature next() throws IOException {
-        //init, setting id to null explicity since the feature is yet to be 
+        // init, setting id to null explicity since the feature is yet to be
         // inserted
         ResultSetFeature rsf = getOrCreateRSF();
         rsf.init(null);
@@ -91,12 +91,12 @@ public class JDBCInsertFeatureWriter extends JDBCFeatureReader implements Featur
     }
 
     public void remove() throws IOException {
-        //noop
+        // noop
     }
 
     public void write() throws IOException {
         if (++curBufferPos >= buffer.length) {
-            //buffer full => do the inserts
+            // buffer full => do the inserts
             flush();
         }
     }
@@ -118,23 +118,24 @@ public class JDBCInsertFeatureWriter extends JDBCFeatureReader implements Featur
     }
 
     private void flush() throws IOException {
-        if(curBufferPos == 0) {
+        if (curBufferPos == 0) {
             return;
         }
         try {
-            //do the insert
+            // do the insert
             Collection<ResultSetFeature> features =
                     Arrays.asList(Arrays.copyOfRange(buffer, 0, curBufferPos));
             dataStore.insert(features, featureType, st.getConnection());
 
             for (ResultSetFeature cur : features) {
-                //the datastore sets as userData, grab it and update the fid
+                // the datastore sets as userData, grab it and update the fid
                 final String fid = (String) cur.getUserData().get("fid");
                 cur.setID(fid);
-                final SimpleFeature orig =(SimpleFeature)cur.getUserData().
-                        get(ContentFeatureStore.ORIGINAL_FEATURE_KEY);
+                final SimpleFeature orig =
+                        (SimpleFeature)
+                                cur.getUserData().get(ContentFeatureStore.ORIGINAL_FEATURE_KEY);
                 if (orig != null) {
-                    ((FeatureIdImpl)orig.getIdentifier()).setID(fid);
+                    ((FeatureIdImpl) orig.getIdentifier()).setID(fid);
                     orig.getUserData().putAll(cur.getUserData());
                     orig.getUserData().remove(ContentFeatureStore.ORIGINAL_FEATURE_KEY);
                 }

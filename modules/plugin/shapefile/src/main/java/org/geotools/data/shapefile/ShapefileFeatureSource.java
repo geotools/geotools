@@ -18,6 +18,15 @@ package org.geotools.data.shapefile;
 
 import static org.geotools.data.shapefile.files.ShpFileType.SHP;
 
+import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.MultiLineString;
+import com.vividsolutions.jts.geom.MultiPoint;
+import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
@@ -30,7 +39,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.data.CloseableIterator;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.EmptyFeatureReader;
@@ -85,26 +93,16 @@ import org.opengis.filter.temporal.TOverlaps;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
-
 /**
  * A {@link FeatureSource} for shapefiles based on {@link ContentFeatureSource}
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 class ShapefileFeatureSource extends ContentFeatureSource {
 
     /**
-     * Attribute extract that resolves empty PropertyName
-     * references to the default geometry where appropriate.
+     * Attribute extract that resolves empty PropertyName references to the default geometry where
+     * appropriate.
      */
     private final class AbsoluteAttributeExtractor extends FilterAttributeExtractor {
         private AbsoluteAttributeExtractor(SimpleFeatureType featureType) {
@@ -112,78 +110,76 @@ class ShapefileFeatureSource extends ContentFeatureSource {
         }
 
         @Override
-        public Object visit( final BBOX filter, Object data ) {
-            data = geom( filter.getExpression1(), data );
-            data = geom( filter.getExpression2(), data );
+        public Object visit(final BBOX filter, Object data) {
+            data = geom(filter.getExpression1(), data);
+            data = geom(filter.getExpression2(), data);
             return data;
         }
 
         @Override
         public Object visit(Beyond filter, Object data) {
-            data = geom( filter.getExpression1(), data );
-            data = geom( filter.getExpression2(), data );
+            data = geom(filter.getExpression1(), data);
+            data = geom(filter.getExpression2(), data);
             return data;
         }
 
         @Override
         public Object visit(Contains filter, Object data) {
-            data = geom( filter.getExpression1(), data );
-            data = geom( filter.getExpression2(), data );
+            data = geom(filter.getExpression1(), data);
+            data = geom(filter.getExpression2(), data);
             return data;
         }
 
         @Override
         public Object visit(Crosses filter, Object data) {
-            data = geom( filter.getExpression1(), data );
-            data = geom( filter.getExpression2(), data );
+            data = geom(filter.getExpression1(), data);
+            data = geom(filter.getExpression2(), data);
             return data;
         }
 
         @Override
         public Object visit(Disjoint filter, Object data) {
-            data = geom( filter.getExpression1(), data );
-            data = geom( filter.getExpression2(), data );
+            data = geom(filter.getExpression1(), data);
+            data = geom(filter.getExpression2(), data);
             return data;
         }
 
         @Override
         public Object visit(DWithin filter, Object data) {
-            data = geom( filter.getExpression1(), data );
-            data = geom( filter.getExpression2(), data );
+            data = geom(filter.getExpression1(), data);
+            data = geom(filter.getExpression2(), data);
             return data;
         }
 
         @Override
         public Object visit(Touches filter, Object data) {
-            data = geom( filter.getExpression1(), data );
-            data = geom( filter.getExpression2(), data );
+            data = geom(filter.getExpression1(), data);
+            data = geom(filter.getExpression2(), data);
             return data;
         }
 
         @Override
         public Object visit(TOverlaps filter, Object data) {
-            data = geom( filter.getExpression1(), data );
-            data = geom( filter.getExpression2(), data );
+            data = geom(filter.getExpression1(), data);
+            data = geom(filter.getExpression2(), data);
             return data;
         }
 
         // Fill in geometries rather than XPath
         Object geom(Expression expr, Object data) {
-            String propertyName = expr instanceof PropertyName
-                    ? ((PropertyName) expr).getPropertyName()
-                    : null;
-            if( propertyName != null && propertyName.trim().isEmpty() ){
-                if( data != null && data != attributeNames ){
+            String propertyName =
+                    expr instanceof PropertyName ? ((PropertyName) expr).getPropertyName() : null;
+            if (propertyName != null && propertyName.trim().isEmpty()) {
+                if (data != null && data != attributeNames) {
                     this.attributeNames = (Set<String>) data;
                 }
-                propertyNames.add( (PropertyName) expr );
+                propertyNames.add((PropertyName) expr);
                 // fill in all geometries .. for shapefile there is only one
                 GeometryDescriptor geometryDescriptor = this.featureType.getGeometryDescriptor();
-                this.attributeNames.add( geometryDescriptor.getName().getLocalPart() );
+                this.attributeNames.add(geometryDescriptor.getName().getLocalPart());
                 return data;
-            }
-            else {
-                return expr.accept(this, data );
+            } else {
+                return expr.accept(this, data);
             }
         }
     }
@@ -228,11 +224,12 @@ class ShapefileFeatureSource extends ContentFeatureSource {
         ReadableByteChannel in = null;
         try {
             ByteBuffer buffer = ByteBuffer.allocate(100);
-            FileReader reader = new FileReader() {
-                public String id() {
-                    return "Shapefile Datastore's getBounds Method";
-                }
-            };
+            FileReader reader =
+                    new FileReader() {
+                        public String id() {
+                            return "Shapefile Datastore's getBounds Method";
+                        }
+                    };
 
             in = shpFiles.getReadChannel(SHP, reader);
             try {
@@ -243,16 +240,15 @@ class ShapefileFeatureSource extends ContentFeatureSource {
                 header.read(buffer, true);
 
                 SimpleFeatureType schema = getSchema();
-                
+
                 Envelope env;
-                
+
                 // If it is a shapefile without any data (file length equals 50), return an empty
                 // envelope as expected
-                if(header.getFileLength() == 50) {
+                if (header.getFileLength() == 50) {
                     env = new Envelope();
                 } else {
-                    env = new Envelope(header.minX(), header.maxX(), header.minY(),
-                        header.maxY());
+                    env = new Envelope(header.minX(), header.maxX(), header.minY(), header.maxY());
                 }
 
                 CoordinateReferenceSystem crs = null;
@@ -290,8 +286,8 @@ class ShapefileFeatureSource extends ContentFeatureSource {
             }
 
             // no Index file so use the number of shapefile records
-            ShapefileReader reader = getDataStore().shpManager.openShapeReader(
-                    new GeometryFactory(), false);
+            ShapefileReader reader =
+                    getDataStore().shpManager.openShapeReader(new GeometryFactory(), false);
             int count = -1;
 
             try {
@@ -303,11 +299,9 @@ class ShapefileFeatureSource extends ContentFeatureSource {
             }
 
             return count;
-
         }
 
         return -1;
-
     }
 
     @Override
@@ -321,7 +315,7 @@ class ShapefileFeatureSource extends ContentFeatureSource {
         Envelope bbox = new ReferencedEnvelope();
         if (q.getFilter() != null) {
             bbox = (Envelope) q.getFilter().accept(ExtractBoundsFilterVisitor.BOUNDS_VISITOR, bbox);
-            if(bbox == null) {
+            if (bbox == null) {
                 bbox = new ReferencedEnvelope();
             }
         }
@@ -330,16 +324,21 @@ class ShapefileFeatureSource extends ContentFeatureSource {
         Filter filter = q != null ? q.getFilter() : null;
         IndexManager indexManager = getDataStore().indexManager;
         CloseableIterator<Data> goodRecs = null;
-        if (getDataStore().isFidIndexed() && filter instanceof Id && indexManager.hasFidIndex(false)) {
+        if (getDataStore().isFidIndexed()
+                && filter instanceof Id
+                && indexManager.hasFidIndex(false)) {
             Id fidFilter = (Id) filter;
             List<Data> records = indexManager.queryFidIndex(fidFilter);
             if (records != null) {
                 goodRecs = new CloseableIteratorWrapper<Data>(records.iterator());
             }
-        } else if (getDataStore().isIndexed() && !bbox.isNull() 
-                && !Double.isInfinite(bbox.getWidth()) && !Double.isInfinite(bbox.getHeight())) {
+        } else if (getDataStore().isIndexed()
+                && !bbox.isNull()
+                && !Double.isInfinite(bbox.getWidth())
+                && !Double.isInfinite(bbox.getHeight())) {
             try {
-                if(indexManager.isSpatialIndexAvailable() || getDataStore().isIndexCreationEnabled()) {
+                if (indexManager.isSpatialIndexAvailable()
+                        || getDataStore().isIndexCreationEnabled()) {
                     goodRecs = indexManager.querySpatialIndex(bbox);
                 }
             } catch (TreeException e) {
@@ -348,15 +347,20 @@ class ShapefileFeatureSource extends ContentFeatureSource {
         }
         // do we have anything to read at all? If not don't bother opening all the files
         if (goodRecs != null && !goodRecs.hasNext()) {
-            LOGGER.log(Level.FINE, "Empty results for " + resultSchema.getName().getLocalPart()
-                    + ", skipping read");
+            LOGGER.log(
+                    Level.FINE,
+                    "Empty results for "
+                            + resultSchema.getName().getLocalPart()
+                            + ", skipping read");
             goodRecs.close();
             return new EmptyFeatureReader<SimpleFeatureType, SimpleFeature>(resultSchema);
         }
-        
+
         // get the .fix file reader, if we have a .fix file
         IndexedFidReader fidReader = null;
-        if (getDataStore().isFidIndexed() && filter instanceof Id && indexManager.hasFidIndex(false)) {
+        if (getDataStore().isFidIndexed()
+                && filter instanceof Id
+                && indexManager.hasFidIndex(false)) {
             fidReader = new IndexedFidReader(shpFiles);
         }
 
@@ -373,8 +377,9 @@ class ShapefileFeatureSource extends ContentFeatureSource {
         }
         ShapefileFeatureReader reader;
         if (goodRecs != null) {
-            reader = new IndexedShapefileFeatureReader(readSchema, shapeReader, dbfReader, fidReader, 
-                    goodRecs);
+            reader =
+                    new IndexedShapefileFeatureReader(
+                            readSchema, shapeReader, dbfReader, fidReader, goodRecs);
         } else {
             reader = new ShapefileFeatureReader(readSchema, shapeReader, dbfReader, fidReader);
         }
@@ -400,12 +405,11 @@ class ShapefileFeatureSource extends ContentFeatureSource {
                     shapeReader.setFlatGeometry(true);
                 }
             }
-
         }
 
         // do the retyping
-        if(!FeatureTypes.equals(readSchema, resultSchema)) {
-           return new ReTypeFeatureReader(reader, resultSchema);
+        if (!FeatureTypes.equals(readSchema, resultSchema)) {
+            return new ReTypeFeatureReader(reader, resultSchema);
         } else {
             return reader;
         }
@@ -418,17 +422,17 @@ class ShapefileFeatureSource extends ContentFeatureSource {
             return SimpleFeatureTypeBuilder.retype(getSchema(), q.getPropertyNames());
         }
     }
-    
+
     SimpleFeatureType getReadSchema(Query q) {
         if (q.getPropertyNames() == Query.ALL_NAMES) {
             return getSchema();
         }
-        // Step 1: start with requested property names 
+        // Step 1: start with requested property names
         LinkedHashSet<String> attributes = new LinkedHashSet<String>();
         attributes.addAll(Arrays.asList(q.getPropertyNames()));
-        
+
         Filter filter = q.getFilter();
-        if(filter != null && !Filter.INCLUDE.equals(filter)) {
+        if (filter != null && !Filter.INCLUDE.equals(filter)) {
             // Step 2: Add query attributes (if needed)
             // Step 3: Fill empty XPath with appropriate property names
             FilterAttributeExtractor fat = new AbsoluteAttributeExtractor(getSchema());
@@ -440,7 +444,7 @@ class ShapefileFeatureSource extends ContentFeatureSource {
 
     /**
      * Builds the most appropriate geometry factory depending on the available query hints
-     * 
+     *
      * @param query
      * @return
      */
@@ -455,8 +459,8 @@ class ShapefileFeatureSource extends ContentFeatureSource {
         GeometryFactory geometryFactory = (GeometryFactory) hints.get(Hints.JTS_GEOMETRY_FACTORY);
         if (geometryFactory == null) {
             // look for a coordinate sequence factory
-            CoordinateSequenceFactory csFactory = (CoordinateSequenceFactory) hints
-                    .get(Hints.JTS_COORDINATE_SEQUENCE_FACTORY);
+            CoordinateSequenceFactory csFactory =
+                    (CoordinateSequenceFactory) hints.get(Hints.JTS_COORDINATE_SEQUENCE_FACTORY);
 
             if (csFactory != null) {
                 geometryFactory = new GeometryFactory(csFactory);
@@ -499,7 +503,7 @@ class ShapefileFeatureSource extends ContentFeatureSource {
 
     /**
      * Create the AttributeDescriptor contained within this DataStore.
-     * 
+     *
      * @return List of new AttributeDescriptor
      * @throws IOException If AttributeType reading fails
      */
@@ -524,17 +528,17 @@ class ShapefileFeatureSource extends ContentFeatureSource {
             } catch (FactoryException fe) {
                 crs = null;
             }
-            
-            Class<?> geometryClass = JTSUtilities.findBestGeometryClass(shp.getHeader()
-                    .getShapeType());
+
+            Class<?> geometryClass =
+                    JTSUtilities.findBestGeometryClass(shp.getHeader().getShapeType());
             build.setName(Classes.getShortName(geometryClass));
             build.setNillable(true);
             build.setCRS(crs);
             build.setBinding(geometryClass);
 
             GeometryType geometryType = build.buildGeometryType();
-            attributes.add(build.buildDescriptor(BasicFeatureTypes.GEOMETRY_ATTRIBUTE_NAME,
-                    geometryType));
+            attributes.add(
+                    build.buildDescriptor(BasicFeatureTypes.GEOMETRY_ATTRIBUTE_NAME, geometryType));
             Set<String> usedNames = new HashSet<String>(); // record names in
             // case of
             // duplicates
@@ -598,5 +602,4 @@ class ShapefileFeatureSource extends ContentFeatureSource {
     protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {
         return super.handleVisitor(query, visitor);
     }
-
 }

@@ -18,7 +18,6 @@
 package org.geotools.data.complex.config;
 
 import java.util.Map;
-
 import org.opengis.feature.type.GeometryType;
 import org.opengis.feature.type.Name;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -38,5 +37,4 @@ class GeometryTypeProxy extends AttributeTypeProxy implements GeometryType {
     public CoordinateReferenceSystem getCoordinateReferenceSystem() {
         return ((GeometryType) getSubject()).getCoordinateReferenceSystem();
     }
-
 }

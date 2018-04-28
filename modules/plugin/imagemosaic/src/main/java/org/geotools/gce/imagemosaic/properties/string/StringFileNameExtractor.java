@@ -19,7 +19,6 @@ package org.geotools.gce.imagemosaic.properties.string;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.gce.imagemosaic.properties.PropertiesCollector;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
 import org.geotools.gce.imagemosaic.properties.RegExPropertiesCollector;
@@ -28,17 +27,15 @@ import org.opengis.feature.simple.SimpleFeature;
 
 /**
  * {@link PropertiesCollector} that is able to collect properties from a file name.
- * 
- * @author Simone Giannecchini, GeoSolutions SAS
  *
+ * @author Simone Giannecchini, GeoSolutions SAS
  */
 class StringFileNameExtractor extends RegExPropertiesCollector {
-    private final static Logger LOGGER = Logging.getLogger(StringFileNameExtractor.class);
+    private static final Logger LOGGER = Logging.getLogger(StringFileNameExtractor.class);
 
-    public StringFileNameExtractor(PropertiesCollectorSPI spi, List<String> propertyNames,
-            String regex) {
+    public StringFileNameExtractor(
+            PropertiesCollectorSPI spi, List<String> propertyNames, String regex) {
         super(spi, propertyNames, regex);
-
     }
 
     @Override
@@ -58,9 +55,7 @@ class StringFileNameExtractor extends RegExPropertiesCollector {
             feature.setAttribute(propertyName, matches.get(index++));
 
             // do we have more dates?
-            if (index >= matches.size())
-                return;
+            if (index >= matches.size()) return;
         }
     }
-
 }

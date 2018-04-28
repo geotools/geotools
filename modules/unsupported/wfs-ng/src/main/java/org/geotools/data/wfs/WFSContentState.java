@@ -41,16 +41,13 @@ public class WFSContentState extends ContentState {
         return (WFSLocalTransactionState) super.transactionState;
     }
 
-    /**
-     * Sets the transaction associated with the state.
-     */
+    /** Sets the transaction associated with the state. */
     @Override
     public void setTransaction(Transaction tx) {
         super.setTransaction(tx);
 
         if (tx != Transaction.AUTO_COMMIT) {
             synchronized (WFSRemoteTransactionState.class) {
-
                 WFSDataStore dataStore = (WFSDataStore) entry.getDataStore();
 
                 WFSRemoteTransactionState remoteStateKeeper;

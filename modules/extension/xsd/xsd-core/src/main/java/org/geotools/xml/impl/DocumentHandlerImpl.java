@@ -16,28 +16,20 @@
  */
 package org.geotools.xml.impl;
 
-import org.eclipse.xsd.XSDSchemaContent;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import javax.xml.namespace.QName;
+import org.eclipse.xsd.XSDSchemaContent;
 import org.geotools.xml.InstanceComponent;
 import org.geotools.xml.Node;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class DocumentHandlerImpl extends HandlerImpl implements DocumentHandler {
-    /** factory used to create a handler for the root element **/
+    /** factory used to create a handler for the root element * */
     HandlerFactory factory;
 
     /** root node of the parse tree */
     Node tree;
 
-    //ElementHandler handler;
+    // ElementHandler handler;
 
     /** the parser */
     ParserHandler parser;
@@ -56,7 +48,7 @@ public class DocumentHandlerImpl extends HandlerImpl implements DocumentHandler 
     }
 
     public Object getValue() {
-        //jsut return the root of the parse tree's value
+        // jsut return the root of the parse tree's value
         if (tree != null) {
             return tree.getValue();
         }
@@ -80,34 +72,32 @@ public class DocumentHandlerImpl extends HandlerImpl implements DocumentHandler 
     //    	if ( handler == null ) {
     //    		return Collections.EMPTY_LIST;
     //    	}
-    //    	
+    //
     //    	ArrayList list = new ArrayList();
     //    	list.add( handler );
-    //    	
+    //
     //    	return list;
     //    }
     public void startChildHandler(Handler child) {
         this.tree = child.getParseNode();
 
-        //this.handler = (ElementHandler) child;
+        // this.handler = (ElementHandler) child;
     }
 
     public void endChildHandler(Handler child) {
-        //this.handler = null;
+        // this.handler = null;
     }
 
     public Handler getParentHandler() {
-        //always null, this is the root handler
+        // always null, this is the root handler
         return null;
     }
 
     //    public ElementHandler getDocumentElementHandler() {
     //        return handler;
     //    }
-    
-    public void startDocument() {
-    }
-    
-    public void endDocument() {
-    }
+
+    public void startDocument() {}
+
+    public void endDocument() {}
 }

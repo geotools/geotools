@@ -18,7 +18,6 @@ package org.geotools.gce.imagemosaic.catalogbuilder;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-
 import org.apache.commons.beanutils.BeanUtils;
 import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.Utils;
@@ -31,12 +30,10 @@ import org.geotools.gce.imagemosaic.catalog.index.SchemasType;
 import org.geotools.util.Utilities;
 
 /**
- * Simple bean that conveys the information needed by the CatalogBuilder to create a catalogue of granules
- * 
+ * Simple bean that conveys the information needed by the CatalogBuilder to create a catalogue of
+ * granules
+ *
  * @author Simone Giannecchini, GeoSolutions SAS
- * 
- *
- *
  * @source $URL$
  */
 public class CatalogBuilderConfiguration {
@@ -73,19 +70,14 @@ public class CatalogBuilderConfiguration {
         } catch (IllegalAccessException | InvocationTargetException e) {
             throw new IllegalArgumentException(e);
         }
-
     }
 
-    /**
-     * @return the hints
-     */
+    /** @return the hints */
     public Hints getHints() {
         return hints;
     }
 
-    /**
-     * @param hints the hints to set
-     */
+    /** @param hints the hints to set */
     public void setHints(Hints hints) {
         this.hints = hints;
     }
@@ -108,7 +100,7 @@ public class CatalogBuilderConfiguration {
 
     /**
      * Get the schema with the specified name
-     * 
+     *
      * @param name
      * @return
      */
@@ -226,31 +218,24 @@ public class CatalogBuilderConfiguration {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!(obj instanceof CatalogBuilderConfiguration))
-            return false;
+        if (this == obj) return true;
+        if (!(obj instanceof CatalogBuilderConfiguration)) return false;
         final CatalogBuilderConfiguration that = (CatalogBuilderConfiguration) obj;
-        if (!equalsParameter(this, that, Prop.ABSOLUTE_PATH))
-            return false;
+        if (!equalsParameter(this, that, Prop.ABSOLUTE_PATH)) return false;
 
-        if (!equalsParameter(this, that, Prop.CACHING))
-            return false;
-        if (!equalsParameter(this, that, Prop.RECURSIVE))
-            return false;
-        if (!equalsParameter(this, that, Prop.FOOTPRINT_MANAGEMENT))
-            return false;
-        if (!equalsParameter(this, that, Prop.INDEX_NAME))
-            return false;
-        if (!equalsParameter(this, that, Prop.LOCATION_ATTRIBUTE))
-            return false;
-        if (!equalsParameter(this, that, Prop.ROOT_MOSAIC_DIR))
-            return false;
+        if (!equalsParameter(this, that, Prop.CACHING)) return false;
+        if (!equalsParameter(this, that, Prop.RECURSIVE)) return false;
+        if (!equalsParameter(this, that, Prop.FOOTPRINT_MANAGEMENT)) return false;
+        if (!equalsParameter(this, that, Prop.INDEX_NAME)) return false;
+        if (!equalsParameter(this, that, Prop.LOCATION_ATTRIBUTE)) return false;
+        if (!equalsParameter(this, that, Prop.ROOT_MOSAIC_DIR)) return false;
         return true;
     }
 
-    private static boolean equalsParameter(CatalogBuilderConfiguration thisConfig,
-            CatalogBuilderConfiguration thatConfig, String parameterName) {
+    private static boolean equalsParameter(
+            CatalogBuilderConfiguration thisConfig,
+            CatalogBuilderConfiguration thatConfig,
+            String parameterName) {
         String thisValue = thisConfig.getParameter(parameterName);
         String thatValue = thatConfig.getParameter(parameterName);
         if (!(thisValue == null && thatValue == null) && !thisValue.equals(thatValue)) {
@@ -280,16 +265,22 @@ public class CatalogBuilderConfiguration {
         builder.append("wildcardString:\t\t\t").append(getParameter(Prop.WILDCARD)).append("\n");
         builder.append("indexName:\t\t\t").append(getParameter(Prop.INDEX_NAME)).append("\n");
         builder.append("absolute:\t\t\t")
-                .append(Boolean.parseBoolean(getParameter(Prop.ABSOLUTE_PATH))).append("\n");
-        builder.append("caching:\t\t\t").append(Boolean.parseBoolean(getParameter(Prop.CACHING)))
+                .append(Boolean.parseBoolean(getParameter(Prop.ABSOLUTE_PATH)))
+                .append("\n");
+        builder.append("caching:\t\t\t")
+                .append(Boolean.parseBoolean(getParameter(Prop.CACHING)))
                 .append("\n");
         builder.append("recursive:\t\t\t")
-                .append(Boolean.parseBoolean(getParameter(Prop.RECURSIVE))).append("\n");
-        builder.append("footprintManagement:\t\t\t")
-                .append(Boolean.parseBoolean(getParameter(Prop.FOOTPRINT_MANAGEMENT))).append("\n");
-        builder.append("locationAttribute:\t\t\t").append(getParameter(Prop.LOCATION_ATTRIBUTE))
+                .append(Boolean.parseBoolean(getParameter(Prop.RECURSIVE)))
                 .append("\n");
-        builder.append("rootMosaicDirectory:\t\t\t").append(getParameter(Prop.ROOT_MOSAIC_DIR))
+        builder.append("footprintManagement:\t\t\t")
+                .append(Boolean.parseBoolean(getParameter(Prop.FOOTPRINT_MANAGEMENT)))
+                .append("\n");
+        builder.append("locationAttribute:\t\t\t")
+                .append(getParameter(Prop.LOCATION_ATTRIBUTE))
+                .append("\n");
+        builder.append("rootMosaicDirectory:\t\t\t")
+                .append(getParameter(Prop.ROOT_MOSAIC_DIR))
                 .append("\n");
         return builder.toString();
     }
@@ -330,5 +321,4 @@ public class CatalogBuilderConfiguration {
         if (wildcard == null || wildcard.length() == 0)
             throw new IllegalStateException("WildcardString name cannot be empty");
     }
-
 }

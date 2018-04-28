@@ -16,11 +16,12 @@
  */
 /**
  * Geometry processing support for the GeoTools library.
- * <p>
- * These geometry operations are made available as:
+ *
+ * <p>These geometry operations are made available as:
+ *
  * <ul>
- * <li>static methods for direct use in your code</li>
- * <li>ProcessFactory for use in dynamic systems</li>
+ *   <li>static methods for direct use in your code
+ *   <li>ProcessFactory for use in dynamic systems
  * </ul>
  */
 package org.geotools.process.geometry;

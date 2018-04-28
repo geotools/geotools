@@ -23,17 +23,13 @@ import java.awt.image.RenderedImage;
 import java.awt.image.SampleModel;
 import java.util.LinkedList;
 import java.util.ListIterator;
-
 import javax.media.jai.PixelAccessor;
 import javax.media.jai.ROI;
 import javax.media.jai.StatisticsOpImage;
 import javax.media.jai.UnpackedImageData;
-
 import org.geotools.process.raster.classify.Classification;
 
-/**
- * Abstract base class for various operations corresponding to classification method.
- */
+/** Abstract base class for various operations corresponding to classification method. */
 public abstract class ClassBreaksOpImage extends StatisticsOpImage {
 
     /* number of classes */
@@ -48,9 +44,17 @@ public abstract class ClassBreaksOpImage extends StatisticsOpImage {
     /* no data value */
     protected Double noData;
 
-    public ClassBreaksOpImage(RenderedImage image, Integer numClasses, Double[][] extrema, 
-        ROI roi, Integer[] bands, Integer xStart, Integer yStart, Integer xPeriod, Integer yPeriod, 
-        Double noData) {
+    public ClassBreaksOpImage(
+            RenderedImage image,
+            Integer numClasses,
+            Double[][] extrema,
+            ROI roi,
+            Integer[] bands,
+            Integer xStart,
+            Integer yStart,
+            Integer xPeriod,
+            Integer yPeriod,
+            Double noData) {
 
         super(image, roi, xStart, yStart, xPeriod, yPeriod);
 
@@ -59,23 +63,23 @@ public abstract class ClassBreaksOpImage extends StatisticsOpImage {
         this.bands = bands;
         this.noData = noData;
     }
-    
+
     @Override
     protected String[] getStatisticsNames() {
-        return new String[]{ClassBreaksDescriptor.CLASSIFICATION_PROPERTY};
+        return new String[] {ClassBreaksDescriptor.CLASSIFICATION_PROPERTY};
     }
 
     @Override
     public Object getProperty(String name) {
-        Object obj =  properties.getProperty(ClassBreaksDescriptor.CLASSIFICATION_PROPERTY);
+        Object obj = properties.getProperty(ClassBreaksDescriptor.CLASSIFICATION_PROPERTY);
         if (obj == java.awt.Image.UndefinedProperty) {
-            // not calculated yet, give subclass a chance to optimize in cases where enough 
+            // not calculated yet, give subclass a chance to optimize in cases where enough
             // parameters are specified that the image does not have to be scanned
             Classification c = preCalculate();
             if (c != null) {
                 properties.setProperty(ClassBreaksDescriptor.CLASSIFICATION_PROPERTY, c);
             }
-       }
+        }
 
         return super.getProperty(name);
     }
@@ -83,7 +87,7 @@ public abstract class ClassBreaksOpImage extends StatisticsOpImage {
     @Override
     public void setProperty(String name, Object value) {
         if (value instanceof Classification) {
-            //calculation over, calculate the breaks
+            // calculation over, calculate the breaks
             Classification c = (Classification) value;
             for (int b = 0; b < bands.length; b++) {
                 postCalculate(c, b);
@@ -109,18 +113,20 @@ public abstract class ClassBreaksOpImage extends StatisticsOpImage {
 
         Classification c = (Classification) obj;
 
-        //ClassifiedStats2 stats = (ClassifiedStats2) obj;
+        // ClassifiedStats2 stats = (ClassifiedStats2) obj;
         SampleModel sampleModel = raster.getSampleModel();
 
         Rectangle bounds = raster.getBounds();
 
         LinkedList rectList;
-        if (roi == null) {      // ROI is the whole Raster
+        if (roi == null) { // ROI is the whole Raster
             rectList = new LinkedList();
             rectList.addLast(bounds);
         } else {
-            rectList = roi.getAsRectangleList(bounds.x, bounds.y,
-                                              bounds.width, bounds.height);
+            rectList =
+                    roi.getAsRectangleList(
+                            bounds.x, bounds.y,
+                            bounds.width, bounds.height);
             if (rectList == null) {
                 return; // ROI does not intersect with Raster boundary.
             }
@@ -131,7 +137,7 @@ public abstract class ClassBreaksOpImage extends StatisticsOpImage {
         ListIterator iterator = rectList.listIterator(0);
 
         while (iterator.hasNext()) {
-            Rectangle r = (Rectangle)iterator.next();
+            Rectangle r = (Rectangle) iterator.next();
             int tx = r.x;
             int ty = r.y;
 
@@ -142,7 +148,7 @@ public abstract class ClassBreaksOpImage extends StatisticsOpImage {
             r.height = ty + r.height - r.y;
 
             if (r.width <= 0 || r.height <= 0) {
-                continue;       // no pixel to count in this rectangle
+                continue; // no pixel to count in this rectangle
             }
 
             switch (accessor.sampleType) {
@@ -151,8 +157,8 @@ public abstract class ClassBreaksOpImage extends StatisticsOpImage {
                 case DataBuffer.TYPE_USHORT:
                 case DataBuffer.TYPE_SHORT:
                 case DataBuffer.TYPE_INT:
-                    //countPixelsInt(accessor, raster, r, xPeriod, yPeriod, breaks);
-                    //break;
+                    // countPixelsInt(accessor, raster, r, xPeriod, yPeriod, breaks);
+                    // break;
                 case DataBuffer.TYPE_FLOAT:
                 case DataBuffer.TYPE_DOUBLE:
                 default:
@@ -162,8 +168,13 @@ public abstract class ClassBreaksOpImage extends StatisticsOpImage {
         }
     }
 
-    void calculate(PixelAccessor accessor, Raster raster, Rectangle rect,
-            int xPeriod, int yPeriod, Classification c) {
+    void calculate(
+            PixelAccessor accessor,
+            Raster raster,
+            Rectangle rect,
+            int xPeriod,
+            int yPeriod,
+            Classification c) {
         UnpackedImageData uid = accessor.getPixels(raster, rect, DataBuffer.TYPE_DOUBLE, false);
 
         double[][] doubleData = uid.getDoubleData();
@@ -211,5 +222,4 @@ public abstract class ClassBreaksOpImage extends StatisticsOpImage {
         int t = (pos - start) % Period;
         return t == 0 ? pos : pos + (Period - t);
     }
-
 }

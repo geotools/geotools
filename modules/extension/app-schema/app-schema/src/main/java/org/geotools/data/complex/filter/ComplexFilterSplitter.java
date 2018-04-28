@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
-
 import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.data.complex.NestedAttributeMapping;
 import org.geotools.data.complex.config.AppSchemaDataAccessConfigurator;
@@ -56,7 +55,6 @@ import org.opengis.filter.temporal.BinaryTemporalOperator;
 
 /**
  * @author Niels Charlier (Curtin University of Technology)
- *
  * @source $URL$
  */
 public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor {
@@ -66,10 +64,10 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
     private int nestedAttributes = 0;
 
     public class CapabilitiesExpressionVisitor implements ExpressionVisitor {
-        
+
         protected boolean capable = true;
-        
-        public boolean isCapable(){
+
+        public boolean isCapable() {
             return capable;
         }
 
@@ -80,7 +78,7 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
         public Object visit(Add expr, Object extraData) {
             visitMathExpression(expr);
             return null;
-        }        
+        }
 
         public Object visit(Subtract expr, Object extraData) {
             visitMathExpression(expr);
@@ -96,12 +94,12 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
             visitMathExpression(expr);
             return null;
         }
-        
+
         public Object visit(Function expr, Object extraData) {
             for (int i = 0; i < expr.getParameters().size(); i++) {
-                ((Expression)expr.getParameters().get(i)).accept(this, null);
+                ((Expression) expr.getParameters().get(i)).accept(this, null);
             }
-            
+
             capable = capable && fcs.supports(expr.getClass());
             return null;
         }
@@ -113,33 +111,32 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
         public Object visit(PropertyName expr, Object extraData) {
             return null;
         }
-        
-        private void visitMathExpression(BinaryExpression expression) {           
+
+        private void visitMathExpression(BinaryExpression expression) {
             expression.getExpression1().accept(this, null);
             expression.getExpression2().accept(this, null);
-            
+
             capable = capable && fcs.supports(expression.getClass());
         }
-
     }
 
     private FeatureTypeMapping mappings;
-    
+
     public ComplexFilterSplitter(FilterCapabilities fcs, FeatureTypeMapping mappings) {
         super(fcs, null, null);
         this.mappings = mappings;
     }
-    
+
     public Object visit(Id filter, Object notUsed) {
         CapabilitiesExpressionVisitor visitor = new CapabilitiesExpressionVisitor();
         mappings.getFeatureIdExpression().accept(visitor, null);
-        
+
         if (visitor.isCapable()) {
             super.visit(filter, notUsed);
         } else {
             postStack.push(filter);
         }
-        
+
         return null;
     }
 
@@ -198,10 +195,10 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
         nestedAttributes = 0;
         int i = preStack.size();
         if (filter.getExpression1() instanceof PropertyName) {
-            PropertyName bboxProperty = (PropertyName)filter.getExpression1();
+            PropertyName bboxProperty = (PropertyName) filter.getExpression1();
             if (!bboxProperty.getPropertyName().isEmpty()) {
                 Object ret = this.visit(bboxProperty, notUsed);
-                if (preStack.size() == i+1) {
+                if (preStack.size() == i + 1) {
                     preStack.pop();
                 }
                 // encoding bbox on nested geometry is not supported
@@ -260,9 +257,13 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
             FilterFactory2 ff = new FilterFactoryImplNamespaceAware(mappings.getNamespaces());
             expression = ff.property(defGeomPath);
         }
-        
+
         // break into single steps
-        StepList exprSteps = XPath.steps(mappings.getTargetFeature(), expression.getPropertyName(), this.mappings.getNamespaces());
+        StepList exprSteps =
+                XPath.steps(
+                        mappings.getTargetFeature(),
+                        expression.getPropertyName(),
+                        this.mappings.getNamespaces());
 
         if (exprSteps.containsPredicate()) {
             postStack.push(expression);
@@ -273,49 +274,57 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
 
         if (AppSchemaDataAccessConfigurator.shouldEncodeNestedFilters()) {
             // check nested mappings
-            FeatureChainedAttributeVisitor nestedAttrExtractor = new FeatureChainedAttributeVisitor(
-                    mappings);
+            FeatureChainedAttributeVisitor nestedAttrExtractor =
+                    new FeatureChainedAttributeVisitor(mappings);
             nestedAttrExtractor.visit(expression, null);
-            List<FeatureChainedAttributeDescriptor> attributes = nestedAttrExtractor
-                    .getFeatureChainedAttributes();
+            List<FeatureChainedAttributeDescriptor> attributes =
+                    nestedAttrExtractor.getFeatureChainedAttributes();
             // encoding of filters on multiple nested attributes is not (yet) supported
             if (attributes.size() == 1) {
                 FeatureChainedAttributeDescriptor nestedAttrDescr = attributes.get(0);
                 if (nestedAttrDescr.chainSize() > 1 && nestedAttrDescr.isJoiningEnabled()) {
                     nestedAttributes++;
 
-                    FeatureTypeMapping featureMapping = nestedAttrDescr.getFeatureTypeOwningAttribute();
+                    FeatureTypeMapping featureMapping =
+                            nestedAttrDescr.getFeatureTypeOwningAttribute();
 
                     // add source expressions for target attribute
-                    List<Expression> nestedMappings = featureMapping.findMappingsFor(
-                            nestedAttrDescr.getAttributePath(), false);
+                    List<Expression> nestedMappings =
+                            featureMapping.findMappingsFor(
+                                    nestedAttrDescr.getAttributePath(), false);
                     Iterator<Expression> it = matchingMappings.iterator();
                     while (it.hasNext()) {
                         if (it.next() == null) {
-                            // necessary to enable encoding of nested filters when joining simple content
+                            // necessary to enable encoding of nested filters when joining simple
+                            // content
                             it.remove();
                         }
                     }
                     matchingMappings.addAll(nestedMappings);
 
-                    // add source expressions for mappings used in join conditions, as they too must be encoded
+                    // add source expressions for mappings used in join conditions, as they too must
+                    // be encoded
                     for (int i = nestedAttrDescr.chainSize() - 2; i > 0; i--) {
                         FeatureChainLink mappingStep = nestedAttrDescr.getLink(i);
                         if (mappingStep.hasNestedFeature()) {
                             FeatureChainLink parentStep = nestedAttrDescr.getLink(i);
 
-                            NestedAttributeMapping nestedAttr = parentStep.getNestedFeatureAttribute();
+                            NestedAttributeMapping nestedAttr =
+                                    parentStep.getNestedFeatureAttribute();
                             FeatureTypeMapping nestedFeature = null;
                             try {
                                 nestedFeature = nestedAttr.getFeatureTypeMapping(null);
                             } catch (IOException e) {
-                                LOGGER.warning("Exception occurred processing nested filter, encoding"
-                                        + "will be disabled: " + e.getMessage());
+                                LOGGER.warning(
+                                        "Exception occurred processing nested filter, encoding"
+                                                + "will be disabled: "
+                                                + e.getMessage());
                                 postStack.push(expression);
                                 return null;
                             }
 
-                            Expression nestedExpr = nestedAttr.getMapping(nestedFeature).getSourceExpression();
+                            Expression nestedExpr =
+                                    nestedAttr.getMapping(nestedFeature).getSourceExpression();
                             matchingMappings.add(nestedExpr);
                         }
                     }
@@ -347,9 +356,7 @@ public class ComplexFilterSplitter extends PostPreProcessFilterSplittingVisitor 
                 }
             }
         }
-        
-        return super.visit(expression, notUsed);
-        
-    }
 
+        return super.visit(expression, notUsed);
+    }
 }

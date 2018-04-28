@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -34,11 +34,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.xml.resolver.SchemaCache;
 import org.geotools.xml.resolver.SchemaResolver;
@@ -51,21 +49,17 @@ import org.geotools.xml.schema.Schema;
 import org.geotools.xml.schema.SimpleType;
 import org.xml.sax.SAXException;
 
-
 /**
  * This is the main entry point into the XSI parsing routines.
- * 
- * <p>
- * Example Use:
+ *
+ * <p>Example Use:
+ *
  * <pre>
  * Schema x = SchemaFactory.getInstance(&quot;MyTargetNameSpace&quot;,new URI(&quot;MyNameSpaceURI&quot;);
  * </pre>
- * </p>
  *
  * @author dzwiers, Refractions Research, Inc. http://www.refractions.net
  * @author $Author:$ (last modification)
- *
- *
  * @source $URL$
  * @version $Id$
  */
@@ -82,11 +76,10 @@ public class SchemaFactory {
      * instances
      */
     private Map schemas = loadSchemas();
-    
-    /**
-     * Schema Resolver: uses local versions of schemas or cached ones if available.
-     */
-    File cacheDir;    
+
+    /** Schema Resolver: uses local versions of schemas or cached ones if available. */
+    File cacheDir;
+
     private SchemaResolver resolver;
 
     /*
@@ -95,22 +88,16 @@ public class SchemaFactory {
      */
     private SAXParser parser;
 
-    
-    
-    /**
-     * Default constructor.
-     */
+    /** Default constructor. */
     protected SchemaFactory() {
         super();
         initResolver();
     }
 
-    /**
-     * Initialize the schema resolver.
-     */
+    /** Initialize the schema resolver. */
     private void initResolver() {
         try {
-            if(System.getProperty("schema.factory.cache", null) == null) {
+            if (System.getProperty("schema.factory.cache", null) == null) {
                 File tempFolder = File.createTempFile("schema", "cache");
                 tempFolder.delete();
                 tempFolder.mkdirs();
@@ -118,7 +105,7 @@ public class SchemaFactory {
             } else {
                 cacheDir = new File(System.getProperty("schema.factory.cache"));
             }
-            
+
             resolver = new SchemaResolver(new SchemaCache(cacheDir, true));
         } catch (IOException e) {
             LOGGER.log(Level.WARNING, e.getMessage(), e);
@@ -143,16 +130,18 @@ public class SchemaFactory {
 
                 while (e.hasMoreElements()) {
                     URL res = (URL) e.nextElement();
-                    BufferedReader rd = new BufferedReader(new InputStreamReader(
-                        res.openStream(), "UTF-8"));
+                    BufferedReader rd =
+                            new BufferedReader(new InputStreamReader(res.openStream(), "UTF-8"));
 
                     while (rd.ready()) {
                         String factoryClassName = rd.readLine().trim();
 
                         try {
-                            Schema s = (Schema) cls[i].loadClass(factoryClassName)
-                                .getDeclaredMethod("getInstance", new Class[0])
-                                .invoke(null, new Object[0]);
+                            Schema s =
+                                    (Schema)
+                                            cls[i].loadClass(factoryClassName)
+                                                    .getDeclaredMethod("getInstance", new Class[0])
+                                                    .invoke(null, new Object[0]);
                             schemas.put(s.getTargetNamespace(), s);
                         } catch (IllegalArgumentException e1) {
                             XSISAXHandler.logger.warning(e1.toString());
@@ -208,66 +197,55 @@ public class SchemaFactory {
     }
 
     /**
-     * Returns an instance of the desired class. There is no provision for: a)
-     * same instances each call b) different instances each call c) this
-     * factory being thread safe
+     * Returns an instance of the desired class. There is no provision for: a) same instances each
+     * call b) different instances each call c) this factory being thread safe
      *
      * @param targetNamespace
      * @param desiredSchema URI the uri of which you want a schema instance.
-     *
      * @return Schema an instance of the desired schema.
-     *
      * @throws SAXException
      */
-    public static Schema getInstance(URI targetNamespace, URI desiredSchema)
-        throws SAXException {
+    public static Schema getInstance(URI targetNamespace, URI desiredSchema) throws SAXException {
         return getInstance(targetNamespace, desiredSchema, Level.WARNING);
     }
 
-    public static Schema getInstance(URI targetNamespace, InputStream is1)
-        throws SAXException {
+    public static Schema getInstance(URI targetNamespace, InputStream is1) throws SAXException {
         return getInstance(targetNamespace, is1, Level.WARNING);
     }
 
-    public synchronized static Schema getInstance(String targetNamespace) {
+    public static synchronized Schema getInstance(String targetNamespace) {
         try {
-            URI uri = new URI(targetNamespace );
-            return getInstance( uri );
+            URI uri = new URI(targetNamespace);
+            return getInstance(uri);
         } catch (URISyntaxException e) {
             return null;
-        }        
+        }
     }
     /**
-     * Returns an instance of the targetNamespace if it can be found ... null
-     * otherwise. targetNamespaces which can be found are either hard-coded
-     * namespaces (SchemaFactory.properties), have already been parsed or were
-     * registered.
+     * Returns an instance of the targetNamespace if it can be found ... null otherwise.
+     * targetNamespaces which can be found are either hard-coded namespaces
+     * (SchemaFactory.properties), have already been parsed or were registered.
      *
      * @param targetNamespace
-     *
-     *
      * @see #registerSchema(Strin,Schema)
      */
-    public synchronized static Schema getInstance(URI targetNamespace) {
+    public static synchronized Schema getInstance(URI targetNamespace) {
         return getInstance().getRealInstance(targetNamespace);
     }
-    
-    //TODO cache this on schema registry
-    public synchronized static Schema[] getSchemas(String prefix){
-        if(prefix == null)
-            return null;
+
+    // TODO cache this on schema registry
+    public static synchronized Schema[] getSchemas(String prefix) {
+        if (prefix == null) return null;
         SchemaFactory sf = getInstance();
         Iterator i = sf.schemas.values().iterator();
         List l = new LinkedList();
-        while(i.hasNext()){
-            Schema s = (Schema)i.next();
-            if(prefix.equals(s.getPrefix()))
-                l.add(s);
+        while (i.hasNext()) {
+            Schema s = (Schema) i.next();
+            if (prefix.equals(s.getPrefix())) l.add(s);
         }
-        return (Schema[])l.toArray(new Schema[l.size()]);
+        return (Schema[]) l.toArray(new Schema[l.size()]);
     }
 
-    
     private synchronized Schema getRealInstance(URI targetNamespace) {
         Schema r = (Schema) schemas.get(targetNamespace);
 
@@ -292,27 +270,23 @@ public class SchemaFactory {
     }
 
     /**
-     * Returns an instance of the desired class. There is no provision for: a)
-     * same instances each call b) different instances each call c) this
-     * factory being thread safe
+     * Returns an instance of the desired class. There is no provision for: a) same instances each
+     * call b) different instances each call c) this factory being thread safe
      *
      * @param targetNamespace The targetNamespace to search for.
      * @param desiredSchema URI the uri of which you want a schema instance.
      * @param level Level
-     *
      * @return Schema an instance of the desired schema.
-     *
      * @throws SAXException When something goes wrong
      */
-    public synchronized static Schema getInstance(URI targetNamespace,
-        URI desiredSchema, Level level) throws SAXException {
-        return getInstance().getRealInstance(targetNamespace, desiredSchema,
-            level);
+    public static synchronized Schema getInstance(
+            URI targetNamespace, URI desiredSchema, Level level) throws SAXException {
+        return getInstance().getRealInstance(targetNamespace, desiredSchema, level);
     }
 
-    private synchronized Schema getRealInstance(URI targetNamespace2,
-        URI desiredSchema, Level level) throws SAXException {
-        URI targetNamespace=targetNamespace2;
+    private synchronized Schema getRealInstance(
+            URI targetNamespace2, URI desiredSchema, Level level) throws SAXException {
+        URI targetNamespace = targetNamespace2;
         if ((targetNamespace == null) || (schemas.get(targetNamespace) == null)) {
             setParser();
 
@@ -328,22 +302,20 @@ public class SchemaFactory {
                 } catch (IOException e1) {
                     throw new SAXException(e1);
                 }
-                
             }
 
             Schema schema = contentHandler.getSchema();
             if ((targetNamespace == null) || "".equals(targetNamespace)) {
-                targetNamespace=schema.getTargetNamespace();
+                targetNamespace = schema.getTargetNamespace();
             }
 
-            if( schemas.get(targetNamespace)!=null ){
-                schema=merge(schema, (Schema) schemas.get(targetNamespace));
+            if (schemas.get(targetNamespace) != null) {
+                schema = merge(schema, (Schema) schemas.get(targetNamespace));
             }
             schemas.put(targetNamespace, schema);
             return schema;
         } else {
-            if ( !((Schema) schemas.get(targetNamespace)).includesURI(
-                        desiredSchema)) {
+            if (!((Schema) schemas.get(targetNamespace)).includesURI(desiredSchema)) {
                 Schema sh = (Schema) schemas.get(targetNamespace);
                 setParser();
 
@@ -376,27 +348,27 @@ public class SchemaFactory {
         return new XSISAXHandler(uri);
     }
 
-    public static synchronized Schema getInstance(URI targetNamespace,
-        InputStream is1, Level level) throws SAXException {
+    public static synchronized Schema getInstance(URI targetNamespace, InputStream is1, Level level)
+            throws SAXException {
         return getInstance().getRealInstance(targetNamespace, is1, level);
     }
 
-    private synchronized Schema getRealInstance(URI targetNamespace2,
-        InputStream is1, Level level) throws SAXException {
-        URI targetNamespace=targetNamespace2;
-        
+    private synchronized Schema getRealInstance(URI targetNamespace2, InputStream is1, Level level)
+            throws SAXException {
+        URI targetNamespace = targetNamespace2;
+
         if ((targetNamespace == null) || (schemas.get(targetNamespace) == null)) {
             XSISAXHandler contentHandler = parseSchema(is1, level);
 
             if ((targetNamespace == null) || "".equals(targetNamespace)) {
-                targetNamespace=contentHandler.getSchema().getTargetNamespace();
+                targetNamespace = contentHandler.getSchema().getTargetNamespace();
             }
 
             Schema schema = contentHandler.getSchema();
-            if( schemas.get(targetNamespace)!=null ){
-                schema=merge(schema, (Schema) schemas.get(targetNamespace));
+            if (schemas.get(targetNamespace) != null) {
+                schema = merge(schema, (Schema) schemas.get(targetNamespace));
             }
-            
+
             schemas.put(targetNamespace, schema);
 
         } else {
@@ -409,7 +381,7 @@ public class SchemaFactory {
         return (Schema) schemas.get(targetNamespace);
     }
 
-    private XSISAXHandler parseSchema( InputStream is1, Level level ) throws SAXException {
+    private XSISAXHandler parseSchema(InputStream is1, Level level) throws SAXException {
         setParser();
 
         XSISAXHandler contentHandler = getSAXHandler(null);
@@ -432,13 +404,11 @@ public class SchemaFactory {
     }
 
     /**
-     * Registers a Schema instance with the factory. A clone is NOT created
-     * within this method. The Schema passed in is associated with the
-     * specified targetNamespace. The Schema is not tested to ensure the
-     * intended targetNamespace (schema.getTargetNamespace()) is equal to
-     * targetNamespace. The ramifications is that you may hack wildly within
-     * the repository, but we aware you may have some 'undocumented features'
-     * as a result (odd Schemas being returned).
+     * Registers a Schema instance with the factory. A clone is NOT created within this method. The
+     * Schema passed in is associated with the specified targetNamespace. The Schema is not tested
+     * to ensure the intended targetNamespace (schema.getTargetNamespace()) is equal to
+     * targetNamespace. The ramifications is that you may hack wildly within the repository, but we
+     * aware you may have some 'undocumented features' as a result (odd Schemas being returned).
      *
      * @param targetNamespace
      * @param schema
@@ -471,13 +441,11 @@ public class SchemaFactory {
     }
 
     /**
-     * The Schema will contain references to the elements within the two
-     * Schemas provided in the constructor. In most cases this is used to
-     * incorporate additional definitions into a targetNamespace by parsing an
-     * additional schema file.
+     * The Schema will contain references to the elements within the two Schemas provided in the
+     * constructor. In most cases this is used to incorporate additional definitions into a
+     * targetNamespace by parsing an additional schema file.
      *
      * @author dzwiers
-     *
      * @see Schema
      */
     private static class MergedSchema implements Schema {
@@ -504,15 +472,13 @@ public class SchemaFactory {
         private URI uri;
 
         /**
-         * This completes the merge of two schemas, s1 and s2. When there is a
-         * conflict in data between the two schemas, s1 is assumed to be
-         * correct.
+         * This completes the merge of two schemas, s1 and s2. When there is a conflict in data
+         * between the two schemas, s1 is assumed to be correct.
          *
          * @param s1 Schema (Tie Winner)
          * @param s2 Schema (Tie Loser)
-         *
-         * @throws SAXException When some thing bad happens (for example
-         *         merging two targetNamespaces)
+         * @throws SAXException When some thing bad happens (for example merging two
+         *     targetNamespaces)
          */
         public MergedSchema(Schema s1, Schema s2) throws SAXException {
             if ((s1.getId() == null) || s1.getId().equals("")) {
@@ -527,17 +493,16 @@ public class SchemaFactory {
                 version = s1.getVersion();
             }
 
-            if ((s1.getTargetNamespace() == null)
-                    || s1.getTargetNamespace().equals("")) {
+            if ((s1.getTargetNamespace() == null) || s1.getTargetNamespace().equals("")) {
                 targetNamespace = s2.getTargetNamespace();
             } else {
                 if ((s2.getTargetNamespace() != null)
-                        && !s1.getTargetNamespace().equals(s2
-                            .getTargetNamespace())) {
+                        && !s1.getTargetNamespace().equals(s2.getTargetNamespace())) {
                     throw new SAXException(
-                        "cannot merge two target namespaces. "
-                        + s1.getTargetNamespace() + " "
-                        + s2.getTargetNamespace());
+                            "cannot merge two target namespaces. "
+                                    + s1.getTargetNamespace()
+                                    + " "
+                                    + s2.getTargetNamespace());
                 }
 
                 targetNamespace = s1.getTargetNamespace();
@@ -560,8 +525,7 @@ public class SchemaFactory {
                 ag2 = new AttributeGroup[0];
             }
 
-            for (int i = 0; i < ag1.length; i++)
-                m.put(ag1[i].getName(), ag1[i]);
+            for (int i = 0; i < ag1.length; i++) m.put(ag1[i].getName(), ag1[i]);
 
             for (int i = 0; i < ag2.length; i++)
                 if (!m.containsKey(ag2[i].getName())) {
@@ -572,8 +536,7 @@ public class SchemaFactory {
 
             Object[] obj = m.values().toArray();
 
-            for (int i = 0; i < obj.length; i++)
-                attributeGroups[i] = (AttributeGroup) (obj[i]);
+            for (int i = 0; i < obj.length; i++) attributeGroups[i] = (AttributeGroup) (obj[i]);
 
             m = new HashMap();
 
@@ -589,8 +552,7 @@ public class SchemaFactory {
                 a2 = new Attribute[0];
             }
 
-            for (int i = 0; i < a1.length; i++)
-                m.put(a1[i].getName(), a1[i]);
+            for (int i = 0; i < a1.length; i++) m.put(a1[i].getName(), a1[i]);
 
             for (int i = 0; i < a2.length; i++)
                 if (!m.containsKey(a2[i].getName())) {
@@ -600,8 +562,7 @@ public class SchemaFactory {
             attributes = new Attribute[m.size()];
             obj = m.values().toArray();
 
-            for (int i = 0; i < obj.length; i++)
-                attributes[i] = (Attribute) (obj[i]);
+            for (int i = 0; i < obj.length; i++) attributes[i] = (Attribute) (obj[i]);
 
             block = s1.getBlockDefault() | s2.getBlockDefault();
             finaL = s1.getFinalDefault() | s2.getFinalDefault();
@@ -620,8 +581,7 @@ public class SchemaFactory {
                 c2 = new ComplexType[0];
             }
 
-            for (int i = 0; i < c1.length; i++)
-                m.put(c1[i].getName(), c1[i]);
+            for (int i = 0; i < c1.length; i++) m.put(c1[i].getName(), c1[i]);
 
             for (int i = 0; i < c2.length; i++)
                 if (!m.containsKey(c2[i].getName())) {
@@ -631,8 +591,7 @@ public class SchemaFactory {
             complexTypes = new ComplexType[m.size()];
             obj = m.values().toArray();
 
-            for (int i = 0; i < obj.length; i++)
-                complexTypes[i] = (ComplexType) (obj[i]);
+            for (int i = 0; i < obj.length; i++) complexTypes[i] = (ComplexType) (obj[i]);
 
             m = new HashMap();
 
@@ -648,8 +607,7 @@ public class SchemaFactory {
                 ss2 = new SimpleType[0];
             }
 
-            for (int i = 0; i < ss1.length; i++)
-                m.put(ss1[i].getName(), ss1[i]);
+            for (int i = 0; i < ss1.length; i++) m.put(ss1[i].getName(), ss1[i]);
 
             for (int i = 0; i < ss2.length; i++)
                 if (!m.containsKey(ss2[i].getName())) {
@@ -659,8 +617,7 @@ public class SchemaFactory {
             simpleTypes = new SimpleType[m.size()];
             obj = m.values().toArray();
 
-            for (int i = 0; i < obj.length; i++)
-                simpleTypes[i] = (SimpleType) (obj[i]);
+            for (int i = 0; i < obj.length; i++) simpleTypes[i] = (SimpleType) (obj[i]);
 
             m = new HashMap();
 
@@ -676,8 +633,7 @@ public class SchemaFactory {
                 e2 = new Element[0];
             }
 
-            for (int i = 0; i < e1.length; i++)
-                m.put(e1[i].getName(), e1[i]);
+            for (int i = 0; i < e1.length; i++) m.put(e1[i].getName(), e1[i]);
 
             for (int i = 0; i < e2.length; i++)
                 if (!m.containsKey(e2[i].getName())) {
@@ -687,8 +643,7 @@ public class SchemaFactory {
             elements = new Element[m.size()];
             obj = m.values().toArray();
 
-            for (int i = 0; i < obj.length; i++)
-                elements[i] = (Element) (obj[i]);
+            for (int i = 0; i < obj.length; i++) elements[i] = (Element) (obj[i]);
 
             m = new HashMap();
 
@@ -704,8 +659,7 @@ public class SchemaFactory {
                 g2 = new Group[0];
             }
 
-            for (int i = 0; i < g1.length; i++)
-                m.put(g1[i].getName(), g1[i]);
+            for (int i = 0; i < g1.length; i++) m.put(g1[i].getName(), g1[i]);
 
             for (int i = 0; i < g2.length; i++)
                 if (!m.containsKey(g2[i].getName())) {
@@ -715,8 +669,7 @@ public class SchemaFactory {
             groups = new Group[m.size()];
             obj = m.values().toArray();
 
-            for (int i = 0; i < obj.length; i++)
-                groups[i] = (Group) (obj[i]);
+            for (int i = 0; i < obj.length; i++) groups[i] = (Group) (obj[i]);
 
             m = new HashMap();
 
@@ -732,8 +685,7 @@ public class SchemaFactory {
                 i2 = new Schema[0];
             }
 
-            for (int i = 0; i < i1.length; i++)
-                m.put(i1[i].getTargetNamespace(), i1[i]);
+            for (int i = 0; i < i1.length; i++) m.put(i1[i].getTargetNamespace(), i1[i]);
 
             for (int i = 0; i < i2.length; i++)
                 if (!m.containsKey(i2[i].getTargetNamespace())) {
@@ -743,8 +695,7 @@ public class SchemaFactory {
             imports = new Schema[m.size()];
             obj = m.values().toArray();
 
-            for (int i = 0; i < obj.length; i++)
-                imports[i] = (Schema) (obj[i]);
+            for (int i = 0; i < obj.length; i++) imports[i] = (Schema) (obj[i]);
 
             URI u1 = s1.getURI();
 
@@ -767,93 +718,67 @@ public class SchemaFactory {
             }
         }
 
-        /**
-         * @see schema.Schema#getAttributeGroups()
-         */
+        /** @see schema.Schema#getAttributeGroups() */
         public AttributeGroup[] getAttributeGroups() {
             return attributeGroups;
         }
 
-        /**
-         * @see schema.Schema#getAttributeDescriptors()
-         */
+        /** @see schema.Schema#getAttributeDescriptors() */
         public Attribute[] getAttributes() {
             return attributes;
         }
 
-        /**
-         * @see schema.Schema#getBlockDefault()
-         */
+        /** @see schema.Schema#getBlockDefault() */
         public int getBlockDefault() {
             return block;
         }
 
-        /**
-         * @see schema.Schema#getComplexTypes()
-         */
+        /** @see schema.Schema#getComplexTypes() */
         public ComplexType[] getComplexTypes() {
             return complexTypes;
         }
 
-        /**
-         * @see schema.Schema#getElements()
-         */
+        /** @see schema.Schema#getElements() */
         public Element[] getElements() {
             return elements;
         }
 
-        /**
-         * @see schema.Schema#getFinalDefault()
-         */
+        /** @see schema.Schema#getFinalDefault() */
         public int getFinalDefault() {
             return finaL;
         }
 
-        /**
-         * @see schema.Schema#getGroups()
-         */
+        /** @see schema.Schema#getGroups() */
         public Group[] getGroups() {
             return groups;
         }
 
-        /**
-         * @see schema.Schema#getId()
-         */
+        /** @see schema.Schema#getId() */
         public String getId() {
             return id;
         }
 
-        /**
-         * @see schema.Schema#getImports()
-         */
+        /** @see schema.Schema#getImports() */
         public Schema[] getImports() {
             return imports;
         }
 
-        /**
-         * @see schema.Schema#getSimpleTypes()
-         */
+        /** @see schema.Schema#getSimpleTypes() */
         public SimpleType[] getSimpleTypes() {
             return simpleTypes;
         }
 
-        /**
-         * @see schema.Schema#getTargetNamespace()
-         */
+        /** @see schema.Schema#getTargetNamespace() */
         public URI getTargetNamespace() {
             return targetNamespace;
         }
 
-        /**
-         * @see schema.Schema#getVersion()
-         */
+        /** @see schema.Schema#getVersion() */
         public String getVersion() {
             return version;
         }
 
-        /**
-         * @see schema.Schema#includesURI(java.net.URI)
-         */
+        /** @see schema.Schema#includesURI(java.net.URI) */
         public boolean includesURI(URI uri1) {
             if (uri1 == null || this.uri == null) {
                 return false;
@@ -862,23 +787,17 @@ public class SchemaFactory {
             return this.uri.equals(uri1);
         }
 
-        /**
-         * @see schema.Schema#isAttributeFormDefault()
-         */
+        /** @see schema.Schema#isAttributeFormDefault() */
         public boolean isAttributeFormDefault() {
             return aForm;
         }
 
-        /**
-         * @see schema.Schema#isElementFormDefault()
-         */
+        /** @see schema.Schema#isElementFormDefault() */
         public boolean isElementFormDefault() {
             return eForm;
         }
 
-        /**
-         * @see schema.Schema#getURIs()
-         */
+        /** @see schema.Schema#getURIs() */
         public URI getURI() {
             return uri;
         }
@@ -887,12 +806,9 @@ public class SchemaFactory {
             return prefix;
         }
 
-        /**
-         * Returns the implementation hints. The default implementation returns en empty map.
-         */
+        /** Returns the implementation hints. The default implementation returns en empty map. */
         public Map getImplementationHints() {
             return Collections.EMPTY_MAP;
         }
     }
-    
 }

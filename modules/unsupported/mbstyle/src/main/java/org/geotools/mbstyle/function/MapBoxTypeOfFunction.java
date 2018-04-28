@@ -20,9 +20,7 @@ import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
 
-/**
- * Takes an object as an argument and returns the class as a string value.
- */
+/** Takes an object as an argument and returns the class as a string value. */
 class MapBoxTypeOfFunction extends FunctionExpressionImpl {
 
     public static FunctionName NAME = new FunctionNameImpl("mbTypeOf");

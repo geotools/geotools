@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,23 +16,19 @@
  */
 package org.geotools.temporal.reference;
 
+import static org.junit.Assert.*;
+
 import java.util.Collection;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.opengis.temporal.OrdinalEra;
 import org.opengis.temporal.OrdinalReferenceSystem;
 
-
 /**
- *
  * @author Mehdi Sidhoum (Geomatys)
- *
- *
- *
  * @source $URL$
  */
 public class DefaultOrdinalReferenceSystemTest {
@@ -54,26 +50,20 @@ public class DefaultOrdinalReferenceSystemTest {
         ordinalReferenceSystem2 = null;
     }
 
-    /**
-     * Test of getOrdinalEraSequence method, of class DefaultOrdinalReferenceSystem.
-     */
+    /** Test of getOrdinalEraSequence method, of class DefaultOrdinalReferenceSystem. */
     @Test
     public void testGetOrdinalEraSequence() {
         Collection<OrdinalEra> result = ordinalReferenceSystem1.getOrdinalEraSequence();
         assertEquals(ordinalReferenceSystem2.getOrdinalEraSequence(), result);
     }
 
-    /**
-     * Test of toWKT method, of class DefaultOrdinalReferenceSystem.
-     */
+    /** Test of toWKT method, of class DefaultOrdinalReferenceSystem. */
     @Test
     public void testToWKT() {
-        //@TODO this method is not implemented yet!
+        // @TODO this method is not implemented yet!
     }
 
-    /**
-     * Test of equals method, of class DefaultOrdinalReferenceSystem.
-     */
+    /** Test of equals method, of class DefaultOrdinalReferenceSystem. */
     @Test
     public void testEquals() {
         assertFalse(ordinalReferenceSystem1.equals(null));
@@ -81,18 +71,14 @@ public class DefaultOrdinalReferenceSystemTest {
         assertFalse(ordinalReferenceSystem1.equals(ordinalReferenceSystem2));
     }
 
-    /**
-     * Test of hashCode method, of class DefaultOrdinalReferenceSystem.
-     */
+    /** Test of hashCode method, of class DefaultOrdinalReferenceSystem. */
     @Test
     public void testHashCode() {
         int result = ordinalReferenceSystem1.hashCode();
         assertFalse(ordinalReferenceSystem2.hashCode() == result);
     }
 
-    /**
-     * Test of toString method, of class DefaultOrdinalReferenceSystem.
-     */
+    /** Test of toString method, of class DefaultOrdinalReferenceSystem. */
     @Test
     public void testToString() {
         String result = ordinalReferenceSystem1.toString();

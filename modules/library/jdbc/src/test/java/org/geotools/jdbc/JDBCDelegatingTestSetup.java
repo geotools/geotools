@@ -19,24 +19,22 @@ package org.geotools.jdbc;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
-
 import org.apache.commons.dbcp.BasicDataSource;
 
 /**
  * Allows reuse of JDBCTestSetup for a different set of tests.
- * <p>
- * For example see JDBC3DTestSetup which provides a different
- * test dataset, while still using the provided delegate
- * to access a test fixture and establish a connection.
- * 
+ *
+ * <p>For example see JDBC3DTestSetup which provides a different test dataset, while still using the
+ * provided delegate to access a test fixture and establish a connection.
+ *
  * @see JDBC3DTestSetup
  * @source $URL$
  */
 public class JDBCDelegatingTestSetup extends JDBCTestSetup {
 
     protected JDBCTestSetup delegate;
-    
-    protected JDBCDelegatingTestSetup( JDBCTestSetup delegate ) {
+
+    protected JDBCDelegatingTestSetup(JDBCTestSetup delegate) {
         this.delegate = delegate;
     }
 
@@ -45,33 +43,33 @@ public class JDBCDelegatingTestSetup extends JDBCTestSetup {
         super.setFixture(fixture);
         delegate.setFixture(fixture);
     }
-    
+
     @Override
     protected Properties createOfflineFixture() {
         return delegate.createOfflineFixture();
     }
-    
+
     @Override
     protected Properties createExampleFixture() {
         return delegate.createExampleFixture();
     }
-    
+
     public void setUp() throws Exception {
         // make sure we don't forget to run eventual extra stuff
         delegate.setUp();
     }
-    
+
     @Override
     public void tearDown() throws Exception {
         super.tearDown();
         delegate.tearDown();
     }
-    
+
     @Override
     protected void setUpData() throws Exception {
         delegate.setUpData();
     }
-    
+
     protected final void initializeDatabase() throws Exception {
         delegate.initializeDatabase();
     }
@@ -84,7 +82,7 @@ public class JDBCDelegatingTestSetup extends JDBCTestSetup {
     protected JDBCDataStoreFactory createDataStoreFactory() {
         return delegate.createDataStoreFactory();
     }
-    
+
     @Override
     protected void setUpDataStore(JDBCDataStore dataStore) {
         delegate.setUpDataStore(dataStore);
@@ -94,12 +92,12 @@ public class JDBCDelegatingTestSetup extends JDBCTestSetup {
     protected String typeName(String raw) {
         return delegate.typeName(raw);
     }
-    
+
     @Override
     protected String attributeName(String raw) {
         return delegate.attributeName(raw);
     }
-    
+
     @Override
     public boolean shouldRunTests(Connection cx) throws SQLException {
         return delegate.shouldRunTests(cx);

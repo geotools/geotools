@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -21,32 +21,29 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
-
 import javax.xml.datatype.XMLGregorianCalendar;
-
 import org.geotools.factory.Hints;
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
 
 /**
  * Converter factory which created converting between temporal types and {@link String}
- * <p>
- * Supported save conversions:
+ *
+ * <p>Supported save conversions:
+ *
  * <ul>
- * <li>{@link java.util.Date} to {@link String}
- * <li>{@link java.sql.Time} to {@link to {@link String}}
- * <li>{@link java.util.Date} to {@link to {@link String}}
- * <li>{@link java.util.Calendar} to {@link to {@link String}}
- * <li>{@link XMLGregorianCalendar} to {@link to {@link String}}
+ *   <li>{@link java.util.Date} to {@link String}
+ *   <li>{@link java.sql.Time} to {@link to {@link String}}
+ *   <li>{@link java.util.Date} to {@link to {@link String}}
+ *   <li>{@link java.util.Calendar} to {@link to {@link String}}
+ *   <li>{@link XMLGregorianCalendar} to {@link to {@link String}}
  * </ul>
- * </p>
- * <p>
- * The hint {@link ConverterFactory#SAFE_CONVERSION} is used to control which conversions will be applied.
- * </p>
- * 
+ *
+ * <p>The hint {@link ConverterFactory#SAFE_CONVERSION} is used to control which conversions will be
+ * applied.
+ *
  * @author Simone Giannecchini, GeoSolutions
  * @since 9.0
- * 
  * @source $URL$
  */
 class TemporalConverterFactoryHack implements ConverterFactory {
@@ -108,10 +105,13 @@ class TemporalConverterFactoryHack implements ConverterFactory {
                 return new Converter() {
                     public Object convert(Object source, Class target) throws Exception {
                         if (source instanceof XMLGregorianCalendar) {
-                            return df.format(((XMLGregorianCalendar) source)
-                                    .toGregorianCalendar(TimeZone.getTimeZone("GMT"),
-                                            Locale.getDefault(), null)
-                                    .getTime());
+                            return df.format(
+                                    ((XMLGregorianCalendar) source)
+                                            .toGregorianCalendar(
+                                                    TimeZone.getTimeZone("GMT"),
+                                                    Locale.getDefault(),
+                                                    null)
+                                            .getTime());
                         }
                         return null;
                     }

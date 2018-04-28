@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,17 +16,16 @@
  */
 package org.geotools.geometry.jts;
 
-import java.util.List;
-
 import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
+import java.util.List;
 
 /**
  * A subclass of {@link MultiPolygon} that can host also {@link CurvePolygon} and will linearize if
  * needed
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 public class MultiSurface extends MultiPolygon implements MultiCurvedGeometry<MultiPolygon> {
@@ -80,12 +79,13 @@ public class MultiSurface extends MultiPolygon implements MultiCurvedGeometry<Mu
                 } else {
                     // straight lines polygon
                     sb.append("(");
-                    writeCoordinateSequence(sb, component.getExteriorRing().getCoordinateSequence());
+                    writeCoordinateSequence(
+                            sb, component.getExteriorRing().getCoordinateSequence());
                     int numHoles = component.getNumInteriorRing();
                     for (int i = 0; i < numHoles; i++) {
                         sb.append(", ");
-                        writeCoordinateSequence(sb, component.getInteriorRingN(i)
-                                .getCoordinateSequence());
+                        writeCoordinateSequence(
+                                sb, component.getInteriorRingN(i).getCoordinateSequence());
                     }
                     sb.append(")");
                 }
@@ -118,5 +118,4 @@ public class MultiSurface extends MultiPolygon implements MultiCurvedGeometry<Mu
     public int getCoordinatesDimension() {
         return 2;
     }
-
 }

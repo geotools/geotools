@@ -16,26 +16,19 @@
  */
 package org.geotools.wfs.v1_0;
 
-import java.util.Iterator;
-
 import javax.xml.namespace.QName;
-
-import net.opengis.wfs.InsertResultsType;
-import net.opengis.wfs.InsertedFeatureType;
 import net.opengis.wfs.TransactionResultsType;
 import net.opengis.wfs.WfsFactory;
-
-import org.geotools.filter.v1_0.capabilities.OGC;
 import org.geotools.xml.AbstractComplexEMFBinding;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
 
 /**
  * Binding object for the type http://www.opengis.net/wfs:TransactionResultsType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:complexType name="TransactionResultsType"&gt;
  *      &lt;xsd:annotation&gt;
@@ -61,12 +54,8 @@ import org.w3c.dom.Element;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class TransactionResultTypeBinding extends AbstractComplexEMFBinding {
@@ -74,14 +63,13 @@ public class TransactionResultTypeBinding extends AbstractComplexEMFBinding {
         super(factory);
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return WFS.TransactionResultType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -90,22 +78,22 @@ public class TransactionResultTypeBinding extends AbstractComplexEMFBinding {
     public Class getType() {
         return TransactionResultsType.class;
     }
-    
+
     @Override
     public Element encode(Object object, Document document, Element value) throws Exception {
         Element e = super.encode(object, document, value);
-        
+
         TransactionResultsType resultType = (TransactionResultsType) object;
-        
+
         Element node = document.createElementNS(WFS.NAMESPACE, "Status");
         e.appendChild(node);
-        
+
         if (resultType.getAction().isEmpty()) {
             node.appendChild(document.createElementNS(WFS.NAMESPACE, "SUCCESS"));
         } else {
             node.appendChild(document.createElementNS(WFS.NAMESPACE, "FAILED"));
         }
-        
+
         return e;
     }
 }

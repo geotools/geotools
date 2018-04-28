@@ -1,11 +1,11 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
- *    modify it under the terms of the GNU Lesser General 
+ *    modify it under the terms of the GNU Lesser General
  *    License as published by the Free Software Foundation;
  *    version 2.1 of the License.
  *
@@ -25,15 +25,12 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Core information needed to draw out a line of text
- */
+/** Core information needed to draw out a line of text */
 class LineInfo {
-
 
     /**
      * Part of a line that can be rendered with a uniform font
-     * 
+     *
      * @author Andrea Aime - GeoSolutions
      */
     static class LineComponent {
@@ -78,20 +75,18 @@ class LineInfo {
             return text;
         }
 
-
         GlyphVector getGlyphVector() {
             return gv;
         }
-
 
         TextLayout getLayout() {
             return layout;
         }
 
         /**
-         * Computes some metrics for this part of the line taking in account the
-         * provided rendering context. This methods will always recompute the
-         * metrics even if the same font rendering context is provided.
+         * Computes some metrics for this part of the line taking in account the provided rendering
+         * context. This methods will always recompute the metrics even if the same font rendering
+         * context is provided.
          */
         LineMetrics computeLineMetrics(FontRenderContext fontRenderContext) {
             return gv.getFont().getLineMetrics(text, fontRenderContext);
@@ -102,9 +97,7 @@ class LineInfo {
     // label bounds (so these are relative coordinates)
     private double y;
 
-    /**
-     * The components of the line
-     */
+    /** The components of the line */
     private List<LineComponent> components;
 
     LineInfo() {
@@ -136,14 +129,21 @@ class LineInfo {
             // the logical bounds include the spaces, we want them in the horizontal direction
             // in order to compose the element in the row, but we need the visual bounds for
             // vertical alignment
-            Rectangle2D componentBounds = new Rectangle2D.Double(componentLogicalBounds.getX(), 
-                    componentVisualBounds.getY(), componentLogicalBounds.getWidth(),
-                    componentVisualBounds.getHeight());
+            Rectangle2D componentBounds =
+                    new Rectangle2D.Double(
+                            componentLogicalBounds.getX(),
+                            componentVisualBounds.getY(),
+                            componentLogicalBounds.getWidth(),
+                            componentVisualBounds.getHeight());
             if (vb == null) {
                 vb = componentBounds;
             } else {
-                Rectangle2D other = new Rectangle2D.Double(vb.getMaxX(), vb.getMinY(),
-                        componentBounds.getWidth(), componentBounds.getHeight());
+                Rectangle2D other =
+                        new Rectangle2D.Double(
+                                vb.getMaxX(),
+                                vb.getMinY(),
+                                componentBounds.getWidth(),
+                                componentBounds.getHeight());
                 vb = vb.createUnion(other);
             }
         }
@@ -158,14 +158,15 @@ class LineInfo {
             // use the logical bounds to have spaces taken into account
             x += component.getGlyphVector().getLogicalBounds().getWidth();
         }
-
     }
 
     float getLineOffset() {
         float offset = Float.NEGATIVE_INFINITY;
         for (LineComponent component : components) {
-            float co = component.getLayout().getAscent() + component.getLayout().getDescent()
-                    + component.getLayout().getLeading();
+            float co =
+                    component.getLayout().getAscent()
+                            + component.getLayout().getDescent()
+                            + component.getLayout().getLeading();
             if (co > offset) {
                 offset = co;
             }
@@ -177,8 +178,9 @@ class LineInfo {
     double getLineHeight() {
         double height = Float.NEGATIVE_INFINITY;
         for (LineComponent component : components) {
-            double ch = component.getGlyphVector().getVisualBounds().getHeight()
-                    - component.getLayout().getDescent();
+            double ch =
+                    component.getGlyphVector().getVisualBounds().getHeight()
+                            - component.getLayout().getDescent();
             if (ch > height) {
                 height = ch;
             }
@@ -210,6 +212,4 @@ class LineInfo {
     void setY(double y) {
         this.y = y;
     }
-
-
 }

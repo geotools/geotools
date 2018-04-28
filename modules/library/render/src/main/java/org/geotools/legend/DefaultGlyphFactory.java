@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,131 +16,127 @@
  */
 package org.geotools.legend;
 
+import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Polygon;
 import java.awt.Color;
-
 import javax.swing.Icon;
-
 import org.geotools.map.MapLayer;
 import org.geotools.styling.Rule;
 import org.geotools.styling.SLD;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.FeatureType;
 
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Polygon;
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class DefaultGlyphFactory implements GlyphFactory {
 
     /**
      * Glyph for the provided layer.
-     * <p>
-     * At a minimum the icon will be based on:
+     *
+     * <p>At a minimum the icon will be based on:
+     *
      * <ul>
-     * <li>layer schema, will be considered a generic geometry if not recognized
-     * <li>layer style, defaults will be used if not recognized
+     *   <li>layer schema, will be considered a generic geometry if not recognized
+     *   <li>layer style, defaults will be used if not recognized
      * </ul>
-     * 
+     *
      * @param layer
      * @return Icon For the provided layer
      */
-    public Icon icon(MapLayer layer){
-        if( layer == null || layer.getFeatureSource() == null){
+    public Icon icon(MapLayer layer) {
+        if (layer == null || layer.getFeatureSource() == null) {
             return geometry(null, null);
         }
         FeatureType schema = layer.getFeatureSource().getSchema();
-        
-        if( "GridCoverage".equals( schema.getName().getLocalPart() ) ){
-            return grid(Color.RED,Color.GREEN,Color.BLUE,Color.YELLOW);
+
+        if ("GridCoverage".equals(schema.getName().getLocalPart())) {
+            return grid(Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW);
         }
-        Rule rule = SLD.rules( layer.getStyle() )[0];
-        
+        Rule rule = SLD.rules(layer.getStyle())[0];
+
         Class<?> binding = schema.getBinding();
-        if( isPolygon( binding )){
-            return polygon( rule );
-        }
-        else if( isLine( binding )){
-            return line( rule );
-        }              
-        else if( isPoint( binding )){
-            return point( rule );
-        }
-        else {
-            return geometry( rule );
+        if (isPolygon(binding)) {
+            return polygon(rule);
+        } else if (isLine(binding)) {
+            return line(rule);
+        } else if (isPoint(binding)) {
+            return point(rule);
+        } else {
+            return geometry(rule);
         }
     }
-    private boolean isPolygon( Class<?> type ){
+
+    private boolean isPolygon(Class<?> type) {
         return type == Polygon.class || type == MultiPolygon.class;
     }
-    private boolean isPoint( Class<?> type ){
+
+    private boolean isPoint(Class<?> type) {
         return true;
     }
-    private boolean isLine( Class<?> type ){
+
+    private boolean isLine(Class<?> type) {
         return true;
     }
-    private boolean isGeometry( Class<?> type ){
-        return isPolygon( type ) || isPoint( type ) || isLine( type );
+
+    private boolean isGeometry(Class<?> type) {
+        return isPolygon(type) || isPoint(type) || isLine(type);
     }
-    public Icon polygon( Rule rule ) {
+
+    public Icon polygon(Rule rule) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    public Icon geometry( Color color, Color fill ) {
+    public Icon geometry(Color color, Color fill) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    public Icon geometry( Rule rule ) {
+    public Icon geometry(Rule rule) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    public Icon grid( Color color1, Color color2, Color color3, Color color4 ) {
+    public Icon grid(Color color1, Color color2, Color color3, Color color4) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    public Icon icon( SimpleFeatureType schema ) {
+    public Icon icon(SimpleFeatureType schema) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    public Icon line( Color line, int width ) {
+    public Icon line(Color line, int width) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    public Icon line( Rule rule ) {
+    public Icon line(Rule rule) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    public Icon palette( Color[] colors ) {
+    public Icon palette(Color[] colors) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    public Icon point( Color point, Color fill ) {
+    public Icon point(Color point, Color fill) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    public Icon point( Rule rule ) {
+    public Icon point(Rule rule) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    public Icon polygon( Color color, Color fill, int width ) {
+    public Icon polygon(Color color, Color fill, int width) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    public Icon swatch( Color color ) {
+    public Icon swatch(Color color) {
         // TODO Auto-generated method stub
         return null;
     }

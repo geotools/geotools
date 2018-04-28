@@ -22,12 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.geotools.gce.imagemosaic.properties.PropertiesCollector;
-import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
-
-/**
- * SPI for the CRS extractor
- */
+/** SPI for the CRS extractor */
 public class CRSExtractorSPI implements PropertiesCollectorSPI {
     @Override
     public PropertiesCollector create(Object o, List<String> propertyNames) {

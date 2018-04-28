@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,7 +17,6 @@
 package org.geotools.feature.type;
 
 import java.util.Map;
-
 import org.opengis.feature.Attribute;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
@@ -26,11 +25,9 @@ import org.opengis.filter.identity.Identifier;
 
 /**
  * Readonly wrapper around the provided Attribute.
- * <p>
- * This class is used by Types in order to protect provided attributes from modification
- * during evaluation.
  *
- *
+ * <p>This class is used by Types in order to protect provided attributes from modification during
+ * evaluation.
  *
  * @source $URL$
  */
@@ -72,6 +69,7 @@ public final class ReadonlyAttributeDecorator implements Attribute {
     public boolean isNillable() {
         return delegate.isNillable();
     }
+
     public void validate() {
         delegate.validate();
     }

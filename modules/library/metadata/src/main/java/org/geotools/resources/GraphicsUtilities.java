@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -26,51 +26,38 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.geotools.io.ExpandedTabWriter;
 
-
 /**
- * A set of utilities methods for painting in a {@link Graphics2D} handle.
- * Method in this class was used to be in {@link org.geotools.gui.swing.ExceptionMonitor}.
- * We had to extract them in a separated class in order to avoid dependencies of renderer
- * module toward the GUI one, especially since the extracted methods are not Swing specific.
+ * A set of utilities methods for painting in a {@link Graphics2D} handle. Method in this class was
+ * used to be in {@link org.geotools.gui.swing.ExceptionMonitor}. We had to extract them in a
+ * separated class in order to avoid dependencies of renderer module toward the GUI one, especially
+ * since the extracted methods are not Swing specific.
  *
  * @since 2.0
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
 public final class GraphicsUtilities {
-    /**
-     * Number of spaces to leave between each tab.
-     */
+    /** Number of spaces to leave between each tab. */
     private static final int TAB_WIDTH = 4;
 
-    /**
-     * The creation of {@code GraphicsUtilities} class objects is forbidden.
-     */
-    private GraphicsUtilities() {
-    }
+    /** The creation of {@code GraphicsUtilities} class objects is forbidden. */
+    private GraphicsUtilities() {}
 
     /**
-     * Writes the specified exception trace in the specified graphics
-     * context.  This method is useful when an exception has occurred
-     * inside a {@link java.awt.Component#paint} method and we want to
-     * write it rather than leaving an empty window.
+     * Writes the specified exception trace in the specified graphics context. This method is useful
+     * when an exception has occurred inside a {@link java.awt.Component#paint} method and we want
+     * to write it rather than leaving an empty window.
      *
      * @param exception Exception whose trace we want to write.
-     * @param graphics Graphics context in which to write exception.  The
-     *        graphics context should be in its initial state (default affine
-     *        transform, default colour, etc...)
+     * @param graphics Graphics context in which to write exception. The graphics context should be
+     *     in its initial state (default affine transform, default colour, etc...)
      * @param widgetBounds Size of the trace which was being drawn.
      */
-    public static void paintStackTrace(final Graphics2D graphics,
-                                       final Rectangle  widgetBounds,
-                                       final Throwable  exception)
-    {
+    public static void paintStackTrace(
+            final Graphics2D graphics, final Rectangle widgetBounds, final Throwable exception) {
         /*
          * Obtains the exception trace in the form of a character chain.
          * The carriage returns in this chain can be "\r", "\n" or "r\n".
@@ -87,7 +74,7 @@ public final class GraphicsUtilities {
         final int length = message.length();
         final Font font = graphics.getFont();
         final FontRenderContext context = graphics.getFontRenderContext();
-        for (int i = 0; i < length;) {
+        for (int i = 0; i < length; ) {
             int ir = message.indexOf('\r', i);
             int in = message.indexOf('\n', i);
             if (ir < 0) ir = length;
@@ -117,9 +104,9 @@ public final class GraphicsUtilities {
     }
 
     /**
-     * Returns an exception trace. All tabs will have been replaced by 4 white spaces.
-     * This method was used to be a private one in {@link org.geotools.gui.swing.ExceptionMonitor}.
-     * Do not rely on it.
+     * Returns an exception trace. All tabs will have been replaced by 4 white spaces. This method
+     * was used to be a private one in {@link org.geotools.gui.swing.ExceptionMonitor}. Do not rely
+     * on it.
      */
     public static String printStackTrace(final Throwable exception) {
         final StringWriter writer = new StringWriter();

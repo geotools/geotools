@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,20 +16,17 @@
  */
 package org.geotools.filter;
 
-
 /**
- * The ExpressionType interface lists all the possible type of filter. Should
- * be replaced by a type safe enum when we move to Java 1.5
+ * The ExpressionType interface lists all the possible type of filter. Should be replaced by a type
+ * safe enum when we move to Java 1.5
  *
  * @author wolf
- *
- *
  * @source $URL$
  */
 public interface ExpressionType {
     /* This is a listing of all possible expression types, grouped by
-       expressions that are implemented by a single expression class
-       (ie. all math types are implemented by ExpressionMath). */
+    expressions that are implemented by a single expression class
+    (ie. all math types are implemented by ExpressionMath). */
 
     /* Types implemented by ExpressionLiteral */
     /** Defines a literal expression with an undeclared type. */
@@ -48,9 +45,10 @@ public interface ExpressionType {
     public static final short LITERAL_GEOMETRY = 104;
 
     /**
-     *  Defines a literal expression with a declared long type.
-     *  @since 2.4
-     **/
+     * Defines a literal expression with a declared long type.
+     *
+     * @since 2.4
+     */
     public static final short LITERAL_LONG = 99;
 
     /* Types implemented by ExpressionMath. */

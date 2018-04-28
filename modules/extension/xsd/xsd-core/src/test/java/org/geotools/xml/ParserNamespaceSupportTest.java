@@ -16,12 +16,11 @@
  */
 package org.geotools.xml;
 
-import junit.framework.TestCase;
-import org.xml.sax.helpers.NamespaceSupport;
-
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import junit.framework.TestCase;
+import org.xml.sax.helpers.NamespaceSupport;
 
 public class ParserNamespaceSupportTest extends TestCase {
 
@@ -57,7 +56,7 @@ public class ParserNamespaceSupportTest extends TestCase {
 
     List list(Enumeration e) {
         List<Object> l = new ArrayList<Object>();
-        while(e.hasMoreElements()) {
+        while (e.hasMoreElements()) {
             l.add(e.nextElement());
         }
         return l;

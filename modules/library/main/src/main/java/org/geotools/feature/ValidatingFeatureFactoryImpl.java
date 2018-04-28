@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,22 +16,16 @@
  */
 package org.geotools.feature;
 
-
 /**
  * Factory for creating instances of the Attribute family of classes.
- * 
+ *
  * @author Andrea Aime
- * 
- *
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public class ValidatingFeatureFactoryImpl extends AbstractFeatureFactoryImpl {
-    
+
     public ValidatingFeatureFactoryImpl() {
         validating = true;
     }
- }
-
+}

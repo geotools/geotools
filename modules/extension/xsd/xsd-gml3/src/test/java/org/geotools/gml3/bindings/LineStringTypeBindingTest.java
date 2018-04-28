@@ -16,21 +16,15 @@
  */
 package org.geotools.gml3.bindings;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.LineString;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
 import org.w3c.dom.Document;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.LineString;
-
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class LineStringTypeBindingTest extends GML3TestSupport {
-    
+
     public void testPos() throws Exception {
         document.appendChild(GML3MockData.lineStringWithPos(document, null));
 
@@ -40,7 +34,7 @@ public class LineStringTypeBindingTest extends GML3TestSupport {
         assertEquals(new Coordinate(1d, 2d), line.getPointN(0).getCoordinate());
         assertEquals(new Coordinate(3d, 4d), line.getPointN(1).getCoordinate());
     }
-    
+
     public void testPos3D() throws Exception {
         document.appendChild(GML3MockData.lineStringWithPos3D(document, null));
 
@@ -60,7 +54,7 @@ public class LineStringTypeBindingTest extends GML3TestSupport {
         assertEquals(new Coordinate(1d, 2d), line.getPointN(0).getCoordinate());
         assertEquals(new Coordinate(3d, 4d), line.getPointN(1).getCoordinate());
     }
-    
+
     public void testPosList3D() throws Exception {
         document.appendChild(GML3MockData.lineStringWithPosList3D(document, null));
 
@@ -70,48 +64,47 @@ public class LineStringTypeBindingTest extends GML3TestSupport {
         assertTrue(new Coordinate(1d, 2d, 10d).equals3D(line.getPointN(0).getCoordinate()));
         assertTrue(new Coordinate(3d, 4d, 20d).equals3D(line.getPointN(1).getCoordinate()));
     }
-    
+
     /**
-     * Tests encoding using a CoordinateArraySequence
-     * (which requires special logic to get the dimension correct)
+     * Tests encoding using a CoordinateArraySequence (which requires special logic to get the
+     * dimension correct)
+     *
      * @throws Exception
      */
     public void testEncodeLineString() throws Exception {
-    	LineString line = GML3MockData.lineString();
+        LineString line = GML3MockData.lineString();
         Document doc = encode(line, GML.LineString);
-        
+
         checkDimension(doc, GML.LineString.getLocalPart(), 2);
         checkPosListOrdinates(doc, 2 * line.getNumPoints());
     }
-    
+
     public void testEncodeLite2D() throws Exception {
-    	LineString line = GML3MockData.lineStringLite2D();
+        LineString line = GML3MockData.lineStringLite2D();
         Document doc = encode(line, GML.LineString);
-        
+
         checkDimension(doc, GML.LineString.getLocalPart(), 2);
         checkPosListOrdinates(doc, 2 * line.getNumPoints());
     }
-    
+
     public void testEncodeLite3D() throws Exception {
-    	LineString line = GML3MockData.lineStringLite3D();
+        LineString line = GML3MockData.lineStringLite3D();
         Document doc = encode(line, GML.LineString);
-        
+
         checkDimension(doc, GML.LineString.getLocalPart(), 3);
         checkPosListOrdinates(doc, 3 * line.getNumPoints());
     }
-    
+
     /**
      * Test a long LineString to catch problems that only show up with large numbers of ordinates
-     * 
+     *
      * @throws Exception
      */
     public void testEncode2DLong() throws Exception {
-    	LineString line = GML3MockData.lineStringLite2D(10);
+        LineString line = GML3MockData.lineStringLite2D(10);
         Document doc = encode(line, GML.LineString);
-        
+
         checkDimension(doc, GML.LineString.getLocalPart(), 2);
         checkPosListOrdinates(doc, 2 * line.getNumPoints());
     }
-    
-
 }

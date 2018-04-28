@@ -16,19 +16,13 @@
  */
 package org.geotools.kml.bindings;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Point;
 import org.geotools.kml.KML;
 import org.geotools.kml.KMLTestSupport;
 import org.geotools.xml.Binding;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Point;
-
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class LookAtTypeBindingTest extends KMLTestSupport {
 
     public void testType() {
@@ -40,8 +34,12 @@ public class LookAtTypeBindingTest extends KMLTestSupport {
     }
 
     public void testParse() throws Exception {
-        String xml = "<LookAt>" + "<longitude>1</longitude>" + "<latitude>2</latitude>"
-            + "<altitude>3</altitude>" + "</LookAt>";
+        String xml =
+                "<LookAt>"
+                        + "<longitude>1</longitude>"
+                        + "<latitude>2</latitude>"
+                        + "<altitude>3</altitude>"
+                        + "</LookAt>";
         buildDocument(xml);
 
         Point p = (Point) parse();

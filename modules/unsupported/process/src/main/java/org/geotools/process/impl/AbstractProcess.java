@@ -16,25 +16,21 @@
  */
 package org.geotools.process.impl;
 
-
 import org.geotools.process.Process;
 import org.geotools.process.ProcessFactory;
 
 /**
  * Provide an implementation of the process method to implement your own Process.
- * <p>
- * This is a straight forward abstract process that has all the fields filled in.
- * </p>
+ *
+ * <p>This is a straight forward abstract process that has all the fields filled in.
+ *
  * @author gdavis
- *
- *
  * @source $URL$
  */
-public abstract class AbstractProcess implements Process {   
+public abstract class AbstractProcess implements Process {
     protected ProcessFactory factory;
-    
-    protected AbstractProcess( ProcessFactory factory ){
+
+    protected AbstractProcess(ProcessFactory factory) {
         this.factory = factory;
-    }    
-     
+    }
 }

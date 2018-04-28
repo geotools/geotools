@@ -16,29 +16,23 @@
  */
 package org.geotools.util;
 
-import java.util.*;
-import org.junit.*;
 import static org.junit.Assert.*;
 
+import java.util.*;
+import org.junit.*;
 
 /**
  * Tests {@link IntegerList} implementations.
  *
  * @author Martin Desruisseaux
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public final class IntegerListTest {
-    /**
-     * The random number generator used for this test suite.
-     */
+    /** The random number generator used for this test suite. */
     private final Random random = new Random(1241962316404811189L);
 
-    /**
-     * The list of integers.
-     */
+    /** The list of integers. */
     private IntegerList list;
 
     /**
@@ -52,7 +46,7 @@ public final class IntegerListTest {
         list = new IntegerList(length / 2, maximalValue);
         assertTrue(list.maximalValue() >= maximalValue);
         final List<Integer> copy = new ArrayList<Integer>();
-        for (int i=0; i<length; i++) {
+        for (int i = 0; i < length; i++) {
             assertEquals(i, list.size());
             final Integer value = nextInt(maximalValue);
             assertTrue(copy.add(value));
@@ -60,22 +54,20 @@ public final class IntegerListTest {
         }
         assertEquals(copy, list);
         assertEquals(copy.hashCode(), list.hashCode());
-        for (int i=0; i<length; i+=10) {
+        for (int i = 0; i < length; i += 10) {
             final Integer value = nextInt(maximalValue);
             final Integer old = copy.set(i, value);
             assertNotNull(old);
             assertEquals(old, list.set(i, value));
         }
-        for (int i=0; i<length; i++) {
+        for (int i = 0; i < length; i++) {
             assertEquals(String.valueOf(i), copy.get(i), list.get(i));
         }
         assertEquals(copy, list);
         assertEquals(copy.hashCode(), list.hashCode());
     }
 
-    /**
-     * Returns the next number from the random number generator.
-     */
+    /** Returns the next number from the random number generator. */
     private int nextInt(final int maximalValue) {
         if (maximalValue == Integer.MAX_VALUE) {
             return Math.abs(random.nextInt());
@@ -85,8 +77,8 @@ public final class IntegerListTest {
     }
 
     /**
-     * Tests the fill value using the existing list, which is assumed
-     * already filled with random values prior this method call.
+     * Tests the fill value using the existing list, which is assumed already filled with random
+     * values prior this method call.
      */
     private void testFill(final int value) {
         assertEquals(400, list.size());
@@ -100,45 +92,35 @@ public final class IntegerListTest {
         assertEquals(Collections.singleton(0), set);
     }
 
-    /**
-     * Tests with a maximal value of 1.
-     */
+    /** Tests with a maximal value of 1. */
     @Test
     public void test1() {
         testReadWrite(1);
         testFill(1);
     }
 
-    /**
-     * Tests with a maximal value of 2.
-     */
+    /** Tests with a maximal value of 2. */
     @Test
     public void test2() {
         testReadWrite(2);
         testFill(2);
     }
 
-    /**
-     * Tests with a maximal value of 3.
-     */
+    /** Tests with a maximal value of 3. */
     @Test
     public void test3() {
         testReadWrite(3);
         testFill(3);
     }
 
-    /**
-     * Tests with a maximal value of 10.
-     */
+    /** Tests with a maximal value of 10. */
     @Test
     public void test10() {
         testReadWrite(10);
         testFill(10);
     }
 
-    /**
-     * Tests with a maximal value of 100.
-     */
+    /** Tests with a maximal value of 100. */
     @Test
     public void test100() {
         testReadWrite(100);
@@ -153,25 +135,21 @@ public final class IntegerListTest {
         assertEquals(200, list.size());
         assertEquals(old100, list.getInteger(100));
         assertEquals(0, list.getInteger(101));
-        for (int i=101; i<200; i++) {
+        for (int i = 101; i < 200; i++) {
             assertEquals(0, list.getInteger(i));
         }
         list.resize(400);
         testFill(100);
     }
 
-    /**
-     * Tests with a maximal value of 100000.
-     */
+    /** Tests with a maximal value of 100000. */
     @Test
     public void test100000() {
         testReadWrite(100000);
         testFill(17);
     }
 
-    /**
-     * Tests with a maximal value of {@value Integer#MAX_VALUE}.
-     */
+    /** Tests with a maximal value of {@value Integer#MAX_VALUE}. */
     @Test
     public void testMax() {
         testReadWrite(Integer.MAX_VALUE);

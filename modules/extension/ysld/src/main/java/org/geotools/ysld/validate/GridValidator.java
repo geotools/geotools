@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -22,9 +22,7 @@ import org.geotools.ysld.parse.ZoomContext;
 import org.yaml.snakeyaml.events.MappingEndEvent;
 import org.yaml.snakeyaml.events.ScalarEvent;
 
-/**
- * Validator for gridset definitions
- */
+/** Validator for gridset definitions */
 public class GridValidator extends YsldValidateHandler {
 
     @Override
@@ -37,15 +35,13 @@ public class GridValidator extends YsldValidateHandler {
 
     class ZoomContextNameValidator extends ScalarValidator {
 
-        /**
-         * {@inheritDoc}
-         */
+        /** {@inheritDoc} */
         @Override
         protected String validate(String value, ScalarEvent evt, YsldValidateContext context) {
             try {
 
-                ZoomContext namedZoomContext = Util.getNamedZoomContext(value,
-                        context.zCtxtFinders);
+                ZoomContext namedZoomContext =
+                        Util.getNamedZoomContext(value, context.zCtxtFinders);
                 if (namedZoomContext != null) {
                     context.zCtxt = namedZoomContext;
                     return null;
@@ -55,12 +51,10 @@ public class GridValidator extends YsldValidateHandler {
                 return ex.getMessage();
             }
         }
-
     }
 
     @Override
     public void endMapping(MappingEndEvent evt, YsldValidateContext context) {
         context.pop();
     }
-
 }

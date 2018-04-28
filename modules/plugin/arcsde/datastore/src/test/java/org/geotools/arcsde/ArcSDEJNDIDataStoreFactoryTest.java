@@ -25,11 +25,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Logger;
-
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-
 import org.geotools.arcsde.data.ArcSDEDataStore;
 import org.geotools.arcsde.data.TestData;
 import org.geotools.arcsde.session.ISession;
@@ -49,12 +47,9 @@ import org.junit.Test;
 
 /**
  * @author Gabriel Roldan (OpenGeo)
- * 
- *
- *
  * @source $URL$
- *         http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/test/java/org
- *         /geotools/arcsde/ArcSDEJNDIDataStoreFactoryTest.java $
+ *     http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/test/java/org
+ *     /geotools/arcsde/ArcSDEJNDIDataStoreFactoryTest.java $
  * @version $Id$
  * @since 2.5.7
  */
@@ -72,9 +67,7 @@ public class ArcSDEJNDIDataStoreFactoryTest {
 
     static final String JNDI_DELIM = "org.osjava.jndi.delimiter";
 
-    /**
-     * @throws java.lang.Exception
-     */
+    /** @throws java.lang.Exception */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
         factory = new ArcSDEJNDIDataStoreFactory();
@@ -127,11 +120,11 @@ public class ArcSDEJNDIDataStoreFactoryTest {
 
     /**
      * Test method for {@link ArcSDEJNDIDataStoreFactory#createDataStore(java.util.Map)}.
-     * 
+     *
      * @throws IOException
      */
     @Test
-    @Ignore//TODO: revisit
+    @Ignore // TODO: revisit
     public void testCreateDataStore_MapParams() throws IOException {
         String jndiRef = "MyArcSdeResource";
         Map<String, Serializable> params = new HashMap<String, Serializable>();
@@ -151,15 +144,16 @@ public class ArcSDEJNDIDataStoreFactoryTest {
         ISession session = dataStore.getSession(Transaction.AUTO_COMMIT);
         assertNotNull(session);
         try {
-            assertEquals(String.valueOf(config.get("user")).toUpperCase(), session.getUser()
-                    .toUpperCase());
+            assertEquals(
+                    String.valueOf(config.get("user")).toUpperCase(),
+                    session.getUser().toUpperCase());
         } finally {
             session.dispose();
         }
     }
 
     @Test
-    @Ignore //TODO: revisit
+    @Ignore // TODO: revisit
     public void testCreateDataStore_SessionPool() throws IOException {
         String jndiRef = "MyArcSdeResource_SessionPool";
         Map<String, Serializable> params = new HashMap<String, Serializable>();
@@ -181,9 +175,7 @@ public class ArcSDEJNDIDataStoreFactoryTest {
         session.dispose();
     }
 
-    /**
-     * Test method for {@link ArcSDEJNDIDataStoreFactory#canProcess(java.util.Map)}.
-     */
+    /** Test method for {@link ArcSDEJNDIDataStoreFactory#canProcess(java.util.Map)}. */
     @Test
     public void testCanProcess() {
         assertFalse(factory.canProcess(null));
@@ -194,9 +186,7 @@ public class ArcSDEJNDIDataStoreFactoryTest {
         assertTrue(factory.canProcess(params));
     }
 
-    /**
-     * Test method for {@link ArcSDEJNDIDataStoreFactory#getParametersInfo()}.
-     */
+    /** Test method for {@link ArcSDEJNDIDataStoreFactory#getParametersInfo()}. */
     @Test
     public void testGetParametersInfo() {
         Param[] parametersInfo = factory.getParametersInfo();
@@ -210,7 +200,7 @@ public class ArcSDEJNDIDataStoreFactoryTest {
 
     /**
      * Test method for {@link ArcSDEJNDIDataStoreFactory#createNewDataStore(java.util.Map)}.
-     * 
+     *
      * @throws IOException
      */
     @Test
@@ -244,5 +234,4 @@ public class ArcSDEJNDIDataStoreFactoryTest {
         LOGGER.fine(JNDI_ROOT + " = " + System.getProperty(JNDI_ROOT));
         LOGGER.fine(JNDI_DELIM + " = " + System.getProperty(JNDI_DELIM));
     }
-
 }

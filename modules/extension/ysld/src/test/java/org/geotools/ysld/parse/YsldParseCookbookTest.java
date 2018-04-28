@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,27 +17,24 @@
  */
 package org.geotools.ysld.parse;
 
-import org.geotools.ysld.TestUtils;
-import org.geotools.ysld.YsldTests;
-import org.geotools.filter.Filters;
-import org.geotools.filter.text.ecql.ECQL;
-import org.geotools.styling.*;
-import org.geotools.styling.Font;
-import org.geotools.styling.Stroke;
-import org.junit.Assert;
-import org.junit.Test;
-import org.opengis.style.ContrastMethod;
+import static org.geotools.ysld.Ysld.transform;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 import java.awt.*;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Map;
-
-import static org.geotools.ysld.Ysld.transform;
-import static org.geotools.ysld.Ysld.xmlReader;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
+import org.geotools.filter.Filters;
+import org.geotools.filter.text.ecql.ECQL;
+import org.geotools.styling.*;
+import org.geotools.styling.Font;
+import org.geotools.styling.Stroke;
+import org.geotools.ysld.TestUtils;
+import org.geotools.ysld.YsldTests;
+import org.junit.Test;
+import org.opengis.style.ContrastMethod;
 
 public class YsldParseCookbookTest {
 
@@ -770,7 +767,6 @@ public class YsldParseCookbookTest {
         //    </UserStyle>
         Style style = parse("line", "dash-dot.sld");
 
-
         LineSymbolizer line = (LineSymbolizer) SLD.rules(style)[0].symbolizers().get(0);
         assertEquals(Color.blue, SLD.color(line));
         assertEquals(1, SLD.width(line));
@@ -817,6 +813,7 @@ public class YsldParseCookbookTest {
         assertEquals(5f, SLD.lineDash(line)[0], 0.1);
         assertEquals(2f, SLD.lineDash(line)[1], 0.1);
     }
+
     @Test
     public void testLineWithDashspace() throws Exception {
         //   <UserStyle>
@@ -1216,7 +1213,6 @@ public class YsldParseCookbookTest {
 
         poly = (PolygonSymbolizer) rule.symbolizers().get(0);
         assertEquals(color("009900"), SLD.color(poly.getFill()));
-
     }
 
     @Test
@@ -1752,7 +1748,6 @@ public class YsldParseCookbookTest {
         e = raster.getColorMap().getColorMapEntry(7);
         assertEquals("#FFFFFF", Filters.asString(e.getColor()));
         assertEquals(256, Filters.asInt(e.getQuantity()));
-
     }
 
     @Test
@@ -1848,21 +1843,20 @@ public class YsldParseCookbookTest {
         e = raster.getColorMap().getColorMapEntry(1);
         assertEquals("#663333", Filters.asString(e.getColor()));
         assertEquals(256, Filters.asInt(e.getQuantity()));
-        
     }
 
     Style parse(String dir, String file) throws IOException {
         StringWriter writer = new StringWriter();
         transform(YsldTests.sld(dir, file), writer);
-        //System.out.println(writer.toString());
+        // System.out.println(writer.toString());
         YsldParser p = new YsldParser(new StringReader(writer.toString()));
         return SLD.defaultStyle(p.parse());
     }
 
     Color color(String hex) {
         return new Color(
-            Integer.valueOf( hex.substring( 0, 2 ), 16 ),
-            Integer.valueOf( hex.substring( 2, 4 ), 16 ),
-            Integer.valueOf( hex.substring( 4, 6 ), 16 ) );
+                Integer.valueOf(hex.substring(0, 2), 16),
+                Integer.valueOf(hex.substring(2, 4), 16),
+                Integer.valueOf(hex.substring(4, 6), 16));
     }
 }

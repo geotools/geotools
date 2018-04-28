@@ -17,29 +17,17 @@
 package org.geotools.xml;
 
 import org.eclipse.xsd.XSDNamedComponent;
-import org.eclipse.xsd.XSDSchemaContent;
 import org.eclipse.xsd.XSDTypeDefinition;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public interface InstanceComponent {
-    /**
-     * @return The object containing the type definiton of the instance.
-     */
+    /** @return The object containing the type definiton of the instance. */
     XSDTypeDefinition getTypeDefinition();
 
-    /**
-     * @return The feature describing the component instance.
-     */
+    /** @return The feature describing the component instance. */
     XSDNamedComponent getDeclaration();
 
-    /**
-     * @return The namespace of the element;
-     */
+    /** @return The namespace of the element; */
     String getNamespace();
 
     /**
@@ -49,9 +37,7 @@ public interface InstanceComponent {
      */
     void setNamespace(String namespace);
 
-    /**
-     * @return The name of the element.
-     */
+    /** @return The name of the element. */
     String getName();
 
     /**
@@ -62,8 +48,8 @@ public interface InstanceComponent {
     void setName(String name);
 
     /**
-     * @return The text inside of the component, or the empty string if the
-     * component does not contain any text.
+     * @return The text inside of the component, or the empty string if the component does not
+     *     contain any text.
      */
     String getText();
 

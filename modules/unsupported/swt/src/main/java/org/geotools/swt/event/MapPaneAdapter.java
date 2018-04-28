@@ -18,15 +18,11 @@
 package org.geotools.swt.event;
 
 /**
- * An adapter class that implements all of the method
- * defined in the {@code MapPaneListener} interface as empty methods, allowing sub-classes
- * to just override the methods they need. 
+ * An adapter class that implements all of the method defined in the {@code MapPaneListener}
+ * interface as empty methods, allowing sub-classes to just override the methods they need.
  *
  * @author Michael Bedward
  * @since 2.6
- *
- *
- *
  * @source $URL$
  */
 public class MapPaneAdapter implements MapPaneListener {
@@ -53,8 +49,7 @@ public class MapPaneAdapter implements MapPaneListener {
     public void onResized(MapPaneEvent ev) {}
 
     /**
-     * Called by the map pane when its display area has been
-     * changed e.g. by zooming or panning
+     * Called by the map pane when its display area has been changed e.g. by zooming or panning
      *
      * @param ev the event
      */
@@ -75,12 +70,10 @@ public class MapPaneAdapter implements MapPaneListener {
     public void onRenderingStopped(MapPaneEvent ev) {}
 
     /**
-     * Called by the map pane when it is rendering features. The
-     * event will be carrying data: a floating point value between
-     * 0 and 1 indicating rendering progress.
+     * Called by the map pane when it is rendering features. The event will be carrying data: a
+     * floating point value between 0 and 1 indicating rendering progress.
      *
      * @param ev the event
      */
     public void onRenderingProgress(MapPaneEvent ev) {}
-
 }

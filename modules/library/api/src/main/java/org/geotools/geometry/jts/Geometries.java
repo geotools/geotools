@@ -19,17 +19,15 @@ package org.geotools.geometry.jts;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 
-
 /**
- * Constants to identify JTS geometry types, reducing the need for boiler-plate
- * code such as this...
+ * Constants to identify JTS geometry types, reducing the need for boiler-plate code such as this...
+ *
  * <pre><code>
  * if (Polygon.class.isAssignableFrom(myObject.getClass()) ||
  *         MultiPolygon.class.isAssignableFrom(myObject.getClass())) {
@@ -46,6 +44,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * </code></pre>
  *
  * Instead you can do this...
+ *
  * <pre><code>
  * Geometries geomType = Geometries.get(myObject);
  * switch (geomType) {
@@ -69,7 +68,9 @@ import com.vividsolutions.jts.geom.Polygon;
  *         break;
  * }
  * </code></pre>
+ *
  * You can also work with {@code Class} objects...
+ *
  * <pre><code>
  * Class<? extends Geometry> aClass = ...
  * Geometries type = Geometries.getForBinding( aClass );
@@ -78,8 +79,6 @@ import com.vividsolutions.jts.geom.Polygon;
  * @author Justin Deoliveira, The Open Planning Project
  * @author Michael Bedward
  * @since 2.6
- *
- *
  * @source $URL$
  * @version $Id$
  */
@@ -87,15 +86,18 @@ public enum Geometries {
     /** Representing {@link Point} */
     POINT(Point.class, 2001),
 
-    /** Representing {@lin LinearRing}, {@link SingleCurvedGeometry} and {@link CompoundCurvedGeometry} */
+    /**
+     * Representing {@lin LinearRing}, {@link SingleCurvedGeometry} and {@link
+     * CompoundCurvedGeometry}
+     */
     LINESTRING(LineString.class, 2002),
-    
+
     /** Represent {@link Polygon} */
     POLYGON(Polygon.class, 2003),
 
     /** Represent {@link MultiPoint} */
     MULTIPOINT(MultiPoint.class, 2004),
-    
+
     /** Represent {@link MultiLineString} */
     MULTILINESTRING(MultiLineString.class, 2005),
 
@@ -107,7 +109,7 @@ public enum Geometries {
 
     /** Represent {@link GeometryCollection} */
     GEOMETRYCOLLECTION(GeometryCollection.class, 2008);
-    
+
     private final Class<? extends Geometry> binding;
     private final int sqlType;
     private final String name;
@@ -158,9 +160,9 @@ public enum Geometries {
     }
 
     /**
-     * Get the 'simple name'. Returns the same value as {@linkplain #getName()}
-     * except for MULTIPOINT, MULTILINESTRING and MULTIPOLYGON, for which it returns
-     * the name without the 'Multi' prefix.
+     * Get the 'simple name'. Returns the same value as {@linkplain #getName()} except for
+     * MULTIPOINT, MULTILINESTRING and MULTIPOLYGON, for which it returns the name without the
+     * 'Multi' prefix.
      *
      * @return the simple name
      */
@@ -172,9 +174,8 @@ public enum Geometries {
      * Get the {@code Geometries} for the given object.
      *
      * @param geom a JTS Geometry object
-     *
-     * @return the {@code Geometries} for the argument's class, or {@code null}
-     *         if the argument is {@code null}
+     * @return the {@code Geometries} for the argument's class, or {@code null} if the argument is
+     *     {@code null}
      */
     public static Geometries get(Geometry geom) {
         if (geom != null) {
@@ -188,7 +189,6 @@ public enum Geometries {
      * Get the {@code Geometries} for the given {@code Geometry} class.
      *
      * @param geomClass the class
-     *
      * @return the constant for this class
      */
     public static Geometries getForBinding(Class<? extends Geometry> geomClass) {
@@ -197,15 +197,15 @@ public enum Geometries {
                 return gt;
             }
         }
-        
-        //no direct match look for a subclass
+
+        // no direct match look for a subclass
         Geometries match = null;
 
         for (Geometries gt : Geometries.values()) {
             if (gt == GEOMETRY || gt == GEOMETRYCOLLECTION) {
                 continue;
             }
-            
+
             if (gt.binding.isAssignableFrom(geomClass)) {
                 if (match == null) {
                     match = gt;
@@ -215,9 +215,9 @@ public enum Geometries {
                 }
             }
         }
-        
+
         if (match == null) {
-            //no matches from concrete classes, try abstract classes
+            // no matches from concrete classes, try abstract classes
             if (GeometryCollection.class.isAssignableFrom(geomClass)) {
                 return GEOMETRYCOLLECTION;
             }
@@ -225,15 +225,14 @@ public enum Geometries {
                 return GEOMETRY;
             }
         }
-        
+
         return match;
     }
 
     /**
      * Get the {@code Geometries} for the specified name.
-     * 
+     *
      * @param name The name of the geometry, eg: "POINT"
-     * 
      * @return The constant for the name.
      */
     public static Geometries getForName(String name) {
@@ -244,12 +243,11 @@ public enum Geometries {
         }
         return null;
     }
-    
+
     /**
      * Get the {@code Geometries} with the given integer SQL type code.
      *
      * @param sqlType the code to look up.
-     *
      * @return the matching type or {@code null} if no match was found
      */
     public static Geometries getForSQLType(int sqlType) {

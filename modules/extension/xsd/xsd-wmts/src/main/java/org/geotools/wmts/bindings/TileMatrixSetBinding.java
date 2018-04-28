@@ -1,27 +1,24 @@
 package org.geotools.wmts.bindings;
 
-import org.geotools.wmts.WMTS;
-import org.geotools.xml.*;
-import org.geotools.xml.AbstractComplexBinding;
-
+import java.net.URI;
+import java.util.List;
+import javax.xml.namespace.QName;
 import net.opengis.ows11.BoundingBoxType;
 import net.opengis.ows11.CodeType;
 import net.opengis.wmts.v_1.TileMatrixSetType;
 import net.opengis.wmts.v_1.TileMatrixType;
 import net.opengis.wmts.v_1.wmtsv_1Factory;
-
-import java.net.URI;
-import java.util.List;
-
-import javax.xml.namespace.QName;
+import org.geotools.wmts.WMTS;
+import org.geotools.xml.*;
+import org.geotools.xml.AbstractComplexBinding;
 
 /**
  * Binding object for the element http://www.opengis.net/wmts/1.0:TileMatrixSet.
  *
  * <p>
- * 
+ *
  * <pre>
- *	 <code>
+ *  <code>
  *  &lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;element name="TileMatrixSet" xmlns="http://www.w3.org/2001/XMLSchema"&gt;
  *  		&lt;annotation&gt;
  *  			&lt;documentation&gt;Describes a particular set of tile matrices.&lt;/documentation&gt;
@@ -38,25 +35,25 @@ import javax.xml.namespace.QName;
  *  						&lt;element minOccurs="0" ref="ows:BoundingBox"&gt;
  *  							&lt;annotation&gt;
  *  								&lt;documentation&gt;
- *  									Minimum bounding rectangle surrounding 
- *  									the visible layer presented by this tile matrix 
+ *  									Minimum bounding rectangle surrounding
+ *  									the visible layer presented by this tile matrix
  *  									set, in the supported CRS &lt;/documentation&gt;
  *  							&lt;/annotation&gt;
  *  						&lt;/element&gt;
  *  						&lt;element ref="ows:SupportedCRS"&gt;
  *  							&lt;annotation&gt;
- *  								&lt;documentation&gt;Reference to one coordinate reference 
+ *  								&lt;documentation&gt;Reference to one coordinate reference
  *  								system (CRS).&lt;/documentation&gt;
  *  							&lt;/annotation&gt;
  *  						&lt;/element&gt;
  *  						&lt;element minOccurs="0" name="WellKnownScaleSet" type="anyURI"&gt;
  *  							&lt;annotation&gt;
  *  								&lt;documentation&gt;Reference to a well known scale set.
- *  									urn:ogc:def:wkss:OGC:1.0:GlobalCRS84Scale, 
- *  									urn:ogc:def:wkss:OGC:1.0:GlobalCRS84Pixel, 
- *  									urn:ogc:def:wkss:OGC:1.0:GoogleCRS84Quad and 
- *  									urn:ogc:def:wkss:OGC:1.0:GoogleMapsCompatible are 
- *  								possible values that are defined in Annex E. It has to be consistent with the 
+ *  									urn:ogc:def:wkss:OGC:1.0:GlobalCRS84Scale,
+ *  									urn:ogc:def:wkss:OGC:1.0:GlobalCRS84Pixel,
+ *  									urn:ogc:def:wkss:OGC:1.0:GoogleCRS84Quad and
+ *  									urn:ogc:def:wkss:OGC:1.0:GoogleMapsCompatible are
+ *  								possible values that are defined in Annex E. It has to be consistent with the
  *  								SupportedCRS and with the ScaleDenominators of the TileMatrix elements.
  *  								&lt;/documentation&gt;
  *  							&lt;/annotation&gt;
@@ -70,11 +67,10 @@ import javax.xml.namespace.QName;
  *  				&lt;/extension&gt;
  *  			&lt;/complexContent&gt;
  *  		&lt;/complexType&gt;
- *  	&lt;/element&gt; 
- *		
- *	  </code>
+ *  	&lt;/element&gt;
+ *
+ *   </code>
  * </pre>
- * </p>
  *
  * @generated
  */
@@ -87,16 +83,16 @@ public class TileMatrixSetBinding extends AbstractComplexBinding {
         this.factory = factory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return WMTS.TileMatrixSet;
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Class<TileMatrixSetType> getType() {
@@ -104,8 +100,10 @@ public class TileMatrixSetBinding extends AbstractComplexBinding {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
@@ -133,5 +131,4 @@ public class TileMatrixSetBinding extends AbstractComplexBinding {
 
         return matrixSet;
     }
-
 }

@@ -17,15 +17,12 @@
 package org.geotools.gce.imagemosaic.catalog;
 
 import java.lang.reflect.InvocationTargetException;
-
 import org.apache.commons.beanutils.BeanUtils;
 import org.geotools.gce.imagemosaic.PathType;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.util.Utilities;
 
-/**
- * Catalog configuration.
- */
+/** Catalog configuration. */
 public class CatalogConfigurationBean {
 
     /** The typename to use for the mosaic index */
@@ -33,37 +30,37 @@ public class CatalogConfigurationBean {
 
     private String locationAttribute = Utils.DEFAULT_LOCATION_ATTRIBUTE;
 
-    /** Suggested SPI for the various tiles. May be null. **/
+    /** Suggested SPI for the various tiles. May be null. * */
     private String suggestedSPI;
 
-    /** Suggested Format for the various tiles. May be null. **/
+    /** Suggested Format for the various tiles. May be null. * */
     private String suggestedFormat;
 
-    /** Suggested InputStreamSPI for the various tiles. May be null. **/
+    /** Suggested InputStreamSPI for the various tiles. May be null. * */
     private String suggestedIsSPI;
 
     /** we want to use caching for our index. */
     private boolean caching = Utils.DEFAULT_CONFIGURATION_CACHING;
 
     private boolean heterogeneous;
-    
+
     private boolean heterogeneousCRS;
 
     /**
-     * Whether the specified store should be wrapped. Only PostGis stores support this parameter. (Oracle stores are wrapped by default).
+     * Whether the specified store should be wrapped. Only PostGis stores support this parameter.
+     * (Oracle stores are wrapped by default).
      */
     private boolean wrapStore = false;
 
     /**
-     * <code>true</code> it tells us if the mosaic points to absolute paths or to relative ones. (in case of <code>false</code>).
+     * <code>true</code> it tells us if the mosaic points to absolute paths or to relative ones. (in
+     * case of <code>false</code>).
      */
     private boolean absolutePath = Utils.DEFAULT_PATH_BEHAVIOR;
 
     private PathType pathType;
 
-    public CatalogConfigurationBean() {
-
-    }
+    public CatalogConfigurationBean() {}
 
     public CatalogConfigurationBean(final CatalogConfigurationBean that) {
         Utilities.ensureNonNull("CatalogConfigurationBean", that);
@@ -87,7 +84,6 @@ public class CatalogConfigurationBean {
     }
 
     /** location attribute name */
-
     public String getLocationAttribute() {
         return locationAttribute;
     }
@@ -104,16 +100,12 @@ public class CatalogConfigurationBean {
         this.caching = caching;
     }
 
-    /**
-     * @return the suggestedSPI
-     */
+    /** @return the suggestedSPI */
     public String getSuggestedSPI() {
         return suggestedSPI;
     }
 
-    /**
-     * @param suggestedSPI the suggestedSPI to set
-     */
+    /** @param suggestedSPI the suggestedSPI to set */
     public void setSuggestedSPI(final String suggestedSPI) {
         this.suggestedSPI = suggestedSPI;
     }
@@ -125,7 +117,7 @@ public class CatalogConfigurationBean {
     public void setHeterogeneous(boolean heterogeneous) {
         this.heterogeneous = heterogeneous;
     }
-    
+
     public boolean isHeterogeneousCRS() {
         return heterogeneousCRS;
     }
@@ -143,14 +135,14 @@ public class CatalogConfigurationBean {
     public void setAbsolutePath(final boolean absolutePath) {
         this.absolutePath = absolutePath;
     }
-    
+
     public PathType getPathType() {
         if (pathType == null) {
             return isAbsolutePath() ? PathType.ABSOLUTE : PathType.RELATIVE;
         }
         return pathType;
     }
-    
+
     public void setPathType(PathType pathType) {
         this.pathType = pathType;
     }
@@ -178,7 +170,4 @@ public class CatalogConfigurationBean {
     public void setSuggestedIsSPI(String suggestedIsSPI) {
         this.suggestedIsSPI = suggestedIsSPI;
     }
-
-    
-    
 }

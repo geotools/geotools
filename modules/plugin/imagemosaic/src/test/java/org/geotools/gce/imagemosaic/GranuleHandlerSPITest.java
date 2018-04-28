@@ -20,7 +20,6 @@ package org.geotools.gce.imagemosaic;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.Map;
-
 import org.geotools.gce.imagemosaic.granulehandler.DefaultGranuleHandler;
 import org.geotools.gce.imagemosaic.granulehandler.DefaultGranuleHandlerFactory;
 import org.geotools.gce.imagemosaic.granulehandler.GranuleHandler;
@@ -29,16 +28,14 @@ import org.geotools.gce.imagemosaic.granulehandler.GranuleHandlerFactorySPI;
 import org.junit.Assert;
 import org.junit.Test;
 
-/**
- * Testing that granule handler correctly get configured and initialized
- */
+/** Testing that granule handler correctly get configured and initialized */
 public class GranuleHandlerSPITest {
 
-
     @Test
-    public void basicTest(){
+    public void basicTest() {
         // get the SPIs
-        Map<String, GranuleHandlerFactorySPI> spiMap = GranuleHandlerFactoryFinder.getGranuleHandlersSPI();
+        Map<String, GranuleHandlerFactorySPI> spiMap =
+                GranuleHandlerFactoryFinder.getGranuleHandlersSPI();
 
         // make sure it is not empty
         assertNotNull(spiMap);
@@ -55,7 +52,5 @@ public class GranuleHandlerSPITest {
         GranuleHandler handler = spi.create();
         assertNotNull(handler);
         Assert.assertTrue(handler.getClass().equals(DefaultGranuleHandler.class));
-
     }
-
 }

@@ -17,42 +17,42 @@
 
 package org.geotools.swing.dialog;
 
-import org.junit.Test;
 import static org.junit.Assert.*;
+
+import org.junit.Test;
 
 /**
  * Tests for the DialogUtils class which don't require a graphics environment.
- * 
+ *
  * @author Michael Bedward
  * @since 8.0
  * @source $URL$
  * @version $Id$
  */
 public class DialogUtilsHeadlessTest {
-    
+
     @Test
     public void getStringReturnsNonEmptyInput() {
         assertEquals("Foo", DialogUtils.getString("Foo", "Bar"));
     }
-    
+
     @Test
     public void getStringReturnsFallbackWhenInputNull() {
         assertEquals("Bar", DialogUtils.getString(null, "Bar"));
     }
-    
+
     @Test
     public void getStringReturnsFallbackWhenInputEmpty() {
         assertEquals("Bar", DialogUtils.getString("", "Bar"));
     }
-    
+
     @Test
     public void getStringReturnsFallbackWhenInputAllSpaces() {
         assertEquals("Bar", DialogUtils.getString("     ", "Bar"));
     }
-    
+
     @Test
     public void nullFallbackIsAllowed() {
         assertNull(DialogUtils.getString(null, null));
     }
-    
 }

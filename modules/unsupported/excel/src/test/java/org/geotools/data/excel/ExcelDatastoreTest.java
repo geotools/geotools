@@ -28,7 +28,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
-
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataStoreFinder;
@@ -47,19 +46,15 @@ import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class ExcelDatastoreTest extends DataTestCase {
 
     public ExcelDatastoreTest(String name) {
-		super(name);
-		// TODO Auto-generated constructor stub
-	}
+        super(name);
+        // TODO Auto-generated constructor stub
+    }
 
-	static ExcelDataStore[] eds;
+    static ExcelDataStore[] eds;
 
     static boolean setup = false;
 
@@ -68,28 +63,31 @@ public class ExcelDatastoreTest extends DataTestCase {
         if (!setup) {
             super.setUp();
             final File test_data_dir = TestData.file(this, null);
-            String[] testFiles = test_data_dir.list(new FilenameFilter() {
+            String[] testFiles =
+                    test_data_dir.list(
+                            new FilenameFilter() {
 
-                public boolean accept(File dir, String name) {
+                                public boolean accept(File dir, String name) {
 
-                    final boolean accept = name.endsWith(".xlsx") || name.endsWith(".xls");
-                    return accept;
-                }
-            });
+                                    final boolean accept =
+                                            name.endsWith(".xlsx") || name.endsWith(".xls");
+                                    return accept;
+                                }
+                            });
             eds = new ExcelDataStore[testFiles.length];
             int i = 0;
             for (String f : testFiles) {
-                System.out.println("testing "+f);
+                System.out.println("testing " + f);
                 File file = TestData.file(this, f);
                 HashMap<String, Serializable> params = new HashMap<String, Serializable>();
                 java.net.URL url = URLs.fileToUrl(file);
-                //System.out.println(url);
+                // System.out.println(url);
                 int idx = f.lastIndexOf('.');
                 String props = f.substring(0, idx) + ".props";
                 File propsFile = null;
                 try {
                     propsFile = TestData.file(this, props);
-                    //System.out.println(propsFile);
+                    // System.out.println(propsFile);
                 } catch (IOException e) {
                     // TestData throws an exception for file not found!
                     // ignore it.
@@ -110,16 +108,15 @@ public class ExcelDatastoreTest extends DataTestCase {
                         String key = (String) en.nextElement();
                         params.put(key, p.getProperty(key));
                     }
-                    //you can't hard code the test-files location in to the props file
+                    // you can't hard code the test-files location in to the props file
                     params.put("url", url);
                 }
                 ExcelDataStoreFactory fac = new ExcelDataStoreFactory();
                 assertTrue("Can't process params", fac.canProcess(params));
                 ExcelDataStore ex = (ExcelDataStore) fac.createDataStore(params);
                 assertNotNull("Null data store", ex);
-                //System.out.println("adding " + i + " " + ex);
+                // System.out.println("adding " + i + " " + ex);
                 eds[i++] = ex;
-
             }
             setup = true;
         }
@@ -151,7 +148,7 @@ public class ExcelDatastoreTest extends DataTestCase {
         params.put("longcol", "LON");
         params.put("projection", "epsg:4326");
         if (count == 1) {
-            // running in Eclipse I only get a MockDataStoreFactory found 
+            // running in Eclipse I only get a MockDataStoreFactory found
             DataStore store = DataStoreFinder.getDataStore(params);
             assertNotNull("no datastore found", store);
             System.out.println(store.getInfo());
@@ -173,8 +170,7 @@ public class ExcelDatastoreTest extends DataTestCase {
 
             String[] names = ed.getTypeNames();
             System.out.println(names);
-            if (ed.getName().contains("qed"))
-                continue;
+            if (ed.getName().contains("qed")) continue;
             assertEquals("Sheet Name is wrong", "locations", names[0]);
         }
     }
@@ -207,8 +203,7 @@ public class ExcelDatastoreTest extends DataTestCase {
                 }
                 System.out.println();
             }
-            if (ed.getName().contains("qed"))
-                continue;
+            if (ed.getName().contains("qed")) continue;
             FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
             Filter filter = ff.equal(ff.property("CITY"), ff.literal("Trento"), true);
             Query query = new Query("locations", filter);
@@ -217,30 +212,31 @@ public class ExcelDatastoreTest extends DataTestCase {
             System.out.println(fts.features().next());
         }
     }
-    
+
     /**
      * Test query with a start index
-     * @throws IOException 
-     * @throws FileNotFoundException 
+     *
+     * @throws IOException
+     * @throws FileNotFoundException
      */
-    
     public void testOffset() throws FileNotFoundException, IOException {
         Query query = new Query(Query.ALL);
         query.setStartIndex(1);
-        
+
         for (ExcelDataStore ed : eds) {
             System.out.println(ed.getName());
 
             List<Name> names = ed.getNames();
             ExcelFeatureSource source = (ExcelFeatureSource) ed.getFeatureSource(names.get(0));
-            assertEquals(source.getCount(Query.ALL)-1, source.getCount(query));
+            assertEquals(source.getCount(Query.ALL) - 1, source.getCount(query));
         }
     }
-    
+
     /**
      * Test query with maxFeatures
-     * @throws IOException 
-     * @throws FileNotFoundException 
+     *
+     * @throws IOException
+     * @throws FileNotFoundException
      */
     public void testLimit() throws FileNotFoundException, IOException {
         Query query = new Query(Query.ALL);
@@ -253,11 +249,12 @@ public class ExcelDatastoreTest extends DataTestCase {
             assertTrue(2 >= source.getCount(query));
         }
     }
-    
+
     /**
      * Test query with maxFeatures and startIndex
-     * @throws IOException 
-     * @throws FileNotFoundException 
+     *
+     * @throws IOException
+     * @throws FileNotFoundException
      */
     public void testLimitOffset() throws FileNotFoundException, IOException {
         Query query = new Query(Query.ALL);
@@ -268,7 +265,7 @@ public class ExcelDatastoreTest extends DataTestCase {
 
             List<Name> names = ed.getNames();
             ExcelFeatureSource source = (ExcelFeatureSource) ed.getFeatureSource(names.get(0));
-            assertEquals(Math.min(2, source.getCount(Query.ALL)-1), source.getCount(query));
+            assertEquals(Math.min(2, source.getCount(Query.ALL) - 1), source.getCount(query));
         }
     }
 }

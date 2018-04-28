@@ -18,10 +18,8 @@ package org.geotools.data.shapefile.index;
 
 /**
  * DOCUMENT ME!
- * 
+ *
  * @author Tommaso Nolli
- *
- *
  * @source $URL$
  */
 public class LockManager {
@@ -32,8 +30,7 @@ public class LockManager {
     private Lock exclusiveLock;
     private int leases;
 
-    public LockManager() {
-    }
+    public LockManager() {}
 
     public synchronized void release(Lock lock) {
         LockImpl li = (LockImpl) lock;
@@ -49,10 +46,8 @@ public class LockManager {
 
     /**
      * DOCUMENT ME!
-     * 
-     * 
-     * @throws LockTimeoutException
-     *                 DOCUMENT ME!
+     *
+     * @throws LockTimeoutException DOCUMENT ME!
      */
     public synchronized Lock aquireExclusive() throws LockTimeoutException {
         int cnt = 0;
@@ -79,10 +74,8 @@ public class LockManager {
 
     /**
      * DOCUMENT ME!
-     * 
-     * 
-     * @throws LockTimeoutException
-     *                 DOCUMENT ME!
+     *
+     * @throws LockTimeoutException DOCUMENT ME!
      */
     public synchronized Lock aquireShared() throws LockTimeoutException {
         int cnt = 0;
@@ -108,7 +101,7 @@ public class LockManager {
 
     /**
      * DOCUMENT ME!
-     * 
+     *
      * @author Tommaso Nolli
      */
     private class LockImpl implements Lock {
@@ -116,16 +109,14 @@ public class LockManager {
 
         /**
          * DOCUMENT ME!
-         * 
+         *
          * @param type
          */
         public LockImpl(short type) {
             this.type = type;
         }
 
-        /**
-         * @see org.geotools.index.Lock#getType()
-         */
+        /** @see org.geotools.index.Lock#getType() */
         public short getType() {
             return this.type;
         }

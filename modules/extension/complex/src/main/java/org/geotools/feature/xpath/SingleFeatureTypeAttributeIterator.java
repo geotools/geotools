@@ -23,23 +23,15 @@ import org.opengis.feature.type.Name;
 
 /**
  * Iterates over a single attribute of a feature type.
- * 
+ *
  * @author Niels Charlier (Curtin University of Technology)
- * 
- *
- *
- *
  * @source $URL$
- *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main
- *         /java/org/geotools/feature/xpath/SingleFeatureTypeAttributeIterator.java $
- * 
+ *     http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main
+ *     /java/org/geotools/feature/xpath/SingleFeatureTypeAttributeIterator.java $
  */
-
 public class SingleFeatureTypeAttributeIterator implements NodeIterator {
 
-    /**
-     * The feature type node pointer
-     */
+    /** The feature type node pointer */
     protected NodePointer pointer;
 
     protected Name name;
@@ -48,36 +40,28 @@ public class SingleFeatureTypeAttributeIterator implements NodeIterator {
 
     /**
      * Creates the iteartor.
-     * 
-     * @param pointer
-     *            The pointer to the feature.
-     * @param index
-     *            The index of the property to iterate over
+     *
+     * @param pointer The pointer to the feature.
+     * @param index The index of the property to iterate over
      */
-    public SingleFeatureTypeAttributeIterator(NodePointer pointer, ComplexType featureType,
-            Name name) {
+    public SingleFeatureTypeAttributeIterator(
+            NodePointer pointer, ComplexType featureType, Name name) {
         this.pointer = pointer;
         this.name = name;
         this.featureType = featureType;
     }
 
-    /**
-     * Always return 1, only a single property.
-     */
+    /** Always return 1, only a single property. */
     public int getPosition() {
         return 1;
     }
 
-    /**
-     * Return true if position == 1.
-     */
+    /** Return true if position == 1. */
     public boolean setPosition(int position) {
         return position < 2;
     }
 
-    /**
-     * Return a pointer to the property at the set index.
-     */
+    /** Return a pointer to the property at the set index. */
     public NodePointer getNodePointer() {
         return new FeatureTypeAttributePointer(pointer, featureType, name);
     }

@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2001-2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -22,23 +22,16 @@ import java.awt.image.RenderedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-
 import javax.imageio.ImageIO;
 import javax.imageio.stream.FileCacheImageOutputStream;
 import javax.imageio.stream.ImageOutputStream;
 import javax.imageio.stream.MemoryCacheImageOutputStream;
 import javax.media.jai.operator.ConstantDescriptor;
-
-import org.geotools.image.io.ImageIOExt;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class ImageIOExtTest {
 
     private boolean useCache;
@@ -58,18 +51,18 @@ public class ImageIOExtTest {
         ImageIO.setUseCache(false);
         testSameStreamClass();
     }
-    
+
     @Test
     public void testDefaultFileOutputStreams() throws Exception {
         ImageIO.setUseCache(true);
         testSameStreamClass();
     }
-    
-    @Test 
+
+    @Test
     public void testThreshold() throws Exception {
         OutputStream os = new ByteArrayOutputStream();
         ImageIOExt.setFilesystemThreshold(100 * 100 * 3l);
-        
+
         RenderedImage imageSmall = getTestRenderedImage(50, 50, 3);
         final ImageOutputStream iosSmall = ImageIOExt.createImageOutputStream(imageSmall, os);
         try {
@@ -77,7 +70,7 @@ public class ImageIOExtTest {
         } finally {
             iosSmall.close();
         }
-        
+
         RenderedImage imageLarge = getTestRenderedImage(101, 101, 3);
         final ImageOutputStream iosLarge = ImageIOExt.createImageOutputStream(imageLarge, os);
         try {

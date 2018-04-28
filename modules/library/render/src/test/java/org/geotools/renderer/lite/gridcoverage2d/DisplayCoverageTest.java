@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -25,7 +25,6 @@ import java.awt.image.BufferedImage;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
@@ -49,10 +48,8 @@ import org.opengis.style.ContrastMethod;
 
 /**
  * Tests rendering a GridCoverage2D object directly (ie. not via a coverage reader).
- * 
+ *
  * @author mbedward
- *
- *
  * @source $URL$
  * @since 2.7
  * @version $Id$
@@ -73,13 +70,13 @@ public class DisplayCoverageTest {
     }
 
     /**
-     * This test was added after changes to the render module broke direct
-     * rendering of GridCoverage2D objects in GridCoverageLayers. 
-     * 
-     * It does not compare the rendering to the coverage data. Rather it just
-     * checks that rendering is done without error.
-     * 
-     * The test is skipped in a headless build.
+     * This test was added after changes to the render module broke direct rendering of
+     * GridCoverage2D objects in GridCoverageLayers.
+     *
+     * <p>It does not compare the rendering to the coverage data. Rather it just checks that
+     * rendering is done without error.
+     *
+     * <p>The test is skipped in a headless build.
      */
     @Test
     public void renderCoverage() {
@@ -97,14 +94,15 @@ public class DisplayCoverageTest {
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setContext(context);
 
-        RenderListener listener = new RenderListener() {
-            public void featureRenderer(SimpleFeature feature) {}
+        RenderListener listener =
+                new RenderListener() {
+                    public void featureRenderer(SimpleFeature feature) {}
 
-            public void errorOccurred(Exception e) {
-                e.printStackTrace();
-                fail("Failed to render coverage");
-            }
-        };
+                    public void errorOccurred(Exception e) {
+                        e.printStackTrace();
+                        fail("Failed to render coverage");
+                    }
+                };
 
         renderer.addRenderListener(listener);
 

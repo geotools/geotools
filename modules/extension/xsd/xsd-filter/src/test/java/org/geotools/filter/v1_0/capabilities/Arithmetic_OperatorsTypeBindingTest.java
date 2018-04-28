@@ -16,17 +16,12 @@
  */
 package org.geotools.filter.v1_0.capabilities;
 
-import org.w3c.dom.Document;
 import javax.xml.namespace.QName;
-import org.opengis.filter.capability.ArithmeticOperators;
 import org.geotools.xml.Binding;
+import org.opengis.filter.capability.ArithmeticOperators;
+import org.w3c.dom.Document;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class Arithmetic_OperatorsTypeBindingTest extends FilterCapabilitiesTestSupport {
     public void testType() {
         assertEquals(ArithmeticOperators.class, binding(OGC.Arithmetic_OperatorsType).getType());
@@ -55,14 +50,20 @@ public class Arithmetic_OperatorsTypeBindingTest extends FilterCapabilitiesTestS
     }
 
     public void testEncode() throws Exception {
-        Document dom = encode(FilterMockData.arithmetic(true),
-                new QName(OGC.NAMESPACE, "Arithmetic_Operators"), OGC.Arithmetic_OperatorsType);
+        Document dom =
+                encode(
+                        FilterMockData.arithmetic(true),
+                        new QName(OGC.NAMESPACE, "Arithmetic_Operators"),
+                        OGC.Arithmetic_OperatorsType);
 
         assertNotNull(getElementByQName(dom, OGC.Simple_Arithmetic));
         assertNotNull(getElementByQName(dom, new QName(OGC.NAMESPACE, "Functions")));
 
-        dom = encode(FilterMockData.arithmetic(false),
-                new QName(OGC.NAMESPACE, "Arithmetic_Operators"), OGC.Arithmetic_OperatorsType);
+        dom =
+                encode(
+                        FilterMockData.arithmetic(false),
+                        new QName(OGC.NAMESPACE, "Arithmetic_Operators"),
+                        OGC.Arithmetic_OperatorsType);
         assertNull(getElementByQName(dom, OGC.Simple_Arithmetic));
         assertNotNull(getElementByQName(dom, new QName(OGC.NAMESPACE, "Functions")));
     }

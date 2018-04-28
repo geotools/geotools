@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2011, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -23,19 +23,17 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.zip.GZIPInputStream;
-
 import org.geotools.data.Base64;
 
 /**
  * A simple {@link HTTPClient} that creates a new {@link HttpURLConnection HTTP connection} for each
  * request.
- * 
+ *
  * @author groldan
- * 
  */
 public class SimpleHttpClient implements HTTPClient {
 
-    private static final int DEFAULT_TIMEOUT = 30;// 30 seconds
+    private static final int DEFAULT_TIMEOUT = 30; // 30 seconds
 
     private String user;
 
@@ -87,13 +85,11 @@ public class SimpleHttpClient implements HTTPClient {
         this.readTimeout = readTimeout;
     }
 
-    /**
-     * @see org.geotools.data.ows.HTTPClient#get(java.net.URL)
-     */
+    /** @see org.geotools.data.ows.HTTPClient#get(java.net.URL) */
     public HTTPResponse get(final URL url) throws IOException {
 
         URLConnection connection = openConnection(url);
-        if(connection instanceof HttpURLConnection){
+        if (connection instanceof HttpURLConnection) {
             ((HttpURLConnection) connection).setRequestMethod("GET");
         }
 
@@ -104,10 +100,11 @@ public class SimpleHttpClient implements HTTPClient {
 
     /**
      * @see org.geotools.data.ows.HTTPClient#post(java.net.URL, java.io.InputStream,
-     *      java.lang.String)
+     *     java.lang.String)
      */
-    public HTTPResponse post(final URL url, final InputStream postContent,
-            final String postContentType) throws IOException {
+    public HTTPResponse post(
+            final URL url, final InputStream postContent, final String postContentType)
+            throws IOException {
 
         URLConnection connection = openConnection(url);
         if (connection instanceof HttpURLConnection) {
@@ -138,7 +135,7 @@ public class SimpleHttpClient implements HTTPClient {
     private URLConnection openConnection(URL finalURL) throws IOException {
         URLConnection connection = finalURL.openConnection();
         final boolean http = connection instanceof HttpURLConnection;
-        if(http && tryGzip){
+        if (http && tryGzip) {
             connection.addRequestProperty("Accept-Encoding", "gzip");
         }
         // mind, connect timeout is in seconds
@@ -154,7 +151,8 @@ public class SimpleHttpClient implements HTTPClient {
 
         if (http && username != null && password != null) {
             String userpassword = username + ":" + password;
-            String encodedAuthorization = Base64.encodeBytes(userpassword.getBytes("UTF-8"), Base64.DONT_BREAK_LINES);
+            String encodedAuthorization =
+                    Base64.encodeBytes(userpassword.getBytes("UTF-8"), Base64.DONT_BREAK_LINES);
             connection.setRequestProperty("Authorization", "Basic " + encodedAuthorization);
         }
         return connection;
@@ -178,9 +176,7 @@ public class SimpleHttpClient implements HTTPClient {
             responseStream = inputStream;
         }
 
-        /**
-         * @see org.geotools.data.ows.HTTPResponse#dispose()
-         */
+        /** @see org.geotools.data.ows.HTTPResponse#dispose() */
         public void dispose() {
             if (responseStream != null) {
                 try {
@@ -198,30 +194,23 @@ public class SimpleHttpClient implements HTTPClient {
             }
         }
 
-        /**
-         * @see org.geotools.data.ows.HTTPResponse#getContentType()
-         */
+        /** @see org.geotools.data.ows.HTTPResponse#getContentType() */
         @Override
         public String getContentType() {
             return connection.getContentType();
         }
-
 
         @Override
         public String getResponseHeader(String headerName) {
             return connection.getHeaderField(headerName);
         }
 
-        /**
-         * @see org.geotools.data.ows.HTTPResponse#getResponseStream()
-         */
+        /** @see org.geotools.data.ows.HTTPResponse#getResponseStream() */
         public InputStream getResponseStream() throws IOException {
             return responseStream;
         }
 
-        /**
-         * @see org.geotools.data.ows.HTTPResponse#getResponseCharset()
-         */
+        /** @see org.geotools.data.ows.HTTPResponse#getResponseCharset() */
         @Override
         public String getResponseCharset() {
             String contentType = getContentType();

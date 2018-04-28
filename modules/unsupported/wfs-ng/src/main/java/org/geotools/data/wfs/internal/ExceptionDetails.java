@@ -22,9 +22,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Corresponds to one detail item of an WFS exception report.
- * Contained by {@link WFSException}.
- * 
+ * Corresponds to one detail item of an WFS exception report. Contained by {@link WFSException}.
+ *
  * @author awaterme
  */
 public final class ExceptionDetails implements Serializable {
@@ -64,7 +63,6 @@ public final class ExceptionDetails implements Serializable {
 
     @Override
     public String toString() {
-        return "ExceptionDetails [code=" + code + ", locator=" + locator + ", texts=" + texts
-                + "]";
+        return "ExceptionDetails [code=" + code + ", locator=" + locator + ", texts=" + texts + "]";
     }
 }

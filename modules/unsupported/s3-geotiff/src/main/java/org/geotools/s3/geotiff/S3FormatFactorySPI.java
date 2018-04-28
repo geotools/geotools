@@ -19,13 +19,10 @@ package org.geotools.s3.geotiff;
 import java.awt.RenderingHints;
 import java.util.Collections;
 import java.util.Map;
-
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 
-/**
- * Simple format factory required to get S3GeoTiff working
- */
+/** Simple format factory required to get S3GeoTiff working */
 public class S3FormatFactorySPI implements GridFormatFactorySpi {
     @Override
     public AbstractGridFormat createFormat() {

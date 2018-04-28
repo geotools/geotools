@@ -46,8 +46,8 @@ contains our boilerplate imports, fields and getters/setters:
 
 .. literalinclude:: /../src/main/java/org/geotools/tutorial/coverage/ImageTiler.java
     :language: java
-    :start-after: //docs start prelim
-    :end-before: //docs end prelim
+    :start-after: // docs start prelim
+    :end-before: // docs end prelim
 
 
 .. note:: Please note that this isn't the entire code listing -- we'll finish it off as we go along -- so don't worry right now
@@ -63,8 +63,8 @@ arguments -- vertical and horizontal tile counts, and tile scaling.
 
 .. literalinclude:: /../src/main/java/org/geotools/tutorial/coverage/ImageTiler.java
     :language: java
-    :start-after: //docs start main
-    :end-before: //docs end main
+    :start-after: // docs start main
+    :end-before: // docs end main
 
 Loading the coverage
 --------------------
@@ -74,8 +74,8 @@ writing that we handle separately.
 
 .. literalinclude:: /../src/main/java/org/geotools/tutorial/coverage/ImageTiler.java
     :language: java
-    :start-after: //docs start load coverage
-    :end-before: //docs end load coverage
+    :start-after: // docs start load coverage
+    :end-before: // docs end load coverage
 
 
 Subdividing the coverage
@@ -87,8 +87,8 @@ to crop and scale.
 
 .. literalinclude:: /../src/main/java/org/geotools/tutorial/coverage/ImageTiler.java
     :language: java
-    :start-after: //docs start envelope
-    :end-before: //docs end envelope
+    :start-after: // docs start envelope
+    :end-before: // docs end envelope
 
 Creating our tile envelope
 --------------------------
@@ -96,8 +96,8 @@ We'll create the envelope of our tile based on our indexes and target enveloped 
 
 .. literalinclude:: /../src/main/java/org/geotools/tutorial/coverage/ImageTiler.java
     :language: java
-    :start-after: //docs start make envelope
-    :end-before: //docs end make envelope
+    :start-after: // docs start make envelope
+    :end-before: // docs end make envelope
 
 
 Cropping
@@ -109,8 +109,8 @@ to perform coverage operations in the next step.
 
 .. literalinclude:: /../src/main/java/org/geotools/tutorial/coverage/ImageTiler.java
     :language: java
-    :start-after: //docs start cropping
-    :end-before: //docs end cropping
+    :start-after: // docs start cropping
+    :end-before: // docs end cropping
 
 Scaling
 -------
@@ -121,8 +121,8 @@ factor in order to preserve the aspect ratio of our original coverage.
 
 .. literalinclude:: /../src/main/java/org/geotools/tutorial/coverage/ImageTiler.java
     :language: java
-    :start-after: //docs start scale
-    :end-before: //docs end scale
+    :start-after: // docs start scale
+    :end-before: // docs end scale
 
 Running the application
 =======================

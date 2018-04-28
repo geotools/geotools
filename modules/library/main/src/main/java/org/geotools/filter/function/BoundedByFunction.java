@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2017, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,6 +16,8 @@
  */
 package org.geotools.filter.function;
 
+import static org.geotools.filter.capability.FunctionNameImpl.parameter;
+
 import org.geotools.filter.FunctionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.geometry.jts.JTS;
@@ -24,15 +26,11 @@ import org.opengis.feature.Feature;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.geometry.Geometry;
 
-import static org.geotools.filter.capability.FunctionNameImpl.parameter;
-
-/**
- * A function returning the bounds of a feature (including all geometries)
- */
+/** A function returning the bounds of a feature (including all geometries) */
 public class BoundedByFunction extends FunctionImpl {
 
-    public static FunctionName NAME = new FunctionNameImpl("boundedBy",
-            parameter("result", Geometry.class));
+    public static FunctionName NAME =
+            new FunctionNameImpl("boundedBy", parameter("result", Geometry.class));
 
     public BoundedByFunction() {
         this.functionName = NAME;

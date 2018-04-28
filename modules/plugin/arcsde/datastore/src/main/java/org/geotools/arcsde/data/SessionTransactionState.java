@@ -17,10 +17,11 @@
  */
 package org.geotools.arcsde.data;
 
+import com.esri.sde.sdk.client.SeConnection;
+import com.esri.sde.sdk.client.SeException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.arcsde.session.Command;
 import org.geotools.arcsde.session.ISession;
 import org.geotools.arcsde.session.ISessionPool;
@@ -30,25 +31,22 @@ import org.geotools.data.DataSourceException;
 import org.geotools.data.Transaction;
 import org.geotools.data.Transaction.State;
 
-import com.esri.sde.sdk.client.SeConnection;
-import com.esri.sde.sdk.client.SeException;
-
 /**
  * Store the transaction state needed for a <code>Session</code> instances.
- * <p>
- * This transaction state is used to hold the SeConnection needed for a Session.
- * </p>
- * 
+ *
+ * <p>This transaction state is used to hold the SeConnection needed for a Session.
+ *
  * @author Jake Fear
  * @author Gabriel Roldan
  * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *         /org/geotools/arcsde/data/ArcTransactionState.java $
+ *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
+ *     /org/geotools/arcsde/data/ArcTransactionState.java $
  * @version $Id$
  */
 final class SessionTransactionState implements Transaction.State {
-    private static final Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger(SessionTransactionState.class.getPackage().getName());
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(
+                    SessionTransactionState.class.getPackage().getName());
 
     /**
      * The session being managed, it will be held open until commit(), rollback() or close() is
@@ -56,18 +54,15 @@ final class SessionTransactionState implements Transaction.State {
      */
     private TransactionSession session;
 
-    /**
-     * The transaction that is holding on to this Transaction.State
-     */
+    /** The transaction that is holding on to this Transaction.State */
     private Transaction transaction;
 
     /**
      * Creates a new ArcTransactionState object.
-     * 
+     *
      * @param listenerManager
-     * @param pool
-     *            connection pool where to grab a connection and hold it while there's a transaction
-     *            open (signaled by any use of {@link #getConnection()}
+     * @param pool connection pool where to grab a connection and hold it while there's a
+     *     transaction open (signaled by any use of {@link #getConnection()}
      */
     private SessionTransactionState(final ISession session) {
         if (!session.isTransactionActive()) {
@@ -79,33 +74,35 @@ final class SessionTransactionState implements Transaction.State {
     /**
      * Commits the transaction and returns the connection to the pool. A new one will be grabbed
      * when needed.
-     * <p>
-     * Preconditions:
+     *
+     * <p>Preconditions:
+     *
      * <ul>
-     * <li>{@link #setTransaction(Transaction)} already called with non <code>null</code> argument.
-     * <li>
+     *   <li>{@link #setTransaction(Transaction)} already called with non <code>null</code>
+     *       argument.
+     *   <li>
      * </ul>
-     * </p>
      */
     public void commit() throws IOException {
         failIfClosed();
         final ISession session = this.session;
 
-        final Command<Void> commitCommand = new Command<Void>() {
-            @Override
-            public Void execute(ISession session, SeConnection connection) throws SeException,
-                    IOException {
+        final Command<Void> commitCommand =
+                new Command<Void>() {
+                    @Override
+                    public Void execute(ISession session, SeConnection connection)
+                            throws SeException, IOException {
 
-                try {
-                    session.commitTransaction();
-                    session.startTransaction();
-                } catch (IOException se) {
-                    LOGGER.log(Level.WARNING, se.getMessage(), se);
-                    throw se;
-                }
-                return null;
-            }
-        };
+                        try {
+                            session.commitTransaction();
+                            session.startTransaction();
+                        } catch (IOException se) {
+                            LOGGER.log(Level.WARNING, se.getMessage(), se);
+                            throw se;
+                        }
+                        return null;
+                    }
+                };
 
         try {
             session.issue(commitCommand);
@@ -114,23 +111,22 @@ final class SessionTransactionState implements Transaction.State {
         }
     }
 
-    /**
-     * 
-     */
+    /** */
     public void rollback() throws IOException {
         failIfClosed();
         final ISession session = this.session;
         try {
-            session.issue(new Command<Void>() {
-                @Override
-                public Void execute(ISession session, SeConnection connection) throws SeException,
-                        IOException {
-                    session.rollbackTransaction();
-                    // and keep editing
-                    session.startTransaction();
-                    return null;
-                }
-            });
+            session.issue(
+                    new Command<Void>() {
+                        @Override
+                        public Void execute(ISession session, SeConnection connection)
+                                throws SeException, IOException {
+                            session.rollbackTransaction();
+                            // and keep editing
+                            session.startTransaction();
+                            return null;
+                        }
+                    });
         } catch (IOException se) {
             close();
             LOGGER.log(Level.WARNING, se.getMessage(), se);
@@ -138,25 +134,21 @@ final class SessionTransactionState implements Transaction.State {
         }
     }
 
-    /**
-     * @see State#addAuthorization(String)
-     */
+    /** @see State#addAuthorization(String) */
     public void addAuthorization(String authId) {
         // intentionally blank we are not making use of ArcSDE locking
     }
 
     /**
      * Transaction start/end.
-     * <p>
-     * If the provided transaction is non null we are being added to the Transaction. If the
+     *
+     * <p>If the provided transaction is non null we are being added to the Transaction. If the
      * provided transaction is null we are being shutdown.
-     * </p>
-     * 
+     *
      * @see Transaction.State#setTransaction(Transaction)
-     * @param transaction
-     *            transaction information, <code>null</code> signals this state lifecycle end.
-     * @throws IllegalStateException
-     *             if close() is called while a transaction is in progress
+     * @param transaction transaction information, <code>null</code> signals this state lifecycle
+     *     end.
+     * @throws IllegalStateException if close() is called while a transaction is in progress
      */
     public void setTransaction(final Transaction transaction) {
         if (Transaction.AUTO_COMMIT.equals(transaction)) {
@@ -177,9 +169,8 @@ final class SessionTransactionState implements Transaction.State {
 
     /**
      * If this state has been closed throws an unchecked exception as its clearly a broken workflow.
-     * 
-     * @throws IllegalStateException
-     *             if the transaction state has been closed.
+     *
+     * @throws IllegalStateException if the transaction state has been closed.
      */
     private void failIfClosed() throws IllegalStateException {
         if (session == null) {
@@ -227,7 +218,7 @@ final class SessionTransactionState implements Transaction.State {
     /**
      * Used only within the package to provide access to a single connection on which this
      * transaction is being conducted.
-     * 
+     *
      * @return the session tied to ths state's transaction
      */
     ISession getConnection() {
@@ -241,19 +232,19 @@ final class SessionTransactionState implements Transaction.State {
 
     /**
      * Grab the SessionTransactionState (when not using AUTO_COMMIT).
-     * <p>
-     * As of GeoTools 2.5 we store the TransactionState using the connection pool as a key.
-     * </p>
-     * 
-     * @return the SessionTransactionState stored in the transaction with
-     *         <code>connectionPool</code> as key.
+     *
+     * <p>As of GeoTools 2.5 we store the TransactionState using the connection pool as a key.
+     *
+     * @return the SessionTransactionState stored in the transaction with <code>connectionPool
+     *     </code> as key.
      */
-    public static SessionTransactionState getState(final Transaction transaction,
-            final ISessionPool pool) throws IOException {
+    public static SessionTransactionState getState(
+            final Transaction transaction, final ISessionPool pool) throws IOException {
         SessionTransactionState state;
 
         if (transaction == Transaction.AUTO_COMMIT) {
-            LOGGER.log(Level.SEVERE,
+            LOGGER.log(
+                    Level.SEVERE,
                     "Should not request ArcTransactionState when using AUTO_COMMITback connection");
             return null;
         }
@@ -277,8 +268,8 @@ final class SessionTransactionState implements Transaction.State {
                     } finally {
                         session.dispose();
                     }
-                    throw new DataSourceException("Exception initiating transaction on " + session,
-                            e);
+                    throw new DataSourceException(
+                            "Exception initiating transaction on " + session, e);
                 }
                 state = new SessionTransactionState(session);
                 transaction.putState(pool, state);
@@ -289,18 +280,17 @@ final class SessionTransactionState implements Transaction.State {
 
     /**
      * A session wrapper that does not disposes if a transaction is active.
-     * <p>
-     * This wrapper provides for client code to follow de acquire/use/dispose workflow without
+     *
+     * <p>This wrapper provides for client code to follow de acquire/use/dispose workflow without
      * worrying if it should or should not actually dispose the session depending on a transaction
      * being in progress or not.
-     * </p>
-     * 
+     *
      * @author Gabriel Roldan (TOPP)
      * @version $Id$
      * @since 2.5.x
      * @source $URL:
-     *         http://svn.geotools.org/trunk/modules/plugin/arcsde/datastore/src/main/java/org/
-     *         geotools/arcsde/pool/SessionTransactionState.java $
+     *     http://svn.geotools.org/trunk/modules/plugin/arcsde/datastore/src/main/java/org/
+     *     geotools/arcsde/pool/SessionTransactionState.java $
      */
     private static final class TransactionSession extends SessionWrapper {
 
@@ -308,9 +298,7 @@ final class SessionTransactionState implements Transaction.State {
             super(session);
         }
 
-        /**
-         * Does not returns the session to the pool while a transaction is active.
-         */
+        /** Does not returns the session to the pool while a transaction is active. */
         @Override
         public void dispose() throws IllegalStateException {
             if (isTransactionActive()) {
@@ -320,5 +308,4 @@ final class SessionTransactionState implements Transaction.State {
             }
         }
     }
-
 }

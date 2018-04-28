@@ -4,7 +4,7 @@
  *
  *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2003-2005 Open Geospatial Consortium Inc.
- *    
+ *
  *    All Rights Reserved. http://www.opengis.org/legal/
  */
 package org.opengis.filter.capability;
@@ -15,10 +15,11 @@ import java.util.HashMap;
 import java.util.Map;
 import org.opengis.feature.type.Name;
 
-
 /**
  * Enumeration of the different {@code GeometryOperand} types.
+ *
  * <p>
+ *
  * <pre>
  *  &lt;xsd:simpleType name="GeometryOperandType">
  *    &lt;xsd:restriction base="xsd:QName">
@@ -44,23 +45,16 @@ import org.opengis.feature.type.Name;
  *     &lt;/xsd:restriction>
  *  &lt;/xsd:simpleType>
  *  </pre>
- * </p>
  *
  * @author Justin Deoliveira (The Open Planning Project)
  * @author Martin Desruisseaux (Geomatys)
- *
- *
  * @source $URL$
  */
 public final class GeometryOperand implements Name, Serializable {
-    /**
-     * For cross-version compatibility.
-     */
+    /** For cross-version compatibility. */
     private static final long serialVersionUID = -9006169053542932716L;
 
-    /**
-     * The pool of operands created up to date.
-     */
+    /** The pool of operands created up to date. */
     private static final Map<GeometryOperand, GeometryOperand> POOL =
             new HashMap<GeometryOperand, GeometryOperand>();
 
@@ -80,7 +74,8 @@ public final class GeometryOperand implements Name, Serializable {
     public static final GeometryOperand ArcByCenterPoint = new GeometryOperand("ArcByCenterPoint");
 
     /** {@code "http://www.opengis.net/gml/CircleByCenterPoint"} */
-    public static final GeometryOperand CircleByCenterPoint = new GeometryOperand("CircleByCenterPoint");
+    public static final GeometryOperand CircleByCenterPoint =
+            new GeometryOperand("CircleByCenterPoint");
 
     /** {@code "http://www.opengis.net/gml/Arc"} */
     public static final GeometryOperand Arc = new GeometryOperand("Arc");
@@ -110,10 +105,12 @@ public final class GeometryOperand implements Name, Serializable {
     public static final GeometryOperand Triangle = new GeometryOperand("Triangle");
 
     /** {@code "http://www.opengis.net/gml/PolyhedralSurface"} */
-    public static final GeometryOperand PolyhedralSurface = new GeometryOperand("PolyhedralSurface");
+    public static final GeometryOperand PolyhedralSurface =
+            new GeometryOperand("PolyhedralSurface");
 
     /** {@code "http://www.opengis.net/gml/TriangulatedSurface"} */
-    public static final GeometryOperand TriangulatedSurface = new GeometryOperand("TriangulatedSurface");
+    public static final GeometryOperand TriangulatedSurface =
+            new GeometryOperand("TriangulatedSurface");
 
     /** {@code "http://www.opengis.net/gml/Tin"} */
     public static final GeometryOperand Tin = new GeometryOperand("Tin");
@@ -121,26 +118,18 @@ public final class GeometryOperand implements Name, Serializable {
     /** {@code "http://www.opengis.net/gml/Solid"} */
     public static final GeometryOperand Solid = new GeometryOperand("Solid");
 
-    /**
-     * The namespace URI.
-     */
+    /** The namespace URI. */
     private final String namespaceURI;
 
-    /**
-     * The name.
-     */
+    /** The name. */
     private final String name;
 
-    /**
-     * Creates an operand in the {@code "http://www.opengis.net/gml"} namespace.
-     */
+    /** Creates an operand in the {@code "http://www.opengis.net/gml"} namespace. */
     private GeometryOperand(final String name) {
         this("http://www.opengis.net/gml", name);
     }
 
-    /**
-     * Creates an operand in the given namespace.
-     */
+    /** Creates an operand in the given namespace. */
     private GeometryOperand(final String namespaceURI, final String name) {
         this.namespaceURI = namespaceURI;
         this.name = name;
@@ -150,8 +139,8 @@ public final class GeometryOperand implements Name, Serializable {
     /**
      * Returns the geometry operand for the given name.
      *
-     * @param  namespaceURI The namespace URI, or {@code null} for the default one.
-     * @param  name The operand name.
+     * @param namespaceURI The namespace URI, or {@code null} for the default one.
+     * @param name The operand name.
      * @return The geometry operand, or {@code null} if none was found.
      */
     public static GeometryOperand get(String namespaceURI, String name) {
@@ -162,49 +151,37 @@ public final class GeometryOperand implements Name, Serializable {
         return POOL.get(new GeometryOperand(namespaceURI, name));
     }
 
-    /**
-     * Retrieve the Local name.
-     */
+    /** Retrieve the Local name. */
     public String getLocalPart() {
         return name;
     }
 
-    /**
-     * Returns the name space, which is usually {@code "http://www.opengis.net/gml"}.
-     */
+    /** Returns the name space, which is usually {@code "http://www.opengis.net/gml"}. */
     public String getNamespaceURI() {
         return namespaceURI;
     }
 
-    /**
-     * Convert this name to a complete URI.
-     */
+    /** Convert this name to a complete URI. */
     public String getURI() {
         return namespaceURI + '/' + name;
     }
 
-    /**
-     * Returns {@code false} since this name has a {@linkplain #getNamespaceURI namespace}.
-     */
+    /** Returns {@code false} since this name has a {@linkplain #getNamespaceURI namespace}. */
     public boolean isGlobal() {
         return false;
     }
 
     public String getSeparator() {
-    	return "#";
-    }
-    
-    /**
-     * Returns a hash code value for this operand.
-     */
-    @Override
-    public int hashCode() {
-        return namespaceURI.hashCode() + 37*name.hashCode();
+        return "#";
     }
 
-    /**
-     * Compares this operand with the specified value for equality.
-     */
+    /** Returns a hash code value for this operand. */
+    @Override
+    public int hashCode() {
+        return namespaceURI.hashCode() + 37 * name.hashCode();
+    }
+
+    /** Compares this operand with the specified value for equality. */
     @Override
     public boolean equals(final Object other) {
         if (other != null && other instanceof Name) {
@@ -214,17 +191,13 @@ public final class GeometryOperand implements Name, Serializable {
         return false;
     }
 
-    /**
-     * Returns a string representation of this operand.
-     */
+    /** Returns a string representation of this operand. */
     @Override
     public String toString() {
         return getURI();
     }
 
-    /**
-     * Returns the canonical instance on deserialization.
-     */
+    /** Returns the canonical instance on deserialization. */
     private Object readResolve() throws ObjectStreamException {
         final GeometryOperand unique = POOL.get(this);
         return (unique != null) ? unique : this;

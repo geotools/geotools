@@ -1,25 +1,22 @@
 package org.geotools.wmts.bindings;
 
-import org.geotools.wmts.WMTS;
-import org.geotools.xml.*;
-import org.geotools.xml.AbstractComplexBinding;
-
+import java.math.BigInteger;
+import java.util.List;
+import javax.xml.namespace.QName;
 import net.opengis.ows11.CodeType;
 import net.opengis.wmts.v_1.TileMatrixType;
 import net.opengis.wmts.v_1.wmtsv_1Factory;
-
-import java.math.BigInteger;
-import java.util.List;
-
-import javax.xml.namespace.QName;
+import org.geotools.wmts.WMTS;
+import org.geotools.xml.*;
+import org.geotools.xml.AbstractComplexBinding;
 
 /**
  * Binding object for the element http://www.opengis.net/wmts/1.0:TileMatrix.
  *
  * <p>
- * 
+ *
  * <pre>
- *	 <code>
+ *  <code>
  *  &lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;element name="TileMatrix" xmlns="http://www.w3.org/2001/XMLSchema"&gt;
  *  		&lt;annotation&gt;
  *  			&lt;documentation&gt;Describes a particular tile matrix.&lt;/documentation&gt;
@@ -30,7 +27,7 @@ import javax.xml.namespace.QName;
  *  					&lt;sequence&gt;
  *  						&lt;element ref="ows:Identifier"&gt;
  *  							&lt;annotation&gt;
- *  								&lt;documentation&gt;Tile matrix identifier. Typically an abreviation of 
+ *  								&lt;documentation&gt;Tile matrix identifier. Typically an abreviation of
  *  								the ScaleDenominator value or its equivalent pixel size&lt;/documentation&gt;
  *  							&lt;/annotation&gt;
  *  						&lt;/element&gt;
@@ -42,8 +39,8 @@ import javax.xml.namespace.QName;
  *  						&lt;element name="TopLeftCorner" type="ows:PositionType"&gt;
  *  							&lt;annotation&gt;
  *  								&lt;documentation&gt;
- *  									Position in CRS coordinates of the top-left corner of this tile matrix. 
- *  									This are the  precise coordinates of the top left corner of top left 
+ *  									Position in CRS coordinates of the top-left corner of this tile matrix.
+ *  									This are the  precise coordinates of the top left corner of top left
  *  									pixel of the 0,0 tile in SupportedCRS coordinates of this TileMatrixSet.
  *  								&lt;/documentation&gt;
  *  							&lt;/annotation&gt;
@@ -72,11 +69,10 @@ import javax.xml.namespace.QName;
  *  				&lt;/extension&gt;
  *  			&lt;/complexContent&gt;
  *  		&lt;/complexType&gt;
- *  	&lt;/element&gt; 
- *		
- *	  </code>
+ *  	&lt;/element&gt;
+ *
+ *   </code>
  * </pre>
- * </p>
  *
  * @generated
  */
@@ -89,16 +85,16 @@ public class TileMatrixBinding extends AbstractComplexBinding {
         this.factory = factory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return WMTS.TileMatrix;
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Class getType() {
@@ -106,14 +102,18 @@ public class TileMatrixBinding extends AbstractComplexBinding {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        if(node.getChildren().isEmpty()) {
-            // we are in a Contents/Layer/TileMatrixSetLink/TileMatrixSetLimits/TileMatrixLimits/TileMatrix (simple) element
-            return (String)value;
+        if (node.getChildren().isEmpty()) {
+            // we are in a
+            // Contents/Layer/TileMatrixSetLink/TileMatrixSetLimits/TileMatrixLimits/TileMatrix
+            // (simple) element
+            return (String) value;
         }
 
         // we are in a Contents/TileMatrixSet/TileMatrix (complex) element
@@ -127,5 +127,4 @@ public class TileMatrixBinding extends AbstractComplexBinding {
         tileMatrix.setTopLeftCorner((List<Double>) node.getChildValue("TopLeftCorner"));
         return tileMatrix;
     }
-
 }

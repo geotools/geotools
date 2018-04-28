@@ -21,7 +21,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Properties;
-
 import org.geotools.caching.spatialindex.Node;
 import org.geotools.caching.spatialindex.NodeIdentifier;
 import org.geotools.caching.spatialindex.SpatialIndex;
@@ -29,23 +28,17 @@ import org.geotools.caching.spatialindex.Storage;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.type.FeatureType;
 
-
-/** 
+/**
  * A simple in-memory storage relying on LinkedHashMap.
- * 
+ *
  * @author crousson
- *
- *
- *
- *
- *
  * @source $URL$
  */
 public class MemoryStorage implements Storage {
     private HashMap<NodeIdentifier, Node> map;
     private ArrayList<FeatureType> featureTypes = null;
     private ReferencedEnvelope bounds = null;
-    
+
     private MemoryStorage() {
         this.map = new HashMap<NodeIdentifier, Node>();
         featureTypes = new ArrayList<FeatureType>();
@@ -84,8 +77,8 @@ public class MemoryStorage implements Storage {
     public void flush() {
         // do nothing
     }
-    
-    public void dispose(){
+
+    public void dispose() {
         clear();
     }
 
@@ -104,7 +97,7 @@ public class MemoryStorage implements Storage {
         }
     }
 
-    public void addFeatureType( FeatureType ft ) {
+    public void addFeatureType(FeatureType ft) {
         featureTypes.add(ft);
     }
 
@@ -112,7 +105,7 @@ public class MemoryStorage implements Storage {
         return Collections.unmodifiableCollection(featureTypes);
     }
 
-    public void clearFeatureTypes(){
+    public void clearFeatureTypes() {
         featureTypes.clear();
     }
 
@@ -120,8 +113,7 @@ public class MemoryStorage implements Storage {
         return bounds;
     }
 
-    public void setBounds( ReferencedEnvelope bounds ) {
+    public void setBounds(ReferencedEnvelope bounds) {
         this.bounds = bounds;
     }
-    
 }

@@ -19,7 +19,6 @@ package org.geotools.data.complex;
 
 import java.util.Collections;
 import java.util.Map;
-
 import org.geotools.data.complex.filter.XPathUtil.StepList;
 import org.geotools.util.Utilities;
 import org.opengis.feature.type.AttributeType;
@@ -30,9 +29,6 @@ import org.opengis.filter.expression.Expression;
  * @author Gabriel Roldan (Axios Engineering)
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
  * @version $Id$
- *
- *
- *
  * @source $URL$
  * @since 2.4
  */
@@ -46,14 +42,14 @@ public class AttributeMapping {
     protected StepList targetXPath;
 
     private boolean isMultiValued;
-    
+
     private boolean encodeIfEmpty;
-    
+
     private boolean isList;
 
     /**
      * If present, represents our way to deal polymorphic attribute instances, so this node should
-     * be of a subtype of the one referenced by {@link  #targetXPath}
+     * be of a subtype of the one referenced by {@link #targetXPath}
      */
     AttributeType targetNodeInstance;
 
@@ -69,19 +65,22 @@ public class AttributeMapping {
 
     /**
      * Creates a new AttributeMapping object.
-     * 
-     * @param sourceExpression
-     *                DOCUMENT ME!
-     * @param targetXPath
-     *                DOCUMENT ME!
+     *
+     * @param sourceExpression DOCUMENT ME!
+     * @param targetXPath DOCUMENT ME!
      */
-    public AttributeMapping(Expression idExpression, Expression sourceExpression,
-            StepList targetXPath) {
+    public AttributeMapping(
+            Expression idExpression, Expression sourceExpression, StepList targetXPath) {
         this(idExpression, sourceExpression, null, targetXPath, null, false, null);
     }
 
-    public AttributeMapping(Expression idExpression, Expression sourceExpression, String sourceIndex,
-            StepList targetXPath, AttributeType targetNodeInstance, boolean isMultiValued,
+    public AttributeMapping(
+            Expression idExpression,
+            Expression sourceExpression,
+            String sourceIndex,
+            StepList targetXPath,
+            AttributeType targetNodeInstance,
+            boolean isMultiValued,
             Map<Name, Expression> clientProperties) {
 
         this.identifierExpression = idExpression == null ? Expression.NIL : idExpression;
@@ -93,18 +92,20 @@ public class AttributeMapping {
         this.sourceIndex = sourceIndex;
         this.targetXPath = targetXPath;
         this.targetNodeInstance = targetNodeInstance;
-        this.clientProperties = clientProperties == null ? Collections
-                .<Name, Expression> emptyMap() : clientProperties;
+        this.clientProperties =
+                clientProperties == null
+                        ? Collections.<Name, Expression>emptyMap()
+                        : clientProperties;
     }
 
     public boolean isMultiValued() {
         return isMultiValued;
     }
-    
+
     public boolean encodeIfEmpty() {
         return encodeIfEmpty;
     }
-    
+
     public boolean isList() {
         return isList;
     }
@@ -112,7 +113,7 @@ public class AttributeMapping {
     public Expression getSourceExpression() {
         return sourceExpression;
     }
-    
+
     public String getSourceIndex() {
         return sourceIndex;
     }
@@ -127,50 +128,51 @@ public class AttributeMapping {
 
     /**
      * This is overridden by NestedAttributeMapping
-     * 
+     *
      * @return always return false
      */
     public boolean isNestedAttribute() {
         return false;
-    }   
-    
-    /**********************************************************************
-     * Label, parentLabel and instancePath are for web service backend only
-     **********************************************************************/
+    }
+
+    /**
+     * ******************************************************************** Label, parentLabel and
+     * instancePath are for web service backend only
+     * ********************************************************************
+     */
     public String getLabel() {
         return label;
     }
 
     public String getParentLabel() {
         return parentLabel;
-    }  
-    
+    }
+
     public String getInstanceXpath() {
         return instancePath;
     }
-    
+
     public void setLabel(String label) {
         this.label = label;
     }
 
     public void setParentLabel(String label) {
         parentLabel = label;
-    }  
-    
+    }
+
     public void setInstanceXpath(String instancePath) {
         this.instancePath = instancePath;
     }
-    
+
     public void setEncodeIfEmpty(boolean encodeIfEmpty) {
         this.encodeIfEmpty = encodeIfEmpty;
     }
-    
+
     public void setList(boolean isList) {
         this.isList = isList;
     }
-    
-    /********END specific web service methods*******************/
-    
+
+    /** ******END specific web service methods****************** */
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -201,8 +203,10 @@ public class AttributeMapping {
 
     public String toString() {
         StringBuffer sb = new StringBuffer("AttributeMapping[");
-        sb.append("sourceExpression='").append(sourceExpression).append("', targetXPath='").append(
-                targetXPath);
+        sb.append("sourceExpression='")
+                .append(sourceExpression)
+                .append("', targetXPath='")
+                .append(targetXPath);
         if (targetNodeInstance != null) {
             sb.append(", target instance type=").append(targetNodeInstance);
         }
@@ -212,7 +216,8 @@ public class AttributeMapping {
     }
 
     public Map<Name, Expression> getClientProperties() {
-        return clientProperties == null ? Collections.<Name, Expression> emptyMap()
+        return clientProperties == null
+                ? Collections.<Name, Expression>emptyMap()
                 : clientProperties;
     }
 
@@ -223,5 +228,4 @@ public class AttributeMapping {
     public void setIdentifierExpression(Expression identifierExpression) {
         this.identifierExpression = identifierExpression;
     }
-
 }

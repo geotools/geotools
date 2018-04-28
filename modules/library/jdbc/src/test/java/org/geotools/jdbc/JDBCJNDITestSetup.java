@@ -20,21 +20,15 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
-
 import javax.naming.Context;
 import javax.naming.NamingException;
 import javax.naming.spi.InitialContextFactory;
 import javax.sql.DataSource;
-
 import org.apache.commons.dbcp.BasicDataSource;
 import org.geotools.factory.GeoTools;
 import org.mockito.Mockito;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class JDBCJNDITestSetup extends JDBCDelegatingTestSetup {
 
     private BasicDataSource dataSource;
@@ -43,32 +37,34 @@ public class JDBCJNDITestSetup extends JDBCDelegatingTestSetup {
         super(delegate);
     }
 
-    protected void setupJNDIEnvironment(JDBCDataStoreFactory jdbcDataStoreFactory) throws IOException {
-        
+    protected void setupJNDIEnvironment(JDBCDataStoreFactory jdbcDataStoreFactory)
+            throws IOException {
+
         Map params = new HashMap(fixture);
         params.put("passwd", params.get("password"));
         dataSource = jdbcDataStoreFactory.createDataSource(params);
         MockInitialDirContextFactory.setDataSource(dataSource);
 
-        System.setProperty(Context.INITIAL_CONTEXT_FACTORY, MockInitialDirContextFactory.class.getName());
+        System.setProperty(
+                Context.INITIAL_CONTEXT_FACTORY, MockInitialDirContextFactory.class.getName());
         try {
             GeoTools.clearInitialContext();
         } catch (NamingException e) {
             throw new RuntimeException(e);
         }
     }
-    
+
     @Override
     public DataSource getDataSource() throws IOException {
-        System.setProperty(Context.INITIAL_CONTEXT_FACTORY, MockInitialDirContextFactory.class.getName());
+        System.setProperty(
+                Context.INITIAL_CONTEXT_FACTORY, MockInitialDirContextFactory.class.getName());
         return super.getDataSource();
     }
 
-    
     @Override
     public void tearDown() throws Exception {
         try {
-            if(dataSource  != null) {
+            if (dataSource != null) {
                 dataSource.close();
             }
             super.tearDown();
@@ -77,23 +73,20 @@ public class JDBCJNDITestSetup extends JDBCDelegatingTestSetup {
             GeoTools.clearInitialContext();
         }
     }
-    
+
     public static class MockInitialDirContextFactory implements InitialContextFactory {
-        
+
         private Context mockContext = null;
         private static BasicDataSource dataSource;
-        
+
         public static void setDataSource(BasicDataSource dataSource) {
             MockInitialDirContextFactory.dataSource = dataSource;
         }
-     
-        public Context getInitialContext(Hashtable environment)
-                throws NamingException {
+
+        public Context getInitialContext(Hashtable environment) throws NamingException {
             mockContext = (Context) Mockito.mock(Context.class);
             Mockito.when(mockContext.lookup("ds")).thenReturn(dataSource);
             return mockContext;
         }
     }
-    
-
 }

@@ -2,7 +2,6 @@ package org.geotools.kml.bindings;
 
 import java.util.List;
 import java.util.Map;
-
 import org.geotools.kml.Folder;
 import org.geotools.kml.v22.KML;
 import org.geotools.kml.v22.KMLTestSupport;
@@ -28,8 +27,12 @@ public class FolderBindingTest extends KMLTestSupport {
 
     @SuppressWarnings("unchecked")
     public void testFolderHierarchy() throws Exception {
-        String xml = "<Folder><name>foo</name>" + "<Folder><name>bar</name>"
-                + "<Placemark><name>morx</name></Placemark>" + "</Folder>" + "</Folder>";
+        String xml =
+                "<Folder><name>foo</name>"
+                        + "<Folder><name>bar</name>"
+                        + "<Placemark><name>morx</name></Placemark>"
+                        + "</Folder>"
+                        + "</Folder>";
         buildDocument(xml);
         SimpleFeature folder1 = (SimpleFeature) parse();
         List<SimpleFeature> features = (List<SimpleFeature>) folder1.getAttribute("Feature");
@@ -46,5 +49,4 @@ public class FolderBindingTest extends KMLTestSupport {
         assertEquals("bar", folders.get(1).getName());
         assertEquals("morx", placemark.getAttribute("name"));
     }
-
 }

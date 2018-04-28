@@ -18,38 +18,24 @@ package org.geotools.gml3.smil;
 
 import org.geotools.xml.XSD;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class XMLMOD extends XSD {
-    /**
-     * Singleton instance.
-     */
+    /** Singleton instance. */
     private static XMLMOD instance = new XMLMOD();
 
-    /**
-     * private constructor.
-     */
-    private XMLMOD() {
-    }
+    /** private constructor. */
+    private XMLMOD() {}
 
     public static XMLMOD getInstance() {
         return instance;
     }
 
-    /**
-     * Returns 'http://www.w3.org/XML/1998/namespace'.
-     */
+    /** Returns 'http://www.w3.org/XML/1998/namespace'. */
     public String getNamespaceURI() {
         return "http://www.w3.org/XML/1998/namespace";
     }
 
-    /**
-     * Returns the location of 'xml-mod.xsd'.
-     */
+    /** Returns the location of 'xml-mod.xsd'. */
     public String getSchemaLocation() {
         return getClass().getResource("xml-mod.xsd").toString();
     }

@@ -6,17 +6,15 @@ import org.geotools.data.efeature.query.EFeatureFilter;
 
 /**
  * EFeature {@link TreeIterator} class.
- * <p>
- * This class implements a EObject Tree iterator that:
- * <ol>
- * <li>support lazy loading</li>
- * <li>support spatial filtering</li>
- * </ol>
- * </p>
- * 
- * @author kengu
- * 
  *
+ * <p>This class implements a EObject Tree iterator that:
+ *
+ * <ol>
+ *   <li>support lazy loading
+ *   <li>support spatial filtering
+ * </ol>
+ *
+ * @author kengu
  * @source $URL$
  */
 public class EFeatureIterator implements TreeIterator<EObject> {
@@ -78,7 +76,7 @@ public class EFeatureIterator implements TreeIterator<EObject> {
                 eObject = null;
             }
         } // while
-        
+
         //
         // Set as next
         //
@@ -96,12 +94,9 @@ public class EFeatureIterator implements TreeIterator<EObject> {
         } finally {
             eNext = null;
         }
-
     }
 
-    /**
-     * Remove is not supported by this iterator
-     */
+    /** Remove is not supported by this iterator */
     @Override
     public void remove() {
         throw new UnsupportedOperationException();
@@ -111,5 +106,4 @@ public class EFeatureIterator implements TreeIterator<EObject> {
     public void prune() {
         it.prune();
     }
-
 }

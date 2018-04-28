@@ -26,9 +26,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.imageio.ImageTypeSpecifier;
-
 import org.geotools.coverage.Category;
 import org.geotools.coverage.GridSampleDimension;
 import org.geotools.coverage.grid.GeneralGridEnvelope;
@@ -36,7 +34,6 @@ import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.operation.builder.GridToEnvelopeMapper;
-import org.geotools.referencing.operation.transform.LinearTransform1D;
 import org.geotools.resources.i18n.Vocabulary;
 import org.geotools.resources.i18n.VocabularyKeys;
 import org.geotools.util.NumberRange;
@@ -51,21 +48,18 @@ import org.opengis.referencing.operation.TransformException;
  * Wraps metadata information for a raster dataset, whether it is composed of a single raster, or
  * it's raster catalog, and provides some conveinent methods to get to the raster metadata of it's
  * rasters and pyramid levels.
- * <p>
- * This is the single entry point to the metadata of a raster dataset. The associated classes
+ *
+ * <p>This is the single entry point to the metadata of a raster dataset. The associated classes
  * {@link RasterInfo} and {@link PyramidLevelInfo} are to be considered private to this class.
- * </p>
- * 
+ *
  * @author Gabriel Roldan (OpenGeo)
  * @since 2.5.4
  * @version $Id$
- *
- *
  * @source $URL$
- *         http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/main/java/org
- *         /geotools/arcsde/gce/RasterDatasetInfo.java $
+ *     http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/main/java/org
+ *     /geotools/arcsde/gce/RasterDatasetInfo.java $
  */
-@SuppressWarnings({ "nls" })
+@SuppressWarnings({"nls"})
 public final class RasterDatasetInfo {
 
     /** TRasterDatasetInfo the raster table we're pulling images from in this reader * */
@@ -84,42 +78,30 @@ public final class RasterDatasetInfo {
 
     private List<GridSampleDimension> gridSampleDimensions;
 
-    private final Map<Integer, ImageTypeSpecifier> renderedImageSpec = new HashMap<Integer, ImageTypeSpecifier>();
+    private final Map<Integer, ImageTypeSpecifier> renderedImageSpec =
+            new HashMap<Integer, ImageTypeSpecifier>();
 
-    /**
-     * @param rasterTable
-     *            the rasterTable to set
-     */
+    /** @param rasterTable the rasterTable to set */
     void setRasterTable(String rasterTable) {
         this.rasterTable = rasterTable;
     }
 
-    /**
-     * @return the raster table name
-     */
+    /** @return the raster table name */
     public String getRasterTable() {
         return rasterTable;
     }
 
-    /**
-     * @param rasterColumns
-     *            the rasterColumns to set
-     */
+    /** @param rasterColumns the rasterColumns to set */
     void setRasterColumns(String[] rasterColumns) {
         this.rasterColumns = rasterColumns;
     }
 
-    /**
-     * @return the raster column names
-     */
+    /** @return the raster column names */
     public String[] getRasterColumns() {
         return rasterColumns;
     }
 
-    /**
-     * @param pyramidInfo
-     *            the pyramidInfo to set
-     */
+    /** @param pyramidInfo the pyramidInfo to set */
     public void setPyramidInfo(List<RasterInfo> pyramidInfo) {
         this.subRasterInfo = pyramidInfo;
     }
@@ -135,7 +117,7 @@ public final class RasterDatasetInfo {
         return gridSampleDimensions.toArray(new GridSampleDimension[getNumBands()]);
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({"unchecked", "rawtypes"})
     private List<GridSampleDimension> buildSampleDimensions() {
 
         final int numBands = getNumBands();
@@ -175,14 +157,16 @@ public final class RasterDatasetInfo {
                 double noDataValue = band.getNoDataValue().doubleValue();
                 // same as Category.NODATA but for the actual nodata value instead of hardcoded to
                 // zero
-                Category nodataCat = new Category(
-                        Vocabulary.formatInternational(VocabularyKeys.NODATA), transparent,
-                        noDataValue);
-                categories = new Category[] { valuesCat, nodataCat };
+                Category nodataCat =
+                        new Category(
+                                Vocabulary.formatInternational(VocabularyKeys.NODATA),
+                                transparent,
+                                noDataValue);
+                categories = new Category[] {valuesCat, nodataCat};
             } else {
                 // do not build a nodata category. A nodata value that doesn't overlap the value
                 // range couldn't be determined
-                categories = new Category[] { valuesCat };
+                categories = new Category[] {valuesCat};
             }
             /*
              * if (band.isHasStats()) { //can't do this, get an exception telling categories
@@ -228,16 +212,14 @@ public final class RasterDatasetInfo {
         return height;
     }
 
-    /**
-     * @return the coverageCrs
-     */
+    /** @return the coverageCrs */
     public CoordinateReferenceSystem getCoverageCrs() {
         return subRasterInfo.get(0).getCoordinateReferenceSystem();
     }
 
     /**
      * @return the originalGridRange for the whole raster dataset, based on the first raster in the
-     *         raster dataset
+     *     raster dataset
      */
     public GridEnvelope getOriginalGridRange() {
         if (originalGridRange == null) {
@@ -326,8 +308,11 @@ public final class RasterDatasetInfo {
             double[] resolution = getResolution(0, 0);
             double deltaX = resolution[0] / 2;
             double deltaY = resolution[1] / 2;
-            env.setEnvelope(env.getMinimum(0) + deltaX, env.getMinimum(1) + deltaY,
-                    env.getMaximum(0) - deltaX, env.getMaximum(1) - deltaY);
+            env.setEnvelope(
+                    env.getMinimum(0) + deltaX,
+                    env.getMinimum(1) + deltaY,
+                    env.getMaximum(0) - deltaX,
+                    env.getMaximum(1) - deltaY);
         }
         return env;
     }
@@ -424,8 +409,8 @@ public final class RasterDatasetInfo {
             synchronized (this) {
                 if (!this.renderedImageSpec.containsKey(Integer.valueOf(rasterIndex))) {
                     ImageTypeSpecifier imageTypeSpecifier;
-                    imageTypeSpecifier = RasterUtils
-                            .createFullImageTypeSpecifier(this, rasterIndex);
+                    imageTypeSpecifier =
+                            RasterUtils.createFullImageTypeSpecifier(this, rasterIndex);
                     renderedImageSpec.put(Integer.valueOf(rasterIndex), imageTypeSpecifier);
                 }
             }
@@ -463,8 +448,11 @@ public final class RasterDatasetInfo {
         return rasterInfo.getRasterId();
     }
 
-    public int getOptimalPyramidLevel(final int rasterIndex, final OverviewPolicy policy,
-            final GeneralEnvelope requestedEnvelope, final GridEnvelope requestedDim) {
+    public int getOptimalPyramidLevel(
+            final int rasterIndex,
+            final OverviewPolicy policy,
+            final GeneralEnvelope requestedEnvelope,
+            final GridEnvelope requestedDim) {
 
         final RasterInfo rasterInfo = getRasterInfo(rasterIndex);
 
@@ -506,8 +494,7 @@ public final class RasterDatasetInfo {
     }
 
     /**
-     * @param rasterIndex
-     *            the raster for which bands to return the no data values
+     * @param rasterIndex the raster for which bands to return the no data values
      * @return the list of no data values, one per band for the raster at index {@code rasterIndex}
      */
     public List<Number> getNoDataValues(final int rasterIndex) {

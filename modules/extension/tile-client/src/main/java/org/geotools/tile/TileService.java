@@ -17,13 +17,13 @@
  */
 package org.geotools.tile;
 
+import com.vividsolutions.jts.geom.Envelope;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -36,28 +36,26 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.TransformException;
 
-import com.vividsolutions.jts.geom.Envelope;
-
 /**
  * A TileService represent the class of objects that serve map tiles.
- * 
- * TileServices must at least have a name and a base URL.
- * 
+ *
+ * <p>TileServices must at least have a name and a base URL.
+ *
  * @author to.srwn
  * @author Ugo Taddei
  * @since 12
  */
 public abstract class TileService {
 
-    protected static final Logger LOGGER = Logging
-            .getLogger(TileService.class.getPackage().getName());
+    protected static final Logger LOGGER =
+            Logging.getLogger(TileService.class.getPackage().getName());
 
     /**
-     * This WeakHashMap acts as a memory cache. 
-     * 
-     * Because we are using SoftReference, we won't run out of Memory, the GC will free space.
-     **/
-    private ObjectCache tiles = ObjectCaches.create("soft", 50); //$NON-NLS-1$
+     * This WeakHashMap acts as a memory cache.
+     *
+     * <p>Because we are using SoftReference, we won't run out of Memory, the GC will free space.
+     */
+    private ObjectCache tiles = ObjectCaches.create("soft", 50); // $NON-NLS-1$
 
     private String baseURL;
 
@@ -65,15 +63,15 @@ public abstract class TileService {
 
     /**
      * Create a new TileService with a name and a base URL
-     * 
+     *
      * @param name the name. Cannot be null.
-     * @param baseURL the base URL. This is a string representing the common part of the URL for all this service's tiles. Cannot be null. Note that
-     *        this constructor doesn't ensure that the URL is well-formed.
+     * @param baseURL the base URL. This is a string representing the common part of the URL for all
+     *     this service's tiles. Cannot be null. Note that this constructor doesn't ensure that the
+     *     URL is well-formed.
      */
     protected TileService(String name, String baseURL) {
         setName(name);
         setBaseURL(baseURL);
-
     }
 
     private void setBaseURL(String baseURL) {
@@ -124,8 +122,8 @@ public abstract class TileService {
     /**
      * Translates the map scale into a zoom-level for the map services.
      *
-     * The scale-factor (0-100) decides whether the tiles will be scaled down (100)
-     * or scaled up (0).
+     * <p>The scale-factor (0-100) decides whether the tiles will be scaled down (100) or scaled up
+     * (0).
      *
      * @param scaleFactor Scale-factor (0-100)
      * @return Zoom-level
@@ -165,11 +163,12 @@ public abstract class TileService {
      *
      * @param scale
      * @param scaleFactor
-     * @param useRecommended always use the calculated zoom-level, do not use the one the user selected
+     * @param useRecommended always use the calculated zoom-level, do not use the one the user
+     *     selected
      * @return
      */
-    public int getZoomLevelToUse(ScaleZoomLevelMatcher zoomLevelMatcher, int scaleFactor,
-            boolean useRecommended) {
+    public int getZoomLevelToUse(
+            ScaleZoomLevelMatcher zoomLevelMatcher, int scaleFactor, boolean useRecommended) {
         if (useRecommended) {
             return getZoomLevelFromMapScale(zoomLevelMatcher, scaleFactor);
         }
@@ -224,8 +223,11 @@ public abstract class TileService {
         return maxZoomLevel;
     }
 
-    public Set<Tile> findTilesInExtent(ReferencedEnvelope _mapExtent, int scaleFactor,
-            boolean recommendedZoomLevel, int maxNumberOfTiles) {
+    public Set<Tile> findTilesInExtent(
+            ReferencedEnvelope _mapExtent,
+            int scaleFactor,
+            boolean recommendedZoomLevel,
+            int maxNumberOfTiles) {
 
         ReferencedEnvelope mapExtent = createSafeEnvelopeInWGS84(_mapExtent);
 
@@ -242,10 +244,15 @@ public abstract class TileService {
         ScaleZoomLevelMatcher zoomLevelMatcher = null;
         try {
 
-            zoomLevelMatcher = new ScaleZoomLevelMatcher(getTileCrs(), getProjectedTileCrs(),
-                    CRS.findMathTransform(getTileCrs(), getProjectedTileCrs()),
-                    CRS.findMathTransform(getProjectedTileCrs(), getTileCrs()), mapExtent,
-                    mapExtent, scaleFactor);
+            zoomLevelMatcher =
+                    new ScaleZoomLevelMatcher(
+                            getTileCrs(),
+                            getProjectedTileCrs(),
+                            CRS.findMathTransform(getTileCrs(), getProjectedTileCrs()),
+                            CRS.findMathTransform(getProjectedTileCrs(), getTileCrs()),
+                            mapExtent,
+                            mapExtent,
+                            scaleFactor);
 
         } catch (FactoryException e) {
             throw new RuntimeException(e);
@@ -253,8 +260,7 @@ public abstract class TileService {
 
         // TODO understand the minus 1 below
         int zoomLevelA = getZoomLevelToUse(zoomLevelMatcher, scaleFactor, recommendedZoomLevel) - 1;
-        if (zoomLevelA <= 0)
-            zoomLevelA = 0; // this is related to the -1 above!
+        if (zoomLevelA <= 0) zoomLevelA = 0; // this is related to the -1 above!
         ZoomLevel zoomLevel = tileFactory.getZoomLevel(zoomLevelA, this);
 
         long maxNumberOfTilesForZoomLevel = zoomLevel.getMaxTileNumber();
@@ -262,8 +268,9 @@ public abstract class TileService {
         Set<Tile> tileList = new HashSet<>(100);
 
         // Let's get the first tile which covers the upper-left corner
-        Tile firstTile = tileFactory.findTileAtCoordinate(extent.getMinX(), extent.getMaxY(),
-                zoomLevel, this);
+        Tile firstTile =
+                tileFactory.findTileAtCoordinate(
+                        extent.getMinX(), extent.getMaxY(), zoomLevel, this);
 
         addTileToCache(firstTile);
         tileList.add(firstTile);
@@ -293,8 +300,10 @@ public abstract class TileService {
                     break;
                 }
                 if (tileList.size() > maxNumberOfTiles) {
-                    LOGGER.warning("Reached tile limit of " + maxNumberOfTiles
-                            + ". Returning an empty collection.");
+                    LOGGER.warning(
+                            "Reached tile limit of "
+                                    + maxNumberOfTiles
+                                    + ". Returning an empty collection.");
                     return Collections.emptySet();
                 }
             } while (tileList.size() < maxNumberOfTilesForZoomLevel);
@@ -321,10 +330,10 @@ public abstract class TileService {
     /**
      * Add a tile to the cache.
      *
-     * The cache used here is a soft cache, which has an un-controllable time to live
-     * (could last a split seconds or 100 years).
+     * <p>The cache used here is a soft cache, which has an un-controllable time to live (could last
+     * a split seconds or 100 years).
      *
-     * Subclasses services (such as WMTS) may have some more hints about the tile TTL, so a more
+     * <p>Subclasses services (such as WMTS) may have some more hints about the tile TTL, so a more
      * controllable cache should be implemented in these cases.
      */
     protected Tile addTileToCache(Tile tile) {
@@ -348,8 +357,8 @@ public abstract class TileService {
     /**
      * Returns a list that represents a mapping between zoom-levels and map scale.
      *
-     * Array index: zoom-level Value at index: map scale High zoom-level
-     * -> more detailed map Low zoom-level -> less detailed map
+     * <p>Array index: zoom-level Value at index: map scale High zoom-level -> more detailed map Low
+     * zoom-level -> less detailed map
      *
      * @return mapping between zoom-levels and map scale
      */
@@ -357,14 +366,10 @@ public abstract class TileService {
 
     public abstract ReferencedEnvelope getBounds();
 
-    /**
-     * The projection the tiles are drawn in.
-     */
+    /** The projection the tiles are drawn in. */
     public abstract CoordinateReferenceSystem getProjectedTileCrs();
 
-    /**
-     * Returns the TileFactory which is used to call the method getTileFromCoordinate().
-     */
+    /** Returns the TileFactory which is used to call the method getTileFromCoordinate(). */
     public abstract TileFactory getTileFactory();
 
     public static final ReferencedEnvelope createSafeEnvelopeInWGS84(
@@ -384,12 +389,11 @@ public abstract class TileService {
     /**
      * Normalize extents.
      *
-     * The extent from the viewport may look like this: 
-     *     MaxY: 110° (=-70°) MinY: -110° MaxX: 180° MinX: -180°
+     * <p>The extent from the viewport may look like this: MaxY: 110° (=-70°) MinY: -110° MaxX: 180°
+     * MinX: -180°
      *
-     * But cutExtentIntoTiles(..) requires an
-     * extent that looks like this:
-     *     MaxY: 85° (or 90°) MinY: -85° (or -90°) MaxX: 180° MinX: -180°
+     * <p>But cutExtentIntoTiles(..) requires an extent that looks like this: MaxY: 85° (or 90°)
+     * MinY: -85° (or -90°) MaxX: 180° MinX: -180°
      *
      * @param envelope
      * @return
@@ -397,20 +401,23 @@ public abstract class TileService {
     private ReferencedEnvelope normalizeExtent(ReferencedEnvelope envelope) {
         ReferencedEnvelope bounds = getBounds();
 
-        if (envelope.getMaxY() > bounds.getMaxY() || envelope.getMinY() < bounds.getMinY()
-                || envelope.getMaxX() > bounds.getMaxX() || envelope.getMinX() < bounds.getMinX()) {
+        if (envelope.getMaxY() > bounds.getMaxY()
+                || envelope.getMinY() < bounds.getMinY()
+                || envelope.getMaxX() > bounds.getMaxX()
+                || envelope.getMinX() < bounds.getMinX()) {
 
-            double maxY = (envelope.getMaxY() > bounds.getMaxY()) ? bounds.getMaxY()
-                    : envelope.getMaxY();
-            double minY = (envelope.getMinY() < bounds.getMinY()) ? bounds.getMinY()
-                    : envelope.getMinY();
-            double maxX = (envelope.getMaxX() > bounds.getMaxX()) ? bounds.getMaxX()
-                    : envelope.getMaxX();
-            double minX = (envelope.getMinX() < bounds.getMinX()) ? bounds.getMinX()
-                    : envelope.getMinX();
+            double maxY =
+                    (envelope.getMaxY() > bounds.getMaxY()) ? bounds.getMaxY() : envelope.getMaxY();
+            double minY =
+                    (envelope.getMinY() < bounds.getMinY()) ? bounds.getMinY() : envelope.getMinY();
+            double maxX =
+                    (envelope.getMaxX() > bounds.getMaxX()) ? bounds.getMaxX() : envelope.getMaxX();
+            double minX =
+                    (envelope.getMinX() < bounds.getMinX()) ? bounds.getMinX() : envelope.getMinX();
 
-            ReferencedEnvelope newEnvelope = new ReferencedEnvelope(minX, maxX, minY, maxY,
-                    envelope.getCoordinateReferenceSystem());
+            ReferencedEnvelope newEnvelope =
+                    new ReferencedEnvelope(
+                            minX, maxX, minY, maxY, envelope.getCoordinateReferenceSystem());
 
             return newEnvelope;
         }

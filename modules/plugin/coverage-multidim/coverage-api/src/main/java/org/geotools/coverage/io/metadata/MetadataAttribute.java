@@ -16,11 +16,5 @@
  */
 package org.geotools.coverage.io.metadata;
 
-/**
- * 
- *
- * @source $URL$
- */
-public class MetadataAttribute {
-
-}
+/** @source $URL$ */
+public class MetadataAttribute {}

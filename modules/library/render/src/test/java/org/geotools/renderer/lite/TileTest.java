@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -21,14 +21,11 @@ import static java.awt.RenderingHints.*;
 import java.awt.Font;
 import java.awt.RenderingHints;
 import java.io.File;
-
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.DefaultMapContext;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.style.FontCache;
 import org.geotools.styling.Style;
 import org.geotools.test.TestData;
@@ -37,12 +34,8 @@ import org.junit.Test;
 
 /**
  * Tests for rendering and reprojection
- * 
+ *
  * @author jandm
- * 
- *
- *
- *
  * @source $URL$
  */
 public class TileTest {
@@ -65,14 +58,18 @@ public class TileTest {
         ds = new PropertyDataStore(property.getParentFile());
         linefs = ds.getFeatureSource("tilelines");
 
-        leftTileBounds = new ReferencedEnvelope(0, 10, 0, 10, polyfs.getBounds()
-                .getCoordinateReferenceSystem());
-        rightTileBounds = new ReferencedEnvelope(10, 20, 0, 10, polyfs.getBounds()
-                .getCoordinateReferenceSystem());
+        leftTileBounds =
+                new ReferencedEnvelope(
+                        0, 10, 0, 10, polyfs.getBounds().getCoordinateReferenceSystem());
+        rightTileBounds =
+                new ReferencedEnvelope(
+                        10, 20, 0, 10, polyfs.getBounds().getCoordinateReferenceSystem());
 
         // load font
-        Font f = Font.createFont(Font.TRUETYPE_FONT, TestData.getResource(this, "recreate.ttf")
-                .openStream());
+        Font f =
+                Font.createFont(
+                        Font.TRUETYPE_FONT,
+                        TestData.getResource(this, "recreate.ttf").openStream());
         FontCache.getDefaultInstance().registerFont(f);
 
         // System.setProperty("org.geotools.test.interactive", "true");
@@ -89,8 +86,8 @@ public class TileTest {
         renderer.setMapContent(mc);
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
 
-        RendererBaseTest.showRender("FillAlignment", renderer, TIME, leftTileBounds,
-                rightTileBounds);
+        RendererBaseTest.showRender(
+                "FillAlignment", renderer, TIME, leftTileBounds, rightTileBounds);
     }
 
     @Test
@@ -104,8 +101,7 @@ public class TileTest {
         renderer.setMapContent(mc);
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
 
-        RendererBaseTest.showRender("StrokeAlignment", renderer, TIME, leftTileBounds,
-                rightTileBounds);
+        RendererBaseTest.showRender(
+                "StrokeAlignment", renderer, TIME, leftTileBounds, rightTileBounds);
     }
-
 }

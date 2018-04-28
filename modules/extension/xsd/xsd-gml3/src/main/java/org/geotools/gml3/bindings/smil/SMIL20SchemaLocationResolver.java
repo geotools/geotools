@@ -19,29 +19,25 @@ package org.geotools.gml3.bindings.smil;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.util.XSDSchemaLocationResolver;
 
-
 /**
- *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class SMIL20SchemaLocationResolver implements XSDSchemaLocationResolver {
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
-     *        @generated modifiable
+     * @generated modifiable
      */
-    public String resolveSchemaLocation(XSDSchema xsdSchema, String namespaceURI,
-        String schemaLocationURI) {
+    public String resolveSchemaLocation(
+            XSDSchema xsdSchema, String namespaceURI, String schemaLocationURI) {
         if (schemaLocationURI == null) {
             return null;
         }
 
-        //if no namespace given, assume default for the current schema
+        // if no namespace given, assume default for the current schema
         if (((namespaceURI == null) || "".equals(namespaceURI)) && (xsdSchema != null)) {
             namespaceURI = xsdSchema.getTargetNamespace();
         }

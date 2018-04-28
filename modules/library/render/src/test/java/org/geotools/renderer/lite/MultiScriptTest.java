@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -19,6 +19,12 @@ package org.geotools.renderer.lite;
 import static java.awt.RenderingHints.KEY_ANTIALIASING;
 import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -28,7 +34,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
+import junit.framework.TestCase;
 import org.geotools.data.memory.MemoryDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -44,15 +50,6 @@ import org.geotools.styling.Style;
 import org.geotools.test.TestData;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
-
-import junit.framework.TestCase;
 
 /**
  * Tests labeling in multiple scripts on point and line labels
@@ -76,14 +73,26 @@ public class MultiScriptTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         // register a cross platform test
-        FontCache.getDefaultInstance().registerFont(Font.createFont(Font.TRUETYPE_FONT,
-                TestData.getResource(this, "Vera.ttf").openStream()));
-        FontCache.getDefaultInstance().registerFont(Font.createFont(Font.TRUETYPE_FONT,
-                TestData.getResource(this, "DroidSansArmenian.ttf").openStream()));
-        FontCache.getDefaultInstance().registerFont(Font.createFont(Font.TRUETYPE_FONT,
-                TestData.getResource(this, "DroidSansArmenian.ttf").openStream()));
-        FontCache.getDefaultInstance().registerFont(Font.createFont(Font.TRUETYPE_FONT,
-                TestData.getResource(this, "DroidNaskh-Regular.ttf").openStream()));
+        FontCache.getDefaultInstance()
+                .registerFont(
+                        Font.createFont(
+                                Font.TRUETYPE_FONT,
+                                TestData.getResource(this, "Vera.ttf").openStream()));
+        FontCache.getDefaultInstance()
+                .registerFont(
+                        Font.createFont(
+                                Font.TRUETYPE_FONT,
+                                TestData.getResource(this, "DroidSansArmenian.ttf").openStream()));
+        FontCache.getDefaultInstance()
+                .registerFont(
+                        Font.createFont(
+                                Font.TRUETYPE_FONT,
+                                TestData.getResource(this, "DroidSansArmenian.ttf").openStream()));
+        FontCache.getDefaultInstance()
+                .registerFont(
+                        Font.createFont(
+                                Font.TRUETYPE_FONT,
+                                TestData.getResource(this, "DroidNaskh-Regular.ttf").openStream()));
 
         bounds = new ReferencedEnvelope(0, 10, 0, 10, null);
 
@@ -100,29 +109,49 @@ public class MultiScriptTest extends TestCase {
         builder.setName("multiScript");
         SimpleFeatureType type = builder.buildFeatureType();
 
-        SimpleFeature f1 = SimpleFeatureBuilder.build(type,
-                new Object[] { gf.createPoint(new Coordinate(5, 9)),
-                        "Some latin and some armenian\n\u0562\u0561\u0580\u0565\u0582 \u0541\u0565\u0566" },
-                null);
-        SimpleFeature f2 = SimpleFeatureBuilder
-                .build(type,
-                        new Object[] { gf.createPoint(new Coordinate(5, 6)),
-                                "Latin, arab, armenian" + "\n\u0627\u062E\u062A\u0628\u0627\u0631\n"
-                                        + "\u0562\u0561\u0580\u0565\u0582 \u0541\u0565\u0566" },
-                null);
-        SimpleFeature f3 = SimpleFeatureBuilder
-                .build(type,
-                        new Object[] { gf.createPoint(new Coordinate(7.5, 3)),
-                                "armenian \u0562\u0561\u0580\u0565\u0582 \u0541\u0565\u0566" },
+        SimpleFeature f1 =
+                SimpleFeatureBuilder.build(
+                        type,
+                        new Object[] {
+                            gf.createPoint(new Coordinate(5, 9)),
+                            "Some latin and some armenian\n\u0562\u0561\u0580\u0565\u0582 \u0541\u0565\u0566"
+                        },
                         null);
-        SimpleFeature f4 = SimpleFeatureBuilder.build(type, new Object[] {
-                gf.createPoint(new Coordinate(2.5, 3)), "\u0627\u062E\u062A\u0628\u0627\u0631" },
-                null);
+        SimpleFeature f2 =
+                SimpleFeatureBuilder.build(
+                        type,
+                        new Object[] {
+                            gf.createPoint(new Coordinate(5, 6)),
+                            "Latin, arab, armenian"
+                                    + "\n\u0627\u062E\u062A\u0628\u0627\u0631\n"
+                                    + "\u0562\u0561\u0580\u0565\u0582 \u0541\u0565\u0566"
+                        },
+                        null);
+        SimpleFeature f3 =
+                SimpleFeatureBuilder.build(
+                        type,
+                        new Object[] {
+                            gf.createPoint(new Coordinate(7.5, 3)),
+                            "armenian \u0562\u0561\u0580\u0565\u0582 \u0541\u0565\u0566"
+                        },
+                        null);
+        SimpleFeature f4 =
+                SimpleFeatureBuilder.build(
+                        type,
+                        new Object[] {
+                            gf.createPoint(new Coordinate(2.5, 3)),
+                            "\u0627\u062E\u062A\u0628\u0627\u0631"
+                        },
+                        null);
 
-        SimpleFeature f5 = SimpleFeatureBuilder.build(type,
-                new Object[] { gf.createPoint(new Coordinate(5, 1)),
-                        "\u0562\u0561\u0580\u0565\u0582 \u0541\u0565\u0566  abc  \u0627\u062E\u062A\u0628\u0627\u0631" },
-                null);
+        SimpleFeature f5 =
+                SimpleFeatureBuilder.build(
+                        type,
+                        new Object[] {
+                            gf.createPoint(new Coordinate(5, 1)),
+                            "\u0562\u0561\u0580\u0565\u0582 \u0541\u0565\u0566  abc  \u0627\u062E\u062A\u0628\u0627\u0631"
+                        },
+                        null);
 
         MemoryDataStore data = new MemoryDataStore();
         data.addFeature(f1);
@@ -140,19 +169,30 @@ public class MultiScriptTest extends TestCase {
         builder.setName("multiScript");
         SimpleFeatureType type = builder.buildFeatureType();
 
-        SimpleFeature f1 = SimpleFeatureBuilder
-                .build(type,
-                        new Object[] { circleArcInBounds(5, 0, 8, bounds),
-                                "armenian    \u0562\u0561\u0580\u0565\u0582 \u0541\u0565\u0566" },
+        SimpleFeature f1 =
+                SimpleFeatureBuilder.build(
+                        type,
+                        new Object[] {
+                            circleArcInBounds(5, 0, 8, bounds),
+                            "armenian    \u0562\u0561\u0580\u0565\u0582 \u0541\u0565\u0566"
+                        },
                         null);
-        SimpleFeature f2 = SimpleFeatureBuilder.build(type,
-                new Object[] { circleArcInBounds(5, -3, 8, bounds),
-                        "\u0562\u0561\u0580\u0565\u0582 \u0541\u0565\u0566 abc \u0627\u062E\u062A\u0628\u0627\u0631" },
-                null);
-        SimpleFeature f3 = SimpleFeatureBuilder.build(type,
-                new Object[] { circleArcInBounds(5, -6, 8, bounds),
-                        "\u062A\u0635\u0628\u062D/ \u062A\u0635\u0628\u062D\u064A\u0646 \u0639\u0644\u0649 \u062E\u064A\u0631" },
-                null);
+        SimpleFeature f2 =
+                SimpleFeatureBuilder.build(
+                        type,
+                        new Object[] {
+                            circleArcInBounds(5, -3, 8, bounds),
+                            "\u0562\u0561\u0580\u0565\u0582 \u0541\u0565\u0566 abc \u0627\u062E\u062A\u0628\u0627\u0631"
+                        },
+                        null);
+        SimpleFeature f3 =
+                SimpleFeatureBuilder.build(
+                        type,
+                        new Object[] {
+                            circleArcInBounds(5, -6, 8, bounds),
+                            "\u062A\u0635\u0628\u062D/ \u062A\u0635\u0628\u062D\u064A\u0646 \u0639\u0644\u0649 \u062E\u064A\u0631"
+                        },
+                        null);
 
         MemoryDataStore data = new MemoryDataStore();
         data.addFeature(f1);
@@ -161,8 +201,8 @@ public class MultiScriptTest extends TestCase {
         lines = data.getFeatureSource("multiScript");
     }
 
-    private LineString circleArcInBounds(double x, double y, double radius,
-            ReferencedEnvelope bounds) {
+    private LineString circleArcInBounds(
+            double x, double y, double radius, ReferencedEnvelope bounds) {
         Point center = gf.createPoint(new Coordinate(x, y));
         Polygon buffered = (Polygon) center.buffer(radius, 64);
         Polygon mask = JTS.toGeometry(bounds);
@@ -173,25 +213,25 @@ public class MultiScriptTest extends TestCase {
     public void testMultiScriptPoint() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "multiscript/textMultiScript.sld");
         BufferedImage image = renderLabels(points, style, "Multi script");
-        String refPath = "./src/test/resources/org/geotools/renderer/lite/test-data/multiscript/textMultiScript.png";
+        String refPath =
+                "./src/test/resources/org/geotools/renderer/lite/test-data/multiscript/textMultiScript.png";
         ImageAssert.assertEquals(new File(refPath), image, TOLERANCE);
-
     }
 
     public void testMultiScriptPointWrap() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "multiscript/textMultiScriptWrap.sld");
         BufferedImage image = renderLabels(points, style, "Multi script wrap");
-        String refPath = "./src/test/resources/org/geotools/renderer/lite/test-data/multiscript/textMultiScriptWrap.png";
+        String refPath =
+                "./src/test/resources/org/geotools/renderer/lite/test-data/multiscript/textMultiScriptWrap.png";
         ImageAssert.assertEquals(new File(refPath), image, TOLERANCE);
-
     }
 
     public void testMultiScriptLine() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "multiscript/textMultiScriptLine.sld");
         BufferedImage image = renderLabels(lines, style, "Multi script lines");
-        String refPath = "./src/test/resources/org/geotools/renderer/lite/test-data/multiscript/textMultiScriptLine.png";
+        String refPath =
+                "./src/test/resources/org/geotools/renderer/lite/test-data/multiscript/textMultiScriptLine.png";
         ImageAssert.assertEquals(new File(refPath), image, TOLERANCE);
-
     }
 
     private BufferedImage renderLabels(SimpleFeatureSource fs, Style style, String title)
@@ -206,7 +246,7 @@ public class MultiScriptTest extends TestCase {
 
         return RendererBaseTest.showRender(title, renderer, TIME, bounds);
     }
-    
+
     public void testFollowLineWithLocalTransform() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "multiscript/textMultiScriptLine.sld");
         MapContent mc = new MapContent();
@@ -222,14 +262,20 @@ public class MultiScriptTest extends TestCase {
         Graphics2D g = (Graphics2D) image.getGraphics();
         g.setColor(Color.white);
         g.fillRect(0, 0, SIZE, SIZE);
-        g.setTransform(new AffineTransform(1.1, Math.sin(Math.toRadians(15)), -Math.sin(Math.toRadians(15)), 1.1, 15, 20));
+        g.setTransform(
+                new AffineTransform(
+                        1.1,
+                        Math.sin(Math.toRadians(15)),
+                        -Math.sin(Math.toRadians(15)),
+                        1.1,
+                        15,
+                        20));
         renderer.paint(g, new Rectangle(SIZE, SIZE), bounds);
         mc.dispose();
         renderer.getMapContent().dispose();
 
-        String refPath = "./src/test/resources/org/geotools/renderer/lite/test-data/multiscript/textMultiScriptTransformedLine.png";
+        String refPath =
+                "./src/test/resources/org/geotools/renderer/lite/test-data/multiscript/textMultiScriptTransformedLine.png";
         ImageAssert.assertEquals(new File(refPath), image, TOLERANCE);
-
     }
-
 }

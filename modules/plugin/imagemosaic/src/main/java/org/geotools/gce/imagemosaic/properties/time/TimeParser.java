@@ -29,36 +29,51 @@ import java.util.Map;
 import java.util.TimeZone;
 
 /**
- * Parses the {@code time} parameter of the request. The date, time and period are expected to be formatted according ISO-8601 standard.
+ * Parses the {@code time} parameter of the request. The date, time and period are expected to be
+ * formatted according ISO-8601 standard.
  *
  * @author Simone Giannecchini, GeoSolutions SAS
  */
 public class TimeParser {
-    /**
-     * All patterns that are correct regarding the ISO-8601 norm.
-     */
-    private static final String[] PATTERNS = { "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
-            "yyyy-MM-dd'T'HHmmssSSS'Z'", "yyyyMMdd'T'HH:mm:ss.SSS'Z'", "yyyyMMdd'T'HHmmssSSS'Z'",
-            "yyyy-MM-dd'T'HH:mm:ss.SSS", "yyyy-MM-dd'T'HHmmssSSS", "yyyyMMdd'T'HH:mm:ss.SSS",
-            "yyyyMMdd'T'HHmmssSSS",
-
-            "yyyy-MM-dd'T'HH:mm:ss'Z'", "yyyy-MM-dd'T'HHmmss'Z'", "yyyyMMdd'T'HH:mm:ss'Z'",
-            "yyyyMMdd'T'HHmmss'Z'", "yyyy-MM-dd'T'HH:mm:ss", "yyyy-MM-dd'T'HHmmss",
-            "yyyyMMdd'T'HH:mm:ss", "yyyyMMdd'T'HHmmss",
-
-            "yyyy-MM-dd'T'HH:mm'Z'", "yyyy-MM-dd'T'HHmm'Z'", "yyyyMMdd'T'HH:mm'Z'",
-            "yyyyMMdd'T'HHmm'Z'", "yyyy-MM-dd'T'HH:mm", "yyyy-MM-dd'T'HHmm", "yyyyMMdd'T'HH:mm",
-            "yyyyMMdd'T'HHmm",
-
-            "yyyy-MM-dd'T'HH'Z'", "yyyyMMdd'T'HH'Z'", "yyyy-MM-dd'T'HH", "yyyyMMdd'T'HH",
-
-            "yyyy-MM-dd", "yyyyMMdd",
-
-            "yyyy-MM", "yyyyMM",
-
-            "yyyy" };
+    /** All patterns that are correct regarding the ISO-8601 norm. */
+    private static final String[] PATTERNS = {
+        "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+        "yyyy-MM-dd'T'HHmmssSSS'Z'",
+        "yyyyMMdd'T'HH:mm:ss.SSS'Z'",
+        "yyyyMMdd'T'HHmmssSSS'Z'",
+        "yyyy-MM-dd'T'HH:mm:ss.SSS",
+        "yyyy-MM-dd'T'HHmmssSSS",
+        "yyyyMMdd'T'HH:mm:ss.SSS",
+        "yyyyMMdd'T'HHmmssSSS",
+        "yyyy-MM-dd'T'HH:mm:ss'Z'",
+        "yyyy-MM-dd'T'HHmmss'Z'",
+        "yyyyMMdd'T'HH:mm:ss'Z'",
+        "yyyyMMdd'T'HHmmss'Z'",
+        "yyyy-MM-dd'T'HH:mm:ss",
+        "yyyy-MM-dd'T'HHmmss",
+        "yyyyMMdd'T'HH:mm:ss",
+        "yyyyMMdd'T'HHmmss",
+        "yyyy-MM-dd'T'HH:mm'Z'",
+        "yyyy-MM-dd'T'HHmm'Z'",
+        "yyyyMMdd'T'HH:mm'Z'",
+        "yyyyMMdd'T'HHmm'Z'",
+        "yyyy-MM-dd'T'HH:mm",
+        "yyyy-MM-dd'T'HHmm",
+        "yyyyMMdd'T'HH:mm",
+        "yyyyMMdd'T'HHmm",
+        "yyyy-MM-dd'T'HH'Z'",
+        "yyyyMMdd'T'HH'Z'",
+        "yyyy-MM-dd'T'HH",
+        "yyyyMMdd'T'HH",
+        "yyyy-MM-dd",
+        "yyyyMMdd",
+        "yyyy-MM",
+        "yyyyMM",
+        "yyyy"
+    };
 
     private static final Map<Integer, List<String>> SPLITTED_PATTERNS;
+
     static {
         Map<Integer, List<String>> tmpPatterns = new HashMap<Integer, List<String>>();
 
@@ -66,8 +81,7 @@ public class TimeParser {
             int escapeCount = 0;
 
             for (char c : pattern.toCharArray()) {
-                if (c == '\'')
-                    escapeCount++;
+                if (c == '\'') escapeCount++;
             }
             int len = pattern.length() - escapeCount;
             List<String> list = tmpPatterns.get(len);
@@ -80,14 +94,10 @@ public class TimeParser {
         SPLITTED_PATTERNS = Collections.unmodifiableMap(tmpPatterns);
     }
 
-    /**
-     * UTC timezone to serve as reference
-     */
+    /** UTC timezone to serve as reference */
     static final TimeZone UTC_TZ = TimeZone.getTimeZone("UTC");
 
-    /**
-     * Amount of milliseconds in a day.
-     */
+    /** Amount of milliseconds in a day. */
     static final long MILLIS_IN_DAY = 24 * 60 * 60 * 1000;
 
     /**
@@ -95,13 +105,14 @@ public class TimeParser {
      *
      * @param key The key whose associated value to parse.
      */
-    public TimeParser() {
-    }
+    public TimeParser() {}
 
     /**
-     * Parses the date given in parameter. The date format should comply to ISO-8601 standard. The string may contains either a single date, or a
-     * start time, end time and a period. In the first case, this method returns a singleton containing only the parsed date. In the second case, this
-     * method returns a list including all dates from start time up to the end time with the interval specified in the {@code value} string.
+     * Parses the date given in parameter. The date format should comply to ISO-8601 standard. The
+     * string may contains either a single date, or a start time, end time and a period. In the
+     * first case, this method returns a singleton containing only the parsed date. In the second
+     * case, this method returns a list including all dates from start time up to the end time with
+     * the interval specified in the {@code value} string.
      *
      * @param value The date, time and period to parse.
      * @return A list of dates, or an empty list of the {@code value} string is null or empty.
@@ -154,8 +165,8 @@ public class TimeParser {
     }
 
     /**
-     * Parses date given in parameter according the ISO-8601 standard. This parameter should follow a syntax defined in the {@link #PATTERNS} array to
-     * be validated.
+     * Parses date given in parameter according the ISO-8601 standard. This parameter should follow
+     * a syntax defined in the {@link #PATTERNS} array to be validated.
      *
      * @param value The date to parse.
      * @return A date found in the request.
@@ -186,7 +197,8 @@ public class TimeParser {
     /**
      * Parses the increment part of a period and returns it in milliseconds.
      *
-     * @param period A string representation of the time increment according the ISO-8601:1988(E) standard. For example: {@code "P1D"} = one day.
+     * @param period A string representation of the time increment according the ISO-8601:1988(E)
+     *     standard. For example: {@code "P1D"} = one day.
      * @return The increment value converted in milliseconds.
      * @throws ParseException if the string can not be parsed.
      */
@@ -219,35 +231,35 @@ public class TimeParser {
             final double factor;
             if (time) {
                 switch (letter) {
-                case 'S':
-                    factor = 1000;
-                    break;
-                case 'M':
-                    factor = 60 * 1000;
-                    break;
-                case 'H':
-                    factor = 60 * 60 * 1000;
-                    break;
-                default:
-                    throw new ParseException("Unknown time symbol: " + letter, upper);
+                    case 'S':
+                        factor = 1000;
+                        break;
+                    case 'M':
+                        factor = 60 * 1000;
+                        break;
+                    case 'H':
+                        factor = 60 * 60 * 1000;
+                        break;
+                    default:
+                        throw new ParseException("Unknown time symbol: " + letter, upper);
                 }
             } else {
                 switch (letter) {
-                case 'D':
-                    factor = MILLIS_IN_DAY;
-                    break;
-                case 'W':
-                    factor = 7 * MILLIS_IN_DAY;
-                    break;
-                // TODO: handle months in a better way than just taking the average length.
-                case 'M':
-                    factor = 30 * MILLIS_IN_DAY;
-                    break;
-                case 'Y':
-                    factor = 365.25 * MILLIS_IN_DAY;
-                    break;
-                default:
-                    throw new ParseException("Unknown period symbol: " + letter, upper);
+                    case 'D':
+                        factor = MILLIS_IN_DAY;
+                        break;
+                    case 'W':
+                        factor = 7 * MILLIS_IN_DAY;
+                        break;
+                        // TODO: handle months in a better way than just taking the average length.
+                    case 'M':
+                        factor = 30 * MILLIS_IN_DAY;
+                        break;
+                    case 'Y':
+                        factor = 365.25 * MILLIS_IN_DAY;
+                        break;
+                    default:
+                        throw new ParseException("Unknown period symbol: " + letter, upper);
                 }
             }
             millis += Math.round(value * factor);

@@ -16,25 +16,19 @@
  */
 package org.geotools.graph.structure;
 
-
 /**
- * An interface in which to implement a visitor pattern with components of a
- * graph.
+ * An interface in which to implement a visitor pattern with components of a graph.
  *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- *
- *
- *
  * @source $URL$
  */
 public interface GraphVisitor {
-  
-  /**
-   * Presents the visitor with the component to visit. 
-   * 
-   * @param component The component being visited.
-   * 
-   * @return An integer signal value back to the caller.
-   */
-  public int visit(Graphable component);
+
+    /**
+     * Presents the visitor with the component to visit.
+     *
+     * @param component The component being visited.
+     * @return An integer signal value back to the caller.
+     */
+    public int visit(Graphable component);
 }

@@ -25,9 +25,8 @@ import org.geotools.process.factory.DescribeResult;
 
 /**
  * Simple process with a {@link ReferencedEnvelope} as the output
- * 
- * @author Andrea Aime
  *
+ * @author Andrea Aime
  * @source $URL$
  */
 @DescribeProcess(title = "Bounds", description = "Computes the bounding box of the input features.")
@@ -35,8 +34,8 @@ public class BoundsProcess implements VectorProcess {
 
     @DescribeResult(name = "bounds", description = "Bounding box of input features")
     public ReferencedEnvelope execute(
-            @DescribeParameter(name = "features", description = "Input feature collection") FeatureCollection features) {
+            @DescribeParameter(name = "features", description = "Input feature collection")
+                    FeatureCollection features) {
         return features.getBounds();
     }
-
 }

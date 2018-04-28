@@ -12,20 +12,19 @@ import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.util.logging.Logging;
 import org.junit.Test;
 
 public class MBTilesFileTest {
-    
+
     private static final Logger LOGGER = Logging.getLogger(MBTilesFileTest.class);
-    
+
     @Test
     public void testMBTilesMetaData() throws IOException {
-        
+
         MBTilesFile file = new MBTilesFile();
         file.init();
-                
+
         MBTilesMetadata metadata = new MBTilesMetadata();
         metadata.setName("dummy name");
         metadata.setDescription("dummy description");
@@ -35,8 +34,8 @@ public class MBTilesFileTest {
         metadata.setTypeStr("overlay");
         metadata.setMinZoomStr("0");
         metadata.setMaxZoomStr("5");
-        file.saveMetaData(metadata);   
-        
+        file.saveMetaData(metadata);
+
         MBTilesMetadata metadata2 = file.loadMetaData();
         assertEquals(metadata.getName(), metadata2.getName());
         assertEquals(metadata.getDescription(), metadata2.getDescription());
@@ -47,7 +46,7 @@ public class MBTilesFileTest {
         assertEquals(metadata.getMinZoom(), metadata2.getMinZoom());
         assertEquals(metadata.getMaxZoom(), metadata2.getMaxZoom());
 
-        file.close();        
+        file.close();
     }
 
     @Test
@@ -56,56 +55,58 @@ public class MBTilesFileTest {
         file.init();
         file.init();
     }
-    
+
     @Test
     public void testMBTilesWithoutJournal() throws IOException {
         // Create the temporary file
         File temp = File.createTempFile("temp2_", ".mbtiles");
-        MBTilesFile file = new MBTilesFile(temp,true);
+        MBTilesFile file = new MBTilesFile(temp, true);
         file.init();
         // Define the Journal file
-        final File journal = new File(temp.getAbsolutePath() + "-journal");      
+        final File journal = new File(temp.getAbsolutePath() + "-journal");
         // Initialize the journal file
         final AtomicLong counter = new AtomicLong(0);
         // Define a counter thread
-        Thread th = new Thread(new Runnable() {
-            
-            @Override
-            public void run() {
-                
-                while(true){
-                    if(journal.exists()){
-                        counter.incrementAndGet();  
-                    }
-                } 
-            }
-        });
+        Thread th =
+                new Thread(
+                        new Runnable() {
+
+                            @Override
+                            public void run() {
+
+                                while (true) {
+                                    if (journal.exists()) {
+                                        counter.incrementAndGet();
+                                    }
+                                }
+                            }
+                        });
         // launch the thread
         th.start();
         // add data to the mbtile
-        for(int i = 0; i< 10; i++){
-            for(int j = 0; j< 10; j++){
-                MBTilesTile tile1 = new MBTilesTile(1,i,j);
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                MBTilesTile tile1 = new MBTilesTile(1, i, j);
                 tile1.setData("dummy data 1".getBytes());
                 file.saveTile(tile1);
             }
         }
         // Stop the thread
-        try{
+        try {
             th.interrupt();
-        }catch(Exception e ){
+        } catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
-        
+
         // Close files
-        try{
+        try {
             file.close();
-        }catch(Exception e ){
+        } catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
-        try{
+        try {
             temp.delete();
-        }catch(Exception e ){
+        } catch (Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
         // Ensure journal has never been found
@@ -124,26 +125,26 @@ public class MBTilesFileTest {
 
     @Test
     public void testMBTilesTile() throws IOException, SQLException {
-        
+
         MBTilesFile file = new MBTilesFile();
         file.init();
-                
-        MBTilesTile tile1 = new MBTilesTile(1,0,0);
+
+        MBTilesTile tile1 = new MBTilesTile(1, 0, 0);
         tile1.setData("dummy data 1".getBytes());
-        MBTilesTile tile2 = new MBTilesTile(2,0,1);
+        MBTilesTile tile2 = new MBTilesTile(2, 0, 1);
         tile2.setData("dummy data 2".getBytes());
-       
+
         file.saveTile(tile1);
         file.saveTile(tile2);
-        
-        MBTilesTile testTile = file.loadTile(1,0,0);
+
+        MBTilesTile testTile = file.loadTile(1, 0, 0);
         assertTrue(Arrays.equals(tile1.getData(), testTile.getData()));
-        
-        testTile = file.loadTile(2,0,1);
+
+        testTile = file.loadTile(2, 0, 1);
         assertTrue(Arrays.equals(tile2.getData(), testTile.getData()));
-        
+
         assertEquals(2, file.numberOfTiles());
-        
+
         MBTilesFile.TileIterator it = file.tiles();
         assertTrue(it.hasNext());
         assertNotNull(it.next());
@@ -159,38 +160,36 @@ public class MBTilesFileTest {
         assertEquals(0, file.maxColumn(2));
         assertEquals(0, file.minRow(1));
         assertEquals(1, file.maxRow(2));
-        
-        file.close();   
+
+        file.close();
     }
-    
+
     @Test
     public void testMBTilesGrid() throws IOException, SQLException {
-        
+
         MBTilesFile file = new MBTilesFile();
         file.init();
-                
-        MBTilesGrid grid1 = new MBTilesGrid(1,0,0);
+
+        MBTilesGrid grid1 = new MBTilesGrid(1, 0, 0);
         grid1.setGrid("dummy data 1".getBytes());
         grid1.setGridDataKey("key1", "dummy value1");
         grid1.setGridDataKey("key2", "dummy value2");
-        MBTilesGrid grid2 = new MBTilesGrid(2,0,1);
+        MBTilesGrid grid2 = new MBTilesGrid(2, 0, 1);
         grid2.setGridDataKey("key3", "dummy value3");
         grid2.setGridDataKey("key4", "dummy value4");
         grid2.setGrid("dummy data 2".getBytes());
-       
+
         file.saveGrid(grid1);
         file.saveGrid(grid2);
-        
-        MBTilesGrid testGrid = file.loadGrid(1,0,0);
+
+        MBTilesGrid testGrid = file.loadGrid(1, 0, 0);
         assertTrue(Arrays.equals(grid1.getGrid(), testGrid.getGrid()));
         assertEquals(grid1.getGridDataKey("key1"), grid1.getGridDataKey("key1"));
         assertEquals(grid1.getGridDataKey("key2"), grid1.getGridDataKey("key2"));
-        
-        testGrid = file.loadGrid(2,0,1);
+
+        testGrid = file.loadGrid(2, 0, 1);
         assertTrue(Arrays.equals(grid2.getGrid(), testGrid.getGrid()));
         assertEquals(grid2.getGridDataKey("key3"), grid2.getGridDataKey("key3"));
         assertEquals(grid2.getGridDataKey("key4"), grid2.getGridDataKey("key4"));
-        
     }
-
 }

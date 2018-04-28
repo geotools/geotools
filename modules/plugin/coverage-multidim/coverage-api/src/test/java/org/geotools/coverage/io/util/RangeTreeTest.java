@@ -19,15 +19,12 @@ package org.geotools.coverage.io.util;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.geotools.util.DateRange;
 import org.geotools.util.NumberRange;
 import org.junit.Assert;
 import org.junit.Test;
 
-/**
- * Testing Range Trees and related comparators
- */
+/** Testing Range Trees and related comparators */
 public class RangeTreeTest extends Assert {
 
     @Test
@@ -93,5 +90,4 @@ public class RangeTreeTest extends Assert {
         assertSame(treeSet2.last(), treeSet.last());
         assertSame(treeSet2.first(), treeSet.first());
     }
-
 }

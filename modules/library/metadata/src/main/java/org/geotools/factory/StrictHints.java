@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,13 +16,12 @@
  */
 package org.geotools.factory;
 
-import java.util.Map;
 import java.awt.RenderingHints;
-
+import java.util.Map;
 
 /**
- * Hints which should not be merged with global hints, usually because the global hints have
- * already been merged.
+ * Hints which should not be merged with global hints, usually because the global hints have already
+ * been merged.
  *
  * @since 2.4
  * @source $URL$
@@ -30,58 +29,42 @@ import java.awt.RenderingHints;
  * @author Martin Desruisseaux
  */
 class StrictHints extends Hints {
-    /**
-     * Creates a set of strict hints which is a copy of the specified hints.
-     */
+    /** Creates a set of strict hints which is a copy of the specified hints. */
     public StrictHints(final Hints hints) {
         super(hints);
     }
-    
-    /**
-     * Creates a set of strict hints which is a copy of the specified hints.
-     */
+
+    /** Creates a set of strict hints which is a copy of the specified hints. */
     public StrictHints(final Map<RenderingHints.Key, Object> hints) {
         super(hints);
     }
 
-    /**
-     * An immutable set of empty hints.
-     */
+    /** An immutable set of empty hints. */
     static final class Empty extends StrictHints {
-        /**
-         * Creates an empty instance.
-         */
+        /** Creates an empty instance. */
         Empty() {
             super((Hints) null);
         }
 
-        /**
-         * Unsupported operation.
-         */
+        /** Unsupported operation. */
         @Override
         public void add(RenderingHints hints) {
             throw new UnsupportedOperationException();
         }
 
-        /**
-         * Unsupported operation.
-         */
+        /** Unsupported operation. */
         @Override
         public Object put(Object key, Object value) {
             throw new UnsupportedOperationException();
         }
 
-        /**
-         * Unsupported operation.
-         */
+        /** Unsupported operation. */
         @Override
-        public void putAll(Map<?,?> map) {
+        public void putAll(Map<?, ?> map) {
             throw new UnsupportedOperationException();
         }
 
-        /**
-         * Returns a modifiable copy.
-         */
+        /** Returns a modifiable copy. */
         @Override
         public StrictHints clone() {
             return new StrictHints((Hints) null);

@@ -18,12 +18,10 @@
 package org.geotools.util;
 
 import org.geotools.factory.Hints;
-import org.geotools.util.Converter;
-import org.geotools.util.ConverterFactory;
 
 /**
  * Converts between enumerations and strings
- * 
+ *
  * @author Andrea Aime - OpenGeo
  */
 public class EnumerationConverterFactory implements ConverterFactory {
@@ -48,6 +46,5 @@ public class EnumerationConverterFactory implements ConverterFactory {
                 return null;
             }
         }
-
     }
 }

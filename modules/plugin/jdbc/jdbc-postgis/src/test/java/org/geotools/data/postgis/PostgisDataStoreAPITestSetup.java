@@ -19,11 +19,7 @@ package org.geotools.data.postgis;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class PostgisDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
 
     public PostgisDataStoreAPITestSetup(JDBCTestSetup delegate) {
@@ -45,52 +41,62 @@ public class PostgisDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
 
     @Override
     protected void createLakeTable() throws Exception {
-        run("CREATE TABLE \"lake\"(\"fid\" serial PRIMARY KEY, \"id\" int, "
-                + "\"geom\" geometry, \"name\" varchar )");
-        run("INSERT INTO GEOMETRY_COLUMNS VALUES('', 'public', 'lake', 'geom', 2, '4326', 'POLYGON')");
+        run(
+                "CREATE TABLE \"lake\"(\"fid\" serial PRIMARY KEY, \"id\" int, "
+                        + "\"geom\" geometry, \"name\" varchar )");
+        run(
+                "INSERT INTO GEOMETRY_COLUMNS VALUES('', 'public', 'lake', 'geom', 2, '4326', 'POLYGON')");
 
-        if (((PostGISTestSetup)delegate).isVersion2()) {
+        if (((PostGISTestSetup) delegate).isVersion2()) {
             run("ALTER TABLE \"lake\" ALTER COLUMN  \"geom\" TYPE geometry(Polygon,4326);");
         }
         run("CREATE INDEX LAKE_GEOM_INDEX ON \"lake\" USING GIST (\"geom\") ");
-        
+
         // advance the sequence to 1 to compensate for hand insertions
         run("SELECT nextval(pg_get_serial_sequence('lake','fid'))");
 
-        run("INSERT INTO \"lake\" (\"fid\", \"id\",\"geom\",\"name\") VALUES (0, 0,"
-                + "ST_GeomFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',4326),"
-                + "'muddy')");
+        run(
+                "INSERT INTO \"lake\" (\"fid\", \"id\",\"geom\",\"name\") VALUES (0, 0,"
+                        + "ST_GeomFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',4326),"
+                        + "'muddy')");
     }
 
     @Override
     protected void createRiverTable() throws Exception {
-        run("CREATE TABLE \"river\"(\"fid\" serial PRIMARY KEY, \"id\" int, "
-                + "\"geom\" geometry, \"river\" varchar , \"flow\" real )");
-        run("INSERT INTO GEOMETRY_COLUMNS VALUES('', 'public', 'river', 'geom', 2, '4326', 'MULTILINESTRING')");
+        run(
+                "CREATE TABLE \"river\"(\"fid\" serial PRIMARY KEY, \"id\" int, "
+                        + "\"geom\" geometry, \"river\" varchar , \"flow\" real )");
+        run(
+                "INSERT INTO GEOMETRY_COLUMNS VALUES('', 'public', 'river', 'geom', 2, '4326', 'MULTILINESTRING')");
 
-        if (((PostGISTestSetup)delegate).isVersion2()) {
-            run("ALTER TABLE \"river\" ALTER COLUMN  \"geom\" TYPE geometry(MultiLineString,4326);");
+        if (((PostGISTestSetup) delegate).isVersion2()) {
+            run(
+                    "ALTER TABLE \"river\" ALTER COLUMN  \"geom\" TYPE geometry(MultiLineString,4326);");
         }
         run("CREATE INDEX RIVER_GEOM_INDEX ON \"river\" USING GIST (\"geom\") ");
-        
+
         // advance the sequence to 1 to compensate for hand insertions
         run("SELECT nextval(pg_get_serial_sequence('river','fid'))");
 
-        run("INSERT INTO \"river\" (\"fid\", \"id\",\"geom\",\"river\", \"flow\")  VALUES (0, 0,"
-                + "ST_GeomFromText('MULTILINESTRING((5 5, 7 4),(7 5, 9 7, 13 7),(7 5, 9 3, 11 3))',4326),"
-                + "'rv1', 4.5)");
-        run("INSERT INTO \"river\" (\"fid\", \"id\",\"geom\",\"river\", \"flow\") VALUES (1, 1,"
-                + "ST_GeomFromText('MULTILINESTRING((4 6, 4 8, 6 10))',4326),"
-                + "'rv2', 3.0)");
+        run(
+                "INSERT INTO \"river\" (\"fid\", \"id\",\"geom\",\"river\", \"flow\")  VALUES (0, 0,"
+                        + "ST_GeomFromText('MULTILINESTRING((5 5, 7 4),(7 5, 9 7, 13 7),(7 5, 9 3, 11 3))',4326),"
+                        + "'rv1', 4.5)");
+        run(
+                "INSERT INTO \"river\" (\"fid\", \"id\",\"geom\",\"river\", \"flow\") VALUES (1, 1,"
+                        + "ST_GeomFromText('MULTILINESTRING((4 6, 4 8, 6 10))',4326),"
+                        + "'rv2', 3.0)");
     }
 
     @Override
     protected void createRoadTable() throws Exception {
         // create table and spatial index
-        run("CREATE TABLE \"road\"(\"fid\" serial PRIMARY KEY, \"id\" int, "
-                + "\"geom\" geometry, \"name\" varchar )");
-        run("INSERT INTO GEOMETRY_COLUMNS VALUES('', 'public', 'road', 'geom', 2, '4326', 'LINESTRING')");
-        if (((PostGISTestSetup)delegate).isVersion2()) {
+        run(
+                "CREATE TABLE \"road\"(\"fid\" serial PRIMARY KEY, \"id\" int, "
+                        + "\"geom\" geometry, \"name\" varchar )");
+        run(
+                "INSERT INTO GEOMETRY_COLUMNS VALUES('', 'public', 'road', 'geom', 2, '4326', 'LINESTRING')");
+        if (((PostGISTestSetup) delegate).isVersion2()) {
             run("ALTER TABLE \"road\" ALTER COLUMN  \"geom\" TYPE geometry(LineString,4326);");
         }
         run("CREATE INDEX ROAD_GEOM_INDEX ON \"road\" USING GIST (\"geom\") ");
@@ -100,14 +106,18 @@ public class PostgisDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
         run("SELECT nextval(pg_get_serial_sequence('road','fid'))");
 
         // insertions
-        run("INSERT INTO \"road\" (\"fid\", \"id\",\"geom\",\"name\") VALUES (0, 0,"
-                + "ST_GeomFromText('LINESTRING(1 1, 2 2, 4 2, 5 1)',4326),"
-                + "'r1')");
-        run("INSERT INTO \"road\" (\"fid\", \"id\",\"geom\",\"name\") VALUES (1, 1,"
-                + "ST_GeomFromText('LINESTRING(3 0, 3 2, 3 3, 3 4)',4326),"
-                + "'r2')");
-        run("INSERT INTO \"road\" (\"fid\", \"id\",\"geom\",\"name\") VALUES (2, 2,"
-                + "ST_GeomFromText('LINESTRING(3 2, 4 2, 5 3)',4326)," + "'r3')");
+        run(
+                "INSERT INTO \"road\" (\"fid\", \"id\",\"geom\",\"name\") VALUES (0, 0,"
+                        + "ST_GeomFromText('LINESTRING(1 1, 2 2, 4 2, 5 1)',4326),"
+                        + "'r1')");
+        run(
+                "INSERT INTO \"road\" (\"fid\", \"id\",\"geom\",\"name\") VALUES (1, 1,"
+                        + "ST_GeomFromText('LINESTRING(3 0, 3 2, 3 3, 3 4)',4326),"
+                        + "'r2')");
+        run(
+                "INSERT INTO \"road\" (\"fid\", \"id\",\"geom\",\"name\") VALUES (2, 2,"
+                        + "ST_GeomFromText('LINESTRING(3 2, 4 2, 5 3)',4326),"
+                        + "'r3')");
     }
 
     @Override
@@ -135,9 +145,10 @@ public class PostgisDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
     }
 
     protected void createSimplifyPolygonTable() throws Exception {
-        run("CREATE TABLE \"simplify_polygon\" AS SELECT ST_GeomFromText('POLYGON(("
-                + "-165.96 64.51,-165.96 64.5,-165.97 64.5,-165.97 64.51,-165.96 64.51))'"
-                + ",4326) as \"geom\"");
+        run(
+                "CREATE TABLE \"simplify_polygon\" AS SELECT ST_GeomFromText('POLYGON(("
+                        + "-165.96 64.51,-165.96 64.5,-165.97 64.5,-165.97 64.51,-165.96 64.51))'"
+                        + ",4326) as \"geom\"");
     }
 
     protected void dropSimplifyPolygonTable() {

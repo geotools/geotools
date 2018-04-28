@@ -16,17 +16,16 @@
  */
 package org.geotools.filter.function;
 
+import static org.junit.Assert.assertEquals;
+
+import java.util.Date;
 import org.geotools.factory.CommonFactoryFinder;
 import org.junit.Test;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Function;
 
-import java.util.Date;
-
-import static org.junit.Assert.assertEquals;
-
 public class DateDifferenceTest {
-    
+
     @Test
     public void testDifference() {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
@@ -35,5 +34,4 @@ public class DateDifferenceTest {
         Function function = ff.function("dateDifference", ff.literal(d2), ff.literal(d1));
         assertEquals(10, function.evaluate(null, Integer.class), 0d);
     }
-    
 }

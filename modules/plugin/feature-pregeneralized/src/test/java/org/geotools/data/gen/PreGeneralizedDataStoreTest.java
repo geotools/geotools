@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -19,10 +19,8 @@ package org.geotools.data.gen;
 
 import java.io.IOException;
 import java.util.List;
-
 import junit.framework.TestCase;
 import org.geotools.data.DataUtilities;
-
 import org.geotools.data.DefaultQuery;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
@@ -38,11 +36,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class PreGeneralizedDataStoreTest extends TestCase {
 
     @Override
@@ -63,8 +57,8 @@ public class PreGeneralizedDataStoreTest extends TestCase {
             assertTrue("GenStreams".equals(typeName));
             Query query = new DefaultQuery(typeName);
 
-            FeatureReader<SimpleFeatureType, SimpleFeature> reader = ds.getFeatureReader(query,
-                    Transaction.AUTO_COMMIT);
+            FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                    ds.getFeatureReader(query, Transaction.AUTO_COMMIT);
             assertTrue(reader != null);
             reader.close();
 
@@ -93,7 +87,6 @@ public class PreGeneralizedDataStoreTest extends TestCase {
             e.printStackTrace();
             Assert.fail();
         }
-
     }
 
     public void testNotSupportedFeatures() {
@@ -180,6 +173,5 @@ public class PreGeneralizedDataStoreTest extends TestCase {
         if (error) {
             Assert.fail();
         }
-
     }
 }

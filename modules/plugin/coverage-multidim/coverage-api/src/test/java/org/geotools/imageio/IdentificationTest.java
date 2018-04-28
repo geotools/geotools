@@ -19,9 +19,7 @@ package org.geotools.imageio;
 import org.junit.Assert;
 import org.junit.Test;
 
-/**
- * Simple {@link Identification} class test
- */
+/** Simple {@link Identification} class test */
 public class IdentificationTest extends Assert {
 
     @Test

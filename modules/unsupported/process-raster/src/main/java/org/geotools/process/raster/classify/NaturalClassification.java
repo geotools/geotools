@@ -16,14 +16,11 @@
  */
 package org.geotools.process.raster.classify;
 
-import org.geotools.process.classify.ClassificationMethod;
-
 import java.util.ArrayList;
 import java.util.List;
+import org.geotools.process.classify.ClassificationMethod;
 
-/**
- * Helper class used for raster natural breaks classification.
- */
+/** Helper class used for raster natural breaks classification. */
 public class NaturalClassification extends Classification {
 
     List<Double>[] values;
@@ -32,7 +29,7 @@ public class NaturalClassification extends Classification {
         super(ClassificationMethod.NATURAL_BREAKS, numBands);
         values = new List[numBands];
         for (int i = 0; i < values.length; i++) {
-            values[i] = new ArrayList<Double>(); 
+            values[i] = new ArrayList<Double>();
         }
     }
 

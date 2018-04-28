@@ -16,15 +16,13 @@
  */
 package org.geotools.data.mysql;
 
+import java.util.HashMap;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
 
-import java.util.HashMap;
-
-
 /**
- * Tests that enhandedSpatialSupport is not enabled in MySQL versions < 5.6
- * even if MySQLDataStoreFactory.ENHANCED_SPATIAL_SUPPORT is set.
+ * Tests that enhandedSpatialSupport is not enabled in MySQL versions < 5.6 even if
+ * MySQLDataStoreFactory.ENHANCED_SPATIAL_SUPPORT is set.
  *
  * @author Justin Deoliveira, The Open Planning Project
  * @source $URL$
@@ -34,7 +32,6 @@ public class MySQLDataStoreManualEnhandedSpatialSupportTest extends JDBCTestSupp
         return new MySQLTestSetup();
     }
 
-
     @Override
     protected HashMap createDataStoreFactoryParams() throws Exception {
         // TODO Auto-generated method stub
@@ -43,10 +40,9 @@ public class MySQLDataStoreManualEnhandedSpatialSupportTest extends JDBCTestSupp
         return params;
     }
 
-
     public void testManualEnhancedSpatialSupportDetection() throws Exception {
-        //ensure that if not version 5.6 or later then PreciseSpatialOps are
-        //disabled
+        // ensure that if not version 5.6 or later then PreciseSpatialOps are
+        // disabled
         boolean isMySQL56 = MySQLDataStoreFactory.isMySqlVersion56(dataStore);
         if (!isMySQL56) {
             assertFalse(((MySQLDialectBasic) dialect).getUsePreciseSpatialOps());

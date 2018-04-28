@@ -17,6 +17,7 @@
 
 package org.geotools.data.complex.filter;
 
+import com.vividsolutions.jts.geom.Geometry;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -24,9 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.xml.namespace.QName;
-
 import org.geotools.data.complex.AbstractMappingFeatureIterator;
 import org.geotools.data.complex.ComplexFeatureConstants;
 import org.geotools.data.complex.config.NonFeatureTypeProxy;
@@ -64,44 +63,38 @@ import org.opengis.filter.expression.PropertyName;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.xml.sax.Attributes;
 
-import com.vividsolutions.jts.geom.Geometry;
-
 /**
  * Utility class to evaluate XPath expressions against an Attribute instance, which may be any
  * Attribute, whether it is simple, complex, a feature, etc.
- * <p>
- * At the difference of the Filter subsystem, which works against Attribute contents (for example to
- * evaluate a comparison filter), the XPath subsystem, for which this class is the single entry
+ *
+ * <p>At the difference of the Filter subsystem, which works against Attribute contents (for example
+ * to evaluate a comparison filter), the XPath subsystem, for which this class is the single entry
  * point, works against Attribute instances. That is, the result of an XPath expression, if a single
  * value, is an Attribtue, not the attribute content, or a List of Attributes, for instance.
- * </p>
- * 
+ *
  * @author Gabriel Roldan (Axios Engineering)
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
  * @version $Id$
- *
- *
- *
  * @source $URL$
- *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main
- *         /java/org/geotools/data/complex/filter/XPath.java $
+ *     http://svn.osgeo.org/geotools/trunk/modules/unsupported/app-schema/app-schema/src/main
+ *     /java/org/geotools/data/complex/filter/XPath.java $
  * @since 2.4
  */
 public class XPath extends XPathUtil {
 
-    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(XPath.class
-            .getPackage().getName());
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(XPath.class.getPackage().getName());
 
     private FilterFactory FF;
 
     private FeatureFactory featureFactory;
-    
+
     private CoordinateReferenceSystem crs;
 
     /**
-     * Used to create specific attribute descriptors for
-     * {@link #set(Attribute, String, Object, String, AttributeType)} when the actual attribute
-     * instance is of a derived type of the corresponding one declared in the feature type.
+     * Used to create specific attribute descriptors for {@link #set(Attribute, String, Object,
+     * String, AttributeType)} when the actual attribute instance is of a derived type of the
+     * corresponding one declared in the feature type.
      */
     private FeatureTypeFactory descriptorFactory;
 
@@ -120,47 +113,53 @@ public class XPath extends XPathUtil {
     public void setFilterFactory(FilterFactory ff) {
         this.FF = ff;
     }
-    
+
     public void setCRS(CoordinateReferenceSystem crs) {
         this.crs = crs;
     }
 
     public void setFeatureFactory(FeatureFactory featureFactory) {
         this.featureFactory = featureFactory;
-    }  
-   
+    }
+
     /**
      * Sets the value of the attribute of <code>att</code> addressed by <code>xpath</code> and of
      * type <code>targetNodeType</code> to be <code>value</code> with id <code>id</code>.
-     * 
-     * @param att
-     *            the root attribute for which to set the child attribute value
-     * @param xpath
-     *            the xpath expression that addresses the <code>att</code> child whose value is to
-     *            be set
-     * @param value
-     *            the value of the attribute addressed by <code>xpath</code>
-     * @param id
-     *            the identifier of the attribute addressed by <code>xpath</code>, might be
-     *            <code>null</code>
-     * @param targetNodeType
-     *            the expected type of the attribute addressed by <code>xpath</code>, or
-     *            <code>null</code> if unknown
-     * @param isXlinkRef
-     *            true if the attribute would only contain xlink:href client property
+     *
+     * @param att the root attribute for which to set the child attribute value
+     * @param xpath the xpath expression that addresses the <code>att</code> child whose value is to
+     *     be set
+     * @param value the value of the attribute addressed by <code>xpath</code>
+     * @param id the identifier of the attribute addressed by <code>xpath</code>, might be <code>
+     *     null</code>
+     * @param targetNodeType the expected type of the attribute addressed by <code>xpath</code>, or
+     *     <code>null</code> if unknown
+     * @param isXlinkRef true if the attribute would only contain xlink:href client property
      * @return
      */
-    public Attribute set(final Attribute att, final StepList xpath, Object value, String id,
-            AttributeType targetNodeType, boolean isXlinkRef, Expression sourceExpression) {
+    public Attribute set(
+            final Attribute att,
+            final StepList xpath,
+            Object value,
+            String id,
+            AttributeType targetNodeType,
+            boolean isXlinkRef,
+            Expression sourceExpression) {
         return set(att, xpath, value, id, targetNodeType, isXlinkRef, null, sourceExpression);
     }
 
-    public Attribute set(final Attribute att, final StepList xpath, Object value, String id,
-            AttributeType targetNodeType, boolean isXlinkRef, AttributeDescriptor targetDescriptor,
+    public Attribute set(
+            final Attribute att,
+            final StepList xpath,
+            Object value,
+            String id,
+            AttributeType targetNodeType,
+            boolean isXlinkRef,
+            AttributeDescriptor targetDescriptor,
             Expression sourceExpression) {
         if (XPath.LOGGER.isLoggable(Level.CONFIG)) {
-            XPath.LOGGER.entering("XPath", "set", new Object[] { att, xpath, value, id,
-                    targetNodeType });
+            XPath.LOGGER.entering(
+                    "XPath", "set", new Object[] {att, xpath, value, id, targetNodeType});
         }
 
         final StepList steps = new StepList(xpath);
@@ -177,26 +176,32 @@ public class XPath extends XPathUtil {
                 if (steps.size() > 1) {
                     steps.remove(0);
                 } else {
-                    // except when the xpath is the root itself 
+                    // except when the xpath is the root itself
                     // where it is done for feature chaining for simple content
                     if (Types.isSimpleContentType(parent.getType())
                             || Types.canHaveTextContent(parent.getType())) {
                         return setSimpleContentValue(parent, value);
                     } else if (Types.isGeometryType(parent.getType())) {
-                        ComplexFeatureTypeFactoryImpl typeFactory = new ComplexFeatureTypeFactoryImpl();
+                        ComplexFeatureTypeFactoryImpl typeFactory =
+                                new ComplexFeatureTypeFactoryImpl();
                         GeometryType geomType;
                         if (parent.getType() instanceof GeometryType) {
                             geomType = (GeometryType) parent.getType();
                         } else {
-                            geomType = (GeometryType) ((NonFeatureTypeProxy) parent.getType())
-                                    .getSubject();
+                            geomType =
+                                    (GeometryType)
+                                            ((NonFeatureTypeProxy) parent.getType()).getSubject();
                         }
-                        GeometryDescriptor geomDescriptor = typeFactory.createGeometryDescriptor(
-                                geomType, rootName, parentDescriptor.getMinOccurs(),
-                                parentDescriptor.getMaxOccurs(), parentDescriptor.isNillable(),
-                                parentDescriptor.getDefaultValue());
-                        GeometryAttributeImpl geom = new GeometryAttributeImpl(value,
-                                geomDescriptor, null);
+                        GeometryDescriptor geomDescriptor =
+                                typeFactory.createGeometryDescriptor(
+                                        geomType,
+                                        rootName,
+                                        parentDescriptor.getMinOccurs(),
+                                        parentDescriptor.getMaxOccurs(),
+                                        parentDescriptor.isNillable(),
+                                        parentDescriptor.getDefaultValue());
+                        GeometryAttributeImpl geom =
+                                new GeometryAttributeImpl(value, geomDescriptor, null);
                         ArrayList<Property> geomAtts = new ArrayList<Property>();
                         geomAtts.add(geom);
                         parent.setValue(geomAtts);
@@ -208,7 +213,7 @@ public class XPath extends XPathUtil {
 
         Iterator stepsIterator = steps.iterator();
 
-        for (; stepsIterator.hasNext();) {
+        for (; stepsIterator.hasNext(); ) {
             final XPath.Step currStep = (Step) stepsIterator.next();
             AttributeDescriptor currStepDescriptor = null;
             final boolean isLastStep = !stepsIterator.hasNext();
@@ -216,7 +221,8 @@ public class XPath extends XPathUtil {
             final Name attributeName = Types.toName(stepName);
 
             final AttributeType _parentType = parent.getType();
-            if (_parentType.getName().equals(XSSchema.ANYTYPE_TYPE.getName()) && targetDescriptor != null) {
+            if (_parentType.getName().equals(XSSchema.ANYTYPE_TYPE.getName())
+                    && targetDescriptor != null) {
                 // this needs to be passed on if casting anyType to something else, since it won't
                 // exist in the schema
                 currStepDescriptor = targetDescriptor;
@@ -225,9 +231,14 @@ public class XPath extends XPathUtil {
 
                 if (!isLastStep || targetNodeType == null) {
                     if (null == attributeName.getNamespaceURI()) {
-                        currStepDescriptor = (AttributeDescriptor) Types.findDescriptor(parentType, attributeName.getLocalPart());
+                        currStepDescriptor =
+                                (AttributeDescriptor)
+                                        Types.findDescriptor(
+                                                parentType, attributeName.getLocalPart());
                     } else {
-                        currStepDescriptor = (AttributeDescriptor) Types.findDescriptor(parentType, attributeName);
+                        currStepDescriptor =
+                                (AttributeDescriptor)
+                                        Types.findDescriptor(parentType, attributeName);
                     }
 
                     if (currStepDescriptor == null) {
@@ -244,9 +255,14 @@ public class XPath extends XPathUtil {
                 } else {
                     AttributeDescriptor actualDescriptor;
                     if (null == attributeName.getNamespaceURI()) {
-                        actualDescriptor = (AttributeDescriptor) Types.findDescriptor(parentType, attributeName.getLocalPart());
+                        actualDescriptor =
+                                (AttributeDescriptor)
+                                        Types.findDescriptor(
+                                                parentType, attributeName.getLocalPart());
                     } else {
-                        actualDescriptor = (AttributeDescriptor) Types.findDescriptor(parentType, attributeName);
+                        actualDescriptor =
+                                (AttributeDescriptor)
+                                        Types.findDescriptor(parentType, attributeName);
                     }
 
                     if (actualDescriptor != null) {
@@ -257,27 +273,46 @@ public class XPath extends XPathUtil {
                             // important to maintain CRS information encoding
                             if (Geometry.class.isAssignableFrom(targetNodeType.getBinding())) {
                                 if (!(targetNodeType instanceof GeometryType)) {
-                                    targetNodeType = new GeometryTypeImpl(targetNodeType.getName(),
-                                            targetNodeType.getBinding(), crs != null ? crs
-                                                    : ((GeometryDescriptor) actualDescriptor)
-                                                            .getCoordinateReferenceSystem(),
-                                            targetNodeType.isIdentified(), targetNodeType
-                                                    .isAbstract(),
-                                            targetNodeType.getRestrictions(), targetNodeType
-                                                    .getSuper(), targetNodeType.getDescription());
+                                    targetNodeType =
+                                            new GeometryTypeImpl(
+                                                    targetNodeType.getName(),
+                                                    targetNodeType.getBinding(),
+                                                    crs != null
+                                                            ? crs
+                                                            : ((GeometryDescriptor)
+                                                                            actualDescriptor)
+                                                                    .getCoordinateReferenceSystem(),
+                                                    targetNodeType.isIdentified(),
+                                                    targetNodeType.isAbstract(),
+                                                    targetNodeType.getRestrictions(),
+                                                    targetNodeType.getSuper(),
+                                                    targetNodeType.getDescription());
                                 }
-                                currStepDescriptor = descriptorFactory.createGeometryDescriptor(
-                                        (GeometryType) targetNodeType, attributeName, minOccurs,
-                                        maxOccurs, nillable, null);
+                                currStepDescriptor =
+                                        descriptorFactory.createGeometryDescriptor(
+                                                (GeometryType) targetNodeType,
+                                                attributeName,
+                                                minOccurs,
+                                                maxOccurs,
+                                                nillable,
+                                                null);
                             } else {
-                                throw new IllegalArgumentException("Can't set targetNodeType: "
-                                        + targetNodeType.toString() + " for attribute mapping: "
-                                        + attributeName + " as it is not a Geometry type!");
+                                throw new IllegalArgumentException(
+                                        "Can't set targetNodeType: "
+                                                + targetNodeType.toString()
+                                                + " for attribute mapping: "
+                                                + attributeName
+                                                + " as it is not a Geometry type!");
                             }
                         } else {
-                            currStepDescriptor = descriptorFactory.createAttributeDescriptor(
-                                    targetNodeType, attributeName, minOccurs, maxOccurs, nillable,
-                                    null);
+                            currStepDescriptor =
+                                    descriptorFactory.createAttributeDescriptor(
+                                            targetNodeType,
+                                            attributeName,
+                                            minOccurs,
+                                            maxOccurs,
+                                            nillable,
+                                            null);
                         }
                     }
                 }
@@ -285,7 +320,7 @@ public class XPath extends XPathUtil {
                 if (currStepDescriptor == null) {
                     StringBuffer parentAtts = new StringBuffer();
                     Collection properties = parentType.getDescriptors();
-                    for (Iterator it = properties.iterator(); it.hasNext();) {
+                    for (Iterator it = properties.iterator(); it.hasNext(); ) {
                         PropertyDescriptor desc = (PropertyDescriptor) it.next();
                         Name name = desc.getName();
                         parentAtts.append(name.getNamespaceURI());
@@ -295,103 +330,137 @@ public class XPath extends XPathUtil {
                             parentAtts.append(", ");
                         }
                     }
-                    throw new IllegalArgumentException(currStep
-                            + " is not a valid location path for type " + parentType.getName()
-                            + ". " + currStep + " ns: " + currStep.getName().getNamespaceURI()
-                            + ", " + parentType.getName().getLocalPart() + " properties: "
-                            + parentAtts);
+                    throw new IllegalArgumentException(
+                            currStep
+                                    + " is not a valid location path for type "
+                                    + parentType.getName()
+                                    + ". "
+                                    + currStep
+                                    + " ns: "
+                                    + currStep.getName().getNamespaceURI()
+                                    + ", "
+                                    + parentType.getName().getLocalPart()
+                                    + " properties: "
+                                    + parentAtts);
                 }
             }
 
             if (isLastStep) {
                 // reached the leaf
                 if (currStepDescriptor == null) {
-                    throw new IllegalArgumentException(currStep
-                            + " is not a valid location path for type " + _parentType.getName());
+                    throw new IllegalArgumentException(
+                            currStep
+                                    + " is not a valid location path for type "
+                                    + _parentType.getName());
                 }
 
-                return setLeafAttribute(currStepDescriptor, currStep, id, value, parent,
-                        targetNodeType, isXlinkRef);
+                return setLeafAttribute(
+                        currStepDescriptor,
+                        currStep,
+                        id,
+                        value,
+                        parent,
+                        targetNodeType,
+                        isXlinkRef);
             } else {
                 // parent = appendComplexProperty(parent, currStep,
                 // currStepDescriptor);
                 int index = currStep.isIndexed() ? currStep.getIndex() : -1;
-                parent = setValue(currStepDescriptor, null, new ArrayList<Property>(), index,
-                        parent, null, isXlinkRef);
+                parent =
+                        setValue(
+                                currStepDescriptor,
+                                null,
+                                new ArrayList<Property>(),
+                                index,
+                                parent,
+                                null,
+                                isXlinkRef);
             }
         }
         throw new IllegalStateException();
     }
-    
+
     /**
      * Set a simple content value for an attribute.
-     * 
-     * @param attribute
-     *            Attribute of simple content type.
-     * @param value
-     *            Value for the simple content.
+     *
+     * @param attribute Attribute of simple content type.
+     * @param value Value for the simple content.
      * @return The attribute with simple content type.
      */
     private Attribute setSimpleContentValue(Attribute attribute, Object value) {
         Property simpleContent = null;
         if (attribute instanceof ComplexAttribute) {
-        	simpleContent = ((ComplexAttribute)attribute).getProperty(ComplexFeatureConstants.SIMPLE_CONTENT);
+            simpleContent =
+                    ((ComplexAttribute) attribute)
+                            .getProperty(ComplexFeatureConstants.SIMPLE_CONTENT);
         }
         if (simpleContent == null) {
             Collection<Property> contents = new ArrayList<Property>();
-        	simpleContent = buildSimpleContent(attribute.getType(), value);
+            simpleContent = buildSimpleContent(attribute.getType(), value);
             contents.add(simpleContent);
             ArrayList<Attribute> nestedAttContents = new ArrayList<Attribute>();
-            Attribute nestedAtt = new ComplexAttributeImpl(contents, attribute.getDescriptor(),
-                    attribute.getIdentifier());
+            Attribute nestedAtt =
+                    new ComplexAttributeImpl(
+                            contents, attribute.getDescriptor(), attribute.getIdentifier());
             nestedAttContents.add(nestedAtt);
             attribute.setValue(nestedAttContents);
-            
+
             return nestedAtt;
         } else {
-        	PropertyType simpleContentType = getSimpleContentType((AttributeType) simpleContent.getType());
-            Object convertedValue = FF.literal(value).evaluate(value,
-                    simpleContentType.getBinding());
-        	simpleContent.setValue(convertedValue);
-        	return attribute;
-        }        
+            PropertyType simpleContentType =
+                    getSimpleContentType((AttributeType) simpleContent.getType());
+            Object convertedValue =
+                    FF.literal(value).evaluate(value, simpleContentType.getBinding());
+            simpleContent.setValue(convertedValue);
+            return attribute;
+        }
     }
-    
-    private Attribute setLeafAttribute(AttributeDescriptor currStepDescriptor,
-            Step currStep, String id, Object value, Attribute parent,
-            AttributeType targetNodeType, boolean isXlinkRef) {
+
+    private Attribute setLeafAttribute(
+            AttributeDescriptor currStepDescriptor,
+            Step currStep,
+            String id,
+            Object value,
+            Attribute parent,
+            AttributeType targetNodeType,
+            boolean isXlinkRef) {
         int index = currStep.isIndexed() ? currStep.getIndex() : -1;
-        Attribute attribute = setValue(currStepDescriptor, id, value, index, parent,
-                targetNodeType, isXlinkRef);
+        Attribute attribute =
+                setValue(currStepDescriptor, id, value, index, parent, targetNodeType, isXlinkRef);
         return attribute;
     }
 
     @SuppressWarnings("unchecked")
-    private Attribute setValue(final AttributeDescriptor descriptor, final String id,
-            final Object value, final int index, final Attribute parent,
-            final AttributeType targetNodeType, boolean isXlinkRef) {
-        
+    private Attribute setValue(
+            final AttributeDescriptor descriptor,
+            final String id,
+            final Object value,
+            final int index,
+            final Attribute parent,
+            final AttributeType targetNodeType,
+            boolean isXlinkRef) {
+
         Object convertedValue = null;
-        Map <Object, Object> simpleContentProperties = null;
+        Map<Object, Object> simpleContentProperties = null;
         if (isFeatureChainedSimpleContent(descriptor, value)) {
             List<Property> nestedPropList = getSimpleContentList(value);
             if (!nestedPropList.isEmpty()) {
-            	Property nestedProp = nestedPropList.iterator().next();
-            	if (Types.isGeometryType(descriptor.getType())
-            			|| nestedProp.getName().equals(descriptor.getName())) {
-            		convertedValue = nestedProp.getValue();
-            	} else {
+                Property nestedProp = nestedPropList.iterator().next();
+                if (Types.isGeometryType(descriptor.getType())
+                        || nestedProp.getName().equals(descriptor.getName())) {
+                    convertedValue = nestedProp.getValue();
+                } else {
                     convertedValue = nestedPropList;
-            	}
+                }
                 simpleContentProperties = nestedProp.getUserData();
             }
         } else {
             // adapt value to context
-            convertedValue = convertValue(descriptor, value);   
+            convertedValue = convertValue(descriptor, value);
         }
-                
+
         Attribute leafAttribute = null;
-        final Name attributeName = descriptor.getName();        
+        final Name attributeName = descriptor.getName();
         if (!isXlinkRef) {
             // skip this process if the attribute would only contain xlink:ref
             // that is chained, because it won't contain any values, and we
@@ -416,8 +485,12 @@ public class XPath extends XPathUtil {
                                 // get the attribute of specified index
                                 int valueIndex = 1;
                                 for (Attribute stepValue : values) {
-                                    Object mappedIndex = stepValue.getUserData().get(
-                                            ComplexFeatureConstants.MAPPED_ATTRIBUTE_INDEX);
+                                    Object mappedIndex =
+                                            stepValue
+                                                    .getUserData()
+                                                    .get(
+                                                            ComplexFeatureConstants
+                                                                    .MAPPED_ATTRIBUTE_INDEX);
                                     if (mappedIndex == null) {
                                         mappedIndex = valueIndex;
                                     }
@@ -436,11 +509,20 @@ public class XPath extends XPathUtil {
                                 // view..
                                 boolean sameIndex = true;
                                 if (index > -1) {
-                                    if (stepValue.getUserData().containsKey(
-                                            ComplexFeatureConstants.MAPPED_ATTRIBUTE_INDEX)) {
-                                        sameIndex = (index == Integer.parseInt(
-                                            String.valueOf(stepValue.getUserData().get(
-                                                ComplexFeatureConstants.MAPPED_ATTRIBUTE_INDEX))));
+                                    if (stepValue
+                                            .getUserData()
+                                            .containsKey(
+                                                    ComplexFeatureConstants
+                                                            .MAPPED_ATTRIBUTE_INDEX)) {
+                                        sameIndex =
+                                                (index
+                                                        == Integer.parseInt(
+                                                                String.valueOf(
+                                                                        stepValue
+                                                                                .getUserData()
+                                                                                .get(
+                                                                                        ComplexFeatureConstants
+                                                                                                .MAPPED_ATTRIBUTE_INDEX))));
                                     }
                                 }
                                 if (sameIndex && stepValue.getValue().equals(convertedValue)) {
@@ -452,9 +534,14 @@ public class XPath extends XPathUtil {
                 } else if (currStepValue instanceof Attribute) {
                     leafAttribute = (Attribute) currStepValue;
                 } else if (currStepValue != null) {
-                    throw new IllegalStateException("Unknown addressed object. Xpath:"
-                            + attributeName + ", addressed: " + currStepValue.getClass().getName()
-                            + " [" + currStepValue.toString() + "]");
+                    throw new IllegalStateException(
+                            "Unknown addressed object. Xpath:"
+                                    + attributeName
+                                    + ", addressed: "
+                                    + currStepValue.getClass().getName()
+                                    + " ["
+                                    + currStepValue.toString()
+                                    + "]");
                 }
             }
         }
@@ -463,10 +550,11 @@ public class XPath extends XPathUtil {
         // (2) maxOccurs is greater than one and existing leaf already has xlink:href, in which
         // case, as insufficient information at this point to evaluate xlink:href expressions and
         // remove duplicates, assume building multivalued xlink:href ClientProperty.
-        if (leafAttribute == null || (descriptor.getMaxOccurs() > 1
-                && leafAttribute.getUserData().containsKey(Attributes.class)
-                && ((Map<Object, Object>) leafAttribute.getUserData().get(Attributes.class))
-                        .containsKey(AbstractMappingFeatureIterator.XLINK_HREF_NAME))) {
+        if (leafAttribute == null
+                || (descriptor.getMaxOccurs() > 1
+                        && leafAttribute.getUserData().containsKey(Attributes.class)
+                        && ((Map<Object, Object>) leafAttribute.getUserData().get(Attributes.class))
+                                .containsKey(AbstractMappingFeatureIterator.XLINK_HREF_NAME))) {
             AppSchemaAttributeBuilder builder = new AppSchemaAttributeBuilder(featureFactory);
             if (crs != null) {
                 builder.setCRS(crs);
@@ -479,14 +567,14 @@ public class XPath extends XPathUtil {
                 if (parent.getType().getName().equals(XSSchema.ANYTYPE_TYPE.getName())) {
                     // special handling for casting any type since there's no attributes in its
                     // schema
-                    leafAttribute = builder.addAnyTypeValue(convertedValue, targetNodeType,
-                            descriptor, id);
+                    leafAttribute =
+                            builder.addAnyTypeValue(convertedValue, targetNodeType, descriptor, id);
                 } else {
                     leafAttribute = builder.add(id, convertedValue, attributeName, targetNodeType);
                 }
             } else if (descriptor.getType().getName().equals(XSSchema.ANYTYPE_TYPE.getName())
-                    && (value == null || (value instanceof Collection && ((Collection) value)
-                            .isEmpty()))) {
+                    && (value == null
+                            || (value instanceof Collection && ((Collection) value).isEmpty()))) {
                 // casting anyType as a complex attribute so we can set xlink:href
                 leafAttribute = builder.addComplexAnyTypeAttribute(convertedValue, descriptor, id);
             } else {
@@ -494,8 +582,9 @@ public class XPath extends XPathUtil {
             }
             if (index > -1) {
                 // set attribute index if specified so it can be retrieved later for grouping
-                leafAttribute.getUserData().put(ComplexFeatureConstants.MAPPED_ATTRIBUTE_INDEX,
-                        index);
+                leafAttribute
+                        .getUserData()
+                        .put(ComplexFeatureConstants.MAPPED_ATTRIBUTE_INDEX, index);
             }
             List newValue = new ArrayList();
             newValue.addAll((Collection) parent.getValue());
@@ -513,52 +602,50 @@ public class XPath extends XPathUtil {
     }
 
     /**
-     * Extract the simple content attribute from a list of features.
-     * This is used when feature chaining is used for simple contents, such
-     * as gml:name.. therefore the iterator would create a list of features containing the
-     * simple content attributes. 
-     * @param value    List of features
-     * @return   The attribute with simple content
+     * Extract the simple content attribute from a list of features. This is used when feature
+     * chaining is used for simple contents, such as gml:name.. therefore the iterator would create
+     * a list of features containing the simple content attributes.
+     *
+     * @param value List of features
+     * @return The attribute with simple content
      */
     @SuppressWarnings("unchecked")
     private List<Property> getSimpleContentList(Object value) {
-       if (value == null || !(value instanceof Collection)) {
-           return null;
-       }
-       Collection list = (Collection) value;
-       if (list.size() != 1) {
-           // there should only 1 feature in a list even if it's multi-valued
-           // since each value should be wrapped in its own parent node
-           // eg. the format is
-           // gsml:specification[1]/gsml:CompositionPart/...
-           // gsml:specification[2]/gsml:CompositionPart/...
-           throw new IllegalArgumentException("Expecting only 1 feature in the list!");
-       }
-       Object f = list.iterator().next();
-       if (!(f instanceof Feature)) {
-           throw new IllegalArgumentException("Expecting a feature!");
-       }
-       Feature feature = (Feature) f;
-       ArrayList<Property> properties = new ArrayList<Property>();
-       for (Property prop : feature.getProperties()) {
-           if (!ComplexFeatureConstants.FEATURE_CHAINING_LINK_NAME.equals(prop.getName())) {
-               properties.add(prop);
-           }
-       }
-       return properties;
+        if (value == null || !(value instanceof Collection)) {
+            return null;
+        }
+        Collection list = (Collection) value;
+        if (list.size() != 1) {
+            // there should only 1 feature in a list even if it's multi-valued
+            // since each value should be wrapped in its own parent node
+            // eg. the format is
+            // gsml:specification[1]/gsml:CompositionPart/...
+            // gsml:specification[2]/gsml:CompositionPart/...
+            throw new IllegalArgumentException("Expecting only 1 feature in the list!");
+        }
+        Object f = list.iterator().next();
+        if (!(f instanceof Feature)) {
+            throw new IllegalArgumentException("Expecting a feature!");
+        }
+        Feature feature = (Feature) f;
+        ArrayList<Property> properties = new ArrayList<Property>();
+        for (Property prop : feature.getProperties()) {
+            if (!ComplexFeatureConstants.FEATURE_CHAINING_LINK_NAME.equals(prop.getName())) {
+                properties.add(prop);
+            }
+        }
+        return properties;
     }
 
     /**
      * Merge client properties from an attribute with a given map.
-     * 
-     * @param leafAttribute
-     *            The attribute which will have the client properties
-     * @param simpleContentProperties
-     *            Map of new client properties
+     *
+     * @param leafAttribute The attribute which will have the client properties
+     * @param simpleContentProperties Map of new client properties
      */
     @SuppressWarnings("unchecked")
-    private void mergeClientProperties(Attribute leafAttribute,
-            Map<Object, Object> simpleContentProperties) {
+    private void mergeClientProperties(
+            Attribute leafAttribute, Map<Object, Object> simpleContentProperties) {
 
         Map<Object, Object> origData = leafAttribute.getUserData();
         for (Object key : simpleContentProperties.keySet()) {
@@ -589,11 +676,9 @@ public class XPath extends XPathUtil {
      * Determine whether or not the value is a feature with target descriptor that is of the given
      * attribute descriptor. If it is, then it is a feature chained feature with only simple
      * content.
-     * 
-     * @param descriptor
-     *            The attribute descriptor
-     * @param value
-     *            value to check
+     *
+     * @param descriptor The attribute descriptor
+     * @param value value to check
      * @return true if the value is an arraylist containing a feature with the descriptor.
      */
     @SuppressWarnings("unchecked")
@@ -619,7 +704,8 @@ public class XPath extends XPathUtil {
     private boolean isEmpty(Object convertedValue) {
         if (convertedValue == null) {
             return true;
-        } else if (convertedValue instanceof Collection && ((Collection) convertedValue).isEmpty()) {
+        } else if (convertedValue instanceof Collection
+                && ((Collection) convertedValue).isEmpty()) {
             return true;
         } else {
             return false;
@@ -628,7 +714,7 @@ public class XPath extends XPathUtil {
 
     /**
      * Return value converted into a type suitable for this descriptor.
-     * 
+     *
      * @param descriptor
      * @param value
      * @return
@@ -669,7 +755,7 @@ public class XPath extends XPathUtil {
 
     /**
      * Get base (non-collection) type of simple content.
-     * 
+     *
      * @param type
      * @return
      */
@@ -684,7 +770,7 @@ public class XPath extends XPathUtil {
 
     /**
      * Create a fake property for simple content of a complex type.
-     * 
+     *
      * @param type
      * @param value
      * @return
@@ -696,11 +782,10 @@ public class XPath extends XPathUtil {
 
     /**
      * Create a fake property to store arbitrary text in a complex type.
-     * 
-     * <p>
-     * Passed in value is converted to a string and then stored in the special <code>simpleContent</code> attribute.
-     * </p>
-     * 
+     *
+     * <p>Passed in value is converted to a string and then stored in the special <code>
+     * simpleContent</code> attribute.
+     *
      * @param type
      * @param value
      * @return
@@ -715,8 +800,14 @@ public class XPath extends XPathUtil {
 
     private Attribute buildSimpleContentInternal(AttributeType simpleContentType, Object value) {
         Object convertedValue = FF.literal(value).evaluate(value, simpleContentType.getBinding());
-        AttributeDescriptor descriptor = new AttributeDescriptorImpl(simpleContentType,
-                ComplexFeatureConstants.SIMPLE_CONTENT, 1, 1, true, (Object) null);
+        AttributeDescriptor descriptor =
+                new AttributeDescriptorImpl(
+                        simpleContentType,
+                        ComplexFeatureConstants.SIMPLE_CONTENT,
+                        1,
+                        1,
+                        true,
+                        (Object) null);
         return new AttributeImpl(convertedValue, descriptor, null);
     }
 
@@ -731,13 +822,9 @@ public class XPath extends XPathUtil {
         AttributeDescriptor node = (AttributeDescriptor) type;
         return node.getType() instanceof ComplexType;
     }
-    
 
-    /**
-     * @return true if this step represents an id attribute
-     */
+    /** @return true if this step represents an id attribute */
     public static boolean isId(Step step) {
         return step.isXmlAttribute() && step.getName().equals(GML.id);
     }
-
 }

@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -16,32 +16,27 @@
  */
 package org.geotools.gml;
 
-import java.util.logging.Logger;
-
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Polygon;
-
+import java.util.logging.Logger;
 
 /**
  * Creates a simple OGC box.
  *
  * @author Ian Turton, CCG
  * @author Rob Hranac, Vision for New York
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public class SubHandlerBox extends SubHandler {
     /** The logger for the GML module */
-    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.gml");
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.gml");
 
     /** */
     com.vividsolutions.jts.geom.Envelope e = new com.vividsolutions.jts.geom.Envelope();
 
-    /**
-     * Creates a new instance of GMLBoxHandler.
-     */
+    /** Creates a new instance of GMLBoxHandler. */
     public SubHandlerBox() {
         LOGGER.entering("SubHandlerBox", "new");
         LOGGER.exiting("SubHandlerBox", "new");
@@ -62,7 +57,6 @@ public class SubHandlerBox extends SubHandler {
      * Sets a corner.
      *
      * @param message The geometry to inspect.
-     *
      * @return Flag for a complete geometry.
      */
     public boolean isComplete(String message) {
@@ -75,13 +69,11 @@ public class SubHandlerBox extends SubHandler {
     /**
      * Builds and returns the polygon.
      *
-     * @param geometryFactory the geometryFactory to be used to build the
-     *        polygon.
-     *
+     * @param geometryFactory the geometryFactory to be used to build the polygon.
      * @return the polygon.
      */
     public com.vividsolutions.jts.geom.Geometry create(
-        com.vividsolutions.jts.geom.GeometryFactory geometryFactory) {
+            com.vividsolutions.jts.geom.GeometryFactory geometryFactory) {
         LOGGER.entering("SubHandlerBox", "create", geometryFactory);
 
         Coordinate[] c = new Coordinate[5];
@@ -103,9 +95,9 @@ public class SubHandlerBox extends SubHandler {
 
         Polygon polygon = geometryFactory.createPolygon(r, null);
         LOGGER.exiting("SubHandlerBox", "create", polygon);
-        polygon.setUserData( getSRS() );
-        polygon.setSRID( getSRID() );
-        
+        polygon.setUserData(getSRS());
+        polygon.setSRID(getSRID());
+
         return polygon;
     }
 }

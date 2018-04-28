@@ -15,7 +15,5 @@
  *    Lesser General Public License for more details.
  */
 
-/**
- * Menu classes.
- */
+/** Menu classes. */
 package org.geotools.swing.menu;

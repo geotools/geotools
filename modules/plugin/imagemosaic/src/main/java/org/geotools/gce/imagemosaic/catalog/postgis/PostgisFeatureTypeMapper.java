@@ -21,7 +21,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.transform.Definition;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -38,9 +37,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * A Postgis specific {@link FeatureTypeMapper} instance
- * 
- * @author Daniele Romagnoli, GeoSolutions SAS
  *
+ * @author Daniele Romagnoli, GeoSolutions SAS
  */
 public class PostgisFeatureTypeMapper implements FeatureTypeMapper {
 
@@ -117,7 +115,7 @@ public class PostgisFeatureTypeMapper implements FeatureTypeMapper {
 
     /**
      * Create a new {@link PostgisFeatureTypeMapper} on top of the original featureType provided
-     * 
+     *
      * @param featureType
      * @throws CQLException
      */
@@ -138,8 +136,8 @@ public class PostgisFeatureTypeMapper implements FeatureTypeMapper {
             String attributeName = remap(originalAttribute);
 
             // Create the definition to map the original attribute to the Postgis specific one
-            final Definition definition = new Definition(originalAttribute,
-                    ECQL.toExpression(attributeName), binding);
+            final Definition definition =
+                    new Definition(originalAttribute, ECQL.toExpression(attributeName), binding);
             definitions.add(definition);
             definitionsMapping.put(attribute.getName(), definition);
         }
@@ -147,7 +145,8 @@ public class PostgisFeatureTypeMapper implements FeatureTypeMapper {
     }
 
     /**
-     * Remap the original featureType on top of the available definitions to create the Postgis specific featureType
+     * Remap the original featureType on top of the available definitions to create the Postgis
+     * specific featureType
      */
     private void remapFeatureType() {
         final SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
@@ -178,7 +177,9 @@ public class PostgisFeatureTypeMapper implements FeatureTypeMapper {
                         }
                     }
                 }
-                tb.add(definition.getExpression().toString(), definition.getBinding(),
+                tb.add(
+                        definition.getExpression().toString(),
+                        definition.getBinding(),
                         coordinateReferenceSystem);
             } else {
                 tb.add(definition.getExpression().toString(), definition.getBinding());
@@ -194,8 +195,10 @@ public class PostgisFeatureTypeMapper implements FeatureTypeMapper {
     @Override
     public String remap(String name) {
         String mappedName = name;
-        mappedName = mappedName.length() >= MAX_LENGTH ? mappedName.substring(0, MAX_LENGTH)
-                : mappedName;
+        mappedName =
+                mappedName.length() >= MAX_LENGTH
+                        ? mappedName.substring(0, MAX_LENGTH)
+                        : mappedName;
         return mappedName;
     }
 }

@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,21 +17,16 @@
  */
 package org.geotools.ysld.validate;
 
+import java.awt.*;
 import org.geotools.ysld.parse.Util;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.yaml.snakeyaml.events.ScalarEvent;
 
-import java.awt.*;
-
-/**
- * Validator for Colors
- */
+/** Validator for Colors */
 public class ColorValidator extends ScalarValidator {
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     protected String validate(String value, ScalarEvent evt, YsldValidateContext context) {
         try {

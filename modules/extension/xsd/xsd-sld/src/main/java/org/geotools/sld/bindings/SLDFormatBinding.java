@@ -19,34 +19,29 @@ package org.geotools.sld.bindings;
 import javax.xml.namespace.QName;
 import org.geotools.xml.*;
 
-
 /**
  * Binding object for the element http://www.opengis.net/sld:Format.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:element name="Format" type="xsd:string"/&gt;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class SLDFormatBinding implements SimpleBinding {
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return SLD.FORMAT;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -57,6 +52,7 @@ public class SLDFormatBinding implements SimpleBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -67,24 +63,25 @@ public class SLDFormatBinding implements SimpleBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(InstanceComponent instance, Object value)
-        throws Exception {
+    public Object parse(InstanceComponent instance, Object value) throws Exception {
         return null;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
     public String encode(Object object, String value) {
-        //TODO: implement
+        // TODO: implement
         return null;
     }
 }

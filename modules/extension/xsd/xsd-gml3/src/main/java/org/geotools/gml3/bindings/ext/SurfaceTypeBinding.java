@@ -16,45 +16,39 @@
  */
 package org.geotools.gml3.bindings.ext;
 
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Polygon;
 import javax.xml.namespace.QName;
-
 import org.geotools.gml3.GML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Polygon;
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class SurfaceTypeBinding extends AbstractComplexBinding {
 
     GeometryFactory gf;
-    
+
     public SurfaceTypeBinding(GeometryFactory gf) {
         this.gf = gf;
     }
-    
-    /**
-     * @generated
-     */
+
+    /** @generated */
     public QName getTarget() {
         return GML.SurfaceType;
     }
-    
+
     @Override
     public int getExecutionMode() {
         return BEFORE;
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Class getType() {
@@ -62,20 +56,22 @@ public class SurfaceTypeBinding extends AbstractComplexBinding {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        Polygon[] patches = (Polygon[])node.getChildValue(Polygon[].class);
-        MultiPolygon mp = (MultiPolygon)node.getChildValue(MultiPolygon.class);
-       if(mp != null){
+        Polygon[] patches = (Polygon[]) node.getChildValue(Polygon[].class);
+        MultiPolygon mp = (MultiPolygon) node.getChildValue(MultiPolygon.class);
+        if (mp != null) {
             return mp;
-        }else{
+        } else {
             return gf.createMultiPolygon(patches);
         }
     }
-    
+
     @Override
     public Object getProperty(Object object, QName name) throws Exception {
         if ("patches".equals(name.getLocalPart())) {

@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,16 +16,11 @@
  */
 package org.geotools.styling;
 
-
-
 /**
- * 'StyledLayer' is not part of the SLD 1.0 spec. We're currently used it as a
- * parent interface for NamedLayer and UserLayer.
+ * 'StyledLayer' is not part of the SLD 1.0 spec. We're currently used it as a parent interface for
+ * NamedLayer and UserLayer.
  *
- * <p>
- * TODO: investigate why this is here.
- * </p>
- *
+ * <p>TODO: investigate why this is here.
  *
  * @source $URL$
  */

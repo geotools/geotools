@@ -19,16 +19,10 @@ package org.geotools.data.teradata;
 import org.geotools.jdbc.JDBCGeometrylessOnlineTest;
 import org.geotools.jdbc.JDBCGeometrylessTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class TeradataGeometrylessOnlineTest extends JDBCGeometrylessOnlineTest {
-
 
     protected JDBCGeometrylessTestSetup createTestSetup() {
         return new TeradataGeometrylessTestSetup(new TeradataTestSetup());
     }
-
 }

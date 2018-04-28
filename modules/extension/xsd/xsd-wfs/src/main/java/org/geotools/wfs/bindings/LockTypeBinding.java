@@ -17,19 +17,17 @@
 package org.geotools.wfs.bindings;
 
 import javax.xml.namespace.QName;
-
 import net.opengis.wfs.LockType;
 import net.opengis.wfs.WfsFactory;
-
 import org.geotools.wfs.WFS;
 import org.geotools.xml.AbstractComplexEMFBinding;
-
 
 /**
  * Binding object for the type http://www.opengis.net/wfs:LockType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:complexType name="LockType"&gt;
  *      &lt;xsd:annotation&gt;
@@ -76,12 +74,8 @@ import org.geotools.xml.AbstractComplexEMFBinding;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class LockTypeBinding extends AbstractComplexEMFBinding {
@@ -89,14 +83,13 @@ public class LockTypeBinding extends AbstractComplexEMFBinding {
         super(factory);
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return WFS.LockType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *

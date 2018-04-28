@@ -20,9 +20,9 @@ import org.geotools.jdbc.JDBCEmptyGeometryTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
 /**
- * 
- *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/plugin/jdbc/jdbc-postgis/src/test/java/org/geotools/data/postgis/PostGISBooleanTestSetup.java $
+ * @source $URL:
+ *     http://svn.osgeo.org/geotools/trunk/modules/plugin/jdbc/jdbc-postgis/src/test/java/org/geotools/data/postgis/PostGISBooleanTestSetup.java
+ *     $
  */
 public class H2EmptyGeometryTestSetup extends JDBCEmptyGeometryTestSetup {
 
@@ -30,34 +30,37 @@ public class H2EmptyGeometryTestSetup extends JDBCEmptyGeometryTestSetup {
         super(delegate);
     }
 
-	@Override
-	protected void createEmptyGeometryTable() throws Exception {
-		//create table schema
-		 run("CREATE TABLE \"geotools\".\"empty\"(" //
-	                + "\"fid\" serial primary key, " //
-	                + "\"id\" integer, " //
-	                + "\"geom_point\" POINT, " //
-	                + "\"geom_linestring\" LINESTRING, " //
-	                + "\"geom_polygon\" POLYGON, " //
-                    + "\"geom_multipoint\" MULTIPOINT, " //	                
-                    + "\"geom_multilinestring\" MULTILINESTRING, " //
-                    + "\"geom_multipolygon\" MULTIPOLYGON, " //                   
-	                + "\"name\" varchar" //
-	                + ")");
-		 
+    @Override
+    protected void createEmptyGeometryTable() throws Exception {
+        // create table schema
+        run(
+                "CREATE TABLE \"geotools\".\"empty\"(" //
+                        + "\"fid\" serial primary key, " //
+                        + "\"id\" integer, " //
+                        + "\"geom_point\" POINT, " //
+                        + "\"geom_linestring\" LINESTRING, " //
+                        + "\"geom_polygon\" POLYGON, " //
+                        + "\"geom_multipoint\" MULTIPOINT, " //
+                        + "\"geom_multilinestring\" MULTILINESTRING, " //
+                        + "\"geom_multipolygon\" MULTIPOLYGON, " //
+                        + "\"name\" varchar" //
+                        + ")");
+
         run("CALL AddGeometryColumn('geotools', 'empty', 'geom_point', 4326, 'POINT', 2)");
-        run("CALL AddGeometryColumn('geotools', 'empty', 'geom_linestring', 4326, 'LINESTRING', 2)");
+        run(
+                "CALL AddGeometryColumn('geotools', 'empty', 'geom_linestring', 4326, 'LINESTRING', 2)");
         run("CALL AddGeometryColumn('geotools', 'empty', 'geom_polygon', 4326, 'POLYGON', 2)");
-        run("CALL AddGeometryColumn('geotools', 'empty', 'geom_multipoint', 4326, 'MULTIPOINT', 2)");
-        run("CALL AddGeometryColumn('geotools', 'empty', 'geom_multilinestring', 4326, 'MULTILINESTRING', 2)");
-        run("CALL AddGeometryColumn('geotools', 'empty', 'geom_multipolygon', 4326, 'MULTIPOLYGON', 2)");
-	}
+        run(
+                "CALL AddGeometryColumn('geotools', 'empty', 'geom_multipoint', 4326, 'MULTIPOINT', 2)");
+        run(
+                "CALL AddGeometryColumn('geotools', 'empty', 'geom_multilinestring', 4326, 'MULTILINESTRING', 2)");
+        run(
+                "CALL AddGeometryColumn('geotools', 'empty', 'geom_multipolygon', 4326, 'MULTIPOLYGON', 2)");
+    }
 
-	@Override
-	protected void dropEmptyGeometryTable() throws Exception {
-	     run("DELETE FROM geometry_columns WHERE f_table_name = 'empty'");
-		 run( "DROP TABLE \"geotools\".\"empty\"");
-	}
-    
-
+    @Override
+    protected void dropEmptyGeometryTable() throws Exception {
+        run("DELETE FROM geometry_columns WHERE f_table_name = 'empty'");
+        run("DROP TABLE \"geotools\".\"empty\"");
+    }
 }

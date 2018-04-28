@@ -22,24 +22,20 @@ import org.geotools.data.efeature.query.EGeometryValueEquals;
 
 /**
  * @author kengu - 14. juni 2011
- *
- *
  * @source $URL$
  */
 public class EGeometryValueEqualsTest extends AbstractEGeometryValueTest {
-    
-    // ----------------------------------------------------- 
+
+    // -----------------------------------------------------
     //  Constructors
     // -----------------------------------------------------
-    
-    /**
-     * @param name
-     */
+
+    /** @param name */
     public EGeometryValueEqualsTest(String name) {
-        super(name,EQUALS);
+        super(name, EQUALS);
     }
 
-    // ----------------------------------------------------- 
+    // -----------------------------------------------------
     //  AbstractEAttributeValueTest implementation
     // -----------------------------------------------------
 
@@ -50,5 +46,4 @@ public class EGeometryValueEqualsTest extends AbstractEGeometryValueTest {
         //
         return new EGeometryValueEquals(eAttribute, filter, false);
     }
-
 }

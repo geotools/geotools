@@ -16,6 +16,8 @@
  */
 package org.geotools.gml3.bindings;
 
+import com.vividsolutions.jts.geom.CoordinateSequence;
+import com.vividsolutions.jts.geom.LineString;
 import org.geotools.geometry.DirectPosition1D;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.DirectPosition3D;
@@ -24,15 +26,7 @@ import org.geotools.gml3.GML3TestSupport;
 import org.opengis.geometry.DirectPosition;
 import org.w3c.dom.Document;
 
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.LineString;
-
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class DirectPositionListTypeBindingTest extends GML3TestSupport {
     public void test1D() throws Exception {
         GML3MockData.element(GML.posList, document, document);
@@ -66,7 +60,7 @@ public class DirectPositionListTypeBindingTest extends GML3TestSupport {
         assertEquals(1d, dps[0].getOrdinate(0), 0d);
         assertEquals(2d, dps[0].getOrdinate(1), 0d);
     }
-    
+
     public void test3D() throws Exception {
         GML3MockData.element(GML.posList, document, document);
         document.getDocumentElement().setAttribute("srsDimension", "3");
@@ -87,17 +81,17 @@ public class DirectPositionListTypeBindingTest extends GML3TestSupport {
         assertEquals(4d, dps[1].getOrdinate(1), 0d);
         assertEquals(5d, dps[1].getOrdinate(2), 0d);
     }
-    
+
     public void testEncode2D() throws Exception {
-    	LineString line = GML3MockData.lineStringLite2D();
-    	CoordinateSequence seq = line.getCoordinateSequence();
+        LineString line = GML3MockData.lineStringLite2D();
+        CoordinateSequence seq = line.getCoordinateSequence();
         Document doc = encode(seq, GML.posList);
         checkPosListOrdinates(doc, 2 * line.getNumPoints());
     }
-    
+
     public void testEncode3D() throws Exception {
-    	LineString line = GML3MockData.lineStringLite3D();
-    	CoordinateSequence seq = line.getCoordinateSequence();
+        LineString line = GML3MockData.lineStringLite3D();
+        CoordinateSequence seq = line.getCoordinateSequence();
         Document doc = encode(seq, GML.posList);
         checkPosListOrdinates(doc, 3 * line.getNumPoints());
     }

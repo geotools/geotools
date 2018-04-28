@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -18,7 +18,6 @@ package org.geotools.feature.visitor;
 
 import java.util.Arrays;
 import java.util.List;
-
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.visitor.AverageVisitor.AverageResult;
@@ -35,10 +34,7 @@ import org.opengis.filter.expression.Expression;
  * Calculates the Sum of an attribute (of a FeatureVisitor)
  *
  * @author Cory Horner, Refractions
- *
  * @since 2.2.M2
- *
- *
  * @source $URL$
  */
 public class SumVisitor implements FeatureCalc, FeatureAttributeVisitor {
@@ -84,7 +80,6 @@ public class SumVisitor implements FeatureCalc, FeatureAttributeVisitor {
      * Factory method
      *
      * @param type The Class of the attributeType
-     *
      * @return The correct strategy class (which returns the correct data type)
      */
     private static SumStrategy createStrategy(Class type) {
@@ -212,12 +207,9 @@ public class SumVisitor implements FeatureCalc, FeatureAttributeVisitor {
         }
 
         public boolean isCompatible(CalcResult targetResults) {
-            if (targetResults == CalcResult.NULL_RESULT)
-                return true;
-            if (targetResults instanceof SumResult)
-                return true;
-            if (targetResults instanceof CountResult)
-                return true;
+            if (targetResults == CalcResult.NULL_RESULT) return true;
+            if (targetResults instanceof SumResult) return true;
+            if (targetResults instanceof CountResult) return true;
             return false;
         }
 

@@ -18,7 +18,6 @@ package org.geotools.data.aggregate;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
-
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.SchemaException;
@@ -28,7 +27,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
  * A blocking queue that can also carry an exception marker
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 class FeatureQueue extends ArrayBlockingQueue<SimpleFeature> {
@@ -44,8 +43,12 @@ class FeatureQueue extends ArrayBlockingQueue<SimpleFeature> {
     static {
         try {
             SimpleFeatureType endMarkerType = DataUtilities.createType("END_MARKER", "id:String");
-            END_MARKER = new SimpleFeatureImpl(new Object[] { "end" }, endMarkerType,
-                    CommonFactoryFinder.getFilterFactory(null).featureId("END_ID"), false);
+            END_MARKER =
+                    new SimpleFeatureImpl(
+                            new Object[] {"end"},
+                            endMarkerType,
+                            CommonFactoryFinder.getFilterFactory(null).featureId("END_ID"),
+                            false);
         } catch (SchemaException e) {
             throw new RuntimeException("Unexpected error occurred creating the end marker", e);
         }
@@ -53,7 +56,8 @@ class FeatureQueue extends ArrayBlockingQueue<SimpleFeature> {
 
     Exception exception;
 
-    ConcurrentHashMap<FeatureCallable, FeatureCallable> sources = new ConcurrentHashMap<FeatureCallable, FeatureCallable>();
+    ConcurrentHashMap<FeatureCallable, FeatureCallable> sources =
+            new ConcurrentHashMap<FeatureCallable, FeatureCallable>();
 
     public FeatureQueue(int sourceCount) {
         super(100);
@@ -87,5 +91,4 @@ class FeatureQueue extends ArrayBlockingQueue<SimpleFeature> {
             fc.shutdown();
         }
     }
-
 }

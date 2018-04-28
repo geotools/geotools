@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2001-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,45 +16,42 @@
  */
 package org.geotools.referencing;
 
-import java.util.Locale;
-import java.util.Set;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.io.PrintWriter;
-import java.io.IOException;
-import java.text.NumberFormat;
-
-import org.opengis.util.InternationalString;
-import org.opengis.metadata.Identifier;
-import org.opengis.metadata.citation.Citation;
-import org.opengis.referencing.IdentifiedObject;
-import org.opengis.referencing.AuthorityFactory;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
-import org.opengis.referencing.crs.CRSAuthorityFactory;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.CoordinateOperation;
-import org.opengis.referencing.operation.CoordinateOperationFactory;
-import org.opengis.referencing.operation.OperationNotFoundException;
-import org.opengis.referencing.operation.CoordinateOperationAuthorityFactory;
-
+import java.util.Locale;
+import java.util.Set;
 import org.geotools.factory.Hints;
 import org.geotools.io.TableWriter;
-import org.geotools.referencing.wkt.Parser;
 import org.geotools.referencing.datum.BursaWolfParameters;
 import org.geotools.referencing.datum.DefaultGeodeticDatum;
 import org.geotools.referencing.factory.AbstractAuthorityFactory;
 import org.geotools.referencing.factory.FactoryDependencies;
+import org.geotools.referencing.wkt.Parser;
 import org.geotools.resources.Arguments;
 import org.geotools.resources.CRSUtilities;
 import org.geotools.resources.i18n.Vocabulary;
 import org.geotools.resources.i18n.VocabularyKeys;
-
+import org.opengis.metadata.Identifier;
+import org.opengis.metadata.citation.Citation;
+import org.opengis.referencing.AuthorityFactory;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.IdentifiedObject;
+import org.opengis.referencing.NoSuchAuthorityCodeException;
+import org.opengis.referencing.crs.CRSAuthorityFactory;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.CoordinateOperation;
+import org.opengis.referencing.operation.CoordinateOperationAuthorityFactory;
+import org.opengis.referencing.operation.CoordinateOperationFactory;
+import org.opengis.referencing.operation.OperationNotFoundException;
+import org.opengis.util.InternationalString;
 
 /**
- * Implementation of the {@link CRS#main} method. Exists as a separated class in order
- * to reduce the class loading for applications that don't want to run this main method.
+ * Implementation of the {@link CRS#main} method. Exists as a separated class in order to reduce the
+ * class loading for applications that don't want to run this main method.
  *
  * @source $URL$
  * @version $Id$
@@ -66,37 +63,29 @@ final class Command {
      */
     private static final Hints HINTS = null;
 
-    /**
-     * The authority factory.
-     */
+    /** The authority factory. */
     private final AuthorityFactory factory;
 
-    /**
-     * The object to use for formatting objects.
-     */
+    /** The object to use for formatting objects. */
     private final Parser formatter;
 
-    /**
-     * Creates an instance of the specified authority.
-     */
+    /** Creates an instance of the specified authority. */
     private Command(final String authority) {
-        factory = (authority == null) ? CRS.getAuthorityFactory(false) :
-                ReferencingFactoryFinder.getCRSAuthorityFactory(authority, HINTS);
+        factory =
+                (authority == null)
+                        ? CRS.getAuthorityFactory(false)
+                        : ReferencingFactoryFinder.getCRSAuthorityFactory(authority, HINTS);
         formatter = new Parser();
     }
 
-    /**
-     * The separator to put between WKT.
-     */
+    /** The separator to put between WKT. */
     private static char[] getSeparator() {
         final char[] separator = new char[79];
         Arrays.fill(separator, '\u2500');
         return separator;
     }
 
-    /**
-     * Prints usage.
-     */
+    /** Prints usage. */
     private static void help(final PrintWriter out) {
         out.println("Display informations about CRS identified by authority codes.");
         out.println("Usage: java org.geotools.referencing.CRS [options] [codes]");
@@ -110,16 +99,15 @@ final class Command {
         out.println(" -forcexy       : Force \"longitude first\" axis order.");
         out.println(" -help          : Prints this message.");
         out.println(" -locale=ARG    : Formats texts in the specified locale.");
-        out.println(" -operations    : Prints all available coordinate operations between a pair of CRS.");
+        out.println(
+                " -operations    : Prints all available coordinate operations between a pair of CRS.");
         out.println(" -transform     : Prints the preferred math transform between a pair of CRS.");
     }
 
-    /**
-     * Prints all objects as WKT. This is the default behavior when no option is specified.
-     */
+    /** Prints all objects as WKT. This is the default behavior when no option is specified. */
     private void list(final PrintWriter out, final String[] args) throws FactoryException {
         char[] separator = null;
-        for (int i=0; i<args.length; i++) {
+        for (int i = 0; i < args.length; i++) {
             if (separator == null) {
                 separator = getSeparator();
             } else {
@@ -136,9 +124,7 @@ final class Command {
         }
     }
 
-    /**
-     * Lists all authority codes.
-     */
+    /** Lists all authority codes. */
     private void codes(final PrintWriter out) throws FactoryException {
         final Set<String> codes = factory.getAuthorityCodes(CoordinateReferenceSystem.class);
         final TableWriter table = new TableWriter(out);
@@ -169,13 +155,11 @@ final class Command {
         }
     }
 
-    /**
-     * Lists all CRS authority factories.
-     */
+    /** Lists all CRS authority factories. */
     private static void factories(final PrintWriter out) {
-        final Set<Citation> done  = new HashSet<Citation>();
-        final TableWriter   table = new TableWriter(out, TableWriter.SINGLE_VERTICAL_LINE);
-        final TableWriter   notes = new TableWriter(out, " ");
+        final Set<Citation> done = new HashSet<Citation>();
+        final TableWriter table = new TableWriter(out, TableWriter.SINGLE_VERTICAL_LINE);
+        final TableWriter notes = new TableWriter(out, " ");
         int noteCount = 0;
         notes.setMultiLinesCells(true);
         table.setMultiLinesCells(true);
@@ -188,7 +172,8 @@ final class Command {
         table.writeHorizontalSeparator();
         for (AuthorityFactory factory : ReferencingFactoryFinder.getCRSAuthorityFactories(HINTS)) {
             final Citation authority = factory.getAuthority();
-            final Iterator<? extends Identifier> identifiers = authority.getIdentifiers().iterator();
+            final Iterator<? extends Identifier> identifiers =
+                    authority.getIdentifiers().iterator();
             if (!identifiers.hasNext()) {
                 // No identifier. Scan next authorities.
                 continue;
@@ -210,8 +195,12 @@ final class Command {
                 if (description != null) {
                     final String n = String.valueOf(++noteCount);
                     table.nextColumn();
-                    table.write('('); table.write(n); table.write(')');
-                    notes.write('('); notes.write(n); notes.write(')');
+                    table.write('(');
+                    table.write(n);
+                    table.write(')');
+                    notes.write('(');
+                    notes.write(n);
+                    notes.write(')');
                     notes.nextColumn();
                     notes.write(description.trim());
                     notes.nextLine();
@@ -229,9 +218,7 @@ final class Command {
         }
     }
 
-    /**
-     * Prints the bursa-wolfs parameters for the specified CRS.
-     */
+    /** Prints the bursa-wolfs parameters for the specified CRS. */
     private void bursaWolfs(final PrintWriter out, final String[] args) throws FactoryException {
         final NumberFormat nf = NumberFormat.getNumberInstance();
         nf.setMinimumFractionDigits(3);
@@ -239,16 +226,15 @@ final class Command {
         final TableWriter table = new TableWriter(out);
         table.writeHorizontalSeparator();
         final String[] titles = {
-            Vocabulary.format(VocabularyKeys.TARGET),
-            "dx", "dy", "dz", "ex", "ey", "ez", "ppm"
+            Vocabulary.format(VocabularyKeys.TARGET), "dx", "dy", "dz", "ex", "ey", "ez", "ppm"
         };
-        for (int i=0; i<titles.length; i++) {
+        for (int i = 0; i < titles.length; i++) {
             table.write(titles[i]);
             table.nextColumn();
             table.setAlignment(TableWriter.ALIGN_CENTER);
         }
         table.writeHorizontalSeparator();
-        for (int i=0; i<args.length; i++) {
+        for (int i = 0; i < args.length; i++) {
             IdentifiedObject object = factory.createObject(args[i]);
             if (object instanceof CoordinateReferenceSystem) {
                 object = CRSUtilities.getDatum((CoordinateReferenceSystem) object);
@@ -256,23 +242,38 @@ final class Command {
             if (object instanceof DefaultGeodeticDatum) {
                 final BursaWolfParameters[] params =
                         ((DefaultGeodeticDatum) object).getBursaWolfParameters();
-                for (int j=0; j<params.length; j++) {
+                for (int j = 0; j < params.length; j++) {
                     final BursaWolfParameters p = params[j];
                     table.setAlignment(TableWriter.ALIGN_LEFT);
                     table.write(p.targetDatum.getName().getCode());
                     table.nextColumn();
                     table.setAlignment(TableWriter.ALIGN_RIGHT);
                     double v;
-                    for (int k=0; k<7; k++) {
+                    for (int k = 0; k < 7; k++) {
                         switch (k) {
-                            case 0: v = p.dx;  break;
-                            case 1: v = p.dy;  break;
-                            case 2: v = p.dz;  break;
-                            case 3: v = p.ex;  break;
-                            case 4: v = p.ey;  break;
-                            case 5: v = p.ez;  break;
-                            case 6: v = p.ppm; break;
-                            default: throw new AssertionError(k);
+                            case 0:
+                                v = p.dx;
+                                break;
+                            case 1:
+                                v = p.dy;
+                                break;
+                            case 2:
+                                v = p.dz;
+                                break;
+                            case 3:
+                                v = p.ex;
+                                break;
+                            case 4:
+                                v = p.ey;
+                                break;
+                            case 5:
+                                v = p.ez;
+                                break;
+                            case 6:
+                                v = p.ppm;
+                                break;
+                            default:
+                                throw new AssertionError(k);
                         }
                         table.write(nf.format(v));
                         table.nextColumn();
@@ -290,9 +291,7 @@ final class Command {
         }
     }
 
-    /**
-     * Prints the operations between every pairs of the specified authority code.
-     */
+    /** Prints the operations between every pairs of the specified authority code. */
     private void operations(final PrintWriter out, final String[] args) throws FactoryException {
         if (!(factory instanceof CoordinateOperationAuthorityFactory)) {
             return;
@@ -300,8 +299,8 @@ final class Command {
         final CoordinateOperationAuthorityFactory factory =
                 (CoordinateOperationAuthorityFactory) this.factory;
         char[] separator = null;
-        for (int i=0; i<args.length; i++) {
-            for (int j=i+1; j<args.length; j++) {
+        for (int i = 0; i < args.length; i++) {
+            for (int j = i + 1; j < args.length; j++) {
                 final Set<CoordinateOperation> op;
                 op = factory.createFromCoordinateReferenceSystemCodes(args[i], args[j]);
                 for (final CoordinateOperation operation : op) {
@@ -316,9 +315,7 @@ final class Command {
         }
     }
 
-    /**
-     * Prints the math transforms between every pairs of the specified authority code.
-     */
+    /** Prints the math transforms between every pairs of the specified authority code. */
     private void transform(final PrintWriter out, final String[] args) throws FactoryException {
         if (!(factory instanceof CRSAuthorityFactory)) {
             return;
@@ -327,10 +324,11 @@ final class Command {
         final CoordinateOperationFactory opFactory =
                 ReferencingFactoryFinder.getCoordinateOperationFactory(HINTS);
         char[] separator = null;
-        for (int i=0; i<args.length; i++) {
+        for (int i = 0; i < args.length; i++) {
             final CoordinateReferenceSystem crs1 = factory.createCoordinateReferenceSystem(args[i]);
-            for (int j=i+1; j<args.length; j++) {
-                final CoordinateReferenceSystem crs2 = factory.createCoordinateReferenceSystem(args[j]);
+            for (int j = i + 1; j < args.length; j++) {
+                final CoordinateReferenceSystem crs2 =
+                        factory.createCoordinateReferenceSystem(args[j]);
                 final CoordinateOperation op;
                 try {
                     op = opFactory.createOperation(crs1, crs2);
@@ -348,10 +346,9 @@ final class Command {
         }
     }
 
-    /**
-     * Prints all {@linkplain AuthorityFactory authority factory} dependencies as a tree.
-     */
-    private static void printAuthorityFactoryDependencies(final PrintWriter out, final boolean colors) {
+    /** Prints all {@linkplain AuthorityFactory authority factory} dependencies as a tree. */
+    private static void printAuthorityFactoryDependencies(
+            final PrintWriter out, final boolean colors) {
         final FactoryDependencies printer = new FactoryDependencies(CRS.getAuthorityFactory(false));
         printer.setAttributeEnabled(true);
         printer.setColorEnabled(colors);
@@ -359,18 +356,14 @@ final class Command {
         out.flush();
     }
 
-    /**
-     * Dispose the factory.
-     */
+    /** Dispose the factory. */
     private void dispose() throws FactoryException {
         if (factory instanceof AbstractAuthorityFactory) {
             ((AbstractAuthorityFactory) factory).dispose();
         }
     }
 
-    /**
-     * Implementation of {@link CRS#main}.
-     */
+    /** Implementation of {@link CRS#main}. */
     public static void execute(String[] args) {
         final Arguments arguments = new Arguments(args);
         final PrintWriter out = arguments.out;

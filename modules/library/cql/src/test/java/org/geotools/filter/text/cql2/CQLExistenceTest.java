@@ -26,54 +26,51 @@ import org.opengis.filter.PropertyIsEqualTo;
 
 /**
  * Test Existence Predicate.
+ *
+ * <p>EXIST: evaluates as true for all record instances where the attribute_name is a member of the
+ * record schema. DOES-NOT-EXIST: opposite to EXISTS
+ *
  * <p>
- * EXIST: evaluates as true for all record instances where the attribute_name is
- * a member of the record schema. DOES-NOT-EXIST: opposite to EXISTS
- * </p>
- * <p>
- * 
+ *
  * <pre>
  *  &lt;existence_predicate &gt; ::=
  *          &lt;attribute_name &gt; EXISTS
  *      |   &lt;attribute_name &gt; DOES-NOT-EXIST
  * </pre>
- * 
- * </p>
- * 
+ *
  * @author Mauricio Pazos (Axios Engineering)
  * @since 2.6
- *
- *
- *
  * @source $URL$
  */
 public class CQLExistenceTest {
 
     protected final Language language;
 
-    public CQLExistenceTest(){
-        
+    public CQLExistenceTest() {
+
         this(Language.CQL);
     }
 
-    protected CQLExistenceTest(final Language language){
-        
-        assert language != null: "language cannot be null value";
-        
+    protected CQLExistenceTest(final Language language) {
+
+        assert language != null : "language cannot be null value";
+
         this.language = language;
     }
 
     /**
      * Sample: attribute_name DOES-NOT-EXIST
-     * 
+     *
      * @throws CQLException
      */
     @Test
-    public void attributeDoesNotExist() throws CQLException{
+    public void attributeDoesNotExist() throws CQLException {
         // -------------------------------------------------------------
         // <attribute_name> DOES-NOT-EXIST
         // -------------------------------------------------------------
-        Filter resultFilter = CompilerUtil.parseFilter(this.language,FilterCQLSample.ATTRIBUTE_NAME_DOES_NOT_EXIST);
+        Filter resultFilter =
+                CompilerUtil.parseFilter(
+                        this.language, FilterCQLSample.ATTRIBUTE_NAME_DOES_NOT_EXIST);
 
         Assert.assertNotNull("Filter expected", resultFilter);
 
@@ -81,10 +78,8 @@ public class CQLExistenceTest {
 
         Assert.assertEquals(expected, resultFilter);
     }
-    
-    /**
-     * Sample: attribute_name EXISTS
-     */
+
+    /** Sample: attribute_name EXISTS */
     @Test
     public void attributeExist() throws Exception {
 
@@ -92,7 +87,8 @@ public class CQLExistenceTest {
         // <attribute_name> EXISTS
         // TODO Exist function must be implemented in Geotools
         // -------------------------------------------------------------
-        Filter resultFilter = CompilerUtil.parseFilter(this.language,FilterCQLSample.ATTRIBUTE_NAME_EXISTS);
+        Filter resultFilter =
+                CompilerUtil.parseFilter(this.language, FilterCQLSample.ATTRIBUTE_NAME_EXISTS);
 
         Assert.assertNotNull("Filter expected", resultFilter);
 
@@ -104,8 +100,7 @@ public class CQLExistenceTest {
 
         Assert.assertEquals(expected, eqToResultFilter);
 
-        Assert.assertNotNull("implementation of function was expected", eqToResultFilter.getExpression1());
+        Assert.assertNotNull(
+                "implementation of function was expected", eqToResultFilter.getExpression1());
     }
-
-    
 }

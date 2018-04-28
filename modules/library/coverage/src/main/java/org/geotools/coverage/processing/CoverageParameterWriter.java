@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -22,14 +22,12 @@ import java.util.Locale;
 import javax.media.jai.EnumeratedParameter;
 import javax.media.jai.Interpolation;
 import javax.media.jai.KernelJAI;
-
-import org.opengis.util.InternationalString;
 import org.geotools.coverage.AbstractCoverage;
 import org.geotools.parameter.ParameterWriter;
 import org.geotools.resources.i18n.Vocabulary;
 import org.geotools.resources.i18n.VocabularyKeys;
 import org.geotools.resources.image.ImageUtilities;
-
+import org.opengis.util.InternationalString;
 
 /**
  * Format grid coverage operation parameters in a tabular format.
@@ -40,16 +38,12 @@ import org.geotools.resources.image.ImageUtilities;
  * @author Martin Desruisseaux
  */
 final class CoverageParameterWriter extends ParameterWriter {
-    /**
-     * Creates a new formatter writting parameters to the specified output stream.
-     */
+    /** Creates a new formatter writting parameters to the specified output stream. */
     public CoverageParameterWriter(final Writer out) {
         super(out);
     }
 
-    /**
-     * Formats the specified value as a string.
-     */
+    /** Formats the specified value as a string. */
     @Override
     protected String formatValue(final Object value) {
         if (KernelJAI.GRADIENT_MASK_SOBEL_HORIZONTAL.equals(value)) {
@@ -61,8 +55,9 @@ final class CoverageParameterWriter extends ParameterWriter {
         if (value instanceof AbstractCoverage) {
             final InternationalString name = ((AbstractCoverage) value).getName();
             final Locale locale = getLocale();
-            return (name != null) ? name.toString(locale) :
-                Vocabulary.getResources(locale).getString(VocabularyKeys.UNTITLED);
+            return (name != null)
+                    ? name.toString(locale)
+                    : Vocabulary.getResources(locale).getString(VocabularyKeys.UNTITLED);
         }
         if (value instanceof Interpolation) {
             return ImageUtilities.getInterpolationName((Interpolation) value);
@@ -72,7 +67,7 @@ final class CoverageParameterWriter extends ParameterWriter {
         }
         if (value instanceof Color) {
             final Color c = (Color) value;
-            return "RGB["+c.getRed()+','+c.getGreen()+','+c.getBlue()+']';
+            return "RGB[" + c.getRed() + ',' + c.getGreen() + ',' + c.getBlue() + ']';
         }
         return super.formatValue(value);
     }

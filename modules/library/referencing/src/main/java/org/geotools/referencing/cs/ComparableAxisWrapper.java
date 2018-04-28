@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -20,47 +20,37 @@ import java.util.Arrays;
 import org.opengis.referencing.cs.AxisDirection;
 import org.opengis.referencing.cs.CoordinateSystemAxis;
 
-
 /**
- * Wraps a {@linkplain CoordinateSystemAxis coordinate system axis} for comparaison purpose.
- * The sorting order tries to favor a right-handed system. Compass directions like
- * {@linkplain AxisDirection#NORTH North} or {@linkplain AxisDirection#EAST East} are first,
- * and vertical or temporal directions like {@linkplain AxisDirection#UP Up} are last.
+ * Wraps a {@linkplain CoordinateSystemAxis coordinate system axis} for comparaison purpose. The
+ * sorting order tries to favor a right-handed system. Compass directions like {@linkplain
+ * AxisDirection#NORTH North} or {@linkplain AxisDirection#EAST East} are first, and vertical or
+ * temporal directions like {@linkplain AxisDirection#UP Up} are last.
  *
  * @version $Id$
  * @source $URL$
  * @author Martin Desruisseaux
  */
 final class ComparableAxisWrapper implements Comparable {
-    /**
-     * The wrapped axis.
-     */
+    /** The wrapped axis. */
     private final CoordinateSystemAxis axis;
 
-    /**
-     * The direction along meridian, or {@code null} if none.
-     */
+    /** The direction along meridian, or {@code null} if none. */
     private final DirectionAlongMeridian meridian;
 
-    /**
-     * Creates a new wrapper for the given axis.
-     */
+    /** Creates a new wrapper for the given axis. */
     private ComparableAxisWrapper(final CoordinateSystemAxis axis) {
         this.axis = axis;
         meridian = DirectionAlongMeridian.parse(axis.getDirection());
     }
 
-    /**
-     * Returns {@code true} if the specified direction is a compass direction.
-     */
+    /** Returns {@code true} if the specified direction is a compass direction. */
     private static boolean isCompassDirection(final AxisDirection direction) {
         int compass = DefaultCoordinateSystemAxis.getCompassAngle(direction, AxisDirection.NORTH);
         return compass != Integer.MIN_VALUE;
     }
 
     /**
-     * Compares with the specified object. See class javadoc
-     * for a description of the sorting order.
+     * Compares with the specified object. See class javadoc for a description of the sorting order.
      */
     public int compareTo(final Object other) {
         final ComparableAxisWrapper that = (ComparableAxisWrapper) other;
@@ -90,18 +80,17 @@ final class ComparableAxisWrapper implements Comparable {
     }
 
     /**
-     * Sorts the specified axis in an attempt to create a right-handed system.
-     * The sorting is performed in place. This method returns {@code true} if
-     * at least one axis moved.
+     * Sorts the specified axis in an attempt to create a right-handed system. The sorting is
+     * performed in place. This method returns {@code true} if at least one axis moved.
      */
     public static boolean sort(final CoordinateSystemAxis[] axis) {
         final ComparableAxisWrapper[] wrappers = new ComparableAxisWrapper[axis.length];
-        for (int i=0; i<axis.length; i++) {
+        for (int i = 0; i < axis.length; i++) {
             wrappers[i] = new ComparableAxisWrapper(axis[i]);
         }
         Arrays.sort(wrappers);
         boolean changed = false;
-        for (int i=0; i<axis.length; i++) {
+        for (int i = 0; i < axis.length; i++) {
             final CoordinateSystemAxis a = wrappers[i].axis;
             changed |= (axis[i] != a);
             axis[i] = a;

@@ -19,29 +19,28 @@ package org.geotools.data.mysql;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 import org.geotools.jdbc.JDBCSpatialFiltersOnlineTest;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class MySQLSpatialFiltersOnlineTest extends JDBCSpatialFiltersOnlineTest {
-
 
     @Override
     protected void connect() throws Exception {
         super.connect();
 
-        //uncomment code below to enable logging
-        //java.util.logging.ConsoleHandler handler = new java.util.logging.ConsoleHandler();
-        //handler.setLevel(java.util.logging.Level.FINE);
-        //org.geotools.util.logging.Logging.getLogger("org.geotools.data.jdbc").addHandler(handler);
+        // uncomment code below to enable logging
+        // java.util.logging.ConsoleHandler handler = new java.util.logging.ConsoleHandler();
+        // handler.setLevel(java.util.logging.Level.FINE);
+        // org.geotools.util.logging.Logging.getLogger("org.geotools.data.jdbc").addHandler(handler);
 
         if (dialect instanceof MySQLDialect) {
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.jdbc").info(
-                    "MySQLDialect enhanced spatial support is:" + ((MySQLDialect) dialect).getUsePreciseSpatialOps());
+            org.geotools.util.logging.Logging.getLogger("org.geotools.data.jdbc")
+                    .info(
+                            "MySQLDialect enhanced spatial support is:"
+                                    + ((MySQLDialect) dialect).getUsePreciseSpatialOps());
         } else if (dialect instanceof MySQLDialectBasic) {
-            org.geotools.util.logging.Logging.getLogger("org.geotools.data.jdbc").info(
-                    "MySQLDialectBasic enhanced spatial support is:" + ((MySQLDialectBasic) dialect).getUsePreciseSpatialOps());
+            org.geotools.util.logging.Logging.getLogger("org.geotools.data.jdbc")
+                    .info(
+                            "MySQLDialectBasic enhanced spatial support is:"
+                                    + ((MySQLDialectBasic) dialect).getUsePreciseSpatialOps());
         }
     }
 
@@ -52,16 +51,16 @@ public class MySQLSpatialFiltersOnlineTest extends JDBCSpatialFiltersOnlineTest 
 
     @Override
     public void testBboxFilter() throws Exception {
-        //super.testBboxFilter();
+        // super.testBboxFilter();
     }
-    
+
     @Override
     public void testBboxFilterDefault() throws Exception {
-        //super.testBboxFilterDefault();
+        // super.testBboxFilterDefault();
     }
-    
+
     @Override
     public void testCrossesFilter() throws Exception {
-        //super.testCrossesFilter();
+        // super.testCrossesFilter();
     }
 }

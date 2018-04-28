@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2015, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -22,9 +22,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
-
 import org.geotools.filter.FilterAttributeExtractor;
-import org.geotools.filter.IsBetweenImpl;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.And;
@@ -56,33 +54,30 @@ import org.opengis.filter.identity.Identifier;
 
 /**
  * Takes a filter and returns a simplified, equivalent one. At the moment the filter:
+ *
  * <ul>
- * <li>simplifies out {@link Filter#INCLUDE} and {@link Filter#EXCLUDE} in logical expressions</li>
- * <li>removes double logic negations</li>
- * <li>deal with FID filter validation removing invalid fids</li>
- * <li>optimize out all non volatile functions that do not happen to use attributes, replacing them
- * with literals</li>
+ *   <li>simplifies out {@link Filter#INCLUDE} and {@link Filter#EXCLUDE} in logical expressions
+ *   <li>removes double logic negations
+ *   <li>deal with FID filter validation removing invalid fids
+ *   <li>optimize out all non volatile functions that do not happen to use attributes, replacing
+ *       them with literals
  * </ul>
- * <p>
- * FID filter validation is meant to wipe out non valid feature ids from {@link Id} filters. This is
- * so in order to avoid sending feature ids down to DataStores that are not valid as per the
+ *
+ * <p>FID filter validation is meant to wipe out non valid feature ids from {@link Id} filters. This
+ * is so in order to avoid sending feature ids down to DataStores that are not valid as per the
  * specific FeatureType fid structure. Since this is structure is usually DataStore specific, some
  * times being a strategy based on how the feature type primary key is generated, fid validation is
  * abstracted out to the {@link FIDValidator} interface so when a DataStore is about to send a query
  * down to the backend it van provide this visitor with a validator specific for the feature type
  * fid structure being queried.
- * </p>
- * <p>
- * By default all feature ids are valid. DataStores that want non valid fids to be wiped out should
- * set a {@link FIDValidator} through the {@link #setFIDValidator(FIDValidator)} method.
- * </p>
- * 
+ *
+ * <p>By default all feature ids are valid. DataStores that want non valid fids to be wiped out
+ * should set a {@link FIDValidator} through the {@link #setFIDValidator(FIDValidator)} method.
+ *
  * @author Andrea Aime - OpenGeo
  * @author Gabriel Roldan (OpenGeo)
  * @since 2.5.x
  * @version $Id$
- * 
- * 
  * @source $URL$
  */
 public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
@@ -100,16 +95,17 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
     /**
      * A 'null-object' fid validator that assumes any feature id in an {@link Id} filter is valid
      */
-    public static final FIDValidator ANY_FID_VALID = new FIDValidator() {
-        public boolean isValid(String fid) {
-            return true;
-        }
-    };
+    public static final FIDValidator ANY_FID_VALID =
+            new FIDValidator() {
+                public boolean isValid(String fid) {
+                    return true;
+                }
+            };
 
     /**
      * A FID validator that matches the fids with a given regular expression to determine the fid's
      * validity.
-     * 
+     *
      * @author Gabriel Roldan (OpenGeo)
      */
     public static class RegExFIDValidator implements FIDValidator {
@@ -118,7 +114,7 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
 
         /**
          * @param regularExpression a regular expression as used by the {@code java.util.regex}
-         *        package
+         *     package
          */
         public RegExFIDValidator(String regularExpression) {
             pattern = Pattern.compile(regularExpression);
@@ -136,7 +132,7 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
     public static class TypeNameDotNumberFidValidator extends RegExFIDValidator {
         /**
          * @param typeName the typename that will be used for a regular expression match in the form
-         *        of {@code <typename>.<number>}
+         *     of {@code <typename>.<number>}
          */
         public TypeNameDotNumberFidValidator(final String typeName) {
             super(typeName + "\\.\\d+");
@@ -148,7 +144,7 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
     protected FeatureType featureType;
 
     private FIDValidator fidValidator = ANY_FID_VALID;
-    
+
     private boolean rangeSimplicationEnabled = false;
 
     public void setFIDValidator(FIDValidator validator) {
@@ -172,7 +168,6 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
         if (filters.size() == 0) {
             return Filter.INCLUDE;
         }
-
 
         // remove the logic we have only one filter
         if (filters.size() == 1) {
@@ -209,7 +204,7 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
 
         // see if we have dual filters that can lead to Filter.Exclude, or duplicated filters
         for (int i = 0; i < simplified.size(); i++) {
-            for (int j = i + 1; j < simplified.size();) {
+            for (int j = i + 1; j < simplified.size(); ) {
                 Filter f1 = simplified.get(i);
                 Filter f2 = simplified.get(j);
                 if (f1.equals(f2)) {
@@ -224,9 +219,8 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
         return simplified;
     }
 
-    protected <T extends BinaryLogicOperator> List<Filter> collect(T filter, Class<T> type,
-            Object extraData,
-            List<Filter> collected) {
+    protected <T extends BinaryLogicOperator> List<Filter> collect(
+            T filter, Class<T> type, Object extraData, List<Filter> collected) {
         for (Filter child : filter.getChildren()) {
             if (type.isInstance(child)) {
                 T and = (T) child;
@@ -245,12 +239,10 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
         return collected;
     }
 
-
-
     /**
      * Two filters are dual if the are the negation of each other (range based logic is handled
      * separately)
-     * 
+     *
      * @param f1
      * @param f2
      * @return
@@ -277,10 +269,10 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
             if (!isSimpleFeature()) {
                 return false;
             } else {
-                return (e.getExpression1().equals(ne.getExpression1()) && e.getExpression2()
-                        .equals(ne.getExpression2()))
-                        || (e.getExpression2().equals(ne.getExpression1()) && e.getExpression1()
-                                .equals(ne.getExpression2()));
+                return (e.getExpression1().equals(ne.getExpression1())
+                                && e.getExpression2().equals(ne.getExpression2()))
+                        || (e.getExpression2().equals(ne.getExpression1())
+                                && e.getExpression1().equals(ne.getExpression2()));
             }
         }
 
@@ -337,7 +329,7 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
 
         // see if we have dual filters that can lead to Filter.Exclude, or duplicated filters
         for (int i = 0; i < simplified.size(); i++) {
-            for (int j = i + 1; j < simplified.size();) {
+            for (int j = i + 1; j < simplified.size(); ) {
                 Filter f1 = simplified.get(i);
                 Filter f2 = simplified.get(j);
                 if (f1.equals(f2)) {
@@ -360,13 +352,12 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
         return filters;
     }
 
-
     /**
      * Uses the current {@link FIDValidator} to wipe out illegal feature ids from the returned
      * filters.
-     * 
+     *
      * @return a filter containing only valid fids as per the current {@link FIDValidator}, may be
-     *         {@link Filter#EXCLUDE} if none matches or the filter is already empty
+     *     {@link Filter#EXCLUDE} if none matches or the filter is already empty
      */
     @Override
     public Object visit(Id filter, Object extraData) {
@@ -400,7 +391,7 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
     public Object visit(Not filter, Object extraData) {
         FilterFactory2 ff = getFactory(extraData);
         Filter inner = filter.getFilter();
-		if (inner instanceof Not) {
+        if (inner instanceof Not) {
             // simplify out double negation
             Not innerNot = (Not) inner;
             return innerNot.getFilter().accept(this, extraData);
@@ -422,11 +413,11 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
                 negatedChildren.add((Filter) ff.not(child).accept(this, extraData));
             }
             return ff.and(negatedChildren);
-        } else if(isSimpleFeature()) {
+        } else if (isSimpleFeature()) {
             Filter simplified = (Filter) inner.accept(this, extraData);
-            if(simplified == Filter.INCLUDE) {
+            if (simplified == Filter.INCLUDE) {
                 return Filter.EXCLUDE;
-            } else if(simplified == Filter.EXCLUDE) {
+            } else if (simplified == Filter.EXCLUDE) {
                 return Filter.INCLUDE;
             } else if (simplified instanceof PropertyIsBetween) {
                 PropertyIsBetween pb = (PropertyIsBetween) simplified;
@@ -441,13 +432,15 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
                 return ff.equal(pe.getExpression1(), pe.getExpression2(), pe.isMatchingCase());
             } else if (simplified instanceof PropertyIsGreaterThan) {
                 PropertyIsGreaterThan pg = (PropertyIsGreaterThan) simplified;
-                return ff.lessOrEqual(pg.getExpression1(), pg.getExpression2(), pg.isMatchingCase());
+                return ff.lessOrEqual(
+                        pg.getExpression1(), pg.getExpression2(), pg.isMatchingCase());
             } else if (simplified instanceof PropertyIsGreaterThanOrEqualTo) {
                 PropertyIsGreaterThanOrEqualTo pg = (PropertyIsGreaterThanOrEqualTo) simplified;
                 return ff.less(pg.getExpression1(), pg.getExpression2(), pg.isMatchingCase());
             } else if (simplified instanceof PropertyIsLessThan) {
                 PropertyIsLessThan pl = (PropertyIsLessThan) simplified;
-                return ff.greaterOrEqual(pl.getExpression1(), pl.getExpression2(), pl.isMatchingCase());
+                return ff.greaterOrEqual(
+                        pl.getExpression1(), pl.getExpression2(), pl.isMatchingCase());
             } else if (simplified instanceof PropertyIsLessThanOrEqualTo) {
                 PropertyIsLessThanOrEqualTo pl = (PropertyIsLessThanOrEqualTo) simplified;
                 return ff.greater(pl.getExpression1(), pl.getExpression2(), pl.isMatchingCase());
@@ -459,7 +452,7 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
 
     /**
      * Returns true if the target feature type is a simple feature one
-     * 
+     *
      * @return
      */
     protected boolean isSimpleFeature() {
@@ -492,7 +485,7 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
     /**
      * Checks if a function is volatile in this context. By default it checks if the function
      * implements the {@link VolatileFunction} interface, subclasses can override
-     * 
+     *
      * @param function
      * @return
      */
@@ -502,7 +495,7 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
 
     /**
      * Tries to simplify the filter if it's not already a simple one.
-     * 
+     *
      * @param filter
      * @return
      */
@@ -512,7 +505,7 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
 
     /**
      * Tries to simplify the filter if it's not already a simple one
-     * 
+     *
      * @param filter
      * @return
      */
@@ -543,7 +536,8 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
 
     public Object visit(PropertyIsBetween filter, Object extraData) {
         PropertyIsBetween clone = (PropertyIsBetween) super.visit(filter, extraData);
-        if (isConstant(clone.getExpression()) && isConstant(clone.getLowerBoundary())
+        if (isConstant(clone.getExpression())
+                && isConstant(clone.getLowerBoundary())
                 && isConstant(clone.getUpperBoundary())) {
             return staticFilterEvaluate(clone);
         } else {
@@ -560,8 +554,8 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
     }
 
     public Object visit(PropertyIsEqualTo filter, Object extraData) {
-        return simplifyBinaryComparisonOperator((BinaryComparisonOperator) super.visit(filter,
-                extraData));
+        return simplifyBinaryComparisonOperator(
+                (BinaryComparisonOperator) super.visit(filter, extraData));
     }
 
     private Object simplifyBinaryComparisonOperator(BinaryComparisonOperator clone) {
@@ -573,28 +567,28 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
     }
 
     public Object visit(PropertyIsNotEqualTo filter, Object extraData) {
-        return simplifyBinaryComparisonOperator((BinaryComparisonOperator) super.visit(filter,
-                extraData));
+        return simplifyBinaryComparisonOperator(
+                (BinaryComparisonOperator) super.visit(filter, extraData));
     }
 
     public Object visit(PropertyIsGreaterThan filter, Object extraData) {
-        return simplifyBinaryComparisonOperator((BinaryComparisonOperator) super.visit(filter,
-                extraData));
+        return simplifyBinaryComparisonOperator(
+                (BinaryComparisonOperator) super.visit(filter, extraData));
     }
 
     public Object visit(PropertyIsGreaterThanOrEqualTo filter, Object extraData) {
-        return simplifyBinaryComparisonOperator((BinaryComparisonOperator) super.visit(filter,
-                extraData));
+        return simplifyBinaryComparisonOperator(
+                (BinaryComparisonOperator) super.visit(filter, extraData));
     }
 
     public Object visit(PropertyIsLessThan filter, Object extraData) {
-        return simplifyBinaryComparisonOperator((BinaryComparisonOperator) super.visit(filter,
-                extraData));
+        return simplifyBinaryComparisonOperator(
+                (BinaryComparisonOperator) super.visit(filter, extraData));
     }
 
     public Object visit(PropertyIsLessThanOrEqualTo filter, Object extraData) {
-        return simplifyBinaryComparisonOperator((BinaryComparisonOperator) super.visit(filter,
-                extraData));
+        return simplifyBinaryComparisonOperator(
+                (BinaryComparisonOperator) super.visit(filter, extraData));
     }
 
     @Override
@@ -635,11 +629,10 @@ public class SimplifyingFilterVisitor extends DuplicatingFilterVisitor {
      * Enables/disable range simplification. Range simplification can figure out that the logic
      * combination of multiple ranges against the same property can be turned into a single range, a
      * INCLUDE, or a EXCLUDE, but it requires the range boundaries to be of the same type as the
-     * 
+     *
      * @param rangeSimplicationEnabled
      */
     public void setRangeSimplicationEnabled(boolean rangeSimplicationEnabled) {
         this.rangeSimplicationEnabled = rangeSimplicationEnabled;
     }
-
 }

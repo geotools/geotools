@@ -17,32 +17,25 @@
 package org.geotools.gml3.bindings;
 
 import java.util.Set;
-
 import javax.xml.namespace.QName;
-
 import org.geotools.gml3.GML;
 import org.geotools.xml.XSD;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public final class TEST extends XSD {
     private static TEST instance = new TEST();
     public static String NAMESPACE = "http://www.geotools.org/test";
 
-    //types
+    // types
     public static QName TestFeatureType = new QName(NAMESPACE, "TestFeatureType");
-    public static QName TestFeatureCollectionType = new QName(NAMESPACE, "TestFeatureCollectionType");
+    public static QName TestFeatureCollectionType =
+            new QName(NAMESPACE, "TestFeatureCollectionType");
 
-    //elements
+    // elements
     public static QName TestFeature = new QName(NAMESPACE, "TestFeature");
     public static QName TestFeatureCollection = new QName(NAMESPACE, "TestFeatureCollection");
 
-    private TEST() {
-    }
+    private TEST() {}
 
     public static TEST getInstance() {
         return instance;

@@ -22,7 +22,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Iterator;
-
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -31,9 +30,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ListCellRenderer;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
 import net.miginfocom.swing.MigLayout;
-
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.swing.wizard.JPage;
@@ -41,15 +38,10 @@ import org.geotools.swing.wizard.JPage;
 /**
  * A wizard page that will allow the user to choose a format (ie DataAccess factory).
  *
- *
- *
- *
  * @source $URL$
  */
 public class JDataChoosePage extends JPage {
-    /**
-     * Factory for which we are collection connection parameters
-     */
+    /** Factory for which we are collection connection parameters */
     protected DataStoreFactorySpi format;
 
     /** max line length of parameter description labels (chars) */
@@ -60,11 +52,11 @@ public class JDataChoosePage extends JPage {
     public JDataChoosePage() {
         this(null);
     }
-    
+
     public JDataChoosePage(DataStoreFactorySpi format) {
         this.format = format;
     }
-    
+
     @SuppressWarnings("serial")
     @Override
     public JPanel createPanel() {
@@ -78,52 +70,59 @@ public class JDataChoosePage extends JPage {
         page.add(description, "grow, span");
 
         java.util.List<DataStoreFactorySpi> factoryList = new ArrayList<DataStoreFactorySpi>();
-        for( Iterator<DataStoreFactorySpi> iter = DataStoreFinder.getAvailableDataStores(); iter.hasNext();){
-            factoryList.add( iter.next() );
+        for (Iterator<DataStoreFactorySpi> iter = DataStoreFinder.getAvailableDataStores();
+                iter.hasNext(); ) {
+            factoryList.add(iter.next());
         }
-        list = new JList( factoryList.toArray() );
-        ListCellRenderer cellRenderer = new DefaultListCellRenderer() {
-            @Override
-            public Component getListCellRendererComponent(JList list, Object value, int index,
-                    boolean isSelected, boolean cellHasFocus) {
-                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                DataStoreFactorySpi factory = (DataStoreFactorySpi) value;
-                setText( factory.getDisplayName() );
-                setToolTipText( factory.getDescription() );
-                
-                return this;
-            }
-        };
+        list = new JList(factoryList.toArray());
+        ListCellRenderer cellRenderer =
+                new DefaultListCellRenderer() {
+                    @Override
+                    public Component getListCellRendererComponent(
+                            JList list,
+                            Object value,
+                            int index,
+                            boolean isSelected,
+                            boolean cellHasFocus) {
+                        super.getListCellRendererComponent(
+                                list, value, index, isSelected, cellHasFocus);
+                        DataStoreFactorySpi factory = (DataStoreFactorySpi) value;
+                        setText(factory.getDisplayName());
+                        setToolTipText(factory.getDescription());
+
+                        return this;
+                    }
+                };
         list.setCellRenderer(cellRenderer);
-        list.addListSelectionListener( new ListSelectionListener() {            
-            public void valueChanged(ListSelectionEvent e) {
-                format = (DataStoreFactorySpi) list.getSelectedValue();
-            }
-        });
-        JScrollPane scroll = new JScrollPane( list );
-        scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS );
-        scroll.setPreferredSize(new Dimension(300,100));
-        page.add( scroll, "growx,growy,span");        
-        
+        list.addListSelectionListener(
+                new ListSelectionListener() {
+                    public void valueChanged(ListSelectionEvent e) {
+                        format = (DataStoreFactorySpi) list.getSelectedValue();
+                    }
+                });
+        JScrollPane scroll = new JScrollPane(list);
+        scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scroll.setPreferredSize(new Dimension(300, 100));
+        page.add(scroll, "growx,growy,span");
+
         return page;
     }
 
     @Override
     public void preDisplayPanel() {
-        list.addListSelectionListener( getJWizard().getController() );
+        list.addListSelectionListener(getJWizard().getController());
     }
 
     @Override
     public void preClosePanel() {
-        list.addListSelectionListener( getJWizard().getController() );
-        
+        list.addListSelectionListener(getJWizard().getController());
+
         JDataStoreWizard dataStoreWizard = (JDataStoreWizard) getJWizard();
-        dataStoreWizard.setFormat( format );
+        dataStoreWizard.setFormat(format);
     }
-    
+
     @Override
     public boolean isValid() {
         return format != null;
     }
-
 }

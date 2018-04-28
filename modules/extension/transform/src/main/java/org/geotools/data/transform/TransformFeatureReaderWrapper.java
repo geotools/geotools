@@ -18,7 +18,6 @@ package org.geotools.data.transform;
 
 import java.io.IOException;
 import java.util.logging.Logger;
-
 import org.geotools.data.FeatureReader;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.util.logging.Logging;
@@ -29,9 +28,8 @@ import org.opengis.filter.expression.Expression;
 
 /**
  * A transforming reader based on a user provided {@link FeatureReader}
- * 
+ *
  * @author Andrea Aime - GeoSolutions
- * 
  */
 class TransformFeatureReaderWrapper implements FeatureReader<SimpleFeatureType, SimpleFeature> {
 
@@ -45,7 +43,8 @@ class TransformFeatureReaderWrapper implements FeatureReader<SimpleFeatureType, 
 
     private SimpleFeatureType target;
 
-    public TransformFeatureReaderWrapper(FeatureReader<SimpleFeatureType, SimpleFeature> wrapped, Transformer transformer)
+    public TransformFeatureReaderWrapper(
+            FeatureReader<SimpleFeatureType, SimpleFeature> wrapped, Transformer transformer)
             throws IOException {
         this.transformer = transformer;
         this.target = transformer.getSchema();
@@ -61,12 +60,12 @@ class TransformFeatureReaderWrapper implements FeatureReader<SimpleFeatureType, 
     }
 
     @Override
-    public SimpleFeature next()  throws IOException{
+    public SimpleFeature next() throws IOException {
         SimpleFeature f = wrapped.next();
 
         for (AttributeDescriptor ad : target.getAttributeDescriptors()) {
             Expression ex = transformer.getExpression(ad.getLocalName());
-            if(ex != null) {
+            if (ex != null) {
                 Object value = ex.evaluate(f, ad.getType().getBinding());
                 fb.add(value);
             } else {
@@ -89,6 +88,4 @@ class TransformFeatureReaderWrapper implements FeatureReader<SimpleFeatureType, 
     public SimpleFeatureType getFeatureType() {
         return target;
     }
-
-
 }

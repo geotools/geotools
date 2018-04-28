@@ -25,10 +25,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.List;
-
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.factory.CommonFactoryFinder;
@@ -50,9 +48,8 @@ import org.xml.sax.SAXParseException;
 
 /**
  * Reads and translates all tests checking for errors in the process
- * 
+ *
  * @author Andrea Aime - GeoSolutions
- * 
  */
 @RunWith(Parameterized.class)
 public abstract class AbstractIntegrationTest extends CssBaseTest {
@@ -82,14 +79,23 @@ public abstract class AbstractIntegrationTest extends CssBaseTest {
         }
     }
 
-    private void testTranslation(String css) throws TransformerException, IOException,
-            FileNotFoundException, SAXException, ParserConfigurationException {
-        File sldFile = new File(file.getParentFile(), FilenameUtils.getBaseName(file.getName())
-                + (exclusiveRulesEnabled ? "" : "-first") + ".sld");
+    private void testTranslation(String css)
+            throws TransformerException, IOException, FileNotFoundException, SAXException,
+                    ParserConfigurationException {
+        File sldFile =
+                new File(
+                        file.getParentFile(),
+                        FilenameUtils.getBaseName(file.getName())
+                                + (exclusiveRulesEnabled ? "" : "-first")
+                                + ".sld");
 
-        //Java 9 pretty-print has slightly different indentation
-        File sldFile_java9 = new File(file.getParentFile(), FilenameUtils.getBaseName(file.getName())
-                + (exclusiveRulesEnabled ? "" : "-first") + "_java9.sld");
+        // Java 9 pretty-print has slightly different indentation
+        File sldFile_java9 =
+                new File(
+                        file.getParentFile(),
+                        FilenameUtils.getBaseName(file.getName())
+                                + (exclusiveRulesEnabled ? "" : "-first")
+                                + "_java9.sld");
 
         if (!sldFile.exists()) {
             Stylesheet ss = CssParser.parse(css);
@@ -101,8 +107,8 @@ public abstract class AbstractIntegrationTest extends CssBaseTest {
         }
 
         Style actual = cssToSld(css);
-        File sldFile2 = new File("./target/css",
-                FilenameUtils.getBaseName(file.getName()) + ".sld");
+        File sldFile2 =
+                new File("./target/css", FilenameUtils.getBaseName(file.getName()) + ".sld");
         writeStyle(actual, sldFile2);
         String actualSld = FileUtils.readFileToString(sldFile2);
 
@@ -117,10 +123,12 @@ public abstract class AbstractIntegrationTest extends CssBaseTest {
                 } else {
                     System.out.println(e);
                 }
-
             }
-            System.err.println("Validation failed, the two files are: " + sldFile.getAbsolutePath()
-                    + " " + sldFile2.getAbsolutePath());
+            System.err.println(
+                    "Validation failed, the two files are: "
+                            + sldFile.getAbsolutePath()
+                            + " "
+                            + sldFile2.getAbsolutePath());
             fail("Validation failed");
         }
 
@@ -132,17 +140,19 @@ public abstract class AbstractIntegrationTest extends CssBaseTest {
         // Diff diff = new Diff(expectedDom, actualDom);
         // if (!diff.identical()) {
         if (!expectedSLD.equals(actualSLD)) {
-            String message = "Comparison failed, the two files are: " + sldFile.getAbsolutePath()
-                    + " " + sldFile2.getAbsolutePath();
+            String message =
+                    "Comparison failed, the two files are: "
+                            + sldFile.getAbsolutePath()
+                            + " "
+                            + sldFile2.getAbsolutePath();
 
-            //Try the java9 version
+            // Try the java9 version
             if (sldFile_java9.exists()) {
                 expectedSLD = parseToSld(FileUtils.readFileToString(sldFile_java9));
                 if (expectedSLD.equals(actualSLD)) {
                     return;
                 }
             }
-
 
             System.err.println(message);
             fail(message);
@@ -179,13 +189,12 @@ public abstract class AbstractIntegrationTest extends CssBaseTest {
     }
 
     private Style cssToSld(String css) {
-        ParsingResult<Stylesheet> result = new ReportingParseRunner<Stylesheet>(parser.StyleSheet())
-                .run(css);
+        ParsingResult<Stylesheet> result =
+                new ReportingParseRunner<Stylesheet>(parser.StyleSheet()).run(css);
 
         assertNoErrors(result);
         Stylesheet ss = result.parseTreeRoot.getValue();
         CssTranslator translator = new CssTranslator();
         return translator.translate(ss);
     }
-
 }

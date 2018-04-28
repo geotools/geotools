@@ -16,16 +16,11 @@
  */
 package org.geotools.data.teradata;
 
+import java.io.IOException;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTransactionOnlineTest;
 
-import java.io.IOException;
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class TeradataTransactionOnlineTest extends JDBCTransactionOnlineTest {
 
     protected JDBCTestSetup createTestSetup() {

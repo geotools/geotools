@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -40,12 +39,11 @@ import org.opengis.geometry.BoundingBox;
 
 /**
  * A transforming collection based on the {@link TransformFeatureSource} definitions
- * 
+ *
  * @author Andrea Aime - GeoSolution
- * 
  */
 class TransformFeatureCollection extends AbstractFeatureCollection {
-    
+
     static final Logger LOGGER = Logging.getLogger(TransformFeatureCollection.class);
 
     SimpleFeatureSource source;
@@ -54,7 +52,8 @@ class TransformFeatureCollection extends AbstractFeatureCollection {
 
     Query query;
 
-    public TransformFeatureCollection(SimpleFeatureSource source, Transformer transformer, Query query) {
+    public TransformFeatureCollection(
+            SimpleFeatureSource source, Transformer transformer, Query query) {
         super(retypeSchema(source.getSchema(), query));
         this.source = source;
         this.transformer = transformer;
@@ -63,7 +62,7 @@ class TransformFeatureCollection extends AbstractFeatureCollection {
 
     /**
      * Creates a sub-schema with only the selected attributes
-     * 
+     *
      * @param schema
      * @param query
      * @return
@@ -81,35 +80,38 @@ class TransformFeatureCollection extends AbstractFeatureCollection {
         try {
             // build the query against the original store
             Query txQuery = transformer.transformQuery(query);
-            
+
             // let the world know about the query re-shaping
             if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.log(Level.FINE,
+                LOGGER.log(
+                        Level.FINE,
                         "The original query for feature extraction {0} has been transformed to {1}",
-                        new Object[] { query, txQuery });
+                        new Object[] {query, txQuery});
             }
-            
+
             // grab the original features
             SimpleFeatureIterator fi = transformer.getSource().getFeatures(txQuery).features();
-            SimpleFeatureIterator transformed = new TransformFeatureIteratorWrapper(fi, transformer);
-            
+            SimpleFeatureIterator transformed =
+                    new TransformFeatureIteratorWrapper(fi, transformer);
+
             // see if we have to apply sort
-            if(query.getSortBy() != null && txQuery.getSortBy() == null) {
-                transformed = new SortedFeatureIterator(transformed, getSchema(), query.getSortBy(), -1);
+            if (query.getSortBy() != null && txQuery.getSortBy() == null) {
+                transformed =
+                        new SortedFeatureIterator(transformed, getSchema(), query.getSortBy(), -1);
             }
-            
+
             // see if we have to apply the offset manually
-            if(query.getStartIndex() != null && txQuery.getStartIndex() == null) {
+            if (query.getStartIndex() != null && txQuery.getStartIndex() == null) {
                 for (int i = 0; i < query.getStartIndex() && transformed.hasNext(); i++) {
                     transformed.next();
                 }
             }
-            
+
             // do we also have to apply limits?
-            if(txQuery.getMaxFeatures() > query.getMaxFeatures()) {
+            if (txQuery.getMaxFeatures() > query.getMaxFeatures()) {
                 transformed = new MaxFeaturesIterator(transformed, query.getMaxFeatures());
             }
-            
+
             return new SimpleFeatureIteratorIterator(transformed);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -123,7 +125,7 @@ class TransformFeatureCollection extends AbstractFeatureCollection {
             int size = source.getCount(query);
             if (size >= 0) {
                 // see if we had to hide paging to the wrapped store
-                if(query.getStartIndex() != null && txQuery.getStartIndex() == null) {
+                if (query.getStartIndex() != null && txQuery.getStartIndex() == null) {
                     size -= query.getStartIndex();
                 }
                 return Math.min(size, query.getMaxFeatures());
@@ -204,5 +206,4 @@ class TransformFeatureCollection extends AbstractFeatureCollection {
         }
         return new TransformFeatureCollection(source, transformer, q);
     }
-
 }

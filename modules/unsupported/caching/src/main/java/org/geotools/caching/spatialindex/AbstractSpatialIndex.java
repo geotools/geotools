@@ -18,16 +18,11 @@ package org.geotools.caching.spatialindex;
 
 import java.util.Stack;
 
-
-/** This is a base class for implementing spatial indexes.
- * It provides common routines useful for every type of indexes.
+/**
+ * This is a base class for implementing spatial indexes. It provides common routines useful for
+ * every type of indexes.
  *
  * @author Christophe Rousson, SoC 2007, CRG-ULAVAL
- *
- *
- *
- *
- *
  * @source $URL$
  */
 public abstract class AbstractSpatialIndex implements SpatialIndex {
@@ -35,32 +30,33 @@ public abstract class AbstractSpatialIndex implements SpatialIndex {
     public static final int IntersectionQuery = 2;
 
     /**
-     * The node at the root of index.
-     * All others nodes should be direct or indirect children of this one.
+     * The node at the root of index. All others nodes should be direct or indirect children of this
+     * one.
      */
     protected NodeIdentifier root;
+
     protected Node rootNode = null;
     protected Storage store;
 
     /**
-     * Indexes can be n-dimensional, but queries and data should be consistent with regards to dimensions.
-     * This is the dimension of data shapes in the index, and should be considered final.
-     * (It is not because it makes things easier to initialize index from a serialized form).
+     * Indexes can be n-dimensional, but queries and data should be consistent with regards to
+     * dimensions. This is the dimension of data shapes in the index, and should be considered
+     * final. (It is not because it makes things easier to initialize index from a serialized form).
      */
     protected int dimension;
+
     protected Region infiniteRegion;
 
     protected SpatialIndexStatistics stats = new SpatialIndexStatistics();
 
-    
-    public Storage getStorage(){
+    public Storage getStorage() {
         return this.store;
     }
 
     public void intersectionQuery(Shape query, Visitor v) {
         if (query.getDimension() != dimension) {
             throw new IllegalArgumentException(
-                "intersectionQuery: Shape has the wrong number of dimensions.");
+                    "intersectionQuery: Shape has the wrong number of dimensions.");
         }
 
         rangeQuery(IntersectionQuery, query, v);
@@ -69,7 +65,7 @@ public abstract class AbstractSpatialIndex implements SpatialIndex {
     public void containmentQuery(Shape query, Visitor v) {
         if (query.getDimension() != dimension) {
             throw new IllegalArgumentException(
-                "containmentQuery: Shape has the wrong number of dimensions.");
+                    "containmentQuery: Shape has the wrong number of dimensions.");
         }
 
         rangeQuery(ContainmentQuery, query, v);
@@ -78,29 +74,29 @@ public abstract class AbstractSpatialIndex implements SpatialIndex {
     public void pointLocationQuery(Point query, Visitor v) {
         if (query.getDimension() != dimension) {
             throw new IllegalArgumentException(
-                "pointLocationQuery: Shape has the wrong number of dimensions.");
+                    "pointLocationQuery: Shape has the wrong number of dimensions.");
         }
 
         /*Region r = null;
-           if (query instanceof Point) {
-               r = new Region((Point) query, (Point) query);
-           } else if (query instanceof Region) {
-               r = (Region) query;
-           } else {
-               throw new IllegalArgumentException(
-                   "pointLocationQuery: Shape can be Point or Region only.");
-           }*/
+        if (query instanceof Point) {
+            r = new Region((Point) query, (Point) query);
+        } else if (query instanceof Region) {
+            r = (Region) query;
+        } else {
+            throw new IllegalArgumentException(
+                "pointLocationQuery: Shape can be Point or Region only.");
+        }*/
         Region r = new Region(query, query);
 
         rangeQuery(IntersectionQuery, r, v);
     }
 
-    /** Common algorithm used by both intersection and containment queries.
+    /**
+     * Common algorithm used by both intersection and containment queries.
      *
      * @param type
      * @param query
      * @param v
-     *
      */
     protected void rangeQuery(int type, Shape query, Visitor v) {
         NodePointer current = null;
@@ -112,14 +108,14 @@ public abstract class AbstractSpatialIndex implements SpatialIndex {
             current = new NodePointer(readNode(this.root));
             notYetVisitedNodes.push(current);
         }
-        
+
         while (!notYetVisitedNodes.isEmpty() || !visitedNodes.isEmpty()) {
             if (!notYetVisitedNodes.isEmpty()) {
                 current = notYetVisitedNodes.pop();
                 v.visitNode(current.node);
 
                 if (v.isDataVisitor()) { // skip if visitor does nothing with data
-                                         // visitData check for actual containment or intersection
+                    // visitData check for actual containment or intersection
                     visitData(current.node, v, query, type);
                 }
             } else {
@@ -140,11 +136,11 @@ public abstract class AbstractSpatialIndex implements SpatialIndex {
         }
     }
 
-    /** Visit data associated with a node using given visitor.
-     * At this stage, we only know that node's MBR intersects query.
-     * This method is reponsible for iterating over node's data, if any,
-     * and for checking if data is actually part of the query result.
-     * Then it uses the visitor's visit() method on the selected data.
+    /**
+     * Visit data associated with a node using given visitor. At this stage, we only know that
+     * node's MBR intersects query. This method is reponsible for iterating over node's data, if
+     * any, and for checking if data is actually part of the query result. Then it uses the
+     * visitor's visit() method on the selected data.
      *
      * @param node to visit
      * @param visitor for callback
@@ -159,26 +155,22 @@ public abstract class AbstractSpatialIndex implements SpatialIndex {
 
     public void nearestNeighborQuery(int k, Shape query, Visitor v) {
         // TODO Auto-generated method stub
-    } 
-    
+    }
+
     /**
      * Inserts data into the spatial index.
-     * 
-     * <p>Items with the same "data" and  "shape" 
-     * will be considered equal and only one copy of them will be added to the
-     * cache.
-     * </p>
-     * 
+     *
+     * <p>Items with the same "data" and "shape" will be considered equal and only one copy of them
+     * will be added to the cache.
+     *
      * @param data to insert
      * @param shape associated with data
      * @param id the id of the data
-     * 
-     * 
      */
     public void insertData(Object data, Shape shape) {
         if (shape.getDimension() != dimension) {
             throw new IllegalArgumentException(
-                "insertData: Shape has the wrong number of dimensions.");
+                    "insertData: Shape has the wrong number of dimensions.");
         }
 
         if (this.root.getShape().contains(shape)) {
@@ -188,10 +180,10 @@ public abstract class AbstractSpatialIndex implements SpatialIndex {
         }
     }
 
-    /** Insert new data into target node. Node may delegate to child nodes, if required.
-     * Implementation note : it is assumed arguments verify :
-     * <code>node.getShape().contains(shape)</code>
-     * So this must be checked before calling this method.
+    /**
+     * Insert new data into target node. Node may delegate to child nodes, if required.
+     * Implementation note : it is assumed arguments verify : <code>node.getShape().contains(shape)
+     * </code> So this must be checked before calling this method.
      *
      * @param node where to insert data
      * @param data
@@ -200,9 +192,9 @@ public abstract class AbstractSpatialIndex implements SpatialIndex {
      */
     protected abstract void insertData(NodeIdentifier n, Object data, Shape shape);
 
-    /** Insert new data with shape not contained in the current index.
-     * Some indexes may require to recreate the root or the index,
-     * depending on the type of index ...
+    /**
+     * Insert new data with shape not contained in the current index. Some indexes may require to
+     * recreate the root or the index, depending on the type of index ...
      *
      * @param data
      * @param shape
@@ -221,7 +213,7 @@ public abstract class AbstractSpatialIndex implements SpatialIndex {
         }
 
         ret = id.getNode();
-        if (ret != null){
+        if (ret != null) {
             return ret;
         }
         ret = store.get(id);
@@ -274,6 +266,4 @@ public abstract class AbstractSpatialIndex implements SpatialIndex {
             }
         }
     }
-
-    
 }

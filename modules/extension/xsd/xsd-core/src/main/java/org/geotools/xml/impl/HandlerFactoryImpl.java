@@ -16,17 +16,11 @@
  */
 package org.geotools.xml.impl;
 
-import org.eclipse.xsd.XSDAttributeDeclaration;
-import org.eclipse.xsd.XSDElementDeclaration;
 import javax.xml.namespace.QName;
+import org.eclipse.xsd.XSDElementDeclaration;
 import org.geotools.xml.SchemaIndex;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class HandlerFactoryImpl implements HandlerFactory {
     public DocumentHandler createDocumentHandler(ParserHandler parser) {
         return new DocumentHandlerImpl(this, parser);
@@ -35,7 +29,7 @@ public class HandlerFactoryImpl implements HandlerFactory {
     public ElementHandler createElementHandler(QName qName, Handler parent, ParserHandler parser) {
         SchemaIndex index = parser.getSchemaIndex();
 
-        //look up the element in the schema
+        // look up the element in the schema
         XSDElementDeclaration element = index.getElementDeclaration(qName);
 
         if (element != null) {
@@ -45,8 +39,8 @@ public class HandlerFactoryImpl implements HandlerFactory {
         return null;
     }
 
-    public ElementHandler createElementHandler(XSDElementDeclaration element, Handler parent,
-        ParserHandler parser) {
+    public ElementHandler createElementHandler(
+            XSDElementDeclaration element, Handler parent, ParserHandler parser) {
         return new ElementHandlerImpl(element, parent, parser);
     }
 }

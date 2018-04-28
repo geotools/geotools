@@ -1,4 +1,3 @@
-
 package org.geotools.data.arcgisrest.schema.query;
 
 import com.google.gson.annotations.Expose;
@@ -9,62 +8,46 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 
 public class Feature {
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     @SerializedName("attributes")
     @Expose
     private Attributes attributes;
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     @SerializedName("geometry")
     @Expose
     private Geometry geometry;
 
     /**
-     * 
      * (Required)
-     * 
-     * @return
-     *     The attributes
+     *
+     * @return The attributes
      */
     public Attributes getAttributes() {
         return attributes;
     }
 
     /**
-     * 
      * (Required)
-     * 
-     * @param attributes
-     *     The attributes
+     *
+     * @param attributes The attributes
      */
     public void setAttributes(Attributes attributes) {
         this.attributes = attributes;
     }
 
     /**
-     * 
      * (Required)
-     * 
-     * @return
-     *     The geometry
+     *
+     * @return The geometry
      */
     public Geometry getGeometry() {
         return geometry;
     }
 
     /**
-     * 
      * (Required)
-     * 
-     * @param geometry
-     *     The geometry
+     *
+     * @param geometry The geometry
      */
     public void setGeometry(Geometry geometry) {
         this.geometry = geometry;
@@ -89,7 +72,9 @@ public class Feature {
             return false;
         }
         Feature rhs = ((Feature) other);
-        return new EqualsBuilder().append(attributes, rhs.attributes).append(geometry, rhs.geometry).isEquals();
+        return new EqualsBuilder()
+                .append(attributes, rhs.attributes)
+                .append(geometry, rhs.geometry)
+                .isEquals();
     }
-
 }

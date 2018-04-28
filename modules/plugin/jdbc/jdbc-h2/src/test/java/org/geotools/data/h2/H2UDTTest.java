@@ -19,16 +19,11 @@ package org.geotools.data.h2;
 import org.geotools.jdbc.JDBCUDTOnlineTest;
 import org.geotools.jdbc.JDBCUDTTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class H2UDTTest extends JDBCUDTOnlineTest {
 
     @Override
     protected JDBCUDTTestSetup createTestSetup() {
         return new H2UDTTestSetup();
     }
-
 }

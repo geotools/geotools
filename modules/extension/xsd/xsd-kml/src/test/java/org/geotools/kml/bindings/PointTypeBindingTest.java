@@ -25,12 +25,7 @@ import org.geotools.xml.Binding;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class PointTypeBindingTest extends KMLTestSupport {
     public void testType() {
         assertEquals(Point.class, binding(KML.PointType).getType());
@@ -48,12 +43,12 @@ public class PointTypeBindingTest extends KMLTestSupport {
         assertEquals(1d, p.getX(), 0.1);
         assertEquals(1d, p.getY(), 0.2);
     }
-    
+
     public void testEncode() throws Exception {
-        Point p = new GeometryFactory().createPoint(new Coordinate(1,1));
-        Document dom = encode( p, KML.Point );
-        
-        Element coordinates = getElementByQName(dom, KML.coordinates );
-        assertNotNull( coordinates );
+        Point p = new GeometryFactory().createPoint(new Coordinate(1, 1));
+        Document dom = encode(p, KML.Point);
+
+        Element coordinates = getElementByQName(dom, KML.coordinates);
+        assertNotNull(coordinates);
     }
 }

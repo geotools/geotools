@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -18,30 +18,28 @@ package org.geotools.util;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.factory.Hints;
 import org.geotools.referencing.CRS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Convert String to CRS classes.
- * 
+ *
  * @author Simone Giannecchini, GeoSolutions
  * @since 12.0
  * @version 11.0
- * 
  * @source $URL$
  */
 public class CRSConverterFactory implements ConverterFactory {
 
-    private static final Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger(CRSConverterFactory.class);
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(CRSConverterFactory.class);
 
-    private final static CRSConverter STRING_TO_CRS = new CRSConverter();
+    private static final CRSConverter STRING_TO_CRS = new CRSConverter();
 
     /**
      * Delegates to {@link ConvertUtils#lookup(java.lang.Class)} to create a converter instance.
-     * 
+     *
      * @see ConverterFactory#createConverter(Class, Class, Hints).
      */
     public Converter createConverter(Class<?> source, Class<?> target, Hints hints) {
@@ -69,9 +67,7 @@ public class CRSConverterFactory implements ConverterFactory {
     }
 
     // some additional converters
-    /**
-     * converts a string to an {@link CoordinateReferenceSystem} Object.
-     */
+    /** converts a string to an {@link CoordinateReferenceSystem} Object. */
     static class CRSConverter implements Converter {
         @SuppressWarnings("unchecked")
         public <T> T convert(Object source, Class<T> target) throws Exception {
@@ -84,9 +80,11 @@ public class CRSConverterFactory implements ConverterFactory {
             if ((source instanceof String)
                     && CoordinateReferenceSystem.class.isAssignableFrom(target)) {
                 if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine("CRSConverter: Converting object of class "
-                            + source.getClass().getCanonicalName() + " to "
-                            + target.getCanonicalName());
+                    LOGGER.fine(
+                            "CRSConverter: Converting object of class "
+                                    + source.getClass().getCanonicalName()
+                                    + " to "
+                                    + target.getCanonicalName());
                 }
                 // convert
                 String input = (String) source;
@@ -115,9 +113,11 @@ public class CRSConverterFactory implements ConverterFactory {
             if ((source instanceof CoordinateReferenceSystem)
                     && String.class.isAssignableFrom(target)) {
                 if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine("CRSConverter: Converting object of class "
-                            + source.getClass().getCanonicalName() + " to "
-                            + target.getCanonicalName());
+                    LOGGER.fine(
+                            "CRSConverter: Converting object of class "
+                                    + source.getClass().getCanonicalName()
+                                    + " to "
+                                    + target.getCanonicalName());
                 }
                 try {
                     return (T) ((CoordinateReferenceSystem) source).toWKT();
@@ -130,8 +130,11 @@ public class CRSConverterFactory implements ConverterFactory {
 
             // failed
             if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("CRSConverter: Unable to convert object of class "
-                        + source.getClass().getCanonicalName() + " to " + target.getCanonicalName());
+                LOGGER.fine(
+                        "CRSConverter: Unable to convert object of class "
+                                + source.getClass().getCanonicalName()
+                                + " to "
+                                + target.getCanonicalName());
             }
             return null;
         }

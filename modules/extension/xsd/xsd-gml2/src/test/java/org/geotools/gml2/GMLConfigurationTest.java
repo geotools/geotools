@@ -16,23 +16,16 @@
  */
 package org.geotools.gml2;
 
+import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
+import com.vividsolutions.jts.geom.GeometryFactory;
 import junit.framework.TestCase;
-
 import org.geotools.feature.FeatureCollections;
 import org.geotools.xlink.XLINKConfiguration;
 import org.geotools.xs.XSConfiguration;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
-import com.vividsolutions.jts.geom.GeometryFactory;
-
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class GMLConfigurationTest extends TestCase {
     GMLConfiguration configuration;
 
@@ -47,8 +40,9 @@ public class GMLConfigurationTest extends TestCase {
     }
 
     public void testGetSchemaLocation() {
-        assertEquals(GMLConfiguration.class.getResource("feature.xsd").toString(),
-            configuration.getSchemaFileURL());
+        assertEquals(
+                GMLConfiguration.class.getResource("feature.xsd").toString(),
+                configuration.getSchemaFileURL());
     }
 
     public void testDependencies() {
@@ -58,12 +52,16 @@ public class GMLConfigurationTest extends TestCase {
     }
 
     public void testSchemaLocationResolver() {
-        assertEquals(GMLConfiguration.class.getResource("feature.xsd").toString(),
-            configuration.getSchemaLocationResolver()
-                         .resolveSchemaLocation(null, GML.NAMESPACE, "feature.xsd"));
-        assertEquals(GMLConfiguration.class.getResource("geometry.xsd").toString(),
-            configuration.getSchemaLocationResolver()
-                         .resolveSchemaLocation(null, GML.NAMESPACE, "geometry.xsd"));
+        assertEquals(
+                GMLConfiguration.class.getResource("feature.xsd").toString(),
+                configuration
+                        .getSchemaLocationResolver()
+                        .resolveSchemaLocation(null, GML.NAMESPACE, "feature.xsd"));
+        assertEquals(
+                GMLConfiguration.class.getResource("geometry.xsd").toString(),
+                configuration
+                        .getSchemaLocationResolver()
+                        .resolveSchemaLocation(null, GML.NAMESPACE, "geometry.xsd"));
     }
 
     public void testContext() {

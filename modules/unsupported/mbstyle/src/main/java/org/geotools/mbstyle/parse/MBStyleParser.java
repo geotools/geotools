@@ -20,31 +20,29 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-
 import org.geotools.mbstyle.MBStyle;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-
 /**
  * Given JSON input (as a {@link String} or {@link Reader}, parses and returns a {@link MBStyle}.
- * 
+ *
  * @author Torben Barsballe (Boundless)
  */
 public class MBStyleParser {
 
     JSONParser jsonParser;
-    
+
     public MBStyleParser() {
         jsonParser = new JSONParser();
     }
 
     /**
-     * Parse the provided json into MBStyle. 
-     * <p>
-     * Please be aware that {@link MBStyle}.is a thin wrapper around the provided
-     * json and will lazily parse map box style contents as required.
-     * 
+     * Parse the provided json into MBStyle.
+     *
+     * <p>Please be aware that {@link MBStyle}.is a thin wrapper around the provided json and will
+     * lazily parse map box style contents as required.
+     *
      * @param json String
      * @return MBStyle
      * @throws ParseException If JSON is not well formed
@@ -55,11 +53,11 @@ public class MBStyleParser {
     }
 
     /**
-     * Parse the provided json into MBStyle. 
-     * <p>
-     * Please be aware that {@link MBStyle}.is a thin wrapper around the provided
-     * json and will lazily parse map box style contents as required.
-     * 
+     * Parse the provided json into MBStyle.
+     *
+     * <p>Please be aware that {@link MBStyle}.is a thin wrapper around the provided json and will
+     * lazily parse map box style contents as required.
+     *
      * @param json Reader
      * @return MBStyle
      * @throws ParseException If JSON is not well formed
@@ -69,18 +67,17 @@ public class MBStyleParser {
     public MBStyle parse(Reader json) throws ParseException, IOException, MBFormatException {
         try {
             return MBStyle.create(jsonParser.parse(json));
-        }
-        finally {
+        } finally {
             json.close();
         }
     }
 
     /**
-     * Parse the provided json into MBStyle. 
-     * <p>
-     * Please be aware that {@link MBStyle}.is a thin wrapper around the provided
-     * json and will lazily parse map box style contents as required.
-     * 
+     * Parse the provided json into MBStyle.
+     *
+     * <p>Please be aware that {@link MBStyle}.is a thin wrapper around the provided json and will
+     * lazily parse map box style contents as required.
+     *
      * @param json InputStream
      * @return MBStyle
      * @throws ParseException If JSON is not well formed
@@ -88,9 +85,9 @@ public class MBStyleParser {
      * @throws MBFormatException If MapBox Style is obviously not well formed
      */
     public MBStyle parse(InputStream json) throws ParseException, IOException, MBFormatException {
-        try (Reader reader = new InputStreamReader(json)){ // auto close
-            Object obj = jsonParser.parse( reader );
-            return MBStyle.create( obj );
+        try (Reader reader = new InputStreamReader(json)) { // auto close
+            Object obj = jsonParser.parse(reader);
+            return MBStyle.create(obj);
         }
     }
 }

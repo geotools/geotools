@@ -4,21 +4,18 @@
  *
  *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2005, Open Geospatial Consortium Inc.
- *    
+ *
  *    All Rights Reserved. http://www.opengis.org/legal/
  */
 package org.opengis.filter.spatial;
 
 // Annotations
+
 import org.opengis.annotation.XmlElement;
 
-
 /**
- * Concrete {@linkplain DistanceBufferOperator distance buffer operator} that evaluates as
- * true when any part of the first geometry lies within the given distance
- * of the second geometry.
- *
- *
+ * Concrete {@linkplain DistanceBufferOperator distance buffer operator} that evaluates as true when
+ * any part of the first geometry lies within the given distance of the second geometry.
  *
  * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.0</A>
@@ -27,6 +24,6 @@ import org.opengis.annotation.XmlElement;
  */
 @XmlElement("DWithin")
 public interface DWithin extends DistanceBufferOperator {
-	/** Operator name used to check FilterCapabilities */
-	public static String NAME = "DWithin";
+    /** Operator name used to check FilterCapabilities */
+    public static String NAME = "DWithin";
 }

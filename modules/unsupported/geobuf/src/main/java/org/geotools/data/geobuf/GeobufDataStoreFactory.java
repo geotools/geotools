@@ -16,33 +16,49 @@
  */
 package org.geotools.data.geobuf;
 
-import org.geotools.data.DataStore;
-import org.geotools.data.DataStoreFactorySpi;
-import org.geotools.util.KVP;
-import org.geotools.util.logging.Logging;
-
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.logging.Logger;
+import org.geotools.data.DataStore;
+import org.geotools.data.DataStoreFactorySpi;
+import org.geotools.util.KVP;
+import org.geotools.util.logging.Logging;
 
 public class GeobufDataStoreFactory implements DataStoreFactorySpi {
 
     private static final Logger LOGGER = Logging.getLogger("org.geotools.data.geobuf");
 
-    public static final Param FILE_PARAM = new Param("file", File.class, "The Geobuf file or directory",
-            true, null, new KVP(Param.EXT, "pbf"));
+    public static final Param FILE_PARAM =
+            new Param(
+                    "file",
+                    File.class,
+                    "The Geobuf file or directory",
+                    true,
+                    null,
+                    new KVP(Param.EXT, "pbf"));
 
-    public static final Param PRECISION_PARAM = new Param("precision", Integer.class, "The coordinate preceision",
-            false, 6, new KVP("precision", "6"));
+    public static final Param PRECISION_PARAM =
+            new Param(
+                    "precision",
+                    Integer.class,
+                    "The coordinate preceision",
+                    false,
+                    6,
+                    new KVP("precision", "6"));
 
-    public static final Param DIMENSION_PARAM = new Param("dimension", Integer.class, "The geometry dimension",
-            false, 2, new KVP("precision", "2"));
+    public static final Param DIMENSION_PARAM =
+            new Param(
+                    "dimension",
+                    Integer.class,
+                    "The geometry dimension",
+                    false,
+                    2,
+                    new KVP("precision", "2"));
 
-    public GeobufDataStoreFactory() {
-    }
+    public GeobufDataStoreFactory() {}
 
     @Override
     public DataStore createDataStore(Map<String, Serializable> map) throws IOException {
@@ -95,7 +111,7 @@ public class GeobufDataStoreFactory implements DataStoreFactorySpi {
 
     @Override
     public Param[] getParametersInfo() {
-        return new Param[]{FILE_PARAM, PRECISION_PARAM, DIMENSION_PARAM};
+        return new Param[] {FILE_PARAM, PRECISION_PARAM, DIMENSION_PARAM};
     }
 
     @Override
@@ -103,7 +119,9 @@ public class GeobufDataStoreFactory implements DataStoreFactorySpi {
         try {
             File file = (File) FILE_PARAM.lookUp(map);
             if (file != null) {
-                return file.isDirectory() || file.getPath().toLowerCase().endsWith(".pbf") || file.getPath().toLowerCase().endsWith(".geobuf");
+                return file.isDirectory()
+                        || file.getPath().toLowerCase().endsWith(".pbf")
+                        || file.getPath().toLowerCase().endsWith(".geobuf");
             }
         } catch (IOException e) {
             // ignore as we are expected to return true or false

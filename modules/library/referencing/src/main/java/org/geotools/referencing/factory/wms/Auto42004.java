@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *   
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,14 +17,13 @@
 package org.geotools.referencing.factory.wms;
 
 // OpenGIS dependencies
+
 import org.opengis.parameter.ParameterValueGroup;
 
-
 /**
- * Auto Equirectangular ({@code AUTO:42004}).
- * In the notation below, "<code>${var}</code>" denotes a reference to the value of a variable
- * "{@code var}". The variables "{@code lat0}" and "{@code lon0}" are the central point of the
- * projection appearing in the CRS parameter of the map request.
+ * Auto Equirectangular ({@code AUTO:42004}). In the notation below, "<code>${var}</code>" denotes a
+ * reference to the value of a variable "{@code var}". The variables "{@code lat0}" and "{@code
+ * lon0}" are the central point of the projection appearing in the CRS parameter of the map request.
  *
  * <pre>
  * PROJCS["WGS 84 / Auto Equirectangular",
@@ -54,47 +53,34 @@ import org.opengis.parameter.ParameterValueGroup;
  * @author Martin Desruisseaux
  */
 final class Auto42004 extends Factlet {
-    /**
-     * A shared (thread-safe) instance.
-     */
+    /** A shared (thread-safe) instance. */
     public static final Auto42004 DEFAULT = new Auto42004();
 
-    /**
-     * Do not allows instantiation except the {@link #DEFAULT} constant.
-     */
-    private Auto42004() {
-    }
+    /** Do not allows instantiation except the {@link #DEFAULT} constant. */
+    private Auto42004() {}
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public int code() {
         return 42004;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public String getName() {
         return "WGS 84 / Auto Equirectangular";
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public String getClassification() {
         return "Equidistant_Cylindrical";
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     protected void setProjectionParameters(final ParameterValueGroup parameters, final Code code) {
-        final double   centralMeridian   = code.longitude;
-        final double   standardParallel1 = code.latitude;
+        final double centralMeridian = code.longitude;
+        final double standardParallel1 = code.latitude;
 
-        parameters.parameter("central_meridian")   .setValue(centralMeridian);
-        parameters.parameter("latitude_of_origin") .setValue(0.0);
+        parameters.parameter("central_meridian").setValue(centralMeridian);
+        parameters.parameter("latitude_of_origin").setValue(0.0);
         parameters.parameter("standard_parallel_1").setValue(standardParallel1);
     }
 }

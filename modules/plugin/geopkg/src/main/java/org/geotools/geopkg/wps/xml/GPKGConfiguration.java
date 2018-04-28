@@ -29,30 +29,33 @@ public class GPKGConfiguration extends Configuration {
 
     /**
      * Creates a new configuration.
-     * 
+     *
      * @generated
-     */     
+     */
     public GPKGConfiguration() {
-       super(GPKG.getInstance());
-       
-       addDependency(new FESConfiguration());
+        super(GPKG.getInstance());
+
+        addDependency(new FESConfiguration());
     }
-    
+
     /**
      * Registers the bindings for the configuration.
      *
      * @generated
      */
-    protected final void registerBindings( MutablePicoContainer container ) {
-        //Types
-        container.registerComponentImplementation(GPKG.coveragetype,CoveragetypeBinding.class);
-        container.registerComponentImplementation(GPKG.geopkgtype,GeopkgtypeBinding.class);
-        container.registerComponentImplementation(GPKG.gridsettype,GridsettypeBinding.class);
-        container.registerComponentImplementation(GPKG.gridtype,GridtypeBinding.class);
-        container.registerComponentImplementation(GPKG.layertype,LayertypeBinding.class);
-        container.registerComponentImplementation(GPKG.geopkgtype_features,Geopkgtype_featuresBinding.class);
-        container.registerComponentImplementation(GPKG.geopkgtype_tiles,Geopkgtype_tilesBinding.class);
-        container.registerComponentImplementation(GPKG.gridsettype_grids,Gridsettype_gridsBinding.class);
-        container.registerComponentImplementation(GPKG.bboxtype,BboxtypeBinding.class);
+    protected final void registerBindings(MutablePicoContainer container) {
+        // Types
+        container.registerComponentImplementation(GPKG.coveragetype, CoveragetypeBinding.class);
+        container.registerComponentImplementation(GPKG.geopkgtype, GeopkgtypeBinding.class);
+        container.registerComponentImplementation(GPKG.gridsettype, GridsettypeBinding.class);
+        container.registerComponentImplementation(GPKG.gridtype, GridtypeBinding.class);
+        container.registerComponentImplementation(GPKG.layertype, LayertypeBinding.class);
+        container.registerComponentImplementation(
+                GPKG.geopkgtype_features, Geopkgtype_featuresBinding.class);
+        container.registerComponentImplementation(
+                GPKG.geopkgtype_tiles, Geopkgtype_tilesBinding.class);
+        container.registerComponentImplementation(
+                GPKG.gridsettype_grids, Gridsettype_gridsBinding.class);
+        container.registerComponentImplementation(GPKG.bboxtype, BboxtypeBinding.class);
     }
-} 
+}

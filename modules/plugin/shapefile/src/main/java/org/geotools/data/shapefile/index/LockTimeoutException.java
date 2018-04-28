@@ -18,23 +18,19 @@ package org.geotools.data.shapefile.index;
 
 /**
  * DOCUMENT ME!
- * 
+ *
  * @author Tommaso Nolli
- *
- *
  * @source $URL$
  */
 public class LockTimeoutException extends Exception {
-    /**
-     * 
-     */
+    /** */
     public LockTimeoutException() {
         super();
     }
 
     /**
      * DOCUMENT ME!
-     * 
+     *
      * @param message
      */
     public LockTimeoutException(String message) {
@@ -43,7 +39,7 @@ public class LockTimeoutException extends Exception {
 
     /**
      * DOCUMENT ME!
-     * 
+     *
      * @param message
      * @param cause
      */
@@ -53,7 +49,7 @@ public class LockTimeoutException extends Exception {
 
     /**
      * DOCUMENT ME!
-     * 
+     *
      * @param cause
      */
     public LockTimeoutException(Throwable cause) {

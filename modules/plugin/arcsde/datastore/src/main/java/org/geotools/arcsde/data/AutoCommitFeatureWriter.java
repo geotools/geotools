@@ -18,7 +18,6 @@ package org.geotools.arcsde.data;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
-
 import org.geotools.arcsde.session.ISession;
 import org.geotools.arcsde.versioning.ArcSdeVersionHandler;
 import org.geotools.data.FeatureEvent;
@@ -32,20 +31,24 @@ import org.opengis.filter.Filter;
 
 /**
  * A FeatureWriter for auto commit mode.
- * 
+ *
  * @author Gabriel Roldan (TOPP)
  * @version $Id$
  * @since 2.5
  * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *         /org/geotools/arcsde/data/AutoCommitFeatureWriter.java $
+ *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
+ *     /org/geotools/arcsde/data/AutoCommitFeatureWriter.java $
  */
 class AutoCommitFeatureWriter extends ArcSdeFeatureWriter {
 
-    public AutoCommitFeatureWriter(final FIDReader fidReader, final SimpleFeatureType featureType,
+    public AutoCommitFeatureWriter(
+            final FIDReader fidReader,
+            final SimpleFeatureType featureType,
             final FeatureReader<SimpleFeatureType, SimpleFeature> filteredContent,
-            final ISession session, final FeatureListenerManager listenerManager,
-            final ArcSdeVersionHandler versionHandler) throws NoSuchElementException, IOException {
+            final ISession session,
+            final FeatureListenerManager listenerManager,
+            final ArcSdeVersionHandler versionHandler)
+            throws NoSuchElementException, IOException {
 
         super(fidReader, featureType, filteredContent, session, listenerManager, versionHandler);
     }
@@ -57,15 +60,16 @@ class AutoCommitFeatureWriter extends ArcSdeFeatureWriter {
     }
 
     @Override
-    protected void doFireFeaturesChanged(String typeName, ReferencedEnvelope bounds, Filter filter) {
+    protected void doFireFeaturesChanged(
+            String typeName, ReferencedEnvelope bounds, Filter filter) {
         FeatureEvent event = new FeatureEvent(this, FeatureEvent.Type.CHANGED, bounds, filter);
         listenerManager.fireEvent(typeName, Transaction.AUTO_COMMIT, event);
     }
 
     @Override
-    protected void doFireFeaturesRemoved(String typeName, ReferencedEnvelope bounds, Filter filter) {
+    protected void doFireFeaturesRemoved(
+            String typeName, ReferencedEnvelope bounds, Filter filter) {
         FeatureEvent event = new FeatureEvent(this, FeatureEvent.Type.REMOVED, bounds, filter);
         listenerManager.fireEvent(typeName, Transaction.AUTO_COMMIT, event);
     }
-
 }

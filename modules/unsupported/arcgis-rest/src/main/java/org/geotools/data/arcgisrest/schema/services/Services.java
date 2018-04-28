@@ -1,72 +1,55 @@
-
 package org.geotools.data.arcgisrest.schema.services;
 
-import java.util.ArrayList;
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 public class Services {
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     @SerializedName("currentVersion")
     @Expose
     private Double currentVersion;
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     @SerializedName("services")
     @Expose
     private List<Service> services = new ArrayList<Service>();
 
     /**
-     * 
      * (Required)
-     * 
-     * @return
-     *     The currentVersion
+     *
+     * @return The currentVersion
      */
     public Double getCurrentVersion() {
         return currentVersion;
     }
 
     /**
-     * 
      * (Required)
-     * 
-     * @param currentVersion
-     *     The currentVersion
+     *
+     * @param currentVersion The currentVersion
      */
     public void setCurrentVersion(Double currentVersion) {
         this.currentVersion = currentVersion;
     }
 
     /**
-     * 
      * (Required)
-     * 
-     * @return
-     *     The services
+     *
+     * @return The services
      */
     public List<Service> getServices() {
         return services;
     }
 
     /**
-     * 
      * (Required)
-     * 
-     * @param services
-     *     The services
+     *
+     * @param services The services
      */
     public void setServices(List<Service> services) {
         this.services = services;
@@ -91,7 +74,9 @@ public class Services {
             return false;
         }
         Services rhs = ((Services) other);
-        return new EqualsBuilder().append(currentVersion, rhs.currentVersion).append(services, rhs.services).isEquals();
+        return new EqualsBuilder()
+                .append(currentVersion, rhs.currentVersion)
+                .append(services, rhs.services)
+                .isEquals();
     }
-
 }

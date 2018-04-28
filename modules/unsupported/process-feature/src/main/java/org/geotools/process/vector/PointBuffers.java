@@ -17,14 +17,13 @@
  */
 package org.geotools.process.vector;
 
+import com.vividsolutions.jts.geom.CoordinateSequence;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
 import java.awt.geom.Point2D;
-
-import javax.measure.UnitConverter;
-import si.uom.SI;
-import tec.uom.se.AbstractConverter;
-
 import javax.measure.Unit;
-
+import javax.measure.UnitConverter;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -33,7 +32,6 @@ import org.geotools.geometry.jts.LiteCoordinateSequence;
 import org.geotools.process.factory.DescribeParameter;
 import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
-
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.GeodeticCalculator;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -42,26 +40,47 @@ import org.opengis.referencing.crs.GeographicCRS;
 import org.opengis.referencing.cs.AxisDirection;
 import org.opengis.referencing.cs.CoordinateSystem;
 import org.opengis.util.ProgressListener;
-
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
+import si.uom.SI;
+import tec.uom.se.AbstractConverter;
 
 /**
- * Generates a set of polygons, each representing the set of points 
- * within a given distance from the central point The data layer must
- * be a point layer, the reference layer must be a polygonal one"
+ * Generates a set of polygons, each representing the set of points within a given distance from the
+ * central point The data layer must be a point layer, the reference layer must be a polygonal one"
  */
-@DescribeProcess(title = "Point Buffers", description = "Returns a collection of circular buffer polygons with specified radii centered on a given point")
+@DescribeProcess(
+    title = "Point Buffers",
+    description =
+            "Returns a collection of circular buffer polygons with specified radii centered on a given point"
+)
 public class PointBuffers implements VectorProcess {
 
-    @DescribeResult(name = "buffers", description = "Features for the circular buffer polygons around the point, with attributes geom and radius")
+    @DescribeResult(
+        name = "buffers",
+        description =
+                "Features for the circular buffer polygons around the point, with attributes geom and radius"
+    )
     public SimpleFeatureCollection execute(
             @DescribeParameter(name = "center", description = "Input point") Point center,
-            @DescribeParameter(name = "crs", description = "Coordinate reference system of the point and the generated buffer polygons", min = 0) CoordinateReferenceSystem crs,
-            @DescribeParameter(name = "distances", description = "Buffer radius distance, in meters") double[] distances,
-            @DescribeParameter(name = "quadrantSegments", description = "Number of line segments per quarter-circle to be generated.  Larger numbers produce smoother shapes but larger numbers of vertices. Default is 8", min = 0, defaultValue = "8") Integer quadrantSegments,
+            @DescribeParameter(
+                        name = "crs",
+                        description =
+                                "Coordinate reference system of the point and the generated buffer polygons",
+                        min = 0
+                    )
+                    CoordinateReferenceSystem crs,
+            @DescribeParameter(
+                        name = "distances",
+                        description = "Buffer radius distance, in meters"
+                    )
+                    double[] distances,
+            @DescribeParameter(
+                        name = "quadrantSegments",
+                        description =
+                                "Number of line segments per quarter-circle to be generated.  Larger numbers produce smoother shapes but larger numbers of vertices. Default is 8",
+                        min = 0,
+                        defaultValue = "8"
+                    )
+                    Integer quadrantSegments,
             ProgressListener listener) {
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.add("geom", Polygon.class, crs);
@@ -102,11 +121,10 @@ public class PointBuffers implements VectorProcess {
 
     /**
      * Generates a buffer
-     * 
+     *
      * @author Andrea Aime - GeoSolutions
-     * 
      */
-    static abstract class BufferGenerator {
+    abstract static class BufferGenerator {
         Point center;
 
         int quadrantSegments;
@@ -114,9 +132,7 @@ public class PointBuffers implements VectorProcess {
         public abstract Polygon getBuffer(double distance);
     }
 
-    /**
-     * A generator that uses JTS buffer to create the buffer polygons
-     */
+    /** A generator that uses JTS buffer to create the buffer polygons */
     public class MetricGenerator extends BufferGenerator {
         UnitConverter converter;
 
@@ -134,13 +150,12 @@ public class PointBuffers implements VectorProcess {
             // buffer and return
             return (Polygon) center.buffer(distance, quadrantSegments);
         }
-
     }
 
     /**
      * Builds the appropriate buffer polygons sampling the actual buffer shape with the
      * GeodeticCalculator
-     * 
+     *
      * @author Andrea Aime - GeoSolutions
      */
     public class GeographicGenerator extends BufferGenerator {
@@ -150,7 +165,8 @@ public class PointBuffers implements VectorProcess {
 
         boolean latLon;
 
-        public GeographicGenerator(Point center, int quadrantSegments, CoordinateReferenceSystem crs) {
+        public GeographicGenerator(
+                Point center, int quadrantSegments, CoordinateReferenceSystem crs) {
             this.quadrantSegments = quadrantSegments;
             this.center = center;
             this.calculator = new GeodeticCalculator(crs);
@@ -183,7 +199,6 @@ public class PointBuffers implements VectorProcess {
 
             return gf.createPolygon(gf.createLinearRing(cs), null);
         }
-
     }
 
     boolean isLatLonOrder(CoordinateSystem cs) {
@@ -211,5 +226,4 @@ public class PointBuffers implements VectorProcess {
 
         return false;
     }
-
 }

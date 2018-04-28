@@ -22,17 +22,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-
 import javax.imageio.ImageIO;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * A file chooser dialog for common raster image format files.
- * It provides static methods to display the dialog for opening or
- * saving an image file with basic validation of user input.
+ * A file chooser dialog for common raster image format files. It provides static methods to display
+ * the dialog for opening or saving an image file with basic validation of user input.
  *
  * <pre><code>
  * // Prompting for an input image file
@@ -48,19 +45,16 @@ import org.eclipse.swt.widgets.Shell;
  * }
  * </code></pre>
  *
- * The file formats offered by the dialog are a subset of those supported by
- * {@code ImageIO} on the host system.
+ * The file formats offered by the dialog are a subset of those supported by {@code ImageIO} on the
+ * host system.
+ *
  * <p>
  *
  * @see JFileDataStoreChooser
  * @see JParameterListWizard
  * @see ImageIO
- *
  * @author Andrea Antonello (www.hydrologis.com)
  * @author Michael Bedward
- *
- *
- *
  * @source $URL$
  */
 public class JFileImageChooser {
@@ -75,10 +69,10 @@ public class JFileImageChooser {
         private String id;
         private String[] suffixes;
 
-        private FormatSpecifier( String id, String desc, String... suffixes ) {
+        private FormatSpecifier(String id, String desc, String... suffixes) {
             this.id = id;
             this.suffixes = new String[suffixes.length];
-            for( int i = 0; i < suffixes.length; i++ ) {
+            for (int i = 0; i < suffixes.length; i++) {
                 this.suffixes[i] = suffixes[i];
             }
         }
@@ -86,8 +80,9 @@ public class JFileImageChooser {
 
     private static final Set<FormatSpecifier> supportedReaders = new TreeSet<FormatSpecifier>();
     private static final Set<FormatSpecifier> supportedWriters = new TreeSet<FormatSpecifier>();
+
     static {
-        for( FormatSpecifier format : FormatSpecifier.values() ) {
+        for (FormatSpecifier format : FormatSpecifier.values()) {
             if (ImageIO.getImageReadersBySuffix(format.id).hasNext()) {
                 supportedReaders.add(format);
             }
@@ -105,7 +100,7 @@ public class JFileImageChooser {
     /*
      * Create a new image file chooser
      */
-    public JFileImageChooser( Shell parent, int style ) {
+    public JFileImageChooser(Shell parent, int style) {
         this(parent, style, null);
     }
 
@@ -114,10 +109,9 @@ public class JFileImageChooser {
      *
      * @param workingDir the initial directory to display
      */
-    public JFileImageChooser( Shell parent, int style, File workingDir ) {
+    public JFileImageChooser(Shell parent, int style, File workingDir) {
         fileDialog = new FileDialog(parent, style);
-        if (workingDir != null)
-            fileDialog.setFilterPath(workingDir.getAbsolutePath());
+        if (workingDir != null) fileDialog.setFilterPath(workingDir.getAbsolutePath());
     }
 
     /**
@@ -125,11 +119,11 @@ public class JFileImageChooser {
      *
      * @param supportedFormats the set of file formats that will be offered
      */
-    private void setFilter( Set<FormatSpecifier> supportedFormats ) {
-        for( final FormatSpecifier format : supportedFormats ) {
+    private void setFilter(Set<FormatSpecifier> supportedFormats) {
+        for (final FormatSpecifier format : supportedFormats) {
             String[] suffixes = format.suffixes;
             // tweak for swt filters
-            for( int i = 0; i < suffixes.length; i++ ) {
+            for (int i = 0; i < suffixes.length; i++) {
                 if (!suffixes[i].startsWith("*.")) {
                     if (suffixes[i].startsWith(".")) {
                         suffixes[i] = "*" + suffixes[i];
@@ -152,10 +146,9 @@ public class JFileImageChooser {
      * Display a dialog to choose a file name to save an image to
      *
      * @param parent parent component (may be {@code null})
-     *
      * @return the selected file or {@code null} if the dialog was cancelled
      */
-    public static File showSaveFile( Shell parent ) {
+    public static File showSaveFile(Shell parent) {
         return showSaveFile(parent, null);
     }
 
@@ -164,10 +157,9 @@ public class JFileImageChooser {
      *
      * @param parent parent component (may be {@code null})
      * @param workingDir the initial directory to display
-     *
      * @return the selected file or {@code null} if the dialog was cancelled
      */
-    public static File showSaveFile( Shell parent, File workingDir ) {
+    public static File showSaveFile(Shell parent, File workingDir) {
         JFileImageChooser chooser = new JFileImageChooser(parent, SWT.SAVE, workingDir);
         chooser.setFilter(supportedWriters);
         FileDialog dialog = chooser.getFileDialog();
@@ -186,10 +178,9 @@ public class JFileImageChooser {
      *
      * @param parent parent component (may be {@code null})
      * @param workingDir the initial directory to display
-     *
      * @return the selected file or {@code null} if the dialog was cancelled
      */
-    public static File showOpenFile( Shell parent ) {
+    public static File showOpenFile(Shell parent) {
         return showOpenFile(parent, null);
     }
 
@@ -198,10 +189,9 @@ public class JFileImageChooser {
      *
      * @param parent parent component (may be {@code null})
      * @param workingDir the initial directory to display
-     *
      * @return the selected file or {@code null} if the dialog was cancelled
      */
-    public static File showOpenFile( Shell parent, File workingDir ) {
+    public static File showOpenFile(Shell parent, File workingDir) {
         JFileImageChooser chooser = new JFileImageChooser(parent, SWT.OPEN, workingDir);
         chooser.setFilter(supportedReaders);
         FileDialog dialog = chooser.getFileDialog();

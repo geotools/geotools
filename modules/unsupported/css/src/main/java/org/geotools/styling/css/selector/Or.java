@@ -49,5 +49,4 @@ public class Or extends Composite {
     public String toString() {
         return "Or [children=" + getChildren() + "]";
     }
-
 }

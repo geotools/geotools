@@ -69,5 +69,4 @@ public class SelectorCombineTest {
         ScaleRange range3 = new ScaleRange(30000, true, Double.POSITIVE_INFINITY, false);
         assertEquals(Selector.REJECT, Selector.and(range1, range3));
     }
-
 }

@@ -21,7 +21,7 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 
 /**
  * Mock layer class for testing MapContent and friends.
- * 
+ *
  * @author Michael Bedward
  * @since 8.0
  * @source $URL: $
@@ -38,7 +38,7 @@ public class MockLayer extends Layer {
         } else {
             this.bounds = new ReferencedEnvelope();
         }
-        
+
         disposed = false;
     }
 
@@ -57,5 +57,4 @@ public class MockLayer extends Layer {
     public boolean isDisposed() {
         return disposed;
     }
-    
 }

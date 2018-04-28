@@ -26,21 +26,18 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
 
 /**
  * Tests for {@link HTTP_URI_Parser}.
- * 
+ *
  * @author Martin Desruisseaux
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
- * 
  * @source $URL$
  */
 public final class HTTP_URI_ParserTest {
 
-    /**
-     * Test that an unversioned HTTP URI can be parsed.
-     */
+    /** Test that an unversioned HTTP URI can be parsed. */
     @Test
     public void testParseUnversioned() throws NoSuchAuthorityCodeException {
-        URI_Parser parser = HTTP_URI_Parser
-                .buildParser("http://www.opengis.net/def/crs/EPSG/0/4326");
+        URI_Parser parser =
+                HTTP_URI_Parser.buildParser("http://www.opengis.net/def/crs/EPSG/0/4326");
         assertEquals("crs", parser.type.name);
         assertEquals("EPSG", parser.authority);
         assertNull(parser.version);
@@ -48,13 +45,11 @@ public final class HTTP_URI_ParserTest {
         assertEquals("EPSG:4326", parser.getAuthorityCode());
     }
 
-    /**
-     * Test that an versioned HTTP URI can be parsed.
-     */
+    /** Test that an versioned HTTP URI can be parsed. */
     @Test
     public void testParseVersioned() throws NoSuchAuthorityCodeException {
-        URI_Parser parser = HTTP_URI_Parser
-                .buildParser("http://www.opengis.net/def/crs/EPSG/6.11.2/4326");
+        URI_Parser parser =
+                HTTP_URI_Parser.buildParser("http://www.opengis.net/def/crs/EPSG/6.11.2/4326");
         assertEquals("crs", parser.type.name);
         assertEquals("EPSG", parser.authority);
         assertEquals("6.11.2", parser.version.toString());
@@ -62,9 +57,7 @@ public final class HTTP_URI_ParserTest {
         assertEquals("EPSG:4326", parser.getAuthorityCode());
     }
 
-    /**
-     * Test that an HTTP URI with missing version results in the expected exception.
-     */
+    /** Test that an HTTP URI with missing version results in the expected exception. */
     @Test
     public void testParseMissingVersion() {
         String uri = "http://www.opengis.net/def/crs/EPSG/4326";
@@ -76,9 +69,7 @@ public final class HTTP_URI_ParserTest {
         }
     }
 
-    /**
-     * Test that an HTTP URI with an invalid type results in the expected exception.
-     */
+    /** Test that an HTTP URI with an invalid type results in the expected exception. */
     @Test
     public void testParseInvalidType() {
         String uri = "http://www.opengis.net/def/does-not-exist/EPSG/0/4326";
@@ -89,5 +80,4 @@ public final class HTTP_URI_ParserTest {
             assertEquals(uri, e.getAuthorityCode());
         }
     }
-
 }

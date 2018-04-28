@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,18 +16,17 @@
  */
 package org.geotools.referencing.operation.builder;
 
-import org.geotools.geometry.DirectPosition2D;
-import org.opengis.geometry.DirectPosition;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
+import org.geotools.geometry.DirectPosition2D;
+import org.opengis.geometry.DirectPosition;
 
 /**
- * Simple polygons like three - sided (triangle) or four - sided
- * (qadrilateral), that are used for triangulation.
+ * Simple polygons like three - sided (triangle) or four - sided (qadrilateral), that are used for
+ * triangulation.
  *
  * @since 2.4
  * @source $URL$
@@ -74,8 +73,7 @@ class Polygon {
         String wkt = "";
 
         for (int i = 0; i < vertices.length; i++) {
-            wkt = wkt + vertices[i].getCoordinate()[0] + " "
-                + vertices[i].getCoordinate()[1];
+            wkt = wkt + vertices[i].getCoordinate()[0] + " " + vertices[i].getCoordinate()[1];
 
             if (i != (vertices.length - 1)) {
                 wkt = wkt + ", ";
@@ -89,20 +87,17 @@ class Polygon {
      * Generates GeneralPath from the array of points.
      *
      * @param points vertices of polygon.
-     *
      * @return generated GeneralPath.
      */
     protected GeneralPath generateGeneralPath(DirectPosition[] points) {
         GeneralPath ring = new GeneralPath();
 
         // Set the initiakl coordinates of the general Path
-        ring.moveTo((float) points[0].getCoordinate()[0],
-            (float) points[0].getCoordinate()[1]);
+        ring.moveTo((float) points[0].getCoordinate()[0], (float) points[0].getCoordinate()[1]);
 
         // Create the star. Note: this does not draw the star.
         for (int i = 1; i < points.length; i++) {
-            ring.lineTo((float) points[i].getCoordinate()[0],
-                (float) points[i].getCoordinate()[1]);
+            ring.lineTo((float) points[i].getCoordinate()[0], (float) points[i].getCoordinate()[1]);
         }
 
         return ring;
@@ -112,13 +107,10 @@ class Polygon {
      * Test whether the coordinate is inside or is vertex of ploygon.
      *
      * @param dp Point to be tested whether is inside of polygon.
-     *
-     * @return True if the point is inside (or is the vertex of polygon, false
-     *         if not.
+     * @return True if the point is inside (or is the vertex of polygon, false if not.
      */
     protected boolean containsOrIsVertex(DirectPosition dp) {
-        if (generateGeneralPath(vertices).contains((Point2D) dp)
-                || (hasVertex(dp))) {
+        if (generateGeneralPath(vertices).contains((Point2D) dp) || (hasVertex(dp))) {
             return true;
         }
 
@@ -129,7 +121,6 @@ class Polygon {
      * Returns whether v is one of the vertices of this polygon.
      *
      * @param p the candidate point
-     *
      * @return whether v is equal to one of the vertices of this Triangle
      */
     public boolean hasVertex(DirectPosition p) {
@@ -145,8 +136,7 @@ class Polygon {
     /**
      * Enlarge the polygon using homothetic transformation method.
      *
-     * @param scale of enlargement (when scale = 1 then polygon stays
-     *        unchanged)
+     * @param scale of enlargement (when scale = 1 then polygon stays unchanged)
      */
     protected void enlarge(double scale) {
         double sumX = 0;
@@ -163,45 +153,41 @@ class Polygon {
 
         // The homothetic transformation is made.
         for (int i = 0; i < vertices.length; i++) {
-            vertices[i].getCoordinate()[0] = (scale * (vertices[i]
-                .getCoordinate()[0] - sumX)) + sumX;
-            vertices[i].getCoordinate()[1] = (scale * (vertices[i]
-                .getCoordinate()[1] - sumY)) + sumY;
+            vertices[i].getCoordinate()[0] =
+                    (scale * (vertices[i].getCoordinate()[0] - sumX)) + sumX;
+            vertices[i].getCoordinate()[1] =
+                    (scale * (vertices[i].getCoordinate()[1] - sumY)) + sumY;
         }
     }
 
     /**
-     * Returns reduced coordinates of vertices so the first vertex has
-     * [0,0] coordinats.
+     * Returns reduced coordinates of vertices so the first vertex has [0,0] coordinats.
      *
      * @return The List of reduced vertives
      */
-    protected List <DirectPosition> reduce() {
-        //Coordinate[] redCoords = new Coordinate[coordinates.length];
-        ArrayList <DirectPosition> redCoords = new ArrayList<DirectPosition>();
+    protected List<DirectPosition> reduce() {
+        // Coordinate[] redCoords = new Coordinate[coordinates.length];
+        ArrayList<DirectPosition> redCoords = new ArrayList<DirectPosition>();
 
         for (int i = 0; i < vertices.length; i++) {
-            redCoords.add(new DirectPosition2D(
-                    vertices[i].getCoordinateReferenceSystem(),
-                    vertices[i].getCoordinate()[0]
-                    - vertices[0].getCoordinate()[0],
-                    vertices[i].getCoordinate()[1]
-                    - vertices[0].getCoordinate()[1]));
+            redCoords.add(
+                    new DirectPosition2D(
+                            vertices[i].getCoordinateReferenceSystem(),
+                            vertices[i].getCoordinate()[0] - vertices[0].getCoordinate()[0],
+                            vertices[i].getCoordinate()[1] - vertices[0].getCoordinate()[1]));
         }
 
         return redCoords;
     }
 
     /**
-     * Returns whether this Polygon contains all of the the given
-     * coordinates.
+     * Returns whether this Polygon contains all of the the given coordinates.
      *
      * @param coordinate of coordinates
-     *
      * @return whether this Polygon contains the all of the given coordinates
      */
-    protected boolean containsAll(List <DirectPosition> coordinate) {
-        for (Iterator <DirectPosition> i = coordinate.iterator(); i.hasNext();) {
+    protected boolean containsAll(List<DirectPosition> coordinate) {
+        for (Iterator<DirectPosition> i = coordinate.iterator(); i.hasNext(); ) {
             if (!this.containsOrIsVertex((DirectPosition) i.next())) {
                 return false;
             }

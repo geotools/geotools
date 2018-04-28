@@ -17,35 +17,28 @@
 package org.geotools.referencing.factory;
 
 import java.util.Map;
-
-import org.opengis.referencing.IdentifiedObject;
+import org.geotools.factory.Hints;
+import org.geotools.referencing.CRS;
+import org.geotools.referencing.ReferencingFactoryFinder;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.geotools.referencing.cs.DefaultCoordinateSystemAxis;
+import org.geotools.referencing.factory.epsg.LongitudeFirstFactory;
+import org.geotools.referencing.factory.epsg.oracle.OracleOnlineTestCase;
+import org.geotools.referencing.operation.LinearTransform;
+import org.geotools.referencing.operation.matrix.GeneralMatrix;
 import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.SingleCRS;
-import org.opengis.referencing.crs.ProjectedCRS;
+import org.opengis.referencing.IdentifiedObject;
 import org.opengis.referencing.crs.CRSAuthorityFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.crs.ProjectedCRS;
+import org.opengis.referencing.crs.SingleCRS;
 import org.opengis.referencing.cs.CoordinateSystem;
 import org.opengis.referencing.operation.CoordinateOperationFactory;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.Matrix;
 
-import org.geotools.factory.Hints;
-import org.geotools.referencing.CRS;
-import org.geotools.referencing.ReferencingFactoryFinder;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.geotools.referencing.operation.LinearTransform;
-import org.geotools.referencing.operation.matrix.GeneralMatrix;
-import org.geotools.referencing.cs.DefaultCoordinateSystemAxis;
-import org.geotools.referencing.factory.epsg.LongitudeFirstFactory;
-import org.geotools.referencing.factory.epsg.oracle.OracleOnlineTestCase;
-
-
 /**
- * Tests the usage of {@link OrderedAxisAuthorityFactory} with the help of the
- * EPSG database. 
- *
- *
- *
+ * Tests the usage of {@link OrderedAxisAuthorityFactory} with the help of the EPSG database.
  *
  * @source $URL$
  * @version $Id$
@@ -54,22 +47,18 @@ import org.geotools.referencing.factory.epsg.oracle.OracleOnlineTestCase;
  */
 public class OrderedAxisAuthorityFactoryOnlineTest extends OracleOnlineTestCase {
     /**
-     * {@code true} if metadata (especially identifiers) should be erased, or {@code false} if
-     * they should be kepts. The {@code true} value matches the pre GEOT-854 state, while the
-     * {@code false} value mathes the post GEOT-854 state.
+     * {@code true} if metadata (especially identifiers) should be erased, or {@code false} if they
+     * should be kepts. The {@code true} value matches the pre GEOT-854 state, while the {@code
+     * false} value mathes the post GEOT-854 state.
      *
      * @see http://jira.codehaus.org/browse/GEOT-854
      */
     private static final boolean METADATA_ERASED = false;
 
-    /**
-     * Small number for floating points comparaisons.
-     */
+    /** Small number for floating points comparaisons. */
     private static final double EPS = 1E-8;
 
-    /**
-     * Returns the ordered axis factory for the specified set of hints.
-     */
+    /** Returns the ordered axis factory for the specified set of hints. */
     private static OrderedAxisAuthorityFactory getFactory(final Hints hints) {
         CRSAuthorityFactory factory;
         factory = ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", hints);
@@ -87,14 +76,14 @@ public class OrderedAxisAuthorityFactoryOnlineTest extends OracleOnlineTestCase 
     }
 
     /**
-     * Returns a positive number if the specified coordinate system is right-handed,
-     * or a negative number if it is left handed.
+     * Returns a positive number if the specified coordinate system is right-handed, or a negative
+     * number if it is left handed.
      */
     private static double getAngle(final CoordinateReferenceSystem crs) {
         final CoordinateSystem cs = crs.getCoordinateSystem();
         assertEquals(2, cs.getDimension());
-        return DefaultCoordinateSystemAxis.getAngle(cs.getAxis(0).getDirection(),
-                                                    cs.getAxis(1).getDirection());
+        return DefaultCoordinateSystemAxis.getAngle(
+                cs.getAxis(0).getDirection(), cs.getAxis(1).getDirection());
     }
 
     /**
@@ -120,23 +109,21 @@ public class OrderedAxisAuthorityFactoryOnlineTest extends OracleOnlineTestCase 
 
         hints.put(Hints.FORCE_STANDARD_AXIS_UNITS, Boolean.TRUE);
         assertNotSame(factory, factory = getFactory(hints));
-        assertFalse  (factory.forceStandardDirections);
-        assertTrue   (factory.forceStandardUnits);
+        assertFalse(factory.forceStandardDirections);
+        assertTrue(factory.forceStandardUnits);
 
         hints.put(Hints.FORCE_STANDARD_AXIS_DIRECTIONS, Boolean.TRUE);
         assertNotSame(factory, factory = getFactory(hints));
-        assertTrue   (factory.forceStandardDirections);
-        assertTrue   (factory.forceStandardUnits);
+        assertTrue(factory.forceStandardDirections);
+        assertTrue(factory.forceStandardUnits);
 
         hints.put(Hints.FORCE_STANDARD_AXIS_UNITS, Boolean.FALSE);
         assertNotSame(factory, factory = getFactory(hints));
-        assertTrue   (factory.forceStandardDirections);
-        assertFalse  (factory.forceStandardUnits);
+        assertTrue(factory.forceStandardDirections);
+        assertFalse(factory.forceStandardUnits);
     }
 
-    /**
-     * Tests the axis reordering.
-     */
+    /** Tests the axis reordering. */
     public void testAxisReordering() throws FactoryException {
         /*
          * Tests the OrderedAxisAuthorityFactory creating using FactoryFinder. The following
@@ -149,13 +136,17 @@ public class OrderedAxisAuthorityFactoryOnlineTest extends OracleOnlineTestCase 
          */
         final AbstractAuthorityFactory factory0, factory1;
         final Hints hints = new Hints(Hints.CRS_AUTHORITY_FACTORY, AbstractAuthorityFactory.class);
-        factory0 = (AbstractAuthorityFactory) ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", hints);
+        factory0 =
+                (AbstractAuthorityFactory)
+                        ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", hints);
         assertFalse(factory0 instanceof OrderedAxisAuthorityFactory);
         assertFalse(factory0 instanceof LongitudeFirstFactory);
         hints.put(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE);
-        hints.put(Hints.FORCE_STANDARD_AXIS_DIRECTIONS,   Boolean.TRUE);
-        hints.put(Hints.FORCE_STANDARD_AXIS_UNITS,        Boolean.TRUE);
-        factory1 = (AbstractAuthorityFactory) ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", hints);
+        hints.put(Hints.FORCE_STANDARD_AXIS_DIRECTIONS, Boolean.TRUE);
+        hints.put(Hints.FORCE_STANDARD_AXIS_UNITS, Boolean.TRUE);
+        factory1 =
+                (AbstractAuthorityFactory)
+                        ReferencingFactoryFinder.getCRSAuthorityFactory("EPSG", hints);
         assertTrue(factory1 instanceof LongitudeFirstFactory);
         /*
          * The local variables to be used for all remaining tests
@@ -163,7 +154,8 @@ public class OrderedAxisAuthorityFactoryOnlineTest extends OracleOnlineTestCase 
          */
         String code;
         CoordinateReferenceSystem crs0, crs1;
-        CoordinateOperationFactory opFactory = ReferencingFactoryFinder.getCoordinateOperationFactory(null);
+        CoordinateOperationFactory opFactory =
+                ReferencingFactoryFinder.getCoordinateOperationFactory(null);
         MathTransform mt;
         Matrix matrix;
         /*
@@ -177,7 +169,7 @@ public class OrderedAxisAuthorityFactoryOnlineTest extends OracleOnlineTestCase 
         assertNotSame(crs0, crs1);
         assertNotSame(crs0.getCoordinateSystem(), crs1.getCoordinateSystem());
         assertSame(((SingleCRS) crs0).getDatum(), ((SingleCRS) crs1).getDatum());
-        assertEquals("Expected a left-handed CS.",  -90, getAngle(crs0), EPS);
+        assertEquals("Expected a left-handed CS.", -90, getAngle(crs0), EPS);
         assertEquals("Expected a right-handed CS.", +90, getAngle(crs1), EPS);
         assertFalse(crs0.getIdentifiers().isEmpty());
         if (METADATA_ERASED) {
@@ -189,10 +181,14 @@ public class OrderedAxisAuthorityFactoryOnlineTest extends OracleOnlineTestCase 
         assertFalse(mt.isIdentity());
         assertTrue(mt instanceof LinearTransform);
         matrix = ((LinearTransform) mt).getMatrix();
-        assertEquals(new GeneralMatrix(new double[][] {
-            {0, 1, 0},
-            {1, 0, 0},
-            {0, 0, 1}}), new GeneralMatrix(matrix));
+        assertEquals(
+                new GeneralMatrix(
+                        new double[][] {
+                            {0, 1, 0},
+                            {1, 0, 0},
+                            {0, 0, 1}
+                        }),
+                new GeneralMatrix(matrix));
         /*
          * Tests a WGS84 geographic CRS (3D) with (NORTH, EAST, UP) axis directions.
          * Because this CRS uses sexagesimal units, conversions are not supported and
@@ -230,11 +226,15 @@ public class OrderedAxisAuthorityFactoryOnlineTest extends OracleOnlineTestCase 
         assertFalse(mt.isIdentity());
         assertTrue(mt instanceof LinearTransform);
         matrix = ((LinearTransform) mt).getMatrix();
-        assertEquals(new GeneralMatrix(new double[][] {
-            {0, 1, 0, 0},
-            {1, 0, 0, 0},
-            {0, 0, 1, 0},
-            {0, 0, 0, 1}}), new GeneralMatrix(matrix));
+        assertEquals(
+                new GeneralMatrix(
+                        new double[][] {
+                            {0, 1, 0, 0},
+                            {1, 0, 0, 0},
+                            {0, 0, 1, 0},
+                            {0, 0, 0, 1}
+                        }),
+                new GeneralMatrix(matrix));
         /*
          * Tests a projected CRS with (EAST, NORTH) axis orientation. No axis reordering is needed,
          * which means that their coordinate systems are identical and the math transform should be
@@ -278,57 +278,67 @@ public class OrderedAxisAuthorityFactoryOnlineTest extends OracleOnlineTestCase 
         assertFalse(mt.isIdentity());
         assertTrue(mt instanceof LinearTransform);
         matrix = ((LinearTransform) mt).getMatrix();
-        assertEquals(new GeneralMatrix(new double[][] {
-            {-1,  0,  0},
-            { 0, -1,  0},
-            { 0,  0,  1}}), new GeneralMatrix(matrix));
+        assertEquals(
+                new GeneralMatrix(
+                        new double[][] {
+                            {-1, 0, 0},
+                            {0, -1, 0},
+                            {0, 0, 1}
+                        }),
+                new GeneralMatrix(matrix));
         /*
          * Tests the cache.
          */
         assertSame(cacheTest, factory1.createCoordinateReferenceSystem("4326"));
     }
 
-    /**
-     * Tests the creation of EPSG:4326 CRS with different axis order.
-     */
+    /** Tests the creation of EPSG:4326 CRS with different axis order. */
     public void testLongitudeFirst() throws FactoryException {
         final CoordinateReferenceSystem standard = CRS.decode("EPSG:4326", false);
-        final CoordinateReferenceSystem modified = CRS.decode("EPSG:4326", true );
-        assertEquals("Expected a left-handed CS.",  -90, getAngle(standard), EPS);
+        final CoordinateReferenceSystem modified = CRS.decode("EPSG:4326", true);
+        assertEquals("Expected a left-handed CS.", -90, getAngle(standard), EPS);
         assertEquals("Expected a right-handed CS.", +90, getAngle(modified), EPS);
         final MathTransform transform = CRS.findMathTransform(standard, modified);
         assertTrue(transform instanceof LinearTransform);
         final Matrix matrix = ((LinearTransform) transform).getMatrix();
-        assertEquals(new GeneralMatrix(new double[][] {
-            { 0,  1,  0},
-            { 1,  0,  0},
-            { 0,  0,  1}}), new GeneralMatrix(matrix));
+        assertEquals(
+                new GeneralMatrix(
+                        new double[][] {
+                            {0, 1, 0},
+                            {1, 0, 0},
+                            {0, 0, 1}
+                        }),
+                new GeneralMatrix(matrix));
     }
 
-    /**
-     * Tests the {@link IdentifiedObjectFinder#find} method with axis order forced.
-     */
+    /** Tests the {@link IdentifiedObjectFinder#find} method with axis order forced. */
     public void testFind() throws FactoryException {
-        final CRSAuthorityFactory factory = ReferencingFactoryFinder.getCRSAuthorityFactory(
-                "EPSG", new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE));
+        final CRSAuthorityFactory factory =
+                ReferencingFactoryFinder.getCRSAuthorityFactory(
+                        "EPSG", new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE));
         assertTrue(factory instanceof AbstractAuthorityFactory);
         AbstractAuthorityFactory findable = (AbstractAuthorityFactory) factory;
-        final IdentifiedObjectFinder finder = findable.getIdentifiedObjectFinder(CoordinateReferenceSystem.class);
-        
+        final IdentifiedObjectFinder finder =
+                findable.getIdentifiedObjectFinder(CoordinateReferenceSystem.class);
+
         /*
          * We tested in DefaultFactoryTest that WGS84 is not found when searching
          * directly in ThreadedEpsgFactory. Now we perform the same search through the
          * ordered axis authority factory.
          */
         finder.setFullScanAllowed(false);
-        assertNull("Should not find the CRS without a scan.",
-                   finder.find(DefaultGeographicCRS.WGS84));
+        assertNull(
+                "Should not find the CRS without a scan.", finder.find(DefaultGeographicCRS.WGS84));
 
         finder.setFullScanAllowed(true);
         IdentifiedObject find = finder.find(DefaultGeographicCRS.WGS84);
         assertNotNull("With scan allowed, should find the CRS.", find);
         assertTrue(CRS.equalsIgnoreMetadata(DefaultGeographicCRS.WGS84, find));
-        assertEquals("Expected a right-handed CS.", +90, getAngle((CoordinateReferenceSystem) find), EPS);
+        assertEquals(
+                "Expected a right-handed CS.",
+                +90,
+                getAngle((CoordinateReferenceSystem) find),
+                EPS);
         /*
          * Search a CRS using (latitude,longitude) axis order. The IdentifiedObjectFinder
          * should be able to find it even if it is backed by LongitudeFirstAuthorityFactory,
@@ -336,14 +346,14 @@ public class OrderedAxisAuthorityFactoryOnlineTest extends OracleOnlineTestCase 
          * should queries CRS from both.
          */
         final String wkt =
-                "GEOGCS[\"WGS 84\",\n" +
-                "  DATUM[\"WGS84\",\n" +
-                "    SPHEROID[\"WGS 84\", 6378137.0, 298.257223563]],\n" +
-                "  PRIMEM[\"Greenwich\", 0.0],\n" +
-                "  UNIT[\"degree\", 0.017453292519943295],\n" +
-                "  AXIS[\"Geodetic latitude\", NORTH],\n" + 
-                "  AXIS[\"Geodetic longitude\", EAST]]";
-        final CoordinateReferenceSystem search   = CRS.parseWKT(wkt);
+                "GEOGCS[\"WGS 84\",\n"
+                        + "  DATUM[\"WGS84\",\n"
+                        + "    SPHEROID[\"WGS 84\", 6378137.0, 298.257223563]],\n"
+                        + "  PRIMEM[\"Greenwich\", 0.0],\n"
+                        + "  UNIT[\"degree\", 0.017453292519943295],\n"
+                        + "  AXIS[\"Geodetic latitude\", NORTH],\n"
+                        + "  AXIS[\"Geodetic longitude\", EAST]]";
+        final CoordinateReferenceSystem search = CRS.parseWKT(wkt);
         final CoordinateReferenceSystem standard = CRS.decode("EPSG:4326", false);
         assertTrue(CRS.equalsIgnoreMetadata(search, standard));
         assertFalse("Identifiers should not be the same.", search.equals(standard));
@@ -356,8 +366,8 @@ public class OrderedAxisAuthorityFactoryOnlineTest extends OracleOnlineTestCase 
         assertNotNull("Should find the CRS despite the different axis order.", find);
         assertEquals("Expected a left-handed CS.", -90, getAngle(crs), EPS);
         assertFalse(CRS.equalsIgnoreMetadata(find, DefaultGeographicCRS.WGS84));
-        assertTrue (CRS.equalsIgnoreMetadata(find, search));
-        assertTrue (CRS.equalsIgnoreMetadata(find, standard));
+        assertTrue(CRS.equalsIgnoreMetadata(find, search));
+        assertTrue(CRS.equalsIgnoreMetadata(find, standard));
         assertSame("Expected caching to work.", standard, find);
     }
 }

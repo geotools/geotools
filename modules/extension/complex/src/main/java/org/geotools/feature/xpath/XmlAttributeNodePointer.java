@@ -18,7 +18,6 @@
 package org.geotools.feature.xpath;
 
 import java.util.Map;
-
 import org.apache.commons.jxpath.ri.QName;
 import org.apache.commons.jxpath.ri.model.NodePointer;
 import org.opengis.feature.Attribute;
@@ -30,30 +29,19 @@ import org.xml.sax.Attributes;
 
 /**
  * Special node pointer for an XML-attribute inside an attribute.
- * 
+ *
  * @author Niels Charlier (Curtin University of Technology)
- * 
- *
- *
- *
- *
  * @source $URL$
  */
 public class XmlAttributeNodePointer extends NodePointer {
 
-    /**
-     * 
-     */
+    /** */
     private static final long serialVersionUID = 3315524792964171784L;
 
-    /**
-     * The name of hte node.
-     */
+    /** The name of hte node. */
     Name name;
 
-    /**
-     * The underlying feature
-     */
+    /** The underlying feature */
     Attribute feature;
 
     protected XmlAttributeNodePointer(NodePointer parent, Attribute feature, Name name) {
@@ -69,23 +57,23 @@ public class XmlAttributeNodePointer extends NodePointer {
     public boolean isCollection() {
         return false;
     }
-    
+
     public boolean isAttribute() {
         return true;
     }
 
     public QName getName() {
-        return new QName( name.getURI(), name.getLocalPart() );
+        return new QName(name.getURI(), name.getLocalPart());
     }
 
     public Object getBaseValue() {
         return null;
     }
 
-    @SuppressWarnings("unchecked")    
+    @SuppressWarnings("unchecked")
     public Object getImmediateNode() {
-        
-        //first try regular way
+
+        // first try regular way
         if (feature instanceof ComplexAttribute) {
             ComplexAttribute ca = (ComplexAttribute) feature;
             Property p = ca.getProperty("@" + name.getLocalPart());
@@ -93,8 +81,8 @@ public class XmlAttributeNodePointer extends NodePointer {
                 return p;
             }
         }
-        
-        //FIXME - better id checking
+
+        // FIXME - better id checking
         if (name.getLocalPart().equals("id")) {
             Identifier id = feature.getIdentifier();
             if (id != null) {
@@ -109,14 +97,14 @@ public class XmlAttributeNodePointer extends NodePointer {
         }
     }
 
-    @SuppressWarnings("unchecked")    
+    @SuppressWarnings("unchecked")
     public void setValue(Object value) {
-       if (!name.getLocalPart().equals("id")) {
-           Map<Name, Object> map = (Map<Name, Object>) feature.getUserData().get(Attributes.class);
-           if (map != null) {
-              map.put(name, value);
-           }
-       }
+        if (!name.getLocalPart().equals("id")) {
+            Map<Name, Object> map = (Map<Name, Object>) feature.getUserData().get(Attributes.class);
+            if (map != null) {
+                map.put(name, value);
+            }
+        }
     }
 
     @Override
@@ -128,6 +116,4 @@ public class XmlAttributeNodePointer extends NodePointer {
     public int getLength() {
         return 0;
     }
-
-
 }

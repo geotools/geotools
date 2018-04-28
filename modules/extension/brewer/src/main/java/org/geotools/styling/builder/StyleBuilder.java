@@ -18,16 +18,11 @@ package org.geotools.styling.builder;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Style;
 import org.geotools.util.SimpleInternationalString;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class StyleBuilder extends AbstractStyleBuilder<Style> {
     List<FeatureTypeStyleBuilder> fts = new ArrayList<FeatureTypeStyleBuilder>();
 
@@ -86,8 +81,7 @@ public class StyleBuilder extends AbstractStyleBuilder<Style> {
             s.setName(name);
             if (styleAbstract != null)
                 s.getDescription().setAbstract(new SimpleInternationalString(styleAbstract));
-            if (title != null)
-                s.getDescription().setTitle(new SimpleInternationalString(title));
+            if (title != null) s.getDescription().setTitle(new SimpleInternationalString(title));
             for (FeatureTypeStyleBuilder builder : fts) {
                 s.featureTypeStyles().add(builder.build());
             }

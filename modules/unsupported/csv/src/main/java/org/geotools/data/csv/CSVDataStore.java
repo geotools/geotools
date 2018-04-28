@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- *    
+ *
  * 	  (c) 2014 - 2015 Open Source Geospatial Foundation - all rights reserved
  * 	  (c) 2012 - 2014 OpenPlans
  *
@@ -20,7 +20,6 @@ package org.geotools.data.csv;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
-
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.FileDataStore;
@@ -46,9 +45,9 @@ public class CSVDataStore extends ContentDataStore implements FileDataStore {
     public CSVDataStore(CSVFileState csvFileState, CSVStrategy csvStrategy) {
         this.csvFileState = csvFileState;
         this.csvStrategy = csvStrategy;
-
     }
 
+    // docs start getTypeName
     public Name getTypeName() {
         if (namespaceURI != null) {
             return new NameImpl(namespaceURI, csvFileState.getTypeName());
@@ -56,7 +55,9 @@ public class CSVDataStore extends ContentDataStore implements FileDataStore {
             return new NameImpl(csvFileState.getTypeName());
         }
     }
+    // docs end getTypeName
 
+    // docs start dataStoreOperations
     @Override
     protected List<Name> createTypeNames() throws IOException {
         return Collections.singletonList(getTypeName());
@@ -90,10 +91,10 @@ public class CSVDataStore extends ContentDataStore implements FileDataStore {
     public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader() throws IOException {
         return new CSVFeatureSource(this).getReader();
     }
-    
+
     @Override
-    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(Filter filter,
-            Transaction transaction) throws IOException {
+    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
+            Filter filter, Transaction transaction) throws IOException {
         return super.getFeatureWriter(this.csvFileState.getTypeName(), filter, transaction);
     }
 
@@ -112,9 +113,10 @@ public class CSVDataStore extends ContentDataStore implements FileDataStore {
     public CSVStrategy getCSVStrategy() {
         return csvStrategy;
     }
-    
+
     @Override
     public void createSchema(SimpleFeatureType featureType) throws IOException {
         this.csvStrategy.createSchema(featureType);
     }
+    // docs end dataStoreOperations
 }

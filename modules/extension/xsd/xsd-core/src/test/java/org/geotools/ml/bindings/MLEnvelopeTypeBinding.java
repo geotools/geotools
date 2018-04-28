@@ -27,12 +27,12 @@ import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 
-
 /**
  * Strategy object for the type http://mails/refractions/net:envelopeType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:complexType name="envelopeType"&gt;
  *      &lt;xsd:sequence&gt;
@@ -47,18 +47,12 @@ import org.geotools.xml.Node;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class MLEnvelopeTypeBinding extends AbstractComplexBinding {
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return ML.ENVELOPETYPE;
     }
@@ -68,13 +62,13 @@ public class MLEnvelopeTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         String from = (String) node.getChildValue("From");
         String to = (String) node.getChildValue("To");
         Calendar date = (Calendar) node.getChildValue("Data");
@@ -85,23 +79,23 @@ public class MLEnvelopeTypeBinding extends AbstractComplexBinding {
 
         int i = 0;
 
-        for (Iterator itr = headerElements.iterator(); itr.hasNext();) {
+        for (Iterator itr = headerElements.iterator(); itr.hasNext(); ) {
             Map headerObject = (Map) itr.next();
-            headers[i++] = new Header((String) headerObject.get("name"),
-                    (String) headerObject.get(null));
+            headers[i++] =
+                    new Header((String) headerObject.get("name"), (String) headerObject.get(null));
         }
 
         return new Envelope(from, to, date, subject, headers);
     }
-    
+
     @Override
     public Object getProperty(Object object, QName name) throws Exception {
         Envelope e = (Envelope) object;
-        
-        if ( "From".equals( name.getLocalPart() ) ) {
+
+        if ("From".equals(name.getLocalPart())) {
             return e.getFrom();
         }
-        if ( "To".equals( name.getLocalPart() ) ) {
+        if ("To".equals(name.getLocalPart())) {
             return e.getTo();
         }
 

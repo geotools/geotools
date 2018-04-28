@@ -16,13 +16,6 @@
  */
 package org.geotools.xml;
 
-import org.eclipse.emf.common.util.BasicEList;
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EFactory;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature;
-import org.geotools.feature.FeatureCollection;
-
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,16 +25,17 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EFactory;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.geotools.feature.FeatureCollection;
 
 /**
  * Utility methods for working with emf model objects.
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
- *
- *
- *
- *
  * @source $URL$
  */
 public class EMFUtils {
@@ -74,7 +68,6 @@ public class EMFUtils {
      *
      * @param eobject The object.
      * @param property The property to get.
-     *
      * @return The value of the property.
      */
     public static Object get(EObject eobject, String property) {
@@ -85,14 +78,13 @@ public class EMFUtils {
 
     /**
      * Returns a value from a map based property of an eobject.
-     * <p>
-     * This method does not sort of checking of the property, use 
-     * {@link #getFromMapSafe(EObject, String, String)} for more leniency. 
-     * </p>
+     *
+     * <p>This method does not sort of checking of the property, use {@link #getFromMapSafe(EObject,
+     * String, String)} for more leniency.
+     *
      * @param eobject The object.
      * @param property The map property.
      * @param key The key to obtain from the map.
-     * 
      * @return The map value, possibly <code>null</code>.
      */
     public static Object getFromMap(EObject eobject, String property, Object key) {
@@ -103,13 +95,13 @@ public class EMFUtils {
     /**
      * Returns a value from a map based property of an eobject, handling null cases and the case
      * where the property is not actually a map.
-     * <p>
-     * This method returns null in cases where the the property does not exist, or it is not a map. 
-     * </p>
+     *
+     * <p>This method returns null in cases where the the property does not exist, or it is not a
+     * map.
+     *
      * @param eobject The object.
      * @param property The map property.
      * @param key The key to obtain from the map.
-     * 
      * @return The map value, possibly <code>null</code>.
      */
     public static Object getFromMapSafe(EObject eobject, String property, String key) {
@@ -122,16 +114,14 @@ public class EMFUtils {
             return null;
         }
 
-        return ((Map)o).get(key);
+        return ((Map) o).get(key);
     }
 
     /**
      * Adds a value to a multi-valued propert of an eobject.
-     * <p>
-     * The <param>property</param> must map to a multi-valued property of the
-     * eobject. The {@link #isCollection(EObject, String)} method can be used
-     * to test this.
-     * </p>
+     *
+     * <p>The <param>property</param> must map to a multi-valued property of the eobject. The {@link
+     * #isCollection(EObject, String)} method can be used to test this.
      *
      * @param eobject The object.
      * @param property The multi-valued property.
@@ -147,11 +137,9 @@ public class EMFUtils {
 
     /**
      * Adds a value to a multi-valued propert of an eobject.
-     * <p>
-     * The <param>feature</param> must map to a multi-valued property of the
-     * eobject. The {@link #isCollection(EStructuralFeature)} method can be used
-     * to test this.
-     * </p>
+     *
+     * <p>The <param>feature</param> must map to a multi-valued property of the eobject. The {@link
+     * #isCollection(EStructuralFeature)} method can be used to test this.
      *
      * @param eobject The object.
      * @param feature The multi-valued feature.
@@ -161,7 +149,7 @@ public class EMFUtils {
         if (isCollection(eobject, feature)) {
             Collection collection = (Collection) eobject.eGet(feature);
             if (collection == null) {
-                //most likely not an ECollection
+                // most likely not an ECollection
                 collection = createEmptyCollection(feature);
                 eobject.eSet(feature, collection);
             }
@@ -169,7 +157,7 @@ public class EMFUtils {
             collection.addAll(addCollection);
         }
     }
-    
+
     static Collection createEmptyCollection(EStructuralFeature feature) {
         Class clazz = feature.getEType().getInstanceClass();
         if (EList.class.isAssignableFrom(clazz)) {
@@ -182,16 +170,15 @@ public class EMFUtils {
             return new HashSet();
         }
         throw new IllegalArgumentException("Unable to create collection for " + clazz);
-     }
-    
+    }
+
     /**
-     * Returns a collection view for value, taking care of the case where value
-     * is of an array type, in which case the collection returned contains the
-     * array elements, not the array itself.
+     * Returns a collection view for value, taking care of the case where value is of an array type,
+     * in which case the collection returned contains the array elements, not the array itself.
      *
      * @param value a value to be added to an EObject collection property
-     * @return value wrapped in a collection, or a collection containing the
-     * array elements in case value is an array.
+     * @return value wrapped in a collection, or a collection containing the array elements in case
+     *     value is an array.
      * @see #add(EObject, String, Object)
      */
     private static Collection collection(Object value) {
@@ -206,7 +193,7 @@ public class EMFUtils {
                 list.add(val);
             }
             return list;
-        } else if (value instanceof FeatureCollection){
+        } else if (value instanceof FeatureCollection) {
             return Collections.singletonList(value); // force singleton for FeatureCollectionType
         } else if (value instanceof Collection) {
             return (Collection) value;
@@ -217,23 +204,20 @@ public class EMFUtils {
 
     /**
      * Determines if a property of an eobject is a collection.
-     * <p>
-     * In the event the property does not exist, this method will return
-     * <code>false</code>
-     * </p>
      *
-     * @return <code>true</code> if hte property is a collection, otherwise
-     * <code>false</code>
+     * <p>In the event the property does not exist, this method will return <code>false</code>
+     *
+     * @return <code>true</code> if hte property is a collection, otherwise <code>false</code>
      */
     public static boolean isCollection(EObject eobject, String property) {
         Object o = get(eobject, property);
 
-        //first check the actual value
+        // first check the actual value
         if (o != null) {
             return o instanceof Collection;
         }
 
-        //value was null, try checking the class
+        // value was null, try checking the class
         EStructuralFeature feature = feature(eobject, property);
 
         if (feature == null) {
@@ -246,30 +230,28 @@ public class EMFUtils {
     /**
      * Determines if a feature of an eobject is a collection.
      *
-     * @return <code>true</code> if the feature is a collection, otherwise
-     * <code>false</code>
+     * @return <code>true</code> if the feature is a collection, otherwise <code>false</code>
      */
     public static boolean isCollection(EObject eobject, EStructuralFeature feature) {
-        
+
         Object o = eobject.eGet(feature);
         if (o != null) {
             return o instanceof Collection;
         }
-        
+
         if (Collection.class.isAssignableFrom(feature.getEType().getInstanceClass())) {
             return true;
         }
 
         return false;
     }
-    
+
     /**
-     * Method which looks up a structure feature of an eobject, first doing
-     * an exact name match, then a case insensitive one.
+     * Method which looks up a structure feature of an eobject, first doing an exact name match,
+     * then a case insensitive one.
      *
      * @param eobject The eobject.
      * @param property The property
-     *
      * @return The structure feature, or <code>null</code> if not found.
      */
     public static EStructuralFeature feature(EObject eobject, String property) {
@@ -279,8 +261,9 @@ public class EMFUtils {
             return feature;
         }
 
-        //do a case insentive check, need to do the walk up the type hierarchy
-        for (Iterator itr = eobject.eClass().getEAllStructuralFeatures().iterator(); itr.hasNext();) {
+        // do a case insentive check, need to do the walk up the type hierarchy
+        for (Iterator itr = eobject.eClass().getEAllStructuralFeatures().iterator();
+                itr.hasNext(); ) {
             feature = (EStructuralFeature) itr.next();
 
             if (feature.getName().equalsIgnoreCase(property)) {
@@ -296,14 +279,13 @@ public class EMFUtils {
      *
      * @param eobject The eobject.
      * @param propertyType The type of the properties.
-     *
      * @return The list of structure features, or an empty list if none are found.
      */
     public static List /*<EStructuralFeature>*/ features(EObject eobject, Class propertyType) {
         List match = new ArrayList();
         List features = eobject.eClass().getEAllStructuralFeatures();
 
-        for (Iterator itr = features.iterator(); itr.hasNext();) {
+        for (Iterator itr = features.iterator(); itr.hasNext(); ) {
             EStructuralFeature feature = (EStructuralFeature) itr.next();
 
             if (feature.getEType().getInstanceClass().isAssignableFrom(propertyType)) {
@@ -316,12 +298,10 @@ public class EMFUtils {
 
     /**
      * Sets a particular property on each {@link EObject} in a list to a particular value.
-     * <p>
-     * The following must hold:
-     * <code>
+     *
+     * <p>The following must hold: <code>
      * objects.size() == values.size()
      * </code>
-     * </p>
      *
      * @param objects A list of {@link EObject}.
      * @param property The property to set on each eobject in <code>objects</code>
@@ -336,6 +316,7 @@ public class EMFUtils {
 
     /**
      * Sets a particular property on each {@link EObject} in a list to a particular value.
+     *
      * <p>
      *
      * @param objects A list of {@link EObject}.
@@ -354,7 +335,6 @@ public class EMFUtils {
      *
      * @param objects A list of {@link EObject}.
      * @param property The property to obtain.
-     *
      * @return The list of values.
      */
     public static List get(List objects, String property) {
@@ -375,7 +355,6 @@ public class EMFUtils {
      *
      * @param eobjects The eobject.
      * @param property The property to check.
-     *
      * @return <code>true</code> if the property has been set, otherwise <code>false</code>
      */
     public static boolean isSet(EObject eobject, String property) {
@@ -389,8 +368,8 @@ public class EMFUtils {
      *
      * @param objects A list of {@link EObject}
      * @param property The property to check.
-     *
-     * @return <code>true</code> if every element in the list has been set, otherwise <code>false</code>
+     * @return <code>true</code> if every element in the list has been set, otherwise <code>false
+     *     </code>
      */
     public static boolean isSet(List objects, String property) {
         for (int i = 0; i < objects.size(); i++) {
@@ -409,7 +388,6 @@ public class EMFUtils {
      *
      * @param objects A list of {@link EObject}
      * @param property The property to check.
-     *
      * @return <code>true</code> if every element in the list is unset, otherwise <code>false</code>
      */
     public static boolean isUnset(List objects, String property) {
@@ -429,14 +407,13 @@ public class EMFUtils {
      *
      * @param prototype The object to be cloned from.
      * @param factory The factory used to create the clone.
-     *
      * @return THe cloned object, with all properties the same to the original.
      * @deprecated use {@link #clone(EObject, EFactory, boolean)}.
      */
     public static EObject clone(EObject prototype, EFactory factory) {
-        return clone( prototype, factory, false );
+        return clone(prototype, factory, false);
     }
-    
+
     /**
      * Clones an eobject, with the option of performing a deep clone in which referenced eobjects
      * are also cloned.
@@ -444,26 +421,25 @@ public class EMFUtils {
      * @param prototype The object to be cloned from.
      * @param factory The factory used to create the clone.
      * @param deepFlag indicating wether to perform a deep clone.
-     *
      * @return THe cloned object, with all properties the same to the original.
      */
     public static EObject clone(EObject prototype, EFactory factory, boolean deep) {
         EObject clone = factory.create(prototype.eClass());
 
-        for (Iterator i = clone.eClass().getEStructuralFeatures().iterator(); i.hasNext();) {
+        for (Iterator i = clone.eClass().getEStructuralFeatures().iterator(); i.hasNext(); ) {
             EStructuralFeature feature = (EStructuralFeature) i.next();
             Object value = prototype.eGet(feature);
-            if ( deep && value instanceof EObject ) {
+            if (deep && value instanceof EObject) {
                 EObject evalue = (EObject) value;
-                //recursively call
-                //TODO:handle cycles in reference graph
-                value = clone(  evalue, evalue.eClass().getEPackage().getEFactoryInstance(), deep );
+                // recursively call
+                // TODO:handle cycles in reference graph
+                value = clone(evalue, evalue.eClass().getEPackage().getEFactoryInstance(), deep);
             }
-            
-            clone.eSet(feature, value );    
+
+            clone.eSet(feature, value);
         }
 
-        return clone; 
+        return clone;
     }
 
     /**
@@ -473,7 +449,7 @@ public class EMFUtils {
      * @param target The object to copy to.
      */
     public static void copy(EObject source, EObject target) {
-        for (Iterator i = source.eClass().getEStructuralFeatures().iterator(); i.hasNext();) {
+        for (Iterator i = source.eClass().getEStructuralFeatures().iterator(); i.hasNext(); ) {
             EStructuralFeature feature = (EStructuralFeature) i.next();
             target.eSet(feature, source.eGet(feature));
         }

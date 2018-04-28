@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -18,7 +18,6 @@ package org.geotools.feature.collection;
 
 import java.io.IOException;
 import java.util.Collection;
-
 import org.geotools.data.DataUtilities;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
@@ -30,32 +29,30 @@ import org.opengis.filter.sort.SortBy;
 
 /**
  * A FeatureCollection which completely delegates to another FeatureCollection.
- * <p>
- * This class should be subclasses by classes which must somehow decorate 
- * another SimpleFeatureCollection and override the relevant methods. 
- * </p>
+ *
+ * <p>This class should be subclasses by classes which must somehow decorate another
+ * SimpleFeatureCollection and override the relevant methods.
+ *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
  * @since 2.5
- *
  * @source $URL$
  */
-public class DecoratingFeatureCollection<T extends FeatureType, F extends Feature> implements
-        FeatureCollection<T, F> {
+public class DecoratingFeatureCollection<T extends FeatureType, F extends Feature>
+        implements FeatureCollection<T, F> {
 
-    /**
-     * the delegate
-     */
+    /** the delegate */
     protected FeatureCollection<T, F> delegate;
 
     protected DecoratingFeatureCollection(FeatureCollection<T, F> delegate) {
         this.delegate = delegate;
     }
 
-    public void accepts(org.opengis.feature.FeatureVisitor visitor,
-            org.opengis.util.ProgressListener progress) throws IOException {
+    public void accepts(
+            org.opengis.feature.FeatureVisitor visitor, org.opengis.util.ProgressListener progress)
+            throws IOException {
         DataUtilities.visit(this, visitor, progress);
     }
-    
+
     public boolean contains(Object o) {
         return delegate.contains(o);
     }
@@ -107,7 +104,8 @@ public class DecoratingFeatureCollection<T extends FeatureType, F extends Featur
     public <O> O[] toArray(O[] a) {
         return delegate.toArray(a);
     }
-	public String getID() {
-		return delegate.getID();
-	}
+
+    public String getID() {
+        return delegate.getID();
+    }
 }

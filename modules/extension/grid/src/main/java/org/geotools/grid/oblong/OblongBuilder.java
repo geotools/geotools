@@ -27,9 +27,6 @@ import org.geotools.grid.PolygonElement;
  *
  * @author mbedward
  * @since 2.7
- *
- *
- *
  * @source $URL$
  * @version $Id$
  */
@@ -49,23 +46,19 @@ public class OblongBuilder extends PolygonBuilder {
     }
 
     /**
-     * Creates a new {@code Oblong} positioned at the given neighbor position
-     * relative to the reference element.
+     * Creates a new {@code Oblong} positioned at the given neighbor position relative to the
+     * reference element.
      *
      * @param el the reference oblong
-     *
      * @param neighbor a neighbour position
-     *
      * @return a new {@code Oblong} object
-     *
-     * @throws IllegalArgumentException if either argument is {@code null} or
-     *         if {@code el} is not an instance of {@code Oblong}
+     * @throws IllegalArgumentException if either argument is {@code null} or if {@code el} is not
+     *     an instance of {@code Oblong}
      */
     @Override
     public Oblong createNeighbor(PolygonElement el, Neighbor neighbor) {
         if (el == null || neighbor == null) {
-            throw new IllegalArgumentException(
-                    "el and neighbour position must both be non-null");
+            throw new IllegalArgumentException("el and neighbour position must both be non-null");
         }
 
         if (!(el instanceof Oblong)) {
@@ -121,8 +114,11 @@ public class OblongBuilder extends PolygonBuilder {
                 throw new IllegalArgumentException("Unrecognized value for neighbor");
         }
 
-        return Oblongs.create(bounds.getMinX() + dx, bounds.getMinY() + dy,
-                bounds.getWidth(), bounds.getHeight(),
+        return Oblongs.create(
+                bounds.getMinX() + dx,
+                bounds.getMinY() + dy,
+                bounds.getWidth(),
+                bounds.getHeight(),
                 bounds.getCoordinateReferenceSystem());
     }
 
@@ -134,8 +130,11 @@ public class OblongBuilder extends PolygonBuilder {
     @Override
     public PolygonElement getFirstElement() {
         return Oblongs.create(
-                gridBounds.getMinX(), gridBounds.getMinY(),
-                elementWidth, elementHeight, gridBounds.getCoordinateReferenceSystem());
+                gridBounds.getMinX(),
+                gridBounds.getMinY(),
+                elementWidth,
+                elementHeight,
+                gridBounds.getCoordinateReferenceSystem());
     }
 
     @Override
@@ -147,5 +146,4 @@ public class OblongBuilder extends PolygonBuilder {
     public PolygonElement getNextYElement(PolygonElement el) {
         return createNeighbor(el, Neighbor.UPPER);
     }
-
 }

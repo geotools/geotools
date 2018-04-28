@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -18,22 +18,14 @@
 package org.geotools.data.gen;
 
 import java.io.IOException;
-import java.util.Collection;
-
 import junit.framework.TestCase;
-
 import org.geotools.data.gen.info.GeneralizationInfos;
 import org.geotools.data.gen.info.GeneralizationInfosProvider;
 import org.geotools.data.gen.info.GeneralizationInfosProviderImpl;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.junit.Assert;
-import org.opengis.feature.simple.SimpleFeature;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class PreGeneralizedFeatureCollectionTest extends TestCase {
 
     @Override
@@ -58,7 +50,7 @@ public class PreGeneralizedFeatureCollectionTest extends TestCase {
             ex.printStackTrace();
             Assert.fail();
         }
-        
+
         // the non-supported features
     }
 }

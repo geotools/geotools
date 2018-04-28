@@ -19,17 +19,17 @@ package org.geotools.filter.v1_0.capabilities;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.namespace.QName;
+import org.geotools.xml.*;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.capability.ComparisonOperators;
 import org.opengis.filter.capability.Operator;
-import org.geotools.xml.*;
-
 
 /**
  * Binding object for the type http://www.opengis.net/ogc:Comparison_OperatorsType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:complexType name="Comparison_OperatorsType"&gt;
  *      &lt;xsd:choice maxOccurs="unbounded"&gt;
@@ -42,12 +42,8 @@ import org.geotools.xml.*;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class Comparison_OperatorsTypeBinding extends AbstractComplexBinding {
@@ -57,14 +53,13 @@ public class Comparison_OperatorsTypeBinding extends AbstractComplexBinding {
         this.factory = factory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return OGC.Comparison_OperatorsType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -75,16 +70,16 @@ public class Comparison_OperatorsTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         List comparisons = new ArrayList();
 
-        //&lt;xsd:element ref="ogc:Simple_Comparisons"/&gt;
+        // &lt;xsd:element ref="ogc:Simple_Comparisons"/&gt;
         if (node.hasChild("Simple_Comparisons")) {
             comparisons.add(factory.operator("LessThan"));
             comparisons.add(factory.operator("LessThanOrEqualTo"));
@@ -94,27 +89,26 @@ public class Comparison_OperatorsTypeBinding extends AbstractComplexBinding {
             comparisons.add(factory.operator("NotEqualTo"));
         }
 
-        //&lt;xsd:element ref="ogc:Like"/&gt;
+        // &lt;xsd:element ref="ogc:Like"/&gt;
         if (node.hasChild("Like")) {
             comparisons.add(factory.operator("Like"));
         }
 
-        //&lt;xsd:element ref="ogc:Between"/&gt;
+        // &lt;xsd:element ref="ogc:Between"/&gt;
         if (node.hasChild("Between")) {
             comparisons.add(factory.operator("Between"));
         }
 
-        //&lt;xsd:element ref="ogc:NullCheck"/&gt;
+        // &lt;xsd:element ref="ogc:NullCheck"/&gt;
         if (node.hasChild("NullCheck")) {
             comparisons.add(factory.operator("NullCheck"));
         }
 
-        return factory.comparisonOperators((Operator[]) comparisons.toArray(
-                new Operator[comparisons.size()]));
+        return factory.comparisonOperators(
+                (Operator[]) comparisons.toArray(new Operator[comparisons.size()]));
     }
 
-    public Object getProperty(Object object, QName name)
-        throws Exception {
+    public Object getProperty(Object object, QName name) throws Exception {
         ComparisonOperators comparison = (ComparisonOperators) object;
 
         if (name.equals(OGC.Simple_Comparisons) && (comparison.getOperator("LessThan") != null)) {

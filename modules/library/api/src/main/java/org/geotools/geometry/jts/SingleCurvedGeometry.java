@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -21,14 +21,14 @@ import com.vividsolutions.jts.geom.LineString;
 
 /**
  * Convenience interface to expose methods common to {@link CircularString} and {@link CircularRing}
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 public interface SingleCurvedGeometry<T extends LineString> extends CurvedGeometry<T> {
 
     /**
      * Returns the linearized coordinates at the given tolerance
-     * 
+     *
      * @param tolerance
      * @return
      */
@@ -36,24 +36,23 @@ public interface SingleCurvedGeometry<T extends LineString> extends CurvedGeomet
 
     /**
      * Returns the control points for this string/ring.
-     * 
+     *
      * @return
      */
     double[] getControlPoints();
 
     /**
      * Number of arc circles
-     * 
+     *
      * @return
      */
     public int getNumArcs();
 
     /**
      * Returns the n-th circular arc making up the geometry
-     * 
+     *
      * @param arcIndex
      * @return
      */
     public CircularArc getArcN(int arcIndex);
-
 }

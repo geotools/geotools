@@ -19,7 +19,6 @@ package org.geotools.data.postgis;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
-
 import org.geotools.jdbc.JDBCDelegatingTestSetup;
 import org.geotools.util.Version;
 
@@ -55,41 +54,55 @@ public class PostGISJsonTestSetup extends JDBCDelegatingTestSetup {
     }
 
     private void createTestJsonTable() throws Exception {
-        
-        String sql = "CREATE TABLE \"jsontest\" ("
-                + "\"id\" INT, \"name\" VARCHAR, \"jsonColumn\" JSON, "
-                + (supportJsonB ? "\"jsonbColumn\" JSONB, " : "") 
-                + "PRIMARY KEY(id))";
+
+        String sql =
+                "CREATE TABLE \"jsontest\" ("
+                        + "\"id\" INT, \"name\" VARCHAR, \"jsonColumn\" JSON, "
+                        + (supportJsonB ? "\"jsonbColumn\" JSONB, " : "")
+                        + "PRIMARY KEY(id))";
         run(sql);
-        
+
         // Quoting from PostgreSQL Documentation:
         // --------------------------------------
-        // There are two JSON data types: json and jsonb. They accept almost identical sets of values as input. 
-        // The major practical difference is one of efficiency. The json data type stores an exact copy of the input text [...]  
-        // while jsonb data is stored in a decomposed binary format [...]. 
-        // Because the json type stores an exact copy of the input text, it will preserve semantically-insignificant 
-        // white space between tokens, as well as the order of keys within JSON objects. Also, if a JSON object within 
-        // the value contains the same key more than once, all the key/value pairs are kept. 
-        // By contrast, jsonb does not preserve white space, does not preserve the order of object keys, and does not keep 
-        // duplicate object keys. If duplicate keys are specified in the input, only the last value is kept.
-        // One semantically-insignificant detail worth noting is that in jsonb, numbers will be printed according 
-        // to the behavior of the underlying numeric type. In practice this means that numbers entered with E notation 
+        // There are two JSON data types: json and jsonb. They accept almost identical sets of
+        // values as input.
+        // The major practical difference is one of efficiency. The json data type stores an exact
+        // copy of the input text [...]
+        // while jsonb data is stored in a decomposed binary format [...].
+        // Because the json type stores an exact copy of the input text, it will preserve
+        // semantically-insignificant
+        // white space between tokens, as well as the order of keys within JSON objects. Also, if a
+        // JSON object within
+        // the value contains the same key more than once, all the key/value pairs are kept.
+        // By contrast, jsonb does not preserve white space, does not preserve the order of object
+        // keys, and does not keep
+        // duplicate object keys. If duplicate keys are specified in the input, only the last value
+        // is kept.
+        // One semantically-insignificant detail worth noting is that in jsonb, numbers will be
+        // printed according
+        // to the behavior of the underlying numeric type. In practice this means that numbers
+        // entered with E notation
         // will be printed without it, for example:
-        sql = "INSERT INTO \"jsontest\" VALUES (0, 'numberEntry','{\"weight\": 1e-3 }'"
-                + (supportJsonB ? ",'{\"weight\": 1e-3}'" : "") +" );" 
-                + "INSERT INTO \"jsontest\" VALUES (1, 'entryWithSpaces','{\"title\"    :    \"Title\" }'"
-                + (supportJsonB ? ",'{\"title\"    :    \"Title\" }'" : "") + ");"
-                + "INSERT INTO \"jsontest\" VALUES (2, 'duppedKeyEntry', '{\"title\":\"Title1\", \"title\":\"Title2\"}'"
-                + (supportJsonB ? ",'{\"title\":\"Title1\", \"title\":\"Title2\"}'" : "") + ");"
-                + "INSERT INTO \"jsontest\" VALUES (3, 'nullKey', '{\"title\":null}'"
-                + (supportJsonB ? ", '{\"title\":null}'" : "") + ");"
-                + "INSERT INTO \"jsontest\" VALUES (4, 'nullEntry', NULL"
-                + (supportJsonB ? ", NULL" : "") + ");";
+        sql =
+                "INSERT INTO \"jsontest\" VALUES (0, 'numberEntry','{\"weight\": 1e-3 }'"
+                        + (supportJsonB ? ",'{\"weight\": 1e-3}'" : "")
+                        + " );"
+                        + "INSERT INTO \"jsontest\" VALUES (1, 'entryWithSpaces','{\"title\"    :    \"Title\" }'"
+                        + (supportJsonB ? ",'{\"title\"    :    \"Title\" }'" : "")
+                        + ");"
+                        + "INSERT INTO \"jsontest\" VALUES (2, 'duppedKeyEntry', '{\"title\":\"Title1\", \"title\":\"Title2\"}'"
+                        + (supportJsonB ? ",'{\"title\":\"Title1\", \"title\":\"Title2\"}'" : "")
+                        + ");"
+                        + "INSERT INTO \"jsontest\" VALUES (3, 'nullKey', '{\"title\":null}'"
+                        + (supportJsonB ? ", '{\"title\":null}'" : "")
+                        + ");"
+                        + "INSERT INTO \"jsontest\" VALUES (4, 'nullEntry', NULL"
+                        + (supportJsonB ? ", NULL" : "")
+                        + ");";
         run(sql);
     }
 
     private void dropTestJsonTable() throws Exception {
         runSafe("DROP TABLE \"jsontest\" cascade");
     }
-
 }

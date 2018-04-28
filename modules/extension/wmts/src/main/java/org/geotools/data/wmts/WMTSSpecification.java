@@ -19,7 +19,6 @@ package org.geotools.data.wmts;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
-
 import org.geotools.data.ows.AbstractGetCapabilitiesRequest;
 import org.geotools.data.ows.GetCapabilitiesRequest;
 import org.geotools.data.ows.HTTPResponse;
@@ -35,7 +34,6 @@ import org.geotools.ows.ServiceException;
 /**
  * @author ian
  * @author Emanuele Tajariol (etj at geo-solutions dot it)
- * 
  */
 public class WMTSSpecification extends Specification {
 
@@ -43,9 +41,7 @@ public class WMTSSpecification extends Specification {
 
     private WMTSServiceType type;
 
-    /**
-     *
-     */
+    /** */
     public WMTSSpecification() {
         // TODO Auto-generated constructor stub
     }
@@ -62,21 +58,20 @@ public class WMTSSpecification extends Specification {
         return new GetCapsRequest(server);
     }
 
-    public GetTileRequest createGetTileRequest(URL server, Properties props,
-            WMTSCapabilities caps) {
+    public GetTileRequest createGetTileRequest(
+            URL server, Properties props, WMTSCapabilities caps) {
         return new GetTileRequest(server, props, caps);
-
     }
 
-    static public class GetTileRequest extends AbstractGetTileRequest {
+    public static class GetTileRequest extends AbstractGetTileRequest {
 
         /**
          * @param onlineResource
          * @param properties
          * @param type
          */
-        public GetTileRequest(URL onlineResource, Properties properties,
-                WMTSCapabilities capabilities) {
+        public GetTileRequest(
+                URL onlineResource, Properties properties, WMTSCapabilities capabilities) {
             super(onlineResource, properties);
             this.type = capabilities.getType();
             this.capabilities = capabilities;
@@ -93,29 +88,22 @@ public class WMTSSpecification extends Specification {
             setProperty(VERSION, WMTS_VERSION);
         }
 
-        /**
-         * @return the type
-         */
+        /** @return the type */
         public WMTSServiceType getType() {
             return type;
         }
 
-        /**
-         * @param type
-         *            the type to set
-         */
+        /** @param type the type to set */
         public void setType(WMTSServiceType type) {
             this.type = type;
         }
-
     }
 
-    static public class GetCapsRequest extends AbstractGetCapabilitiesRequest {
+    public static class GetCapsRequest extends AbstractGetCapabilitiesRequest {
         /**
          * Construct a Request compatible with a 1.0.1 WMTS.
          *
-         * @param urlGetCapabilities
-         *            URL of GetCapabilities document.
+         * @param urlGetCapabilities URL of GetCapabilities document.
          */
         public GetCapsRequest(URL urlGetCapabilities) {
             super(urlGetCapabilities);
@@ -151,5 +139,4 @@ public class WMTSSpecification extends Specification {
 
         return key.trim().toUpperCase();
     }
-
 }

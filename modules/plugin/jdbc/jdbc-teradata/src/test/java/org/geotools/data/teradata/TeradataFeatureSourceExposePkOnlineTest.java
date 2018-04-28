@@ -19,17 +19,10 @@ package org.geotools.data.teradata;
 import org.geotools.jdbc.JDBCFeatureSourceExposePkOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class TeradataFeatureSourceExposePkOnlineTest extends JDBCFeatureSourceExposePkOnlineTest {
-
 
     protected JDBCTestSetup createTestSetup() {
         return new TeradataTestSetup();
     }
-
 }

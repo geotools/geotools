@@ -19,11 +19,11 @@ package org.geotools.arcsde.data;
 
 import static org.junit.Assert.assertEquals;
 
+import com.esri.sde.sdk.client.SeVersion;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.geotools.arcsde.ArcSDEDataStoreFactory;
 import org.geotools.arcsde.session.ISession;
 import org.geotools.data.DataSourceException;
@@ -42,13 +42,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.filter.Filter;
 
-import com.esri.sde.sdk.client.SeVersion;
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class ArcSDEDataStoreVersioningTest {
 
     private static String defaultVersion;
@@ -68,14 +62,10 @@ public class ArcSDEDataStoreVersioningTest {
     private static DataStore version2DataStore;
 
     @BeforeClass
-    public static void oneTimeSetUp() throws Exception {
-
-    }
+    public static void oneTimeSetUp() throws Exception {}
 
     @AfterClass
-    public static void oneTimeTearDown() {
-
-    }
+    public static void oneTimeTearDown() {}
 
     @Before
     public void setUp() throws Exception {
@@ -83,7 +73,7 @@ public class ArcSDEDataStoreVersioningTest {
         testData.setUp();
 
         typeName = testData.getTempTableName();
-        {// set up a couple versions
+        { // set up a couple versions
             ISession session = testData.getConnectionPool().getSession();
 
             defaultVersion = SeVersion.SE_QUALIFIED_DEFAULT_VERSION_NAME;
@@ -112,7 +102,8 @@ public class ArcSDEDataStoreVersioningTest {
             session.dispose();
         }
 
-        Map<String, Serializable> params = new HashMap<String, Serializable>(testData.getConProps());
+        Map<String, Serializable> params =
+                new HashMap<String, Serializable>(testData.getConProps());
         ArcSDEDataStoreFactory factory = new ArcSDEDataStoreFactory();
         defaultVersionDataStore = factory.createDataStore(params);
 
@@ -143,7 +134,7 @@ public class ArcSDEDataStoreVersioningTest {
     /**
      * Why... oh why this test fails if executed twice, but succeeds if the transactional version
      * ran before? no time to look further into it right now, but beware
-     * 
+     *
      * @throws IOException
      */
     @Test
@@ -159,7 +150,7 @@ public class ArcSDEDataStoreVersioningTest {
     }
 
     private void testMultiVersionSupport(final Transaction transaction) throws IOException {
-        final int initialCount = 8;// as per TestData.insertData
+        final int initialCount = 8; // as per TestData.insertData
         SimpleFeatureStore storeDefault;
         SimpleFeatureStore storeV1;
         SimpleFeatureStore storeV2;
@@ -207,8 +198,9 @@ public class ArcSDEDataStoreVersioningTest {
         return store.getCount(Query.ALL);
     }
 
-    private SimpleFeatureStore store(final DataStore ds, final String typeName,
-            final Transaction transaction) throws IOException {
+    private SimpleFeatureStore store(
+            final DataStore ds, final String typeName, final Transaction transaction)
+            throws IOException {
         SimpleFeatureStore store;
         store = (SimpleFeatureStore) ds.getFeatureSource(typeName);
         store.setTransaction(transaction);

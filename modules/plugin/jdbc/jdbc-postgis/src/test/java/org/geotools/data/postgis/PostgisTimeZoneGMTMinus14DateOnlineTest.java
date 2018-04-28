@@ -1,16 +1,10 @@
 package org.geotools.data.postgis;
 
 import java.util.TimeZone;
-
-import org.geotools.data.postgis.PostgisDateTestSetup;
 import org.geotools.jdbc.JDBCDateTestSetup;
 import org.geotools.jdbc.JDBCTimeZoneDateOnlineTest;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class PostgisTimeZoneGMTMinus14DateOnlineTest extends JDBCTimeZoneDateOnlineTest {
 
     @Override
@@ -18,5 +12,4 @@ public class PostgisTimeZoneGMTMinus14DateOnlineTest extends JDBCTimeZoneDateOnl
         super.setTimeZone(TimeZone.getTimeZone("Etc/GMT-14"));
         return new PostgisDateTestSetup(new PostGISTestSetup());
     }
-    
 }

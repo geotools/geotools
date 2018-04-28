@@ -25,18 +25,15 @@ import javax.swing.JComponent;
 import javax.swing.event.MouseInputAdapter;
 
 /**
- * Draws a box on the parent component (e.g. JMapPane) as the mouse 
- * is dragged.
- * 
+ * Draws a box on the parent component (e.g. JMapPane) as the mouse is dragged.
+ *
  * @author Michael Bedward
  * @since 8.0
- *
  * @source $URL$
  * @version $Id$
- * 
  */
 public class MouseDragBox extends MouseInputAdapter {
-    
+
     private final JComponent parentComponent;
     private Point startPos;
     private Rectangle rect;
@@ -46,7 +43,7 @@ public class MouseDragBox extends MouseInputAdapter {
 
     /**
      * Creates a new instance to work with the given component.
-     * 
+     *
      * @param component the component on which the box will be drawn
      */
     public MouseDragBox(JComponent component) {
@@ -57,9 +54,8 @@ public class MouseDragBox extends MouseInputAdapter {
     }
 
     /**
-     * Enables or disables the drag box. When enabled, the box 
-     * is drawn on mouse dragging.
-     * 
+     * Enables or disables the drag box. When enabled, the box is drawn on mouse dragging.
+     *
      * @param state {@code true} to enable; {@code false} to disable
      */
     public void setEnabled(boolean state) {
@@ -67,9 +63,9 @@ public class MouseDragBox extends MouseInputAdapter {
     }
 
     /**
-     * If the box is enabled, records the start position for subsequent
-     * drawing as the mouse is dragged.
-     * 
+     * If the box is enabled, records the start position for subsequent drawing as the mouse is
+     * dragged.
+     *
      * @param ev input mouse event
      */
     @Override
@@ -78,9 +74,9 @@ public class MouseDragBox extends MouseInputAdapter {
     }
 
     /**
-     * If the box is enabled, draws the box with the diagonal running from the
-     * start position to the current mouse position. 
-     * 
+     * If the box is enabled, draws the box with the diagonal running from the start position to the
+     * current mouse position.
+     *
      * @param ev input mouse event
      */
     @Override
@@ -98,7 +94,7 @@ public class MouseDragBox extends MouseInputAdapter {
 
     /**
      * If the box is enabled, removes the final box.
-     * 
+     *
      * @param ev the input mouse event
      */
     @Override
@@ -107,15 +103,13 @@ public class MouseDragBox extends MouseInputAdapter {
             ensureGraphics();
             graphics.drawRect(rect.x, rect.y, rect.width, rect.height);
             dragged = false;
-            
+
             graphics.dispose();
             graphics = null;
         }
     }
 
-    /**
-     * Creates and initializes the graphics object if required.
-     */
+    /** Creates and initializes the graphics object if required. */
     private void ensureGraphics() {
         if (graphics == null) {
             graphics = (Graphics2D) parentComponent.getGraphics().create();
@@ -123,5 +117,4 @@ public class MouseDragBox extends MouseInputAdapter {
             graphics.setXORMode(Color.RED);
         }
     }
-    
 }

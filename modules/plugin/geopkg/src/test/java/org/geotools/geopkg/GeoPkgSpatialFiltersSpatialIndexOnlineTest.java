@@ -19,14 +19,11 @@ package org.geotools.geopkg;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 import org.geotools.jdbc.JDBCSpatialFiltersOnlineTest;
 
-/**
- * Spatial filters test, without spatial index support on the column
- */
+/** Spatial filters test, without spatial index support on the column */
 public class GeoPkgSpatialFiltersSpatialIndexOnlineTest extends JDBCSpatialFiltersOnlineTest {
-    
+
     @Override
     protected JDBCDataStoreAPITestSetup createTestSetup() {
         return new GeoPkgDataStoreAPITestSetup(true);
     }
-
 }

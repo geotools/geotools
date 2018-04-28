@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
- *        
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -21,8 +21,6 @@ package org.geotools.filter;
  *
  * @author Rob Hranac, Vision for New York
  * @author Chris Holmes, TOPP
- *
- *
  * @source $URL$
  * @version $Id$
  */
@@ -37,8 +35,8 @@ public class MalformedFilterException extends Exception {
     }
 
     /**
-     * Constructs an instance of <code>MalformedFilterException</code> with the
-     * specified root cause.
+     * Constructs an instance of <code>MalformedFilterException</code> with the specified root
+     * cause.
      *
      * @param cause the root cause of the exceptions.
      */
@@ -47,8 +45,8 @@ public class MalformedFilterException extends Exception {
     }
 
     /**
-     * Constructs an instance of <code>MalformedFilterException</code> with the
-     * specified detail message and root cause.
+     * Constructs an instance of <code>MalformedFilterException</code> with the specified detail
+     * message and root cause.
      *
      * @param msg the detail message.
      * @param cause the root cause of the exceptions.

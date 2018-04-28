@@ -1,14 +1,7 @@
 package org.geotools.wmts.bindings;
 
 import java.util.List;
-
 import javax.xml.namespace.QName;
-
-import org.geotools.wmts.WMTS;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
-
 import net.opengis.ows11.OnlineResourceType;
 import net.opengis.ows11.OperationsMetadataType;
 import net.opengis.ows11.ServiceIdentificationType;
@@ -17,12 +10,17 @@ import net.opengis.wmts.v_1.CapabilitiesType;
 import net.opengis.wmts.v_1.ContentsType;
 import net.opengis.wmts.v_1.ThemeType;
 import net.opengis.wmts.v_1.wmtsv_1Factory;
+import org.geotools.wmts.WMTS;
+import org.geotools.xml.AbstractComplexBinding;
+import org.geotools.xml.ElementInstance;
+import org.geotools.xml.Node;
 
 /**
  * Binding object for the element http://www.opengis.net/wmts/1.0:Capabilities.
  *
  * <p>
- *    <pre>
+ *
+ * <pre>
  *       <code>
  *  &lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;element name="Capabilities" xmlns="http://www.w3.org/2001/XMLSchema"&gt;
  *  		&lt;annotation&gt;
@@ -76,14 +74,12 @@ import net.opengis.wmts.v_1.wmtsv_1Factory;
  *  		&lt;/complexType&gt;
  *  	&lt;/element&gt;
  *
- *	  </code>
+ *   </code>
  *     </pre>
- * </p>
  *
  * @generated
  */
-public class CapabilitiesBinding extends AbstractComplexBinding
-{
+public class CapabilitiesBinding extends AbstractComplexBinding {
     wmtsv_1Factory factory;
 
     public CapabilitiesBinding(wmtsv_1Factory factory) {
@@ -91,14 +87,13 @@ public class CapabilitiesBinding extends AbstractComplexBinding
         this.factory = factory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return WMTS.Capabilities;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -109,21 +104,24 @@ public class CapabilitiesBinding extends AbstractComplexBinding
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-            throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         CapabilitiesType capabilities = factory.createCapabilitiesType();
 
         capabilities.setContents((ContentsType) node.getChildValue(ContentsType.class));
         capabilities.getThemes().addAll(node.getChildren(ThemeType.class));
-        capabilities.setOperationsMetadata((OperationsMetadataType) node.getChildValue(OperationsMetadataType.class));
-        capabilities.setServiceIdentification((ServiceIdentificationType) node.getChildValue(ServiceIdentificationType.class));
-        capabilities.setServiceProvider((ServiceProviderType) node.getChildValue(ServiceProviderType.class));
+        capabilities.setOperationsMetadata(
+                (OperationsMetadataType) node.getChildValue(OperationsMetadataType.class));
+        capabilities.setServiceIdentification(
+                (ServiceIdentificationType) node.getChildValue(ServiceIdentificationType.class));
+        capabilities.setServiceProvider(
+                (ServiceProviderType) node.getChildValue(ServiceProviderType.class));
         capabilities.setUpdateSequence((String) node.getChildValue("UpdateSequence"));
 
         List<Node> children = node.getChildren("ServiceMetadataURL");
@@ -133,5 +131,4 @@ public class CapabilitiesBinding extends AbstractComplexBinding
         capabilities.getWSDL().addAll(node.getChildren("WSDL"));
         return capabilities;
     }
-
 }

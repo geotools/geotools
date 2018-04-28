@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2014 - 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -15,9 +15,6 @@
  *    Lesser General Public License for more details.
  */
 package org.geotools.geometry.jts;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.CoordinateFilter;
@@ -33,10 +30,12 @@ import com.vividsolutions.jts.geom.IntersectionMatrix;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.PrecisionModel;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A CompoundCurve is a connected sequence of circular arcs and linear segments.
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 public class CompoundCurve extends LineString implements CompoundCurvedGeometry<LineString> {
@@ -132,8 +131,7 @@ public class CompoundCurve extends LineString implements CompoundCurvedGeometry<
             // linearize with tolerance the circular strings, take the linear ones as is
             if (component instanceof SingleCurvedGeometry<?>) {
                 SingleCurvedGeometry<?> curved = (SingleCurvedGeometry<?>) component;
-                CoordinateSequence cs = curved
-                        .getLinearizedCoordinateSequence(tolerance);
+                CoordinateSequence cs = curved.getLinearizedCoordinateSequence(tolerance);
                 gar.addAll(cs);
             } else {
                 CoordinateSequence cs = component.getCoordinateSequence();
@@ -155,7 +153,7 @@ public class CompoundCurve extends LineString implements CompoundCurvedGeometry<
     /**
      * Returns the components of this compound curve, which will be a list of straight LineString
      * objects and CircularString/CircularRing
-     * 
+     *
      * @return
      */
     public List<LineString> getComponents() {
@@ -254,7 +252,6 @@ public class CompoundCurve extends LineString implements CompoundCurvedGeometry<
     public PrecisionModel getPrecisionModel() {
         return super.getPrecisionModel();
     }
-
 
     public boolean equalsExact(Geometry other) {
         return equalsExact(other, 0);
@@ -462,7 +459,6 @@ public class CompoundCurve extends LineString implements CompoundCurvedGeometry<
         return linearize().isWithinDistance(geom, distance);
     }
 
-
     public double getArea() {
         return linearize().getArea();
     }
@@ -519,8 +515,6 @@ public class CompoundCurve extends LineString implements CompoundCurvedGeometry<
         return linearize().relate(g);
     }
 
-
-
     public Geometry buffer(double distance) {
         return linearize().buffer(distance);
     }
@@ -573,5 +567,4 @@ public class CompoundCurve extends LineString implements CompoundCurvedGeometry<
     public String toText() {
         return linearize().toText();
     }
-
 }

@@ -22,18 +22,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.eclipse.jface.wizard.Wizard;
 import org.geotools.data.Parameter;
 import org.geotools.util.URLs;
 
 /**
  * The parameter list wizard.
- * 
+ *
  * @author Andrea Antonello (www.hydrologis.com)
- *
- *
- *
  * @source $URL$
  */
 public class JParameterListWizard extends Wizard {
@@ -50,34 +46,37 @@ public class JParameterListWizard extends Wizard {
      * @param description brief description to be displayed on the page
      * @param contents a {@code List} of {@code Parameter} objects defining the data being requested
      */
-    public JParameterListWizard( String title, String description, List<Parameter< ? >> contents ) {
+    public JParameterListWizard(String title, String description, List<Parameter<?>> contents) {
         this(title, description, contents, new HashMap<String, Object>());
     }
 
-    public JParameterListWizard( String title, String description, List<Parameter< ? >> contents,
-            Map<String, Object> connectionParams ) {
+    public JParameterListWizard(
+            String title,
+            String description,
+            List<Parameter<?>> contents,
+            Map<String, Object> connectionParams) {
 
-        this.connectionParameters = connectionParams == null ? new HashMap<String, Object>() : connectionParams;
+        this.connectionParameters =
+                connectionParams == null ? new HashMap<String, Object>() : connectionParams;
         fillInDefaults(contents, this.connectionParameters);
 
-        List<Parameter< ? >> userContents = contentsForLevel(contents, "user");
+        List<Parameter<?>> userContents = contentsForLevel(contents, "user");
 
         userPage = new JParameterListPage(title, description, userContents, connectionParameters);
 
-        List<Parameter< ? >> advancedContents = contentsForLevel(contents, "advanced");
+        List<Parameter<?>> advancedContents = contentsForLevel(contents, "advanced");
 
         if (advancedContents.size() > 0) {
-            advancedPage = new JParameterListPage(title, description, advancedContents, connectionParameters);
+            advancedPage =
+                    new JParameterListPage(
+                            title, description, advancedContents, connectionParameters);
         }
-
     }
 
     public void addPages() {
         super.addPages();
-        if (userPage != null)
-            addPage(userPage);
-        if (advancedPage != null)
-            addPage(advancedPage);
+        if (userPage != null) addPage(userPage);
+        if (advancedPage != null) addPage(advancedPage);
     }
 
     public boolean performFinish() {
@@ -86,15 +85,14 @@ public class JParameterListWizard extends Wizard {
 
     /**
      * Method used to fill in any required "programming" level defaults such as dbtype.
-     * 
+     *
      * @param contents
      * @param connectionParams a {@code Map} of initial parameter values
      */
-    private void fillInDefaults( List<Parameter< ? >> contents, Map<String, Object> connectionParams ) {
-        if (connectionParams == null)
-            return;
+    private void fillInDefaults(List<Parameter<?>> contents, Map<String, Object> connectionParams) {
+        if (connectionParams == null) return;
 
-        for( Parameter< ? > param : contents ) {
+        for (Parameter<?> param : contents) {
             if (param.required && "program".equals(param.getLevel())) {
                 if (!connectionParams.containsKey(param.key)) {
                     connectionParams.put(param.key, param.sample);
@@ -103,15 +101,18 @@ public class JParameterListWizard extends Wizard {
         }
     }
 
-    List<Parameter< ? >> contentsForLevel( List<Parameter< ? >> contents, String level ) {
-        List<Parameter< ? >> list = new ArrayList<Parameter< ? >>();
+    List<Parameter<?>> contentsForLevel(List<Parameter<?>> contents, String level) {
+        List<Parameter<?>> list = new ArrayList<Parameter<?>>();
         if (level == null) {
             level = "user";
         }
         if (contents != null) {
-            for( Parameter< ? > param : contents ) {
+            for (Parameter<?> param : contents) {
                 if (level != null) {
-                    String check = param.metadata == null ? "user" : (String) param.metadata.get(Parameter.LEVEL);
+                    String check =
+                            param.metadata == null
+                                    ? "user"
+                                    : (String) param.metadata.get(Parameter.LEVEL);
                     if (check == null) {
                         check = "user";
                     }
@@ -135,8 +136,9 @@ public class JParameterListWizard extends Wizard {
     }
 
     /**
-     * Helper method that returns the "url" element of the connection
-     * parameters as a File, if present. Equivalent to:
+     * Helper method that returns the "url" element of the connection parameters as a File, if
+     * present. Equivalent to:
+     *
      * <pre><code>
      *     URL url = (URL) myWizard.getConnectionParameters().get("url");
      *     File file = URLs.urlToFile(url);
@@ -148,5 +150,4 @@ public class JParameterListWizard extends Wizard {
         URL url = (URL) connectionParameters.get("url");
         return URLs.urlToFile(url);
     }
-
 }

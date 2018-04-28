@@ -17,54 +17,42 @@
 package org.geotools.data.wms.xml.test;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
-
 import junit.framework.TestCase;
-
-import org.geotools.data.DataUtilities;
 import org.geotools.data.ows.CRSEnvelope;
 import org.geotools.data.ows.Layer;
 import org.geotools.data.ows.WMSCapabilities;
-import org.geotools.data.wms.WebMapServer;
 import org.geotools.data.wms.xml.Attribution;
 import org.geotools.data.wms.xml.LogoURL;
 import org.geotools.data.wms.xml.WMSSchema;
-import org.geotools.map.WMSCoverageReaderTest;
-import org.geotools.ows.ServiceException;
 import org.geotools.test.TestData;
 import org.geotools.xml.DocumentFactory;
 import org.geotools.xml.SchemaFactory;
 import org.geotools.xml.handlers.DocumentHandler;
 import org.geotools.xml.schema.Schema;
-import org.junit.Test;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class WMSSchemaTest extends TestCase {
-    
-    public void testSchema() throws URISyntaxException{
+
+    public void testSchema() throws URISyntaxException {
         Schema v1 = SchemaFactory.getInstance(new URI("http://www.opengis.net/wms"));
         assertNotNull(v1);
         Schema v2 = WMSSchema.getInstance();
         assertNotNull(v2);
-        assertEquals(v1,v2);
+        assertEquals(v1, v2);
     }
 
-	public void testGetCapabilities() throws Exception {
-		
-		File getCaps = TestData.file(this, "1.3.0Capabilities.xml");
+    public void testGetCapabilities() throws Exception {
+
+        File getCaps = TestData.file(this, "1.3.0Capabilities.xml");
         URL getCapsURL = getCaps.toURI().toURL();
 
-		Object object = DocumentFactory.getInstance(getCapsURL.openStream(), null, Level.WARNING);
+        Object object = DocumentFactory.getInstance(getCapsURL.openStream(), null, Level.WARNING);
 
         Schema schema = WMSSchema.getInstance();
         SchemaFactory.getInstance(WMSSchema.NAMESPACE);
@@ -77,17 +65,21 @@ public class WMSSchemaTest extends TestCase {
         assertEquals(capabilities.getService().getName(), "WMS");
         assertEquals(capabilities.getService().getTitle(), "World Map");
         assertEquals(capabilities.getService().get_abstract(), "None");
-        assertEquals(capabilities.getService().getOnlineResource(), new URL("http://www2.demis.nl"));
+        assertEquals(
+                capabilities.getService().getOnlineResource(), new URL("http://www2.demis.nl"));
 
         assertEquals(capabilities.getService().getLayerLimit(), 40);
         assertEquals(capabilities.getService().getMaxWidth(), 2000);
         assertEquals(capabilities.getService().getMaxHeight(), 2000);
 
-        assertEquals(capabilities.getRequest().getGetCapabilities().getFormats().get(0), "text/xml");
-        assertEquals(capabilities.getRequest().getGetCapabilities().getGet(), new URL(
-                "http://www2.demis.nl/wms/wms.asp?wms=WorldMap&"));
-        assertEquals(capabilities.getRequest().getGetCapabilities().getPost(), new URL(
-                "http://www2.demis.nl/wms/wms.asp?wms=WorldMap&"));
+        assertEquals(
+                capabilities.getRequest().getGetCapabilities().getFormats().get(0), "text/xml");
+        assertEquals(
+                capabilities.getRequest().getGetCapabilities().getGet(),
+                new URL("http://www2.demis.nl/wms/wms.asp?wms=WorldMap&"));
+        assertEquals(
+                capabilities.getRequest().getGetCapabilities().getPost(),
+                new URL("http://www2.demis.nl/wms/wms.asp?wms=WorldMap&"));
 
         assertEquals(capabilities.getRequest().getGetMap().getFormats().size(), 5);
         assertEquals(capabilities.getRequest().getGetMap().getFormats().get(0), "image/gif");
@@ -95,17 +87,20 @@ public class WMSSchemaTest extends TestCase {
         assertEquals(capabilities.getRequest().getGetMap().getFormats().get(2), "image/jpeg");
         assertEquals(capabilities.getRequest().getGetMap().getFormats().get(3), "image/bmp");
         assertEquals(capabilities.getRequest().getGetMap().getFormats().get(4), "image/swf");
-        assertEquals(capabilities.getRequest().getGetMap().getGet(), new URL(
-                "http://www2.demis.nl/wms/wms.asp?wms=WorldMap&"));
+        assertEquals(
+                capabilities.getRequest().getGetMap().getGet(),
+                new URL("http://www2.demis.nl/wms/wms.asp?wms=WorldMap&"));
 
         assertEquals(capabilities.getRequest().getGetFeatureInfo().getFormats().size(), 4);
         assertEquals(capabilities.getRequest().getGetFeatureInfo().getFormats().get(0), "text/xml");
-        assertEquals(capabilities.getRequest().getGetFeatureInfo().getFormats().get(1),
-                "text/plain");
-        assertEquals(capabilities.getRequest().getGetFeatureInfo().getFormats().get(2), "text/html");
+        assertEquals(
+                capabilities.getRequest().getGetFeatureInfo().getFormats().get(1), "text/plain");
+        assertEquals(
+                capabilities.getRequest().getGetFeatureInfo().getFormats().get(2), "text/html");
         assertEquals(capabilities.getRequest().getGetFeatureInfo().getFormats().get(3), "text/swf");
-        assertEquals(capabilities.getRequest().getGetFeatureInfo().getGet(), new URL(
-                "http://www2.demis.nl/wms/wms.asp?wms=WorldMap&"));
+        assertEquals(
+                capabilities.getRequest().getGetFeatureInfo().getGet(),
+                new URL("http://www2.demis.nl/wms/wms.asp?wms=WorldMap&"));
 
         Layer topLayer = (Layer) capabilities.getLayerList().get(0);
         assertNotNull(topLayer);
@@ -140,7 +135,8 @@ public class WMSSchemaTest extends TestCase {
         assertEquals(layer.getMetadataURL().get(0).getUrl().toString(), "http://www.example.com/?");
         assertEquals(layer.getMetadataURL().get(0).getFormat(), "text/html");
         assertEquals(layer.getMetadataURL().get(0).getType(), "FGDC");
-        assertEquals(layer.getStyles().get(0).getLegendURLs().get(0),
+        assertEquals(
+                layer.getStyles().get(0).getLegendURLs().get(0),
                 "http://www.osgeo.org/sites/all/themes/osgeo/logo.png");
 
         // Added test for Attribution parameter
@@ -151,7 +147,8 @@ public class WMSSchemaTest extends TestCase {
         LogoURL logoURL = attribution.getLogoURL();
         assertNotNull(logoURL);
         assertEquals(logoURL.getFormat(), "image/png");
-        assertEquals(logoURL.getOnlineResource().toString(),
+        assertEquals(
+                logoURL.getOnlineResource().toString(),
                 "http://www.osgeo.org/sites/all/themes/osgeo/logo.png");
         assertEquals(logoURL.getHeight(), 100);
         assertEquals(logoURL.getWidth(), 100);
@@ -214,7 +211,8 @@ public class WMSSchemaTest extends TestCase {
         logoURL = attribution.getLogoURL();
         assertNotNull(logoURL);
         assertEquals(logoURL.getFormat(), "image/png");
-        assertEquals(logoURL.getOnlineResource().toString(),
+        assertEquals(
+                logoURL.getOnlineResource().toString(),
                 "http://www.osgeo.org/sites/all/themes/osgeo/logo.png");
         assertEquals(logoURL.getHeight(), 0);
         assertEquals(logoURL.getWidth(), 0);
@@ -242,13 +240,13 @@ public class WMSSchemaTest extends TestCase {
         assertEquals(bbox.getMaxX(), 179.999420166016, 0.0);
         assertEquals(bbox.getMinY(), -62.9231796264648, 0.0);
         assertEquals(bbox.getMaxY(), 68.6906585693359, 0.0);
-	}
+    }
 
     public void testGetCapabilities110() throws Exception {
 
         File getCaps = TestData.file(this, "1.1.0Capabilities.xml");
         URL getCapsURL = getCaps.toURI().toURL();
-        Map<String,Object> hints = new HashMap<>();
+        Map<String, Object> hints = new HashMap<>();
         hints.put(DocumentHandler.DEFAULT_NAMESPACE_HINT_KEY, WMSSchema.getInstance());
         Object object = DocumentFactory.getInstance(getCapsURL.openStream(), hints, Level.WARNING);
 
@@ -259,12 +257,17 @@ public class WMSSchemaTest extends TestCase {
         assertEquals(capabilities.getVersion(), "1.1.0");
         assertEquals(capabilities.getService().getName(), "OGC:WMS");
         assertEquals(capabilities.getService().getTitle(), "GMap WMS Demo Server");
-        assertTrue(capabilities.getService().get_abstract()
-                .contains("This demonstration server was setup by DM Solutions Group"));
-        assertEquals(capabilities.getService().getOnlineResource(), new URL(
-                "http://dev1.dmsolutions.ca/cgi-bin/mswms_gmap?"));
+        assertTrue(
+                capabilities
+                        .getService()
+                        .get_abstract()
+                        .contains("This demonstration server was setup by DM Solutions Group"));
+        assertEquals(
+                capabilities.getService().getOnlineResource(),
+                new URL("http://dev1.dmsolutions.ca/cgi-bin/mswms_gmap?"));
 
-        assertEquals(capabilities.getRequest().getGetCapabilities().getFormats().get(0),
+        assertEquals(
+                capabilities.getRequest().getGetCapabilities().getFormats().get(0),
                 "application/vnd.ogc.wms_xml");
 
         Layer topLayer = (Layer) capabilities.getLayerList().get(0);
@@ -282,7 +285,8 @@ public class WMSSchemaTest extends TestCase {
         LogoURL logoURL = attribution.getLogoURL();
         assertNotNull(logoURL);
         assertEquals(logoURL.getFormat(), "image/png");
-        assertEquals(logoURL.getOnlineResource().toString(),
+        assertEquals(
+                logoURL.getOnlineResource().toString(),
                 "http://www.osgeo.org/sites/all/themes/osgeo/logo.png");
         assertEquals(logoURL.getHeight(), 100);
         assertEquals(logoURL.getWidth(), 100);
@@ -327,7 +331,8 @@ public class WMSSchemaTest extends TestCase {
         logoURL = attribution.getLogoURL();
         assertNotNull(logoURL);
         assertEquals(logoURL.getFormat(), "image/png");
-        assertEquals(logoURL.getOnlineResource().toString(),
+        assertEquals(
+                logoURL.getOnlineResource().toString(),
                 "http://www.osgeo.org/sites/all/themes/osgeo/logo.png");
         assertEquals(logoURL.getHeight(), 0);
         assertEquals(logoURL.getWidth(), 0);

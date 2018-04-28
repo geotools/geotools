@@ -17,17 +17,17 @@
 package org.geotools.gml3;
 
 /**
- *
  * @author Erik van de Pol
- *
- *
  * @source $URL$
  */
 public interface LinearizationTolerance {
     /**
      * Returns the linearization tolerance for the arc linearization algorithm.
-     * @param circle The circle the Arc is part of. This circle is calculated during the Arc linearization algorithm.
-     * @return The maximum distance after linearization, between the original Arc and the linearized Arc.
+     *
+     * @param circle The circle the Arc is part of. This circle is calculated during the Arc
+     *     linearization algorithm.
+     * @return The maximum distance after linearization, between the original Arc and the linearized
+     *     Arc.
      */
     public double getTolerance(Circle circle);
 }

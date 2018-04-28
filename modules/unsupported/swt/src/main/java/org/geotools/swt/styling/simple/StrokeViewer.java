@@ -16,7 +16,6 @@ package org.geotools.swt.styling.simple;
 
 import java.awt.Color;
 import java.text.MessageFormat;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.ModifyEvent;
@@ -33,34 +32,33 @@ import org.geotools.swt.utils.Messages;
 
 /**
  * Allows editing/viewing of a Style Layer Descriptor "Stroke".
- * <p>
- * Here is the pretty picture: <pre><code>
+ *
+ * <p>Here is the pretty picture:
+ *
+ * <pre><code>
  *          +-+ +-------+ +------+ +------+
  *    Line: |x| | color | |size\/| |100%\/|
  *          +-+ +-------+ +------+ +------+
  * </code></pre>
- * </p>
- * <p>
- * Workflow:
+ *
+ * <p>Workflow:
+ *
  * <ol>
- * <li>createControl( parent ) - set up controls
- * <li>setStroke( stroke, mode ) - provide content from SimpleStyleConfigurator
- *    <ol>
- *    <li> Symbolizer values copied into fields based on mode
- *    <li> fields copied into controls
- *    <li> controls enabled based on mode & fields
- *    </ol>
- * <li>Listener.widgetSelected/modifyText - User performs an "edit"
- * <li>Listener.sync( SelectionEvent ) - update fields with values of controls
- * <li>fire( SelectionSevent ) - notify SimpleStyleConfigurator of change
- * <li>getStroke( StyleBuilder ) - construct a Stroke based on fields
+ *   <li>createControl( parent ) - set up controls
+ *   <li>setStroke( stroke, mode ) - provide content from SimpleStyleConfigurator
+ *       <ol>
+ *         <li>Symbolizer values copied into fields based on mode
+ *         <li>fields copied into controls
+ *         <li>controls enabled based on mode & fields
+ *       </ol>
+ *   <li>Listener.widgetSelected/modifyText - User performs an "edit"
+ *   <li>Listener.sync( SelectionEvent ) - update fields with values of controls
+ *   <li>fire( SelectionSevent ) - notify SimpleStyleConfigurator of change
+ *   <li>getStroke( StyleBuilder ) - construct a Stroke based on fields
  * </ul>
- * </p>  
+ *
  * @author Jody Garnett
  * @since 1.0.0
- *
- *
- *
  * @source $URL$
  */
 public class StrokeViewer {
@@ -75,16 +73,19 @@ public class StrokeViewer {
     Combo percent;
 
     private class Listener implements SelectionListener, ModifyListener {
-        public void widgetSelected( SelectionEvent e ) {
+        public void widgetSelected(SelectionEvent e) {
             sync(e);
         };
-        public void widgetDefaultSelected( SelectionEvent e ) {
+
+        public void widgetDefaultSelected(SelectionEvent e) {
             sync(e);
         };
-        public void modifyText( final ModifyEvent e ) {
+
+        public void modifyText(final ModifyEvent e) {
             sync(AbstractSimpleConfigurator.selectionEvent(e));
         };
-        private void sync( SelectionEvent cause ) {
+
+        private void sync(SelectionEvent cause) {
             try {
                 StrokeViewer.this.enabled = StrokeViewer.this.on.getSelection();
                 StrokeViewer.this.color = StrokeViewer.this.chooser.getColor();
@@ -95,7 +96,7 @@ public class StrokeViewer {
                 }
                 try {
                     String ptext = StrokeViewer.this.percent.getText();
-                    if (ptext.endsWith("%")) { //$NON-NLS-1$
+                    if (ptext.endsWith("%")) { // $NON-NLS-1$
                         ptext = ptext.substring(0, ptext.length() - 1);
                         StrokeViewer.this.opacity = Double.parseDouble(ptext);
                         StrokeViewer.this.opacity /= 100.0;
@@ -117,8 +118,8 @@ public class StrokeViewer {
                 StrokeViewer.this.percent.setEnabled(StrokeViewer.this.enabled);
             }
         }
-
     };
+
     Listener sync = new Listener();
 
     /** TODO: replace w/ support for more then one listener - when needed */
@@ -126,26 +127,34 @@ public class StrokeViewer {
 
     /**
      * TODO summary sentence for createControl ...
-     * 
+     *
      * @param parent
-     * @param klisten 
+     * @param klisten
      * @return Generated composite
      */
-    public Composite createControl( Composite parent, KeyListener klisten ) {
-        Composite part = AbstractSimpleConfigurator.subpart(parent, Messages.getString("SimpleStyleConfigurator_line_label"));
+    public Composite createControl(Composite parent, KeyListener klisten) {
+        Composite part =
+                AbstractSimpleConfigurator.subpart(
+                        parent, Messages.getString("SimpleStyleConfigurator_line_label"));
 
         this.on = new Button(part, SWT.CHECK);
 
         this.chooser = new StolenColorEditor(part, this.sync);
 
         this.size = new Combo(part, SWT.DROP_DOWN);
-        this.size.setItems(new String[]{"1", "2", "3", "5", "10"}); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+        this.size.setItems(
+                new String[] {
+                    "1", "2", "3", "5", "10"
+                }); // $NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
         this.size.setTextLimit(2);
         this.size.addKeyListener(klisten);
         this.size.setToolTipText(Messages.getString("StrokeViewer_size_tooltip"));
 
         this.percent = new Combo(part, SWT.DROP_DOWN);
-        this.percent.setItems(new String[]{"0%", "25%", "50%", "75%", "100%"}); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$
+        this.percent.setItems(
+                new String[] {
+                    "0%", "25%", "50%", "75%", "100%"
+                }); // $NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$
         this.percent.setTextLimit(3);
         this.percent.addKeyListener(klisten);
         this.percent.setToolTipText(Messages.getString("StrokeViewer_percent_tooltip"));
@@ -154,33 +163,33 @@ public class StrokeViewer {
 
     /**
      * Accepts a listener that will be notified when content changes.
-     * @param listener1 
+     *
+     * @param listener1
      */
-    public void addListener( SelectionListener listener1 ) {
+    public void addListener(SelectionListener listener1) {
         this.listener = listener1;
     }
 
     /**
      * Remove listener.
-     * @param listener1 
+     *
+     * @param listener1
      */
-    public void removeListener( SelectionListener listener1 ) {
-        if (this.listener == listener1)
-            this.listener = null;
+    public void removeListener(SelectionListener listener1) {
+        if (this.listener == listener1) this.listener = null;
     }
 
     /**
      * TODO summary sentence for fire ...
-     * 
+     *
      * @param event
      */
-    protected void fire( SelectionEvent event ) {
-        if (this.listener == null)
-            return;
+    protected void fire(SelectionEvent event) {
+        if (this.listener == null) return;
         this.listener.widgetSelected(event);
     }
 
-    void listen( boolean listen ) {
+    void listen(boolean listen) {
         if (listen) {
             this.on.addSelectionListener(this.sync);
             this.chooser.setListener(this.sync);
@@ -200,12 +209,12 @@ public class StrokeViewer {
 
     /**
      * TODO summary sentence for setStroke ...
-     * 
+     *
      * @param line
-     * @param mode 
-     * @param defaultColor 
+     * @param mode
+     * @param defaultColor
      */
-    public void setStroke( Stroke aLine, Mode mode, Color defaultColor ) {
+    public void setStroke(Stroke aLine, Mode mode, Color defaultColor) {
         listen(false);
         try {
             boolean enabled = true;
@@ -225,11 +234,11 @@ public class StrokeViewer {
             this.on.setEnabled(mode != Mode.NONE);
             this.chooser.setColor(this.color);
 
-            String text = MessageFormat.format("{0,number,#0}", this.width); //$NON-NLS-1$
+            String text = MessageFormat.format("{0,number,#0}", this.width); // $NON-NLS-1$
             this.size.setText(text);
             this.size.select(this.size.indexOf(text));
 
-            text = MessageFormat.format("{0,number,#0%}", this.opacity); //$NON-NLS-1$
+            text = MessageFormat.format("{0,number,#0%}", this.opacity); // $NON-NLS-1$
             this.percent.setText(text);
             this.percent.select(this.percent.indexOf(text));
 
@@ -244,13 +253,12 @@ public class StrokeViewer {
 
     /**
      * TODO summary sentence for getStroke ...
-     * @param build 
-     * 
+     *
+     * @param build
      * @return Stroke defined by this model
      */
-    public Stroke getStroke( StyleBuilder build ) {
-        if (!this.enabled)
-            return null;
+    public Stroke getStroke(StyleBuilder build) {
+        if (!this.enabled) return null;
         if (!Double.isNaN(this.opacity)) {
             return build.createStroke(this.color, this.width, this.opacity);
         }

@@ -24,30 +24,25 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-
 import org.geotools.gce.imagemosaic.properties.PropertiesCollector;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
 import org.geotools.resources.coverage.CoverageUtilities;
 import org.geotools.util.URLs;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class TimestampFileNameExtractorSPI implements PropertiesCollectorSPI {
 
-    public final static String REGEX = "regex";
+    public static final String REGEX = "regex";
 
-    public final static String FORMAT = "format";
+    public static final String FORMAT = "format";
 
-    public final static String FULL_PATH = "fullPath";
+    public static final String FULL_PATH = "fullPath";
 
-    public final static String REGEX_PREFIX = REGEX + "=";
+    public static final String REGEX_PREFIX = REGEX + "=";
 
-    public final static String FORMAT_PREFIX = FORMAT + "=";
+    public static final String FORMAT_PREFIX = FORMAT + "=";
 
-    public final static String FULL_PATH_PREFIX = FULL_PATH + "=";
+    public static final String FULL_PATH_PREFIX = FULL_PATH + "=";
 
     public String getName() {
         return "TimestampFileNameExtractorSPI";

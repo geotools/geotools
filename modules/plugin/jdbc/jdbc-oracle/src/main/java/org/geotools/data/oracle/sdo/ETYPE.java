@@ -3,7 +3,7 @@
  *    http://geotools.org
  *
  *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -21,11 +21,9 @@ package org.geotools.data.oracle.sdo;
 
 /**
  * ETYPE is a set of constants used to describe Oracle SDO Geometries.
- * 
+ *
  * @author Jody Garnett, Refractions Research, Inc.
  * @author $Author: jgarnett $ (last modification)
- *
- *
  * @source $URL$
  * @version $Id$
  */
@@ -47,66 +45,50 @@ public interface ETYPE {
 
     /** <code>ETYPE</code> code representing interior CW polygon ring */
     public static final int POLYGON_INTERIOR = 2003;
-    
+
     /** <code>ETYPE</code> code representing exterior surface CCW polygon ring */
     public static final int FACE_EXTERIOR = 1007;
-    
+
     /** <code>ETYPE</code> code representing interior surface CCW polygon ring */
     public static final int FACE_INTERIOR = 2006;
 
     /**
      * <code>ETYPE</code> code representing compound linestring
-     * 
-     * <p>
-     * A compound polygon represents its edges using a combination of sequence
-     * of straight and curved edges.
-     * </p>
-     * 
-     * <p>
-     * Compound LineString is not representatble as a JTS Geometry
-     * </p>
+     *
+     * <p>A compound polygon represents its edges using a combination of sequence of straight and
+     * curved edges.
+     *
+     * <p>Compound LineString is not representatble as a JTS Geometry
      */
     public static final int COMPOUND = 4;
 
     /**
      * <code>ETYPE</code> code representing compound polygon.
-     * 
-     * <p>
-     * A compound polygon represents its edge using a combination of sequence
-     * of straight and curved edges.
-     * </p>
-     * 
-     * <p>
-     * Compound Polygon is not representatble as a JTS Geometry
-     * </p>
+     *
+     * <p>A compound polygon represents its edge using a combination of sequence of straight and
+     * curved edges.
+     *
+     * <p>Compound Polygon is not representatble as a JTS Geometry
      */
     public static final int COMPOUND_POLYGON = 5;
 
     /**
      * <code>ETYPE</code> code representing compound exterior CCW polygon ring
-     * 
-     * <p>
-     * A compound polygon represents its edges using a combination of sequence
-     * of straight and curved edges.
-     * </p>
-     * 
-     * <p>
-     * Compound Polygon Interior is not representatble as a JTS Geometry
-     * </p>
+     *
+     * <p>A compound polygon represents its edges using a combination of sequence of straight and
+     * curved edges.
+     *
+     * <p>Compound Polygon Interior is not representatble as a JTS Geometry
      */
     public static final int COMPOUND_POLYGON_EXTERIOR = 1005;
 
     /**
      * <code>ETYPE</code> code representing compound interior CW polygon ring
-     * 
-     * <p>
-     * A compound polygon represents its edges using a combination of sequence
-     * of straight and curved edges.
-     * </p>
-     * 
-     * <p>
-     * Compound Polygon Exterior is not representatble as a JTS Geometry
-     * </p>
+     *
+     * <p>A compound polygon represents its edges using a combination of sequence of straight and
+     * curved edges.
+     *
+     * <p>Compound Polygon Exterior is not representatble as a JTS Geometry
      */
     public static final int COMPOUND_POLYGON_INTERIOR = 2005;
 }

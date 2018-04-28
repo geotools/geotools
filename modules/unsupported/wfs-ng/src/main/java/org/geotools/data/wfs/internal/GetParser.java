@@ -16,48 +16,50 @@
  */
 package org.geotools.data.wfs.internal;
 
+import com.vividsolutions.jts.geom.GeometryFactory;
 import java.io.IOException;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.FeatureType;
-import com.vividsolutions.jts.geom.GeometryFactory;
 
 /**
  * Interface to return appropriate feature parser.
- * 
+ *
  * @author Adam Brown (Curtin University of Technology)
  */
 public interface GetParser<F extends Feature> {
     /**
-     * Returns the number of features if advertised by the server and the parser was able to get that information for example from the
-     * {@code wfs:FeatureCollection} "numberOfFeatures" xml attribute, or {@code -1} if unknown.
-     * 
+     * Returns the number of features if advertised by the server and the parser was able to get
+     * that information for example from the {@code wfs:FeatureCollection} "numberOfFeatures" xml
+     * attribute, or {@code -1} if unknown.
+     *
      * @return number of features advertised by server, or {@code -1} if unknown
      */
     public int getNumberOfFeatures();
 
     /**
-     * @return the next feature in the stream or {@code null} if there are no more features to parse.
+     * @return the next feature in the stream or {@code null} if there are no more features to
+     *     parse.
      */
     F parse() throws IOException;
 
     /**
      * Close the parser.
-     * @throws IOException
-     * 		Throws IOException if there was a problem closing the parser.
+     *
+     * @throws IOException Throws IOException if there was a problem closing the parser.
      */
     void close() throws IOException;
 
     /**
      * Get the feature type that the parser is targeting.
-     * @return
-     * 		The feature type that the parser is targeting.
+     *
+     * @return The feature type that the parser is targeting.
      */
     public FeatureType getFeatureType();
 
     /**
-     * Set the geometry factory. 
-     * @param geometryFactory
-     * 		The geometry factory to use.
+     * Set the geometry factory.
+     *
+     * @param geometryFactory The geometry factory to use.
      */
     public void setGeometryFactory(GeometryFactory geometryFactory);
 }

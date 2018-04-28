@@ -17,42 +17,29 @@
 package org.geotools.imageio.netcdf.cv;
 
 import java.util.Set;
-
 import ucar.nc2.dataset.CoordinateAxis;
-import ucar.nc2.dataset.CoordinateAxis1D;
 
 /**
  * Constructs a live CoordinateHandler
  *
- * <p>
- * In addition to implementing this interface, this service file should be defined:
- * </p>
+ * <p>In addition to implementing this interface, this service file should be defined:
  *
- * <p>
- * <code>META-INF/services/org.geotools.imageio.netcdf.cv.CoordinateHandlerSpi</code>
- * </p>
+ * <p><code>META-INF/services/org.geotools.imageio.netcdf.cv.CoordinateHandlerSpi</code>
  *
- * <p>
- * The file should contain a single line which gives the full name of the implementing class.
- * </p>
+ * <p>The file should contain a single line which gives the full name of the implementing class.
  *
- * <p>
- * example:<br/>
+ * <p>example:<br>
  * <code>e.g.
  * org.geotools.imageio.netcdf.cv.ClimatologicalTimeHandlerSPI</code>
- * </p>
  *
- * <p>
- * The factories are never called directly by users, instead the CoordinateHandlerFinder class is used.
- * </p>
- *
+ * <p>The factories are never called directly by users, instead the CoordinateHandlerFinder class is
+ * used.
  */
 public interface CoordinateHandlerSpi {
 
-    /** 
-     * Check if the specified spi can handle the provided axis 
-     * through a {@link CoordinateHandler}
-
+    /**
+     * Check if the specified spi can handle the provided axis through a {@link CoordinateHandler}
+     *
      * @param axis
      * @return
      */
@@ -67,6 +54,5 @@ public interface CoordinateHandlerSpi {
     public interface CoordinateHandler {
 
         public CoordinateVariable<?> createCoordinateVariable(CoordinateAxis axis);
-
     }
 }

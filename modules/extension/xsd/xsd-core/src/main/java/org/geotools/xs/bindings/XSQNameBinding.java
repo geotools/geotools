@@ -23,12 +23,12 @@ import org.geotools.xml.SimpleBinding;
 import org.geotools.xml.impl.DatatypeConverterImpl;
 import org.geotools.xs.XS;
 
-
 /**
  * Binding object for the type http://www.w3.org/2001/XMLSchema:QName.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xs:simpleType name="QName" id="QName"&gt;
  *      &lt;xs:annotation&gt;
@@ -53,12 +53,8 @@ import org.geotools.xs.XS;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class XSQNameBinding implements SimpleBinding {
@@ -68,14 +64,13 @@ public class XSQNameBinding implements SimpleBinding {
         this.namespaceContext = namespaceContext;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return XS.QNAME;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -86,6 +81,7 @@ public class XSQNameBinding implements SimpleBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * This binding returns objects of type {@link QName}.
      * <!-- end-user-doc -->
@@ -97,40 +93,41 @@ public class XSQNameBinding implements SimpleBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * This binding returns objects of type {@link QName}.
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(InstanceComponent instance, Object value)
-        throws Exception {
-        
-        //if value passed in was null just return "null" qname
+    public Object parse(InstanceComponent instance, Object value) throws Exception {
+
+        // if value passed in was null just return "null" qname
         if (value == null) {
             return new QName(null);
         }
-        
+
         QName qName = null;
         try {
-            qName = DatatypeConverterImpl.getInstance().parseQName((String) value, namespaceContext);
+            qName =
+                    DatatypeConverterImpl.getInstance()
+                            .parseQName((String) value, namespaceContext);
+        } catch (Exception e) {
+            // could occur if a prefix that was not registered was found
         }
-        catch( Exception e ) {
-            //could occur if a prefix that was not registered was found
-        }
-        
-        //try to set the prefix
-        if (qName != null && (qName.getPrefix() == null || qName.getPrefix().equals( "") ) ) {
-            if ( qName.getNamespaceURI() != null && !"".equals(qName.getNamespaceURI()) ) {
+
+        // try to set the prefix
+        if (qName != null && (qName.getPrefix() == null || qName.getPrefix().equals(""))) {
+            if (qName.getNamespaceURI() != null && !"".equals(qName.getNamespaceURI())) {
                 String prefix = namespaceContext.getPrefix(qName.getNamespaceURI());
-                if ( prefix != null && !"".equals( prefix ) ) {
-                    qName = new QName( qName.getNamespaceURI(), qName.getLocalPart(), prefix );
+                if (prefix != null && !"".equals(prefix)) {
+                    qName = new QName(qName.getNamespaceURI(), qName.getLocalPart(), prefix);
                 }
             }
             return qName;
         }
 
-        //could not parse with convert, parse manually
+        // could not parse with convert, parse manually
         String s = (String) value;
         int i = s.indexOf(':');
 
@@ -146,17 +143,15 @@ public class XSQNameBinding implements SimpleBinding {
 
     public String encode(Object object, String value) throws Exception {
         try {
-            return DatatypeConverterImpl.getInstance().printQName(
-                    (QName) object, namespaceContext);
+            return DatatypeConverterImpl.getInstance().printQName((QName) object, namespaceContext);
         } catch (Exception e) {
-            //will happen if a prefix is not in the context, serialize manually
+            // will happen if a prefix is not in the context, serialize manually
             QName qName = (QName) object;
-            if ( qName.getPrefix() == null || qName.getPrefix().equals( "") ) {
+            if (qName.getPrefix() == null || qName.getPrefix().equals("")) {
                 return qName.getLocalPart();
             }
-            
+
             return qName.getPrefix() + ":" + qName.getLocalPart();
-            
-        }        
+        }
     }
 }

@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -21,11 +21,10 @@ import org.yaml.snakeyaml.events.ScalarEvent;
 
 /**
  * Validator for Scale
- * <p>
- * This Validator is stateful, do not re-use it.
- * 
- * @author Kevin Smith, Boundless
  *
+ * <p>This Validator is stateful, do not re-use it.
+ *
+ * @author Kevin Smith, Boundless
  */
 public class ScaleValidator extends RangeValidator<Double> {
 
@@ -42,5 +41,4 @@ public class ScaleValidator extends RangeValidator<Double> {
             context.error("scale denominator is not a number", evt.getStartMark());
         }
     }
-
 }

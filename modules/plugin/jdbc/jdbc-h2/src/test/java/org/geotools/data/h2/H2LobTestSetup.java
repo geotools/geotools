@@ -18,41 +18,38 @@ package org.geotools.data.h2;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCLobTestSetup;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class H2LobTestSetup extends JDBCLobTestSetup {
 
     public H2LobTestSetup() {
         super(new H2TestSetup());
     }
-    
+
     @Override
     protected void setUpDataStore(JDBCDataStore dataStore) {
         super.setUpDataStore(dataStore);
-        dataStore.setDatabaseSchema( null );
+        dataStore.setDatabaseSchema(null);
     }
-    
+
     @Override
     protected void createLobTable() throws Exception {
-        
-        run("CREATE TABLE \"testlob\" (\"fid\" INT AUTO_INCREMENT PRIMARY KEY, " +
-            "\"blob_field\" BYTEA, \"clob_field\" TEXT, \"raw_field\" BYTEA)");
-        
+
+        run(
+                "CREATE TABLE \"testlob\" (\"fid\" INT AUTO_INCREMENT PRIMARY KEY, "
+                        + "\"blob_field\" BYTEA, \"clob_field\" TEXT, \"raw_field\" BYTEA)");
+
         Connection cx = getDataSource().getConnection();
-        PreparedStatement ps = cx.prepareStatement("INSERT INTO \"testlob\" (\"blob_field\"," +
-            "\"clob_field\",\"raw_field\") VALUES (?,?,?)");
-        
-        ps.setBytes(1, new byte[] {1,2,3,4,5});
+        PreparedStatement ps =
+                cx.prepareStatement(
+                        "INSERT INTO \"testlob\" (\"blob_field\","
+                                + "\"clob_field\",\"raw_field\") VALUES (?,?,?)");
+
+        ps.setBytes(1, new byte[] {1, 2, 3, 4, 5});
         ps.setString(2, "small clob");
-        ps.setBytes(3, new byte[] {6,7,8,9,10});
+        ps.setBytes(3, new byte[] {6, 7, 8, 9, 10});
         ps.execute();
         ps.close();
         cx.close();
@@ -62,5 +59,4 @@ public class H2LobTestSetup extends JDBCLobTestSetup {
     protected void dropLobTable() throws Exception {
         runSafe("DROP TABLE \"testlob\"");
     }
-
 }

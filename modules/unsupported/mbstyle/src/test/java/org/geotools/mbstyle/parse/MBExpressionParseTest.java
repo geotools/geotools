@@ -16,11 +16,20 @@
  */
 package org.geotools.mbstyle.parse;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.awt.*;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.MapboxTestUtils;
 import org.geotools.mbstyle.expression.MBColor;
 import org.geotools.mbstyle.expression.MBExpression;
-import org.geotools.mbstyle.expression.MBLookup;
 import org.geotools.mbstyle.expression.MBString;
 import org.geotools.mbstyle.layer.SymbolMBLayer;
 import org.geotools.styling.FeatureTypeStyle;
@@ -34,18 +43,6 @@ import org.junit.Test;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
-
-import java.awt.*;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 
 public class MBExpressionParseTest {
     Map<String, JSONObject> testLayersById = new HashMap<>();
@@ -81,32 +78,28 @@ public class MBExpressionParseTest {
         JSONArray filter = f.get();
 
         // Testing parsing expression out of layer JSONObject
-        Function upper = ff.function("strToUpperCase",ff.literal("test"));
+        Function upper = ff.function("strToUpperCase", ff.literal("test"));
         assertEquals(upper, parse.string(layout, "text-field", "fallback"));
 
         // Testing parsing expression out of filter JSONArray
-        Function cat = ff.function("Concatenate", ff.literal("P"), ff.literal("o"), ff.literal("int"));
+        Function cat =
+                ff.function("Concatenate", ff.literal("P"), ff.literal("o"), ff.literal("int"));
         assertEquals(cat, parse.string(filter, 2));
 
         // Testing parsing expression out of paint JSONObject
         Function down = ff.function("strToLowerCase", ff.literal("RED"));
         assertEquals(down, parse.color(paint, "text-color", Color.RED));
 
-
         // Testing exception thrown for unknown expression
         try {
             parse.string(layout, "text-size", "fallback");
             fail("expected format exception due to 'test' being an invalid MBExpression");
+        } catch (MBFormatException expected) {
         }
-        catch (MBFormatException expected){
-        }
-
     }
     // ---- STRING EXPRESSIONS ---------------------------------------------------------
 
-    /**
-     * Verify that a upcase string expression can be parsed correctly.
-     */
+    /** Verify that a upcase string expression can be parsed correctly. */
     @Test
     public void testParseUpcaseExpression() {
 
@@ -121,9 +114,7 @@ public class MBExpressionParseTest {
         assertEquals(ff.literal("UPCASING STRING"), ff.literal(up));
     }
 
-    /**
-     * Verify that a downcase string expression can be parsed correctly.
-     */
+    /** Verify that a downcase string expression can be parsed correctly. */
     @Test
     public void testParseDowncaseExpression() {
 
@@ -138,9 +129,7 @@ public class MBExpressionParseTest {
         assertEquals(ff.literal("downcasing string"), ff.literal(down));
     }
 
-    /**
-     * Verify that a concat string expression can be parsed correctly.
-     */
+    /** Verify that a concat string expression can be parsed correctly. */
     @Test
     public void testParseConcatExpression() {
 
@@ -168,6 +157,7 @@ public class MBExpressionParseTest {
         Object a = all.evaluate(all);
         assertEquals(ff.literal("Cat"), ff.literal(a));
     }
+
     @Test
     public void testParseUpcaseConcat() {
 
@@ -209,8 +199,7 @@ public class MBExpressionParseTest {
         try {
             MBExpression.transformExpression(arr);
             fail("expected exception due to \"to-rgba\" function being unsupported");
-        }
-        catch (UnsupportedOperationException expected){
+        } catch (UnsupportedOperationException expected) {
         }
     }
 
@@ -235,53 +224,53 @@ public class MBExpressionParseTest {
         MBStyle rgbTest = MBStyle.create(mbstyle);
         SymbolMBLayer rgbLayer = (SymbolMBLayer) rgbTest.layer("rgbExpression");
         List<FeatureTypeStyle> rgbFeatures = rgbLayer.transformInternal(rgbTest);
-        Color sldColor = (((TextSymbolizer) rgbFeatures.get(0).rules().get(0).getSymbolizers()[0]).getFill().getColor().
-                evaluate(null, Color.class));
+        Color sldColor =
+                (((TextSymbolizer) rgbFeatures.get(0).rules().get(0).getSymbolizers()[0])
+                        .getFill()
+                        .getColor()
+                        .evaluate(null, Color.class));
         assertEquals(new Color(0, 111, 222), sldColor);
         try {
             String xml = new SLDTransformer().transform(rgbFeatures.get(0));
-            assertTrue(xml.contains("<sld:Fill><sld:CssParameter name=\"fill\"><ogc:Function name=\"torgb\">" +
-                    "<ogc:Function name=\"round_2\"><ogc:Literal>0</ogc:Literal></ogc:Function>" +
-                    "<ogc:Function name=\"round_2\"><ogc:Literal>111</ogc:Literal></ogc:Function><ogc:Function name=\"round_2\">" +
-                    "<ogc:Literal>222</ogc:Literal></ogc:Function></ogc:Function></sld:CssParameter></sld:Fill>"));
-        } catch(Exception e) { }
+            assertTrue(
+                    xml.contains(
+                            "<sld:Fill><sld:CssParameter name=\"fill\"><ogc:Function name=\"torgb\">"
+                                    + "<ogc:Function name=\"round_2\"><ogc:Literal>0</ogc:Literal></ogc:Function>"
+                                    + "<ogc:Function name=\"round_2\"><ogc:Literal>111</ogc:Literal></ogc:Function><ogc:Function name=\"round_2\">"
+                                    + "<ogc:Literal>222</ogc:Literal></ogc:Function></ogc:Function></sld:CssParameter></sld:Fill>"));
+        } catch (Exception e) {
+        }
     }
 
     // ---- DECISION EXPRESSIONS ---------------------------------------------------------
 
-
     // ---- FEATUREDATA EXPRESSIONS ---------------------------------------------------------
-
 
     // ---- HEATMAP EXPRESSIONS ---------------------------------------------------------
 
-
     // ---- LOOKUP EXPRESSIONS ---------------------------------------------------------
-
 
     // ---- MATH EXPRESSIONS ---------------------------------------------------------
 
-
-    // ---- RAMPS SCALES CURVES EXPRESSIONS ---------------------------------------------------------
-
+    // ---- RAMPS SCALES CURVES EXPRESSIONS
+    // ---------------------------------------------------------
 
     // ---- TYPE EXPRESSIONS ---------------------------------------------------------
 
-
     // ---- VARIABLE BINDING EXPRESSIONS ---------------------------------------------------------
-
 
     // ---- ZOOM EXPRESSIONS ---------------------------------------------------------
 
     /**
-     * Traverse a nested map using the array of strings, and cast the result to the provided class, or return {@link Optional#empty()}.
+     * Traverse a nested map using the array of strings, and cast the result to the provided class,
+     * or return {@link Optional#empty()}.
+     *
      * @param map
      * @param clazz expected type
      * @param path used to access map
      * @return result at the provided path, or {@link Optional#empty()}.
      */
-    private <T> Optional<T> traverse(JSONObject map, Class<T> clazz,
-                                     String... path) {
+    private <T> Optional<T> traverse(JSONObject map, Class<T> clazz, String... path) {
         if (path == null || path.length == 0) {
             return Optional.empty();
         }

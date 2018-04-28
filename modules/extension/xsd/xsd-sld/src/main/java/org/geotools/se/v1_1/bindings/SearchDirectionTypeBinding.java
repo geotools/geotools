@@ -16,16 +16,15 @@
  */
 package org.geotools.se.v1_1.bindings;
 
+import javax.xml.namespace.QName;
 import org.geotools.se.v1_1.SE;
 import org.geotools.xml.*;
 
-import javax.xml.namespace.QName;
-
 /**
  * Binding object for the type http://www.opengis.net/se:searchDirectionType.
- * 
+ *
  * <p>
- * 
+ *
  * <pre>
  *  <code>
  *  &lt;xsd:simpleType name="searchDirectionType"&gt;
@@ -33,30 +32,26 @@ import javax.xml.namespace.QName;
  *          &lt;xsd:enumeration value="frontToBack"/&gt;
  *          &lt;xsd:enumeration value="backToFront"/&gt;
  *      &lt;/xsd:restriction&gt;
- *  &lt;/xsd:simpleType&gt; 
- * 	
+ *  &lt;/xsd:simpleType&gt;
+ *
  *   </code>
  * </pre>
- * 
- * </p>
- * 
+ *
  * @generated
- *
- *
  * @source $URL$
  */
 public class SearchDirectionTypeBinding extends AbstractSimpleBinding {
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return SE.searchDirectionType;
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Class getType() {
@@ -64,21 +59,22 @@ public class SearchDirectionTypeBinding extends AbstractSimpleBinding {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         String val = (String) value;
-        
-        //&lt;xsd:enumeration value="frontToBack"/&gt;
-        //&lt;xsd:enumeration value="backToFront"/&gt;
+
+        // &lt;xsd:enumeration value="frontToBack"/&gt;
+        // &lt;xsd:enumeration value="backToFront"/&gt;
         if (!"frontToBack".equalsIgnoreCase(val) && !"backToFront".equalsIgnoreCase(val)) {
             throw new IllegalArgumentException(
-                val + " not supported, must be one of 'frontToBack', 'backToFront'");
+                    val + " not supported, must be one of 'frontToBack', 'backToFront'");
         }
 
         return val;
     }
-
 }

@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -30,57 +30,47 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
-import java.util.logging.Logger;
-
 import org.geotools.factory.Hints;
 import org.geotools.util.logging.Logging;
 import org.hsqldb.jdbc.JDBCDataSource;
 import org.opengis.referencing.FactoryException;
 
-
 /**
- * This utility class knows everything there is to know about the care and
- * feeding of our pet EPSG database. This utility class is used to hold logic
- * previously associated with our own custom DataSource.
- * <p>
- * The EPSG database can be downloaded from <A
- * HREF="http://www.epsg.org">http://www.epsg.org</A>. The SQL scripts
- * (modified for the HSQL syntax as <A HREF="doc-files/HSQL.html">explained here</A>)
- * are bundled into this plugin. The database version is given in the
- * {@linkplain org.opengis.metadata.citation.Citation#getEdition edition attribute}
- * of the
- * {@linkplain org.opengis.referencing.AuthorityFactory#getAuthority authority}.
+ * This utility class knows everything there is to know about the care and feeding of our pet EPSG
+ * database. This utility class is used to hold logic previously associated with our own custom
+ * DataSource.
+ *
+ * <p>The EPSG database can be downloaded from <A
+ * HREF="http://www.epsg.org">http://www.epsg.org</A>. The SQL scripts (modified for the HSQL syntax
+ * as <A HREF="doc-files/HSQL.html">explained here</A>) are bundled into this plugin. The database
+ * version is given in the {@linkplain org.opengis.metadata.citation.Citation#getEdition edition
+ * attribute} of the {@linkplain org.opengis.referencing.AuthorityFactory#getAuthority authority}.
  * The HSQL database is read only.
+ *
  * <p>
- * 
+ *
  * @since 2.4
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Jody Garnett
- *
  * @todo This class is used only by {@link HSQLDataSource}, which is deprecated.
  */
 public class HsqlEpsgDatabase {
     /**
-     * The key for fetching the database directory from
-     * {@linkplain System#getProperty(String) system properties}.
+     * The key for fetching the database directory from {@linkplain System#getProperty(String)
+     * system properties}.
      */
     public static final String DIRECTORY_KEY = "EPSG-HSQL.directory";
 
-    /**
-     * The database name.
-     */
+    /** The database name. */
     public static final String DATABASE_NAME = "EPSG";
 
     /**
      * Creates a DataSource that is set up and ready to go.
-     * <p>
-     * This method pays attention to the system property "EPSG-HSQL.directory"
-     * and makes use of the default database name "EPSG".
-     * </p>
-     * 
+     *
+     * <p>This method pays attention to the system property "EPSG-HSQL.directory" and makes use of
+     * the default database name "EPSG".
+     *
      * @return
      * @throws SQLException
      */
@@ -88,13 +78,14 @@ public class HsqlEpsgDatabase {
         return createDataSource(getDirectory());
     }
 
-    public static javax.sql.DataSource createDataSource(Hints hints ) throws FactoryException {
+    public static javax.sql.DataSource createDataSource(Hints hints) throws FactoryException {
         try {
             return createDataSource(getDirectory());
         } catch (SQLException e) {
-            throw new FactoryException( e );
+            throw new FactoryException(e);
         }
     }
+
     public static javax.sql.DataSource createDataSource(File directory) throws SQLException {
         JDBCDataSource dataSource = new JDBCDataSource();
         /*
@@ -104,11 +95,11 @@ public class HsqlEpsgDatabase {
          */
         final StringBuilder url = new StringBuilder("jdbc:hsqldb:file:");
         final String path = directory.getAbsolutePath().replace(File.separatorChar, '/');
-        if (path.length()==0 || path.charAt(0)!='/') {
+        if (path.length() == 0 || path.charAt(0) != '/') {
             url.append('/');
         }
         url.append(path);
-        if (url.charAt(url.length()-1) != '/') {
+        if (url.charAt(url.length() - 1) != '/') {
             url.append('/');
         }
         url.append(HsqlEpsgDatabase.DATABASE_NAME);
@@ -133,21 +124,22 @@ public class HsqlEpsgDatabase {
     }
 
     /**
-     * HSQL has created automatically an empty database. We need to populate it.
-     * Executes the SQL scripts bundled in the JAR. In theory, each line
-     * contains a full SQL statement. For this plugin however, we have
-     * compressed "INSERT INTO" statements using Compactor class in this
+     * HSQL has created automatically an empty database. We need to populate it. Executes the SQL
+     * scripts bundled in the JAR. In theory, each line contains a full SQL statement. For this
+     * plugin however, we have compressed "INSERT INTO" statements using Compactor class in this
      * package.
      */
     private static void generateData(javax.sql.DataSource dataSource) throws SQLException {
         Connection connection = dataSource.getConnection();
-        Logging.getLogger("org.geotools.referencing.factory").config(
-                        "Creating cached EPSG database."); // TODO: localize
+        Logging.getLogger("org.geotools.referencing.factory")
+                .config("Creating cached EPSG database."); // TODO: localize
         final Statement statement = connection.createStatement();
         try {
-            final BufferedReader in = new BufferedReader(new InputStreamReader(
-                            HsqlEpsgDatabase.class.getResourceAsStream("EPSG.sql"),
-                            "ISO-8859-1"));
+            final BufferedReader in =
+                    new BufferedReader(
+                            new InputStreamReader(
+                                    HsqlEpsgDatabase.class.getResourceAsStream("EPSG.sql"),
+                                    "ISO-8859-1"));
             StringBuilder insertStatement = null;
             String line;
             while ((line = in.readLine()) != null) {
@@ -208,14 +200,11 @@ public class HsqlEpsgDatabase {
     }
 
     /**
-     * Returns the default directory for the EPSG database. If the
-     * {@value #DIRECTORY_KEY}
-     * {@linkplain System#getProperty(String) system property} is defined and
-     * contains the name of a directory with a valid
-     * {@linkplain File#getParent parent}, then the {@value #DATABASE_NAME}
-     * database will be saved in that directory. Otherwise, a temporary
-     * directory will be used.
-     * 
+     * Returns the default directory for the EPSG database. If the {@value #DIRECTORY_KEY}
+     * {@linkplain System#getProperty(String) system property} is defined and contains the name of a
+     * directory with a valid {@linkplain File#getParent parent}, then the {@value #DATABASE_NAME}
+     * database will be saved in that directory. Otherwise, a temporary directory will be used.
+     *
      * @throws SQLException
      */
     static File getDirectory() throws SQLException {
@@ -262,14 +251,17 @@ public class HsqlEpsgDatabase {
     }
 
     /**
-     * Returns {@code true} if the database contains data. This method returns
-     * {@code false} if an empty EPSG database has been automatically created by
-     * HSQL and not yet populated.
+     * Returns {@code true} if the database contains data. This method returns {@code false} if an
+     * empty EPSG database has been automatically created by HSQL and not yet populated.
      */
     static boolean dataExists(final Connection connection) throws SQLException {
         final DatabaseMetaData metaData = connection.getMetaData();
-        final ResultSet tables = metaData.getTables(null, null,
-                "EPSG" + metaData.getSearchStringEscape() + "_%", new String[]{"TABLE"});
+        final ResultSet tables =
+                metaData.getTables(
+                        null,
+                        null,
+                        "EPSG" + metaData.getSearchStringEscape() + "_%",
+                        new String[] {"TABLE"});
         final boolean exists = tables.next();
         tables.close();
         return exists;

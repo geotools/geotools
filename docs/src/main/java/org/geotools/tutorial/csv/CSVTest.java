@@ -10,6 +10,8 @@ package org.geotools.tutorial.csv;
 
 import static org.junit.Assert.assertTrue;
 
+import com.csvreader.CsvReader;
+import com.vividsolutions.jts.geom.Geometry;
 import java.io.File;
 import java.io.FileReader;
 import java.io.Serializable;
@@ -20,7 +22,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.DataUtilities;
@@ -43,9 +44,6 @@ import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.identity.FeatureId;
-
-import com.csvreader.CsvReader;
-import com.vividsolutions.jts.geom.Geometry;
 
 public class CSVTest {
 
@@ -104,8 +102,8 @@ public class CSVTest {
         // access by list
         for (AttributeDescriptor descriptor : type.getAttributeDescriptors()) {
             System.out.print("  " + descriptor.getName());
-            System.out.print(" (" + descriptor.getMinOccurs() + "," + descriptor.getMaxOccurs()
-                    + ",");
+            System.out.print(
+                    " (" + descriptor.getMinOccurs() + "," + descriptor.getMaxOccurs() + ",");
             System.out.print((descriptor.isNillable() ? "nillable" : "manditory") + ")");
             System.out.print(" type: " + descriptor.getType().getName());
             System.out.println(" binding: " + descriptor.getType().getBinding().getSimpleName());
@@ -127,8 +125,9 @@ public class CSVTest {
         System.out.println("default geom    name: " + geometryDescriptor.getName());
         System.out.println("default geom    type: " + geometryDescriptor.getType().toString());
         System.out.println("default geom binding: " + geometryDescriptor.getType().getBinding());
-        System.out.println("default geom     crs: "
-                + CRS.toSRS(geometryDescriptor.getCoordinateReferenceSystem()));
+        System.out.println(
+                "default geom     crs: "
+                        + CRS.toSRS(geometryDescriptor.getCoordinateReferenceSystem()));
 
         // example2 end
         System.out.println("\nexample2 end\n");
@@ -147,8 +146,8 @@ public class CSVTest {
         Query query = new Query("locations");
 
         System.out.println("open feature reader");
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = datastore.getFeatureReader(query,
-                Transaction.AUTO_COMMIT);
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                datastore.getFeatureReader(query, Transaction.AUTO_COMMIT);
         try {
             int count = 0;
             while (reader.hasNext()) {
@@ -184,8 +183,8 @@ public class CSVTest {
         Filter filter = ff.id(selection);
         Query query = new Query("locations", filter);
 
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = store.getFeatureReader(query,
-                Transaction.AUTO_COMMIT);
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                store.getFeatureReader(query, Transaction.AUTO_COMMIT);
 
         try {
             while (reader.hasNext()) {
@@ -249,9 +248,9 @@ public class CSVTest {
 
         SimpleFeatureSource featureSource = store.getFeatureSource("locations");
         SimpleFeatureCollection featureCollection = featureSource.getFeatures();
-        
+
         List<String> list = new ArrayList<>();
-        try (SimpleFeatureIterator features = featureCollection.features();) {
+        try (SimpleFeatureIterator features = featureCollection.features(); ) {
             while (features.hasNext()) {
                 list.add(features.next().getID());
             }
@@ -269,5 +268,4 @@ public class CSVTest {
         // example6 end
         System.out.println("\nexample6 end\n");
     }
-
 }

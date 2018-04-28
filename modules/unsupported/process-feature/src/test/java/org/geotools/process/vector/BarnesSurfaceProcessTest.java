@@ -19,8 +19,12 @@ package org.geotools.process.vector;
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertTrue;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.MultiPoint;
+import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
 import java.awt.geom.Point2D;
-
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.DefaultFeatureCollection;
@@ -32,59 +36,55 @@ import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.util.ProgressListener;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
-
-/**
- * @author Martin Davis - OpenGeo
- * 
- */
+/** @author Martin Davis - OpenGeo */
 public class BarnesSurfaceProcessTest {
-    
+
     /**
-     * A test of a simple surface, validating that the process
-     * can be invoked and return a reasonable result in a simple situation.
-     * 
+     * A test of a simple surface, validating that the process can be invoked and return a
+     * reasonable result in a simple situation.
+     *
      * @throws Exception
      */
     @Test
     public void testSimpleSurface() {
 
-        ReferencedEnvelope bounds = new ReferencedEnvelope(0, 30, 0, 30, DefaultGeographicCRS.WGS84);
-        Coordinate[] data = new Coordinate[] { 
-                new Coordinate(10, 10, 100),
-                new Coordinate(10, 20, 20), 
-                new Coordinate(20, 10, 0), 
-                new Coordinate(20, 20, 80) };
+        ReferencedEnvelope bounds =
+                new ReferencedEnvelope(0, 30, 0, 30, DefaultGeographicCRS.WGS84);
+        Coordinate[] data =
+                new Coordinate[] {
+                    new Coordinate(10, 10, 100),
+                    new Coordinate(10, 20, 20),
+                    new Coordinate(20, 10, 0),
+                    new Coordinate(20, 20, 80)
+                };
         SimpleFeatureCollection fc = createPoints(data, bounds);
 
         ProgressListener monitor = null;
 
         BarnesSurfaceProcess process = new BarnesSurfaceProcess();
-        GridCoverage2D cov = process.execute(fc, // data
-                "value", // valueAttr
-                1000, // dataLimit
-                10.0, // scale
-                (Double) null, // convergence
-                (Integer) 2, // passes
-                (Integer) null, // minObservations
-                (Double) null, // maxObservationDistance
-                -999.0, // noDataValue
-                1, // pixelsPerCell
-                0.0, // queryBuffer
-                bounds, // outputEnv
-                100, // outputWidth
-                100, // outputHeight
-                monitor // monitor)
-        );
-        
-//      System.out.println(coverageValue(cov, 20, 20));
+        GridCoverage2D cov =
+                process.execute(
+                        fc, // data
+                        "value", // valueAttr
+                        1000, // dataLimit
+                        10.0, // scale
+                        (Double) null, // convergence
+                        (Integer) 2, // passes
+                        (Integer) null, // minObservations
+                        (Double) null, // maxObservationDistance
+                        -999.0, // noDataValue
+                        1, // pixelsPerCell
+                        0.0, // queryBuffer
+                        bounds, // outputEnv
+                        100, // outputWidth
+                        100, // outputHeight
+                        monitor // monitor)
+                        );
+
+        //      System.out.println(coverageValue(cov, 20, 20));
 
         double ERROR_TOL = 10;
-        
+
         for (Coordinate p : data) {
             float covval = coverageValue(cov, p.x, p.y);
             double error = Math.abs(p.z - covval);
@@ -95,16 +95,14 @@ public class BarnesSurfaceProcessTest {
         assertEquals("values", cov.getSampleDimensions()[0].getDescription().toString());
     }
 
-    private float coverageValue(GridCoverage2D cov, double x, double y)
-    {
+    private float coverageValue(GridCoverage2D cov, double x, double y) {
         float[] covVal = new float[1];
         Point2D worldPos = new Point2D.Double(x, y);
         cov.evaluate(worldPos, covVal);
         return covVal[0];
     }
-    
-    private SimpleFeatureCollection createPoints(Coordinate[] pts, ReferencedEnvelope bounds)
-    {
+
+    private SimpleFeatureCollection createPoints(Coordinate[] pts, ReferencedEnvelope bounds) {
 
         SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
         tb.setName("obsType");
@@ -127,5 +125,4 @@ public class BarnesSurfaceProcessTest {
 
         return fc;
     }
-
 }

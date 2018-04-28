@@ -5,6 +5,7 @@ import static org.geotools.data.shapefile.files.ShpFileType.QIX;
 import static org.geotools.data.shapefile.files.ShpFileType.SHP;
 import static org.geotools.data.shapefile.files.ShpFileType.SHX;
 
+import com.vividsolutions.jts.geom.Envelope;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -14,10 +15,8 @@ import java.util.List;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.data.CloseableIterator;
 import org.geotools.data.DataSourceException;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.shapefile.fid.FidIndexer;
 import org.geotools.data.shapefile.fid.IndexedFidReader;
 import org.geotools.data.shapefile.files.FileWriter;
@@ -37,11 +36,9 @@ import org.geotools.util.logging.Logging;
 import org.opengis.filter.Id;
 import org.opengis.filter.identity.Identifier;
 
-import com.vividsolutions.jts.geom.Envelope;
-
 /**
  * Manages the index files on behalf of the the {@link ShapefileDataStore}
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 class IndexManager {
@@ -57,17 +54,16 @@ class IndexManager {
     CachedQuadTree cachedTree;
 
     ShapefileDataStore store;
-    
-    /**
-     * Used to lock the files when doing accesses to check indexes and the like
-     */
-    FileWriter writer = new FileWriter() {
 
-        @Override
-        public String id() {
-            return "ShapefileDataStore-" + store.getTypeName().getLocalPart();
-        }
-    };
+    /** Used to lock the files when doing accesses to check indexes and the like */
+    FileWriter writer =
+            new FileWriter() {
+
+                @Override
+                public String id() {
+                    return "ShapefileDataStore-" + store.getTypeName().getLocalPart();
+                }
+            };
 
     static {
         int max = -1;
@@ -89,7 +85,7 @@ class IndexManager {
 
     /**
      * Creates the spatial index is appropriate.
-     * 
+     *
      * @param force Forces the index re-creation even if the spatial index seems to be up to date
      * @return true if the spatial index has been created/updated
      */
@@ -97,8 +93,8 @@ class IndexManager {
         // create index as needed
         try {
             if (shpFiles.isLocal() && (isIndexStale(QIX) || force)) {
-                ShapefileDataStoreFactory.LOGGER.fine("Creating spatial index for "
-                        + shpFiles.get(SHP));
+                ShapefileDataStoreFactory.LOGGER.fine(
+                        "Creating spatial index for " + shpFiles.get(SHP));
 
                 ShapeFileIndexer indexer = new ShapeFileIndexer();
                 indexer.setShapeFileName(shpFiles);
@@ -114,7 +110,7 @@ class IndexManager {
 
     /**
      * If the fid index can be used and it is missing this method will try to create it
-     * 
+     *
      * @return
      */
     boolean hasFidIndex(boolean createIfMissing) {
@@ -126,7 +122,6 @@ class IndexManager {
             } else {
                 return false;
             }
-
         }
     }
 
@@ -142,7 +137,7 @@ class IndexManager {
 
     /**
      * Returns true if the specified index exists, is up to date, and can be read
-     * 
+     *
      * @param indexType
      * @return
      */
@@ -163,8 +158,8 @@ class IndexManager {
                     try {
                         read.close();
                     } catch (IOException e) {
-                        ShapefileDataStoreFactory.LOGGER.log(Level.WARNING,
-                                "could not close stream", e);
+                        ShapefileDataStoreFactory.LOGGER.log(
+                                Level.WARNING, "could not close stream", e);
                     }
                 }
             }
@@ -172,10 +167,10 @@ class IndexManager {
 
         return true;
     }
-    
+
     /**
      * Returns true if the index file is available
-     * 
+     *
      * @param indexType
      * @return
      */
@@ -186,7 +181,7 @@ class IndexManager {
     /**
      * Returns true if the specified index file is outdated compared to the shapefile .shp and .shx
      * files
-     * 
+     *
      * @param indexType
      * @return
      */
@@ -228,7 +223,7 @@ class IndexManager {
     /**
      * Uses the Fid index to quickly lookup the shp offset and the record number for the list of
      * fids
-     * 
+     *
      * @param fids the fid filter identifying the ids
      * @return a list of Data objects
      * @throws IOException
@@ -236,7 +231,9 @@ class IndexManager {
      */
     List<Data> queryFidIndex(Id fidFilter) throws IOException {
         // sort by fid to increase performance and allow skipping on natural order
-        TreeSet<Identifier> idsSet = new TreeSet<Identifier>(new IdentifierComparator(store.getTypeName().getLocalPart()));
+        TreeSet<Identifier> idsSet =
+                new TreeSet<Identifier>(
+                        new IdentifierComparator(store.getTypeName().getLocalPart()));
         idsSet.addAll(fidFilter.getIdentifiers());
 
         IndexedFidReader reader = new IndexedFidReader(shpFiles);
@@ -254,8 +251,10 @@ class IndexManager {
                     long recno = reader.findFid(fid);
                     if (recno == -1) {
                         if (LOGGER.isLoggable(Level.FINEST)) {
-                            LOGGER.finest("fid " + fid
-                                    + " not found in index, continuing with next queried fid...");
+                            LOGGER.finest(
+                                    "fid "
+                                            + fid
+                                            + " not found in index, continuing with next queried fid...");
                         }
                         continue;
                     }
@@ -264,8 +263,13 @@ class IndexManager {
                         data.addValue(new Integer((int) recno + 1));
                         data.addValue(new Long(shx.getOffsetInBytes((int) recno)));
                         if (LOGGER.isLoggable(Level.FINEST)) {
-                            LOGGER.finest("fid " + fid + " found for record #" + data.getValue(0)
-                                    + " at index file offset " + data.getValue(1));
+                            LOGGER.finest(
+                                    "fid "
+                                            + fid
+                                            + " found for record #"
+                                            + data.getValue(0)
+                                            + " at index file offset "
+                                            + data.getValue(1));
                         }
                         records.add(data);
                     } catch (Exception e) {
@@ -286,16 +290,14 @@ class IndexManager {
 
     /**
      * Queries the spatial index for features available in the specified bbox
-     * 
+     *
      * @param bbox
-     * 
-     * 
      * @throws DataSourceException
      * @throws IOException
      * @throws TreeException DOCUMENT ME!
      */
-    protected CloseableIterator<Data> querySpatialIndex(Envelope bbox) throws DataSourceException,
-            IOException, TreeException {
+    protected CloseableIterator<Data> querySpatialIndex(Envelope bbox)
+            throws DataSourceException, IOException, TreeException {
         CloseableIterator<Data> tmp = null;
 
         // check if the spatial index needs recreating
@@ -307,7 +309,9 @@ class IndexManager {
             try {
                 File treeFile = URLs.urlToFile(treeURL);
 
-                if (treeFile != null && treeFile.exists() && treeFile.length() < 1024 * maxQixCacheSize) {
+                if (treeFile != null
+                        && treeFile.exists()
+                        && treeFile.length() < 1024 * maxQixCacheSize) {
                     canCache = true;
                 }
             } finally {
@@ -317,8 +321,9 @@ class IndexManager {
             if (canCache) {
                 QuadTree quadTree = openQuadTree();
                 if (quadTree != null) {
-                    LOGGER.warning("Experimental: loading in memory the quadtree for "
-                            + shpFiles.get(SHP));
+                    LOGGER.warning(
+                            "Experimental: loading in memory the quadtree for "
+                                    + shpFiles.get(SHP));
                     cachedTree = new CachedQuadTree(quadTree);
                     quadTree.close();
                 }
@@ -349,9 +354,8 @@ class IndexManager {
 
     /**
      * Convenience method for opening a QuadTree index.
-     * 
+     *
      * @return A new QuadTree
-     * 
      * @throws StoreException
      */
     protected QuadTree openQuadTree() throws StoreException {

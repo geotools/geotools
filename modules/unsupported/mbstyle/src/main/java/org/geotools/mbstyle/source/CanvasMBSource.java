@@ -20,11 +20,10 @@ import org.geotools.mbstyle.parse.MBObjectParser;
 import org.json.simple.JSONObject;
 
 /**
- * 
  * Wrapper around a {@link JSONObject} containing a Mapbox canvas source.
- * 
- * @see <a href="https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-canvas">https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-canvas</a>
  *
+ * @see <a
+ *     href="https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-canvas">https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-canvas</a>
  */
 public class CanvasMBSource extends MediaMBSource {
 
@@ -38,7 +37,7 @@ public class CanvasMBSource extends MediaMBSource {
 
     /**
      * (Required) HTML ID of the canvas from which to read pixels.
-     * 
+     *
      * @return String value for the HTML ID
      */
     public String getCanvas() {
@@ -46,8 +45,9 @@ public class CanvasMBSource extends MediaMBSource {
     }
 
     /**
-     * (Optional)  Defaults to true. Whether the canvas source is animated. If the canvas is static, animate should be set to false to improve performance.
-     * 
+     * (Optional) Defaults to true. Whether the canvas source is animated. If the canvas is static,
+     * animate should be set to false to improve performance.
+     *
      * @return Boolean for whether the source is animated, defaulting to true.
      */
     public Boolean getAnimate() {
@@ -58,5 +58,4 @@ public class CanvasMBSource extends MediaMBSource {
     public String getType() {
         return "canvas";
     }
-
 }

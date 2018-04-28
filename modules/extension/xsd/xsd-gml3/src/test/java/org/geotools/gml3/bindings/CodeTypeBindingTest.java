@@ -22,11 +22,7 @@ import org.geotools.gml3.GML;
 import org.opengis.feature.ComplexAttribute;
 import org.w3c.dom.Document;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class CodeTypeBindingTest extends ComplexAttributeTestSupport {
 
     private static String TEST_NAME_VALUE = "Test name";
@@ -42,5 +38,4 @@ public class CodeTypeBindingTest extends ComplexAttributeTestSupport {
         assertNotNull(dom.getDocumentElement().getAttribute("codeSpace"));
         assertEquals(TEST_NAME_CODESPACE, dom.getDocumentElement().getAttribute("codeSpace"));
     }
-
 }

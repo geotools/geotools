@@ -1,4 +1,3 @@
-
 package org.geotools.data.arcgisrest.schema.webservice;
 
 import com.google.gson.annotations.Expose;
@@ -9,32 +8,24 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 
 public class EditingInfo {
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     @SerializedName("lastEditDate")
     @Expose
     private Object lastEditDate;
 
     /**
-     * 
      * (Required)
-     * 
-     * @return
-     *     The lastEditDate
+     *
+     * @return The lastEditDate
      */
     public Object getLastEditDate() {
         return lastEditDate;
     }
 
     /**
-     * 
      * (Required)
-     * 
-     * @param lastEditDate
-     *     The lastEditDate
+     *
+     * @param lastEditDate The lastEditDate
      */
     public void setLastEditDate(Object lastEditDate) {
         this.lastEditDate = lastEditDate;
@@ -61,5 +52,4 @@ public class EditingInfo {
         EditingInfo rhs = ((EditingInfo) other);
         return new EqualsBuilder().append(lastEditDate, rhs.lastEditDate).isEquals();
     }
-
 }

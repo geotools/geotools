@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -18,41 +18,37 @@ package org.geotools.temporal.reference;
 
 import java.util.Collection;
 import org.geotools.util.Utilities;
+import org.opengis.metadata.extent.Extent;
+import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.temporal.Calendar;
 import org.opengis.temporal.Clock;
 import org.opengis.temporal.ClockTime;
 import org.opengis.util.InternationalString;
-import org.opengis.metadata.extent.Extent;
-import org.opengis.referencing.ReferenceIdentifier;
 
 /**
- *
  * @author Mehdi Sidhoum (Geomatys)
- *
- *
- *
  * @source $URL$
  */
 public class DefaultClock extends DefaultTemporalReferenceSystem implements Clock {
 
-    /**
-     * Provide the name or description of an event, such as solar noon or sunrise.
-     */
+    /** Provide the name or description of an event, such as solar noon or sunrise. */
     private InternationalString referenceEvent;
     /**
-     * Provide the time of day associated with the reference event expressed as a time of day in the given clock, the reference time is usually the origin of the clock scale.
+     * Provide the time of day associated with the reference event expressed as a time of day in the
+     * given clock, the reference time is usually the origin of the clock scale.
      */
     private ClockTime referenceTime;
-    /**
-     * This is the 24-hour local or UTC time that corresponds to the reference time.
-     */
+    /** This is the 24-hour local or UTC time that corresponds to the reference time. */
     private ClockTime utcReference;
-    /**
-     * Collection of TM_Calendars that use this TM_CalendarEra as a reference for dating.
-     */
+    /** Collection of TM_Calendars that use this TM_CalendarEra as a reference for dating. */
     private Collection<Calendar> dateBasis;
 
-    public DefaultClock(ReferenceIdentifier name, Extent domainOfValidity, InternationalString referenceEvent, ClockTime referenceTime, ClockTime utcReference) {
+    public DefaultClock(
+            ReferenceIdentifier name,
+            Extent domainOfValidity,
+            InternationalString referenceEvent,
+            ClockTime referenceTime,
+            ClockTime utcReference) {
         super(name, domainOfValidity);
         this.referenceEvent = referenceEvent;
         this.referenceTime = referenceTime;
@@ -72,7 +68,9 @@ public class DefaultClock extends DefaultTemporalReferenceSystem implements Cloc
     }
 
     /**
-     * Takes a 24-hour local or UTC time and return the equivalent time of day expressed in terms of the specified clock.
+     * Takes a 24-hour local or UTC time and return the equivalent time of day expressed in terms of
+     * the specified clock.
+     *
      * @param uTime
      * @return
      */
@@ -81,7 +79,9 @@ public class DefaultClock extends DefaultTemporalReferenceSystem implements Cloc
     }
 
     /**
-     * Takes a time of day expressed in terms of the specified clock and return the equivalent time of day in 24-hour local or UTC time.
+     * Takes a time of day expressed in terms of the specified clock and return the equivalent time
+     * of day in 24-hour local or UTC time.
+     *
      * @param clkTime
      * @return
      */
@@ -115,10 +115,10 @@ public class DefaultClock extends DefaultTemporalReferenceSystem implements Cloc
             if (object instanceof DefaultClock) {
                 that = (DefaultClock) object;
 
-                return Utilities.equals(this.dateBasis, that.dateBasis) &&
-                        Utilities.equals(this.referenceEvent, that.referenceEvent) &&
-                        Utilities.equals(this.referenceTime, that.referenceTime) &&
-                        Utilities.equals(this.utcReference, that.utcReference);
+                return Utilities.equals(this.dateBasis, that.dateBasis)
+                        && Utilities.equals(this.referenceEvent, that.referenceEvent)
+                        && Utilities.equals(this.referenceTime, that.referenceTime)
+                        && Utilities.equals(this.utcReference, that.utcReference);
             }
         }
         return false;

@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import java.awt.Color;
 import java.util.Arrays;
-
 import org.geotools.factory.CommonFactoryFinder;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -15,14 +14,9 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.Or;
 import org.opengis.filter.PropertyIsLike;
-import org.opengis.filter.expression.Expression;
 
 @SuppressWarnings("deprecation")
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class FiltersTest {
 
     private static final double DELTA = 0.0000001;
@@ -106,7 +100,6 @@ public class FiltersTest {
     public void testAsType() {
         assertEquals(1.0, Filters.asType(ff.literal("1"), double.class), DELTA);
         assertEquals(Color.BLUE, Filters.asType(ff.literal("#0000FF"), Color.class));
-
     }
 
     @Test
@@ -135,15 +128,15 @@ public class FiltersTest {
     public void testPutsColor() {
         assertEquals("#0000ff", Filters.puts(Color.BLUE));
     }
-    
-    private int count( Filter filter ){
-        if( filter instanceof BinaryLogicOperator ){
+
+    private int count(Filter filter) {
+        if (filter instanceof BinaryLogicOperator) {
             BinaryLogicOperator logic = (BinaryLogicOperator) filter;
             return logic.getChildren() != null ? logic.getChildren().size() : -1;
         }
         return -1;
     }
-    
+
     @Test
     public void testRemoveFilter() {
         Filter results = Filters.removeFilter(null, a);
@@ -152,7 +145,7 @@ public class FiltersTest {
         results = Filters.removeFilter(a, null);
         assertSame("Existing should be returned with null target", a, results);
 
-        And base = ff.and(Arrays.asList(new Filter[]{a,b,c}));
+        And base = ff.and(Arrays.asList(new Filter[] {a, b, c}));
         results = Filters.removeFilter(base, d);
         assertEquals("Should not change when target not a child", base, results);
 
@@ -160,18 +153,18 @@ public class FiltersTest {
         And expected = ff.and(a, c);
         assertEquals(expected, results);
 
-        //now remove another.  it should be collapsed and only c returned
+        // now remove another.  it should be collapsed and only c returned
         results = Filters.removeFilter(results, a);
         assertEquals(results, c);
 
-        //test the last ill-formed bit
+        // test the last ill-formed bit
         results = Filters.removeFilter(results, c);
         assertSame("Include should be returned when same filter", Filter.INCLUDE, results);
     }
 
     @Test
     public void testRemoveFilterCompound() {
-        Or childOr = ff.or(Arrays.asList(new Filter[]{b, c, d}));
+        Or childOr = ff.or(Arrays.asList(new Filter[] {b, c, d}));
         And base = ff.and(a, childOr);
 
         Filter results = Filters.removeFilter(base, d, false);
@@ -179,20 +172,20 @@ public class FiltersTest {
 
         results = Filters.removeFilter(base, d);
         assertFalse("Results should be a new object with different children", base.equals(results));
-        childOr = ff.or(b,c);
+        childOr = ff.or(b, c);
         And expected = ff.and(a, childOr);
         assertEquals(expected, results);
 
-        //again
+        // again
         results = Filters.removeFilter(results, c);
         expected = ff.and(a, b);
         assertEquals(expected, results);
 
-        //again
+        // again
         results = Filters.removeFilter(results, a);
         assertEquals(b, results);
 
-        //again
+        // again
         results = Filters.removeFilter(results, b);
         assertEquals(Filter.INCLUDE, results);
     }
@@ -203,7 +196,6 @@ public class FiltersTest {
         assertEquals("suburb", results);
 
         Filter f = ff.equals(ff.literal("bar"), ff.literal("foo"));
-
     }
 
     @Test
@@ -214,7 +206,7 @@ public class FiltersTest {
         String results = Filters.findPropertyName(b);
         assertNull(Filters.findPropertyName(f));
     }
-    
+
     @Test
     public void testEmptyEscape() {
         PropertyIsLike like = ff.like(ff.literal("abc def"), "*de*", "*", "_", "");

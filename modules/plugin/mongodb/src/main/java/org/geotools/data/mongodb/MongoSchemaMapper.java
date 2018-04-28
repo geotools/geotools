@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2015, Boundless
  *
@@ -17,26 +17,20 @@
  */
 package org.geotools.data.mongodb;
 
-
+import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
+import com.vividsolutions.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.Name;
 
-import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
-import com.vividsolutions.jts.geom.Geometry;
-
-/**
- * 
- * @author tkunicki@boundlessgeo.com
- *
- */
+/** @author tkunicki@boundlessgeo.com */
 public class MongoSchemaMapper extends AbstractCollectionMapper {
 
     MongoGeometryBuilder geomBuilder = new MongoGeometryBuilder();
 
     final SimpleFeatureType schema;
-    
+
     public MongoSchemaMapper(SimpleFeatureType schema) {
         this.schema = schema;
     }
@@ -44,21 +38,22 @@ public class MongoSchemaMapper extends AbstractCollectionMapper {
     @Override
     public String getGeometryPath() {
         String gdName = schema.getGeometryDescriptor().getLocalName();
-        return (String)schema.getDescriptor(gdName).getUserData().get(MongoDataStore.KEY_mapping);
+        return (String) schema.getDescriptor(gdName).getUserData().get(MongoDataStore.KEY_mapping);
     }
 
     @Override
     public String getPropertyPath(String property) {
         AttributeDescriptor descriptor = schema.getDescriptor(property);
-        return descriptor == null ? null :
-                (String)descriptor.getUserData().get(MongoDataStore.KEY_mapping);
+        return descriptor == null
+                ? null
+                : (String) descriptor.getUserData().get(MongoDataStore.KEY_mapping);
     }
 
     @Override
     public Geometry getGeometry(DBObject dbo) {
         Object o = MongoUtil.getDBOValue(dbo, getGeometryPath());
         // TODO legacy coordinate pair
-        return o == null ? null : geomBuilder.toGeometry((DBObject)o);
+        return o == null ? null : geomBuilder.toGeometry((DBObject) o);
     }
 
     @Override

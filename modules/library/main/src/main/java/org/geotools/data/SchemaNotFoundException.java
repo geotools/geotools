@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -18,18 +18,15 @@ package org.geotools.data;
 
 import java.io.IOException;
 
-
 /**
  * Indicates a FeatureType could not be found.
  *
  * @author Jody Garnett, Refractions Research
- *
- *
  * @source $URL$
  */
 public class SchemaNotFoundException extends IOException {
     private static final long serialVersionUID = 1L;
-    
+
     static final String NOT_FOUND = "Feature type could not be found for ";
     private String typeName;
 

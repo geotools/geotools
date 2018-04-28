@@ -19,21 +19,17 @@ package org.geotools.gce.grassraster;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.IIOImage;
 import javax.imageio.ImageTypeSpecifier;
 import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
 import javax.imageio.metadata.IIOMetadata;
-
 import org.geotools.gce.grassraster.core.GrassBinaryRasterWriteHandler;
 import org.geotools.gce.grassraster.spi.GrassBinaryImageWriterSpi;
 import org.opengis.util.ProgressListener;
 
 /**
  * @author Andrea Antonello - www.hydrologis.com
- *
- *
  * @source $URL$
  */
 public class GrassBinaryImageWriter extends ImageWriter {
@@ -45,36 +41,34 @@ public class GrassBinaryImageWriter extends ImageWriter {
     /** The {@link GrassBinaryRasterWriteHandler} to write rasters to grass binary file. */
     private GrassBinaryRasterWriteHandler rasterWriter = null;
 
-    /**
-     * The noData value
-     */
+    /** The noData value */
     private double noDataValue = Double.NaN;
 
     private JGrassRegion writeRegion;
 
     private ProgressListener monitor = new DummyProgressListener();
 
-    public GrassBinaryImageWriter( GrassBinaryImageWriterSpi originatingProvider, ProgressListener monitor ) {
+    public GrassBinaryImageWriter(
+            GrassBinaryImageWriterSpi originatingProvider, ProgressListener monitor) {
         super(originatingProvider);
         if (monitor != null) {
             this.monitor = monitor;
         }
     }
 
-    public void setOutput( Object output, JGrassRegion writeRegion ) {
+    public void setOutput(Object output, JGrassRegion writeRegion) {
         this.writeRegion = writeRegion;
         setOutput(output);
     }
 
-    /**
-     * Sets the output for this {@link GrassBinaryImageWriter}.
-     */
-    public void setOutput( Object output ) {
+    /** Sets the output for this {@link GrassBinaryImageWriter}. */
+    public void setOutput(Object output) {
 
         if (output instanceof File) {
             final File outFile = (File) output;
             JGrassMapEnvironment tmp = new JGrassMapEnvironment(outFile);
-            rasterWriter = new GrassBinaryRasterWriteHandler(tmp.getMAPSET(), tmp.getMapName(), monitor);
+            rasterWriter =
+                    new GrassBinaryRasterWriteHandler(tmp.getMAPSET(), tmp.getMapName(), monitor);
             try {
                 if (writeRegion == null) {
                     writeRegion = rasterWriter.getWriteRegion();
@@ -82,7 +76,8 @@ public class GrassBinaryImageWriter extends ImageWriter {
                     rasterWriter.setWriteRegion(writeRegion);
                 }
             } catch (IOException e) {
-                throw new IllegalArgumentException("The supplied input isn't a GRASS raster map path!");
+                throw new IllegalArgumentException(
+                        "The supplied input isn't a GRASS raster map path!");
             }
         } else {
             // is not something we can decode
@@ -90,9 +85,13 @@ public class GrassBinaryImageWriter extends ImageWriter {
         }
     }
 
-    public void write( IIOMetadata streamMetadata, IIOImage image, ImageWriteParam param ) throws IOException {
+    public void write(IIOMetadata streamMetadata, IIOImage image, ImageWriteParam param)
+            throws IOException {
 
-        hasListeners = (this.progressListeners != null && (!(this.progressListeners.isEmpty()))) ? true : false;
+        hasListeners =
+                (this.progressListeners != null && (!(this.progressListeners.isEmpty())))
+                        ? true
+                        : false;
 
         if (hasListeners) {
             clearAbortRequest();
@@ -116,21 +115,20 @@ public class GrassBinaryImageWriter extends ImageWriter {
         double south = writeRegion.getSouth();
         double cellsizeX = writeRegion.getWEResolution();
         double cellsizeY = writeRegion.getNSResolution();
-        rasterWriter.writeRaster(renderedImage, nColumns, nRows, west, south, cellsizeX, cellsizeY, noDataValue);
+        rasterWriter.writeRaster(
+                renderedImage, nColumns, nRows, west, south, cellsizeX, cellsizeY, noDataValue);
 
         if (hasListeners) {
             // Checking the status of the write operation (aborted/completed)
-            if (rasterWriter.isAborting())
-                processWriteAborted();
-            else
-                processImageComplete();
+            if (rasterWriter.isAborting()) processWriteAborted();
+            else processImageComplete();
         }
         // rasterWriter.close();
     }
 
     /**
      * Initialize all required fields which will be written to the header.
-     * 
+     *
      * @param root The root node containing metadata
      * @throws IOException
      */
@@ -168,38 +166,35 @@ public class GrassBinaryImageWriter extends ImageWriter {
     // }
     /**
      * @see javax.imageio.ImageWriter#getDefaultImageMetadata(javax.imageio.ImageTypeSpecifier,
-     *      javax.imageio.ImageWriteParam)
+     *     javax.imageio.ImageWriteParam)
      */
-    public IIOMetadata getDefaultImageMetadata( ImageTypeSpecifier its, ImageWriteParam param ) {
+    public IIOMetadata getDefaultImageMetadata(ImageTypeSpecifier its, ImageWriteParam param) {
         return null;
     }
 
-    /**
-     * @see javax.imageio.ImageWriter#getDefaultIStreamMetadata(javax.imageio.ImageWriteParam)
-     */
-    public IIOMetadata getDefaultStreamMetadata( ImageWriteParam param ) {
+    /** @see javax.imageio.ImageWriter#getDefaultIStreamMetadata(javax.imageio.ImageWriteParam) */
+    public IIOMetadata getDefaultStreamMetadata(ImageWriteParam param) {
         return null;
     }
 
     /**
      * @see javax.imageio.ImageWriter#convertStreamMetadata(javax.imageio.metadata.IIOMetadata,
-     *      javax.imageio.ImageWriteParam)
+     *     javax.imageio.ImageWriteParam)
      */
-    public IIOMetadata convertStreamMetadata( IIOMetadata md, ImageWriteParam param ) {
+    public IIOMetadata convertStreamMetadata(IIOMetadata md, ImageWriteParam param) {
         return null;
     }
 
     /**
      * @see javax.imageio.ImageWriter#convertImageMetadata(javax.imageio.metadata.IIOMetadata,
-     *      javax.imageio.ImageTypeSpecifier, javax.imageio.ImageWriteParam)
+     *     javax.imageio.ImageTypeSpecifier, javax.imageio.ImageWriteParam)
      */
-    public IIOMetadata convertImageMetadata( IIOMetadata md, ImageTypeSpecifier its, ImageWriteParam param ) {
+    public IIOMetadata convertImageMetadata(
+            IIOMetadata md, ImageTypeSpecifier its, ImageWriteParam param) {
         return md;
     }
 
-    /**
-     * Cleans this {@link GrassBinaryImageWriter}.
-     */
+    /** Cleans this {@link GrassBinaryImageWriter}. */
     public void dispose() {
         try {
             rasterWriter.close();
@@ -210,8 +205,7 @@ public class GrassBinaryImageWriter extends ImageWriter {
     }
 
     public synchronized void abort() {
-        if (rasterWriter != null)
-            rasterWriter.abort();
+        if (rasterWriter != null) rasterWriter.abort();
     }
 
     public synchronized boolean abortRequested() {
@@ -222,5 +216,4 @@ public class GrassBinaryImageWriter extends ImageWriter {
         super.reset();
         rasterWriter = null;
     }
-
 }

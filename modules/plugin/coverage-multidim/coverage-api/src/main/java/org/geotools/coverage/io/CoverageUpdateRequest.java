@@ -19,69 +19,50 @@ package org.geotools.coverage.io;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.geotools.coverage.io.CoverageStore;
 import org.opengis.coverage.Coverage;
 
 /**
  * @author Simone Giannecchini, GeoSolutions
  * @todo revisit and improve when feedback starts to flow in
- * @todo inherit {@link CoverageReadRequest} and add a method to obtain the capabilities for a {@link CoverageStore}
- * 
+ * @todo inherit {@link CoverageReadRequest} and add a method to obtain the capabilities for a
+ *     {@link org.geotools.coverage.io.CoverageStore}
  * @source $URL$
  */
 public class CoverageUpdateRequest extends CoverageRequest {
 
-    /**
-     * @uml.property name="data"
-     */
+    /** @uml.property name="data" */
     private Collection<? extends Coverage> data;
 
-    /**
-     * @uml.property name="metadata"
-     */
+    /** @uml.property name="metadata" */
     private Map<String, String> metadata;
 
-    /**
-     * @see org.geotools.coverage.io.CoverageUpdateRequest#getMetadataNames()
-     */
+    /** @see org.geotools.coverage.io.CoverageUpdateRequest#getMetadataNames() */
     public java.lang.String[] getMetadataNames() throws java.io.IOException {
         return null;
     }
 
-    /**
-     * @see org.geotools.coverage.io.CoverageUpdateRequest#getMetadataValue(java.lang.String)
-     */
+    /** @see org.geotools.coverage.io.CoverageUpdateRequest#getMetadataValue(java.lang.String) */
     public java.lang.String getMetadataValue(java.lang.String arg0) throws java.io.IOException {
         return arg0;
     }
 
-    /**
-     * @see org.geotools.coverage.io.CoverageUpdateRequest#setMetadata(java.util.Map)
-     */
+    /** @see org.geotools.coverage.io.CoverageUpdateRequest#setMetadata(java.util.Map) */
     public void setMetadata(Map<String, String> metadata) throws java.io.IOException {
         this.metadata = new HashMap<String, String>(metadata);
     }
 
-    /**
-     * @see org.geotools.coverage.io.CoverageUpdateRequest#getMetadata()
-     */
+    /** @see org.geotools.coverage.io.CoverageUpdateRequest#getMetadata() */
     public Map<String, String> getMetadata() throws java.io.IOException {
         return new HashMap<String, String>(this.metadata);
     }
 
-    /**
-     * @see org.geotools.coverage.io.CoverageUpdateRequest#setData(java.util.Collection)
-     */
+    /** @see org.geotools.coverage.io.CoverageUpdateRequest#setData(java.util.Collection) */
     public void setData(Collection<? extends Coverage> data) {
         this.data = data;
     }
 
-    /**
-     * @see org.geotools.coverage.io.CoverageUpdateRequest#getData()
-     */
+    /** @see org.geotools.coverage.io.CoverageUpdateRequest#getData() */
     public Collection<? extends Coverage> getData() {
         return data;
     }
-
 }

@@ -16,6 +16,7 @@
  */
 package org.geotools.geometry.jts.spatialschema.geometry.primitive;
 
+import junit.framework.TestCase;
 import org.geotools.geometry.jts.spatialschema.PositionFactoryImpl;
 import org.geotools.geometry.jts.spatialschema.geometry.DirectPositionImpl;
 import org.geotools.geometry.jts.spatialschema.geometry.geometry.GeometryFactoryImpl;
@@ -27,130 +28,119 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-import junit.framework.TestCase;
-
 /**
  * @author gdavis
- * 
- *
- *
- *
- *
  * @source $URL$
  */
 public class PointImplTest extends TestCase {
 
-	public void testNewEmptyPoint() {
-		Point point = new PointImpl();
-		assertNotNull(point.getCoordinateReferenceSystem());
-		DirectPosition position = point.getDirectPosition();
-		assertNotNull(position);
-	}
+    public void testNewEmptyPoint() {
+        Point point = new PointImpl();
+        assertNotNull(point.getCoordinateReferenceSystem());
+        DirectPosition position = point.getDirectPosition();
+        assertNotNull(position);
+    }
 
-	public void testNewPointHere() {
-		DirectPosition here = new DirectPositionImpl(DefaultGeographicCRS.WGS84);
-		here.setOrdinate(0, 48.44);
-		here.setOrdinate(1, -123.37); // 48.44,-123.37
+    public void testNewPointHere() {
+        DirectPosition here = new DirectPositionImpl(DefaultGeographicCRS.WGS84);
+        here.setOrdinate(0, 48.44);
+        here.setOrdinate(1, -123.37); // 48.44,-123.37
 
-		Point point = new PointImpl(here);
-		assertNotNull(point.getCoordinateReferenceSystem());
-		assertEquals(here.getCoordinateReferenceSystem(), point
-				.getCoordinateReferenceSystem());
-		assertEquals(here, point.getDirectPosition());
-		assertEquals(here.hashCode(), point.getDirectPosition().hashCode());
-	}
+        Point point = new PointImpl(here);
+        assertNotNull(point.getCoordinateReferenceSystem());
+        assertEquals(here.getCoordinateReferenceSystem(), point.getCoordinateReferenceSystem());
+        assertEquals(here, point.getDirectPosition());
+        assertEquals(here.hashCode(), point.getDirectPosition().hashCode());
+    }
 
-	public void testNewFactoryPointHere() {
-		PositionFactory gFact = new PositionFactoryImpl(
-				DefaultGeographicCRS.WGS84);
-		double[] ords = { 48.44, -123.37 };
-		DirectPosition here = gFact.createDirectPosition(ords);
+    public void testNewFactoryPointHere() {
+        PositionFactory gFact = new PositionFactoryImpl(DefaultGeographicCRS.WGS84);
+        double[] ords = {48.44, -123.37};
+        DirectPosition here = gFact.createDirectPosition(ords);
 
-		Point point = new PointImpl(here);
-		assertNotNull(point.getCoordinateReferenceSystem());
-		assertEquals(here.getCoordinateReferenceSystem(), point
-				.getCoordinateReferenceSystem());
-		assertEquals(here, point.getDirectPosition());
-		assertEquals(here.hashCode(), point.getDirectPosition().hashCode());
-	}
+        Point point = new PointImpl(here);
+        assertNotNull(point.getCoordinateReferenceSystem());
+        assertEquals(here.getCoordinateReferenceSystem(), point.getCoordinateReferenceSystem());
+        assertEquals(here, point.getDirectPosition());
+        assertEquals(here.hashCode(), point.getDirectPosition().hashCode());
+    }
 
-	public void testPicoStuff() {
-		DefaultPicoContainer container = new DefaultPicoContainer(); // parent
+    public void testPicoStuff() {
+        DefaultPicoContainer container = new DefaultPicoContainer(); // parent
 
-		// Teach Container about Factory Implementations we want to use
-		container.registerComponentImplementation(PositionFactoryImpl.class);
-		container.registerComponentImplementation(PrimitiveFactoryImpl.class);
-		container.registerComponentImplementation(GeometryFactoryImpl.class);
-		
-		// Confirm Container cannot create anything yet
-		assertNull(container
-				.getComponentInstanceOfType(CoordinateReferenceSystem.class));
-		try {
-			container.getComponentInstanceOfType(PositionFactory.class);
-			//fail("We should not be able to make a position factory yet - we do not have a CRS");
-			// we need to work with out a crs on the grounds that FactorySPI
-			// has to be able to find our class :-(
-		} catch (Exception expected) {
-		}
-		// let's provide a CRS now and confirm everything works
-		container.registerComponentInstance(DefaultGeographicCRS.WGS84_3D);
+        // Teach Container about Factory Implementations we want to use
+        container.registerComponentImplementation(PositionFactoryImpl.class);
+        container.registerComponentImplementation(PrimitiveFactoryImpl.class);
+        container.registerComponentImplementation(GeometryFactoryImpl.class);
 
-		PositionFactory positionFactory =
-			(PositionFactory) container.getComponentInstanceOfType(PositionFactory.class);
-		
-		assertSame(DefaultGeographicCRS.WGS84_3D, positionFactory.getCoordinateReferenceSystem());
-	}
-	
-	/**
-	 * Now that we understand containers let's start testing stuff ...
-	 * @param crs
-	 * @return container
-	 */
-	protected PicoContainer container( CoordinateReferenceSystem crs ){
-		DefaultPicoContainer container = new DefaultPicoContainer(); // parent
-		
-		container.registerComponentImplementation(PositionFactoryImpl.class);
-		container.registerComponentImplementation(PrimitiveFactoryImpl.class);
-		container.registerComponentImplementation(GeometryFactoryImpl.class);
-		container.registerComponentInstance( crs );
-		
-		return container;		
-	}
-	
-	public void testWSG84Point(){
-		PicoContainer c = container( DefaultGeographicCRS.WGS84 );
-		
-		// Do actually test stuff
-		
-		double[] ords = { 48.44, -123.37 };
-		PositionFactory factory = (PositionFactory) c.getComponentInstanceOfType( PositionFactory.class );
-		
-		assertNotNull(factory);
-		DirectPosition here = factory.createDirectPosition(ords);
-		Point point = new PointImpl(here);
-		assertNotNull(point.getCoordinateReferenceSystem());
-		assertEquals(here.getCoordinateReferenceSystem(), point
-				.getCoordinateReferenceSystem());
-		assertEquals(here, point.getDirectPosition());
-		assertEquals(here.hashCode(), point.getDirectPosition().hashCode());
-	}
-	
-	public void testWSG843DPoint(){
-		PicoContainer c = container( DefaultGeographicCRS.WGS84_3D );
-		
-		// Do actually test stuff
-		
-		double[] ords = { 48.44, -123.37, 0.0 };
-		PositionFactory factory = (PositionFactory) c.getComponentInstanceOfType( PositionFactory.class );
-		
-		assertNotNull(factory);
-		DirectPosition here = factory.createDirectPosition(ords);
-		Point point = new PointImpl(here);
-		assertNotNull(point.getCoordinateReferenceSystem());
-		assertEquals(here.getCoordinateReferenceSystem(), point
-				.getCoordinateReferenceSystem());
-		assertEquals(here, point.getDirectPosition());
-		assertEquals(here.hashCode(), point.getDirectPosition().hashCode());
-	}
-	
+        // Confirm Container cannot create anything yet
+        assertNull(container.getComponentInstanceOfType(CoordinateReferenceSystem.class));
+        try {
+            container.getComponentInstanceOfType(PositionFactory.class);
+            // fail("We should not be able to make a position factory yet - we do not have a CRS");
+            // we need to work with out a crs on the grounds that FactorySPI
+            // has to be able to find our class :-(
+        } catch (Exception expected) {
+        }
+        // let's provide a CRS now and confirm everything works
+        container.registerComponentInstance(DefaultGeographicCRS.WGS84_3D);
+
+        PositionFactory positionFactory =
+                (PositionFactory) container.getComponentInstanceOfType(PositionFactory.class);
+
+        assertSame(DefaultGeographicCRS.WGS84_3D, positionFactory.getCoordinateReferenceSystem());
+    }
+
+    /**
+     * Now that we understand containers let's start testing stuff ...
+     *
+     * @param crs
+     * @return container
+     */
+    protected PicoContainer container(CoordinateReferenceSystem crs) {
+        DefaultPicoContainer container = new DefaultPicoContainer(); // parent
+
+        container.registerComponentImplementation(PositionFactoryImpl.class);
+        container.registerComponentImplementation(PrimitiveFactoryImpl.class);
+        container.registerComponentImplementation(GeometryFactoryImpl.class);
+        container.registerComponentInstance(crs);
+
+        return container;
+    }
+
+    public void testWSG84Point() {
+        PicoContainer c = container(DefaultGeographicCRS.WGS84);
+
+        // Do actually test stuff
+
+        double[] ords = {48.44, -123.37};
+        PositionFactory factory =
+                (PositionFactory) c.getComponentInstanceOfType(PositionFactory.class);
+
+        assertNotNull(factory);
+        DirectPosition here = factory.createDirectPosition(ords);
+        Point point = new PointImpl(here);
+        assertNotNull(point.getCoordinateReferenceSystem());
+        assertEquals(here.getCoordinateReferenceSystem(), point.getCoordinateReferenceSystem());
+        assertEquals(here, point.getDirectPosition());
+        assertEquals(here.hashCode(), point.getDirectPosition().hashCode());
+    }
+
+    public void testWSG843DPoint() {
+        PicoContainer c = container(DefaultGeographicCRS.WGS84_3D);
+
+        // Do actually test stuff
+
+        double[] ords = {48.44, -123.37, 0.0};
+        PositionFactory factory =
+                (PositionFactory) c.getComponentInstanceOfType(PositionFactory.class);
+
+        assertNotNull(factory);
+        DirectPosition here = factory.createDirectPosition(ords);
+        Point point = new PointImpl(here);
+        assertNotNull(point.getCoordinateReferenceSystem());
+        assertEquals(here.getCoordinateReferenceSystem(), point.getCoordinateReferenceSystem());
+        assertEquals(here, point.getDirectPosition());
+        assertEquals(here.hashCode(), point.getDirectPosition().hashCode());
+    }
 }

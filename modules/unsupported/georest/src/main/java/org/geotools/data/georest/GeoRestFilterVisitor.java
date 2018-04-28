@@ -16,13 +16,14 @@
  */
 package org.geotools.data.georest;
 
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Polygon;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import org.opengis.filter.And;
 import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.ExcludeFilter;
@@ -55,20 +56,12 @@ import org.opengis.filter.spatial.Overlaps;
 import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Polygon;
-
 /**
- * <p>
  * FilterVisitor that parses filters to a rest-like URL. Don't forget to call the finish method
  * after parsing. This visitor also has the option to sort the URL properties in it's URL creation.
  * This can be handy in unit tests.
- * </p>
- * 
+ *
  * @author Pieter De Graef
- *
- *
- *
  * @source $URL$
  */
 public class GeoRestFilterVisitor implements FilterVisitor {
@@ -81,8 +74,7 @@ public class GeoRestFilterVisitor implements FilterVisitor {
 
     private boolean hasProperties;
 
-    public GeoRestFilterVisitor() {
-    }
+    public GeoRestFilterVisitor() {}
 
     public GeoRestFilterVisitor(boolean sortProperties) {
         this.sortProperties = sortProperties;
@@ -98,12 +90,10 @@ public class GeoRestFilterVisitor implements FilterVisitor {
 
     /**
      * Finish up building the URL, and return it as a string.
-     * 
-     * @param builder
-     *            StringBuilder that contains the base URL from which to start adding URL
-     *            properties.
-     * @param hasProperties
-     *            Does the given URL already contains other properties?
+     *
+     * @param builder StringBuilder that contains the base URL from which to start adding URL
+     *     properties.
+     * @param hasProperties Does the given URL already contains other properties?
      * @return Returns the URL with the newly added properties for filtering.
      */
     public String finish(StringBuilder builder, boolean hasProperties) {
@@ -237,8 +227,15 @@ public class GeoRestFilterVisitor implements FilterVisitor {
         Polygon polygon = (Polygon) filter.getExpression2().evaluate(extraData);
         Envelope box = polygon.getEnvelopeInternal();
         if (!properties.containsKey("bbox")) {
-            properties.put("bbox", box.getMinX() + "," + box.getMinY() + "," + box.getMaxX() + ","
-                    + box.getMaxY());
+            properties.put(
+                    "bbox",
+                    box.getMinX()
+                            + ","
+                            + box.getMinY()
+                            + ","
+                            + box.getMaxX()
+                            + ","
+                            + box.getMaxY());
         } else {
             throw new IllegalArgumentException("Filter cannot contain more than one bounding box.");
         }
@@ -298,8 +295,8 @@ public class GeoRestFilterVisitor implements FilterVisitor {
         return "&";
     }
 
-    private void checkPropertyFilter(String propertyName, String extension,
-            BinaryComparisonOperator filter) {
+    private void checkPropertyFilter(
+            String propertyName, String extension, BinaryComparisonOperator filter) {
         String combined = propertyName + extension;
         if (!properties.containsKey(combined)) {
             Object value = ((Literal) filter.getExpression2()).getValue();

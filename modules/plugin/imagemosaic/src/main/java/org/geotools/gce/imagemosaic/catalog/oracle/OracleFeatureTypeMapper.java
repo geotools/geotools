@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.transform.Definition;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -35,9 +34,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * An Oracle specific {@link FeatureTypeMapper} instance
- * 
- * @author Daniele Romagnoli, GeoSolutions SAS
  *
+ * @author Daniele Romagnoli, GeoSolutions SAS
  */
 public class OracleFeatureTypeMapper implements FeatureTypeMapper {
 
@@ -102,7 +100,7 @@ public class OracleFeatureTypeMapper implements FeatureTypeMapper {
 
     /**
      * Create a new {@link OracleFeatureTypeMapper} on top of the original featureType provided
-     * 
+     *
      * @param featureType
      * @throws CQLException
      */
@@ -123,8 +121,8 @@ public class OracleFeatureTypeMapper implements FeatureTypeMapper {
             String attributeName = remap(originalAttribute);
 
             // Create the definition to map the original attribute to the Oracle specific one
-            final Definition definition = new Definition(originalAttribute,
-                    ECQL.toExpression(attributeName), binding);
+            final Definition definition =
+                    new Definition(originalAttribute, ECQL.toExpression(attributeName), binding);
             definitions.add(definition);
             definitionsMapping.put(attribute.getName(), definition);
         }
@@ -132,7 +130,8 @@ public class OracleFeatureTypeMapper implements FeatureTypeMapper {
     }
 
     /**
-     * Remap the original featureType on top of the available definitions to create the Oracle specific featureType
+     * Remap the original featureType on top of the available definitions to create the Oracle
+     * specific featureType
      */
     private void remapFeatureType() {
         final SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();
@@ -148,7 +147,9 @@ public class OracleFeatureTypeMapper implements FeatureTypeMapper {
             AttributeType type = descriptor.getType();
             if (type instanceof GeometryType) {
                 coordinateReferenceSystem = ((GeometryType) type).getCoordinateReferenceSystem();
-                tb.add(definition.getExpression().toString(), definition.getBinding(),
+                tb.add(
+                        definition.getExpression().toString(),
+                        definition.getBinding(),
                         coordinateReferenceSystem);
             } else {
                 tb.add(definition.getExpression().toString(), definition.getBinding());

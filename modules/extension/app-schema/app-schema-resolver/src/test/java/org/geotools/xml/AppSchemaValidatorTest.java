@@ -19,24 +19,18 @@ package org.geotools.xml;
 
 import java.io.IOException;
 import java.io.InputStream;
-
 import org.junit.Assert;
 import org.junit.Test;
 
 /**
  * Tests for {@link AppSchemaValidator}.
- * 
+ *
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
- *
- *
- *
  * @source $URL$
  */
 public class AppSchemaValidatorTest {
 
-    /**
-     * Test that validation succeeds for a known-valid XML instance document.
-     */
+    /** Test that validation succeeds for a known-valid XML instance document. */
     @Test
     public void validateErMineralOccurrence() {
         AppSchemaValidator.validateResource("/test-data/er_MineralOccurrence.xml", null);
@@ -49,13 +43,17 @@ public class AppSchemaValidatorTest {
     @Test
     public void validateErMineralOccurrenceWithErrors() {
         try {
-            AppSchemaValidator.validateResource("/test-data/er_MineralOccurrence_with_errors.xml", null);
-            Assert.fail("Unexpected schema validation success for known-invalid XML instance document");
+            AppSchemaValidator.validateResource(
+                    "/test-data/er_MineralOccurrence_with_errors.xml", null);
+            Assert.fail(
+                    "Unexpected schema validation success for known-invalid XML instance document");
         } catch (Exception e) {
             Assert.assertTrue(
                     e.getMessage(),
-                    e.getMessage().startsWith(
-                            "Schema validation failures: 2" + System.getProperty("line.separator")));
+                    e.getMessage()
+                            .startsWith(
+                                    "Schema validation failures: 2"
+                                            + System.getProperty("line.separator")));
         }
     }
 
@@ -68,32 +66,36 @@ public class AppSchemaValidatorTest {
         AppSchemaValidator.validateResource("/test-data/Example01.xml", null);
     }
 
-    /**
-     * Tests for {@link AppSchemaValidator#getEncoding(String)}.
-     */
+    /** Tests for {@link AppSchemaValidator#getEncoding(String)}. */
     @Test
     public void getEncoding() {
         Assert.assertNull(AppSchemaValidator.getEncoding(""));
         Assert.assertNull(AppSchemaValidator.getEncoding("<?xml version=\"1.0\"?>"));
         Assert.assertNull(AppSchemaValidator.getEncoding("<?xml version=\"1.0\"? >"));
         Assert.assertNull(AppSchemaValidator.getEncoding("<?xml version=\"1.0\"?><root/>"));
-        Assert.assertEquals("UTF-8",
+        Assert.assertEquals(
+                "UTF-8",
                 AppSchemaValidator.getEncoding("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"));
-        Assert.assertEquals("UTF-8",
-                AppSchemaValidator.getEncoding("<?xml version='1.0' encoding='UTF-8'?>"));
-        Assert.assertEquals("UTF-8",
+        Assert.assertEquals(
+                "UTF-8", AppSchemaValidator.getEncoding("<?xml version='1.0' encoding='UTF-8'?>"));
+        Assert.assertEquals(
+                "UTF-8",
                 AppSchemaValidator.getEncoding("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"));
-        Assert.assertEquals("UTF-8", AppSchemaValidator
-                .getEncoding("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>"));
-        Assert.assertEquals("UTF-8",
-                AppSchemaValidator.getEncoding("<?xml version=\"1.0\" encoding=\"UTF-8\"?><root/>"));
+        Assert.assertEquals(
+                "UTF-8",
+                AppSchemaValidator.getEncoding(
+                        "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>"));
+        Assert.assertEquals(
+                "UTF-8",
+                AppSchemaValidator.getEncoding(
+                        "<?xml version=\"1.0\" encoding=\"UTF-8\"?><root/>"));
     }
 
     /**
      * Test support for testing {@link AppSchemaValidator#validate(String)}. This method converts
      * reads a classpath resource into a string (using the default platform encoding) before
      * applying string schema validation.
-     * 
+     *
      * @param name
      */
     public static void validateResourceAsString(String name) {
@@ -135,12 +137,15 @@ public class AppSchemaValidatorTest {
     public void validateErMineralOccurrenceWithErrorsAsString() {
         try {
             validateResourceAsString("/test-data/er_MineralOccurrence_with_errors.xml");
-            Assert.fail("Unexpected schema validation success for known-invalid XML instance document");
+            Assert.fail(
+                    "Unexpected schema validation success for known-invalid XML instance document");
         } catch (Exception e) {
             Assert.assertTrue(
                     e.getMessage(),
-                    e.getMessage().startsWith(
-                            "Schema validation failures: 2" + System.getProperty("line.separator")));
+                    e.getMessage()
+                            .startsWith(
+                                    "Schema validation failures: 2"
+                                            + System.getProperty("line.separator")));
         }
     }
 
@@ -154,17 +159,16 @@ public class AppSchemaValidatorTest {
         validateResourceAsString("/test-data/Example01.xml");
     }
 
-    /**
-     * Test that a GetFeature can be validated.
-     */
+    /** Test that a GetFeature can be validated. */
     @Test
     public void validateGetFeature() {
-        AppSchemaValidator.validate("<wfs:GetFeature " //
-                + "xmlns:wfs=\"http://www.opengis.net/wfs\" " //
-                + "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " //
-                + "xsi:schemaLocation=\"" //
-                + "http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd" //
-                + "\"><wfs:Query typeName=\"test\"/></wfs:GetFeature>", null);
+        AppSchemaValidator.validate(
+                "<wfs:GetFeature " //
+                        + "xmlns:wfs=\"http://www.opengis.net/wfs\" " //
+                        + "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " //
+                        + "xsi:schemaLocation=\"" //
+                        + "http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd" //
+                        + "\"><wfs:Query typeName=\"test\"/></wfs:GetFeature>",
+                null);
     }
-
 }

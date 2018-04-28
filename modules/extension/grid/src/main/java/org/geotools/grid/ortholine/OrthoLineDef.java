@@ -18,14 +18,11 @@
 package org.geotools.grid.ortholine;
 
 /**
- * Defines how to generate a set of regularly-spaced, ortho-line elements with
- * given orientation and level.
- * 
+ * Defines how to generate a set of regularly-spaced, ortho-line elements with given orientation and
+ * level.
+ *
  * @author mbedward
  * @since 8.0
- *
- *
- *
  * @source $URL$
  * @version $Id$
  */
@@ -37,7 +34,7 @@ public class OrthoLineDef {
 
     /**
      * Creates a new ortho-line definition.
-     * 
+     *
      * @param orientation line orientation
      * @param level an integer level (user-defined values) indicating line precedence
      * @param spacing the spacing between lines in world distance units
@@ -47,10 +44,10 @@ public class OrthoLineDef {
         this.orientation = orientation;
         this.spacing = spacing;
     }
-    
+
     /**
      * Creates a copy of an existing line definition.
-     * 
+     *
      * @param lineDef the definition to copy
      * @throws IllegalArgumentException if {@code lineDef} is {@code null}
      */
@@ -65,7 +62,7 @@ public class OrthoLineDef {
 
     /**
      * Gets the integer level (line precedence).
-     * 
+     *
      * @return the level
      */
     public int getLevel() {
@@ -74,7 +71,7 @@ public class OrthoLineDef {
 
     /**
      * Gets the orientation.
-     * 
+     *
      * @return orientation
      */
     public LineOrientation getOrientation() {
@@ -83,11 +80,10 @@ public class OrthoLineDef {
 
     /**
      * Gets the spacing between lines.
-     * 
+     *
      * @return line spacing
      */
     public double getSpacing() {
         return spacing;
     }
-
 }

@@ -17,9 +17,7 @@
 
 package org.geotools.gce.imagemosaic.granulehandler;
 
-/**
- * Simple factory for GranuleGeometryHandlers
- */
+/** Simple factory for GranuleGeometryHandlers */
 public interface GranuleHandlerFactorySPI {
     GranuleHandler create();
 }

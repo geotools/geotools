@@ -1,18 +1,16 @@
 package org.geotools.wcs.bindings;
 
 import javax.xml.namespace.QName;
-
 import net.opengis.wcs10.InterpolationMethodType;
-
 import org.geotools.wcs.WCS;
 import org.geotools.xml.AbstractSimpleBinding;
 import org.geotools.xml.InstanceComponent;
 
 /**
  * Binding object for the type http://www.opengis.net/wcs:InterpolationMethodType.
- * 
+ *
  * <p>
- * 
+ *
  * <pre>
  *  <code>
  *  &lt;simpleType name=&quot;InterpolationMethodType&quot;&gt;
@@ -31,30 +29,26 @@ import org.geotools.xml.InstanceComponent;
  *              &lt;/annotation&gt;
  *          &lt;/enumeration&gt;
  *      &lt;/restriction&gt;
- *  &lt;/simpleType&gt; 
- * 	
+ *  &lt;/simpleType&gt;
+ *
  * </code>
  * </pre>
- * 
- * </p>
- * 
+ *
  * @generated
- * 
- * 
  * @source $URL$
  */
 public class InterpolationMethodTypeBinding extends AbstractSimpleBinding {
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return WCS.InterpolationMethodType;
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Class getType() {
@@ -62,14 +56,14 @@ public class InterpolationMethodTypeBinding extends AbstractSimpleBinding {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
-    public Object parse(InstanceComponent instance, Object value)
-            throws Exception {
+    public Object parse(InstanceComponent instance, Object value) throws Exception {
 
         return InterpolationMethodType.get((String) value);
     }
-
 }

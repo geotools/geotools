@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2017, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -16,15 +16,15 @@
  */
 /**
  * JSON Parsing support for MapBox Style support.
- * 
+ *
  * <ul>
- * <li>This package contains {@link org.geotools.mbstyle.parse.MBStyleParser} to access JSON
- * content.</li>
- * <li>Utility JSON wrappers {@link org.geotools.mbstyle.parse.MBObjectParser},
- * {@link org.geotools.mbstyle.parse.MBFunction} and {@link org.geotools.mbstyle.parse.MBFilter} are
- * provided for use.</li>
+ *   <li>This package contains {@link org.geotools.mbstyle.parse.MBStyleParser} to access JSON
+ *       content.
+ *   <li>Utility JSON wrappers {@link org.geotools.mbstyle.parse.MBObjectParser}, {@link
+ *       org.geotools.mbstyle.parse.MBFunction} and {@link org.geotools.mbstyle.parse.MBFilter} are
+ *       provided for use.
  * </ul>
- * 
+ *
  * @see org.geotools.styling.StyledLayerDescriptor
  */
 package org.geotools.mbstyle.parse;

@@ -16,18 +16,16 @@
  */
 package org.geotools.se.v1_1.bindings;
 
+import javax.xml.namespace.QName;
 import org.geotools.se.v1_1.SE;
-import org.geotools.sld.bindings.SLDOverlapBehaviorBinding;
 import org.geotools.xml.*;
 import org.opengis.style.OverlapBehavior;
 
-import javax.xml.namespace.QName;
-
 /**
  * Binding object for the element http://www.opengis.net/se:OverlapBehavior.
- * 
+ *
  * <p>
- * 
+ *
  * <pre>
  *  <code>
  *  &lt;xsd:element name="OverlapBehavior"&gt;
@@ -46,38 +44,32 @@ import javax.xml.namespace.QName;
  *              &lt;xsd:enumeration value="RANDOM"/&gt;
  *          &lt;/xsd:restriction&gt;
  *      &lt;/xsd:simpleType&gt;
- *  &lt;/xsd:element&gt; 
- * 	
+ *  &lt;/xsd:element&gt;
+ *
  *   </code>
  * </pre>
- * 
- * </p>
- * 
+ *
  * @generated
- *
- *
  * @source $URL$
  */
 public class OverlapBehaviorBinding extends AbstractSimpleBinding {
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return SE.OverlapBehavior;
     }
-    
+
     public Class getType() {
         return OverlapBehavior.class;
     }
-    
+
     @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
-        OverlapBehavior overlap = OverlapBehavior.valueOf((String)value);
+        OverlapBehavior overlap = OverlapBehavior.valueOf((String) value);
         if (overlap == null) {
             throw new IllegalArgumentException("Overlap behaviour " + value + " not supported");
         }
-        
+
         return overlap;
     }
 }

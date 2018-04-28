@@ -10,14 +10,14 @@
 package org.geotools.geometry.jts.spatialschema.geometry.geometry;
 
 // J2SE direct dependencies
-import org.geotools.geometry.jts.spatialschema.geometry.primitive.CurveBoundaryImpl;
-import org.geotools.geometry.jts.spatialschema.geometry.primitive.PointImpl;
+
+import com.vividsolutions.jts.geom.Geometry;
+import java.util.List;
 import org.geotools.geometry.jts.JTSGeometry;
 import org.geotools.geometry.jts.JTSUtils;
-import com.vividsolutions.jts.geom.Geometry;
-
-import java.util.List;
-
+import org.geotools.geometry.jts.spatialschema.geometry.DirectPositionImpl;
+import org.geotools.geometry.jts.spatialschema.geometry.primitive.CurveBoundaryImpl;
+import org.geotools.geometry.jts.spatialschema.geometry.primitive.PointImpl;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.coordinate.LineString;
 import org.opengis.geometry.coordinate.ParamForPoint;
@@ -27,45 +27,34 @@ import org.opengis.geometry.primitive.Curve;
 import org.opengis.geometry.primitive.CurveBoundary;
 import org.opengis.geometry.primitive.CurveInterpolation;
 import org.opengis.geometry.primitive.CurveSegment;
-import org.geotools.geometry.jts.spatialschema.geometry.DirectPositionImpl;
 
 /**
- * The {@code LineStringImpl} class implements the {@link LineString}
- * interface.
- * 
+ * The {@code LineStringImpl} class implements the {@link LineString} interface.
+ *
  * @author SYS Technologies
  * @author crossley
- *
- *
- *
- *
  * @source $URL$
  * @version $Revision $
  */
-public class LineStringImpl extends GenericCurveImpl 
-	implements LineString, JTSGeometry {
+public class LineStringImpl extends GenericCurveImpl implements LineString, JTSGeometry {
 
-    /**
-     * Points comprising this geometry.
-     */
+    /** Points comprising this geometry. */
     private PointArray controlPoints;
 
-    //*************************************************************************
+    // *************************************************************************
     //  Constructors
-    //*************************************************************************
-    
-    /**
-     * Creates a new {@code LineStringImpl}.
-     */
+    // *************************************************************************
+
+    /** Creates a new {@code LineStringImpl}. */
     public LineStringImpl() {
         controlPoints = new PointArrayImpl();
-        ((PointArrayImpl)controlPoints).setJTSParent(this);
+        ((PointArrayImpl) controlPoints).setJTSParent(this);
     }
 
-    //*************************************************************************
+    // *************************************************************************
     //  implement the *** interface
-    //*************************************************************************
-    
+    // *************************************************************************
+
     /**
      * @inheritDoc
      * @see org.opengis.geometry.coordinate.LineString#getControlPoints()
@@ -87,7 +76,8 @@ public class LineStringImpl extends GenericCurveImpl
      * @see org.opengis.geometry.primitive.CurveSegment#getBoundary()
      */
     public CurveBoundary getBoundary() {
-        return new CurveBoundaryImpl(null, new PointImpl(getStartPoint()), new PointImpl(getEndPoint()));
+        return new CurveBoundaryImpl(
+                null, new PointImpl(getStartPoint()), new PointImpl(getEndPoint()));
     }
 
     /**
@@ -95,10 +85,8 @@ public class LineStringImpl extends GenericCurveImpl
      * @see org.opengis.geometry.primitive.CurveSegment#getCurve()
      */
     public Curve getCurve() {
-        if (parent instanceof Curve)
-            return (Curve) parent;
-        else
-            return null;
+        if (parent instanceof Curve) return (Curve) parent;
+        else return null;
     }
 
     /**
@@ -110,8 +98,8 @@ public class LineStringImpl extends GenericCurveImpl
     }
 
     /**
-     * A line string doesn't have any continuous derivatives since the
-     * derivative has dicontinuities at the vertices.
+     * A line string doesn't have any continuous derivatives since the derivative has dicontinuities
+     * at the vertices.
      */
     public int getNumDerivativeInterior() {
         return 0;
@@ -149,7 +137,7 @@ public class LineStringImpl extends GenericCurveImpl
         LineStringImpl result = new LineStringImpl();
         PointArray pa = result.getSamplePoints();
         int n = controlPoints.size();
-        for (int i=n-1; i>=0; i--) {
+        for (int i = n - 1; i >= 0; i--) {
             pa.add(new DirectPositionImpl(controlPoints.get(i).getDirectPosition()));
         }
         return result;
@@ -175,7 +163,7 @@ public class LineStringImpl extends GenericCurveImpl
      * @inheritDoc
      * @see org.opengis.geometry.coordinate.GenericCurve#getTangent(double)
      */
-    public double [] getTangent(final double s) {
+    public double[] getTangent(final double s) {
         return null;
     }
 
@@ -211,23 +199,20 @@ public class LineStringImpl extends GenericCurveImpl
         return 1;
     }
 
-    /**
-     * Not implemented.  Returns null.
-     */
+    /** Not implemented. Returns null. */
     /*public DirectPosition getConstructiveParam(double cp) {
         return null;
     }*/
 
-    /**
-     * Not implemented.  Returns null.
-     */
+    /** Not implemented. Returns null. */
     /*public DirectPosition getParam(double s) {
         return null;
     }*/
 
     /**
      * @inheritDoc
-     * @see org.opengis.geometry.coordinate.GenericCurve#getParamForPoint(org.opengis.geometry.coordinate.DirectPosition)
+     * @see
+     *     org.opengis.geometry.coordinate.GenericCurve#getParamForPoint(org.opengis.geometry.coordinate.DirectPosition)
      */
     public ParamForPoint getParamForPoint(final DirectPosition p) {
         return null;
@@ -235,7 +220,9 @@ public class LineStringImpl extends GenericCurveImpl
 
     /**
      * @inheritDoc
-     * @see org.opengis.geometry.coordinate.GenericCurve#length(org.opengis.geometry.coordinate.Position, org.opengis.geometry.coordinate.Position)
+     * @see
+     *     org.opengis.geometry.coordinate.GenericCurve#length(org.opengis.geometry.coordinate.Position,
+     *     org.opengis.geometry.coordinate.Position)
      */
     public double length(final Position point1, final Position point2) {
         return 0;
@@ -263,18 +250,17 @@ public class LineStringImpl extends GenericCurveImpl
      */
     protected Geometry computeJTSPeer() {
         int n = controlPoints.size();
-        com.vividsolutions.jts.geom.Coordinate [] coords =
-            new com.vividsolutions.jts.geom.Coordinate[n];
-        for (int i=0; i<n; i++) {
-            coords[i] = JTSUtils.directPositionToCoordinate(
-                (DirectPosition) controlPoints.get(i));
+        com.vividsolutions.jts.geom.Coordinate[] coords =
+                new com.vividsolutions.jts.geom.Coordinate[n];
+        for (int i = 0; i < n; i++) {
+            coords[i] = JTSUtils.directPositionToCoordinate((DirectPosition) controlPoints.get(i));
         }
         return JTSUtils.GEOMETRY_FACTORY.createLineString(coords);
     }
 
     /**
-     * We'd like to return "1", but the first derivative is undefined at the
-     * corners.  The subclass, LineSegment, can override this to return 1.
+     * We'd like to return "1", but the first derivative is undefined at the corners. The subclass,
+     * LineSegment, can override this to return 1.
      */
     public int getNumDerivativesInterior() {
         return 0;

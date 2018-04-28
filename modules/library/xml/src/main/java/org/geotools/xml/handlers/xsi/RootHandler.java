@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,31 +17,26 @@
 package org.geotools.xml.handlers.xsi;
 
 import java.net.URI;
-
 import org.geotools.xml.XSIElementHandler;
 import org.geotools.xml.schema.Schema;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotSupportedException;
 
-
 /**
  * RootHandler purpose.
- * 
- * <p>
- * This is intended to bootstrap the schema parsing
- * </p>
+ *
+ * <p>This is intended to bootstrap the schema parsing
  *
  * @author dzwiers, Refractions Research, Inc. http://www.refractions.net
  * @author $Author:$ (last modification)
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public class RootHandler extends XSIElementHandler {
     /** 'root' */
-    public final static String LOCALNAME = "root";
+    public static final String LOCALNAME = "root";
+
     private SchemaHandler schema;
     private URI uri;
 
@@ -62,18 +57,13 @@ public class RootHandler extends XSIElementHandler {
         schema = new SchemaHandler();
     }
 
-    /**
-     * @see java.lang.Object#hashCode()
-     */
+    /** @see java.lang.Object#hashCode() */
     public int hashCode() {
         return LOCALNAME.hashCode() * ((uri == null) ? 1 : uri.hashCode());
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String,
-     *      java.lang.String)
-     */
-    public XSIElementHandler getHandler(String namespaceURI, String localName){
+    /** @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String, java.lang.String) */
+    public XSIElementHandler getHandler(String namespaceURI, String localName) {
         if (SchemaHandler.LOCALNAME.equalsIgnoreCase(localName)
                 && SchemaHandler.namespaceURI.equalsIgnoreCase(namespaceURI)) {
             if (schema == null) {
@@ -89,28 +79,22 @@ public class RootHandler extends XSIElementHandler {
     }
 
     /**
-     * @see org.geotools.xml.XSIElementHandler#startElement(java.lang.String,
-     *      java.lang.String, org.xml.sax.Attributes)
+     * @see org.geotools.xml.XSIElementHandler#startElement(java.lang.String, java.lang.String,
+     *     org.xml.sax.Attributes)
      */
-    public void startElement(String namespaceURI, String localName,
-        Attributes attr) throws SAXException {
-        throw new SAXNotSupportedException(
-            "Should never have elements at the root level");
+    public void startElement(String namespaceURI, String localName, Attributes attr)
+            throws SAXException {
+        throw new SAXNotSupportedException("Should never have elements at the root level");
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#getLocalName()
-     */
+    /** @see org.geotools.xml.XSIElementHandler#getLocalName() */
     public String getLocalName() {
         return LOCALNAME;
     }
 
     /**
-     * <p>
-     * intended to be called after the parse, this generates a Schema object
-     * from the schema which was parsed in.
-     * </p>
-     *
+     * intended to be called after the parse, this generates a Schema object from the schema which
+     * was parsed in.
      *
      * @throws SAXException
      */
@@ -120,26 +104,18 @@ public class RootHandler extends XSIElementHandler {
         return s;
     }
 
-    /**
-     * @see org.xml.sax.ContentHandler#startPrefixMapping(java.lang.String,
-     *      java.lang.String)
-     */
+    /** @see org.xml.sax.ContentHandler#startPrefixMapping(java.lang.String, java.lang.String) */
     public void startPrefixMapping(String arg0, String arg1) {
         schema.startPrefixMapping(arg0, arg1);
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#getHandlerType()
-     */
+    /** @see org.geotools.xml.XSIElementHandler#getHandlerType() */
     public int getHandlerType() {
         return DEFAULT;
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#endElement(java.lang.String,
-     *      java.lang.String)
-     */
-    public void endElement(String namespaceURI, String localName){
+    /** @see org.geotools.xml.XSIElementHandler#endElement(java.lang.String, java.lang.String) */
+    public void endElement(String namespaceURI, String localName) {
         // do nothing
     }
 }

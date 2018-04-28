@@ -19,7 +19,6 @@ package org.geotools.data.aggregate;
 import java.io.IOException;
 import java.util.concurrent.Callable;
 import java.util.logging.Level;
-
 import org.geotools.data.DataStore;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -61,5 +60,4 @@ class CountCallable implements Callable<Long> {
             }
         }
     }
-
 }

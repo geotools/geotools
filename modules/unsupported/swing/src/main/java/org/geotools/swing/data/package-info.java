@@ -15,8 +15,5 @@
  *    Lesser General Public License for more details.
  */
 
-/**
- * Dialog and wizard classes to get user input for data stores
- */
+/** Dialog and wizard classes to get user input for data stores */
 package org.geotools.swing.data;
-

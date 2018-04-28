@@ -16,18 +16,18 @@
  */
 package org.geotools.filter.v1_1.capabilities;
 
-import org.w3c.dom.Document;
 import javax.xml.namespace.QName;
-import org.opengis.filter.capability.GeometryOperand;
 import org.geotools.filter.v1_1.OGC;
 import org.geotools.xml.Binding;
-
+import org.opengis.filter.capability.GeometryOperand;
+import org.w3c.dom.Document;
 
 /**
  * Binding test case for http://www.opengis.net/ogc:GeometryOperandType.
  *
  * <p>
- *  <pre>
+ *
+ * <pre>
  *   <code>
  *  &lt;xsd:simpleType name="GeometryOperandType"&gt;
  *      &lt;xsd:restriction base="xsd:QName"&gt;
@@ -55,12 +55,8 @@ import org.geotools.xml.Binding;
  *
  *    </code>
  *   </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class GeometryOperandTypeBindingTest extends OGCTestSupport {
@@ -81,8 +77,11 @@ public class GeometryOperandTypeBindingTest extends OGCTestSupport {
     }
 
     public void testEncode() throws Exception {
-        Document dom = encode(GeometryOperand.Envelope,
-                new QName(OGC.NAMESPACE, "GeometryOperand"), OGC.GeometryOperandType);
+        Document dom =
+                encode(
+                        GeometryOperand.Envelope,
+                        new QName(OGC.NAMESPACE, "GeometryOperand"),
+                        OGC.GeometryOperandType);
         assertEquals("gml:Envelope", dom.getDocumentElement().getFirstChild().getNodeValue());
     }
 }

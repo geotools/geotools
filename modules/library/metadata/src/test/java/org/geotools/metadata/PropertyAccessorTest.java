@@ -16,34 +16,28 @@
  */
 package org.geotools.metadata;
 
+import static org.junit.Assert.*;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import org.geotools.metadata.iso.citation.CitationImpl;
+import org.geotools.metadata.iso.citation.Citations;
+import org.geotools.util.SimpleInternationalString;
+import org.junit.*;
 import org.opengis.metadata.Identifier;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.util.InternationalString;
 
-import org.geotools.util.SimpleInternationalString;
-import org.geotools.metadata.iso.citation.CitationImpl;
-import org.geotools.metadata.iso.citation.Citations;
-
-import org.junit.*;
-import static org.junit.Assert.*;
-
-
 /**
  * Tests the {@link PropertyAccessor} class.
- *
- *
  *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */
 public final class PropertyAccessorTest {
-    /**
-     * Creates a property accessor for the given citation.
-     */
+    /** Creates a property accessor for the given citation. */
     private static PropertyAccessor createPropertyAccessor(final Citation citation) {
         final Class<?> implementation = citation.getClass();
         final Class<?> type = PropertyAccessor.getType(implementation, "org.opengis.metadata");
@@ -51,36 +45,31 @@ public final class PropertyAccessorTest {
         return new PropertyAccessor(implementation, type);
     }
 
-    /**
-     * Tests the constructor.
-     */
+    /** Tests the constructor. */
     @Test
     public void testConstructor() {
         final Citation citation = Citations.EPSG;
         PropertyAccessor accessor;
-        assertNull("No dummy interface expected.",
+        assertNull(
+                "No dummy interface expected.",
                 PropertyAccessor.getType(citation.getClass(), "org.opengis.dummy"));
         accessor = createPropertyAccessor(citation);
         assertTrue("Count of 'get' methods.", accessor.count() >= 13);
     }
 
-    /**
-     * Tests the {@code indexOf} and {code name} methods.
-     */
+    /** Tests the {@code indexOf} and {code name} methods. */
     @Test
     public void testName() {
         final Citation citation = Citations.EPSG;
         final PropertyAccessor accessor = createPropertyAccessor(citation);
-        assertEquals("Non-existent property",   -1,  accessor.indexOf("dummy"));
+        assertEquals("Non-existent property", -1, accessor.indexOf("dummy"));
         assertEquals("getTitle() property", "title", accessor.name(accessor.indexOf("title")));
         assertEquals("getTitle() property", "title", accessor.name(accessor.indexOf("TITLE")));
-        assertEquals("getISBN() property",  "ISBN",  accessor.name(accessor.indexOf("ISBN")));
+        assertEquals("getISBN() property", "ISBN", accessor.name(accessor.indexOf("ISBN")));
         assertNull(accessor.name(-1));
     }
 
-    /**
-     * Tests the get method.
-     */
+    /** Tests the get method. */
     @Test
     public void testGet() {
         Citation citation = Citations.EPSG;
@@ -92,9 +81,7 @@ public final class PropertyAccessorTest {
         assertTrue(containsEPSG(identifiers));
     }
 
-    /**
-     * Returns {@code true} if the specified identifiers contains the {@code "EPSG"} code.
-     */
+    /** Returns {@code true} if the specified identifiers contains the {@code "EPSG"} code. */
     static boolean containsEPSG(final Object identifiers) {
         assertTrue(identifiers instanceof Collection);
         @SuppressWarnings("unchecked")
@@ -107,9 +94,7 @@ public final class PropertyAccessorTest {
         return false;
     }
 
-    /**
-     * Tests the set method.
-     */
+    /** Tests the set method. */
     @Test
     public void testSet() {
         Citation citation = new CitationImpl();
@@ -149,22 +134,20 @@ public final class PropertyAccessorTest {
         assertEquals(2, ((Collection) value).size());
     }
 
-    /**
-     * Tests the shallow equals and copy methods.
-     */
+    /** Tests the shallow equals and copy methods. */
     @Test
     public void testEquals() {
         Citation citation = Citations.EPSG;
         final PropertyAccessor accessor = createPropertyAccessor(citation);
-        assertFalse(accessor.shallowEquals(citation, Citations.GEOTIFF, true ));
+        assertFalse(accessor.shallowEquals(citation, Citations.GEOTIFF, true));
         assertFalse(accessor.shallowEquals(citation, Citations.GEOTIFF, false));
-        assertTrue (accessor.shallowEquals(citation, Citations.EPSG,    false));
+        assertTrue(accessor.shallowEquals(citation, Citations.EPSG, false));
 
         citation = new CitationImpl();
-        assertTrue (accessor.shallowCopy  (Citations.EPSG, citation,    true ));
-        assertFalse(accessor.shallowEquals(citation, Citations.GEOTIFF, true ));
+        assertTrue(accessor.shallowCopy(Citations.EPSG, citation, true));
+        assertFalse(accessor.shallowEquals(citation, Citations.GEOTIFF, true));
         assertFalse(accessor.shallowEquals(citation, Citations.GEOTIFF, false));
-        assertTrue (accessor.shallowEquals(citation, Citations.EPSG,    false));
+        assertTrue(accessor.shallowEquals(citation, Citations.EPSG, false));
 
         final int index = accessor.indexOf("identifiers");
         final Object source = accessor.get(index, Citations.EPSG);
@@ -172,7 +155,7 @@ public final class PropertyAccessorTest {
         assertNotNull(source);
         assertNotNull(target);
         assertNotSame(source, target);
-        assertEquals (source, target);
+        assertEquals(source, target);
         assertTrue(containsEPSG(target));
 
         assertSame(target, accessor.set(index, citation, null));
@@ -188,9 +171,7 @@ public final class PropertyAccessorTest {
         }
     }
 
-    /**
-     * Tests the hash code computation.
-     */
+    /** Tests the hash code computation. */
     @Test
     public void testHashCode() {
         final CitationImpl citation = new CitationImpl();

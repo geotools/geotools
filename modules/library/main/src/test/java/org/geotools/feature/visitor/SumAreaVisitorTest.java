@@ -16,19 +16,16 @@
  */
 package org.geotools.feature.visitor;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.opengis.feature.simple.SimpleFeatureType;
-
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.Polygon;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.opengis.feature.simple.SimpleFeatureType;
 
 @RunWith(Parameterized.class)
 public class SumAreaVisitorTest<T> extends VisitorTestCase<T, T> {
@@ -43,15 +40,18 @@ public class SumAreaVisitorTest<T> extends VisitorTestCase<T, T> {
     public static Collection<Object[]> parameters() {
 
         return Arrays.asList(
-                new Object[] { Polygon.class,
-                        Arrays.asList(
-                                polygon(new int[] { 12, 6, 14, 8, 16, 6, 16, 4, 12, 4, 12, 6 }),
-                                polygon(new int[] { 10, 3, 12, 5, 16, 6, 15, 4, 13, 4, 10, 3 })),
-                18.5 },
-                new Object[] { Polygon.class,
-                        Arrays.asList(
-                                polygon(new int[] { 12, 6, 14, 8, 16, 6, 16, 4, 12, 4, 12, 6 })),
-                        12.0 });
+                new Object[] {
+                    Polygon.class,
+                    Arrays.asList(
+                            polygon(new int[] {12, 6, 14, 8, 16, 6, 16, 4, 12, 4, 12, 6}),
+                            polygon(new int[] {10, 3, 12, 5, 16, 6, 15, 4, 13, 4, 10, 3})),
+                    18.5
+                },
+                new Object[] {
+                    Polygon.class,
+                    Arrays.asList(polygon(new int[] {12, 6, 14, 8, 16, 6, 16, 4, 12, 4, 12, 6})),
+                    12.0
+                });
     }
 
     public static Polygon polygon(int[] xy) {

@@ -17,10 +17,8 @@
 package org.geotools.coverageio.gdal.rpftoc;
 
 import it.geosolutions.imageio.plugins.rpftoc.RPFTOCImageReaderSpi;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.coverageio.gdal.BaseGDALGridFormat;
 import org.geotools.data.DataSourceException;
 import org.geotools.factory.Hints;
@@ -29,24 +27,18 @@ import org.opengis.geometry.MismatchedDimensionException;
 
 /**
  * An implementation of {@link Format} for the RPFTOC format.
- * 
+ *
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
  * @since 2.5.x
- *
- *
  * @source $URL$
  */
 public final class RPFTOCFormat extends BaseGDALGridFormat implements Format {
-    /**
-     * Logger.
-     */
-    private final static Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger("org.geotools.coverageio.gdal.rfptoc");
+    /** Logger. */
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.gdal.rfptoc");
 
-    /**
-     * Creates an instance and sets the metadata.
-     */
+    /** Creates an instance and sets the metadata. */
     public RPFTOCFormat() {
         super(new RPFTOCImageReaderSpi());
 
@@ -59,17 +51,12 @@ public final class RPFTOCFormat extends BaseGDALGridFormat implements Format {
 
     private static InfoWrapper INFO = new InfoWrapper("RPFTOC Coverage Format", "RPFTOC");
 
-    /**
-     * Sets the metadata information.
-     */
+    /** Sets the metadata information. */
     protected void setInfo() {
         setInfo(INFO);
     }
 
-    /**
-     * @see org.geotools.data.coverage.grid.AbstractGridFormat#getReader(Object,
-     *      Hints)
-     */
+    /** @see org.geotools.data.coverage.grid.AbstractGridFormat#getReader(Object, Hints) */
     public RPFTOCReader getReader(Object source, Hints hints) {
         try {
             return new RPFTOCReader(source, hints);

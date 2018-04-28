@@ -20,11 +20,7 @@ import org.geotools.styling.Description;
 import org.geotools.util.SimpleInternationalString;
 import org.opengis.util.InternationalString;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class DescriptionBuilder extends AbstractStyleBuilder<Description> {
 
     private InternationalString title;
@@ -96,7 +92,5 @@ public class DescriptionBuilder extends AbstractStyleBuilder<Description> {
     protected void buildStyleInternal(StyleBuilder sb) {
         throw new UnsupportedOperationException(
                 "Does not make sense to build a style out of a description");
-
     }
-
 }

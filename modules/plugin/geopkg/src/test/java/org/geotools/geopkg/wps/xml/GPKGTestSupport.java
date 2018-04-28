@@ -16,8 +16,6 @@
  */
 package org.geotools.geopkg.wps.xml;
 
-
-import org.geotools.geopkg.wps.xml.GPKGConfiguration;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.test.XMLTestSupport;
 
@@ -29,7 +27,6 @@ import org.geotools.xml.test.XMLTestSupport;
 public abstract class GPKGTestSupport extends XMLTestSupport {
 
     protected Configuration createConfiguration() {
-       return new GPKGConfiguration();
+        return new GPKGConfiguration();
     }
-  
-} 
+}

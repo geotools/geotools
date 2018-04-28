@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import org.geotools.data.Query;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -28,16 +27,18 @@ import org.opengis.filter.expression.PropertyName;
 
 /**
  * A rendering transformation that renames one attribute in the input feature collection
- * 
+ *
  * @author Andrea Aime - GeoSolutions
- * 
  */
-public class AttributeRenameFunction extends FunctionExpressionImpl implements
-        RenderingTransformation {
+public class AttributeRenameFunction extends FunctionExpressionImpl
+        implements RenderingTransformation {
 
-    public static FunctionName NAME = new FunctionNameImpl("AttributeRename", parameter(
-            "sourceAttribute", String.class), parameter("targetAttribute", String.class),
-            parameter("optimizeQuery", boolean.class, 0, 1));
+    public static FunctionName NAME =
+            new FunctionNameImpl(
+                    "AttributeRename",
+                    parameter("sourceAttribute", String.class),
+                    parameter("targetAttribute", String.class),
+                    parameter("optimizeQuery", boolean.class, 0, 1));
 
     public AttributeRenameFunction() {
         super(NAME);
@@ -65,19 +66,21 @@ public class AttributeRenameFunction extends FunctionExpressionImpl implements
         final SimpleFeatureBuilder fb = new SimpleFeatureBuilder(targetSchema);
         final List<SimpleFeature> features = new ArrayList<SimpleFeature>();
         try {
-            fc.accepts(new FeatureVisitor() {
-                
-                @Override
-                public void visit(Feature feature) {
-                    fb.init((SimpleFeature) feature);
-                    SimpleFeature f = fb.buildFeature(feature.getIdentifier().getID());
-                    features.add(f);
-                }
-            }, null);
-        } catch(IOException e) {
+            fc.accepts(
+                    new FeatureVisitor() {
+
+                        @Override
+                        public void visit(Feature feature) {
+                            fb.init((SimpleFeature) feature);
+                            SimpleFeature f = fb.buildFeature(feature.getIdentifier().getID());
+                            features.add(f);
+                        }
+                    },
+                    null);
+        } catch (IOException e) {
             throw new RuntimeException("Failed to compute output collection", e);
         }
-        
+
         return new ListFeatureCollection(targetSchema, features);
     }
 
@@ -85,20 +88,23 @@ public class AttributeRenameFunction extends FunctionExpressionImpl implements
         try { // attempt to get value and perform conversion
             T result = getExpression(expressionIdx).evaluate(object, targetClass);
             if (result == null && mandatory) {
-                throw new IllegalArgumentException("Could not find function argument #"
-                        + expressionIdx + ", but it's mandatory");
+                throw new IllegalArgumentException(
+                        "Could not find function argument #"
+                                + expressionIdx
+                                + ", but it's mandatory");
             }
             return result;
         } catch (Exception e) {
             // probably a type error
-            if(mandatory) {
-                throw new IllegalArgumentException("Could not find function argument #" + expressionIdx
-                    + ", but it's mandatory");
+            if (mandatory) {
+                throw new IllegalArgumentException(
+                        "Could not find function argument #"
+                                + expressionIdx
+                                + ", but it's mandatory");
             } else {
                 return null;
             }
         }
-
     }
 
     @Override
@@ -106,34 +112,44 @@ public class AttributeRenameFunction extends FunctionExpressionImpl implements
         final String source = getAttribute(null, 0, String.class, true);
         final String target = getAttribute(null, 1, String.class, true);
         Boolean invert = getAttribute(null, 2, Boolean.class, false);
-        
-        if(invert == null || !invert) {
+
+        if (invert == null || !invert) {
             return null;
         } else {
             Query q = new Query(targetQuery);
-            if(q.getPropertyNames() != null) {
+            if (q.getPropertyNames() != null) {
                 String[] names = Arrays.copyOf(q.getPropertyNames(), q.getPropertyNames().length);
                 for (int i = 0; i < names.length; i++) {
-                    if(names[i].equals(target)) {
+                    if (names[i].equals(target)) {
                         names[i] = source;
                     }
                 }
                 q.setPropertyNames(names);
             }
-            if(q.getFilter() != null) {
-                Filter renamed = (Filter) q.getFilter().accept(new DuplicatingFilterVisitor() {
-                    @Override
-                    public Object visit(PropertyName expression, Object extraData) {
-                        if(expression.getPropertyName().equals(target)) {
-                            return ff.property(source);
-                        } else {
-                            return super.visit(expression, extraData);
-                        }
-                    }
-                }, null);
+            if (q.getFilter() != null) {
+                Filter renamed =
+                        (Filter)
+                                q.getFilter()
+                                        .accept(
+                                                new DuplicatingFilterVisitor() {
+                                                    @Override
+                                                    public Object visit(
+                                                            PropertyName expression,
+                                                            Object extraData) {
+                                                        if (expression
+                                                                .getPropertyName()
+                                                                .equals(target)) {
+                                                            return ff.property(source);
+                                                        } else {
+                                                            return super.visit(
+                                                                    expression, extraData);
+                                                        }
+                                                    }
+                                                },
+                                                null);
                 q.setFilter(renamed);
             }
-            
+
             return q;
         }
     }
@@ -142,5 +158,4 @@ public class AttributeRenameFunction extends FunctionExpressionImpl implements
     public GridGeometry invertGridGeometry(Query targetQuery, GridGeometry targetGridGeometry) {
         return null;
     }
-
 }

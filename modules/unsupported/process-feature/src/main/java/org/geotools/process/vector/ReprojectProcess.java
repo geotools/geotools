@@ -17,30 +17,48 @@
  */
 package org.geotools.process.vector;
 
-import org.geotools.process.factory.DescribeParameter;
-import org.geotools.process.factory.DescribeProcess;
-import org.geotools.process.factory.DescribeResult;
 import org.geotools.data.crs.ForceCoordinateSystemFeatureResults;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.store.ReprojectingFeatureCollection;
+import org.geotools.process.factory.DescribeParameter;
+import org.geotools.process.factory.DescribeProcess;
+import org.geotools.process.factory.DescribeResult;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Will reproject the features to another CRS. Can also be used to force a known CRS onto a dataset
  * that does not have ones
- * 
- * @author Andrea Aime
  *
+ * @author Andrea Aime
  * @source $URL$
  */
-@DescribeProcess(title = "Reproject Features", description = "Reprojects features into a supplied coordinate reference system.  Can also force a feature collection to have a given CRS.")
+@DescribeProcess(
+    title = "Reproject Features",
+    description =
+            "Reprojects features into a supplied coordinate reference system.  Can also force a feature collection to have a given CRS."
+)
 public class ReprojectProcess implements VectorProcess {
 
     @DescribeResult(name = "result", description = "Input feature collection")
     public SimpleFeatureCollection execute(
-            @DescribeParameter(name = "features", description = "The feature collection that will be reprojected") SimpleFeatureCollection features,
-            @DescribeParameter(name = "forcedCRS", min = 0, description = "Coordinate reference system to use for input feature collection (overrides native one)") CoordinateReferenceSystem forcedCRS,
-            @DescribeParameter(name = "targetCRS", min = 0, description = "Target coordinate reference system to use for reprojection") CoordinateReferenceSystem targetCRS)
+            @DescribeParameter(
+                        name = "features",
+                        description = "The feature collection that will be reprojected"
+                    )
+                    SimpleFeatureCollection features,
+            @DescribeParameter(
+                        name = "forcedCRS",
+                        min = 0,
+                        description =
+                                "Coordinate reference system to use for input feature collection (overrides native one)"
+                    )
+                    CoordinateReferenceSystem forcedCRS,
+            @DescribeParameter(
+                        name = "targetCRS",
+                        min = 0,
+                        description = "Target coordinate reference system to use for reprojection"
+                    )
+                    CoordinateReferenceSystem targetCRS)
             throws Exception {
 
         if (forcedCRS != null) {
@@ -53,5 +71,4 @@ public class ReprojectProcess implements VectorProcess {
         }
         return features;
     }
-
 }

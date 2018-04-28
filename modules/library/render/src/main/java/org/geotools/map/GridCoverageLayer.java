@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2003-2011, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,7 +17,6 @@
 package org.geotools.map;
 
 import java.util.logging.Level;
-
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.FactoryRegistryException;
@@ -28,29 +27,27 @@ import org.geotools.resources.coverage.FeatureUtilities;
 import org.geotools.styling.Style;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.TransformException;
+
 /**
  * Layer used to draw a raster {@link GridCoverage}.
- * <p>
- * Direct access to the {@link GridCoverage} is available using {@link #getCoverage()}, the
+ *
+ * <p>Direct access to the {@link GridCoverage} is available using {@link #getCoverage()}, the
  * outline of the raster is also available via {@link #toFeatureCollection()} for vector based
  * rendering systems.
+ *
  * @author Jody Garnett
  * @version 8.0
  * @since 2.7
- *
  * @source $URL$
  */
 public class GridCoverageLayer extends RasterLayer {
-    /**
-     * Grid Coverage to be drawn.
-     */
+    /** Grid Coverage to be drawn. */
     protected GridCoverage2D coverage;
 
     /**
      * Create layer to draw the provided grid coverage.
-     * 
-     * @param coverage
-     *            The new layer that has been added.
+     *
+     * @param coverage The new layer that has been added.
      * @param style
      * @throws SchemaException
      * @throws FactoryRegistryException
@@ -62,27 +59,28 @@ public class GridCoverageLayer extends RasterLayer {
     }
     /**
      * Create layer to draw the provided grid coverage.
+     *
      * @param coverage
      * @param style
      * @param title
      */
     public GridCoverageLayer(GridCoverage2D coverage, Style style, String title) {
-        super(style,title);
+        super(style, title);
         this.coverage = coverage;
     }
 
     @Override
     public void dispose() {
         preDispose();
-        if( coverage != null ){
-            try{
+        if (coverage != null) {
+            try {
                 coverage.dispose(true);
-            }catch (Exception e) {
+            } catch (Exception e) {
                 // eat me
-            }            
+            }
             coverage = null;
         }
-        if( style != null ){
+        if (style != null) {
             style = null;
         }
         super.dispose();
@@ -90,6 +88,7 @@ public class GridCoverageLayer extends RasterLayer {
 
     /**
      * Access to the grid coverage being drawn.
+     *
      * @return grid coverage being drawn.
      */
     public GridCoverage2D getCoverage() {
@@ -97,7 +96,7 @@ public class GridCoverageLayer extends RasterLayer {
     }
     /**
      * Layer bounds generated from the grid coverage.
-     * 
+     *
      * @return layer bounds generated from the grid coverage.
      */
     public ReferencedEnvelope getBounds() {
@@ -112,7 +111,7 @@ public class GridCoverageLayer extends RasterLayer {
         }
         return null;
     }
-    
+
     public SimpleFeatureCollection toFeatureCollection() {
         SimpleFeatureCollection collection;
         try {

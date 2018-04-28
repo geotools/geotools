@@ -17,14 +17,13 @@
 package org.geotools.data.postgis;
 
 import java.util.Map;
-
 import org.geotools.factory.Hints;
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
 
 /**
  * ConverterFactory for handling Map of String to {@link HStore} conversion.
- * 
+ *
  * @author Daniele Romagnoli - GeoSolutions SAS
  */
 public class HStoreConverterFactory implements ConverterFactory {

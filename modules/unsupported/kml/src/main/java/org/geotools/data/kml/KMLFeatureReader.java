@@ -21,9 +21,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.logging.Logger;
-
 import javax.xml.namespace.QName;
-
 import org.geotools.data.FeatureReader;
 import org.geotools.kml.KML;
 import org.geotools.kml.KMLConfiguration;
@@ -34,27 +32,26 @@ import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
  * Read a KML file directly.
- * 
+ *
  * @author Niels Charlier, Scitus Development
- * 
  * @source $URL$
  */
 public class KMLFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
     private static final Logger LOGGER = Logging.getLogger("org.geotools.data.property");
 
     SimpleFeatureType type = null;
-    SimpleFeature f = null;    
-    //PullParser parser;
+    SimpleFeature f = null;
+    // PullParser parser;
     StreamingParser parser;
     FileInputStream fis;
-    
+
     public KMLFeatureReader(String namespace, File file, QName name) throws IOException {
         fis = new FileInputStream(file);
         try {
-            parser = new StreamingParser( new KMLConfiguration(), fis, KML.Placemark);
+            parser = new StreamingParser(new KMLConfiguration(), fis, KML.Placemark);
         } catch (Exception e) {
             throw new IOException("Error processing KML file", e);
-        } 
+        }
         forward();
         if (f != null) type = f.getType();
     }
@@ -65,9 +62,8 @@ public class KMLFeatureReader implements FeatureReader<SimpleFeatureType, Simple
 
     /**
      * Grab the next feature from the property file.
-     * 
+     *
      * @return feature
-     * 
      * @throws IOException
      * @throws NoSuchElementException Check hasNext() to avoid reading off the end of the file
      */
@@ -75,24 +71,23 @@ public class KMLFeatureReader implements FeatureReader<SimpleFeatureType, Simple
         if (!hasNext()) {
             throw new NoSuchElementException();
         }
-        SimpleFeature next = f;        
+        SimpleFeature next = f;
         forward();
         return next;
     }
-    
+
     public void forward() throws IOException {
         try {
             f = (SimpleFeature) parser.parse();
         } catch (Exception e) {
             throw new IOException("Error processing KML file", e);
-        } 
+        }
     }
 
     /**
      * DOCUMENT ME!
-     * 
+     *
      * @return DOCUMENT ME!
-     * 
      * @throws IOException DOCUMENT ME!
      */
     public boolean hasNext() throws IOException {
@@ -100,8 +95,9 @@ public class KMLFeatureReader implements FeatureReader<SimpleFeatureType, Simple
     }
 
     /**
-     * Be sure to call close when you are finished with this reader; as it must close the file it has open.
-     * 
+     * Be sure to call close when you are finished with this reader; as it must close the file it
+     * has open.
+     *
      * @throws IOException
      */
     public void close() throws IOException {

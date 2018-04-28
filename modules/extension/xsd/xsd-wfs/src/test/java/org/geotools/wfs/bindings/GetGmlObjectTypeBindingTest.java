@@ -18,9 +18,7 @@ package org.geotools.wfs.bindings;
 
 import java.math.BigInteger;
 import java.net.URL;
-
 import net.opengis.wfs.GetGmlObjectType;
-
 import org.geotools.filter.v1_1.OGC;
 import org.geotools.gml3.GML;
 import org.geotools.test.TestData;
@@ -33,12 +31,10 @@ import org.w3c.dom.Element;
 
 /**
  * Unit test suite for {@link GetGmlObjectTypeBinding}
- * 
+ *
  * @author Gabriel Roldan (TOPP)
  * @version $Id$
  * @since 2.5.x
- *
- *
  * @source $URL$
  */
 public class GetGmlObjectTypeBindingTest extends WFSTestSupport {
@@ -69,7 +65,7 @@ public class GetGmlObjectTypeBindingTest extends WFSTestSupport {
         assertEquals("GML2", root.getAttribute("outputFormat"));
         assertEquals("3", root.getAttribute("traverseXlinkDepth"));
         assertEquals("2", root.getAttribute("traverseXlinkExpiry"));
-        
+
         Element gmlObjectId = getElementByQName(root, OGC.GmlObjectId);
         assertNotNull(gmlObjectId);
         assertEquals("gmlid.1", gmlObjectId.getAttributeNS(GML.NAMESPACE, GML.id.getLocalPart()));
@@ -95,5 +91,4 @@ public class GetGmlObjectTypeBindingTest extends WFSTestSupport {
         GmlObjectId gmlObjectId = (GmlObjectId) getGmlObj.getGmlObjectId();
         assertEquals("id1", gmlObjectId.getID());
     }
-
 }

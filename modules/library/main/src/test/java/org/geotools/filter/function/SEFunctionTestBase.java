@@ -31,9 +31,8 @@ import org.opengis.filter.expression.Expression;
 
 /**
  * Fields and helper method for unit test classes
+ *
  * @author Michael Bedward
- *
- *
  * @source $URL$
  */
 public class SEFunctionTestBase {
@@ -52,5 +51,4 @@ public class SEFunctionTestBase {
         builder.add(value);
         return builder.buildFeature(null);
     }
-
 }

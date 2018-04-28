@@ -19,30 +19,24 @@ package org.geotools.process.vector;
 
 import static org.junit.Assert.*;
 
-import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.feature.DefaultFeatureCollection;
-import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.geotools.process.vector.UnionFeatureCollection;
-import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.filter.FilterFactory;
-
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.PrecisionModel;
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.DefaultFeatureCollection;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
+import org.junit.Test;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.filter.FilterFactory;
 
-/**
- * 
- *
- * @source $URL$
- */
-public class UnionFeatureCollectionTest  {
+/** @source $URL$ */
+public class UnionFeatureCollectionTest {
 
     FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
@@ -57,8 +51,8 @@ public class UnionFeatureCollectionTest  {
         SimpleFeatureBuilder b = new SimpleFeatureBuilder(tb.buildFeatureType());
 
         DefaultFeatureCollection features = new DefaultFeatureCollection(null, b.getFeatureType());
-        DefaultFeatureCollection secondFeatures = new DefaultFeatureCollection(null, b
-                .getFeatureType());
+        DefaultFeatureCollection secondFeatures =
+                new DefaultFeatureCollection(null, b.getFeatureType());
         Geometry[] firstArrayGeometry = new Geometry[5];
         Geometry[] secondArrayGeometry = new Geometry[5];
         for (int numFeatures = 0; numFeatures < 5; numFeatures++) {
@@ -72,7 +66,6 @@ public class UnionFeatureCollectionTest  {
             b.add(0);
             firstArrayGeometry[numFeatures] = gf.createPolygon(shell, null);
             features.add(b.buildFeature(numFeatures + ""));
-
         }
         for (int numFeatures = 0; numFeatures < 5; numFeatures++) {
             Coordinate array[] = new Coordinate[5];
@@ -85,7 +78,6 @@ public class UnionFeatureCollectionTest  {
             b.add(0);
             secondArrayGeometry[numFeatures] = gf.createPolygon(shell, null);
             secondFeatures.add(b.buildFeature(numFeatures + ""));
-
         }
         UnionFeatureCollection process = new UnionFeatureCollection();
         SimpleFeatureCollection output = process.execute(features, secondFeatures);

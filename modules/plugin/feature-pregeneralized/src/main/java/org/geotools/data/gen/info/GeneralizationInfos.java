@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -25,12 +25,7 @@ import java.util.TreeSet;
 
 /**
  * @author Christian Mueller
- * 
- * Container for for GeneralizationInfo objects
- * 
- *
- *
- *
+ *     <p>Container for for GeneralizationInfo objects
  * @source $URL$
  */
 public class GeneralizationInfos {
@@ -44,9 +39,8 @@ public class GeneralizationInfos {
 
     /**
      * add a GeneralizationInfo object
-     * 
+     *
      * @param info
-     * 
      */
     public void addGeneralizationInfo(GeneralizationInfo info) {
         infoMap.put(info.getBaseFeatureName(), info);
@@ -54,7 +48,7 @@ public class GeneralizationInfos {
 
     /**
      * remove a GeneralizationInfo object
-     * 
+     *
      * @param info
      */
     public void removeGeneralizationInfo(GeneralizationInfo info) {
@@ -63,9 +57,8 @@ public class GeneralizationInfos {
 
     /**
      * get GeneralizationInfo for baseFeatureName
-     * 
+     *
      * @see GeneralizationInfo for info about baseFeatureName
-     * 
      * @param baseFeatureName
      * @return GeneralizationInfo or null
      */
@@ -75,22 +68,19 @@ public class GeneralizationInfos {
 
     /**
      * get GeneralizationInfo for featureName
-     * 
+     *
      * @see GeneralizationInfo for info about featureName
-     * 
      * @param featureName
      * @return GeneralizationInfo or null
      */
     public GeneralizationInfo getGeneralizationInfoForFeatureName(String featureName) {
         for (GeneralizationInfo info : infoMap.values())
-            if (info.getFeatureName().equals(featureName))
-                return info;
+            if (info.getFeatureName().equals(featureName)) return info;
         return null;
     }
 
     /**
      * @see GeneralizationInfo for info about basefeatureName
-     * 
      * @return list of base feature names
      */
     public Collection<String> getBaseFeatureNames() {
@@ -101,21 +91,18 @@ public class GeneralizationInfos {
 
     /**
      * @see GeneralizationInfo for info about featureName
-     * 
      * @return list of feature names
      */
-
     public Collection<String> getFeatureNames() {
         TreeSet<String> names = new TreeSet<String>();
-        for (GeneralizationInfo info : infoMap.values())
-            names.add(info.getFeatureName());
+        for (GeneralizationInfo info : infoMap.values()) names.add(info.getFeatureName());
         return names;
     }
 
     /**
      * This data source is the default data source for all GeneraliziationInfo objects in this
      * container
-     * 
+     *
      * @return the data source name or null
      */
     public String getDataSourceName() {
@@ -128,10 +115,9 @@ public class GeneralizationInfos {
 
     /**
      * This workspace is the default workspace for all GeneraliziationInfo objects in this container
-     * 
+     *
      * @return the namespace name or null
      */
-
     public String getDataSourceNameSpace() {
         return dataSourceNameSpace;
     }
@@ -144,16 +130,10 @@ public class GeneralizationInfos {
         return infoMap.values();
     }
 
-    /**
-     * 
-     * @throws IOException
-     *             if the validation of the generalization info objects fails
-     * 
-     */
+    /** @throws IOException if the validation of the generalization info objects fails */
     public void validate() throws IOException {
         for (GeneralizationInfo gi : getGeneralizationInfoCollection()) {
             gi.validate();
         }
     }
-
 }

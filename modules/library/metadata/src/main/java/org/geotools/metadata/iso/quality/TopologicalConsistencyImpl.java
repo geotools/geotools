@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -21,33 +21,23 @@ package org.geotools.metadata.iso.quality;
 
 import org.opengis.metadata.quality.TopologicalConsistency;
 
-
 /**
- * Correctness of the explicitly encoded topological characteristics of the dataset as
- * described by the scope.
- *
- *
+ * Correctness of the explicitly encoded topological characteristics of the dataset as described by
+ * the scope.
  *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane
- *
  * @since 2.1
  */
 public class TopologicalConsistencyImpl extends LogicalConsistencyImpl
-        implements TopologicalConsistency
-{
-    /**
-     * Serial number for interoperability with different versions.
-     */
+        implements TopologicalConsistency {
+    /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -255014076679068944L;
 
-    /**
-     * Constructs an initially empty topological consistency.
-     */
-    public TopologicalConsistencyImpl() {
-    }
+    /** Constructs an initially empty topological consistency. */
+    public TopologicalConsistencyImpl() {}
 
     /**
      * Constructs a metadata entity initialized with the values from the specified metadata.

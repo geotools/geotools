@@ -16,6 +16,12 @@
  */
 package org.geotools.filter.text.ecql;
 
+import static org.hamcrest.CoreMatchers.allOf;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
@@ -27,7 +33,6 @@ import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.factory.GeoTools;
 import org.geotools.factory.Hints;
 import org.geotools.filter.text.commons.CompilerUtil;
 import org.geotools.filter.text.commons.ExpressionToText;
@@ -45,21 +50,11 @@ import org.opengis.filter.spatial.DWithin;
 import org.opengis.filter.spatial.Intersects;
 import org.opengis.referencing.FactoryException;
 
-import static org.hamcrest.CoreMatchers.allOf;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-
 /**
- *
  * Literal Test Cases
  *
  * @author Mauricio Pazos (Axios Engineering)
  * @since 2.6
- *
- *
- *
  * @source $URL$
  */
 public class ECQLLiteralTest extends CQLLiteralTest {
@@ -67,14 +62,13 @@ public class ECQLLiteralTest extends CQLLiteralTest {
     public static final int WGS84 = 4326;
     private FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
 
-
-    public ECQLLiteralTest(){
+    public ECQLLiteralTest() {
         super(Language.ECQL);
     }
 
     /**
-     * Test for LineString Expression
-     * Sample: LINESTRING( 1 2, 3 4)
+     * Test for LineString Expression Sample: LINESTRING( 1 2, 3 4)
+     *
      * @throws Exception
      */
     @Test
@@ -85,17 +79,18 @@ public class ECQLLiteralTest extends CQLLiteralTest {
 
     /**
      * Sample: POINT(1 2)
+     *
      * @throws CQLException
      */
     @Test
-    public void point() throws Exception{
+    public void point() throws Exception {
         String wkt = "POINT(1 2)";
         assertParseReferencedAndUnreferenced(wkt, Point.class);
     }
 
-
     /**
      * Sample: POLYGON((1 2, 15 2, 15 20, 15 21, 1 2))
+     *
      * @throws Exception
      */
     @Test
@@ -104,20 +99,22 @@ public class ECQLLiteralTest extends CQLLiteralTest {
         assertParseReferencedAndUnreferenced(wkt, Polygon.class);
     }
 
-
     /**
-     * Sample: POLYGON ((40 60, 420 60, 420 320, 40 320, 40 60), (200 140, 160 220, 260 200, 200 140))
+     * Sample: POLYGON ((40 60, 420 60, 420 320, 40 320, 40 60), (200 140, 160 220, 260 200, 200
+     * 140))
      *
      * @throws Exception
      */
     @Test
     public void polygonWithHole() throws Exception {
-        String wkt = "POLYGON ((40 60, 420 60, 420 320, 40 320, 40 60), (200 140, 160 220, 260 200, 200 140))";
+        String wkt =
+                "POLYGON ((40 60, 420 60, 420 320, 40 320, 40 60), (200 140, 160 220, 260 200, 200 140))";
         assertParseReferencedAndUnreferenced(wkt, Polygon.class);
     }
 
     /**
      * Sample: MULTIPOINT( (1 2), (15 2), (15 20), (15 21), (1 2) ))
+     *
      * @throws Exception
      */
     @Test
@@ -130,6 +127,7 @@ public class ECQLLiteralTest extends CQLLiteralTest {
 
     /**
      * Sample: MULTILINESTRING((10 10, 20 20),(15 15,30 15))
+     *
      * @throws Exception
      */
     @Test
@@ -139,35 +137,43 @@ public class ECQLLiteralTest extends CQLLiteralTest {
     }
 
     /**
-     * sample: CROSS(ATTR1, GEOMETRYCOLLECTION (POINT (10 10),POINT (30 30),LINESTRING (15 15, 20 20)) )
+     * sample: CROSS(ATTR1, GEOMETRYCOLLECTION (POINT (10 10),POINT (30 30),LINESTRING (15 15, 20
+     * 20)) )
+     *
      * @throws Exception
      */
     @Test
-    public void geometryCollection()throws Exception{
+    public void geometryCollection() throws Exception {
         String wkt = "GEOMETRYCOLLECTION (POINT (10 10),POINT (30 30),LINESTRING (15 15, 20 20))";
         assertParseReferencedAndUnreferenced(wkt, GeometryCollection.class);
     }
 
     /**
      * Sample: MULTIPOLYGON( ((10 10, 10 20, 20 20, 20 15, 10 10)),((60 60, 70 70, 80 60, 60 60 )) )
+     *
      * @throws Exception
      */
     @Test
     public void multiPolygon() throws Exception {
-        String wkt = "MULTIPOLYGON( ((10 10, 10 20, 20 20, 20 15, 10 10)),((60 60, 70 70, 80 60, 60 60 )) )";
+        String wkt =
+                "MULTIPOLYGON( ((10 10, 10 20, 20 20, 20 15, 10 10)),((60 60, 70 70, 80 60, 60 60 )) )";
         assertParseReferencedAndUnreferenced(wkt, MultiPolygon.class);
     }
 
-    private void assertParseReferencedAndUnreferenced(String wkt, Class<? extends Geometry> type) throws Exception {
+    private void assertParseReferencedAndUnreferenced(String wkt, Class<? extends Geometry> type)
+            throws Exception {
         assertParseReferencedAndUnreferenced(wkt, type, null);
         assertParseReferencedAndUnreferenced(wkt, type, WGS84);
     }
 
-    private void assertParseReferencedAndUnreferenced(String wkt, Class expectedGeometryClass, Integer srid) throws Exception {
+    private void assertParseReferencedAndUnreferenced(
+            String wkt, Class expectedGeometryClass, Integer srid) throws Exception {
         assertParseReferencedAndUnreferenced(wkt, wkt, expectedGeometryClass, srid);
     }
 
-    private void assertParseReferencedAndUnreferenced(String wkt, String expectedWkt, Class expectedGeometryClass, Integer srid) throws Exception {
+    private void assertParseReferencedAndUnreferenced(
+            String wkt, String expectedWkt, Class expectedGeometryClass, Integer srid)
+            throws Exception {
         String sridPrefix = srid != null ? ("SRID=" + srid + ";") : "";
         Expression expression = CompilerUtil.parseExpression(language, sridPrefix + wkt);
 
@@ -181,7 +187,6 @@ public class ECQLLiteralTest extends CQLLiteralTest {
         } else {
             assertEqualsGeometries(expectedWkt, (Geometry) actualGeometry);
         }
-
     }
 
     @Test()
@@ -190,7 +195,11 @@ public class ECQLLiteralTest extends CQLLiteralTest {
         try {
             CompilerUtil.parseExpression(language, wkt);
         } catch (CQLException e) {
-            assertThat(e.getMessage(), allOf(containsString("Failed to build CRS"), containsString("12345678987654321")));
+            assertThat(
+                    e.getMessage(),
+                    allOf(
+                            containsString("Failed to build CRS"),
+                            containsString("12345678987654321")));
         }
     }
 

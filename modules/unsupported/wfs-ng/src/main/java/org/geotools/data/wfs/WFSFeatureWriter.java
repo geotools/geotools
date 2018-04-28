@@ -17,7 +17,6 @@
 package org.geotools.data.wfs;
 
 import java.io.IOException;
-
 import org.geotools.data.FeatureReader;
 import org.geotools.data.store.DiffContentFeatureWriter;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -28,12 +27,19 @@ public class WFSFeatureWriter extends DiffContentFeatureWriter {
 
     final WFSRemoteTransactionState autoCommitState;
 
-    public WFSFeatureWriter(final WFSFeatureStore store,
+    public WFSFeatureWriter(
+            final WFSFeatureStore store,
             final WFSLocalTransactionState localSate,
-            final FeatureReader<SimpleFeatureType, SimpleFeature> reader, final boolean autoCommit) {
+            final FeatureReader<SimpleFeatureType, SimpleFeature> reader,
+            final boolean autoCommit) {
 
-        super(store, localSate.getDiff(), reader, new SimpleFeatureBuilder(reader.getFeatureType(), new MutableIdentifierFeatureFactory()));
-        
+        super(
+                store,
+                localSate.getDiff(),
+                reader,
+                new SimpleFeatureBuilder(
+                        reader.getFeatureType(), new MutableIdentifierFeatureFactory()));
+
         if (autoCommit) {
             WFSDataStore dataStore = (WFSDataStore) store.getDataStore();
             autoCommitState = new WFSRemoteTransactionState(dataStore);
@@ -70,7 +76,7 @@ public class WFSFeatureWriter extends DiffContentFeatureWriter {
     @Override
     public synchronized SimpleFeature next() throws IOException {
         checkClosed();
-        return super.next();   
+        return super.next();
     }
 
     private void checkClosed() throws IOException {
@@ -78,5 +84,4 @@ public class WFSFeatureWriter extends DiffContentFeatureWriter {
             throw new IOException("FeatureWriter is closed");
         }
     }
-
 }

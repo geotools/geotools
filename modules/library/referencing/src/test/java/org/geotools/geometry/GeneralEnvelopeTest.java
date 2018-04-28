@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,22 +16,19 @@
  */
 package org.geotools.geometry;
 
+import static org.junit.Assert.*;
+
+import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.junit.*;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.Envelope;
 
-import org.geotools.referencing.crs.DefaultGeocentricCRS;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.junit.*;
-import static org.junit.Assert.*;
-
 /**
  * Tests the {@link GeneralEnvelope} class.
- * 
- *
  *
  * @source $URL$
- *         http://svn.osgeo.org/geotools/branches/2.6.x/modules/library/referencing/src/test/java
- *         /org/geotools/geometry/GeneralEnvelopeTest.java $
+ *     http://svn.osgeo.org/geotools/branches/2.6.x/modules/library/referencing/src/test/java
+ *     /org/geotools/geometry/GeneralEnvelopeTest.java $
  * @version $Id$
  * @author Martin Desruisseaux
  */
@@ -44,8 +41,8 @@ public final class GeneralEnvelopeTest {
         Envelope2D empty2d = new Envelope2D();
         assertTrue(empty2d.isEmpty());
 
-        GeneralEnvelope world = new GeneralEnvelope(new double[] { -180, -90 }, new double[] { 180,
-                90 });
+        GeneralEnvelope world =
+                new GeneralEnvelope(new double[] {-180, -90}, new double[] {180, 90});
         world.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
 
         GeneralEnvelope copyWorld = new GeneralEnvelope(world); // expected to work
@@ -67,22 +64,20 @@ public final class GeneralEnvelopeTest {
         GeneralEnvelope copyNil2 = new GeneralEnvelope((Envelope) nil2); // expected to work
 
         assertTrue(copyNil2.isNull());
-        
+
         // See http://jira.codehaus.org/browse/GEOT-3051
-        GeneralEnvelope geot3045 = new GeneralEnvelope(new double[]{0,0}, new double[]{-1,-1}); 
-        assertTrue( geot3045.isEmpty() );
+        GeneralEnvelope geot3045 = new GeneralEnvelope(new double[] {0, 0}, new double[] {-1, -1});
+        assertTrue(geot3045.isEmpty());
 
         // See http://jira.codehaus.org/browse/GEOT-4261
         GeneralEnvelope geot4261 = new GeneralEnvelope(2);
-        GeneralDirectPosition dp = new GeneralDirectPosition(new double[]{100.0, 200.0});
+        GeneralDirectPosition dp = new GeneralDirectPosition(new double[] {100.0, 200.0});
         assertTrue(geot4261.isEmpty());
         geot4261.add(dp);
         assertEquals(new GeneralEnvelope(dp, dp), geot4261);
     }
 
-    /**
-     * Tests {@link GeneralEnvelope#equals} method.
-     */
+    /** Tests {@link GeneralEnvelope#equals} method. */
     @Test
     public void testEquals() {
         /*
@@ -95,7 +90,7 @@ public final class GeneralEnvelopeTest {
         /*
          * Initialize with arbitrary coordinate values. Should not be empty anymore.
          */
-        for (int i = e1.getDimension(); --i >= 0;) {
+        for (int i = e1.getDimension(); --i >= 0; ) {
             e1.setRange(i, i * 5 + 2, i * 6 + 5);
         }
         assertFalse(e1.isNull());
@@ -138,9 +133,7 @@ public final class GeneralEnvelopeTest {
         assertFalse(e1.hashCode() == e2.hashCode());
     }
 
-    /**
-     * Compares the specified corners.
-     */
+    /** Compares the specified corners. */
     private static void assertPositionEquals(final DirectPosition p1, final DirectPosition p2) {
         assertNotSame(p1, p2);
         assertEquals(p1, p2);

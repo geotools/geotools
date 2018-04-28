@@ -16,33 +16,30 @@
  */
 package org.geotools.resources.coverage;
 
-import static org.geotools.filter.capability.FunctionNameImpl.parameter;
-
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.VolatileFunction;
 
-
 /**
  * Function to identify if a feature is a wrapped coverage or not
- * 
+ *
  * @author Davide Savazzi - GeoSolutions
  */
-public class FilterFunction_isCoverage  extends FunctionExpressionImpl implements VolatileFunction {
+public class FilterFunction_isCoverage extends FunctionExpressionImpl implements VolatileFunction {
 
-    public static FunctionName NAME = new FunctionNameImpl("isCoverage",Boolean.class);
-    
+    public static FunctionName NAME = new FunctionNameImpl("isCoverage", Boolean.class);
+
     public FilterFunction_isCoverage() {
         super(NAME);
     }
 
     public Object evaluate(SimpleFeature feature) {
-        return FeatureUtilities.isWrappedCoverageReader(feature.getFeatureType()) ||
-                FeatureUtilities.isWrappedCoverage(feature.getFeatureType());
+        return FeatureUtilities.isWrappedCoverageReader(feature.getFeatureType())
+                || FeatureUtilities.isWrappedCoverage(feature.getFeatureType());
     }
-    
+
     public Object evaluate(Object object) {
         if (object instanceof SimpleFeature) {
             return evaluate((SimpleFeature) object);

@@ -20,7 +20,6 @@ import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.NoninvertibleTransformException;
 
-
 /**
  * Concatenated transform in which the resulting transform is two-dimensional.
  *
@@ -30,31 +29,21 @@ import org.opengis.referencing.operation.NoninvertibleTransformException;
  * @author Martin Desruisseaux (IRD)
  */
 final class ConcatenatedTransform2D extends ConcatenatedTransform implements MathTransform2D {
-    /**
-     * Serial number for interoperability with different versions.
-     */
+    /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -7307709788564866500L;
 
-    /**
-     * Constructs a concatenated transform.
-     */
-    public ConcatenatedTransform2D(final MathTransform transform1,
-                                   final MathTransform transform2)
-    {
+    /** Constructs a concatenated transform. */
+    public ConcatenatedTransform2D(final MathTransform transform1, final MathTransform transform2) {
         super(transform1, transform2);
     }
 
-    /**
-     * Checks if transforms are compatibles with this implementation.
-     */
+    /** Checks if transforms are compatibles with this implementation. */
     @Override
     boolean isValid() {
-        return super.isValid() && getSourceDimensions()==2 && getTargetDimensions()==2;
+        return super.isValid() && getSourceDimensions() == 2 && getTargetDimensions() == 2;
     }
 
-    /**
-     * Creates the inverse transform of this object.
-     */
+    /** Creates the inverse transform of this object. */
     @Override
     public MathTransform2D inverse() throws NoninvertibleTransformException {
         return (MathTransform2D) super.inverse();

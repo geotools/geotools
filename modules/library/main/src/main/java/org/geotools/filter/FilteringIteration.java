@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
- *        
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -16,27 +16,18 @@
  */
 package org.geotools.filter;
 
-import java.util.Iterator;
-
-import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.store.FilteringFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureCollectionIteration;
 import org.geotools.feature.FeatureIterator;
-import org.opengis.filter.Filter;
 import org.opengis.feature.Feature;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.PropertyDescriptor;
-
+import org.opengis.filter.Filter;
 
 /**
- * Run through the provided collection only returning features that pass the provided
- * filter.
+ * Run through the provided collection only returning features that pass the provided filter.
  *
  * @author Ian Schneider
- *
- *
  * @source $URL$
  * @deprecated Please use {@link FilteringFeatureCollection}
  */
@@ -47,12 +38,12 @@ public class FilteringIteration extends FeatureCollectionIteration {
      * @param filter DOCUMENT ME!
      * @param collection DOCUMENT ME!
      */
-    public FilteringIteration(org.opengis.filter.Filter filter, FeatureCollection<?,?> collection) {
-        super(new FilterHandler(filter),
-              new FilteringFeatureCollection(collection,filter) );
+    public FilteringIteration(
+            org.opengis.filter.Filter filter, FeatureCollection<?, ?> collection) {
+        super(new FilterHandler(filter), new FilteringFeatureCollection(collection, filter));
     }
 
-    public static void filter(FeatureCollection<?,?> features, Filter filter) {
+    public static void filter(FeatureCollection<?, ?> features, Filter filter) {
         FilteringIteration i = new FilteringIteration(filter, features);
         i.iterate();
     }
@@ -61,7 +52,7 @@ public class FilteringIteration extends FeatureCollectionIteration {
         ((FilterHandler) handler).iterator = iterator;
         super.iterate(iterator);
     }
-    
+
     static class FilterHandler implements Handler {
         FeatureIterator<?> iterator;
         final org.opengis.filter.Filter filter;
@@ -70,15 +61,11 @@ public class FilteringIteration extends FeatureCollectionIteration {
             this.filter = filter;
         }
 
-        public void endFeature(Feature f) {
-        }
+        public void endFeature(Feature f) {}
 
-        public void endFeatureCollection( FeatureCollection<?,?> fc) {
-        }
+        public void endFeatureCollection(FeatureCollection<?, ?> fc) {}
 
-        public void handleAttribute(PropertyDescriptor type,
-            Object value) {
-        }
+        public void handleAttribute(PropertyDescriptor type, Object value) {}
 
         public void handleFeature(Feature f) {
             if (!filter.evaluate(f)) {
@@ -87,8 +74,6 @@ public class FilteringIteration extends FeatureCollectionIteration {
             }
         }
 
-        public void handleFeatureCollection(
-            FeatureCollection<?,?> fc) {
-        }
+        public void handleFeatureCollection(FeatureCollection<?, ?> fc) {}
     }
 }

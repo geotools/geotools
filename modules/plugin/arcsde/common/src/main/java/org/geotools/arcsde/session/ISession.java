@@ -17,11 +17,6 @@
  */
 package org.geotools.arcsde.session;
 
-import java.io.IOException;
-import java.util.List;
-
-import org.geotools.arcsde.versioning.ArcSdeVersionHandler;
-
 import com.esri.sde.sdk.client.SeColumnDefinition;
 import com.esri.sde.sdk.client.SeConnection;
 import com.esri.sde.sdk.client.SeDBMSInfo;
@@ -41,25 +36,26 @@ import com.esri.sde.sdk.client.SeState;
 import com.esri.sde.sdk.client.SeStreamOp;
 import com.esri.sde.sdk.client.SeTable;
 import com.esri.sde.sdk.client.SeUpdate;
+import java.io.IOException;
+import java.util.List;
+import org.geotools.arcsde.versioning.ArcSdeVersionHandler;
 
 /**
  * Provides thread safe access to an SeConnection.
- * <p>
- * An {@code ISession} is a decorator around an SeConnection, ensuring the SeConnection is not hit
- * by two concurrent threads while at the same time participating in a {@link ISessionPool
+ *
+ * <p>An {@code ISession} is a decorator around an SeConnection, ensuring the SeConnection is not
+ * hit by two concurrent threads while at the same time participating in a {@link ISessionPool
  * connection pool} where more than one thread can reclaim usage of the {@link SeConnection}.
+ *
+ * <p>Each piece of code that needs access to an {@link SeConnection}, either directly or indirectly
+ * (for example, by accessing an {@link SeStreamOp} like in {@code SeQuery.fetch()} or {@code new
+ * SeLayer(connection)}, needs to do so inside the body of a {@link Command}, and issue the command
+ * through {@link ISession#issue(Command)}.
+ *
  * <p>
- * Each piece of code that needs access to an {@link SeConnection}, either directly or indirectly
- * (for example, by accessing an {@link SeStreamOp} like in {@code SeQuery.fetch()} or
- * {@code new SeLayer(connection)}, needs to do so inside the body of a {@link Command}, and issue
- * the command through {@link ISession#issue(Command)}.
- * <p>
- * 
- * 
+ *
  * @author Gabriel Roldan
  * @author Jody Garnett
- *
- *
  * @source $URL$
  * @version $Id$
  * @since 2.5.x
@@ -68,17 +64,16 @@ public interface ISession {
 
     /**
      * Executes the given command and returns its result.
-     * 
-     * @param command
-     *            the command to execute
-     * @throws IOException
-     *             if an exception occurs handling any ArcSDE resource while executing the command
+     *
+     * @param command the command to execute
+     * @throws IOException if an exception occurs handling any ArcSDE resource while executing the
+     *     command
      */
     public abstract <T> T issue(final Command<T> command) throws IOException;
 
     /**
      * Performs a session sanity check to avoid stale connections to be returned from the pool.
-     * 
+     *
      * @throws IOException
      * @see {@link SeConnection#testServer(long)}
      */
@@ -88,9 +83,9 @@ public interface ISession {
 
     /**
      * Returns whether this connection is on the connection pool domain or not.
-     * 
+     *
      * @return <code>true</code> if this connection has beed returned to the pool and thus cannot be
-     *         used, <code>false</code> if its safe to keep using it.
+     *     used, <code>false</code> if its safe to keep using it.
      */
     public abstract boolean isDisposed();
 
@@ -104,10 +99,9 @@ public interface ISession {
 
     /**
      * Starts a transaction over the connection held by this Session
-     * <p>
-     * If this method succeeds, {@link #isTransactionActive()} will return true afterwards
-     * </p>
-     * 
+     *
+     * <p>If this method succeeds, {@link #isTransactionActive()} will return true afterwards
+     *
      * @throws IOException
      * @see {@link #issueStartTransaction(Session)}
      */
@@ -115,46 +109,40 @@ public interface ISession {
 
     /**
      * Commits the current transaction.
-     * <p>
-     * This method shall only be called from inside a command
-     * </p>
-     * 
+     *
+     * <p>This method shall only be called from inside a command
+     *
      * @throws IOException
      */
     public abstract void commitTransaction() throws IOException;
 
     /**
      * Returns whether a transaction is in progress over this connection
-     * <p>
-     * As for any other public method, this one can't be called if {@link #isDisposed()} is true.
-     * </p>
-     * 
+     *
+     * <p>As for any other public method, this one can't be called if {@link #isDisposed()} is true.
+     *
      * @return
      */
     public abstract boolean isTransactionActive();
 
     /**
      * Rolls back the current transaction
-     * <p>
-     * When this method returns it is guaranteed that {@link #isTransactionActive()} will return
+     *
+     * <p>When this method returns it is guaranteed that {@link #isTransactionActive()} will return
      * false, regardless of the success of the rollback operation.
-     * </p>
-     * 
+     *
      * @throws IOException
      */
     public abstract void rollbackTransaction() throws IOException;
 
     /**
      * Return to the pool (may not close the internal connection, depends on pool settings).
-     * 
-     * @throws IllegalStateException
-     *             if dispose() is called while a transaction is in progress
+     *
+     * @throws IllegalStateException if dispose() is called while a transaction is in progress
      */
     public abstract void dispose() throws IllegalStateException;
 
-    /**
-     * Compares for reference equality
-     */
+    /** Compares for reference equality */
     public abstract boolean equals(Object other);
 
     public abstract int hashCode();
@@ -162,7 +150,7 @@ public interface ISession {
     /**
      * Returns the live list of layers, not the cached ones, so it may pick up the differences in
      * the database.
-     * 
+     *
      * @return
      * @throws IOException
      */
@@ -181,7 +169,7 @@ public interface ISession {
     /**
      * Creates an SeTable named
      * <code>qualifiedName<code>; the layer does not need to exist on the server.
-     * 
+     *
      * @param qualifiedName
      * @return
      * @throws IOException
@@ -199,15 +187,14 @@ public interface ISession {
     public abstract SeColumnDefinition[] describe(final SeTable table) throws IOException;
 
     /**
-     * Issues a command that fetches a row from an already executed SeQuery and returns the
-     * {@link SdeRow} object with its contents.
-     * <p>
-     * The point in returning an {@link SdeRow} instead of a plain {@link SeRow} is that the former
-     * prefetches the row values and this can be freely used outside a {@link Command}. Otherwise
-     * the SeRow should only be used inside a command as accessing its values implies using the
-     * connection.
-     * </p>
-     * 
+     * Issues a command that fetches a row from an already executed SeQuery and returns the {@link
+     * SdeRow} object with its contents.
+     *
+     * <p>The point in returning an {@link SdeRow} instead of a plain {@link SeRow} is that the
+     * former prefetches the row values and this can be freely used outside a {@link Command}.
+     * Otherwise the SeRow should only be used inside a command as accessing its values implies
+     * using the connection.
+     *
      * @param query
      * @return
      * @throws IOException
@@ -222,13 +209,14 @@ public interface ISession {
 
     public abstract SeState createState(final SeObjectId stateId) throws IOException;
 
-    public abstract SeQuery createAndExecuteQuery(final String[] propertyNames,
-            final SeSqlConstruct sql) throws IOException;
+    public abstract SeQuery createAndExecuteQuery(
+            final String[] propertyNames, final SeSqlConstruct sql) throws IOException;
 
     public SeState createChildState(long parentStateId) throws IOException;
 
-    public abstract SeQuery prepareQuery(final SeQueryInfo qInfo,
-            final SeFilter[] spatialConstraints, final ArcSdeVersionHandler version)
+    public abstract SeQuery prepareQuery(
+            final SeQueryInfo qInfo,
+            final SeFilter[] spatialConstraints,
+            final ArcSdeVersionHandler version)
             throws IOException;
-
 }

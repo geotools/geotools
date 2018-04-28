@@ -19,12 +19,7 @@ package org.geotools.sld.bindings;
 import org.geotools.styling.LineSymbolizer;
 import org.opengis.filter.expression.Function;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class SLDLineSymbolizerBindingTest extends SLDTestSupport {
     public void testType() throws Exception {
         assertEquals(LineSymbolizer.class, new SLDLineSymbolizerBinding(null).getType());
@@ -38,7 +33,7 @@ public class SLDLineSymbolizerBindingTest extends SLDTestSupport {
 
         assertNotNull(lineSymbolizer.getStroke());
     }
-    
+
     public void testTransform() throws Exception {
         SLDMockData.transformedLineSymbolizer(document, document);
 

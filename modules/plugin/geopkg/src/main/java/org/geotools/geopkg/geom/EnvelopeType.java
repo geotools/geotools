@@ -18,12 +18,16 @@ package org.geotools.geopkg.geom;
 
 /**
  * EnvelopeType specified in the header of a Geometry (see Geopackage specs)
- * 
+ *
  * @author Justin Deoliveira
  * @author Niels Charlier
  */
 public enum EnvelopeType {
-    NONE(0, 0), XY(1, 32), XYZ(2, 48), XYM(3, 48), XYZM(4, 64);
+    NONE(0, 0),
+    XY(1, 32),
+    XYZ(2, 48),
+    XYM(3, 48),
+    XYZM(4, 64);
 
     private byte value;
     private byte length;

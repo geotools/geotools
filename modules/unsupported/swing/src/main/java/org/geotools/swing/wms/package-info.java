@@ -15,7 +15,5 @@
  *    Lesser General Public License for more details.
  */
 
-/**
- * Basic classes for working with WMS layers.
- */
+/** Basic classes for working with WMS layers. */
 package org.geotools.swing.wms;

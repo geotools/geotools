@@ -16,7 +16,6 @@
  */
 package org.geotools.data.wmts.client;
 
-import org.geotools.data.wmts.model.WMTSServiceType;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,7 +32,7 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.io.IOUtils;
-
+import org.geotools.data.wmts.model.WMTSServiceType;
 import org.geotools.tile.Tile;
 import org.geotools.tile.TileIdentifier;
 import org.geotools.tile.TileService;
@@ -52,15 +51,14 @@ class WMTSTile extends Tile {
 
     protected static final Logger LOGGER = Logging.getLogger(WMTSTile.class.getPackage().getName());
 
-    public final static String WMTS_TILE_CACHE_SIZE_PROPERTY_NAME = "wmts.tile.cache.size";
+    public static final String WMTS_TILE_CACHE_SIZE_PROPERTY_NAME = "wmts.tile.cache.size";
 
     /**
      * Cache for tiles.
      *
-     * Many WMTS tiles may be reloaded over and over, especially in a tiled
-     * getMap request.
+     * <p>Many WMTS tiles may be reloaded over and over, especially in a tiled getMap request.
      *
-     * You can set the cache size using the property WMTS_TILE_CACHE_SIZE_PROPERTY_NAME.
+     * <p>You can set the cache size using the property WMTS_TILE_CACHE_SIZE_PROPERTY_NAME.
      */
     private static final ObjectCache tileImages;
 
@@ -92,7 +90,9 @@ class WMTSTile extends Tile {
      * @param service
      */
     public WMTSTile(WMTSTileIdentifier tileIdentifier, TileService service) {
-        super(tileIdentifier, WMTSTileFactory.getExtentFromTileName(tileIdentifier, service),
+        super(
+                tileIdentifier,
+                WMTSTileFactory.getExtentFromTileName(tileIdentifier, service),
                 ((WMTSTileService) service)
                         .getTileMatrix(tileIdentifier.getZoomLevel().getZoomLevel())
                         .getTileWidth());
@@ -100,9 +100,7 @@ class WMTSTile extends Tile {
         this.type = this.service.getType();
     }
 
-    /**
-     * @return the type of WMTS KVP or REST
-     */
+    /** @return the type of WMTS KVP or REST */
     public WMTSServiceType getType() {
         return type;
     }
@@ -116,12 +114,12 @@ class WMTSTile extends Tile {
             throw new IllegalArgumentException("Unexpected WMTS Service type " + type);
         } else
             switch (type) {
-            case KVP:
-                return getKVPurl(baseUrl, tileIdentifier);
-            case REST:
-                return getRESTurl(baseUrl, tileIdentifier);
-            default:
-                throw new IllegalArgumentException("Unexpected WMTS Service type " + type);
+                case KVP:
+                    return getKVPurl(baseUrl, tileIdentifier);
+                case REST:
+                    return getRESTurl(baseUrl, tileIdentifier);
+                default:
+                    throw new IllegalArgumentException("Unexpected WMTS Service type " + type);
             }
     }
 
@@ -133,8 +131,11 @@ class WMTSTile extends Tile {
         baseUrl = baseUrl.replace("{TileCol}", "" + tileIdentifier.getX());
         baseUrl = baseUrl.replace("{TileRow}", "" + tileIdentifier.getY());
 
-        baseUrl = replaceToken(baseUrl, "time",
-                service.getDimensions().get(WMTSTileService.DIMENSION_TIME));
+        baseUrl =
+                replaceToken(
+                        baseUrl,
+                        "time",
+                        service.getDimensions().get(WMTSTileService.DIMENSION_TIME));
 
         if (LOGGER.isLoggable(Level.FINE))
             LOGGER.fine("Requesting tile " + tileIdentifier.getCode());
@@ -153,7 +154,8 @@ class WMTSTile extends Tile {
         if (index != -1) {
             if (LOGGER.isLoggable(Level.FINE))
                 LOGGER.fine("Resolving dimension " + dimName + " --> " + dimValue);
-            return base.substring(0, index) + dimValue
+            return base.substring(0, index)
+                    + dimValue
                     + base.substring(index + dimName.length() + 2);
         } else {
             return base;
@@ -200,9 +202,7 @@ class WMTSTile extends Tile {
         }
     }
 
-    /**
-     * Load and cache locally the WMTS tiles
-     */
+    /** Load and cache locally the WMTS tiles */
     @Override
     public BufferedImage loadImageTileImage(Tile tile) throws IOException {
         LOGGER.log(Level.FINE, "Loading tile " + getId() + ": " + this.getUrl());
@@ -224,8 +224,9 @@ class WMTSTile extends Tile {
 
     public BufferedImage doLoadImageTileImage(Tile tile) throws IOException {
 
-        Map<String, String> headers = (Map<String, String>) this.service.getExtrainfo()
-                .get(WMTSTileService.EXTRA_HEADERS);
+        Map<String, String> headers =
+                (Map<String, String>)
+                        this.service.getExtrainfo().get(WMTSTileService.EXTRA_HEADERS);
         InputStream is = null;
         try {
             is = setupInputStream(getUrl(), headers);
@@ -239,14 +240,14 @@ class WMTSTile extends Tile {
         HttpClient client = new HttpClient();
         String uri = url.toExternalForm();
 
-        if (LOGGER.isLoggable(Level.FINE))
-            LOGGER.log(Level.FINE, "URL is " + uri);
+        if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, "URL is " + uri);
 
         HttpMethod get = new GetMethod(uri);
         if (MapUtils.isNotEmpty(headers)) {
             for (String headerName : headers.keySet()) {
                 if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.log(Level.FINE,
+                    LOGGER.log(
+                            Level.FINE,
                             "Adding header " + headerName + " = " + headers.get(headerName));
                 }
                 get.addRequestHeader(headerName, headers.get(headerName));
@@ -260,5 +261,4 @@ class WMTSTile extends Tile {
 
         return get.getResponseBodyAsStream();
     }
-
 }

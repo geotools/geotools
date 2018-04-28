@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -20,55 +20,41 @@
 package org.geotools.metadata.iso.extent;
 
 import java.util.Date;
+import org.geotools.metadata.iso.MetadataEntity;
 import org.opengis.metadata.extent.TemporalExtent;
 import org.opengis.temporal.TemporalPrimitive;
-import org.geotools.metadata.iso.MetadataEntity;
-
 
 /**
- * Boundary enclosing the dataset, expressed as the closed set of
- * (<var>x</var>,<var>y</var>) coordinates of the polygon. The last
- * point replicates first point.
- *
- *
+ * Boundary enclosing the dataset, expressed as the closed set of (<var>x</var>,<var>y</var>)
+ * coordinates of the polygon. The last point replicates first point.
  *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane
- *
  * @since 2.1
  */
 public class TemporalExtentImpl extends MetadataEntity implements TemporalExtent {
-    /**
-     * Serial number for interoperability with different versions.
-     */
+    /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 3668140516657118045L;
 
     /**
-     * The start date and time for the content of the dataset,
-     * in milliseconds ellapsed since January 1st, 1970. A value
-     * of {@link Long#MIN_VALUE} means that this attribute is not set.
+     * The start date and time for the content of the dataset, in milliseconds ellapsed since
+     * January 1st, 1970. A value of {@link Long#MIN_VALUE} means that this attribute is not set.
      */
     private long startTime = Long.MIN_VALUE;
 
     /**
-     * The end date and time for the content of the dataset,
-     * in milliseconds ellapsed since January 1st, 1970. A value
-     * of {@link Long#MIN_VALUE} means that this attribute is not set.
+     * The end date and time for the content of the dataset, in milliseconds ellapsed since January
+     * 1st, 1970. A value of {@link Long#MIN_VALUE} means that this attribute is not set.
      */
     private long endTime = Long.MIN_VALUE;
 
-    /**
-     * The date and time for the content of the dataset.
-     */
+    /** The date and time for the content of the dataset. */
     private TemporalPrimitive extent;
 
-    /**
-     * Constructs an initially empty temporal extent.
-     */
-    public TemporalExtentImpl() {
-    }
+    /** Constructs an initially empty temporal extent. */
+    public TemporalExtentImpl() {}
 
     /**
      * Constructs a metadata entity initialized with the values from the specified metadata.
@@ -79,42 +65,32 @@ public class TemporalExtentImpl extends MetadataEntity implements TemporalExtent
         super(source);
     }
 
-    /**
-     * Creates a temporal extent initialized to the specified values.
-     */
+    /** Creates a temporal extent initialized to the specified values. */
     public TemporalExtentImpl(final Date startTime, final Date endTime) {
         setStartTime(startTime);
-        setEndTime  (endTime);
+        setEndTime(endTime);
     }
 
-    /**
-     * The start date and time for the content of the dataset.
-     */
+    /** The start date and time for the content of the dataset. */
     public synchronized Date getStartTime() {
-        return (startTime!=Long.MIN_VALUE) ? new Date(startTime) : null;
+        return (startTime != Long.MIN_VALUE) ? new Date(startTime) : null;
     }
 
-    /**
-     * Set the start date and time for the content of the dataset.
-     */
+    /** Set the start date and time for the content of the dataset. */
     public synchronized void setStartTime(final Date newValue) {
         checkWritePermission();
-        startTime = (newValue!=null) ? newValue.getTime() : Long.MIN_VALUE;
+        startTime = (newValue != null) ? newValue.getTime() : Long.MIN_VALUE;
     }
 
-    /**
-     * Returns the end date and time for the content of the dataset.
-     */
+    /** Returns the end date and time for the content of the dataset. */
     public synchronized Date getEndTime() {
-        return (endTime!=Long.MIN_VALUE) ? new Date(endTime) : null;
+        return (endTime != Long.MIN_VALUE) ? new Date(endTime) : null;
     }
 
-    /**
-     * Set the end date and time for the content of the dataset.
-     */
+    /** Set the end date and time for the content of the dataset. */
     public synchronized void setEndTime(final Date newValue) {
         checkWritePermission();
-        endTime = (newValue!=null) ? newValue.getTime() : Long.MIN_VALUE;
+        endTime = (newValue != null) ? newValue.getTime() : Long.MIN_VALUE;
     }
 
     /**

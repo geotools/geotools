@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,23 +16,19 @@
  */
 package org.geotools.util;
 
-import org.junit.*;
 import static org.junit.Assert.*;
 
+import org.junit.*;
 
 /**
  * Tests the {@link RangeSet} implementation.
- *
- *
  *
  * @source $URL$
  * @version $Id$
  * @author Andrea Aime
  */
 public final class RangeSetTest {
-    /**
-     * Tests {@link RangeSet#remove}.
-     */
+    /** Tests {@link RangeSet#remove}. */
     @Test
     public void testRangeRemoval() {
         RangeSet<Double> rs = new RangeSet<Double>(Double.class);

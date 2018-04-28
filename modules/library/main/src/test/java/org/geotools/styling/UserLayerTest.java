@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,6 +16,10 @@
  */
 package org.geotools.styling;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.PrecisionModel;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.net.URI;
@@ -23,12 +27,9 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-
 import junit.framework.TestCase;
-
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
-import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.GeoTools;
 import org.geotools.feature.DefaultFeatureCollection;
@@ -40,26 +41,19 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.PropertyIsLessThan;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.PrecisionModel;
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class UserLayerTest extends TestCase {
 
-    private static final String CRS_WKT = "GEOGCS[\"WGS 84\", "
-            + "  DATUM[\"WGS_1984\","
-            + "    SPHEROID[\"WGS 84\", 6378137.0, 298.257223563, AUTHORITY[\"EPSG\",\"7030\"]],"
-            + "    AUTHORITY[\"EPSG\",\"6326\"]],"
-            + "  PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]],"
-            + "  UNIT[\"degree\", 0.017453292519943295],"
-            + "  AXIS[\"Lon\", EAST]," + "  AXIS[\"Lat\", NORTH],"
-            + "  AUTHORITY[\"EPSG\",\"4326\"]]";
+    private static final String CRS_WKT =
+            "GEOGCS[\"WGS 84\", "
+                    + "  DATUM[\"WGS_1984\","
+                    + "    SPHEROID[\"WGS 84\", 6378137.0, 298.257223563, AUTHORITY[\"EPSG\",\"7030\"]],"
+                    + "    AUTHORITY[\"EPSG\",\"6326\"]],"
+                    + "  PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]],"
+                    + "  UNIT[\"degree\", 0.017453292519943295],"
+                    + "  AXIS[\"Lon\", EAST],"
+                    + "  AXIS[\"Lat\", NORTH],"
+                    + "  AUTHORITY[\"EPSG\",\"4326\"]]";
 
     private static final int SRID = 4326;
 
@@ -91,14 +85,14 @@ public class UserLayerTest extends TestCase {
 
     private static final String IMAGE_EXT = "jpg";
 
-    private static final String IMAGE_URL = "file:/somewhere/image."
-            + IMAGE_EXT;
+    private static final String IMAGE_URL = "file:/somewhere/image." + IMAGE_EXT;
 
     private static final String MY_NAMESPACE = "integeo";
 
     private static final URI MY_URI;
 
     private static final String MY_FEATURE = "myFeature";
+
     static {
         try {
             MY_URI = new URI("http://geotools.org");
@@ -112,9 +106,9 @@ public class UserLayerTest extends TestCase {
         final CoordinateReferenceSystem crs = CRS.parseWKT(CRS_WKT);
         SimpleFeatureTypeBuilder ftb = new SimpleFeatureTypeBuilder();
         ftb.add(ID_COLUMN, Integer.class);
-		ftb.add(GEOMETRY_COLUMN, Point.class, crs);
-		ftb.add(LABEL_COLUMN, String.class);
-		ftb.setName(MY_FEATURE);
+        ftb.add(GEOMETRY_COLUMN, Point.class, crs);
+        ftb.add(LABEL_COLUMN, String.class);
+        ftb.setName(MY_FEATURE);
         final SimpleFeatureType schema = ftb.buildFeatureType();
 
         // create a feature collection ----------------------------------------
@@ -126,12 +120,16 @@ public class UserLayerTest extends TestCase {
 
         // create 1st point
         final Point g1 = jtsFactory.createPoint(new Coordinate(X_1, Y_1));
-        fc.add(SimpleFeatureBuilder.build(schema, new Object[] { new Integer(1), g1, LABEL_1 }, ID_1));
+        fc.add(
+                SimpleFeatureBuilder.build(
+                        schema, new Object[] {new Integer(1), g1, LABEL_1}, ID_1));
 
         // create 2nd point
         final Point g2 = jtsFactory.createPoint(new Coordinate(X_2, Y_2));
-        fc.add(SimpleFeatureBuilder.build(schema, new Object[] { new Integer(2), g2, LABEL_2 }, ID_2));
-        
+        fc.add(
+                SimpleFeatureBuilder.build(
+                        schema, new Object[] {new Integer(2), g2, LABEL_2}, ID_2));
+
         final DataStore ds = DataUtilities.dataStore(fc);
 
         // create and populate the layer --------------------------------------
@@ -146,10 +144,8 @@ public class UserLayerTest extends TestCase {
         final Style style = sf.createStyle();
 
         final StyleBuilder sb = new StyleBuilder(sf);
-        final ExternalGraphic overlay = sb.createExternalGraphic(IMAGE_URL,
-                "image/" + IMAGE_EXT);
-        final Graphic g = sb.createGraphic(overlay, null, null, OPACITY,
-                Double.NaN, 0.0);
+        final ExternalGraphic overlay = sb.createExternalGraphic(IMAGE_URL, "image/" + IMAGE_EXT);
+        final Graphic g = sb.createGraphic(overlay, null, null, OPACITY, Double.NaN, 0.0);
         final PointSymbolizer ps = sb.createPointSymbolizer(g);
         final FeatureTypeStyle fts = sb.createFeatureTypeStyle(ps);
         fts.setFeatureTypeName(MY_NAMESPACE + ":" + MY_FEATURE);
@@ -178,12 +174,12 @@ public class UserLayerTest extends TestCase {
         // check both SLDs ----------------------------------------------------
         final StyledLayer[] layers = sld2.getStyledLayers();
         assertNotNull("Styled layers array MUST NOT be null", layers);
-        assertEquals("Styled layers array MUST be 1-element long", 1,
-                layers.length);
+        assertEquals("Styled layers array MUST be 1-element long", 1, layers.length);
         final StyledLayer sLayer = layers[0];
         assertNotNull("Single styled layer MUST NOT be null", sLayer);
-        assertTrue("Single layer MUST be a UserLayer", UserLayer.class
-                .isAssignableFrom(sLayer.getClass()));
+        assertTrue(
+                "Single layer MUST be a UserLayer",
+                UserLayer.class.isAssignableFrom(sLayer.getClass()));
         final UserLayer uLayer = (UserLayer) sLayer;
         final String lName = uLayer.getName();
         assertEquals("Read layer name MUST match", LAYER_NAME, lName);
@@ -191,9 +187,10 @@ public class UserLayerTest extends TestCase {
         assertNotNull("Unmarshalled feature type MUST NOT be null", ft);
         final String fName = ft.getTypeName();
         assertEquals("Read feature type name MUST match", MY_FEATURE, fName);
-        assertEquals(CRS.decode("EPSG:4326"), ft.getGeometryDescriptor().getCoordinateReferenceSystem());
+        assertEquals(
+                CRS.decode("EPSG:4326"), ft.getGeometryDescriptor().getCoordinateReferenceSystem());
     }
-    
+
     public void testUserLayerWithRemoteOWS() throws Exception {
         URL sldUrl = TestData.getResource(this, "remoteOws.sld");
         StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
@@ -205,7 +202,9 @@ public class UserLayerTest extends TestCase {
         assertEquals("LayerWithRemoteOWS", layer.getName());
         assertNotNull(layer.getRemoteOWS());
         assertEquals("WFS", layer.getRemoteOWS().getService());
-        assertEquals("http://sigma.openplans.org:8080/geoserver/wfs?", layer.getRemoteOWS().getOnlineResource());
+        assertEquals(
+                "http://sigma.openplans.org:8080/geoserver/wfs?",
+                layer.getRemoteOWS().getOnlineResource());
         assertEquals(1, layer.getLayerFeatureConstraints().length);
         FeatureTypeConstraint ftc = layer.getLayerFeatureConstraints()[0];
         assertEquals("topp:states", ftc.getFeatureTypeName());

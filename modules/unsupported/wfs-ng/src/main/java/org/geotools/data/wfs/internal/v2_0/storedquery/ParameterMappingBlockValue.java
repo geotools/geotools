@@ -26,8 +26,7 @@ public class ParameterMappingBlockValue implements ParameterMapping, Serializabl
         setParameterName(name);
     }
 
-    public ParameterMappingBlockValue() {
-    }
+    public ParameterMappingBlockValue() {}
 
     public void setParameterName(String parameterName) {
         this.parameterName = parameterName;

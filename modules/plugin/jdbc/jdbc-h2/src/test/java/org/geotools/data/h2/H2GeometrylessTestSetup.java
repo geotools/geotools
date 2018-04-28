@@ -20,11 +20,7 @@ import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCGeometrylessTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class H2GeometrylessTestSetup extends JDBCGeometrylessTestSetup {
 
     protected H2GeometrylessTestSetup(JDBCTestSetup delegate) {
@@ -34,14 +30,15 @@ public class H2GeometrylessTestSetup extends JDBCGeometrylessTestSetup {
     @Override
     protected void setUpDataStore(JDBCDataStore dataStore) {
         super.setUpDataStore(dataStore);
-        
-        dataStore.setDatabaseSchema( null );
+
+        dataStore.setDatabaseSchema(null);
     }
-    
+
     @Override
     protected void createPersonTable() throws Exception {
-        run("CREATE TABLE \"person\"(\"fid\" int AUTO_INCREMENT(0) PRIMARY KEY, \"id\" int, "
-                + "\"name\" varchar, \"age\" int)");
+        run(
+                "CREATE TABLE \"person\"(\"fid\" int AUTO_INCREMENT(0) PRIMARY KEY, \"id\" int, "
+                        + "\"name\" varchar, \"age\" int)");
         run("INSERT INTO \"person\" (\"id\",\"name\",\"age\") VALUES (0,'Paul',32)");
         run("INSERT INTO \"person\" (\"id\",\"name\",\"age\") VALUES (0,'Anne',40)");
     }
@@ -55,5 +52,4 @@ public class H2GeometrylessTestSetup extends JDBCGeometrylessTestSetup {
     protected void dropZipCodeTable() throws Exception {
         run("DROP TABLE \"zipcode\"");
     }
-
 }

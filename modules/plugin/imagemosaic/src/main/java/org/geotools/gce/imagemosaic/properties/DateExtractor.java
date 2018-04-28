@@ -23,23 +23,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
-import org.geotools.gce.imagemosaic.properties.PropertiesCollector;
-import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeature;
 
-/**
- * 
- * @author Niels Charlier
- * 
- */
+/** @author Niels Charlier */
 class DateExtractor extends PropertiesCollector {
 
-    private final static SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy:mm:dd hh:mm:ss");
+    private static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy:mm:dd hh:mm:ss");
 
-    private final static Logger LOGGER = Logging.getLogger(DateExtractor.class);
+    private static final Logger LOGGER = Logging.getLogger(DateExtractor.class);
 
     public DateExtractor(PropertiesCollectorSPI spi, List<String> propertyNames) {
         super(spi, propertyNames);
@@ -47,8 +40,10 @@ class DateExtractor extends PropertiesCollector {
 
     @Override
     public PropertiesCollector collect(final GridCoverage2DReader gridCoverageReader) {
-        String value = ((org.geotools.gce.geotiff.GeoTiffReader) gridCoverageReader).getMetadata()
-                .getAsciiTIFFTag("306");
+        String value =
+                ((org.geotools.gce.geotiff.GeoTiffReader) gridCoverageReader)
+                        .getMetadata()
+                        .getAsciiTIFFTag("306");
         if (value != null) {
             addMatch("" + value);
         } else {
@@ -92,5 +87,4 @@ class DateExtractor extends PropertiesCollector {
             }
         }
     }
-
 }

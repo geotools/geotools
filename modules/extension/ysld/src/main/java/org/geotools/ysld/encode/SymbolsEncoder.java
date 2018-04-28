@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -23,9 +23,7 @@ import org.geotools.styling.Mark;
 import org.opengis.metadata.citation.OnLineResource;
 import org.opengis.style.GraphicalSymbol;
 
-/**
- * Encodes a {@link GraphicalSymbol} as YSLD.
- */
+/** Encodes a {@link GraphicalSymbol} as YSLD. */
 public class SymbolsEncoder extends YsldEncodeHandler<GraphicalSymbol> {
 
     public SymbolsEncoder(Graphic g) {

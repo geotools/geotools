@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -18,7 +18,6 @@ package org.geotools.filter.visitor;
 
 import java.util.Date;
 import java.util.List;
-
 import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.PropertyIsBetween;
 import org.opengis.filter.PropertyIsEqualTo;
@@ -52,9 +51,8 @@ import org.opengis.temporal.Period;
 /**
  * Binds all literals in the filter to the target type they are compared to, in order to avoid the
  * usage of converters on a evaluation by evaluation basis.
- * 
- * @author Andrea Aime - GeoSolutions
  *
+ * @author Andrea Aime - GeoSolutions
  */
 public class BindingFilterVisitor extends DuplicatingFilterVisitor {
 
@@ -64,7 +62,7 @@ public class BindingFilterVisitor extends DuplicatingFilterVisitor {
 
     /**
      * Evaluates the
-     * 
+     *
      * @param schema
      */
     public BindingFilterVisitor(FeatureType schema) {
@@ -91,8 +89,11 @@ public class BindingFilterVisitor extends DuplicatingFilterVisitor {
 
     @Override
     public Object visit(PropertyIsBetween filter, Object extraData) {
-        Class targetType = getTargetType(filter.getLowerBoundary(), filter.getExpression(),
-                filter.getUpperBoundary());
+        Class targetType =
+                getTargetType(
+                        filter.getLowerBoundary(),
+                        filter.getExpression(),
+                        filter.getUpperBoundary());
         Expression lb = optimize(filter.getLowerBoundary(), extraData, targetType);
         Expression ex = optimize(filter.getExpression(), extraData, targetType);
         Expression ub = optimize(filter.getUpperBoundary(), extraData, targetType);
@@ -114,8 +115,8 @@ public class BindingFilterVisitor extends DuplicatingFilterVisitor {
         Expression expr1 = optimize(filter.getExpression1(), extraData, targetType);
         Expression expr2 = optimize(filter.getExpression2(), extraData, targetType);
         boolean matchCase = filter.isMatchingCase();
-        return getFactory(extraData).greaterOrEqual(expr1, expr2, matchCase,
-                filter.getMatchAction());
+        return getFactory(extraData)
+                .greaterOrEqual(expr1, expr2, matchCase, filter.getMatchAction());
     }
 
     @Override
@@ -151,9 +152,7 @@ public class BindingFilterVisitor extends DuplicatingFilterVisitor {
             duplicate = getFactory(extraData).function(expression.getName(), args);
         }
         return duplicate;
-
     }
-
 
     public Object visit(After after, Object extraData) {
         Expression expr1 = optimizeTime(after.getExpression1(), extraData);
@@ -174,7 +173,6 @@ public class BindingFilterVisitor extends DuplicatingFilterVisitor {
         Expression expr2 = optimizeTime(before.getExpression2(), extraData);
 
         return getFactory(extraData).before(expr1, expr2, before.getMatchAction());
-
     }
 
     public Object visit(Begins begins, Object extraData) {
@@ -318,5 +316,4 @@ public class BindingFilterVisitor extends DuplicatingFilterVisitor {
 
         return result;
     }
-
 }

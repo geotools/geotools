@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2017, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -19,20 +19,24 @@ package org.geotools.filter.function.color;
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 import java.awt.Color;
-
 import org.geotools.filter.FunctionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
 
 /**
- * Tint lesscss.org color function. Takes one colors and mixes it with white based on a weight (and their eventual alpha)
+ * Tint lesscss.org color function. Takes one colors and mixes it with white based on a weight (and
+ * their eventual alpha)
  *
  * @author Andrea Aime - GeoSolutions
  */
 public class TintFunction extends FunctionImpl {
 
-    public static FunctionName NAME = new FunctionNameImpl("tint", parameter("result", Color.class),
-            parameter("color", Color.class), parameter("weight", Double.class));
+    public static FunctionName NAME =
+            new FunctionNameImpl(
+                    "tint",
+                    parameter("result", Color.class),
+                    parameter("color", Color.class),
+                    parameter("weight", Double.class));
     private MixFunction delegate;
 
     public TintFunction() {
@@ -45,7 +49,6 @@ public class TintFunction extends FunctionImpl {
         Color color = (Color) getParameterValue(object, 0);
         double weight = (Double) getParameterValue(object, 1);
 
-        return delegate.mix(Color.WHITE, color, weight); 
+        return delegate.mix(Color.WHITE, color, weight);
     }
-
 }

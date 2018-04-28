@@ -20,11 +20,7 @@ package org.geotools.data.oracle;
 import org.geotools.jdbc.JDBCJNDIDataSourceOnlineTest;
 import org.geotools.jdbc.JDBCJNDITestSetup;
 
-/**
- * 
- * 
- * @source $URL$
- */
+/** @source $URL$ */
 public class OracleJNDIDataSourceOnlineTest extends JDBCJNDIDataSourceOnlineTest {
 
     protected JDBCJNDITestSetup createTestSetup() {
@@ -38,5 +34,4 @@ public class OracleJNDIDataSourceOnlineTest extends JDBCJNDIDataSourceOnlineTest
     protected OracleNGDataStoreFactory getDataStoreFactory() {
         return new OracleNGDataStoreFactory();
     }
-
 }

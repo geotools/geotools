@@ -16,6 +16,7 @@
  */
 package org.geotools.mbstyle.transform;
 
+import java.io.IOException;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.MapboxTestUtils;
 import org.geotools.styling.StyledLayerDescriptor;
@@ -23,21 +24,20 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.junit.Test;
 
-import java.io.IOException;
-
 public class StyleTransformFunctionTest {
 
     /**
      * Right now these tests exist basically to ensure that these styles with functions are parsed
      * without exception. Lower level unit tests exist to test the results of parsing individual
      * elements
+     *
      * @throws IOException
      * @throws ParseException
      */
     @Test
     public void testLineLayerWithFunctions() throws IOException, ParseException {
         JSONObject styleJson = MapboxTestUtils.parseTestStyle("lineStyleFunctionTest.json");
-        
+
         // Parse to MBStyle
         MBStyle mbStyle = new MBStyle(styleJson);
         StyledLayerDescriptor transformed = mbStyle.transform();
@@ -51,32 +51,32 @@ public class StyleTransformFunctionTest {
         MBStyle mbStyle = new MBStyle(styleJson);
         StyledLayerDescriptor transform = mbStyle.transform();
     }
-    
+
     @Test
     public void testSymbolLayerWithFunctions() throws IOException, ParseException {
         JSONObject styleJson = MapboxTestUtils.parseTestStyle("symbolStyleFunctionTest.json");
-        
+
         // Parse to MBStyle
         MBStyle mbStyle = new MBStyle(styleJson);
         StyledLayerDescriptor transformed = mbStyle.transform();
     }
-    
+
     @Test
     public void testFillLayerWithFunctions() throws IOException, ParseException {
         JSONObject styleJson = MapboxTestUtils.parseTestStyle("fillStyleFunctionTest.json");
-        
+
         // Parse to MBStyle
         MBStyle mbStyle = new MBStyle(styleJson);
         StyledLayerDescriptor transformed = mbStyle.transform();
     }
-    
+
     @Test
     public void testFillLayerWithFunctionsZoomAndProperty() throws IOException, ParseException {
-        JSONObject styleJson = MapboxTestUtils.parseTestStyle("fillStyleFunctionTestZoomAndProperty.json");
-        
+        JSONObject styleJson =
+                MapboxTestUtils.parseTestStyle("fillStyleFunctionTestZoomAndProperty.json");
+
         // Parse to MBStyle
         MBStyle mbStyle = new MBStyle(styleJson);
         StyledLayerDescriptor transformed = mbStyle.transform();
     }
-    
 }

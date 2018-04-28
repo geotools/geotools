@@ -16,17 +16,12 @@
  */
 package org.geotools.styling.builder;
 
-import javax.measure.quantity.Length;
 import javax.measure.Unit;
-
+import javax.measure.quantity.Length;
 import org.geotools.styling.PolygonSymbolizer;
 import org.opengis.filter.expression.Expression;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class PolygonSymbolizerBuilder extends SymbolizerBuilder<PolygonSymbolizer> {
     StrokeBuilder stroke = new StrokeBuilder(this).unset();
 

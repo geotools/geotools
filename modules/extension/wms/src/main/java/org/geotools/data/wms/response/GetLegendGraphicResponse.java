@@ -3,7 +3,7 @@
  *    http://geotools.org
  *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,32 +17,27 @@
 package org.geotools.data.wms.response;
 
 import java.io.IOException;
-
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.Response;
 import org.geotools.ows.ServiceException;
 
 /**
- * 
  * @author Richard Gould
- *
- *
  * @source $URL$
  */
 public class GetLegendGraphicResponse extends Response {
 
-
-    public GetLegendGraphicResponse( HTTPResponse httpResponse ) throws ServiceException, IOException {
+    public GetLegendGraphicResponse(HTTPResponse httpResponse)
+            throws ServiceException, IOException {
         super(httpResponse);
-        
+
         String contentType = getContentType();
         if (contentType != null && contentType.toLowerCase().indexOf("text/xml") != -1) {
-            try{
-        	throw parseException(getInputStream());
-            }finally{
+            try {
+                throw parseException(getInputStream());
+            } finally {
                 dispose();
             }
         }
     }
-
 }

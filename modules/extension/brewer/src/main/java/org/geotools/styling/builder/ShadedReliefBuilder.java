@@ -19,11 +19,7 @@ package org.geotools.styling.builder;
 import org.geotools.styling.ShadedRelief;
 import org.opengis.filter.expression.Expression;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class ShadedReliefBuilder extends AbstractStyleBuilder<ShadedRelief> {
     private Expression factor;
 
@@ -91,5 +87,4 @@ public class ShadedReliefBuilder extends AbstractStyleBuilder<ShadedRelief> {
     protected void buildStyleInternal(StyleBuilder sb) {
         sb.featureTypeStyle().rule().raster().shadedRelief().init(this);
     }
-
 }

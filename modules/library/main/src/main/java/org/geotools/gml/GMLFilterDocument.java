@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -18,39 +18,29 @@ package org.geotools.gml;
 
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
-
 import org.xml.sax.SAXException;
 
-
 /**
- * LEVEL1 saxGML4j GML filter: Sends basic alerts for GML types to
- * GMLFilterGeometry.
- * 
+ * LEVEL1 saxGML4j GML filter: Sends basic alerts for GML types to GMLFilterGeometry.
+ *
+ * <p>This filter separates and passes GML events to a GMLHandlerGeometry. The main simplification
+ * that it performs is to pass along coordinates as an abstracted method call, regardless of their
+ * notation in the GML (Coord vs. Coordinates). This call turns the coordinates into doubles and
+ * makes sure that it distinguishes between 2 and 3 value coordinates.
+ *
+ * <p>The filter also handles some more subtle processing, including handling different delimiters
+ * (decimal, coordinate, tuple) that may be used by more outlandish GML generators.
+ *
  * <p>
- * This filter separates and passes GML events to a GMLHandlerGeometry. The
- * main simplification that it performs is to pass along coordinates as an
- * abstracted method call, regardless of their notation in the GML (Coord vs.
- * Coordinates).  This call turns the coordinates into doubles and makes sure
- * that it distinguishes between 2 and 3 value coordinates.
- * </p>
- * 
- * <p>
- * The filter also handles some more subtle processing, including handling
- * different delimiters (decimal, coordinate, tuple) that may be used by more
- * outlandish GML generators.
- * </p>
- * 
- * <p></p>
  *
  * @author Rob Hranac, Vision for New York
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public class GMLFilterDocument extends org.xml.sax.helpers.XMLFilterImpl {
     /** The logger for the GML module */
-    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.gml");
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.gml");
 
     // Static Globals to handle some expected elements
 
@@ -73,16 +63,25 @@ public class GMLFilterDocument extends org.xml.sax.helpers.XMLFilterImpl {
     private static final String Z_NAME = "Z";
 
     /** Sub geometry elements that may be passed in GML */
-    private static final java.util.Collection SUB_GEOMETRY_TYPES = new java.util.Vector(java.util.Arrays
-            .asList(new String[] { "outerBoundaryIs", "innerBoundaryIs" }));
+    private static final java.util.Collection SUB_GEOMETRY_TYPES =
+            new java.util.Vector(
+                    java.util.Arrays.asList(new String[] {"outerBoundaryIs", "innerBoundaryIs"}));
 
     /** Base geometry elements that may be passed in GML */
-    private static final java.util.Collection BASE_GEOMETRY_TYPES = new java.util.Vector(java.util.Arrays
-            .asList(new String[] {
-                    "Point", "LineString", "Polygon", "LinearRing", "Box",
-                    "MultiPoint", "MultiLineString", "MultiPolygon",
-                    "GeometryCollection"
-                }));
+    private static final java.util.Collection BASE_GEOMETRY_TYPES =
+            new java.util.Vector(
+                    java.util.Arrays.asList(
+                            new String[] {
+                                "Point",
+                                "LineString",
+                                "Polygon",
+                                "LinearRing",
+                                "Box",
+                                "MultiPoint",
+                                "MultiLineString",
+                                "MultiPolygon",
+                                "GeometryCollection"
+                            }));
 
     /** Added by Sean Geoghegan to store character data chunks */
     private StringBuffer buffer = new StringBuffer();
@@ -109,28 +108,26 @@ public class GMLFilterDocument extends org.xml.sax.helpers.XMLFilterImpl {
     }
 
     /**
-     * Checks for GML element start and - if not a coordinates element - sends
-     * it directly on down the chain to the appropriate parent handler.  If it
-     * is a coordinates (or coord) element, it uses internal methods to set
-     * the current state of the coordinates reader appropriately.
-     * 
-     * <p>
-     * Modified by Sean Geoghegan to create new StringBuffers when  entering a
-     * coord or coordinate element.
-     * </p>
+     * Checks for GML element start and - if not a coordinates element - sends it directly on down
+     * the chain to the appropriate parent handler. If it is a coordinates (or coord) element, it
+     * uses internal methods to set the current state of the coordinates reader appropriately.
+     *
+     * <p>Modified by Sean Geoghegan to create new StringBuffers when entering a coord or coordinate
+     * element.
      *
      * @param namespaceURI The namespace of the element.
      * @param localName The local name of the element.
      * @param qName The full name of the element, including namespace prefix.
      * @param atts The element attributes.
-     *
-     * @throws SAXException Some parsing error occurred while reading
-     *         coordinates.
+     * @throws SAXException Some parsing error occurred while reading coordinates.
      */
-    public void startElement(String namespaceURI, String localName,
-        String qName, org.xml.sax.Attributes atts) throws SAXException {
-        LOGGER.entering("GMLFilterDocument", "startElement",
-            new Object[] { namespaceURI, localName, qName, atts });
+    public void startElement(
+            String namespaceURI, String localName, String qName, org.xml.sax.Attributes atts)
+            throws SAXException {
+        LOGGER.entering(
+                "GMLFilterDocument",
+                "startElement",
+                new Object[] {namespaceURI, localName, qName, atts});
 
         /* if at a GML element, do some checks to determine
          * how to handle the element
@@ -171,29 +168,24 @@ public class GMLFilterDocument extends org.xml.sax.helpers.XMLFilterImpl {
     }
 
     /**
-     * Reads the only internal characters read by pure GML parsers, which are
-     * coordinates.  These coordinates are sent to the coordinates reader
-     * class, which interprets them appropriately, depending on its current
-     * state.
-     * 
-     * <p>
-     * Modified by Sean Geoghegan to append character data to buffer when
-     * inside a coordinate or coord element.  SAX doesn't guarentee that all
-     * the character data of an element will be passed to the character method
-     * in one call, it may be split up into chunks.
-     * </p>
+     * Reads the only internal characters read by pure GML parsers, which are coordinates. These
+     * coordinates are sent to the coordinates reader class, which interprets them appropriately,
+     * depending on its current state.
+     *
+     * <p>Modified by Sean Geoghegan to append character data to buffer when inside a coordinate or
+     * coord element. SAX doesn't guarentee that all the character data of an element will be passed
+     * to the character method in one call, it may be split up into chunks.
      *
      * @param ch Raw coordinate string from the GML document.
      * @param start Beginning character position of raw coordinate string.
      * @param length Length of the character string.
-     *
-     * @throws SAXException Some parsing error occurred while reading
-     *         coordinates.
+     * @throws SAXException Some parsing error occurred while reading coordinates.
      */
-    public void characters(char[] ch, int start, int length)
-        throws SAXException {
-        LOGGER.entering("GMLFilterDocument", "characters",
-            new Object[] { ch, new Integer(start), new Integer(length) });
+    public void characters(char[] ch, int start, int length) throws SAXException {
+        LOGGER.entering(
+                "GMLFilterDocument",
+                "characters",
+                new Object[] {ch, new Integer(start), new Integer(length)});
 
         /* the methods here read in both coordinates and coords and
          * take the grunt-work out of this task for geometry handlers
@@ -207,11 +199,11 @@ public class GMLFilterDocument extends org.xml.sax.helpers.XMLFilterImpl {
         if (coordinateReader.insideCoordinates()) {
             buffer.append(rawCoordinates);
 
-            //coordinateReader.readCoordinates(rawCoordinates);
+            // coordinateReader.readCoordinates(rawCoordinates);
         } else if (coordinateReader.insideCoord()) {
             buffer.append(rawCoordinates);
 
-            //coordinateReader.readCoord(rawCoordinates);
+            // coordinateReader.readCoord(rawCoordinates);
         } else {
             /* all non-coordinate data passed on down the
              * filter chain without modification
@@ -223,28 +215,22 @@ public class GMLFilterDocument extends org.xml.sax.helpers.XMLFilterImpl {
     }
 
     /**
-     * Checks for GML element end and - if not a coordinates element -  sends
-     * it directly on down the chain to the appropriate parent handler.  If it
-     * is a coordinates (or coord) element,  it uses internal methods to set
-     * the current state of the coordinates reader appropriately.
-     * 
-     * <p>
-     * Modified by Sean Geoghegan. When we reach the end of a coord or
-     * coordinate element, then the buffer is passed to the handler for
-     * processing.
-     * </p>
+     * Checks for GML element end and - if not a coordinates element - sends it directly on down the
+     * chain to the appropriate parent handler. If it is a coordinates (or coord) element, it uses
+     * internal methods to set the current state of the coordinates reader appropriately.
+     *
+     * <p>Modified by Sean Geoghegan. When we reach the end of a coord or coordinate element, then
+     * the buffer is passed to the handler for processing.
      *
      * @param namespaceURI The namespace of the element.
      * @param localName The local name of the element.
      * @param qName The full name of the element, including namespace prefix.
-     *
-     * @throws SAXException Some parsing error occurred while  reading
-     *         coordinates.
+     * @throws SAXException Some parsing error occurred while reading coordinates.
      */
     public void endElement(String namespaceURI, String localName, String qName)
-        throws SAXException {
-        LOGGER.entering("GMLFilterDocument", "endElement",
-            new Object[] { namespaceURI, localName, qName });
+            throws SAXException {
+        LOGGER.entering(
+                "GMLFilterDocument", "endElement", new Object[] {namespaceURI, localName, qName});
 
         /* if leaving a GML element, handle and pass to appropriate
          * internal or external method
@@ -281,7 +267,7 @@ public class GMLFilterDocument extends org.xml.sax.helpers.XMLFilterImpl {
                 parent.endElement(namespaceURI, localName, qName);
             }
 
-            //else { throw new SAXException("Unrecognized GML element."); }
+            // else { throw new SAXException("Unrecognized GML element."); }
         } else {
             /* all non-GML elements passed on down the filter chain
              * without modification
@@ -294,15 +280,12 @@ public class GMLFilterDocument extends org.xml.sax.helpers.XMLFilterImpl {
 
     /**
      * Simplifies the parsing process for GML coordinate elements.
-     * 
-     * <p>
-     * One of the more annoying features of GML (from a SAX parsing
-     * perspective) is the dual coord and coordinate representation of
-     * coordinates. To further complicate the matter, delimiters for the
-     * coordinates element are quite flexible.  This class hides all that
-     * nasty complexity beneath a benign exterior and greatly reduces the
-     * complexity of the GMLFilterDocument code.
-     * </p>
+     *
+     * <p>One of the more annoying features of GML (from a SAX parsing perspective) is the dual
+     * coord and coordinate representation of coordinates. To further complicate the matter,
+     * delimiters for the coordinates element are quite flexible. This class hides all that nasty
+     * complexity beneath a benign exterior and greatly reduces the complexity of the
+     * GMLFilterDocument code.
      */
     private class CoordinateReader {
         /** Flag for indicating not inside any tag. */
@@ -338,9 +321,7 @@ public class GMLFilterDocument extends org.xml.sax.helpers.XMLFilterImpl {
         /** Remembers last Z coordinate read. */
         private Double z = new Double(Double.NaN);
 
-        /**
-         * Stores requested delimiter for coordinate  separation; default = ','
-         */
+        /** Stores requested delimiter for coordinate separation; default = ',' */
         private String coordinateDelimeter = ",";
 
         /** Stores requested delimiter for tuple separation; default = ' ' */
@@ -349,55 +330,42 @@ public class GMLFilterDocument extends org.xml.sax.helpers.XMLFilterImpl {
         /** Stores requested delimiter for decimal separation; default = '.' */
         private StringBuffer decimalDelimeter = new StringBuffer(".");
 
-        /**
-         * Remembers whether or not the standard decimal is used, to speed up
-         * parsing.
-         */
+        /** Remembers whether or not the standard decimal is used, to speed up parsing. */
         private boolean standardDecimalFlag = true;
 
-        /**
-         * Empty constructor.
-         */
-        public CoordinateReader() {
-        }
+        /** Empty constructor. */
+        public CoordinateReader() {}
 
         /**
-         * Reads raw coordinates from the GML and returns them to the parent as
-         * neat functions.
+         * Reads raw coordinates from the GML and returns them to the parent as neat functions.
          *
          * @param coordinateString Raw coordinate string from the GML document.
-         *
-         * @throws SAXException Some parsing error occurred while reading
-         *         coordinates.
+         * @throws SAXException Some parsing error occurred while reading coordinates.
          */
-        public void readCoordinates(String coordinateString)
-            throws SAXException {
+        public void readCoordinates(String coordinateString) throws SAXException {
             /* if non-standard delimiter, replace it with
              * standard ',' through the entire string
              */
             if (!standardDecimalFlag) {
-                coordinateString = coordinateString.replace(decimalDelimeter
-                        .charAt(0), '.');
+                coordinateString = coordinateString.replace(decimalDelimeter.charAt(0), '.');
             }
 
             // separate tuples and loop through the set
-            StringTokenizer coordinateSets = new StringTokenizer(coordinateString
-                    .trim(), tupleDelimeter);
+            StringTokenizer coordinateSets =
+                    new StringTokenizer(coordinateString.trim(), tupleDelimeter);
             StringTokenizer coordinates;
 
             // loop through each of the coordinate sets.
             // Depending on the number of coordinates found,
             // call the correct parent coordinate class
             while (coordinateSets.hasMoreElements()) {
-                coordinates = new StringTokenizer(coordinateSets.nextToken(),
-                        coordinateDelimeter);
+                coordinates = new StringTokenizer(coordinateSets.nextToken(), coordinateDelimeter);
                 x = new Double(coordinates.nextToken().trim());
                 y = new Double(coordinates.nextToken().trim());
 
                 if (coordinates.hasMoreElements()) {
                     z = new Double(coordinates.nextToken().trim());
-                    parent.gmlCoordinates(x.doubleValue(), y.doubleValue(),
-                        z.doubleValue());
+                    parent.gmlCoordinates(x.doubleValue(), y.doubleValue(), z.doubleValue());
                 } else {
                     parent.gmlCoordinates(x.doubleValue(), y.doubleValue());
                 }
@@ -405,52 +373,48 @@ public class GMLFilterDocument extends org.xml.sax.helpers.XMLFilterImpl {
         }
 
         /**
-         * Reads a coord string.  Note that this string is actually inside an
-         * X, Y, Z tag and is not directly returned by the parent function,
-         * unlike the readCoordinates method.
+         * Reads a coord string. Note that this string is actually inside an X, Y, Z tag and is not
+         * directly returned by the parent function, unlike the readCoordinates method.
          *
          * @param coordString The raw coordinate string from the XML document.
          */
         public void readCoord(String coordString) {
-            // if non-standard delimiter, replace it with standard ',' 
+            // if non-standard delimiter, replace it with standard ','
             // through the entire string
             if (!standardDecimalFlag) {
-                coordString = coordString.replace(decimalDelimeter.charAt(0),
-                        '.');
+                coordString = coordString.replace(decimalDelimeter.charAt(0), '.');
             }
 
             // determine which coord string we are inside
             // set internal x,y,z values depending on the return
             switch (insideInnerFlag) {
-            case INSIDE_X:
-                x = new Double(coordString.trim());
+                case INSIDE_X:
+                    x = new Double(coordString.trim());
 
-                break;
+                    break;
 
-            case INSIDE_Y:
-                y = new Double(coordString.trim());
+                case INSIDE_Y:
+                    y = new Double(coordString.trim());
 
-                break;
+                    break;
 
-            case INSIDE_Z:
-                z = new Double(coordString.trim());
+                case INSIDE_Z:
+                    z = new Double(coordString.trim());
 
-                break;
+                    break;
 
-            default:
-                break;
+                default:
+                    break;
             }
         }
 
         /**
          * Sets an entrance into a coordinates element.
          *
-         * @param isInside Sets whether or not we are  inside a coordinates
-         *        tag.
+         * @param isInside Sets whether or not we are inside a coordinates tag.
          * @param atts Passes the coordinates tag attributes.
          */
-        public void insideCoordinates(boolean isInside,
-            org.xml.sax.Attributes atts) {
+        public void insideCoordinates(boolean isInside, org.xml.sax.Attributes atts) {
             this.insideCoordinates(isInside);
         }
 
@@ -471,7 +435,6 @@ public class GMLFilterDocument extends org.xml.sax.helpers.XMLFilterImpl {
          * Sets an entrance into a coord element.
          *
          * @param isInside Sets whether or not we are inside a coord tag.
-         *
          * @throws SAXException if error occurs in reading
          */
         public void insideCoord(boolean isInside) throws SAXException {
@@ -479,18 +442,17 @@ public class GMLFilterDocument extends org.xml.sax.helpers.XMLFilterImpl {
             if (isInside) {
                 insideOuterFlag = INSIDE_COORD;
             } else {
-                // if leaving coord tag, send coordinates to parent and 
+                // if leaving coord tag, send coordinates to parent and
                 // set all internal values to null equivalent.
                 // if coordinates exist, send on down the filter chain
                 // otherwise, throw an exception
                 if ((!x.isNaN()) && (!y.isNaN()) && (z.isNaN())) {
                     parent.gmlCoordinates(x.doubleValue(), y.doubleValue());
                 } else if ((!x.isNaN()) && (!y.isNaN()) && (!z.isNaN())) {
-                    parent.gmlCoordinates(x.doubleValue(), y.doubleValue(),
-                        z.doubleValue());
+                    parent.gmlCoordinates(x.doubleValue(), y.doubleValue(), z.doubleValue());
                 }
 
-                //else {
+                // else {
                 x = new Double(Double.NaN);
                 y = new Double(Double.NaN);
                 z = new Double(Double.NaN);

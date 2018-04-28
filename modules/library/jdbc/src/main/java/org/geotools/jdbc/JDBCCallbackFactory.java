@@ -3,7 +3,7 @@
  *    http://geotools.org
  *
  *    (C) 2017, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,40 +17,34 @@
 package org.geotools.jdbc;
 
 /**
- * JDBC callback factory. 
- * <p>
- *   This interface is used to "inject" callbacks into the various JDBC classes. 
- * </p>
+ * JDBC callback factory.
+ *
+ * <p>This interface is used to "inject" callbacks into the various JDBC classes.
  */
 public interface JDBCCallbackFactory {
 
-  /**
-   * Null callback factory. 
-   */
-  JDBCCallbackFactory NULL = new JDBCCallbackFactory() {
-    @Override
-    public String getName() {
-      return "null";
-    }
+    /** Null callback factory. */
+    JDBCCallbackFactory NULL =
+            new JDBCCallbackFactory() {
+                @Override
+                public String getName() {
+                    return "null";
+                }
 
-    @Override
-    public JDBCReaderCallback createReaderCallback() {
-      return JDBCReaderCallback.NULL;
-    }
+                @Override
+                public JDBCReaderCallback createReaderCallback() {
+                    return JDBCReaderCallback.NULL;
+                }
 
-    @Override
-    public String toString() {
-      return "null callback";
-    }
-  };
+                @Override
+                public String toString() {
+                    return "null callback";
+                }
+            };
 
-  /**
-   * Callback factory name.
-   */
-  String getName();
+    /** Callback factory name. */
+    String getName();
 
-  /**
-   * Creates a callback for {@link JDBCFeatureReader}.
-   */
-  JDBCReaderCallback createReaderCallback();
+    /** Creates a callback for {@link JDBCFeatureReader}. */
+    JDBCReaderCallback createReaderCallback();
 }

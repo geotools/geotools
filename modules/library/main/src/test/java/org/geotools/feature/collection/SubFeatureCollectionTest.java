@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -18,7 +18,6 @@ package org.geotools.feature.collection;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
-
 import org.geotools.data.DataTestCase;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.DefaultFeatureCollection;
@@ -27,13 +26,9 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterVisitor;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class SubFeatureCollectionTest extends DataTestCase {
-    DefaultFeatureCollection features = new DefaultFeatureCollection(null,null);
+    DefaultFeatureCollection features = new DefaultFeatureCollection(null, null);
 
     public SubFeatureCollectionTest(String testName) {
         super(testName);
@@ -60,22 +55,21 @@ public class SubFeatureCollectionTest extends DataTestCase {
     }
 
     public void testBounds() {
-        SimpleFeatureCollection subCollection = features
-                .subCollection(new Filter() {
+        SimpleFeatureCollection subCollection =
+                features.subCollection(
+                        new Filter() {
 
-                    public Object accept(FilterVisitor arg0, Object arg1) {
-                        return null;
-                    }
+                            public Object accept(FilterVisitor arg0, Object arg1) {
+                                return null;
+                            }
 
-                    public boolean evaluate(Object arg0) {
-                        return true;
-                    }
-
-                });
+                            public boolean evaluate(Object arg0) {
+                                return true;
+                            }
+                        });
 
         // Should not throw an UnsupportedOperationException
         // TODO Not semantically testing the bounds
         assertNotNull(subCollection.getBounds());
     }
-
 }

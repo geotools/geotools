@@ -19,31 +19,23 @@ package org.geotools.gce.imagemosaic.namecollector;
 import java.util.Map;
 
 /**
- * CoverageNameCollector SPI interface. Allows to instantiate {@link CoverageNameCollector}s
- * based on optional input source object and customization properties.
- * 
- * Implementations are pluggable. 
- * In addition to implementing this interface, this service file should be defined:
- * </p>
+ * CoverageNameCollector SPI interface. Allows to instantiate {@link CoverageNameCollector}s based
+ * on optional input source object and customization properties.
  *
- * <p>
- * <code>META-INF/services/org.geotools.gce.imagemosaic.namecollector.CoverageNameCollectorSPI</code>
- * </p>
+ * <p>Implementations are pluggable. In addition to implementing this interface, this service file
+ * should be defined:
  *
- * <p>
- * The file should contain a single line which gives the full name of the implementing class.
- * </p>
+ * <p><code>META-INF/services/org.geotools.gce.imagemosaic.namecollector.CoverageNameCollectorSPI
+ * </code>
  *
- * <p>
- * example:<br/>
+ * <p>The file should contain a single line which gives the full name of the implementing class.
+ *
+ * <p>example:<br>
  * <code>e.g.
  * org.geotools.gce.imagemosaic.namecollector.DefaultCoverageNameCollectorSPI</code>
- * </p>
- *
- * 
  */
 public interface CoverageNameCollectorSPI {
 
     /** Create a {@link CoverageNameCollector} instance */
-    public CoverageNameCollector create(Object object, Map<String,String> properties);
+    public CoverageNameCollector create(Object object, Map<String, String> properties);
 }

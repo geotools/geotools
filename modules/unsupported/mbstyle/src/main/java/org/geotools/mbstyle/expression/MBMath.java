@@ -27,11 +27,9 @@ public class MBMath extends MBExpression {
     }
 
     /**
-     * For two inputs, returns the result of subtracting the second input from the first. For a single input,
-     * returns the result of subtracting it from 0.
-     * Example:
-     * ["-", number, number]: number
-     * ["-", number]: number
+     * For two inputs, returns the result of subtracting the second input from the first. For a
+     * single input, returns the result of subtracting it from 0. Example: ["-", number, number]:
+     * number ["-", number]: number
      *
      * @return
      */
@@ -42,8 +40,7 @@ public class MBMath extends MBExpression {
     }
 
     /**
-     * Returns the product of the inputs.
-     * Example: ["*", number, number, ...]: number
+     * Returns the product of the inputs. Example: ["*", number, number, ...]: number
      *
      * @return
      */
@@ -59,8 +56,8 @@ public class MBMath extends MBExpression {
     }
 
     /**
-     * Returns the result of floating point division of the first input by the second.
-     * Example: ["/", number, number]: number
+     * Returns the result of floating point division of the first input by the second. Example:
+     * ["/", number, number]: number
      *
      * @return
      */
@@ -71,8 +68,8 @@ public class MBMath extends MBExpression {
     }
 
     /**
-     * Returns the remainder after integer division of the first input by the second.
-     * Example: ["%", number, number]: number
+     * Returns the remainder after integer division of the first input by the second. Example: ["%",
+     * number, number]: number
      *
      * @return
      */
@@ -83,8 +80,8 @@ public class MBMath extends MBExpression {
     }
 
     /**
-     * Returns the result of raising the first input to the power specified by the second.
-     * Example: ["^", number, number]: number
+     * Returns the result of raising the first input to the power specified by the second. Example:
+     * ["^", number, number]: number
      *
      * @return
      */
@@ -95,8 +92,7 @@ public class MBMath extends MBExpression {
     }
 
     /**
-     * Returns the sum of the inputs.
-     * Example: ["+", number, number...]: number
+     * Returns the sum of the inputs. Example: ["+", number, number...]: number
      *
      * @return
      */
@@ -112,8 +108,7 @@ public class MBMath extends MBExpression {
     }
 
     /**
-     * Returns the arccosine of the input.
-     * Example: ["acos", number]: number
+     * Returns the arccosine of the input. Example: ["acos", number]: number
      *
      * @return
      */
@@ -123,8 +118,7 @@ public class MBMath extends MBExpression {
     }
 
     /**
-     * Returns the arcsine of the input.
-     * Example: ["asin", number]: number
+     * Returns the arcsine of the input. Example: ["asin", number]: number
      *
      * @return
      */
@@ -134,8 +128,7 @@ public class MBMath extends MBExpression {
     }
 
     /**
-     * Returns the arctangent of the input.
-     * Example: ["atan", number]: number
+     * Returns the arctangent of the input. Example: ["atan", number]: number
      *
      * @return
      */
@@ -145,8 +138,7 @@ public class MBMath extends MBExpression {
     }
 
     /**
-     * Returns the cosine of the input.
-     * Example: ["cos", number]: number
+     * Returns the cosine of the input. Example: ["cos", number]: number
      *
      * @return
      */
@@ -156,8 +148,7 @@ public class MBMath extends MBExpression {
     }
 
     /**
-     * Returns the mathematical constant e.
-     * Example: ["e"]: number
+     * Returns the mathematical constant e. Example: ["e"]: number
      *
      * @return
      */
@@ -166,8 +157,7 @@ public class MBMath extends MBExpression {
     }
 
     /**
-     * Returns the natural logarithm of the input.
-     * Example: ["ln", number]: number
+     * Returns the natural logarithm of the input. Example: ["ln", number]: number
      *
      * @return
      */
@@ -177,8 +167,7 @@ public class MBMath extends MBExpression {
     }
 
     /**
-     * Returns mathematical constant ln(2).
-     * Example: ["ln2"]: number
+     * Returns mathematical constant ln(2). Example: ["ln2"]: number
      *
      * @return
      */
@@ -187,8 +176,7 @@ public class MBMath extends MBExpression {
     }
 
     /**
-     * Returns the base-ten logarithm of the input.
-     * Example: ["log10", number]: number
+     * Returns the base-ten logarithm of the input. Example: ["log10", number]: number
      *
      * @return
      */
@@ -198,8 +186,7 @@ public class MBMath extends MBExpression {
     }
 
     /**
-     * Returns the base-two logarithm of the input.
-     * Example: ["log2", number]: number
+     * Returns the base-two logarithm of the input. Example: ["log2", number]: number
      *
      * @return
      */
@@ -209,8 +196,7 @@ public class MBMath extends MBExpression {
     }
 
     /**
-     * Returns the maximum value of the inputs.
-     * Example: ["max", number, number, ...]: number
+     * Returns the maximum value of the inputs. Example: ["max", number, number, ...]: number
      *
      * @return
      */
@@ -226,8 +212,7 @@ public class MBMath extends MBExpression {
     }
 
     /**
-     * Returns the minimum value of the inputs.
-     * Example: ["min", number, number, ...]: number
+     * Returns the minimum value of the inputs. Example: ["min", number, number, ...]: number
      *
      * @return
      */
@@ -243,8 +228,7 @@ public class MBMath extends MBExpression {
     }
 
     /**
-     * Returns the mathematical constant pi.
-     * Example: ["pi"]: number
+     * Returns the mathematical constant pi. Example: ["pi"]: number
      *
      * @return
      */
@@ -253,8 +237,7 @@ public class MBMath extends MBExpression {
     }
 
     /**
-     * Returns the sine of the input.
-     * Example: ["sin", number]: number
+     * Returns the sine of the input. Example: ["sin", number]: number
      *
      * @return
      */
@@ -264,8 +247,7 @@ public class MBMath extends MBExpression {
     }
 
     /**
-     * Returns the square root of the input.
-     * Example: ["sqrt", number]: number
+     * Returns the square root of the input. Example: ["sqrt", number]: number
      *
      * @return
      */
@@ -275,8 +257,7 @@ public class MBMath extends MBExpression {
     }
 
     /**
-     * Returns the tangent of the input.
-     * Example: ["tan", number]: number
+     * Returns the tangent of the input. Example: ["tan", number]: number
      *
      * @return
      */

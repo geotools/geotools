@@ -22,9 +22,6 @@ package org.geotools.grid;
  *
  * @author mbedward
  * @since 2.7
- *
- *
- *
  * @source $URL$
  * @version $Id$
  */

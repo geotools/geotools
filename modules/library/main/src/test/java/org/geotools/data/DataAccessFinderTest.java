@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -25,11 +25,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import junit.framework.TestCase;
-
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.feature.SchemaException;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -38,12 +35,9 @@ import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 
 /**
- * 
  * @author Gabriel Roldan (TOPP)
  * @version $Id$
  * @since 2.5.x
- *
- *
  * @source $URL$
  */
 public class DataAccessFinderTest extends TestCase {
@@ -74,9 +68,8 @@ public class DataAccessFinderTest extends TestCase {
     }
 
     /**
-     * Can both DataStores and plain DataAccess be aquired through
-     * {@link DataAccessFinder}?
-     * 
+     * Can both DataStores and plain DataAccess be aquired through {@link DataAccessFinder}?
+     *
      * @throws IOException
      */
     public void testGetDataAccess() throws IOException {
@@ -123,10 +116,7 @@ public class DataAccessFinderTest extends TestCase {
         }
     }
 
-    /**
-     * Does DataAccessFinder.getAllDataStores() return both the DataStores and
-     * DataAccess?
-     */
+    /** Does DataAccessFinder.getAllDataStores() return both the DataStores and DataAccess? */
     @SuppressWarnings("unchecked")
     public void testGetAllDataAccess() {
         Iterator<DataAccessFactory> availableDataStores;
@@ -173,8 +163,8 @@ public class DataAccessFinderTest extends TestCase {
     }
 
     /**
-     * Does DataAccessFinder.getAvailableDataStores() return both the available
-     * DataStore and DataAccess factories?
+     * Does DataAccessFinder.getAvailableDataStores() return both the available DataStore and
+     * DataAccess factories?
      */
     @SuppressWarnings("unchecked")
     public void testGetAvailableDataAccess() {
@@ -203,7 +193,6 @@ public class DataAccessFinderTest extends TestCase {
     }
 
     /**
-     * 
      * @author Gabriel Roldan (TOPP)
      * @version $Id$
      * @since 2.5.x
@@ -215,17 +204,14 @@ public class DataAccessFinderTest extends TestCase {
         }
 
         /**
-         * returns true if the
-         * {@link DataAccessFinderTest#MOCK_DS_PARAM_KEY mock param} contains
+         * returns true if the {@link DataAccessFinderTest#MOCK_DS_PARAM_KEY mock param} contains
          * this class as value
          */
         public boolean canProcess(Map<String, Serializable> params) {
             return MockDataAccessFactory.class.equals(params.get(MOCK_DS_PARAM_KEY));
         }
 
-        /**
-         * @return {@link DataAccessFinderTest#MOCK_DATAACCESS}
-         */
+        /** @return {@link DataAccessFinderTest#MOCK_DATAACCESS} */
         public DataAccess<FeatureType, Feature> createDataStore(Map<String, Serializable> params)
                 throws IOException {
             return MOCK_DATAACCESS;
@@ -246,13 +232,11 @@ public class DataAccessFinderTest extends TestCase {
         public Map<Key, ?> getImplementationHints() {
             return null;
         }
-
     }
 
     /**
-     * A mock {@link DataStoreFactorySpi} implementation to test the factory
-     * lookup system.
-     * 
+     * A mock {@link DataStoreFactorySpi} implementation to test the factory lookup system.
+     *
      * @author Gabriel Roldan (TOPP)
      * @version $Id$
      * @since 2.5.x
@@ -264,17 +248,14 @@ public class DataAccessFinderTest extends TestCase {
         }
 
         /**
-         * returns true if the
-         * {@link DataAccessFinderTest#MOCK_DS_PARAM_KEY mock param} contains
+         * returns true if the {@link DataAccessFinderTest#MOCK_DS_PARAM_KEY mock param} contains
          * this class as value
          */
         public boolean canProcess(Map<String, Serializable> params) {
             return MockDataStoreFactory.class.equals(params.get(MOCK_DS_PARAM_KEY));
         }
 
-        /**
-         * @return {@link DataAccessFinderTest#MOCK_DATASTORE}
-         */
+        /** @return {@link DataAccessFinderTest#MOCK_DATASTORE} */
         public DataStore createDataStore(Map<String, Serializable> params) throws IOException {
             return MOCK_DATASTORE;
         }
@@ -298,12 +279,11 @@ public class DataAccessFinderTest extends TestCase {
         public Map<Key, ?> getImplementationHints() {
             return null;
         }
-
     }
 
     /**
      * A test {@link DataStoreFactorySpi} implementation that is unavailable
-     * 
+     *
      * @author Gabriel Roldan (TOPP)
      * @version $Id$
      * @since 2.5.x
@@ -317,116 +297,106 @@ public class DataAccessFinderTest extends TestCase {
         }
     }
 
-    /**
-     * Fake DataAccess returned by {@link MockDataAccessFactory}
-     */
-    private static final DataAccess<FeatureType, Feature> MOCK_DATAACCESS = new DataAccess<FeatureType, Feature>() {
+    /** Fake DataAccess returned by {@link MockDataAccessFactory} */
+    private static final DataAccess<FeatureType, Feature> MOCK_DATAACCESS =
+            new DataAccess<FeatureType, Feature>() {
 
-        public void createSchema(FeatureType featureType) throws IOException {
-        }
+                public void createSchema(FeatureType featureType) throws IOException {}
 
-        public void dispose() {
-        }
+                public void dispose() {}
 
-        public FeatureSource<FeatureType, Feature> getFeatureSource(Name typeName)
-                throws IOException {
-            return null;
-        }
+                public FeatureSource<FeatureType, Feature> getFeatureSource(Name typeName)
+                        throws IOException {
+                    return null;
+                }
 
-        public ServiceInfo getInfo() {
-            return null;
-        }
+                public ServiceInfo getInfo() {
+                    return null;
+                }
 
-        public List<Name> getNames() throws IOException {
-            return null;
-        }
+                public List<Name> getNames() throws IOException {
+                    return null;
+                }
 
-        public FeatureType getSchema(Name name) throws IOException {
-            return null;
-        }
+                public FeatureType getSchema(Name name) throws IOException {
+                    return null;
+                }
 
-        public void updateSchema(Name typeName, FeatureType featureType) throws IOException {
-        }
+                public void updateSchema(Name typeName, FeatureType featureType)
+                        throws IOException {}
 
-        public void removeSchema(Name typeName) throws IOException {
-        }
-    };
+                public void removeSchema(Name typeName) throws IOException {}
+            };
 
-    /**
-     * Fake datastore returned by {@link MockDataStoreFactory}
-     */
-    private static final DataStore MOCK_DATASTORE = new DataStore() {
+    /** Fake datastore returned by {@link MockDataStoreFactory} */
+    private static final DataStore MOCK_DATASTORE =
+            new DataStore() {
 
-        public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(Query query,
-                Transaction transaction) throws IOException {
-            return null;
-        }
+                public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(
+                        Query query, Transaction transaction) throws IOException {
+                    return null;
+                }
 
-        public SimpleFeatureSource getFeatureSource(String typeName)
-                throws IOException {
-            return null;
-        }
+                public SimpleFeatureSource getFeatureSource(String typeName) throws IOException {
+                    return null;
+                }
 
-        public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(String typeName,
-                Filter filter, Transaction transaction) throws IOException {
-            return null;
-        }
+                public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
+                        String typeName, Filter filter, Transaction transaction)
+                        throws IOException {
+                    return null;
+                }
 
-        public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(String typeName,
-                Transaction transaction) throws IOException {
-            return null;
-        }
+                public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
+                        String typeName, Transaction transaction) throws IOException {
+                    return null;
+                }
 
-        public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriterAppend(
-                String typeName, Transaction transaction) throws IOException {
-            return null;
-        }
+                public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriterAppend(
+                        String typeName, Transaction transaction) throws IOException {
+                    return null;
+                }
 
-        public LockingManager getLockingManager() {
-            return null;
-        }
+                public LockingManager getLockingManager() {
+                    return null;
+                }
 
-        public SimpleFeatureType getSchema(String typeName) throws IOException {
-            return null;
-        }
+                public SimpleFeatureType getSchema(String typeName) throws IOException {
+                    return null;
+                }
 
-        public String[] getTypeNames() throws IOException {
-            return null;
-        }
+                public String[] getTypeNames() throws IOException {
+                    return null;
+                }
 
-        public void updateSchema(String typeName, SimpleFeatureType featureType) throws IOException {
-        }
+                public void updateSchema(String typeName, SimpleFeatureType featureType)
+                        throws IOException {}
 
-        public void removeSchema(String typeName) throws IOException {
-        }
+                public void removeSchema(String typeName) throws IOException {}
 
-        public void createSchema(SimpleFeatureType featureType) throws IOException {
-        }
+                public void createSchema(SimpleFeatureType featureType) throws IOException {}
 
-        public void dispose() {
-        }
+                public void dispose() {}
 
-        public SimpleFeatureSource getFeatureSource(Name typeName)
-                throws IOException {
-            return null;
-        }
+                public SimpleFeatureSource getFeatureSource(Name typeName) throws IOException {
+                    return null;
+                }
 
-        public ServiceInfo getInfo() {
-            return null;
-        }
+                public ServiceInfo getInfo() {
+                    return null;
+                }
 
-        public List<Name> getNames() throws IOException {
-            return null;
-        }
+                public List<Name> getNames() throws IOException {
+                    return null;
+                }
 
-        public SimpleFeatureType getSchema(Name name) throws IOException {
-            return null;
-        }
+                public SimpleFeatureType getSchema(Name name) throws IOException {
+                    return null;
+                }
 
-        public void updateSchema(Name typeName, SimpleFeatureType featureType) throws IOException {
-        }
+                public void updateSchema(Name typeName, SimpleFeatureType featureType)
+                        throws IOException {}
 
-        public void removeSchema(Name typeName) throws IOException {
-        }
-    };
+                public void removeSchema(Name typeName) throws IOException {}
+            };
 }

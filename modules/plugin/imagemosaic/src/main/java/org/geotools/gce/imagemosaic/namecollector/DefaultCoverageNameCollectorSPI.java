@@ -17,14 +17,11 @@
 package org.geotools.gce.imagemosaic.namecollector;
 
 import java.util.Map;
-
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.geotools.coverage.grid.io.StructuredGridCoverage2DReader;
 import org.geotools.gce.imagemosaic.Utils;
 
-/**
- * A Default {@link CoverageNameCollectorSPI} implementation
- */
+/** A Default {@link CoverageNameCollectorSPI} implementation */
 public class DefaultCoverageNameCollectorSPI implements CoverageNameCollectorSPI {
 
     public CoverageNameCollector create(Object object, Map<String, String> properties) {

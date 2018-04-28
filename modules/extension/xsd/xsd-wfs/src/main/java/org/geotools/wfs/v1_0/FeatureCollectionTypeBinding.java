@@ -17,24 +17,21 @@
 package org.geotools.wfs.v1_0;
 
 import javax.xml.namespace.QName;
-
 import net.opengis.wfs.FeatureCollectionType;
 import net.opengis.wfs.WfsFactory;
-
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.gml2.GMLConfiguration;
 import org.geotools.gml2.simple.GML2FeatureCollectionEncoderDelegate;
 import org.geotools.gml3.GML;
 import org.geotools.xml.Encoder;
 
-
 /**
  * A WFS 1.0 specific binding with optimizations for {@link SimpleFeatureCollection} encoding
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
-public class FeatureCollectionTypeBinding extends
-        org.geotools.wfs.bindings.FeatureCollectionTypeBinding {
+public class FeatureCollectionTypeBinding
+        extends org.geotools.wfs.bindings.FeatureCollectionTypeBinding {
 
     private Encoder encoder;
 
@@ -53,27 +50,23 @@ public class FeatureCollectionTypeBinding extends
             FeatureCollectionType fc = (FeatureCollectionType) object;
             if (fc.getFeature().size() == 1
                     && fc.getFeature().get(0) instanceof SimpleFeatureCollection
-                    && encoder.getConfiguration().hasProperty(GMLConfiguration.OPTIMIZED_ENCODING)) {
-                return new GML2FeatureCollectionEncoderDelegate((SimpleFeatureCollection) fc
-                        .getFeature().get(0), encoder);
+                    && encoder.getConfiguration()
+                            .hasProperty(GMLConfiguration.OPTIMIZED_ENCODING)) {
+                return new GML2FeatureCollectionEncoderDelegate(
+                        (SimpleFeatureCollection) fc.getFeature().get(0), encoder);
             }
         }
-        
+
         return super.getProperty(object, name);
     }
-    
-    /**
-     * @return the encoder
-     */
+
+    /** @return the encoder */
     public Encoder getEncoder() {
         return encoder;
     }
 
-    /**
-     * @param encoder the encoder to set
-     */
+    /** @param encoder the encoder to set */
     public void setEncoder(Encoder encoder) {
         this.encoder = encoder;
     }
-    
 }

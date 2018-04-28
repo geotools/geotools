@@ -16,13 +16,10 @@
  */
 package org.geotools.brewer.color;
 
-
 /**
  * Number of samples that can be represented.
  *
  * @author James Macgill
- *
- *
  * @source $URL$
  */
 public class SampleScheme {
@@ -30,17 +27,13 @@ public class SampleScheme {
     int minCount = -1;
     int maxCount = -1;
 
-    /**
-     * Creates a new instance of SampleScheme
-     */
-    public SampleScheme() {
-    }
+    /** Creates a new instance of SampleScheme */
+    public SampleScheme() {}
 
     /**
      * Indexed getter for property sampleScheme.
      *
      * @param length Index of the property.
-     *
      * @return Value of the property at <CODE>index</CODE>.
      */
     public int[] getSampleScheme(int length) {

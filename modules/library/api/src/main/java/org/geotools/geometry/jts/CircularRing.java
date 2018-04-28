@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2014 - 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -15,8 +15,6 @@
  *    Lesser General Public License for more details.
  */
 package org.geotools.geometry.jts;
-
-import java.util.Arrays;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.CoordinateFilter;
@@ -33,24 +31,28 @@ import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.PrecisionModel;
 import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
+import java.util.Arrays;
 
 /**
  * A CircularRing is a CircularString whose start and end point coincide. The ring needs to be
  * formed of at least two arc circles, in order to be able to determine its orientation.
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
-public class CircularRing extends LinearRing implements SingleCurvedGeometry<LinearRing>,
-        CurvedRing {
+public class CircularRing extends LinearRing
+        implements SingleCurvedGeometry<LinearRing>, CurvedRing {
 
     private static final long serialVersionUID = -5796254063449438787L;
 
-    /**
-     * This sequence is used as a fake to trick the constructor
-     */
-    static final CoordinateSequence FAKE_RING_2D = new CoordinateArraySequence(
-            new Coordinate[] { new Coordinate(0, 0), new Coordinate(0, 1), new Coordinate(1, 1),
-                    new Coordinate(0, 0) });
+    /** This sequence is used as a fake to trick the constructor */
+    static final CoordinateSequence FAKE_RING_2D =
+            new CoordinateArraySequence(
+                    new Coordinate[] {
+                        new Coordinate(0, 0),
+                        new Coordinate(0, 1),
+                        new Coordinate(1, 1),
+                        new Coordinate(0, 0)
+                    });
 
     CircularString delegate;
 
@@ -137,7 +139,7 @@ public class CircularRing extends LinearRing implements SingleCurvedGeometry<Lin
 
     /**
      * Returns a normalized ring (one that does not have a single arc closing on itself)
-     * 
+     *
      * @return
      */
     public CircularRing normalizeRing() {
@@ -171,7 +173,7 @@ public class CircularRing extends LinearRing implements SingleCurvedGeometry<Lin
         ncp[7] = center.y + radius * Math.sin(am2);
         ncp[8] = cp[0];
         ncp[9] = cp[1];
-        
+
         return new CircularRing(ncp, factory, delegate.getTolerance());
     }
 
@@ -401,7 +403,6 @@ public class CircularRing extends LinearRing implements SingleCurvedGeometry<Lin
         return linearize().isWithinDistance(geom, distance);
     }
 
-
     public double getArea() {
         return linearize().getArea();
     }
@@ -458,8 +459,6 @@ public class CircularRing extends LinearRing implements SingleCurvedGeometry<Lin
         return linearize().relate(g);
     }
 
-
-
     public Geometry buffer(double distance) {
         return linearize().buffer(distance);
     }
@@ -512,5 +511,4 @@ public class CircularRing extends LinearRing implements SingleCurvedGeometry<Lin
     public String toText() {
         return linearize().toText();
     }
-
 }

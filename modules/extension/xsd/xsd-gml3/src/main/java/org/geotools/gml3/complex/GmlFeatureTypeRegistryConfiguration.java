@@ -22,15 +22,14 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.xml.namespace.QName;
-
 import org.eclipse.xsd.XSDAttributeDeclaration;
 import org.eclipse.xsd.XSDAttributeUse;
 import org.eclipse.xsd.XSDAttributeUseCategory;
 import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDTypeDefinition;
+import org.geotools.feature.type.Types;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GMLConfiguration;
 import org.geotools.gml3.GMLSchema;
@@ -43,19 +42,17 @@ import org.geotools.xml.complex.FeatureTypeRegistryConfiguration;
 import org.geotools.xs.XS;
 import org.opengis.feature.type.Name;
 import org.opengis.feature.type.Schema;
-import org.geotools.feature.type.Types;
 
 /**
- * Feature Type Registry Configuration for  GML. Depending on the schema type
- * different version of GML class may be called upon. eg {@link org.geotools.gml3.v3_2.GML} or
- * {@link org.geotools.gml3.GML}
- * 
+ * Feature Type Registry Configuration for GML. Depending on the schema type different version of
+ * GML class may be called upon. eg {@link org.geotools.gml3.v3_2.GML} or {@link
+ * org.geotools.gml3.GML}
+ *
  * @author Victor Tey, CSIRO Exploration and Mining
  * @author Niels Charlier
- *
  */
 public class GmlFeatureTypeRegistryConfiguration implements FeatureTypeRegistryConfiguration {
-    
+
     String namespace;
 
     public GmlFeatureTypeRegistryConfiguration(String uri) {
@@ -71,14 +68,15 @@ public class GmlFeatureTypeRegistryConfiguration implements FeatureTypeRegistryC
         ArrayList<Schema> schemas = new ArrayList<Schema>();
         schemas.add(new SMIL20Schema());
         schemas.add(new SMIL20LANGSchema());
-        schemas.add(new GMLSchema());;
+        schemas.add(new GMLSchema());
+        ;
         schemas.add(new org.geotools.gml3.v3_2.GMLSchema());
         schemas.add(new org.geotools.gml3.v3_2.gco.GCOSchema());
         schemas.add(new org.geotools.gml3.v3_2.gmd.GMDSchema());
         schemas.add(new org.geotools.gml3.v3_2.gmx.GMXSchema());
         schemas.add(new org.geotools.gml3.v3_2.gsr.GSRSchema());
         schemas.add(new org.geotools.gml3.v3_2.gss.GSSSchema());
-        schemas.add(new org.geotools.gml3.v3_2.gts.GTSSchema());                
+        schemas.add(new org.geotools.gml3.v3_2.gts.GTSSchema());
         return schemas;
     }
 
@@ -121,7 +119,7 @@ public class GmlFeatureTypeRegistryConfiguration implements FeatureTypeRegistryC
             return org.geotools.gml3.GML.id;
         }
     }
-    
+
     public void setEmptyNamespace(XSDTypeDefinition typeDefinition) {
         if (namespace.isEmpty()) {
             // GEOT-4756:
@@ -153,7 +151,7 @@ public class GmlFeatureTypeRegistryConfiguration implements FeatureTypeRegistryC
 
         final String idAttName = getId().getLocalPart();
 
-        for (Iterator it = attributeUses.iterator(); it.hasNext();) {
+        for (Iterator it = attributeUses.iterator(); it.hasNext(); ) {
             XSDAttributeUse use = (XSDAttributeUse) it.next();
             XSDAttributeUseCategory useCategory = use.getUse();
 
@@ -169,11 +167,10 @@ public class GmlFeatureTypeRegistryConfiguration implements FeatureTypeRegistryC
         }
         return false;
     }
-    
 
     /**
      * Returns true if the <code>typeDefinition</code> is based on provided <code>superNS</code>.
-     * 
+     *
      * @param typeDefinition
      * @param superNS
      * @return
@@ -201,24 +198,26 @@ public class GmlFeatureTypeRegistryConfiguration implements FeatureTypeRegistryC
 
     /**
      * Returns whether <code>typeDefinition</code> has an ancestor named <code>baseTypeName</code>.
-     * 
+     *
      * @param typeDefinition
      * @param baseTypeName
      * @return
      */
-    private static boolean isDerivedFrom(final XSDTypeDefinition typeDefinition, final QName baseTypeName) {
+    private static boolean isDerivedFrom(
+            final XSDTypeDefinition typeDefinition, final QName baseTypeName) {
         return isDerivedFrom(typeDefinition, Types.toTypeName(baseTypeName));
     }
 
     /**
-     * Returns <code>true</code> if <code>typeDefinition</code> is derived from a type named
-     * <code>superTypeName</code>
-     * 
+     * Returns <code>true</code> if <code>typeDefinition</code> is derived from a type named <code>
+     * superTypeName</code>
+     *
      * @param typeDefinition
      * @param superTypeName
      * @return
      */
-    private static boolean isDerivedFrom(XSDTypeDefinition typeDefinition, final Name superTypeName) {
+    private static boolean isDerivedFrom(
+            XSDTypeDefinition typeDefinition, final Name superTypeName) {
 
         XSDTypeDefinition baseType;
         final String superNS = superTypeName.getNamespaceURI();
@@ -239,22 +238,25 @@ public class GmlFeatureTypeRegistryConfiguration implements FeatureTypeRegistryC
         }
         return false;
     }
-    
 
     /**
-     * Map of the qualified-name of a known type in each supported GML version to the {@link Configuration} for that GML version.
+     * Map of the qualified-name of a known type in each supported GML version to the {@link
+     * Configuration} for that GML version.
      */
     @SuppressWarnings("serial")
-    private static final Map<QName, Class<? extends Configuration>> SUPPORTED_GML_KNOWN_TYPE_TO_CONFIGURATION_MAP //
-    = new LinkedHashMap<QName, Class<? extends Configuration>>() {
-        {
-            // GML 3.1
-            put(GML.AbstractFeatureType, GMLConfiguration.class);
-            // GML 3.2
-            put(org.geotools.gml3.v3_2.GML.AbstractFeatureType,
-                    org.geotools.gml3.v3_2.GMLConfiguration.class);
-        }
-    };
+    private static final Map<QName, Class<? extends Configuration>>
+            SUPPORTED_GML_KNOWN_TYPE_TO_CONFIGURATION_MAP //
+            =
+                    new LinkedHashMap<QName, Class<? extends Configuration>>() {
+                        {
+                            // GML 3.1
+                            put(GML.AbstractFeatureType, GMLConfiguration.class);
+                            // GML 3.2
+                            put(
+                                    org.geotools.gml3.v3_2.GML.AbstractFeatureType,
+                                    org.geotools.gml3.v3_2.GMLConfiguration.class);
+                        }
+                    };
 
     public static Configuration findGmlConfiguration(Configuration configuration) {
         SchemaIndex index = null;
@@ -264,7 +266,9 @@ public class GmlFeatureTypeRegistryConfiguration implements FeatureTypeRegistryC
                 XSDTypeDefinition type = index.getTypeDefinition(name);
                 if (type != null) {
                     try {
-                        return SUPPORTED_GML_KNOWN_TYPE_TO_CONFIGURATION_MAP.get(name).newInstance();
+                        return SUPPORTED_GML_KNOWN_TYPE_TO_CONFIGURATION_MAP
+                                .get(name)
+                                .newInstance();
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
@@ -273,8 +277,9 @@ public class GmlFeatureTypeRegistryConfiguration implements FeatureTypeRegistryC
             for (XSDSchema schema : index.getSchemas()) {
                 String ns = schema.getTargetNamespace();
                 if (ns != null && ns.startsWith("http://www.opengis.net/gml")) {
-                    throw new RuntimeException("Unsupported GML version for schema at "
-                            + configuration.getXSD().getSchemaLocation());
+                    throw new RuntimeException(
+                            "Unsupported GML version for schema at "
+                                    + configuration.getXSD().getSchemaLocation());
                 }
             }
         } finally {
@@ -284,5 +289,4 @@ public class GmlFeatureTypeRegistryConfiguration implements FeatureTypeRegistryC
         }
         return null;
     }
-
 }

@@ -1,25 +1,19 @@
 /**
- * <copyright>
- * </copyright>
+ * <copyright> </copyright>
  *
- * $Id$
+ * <p>$Id$
  */
 package org.geotools.data.efeature.tests.unit.conditions;
 
-import org.geotools.data.efeature.EFeature;
-
 import junit.framework.Test;
 import junit.framework.TestSuite;
-
 import junit.textui.TestRunner;
-
+import org.geotools.data.efeature.EFeature;
 
 /**
  * Test suite for {@link EFeature} implementation.
- * 
+ *
  * @author kengu
- *
- *
  * @source $URL$
  */
 public class EAttributeFilterAllTests extends TestSuite {
@@ -31,7 +25,7 @@ public class EAttributeFilterAllTests extends TestSuite {
     public EAttributeFilterAllTests(String name) {
         super(name);
     }
-    
+
     public static Test suite() {
         //
         // Create test suite
@@ -68,6 +62,4 @@ public class EAttributeFilterAllTests extends TestSuite {
         //
         return suite;
     }
-
-
-} //EFeatureAllTests
+} // EFeatureAllTests

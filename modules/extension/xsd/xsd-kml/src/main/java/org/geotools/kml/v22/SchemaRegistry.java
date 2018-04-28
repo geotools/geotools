@@ -2,7 +2,6 @@ package org.geotools.kml.v22;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import org.opengis.feature.simple.SimpleFeatureType;
 
 public class SchemaRegistry {
@@ -24,5 +23,4 @@ public class SchemaRegistry {
     public SimpleFeatureType get(SimpleFeatureType featureType) {
         return get(featureType.getName().getLocalPart());
     }
-
 }

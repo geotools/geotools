@@ -19,15 +19,12 @@ package org.geotools.process.raster;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
-
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.gce.geotiff.GeoTiffReader;
 import org.geotools.image.ImageWorker;
 import org.geotools.test.TestData;
 import org.junit.Assert;
 import org.junit.Test;
-
-import it.geosolutions.rendered.viewer.RenderedImageBrowser;
 
 public class TransparencyTest {
 
@@ -72,8 +69,10 @@ public class TransparencyTest {
             TransparencyFillProcess process = new TransparencyFillProcess();
             coverage = process.execute(coverage, null);
 
-            worker = new ImageWorker(coverage.getRenderedImage()).crop(0, 0, 39, 19)
-                    .retainLastBand();
+            worker =
+                    new ImageWorker(coverage.getRenderedImage())
+                            .crop(0, 0, 39, 19)
+                            .retainLastBand();
             mins = worker.getMinimums();
             maxs = worker.getMaximums();
 
@@ -81,8 +80,10 @@ public class TransparencyTest {
             Assert.assertEquals(0, mins[0], 1E-6);
             Assert.assertEquals(0, maxs[0], 1E-6);
 
-            worker = new ImageWorker(coverage.getRenderedImage()).crop(0, 50, 100, 50)
-                    .retainLastBand();
+            worker =
+                    new ImageWorker(coverage.getRenderedImage())
+                            .crop(0, 50, 100, 50)
+                            .retainLastBand();
 
             // Make sure the area with white stripes is now fully opaque
             mins = worker.getMinimums();
@@ -99,7 +100,5 @@ public class TransparencyTest {
                 }
             }
         }
-
     }
-
 }

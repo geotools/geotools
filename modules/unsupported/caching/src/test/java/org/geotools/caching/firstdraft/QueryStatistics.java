@@ -16,42 +16,38 @@
  */
 package org.geotools.caching.firstdraft;
 
-
-/**
- * @author crousson
- *
- */
+/** @author crousson */
 class QueryStatistics {
     private int numberOfFeatures;
     private long executionTime;
 
     /**
-     * @return  the executionTime
-     * @uml.property  name="executionTime"
+     * @return the executionTime
+     * @uml.property name="executionTime"
      */
     public long getExecutionTime() {
         return executionTime;
     }
 
     /**
-     * @param executionTime  the executionTime to set
-     * @uml.property  name="executionTime"
+     * @param executionTime the executionTime to set
+     * @uml.property name="executionTime"
      */
     public void setExecutionTime(long executionTime) {
         this.executionTime = executionTime;
     }
 
     /**
-     * @return  the numberOfFeatures
-     * @uml.property  name="numberOfFeatures"
+     * @return the numberOfFeatures
+     * @uml.property name="numberOfFeatures"
      */
     public int getNumberOfFeatures() {
         return numberOfFeatures;
     }
 
     /**
-     * @param numberOfFeatures  the numberOfFeatures to set
-     * @uml.property  name="numberOfFeatures"
+     * @param numberOfFeatures the numberOfFeatures to set
+     * @uml.property name="numberOfFeatures"
      */
     public void setNumberOfFeatures(int numberOfFeatures) {
         this.numberOfFeatures = numberOfFeatures;

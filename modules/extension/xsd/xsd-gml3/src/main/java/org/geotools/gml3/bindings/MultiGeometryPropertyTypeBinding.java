@@ -16,21 +16,18 @@
  */
 package org.geotools.gml3.bindings;
 
+import com.vividsolutions.jts.geom.GeometryCollection;
 import javax.xml.namespace.QName;
-
 import org.geotools.gml3.GML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 
-import com.vividsolutions.jts.geom.GeometryCollection;
-
 /**
- * Binding object for the type
- * http://www.opengis.net/gml/3.2:MultiGeometryPropertyType.
- * 
+ * Binding object for the type http://www.opengis.net/gml/3.2:MultiGeometryPropertyType.
+ *
  * <p>
- * 
+ *
  * <pre>
  * &lt;complexType name="MultiGeometryPropertyType">
  *   &lt;annotation>
@@ -47,27 +44,22 @@ import com.vividsolutions.jts.geom.GeometryCollection;
  *   &lt;/attributeGroup>
  * &lt;/complexType>
  * </pre>
- * 
- * </p>
- * 
+ *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class MultiGeometryPropertyTypeBinding extends AbstractComplexBinding {
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return GML.MultiGeometryPropertyType;
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Class getType() {
@@ -75,16 +67,17 @@ public class MultiGeometryPropertyTypeBinding extends AbstractComplexBinding {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-            throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         return node.getChildValue(GeometryCollection.class);
     }
-    
+
     @Override
     public Object getProperty(Object object, QName name) throws Exception {
         if (GML._GeometricAggregate.equals(name)) {
@@ -92,5 +85,4 @@ public class MultiGeometryPropertyTypeBinding extends AbstractComplexBinding {
         }
         return super.getProperty(object, name);
     }
-
 }

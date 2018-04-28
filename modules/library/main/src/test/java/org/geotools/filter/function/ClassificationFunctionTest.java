@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -17,24 +17,21 @@
 package org.geotools.filter.function;
 
 import java.util.logging.Logger;
-
 import org.opengis.filter.expression.Expression;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class ClassificationFunctionTest extends FunctionTestSupport {
-    
-    protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
-    
+
+    protected static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
+
     public ClassificationFunctionTest(String testName) {
         super(testName);
     }
-    
+
     public void testDecimalPlaces() throws Exception {
-        EqualIntervalFunction eif = (EqualIntervalFunction) ff.function("EqualInterval", Expression.NIL);
+        EqualIntervalFunction eif =
+                (EqualIntervalFunction) ff.function("EqualInterval", Expression.NIL);
         assertEquals(0, eif.decimalPlaces(100.0));
         assertEquals(3, eif.decimalPlaces(25.99312));
         assertEquals(1, eif.decimalPlaces(1.1));
@@ -43,7 +40,7 @@ public class ClassificationFunctionTest extends FunctionTestSupport {
         assertEquals(2, eif.decimalPlaces(0.01));
         assertEquals(3, eif.decimalPlaces(0.001));
     }
-    
+
     public void testRound() throws Exception {
         QuantileFunction classifier = (QuantileFunction) ff.function("Quantile", Expression.NIL);
         assertEquals(100.0, classifier.round(100.0, 0), 0);
@@ -52,7 +49,8 @@ public class ClassificationFunctionTest extends FunctionTestSupport {
     }
 
     public void testRoundOverflow() throws Exception {
-        EqualIntervalFunction eif = (EqualIntervalFunction) ff.function("EqualInterval", Expression.NIL);
+        EqualIntervalFunction eif =
+                (EqualIntervalFunction) ff.function("EqualInterval", Expression.NIL);
         assertEquals(1477946338495.3d, eif.round(1477946338495.25d, 1));
     }
 }

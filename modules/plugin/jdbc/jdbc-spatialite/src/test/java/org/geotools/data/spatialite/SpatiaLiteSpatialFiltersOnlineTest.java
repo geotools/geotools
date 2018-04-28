@@ -19,16 +19,11 @@ package org.geotools.data.spatialite;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 import org.geotools.jdbc.JDBCSpatialFiltersOnlineTest;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class SpatiaLiteSpatialFiltersOnlineTest extends JDBCSpatialFiltersOnlineTest {
 
     @Override
     protected JDBCDataStoreAPITestSetup createTestSetup() {
         return new SpatiaLiteDataStoreAPITestSetup();
     }
-
 }

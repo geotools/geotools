@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,6 +17,10 @@
  */
 package org.geotools.ysld.transform.sld;
 
+import java.io.IOException;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 import org.geotools.filter.text.ecql.ECQL;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.impl.ParserHandler;
@@ -25,14 +29,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import java.io.IOException;
-
-/**
- * Handles xml parse events for filter expressions.
- */
+/** Handles xml parse events for filter expressions. */
 public class FilterHandler extends SldTransformHandler {
     ParserHandler delegate;
 
@@ -45,8 +42,11 @@ public class FilterHandler extends SldTransformHandler {
                 delegate.startDocument();
             }
             if (delegate != null) {
-                delegate.startElement(xml.getNamespaceURI(), xml.getLocalName(),
-                        qname(xml.getName()), attributes(xml));
+                delegate.startElement(
+                        xml.getNamespaceURI(),
+                        xml.getLocalName(),
+                        qname(xml.getName()),
+                        attributes(xml));
             }
         } catch (SAXException e) {
             throw new XMLStreamException(e);
@@ -58,8 +58,8 @@ public class FilterHandler extends SldTransformHandler {
             throws XMLStreamException, IOException {
         if (delegate != null) {
             try {
-                delegate.characters(xml.getTextCharacters(), xml.getTextStart(),
-                        xml.getTextLength());
+                delegate.characters(
+                        xml.getTextCharacters(), xml.getTextStart(), xml.getTextLength());
             } catch (SAXException e) {
                 throw new XMLStreamException(e);
             }
@@ -71,8 +71,8 @@ public class FilterHandler extends SldTransformHandler {
             throws XMLStreamException, IOException {
         if (delegate != null) {
             try {
-                delegate.endElement(xml.getNamespaceURI(), xml.getLocalName(),
-                        qname(xml.getName()));
+                delegate.endElement(
+                        xml.getNamespaceURI(), xml.getLocalName(), qname(xml.getName()));
             } catch (SAXException e) {
                 throw new XMLStreamException(e);
             }
@@ -87,14 +87,18 @@ public class FilterHandler extends SldTransformHandler {
 
     String qname(QName name) {
         return name.getPrefix() != null && !"".equals(name.getPrefix())
-                ? name.getPrefix() + ":" + name.getLocalPart() : name.getLocalPart();
+                ? name.getPrefix() + ":" + name.getLocalPart()
+                : name.getLocalPart();
     }
 
     Attributes attributes(XMLStreamReader xml) {
         AttributesImpl atts = new AttributesImpl();
         for (int i = 0; i < xml.getAttributeCount(); i++) {
-            atts.addAttribute(xml.getAttributeNamespace(i), xml.getAttributeLocalName(i),
-                    qname(xml.getAttributeName(i)), xml.getAttributeType(i),
+            atts.addAttribute(
+                    xml.getAttributeNamespace(i),
+                    xml.getAttributeLocalName(i),
+                    qname(xml.getAttributeName(i)),
+                    xml.getAttributeType(i),
                     xml.getAttributeValue(i));
         }
         return atts;

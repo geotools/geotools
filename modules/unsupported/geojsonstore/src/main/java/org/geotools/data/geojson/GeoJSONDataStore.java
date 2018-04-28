@@ -15,15 +15,13 @@ package org.geotools.data.geojson;
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
+
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.Collections;
 import java.util.List;
-
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.data.Query;
-import org.geotools.data.Transaction;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.feature.NameImpl;
@@ -77,5 +75,4 @@ public class GeoJSONDataStore extends org.geotools.data.store.ContentDataStore {
     public void createSchema(SimpleFeatureType featureType) throws IOException {
         this.schema = featureType;
     }
-    
 }

@@ -17,16 +17,11 @@
 package org.geotools.styling.builder;
 
 import java.awt.Color;
-
 import org.geotools.styling.ColorMapEntry;
 import org.geotools.util.Converters;
 import org.opengis.filter.expression.Expression;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class ColorMapEntryBuilder extends AbstractStyleBuilder<ColorMapEntry> {
 
     String label;
@@ -146,5 +141,4 @@ public class ColorMapEntryBuilder extends AbstractStyleBuilder<ColorMapEntry> {
     public ColorMapEntryBuilder unset() {
         return (ColorMapEntryBuilder) super.unset();
     }
-
 }

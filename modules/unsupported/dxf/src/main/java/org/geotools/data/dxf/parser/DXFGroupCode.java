@@ -1,15 +1,14 @@
 package org.geotools.data.dxf.parser;
 
-/** 
- * An enumeration that represents all valid DXF Group Codes with
- * associated value types as listed in specs.
- * 
+/**
+ * An enumeration that represents all valid DXF Group Codes with associated value types as listed in
+ * specs.
  */
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public enum DXFGroupCode {
-
     UNSUPPORTED(-1, DXFValueType.STRING),
     TYPE(0, DXFValueType.STRING),
     TEXT(1, DXFValueType.STRING),

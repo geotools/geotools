@@ -3,7 +3,7 @@
  *    http://geotools.org
  *
  *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -16,13 +16,12 @@
  */
 package org.geotools.data.couchdb;
 
-import java.io.IOException;
-import java.util.Properties;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import java.io.FileNotFoundException;
+import static org.junit.Assert.*;
+
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.geotools.TestData;
@@ -30,27 +29,27 @@ import org.geotools.data.couchdb.client.CouchDBClient;
 import org.geotools.data.couchdb.client.CouchDBUtils;
 import org.geotools.test.OnlineTestSupport;
 import org.geotools.util.logging.Logging;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.junit.After;
-import static org.junit.Assert.*;
 
 /**
- *
  * @author Ian Schneider (OpenGeo)
- *
  * @source $URL$
  */
 public class CouchDBTestSupport extends OnlineTestSupport {
     protected CouchDBClient client;
     protected Logger logger;
-    
+
     protected final String getTestDB() {
         return getFixture().getProperty("dbname");
     }
+
     protected final String getTestHost() {
         return getFixture().getProperty("url");
     }
-    
+
     @After
     public void tearDown() throws Exception {
         debug(false);
@@ -58,18 +57,18 @@ public class CouchDBTestSupport extends OnlineTestSupport {
             client.close();
         }
     }
-    
+
     protected void debug(boolean on) {
         logger = Logging.getLogger(getClass());
         logger.setLevel(Level.FINEST);
         Logger.getLogger("").getHandlers()[0].setLevel(on ? Level.FINEST : Level.INFO);
     }
-    
+
     protected File resolveFile(String path) throws IOException {
-        return TestData.file(CouchDBTestSupport.class,path);
+        return TestData.file(CouchDBTestSupport.class, path);
     }
-    
-    protected JSONArray loadJSON(String path,String featureClass) throws Exception {
+
+    protected JSONArray loadJSON(String path, String featureClass) throws Exception {
         String content = resolveContent(path);
         JSONObject data = (JSONObject) JSONValue.parseWithException(content);
         JSONArray features = (JSONArray) data.get("features");
@@ -82,11 +81,11 @@ public class CouchDBTestSupport extends OnlineTestSupport {
         }
         return features;
     }
-    
+
     protected String resolveContent(String path) throws IOException {
         return CouchDBUtils.read(resolveFile(path));
     }
-    
+
     protected void deleteIfExists(String db) throws Exception {
         List<String> databaseNames = client.getDatabaseNames();
         if (databaseNames.indexOf(db) >= 0) {
@@ -113,5 +112,4 @@ public class CouchDBTestSupport extends OnlineTestSupport {
         client = new CouchDBClient(getTestHost());
         client.getDatabaseNames(); // should fail unless configured correctly
     }
-    
 }

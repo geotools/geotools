@@ -19,19 +19,19 @@ package org.geotools.gce.imagemosaic;
 import org.geotools.gce.imagemosaic.catalog.GranuleCatalog;
 
 /**
- * A class which can be used as input of an {@link ImageMosaicReader} to describe an available mosaic without the need to access an external file such
- * as a shapeFile, a property file, a data directory or something else.
- * 
+ * A class which can be used as input of an {@link ImageMosaicReader} to describe an available
+ * mosaic without the need to access an external file such as a shapeFile, a property file, a data
+ * directory or something else.
+ *
  * @author Daniele Romagnoli, GeoSolutions S.A.S.
  * @author Simone Giannecchini, GeoSolutions S.A.S.
- * 
  * @source $URL$
  */
 public class ImageMosaicDescriptor {
 
     /**
-     * A {@link MosaicConfigurationBean} describing the common properties of each granule composing the mosaic, such as number of overviews,
-     * resolution levels, suggested SPI.
+     * A {@link MosaicConfigurationBean} describing the common properties of each granule composing
+     * the mosaic, such as number of overviews, resolution levels, suggested SPI.
      */
     private MosaicConfigurationBean configuration;
 
@@ -40,8 +40,8 @@ public class ImageMosaicDescriptor {
     }
 
     /**
-     * A {@link GranuleCatalog} representing the real catalog of granules composing the mosaic described by this {@link ImageMosaicDescriptor}
-     * instance.
+     * A {@link GranuleCatalog} representing the real catalog of granules composing the mosaic
+     * described by this {@link ImageMosaicDescriptor} instance.
      */
     private GranuleCatalog catalog;
 
@@ -49,10 +49,9 @@ public class ImageMosaicDescriptor {
         return catalog;
     }
 
-    public ImageMosaicDescriptor(final MosaicConfigurationBean configurationBean,
-            final GranuleCatalog catalog) {
+    public ImageMosaicDescriptor(
+            final MosaicConfigurationBean configurationBean, final GranuleCatalog catalog) {
         this.configuration = new MosaicConfigurationBean(configurationBean);
         this.catalog = catalog;
     }
-
 }

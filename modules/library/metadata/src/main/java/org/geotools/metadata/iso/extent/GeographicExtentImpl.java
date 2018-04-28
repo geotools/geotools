@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -19,26 +19,20 @@
  */
 package org.geotools.metadata.iso.extent;
 
-import org.opengis.metadata.extent.GeographicExtent;
 import org.geotools.metadata.iso.MetadataEntity;
-
+import org.opengis.metadata.extent.GeographicExtent;
 
 /**
  * Base class for geographic area of the dataset.
- *
- *
  *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane
- *
  * @since 2.1
  */
 public class GeographicExtentImpl extends MetadataEntity implements GeographicExtent {
-    /**
-     * Serial number for interoperability with different versions.
-     */
+    /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -8844015895495563161L;
 
     /**
@@ -47,11 +41,8 @@ public class GeographicExtentImpl extends MetadataEntity implements GeographicEx
      */
     private Boolean inclusion;
 
-    /**
-     * Constructs an initially empty geographic extent.
-     */
-    public GeographicExtentImpl() {
-    }
+    /** Constructs an initially empty geographic extent. */
+    public GeographicExtentImpl() {}
 
     /**
      * Constructs a geographic extent initialized to the same values than the specified one.
@@ -62,9 +53,7 @@ public class GeographicExtentImpl extends MetadataEntity implements GeographicEx
         super(extent);
     }
 
-    /**
-     * Constructs a geographic extent initialized with the specified inclusion value.
-     */
+    /** Constructs a geographic extent initialized with the specified inclusion value. */
     public GeographicExtentImpl(final boolean inclusion) {
         setInclusion(Boolean.valueOf(inclusion));
     }

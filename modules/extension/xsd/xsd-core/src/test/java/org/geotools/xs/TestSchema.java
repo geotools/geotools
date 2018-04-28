@@ -16,13 +16,6 @@
  */
 package org.geotools.xs;
 
-import junit.framework.TestCase;
-import org.eclipse.xsd.XSDElementDeclaration;
-import org.eclipse.xsd.XSDFactory;
-import org.eclipse.xsd.XSDSchema;
-import org.eclipse.xsd.XSDSimpleTypeDefinition;
-import org.eclipse.xsd.util.XSDParser;
-import org.picocontainer.defaults.DefaultPicoContainer;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -33,6 +26,12 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import javax.xml.namespace.QName;
+import junit.framework.TestCase;
+import org.eclipse.xsd.XSDElementDeclaration;
+import org.eclipse.xsd.XSDFactory;
+import org.eclipse.xsd.XSDSchema;
+import org.eclipse.xsd.XSDSimpleTypeDefinition;
+import org.eclipse.xsd.util.XSDParser;
 import org.geotools.xml.Binding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Schemas;
@@ -40,13 +39,9 @@ import org.geotools.xml.SimpleBinding;
 import org.geotools.xml.impl.BindingLoader;
 import org.geotools.xml.impl.ElementImpl;
 import org.geotools.xml.impl.PicoMap;
+import org.picocontainer.defaults.DefaultPicoContainer;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public abstract class TestSchema extends TestCase {
     public static URL url;
     public static XSDSchema schema;
@@ -63,19 +58,18 @@ public abstract class TestSchema extends TestCase {
         }
 
         xsd = schema.getSchemaForSchema();
-        
+
         Map bindings = new HashMap();
-        
+
         new XSConfiguration().registerBindings(new PicoMap(bindings));
-        factory = new BindingLoader(bindings);        
+        factory = new BindingLoader(bindings);
     }
 
     protected XSDSimpleTypeDefinition typeDef;
     protected SimpleBinding strategy;
     protected QName qname;
 
-    public TestSchema() {
-    }
+    public TestSchema() {}
 
     public TestSchema(String name) {
         super(name);
@@ -90,7 +84,7 @@ public abstract class TestSchema extends TestCase {
     public XSDSimpleTypeDefinition xsdSimple(String name) {
         Map simpleTypes = xsd.getSimpleTypeIdMap();
 
-        //System.out.println( simpleTypes );
+        // System.out.println( simpleTypes );
         return (XSDSimpleTypeDefinition) simpleTypes.get(name);
     }
 
@@ -134,12 +128,17 @@ public abstract class TestSchema extends TestCase {
             FileWriter file = new FileWriter(temp);
             BufferedWriter buff = new BufferedWriter(file);
             PrintWriter print = new PrintWriter(buff);
-            print.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-                + "  <xsd:schema xmlns:my=\"http://mails/refractions/net\""
-                + "              xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\""
-                + "              targetNamespace=\"http://localhost//test\">"
-                + "  <xsd:element name=\"" + name + "\" type=\"xsd:" + original.getLocalPart()
-                + "\"/>" + "</xsd:schema>");
+            print.println(
+                    "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+                            + "  <xsd:schema xmlns:my=\"http://mails/refractions/net\""
+                            + "              xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\""
+                            + "              targetNamespace=\"http://localhost//test\">"
+                            + "  <xsd:element name=\""
+                            + name
+                            + "\" type=\"xsd:"
+                            + original.getLocalPart()
+                            + "\"/>"
+                            + "</xsd:schema>");
 
             URL url = temp.toURL();
             XSDParser parser = new XSDParser();
@@ -157,23 +156,19 @@ public abstract class TestSchema extends TestCase {
     }
 
     /**
-     * Will call the parse method on the strategy object, passing it
-     * <code>given</code> to use as a value. It will then perform
-     * <code>assertEquals(expected, result);</code>
+     * Will call the parse method on the strategy object, passing it <code>given</code> to use as a
+     * value. It will then perform <code>assertEquals(expected, result);</code>
      *
      * @param given the value to pass to the parse method
      * @param expected used to compare against the result of the parse method
      * @throws Exception
      */
-    public void validateValues(String given, Object expected)
-        throws Exception {
+    public void validateValues(String given, Object expected) throws Exception {
         Object result = strategy.parse(element(given, qname), given);
         assertEquals(expected, result);
     }
 
-    /**
-     * Each subclass must indicate which kind of QName they wish to operate against.
-     */
+    /** Each subclass must indicate which kind of QName they wish to operate against. */
     protected abstract QName getQName();
 
     protected void setUp() throws Exception {

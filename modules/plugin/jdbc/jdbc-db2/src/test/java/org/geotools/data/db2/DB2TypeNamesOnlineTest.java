@@ -21,9 +21,8 @@ import org.geotools.jdbc.JDBCTypeNamesTestSetup;
 
 public class DB2TypeNamesOnlineTest extends JDBCTypeNamesOnlineTest {
 
-	@Override
-	protected JDBCTypeNamesTestSetup createTestSetup() {
-		return new DB2TypeNamesTestSetup();
-	}
-
+    @Override
+    protected JDBCTypeNamesTestSetup createTestSetup() {
+        return new DB2TypeNamesTestSetup();
+    }
 }

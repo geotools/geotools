@@ -22,40 +22,34 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
 
 /**
- * <p>
  * Factory for the GeoRest DataStore. Required parameters are:
+ *
  * <ul>
- * <li><b>url</b>: The URL that points to the GeoRest service.</li>
- * <li><b>layers</b>: Comma separated list of known layers for the GeoRest service.</li>
+ *   <li><b>url</b>: The URL that points to the GeoRest service.
+ *   <li><b>layers</b>: Comma separated list of known layers for the GeoRest service.
  * </ul>
- * </p>
- * <p>
- * The created DataStore should be able to connect to a rest-like service that provides the GeoJson
- * format as defined in the following projects:
+ *
+ * <p>The created DataStore should be able to connect to a rest-like service that provides the
+ * GeoJson format as defined in the following projects:
+ *
  * <ul>
- * <li>Geomajas GeoJson plug-in</li>
- * <li>FeatureServer</li>
- * <li>MapFish server</li>
+ *   <li>Geomajas GeoJson plug-in
+ *   <li>FeatureServer
+ *   <li>MapFish server
  * </ul>
+ *
  * For a more detailed description, look up the projects documentation.
- * </p>
- * 
+ *
  * @author Pieter De Graef, Geosparc
- *
- *
- *
  * @source $URL$
  */
 public class GeoRestDataStoreFactory implements DataStoreFactorySpi {
 
-    /**
-     * Parameter that points to the base URL of the rest service.
-     */
+    /** Parameter that points to the base URL of the rest service. */
     protected static final String PARAM_URL = "url";
 
     /**
@@ -66,46 +60,38 @@ public class GeoRestDataStoreFactory implements DataStoreFactorySpi {
 
     private List<Param> parameters = new ArrayList<Param>();
 
-    /**
-     * Create a new factory for GeoJson based rest-like services.
-     */
+    /** Create a new factory for GeoJson based rest-like services. */
     public GeoRestDataStoreFactory() {
         parameters.add(new Param(PARAM_URL, String.class, "The base URL for the GeoJson service."));
-        parameters
-                .add(new Param(PARAM_LAYERS, String.class, "Comma separated list of layer names."));
+        parameters.add(
+                new Param(PARAM_LAYERS, String.class, "Comma separated list of layer names."));
     }
 
     /**
      * Create a new {@link GeoRestDataStore}, given the list of parameters.
-     * 
-     * @param params
-     *            The actual list of parameters. Must contain the 'url' and 'layers' parameters.
+     *
+     * @param params The actual list of parameters. Must contain the 'url' and 'layers' parameters.
      */
     public DataStore createDataStore(Map<String, Serializable> params) throws IOException {
         return new GeoRestDataStore(params);
     }
 
-    /**
-     * Returns null.
-     */
+    /** Returns null. */
     public DataStore createNewDataStore(Map<String, Serializable> params) throws IOException {
         return null;
     }
 
-    /**
-     * Returns 'GeoJsonDataStoreFactory'.
-     */
+    /** Returns 'GeoJsonDataStoreFactory'. */
     public String getDisplayName() {
         return "GeoJsonDataStoreFactory";
     }
 
     /**
      * Checks to see if the 'url' and 'layers' parameters are available in the given parameter list.
-     * 
-     * @param params
-     *            The list of parameters that need checking.
+     *
+     * @param params The list of parameters that need checking.
      * @return Returns true or false indicating if the given parameter list is suitable to create a
-     *         {@link GeoRestDataStore}.
+     *     {@link GeoRestDataStore}.
      */
     public boolean canProcess(Map<String, Serializable> params) {
         for (Param p : parameters) {
@@ -117,9 +103,7 @@ public class GeoRestDataStoreFactory implements DataStoreFactorySpi {
         return true;
     }
 
-    /**
-     * Returns an empty string.
-     */
+    /** Returns an empty string. */
     public String getDescription() {
         return "";
     }

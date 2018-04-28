@@ -21,17 +21,14 @@ import org.geotools.tile.TileIdentifier;
 import org.geotools.tile.impl.ZoomLevel;
 
 /**
- * <p>
- * The TileIdentifier implementation for the OpenStreetMap family. This
- * identifier follows the grid logic of similar implementations. Please refer to
- * the <a href="http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames">
- * OpenStreetMap Wiki</a> for the exact description.
- * </p>
- * 
+ * The TileIdentifier implementation for the OpenStreetMap family. This identifier follows the grid
+ * logic of similar implementations. Please refer to the <a
+ * href="http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames">OpenStreetMap Wiki</a> for the
+ * exact description.
+ *
  * @author Ugo Taddei
  * @since 12
  */
-
 public class OSMTileIdentifier extends TileIdentifier {
 
     public OSMTileIdentifier(int x, int y, ZoomLevel zoomLevel, String serviceName) {
@@ -62,13 +59,16 @@ public class OSMTileIdentifier extends TileIdentifier {
     public TileIdentifier getRightNeighbour() {
         return new OSMTileIdentifier(
                 TileIdentifier.arithmeticMod((getX() + 1), getZoomLevel().getMaxTilePerRowNumber()),
-                getY(), getZoomLevel(), getServiceName());
+                getY(),
+                getZoomLevel(),
+                getServiceName());
     }
 
     public TileIdentifier getLowerNeighbour() {
-        return new OSMTileIdentifier(getX(),
+        return new OSMTileIdentifier(
+                getX(),
                 TileIdentifier.arithmeticMod((getY() + 1), getZoomLevel().getMaxTilePerRowNumber()),
-                getZoomLevel(), getServiceName());
+                getZoomLevel(),
+                getServiceName());
     }
-
 }

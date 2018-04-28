@@ -4,53 +4,50 @@
  *
  *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2004-2005, Open Geospatial Consortium Inc.
- *    
+ *
  *    All Rights Reserved. http://www.opengis.org/legal/
  */
 package org.opengis.metadata.citation;
 
-import java.util.Collection;
-import java.util.Date;
-import org.opengis.metadata.Identifier;
-import org.opengis.util.InternationalString;
-import org.opengis.annotation.UML;
-import org.opengis.annotation.Profile;
-
+import static org.opengis.annotation.ComplianceLevel.*;
 import static org.opengis.annotation.Obligation.*;
 import static org.opengis.annotation.Specification.*;
-import static org.opengis.annotation.ComplianceLevel.*;
 
+import java.util.Collection;
+import java.util.Date;
+import org.opengis.annotation.Profile;
+import org.opengis.annotation.UML;
+import org.opengis.metadata.Identifier;
+import org.opengis.util.InternationalString;
 
 /**
  * Standardized resource reference.
  *
- *
- *
  * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as#01-111">ISO 19115</A>
- * @author  Martin Desruisseaux (IRD)
- * @author  Cory Horner (Refractions Research)
- * @since   GeoAPI 1.0
+ * @author Martin Desruisseaux (IRD)
+ * @author Cory Horner (Refractions Research)
+ * @since GeoAPI 1.0
  */
-@Profile (level=CORE)
-@UML(identifier="CI_Citation", specification=ISO_19115)
+@Profile(level = CORE)
+@UML(identifier = "CI_Citation", specification = ISO_19115)
 public interface Citation {
     /**
      * Name by which the cited resource is known.
      *
      * @return The cited resource name.
      */
-    @Profile (level=CORE)
-    @UML(identifier="title", obligation=MANDATORY, specification=ISO_19115)
+    @Profile(level = CORE)
+    @UML(identifier = "title", obligation = MANDATORY, specification = ISO_19115)
     InternationalString getTitle();
 
     /**
-     * Short name or other language name by which the cited information is known.
-     * Example: "DCW" as an alternative title for "Digital Chart of the World".
+     * Short name or other language name by which the cited information is known. Example: "DCW" as
+     * an alternative title for "Digital Chart of the World".
      *
      * @return Other names for the resource, or an empty collection if none.
      */
-    @UML(identifier="alternateTitle", obligation=OPTIONAL, specification=ISO_19115)
+    @UML(identifier = "alternateTitle", obligation = OPTIONAL, specification = ISO_19115)
     Collection<? extends InternationalString> getAlternateTitles();
 
     /**
@@ -58,8 +55,8 @@ public interface Citation {
      *
      * @return The reference date.
      */
-    @Profile (level=CORE)
-    @UML(identifier="date", obligation=MANDATORY, specification=ISO_19115)
+    @Profile(level = CORE)
+    @UML(identifier = "date", obligation = MANDATORY, specification = ISO_19115)
     Collection<? extends CitationDate> getDates();
 
     /**
@@ -67,7 +64,7 @@ public interface Citation {
      *
      * @return The version, or {@code null} if none.
      */
-    @UML(identifier="edition", obligation=OPTIONAL, specification=ISO_19115)
+    @UML(identifier = "edition", obligation = OPTIONAL, specification = ISO_19115)
     InternationalString getEdition();
 
     /**
@@ -75,25 +72,25 @@ public interface Citation {
      *
      * @return The edition date, or {@code null} if none.
      */
-    @UML(identifier="editionDate", obligation=OPTIONAL, specification=ISO_19115)
+    @UML(identifier = "editionDate", obligation = OPTIONAL, specification = ISO_19115)
     Date getEditionDate();
 
     /**
-     * Unique identifier for the resource. Example: Universal Product Code (UPC),
-     * National Stock Number (NSN).
+     * Unique identifier for the resource. Example: Universal Product Code (UPC), National Stock
+     * Number (NSN).
      *
      * @return The identifiers, or an empty collection if none.
      */
-    @UML(identifier="identifier", obligation=OPTIONAL, specification=ISO_19115)
+    @UML(identifier = "identifier", obligation = OPTIONAL, specification = ISO_19115)
     Collection<? extends Identifier> getIdentifiers();
 
     /**
-     * Name and position information for an individual or organization that is responsible
-     * for the resource. Returns an empty string if there is none.
+     * Name and position information for an individual or organization that is responsible for the
+     * resource. Returns an empty string if there is none.
      *
      * @return The individual or organization that is responsible, or an empty collection if none.
      */
-    @UML(identifier="citedResponsibleParty", obligation=OPTIONAL, specification=ISO_19115)
+    @UML(identifier = "citedResponsibleParty", obligation = OPTIONAL, specification = ISO_19115)
     Collection<? extends ResponsibleParty> getCitedResponsibleParties();
 
     /**
@@ -101,35 +98,35 @@ public interface Citation {
      *
      * @return The presentation mode, or an empty collection if none.
      */
-    @UML(identifier="presentationForm", obligation=OPTIONAL, specification=ISO_19115)
+    @UML(identifier = "presentationForm", obligation = OPTIONAL, specification = ISO_19115)
     Collection<PresentationForm> getPresentationForm();
 
     /**
-     * Information about the series, or aggregate dataset, of which the dataset is a part.
-     * Returns {@code null} if none.
+     * Information about the series, or aggregate dataset, of which the dataset is a part. Returns
+     * {@code null} if none.
      *
      * @return The series of which the dataset is a part, or {@code null} if none.
      */
-    @UML(identifier="series", obligation=OPTIONAL, specification=ISO_19115)
+    @UML(identifier = "series", obligation = OPTIONAL, specification = ISO_19115)
     Series getSeries();
 
     /**
-     * Other information required to complete the citation that is not recorded elsewhere.
-     * Returns {@code null} if none.
+     * Other information required to complete the citation that is not recorded elsewhere. Returns
+     * {@code null} if none.
      *
      * @return Other details, or {@code null} if none.
      */
-    @UML(identifier="otherCitationDetails", obligation=OPTIONAL, specification=ISO_19115)
+    @UML(identifier = "otherCitationDetails", obligation = OPTIONAL, specification = ISO_19115)
     InternationalString getOtherCitationDetails();
 
     /**
-     * Common title with holdings note. Note: title identifies elements of a series
-     * collectively, combined with information about what volumes are available at the
-     * source cited. Returns {@code null} if there is no title.
+     * Common title with holdings note. Note: title identifies elements of a series collectively,
+     * combined with information about what volumes are available at the source cited. Returns
+     * {@code null} if there is no title.
      *
      * @return The common title, or {@code null} if none.
      */
-    @UML(identifier="collectiveTitle", obligation=OPTIONAL, specification=ISO_19115)
+    @UML(identifier = "collectiveTitle", obligation = OPTIONAL, specification = ISO_19115)
     InternationalString getCollectiveTitle();
 
     /**
@@ -137,7 +134,7 @@ public interface Citation {
      *
      * @return The ISBN, or {@code null} if none.
      */
-    @UML(identifier="ISBN", obligation=OPTIONAL, specification=ISO_19115)
+    @UML(identifier = "ISBN", obligation = OPTIONAL, specification = ISO_19115)
     String getISBN();
 
     /**
@@ -145,6 +142,6 @@ public interface Citation {
      *
      * @return The ISSN, or {@code null} if none.
      */
-    @UML(identifier="ISSN", obligation=OPTIONAL, specification=ISO_19115)
+    @UML(identifier = "ISSN", obligation = OPTIONAL, specification = ISO_19115)
     String getISSN();
 }

@@ -17,56 +17,52 @@
 package org.geotools.jdbc;
 
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
 public abstract class JDBCTypeNamesTestSetup extends JDBCDelegatingTestSetup {
 
-	protected JDBCTypeNamesTestSetup(JDBCTestSetup delegate) {
-		super(delegate);
-	}
+    protected JDBCTypeNamesTestSetup(JDBCTestSetup delegate) {
+        super(delegate);
+    }
 
-	protected final void setUpData() throws Exception {
-		delegate.setUpData();
+    protected final void setUpData() throws Exception {
+        delegate.setUpData();
 
-		// kill all the data
-		try {
-			dropTypes();
-		} catch (SQLException e) {
-		}
+        // kill all the data
+        try {
+            dropTypes();
+        } catch (SQLException e) {
+        }
 
-		// create all the data
-		createTypes();
-	}
+        // create all the data
+        createTypes();
+    }
 
-	/**
-	 * Creates a table with the following schema:
-	 * <p>
-	 * <code>ftntable( id:Integer; name:String; geom:POLYGON )</code>
-	 * </p>
-	 * Creates a view with the following schema:
-	 * <p>
-	 * <code>create view ftnview as select id, geom from ft_table</code>
-	 * </p>
-	 * In Addition to that, there should be some database specific type
-	 * structures like synonyms or aliases, if available. (should be )
-	 */
-	protected abstract void createTypes() throws Exception;
+    /**
+     * Creates a table with the following schema:
+     *
+     * <p><code>ftntable( id:Integer; name:String; geom:POLYGON )</code> Creates a view with the
+     * following schema:
+     *
+     * <p><code>create view ftnview as select id, geom from ft_table</code> In Addition to that,
+     * there should be some database specific type structures like synonyms or aliases, if
+     * available. (should be )
+     */
+    protected abstract void createTypes() throws Exception;
 
-	protected abstract void dropTypes() throws Exception;
+    protected abstract void dropTypes() throws Exception;
 
-	/**
-	 * Returns expected type names as created in {@link #createTypes()}. At
-	 * least <code>ftntable</code> and <code>ftnview</code>.
-	 * 
-	 * @return
-	 */
-	protected List<String> getExpectedTypeNames(){
-		List<String> expectedTypeNames = new LinkedList<String>();
-		expectedTypeNames.add("ftntable");
-		expectedTypeNames.add("ftnview");
-		return expectedTypeNames;
-	}
-
+    /**
+     * Returns expected type names as created in {@link #createTypes()}. At least <code>ftntable
+     * </code> and <code>ftnview</code>.
+     *
+     * @return
+     */
+    protected List<String> getExpectedTypeNames() {
+        List<String> expectedTypeNames = new LinkedList<String>();
+        expectedTypeNames.add("ftntable");
+        expectedTypeNames.add("ftnview");
+        return expectedTypeNames;
+    }
 }

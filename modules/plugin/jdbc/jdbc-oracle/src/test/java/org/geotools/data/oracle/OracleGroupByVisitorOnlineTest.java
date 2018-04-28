@@ -24,5 +24,4 @@ public class OracleGroupByVisitorOnlineTest extends JDBCGroupByVisitorOnlineTest
     protected OracleGroupByVisitorTestSetup createTestSetup() {
         return new OracleGroupByVisitorTestSetup(new OracleTestSetup());
     }
-
 }

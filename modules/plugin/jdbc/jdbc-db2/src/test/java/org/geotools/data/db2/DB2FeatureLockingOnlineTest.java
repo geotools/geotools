@@ -5,7 +5,7 @@
  *    (C) 2002-2009, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
- *    modify it under the terms of the GNU Lesser General 
+ *    modify it under the terms of the GNU Lesser General
  *    License as published by the Free Software Foundation;
  *    version 2.1 of the License.
  *
@@ -19,16 +19,11 @@ package org.geotools.data.db2;
 import org.geotools.jdbc.JDBCFeatureLockingOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class DB2FeatureLockingOnlineTest extends JDBCFeatureLockingOnlineTest {
 
     @Override
     protected JDBCTestSetup createTestSetup() {
         return new DB2TestSetup();
     }
-
 }

@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- *    
+ *
  * 	  (c) 2014 Open Source Geospatial Foundation - all rights reserved
  * 	  (c) 2012 - 2014 OpenPlans
  *
@@ -19,7 +19,6 @@ package org.geotools.data.csv;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
-
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.csv.parse.CSVIterator;
@@ -37,8 +36,7 @@ public class CSVFeatureReader implements FeatureReader<SimpleFeatureType, Simple
         this(csvStrategy, Query.ALL);
     }
 
-    public CSVFeatureReader(CSVStrategy csvStrategy, Query query)
-            throws IOException {
+    public CSVFeatureReader(CSVStrategy csvStrategy, Query query) throws IOException {
         this.featureType = csvStrategy.getFeatureType();
         this.iterator = csvStrategy.iterator();
     }
@@ -54,8 +52,8 @@ public class CSVFeatureReader implements FeatureReader<SimpleFeatureType, Simple
     }
 
     @Override
-    public SimpleFeature next() throws IOException, IllegalArgumentException,
-            NoSuchElementException {
+    public SimpleFeature next()
+            throws IOException, IllegalArgumentException, NoSuchElementException {
         return iterator.next();
     }
 
@@ -63,5 +61,4 @@ public class CSVFeatureReader implements FeatureReader<SimpleFeatureType, Simple
     public boolean hasNext() throws IOException {
         return iterator.hasNext();
     }
-
 }

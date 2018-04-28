@@ -16,6 +16,7 @@ package org.geotools.data.excel;
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
+
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -25,7 +26,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.data.AbstractDataStoreFactory;
 import org.geotools.data.DataAccessFactory;
 import org.geotools.data.DataStore;
@@ -34,36 +34,39 @@ import org.geotools.util.KVP;
 import org.geotools.util.URLs;
 import org.geotools.util.logging.Logging;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class ExcelDataStoreFactory extends AbstractDataStoreFactory implements DataStoreFactorySpi {
-    private static final Logger logger = Logging
-            .getLogger("org.geotools.excel.datastore.ExcelDataStoreFactory");
+    private static final Logger logger =
+            Logging.getLogger("org.geotools.excel.datastore.ExcelDataStoreFactory");
 
     static HashSet<Param> params = new HashSet<DataAccessFactory.Param>();
 
     public static final Param TYPE = new Param("type", String.class, "Type", true, "excel");
 
-    public static final Param URLP = new Param("url", java.net.URL.class,
-            "A URL pointing to the file containing the data", true,null,new KVP(Param.EXT,"xls",Param.EXT,"xlsx"));
+    public static final Param URLP =
+            new Param(
+                    "url",
+                    java.net.URL.class,
+                    "A URL pointing to the file containing the data",
+                    true,
+                    null,
+                    new KVP(Param.EXT, "xls", Param.EXT, "xlsx"));
 
-    public static final Param SHEETNAME = new Param("sheet", String.class, "name of the sheet",
-            true);
+    public static final Param SHEETNAME =
+            new Param("sheet", String.class, "name of the sheet", true);
 
-    public static final Param LATCOL = new Param("latcol", String.class,
-            "Column name of Latitude or X value", true,"LAT");
+    public static final Param LATCOL =
+            new Param("latcol", String.class, "Column name of Latitude or X value", true, "LAT");
 
-    public static final Param LONGCOL = new Param("longcol", String.class,
-            "Column name of Longitude or Y value", true,"LON");
+    public static final Param LONGCOL =
+            new Param("longcol", String.class, "Column name of Longitude or Y value", true, "LON");
 
-    public static final Param PROJECTION = new Param("projection", String.class,
-            "EPSG code of projection", true,"EPSG:4326");
+    public static final Param PROJECTION =
+            new Param("projection", String.class, "EPSG code of projection", true, "EPSG:4326");
 
-    public static final Param HEADERROW = new Param("headerrow", Integer.class,
-            "Row index for header row (default 0)", false,"0");
+    public static final Param HEADERROW =
+            new Param(
+                    "headerrow", Integer.class, "Row index for header row (default 0)", false, "0");
 
     public String getDisplayName() {
         // TODO Auto-generated method stub
@@ -84,8 +87,10 @@ public class ExcelDataStoreFactory extends AbstractDataStoreFactory implements D
         try {
             URL url = (URL) URLP.lookUp(params);
             File f = URLs.urlToFile(url);
-            boolean accept = url.getFile().toUpperCase().endsWith("XLS")||url.getFile().toUpperCase().endsWith("XLSX");
-            if(accept) {
+            boolean accept =
+                    url.getFile().toUpperCase().endsWith("XLS")
+                            || url.getFile().toUpperCase().endsWith("XLSX");
+            if (accept) {
                 return true;
             }
         } catch (IOException e) {
@@ -125,14 +130,12 @@ public class ExcelDataStoreFactory extends AbstractDataStoreFactory implements D
         String latCol = ((String) LATCOL.lookUp(params));
         String longCol = ((String) LONGCOL.lookUp(params));
         String projectionString = (String) PROJECTION.lookUp(params);
-        ExcelDataStore excel = new ExcelDataStore(url, sheet, headerRow, latCol, longCol,
-                projectionString);
+        ExcelDataStore excel =
+                new ExcelDataStore(url, sheet, headerRow, latCol, longCol, projectionString);
         return excel;
     }
 
     public DataStore createNewDataStore(Map<String, Serializable> params) throws IOException {
         throw new UnsupportedOperationException("Read only datastore");
-
     }
-
 }

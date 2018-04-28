@@ -17,7 +17,6 @@
 package org.geotools.data.efeature;
 
 import java.io.IOException;
-
 import org.geotools.data.Query;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureStore;
@@ -26,19 +25,15 @@ import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
  * @author kengu - 10. juli 2011
- *
- *
  * @source $URL$
  */
 @SuppressWarnings("unchecked")
 public class EFeatureStore extends ContentFeatureStore {
 
-    /**
-     * Cached {@link EFeatureInfo} instance
-     */
+    /** Cached {@link EFeatureInfo} instance */
     protected final EFeatureInfo eStructure;
-    
-    // ----------------------------------------------------- 
+
+    // -----------------------------------------------------
     //  Constructors
     // -----------------------------------------------------
 
@@ -57,23 +52,21 @@ public class EFeatureStore extends ContentFeatureStore {
         this.eStructure = getDataStore().eStructure().eGetFeatureInfo(entry.getTypeName());
         //
         // Cache schema
-        // 
+        //
         this.schema = eStructure.getFeatureType();
     }
-    
-    // ----------------------------------------------------- 
+
+    // -----------------------------------------------------
     //  Overridden methods
     // -----------------------------------------------------
 
-    /**
-     * The {@link EFeatureDataStore} that this {@link EFeatureSource} originated from.
-     */
+    /** The {@link EFeatureDataStore} that this {@link EFeatureSource} originated from. */
     @Override
     public EFeatureDataStore getDataStore() {
-        return (EFeatureDataStore)entry.getDataStore();
+        return (EFeatureDataStore) entry.getDataStore();
     }
-    
-    // ----------------------------------------------------- 
+
+    // -----------------------------------------------------
     //  ContentFeatureStore implementation
     // -----------------------------------------------------
 
@@ -83,7 +76,7 @@ public class EFeatureStore extends ContentFeatureStore {
     }
 
     @Override
-    protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {        
+    protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
         return EFeatureSource.getBounds(getDataStore(), getSchema(), getReader(query));
     }
 
@@ -101,5 +94,4 @@ public class EFeatureStore extends ContentFeatureStore {
     protected EFeatureWriter getWriterInternal(Query query, int flags) throws IOException {
         return new EFeatureWriter(getDataStore(), query, getTransaction(), 0);
     }
-
 }

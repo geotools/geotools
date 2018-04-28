@@ -16,13 +16,11 @@
  */
 package org.geotools.gce.imagemosaic;
 
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Set;
-
 import org.geotools.TestData;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollector;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorFinder;
@@ -36,81 +34,73 @@ import org.junit.Test;
 
 /**
  * @author Simone Giannecchini, GeoSolutions SAS
- *
- *
- *
  * @source $URL$
  */
 public class PropertiesCollectorTest extends Assert {
 
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@Before
-	public void setUp() throws Exception {
-	}
+    /** @throws java.lang.Exception */
+    @Before
+    public void setUp() throws Exception {}
 
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@After
-	public void tearDown() throws Exception {
-	}
-	
-        @Test
-        public void test(){
-    
-            // get the spi
-            final Set<PropertiesCollectorSPI> spis = PropertiesCollectorFinder.getPropertiesCollectorSPI();
-            assertNotNull(spis);
-            assertTrue(!spis.isEmpty());
-            assertEquals(14,spis.size());
-        }
-	
-        @Test
-        public void testString() throws IOException{
-                
-                // get the spi
-                final Set<PropertiesCollectorSPI> spis = PropertiesCollectorFinder.getPropertiesCollectorSPI();
-                assertNotNull(spis);
-                assertTrue(!spis.isEmpty());
-                URL testUrl = TestData.url(this,"time_geotiff/stringregex.properties");
-                // test a regex
-                PropertiesCollectorSPI spi;
-                final Iterator<PropertiesCollectorSPI> iterator = spis.iterator();
-                while (iterator.hasNext()){
-                    spi = iterator.next();
-                    if (spi instanceof StringFileNameExtractorSPI){
-                        final PropertiesCollector pc = spi.create(testUrl, Arrays.asList("string_attr"));
-                        pc.collect(TestData.file(this,"time_geotiff/world.200402.3x5400x2700.tiff"));
-                        return;
-                    }
-                }
-                
-                assertTrue(false);
-                
-        }
-        
-	@Test
-	public void testTime() throws IOException{
-		
-		// get the spi
-		final Set<PropertiesCollectorSPI> spis = PropertiesCollectorFinder.getPropertiesCollectorSPI();
-		assertNotNull(spis);
-		assertTrue(!spis.isEmpty());
-		URL testUrl = TestData.url(this,"time_geotiff/timeregex.properties");
-		// test a regex
-		PropertiesCollectorSPI spi;
-		final Iterator<PropertiesCollectorSPI> iterator = spis.iterator();
-		while (iterator.hasNext()){
-		    spi = iterator.next();
-		    if (spi instanceof TimestampFileNameExtractorSPI){
-		        final PropertiesCollector pc = spi.create(testUrl, Arrays.asList("time_attr"));
-	                pc.collect(TestData.file(this,"time_geotiff/world.200403.3x5400x2700.tiff"));
-	                return;
-		    }
-		}
-		assertTrue(false);
-	}
+    /** @throws java.lang.Exception */
+    @After
+    public void tearDown() throws Exception {}
 
+    @Test
+    public void test() {
+
+        // get the spi
+        final Set<PropertiesCollectorSPI> spis =
+                PropertiesCollectorFinder.getPropertiesCollectorSPI();
+        assertNotNull(spis);
+        assertTrue(!spis.isEmpty());
+        assertEquals(14, spis.size());
+    }
+
+    @Test
+    public void testString() throws IOException {
+
+        // get the spi
+        final Set<PropertiesCollectorSPI> spis =
+                PropertiesCollectorFinder.getPropertiesCollectorSPI();
+        assertNotNull(spis);
+        assertTrue(!spis.isEmpty());
+        URL testUrl = TestData.url(this, "time_geotiff/stringregex.properties");
+        // test a regex
+        PropertiesCollectorSPI spi;
+        final Iterator<PropertiesCollectorSPI> iterator = spis.iterator();
+        while (iterator.hasNext()) {
+            spi = iterator.next();
+            if (spi instanceof StringFileNameExtractorSPI) {
+                final PropertiesCollector pc = spi.create(testUrl, Arrays.asList("string_attr"));
+                pc.collect(TestData.file(this, "time_geotiff/world.200402.3x5400x2700.tiff"));
+                return;
+            }
+        }
+
+        assertTrue(false);
+    }
+
+    @Test
+    public void testTime() throws IOException {
+
+        // get the spi
+        final Set<PropertiesCollectorSPI> spis =
+                PropertiesCollectorFinder.getPropertiesCollectorSPI();
+        assertNotNull(spis);
+        assertTrue(!spis.isEmpty());
+        URL testUrl = TestData.url(this, "time_geotiff/timeregex.properties");
+        // test a regex
+        PropertiesCollectorSPI spi;
+        final Iterator<PropertiesCollectorSPI> iterator = spis.iterator();
+        while (iterator.hasNext()) {
+            spi = iterator.next();
+            if (spi instanceof TimestampFileNameExtractorSPI) {
+                final PropertiesCollector pc = spi.create(testUrl, Arrays.asList("time_attr"));
+                pc.collect(TestData.file(this, "time_geotiff/world.200403.3x5400x2700.tiff"));
+                return;
+            }
+        }
+        assertTrue(false);
+    }
 }

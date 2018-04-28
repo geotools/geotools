@@ -20,28 +20,23 @@ import org.geotools.data.shapefile.shp.IndexFile;
 
 /**
  * DOCUMENT ME!
- * 
+ *
  * @author Tommaso Nolli
- *
- *
  * @source $URL$
  */
 public interface IndexStore {
     /**
      * Stores a <code>QuadTree</code>
-     * 
-     * @param tree
-     *                the <code>QuadTree</code> to store
-     * 
+     *
+     * @param tree the <code>QuadTree</code> to store
      * @throws StoreException
      */
     public void store(QuadTree tree) throws StoreException;
 
     /**
      * Loads a <code>QuadTree</code>
-     * 
+     *
      * @return the loaded <code>QuadTree</code>
-     * 
      * @throws StoreException
      */
     public QuadTree load(IndexFile indexfile, boolean useMemoryMapping) throws StoreException;

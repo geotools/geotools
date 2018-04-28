@@ -23,13 +23,11 @@ import java.util.Map;
 
 /**
  * Represents a set of ArcSDE database connection parameters.
- * 
+ *
  * @author Gabriel Roldan
- *
- *
  * @source $URL$
- *         http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/common/src/main/java/org/geotools
- *         /arcsde/session/ArcSDEConnectionConfig.java $
+ *     http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/common/src/main/java/org/geotools
+ *     /arcsde/session/ArcSDEConnectionConfig.java $
  * @version $Id$
  */
 public class ArcSDEConnectionConfig {
@@ -78,9 +76,7 @@ public class ArcSDEConnectionConfig {
     /** time to hold onto an idle connection before cleaning it up */
     private Integer connTimeOut = null;
 
-    public ArcSDEConnectionConfig() throws IllegalArgumentException {
-
-    }
+    public ArcSDEConnectionConfig() throws IllegalArgumentException {}
 
     public String getServerName() {
         return serverName;
@@ -168,10 +164,15 @@ public class ArcSDEConnectionConfig {
         }
 
         ArcSDEConnectionConfig c = (ArcSDEConnectionConfig) o;
-        boolean equals = equals(serverName, c.serverName) && equals(portNumber, c.portNumber)
-                && equals(databaseName, c.databaseName) && equals(userName, c.userName)
-                && equals(password, c.password) && equals(minConnections, c.minConnections)
-                && equals(maxConnections, c.maxConnections) && equals(connTimeOut, c.connTimeOut);
+        boolean equals =
+                equals(serverName, c.serverName)
+                        && equals(portNumber, c.portNumber)
+                        && equals(databaseName, c.databaseName)
+                        && equals(userName, c.userName)
+                        && equals(password, c.password)
+                        && equals(minConnections, c.minConnections)
+                        && equals(maxConnections, c.maxConnections)
+                        && equals(connTimeOut, c.connTimeOut);
 
         return equals;
     }
@@ -183,9 +184,16 @@ public class ArcSDEConnectionConfig {
     @Override
     public int hashCode() {
         int prime = 17;
-        int hash = prime
-                * (hash(serverName) + hash(portNumber) + hash(databaseName) + hash(userName)
-                        + hash(password) + hash(minConnections) + hash(maxConnections) + hash(connTimeOut));
+        int hash =
+                prime
+                        * (hash(serverName)
+                                + hash(portNumber)
+                                + hash(databaseName)
+                                + hash(userName)
+                                + hash(password)
+                                + hash(minConnections)
+                                + hash(maxConnections)
+                                + hash(connTimeOut));
         return hash;
     }
 
@@ -201,9 +209,12 @@ public class ArcSDEConnectionConfig {
         config.setServerName(String.valueOf(map.get(SERVER_NAME_PARAM_NAME)));
         config.setUserName(String.valueOf(map.get(USER_NAME_PARAM_NAME)));
 
-        config.setConnTimeOut(Integer.valueOf(String.valueOf(map.get(CONNECTION_TIMEOUT_PARAM_NAME))));
-        config.setMaxConnections(Integer.valueOf(String.valueOf(map.get(MAX_CONNECTIONS_PARAM_NAME))));
-        config.setMinConnections(Integer.valueOf(String.valueOf(map.get(MIN_CONNECTIONS_PARAM_NAME))));
+        config.setConnTimeOut(
+                Integer.valueOf(String.valueOf(map.get(CONNECTION_TIMEOUT_PARAM_NAME))));
+        config.setMaxConnections(
+                Integer.valueOf(String.valueOf(map.get(MAX_CONNECTIONS_PARAM_NAME))));
+        config.setMinConnections(
+                Integer.valueOf(String.valueOf(map.get(MIN_CONNECTIONS_PARAM_NAME))));
 
         return config;
     }

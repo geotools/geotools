@@ -16,12 +16,11 @@ package org.geotools.data.geojson;
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.logging.Logger;
-
-import org.geotools.data.Query;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
@@ -29,13 +28,11 @@ import org.geotools.geojson.feature.FeatureJSON;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.FeatureType;
-import org.opengis.filter.Filter;
 
 /**
  * Utility class to provide a reader for GeoJSON streams
- * 
- * @author ian
  *
+ * @author ian
  */
 public class GeoJSONReader {
     private static final Logger LOGGER = Logging.getLogger(GeoJSONReader.class.getName());
@@ -53,20 +50,20 @@ public class GeoJSONReader {
     public boolean isConnected() {
         try {
             inputStream = url.openStream();
-            if(inputStream==null) {
-              url = new URL(url.toExternalForm());
-              inputStream = url.openStream();
+            if (inputStream == null) {
+                url = new URL(url.toExternalForm());
+                inputStream = url.openStream();
             }
         } catch (IOException e) {
             // whoops
             return false;
         }
         try {
-            if(inputStream.available()==0) {
-              url = new URL(url.toExternalForm());
-              inputStream = url.openStream();
+            if (inputStream.available() == 0) {
+                url = new URL(url.toExternalForm());
+                inputStream = url.openStream();
             }
-        
+
             LOGGER.finest("inputstream is " + inputStream);
             return (inputStream != null) && (inputStream.available() > 0);
         } catch (IOException e) {
@@ -84,9 +81,8 @@ public class GeoJSONReader {
         LOGGER.fine("reading features from " + url.toExternalForm() + " inputstream");
         FeatureCollection collection = reader.readFeatureCollection(inputStream);
         inputStream.close();
-        
-        return collection;
 
+        return collection;
     }
 
     public FeatureIterator<SimpleFeature> getIterator() throws IOException {

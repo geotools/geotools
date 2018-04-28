@@ -18,12 +18,7 @@ package org.geotools.xml.impl;
 
 import org.geotools.xml.Configuration;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class TypeStreamingParserHandler extends StreamingParserHandler {
     Class type;
 
@@ -34,6 +29,6 @@ public class TypeStreamingParserHandler extends StreamingParserHandler {
 
     protected boolean stream(ElementHandler handler) {
         return (handler.getParseNode().getValue() != null)
-        && type.isAssignableFrom(handler.getParseNode().getValue().getClass());
+                && type.isAssignableFrom(handler.getParseNode().getValue().getClass());
     }
 }

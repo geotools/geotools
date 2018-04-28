@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,47 +17,41 @@
  */
 package org.geotools.ysld;
 
-import org.geotools.ysld.encode.YsldEncoder;
-import org.geotools.ysld.parse.YsldParser;
-import org.geotools.ysld.parse.ZoomContextFinder;
-import org.geotools.ysld.transform.sld.SldTransformer;
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.styling.ResourceLocator;
-import org.geotools.styling.SLDParser;
-import org.geotools.styling.StyledLayerDescriptor;
-import org.geotools.ysld.validate.YsldValidator;
-import org.yaml.snakeyaml.error.MarkedYAMLException;
-
+import java.io.*;
+import java.util.Collections;
+import java.util.List;
 import javax.annotation.Nullable;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.styling.ResourceLocator;
+import org.geotools.styling.SLDParser;
+import org.geotools.styling.StyledLayerDescriptor;
+import org.geotools.ysld.encode.YsldEncoder;
+import org.geotools.ysld.parse.YsldParser;
+import org.geotools.ysld.parse.ZoomContextFinder;
+import org.geotools.ysld.validate.YsldValidator;
+import org.yaml.snakeyaml.error.MarkedYAMLException;
 
-import java.io.*;
-import java.util.Collections;
-import java.util.List;
-
-/**
- * Parses, encodes, and transforms Ysld.
- */
+/** Parses, encodes, and transforms Ysld. */
 public class Ysld {
 
     public static String OPTION_PREFIX = "x-";
 
     /**
      * Creates a {@link java.io.Reader} from an input object.
-     * <p>
-     * Handles objects of the following type.
-     * <ul>
-     * <li>{@link java.io.Reader}</li>
-     * <li>{@link java.io.InputStream}</li>
-     * <li>{@link java.io.File}</li>
-     * <li>{@link java.lang.String}</li>
-     * </ul>
-     * </p>
-     * 
-     * @param input The input object.
      *
+     * <p>Handles objects of the following type.
+     *
+     * <ul>
+     *   <li>{@link java.io.Reader}
+     *   <li>{@link java.io.InputStream}
+     *   <li>{@link java.io.File}
+     *   <li>{@link java.lang.String}
+     * </ul>
+     *
+     * @param input The input object.
      * @throws java.lang.IllegalArgumentException If the input object can not be converted.
      */
     static YsldInput reader(Object input) throws IOException {
@@ -76,17 +70,16 @@ public class Ysld {
 
     /**
      * Creates a {@link java.io.Writer} from an output object.
-     * <p>
-     * Handles objects of the following type.
-     * <ul>
-     * <li>{@link java.io.Reader}</li>
-     * <li>{@link java.io.InputStream}</li>
-     * <li>{@link java.io.File}</li>
-     * </ul>
-     * </p>
-     * 
-     * @param output The output object.
      *
+     * <p>Handles objects of the following type.
+     *
+     * <ul>
+     *   <li>{@link java.io.Reader}
+     *   <li>{@link java.io.InputStream}
+     *   <li>{@link java.io.File}
+     * </ul>
+     *
+     * @param output The output object.
      * @throws java.lang.IllegalArgumentException If the output object can not be converted.
      */
     static Writer writer(Object output) throws IOException {
@@ -125,11 +118,12 @@ public class Ysld {
      *
      * @param ysld The Ysld content, anything accepted by {@link #reader(Object)}.
      * @param locator Resource locator for resolving relative URIs.
-     *
      * @return The GeoTools SLD object.
      */
-    public static StyledLayerDescriptor parse(Object ysld,
-            @Nullable List<ZoomContextFinder> zCtxtFinders, @Nullable ResourceLocator locator)
+    public static StyledLayerDescriptor parse(
+            Object ysld,
+            @Nullable List<ZoomContextFinder> zCtxtFinders,
+            @Nullable ResourceLocator locator)
             throws IOException {
         return parse(ysld, zCtxtFinders, locator, new UomMapper());
     }
@@ -139,12 +133,14 @@ public class Ysld {
      *
      * @param ysld The Ysld content, anything accepted by {@link #reader(Object)}.
      * @param locator Resource locator for resolving relative URIs.
-     *
      * @return The GeoTools SLD object.
      */
-    public static StyledLayerDescriptor parse(Object ysld,
-            @Nullable List<ZoomContextFinder> zCtxtFinders, @Nullable ResourceLocator locator,
-            @Nullable UomMapper uomMapper) throws IOException {
+    public static StyledLayerDescriptor parse(
+            Object ysld,
+            @Nullable List<ZoomContextFinder> zCtxtFinders,
+            @Nullable ResourceLocator locator,
+            @Nullable UomMapper uomMapper)
+            throws IOException {
         YsldInput in = reader(ysld);
         try {
             YsldParser parser = new YsldParser(in.reader);
@@ -167,7 +163,6 @@ public class Ysld {
      * Parses a Ysld stream into GeoTools style objects.
      *
      * @param ysld The Ysld content, anything accepted by {@link #reader(Object)}.
-     *
      * @return The GeoTools SLD object.
      */
     public static StyledLayerDescriptor parse(Object ysld) throws IOException {
@@ -201,13 +196,12 @@ public class Ysld {
      *
      * @param sld SLD xml reader.
      * @param ysld Ysld writer.
-     *
      */
     public static void transform(XMLStreamReader sld, Writer ysld) throws IOException {
-        throw new UnsupportedOperationException();/*
-                                                   * SldTransformer tx = new SldTransformer(sld, ysld); try { tx.transform(); }
-                                                   * catch(XMLStreamException e) { throw new IOException(e); }
-                                                   */
+        throw new UnsupportedOperationException(); /*
+                                                    * SldTransformer tx = new SldTransformer(sld, ysld); try { tx.transform(); }
+                                                    * catch(XMLStreamException e) { throw new IOException(e); }
+                                                    */
     }
 
     /**
@@ -215,7 +209,6 @@ public class Ysld {
      *
      * @param sld SLD xml reader.
      * @param ysld Ysld writer.
-     *
      */
     public static void transform(InputStream sld, Writer ysld) throws IOException {
         SLDParser parser = new SLDParser(CommonFactoryFinder.getStyleFactory(), sld);
@@ -227,13 +220,11 @@ public class Ysld {
      * Validates a Ysld stream.
      *
      * @param ysld The Ysld.
-     *
      * @return List of marked exceptions corresponding to validation errors.
      */
     public static List<MarkedYAMLException> validate(Object ysld) throws IOException {
 
-        return validate(ysld, Collections.<ZoomContextFinder> emptyList(), new UomMapper());
-
+        return validate(ysld, Collections.<ZoomContextFinder>emptyList(), new UomMapper());
     }
 
     /**
@@ -241,11 +232,11 @@ public class Ysld {
      *
      * @param ysld The Ysld.
      * @param zContextFinders additional zoom context finders in order of priority.
-     * 
      * @return List of marked exceptions corresponding to validation errors.
      */
-    public static List<MarkedYAMLException> validate(Object ysld,
-            List<ZoomContextFinder> zContextFinders, UomMapper uomMapper) throws IOException {
+    public static List<MarkedYAMLException> validate(
+            Object ysld, List<ZoomContextFinder> zContextFinders, UomMapper uomMapper)
+            throws IOException {
         YsldInput in = reader(ysld);
         try {
             YsldValidator validator = new YsldValidator();
@@ -255,7 +246,6 @@ public class Ysld {
             in.close();
             ;
         }
-
     }
 
     static class YsldInput {

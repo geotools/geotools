@@ -55,5 +55,4 @@ public class FolderStack implements Iterable<Folder> {
     public List<Folder> asList() {
         return new ArrayList<Folder>(stack);
     }
-
 }

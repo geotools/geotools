@@ -21,9 +21,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
 import javax.xml.namespace.QName;
-
 import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDEnumerationFacet;
@@ -50,30 +48,24 @@ import org.geotools.xml.impl.BindingWalker.Visitor;
 import org.geotools.xs.facets.Whitespace;
 import org.picocontainer.MutablePicoContainer;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class ParseExecutor implements Visitor {
     private InstanceComponent instance;
     private Node node;
     private MutablePicoContainer context;
     private ParserHandler parser;
 
-    /**
-     * initial binding value
-     */
+    /** initial binding value */
     private Object value;
 
-    /**
-     * final parsed result
-     */
+    /** final parsed result */
     private Object result;
 
-    public ParseExecutor(InstanceComponent instance, Node node, MutablePicoContainer context,
-        ParserHandler parser) {
+    public ParseExecutor(
+            InstanceComponent instance,
+            Node node,
+            MutablePicoContainer context,
+            ParserHandler parser) {
         this.instance = instance;
         this.node = node;
         this.context = context;
@@ -81,60 +73,65 @@ public class ParseExecutor implements Visitor {
     }
 
     public void visit(Binding binding) {
-        //TODO: the check for InstanceBinding is a temporary measure to allow 
-        // for bindings that are not registered by class, but by instance. 
-        // in the long term we intend to ditch pico container b/c our inection 
+        // TODO: the check for InstanceBinding is a temporary measure to allow
+        // for bindings that are not registered by class, but by instance.
+        // in the long term we intend to ditch pico container b/c our inection
         // needs are quite trivial and can be handled by some simple reflection
-        if ( !( binding instanceof InstanceBinding ) ) {
-            //reload out of context, we do this so that the binding can pick up any new dependencies
+        if (!(binding instanceof InstanceBinding)) {
+            // reload out of context, we do this so that the binding can pick up any new
+            // dependencies
             // providedb by this particular context
             Class bindingClass = binding.getClass();
             QName bindingTarget = binding.getTarget();
-            
+
             binding = (Binding) context.getComponentInstanceOfType(binding.getClass());
             if (binding == null) {
-                
-                binding = parser.getBindingLoader().loadBinding(bindingTarget, context);
-                if ( binding == null ) {
-                    binding = parser.getBindingLoader().loadBinding(bindingTarget,bindingClass,context);
-                }
-                if ( binding.getClass() != bindingClass ) {
-                    throw new IllegalStateException(
-                            "Reloaded binding resulted in different type, from " + bindingClass
-                                    + " to " + binding.getClass());
-                }
-            }    
-        }
-        
 
-        //execute the binding
+                binding = parser.getBindingLoader().loadBinding(bindingTarget, context);
+                if (binding == null) {
+                    binding =
+                            parser.getBindingLoader()
+                                    .loadBinding(bindingTarget, bindingClass, context);
+                }
+                if (binding.getClass() != bindingClass) {
+                    throw new IllegalStateException(
+                            "Reloaded binding resulted in different type, from "
+                                    + bindingClass
+                                    + " to "
+                                    + binding.getClass());
+                }
+            }
+        }
+
+        // execute the binding
         try {
             if (result == null) {
-                //no result has been produced yet, should we pass the facet 
+                // no result has been produced yet, should we pass the facet
                 // parsed text in? only for simple types or complex types with
                 // mixed content
                 XSDTypeDefinition type = null;
 
                 if (Schemas.nameMatches(instance.getDeclaration(), binding.getTarget())) {
-                    //instance binding
+                    // instance binding
                     type = instance.getTypeDefinition();
                 } else {
-                    //type binding
-                    type = Schemas.getBaseTypeDefinition(instance.getTypeDefinition(),
-                            binding.getTarget());
+                    // type binding
+                    type =
+                            Schemas.getBaseTypeDefinition(
+                                    instance.getTypeDefinition(), binding.getTarget());
                 }
 
                 if (value == null) {
-                    //have not preprocessed raw string yet
-                    //value = parseFacets( instance );
+                    // have not preprocessed raw string yet
+                    // value = parseFacets( instance );
                     value = preParse(instance);
 
-                    //if the type is simple or complex and mixed, use the 
-                    // text as is, other wise trim it, turning to null if the 
+                    // if the type is simple or complex and mixed, use the
+                    // text as is, other wise trim it, turning to null if the
                     // result is empty
                     if ((type != null)
                             && (type instanceof XSDSimpleTypeDefinition
-                            || ((XSDComplexTypeDefinition) type).isMixed())) {
+                                    || ((XSDComplexTypeDefinition) type).isMixed())) {
                         result = value;
                     } else if ((value != null) && value instanceof String) {
                         value = ((String) value);
@@ -143,8 +140,7 @@ public class ParseExecutor implements Visitor {
                         } else {
                             result = value;
                         }
-                    }
-                    else {
+                    } else {
                         result = value;
                     }
                 }
@@ -156,7 +152,7 @@ public class ParseExecutor implements Visitor {
                 result = ((ComplexBinding) binding).parse((ElementInstance) instance, node, result);
             }
 
-            //only pass the value along if it was non-null
+            // only pass the value along if it was non-null
             if (result != null) {
                 value = result;
             }
@@ -172,9 +168,9 @@ public class ParseExecutor implements Visitor {
 
     /**
      * Pre-parses the instance compontent checking the following:
+     *
      * <p>
      *
-     * </p>
      * @param instance
      */
     protected Object preParse(InstanceComponent instance) {
@@ -184,8 +180,8 @@ public class ParseExecutor implements Visitor {
         if (instance.getTypeDefinition() instanceof XSDSimpleTypeDefinition) {
             type = (XSDSimpleTypeDefinition) instance.getTypeDefinition();
         } else {
-            XSDComplexTypeDefinition complexType = (XSDComplexTypeDefinition) instance
-                .getTypeDefinition();
+            XSDComplexTypeDefinition complexType =
+                    (XSDComplexTypeDefinition) instance.getTypeDefinition();
 
             if (complexType.getContentType() instanceof XSDSimpleTypeDefinition) {
                 type = (XSDSimpleTypeDefinition) complexType.getContentType();
@@ -195,16 +191,16 @@ public class ParseExecutor implements Visitor {
         String text = instance.getText();
 
         if (type != null) {
-            //alright, lets preparse some text
-            //first base on variety
+            // alright, lets preparse some text
+            // first base on variety
             if (type.getVariety() == XSDVariety.LIST_LITERAL) {
-                //list, whiteSpace is fixed to "COLLAPSE 
+                // list, whiteSpace is fixed to "COLLAPSE
                 text = Whitespace.COLLAPSE.preparse(text);
 
-                //lists are seperated by spaces
+                // lists are seperated by spaces
                 String[] list = text.split(" +");
 
-                //apply the facets
+                // apply the facets
                 // 1. length
                 // 2. maxLength
                 // 3. minLength
@@ -213,7 +209,7 @@ public class ParseExecutor implements Visitor {
                     XSDLengthFacet length = type.getLengthFacet();
 
                     if (list.length != length.getValue()) {
-                        //validation exception
+                        // validation exception
                     }
                 }
 
@@ -221,7 +217,7 @@ public class ParseExecutor implements Visitor {
                     XSDMaxLengthFacet length = type.getMaxLengthFacet();
 
                     if (list.length > length.getValue()) {
-                        //validation exception
+                        // validation exception
                     }
                 }
 
@@ -229,36 +225,36 @@ public class ParseExecutor implements Visitor {
                     XSDMinLengthFacet length = type.getMinLengthFacet();
 
                     if (list.length < length.getValue()) {
-                        //validation exception
+                        // validation exception
                     }
                 }
 
                 if (!type.getEnumerationFacets().isEmpty()) {
-                    //gather up all teh possible values
+                    // gather up all teh possible values
                     Set values = new HashSet();
 
-                    for (Iterator e = type.getEnumerationFacets().iterator(); e.hasNext();) {
+                    for (Iterator e = type.getEnumerationFacets().iterator(); e.hasNext(); ) {
                         XSDEnumerationFacet enumeration = (XSDEnumerationFacet) e.next();
 
-                        for (Iterator v = enumeration.getValue().iterator(); v.hasNext();) {
+                        for (Iterator v = enumeration.getValue().iterator(); v.hasNext(); ) {
                             values.add(v.next());
                         }
                     }
 
                     for (int i = 0; i < list.length; i++) {
                         if (!values.contains(list[i])) {
-                            //validation exception
+                            // validation exception
                         }
                     }
                 }
 
-                //now we must parse the items up
+                // now we must parse the items up
                 final XSDSimpleTypeDefinition itemType = type.getItemTypeDefinition();
                 List parsed = new ArrayList();
 
-                //create a pseudo declaration
-                final XSDElementDeclaration element = XSDFactory.eINSTANCE
-                    .createXSDElementDeclaration();
+                // create a pseudo declaration
+                final XSDElementDeclaration element =
+                        XSDFactory.eINSTANCE.createXSDElementDeclaration();
                 element.setTypeDefinition(itemType);
 
                 if (instance.getName() != null) {
@@ -269,22 +265,22 @@ public class ParseExecutor implements Visitor {
                     element.setTargetNamespace(instance.getNamespace());
                 }
 
-                //create a new instance of the specified type
-                InstanceComponentImpl theInstance = new InstanceComponentImpl() {
-                        public XSDTypeDefinition getTypeDefinition() {
-                            return itemType;
-                        }
+                // create a new instance of the specified type
+                InstanceComponentImpl theInstance =
+                        new InstanceComponentImpl() {
+                            public XSDTypeDefinition getTypeDefinition() {
+                                return itemType;
+                            }
 
-                        public XSDNamedComponent getDeclaration() {
-                            return element;
-                        }
-                        ;
-                    };
-                    
+                            public XSDNamedComponent getDeclaration() {
+                                return element;
+                            };
+                        };
+
                 for (int i = 0; i < list.length; i++) {
                     theInstance.setText(list[i]);
 
-                    //perform the parse
+                    // perform the parse
                     ParseExecutor executor = new ParseExecutor(theInstance, null, context, parser);
                     parser.getBindingWalker().walk(element, executor, context);
 
@@ -293,17 +289,16 @@ public class ParseExecutor implements Visitor {
 
                 return parsed;
             } else if (type.getVariety() == XSDVariety.UNION_LITERAL) {
-                //union, "valueSpace" and "lexicalSpace" facets are the union of the contained
+                // union, "valueSpace" and "lexicalSpace" facets are the union of the contained
                 // datatypes
                 return text;
             } else {
-                //atomic
+                // atomic
 
-                //walk through the facets and preparse as necessary 
-                for (Iterator f = type.getFacets().iterator(); f.hasNext();) {
+                // walk through the facets and preparse as necessary
+                for (Iterator f = type.getFacets().iterator(); f.hasNext(); ) {
                     XSDFacet facet = (XSDFacet) f.next();
 
-                    
                     if (facet instanceof XSDWhiteSpaceFacet && !parser.isCDATA()) {
                         XSDWhiteSpaceFacet whitespace = (XSDWhiteSpaceFacet) facet;
 
@@ -316,9 +311,11 @@ public class ParseExecutor implements Visitor {
                         }
 
                         if (whitespace.getValue() == XSDWhiteSpace.PRESERVE_LITERAL) {
-                            // XML spec seems to indicate that this is wrong, but then abstracts etc look wrong.
+                            // XML spec seems to indicate that this is wrong, but then abstracts etc
+                            // look wrong.
                             // https://www.w3.org/TR/xmlschema-2/#dt-whiteSpace
-                            // however we need to not trim attributes as then GML coordinates don't work!
+                            // however we need to not trim attributes as then GML coordinates don't
+                            // work!
                             if (!(instance instanceof AttributeInstance)) {
                                 text = text.trim();
                             }
@@ -329,11 +326,11 @@ public class ParseExecutor implements Visitor {
                 return text;
             }
         } else {
-            //type is not simple, or complex with simple content, do a check 
+            // type is not simple, or complex with simple content, do a check
             // for mixed
             if (instance.getTypeDefinition() instanceof XSDComplexTypeDefinition
                     && ((XSDComplexTypeDefinition) instance.getTypeDefinition()).isMixed()) {
-                //Collapse the text, but don't do so for CDATA where it's meant to be preserved
+                // Collapse the text, but don't do so for CDATA where it's meant to be preserved
                 if (!parser.isCDATA()) {
                     text = Whitespace.COLLAPSE.preparse(text);
                 }
@@ -355,7 +352,7 @@ public class ParseExecutor implements Visitor {
                 XSDSimpleTypeDefinition simpleType = (XSDSimpleTypeDefinition) type;
                 List facets = simpleType.getFacets();
 
-                for (Iterator itr = facets.iterator(); itr.hasNext();) {
+                for (Iterator itr = facets.iterator(); itr.hasNext(); ) {
                     XSDFacet facet = (XSDFacet) itr.next();
 
                     if ("whiteSpace".equals(facet.getFacetName())) {
@@ -365,10 +362,10 @@ public class ParseExecutor implements Visitor {
                             value = whitespace.preparse(value);
                         }
 
-                        //else TODO: check for validation, throw exception? 
+                        // else TODO: check for validation, throw exception?
                     }
 
-                    //TODO: other facets
+                    // TODO: other facets
                 }
             }
 

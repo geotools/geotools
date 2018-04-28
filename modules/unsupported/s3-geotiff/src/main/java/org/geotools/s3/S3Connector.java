@@ -23,9 +23,6 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.S3ClientOptions;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.utils.URLEncodedUtils;
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,14 +31,14 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Logger;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.utils.URLEncodedUtils;
 
-/**
- * Handles connecting to S3 and fetching parts
- */
+/** Handles connecting to S3 and fetching parts */
 public class S3Connector {
-    private final static Logger LOGGER = Logger.getLogger(S3Utils.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(S3Utils.class.getName());
 
-    //The location of the propertie file
+    // The location of the propertie file
     public static final String S3_GEOTIFF_CONFIG_PATH = "s3.properties.location";
 
     private Properties prop;
@@ -58,17 +55,17 @@ public class S3Connector {
     }
 
     /**
-     * Create an S3 connector from a URI-ish S3:// string. Notably, this constructor supports awsRegion and useAnon
-     * as query parameters to control these settings.
-     * <p>
-     * Also of note, this URL is largely ignored outside of the query parameters. Mainly this is used to control
-     * authentication options
+     * Create an S3 connector from a URI-ish S3:// string. Notably, this constructor supports
+     * awsRegion and useAnon as query parameters to control these settings.
+     *
+     * <p>Also of note, this URL is largely ignored outside of the query parameters. Mainly this is
+     * used to control authentication options
      *
      * @param input an s3:// style URL.
      */
     S3Connector(String input) {
         this.url = input;
-        //Parse region and anon from URL
+        // Parse region and anon from URL
         try {
             URI s3Uri = new URI(input);
             List<NameValuePair> nameValuePairs = URLEncodedUtils.parse(s3Uri, "UTF-8");
@@ -94,10 +91,11 @@ public class S3Connector {
             try {
                 region = Regions.valueOf(regionString);
             } catch (IllegalArgumentException e) {
-                //probably not great to have a default, but we can't just blow up if this
-                //property isn't set
-                LOGGER.warning("AWS_REGION property is set, but not set correctly. "
-                        + "Check that the AWS_REGION property matches the Regions enum");
+                // probably not great to have a default, but we can't just blow up if this
+                // property isn't set
+                LOGGER.warning(
+                        "AWS_REGION property is set, but not set correctly. "
+                                + "Check that the AWS_REGION property matches the Regions enum");
                 region = Regions.US_EAST_1;
             }
         } else {
@@ -106,41 +104,43 @@ public class S3Connector {
         }
 
         AmazonS3 s3;
-        //custom endpoint
+        // custom endpoint
         if (url != null && !url.startsWith("s3://")) {
-            if(!url.contains("://")){
-                throw new IllegalArgumentException("Following this style: s3Alias://bucket/filename");
+            if (!url.contains("://")) {
+                throw new IllegalArgumentException(
+                        "Following this style: s3Alias://bucket/filename");
             }
             String s3Alias = url.split("://")[0];
             String pahtToFile = url.split("://")[1];
 
             Properties prop = readProperties(s3Alias);
 
-            s3 = new AmazonS3Client(new BasicAWSCredentials(
-                    prop.getProperty(s3Alias + ".s3.user"),
-                    prop.getProperty(s3Alias + ".s3.password")));
+            s3 =
+                    new AmazonS3Client(
+                            new BasicAWSCredentials(
+                                    prop.getProperty(s3Alias + ".s3.user"),
+                                    prop.getProperty(s3Alias + ".s3.password")));
 
-            final S3ClientOptions clientOptions = S3ClientOptions.builder().setPathStyleAccess(true).build();
+            final S3ClientOptions clientOptions =
+                    S3ClientOptions.builder().setPathStyleAccess(true).build();
             s3.setS3ClientOptions(clientOptions);
             String endpoint = prop.getProperty(s3Alias + ".s3.endpoint");
-            if(!endpoint.endsWith("/")){
+            if (!endpoint.endsWith("/")) {
                 endpoint = endpoint + "/";
             }
             s3.setEndpoint(endpoint);
 
-        //aws cli client
+            // aws cli client
         } else if (useAnon) {
             s3 = new AmazonS3Client(new AnonymousAWSCredentials());
             s3.setRegion(Region.getRegion(region));
         } else {
-            s3 =  new AmazonS3Client();
+            s3 = new AmazonS3Client();
             s3.setRegion(Region.getRegion(region));
         }
 
         return s3;
     }
-
-
 
     /**
      * @param s3Path the s3:// url style path
@@ -157,7 +157,7 @@ public class S3Connector {
         String key = keyBuilder.toString();
         key = key.startsWith("/") ? key.substring(1) : key;
 
-        return new String[]{bucket, key};
+        return new String[] {bucket, key};
     }
 
     private Properties readProperties(String s3Alias) {
@@ -169,26 +169,30 @@ public class S3Connector {
                     InputStream resourceAsStream = new FileInputStream(property);
                     prop.load(resourceAsStream);
                 } else {
-                    throw new IOException("Properties are missing! " +
-                            "The system property 's3.properties.location' should be set " +
-                            "and contain the path to the s3.properties file.");
+                    throw new IOException(
+                            "Properties are missing! "
+                                    + "The system property 's3.properties.location' should be set "
+                                    + "and contain the path to the s3.properties file.");
                 }
             }
-            //check if the properties are not null.
-            if(prop.getProperty(s3Alias + ".s3.user") == null){
-                throw new IllegalArgumentException("s3.properties file does not contains value for:"
-                        + s3Alias + ".s3.user");
+            // check if the properties are not null.
+            if (prop.getProperty(s3Alias + ".s3.user") == null) {
+                throw new IllegalArgumentException(
+                        "s3.properties file does not contains value for:" + s3Alias + ".s3.user");
             }
-            if(prop.getProperty(s3Alias + ".s3.password") == null){
-                throw new IllegalArgumentException("s3.properties file does not contains value for:"
-                        + s3Alias + ".s3.password");
+            if (prop.getProperty(s3Alias + ".s3.password") == null) {
+                throw new IllegalArgumentException(
+                        "s3.properties file does not contains value for:"
+                                + s3Alias
+                                + ".s3.password");
             }
-            if(prop.getProperty(s3Alias + ".s3.endpoint") == null){
-                throw new IllegalArgumentException("s3.properties file does not contains value for:"
-                        + s3Alias + ".s3.endpoint");
+            if (prop.getProperty(s3Alias + ".s3.endpoint") == null) {
+                throw new IllegalArgumentException(
+                        "s3.properties file does not contains value for:"
+                                + s3Alias
+                                + ".s3.endpoint");
             }
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             LOGGER.severe(ex.getMessage());
             throw new IllegalArgumentException("The properties could not be found.", ex);
         }

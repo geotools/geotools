@@ -21,6 +21,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import com.vividsolutions.jts.util.Stopwatch;
 import java.awt.Rectangle;
 import java.awt.image.ColorModel;
 import java.awt.image.IndexColorModel;
@@ -36,13 +37,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
-
 import javax.imageio.ImageIO;
 import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.RecyclingTileFactory;
 import javax.media.jai.TileCache;
-
 import org.geotools.arcsde.ArcSDERasterFormatFactory;
 import org.geotools.arcsde.session.ArcSDEConnectionConfig;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -72,12 +71,8 @@ import org.opengis.geometry.Envelope;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.ParameterValueGroup;
 
-import com.vividsolutions.jts.util.Stopwatch;
-
 /**
  * Tests over legacy data that should not be deleted
- * 
- *
  *
  * @source $URL$
  */
@@ -89,9 +84,7 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
 
     private static final Logger LOGGER = Logging.getLogger("org.geotools.arcsde.gce");
 
-    /**
-     * Whether to write the fetched rasters to disk or not
-     */
+    /** Whether to write the fetched rasters to disk or not */
     private static boolean DEBUG;
 
     static RasterTestData rasterTestData;
@@ -108,8 +101,9 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
     public static void setUpBeforeClass() throws Exception {
         rasterTestData = new RasterTestData();
         rasterTestData.setUp();
-        DEBUG = Boolean
-                .valueOf(rasterTestData.getRasterTestDataProperty(RASTER_TEST_DEBUG_TO_DISK));
+        DEBUG =
+                Boolean.valueOf(
+                        rasterTestData.getRasterTestDataProperty(RASTER_TEST_DEBUG_TO_DISK));
         // rasterTestData.setOverrideExistingTestTables(false);
     }
 
@@ -118,17 +112,13 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
         rasterTestData.tearDown();
     }
 
-    /**
-     * @throws java.lang.Exception
-     */
+    /** @throws java.lang.Exception */
     @Before
     public void setUp() throws Exception {
         // nothing to do
     }
 
-    /**
-     * @throws java.lang.Exception
-     */
+    /** @throws java.lang.Exception */
     @After
     public void tearDown() throws Exception {
         // try {
@@ -141,8 +131,8 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
     }
 
     /**
-     * Test method for
-     * {@link org.geotools.arcsde.raster.gce.ArcSDEGridCoverage2DReaderJAI#getInfo()}.
+     * Test method for {@link
+     * org.geotools.arcsde.raster.gce.ArcSDEGridCoverage2DReaderJAI#getInfo()}.
      */
     @Test
     @Ignore
@@ -199,14 +189,14 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
 
         // http://localhost:8080/geoserver/wms?WIDTH=256&LAYERS=sde%3AIMG_USGSQUAD_SGBASE&STYLES=&SRS=EPSG%3A26986&HEIGHT=256&FORMAT=image%2Fjpeg&TILED=true&TILESORIGIN=169118.35%2C874964.388&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&EXCEPTIONS=application%2Fvnd.ogc.se_inimage&BBOX=239038.74625,916916.62575,253022.8255,930900.705
 
-        final GeneralEnvelope requestEnvelope =  new GeneralEnvelope(reader.getOriginalEnvelope());
+        final GeneralEnvelope requestEnvelope = new GeneralEnvelope(reader.getOriginalEnvelope());
         final GridEnvelope originalGridRange = reader.getOriginalGridRange();
 
-        final int reqWidth = 1000;// originalGridRange.getSpan(0) / 30;
-        final int reqHeight = 447;//originalGridRange.getSpan(1) / 30;
+        final int reqWidth = 1000; // originalGridRange.getSpan(0) / 30;
+        final int reqHeight = 447; // originalGridRange.getSpan(1) / 30;
 
-
-        requestEnvelope.setEnvelope(249403.30079879,929431.93501181,251110.35576095,930194.98857989);
+        requestEnvelope.setEnvelope(
+                249403.30079879, 929431.93501181, 251110.35576095, 930194.98857989);
         final GridCoverage2D coverage = readCoverage(reader, reqWidth, reqHeight, requestEnvelope);
         assertNotNull("read coverage returned null", coverage);
 
@@ -252,11 +242,11 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
         final GeneralEnvelope requestEnvelope = new GeneralEnvelope(reader.getOriginalEnvelope());
         requestEnvelope.setEnvelope(32168.0, 773720.0, 333224.0, 962136.0);
         final int reqWidth = 294;
-        final int reqHeight =184;
+        final int reqHeight = 184;
 
-        //requestEnvelope.setEnvelope(33000.0, 774000.0, 333002.0, 962000.0);
-//        final int reqWidth = 150001;// 294;
-//        final int reqHeight = 94000;// 184;
+        // requestEnvelope.setEnvelope(33000.0, 774000.0, 333002.0, 962000.0);
+        //        final int reqWidth = 150001;// 294;
+        //        final int reqHeight = 94000;// 184;
 
         final GridCoverage2D coverage = readCoverage(reader, reqWidth, reqHeight, requestEnvelope);
         assertNotNull("read coverage returned null", coverage);
@@ -314,7 +304,8 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
     public static void main(String[] argv) {
         try {
             ArcSDEGridCoverage2DReaderJAILegacyOnlineTest.setUpBeforeClass();
-            ArcSDEGridCoverage2DReaderJAILegacyOnlineTest test = new ArcSDEGridCoverage2DReaderJAILegacyOnlineTest();
+            ArcSDEGridCoverage2DReaderJAILegacyOnlineTest test =
+                    new ArcSDEGridCoverage2DReaderJAILegacyOnlineTest();
             test.setUp();
 
             test.testReadIMG_USGSQUADM();
@@ -343,62 +334,78 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
 
         List<Callable<Object>> tasks = new ArrayList<Callable<Object>>(threads);
 
-        final long[] stats = { Long.MAX_VALUE, Long.MIN_VALUE, 0, 0 };// min/max/total/max mem
+        final long[] stats = {Long.MAX_VALUE, Long.MIN_VALUE, 0, 0}; // min/max/total/max mem
 
         for (int t = 0; t < threads; t++) {
-            tasks.add(new Callable<Object>() {
-                public Object call() throws Exception {
-                    try {
+            tasks.add(
+                    new Callable<Object>() {
+                        public Object call() throws Exception {
+                            try {
 
-                        final AbstractGridCoverage2DReader reader = getReader();
-                        assertNotNull("Couldn't obtain a reader for " + tableName, reader);
+                                final AbstractGridCoverage2DReader reader = getReader();
+                                assertNotNull("Couldn't obtain a reader for " + tableName, reader);
 
-                        final GeneralEnvelope originalEnvelope = reader.getOriginalEnvelope();
-                        final GridEnvelope originalGridRange = reader.getOriginalGridRange();
+                                final GeneralEnvelope originalEnvelope =
+                                        reader.getOriginalEnvelope();
+                                final GridEnvelope originalGridRange =
+                                        reader.getOriginalGridRange();
 
-                        final int reqWidth = originalGridRange.getSpan(0) / 200;
-                        final int reqHeight = originalGridRange.getSpan(1) / 200;
+                                final int reqWidth = originalGridRange.getSpan(0) / 200;
+                                final int reqHeight = originalGridRange.getSpan(1) / 200;
 
-                        for (int i = 0; i < count; i++) {
-                            final GeneralEnvelope reqEnv = new GeneralEnvelope(originalEnvelope);
-                            {
-                                double dx = (originalEnvelope.getSpan(0) / 2) / (2 * i + 1);
-                                double dy = (originalEnvelope.getSpan(1) / 2) / (2 * i + 1);
-                                reqEnv.setEnvelope(originalEnvelope.getMedian(0) - dx,
-                                        originalEnvelope.getMedian(1) - dy,
-                                        originalEnvelope.getMedian(0) + dx,
-                                        originalEnvelope.getMedian(1) + dy);
+                                for (int i = 0; i < count; i++) {
+                                    final GeneralEnvelope reqEnv =
+                                            new GeneralEnvelope(originalEnvelope);
+                                    {
+                                        double dx = (originalEnvelope.getSpan(0) / 2) / (2 * i + 1);
+                                        double dy = (originalEnvelope.getSpan(1) / 2) / (2 * i + 1);
+                                        reqEnv.setEnvelope(
+                                                originalEnvelope.getMedian(0) - dx,
+                                                originalEnvelope.getMedian(1) - dy,
+                                                originalEnvelope.getMedian(0) + dx,
+                                                originalEnvelope.getMedian(1) + dy);
+                                    }
+
+                                    final GridCoverage2D coverage =
+                                            readCoverage(reader, reqWidth, reqHeight, reqEnv);
+                                    assertNotNull("read coverage returned null", coverage);
+
+                                    RenderedImage image = coverage.getRenderedImage();
+                                    Stopwatch sw = new Stopwatch();
+                                    sw.start();
+                                    writeToDisk(image, "testRead_" + tableName);
+                                    sw.stop();
+                                    long memMB =
+                                            (Runtime.getRuntime().totalMemory()
+                                                            - Runtime.getRuntime().freeMemory())
+                                                    / 1024
+                                                    / 1024;
+                                    System.err.println(
+                                            "wrote #"
+                                                    + writeCount.incrementAndGet()
+                                                    + " in "
+                                                    + sw.getTimeString()
+                                                    + ": Mem: "
+                                                    + memMB
+                                                    + "M. Thread: "
+                                                    + Thread.currentThread().getName()
+                                                    + ", iteration #"
+                                                    + i);
+
+                                    synchronized (stats) {
+                                        stats[0] = Math.min(stats[0], sw.getTime());
+                                        stats[1] = Math.max(stats[1], sw.getTime());
+                                        stats[2] = stats[2] + sw.getTime();
+                                        stats[3] = Math.max(stats[3], memMB);
+                                    }
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                throw e;
                             }
-
-                            final GridCoverage2D coverage = readCoverage(reader, reqWidth,
-                                    reqHeight, reqEnv);
-                            assertNotNull("read coverage returned null", coverage);
-
-                            RenderedImage image = coverage.getRenderedImage();
-                            Stopwatch sw = new Stopwatch();
-                            sw.start();
-                            writeToDisk(image, "testRead_" + tableName);
-                            sw.stop();
-                            long memMB = (Runtime.getRuntime().totalMemory() - Runtime.getRuntime()
-                                    .freeMemory()) / 1024 / 1024;
-                            System.err.println("wrote #" + writeCount.incrementAndGet() + " in "
-                                    + sw.getTimeString() + ": Mem: " + memMB + "M. Thread: "
-                                    + Thread.currentThread().getName() + ", iteration #" + i);
-
-                            synchronized (stats) {
-                                stats[0] = Math.min(stats[0], sw.getTime());
-                                stats[1] = Math.max(stats[1], sw.getTime());
-                                stats[2] = stats[2] + sw.getTime();
-                                stats[3] = Math.max(stats[3], memMB);
-                            }
+                            return null;
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        throw e;
-                    }
-                    return null;
-                }
-            });
+                    });
         }
 
         ExecutorService threadPool = Executors.newFixedThreadPool(threads);
@@ -409,9 +416,20 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
             Thread.sleep(100);
         }
         sw.stop();
-        System.err.println("____ Finished in " + sw.getTimeString() + ". Min: " + stats[0]
-                + ", Max: " + stats[1] + ", total execution time: " + stats[2] + ", Avg: "
-                + (stats[2] / (threads * count)) + ". Max mem: " + stats[3] + "MB");
+        System.err.println(
+                "____ Finished in "
+                        + sw.getTimeString()
+                        + ". Min: "
+                        + stats[0]
+                        + ", Max: "
+                        + stats[1]
+                        + ", total execution time: "
+                        + stats[2]
+                        + ", Avg: "
+                        + (stats[2] / (threads * count))
+                        + ". Max mem: "
+                        + stats[3]
+                        + "MB");
         System.err.println("__________________\n  SNAPSHOT!!!!!!!!");
         // Thread.sleep(5000);
     }
@@ -451,12 +469,12 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
         RenderedImage image = coverage.getRenderedImage();
         writeToDisk(image, tableName);
 
-        writeBand(image, new int[] { 0 }, "red");
-        writeBand(image, new int[] { 1 }, "green");
-        writeBand(image, new int[] { 2 }, "blue");
-        writeBand(image, new int[] { 3 }, "alpha");
+        writeBand(image, new int[] {0}, "red");
+        writeBand(image, new int[] {1}, "green");
+        writeBand(image, new int[] {2}, "blue");
+        writeBand(image, new int[] {3}, "alpha");
 
-        writeBand(image, new int[] { 0, 1, 2 }, "rgb");
+        writeBand(image, new int[] {0, 1, 2}, "rgb");
     }
 
     @Test
@@ -501,11 +519,11 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
 
         final GeneralEnvelope originalEnvelope = reader.getOriginalEnvelope();
 
-        final int reqWidth = 100;// 800;// originalGridRange.getSpan(0) / 8;
-        final int reqHeight = 75;// 595;// originalGridRange.getSpan(1) / 8;
+        final int reqWidth = 100; // 800;// originalGridRange.getSpan(0) / 8;
+        final int reqHeight = 75; // 595;// originalGridRange.getSpan(1) / 8;
 
-        GeneralEnvelope reqEnvelope = new GeneralEnvelope(new double[] { 274059, 837434 },
-                new double[] { 355782, 898216 });
+        GeneralEnvelope reqEnvelope =
+                new GeneralEnvelope(new double[] {274059, 837434}, new double[] {355782, 898216});
         reqEnvelope.setCoordinateReferenceSystem(originalEnvelope.getCoordinateReferenceSystem());
 
         final GridCoverage2D coverage = readCoverage(reader, reqWidth, reqHeight, reqEnvelope);
@@ -553,10 +571,10 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
     }
 
     private void writeBand(RenderedImage image, int[] bands, String channel) throws Exception {
-        //ParameterBlock pb = new ParameterBlock();
-        //pb.addSource(image);
-        //pb.add(bands);
-        //PlanarImage alpha = JAI.create("bandSelect", pb);
+        // ParameterBlock pb = new ParameterBlock();
+        // pb.addSource(image);
+        // pb.add(bands);
+        // PlanarImage alpha = JAI.create("bandSelect", pb);
         ImageWorker w = new ImageWorker(image);
         PlanarImage alpha = w.retainBands(bands).getPlanarImage();
         writeToDisk(alpha, tableName + "_" + channel);
@@ -623,20 +641,21 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
         wp.setTiling(128, 128);
         GeoTiffFormat format = new GeoTiffFormat();
         final ParameterValueGroup writerParams = format.getWriteParameters();
-        writerParams.parameter(AbstractGridFormat.GEOTOOLS_WRITE_PARAMS.getName().toString())
+        writerParams
+                .parameter(AbstractGridFormat.GEOTOOLS_WRITE_PARAMS.getName().toString())
                 .setValue(wp);
 
         // write down
         GeoTiffWriter writer = (GeoTiffWriter) format.getWriter(outStream);
         try {
-            GeneralParameterValue[] params = (GeneralParameterValue[]) writerParams.values()
-                    .toArray(new GeneralParameterValue[1]);
+            GeneralParameterValue[] params =
+                    (GeneralParameterValue[])
+                            writerParams.values().toArray(new GeneralParameterValue[1]);
             writer.write(coverage, params);
         } finally {
             writer.dispose();
             outStream.close();
         }
-        
     }
 
     private static AtomicInteger wc = new AtomicInteger();
@@ -647,8 +666,14 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
             return;
         }
         String file = System.getProperty("user.home");
-        file += File.separator + "arcsde_test" + File.separator + fileName + "_"
-                + wc.incrementAndGet() + ".tiff";
+        file +=
+                File.separator
+                        + "arcsde_test"
+                        + File.separator
+                        + fileName
+                        + "_"
+                        + wc.incrementAndGet()
+                        + ".tiff";
         File path = new File(file);
         path.getParentFile().mkdirs();
 
@@ -661,15 +686,14 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
                 // ImageWorker iw = new ImageWorker(image);
                 // iw.write(path);
             } else {
-                OutputStream destination = new OutputStream() {
-                    @Override
-                    public void write(byte[] b, int o, int l) throws IOException {
-                    }
+                OutputStream destination =
+                        new OutputStream() {
+                            @Override
+                            public void write(byte[] b, int o, int l) throws IOException {}
 
-                    @Override
-                    public void write(int b) throws IOException {
-                    }
-                };
+                            @Override
+                            public void write(int b) throws IOException {}
+                        };
                 ImageIO.write(image, "TIFF", destination);
             }
 
@@ -681,18 +705,23 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
         }
     }
 
-    private GridCoverage2D readCoverage(final AbstractGridCoverage2DReader reader,
-            final int reqWidth, final int reqHeight, final Envelope reqEnv) throws Exception {
+    private GridCoverage2D readCoverage(
+            final AbstractGridCoverage2DReader reader,
+            final int reqWidth,
+            final int reqHeight,
+            final Envelope reqEnv)
+            throws Exception {
 
         GeneralParameterValue[] requestParams = new Parameter[2];
 
         GridGeometry2D gg2d;
         gg2d = new GridGeometry2D(new GridEnvelope2D(new Rectangle(reqWidth, reqHeight)), reqEnv);
 
-        requestParams[0] = new Parameter<GridGeometry2D>(AbstractGridFormat.READ_GRIDGEOMETRY2D,
-                gg2d);
-        requestParams[1] = new Parameter<OverviewPolicy>(AbstractGridFormat.OVERVIEW_POLICY,
-                OverviewPolicy.NEAREST);
+        requestParams[0] =
+                new Parameter<GridGeometry2D>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg2d);
+        requestParams[1] =
+                new Parameter<OverviewPolicy>(
+                        AbstractGridFormat.OVERVIEW_POLICY, OverviewPolicy.NEAREST);
 
         final GridCoverage2D coverage;
         coverage = (GridCoverage2D) reader.read(requestParams);
@@ -703,10 +732,20 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
     private AbstractGridCoverage2DReader getReader() throws IOException {
         final ArcSDEConnectionConfig config = rasterTestData.getConnectionPool().getConfig();
 
-        final String rgbUrl = "sde://" + config.getUserName() + ":" + config.getPassword() + "@"
-                + config.getServerName() + ":" + config.getPortNumber() + "/"
-                + config.getDatabaseName() + "#" + tableName
-                + ";pool.minConnections=2;pool.maxConnections=2";
+        final String rgbUrl =
+                "sde://"
+                        + config.getUserName()
+                        + ":"
+                        + config.getPassword()
+                        + "@"
+                        + config.getServerName()
+                        + ":"
+                        + config.getPortNumber()
+                        + "/"
+                        + config.getDatabaseName()
+                        + "#"
+                        + tableName
+                        + ";pool.minConnections=2;pool.maxConnections=2";
         // + config.getMinConnections() + ";pool.maxConnections=" + config.getMaxConnections();
 
         final ArcSDERasterFormat format = new ArcSDERasterFormatFactory().createFormat();
@@ -767,8 +806,8 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
 
         int reqWidth = 294;
         int reqHeight = 184;
-        GeneralEnvelope reqEnv = new GeneralEnvelope(
-                originalEnvelope.getCoordinateReferenceSystem());
+        GeneralEnvelope reqEnv =
+                new GeneralEnvelope(originalEnvelope.getCoordinateReferenceSystem());
         // reqEnv.setEnvelope(236534.9499999986, 901973.4499999813, 236718.8499999986,
         // 902163.0499999814);
         //
@@ -788,5 +827,4 @@ public class ArcSDEGridCoverage2DReaderJAILegacyOnlineTest {
 
         writeToDisk(coverage.getRenderedImage(), tableName);
     }
-
 }

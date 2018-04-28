@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2017, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -33,9 +33,10 @@ class HSLColor {
     double lightness;
 
     double alpha;
-    
+
     /**
      * Builds a color based on HSLA components
+     *
      * @param hue
      * @param saturation
      * @param lightness
@@ -44,9 +45,10 @@ class HSLColor {
     public HSLColor(double hue, double saturation, double lightness) {
         this(hue, saturation, lightness, 1d);
     }
-    
+
     /**
      * Builds a color based on HSLA components
+     *
      * @param hue
      * @param saturation
      * @param lightness
@@ -61,7 +63,7 @@ class HSLColor {
 
     /**
      * Builds the HSL representation of a color
-     * 
+     *
      * @param color
      */
     public HSLColor(Color color) {
@@ -105,9 +107,9 @@ class HSLColor {
     }
 
     public void setSaturation(double saturation) {
-        if(saturation < 0) {
+        if (saturation < 0) {
             this.saturation = 0;
-        } else if(saturation > 1) {
+        } else if (saturation > 1) {
             this.saturation = 1;
         } else {
             this.saturation = saturation;
@@ -140,7 +142,7 @@ class HSLColor {
 
     /**
      * Turns the HSL representation into a RGB one
-     * 
+     *
      * @return
      */
     public Color toRGB() {
@@ -161,7 +163,11 @@ class HSLColor {
         g = Math.min(g, 1.0f);
         b = Math.min(b, 1.0f);
 
-        return new Color((int) Math.round(r * 255), (int) Math.round(g * 255), (int) Math.round(b * 255), (int) Math.round(alpha * 255));
+        return new Color(
+                (int) Math.round(r * 255),
+                (int) Math.round(g * 255),
+                (int) Math.round(b * 255),
+                (int) Math.round(alpha * 255));
     }
 
     private double hueToRGB(double p, double q, double h) {
@@ -185,10 +191,9 @@ class HSLColor {
 
         return p;
     }
-    
+
     @Override
     public String toString() {
         return "HSLColor [" + hue + "," + saturation + "," + lightness + "," + alpha + "]";
-    } 
-
+    }
 }

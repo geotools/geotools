@@ -16,19 +16,14 @@
  */
 package org.geotools.filter.v1_0;
 
-import org.w3c.dom.Document;
 import org.opengis.filter.expression.Add;
 import org.opengis.filter.expression.BinaryExpression;
 import org.opengis.filter.expression.Divide;
 import org.opengis.filter.expression.Multiply;
 import org.opengis.filter.expression.Subtract;
+import org.w3c.dom.Document;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class BinaryOperatorTypeBindingTest extends FilterTestSupport {
     public void testBinaryOperatorType() {
         assertEquals(BinaryExpression.class, binding(OGC.BinaryOperatorType).getType());
@@ -50,8 +45,9 @@ public class BinaryOperatorTypeBindingTest extends FilterTestSupport {
     public void testAddEncode() throws Exception {
         Document dom = encode(FilterMockData.add(), OGC.Add);
 
-        assertEquals(2,
-            dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart()).getLength());
+        assertEquals(
+                2,
+                dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart()).getLength());
     }
 
     public void testSubType() {
@@ -69,8 +65,9 @@ public class BinaryOperatorTypeBindingTest extends FilterTestSupport {
 
     public void testSubEncode() throws Exception {
         Document dom = encode(FilterMockData.sub(), OGC.Sub);
-        assertEquals(2,
-            dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart()).getLength());
+        assertEquals(
+                2,
+                dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart()).getLength());
     }
 
     public void testDivType() {
@@ -88,8 +85,9 @@ public class BinaryOperatorTypeBindingTest extends FilterTestSupport {
 
     public void testDivEncode() throws Exception {
         Document dom = encode(FilterMockData.div(), OGC.Div);
-        assertEquals(2,
-            dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart()).getLength());
+        assertEquals(
+                2,
+                dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart()).getLength());
     }
 
     public void testMulType() {
@@ -107,7 +105,8 @@ public class BinaryOperatorTypeBindingTest extends FilterTestSupport {
 
     public void testMulEncode() throws Exception {
         Document dom = encode(FilterMockData.mul(), OGC.Mul);
-        assertEquals(2,
-            dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart()).getLength());
+        assertEquals(
+                2,
+                dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart()).getLength());
     }
 }

@@ -18,31 +18,22 @@
 package org.geotools.data;
 
 import java.util.List;
-
 import junit.framework.TestCase;
-
-import org.geotools.data.SampleDataAccessData;
 import org.opengis.feature.Feature;
 
 /**
- * Test the test data created by {@link SampleDataAccessData}.
- * 
+ * Test the test data created by {@link org.geotools.data.SampleDataAccessData}.
+ *
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  * @version $Id$
- *
- *
- *
  * @source $URL$
  * @since 2.6
  */
 public class SampleDataAccessDataTest extends TestCase {
 
-    /**
-     * Test that two features are created.
-     */
+    /** Test that two features are created. */
     public static void testData() {
         List<Feature> features = SampleDataAccessData.createMappedFeatures();
         assertEquals(2, features.size());
     }
-
 }

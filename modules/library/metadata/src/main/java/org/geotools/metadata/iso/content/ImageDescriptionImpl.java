@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -23,68 +23,56 @@ import org.opengis.metadata.Identifier;
 import org.opengis.metadata.content.ImageDescription;
 import org.opengis.metadata.content.ImagingCondition;
 
-
 /**
  * Information about an image's suitability for use.
- *
- *
  *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane
- *
  * @since 2.1
  */
 public class ImageDescriptionImpl extends CoverageDescriptionImpl implements ImageDescription {
-    /**
-     * Serial number for interoperability with different versions.
-     */
+    /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -6168624828802439062L;
 
     /**
-     * Illumination elevation measured in degrees clockwise from the target plane at
-     * intersection of the optical line of sight with the Earths surface. For images from a
-     * scanning device, refer to the centre pixel of the image.
+     * Illumination elevation measured in degrees clockwise from the target plane at intersection of
+     * the optical line of sight with the Earths surface. For images from a scanning device, refer
+     * to the centre pixel of the image.
      */
     private Double illuminationElevationAngle;
 
     /**
-     * Illumination azimuth measured in degrees clockwise from true north at the time the
-     * image is taken. For images from a scanning device, refer to the centre pixel of the image.
+     * Illumination azimuth measured in degrees clockwise from true north at the time the image is
+     * taken. For images from a scanning device, refer to the centre pixel of the image.
      */
     private Double illuminationAzimuthAngle;
 
-    /**
-     * Conditions affected the image.
-     */
+    /** Conditions affected the image. */
     private ImagingCondition imagingCondition;
 
-    /**
-     * Specifies the image quality.
-     */
+    /** Specifies the image quality. */
     private Identifier imageQualityCode;
 
-    /**
-     * Area of the dataset obscured by clouds, expressed as a percentage of the spatial extent.
-     */
+    /** Area of the dataset obscured by clouds, expressed as a percentage of the spatial extent. */
     private Double cloudCoverPercentage;
 
     /**
-     * Image distributors code that identifies the level of radiometric and geometric
-     * processing that has been applied.
+     * Image distributors code that identifies the level of radiometric and geometric processing
+     * that has been applied.
      */
     private Identifier processingLevelCode;
 
     /**
-     * Count of the number the number of lossy compression cycles performed on the image.
-     * {@code null} if the information is not provided.
+     * Count of the number the number of lossy compression cycles performed on the image. {@code
+     * null} if the information is not provided.
      */
     private Integer compressionGenerationQuantity;
 
     /**
-     * Indication of whether or not triangulation has been performed upon the image.
-     * {@code null} if the information is not provided.
+     * Indication of whether or not triangulation has been performed upon the image. {@code null} if
+     * the information is not provided.
      */
     private Boolean triangulationIndicator;
 
@@ -100,21 +88,14 @@ public class ImageDescriptionImpl extends CoverageDescriptionImpl implements Ima
      */
     private Boolean cameraCalibrationInformationAvailable;
 
-    /**
-     * Indication of whether or not Calibration Reseau information is available.
-     */
+    /** Indication of whether or not Calibration Reseau information is available. */
     private Boolean filmDistortionInformationAvailable;
 
-    /**
-     * Indication of whether or not lens aberration correction information is available.
-     */
+    /** Indication of whether or not lens aberration correction information is available. */
     private Boolean lensDistortionInformationAvailable;
 
-    /**
-     * Constructs an initially empty image description.
-     */
-    public ImageDescriptionImpl() {
-    }
+    /** Constructs an initially empty image description. */
+    public ImageDescriptionImpl() {}
 
     /**
      * Constructs a metadata entity initialized with the values from the specified metadata.
@@ -162,31 +143,23 @@ public class ImageDescriptionImpl extends CoverageDescriptionImpl implements Ima
         illuminationAzimuthAngle = newValue;
     }
 
-    /**
-     * Returns the conditions affected the image.
-     */
+    /** Returns the conditions affected the image. */
     public ImagingCondition getImagingCondition() {
         return imagingCondition;
     }
 
-    /**
-     * Set the conditions affected the image.
-     */
+    /** Set the conditions affected the image. */
     public synchronized void setImagingCondition(final ImagingCondition newValue) {
         checkWritePermission();
         imagingCondition = newValue;
     }
 
-    /**
-     * Returns the specifies the image quality.
-     */
+    /** Returns the specifies the image quality. */
     public Identifier getImageQualityCode() {
         return imageQualityCode;
     }
 
-    /**
-     * Set the specifies the image quality.
-     */
+    /** Set the specifies the image quality. */
     public synchronized void setImageQualityCode(final Identifier newValue) {
         checkWritePermission();
         imageQualityCode = newValue;
@@ -250,9 +223,7 @@ public class ImageDescriptionImpl extends CoverageDescriptionImpl implements Ima
         return triangulationIndicator;
     }
 
-    /**
-     * Set the indication of whether or not triangulation has been performed upon the image.
-     */
+    /** Set the indication of whether or not triangulation has been performed upon the image. */
     public synchronized void setTriangulationIndicator(final Boolean newValue) {
         checkWritePermission();
         triangulationIndicator = newValue;
@@ -292,16 +263,12 @@ public class ImageDescriptionImpl extends CoverageDescriptionImpl implements Ima
         cameraCalibrationInformationAvailable = newValue;
     }
 
-    /**
-     * Returns the indication of whether or not Calibration Reseau information is available.
-     */
+    /** Returns the indication of whether or not Calibration Reseau information is available. */
     public Boolean isFilmDistortionInformationAvailable() {
         return filmDistortionInformationAvailable;
     }
 
-    /**
-     * Set the indication of whether or not Calibration Reseau information is available.
-     */
+    /** Set the indication of whether or not Calibration Reseau information is available. */
     public synchronized void setFilmDistortionInformationAvailable(final Boolean newValue) {
         checkWritePermission();
         filmDistortionInformationAvailable = newValue;
@@ -314,9 +281,7 @@ public class ImageDescriptionImpl extends CoverageDescriptionImpl implements Ima
         return lensDistortionInformationAvailable;
     }
 
-    /**
-     * Set the indication of whether or not lens aberration correction information is available.
-     */
+    /** Set the indication of whether or not lens aberration correction information is available. */
     public synchronized void setLensDistortionInformationAvailable(final Boolean newValue) {
         checkWritePermission();
         lensDistortionInformationAvailable = newValue;

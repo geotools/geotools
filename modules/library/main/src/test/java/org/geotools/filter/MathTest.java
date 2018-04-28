@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -13,32 +13,26 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
- *    
+ *
  *    Created on 20 June 2002, 18:53
  */
 package org.geotools.filter;
 
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.PrecisionModel;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.PrecisionModel;
-
-
 /**
- * TODO: this is just a copy of other tests, it is not yet populated with Math
- * tests!
+ * TODO: this is just a copy of other tests, it is not yet populated with Math tests!
  *
  * @author James
- *
- *
  * @source $URL$
  */
 public class MathTest extends TestCase {
@@ -68,18 +62,21 @@ public class MathTest extends TestCase {
 
         SimpleFeature[] f = new SimpleFeature[3];
         GeometryFactory gf = new GeometryFactory(new PrecisionModel());
-        f[0] = SimpleFeatureBuilder.build(schema, new Object[] {
-                    new Integer(12), gf.createGeometryCollection(null),
-                    "first"
-                }, null);
-        f[1] = SimpleFeatureBuilder.build(schema, new Object[] {
-                    new Integer(3), gf.createGeometryCollection(null),
-                    "second"
-                }, null);
-        f[2] = SimpleFeatureBuilder.build(schema, new Object[] {
-                    new Integer(15), gf.createGeometryCollection(null),
-                    "third"
-                }, null);
+        f[0] =
+                SimpleFeatureBuilder.build(
+                        schema,
+                        new Object[] {new Integer(12), gf.createGeometryCollection(null), "first"},
+                        null);
+        f[1] =
+                SimpleFeatureBuilder.build(
+                        schema,
+                        new Object[] {new Integer(3), gf.createGeometryCollection(null), "second"},
+                        null);
+        f[2] =
+                SimpleFeatureBuilder.build(
+                        schema,
+                        new Object[] {new Integer(15), gf.createGeometryCollection(null), "third"},
+                        null);
 
         return f;
     }
@@ -87,7 +84,7 @@ public class MathTest extends TestCase {
     public void testTypeMissmatch() throws Exception {
         SimpleFeature[] f = sampleFeatures();
 
-        //the following are intentionaly backwards
+        // the following are intentionaly backwards
         AttributeExpressionImpl e1 = new AttributeExpressionImpl(schema, "value");
         AttributeExpressionImpl e2 = new AttributeExpressionImpl(schema, "name");
         boolean pass = false;
@@ -111,8 +108,8 @@ public class MathTest extends TestCase {
     }
 
     public void testSetupAndExtraction() throws Exception {
-        //this should move out to a more configurable system run from scripts
-        //but we can start with a set of hard coded tests
+        // this should move out to a more configurable system run from scripts
+        // but we can start with a set of hard coded tests
         SimpleFeature[] f = sampleFeatures();
 
         AttributeExpressionImpl e1 = new AttributeExpressionImpl(schema, "value");

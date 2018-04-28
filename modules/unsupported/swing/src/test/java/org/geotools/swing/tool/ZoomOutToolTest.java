@@ -16,20 +16,20 @@
  */
 package org.geotools.swing.tool;
 
+import static org.junit.Assert.*;
+
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.Layer;
-import org.geotools.swing.testutils.TestDataUtils;
 import org.geotools.swing.event.MapPaneEvent;
 import org.geotools.swing.testutils.GraphicsTestRunner;
-
+import org.geotools.swing.testutils.TestDataUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.junit.Assert.*;
 
 /**
  * Tests for the zoom-out cursor tool.
- * 
+ *
  * @author Michael Bedward
  * @since 8.0
  * @source $URL$
@@ -72,5 +72,4 @@ public class ZoomOutToolTest extends CursorToolTestBase {
     protected Layer getTestLayer() throws Exception {
         return TestDataUtils.getPointLayer();
     }
-
 }

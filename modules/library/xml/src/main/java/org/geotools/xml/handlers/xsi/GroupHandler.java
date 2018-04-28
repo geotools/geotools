@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,7 +17,6 @@
 package org.geotools.xml.handlers.xsi;
 
 import java.net.URI;
-
 import org.geotools.xml.XSIElementHandler;
 import org.geotools.xml.schema.Element;
 import org.geotools.xml.schema.ElementGrouping;
@@ -26,24 +25,20 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotRecognizedException;
 
-
 /**
  * GroupHandler purpose.
- * 
- * <p>
- * Representa a 'group' element
- * </p>
+ *
+ * <p>Representa a 'group' element
  *
  * @author dzwiers, Refractions Research, Inc. http://www.refractions.net
  * @author $Author:$ (last modification)
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public class GroupHandler extends ElementGroupingHandler {
     /** 'group' */
-    public final static String LOCALNAME = "group";
+    public static final String LOCALNAME = "group";
+
     private static int offset = 0;
     private String id;
     private String name;
@@ -61,20 +56,13 @@ public class GroupHandler extends ElementGroupingHandler {
         return offset++;
     }
 
-    /**
-     * @see java.lang.Object#hashCode()
-     */
+    /** @see java.lang.Object#hashCode() */
     public int hashCode() {
-        return (LOCALNAME.hashCode() * ((name == null) ? 1 : name.hashCode()))
-        + hashCodeOffset;
+        return (LOCALNAME.hashCode() * ((name == null) ? 1 : name.hashCode())) + hashCodeOffset;
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String,
-     *      java.lang.String)
-     */
-    public XSIElementHandler getHandler(String namespaceURI, String localName)
-        throws SAXException {
+    /** @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String, java.lang.String) */
+    public XSIElementHandler getHandler(String namespaceURI, String localName) throws SAXException {
         if (SchemaHandler.namespaceURI.equalsIgnoreCase(namespaceURI)) {
             // child types
             //
@@ -85,8 +73,7 @@ public class GroupHandler extends ElementGroupingHandler {
                 if (child == null) {
                     child = sth;
                 } else {
-                    throw new SAXNotRecognizedException(LOCALNAME
-                        + " may only have one child.");
+                    throw new SAXNotRecognizedException(LOCALNAME + " may only have one child.");
                 }
 
                 return sth;
@@ -99,8 +86,7 @@ public class GroupHandler extends ElementGroupingHandler {
                 if (child == null) {
                     child = sth;
                 } else {
-                    throw new SAXNotRecognizedException(LOCALNAME
-                        + " may only have one child.");
+                    throw new SAXNotRecognizedException(LOCALNAME + " may only have one child.");
                 }
 
                 return sth;
@@ -113,8 +99,7 @@ public class GroupHandler extends ElementGroupingHandler {
                 if (child == null) {
                     child = sth;
                 } else {
-                    throw new SAXNotRecognizedException(LOCALNAME
-                        + " may only have one child.");
+                    throw new SAXNotRecognizedException(LOCALNAME + " may only have one child.");
                 }
 
                 return sth;
@@ -125,11 +110,10 @@ public class GroupHandler extends ElementGroupingHandler {
     }
 
     /**
-     * @see org.geotools.xml.XSIElementHandler#startElement(java.lang.String,
-     *      java.lang.String, org.xml.sax.Attributes)
+     * @see org.geotools.xml.XSIElementHandler#startElement(java.lang.String, java.lang.String,
+     *     org.xml.sax.Attributes)
      */
-    public void startElement(String namespaceURI, String localName,
-        Attributes atts){
+    public void startElement(String namespaceURI, String localName, Attributes atts) {
         id = atts.getValue("", "id");
 
         if (id == null) {
@@ -174,32 +158,24 @@ public class GroupHandler extends ElementGroupingHandler {
         }
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#getLocalName()
-     */
+    /** @see org.geotools.xml.XSIElementHandler#getLocalName() */
     public String getLocalName() {
         return LOCALNAME;
     }
 
-    /**
-     * <p>
-     * returns the group's name
-     * </p>
-     *
-     */
+    /** returns the group's name */
     public String getName() {
         return name;
     }
 
     /**
-     * @see org.geotools.xml.XSIHandlers.ElementGroupingHandler#compress(org.geotools.xml.XSIHandlers.SchemaHandler)
+     * @see
+     *     org.geotools.xml.XSIHandlers.ElementGroupingHandler#compress(org.geotools.xml.XSIHandlers.SchemaHandler)
      */
-    protected ElementGrouping compress(SchemaHandler parent)
-        throws SAXException {
+    protected ElementGrouping compress(SchemaHandler parent) throws SAXException {
 
-        synchronized(this){
-            if (cache != null)
-            	return cache;
+        synchronized (this) {
+            if (cache != null) return cache;
             cache = new DefaultGroup();
         }
 
@@ -208,8 +184,10 @@ public class GroupHandler extends ElementGroupingHandler {
         cache.namespace = parent.getTargetNamespace();
         cache.min = this.minOccurs;
         cache.max = this.maxOccurs;
-        cache.child = (this.child == null) ? null
-              : this.child.compress(parent); // deal with all/choice/sequnce
+        cache.child =
+                (this.child == null)
+                        ? null
+                        : this.child.compress(parent); // deal with all/choice/sequnce
         if (ref != null) {
             Group g = parent.lookUpGroup(ref);
             if (g != null) {
@@ -221,7 +199,7 @@ public class GroupHandler extends ElementGroupingHandler {
                 cache.max = g.getMaxOccurs();
                 cache.name = g.getName();
                 cache.namespace = g.getNamespace();
-                
+
                 cache.child = (g.getChild() == null) ? cache.child : g.getChild();
             }
         }
@@ -231,29 +209,25 @@ public class GroupHandler extends ElementGroupingHandler {
         return cache;
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#getHandlerType()
-     */
+    /** @see org.geotools.xml.XSIElementHandler#getHandlerType() */
     public int getHandlerType() {
         return DEFAULT;
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#endElement(java.lang.String,
-     *      java.lang.String)
-     */
-    public void endElement(String namespaceURI, String localName){
+    /** @see org.geotools.xml.XSIElementHandler#endElement(java.lang.String, java.lang.String) */
+    public void endElement(String namespaceURI, String localName) {
         // do nothing
     }
-    protected static class DefaultGroup implements Group{
+
+    protected static class DefaultGroup implements Group {
         protected ElementGrouping child;
         protected String id;
-        protected int min,max;
+        protected int min, max;
         protected String name;
         protected URI namespace;
         /**
          * TODO summary sentence for getChild ...
-         * 
+         *
          * @see org.geotools.xml.schema.Group#getChild()
          */
         public ElementGrouping getChild() {
@@ -262,7 +236,7 @@ public class GroupHandler extends ElementGroupingHandler {
 
         /**
          * TODO summary sentence for getId ...
-         * 
+         *
          * @see org.geotools.xml.schema.Group#getId()
          */
         public String getId() {
@@ -271,7 +245,7 @@ public class GroupHandler extends ElementGroupingHandler {
 
         /**
          * TODO summary sentence for getMaxOccurs ...
-         * 
+         *
          * @see org.geotools.xml.schema.Group#getMaxOccurs()
          */
         public int getMaxOccurs() {
@@ -280,7 +254,7 @@ public class GroupHandler extends ElementGroupingHandler {
 
         /**
          * TODO summary sentence for getMinOccurs ...
-         * 
+         *
          * @see org.geotools.xml.schema.Group#getMinOccurs()
          */
         public int getMinOccurs() {
@@ -289,7 +263,7 @@ public class GroupHandler extends ElementGroupingHandler {
 
         /**
          * TODO summary sentence for getName ...
-         * 
+         *
          * @see org.geotools.xml.schema.Group#getName()
          */
         public String getName() {
@@ -298,7 +272,7 @@ public class GroupHandler extends ElementGroupingHandler {
 
         /**
          * TODO summary sentence for getNamespace ...
-         * 
+         *
          * @see org.geotools.xml.schema.Group#getNamespace()
          */
         public URI getNamespace() {
@@ -307,7 +281,7 @@ public class GroupHandler extends ElementGroupingHandler {
 
         /**
          * TODO summary sentence for getGrouping ...
-         * 
+         *
          * @see org.geotools.xml.schema.ElementGrouping#getGrouping()
          */
         public int getGrouping() {
@@ -316,17 +290,16 @@ public class GroupHandler extends ElementGroupingHandler {
 
         /**
          * TODO summary sentence for findChildElement ...
-         * 
+         *
          * @see org.geotools.xml.schema.ElementGrouping#findChildElement(java.lang.String)
          * @param arg1
          */
-        public Element findChildElement( String arg1 ) {
-            return child==null?null:child.findChildElement(arg1);
+        public Element findChildElement(String arg1) {
+            return child == null ? null : child.findChildElement(arg1);
         }
 
-		public Element findChildElement(String localName, URI namespaceURI) {
-			 return child==null?null:child.findChildElement(localName, namespaceURI);
-		}
-        
+        public Element findChildElement(String localName, URI namespaceURI) {
+            return child == null ? null : child.findChildElement(localName, namespaceURI);
+        }
     }
 }

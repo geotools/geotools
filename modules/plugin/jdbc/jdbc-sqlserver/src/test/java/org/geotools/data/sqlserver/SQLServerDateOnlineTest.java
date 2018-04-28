@@ -25,5 +25,4 @@ public class SQLServerDateOnlineTest extends JDBCDateOnlineTest {
     protected JDBCDateTestSetup createTestSetup() {
         return new SQLServerDateTestSetup();
     }
-
 }

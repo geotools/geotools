@@ -19,13 +19,16 @@ package org.geotools.geojson.feature;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geojson.DelegatingHandler;
+import org.geotools.geojson.GeoJSONUtil;
 import org.geotools.geojson.IContentHandler;
 import org.geotools.geojson.geom.GeometryCollectionHandler;
 import org.geotools.geojson.geom.GeometryHandler;
+import org.json.simple.parser.ContentHandler;
 import org.json.simple.parser.ParseException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -79,17 +82,26 @@ public class FeatureHandler extends DelegatingHandler<SimpleFeature> {
 
     @Override
     public boolean startObject() throws ParseException, IOException {
+        if (delegate != NULL) {
+            return delegate.startObject();
+        }
         if (properties == NULL_LIST) {
             properties = new ArrayList();
         } else if (properties != null) {
-            // start of a new object in properties means a geometry
-            delegate = new GeometryHandler(new GeometryFactory());
+            // this must be the start of a complex object
+            ComplexPropertyHandler propertyHandler = new ComplexPropertyHandler();
+            delegate = propertyHandler;
+            delegate.startObject();
+            values.add(propertyHandler.getValue());
+            return true;
         }
-
         return super.startObject();
     }
 
     public boolean startObjectEntry(String key) throws ParseException, IOException {
+        if (delegate != NULL) {
+            return delegate.startObjectEntry(key);
+        }
         if ("id".equals(key) && properties == null) {
             id = "";
             return true;
@@ -114,7 +126,11 @@ public class FeatureHandler extends DelegatingHandler<SimpleFeature> {
     public boolean startArray() throws ParseException, IOException {
         if (properties != null && delegate == NULL) {
             // array inside of properties
-            delegate = new ArrayHandler();
+            ComplexPropertyHandler propertyHandler = new ComplexPropertyHandler();
+            delegate = propertyHandler;
+            delegate.startArray();
+            values.add(propertyHandler.getValue());
+            return true;
         }
 
         return super.startArray();
@@ -122,18 +138,17 @@ public class FeatureHandler extends DelegatingHandler<SimpleFeature> {
 
     @Override
     public boolean endArray() throws ParseException, IOException {
-        if (delegate instanceof ArrayHandler) {
-            super.endArray();
-            values.add(((ArrayHandler) delegate).getValue());
+        if (! delegate.endArray()) {
+            // Delegate is done
             delegate = NULL;
         }
-        return super.endArray();
+        return true; // But we're not
     }
 
     @Override
     public boolean endObject() throws ParseException, IOException {
         if (delegate instanceof IContentHandler) {
-            ((IContentHandler) delegate).endObject();
+            boolean keepGoing = delegate.endObject();
 
             if (delegate instanceof GeometryHandler) {
                 Geometry g = ((IContentHandler<Geometry>) delegate).getValue();
@@ -154,6 +169,16 @@ public class FeatureHandler extends DelegatingHandler<SimpleFeature> {
             } else if (delegate instanceof CRSHandler) {
                 crs = ((CRSHandler) delegate).getValue();
                 delegate = UNINITIALIZED;
+            }
+            if (! keepGoing && delegate instanceof ComplexPropertyHandler) {
+                // Oh, perhaps we added something that should have been a Geometry object
+                int valueCount = values.size();
+                if (valueCount > 0) {
+                    Object justAdded = values.get(valueCount-1);
+                    Object perhapsReplacedGeometry = GeoJSONUtil.replaceGeometry(justAdded);
+                    values.set(valueCount-1, perhapsReplacedGeometry);
+                }
+                delegate = NULL;
             }
 
             return true;

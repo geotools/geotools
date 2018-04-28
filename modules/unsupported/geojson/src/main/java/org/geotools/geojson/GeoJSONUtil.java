@@ -36,12 +36,16 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import org.apache.commons.lang.time.FastDateFormat;
+import org.geotools.geojson.geom.GeometryHandler;
 import org.geotools.util.Converters;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.ContentHandler;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
 
 /**
  * 
@@ -154,13 +158,40 @@ public class GeoJSONUtil {
     }
 
     public static StringBuilder entry(String key, Object value, StringBuilder sb) {
-
         string(key, sb).append(":");
-        
+        return value(value, sb);
+    }
+
+    private static StringBuilder value(Object value, StringBuilder sb) {
         if (value == null) {
             nul(sb);
         } else if (value instanceof Number || value instanceof Boolean || value instanceof Date) {
             literal(value, sb);
+        } else if (value instanceof List) {
+            sb.append('[');
+            boolean firstValue = true;
+            for (Object member : (List)value) {
+                if (firstValue) {
+                    firstValue = false;
+                } else {
+                    sb.append(',');
+                }
+                
+                value(member, sb);
+            }
+            sb.append(']');
+        } else if (value instanceof Map) {
+            sb.append('{');
+            boolean firstEntry = true;
+            for (Map.Entry<Object,Object> entry : ((Map<Object,Object>)value).entrySet()) {
+                if (firstEntry) {
+                    firstEntry = false;
+                } else {
+                    sb.append(',');
+                }
+                entry(entry.getKey().toString(), entry.getValue(), sb);
+            }
+            sb.append('}');
         } else {
             String str = Converters.convert(value, String.class);
             if(str == null) {
@@ -169,7 +200,6 @@ public class GeoJSONUtil {
             string(str, sb);
         }
         return sb;
-        
     }
     
     static StringBuilder literal(Object value, StringBuilder sb) {
@@ -252,5 +282,53 @@ public class GeoJSONUtil {
         Writer w = toWriter(output);
         JSONObject.writeJSONString(obj, w);
         w.flush();
+    }
+    
+
+    public static Object replaceGeometry(Object justAdded) throws ParseException, IOException {
+        if (justAdded instanceof Map) {
+            Map map = (Map) justAdded;
+            if (map.size() == 2 && map.containsKey("type") && (map.containsKey("coordinates") || map.containsKey("geometries")))
+            {
+                return reparseMapToGeography(map);
+            }
+        }
+        
+        return justAdded;
+    }
+
+    private static Geometry reparseMapToGeography(Map map) throws ParseException, IOException {
+        GeometryHandler geomHandler = new GeometryHandler(new GeometryFactory());
+        
+        replayMap(map, geomHandler);
+        return geomHandler.getValue();
+    }
+
+    static void replayMap(Map map, ContentHandler handler) throws ParseException, IOException {
+        handler.startObject();
+        for (Object key : map.keySet()) {
+            handler.startObjectEntry((String) key);
+            replayObject(map.get(key), handler);
+            handler.endObjectEntry();
+        }
+        handler.endObject();
+    }
+
+    private static void replayObject(Object object, ContentHandler handler) throws ParseException, IOException {
+        if (object instanceof Map) {
+            replayMap((Map)object, handler);
+        } else if (object instanceof List) {
+            replayList((List)object, handler);
+        } else {
+            handler.primitive(object);
+        }
+    }
+
+    private static void replayList(List list, ContentHandler handler) throws ParseException, IOException {
+        handler.startArray();
+        for(Object o: list) {
+            replayObject(o, handler);
+        }
+        handler.endArray();
     }
 }

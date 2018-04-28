@@ -30,7 +30,7 @@ import junit.framework.TestCase;
  *
  * @source $URL$
  */
-public class GeoJSONTestSupport extends TestCase {
+public abstract class GeoJSONTestSupport extends TestCase {
 
     protected StringReader reader(String json) throws IOException {
         return new StringReader(json);

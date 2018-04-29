@@ -16,20 +16,17 @@
  */
 package org.geotools.gce.imagemosaic;
 
-import org.geotools.coverage.grid.io.AbstractGridFormat;
-
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-
 import javax.media.jai.PlanarImage;
-
 import org.geotools.TestData;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
+import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.referencing.CRS;
 import org.junit.Assert;
@@ -42,7 +39,7 @@ import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 
 public class RemoteTest {
-    
+
     @Test
     public void testRemoteMosaic() throws IOException, TransformException {
         ImageMosaicFormat format = new ImageMosaicFormat();
@@ -52,36 +49,38 @@ public class RemoteTest {
         GridEnvelope originalRange = reader.getOriginalGridRange();
         GeneralEnvelope envelope = reader.getOriginalEnvelope();
         CoordinateReferenceSystem nativeCRS = envelope.getCoordinateReferenceSystem();
-        
+
         final int minX = originalRange.getLow(0);
         final int minY = originalRange.getLow(1);
         final int width = originalRange.getSpan(0);
         final int height = originalRange.getSpan(1);
         final int maxX = minX + (width <= 50 ? width : 50);
-        final int maxY = minY +(height <= 50 ? height : 50);
+        final int maxY = minY + (height <= 50 ? height : 50);
         // we have to be sure that we are working against a valid grid range.
         final GridEnvelope2D testRange = new GridEnvelope2D(minX, minY, maxX, maxY);
         // build the corresponding envelope
-        final MathTransform gridToWorldCorner = reader.getOriginalGridToWorld(PixelInCell.CELL_CORNER);
-        final GeneralEnvelope testEnvelope = CRS.transform(gridToWorldCorner, new GeneralEnvelope(testRange.getBounds()));
-        testEnvelope.setCoordinateReferenceSystem(nativeCRS);      
+        final MathTransform gridToWorldCorner =
+                reader.getOriginalGridToWorld(PixelInCell.CELL_CORNER);
+        final GeneralEnvelope testEnvelope =
+                CRS.transform(gridToWorldCorner, new GeneralEnvelope(testRange.getBounds()));
+        testEnvelope.setCoordinateReferenceSystem(nativeCRS);
         ParameterValue<GridGeometry2D> pam = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-        pam.setValue(new GridGeometry2D(testRange, testEnvelope));        
+        pam.setValue(new GridGeometry2D(testRange, testEnvelope));
         gc = reader.read(new ParameterValue<?>[] {pam});
         Assert.assertNotNull(gc);
-        assertNotBlank("remote image mosaic", ((PlanarImage) gc.getRenderedImage()).getAsBufferedImage(), Color.BLACK);
+        assertNotBlank(
+                "remote image mosaic",
+                ((PlanarImage) gc.getRenderedImage()).getAsBufferedImage(),
+                Color.BLACK);
     }
-    
+
     /**
      * Asserts that the image is not blank, in the sense that there must be pixels different from
      * the passed background color.
-     * 
-     * @param testName
-     *            the name of the test to throw meaningfull messages if something goes wrong
-     * @param image
-     *            the imgage to check it is not "blank"
-     * @param bgColor
-     *            the background color for which differing pixels are looked for
+     *
+     * @param testName the name of the test to throw meaningfull messages if something goes wrong
+     * @param image the imgage to check it is not "blank"
+     * @param bgColor the background color for which differing pixels are looked for
      */
     protected void assertNotBlank(String testName, BufferedImage image, Color bgColor) {
         int pixelsDiffer = 0;
@@ -95,5 +94,4 @@ public class RemoteTest {
         }
         assertTrue(testName + " image is completely blank", 0 < pixelsDiffer);
     }
-
 }

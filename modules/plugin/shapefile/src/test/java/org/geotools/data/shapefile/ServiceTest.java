@@ -20,7 +20,6 @@ import static org.junit.Assert.*;
 
 import java.util.HashMap;
 import java.util.Iterator;
-
 import org.geotools.TestData;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
@@ -28,9 +27,6 @@ import org.geotools.data.DataStoreFinder;
 import org.junit.Test;
 
 /**
- * 
- *
- *
  * @source $URL$
  * @version $Id$
  * @author ian
@@ -39,9 +35,7 @@ public class ServiceTest extends TestCaseSupport {
 
     final String TEST_FILE = "shapes/statepop.shp";
 
-    /**
-     * Make sure that the loading mechanism is working properly.
-     */
+    /** Make sure that the loading mechanism is working properly. */
     @Test
     public void testIsAvailable() {
         Iterator list = DataStoreFinder.getAvailableDataStores();
@@ -57,9 +51,7 @@ public class ServiceTest extends TestCaseSupport {
         assertTrue("ShapefileDataSourceFactory not registered", found);
     }
 
-    /**
-     * Ensure that we can create a DataStore using url OR string url.
-     */
+    /** Ensure that we can create a DataStore using url OR string url. */
     @Test
     public void testShapefileDataStore() throws Exception {
         HashMap params = new HashMap();
@@ -82,7 +74,5 @@ public class ServiceTest extends TestCaseSupport {
         } catch (java.io.IOException ioe) {
             // this is actually good
         }
-
     }
-
 }

@@ -16,18 +16,13 @@
  */
 package org.geotools.filter.v1_1;
 
-import org.w3c.dom.Document;
+import org.geotools.xml.Binding;
 import org.opengis.filter.And;
 import org.opengis.filter.BinaryLogicOperator;
 import org.opengis.filter.Or;
-import org.geotools.xml.Binding;
+import org.w3c.dom.Document;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class BinaryLogicOpTypeBindingTest extends FilterTestSupport {
     public void testBinaryLogicOpType() {
         assertEquals(BinaryLogicOperator.class, binding(OGC.BinaryLogicOpType).getType());
@@ -51,12 +46,14 @@ public class BinaryLogicOpTypeBindingTest extends FilterTestSupport {
 
     public void testAndEncode() throws Exception {
         Document dom = encode(FilterMockData.and(), OGC.And);
-        assertEquals(1,
-            dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.PropertyIsEqualTo.getLocalPart())
-               .getLength());
-        assertEquals(1,
-            dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.PropertyIsNotEqualTo.getLocalPart())
-               .getLength());
+        assertEquals(
+                1,
+                dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.PropertyIsEqualTo.getLocalPart())
+                        .getLength());
+        assertEquals(
+                1,
+                dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.PropertyIsNotEqualTo.getLocalPart())
+                        .getLength());
     }
 
     public void testOrType() {
@@ -77,11 +74,13 @@ public class BinaryLogicOpTypeBindingTest extends FilterTestSupport {
 
     public void testOrEncode() throws Exception {
         Document dom = encode(FilterMockData.or(), OGC.Or);
-        assertEquals(1,
-            dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.PropertyIsEqualTo.getLocalPart())
-               .getLength());
-        assertEquals(1,
-            dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.PropertyIsNotEqualTo.getLocalPart())
-               .getLength());
+        assertEquals(
+                1,
+                dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.PropertyIsEqualTo.getLocalPart())
+                        .getLength());
+        assertEquals(
+                1,
+                dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.PropertyIsNotEqualTo.getLocalPart())
+                        .getLength());
     }
 }

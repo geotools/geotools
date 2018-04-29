@@ -25,9 +25,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.geotools.referencing.CRS;
 import org.geotools.feature.type.Types;
+import org.geotools.referencing.CRS;
 import org.opengis.feature.type.AssociationDescriptor;
 import org.opengis.feature.type.AssociationType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -47,8 +46,10 @@ import org.opengis.util.InternationalString;
 
 /**
  * Makes building types easier by maintaining state.
- * <p>
- * For reference the builder captures the following state: <table border=1 cellpadding=0
+ *
+ * <p>For reference the builder captures the following state:
+ *
+ * <table border=1 cellpadding=0
  * cellspacing=0>
  * <tr>
  * <th colspan=2 valign=top>State</th>
@@ -300,112 +301,86 @@ import org.opengis.util.InternationalString;
  * <td>x</td>
  * <td>&nbsp;</td>
  * </tr>
- * </table> * collection implementation may be specified
- * </p>
- * <p>
- * There are five state control methods:
+ * </table>
+ *
+ * * collection implementation may be specified
+ *
+ * <p>There are five state control methods:
+ *
  * <ul>
- * <li>{@link init( PropertyType )} - completly load settings from type
- * <li>{@link init( PropertyDescriptor )} - completly load settings from descriptor
- * <li>{@link init()} - completly replace settings with builder defaults
+ *   <li>{@link init( PropertyType )} - completly load settings from type
+ *   <li>{@link init( PropertyDescriptor )} - completly load settings from descriptor
+ *   <li>{@link init()} - completly replace settings with builder defaults
+ *       <ul>
+ *         <li>{@link reset()} - called after a type creation methods to reset common type settings
+ *         <li>{@link clear()} - called after an descriptor create method (or add methods) to clear
+ *             common descriptor settings
+ *       </ul>
+ * </ul>
+ *
+ * <p>For examples of using this class please see the following type creation methods:
+ *
  * <ul>
- * <li>{@link reset()} - called after a type creation methods to reset common type settings
- * <li>{@link clear()} - called after an descriptor create method (or add methods) to clear common
- * descriptor settings
+ *   <li>{@link attribute()}
+ *   <li>{@link geometry()}
+ *   <li>{@link association()}
+ *   <li>{@link complex()}
+ *   <li>{@link feature()}
+ *   <li>{@link collection()}
  * </ul>
- * </ul>
+ *
  * <p>
- * For examples of using this class please see the following type creation methods:
- * <ul>
- * <li>{@link attribute()}
- * <li>{@link geometry()}
- * <li>{@link association()}
- * <li>{@link complex()}
- * <li>{@link feature()}
- * <li>{@link collection()}
- * </ul>
- * <p>
- * 
+ *
  * @author Justin Deoliveira
  * @author Jody Garnett
- *
- *
- *
- *
  * @source $URL$
  */
 public class TypeBuilder {
 
-    /**
-     * factory for creating actual types
-     */
+    /** factory for creating actual types */
     private FeatureTypeFactory factory;
 
-    /**
-     * Namespace of the type, and contained types.
-     */
+    /** Namespace of the type, and contained types. */
     private String namespace;
 
-    /**
-     * Local name of the type.
-     */
+    /** Local name of the type. */
     private String name;
 
-    /**
-     * Class the built type is bound to.
-     */
+    /** Class the built type is bound to. */
     private Class<?> binding;
 
-    /**
-     * Description of type.
-     */
+    /** Description of type. */
     private InternationalString description;
 
-    /**
-     * Flag indicating wether type is identifiable.
-     */
+    /** Flag indicating wether type is identifiable. */
     private boolean isIdentified;
 
-    /**
-     * Flag indicating wether type is identifiable.
-     */
+    /** Flag indicating wether type is identifiable. */
     private boolean isAbstract;
 
-    /**
-     * Additional restrictions on the type.
-     */
+    /** Additional restrictions on the type. */
     private List<Filter> restrictions;
 
-    /**
-     * The parent type of the type.
-     */
+    /** The parent type of the type. */
     private PropertyType superType;
 
-    /**
-     * Flag indiciating wether added properties are nillable.
-     */
+    /** Flag indiciating wether added properties are nillable. */
     private boolean isNillable;
 
     /**
      * Map of java class bound to properties types.
-     * <p>
-     * Please see
+     *
+     * <p>Please see
      */
     private Map<Class<?>, AttributeType> bindings;
 
-    /**
-     * The properties of the type.
-     */
+    /** The properties of the type. */
     private Collection<PropertyDescriptor> properties;
 
-    /**
-     * Minimum occurences of added properties.
-     */
+    /** Minimum occurences of added properties. */
     private int minOccurs;
 
-    /**
-     * Maximum occurences of added properties.
-     */
+    /** Maximum occurences of added properties. */
     private int maxOccurs;
 
     //
@@ -423,8 +398,8 @@ public class TypeBuilder {
 
     /**
      * Type used when creating descriptor.
-     * <p>
-     * May be either a AttributeType or AssocationType.
+     *
+     * <p>May be either a AttributeType or AssocationType.
      */
     private PropertyType propertyType;
 
@@ -446,18 +421,19 @@ public class TypeBuilder {
 
     /**
      * Reset is called after creation a "new" type.
-     * <p>
-     * The following information is reset:
+     *
+     * <p>The following information is reset:
+     *
      * <ul>
-     * <li>name
-     * <li>properties: structural properties (attributes and associations)
-     * <li>members: collection members
-     * <li>default geometry
-     * <li>minOccurs
-     * <li>maxOccurs
+     *   <li>name
+     *   <li>properties: structural properties (attributes and associations)
+     *   <li>members: collection members
+     *   <li>default geometry
+     *   <li>minOccurs
+     *   <li>maxOccurs
      * </ul>
-     * <p>
-     * Note: type type of collection class is not reset, a new instanceof the existing collection
+     *
+     * <p>Note: type type of collection class is not reset, a new instanceof the existing collection
      * class is used.
      */
     public void reset() {
@@ -476,10 +452,9 @@ public class TypeBuilder {
 
     /**
      * Initialize this builder.
-     * <p>
-     * This method cleans the builder of all contained state.
-     * </p>
-     * 
+     *
+     * <p>This method cleans the builder of all contained state.
+     *
      * @see reset
      */
     public void init() {
@@ -524,8 +499,7 @@ public class TypeBuilder {
 
     public void init(PropertyType type) {
         init();
-        if (type == null)
-            return;
+        if (type == null) return;
 
         namespace = type.getName().getNamespaceURI();
         name = type.getName().getLocalPart();
@@ -567,71 +541,86 @@ public class TypeBuilder {
 
     /**
      * Creation method for AttributeType.
-     * <p>
-     * Example:
-     * 
+     *
+     * <p>Example:
+     *
      * <pre><code>
      * AttributeType TEXT = builder.name(&quot;Text&quot;).bind(String.class).attribute();
      * </code></pre>
-     * 
-     * </p>
-     * <p>
-     * Example:
-     * 
+     *
+     * <p>Example:
+     *
      * <pre><code>
      * builder.setName(&quot;Interger&quot;);
      * builder.setBinding(Integer.class);
      * AttributeType INTEGER = builder.attribute();
      * </code></pre>
-     * 
-     * </p>
-     * 
+     *
      * @return AttributeType created
      */
     public AttributeType attribute() {
-        AttributeType type = factory.createAttributeType(typeName(), getBinding(), isIdentified(),
-                isAbstract(), restrictions(), getSuper(), getDescription());
+        AttributeType type =
+                factory.createAttributeType(
+                        typeName(),
+                        getBinding(),
+                        isIdentified(),
+                        isAbstract(),
+                        restrictions(),
+                        getSuper(),
+                        getDescription());
         reset();
         return type;
     }
 
     /** Create AssociationType */
     public AssociationType association() {
-        return factory.createAssociationType(typeName(), getReferenceType(), true,
-                this.restrictions, getAssociationSuper(), this.getDescription());
+        return factory.createAssociationType(
+                typeName(),
+                getReferenceType(),
+                true,
+                this.restrictions,
+                getAssociationSuper(),
+                this.getDescription());
     }
 
     /**
      * Create GeometryType.
-     * <p>
-     * SFSQL Example JTS LineString.class:
-     * 
+     *
+     * <p>SFSQL Example JTS LineString.class:
+     *
      * <pre><code>
      * AttributeType ROUTE = builder.name(&quot;Route&quot;).bind(LineString.class).crs(&quot;EPSG:4326&quot;).geometry();
      * </code></pre>
-     * 
+     *
      * Shape Example Java Rectangle2D:
-     * 
+     *
      * <pre><code>
      * builder.setName(&quot;Quad&quot;);
      * builder.setBinding(Rectangle2D.class);
      * builder.setCRS(crs);
      * AttributeType QUAD = builder.geometry();
      * </code></pre>
-     * 
+     *
      * Use of GeoAPI Geometry interfaces is encouraged as implementations are made avaiable.
-     * 
      */
     public GeometryType geometry() {
-        return getTypeFactory().createGeometryType(typeName(), getBinding(), getCRS(),
-                isIdentified(), isAbstract(), restrictions(), getSuper(), getDescription());
+        return getTypeFactory()
+                .createGeometryType(
+                        typeName(),
+                        getBinding(),
+                        getCRS(),
+                        isIdentified(),
+                        isAbstract(),
+                        restrictions(),
+                        getSuper(),
+                        getDescription());
     }
 
     /**
      * Create a complex attribute, made up of other attributes.
-     * <p>
-     * Example using Set:
-     * 
+     *
+     * <p>Example using Set:
+     *
      * <pre><code>
      * builder.setName(&quot;FullName&quot;);
      * builder.setProperties(new HasSet());
@@ -642,47 +631,66 @@ public class TypeBuilder {
      * builder.addAttribute(&quot;last&quot;, TEXT);
      * ComplexType FULLNAME = builder.complex();
      * </code></pre>
-     * 
-     * <p>
-     * Example using chaining:
-     * 
+     *
+     * <p>Example using chaining:
+     *
      * <pre><code>
      * ComplexType FULLNAME = builder.name(&quot;FullName&quot;).attribute(&quot;first&quot;, TEXT).cardinality(0,
      *         Integer.MAX_VALUE).attribute(&quot;middle&quot;, TEXT).attribute(&quot;last&quot;, TEXT).complex();
      * </code></pre>
-     * 
+     *
      * @return ComplexType
      */
     public ComplexType complex() {
-        ComplexType type = getTypeFactory().createComplexType(typeName(), properties(),
-                isIdentified(), isAbstract(), restrictions(), getSuper(), getDescription());
+        ComplexType type =
+                getTypeFactory()
+                        .createComplexType(
+                                typeName(),
+                                properties(),
+                                isIdentified(),
+                                isAbstract(),
+                                restrictions(),
+                                getSuper(),
+                                getDescription());
         reset();
         return type;
     }
 
     /**
      * Create an AttributeDesctiptor, useful for fine grain control.
-     * <p>
-     * Example:
-     * 
+     *
+     * <p>Example:
+     *
      * <pre><code>
      * AttributeDescriptor name = build.name(&quot;name&quot;).property(TEXT).cardinality(1, 5)
      *         .attributeDescriptor();
      * </code></pre>
-     * 
+     *
      * @return AttributeDescriptor used to define sturcture of ComplexAttribtues
      */
     public AttributeDescriptor attributeDescriptor() {
         // TODO: handle default value
         AttributeDescriptor attribute;
-        if(propertyType instanceof GeometryType) {
-            attribute = getTypeFactory().createGeometryDescriptor(
-                    (GeometryType) propertyType, typeName(), getMinOccurs(), getMaxOccurs(),
-                    isNillable(), null);
+        if (propertyType instanceof GeometryType) {
+            attribute =
+                    getTypeFactory()
+                            .createGeometryDescriptor(
+                                    (GeometryType) propertyType,
+                                    typeName(),
+                                    getMinOccurs(),
+                                    getMaxOccurs(),
+                                    isNillable(),
+                                    null);
         } else {
-            attribute = getTypeFactory().createAttributeDescriptor(
-                    (AttributeType) propertyType, typeName(), getMinOccurs(), getMaxOccurs(),
-                    isNillable(), null);
+            attribute =
+                    getTypeFactory()
+                            .createAttributeDescriptor(
+                                    (AttributeType) propertyType,
+                                    typeName(),
+                                    getMinOccurs(),
+                                    getMaxOccurs(),
+                                    isNillable(),
+                                    null);
         }
         reset();
         return attribute;
@@ -691,49 +699,62 @@ public class TypeBuilder {
     /**
      * Create an AssociationDesctiptor, define relationships between ComplexAttribtues (in
      * particular FeatureCollection to members).
-     * <p>
-     * Example:
-     * 
+     *
+     * <p>Example:
+     *
      * <pre><code>
      * AttributeDescriptor contains = build.name(&quot;contains&quot;).property(ROAD).nillable(false).cardinality(0,
      *         Interger.MAX_VALUE).associationDescriptor();
      * </code></pre>
-     * 
+     *
      * @return AttributeDescriptor used to define sturcture of ComplexAttribtues
      */
     public AssociationDescriptor associationDescriptor() {
-        AssociationDescriptor association = getTypeFactory().createAssociationDescriptor(
-                (AssociationType) propertyType, typeName(), getMinOccurs(), getMaxOccurs(),
-                isNillable());
+        AssociationDescriptor association =
+                getTypeFactory()
+                        .createAssociationDescriptor(
+                                (AssociationType) propertyType,
+                                typeName(),
+                                getMinOccurs(),
+                                getMaxOccurs(),
+                                isNillable());
         reset();
         return association;
     }
 
     /**
      * Create feature.
-     * 
+     *
      * @return FeatureType
      */
     public FeatureType feature() {
         // FeatureTypeFactory typeFactory = getTypeFactory();
-        FeatureType type = factory.createFeatureType(typeName(), properties(), defaultGeometry(),
-                isAbstract(), restrictions(), getSuper(), getDescription());
+        FeatureType type =
+                factory.createFeatureType(
+                        typeName(),
+                        properties(),
+                        defaultGeometry(),
+                        isAbstract(),
+                        restrictions(),
+                        getSuper(),
+                        getDescription());
         reset();
         return type;
     }
 
-//    /**
-//     * Creates a FeatureCollectionType.
-//     * 
-//     * @return FeatureCollectionType based on builder state
-//     */
-//    public FeatureCollectionType collection() {
-//        FeatureCollectionType type = getTypeFactory().createFeatureCollectionType(typeName(),
-//                properties(), members(), defaultGeometry(), getCRS(), isAbstract(), restrictions(),
-//                getSuper(), getDescription());
-//        reset();
-//        return type;
-//    }
+    //    /**
+    //     * Creates a FeatureCollectionType.
+    //     *
+    //     * @return FeatureCollectionType based on builder state
+    //     */
+    //    public FeatureCollectionType collection() {
+    //        FeatureCollectionType type = getTypeFactory().createFeatureCollectionType(typeName(),
+    //                properties(), members(), defaultGeometry(), getCRS(), isAbstract(),
+    // restrictions(),
+    //                getSuper(), getDescription());
+    //        reset();
+    //        return type;
+    //    }
 
     public void setNamespaceURI(String namespace) {
         this.namespace = namespace;
@@ -775,7 +796,7 @@ public class TypeBuilder {
 
     /**
      * Used as a the target for attributeDescriptor or associatioDescriptor().
-     * 
+     *
      * @param type
      * @return TypeBuilder (for chaining).
      */
@@ -849,9 +870,7 @@ public class TypeBuilder {
         this.restrictions = restrictions;
     }
 
-    /**
-     * Accessor for restructions which does the null check and creation if necessary.
-     */
+    /** Accessor for restructions which does the null check and creation if necessary. */
     protected List<Filter> restrictions() {
         if (restrictions == null) {
             restrictions = createRestrictionSet();
@@ -862,7 +881,7 @@ public class TypeBuilder {
     /**
      * Template method to enable subclasses to customize the set implementation used for
      * restrictions.
-     * 
+     *
      * @return A HashSet.
      */
     protected List<Filter> createRestrictionSet() {
@@ -871,11 +890,11 @@ public class TypeBuilder {
 
     /**
      * Accessor which returns type banme as follows:
+     *
      * <ol>
-     * <li>If <code>typeName</code> has been set, its value is returned.
-     * <li>If <code>name</code> has been set, it + <code>namespaceURI</code> are returned.
+     *   <li>If <code>typeName</code> has been set, its value is returned.
+     *   <li>If <code>name</code> has been set, it + <code>namespaceURI</code> are returned.
      * </ol>
-     * 
      */
     protected Name typeName() {
 
@@ -891,7 +910,7 @@ public class TypeBuilder {
 
     /**
      * Template method for creating a type name.
-     * 
+     *
      * @return {@link org.geotools.feature.iso.Types#typeName(String, String)}
      */
     protected Name createTypeName(String ns, String local) {
@@ -900,11 +919,10 @@ public class TypeBuilder {
 
     /**
      * Used to lookup AttributeType for provided binding.
-     * 
+     *
      * @param binding
      * @return AttributeType
-     * @throws IllegalArgumentExcception
-     *                 if class is not bound to a prototype
+     * @throws IllegalArgumentExcception if class is not bound to a prototype
      */
     public AttributeType getBinding(Class binding) {
         AttributeType type = (AttributeType) bindings().get(binding);
@@ -916,10 +934,10 @@ public class TypeBuilder {
 
     /**
      * Used to provide a specific type for provided binding.
-     * <p>
-     * You can use this method to map the AttributeType used when addAttribute( String name, Class
-     * binding ) is called.
-     * 
+     *
+     * <p>You can use this method to map the AttributeType used when addAttribute( String name,
+     * Class binding ) is called.
+     *
      * @param binding
      * @param type
      */
@@ -930,11 +948,11 @@ public class TypeBuilder {
     /**
      * Load the indicated schema to map Java class to your Type System. (please us a profile to
      * prevent binding conflicts).
-     * 
+     *
      * @param schema
      */
     public void load(Schema schema) {
-        for (Iterator itr = schema.values().iterator(); itr.hasNext();) {
+        for (Iterator itr = schema.values().iterator(); itr.hasNext(); ) {
             AttributeType type = (AttributeType) itr.next();
             addBinding(type.getBinding(), type);
         }
@@ -967,11 +985,9 @@ public class TypeBuilder {
     //
     /**
      * Add a descriptor with a provided name, with the binding
-     * 
-     * @param name
-     *                Name of descriptor (combined with uri for a Name)
-     * @param binding
-     *                Used to look up a bound AttributeType
+     *
+     * @param name Name of descriptor (combined with uri for a Name)
+     * @param binding Used to look up a bound AttributeType
      * @return this builder for additional chaining
      */
     public TypeBuilder attribute(String name, Class binding) {
@@ -980,12 +996,10 @@ public class TypeBuilder {
 
     /**
      * Add a descriptor with a provided name, with the binding
-     * 
+     *
      * @param namespaceURI
-     * @param name
-     *                Name of descriptor (combined with uri for a Name)
-     * @param binding
-     *                Used to look up a bound AttributeType
+     * @param name Name of descriptor (combined with uri for a Name)
+     * @param binding Used to look up a bound AttributeType
      * @return this builder for additional chaining
      */
     public TypeBuilder attribute(String namespaceURI, String name, Class binding) {
@@ -1008,8 +1022,10 @@ public class TypeBuilder {
 
     public TypeBuilder attribute(Name name, AttributeType type) {
         // TODO: handle default value
-        AttributeDescriptor descriptor = getTypeFactory().createAttributeDescriptor(type, name,
-                getMinOccurs(), getMaxOccurs(), isNillable(), null);
+        AttributeDescriptor descriptor =
+                getTypeFactory()
+                        .createAttributeDescriptor(
+                                type, name, getMinOccurs(), getMaxOccurs(), isNillable(), null);
         add(descriptor);
         return this;
     }
@@ -1036,14 +1052,14 @@ public class TypeBuilder {
 
     public void addAttribute(Name name, AttributeType type) {
         // TODO: handle default value
-        AttributeDescriptor descriptor = getTypeFactory().createAttributeDescriptor(type, name,
-                getMinOccurs(), getMaxOccurs(), isNillable(), null);
+        AttributeDescriptor descriptor =
+                getTypeFactory()
+                        .createAttributeDescriptor(
+                                type, name, getMinOccurs(), getMaxOccurs(), isNillable(), null);
         add(descriptor);
     }
 
-    /**
-     * Allows you to indicate the reference type to be used with Association to be created.
-     */
+    /** Allows you to indicate the reference type to be used with Association to be created. */
     public void setReferenceType(AttributeType reference) {
         this.referenceType = reference;
     }
@@ -1066,8 +1082,10 @@ public class TypeBuilder {
     }
 
     public TypeBuilder association(Name name, AssociationType type) {
-        AssociationDescriptor descriptor = getTypeFactory().createAssociationDescriptor(type, name,
-                getMinOccurs(), getMaxOccurs(), isNillable());
+        AssociationDescriptor descriptor =
+                getTypeFactory()
+                        .createAssociationDescriptor(
+                                type, name, getMinOccurs(), getMaxOccurs(), isNillable());
 
         add(descriptor);
         return this;
@@ -1075,11 +1093,10 @@ public class TypeBuilder {
 
     /**
      * Add provided descriptor to the type to be created.
-     * <p>
-     * Please note that you may not have two types with the same name, depending on the factory
+     *
+     * <p>Please note that you may not have two types with the same name, depending on the factory
      * being used the order of the structural content may be signficant - this builder will preserve
      * order although the factory may or may not make use of this fact.
-     * </p>
      */
     public TypeBuilder add(PropertyDescriptor descriptor) {
         if (!contains(properties(), descriptor)) {
@@ -1091,7 +1108,7 @@ public class TypeBuilder {
 
     public static boolean contains(Collection collection, PropertyDescriptor descriptor) {
         // check for a descriptor with the same name
-        for (Iterator itr = collection.iterator(); itr.hasNext();) {
+        for (Iterator itr = collection.iterator(); itr.hasNext(); ) {
             PropertyDescriptor d = (PropertyDescriptor) itr.next();
             if (d.getName().equals(descriptor.getName())) {
                 return true;
@@ -1102,11 +1119,10 @@ public class TypeBuilder {
 
     /**
      * Access to properties used by builder.
-     * <p>
-     * You can use this method to perform collection opperations before construction. This is most
-     * useful when initializing the builder with a known type, performing modifications, and then
-     * creating a derrived type.
-     * </p>
+     *
+     * <p>You can use this method to perform collection opperations before construction. This is
+     * most useful when initializing the builder with a known type, performing modifications, and
+     * then creating a derrived type.
      */
     public Collection<PropertyDescriptor> getProperties() {
         if (properties == null) {
@@ -1117,21 +1133,21 @@ public class TypeBuilder {
 
     /**
      * Allow for user supplied collection implementaion used for properties.
-     * <p>
-     * Examples of useful property collections:
+     *
+     * <p>Examples of useful property collections:
+     *
      * <ul>
-     * <li>List - structured properties maintained in order
-     * <li>Set - order of structured properties insignificant
-     * <li>etc...
+     *   <li>List - structured properties maintained in order
+     *   <li>Set - order of structured properties insignificant
+     *   <li>etc...
      * </ul>
+     *
      * The collection class used here should be matched by content described by this type.
      * Explicitly a FeatureType with <code>getProperties() instanceof Set</code> indicates that
      * Features of that FeatureType should maintain a Set of properties where order is not
      * significant.
-     * </p>
-     * 
-     * @param properties
-     *                Collection implementation used to organize properties
+     *
+     * @param properties Collection implementation used to organize properties
      */
     public void setProperties(Collection<PropertyDescriptor> properties) {
         this.properties = properties;
@@ -1143,11 +1159,10 @@ public class TypeBuilder {
     /**
      * Template method to enable subclasses to customize the collection implementation used by
      * "default".
-     * <p>
-     * Considered moving this to the type interface but it would be in appropriate as the user may
-     * need to specifiy different collections for seperate types in the same schema.
-     * </p>
-     * 
+     *
+     * <p>Considered moving this to the type interface but it would be in appropriate as the user
+     * may need to specifiy different collections for seperate types in the same schema.
+     *
      * @return Collection (subclass may override)
      */
     protected Collection<PropertyDescriptor> newCollection() {
@@ -1156,16 +1171,17 @@ public class TypeBuilder {
 
     /**
      * Provides an empty copy of the provided origional collection.
-     * <p>
-     * This method is used by reset for the following goals:
+     *
+     * <p>This method is used by reset for the following goals:
+     *
      * <ul>
-     * <li>use the user supplied collection directly by the TypeFactory,
-     * <li>remember the user supplied collection type for subsequent builder use
+     *   <li>use the user supplied collection directly by the TypeFactory,
+     *   <li>remember the user supplied collection type for subsequent builder use
      * </ul>
+     *
      * This allows a user to indicate that properties are stored in a "LinkedList" once.
-     * 
-     * @param origional
-     *                Origional collection
+     *
+     * @param origional Origional collection
      * @return New instance of the originoal Collection
      */
     protected Collection newCollection(Collection origional) {
@@ -1186,10 +1202,9 @@ public class TypeBuilder {
     //
     /**
      * Grab property collection as an argument to factory method.
-     * <p>
-     * This may return a copy as needed, since most calls to a factory method end up with a reset
+     *
+     * <p>This may return a copy as needed, since most calls to a factory method end up with a reset
      * this seems not be needed at present.
-     * </p>
      */
     protected Collection<PropertyDescriptor> properties() {
         if (properties == null) {
@@ -1198,9 +1213,7 @@ public class TypeBuilder {
         return properties;
     }
 
-    /**
-     * Accessor for bindings.
-     */
+    /** Accessor for bindings. */
     protected Map bindings() {
         if (bindings == null) {
             bindings = new HashMap();
@@ -1210,7 +1223,7 @@ public class TypeBuilder {
 
     /**
      * Template method for creating an attribute name.
-     * 
+     *
      * @return {@link org.geotools.feature.Types#typeName(String, String)}
      */
     protected Name createName(String ns, String local) {
@@ -1240,9 +1253,8 @@ public class TypeBuilder {
 
     /**
      * Convenience method for getting the descriptor of the default geometry type. This method will
-     * first try to look up the supplied <code>defaultGeom</code> property, if it cant find, it
-     * will try to locate any added geometry.
-     * 
+     * first try to look up the supplied <code>defaultGeom</code> property, if it cant find, it will
+     * try to locate any added geometry.
      */
     protected GeometryDescriptor defaultGeometry() {
         if (defaultGeom != null) {
@@ -1274,24 +1286,24 @@ public class TypeBuilder {
     /**
      * Uses CRS utility class with buildres TypeFactory.getCRSFactory to look up a
      * CoordinateReferenceSystem based on the provied srs.
-     * <p>
-     * A SpatialReferenceSystem can be one of the following:
+     *
+     * <p>A SpatialReferenceSystem can be one of the following:
+     *
      * <ul>
-     * <li>"AUTHORITY:CODE"
-     * <li>Well Known Text
+     *   <li>"AUTHORITY:CODE"
+     *   <li>Well Known Text
      * </ul>
-     * 
+     *
      * @param srs
      * @return TypeBuilder ready for chaining
-     * @throws IllegalArgumentException
-     *                 When SRS not understood
+     * @throws IllegalArgumentException When SRS not understood
      */
     public TypeBuilder crs(String SRS) {
         try {
             setCRS(CRS.decode(SRS));
         } catch (Exception e) {
-            IllegalArgumentException iae = new IllegalArgumentException("SRS '" + SRS
-                    + "' unknown:" + e);
+            IllegalArgumentException iae =
+                    new IllegalArgumentException("SRS '" + SRS + "' unknown:" + e);
             iae.initCause(e);
             throw iae;
         }
@@ -1307,11 +1319,10 @@ public class TypeBuilder {
     //
     /**
      * Access to members used by builder.
-     * <p>
-     * You can use this method to perform collection opperations before construction. This is most
-     * useful when initializing the builder with a known type, performing modifications, and then
-     * creating a derrived type.
-     * </p>
+     *
+     * <p>You can use this method to perform collection opperations before construction. This is
+     * most useful when initializing the builder with a known type, performing modifications, and
+     * then creating a derrived type.
      */
     public Collection getMembers() {
         if (members == null) {
@@ -1327,10 +1338,9 @@ public class TypeBuilder {
 
     /**
      * Grab member collection as an argument to factory method.
-     * <p>
-     * This may return a copy as needed, since most calls to a factory method end up with a reset
+     *
+     * <p>This may return a copy as needed, since most calls to a factory method end up with a reset
      * this seems not be needed at present.
-     * </p>
      */
     protected Collection members() {
         if (members == null) {
@@ -1341,10 +1351,9 @@ public class TypeBuilder {
 
     /**
      * Creates a association descriptor and adds to collection members.
-     * <p>
-     * Calls clear to reset cardinality after use.
-     * </p>
-     * 
+     *
+     * <p>Calls clear to reset cardinality after use.
+     *
      * @param name
      * @param type
      */
@@ -1354,10 +1363,9 @@ public class TypeBuilder {
 
     /**
      * Creates a association descriptor and adds to collection members.
-     * <p>
-     * Calls clear to reset cardinality after use.
-     * </p>
-     * 
+     *
+     * <p>Calls clear to reset cardinality after use.
+     *
      * @param name
      * @param type
      */
@@ -1367,23 +1375,21 @@ public class TypeBuilder {
 
     /**
      * Creates a association descriptor and adds to collection members.
-     * <p>
-     * Calls clear to reset cardinality after use.
-     * </p>
-     * 
+     *
+     * <p>Calls clear to reset cardinality after use.
+     *
      * @param name
      * @param type
      */
-    public void addMemberType(Name name, AssociationType/* <FeatureType> */memberType) {
+    public void addMemberType(Name name, AssociationType /* <FeatureType> */ memberType) {
         member(name, memberType);
     }
 
     /**
      * Creates a association descriptor and adds to collection members.
-     * <p>
-     * Calls clear to reset cardinality after use.
-     * </p>
-     * 
+     *
+     * <p>Calls clear to reset cardinality after use.
+     *
      * @param name
      * @param type
      * @return TypeBuilder for operation chaining
@@ -1394,17 +1400,18 @@ public class TypeBuilder {
 
     /**
      * Creates a association descriptor and adds to collection members.
-     * <p>
-     * Calls clear to reset cardinality after use.
-     * </p>
-     * 
+     *
+     * <p>Calls clear to reset cardinality after use.
+     *
      * @param name
      * @param type
      * @return TypeBuilder for operation chaining
      */
     public TypeBuilder member(Name name, AssociationType type) {
-        AssociationDescriptor descriptor = getTypeFactory().createAssociationDescriptor(type, name,
-                getMinOccurs(), getMaxOccurs(), isNillable());
+        AssociationDescriptor descriptor =
+                getTypeFactory()
+                        .createAssociationDescriptor(
+                                type, name, getMinOccurs(), getMaxOccurs(), isNillable());
         clear();
         return member(descriptor);
     }

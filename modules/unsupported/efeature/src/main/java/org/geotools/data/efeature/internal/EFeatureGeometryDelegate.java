@@ -1,14 +1,13 @@
 /**
- * <copyright>
- * </copyright>
+ * <copyright> </copyright>
  *
- * $Id$
+ * <p>$Id$
  */
 package org.geotools.data.efeature.internal;
 
+import com.vividsolutions.jts.geom.Geometry;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.eclipse.emf.ecore.EAttribute;
 import org.geotools.data.efeature.EFeatureGeometry;
 import org.geotools.data.efeature.EFeatureGeometryInfo;
@@ -21,35 +20,34 @@ import org.opengis.feature.type.Name;
 import org.opengis.filter.identity.Identifier;
 import org.opengis.geometry.BoundingBox;
 
-import com.vividsolutions.jts.geom.Geometry;
-
 /**
  * An abstract implementation of the model data type {@link EFeatureGeometry}.
- * 
- * @author kengu, 22. apr. 2011
  *
+ * @author kengu, 22. apr. 2011
  * @source $URL$
  */
-public class EFeatureGeometryDelegate<V extends Geometry> extends
-        EFeaturePropertyDelegate<V, GeometryAttribute, EAttribute> implements EFeatureGeometry<V> {
+public class EFeatureGeometryDelegate<V extends Geometry>
+        extends EFeaturePropertyDelegate<V, GeometryAttribute, EAttribute>
+        implements EFeatureGeometry<V> {
 
-    // ----------------------------------------------------- 
+    // -----------------------------------------------------
     //  Constructors
     // -----------------------------------------------------
 
     /**
      * Default constructor.
+     *
      * <p>
-     * @param eInternal - 
-     * @param eName - 
+     *
+     * @param eInternal -
+     * @param eName -
      * @param valueType - {@link #getValue() property value} type.
      */
-    public EFeatureGeometryDelegate(EFeatureInternal eInternal,
-            String eName, Class<V> valueType) {
+    public EFeatureGeometryDelegate(EFeatureInternal eInternal, String eName, Class<V> valueType) {
         super(eInternal, eName, GeometryAttribute.class, valueType);
     }
 
-    // ----------------------------------------------------- 
+    // -----------------------------------------------------
     //  EFeatureGeometry implementation
     // -----------------------------------------------------
 
@@ -64,7 +62,7 @@ public class EFeatureGeometryDelegate<V extends Geometry> extends
         return getStructure().isDefaultGeometry();
     }
 
-    // ----------------------------------------------------- 
+    // -----------------------------------------------------
     //  EFeaturePropertyDelegate implementation
     // -----------------------------------------------------
 
@@ -104,21 +102,16 @@ public class EFeatureGeometryDelegate<V extends Geometry> extends
         return eValueType.cast(eData.getValue());
     }
 
-    // ----------------------------------------------------- 
+    // -----------------------------------------------------
     //  GeometryAttribute delegate implementation
     // -----------------------------------------------------
 
-
     private class GeometryAttributeDelegate implements GeometryAttribute {
 
-        /**
-         * bounds, derived
-         */
+        /** bounds, derived */
         private BoundingBox bounds;
 
-        /**
-         * Cached User data
-         */
+        /** Cached User data */
         private Map<Object, Object> userData;
 
         @Override
@@ -168,8 +161,8 @@ public class EFeatureGeometryDelegate<V extends Geometry> extends
         @Override
         public BoundingBox getBounds() {
             if (bounds == null) {
-                ReferencedEnvelope bbox = new ReferencedEnvelope(getType()
-                        .getCoordinateReferenceSystem());
+                ReferencedEnvelope bbox =
+                        new ReferencedEnvelope(getType().getCoordinateReferenceSystem());
                 V geom = EFeatureGeometryDelegate.this.getValue();
                 if (geom != null) {
                     bbox.expandToInclude(geom.getEnvelopeInternal());
@@ -198,7 +191,5 @@ public class EFeatureGeometryDelegate<V extends Geometry> extends
         public void validate() throws IllegalArgumentException {
             EFeatureGeometryDelegate.this.validate(getValue());
         }
-
     }
-
 } // EFeatureGeometryDelegate

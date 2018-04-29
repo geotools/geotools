@@ -3,26 +3,20 @@ package org.geotools.data.dxf.header;
 import java.io.EOFException;
 import java.io.IOException;
 import java.util.Vector;
-
-
-import org.geotools.data.dxf.parser.DXFParseException;
-import org.geotools.data.dxf.parser.DXFLineNumberReader;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.geotools.data.dxf.entities.DXFEntity;
 import org.geotools.data.dxf.parser.DXFCodeValuePair;
 import org.geotools.data.dxf.parser.DXFConstants;
 import org.geotools.data.dxf.parser.DXFGroupCode;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.geotools.data.dxf.parser.DXFLineNumberReader;
+import org.geotools.data.dxf.parser.DXFParseException;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class DXFLayer extends DXFEntity implements DXFConstants {
 
     private static final Log log = LogFactory.getLog(DXFLayer.class);
-    
+
     public static final String DEFAULT_NAME = "default";
     public int _flag = 0;
     public Vector<DXFEntity> theEnt = new Vector<DXFEntity>();
@@ -107,14 +101,13 @@ public class DXFLayer extends DXFEntity implements DXFConstants {
         s.append("]");
         return s.toString();
     }
-    
+
     @Override
     public DXFEntity translate(double x, double y) {
         return this;
     }
 
-    public DXFEntity clone(){
+    public DXFEntity clone() {
         return this;
     }
 }
-

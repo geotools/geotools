@@ -16,17 +16,16 @@
  */
 package org.geotools.se.v1_1.bindings;
 
+import javax.xml.namespace.QName;
 import org.geotools.se.v1_1.SE;
 import org.geotools.styling.ColorMap;
 import org.geotools.xml.*;
 
-import javax.xml.namespace.QName;
-
 /**
  * Binding object for the element http://www.opengis.net/se:ColorMap.
- * 
+ *
  * <p>
- * 
+ *
  * <pre>
  *  <code>
  *  &lt;xsd:element name="ColorMap" type="se:ColorMapType"&gt;
@@ -36,11 +35,11 @@ import javax.xml.namespace.QName;
  *          source or the mapping of numeric pixel values to colors.
  *        &lt;/xsd:documentation&gt;
  *      &lt;/xsd:annotation&gt;
- *  &lt;/xsd:element&gt; 
- * 	
+ *  &lt;/xsd:element&gt;
+ *
  *   </code>
  * </pre>
- * 
+ *
  * <pre>
  *       <code>
  *  &lt;xsd:complexType name="ColorMapType"&gt;
@@ -48,31 +47,26 @@ import javax.xml.namespace.QName;
  *          &lt;xsd:element ref="se:Categorize"/&gt;
  *          &lt;xsd:element ref="se:Interpolate"/&gt;
  *      &lt;/xsd:choice&gt;
- *  &lt;/xsd:complexType&gt; 
- *              
+ *  &lt;/xsd:complexType&gt;
+ *
  *        </code>
  * </pre>
- * 
- * 
- * </p>
- * 
+ *
  * @generated
- *
- *
  * @source $URL$
  */
 public class ColorMapBinding extends AbstractComplexBinding {
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return SE.ColorMap;
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Class getType() {
@@ -80,8 +74,10 @@ public class ColorMapBinding extends AbstractComplexBinding {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
@@ -90,11 +86,10 @@ public class ColorMapBinding extends AbstractComplexBinding {
         if (map == null) {
             map = (ColorMap) node.getChildValue("Interpolate");
         }
-        
+
         if (map == null) {
             throw new IllegalArgumentException("Categorize or Interpolate not specified");
         }
         return map;
     }
-
 }

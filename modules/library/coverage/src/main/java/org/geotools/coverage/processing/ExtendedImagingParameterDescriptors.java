@@ -17,9 +17,7 @@
 package org.geotools.coverage.processing;
 
 import java.util.Collection;
-
 import javax.media.jai.RegistryElementDescriptor;
-
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.parameter.ImagingParameterDescriptors;
 import org.geotools.referencing.NamedIdentifier;
@@ -27,22 +25,23 @@ import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.referencing.ReferenceIdentifier;
 
 /**
- * Extension of the {@link ImagingParameterDescriptors} class used for setting the right operation name
- *for the operation associated to the input {@link RegistryElementDescriptor}.
- * 
+ * Extension of the {@link ImagingParameterDescriptors} class used for setting the right operation
+ * name for the operation associated to the input {@link RegistryElementDescriptor}.
+ *
  * @author Nicola Lagomarsini Geosolutions
- * 
  */
 public class ExtendedImagingParameterDescriptors extends ImagingParameterDescriptors {
 
     private ReferenceIdentifier operationName;
 
-    public ExtendedImagingParameterDescriptors(String operationName,
-            RegistryElementDescriptor operation) {
+    public ExtendedImagingParameterDescriptors(
+            String operationName, RegistryElementDescriptor operation) {
         this(operationName, operation, null);
     }
 
-    ExtendedImagingParameterDescriptors(String operationName, RegistryElementDescriptor operation,
+    ExtendedImagingParameterDescriptors(
+            String operationName,
+            RegistryElementDescriptor operation,
             Collection<ParameterDescriptor> extension) {
         super(operation, extension);
         this.operationName = new NamedIdentifier(Citations.JAI, operationName);
@@ -52,5 +51,4 @@ public class ExtendedImagingParameterDescriptors extends ImagingParameterDescrip
     public ReferenceIdentifier getName() {
         return operationName;
     }
-
 }

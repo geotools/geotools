@@ -16,19 +16,18 @@
  */
 package org.geotools.jdbc;
 
-import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
-
 import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.CoordinateSequenceFilter;
+import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
 
 /**
- * Extracts the maximum dimension value from the geometry coordinate sequences (assumes 2 as the starting point)
- * 
- * @author Andrea Aime - GeoSolutions
+ * Extracts the maximum dimension value from the geometry coordinate sequences (assumes 2 as the
+ * starting point)
  *
+ * @author Andrea Aime - GeoSolutions
  */
 class CoordinateSequenceDimensionExtractor implements CoordinateSequenceFilter {
-    
+
     int dimension = 2;
 
     @Override
@@ -50,5 +49,4 @@ class CoordinateSequenceDimensionExtractor implements CoordinateSequenceFilter {
     public int getDimension() {
         return dimension;
     }
-
 }

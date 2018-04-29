@@ -25,5 +25,4 @@ public class CSVTestStrategySupport {
         AttributeType type = attributeDescriptor.getType();
         assertEquals("Unexpected type", clazz, type.getBinding());
     }
-
 }

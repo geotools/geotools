@@ -6,13 +6,12 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
 
 /**
  * Helper class to mock HTTP responses
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 public class MockHttpResponse implements HTTPResponse {
@@ -28,8 +27,9 @@ public class MockHttpResponse implements HTTPResponse {
     public MockHttpResponse(String response, String contentType, String... headers) {
         this(response.getBytes(), contentType, headers);
     }
-    
-    public MockHttpResponse(URL response, String contentType, String... headers) throws IOException {
+
+    public MockHttpResponse(URL response, String contentType, String... headers)
+            throws IOException {
         this(IOUtils.toByteArray(response.openStream()), contentType, headers);
     }
 
@@ -53,24 +53,20 @@ public class MockHttpResponse implements HTTPResponse {
         }
     }
 
-    
     public void dispose() {
         if (!disposed) {
             Assert.fail("The response input stream got grabbed, but not closed");
         }
     }
 
-    
     public String getContentType() {
         return this.contentType;
     }
 
-    
     public String getResponseHeader(String headerName) {
         return headers.get(headerName);
     }
 
-    
     public InputStream getResponseStream() throws IOException {
         return new ByteArrayInputStream(response) {
             @Override
@@ -89,5 +85,4 @@ public class MockHttpResponse implements HTTPResponse {
     public String getResponseCharset() {
         return null;
     }
-
 }

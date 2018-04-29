@@ -16,6 +16,13 @@
  */
 package org.geotools.arcsde.data;
 
+import com.esri.sde.sdk.client.SeConnection;
+import com.esri.sde.sdk.client.SeDefs;
+import com.esri.sde.sdk.client.SeError;
+import com.esri.sde.sdk.client.SeException;
+import com.esri.sde.sdk.client.SeLayer;
+import com.esri.sde.sdk.client.SeRegistration;
+import com.esri.sde.sdk.client.SeTable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,9 +39,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import net.sf.jsqlparser.statement.select.PlainSelect;
-
 import org.geotools.arcsde.session.Command;
 import org.geotools.arcsde.session.ISession;
 import org.geotools.arcsde.session.ISessionPool;
@@ -45,47 +50,35 @@ import org.geotools.util.logging.Logging;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
 
-import com.esri.sde.sdk.client.SeConnection;
-import com.esri.sde.sdk.client.SeDefs;
-import com.esri.sde.sdk.client.SeError;
-import com.esri.sde.sdk.client.SeException;
-import com.esri.sde.sdk.client.SeLayer;
-import com.esri.sde.sdk.client.SeRegistration;
-import com.esri.sde.sdk.client.SeTable;
-
 /**
  * Maintains a cache of {@link FeatureTypeInfo} objects for fast retrieval of ArcSDE vector layer
  * information and its corresponding geotools {@link FeatureType}.
- * <p>
- * {@link SeLayer} objects are not cached, they hold a reference to its connection and hence may
+ *
+ * <p>{@link SeLayer} objects are not cached, they hold a reference to its connection and hence may
  * only be used inside the connection's context. Instead, a set of layer names is kept and the set
  * of actual {@link FeatureTypeInfo}s is lazily loaded on demand.
- * </p>
- * <p>
- * This class may set up a background process to periodically update the list of available layer
+ *
+ * <p>This class may set up a background process to periodically update the list of available layer
  * names in the server and clear the feature type cache. See the constructor's javadoc for more
  * info.
- * </p>
- * 
+ *
  * @author Gabriel Roldan
  * @version $Id$
  * @since 2.5.6
  * @source $URL:
- *         http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/main/java/org
- *         /geotools/arcsde/data/FeatureTypeInfoCache.java $
+ *     http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/main/java/org
+ *     /geotools/arcsde/data/FeatureTypeInfoCache.java $
  */
 final class FeatureTypeInfoCache {
 
     private static final Logger LOGGER = Logging.getLogger("org.geotools.arcsde.data");
 
-    /**
-     * ArcSDE registered layers definitions
-     */
+    /** ArcSDE registered layers definitions */
     private final Map<String, FeatureTypeInfo> featureTypeInfos;
 
     /**
-     * In process view definitions. This map is populated through
-     * {@link #registerView(String, PlainSelect)}
+     * In process view definitions. This map is populated through {@link #registerView(String,
+     * PlainSelect)}
      */
     private final Map<String, FeatureTypeInfo> inProcessFeatureTypeInfos;
 
@@ -98,19 +91,13 @@ final class FeatureTypeInfoCache {
      */
     private final Set<String> availableLayerNames;
 
-    /**
-     * Namespace URI to construct FeatureTypes and AttributeTypes with
-     */
+    /** Namespace URI to construct FeatureTypes and AttributeTypes with */
     private final String namespace;
 
-    /**
-     * Scheduler for cache updating.
-     */
+    /** Scheduler for cache updating. */
     private ScheduledExecutorService cacheUpdateScheduler;
 
-    /**
-     * Lock for protecting featureTypeInfos cache.
-     */
+    /** Lock for protecting featureTypeInfos cache. */
     private final ReentrantReadWriteLock cacheLock;
 
     private final boolean allowNonSpatialTables;
@@ -119,23 +106,24 @@ final class FeatureTypeInfoCache {
 
     /**
      * Creates a FeatureTypeInfoCache
-     * <p>
-     * The provided {@link ISessionPool} is used to grab an {@link ISession} when the list of
+     *
+     * <p>The provided {@link ISessionPool} is used to grab an {@link ISession} when the list of
      * available layers needs to be updated. This update happens at this class' construction time
      * and, optionally, every {@code cacheUpdateFreqSecs} seconds.
-     * </p>
-     * 
+     *
      * @param sessionPool
-     * @param namespace
-     *            the namespace {@link FeatureType}s are created with, may be {@code null}
-     * @param cacheUpdateFreqSecs
-     *            layer name cache update frequency, in seconds. {@code <= 0} means do never update.
-     * @param allowNonSpatialTables
-     *            whether non spatial table names are requested
+     * @param namespace the namespace {@link FeatureType}s are created with, may be {@code null}
+     * @param cacheUpdateFreqSecs layer name cache update frequency, in seconds. {@code <= 0} means
+     *     do never update.
+     * @param allowNonSpatialTables whether non spatial table names are requested
      * @throws IOException
      */
-    public FeatureTypeInfoCache(final ISessionPool sessionPool, final String namespace,
-            final int cacheUpdateFreqSecs, boolean allowNonSpatialTables) throws IOException {
+    public FeatureTypeInfoCache(
+            final ISessionPool sessionPool,
+            final String namespace,
+            final int cacheUpdateFreqSecs,
+            boolean allowNonSpatialTables)
+            throws IOException {
 
         availableLayerNames = new TreeSet<String>();
         featureTypeInfos = new HashMap<String, FeatureTypeInfo>();
@@ -157,10 +145,15 @@ final class FeatureTypeInfoCache {
         cacheUpdater.run();
         if (cacheUpdateFreqSecs > 0) {
             cacheUpdateScheduler = Executors.newScheduledThreadPool(1);
-            LOGGER.info("Scheduling the layer name cache to be updated every "
-                    + this.cacheUpdateFreqSecs + " seconds.");
-            cacheUpdateScheduler.scheduleWithFixedDelay(cacheUpdater, this.cacheUpdateFreqSecs,
-                    this.cacheUpdateFreqSecs, TimeUnit.SECONDS);
+            LOGGER.info(
+                    "Scheduling the layer name cache to be updated every "
+                            + this.cacheUpdateFreqSecs
+                            + " seconds.");
+            cacheUpdateScheduler.scheduleWithFixedDelay(
+                    cacheUpdater,
+                    this.cacheUpdateFreqSecs,
+                    this.cacheUpdateFreqSecs,
+                    TimeUnit.SECONDS);
         } else {
             cacheUpdateScheduler = null;
         }
@@ -203,8 +196,8 @@ final class FeatureTypeInfoCache {
         final List<String> typeNames = getTypeNames();
         List<Name> names = new ArrayList<Name>(typeNames.size());
         for (String typeName : typeNames) {
-            NameImpl name = namespace == null ? new NameImpl(typeName) : new NameImpl(namespace,
-                    typeName);
+            NameImpl name =
+                    namespace == null ? new NameImpl(typeName) : new NameImpl(namespace, typeName);
             names.add(name);
         }
         return names;
@@ -213,7 +206,7 @@ final class FeatureTypeInfoCache {
     /**
      * Check inProcessFeatureTypeInfos and featureTypeInfos for the provided typeName, checking the
      * ArcSDE server as a last resort.
-     * 
+     *
      * @param typeName
      * @return
      */
@@ -227,8 +220,8 @@ final class FeatureTypeInfoCache {
         try {
             session = sessionPool.getSession(false);
         } catch (UnavailableConnectionException e) {
-            throw new RuntimeException("Can't get type info for " + typeName
-                    + ". Connection pool exhausted", e);
+            throw new RuntimeException(
+                    "Can't get type info for " + typeName + ". Connection pool exhausted", e);
         }
         try {
             typeInfo = getFeatureTypeInfo(typeName, session);
@@ -240,11 +233,10 @@ final class FeatureTypeInfoCache {
 
     /**
      * Used by feature reader and writer to get the schema information.
-     * <p>
-     * They are making use of this function because they already have their own Session to request
-     * the ftInfo if needed.
-     * </p>
-     * 
+     *
+     * <p>They are making use of this function because they already have their own Session to
+     * request the ftInfo if needed.
+     *
      * @param typeName
      * @param session
      * @return
@@ -311,7 +303,7 @@ final class FeatureTypeInfoCache {
             }
 
             final Set<String> removed;
-            {// just some logging..
+            { // just some logging..
                 cacheLock.readLock().lock();
                 Set<String> added = new TreeSet<String>(typeNames);
                 added.removeAll(availableLayerNames);
@@ -321,8 +313,10 @@ final class FeatureTypeInfoCache {
                 removed = new TreeSet<String>(availableLayerNames);
                 removed.removeAll(typeNames);
                 if (removed.size() > 0) {
-                    LOGGER.finest("FeatureTypeCache: the following layers are no "
-                            + "longer available: " + removed);
+                    LOGGER.finest(
+                            "FeatureTypeCache: the following layers are no "
+                                    + "longer available: "
+                                    + removed);
                 }
                 cacheLock.readLock().unlock();
             }
@@ -337,8 +331,10 @@ final class FeatureTypeInfoCache {
 
             // discard any removed feature type
             for (String typeName : removed) {
-                LOGGER.fine("Removing FeatureTypeInfo for layer " + typeName
-                        + " since it does no longer exist on the database");
+                LOGGER.fine(
+                        "Removing FeatureTypeInfo for layer "
+                                + typeName
+                                + " since it does no longer exist on the database");
                 featureTypeInfos.remove(typeName);
             }
 
@@ -368,22 +364,26 @@ final class FeatureTypeInfoCache {
 
         @SuppressWarnings("unchecked")
         @Override
-        public List<String> execute(ISession session, SeConnection connection) throws SeException,
-                IOException {
+        public List<String> execute(ISession session, SeConnection connection)
+                throws SeException, IOException {
 
             final Set<String> systemTables;
             {
                 final String sdeDbaName = connection.getSdeDbaName().toUpperCase();
                 final String dbName = connection.getDatabaseName();
-                final String prefix = (dbName != null && dbName.length() > 0 ? (dbName
-                        .toUpperCase() + ".") : "") + sdeDbaName + ".";
-                systemTables = new HashSet<String>(Arrays.asList(//
-                        prefix + "GDB_ITEMRELATIONSHIPS", //
-                        prefix + "GDB_ITEMRELATIONSHIPTYPES", //
-                        prefix + "GDB_ITEMS", //
-                        prefix + "GDB_ITEMTYPES", //
-                        prefix + "GDB_REPLICALOG" //
-                ));
+                final String prefix =
+                        (dbName != null && dbName.length() > 0 ? (dbName.toUpperCase() + ".") : "")
+                                + sdeDbaName
+                                + ".";
+                systemTables =
+                        new HashSet<String>(
+                                Arrays.asList( //
+                                        prefix + "GDB_ITEMRELATIONSHIPS", //
+                                        prefix + "GDB_ITEMRELATIONSHIPTYPES", //
+                                        prefix + "GDB_ITEMS", //
+                                        prefix + "GDB_ITEMTYPES", //
+                                        prefix + "GDB_REPLICALOG" //
+                                        ));
             }
             /*
              * Note we could do almost the same by calling
@@ -435,8 +435,8 @@ final class FeatureTypeInfoCache {
                 // }
 
                 if (reg.isHidden()) {
-                    LOGGER.finer("Ignoring ArcSDE registered table " + tableName
-                            + " as it is hidden");
+                    LOGGER.finer(
+                            "Ignoring ArcSDE registered table " + tableName + " as it is hidden");
                     continue;
                 }
 
@@ -444,16 +444,20 @@ final class FeatureTypeInfoCache {
 
                 if (!hasLayer) {
                     if (!allowNonSpatialTables) {
-                        LOGGER.finer("Ignoring ArcSDE registered table " + tableName
-                                + " as it is non spatial");
+                        LOGGER.finer(
+                                "Ignoring ArcSDE registered table "
+                                        + tableName
+                                        + " as it is non spatial");
                         continue;
                     }
-                    if (reg.getRowIdColumnType() == SeRegistration.SE_REGISTRATION_ROW_ID_COLUMN_TYPE_NONE) {
-                        LOGGER.finer("Ignoring ArcSDE registered table " + tableName
-                                + " as it has no row id column");
+                    if (reg.getRowIdColumnType()
+                            == SeRegistration.SE_REGISTRATION_ROW_ID_COLUMN_TYPE_NONE) {
+                        LOGGER.finer(
+                                "Ignoring ArcSDE registered table "
+                                        + tableName
+                                        + " as it has no row id column");
                         continue;
                     }
-
                 }
 
                 typeNames.add(tableName);
@@ -462,5 +466,4 @@ final class FeatureTypeInfoCache {
             return typeNames;
         }
     }
-
 }

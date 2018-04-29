@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,46 +17,28 @@
 package org.geotools.xml.schema;
 
 /**
- * <p>
- * This interface is intended to represent a Sequence in an XML Schema. This
- * shildren of this sequence are ElementGroupings which may involve Element
- * declarations, Choices, Groups ... or even another Sequence. We recommend
- * flattening child Sequences with the parent, creating a semantically
- * equivalent sequence in it's place.
- * </p>
+ * This interface is intended to represent a Sequence in an XML Schema. This shildren of this
+ * sequence are ElementGroupings which may involve Element declarations, Choices, Groups ... or even
+ * another Sequence. We recommend flattening child Sequences with the parent, creating a
+ * semantically equivalent sequence in it's place.
  *
  * @author dzwiers www.refractions.net
- *
  * @see ElementGrouping
- *
- *
  * @source $URL$
  */
 public interface Sequence extends ElementGrouping {
     /**
-     * <p>
-     * This method returns an ORDERED list of children. The children in the
-     * list may be singular elements, sequences, choices, ... , or groups.
-     * </p>
-     *
+     * This method returns an ORDERED list of children. The children in the list may be singular
+     * elements, sequences, choices, ... , or groups.
      */
     public ElementGrouping[] getChildren();
 
-    /**
-     * <p>
-     * The Schema ID for this sequence definition.
-     * </p>
-     *
-     */
+    /** The Schema ID for this sequence definition. */
     public String getId();
 
-    /**
-     * @see org.geotools.xml.xsi.ElementGrouping#getMaxOccurs()
-     */
+    /** @see org.geotools.xml.xsi.ElementGrouping#getMaxOccurs() */
     public int getMaxOccurs();
 
-    /**
-     * @see org.geotools.xml.xsi.ElementGrouping#getMinOccurs()
-     */
+    /** @see org.geotools.xml.xsi.ElementGrouping#getMinOccurs() */
     public int getMinOccurs();
 }

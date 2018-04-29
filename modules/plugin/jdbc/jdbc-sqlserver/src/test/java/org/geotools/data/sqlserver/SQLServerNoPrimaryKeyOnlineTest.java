@@ -9,5 +9,4 @@ public class SQLServerNoPrimaryKeyOnlineTest extends JDBCNoPrimaryKeyOnlineTest 
     protected JDBCNoPrimaryKeyTestSetup createTestSetup() {
         return new SQLServerNoPrimaryKeyTestSetup(new SQLServerTestSetup());
     }
-
 }

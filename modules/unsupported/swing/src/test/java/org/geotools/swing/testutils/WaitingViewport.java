@@ -11,13 +11,11 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.MapViewport;
 
 /**
- *
  * @author michael
- *
  * @source $URL$
  */
 public class WaitingViewport extends MapViewport {
-    
+
     private CountDownLatch boundsLatch;
     private CountDownLatch screenAreaLatch;
 
@@ -26,13 +24,13 @@ public class WaitingViewport extends MapViewport {
             case BOUNDS:
                 boundsLatch = new CountDownLatch(1);
                 break;
-                
+
             case SCREEN_AREA:
                 screenAreaLatch = new CountDownLatch(1);
                 break;
         }
     }
-    
+
     public boolean await(WaitingMapContent.Type type, long millisTimeout) {
         boolean result = false;
         try {
@@ -40,19 +38,19 @@ public class WaitingViewport extends MapViewport {
                 case BOUNDS:
                     boundsLatch.await(millisTimeout, TimeUnit.MILLISECONDS);
                     break;
-                    
+
                 case SCREEN_AREA:
                     screenAreaLatch.await(millisTimeout, TimeUnit.MILLISECONDS);
                     break;
             }
-            
+
         } catch (InterruptedException ex) {
             // do nothing
         } finally {
             return result;
         }
     }
-    
+
     @Override
     public void setBounds(ReferencedEnvelope requestedBounds) {
         super.setBounds(requestedBounds);
@@ -68,5 +66,4 @@ public class WaitingViewport extends MapViewport {
             screenAreaLatch.countDown();
         }
     }
-
 }

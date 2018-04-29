@@ -22,41 +22,37 @@ import java.util.logging.SimpleFormatter;
 
 /**
  * @author kengu - 6. juni 2011
- *
- *
  * @source $URL$
  */
 public class EFeatureLogFormatter extends Formatter {
-    
+
     private static boolean bMinimal = false;
     private static SimpleFormatter eStandard = new SimpleFormatter();
 
-    
-    
     @Override
     public String format(LogRecord record) {
         //
         // Apply minimal format?
         //
-        if(bMinimal) {
+        if (bMinimal) {
             //
-            // Create a StringBuffer to contain the 
+            // Create a StringBuffer to contain the
             // formatted record start with the date.
             //
             StringBuffer sb = new StringBuffer();
-//            //
-//            // Get the date from the LogRecord and add it to the buffer
-//            //
-//            Date date = new Date(record.getMillis());
-//            sb.append(date.toString());
-//            sb.append(" ");
+            //            //
+            //            // Get the date from the LogRecord and add it to the buffer
+            //            //
+            //            Date date = new Date(record.getMillis());
+            //            sb.append(date.toString());
+            //            sb.append(" ");
             //
             // Get the level name and add it to the buffer
             //
             sb.append(record.getLevel().getName());
             sb.append(": ");
             //
-            // Get the formatted message (includes localization 
+            // Get the formatted message (includes localization
             // and substitution of parameters) and add it to the buffer
             //
             sb.append(formatMessage(record));
@@ -71,14 +67,12 @@ public class EFeatureLogFormatter extends Formatter {
         //
         return eStandard.format(record);
     }
-    
-    public static final void setMinimal() {
-        bMinimal = true;        
-    }
-    
-    public static final void setStandard() {
-        bMinimal = false;        
-    }
-    
 
+    public static final void setMinimal() {
+        bMinimal = true;
+    }
+
+    public static final void setStandard() {
+        bMinimal = false;
+    }
 }

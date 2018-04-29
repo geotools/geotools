@@ -9,9 +9,7 @@ import org.geotools.map.Layer;
 import org.geotools.renderer.GTRenderer;
 
 /**
- *
  * @author michael
- *
  * @source $URL$
  */
 public class RenderingOperands {

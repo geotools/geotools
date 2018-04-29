@@ -16,16 +16,11 @@
  */
 package org.geotools.xml.impl;
 
-import junit.framework.TestCase;
 import java.util.ArrayList;
 import java.util.List;
+import junit.framework.TestCase;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class BufferTest extends TestCase {
     Buffer buffer;
 

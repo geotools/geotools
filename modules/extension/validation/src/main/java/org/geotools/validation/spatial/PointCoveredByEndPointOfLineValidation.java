@@ -16,40 +16,30 @@
  */
 package org.geotools.validation.spatial;
 
-import java.util.Map;
-
-import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.validation.ValidationResults;
-import org.opengis.feature.simple.SimpleFeature;
-
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Point;
-
+import java.util.Map;
+import org.geotools.data.simple.SimpleFeatureSource;
+import org.geotools.validation.ValidationResults;
+import org.opengis.feature.simple.SimpleFeature;
 
 /**
  * PointCoveredByEndPointOfLineValidation purpose.
- * 
- * <p>
- * Checks to ensure the Point is covered by an endpoint of the Line.
- * </p>
+ *
+ * <p>Checks to ensure the Point is covered by an endpoint of the Line.
  *
  * @author dzwiers, Refractions Research, Inc.
  * @author $Author: dmzwiers $ (last modification)
- *
- *
  * @source $URL$
  * @version $Id$
  */
-public class PointCoveredByEndPointOfLineValidation
-    extends PointLineAbstractValidation {
+public class PointCoveredByEndPointOfLineValidation extends PointLineAbstractValidation {
     /**
      * PointCoveredByEndPointOfLineValidation constructor.
-     * 
-     * <p>
-     * Description
-     * </p>
+     *
+     * <p>Description
      */
     public PointCoveredByEndPointOfLineValidation() {
         super();
@@ -57,40 +47,38 @@ public class PointCoveredByEndPointOfLineValidation
 
     /**
      * Ensure Point is covered by a Line end point.
-     * 
-     * <p></p>
+     *
+     * <p>
      *
      * @param layers a HashMap of key="TypeName" value="FeatureSource"
      * @param envelope The bounding box of modified features
      * @param results Storage for the error and warning messages
-     *
-     * @return True if no features intersect. If they do then the validation
-     *         failed.
-     *
+     * @return True if no features intersect. If they do then the validation failed.
      * @throws Exception DOCUMENT ME!
-     *
      * @see org.geotools.validation.IntegrityValidation#validate(java.util.Map,
-     *      com.vividsolutions.jts.geom.Envelope,
-     *      org.geotools.validation.ValidationResults)
+     *     com.vividsolutions.jts.geom.Envelope, org.geotools.validation.ValidationResults)
      */
-    public boolean validate(Map layers, Envelope envelope,
-        ValidationResults results) throws Exception {
-        SimpleFeatureSource lineSource = (SimpleFeatureSource) layers.get(getRestrictedLineTypeRef());
+    public boolean validate(Map layers, Envelope envelope, ValidationResults results)
+            throws Exception {
+        SimpleFeatureSource lineSource =
+                (SimpleFeatureSource) layers.get(getRestrictedLineTypeRef());
         SimpleFeatureSource pointSource = (SimpleFeatureSource) layers.get(getPointTypeRef());
 
         Object[] points = pointSource.getFeatures().toArray();
         Object[] lines = lineSource.getFeatures().toArray();
 
         if (!envelope.contains(pointSource.getBounds())) {
-            results.error((SimpleFeature) points[0],
-                "Point Feature Source is not contained within the Envelope provided.");
+            results.error(
+                    (SimpleFeature) points[0],
+                    "Point Feature Source is not contained within the Envelope provided.");
 
             return false;
         }
 
         if (!envelope.contains(lineSource.getBounds())) {
-            results.error((SimpleFeature) lines[0],
-                "Line Feature Source is not contained within the Envelope provided.");
+            results.error(
+                    (SimpleFeature) lines[0],
+                    "Line Feature Source is not contained within the Envelope provided.");
 
             return false;
         }

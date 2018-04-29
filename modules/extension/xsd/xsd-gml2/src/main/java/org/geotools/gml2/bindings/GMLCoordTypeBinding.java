@@ -16,24 +16,21 @@
  */
 package org.geotools.gml2.bindings;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
 import java.math.BigDecimal;
-
 import javax.xml.namespace.QName;
-
 import org.geotools.gml2.GML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
-
-
 /**
  * Binding object for the type http://www.opengis.net/gml:CoordType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;complexType name="CoordType"&gt;
  *      &lt;annotation&gt;
@@ -49,12 +46,8 @@ import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class GMLCoordTypeBinding extends AbstractComplexBinding {
@@ -64,14 +57,13 @@ public class GMLCoordTypeBinding extends AbstractComplexBinding {
         this.csFactory = csFactory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return GML.CoordType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -82,14 +74,14 @@ public class GMLCoordTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * Returns a coordinate sequence with a single coordinate in it.
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         int dimension = 1;
         double x;
         double y;
@@ -111,8 +103,7 @@ public class GMLCoordTypeBinding extends AbstractComplexBinding {
         return new Coordinate(x, y, z);
     }
 
-    public Object getProperty(Object object, QName name)
-        throws Exception {
+    public Object getProperty(Object object, QName name) throws Exception {
         Coordinate c = (Coordinate) object;
 
         if ("X".equals(name.getLocalPart())) {

@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2015-2016, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,7 +17,6 @@
 package org.geotools.data.memory;
 
 import java.io.IOException;
-
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.store.ContentEntry;
@@ -31,40 +30,39 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Read access to feature content held in memory.
+ *
  * @author Jody Garnett (Boundless)
  */
 public class MemoryFeatureSource extends ContentFeatureSource {
 
     public MemoryFeatureSource(ContentEntry entry) {
-        this(entry, Query.ALL );
+        this(entry, Query.ALL);
     }
-    
+
     public MemoryFeatureSource(ContentEntry entry, Query query) {
         super(entry, query);
     }
-    
-    /**
-     * Access parent MemoryDataStore.
-     */
+
+    /** Access parent MemoryDataStore. */
     public MemoryDataStore getDataStore() {
         return (MemoryDataStore) super.getDataStore();
     }
-    
-    public MemoryState getState(){
+
+    public MemoryState getState() {
         return (MemoryState) super.getState();
     }
-    /**
-     * The entry for the feature source.
-     */
+    /** The entry for the feature source. */
     public MemoryEntry getEntry() {
         return (MemoryEntry) super.getEntry();
     }
 
     @Override
     protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
-        if (query.getFilter() == Filter.INCLUDE) { //filtering not implemented
-            FeatureReader<SimpleFeatureType, SimpleFeature> featureReader = getReaderInternal(query);
-            CoordinateReferenceSystem crs = featureReader.getFeatureType().getCoordinateReferenceSystem();
+        if (query.getFilter() == Filter.INCLUDE) { // filtering not implemented
+            FeatureReader<SimpleFeatureType, SimpleFeature> featureReader =
+                    getReaderInternal(query);
+            CoordinateReferenceSystem crs =
+                    featureReader.getFeatureType().getCoordinateReferenceSystem();
             ReferencedEnvelope bounds = ReferencedEnvelope.create(crs);
             try {
                 while (featureReader.hasNext()) {
@@ -85,19 +83,21 @@ public class MemoryFeatureSource extends ContentFeatureSource {
             MemoryEntry entry = getEntry();
             return entry.getMemory().size();
         }
-        //feature by feature count required
+        // feature by feature count required
         return -1;
     }
 
     @Override
-    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(
-            Query query) throws IOException {
+    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
+            throws IOException {
         return new MemoryFeatureReader(getState(), query);
     }
 
     @Override
     protected SimpleFeatureType buildFeatureType() {
-        return getState().getEntry().schema; // cache schema unchanged (as we do not retype/reproject)
+        return getState()
+                .getEntry()
+                .schema; // cache schema unchanged (as we do not retype/reproject)
     }
 
     @Override

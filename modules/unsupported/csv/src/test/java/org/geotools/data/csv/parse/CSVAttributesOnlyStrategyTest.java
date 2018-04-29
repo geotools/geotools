@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
-
 import org.geotools.data.csv.CSVFileState;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
@@ -52,8 +51,8 @@ public class CSVAttributesOnlyStrategyTest {
 
     @Test
     public void testCreateFeature() throws IOException {
-        String input = CSVTestStrategySupport.buildInputString("fleem,zoo,morx", "3,4,car",
-                "8,9.9,cdr");
+        String input =
+                CSVTestStrategySupport.buildInputString("fleem,zoo,morx", "3,4,car", "8,9.9,cdr");
         CSVFileState fileState = new CSVFileState(input, "bar");
         CSVStrategy strategy = new CSVAttributesOnlyStrategy(fileState);
 
@@ -69,15 +68,21 @@ public class CSVAttributesOnlyStrategyTest {
         assertTrue("next value not read", iterator.hasNext());
         SimpleFeature feature = iterator.next();
         assertEquals("Invalid feature property", 3, feature.getAttribute("fleem"));
-        assertEquals("Invalid feature property", 4.0,
-                Double.parseDouble(feature.getAttribute("zoo").toString()), 0.1);
+        assertEquals(
+                "Invalid feature property",
+                4.0,
+                Double.parseDouble(feature.getAttribute("zoo").toString()),
+                0.1);
         assertEquals("Invalid feature property", "car", feature.getAttribute("morx"));
 
         assertTrue("next value not read", iterator.hasNext());
         feature = iterator.next();
         assertEquals("Invalid feature property", 8, feature.getAttribute("fleem"));
-        assertEquals("Invalid feature property", 9.9,
-                Double.parseDouble(feature.getAttribute("zoo").toString()), 0.1);
+        assertEquals(
+                "Invalid feature property",
+                9.9,
+                Double.parseDouble(feature.getAttribute("zoo").toString()),
+                0.1);
         assertEquals("Invalid feature property", "cdr", feature.getAttribute("morx"));
         assertFalse("extra next value", iterator.hasNext());
 

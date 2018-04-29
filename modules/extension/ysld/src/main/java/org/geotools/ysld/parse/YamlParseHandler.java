@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -20,18 +20,12 @@ package org.geotools.ysld.parse;
 import org.geotools.ysld.YamlObject;
 import org.yaml.snakeyaml.events.*;
 
-import java.util.Deque;
-
 /**
- * Abstract base class for Yaml parse handlers. See the {@link RootParser} subclass for the "entrypoint" for parsing a {@link YamlObject} into
- * GeoTools-style objects.
- * 
+ * Abstract base class for Yaml parse handlers. See the {@link RootParser} subclass for the
+ * "entrypoint" for parsing a {@link YamlObject} into GeoTools-style objects.
  */
 public abstract class YamlParseHandler {
 
-    /**
-     * Handle parsing the provided {@link YamlObject} in the given {@link YamlParseContext}.
-     * 
-     */
+    /** Handle parsing the provided {@link YamlObject} in the given {@link YamlParseContext}. */
     public abstract void handle(YamlObject<?> obj, YamlParseContext context);
 }

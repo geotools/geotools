@@ -17,11 +17,19 @@
  */
 package org.geotools.arcsde.filter;
 
+import com.esri.sde.sdk.client.SeException;
+import com.esri.sde.sdk.client.SeExtent;
+import com.esri.sde.sdk.client.SeFilter;
+import com.esri.sde.sdk.client.SeLayer;
+import com.esri.sde.sdk.client.SeShape;
+import com.esri.sde.sdk.client.SeShapeFilter;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryCollection;
+import com.vividsolutions.jts.geom.Polygon;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-
 import org.geotools.arcsde.data.ArcSDEGeometryBuilder;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FilterCapabilities;
@@ -51,34 +59,20 @@ import org.opengis.filter.spatial.Overlaps;
 import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
 
-import com.esri.sde.sdk.client.SeException;
-import com.esri.sde.sdk.client.SeExtent;
-import com.esri.sde.sdk.client.SeFilter;
-import com.esri.sde.sdk.client.SeLayer;
-import com.esri.sde.sdk.client.SeShape;
-import com.esri.sde.sdk.client.SeShapeFilter;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Polygon;
-
 /**
  * Encodes the geometry related parts of a filter into a set of <code>SeFilter</code> objects and
  * provides a method to get the resulting filters suitable to set up an SeQuery's spatial
  * constraints.
- * <p>
- * Although not all filters support is coded yet, the strategy to filtering queries for ArcSDE
- * datasources is separated in two parts, the SQL where clause construction, provided by
- * <code>FilterToSQLSDE</code> and the spatial filters (or spatial constraints, in SDE vocabulary)
+ *
+ * <p>Although not all filters support is coded yet, the strategy to filtering queries for ArcSDE
+ * datasources is separated in two parts, the SQL where clause construction, provided by <code>
+ * FilterToSQLSDE</code> and the spatial filters (or spatial constraints, in SDE vocabulary)
  * provided here; mirroring the java SDE api approach
- * </p>
- * 
+ *
  * @author Gabriel Rold?n
- * 
- * 
  * @source $URL$
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *         /org/geotools/arcsde/filter/GeometryEncoderSDE.java $
+ *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
+ *     /org/geotools/arcsde/filter/GeometryEncoderSDE.java $
  */
 @SuppressWarnings("deprecation")
 public class GeometryEncoderSDE extends DefaultFilterVisitor implements FilterVisitor {
@@ -113,14 +107,12 @@ public class GeometryEncoderSDE extends DefaultFilterVisitor implements FilterVi
 
     private SimpleFeatureType featureType;
 
-    /**
-     */
+    /** */
     public GeometryEncoderSDE() {
         // intentionally blank
     }
 
-    /**
-     */
+    /** */
     public GeometryEncoderSDE(SeLayer layer, SimpleFeatureType featureType) {
         this.sdeLayer = layer;
         this.featureType = featureType;
@@ -143,9 +135,7 @@ public class GeometryEncoderSDE extends DefaultFilterVisitor implements FilterVi
         return this.sdeLayer.getQualifiedName();
     }
 
-    /**
-     * overrides just to avoid the "WHERE" keyword
-     */
+    /** overrides just to avoid the "WHERE" keyword */
     public void encode(Filter filter) throws GeometryEncoderException {
         this.sdeSpatialFilters = new ArrayList<SeShapeFilter>();
         if (Filter.INCLUDE.equals(filter)) {
@@ -154,8 +144,8 @@ public class GeometryEncoderSDE extends DefaultFilterVisitor implements FilterVi
         if (capabilities.fullySupports(filter)) {
             filter.accept(this, null);
         } else {
-            throw new GeometryEncoderException("Filter type " + filter.getClass()
-                    + " not supported");
+            throw new GeometryEncoderException(
+                    "Filter type " + filter.getClass() + " not supported");
         }
     }
 
@@ -164,11 +154,14 @@ public class GeometryEncoderSDE extends DefaultFilterVisitor implements FilterVi
      * @param sdeMethod
      * @param truth de default truth value for <code>sdeMethod</code>
      * @param extraData if an instanceof java.lang.Boolean, <code>truth</code> is and'ed with its
-     *        boolean value. May have been set by {@link #visit(Not, Object)} to revert the logical
-     *        evaluation criteria.
+     *     boolean value. May have been set by {@link #visit(Not, Object)} to revert the logical
+     *     evaluation criteria.
      */
-    private void addSpatialFilter(final BinarySpatialOperator filter, final int sdeMethod,
-            final boolean truth, final Object extraData) {
+    private void addSpatialFilter(
+            final BinarySpatialOperator filter,
+            final int sdeMethod,
+            final boolean truth,
+            final Object extraData) {
         boolean appliedTruth = truth;
 
         // At the time of writing, extraData can only be null or false.
@@ -182,9 +175,7 @@ public class GeometryEncoderSDE extends DefaultFilterVisitor implements FilterVi
         if (extraData != null && extraData instanceof Boolean) {
             boolean andValue = ((Boolean) extraData).booleanValue();
             if (andValue) {
-                /**
-                 * TRUE ... should not occur, so fallback to old behaviour.
-                 */
+                /** TRUE ... should not occur, so fallback to old behaviour. */
                 appliedTruth = truth && andValue;
             } else {
                 /**
@@ -207,8 +198,12 @@ public class GeometryEncoderSDE extends DefaultFilterVisitor implements FilterVi
             propertyExpr = (PropertyName) right;
             geomLiteralExpr = (Literal) left;
         } else {
-            String err = "SDE currently supports one geometry and one "
-                    + "attribute expr.  You gave: " + left + ", " + right;
+            String err =
+                    "SDE currently supports one geometry and one "
+                            + "attribute expr.  You gave: "
+                            + left
+                            + ", "
+                            + right;
             throw new IllegalArgumentException(err);
         }
 
@@ -231,10 +226,14 @@ public class GeometryEncoderSDE extends DefaultFilterVisitor implements FilterVi
         }
         if (!rawPropName.equalsIgnoreCase(spatialCol)
                 && !localPropName.equalsIgnoreCase(spatialCol)) {
-            throw new IllegalArgumentException("When querying against a spatial "
-                    + "column, your property name must match the spatial"
-                    + " column name.You used '" + propertyExpr.getPropertyName()
-                    + "', but the DB's spatial column name is '" + spatialCol + "'");
+            throw new IllegalArgumentException(
+                    "When querying against a spatial "
+                            + "column, your property name must match the spatial"
+                            + " column name.You used '"
+                            + propertyExpr.getPropertyName()
+                            + "', but the DB's spatial column name is '"
+                            + spatialCol
+                            + "'");
         }
         Geometry geom = (Geometry) geomLiteralExpr.getValue();
 
@@ -247,50 +246,60 @@ public class GeometryEncoderSDE extends DefaultFilterVisitor implements FilterVi
         // vertical line) then we may have
         // a layer extent that's a point or line. We need to correct this.
         if (seExtent.getMaxX() == seExtent.getMinX()) {
-            seExtent = new SeExtent(seExtent.getMinX() - 100, seExtent.getMinY(),
-                    seExtent.getMaxX() + 100, seExtent.getMaxY());
+            seExtent =
+                    new SeExtent(
+                            seExtent.getMinX() - 100,
+                            seExtent.getMinY(),
+                            seExtent.getMaxX() + 100,
+                            seExtent.getMaxY());
         }
         if (seExtent.getMaxY() == seExtent.getMinY()) {
-            seExtent = new SeExtent(seExtent.getMinX(), seExtent.getMinY() - 100,
-                    seExtent.getMaxX(), seExtent.getMaxY() + 100);
+            seExtent =
+                    new SeExtent(
+                            seExtent.getMinX(),
+                            seExtent.getMinY() - 100,
+                            seExtent.getMaxX(),
+                            seExtent.getMaxY() + 100);
         }
 
         try {
             // Now make an SeShape
             SeShape filterShape;
 
-            if(seExtent.isEmpty() == true)
-            {
+            if (seExtent.isEmpty() == true) {
                 // The extent of the sdeLayer is uninitialised so create an extent.
                 // If seExtent.isEmpty() == true, when passed to SeShape.generateRectangle()
                 // an exception occurs.
                 filterShape = new SeShape(this.sdeLayer.getCoordRef());
-            }
-            else
-            {
+            } else {
                 SeShape extent = new SeShape(this.sdeLayer.getCoordRef());
                 extent.generateRectangle(seExtent);
 
-            // this is a bit hacky, but I don't yet know this code well enough
-            // to do it right. Basically if the geometry collection is
-            // completely
-            // outside of the area of the layer then an intersection will return
-            // a geometryCollection (two seperate geometries not intersecting
-            // will
-            // be a collection of two). Passing this into GeometryBuilder causes
-            // an exception. So what I did was just look to see if it is a gc
-            // and if so then just make a null seshape, as it shouldn't match
-            // any features in arcsde. -ch
-            if (geom.getClass() == GeometryCollection.class) {
-                filterShape = new SeShape(this.sdeLayer.getCoordRef());
-            } else {
-                gb = ArcSDEGeometryBuilder.builderFor(geom.getClass());
-                filterShape = gb.constructShape(geom, this.sdeLayer.getCoordRef());
-            }
+                // this is a bit hacky, but I don't yet know this code well enough
+                // to do it right. Basically if the geometry collection is
+                // completely
+                // outside of the area of the layer then an intersection will return
+                // a geometryCollection (two seperate geometries not intersecting
+                // will
+                // be a collection of two). Passing this into GeometryBuilder causes
+                // an exception. So what I did was just look to see if it is a gc
+                // and if so then just make a null seshape, as it shouldn't match
+                // any features in arcsde. -ch
+                if (geom.getClass() == GeometryCollection.class) {
+                    filterShape = new SeShape(this.sdeLayer.getCoordRef());
+                } else {
+                    gb = ArcSDEGeometryBuilder.builderFor(geom.getClass());
+                    filterShape = gb.constructShape(geom, this.sdeLayer.getCoordRef());
+                }
             }
             // Add the filter to our list
-            SeShapeFilter shapeFilter = new SeShapeFilter(getLayerName(),
-                    this.sdeLayer.getSpatialColumn(), filterShape, sdeMethod, appliedTruth);
+            SeShapeFilter shapeFilter =
+                    new SeShapeFilter(
+                            getLayerName(),
+                            this.sdeLayer.getSpatialColumn(),
+                            filterShape,
+                            sdeMethod,
+                            appliedTruth);
             this.sdeSpatialFilters.add(shapeFilter);
         } catch (IOException ioe) {
             throw new RuntimeException(ioe);
@@ -353,11 +362,9 @@ public class GeometryEncoderSDE extends DefaultFilterVisitor implements FilterVi
         return visitDistanceBufferOperator(filter, false, extraData);
     }
 
-    /**
-     * Converts a distance buffer op to an intersects againt the buffered input geometry
-     */
-    private Object visitDistanceBufferOperator(DistanceBufferOperator filter, boolean truth,
-            Object extraData) {
+    /** Converts a distance buffer op to an intersects againt the buffered input geometry */
+    private Object visitDistanceBufferOperator(
+            DistanceBufferOperator filter, boolean truth, Object extraData) {
         // SDE can assert only one way, we need to invert from contains to within in case the
         // assertion is the other way around
         PropertyName property;
@@ -374,8 +381,8 @@ public class GeometryEncoderSDE extends DefaultFilterVisitor implements FilterVi
                 literal = (Literal) expression1;
             } else {
                 // not supported
-                throw new IllegalArgumentException("expected propertyname/literal, got "
-                        + expression1 + "/" + expression2);
+                throw new IllegalArgumentException(
+                        "expected propertyname/literal, got " + expression1 + "/" + expression2);
             }
         }
 

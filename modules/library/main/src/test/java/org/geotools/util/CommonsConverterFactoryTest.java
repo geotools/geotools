@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -17,17 +17,13 @@
 package org.geotools.util;
 
 import java.math.BigDecimal;
-
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
-
 import junit.framework.TestCase;
 
-/**
- * @source $URL$
- */
+/** @source $URL$ */
 public class CommonsConverterFactoryTest extends TestCase {
 
     CommonsConverterFactory factory;
@@ -61,22 +57,25 @@ public class CommonsConverterFactoryTest extends TestCase {
     public void testDateConversion() throws Exception {
         assertEquals(TimeZone.getTimeZone("UTC"), convert("UTC", TimeZone.class));
         assertNull(convert("foobar", TimeZone.class));
-        assertNull(factory.createConverter(String.class, TimeZone.class, null).convert(null, TimeZone.class));
+        assertNull(
+                factory.createConverter(String.class, TimeZone.class, null)
+                        .convert(null, TimeZone.class));
     }
 
     public void testTimeZoneConversion() throws Exception {
-        assertEquals((new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX"))
-                .parse("2011-08-02T00:00:00.000Z"),
-            factory.createConverter(String.class, Date.class, null)
-                .convert("2011-08-02T00:00:00.000Z", Date.class));
-        assertEquals((new SimpleDateFormat("yyyy-MM-dd HH:mm:ssa"))
-                .parse("2011-08-02 00:00:00AM"),
-            factory.createConverter(String.class, Date.class, null)
-                .convert("2011-08-02 00:00:00AM", Date.class));
-        assertNull(factory.createConverter(String.class, Date.class, null)
-                .convert("2011-08-02", Date.class));
+        assertEquals(
+                (new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX"))
+                        .parse("2011-08-02T00:00:00.000Z"),
+                factory.createConverter(String.class, Date.class, null)
+                        .convert("2011-08-02T00:00:00.000Z", Date.class));
+        assertEquals(
+                (new SimpleDateFormat("yyyy-MM-dd HH:mm:ssa")).parse("2011-08-02 00:00:00AM"),
+                factory.createConverter(String.class, Date.class, null)
+                        .convert("2011-08-02 00:00:00AM", Date.class));
+        assertNull(
+                factory.createConverter(String.class, Date.class, null)
+                        .convert("2011-08-02", Date.class));
     }
-
 
     Object convert(Object source, Class target) throws Exception {
         return factory.createConverter(source.getClass(), target, null).convert(source, target);
@@ -86,5 +85,4 @@ public class CommonsConverterFactoryTest extends TestCase {
         String url = "data:,YQo=";
         assertNotNull(convert(url, URL.class));
     }
-
 }

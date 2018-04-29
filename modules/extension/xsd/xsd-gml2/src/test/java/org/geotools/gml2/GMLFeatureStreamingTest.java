@@ -16,23 +16,14 @@
  */
 package org.geotools.gml2;
 
+import com.vividsolutions.jts.geom.Point;
 import java.io.InputStream;
-
 import javax.xml.namespace.QName;
-
 import junit.framework.TestCase;
-
 import org.geotools.xml.StreamingParser;
 import org.opengis.feature.simple.SimpleFeature;
 
-import com.vividsolutions.jts.geom.Point;
-
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class GMLFeatureStreamingTest extends TestCase {
     public void testStreamByXpath() throws Exception {
         InputStream in = getClass().getResourceAsStream("feature.xml");
@@ -47,8 +38,9 @@ public class GMLFeatureStreamingTest extends TestCase {
     public void testStreamByElementName() throws Exception {
         InputStream in = getClass().getResourceAsStream("feature.xml");
 
-        StreamingParser parser = new StreamingParser(new TestConfiguration(), in,
-                new QName(GML.NAMESPACE, "featureMember"));
+        StreamingParser parser =
+                new StreamingParser(
+                        new TestConfiguration(), in, new QName(GML.NAMESPACE, "featureMember"));
         makeAssertions(parser);
 
         in.close();

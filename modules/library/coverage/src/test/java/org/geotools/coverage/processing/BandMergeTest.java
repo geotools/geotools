@@ -18,15 +18,13 @@ package org.geotools.coverage.processing;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import it.geosolutions.jaiext.range.NoDataContainer;
 
+import it.geosolutions.jaiext.range.NoDataContainer;
 import java.awt.image.RenderedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.media.jai.PlanarImage;
-
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.Viewer;
@@ -37,17 +35,13 @@ import org.opengis.geometry.Envelope;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.operation.TransformException;
 
-/**
- * Tests the BandMerge operation.
- *
- */
+/** Tests the BandMerge operation. */
 public final class BandMergeTest extends GridProcessingTestBase {
 
     /**
      * Tests the "BandMerge" operation
-     * 
-     * @throws IOException
      *
+     * @throws IOException
      */
     @Test
     public void testBandMerge() throws TransformException, IOException {
@@ -58,10 +52,11 @@ public final class BandMergeTest extends GridProcessingTestBase {
         GridCoverage2D source = EXAMPLES.get(4);
         Envelope originalEnvelope = source.getEnvelope();
         final List<GridCoverage2D> coverages = new ArrayList<GridCoverage2D>();
-        final RenderedImage byteImage = new ImageWorker(source.getRenderedImage()).rescaleToBytes()
-                .getRenderedImage();
-        source = CoverageFactoryFinder.getGridCoverageFactory(null).create("sample", byteImage,
-                source.getEnvelope());
+        final RenderedImage byteImage =
+                new ImageWorker(source.getRenderedImage()).rescaleToBytes().getRenderedImage();
+        source =
+                CoverageFactoryFinder.getGridCoverageFactory(null)
+                        .create("sample", byteImage, source.getEnvelope());
 
         coverages.add(source);
         coverages.add(source);
@@ -95,5 +90,4 @@ public final class BandMergeTest extends GridProcessingTestBase {
         assertEquals(byteImage.getMinX(), raster.getMinX());
         assertEquals(byteImage.getMinY(), raster.getMinY());
     }
-
 }

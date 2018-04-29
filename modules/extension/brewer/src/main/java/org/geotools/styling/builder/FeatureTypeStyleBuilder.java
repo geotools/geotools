@@ -22,10 +22,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.IdBuilder;
-import org.geotools.filter.expression.ExpressionBuilder;
 import org.geotools.styling.Description;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Rule;
@@ -34,11 +32,7 @@ import org.opengis.filter.Id;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.SemanticType;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class FeatureTypeStyleBuilder extends AbstractStyleBuilder<FeatureTypeStyle> {
     String name;
 
@@ -48,13 +42,13 @@ public class FeatureTypeStyleBuilder extends AbstractStyleBuilder<FeatureTypeSty
 
     LinkedHashSet<Name> featureTypeNames = new LinkedHashSet<Name>();
 
-    private IdBuilder<FeatureTypeStyleBuilder> definedFor = new IdBuilder<FeatureTypeStyleBuilder>(
-            this);
+    private IdBuilder<FeatureTypeStyleBuilder> definedFor =
+            new IdBuilder<FeatureTypeStyleBuilder>(this);
 
     private Set<SemanticType> types = new LinkedHashSet<SemanticType>();
-    
+
     Map<String, String> options = new HashMap<>();
-    
+
     Expression transformation = null;
 
     // TODO : add semantic type identifier, provided it makes any sense to have it
@@ -89,9 +83,9 @@ public class FeatureTypeStyleBuilder extends AbstractStyleBuilder<FeatureTypeSty
     }
 
     /**
-     * Accumulates another feature type name in the list of the feature type names for this
-     * {@link FeatureTypeStyle}
-     * 
+     * Accumulates another feature type name in the list of the feature type names for this {@link
+     * FeatureTypeStyle}
+     *
      * @param featureTypeName
      * @return
      */
@@ -142,12 +136,12 @@ public class FeatureTypeStyleBuilder extends AbstractStyleBuilder<FeatureTypeSty
     public Set<SemanticType> types() {
         return types;
     }
-    
+
     public FeatureTypeStyleBuilder option(String name, String value) {
         options.put(name, value);
         return this;
     }
-    
+
     public FeatureTypeStyleBuilder transformation(Expression transformation) {
         this.unset = false;
         this.transformation = transformation;
@@ -155,9 +149,9 @@ public class FeatureTypeStyleBuilder extends AbstractStyleBuilder<FeatureTypeSty
     }
 
     /**
-     * Accumulates another feature type name in the list of the feature type names for this
-     * {@link FeatureTypeStyle}
-     * 
+     * Accumulates another feature type name in the list of the feature type names for this {@link
+     * FeatureTypeStyle}
+     *
      * @param featureTypeName
      * @return
      */
@@ -175,9 +169,15 @@ public class FeatureTypeStyleBuilder extends AbstractStyleBuilder<FeatureTypeSty
         for (RuleBuilder ruleBuilder : rules) {
             list.add(ruleBuilder.build());
         }
-        FeatureTypeStyle fts = sf.featureTypeStyle(name, description.build(), definedFor.build(),
-                featureTypeNames, types, list);
-        if(!options.isEmpty()) {
+        FeatureTypeStyle fts =
+                sf.featureTypeStyle(
+                        name,
+                        description.build(),
+                        definedFor.build(),
+                        featureTypeNames,
+                        types,
+                        list);
+        if (!options.isEmpty()) {
             fts.getOptions().putAll(options);
         }
         fts.setTransformation(transformation);
@@ -246,5 +246,4 @@ public class FeatureTypeStyleBuilder extends AbstractStyleBuilder<FeatureTypeSty
         this.unset = other.unset;
         this.transformation = other.transformation;
     }
-
 }

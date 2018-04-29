@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -16,8 +16,8 @@
  */
 package org.geotools.styling;
 
-
 // OpenGIS dependencies
+
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.GeoTools;
 import org.geotools.util.Utilities;
@@ -25,51 +25,45 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.util.Cloneable;
 
-
 /**
  * Direct implementation of AnchorPoint.
  *
  * @author Ian Turton, CCG
- *
- *
  * @source $URL$
  * @version $Id$
  */
-public class AnchorPointImpl implements AnchorPoint,Cloneable {
-    
+public class AnchorPointImpl implements AnchorPoint, Cloneable {
+
     /** The logger for the default core module. */
-    private static final java.util.logging.Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.core");
+    private static final java.util.logging.Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.core");
+
     private FilterFactory filterFactory;
     private Expression anchorPointX = null;
     private Expression anchorPointY = null;
 
-    
-    static AnchorPointImpl cast( org.opengis.style.AnchorPoint anchor ){
-        if( anchor == null ){
+    static AnchorPointImpl cast(org.opengis.style.AnchorPoint anchor) {
+        if (anchor == null) {
             return null;
-        }
-        else if (anchor instanceof AnchorPointImpl){
+        } else if (anchor instanceof AnchorPointImpl) {
             return (AnchorPointImpl) anchor;
-        }
-        else {
+        } else {
             AnchorPointImpl copy = new AnchorPointImpl();
-            copy.setAnchorPointX( anchor.getAnchorPointX() );
-            copy.setAnchorPointY( anchor.getAnchorPointY() );
+            copy.setAnchorPointX(anchor.getAnchorPointX());
+            copy.setAnchorPointY(anchor.getAnchorPointY());
             return copy;
         }
     }
-    
+
     public AnchorPointImpl() {
-        this( CommonFactoryFinder.getFilterFactory( GeoTools.getDefaultHints() ) );
+        this(CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints()));
     }
-    /**
-     * Creates a new instance of DefaultAnchorPoint
-     */
-    public AnchorPointImpl( FilterFactory filterFactory ) {
-        this.filterFactory = filterFactory; 
+    /** Creates a new instance of DefaultAnchorPoint */
+    public AnchorPointImpl(FilterFactory filterFactory) {
+        this.filterFactory = filterFactory;
         try {
-            anchorPointX = filterFactory.literal( 0.0 );
-            anchorPointY = filterFactory.literal( 0.5 );
+            anchorPointX = filterFactory.literal(0.0);
+            anchorPointY = filterFactory.literal(0.5);
         } catch (org.geotools.filter.IllegalFilterException ife) {
             LOGGER.severe("Failed to build defaultAnchorPoint: " + ife);
         }
@@ -99,11 +93,11 @@ public class AnchorPointImpl implements AnchorPoint,Cloneable {
     }
     /**
      * Define the anchor point.
-     * 
+     *
      * @param x Literal value of property anchorPointX
      */
-    public void setAnchorPointX(double x){
-        this.anchorPointX = filterFactory.literal( x );
+    public void setAnchorPointX(double x) {
+        this.anchorPointX = filterFactory.literal(x);
     }
 
     /**
@@ -126,19 +120,19 @@ public class AnchorPointImpl implements AnchorPoint,Cloneable {
 
     /**
      * Define the anchor point.
-     * 
+     *
      * @param x Literal value of property anchorPointX
      */
-    public void getAnchorPointY(double x){
-        this.anchorPointY = filterFactory.literal( x );
+    public void getAnchorPointY(double x) {
+        this.anchorPointY = filterFactory.literal(x);
     }
-    
+
     public void accept(StyleVisitor visitor) {
         visitor.visit(this);
     }
-    
-    public Object accept(org.opengis.style.StyleVisitor visitor,Object data) {
-        return visitor.visit(this,data);
+
+    public Object accept(org.opengis.style.StyleVisitor visitor, Object data) {
+        return visitor.visit(this, data);
     }
 
     /* (non-Javadoc)
@@ -164,7 +158,7 @@ public class AnchorPointImpl implements AnchorPoint,Cloneable {
             AnchorPointImpl other = (AnchorPointImpl) obj;
 
             return Utilities.equals(this.anchorPointX, other.anchorPointX)
-            && Utilities.equals(this.anchorPointY, other.anchorPointY);
+                    && Utilities.equals(this.anchorPointY, other.anchorPointY);
         }
 
         return false;

@@ -1,4 +1,3 @@
-
 package org.geotools.data.arcgisrest.schema.query;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -6,7 +5,6 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 public class Attributes {
-
 
     @Override
     public String toString() {
@@ -29,5 +27,4 @@ public class Attributes {
         Attributes rhs = ((Attributes) other);
         return new EqualsBuilder().isEquals();
     }
-
 }

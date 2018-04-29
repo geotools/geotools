@@ -15,29 +15,32 @@
  *    Lesser General Public License for more details.
  */
 
-
 package org.geotools.data.db2;
 
 import org.geotools.jdbc.JDBCTestSetup;
-import org.geotools.jdbc.JDBCThreeValuedLogicTestSetup;;
+import org.geotools.jdbc.JDBCThreeValuedLogicTestSetup;
 
 public class DB2ThreeValuedLogicTestSetup extends JDBCThreeValuedLogicTestSetup {
-    
+
     public DB2ThreeValuedLogicTestSetup(JDBCTestSetup delegate) {
         super(delegate);
     }
 
     @Override
     protected void createAbcTable() throws Exception {
-        run("CREATE TABLE "+DB2TestUtil.SCHEMA_QUOTED +".\"abc\"(\"name\" varchar(10), \"a\" int, \"b\" int, \"c\" int)");
-        run("INSERT INTO "+DB2TestUtil.SCHEMA_QUOTED +".\"abc\" VALUES('n_n_n', null, null, null)");
-        run("INSERT INTO "+DB2TestUtil.SCHEMA_QUOTED +".\"abc\" VALUES('a_b_c', 1, 2, 3)");
+        run(
+                "CREATE TABLE "
+                        + DB2TestUtil.SCHEMA_QUOTED
+                        + ".\"abc\"(\"name\" varchar(10), \"a\" int, \"b\" int, \"c\" int)");
+        run(
+                "INSERT INTO "
+                        + DB2TestUtil.SCHEMA_QUOTED
+                        + ".\"abc\" VALUES('n_n_n', null, null, null)");
+        run("INSERT INTO " + DB2TestUtil.SCHEMA_QUOTED + ".\"abc\" VALUES('a_b_c', 1, 2, 3)");
     }
 
     @Override
     protected void dropAbcTable() throws Exception {
-        runSafe("DROP TABLE "+DB2TestUtil.SCHEMA_QUOTED +".\"abc\"");
+        runSafe("DROP TABLE " + DB2TestUtil.SCHEMA_QUOTED + ".\"abc\"");
     }
-
-
 }

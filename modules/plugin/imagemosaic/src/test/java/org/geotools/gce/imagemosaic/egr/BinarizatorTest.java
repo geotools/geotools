@@ -20,22 +20,17 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.util.logging.Logger;
-
-import org.geotools.util.logging.Logging;
-import org.junit.Ignore;
-import org.junit.Test;
-
 import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
+import java.util.logging.Logger;
+import org.geotools.util.logging.Logging;
+import org.junit.Ignore;
+import org.junit.Test;
 
-/**
- * 
- * @author Emanuele Tajariol <etj at geo-solutions.it>
- */
+/** @author Emanuele Tajariol <etj at geo-solutions.it> */
 public class BinarizatorTest {
     private static final Logger LOGGER = Logging.getLogger(BinarizatorTest.class);
 
@@ -45,8 +40,7 @@ public class BinarizatorTest {
 
     GeometryFactory gf = new GeometryFactory();
 
-    public BinarizatorTest() {
-    }
+    public BinarizatorTest() {}
 
     @Test
     public void testTileNum() {
@@ -66,8 +60,8 @@ public class BinarizatorTest {
     }
 
     /**
-     * This test used to work with antialias off and drawing performed with draw + fill. Its seems that antialias on and fill() only will draw a
-     * square of 44x44 px, not 45x45. TO BE CHECKED.
+     * This test used to work with antialias off and drawing performed with draw + fill. Its seems
+     * that antialias on and fill() only will draw a square of 44x44 px, not 45x45. TO BE CHECKED.
      */
     @Test
     @Ignore
@@ -152,5 +146,4 @@ public class BinarizatorTest {
 
         return new Polygon(lr, null, gf);
     }
-
 }

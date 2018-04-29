@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,31 +16,25 @@
  */
 package org.geotools.geometry.jts;
 
-import java.awt.geom.AffineTransform;
-
-
-
 import com.vividsolutions.jts.geom.Point;
-
+import java.awt.geom.AffineTransform;
 
 /**
  * A path iterator for the LiteShape class, specialized to iterate over Point objects.
  *
  * @author Andrea Aime
- *
- *
  * @source $URL$
  */
 public final class PointIterator extends AbstractLiteIterator {
     /** Transform applied on the coordinates during iteration */
     private AffineTransform at;
-    
+
     /** The point we are going to provide when asked for coordinates */
     private Point point;
-    
+
     /** True when the point has been read once */
     private boolean done;
-    
+
     /** Current coordinate */
     private boolean moved;
 
@@ -54,7 +48,7 @@ public final class PointIterator extends AbstractLiteIterator {
         if (at == null) {
             at = new AffineTransform();
         }
-        
+
         this.at = at;
         this.point = point;
         done = false;
@@ -70,23 +64,17 @@ public final class PointIterator extends AbstractLiteIterator {
         return WIND_EVEN_ODD;
     }
 
-    /**
-     * @see java.awt.geom.PathIterator#next()
-     */
+    /** @see java.awt.geom.PathIterator#next() */
     public void next() {
         done = true;
     }
 
-    /**
-     * @see java.awt.geom.PathIterator#isDone()
-     */
+    /** @see java.awt.geom.PathIterator#isDone() */
     public boolean isDone() {
         return done && moved;
     }
 
-    /**
-     * @see java.awt.geom.PathIterator#currentSegment(double[])
-     */
+    /** @see java.awt.geom.PathIterator#currentSegment(double[]) */
     public int currentSegment(double[] coords) {
         if (!done && !moved) {
             coords[0] = point.getX();
@@ -103,5 +91,4 @@ public final class PointIterator extends AbstractLiteIterator {
             return SEG_LINETO;
         }
     }
-
 }

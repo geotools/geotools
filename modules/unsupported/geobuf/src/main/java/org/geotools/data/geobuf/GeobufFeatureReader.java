@@ -16,6 +16,10 @@
  */
 package org.geotools.data.geobuf;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.NoSuchElementException;
 import org.geotools.data.DataStore;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
@@ -24,11 +28,6 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.NoSuchElementException;
 
 public class GeobufFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
 
@@ -48,15 +47,20 @@ public class GeobufFeatureReader implements FeatureReader<SimpleFeatureType, Sim
 
     private SimpleFeatureBuilder featureBuilder;
 
-    public GeobufFeatureReader(ContentState state, Query query, int precision, int dimension) throws IOException {
+    public GeobufFeatureReader(ContentState state, Query query, int precision, int dimension)
+            throws IOException {
         this.state = state;
-        this.geobufGeometry = new GeobufGeometry(precision, dimension, JTSFactoryFinder.getGeometryFactory(null));
+        this.geobufGeometry =
+                new GeobufGeometry(precision, dimension, JTSFactoryFinder.getGeometryFactory(null));
         this.geobufFeature = new GeobufFeature(geobufGeometry);
         this.featureBuilder = new SimpleFeatureBuilder(state.getFeatureType());
         File file;
         DataStore dataStore = state.getEntry().getDataStore();
         if (dataStore instanceof GeobufDirectoryDataStore) {
-            file = ((GeobufDirectoryDataStore)dataStore).getDataStore(state.getFeatureType().getTypeName()).getFile();
+            file =
+                    ((GeobufDirectoryDataStore) dataStore)
+                            .getDataStore(state.getFeatureType().getTypeName())
+                            .getFile();
         } else {
             file = ((GeobufDataStore) dataStore).getFile();
         }
@@ -70,7 +74,8 @@ public class GeobufFeatureReader implements FeatureReader<SimpleFeatureType, Sim
     }
 
     @Override
-    public SimpleFeature next() throws IOException, IllegalArgumentException, NoSuchElementException {
+    public SimpleFeature next()
+            throws IOException, IllegalArgumentException, NoSuchElementException {
         SimpleFeature feature;
         if (nextFeature != null) {
             feature = nextFeature;
@@ -97,5 +102,4 @@ public class GeobufFeatureReader implements FeatureReader<SimpleFeatureType, Sim
     public void close() throws IOException {
         in.close();
     }
-
 }

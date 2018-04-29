@@ -17,22 +17,18 @@
 package org.geotools.gce.imagemosaic.properties.numeric;
 
 import java.io.File;
-
 import org.geotools.gce.imagemosaic.properties.DefaultPropertiesCollectorSPI;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
 
 /**
  * SPI for the extraction of elevation information from {@link File} names.
- * 
- * @author Simone Giannecchini, GeoSolutions SAS
  *
+ * @author Simone Giannecchini, GeoSolutions SAS
  */
 abstract class NumericFileNameExtractorSPI extends DefaultPropertiesCollectorSPI
         implements PropertiesCollectorSPI {
 
     public NumericFileNameExtractorSPI(final String name) {
         super(name);
-
     }
-
 }

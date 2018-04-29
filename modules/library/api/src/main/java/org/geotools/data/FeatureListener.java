@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,29 +16,21 @@
  */
 package org.geotools.data;
 
-
 /**
  * Interface to be implemented by all listeners of FeatureEvents.
  *
- * <p>
- * Event notification is based on p[roviding the Envelope of the modification
- * (if known).
- * </p>
+ * <p>Event notification is based on p[roviding the Envelope of the modification (if known).
  *
  * @author Jody Garnett, Refractions Research, Inc.
  * @since GeoTools 2.0
- *
- *
  * @source $URL$
  */
 public interface FeatureListener extends java.util.EventListener {
     /**
      * Gets called when a FeatureEvent is fired.
      *
-     * <p>
-     * Typically fired to signify that a change has occurred in the DataStore
-     * backing the FeatureSource.
-     * </p>
+     * <p>Typically fired to signify that a change has occurred in the DataStore backing the
+     * FeatureSource.
      *
      * @param featureEvent The FeatureEvent being fired
      */

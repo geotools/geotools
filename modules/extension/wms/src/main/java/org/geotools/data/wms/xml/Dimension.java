@@ -2,31 +2,30 @@ package org.geotools.data.wms.xml;
 
 /**
  * Property class for holding and handling of property values declared in Dimension-element of a
- * layer. In WMS 1.3.0 this is expanded to include Extent information documenting the valid
- * data values for this range.
- * 
- * http://schemas.opengis.net/wms/1.1.1/WMS_MS_Capabilities.dtd <!-- The Dimension element declares
- * the _existence_ of a dimension. --> <!ELEMENT Dimension EMPTY > <!ATTLIST Dimension name CDATA
- * #REQUIRED units CDATA #REQUIRED unitSymbol CDATA #IMPLIED>
- * 
- * http://schemas.opengis.net/wms/1.3.0/capabilities_1_3_0.xsd <element name="Dimension">
+ * layer. In WMS 1.3.0 this is expanded to include Extent information documenting the valid data
+ * values for this range.
+ *
+ * <p>http://schemas.opengis.net/wms/1.1.1/WMS_MS_Capabilities.dtd
+ * <!-- The Dimension element declares
+ * the _existence_ of a dimension. -->
+ * <!ELEMENT Dimension EMPTY > <!ATTLIST Dimension name CDATA #REQUIRED units CDATA #REQUIRED
+ * unitSymbol CDATA #IMPLIED>
+ *
+ * <p>http://schemas.opengis.net/wms/1.3.0/capabilities_1_3_0.xsd <element name="Dimension">
  * <complexType> <simpleContent> <extension base="string"> <attribute name="name" type="string"
  * use="required"/> <attribute name="units" type="string" use="required"/> <attribute
  * name="unitSymbol" type="string"/> <attribute name="default" type="string"/> <attribute
  * name="multipleValues" type="boolean"/> <attribute name="nearestValue" type="boolean"/> <attribute
  * name="current" type="boolean"/> </extension> </simpleContent> </complexType> </element>
- * 
- *
  *
  * @source $URL$
  * @version SVN $Id$
  * @author Per Engstrom, Curalia AB, pereng@gmail.com
- * 
  */
 public class Dimension {
     /** This name is often used as a lookup key */
     protected String name;
-    
+
     protected String units;
 
     protected String unitSymbol;
@@ -108,5 +107,4 @@ public class Dimension {
     public String toString() {
         return name + ", " + units + "(" + unitSymbol + ")";
     }
-
 }

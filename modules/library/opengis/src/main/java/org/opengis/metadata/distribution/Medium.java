@@ -4,47 +4,43 @@
  *
  *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2004-2005, Open Geospatial Consortium Inc.
- *    
+ *
  *    All Rights Reserved. http://www.opengis.org/legal/
  */
 package org.opengis.metadata.distribution;
 
-import java.util.Collection;
-import javax.measure.Unit;
-import org.opengis.util.InternationalString;
-import org.opengis.annotation.UML;
-
 import static org.opengis.annotation.Obligation.*;
 import static org.opengis.annotation.Specification.*;
 
+import java.util.Collection;
+import javax.measure.Unit;
+import org.opengis.annotation.UML;
+import org.opengis.util.InternationalString;
 
 /**
  * Information about the media on which the resource can be distributed.
  *
- *
- *
  * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as#01-111">ISO 19115</A>
- * @author  Martin Desruisseaux (IRD)
- * @since   GeoAPI 2.0
+ * @author Martin Desruisseaux (IRD)
+ * @since GeoAPI 2.0
  */
-@UML(identifier="MD_Medium", specification=ISO_19115)
+@UML(identifier = "MD_Medium", specification = ISO_19115)
 public interface Medium {
     /**
      * Name of the medium on which the resource can be received.
      *
      * @return Name of the medium, or {@code null}.
      */
-    @UML(identifier="name", obligation=OPTIONAL, specification=ISO_19115)
+    @UML(identifier = "name", obligation = OPTIONAL, specification = ISO_19115)
     MediumName getName();
 
     /**
-     * Density at which the data is recorded.
-     * The numbers should be greater than zero.
+     * Density at which the data is recorded. The numbers should be greater than zero.
      *
      * @return Density at which the data is recorded, or {@code null}.
      */
-    @UML(identifier="density", obligation=OPTIONAL, specification=ISO_19115)
+    @UML(identifier = "density", obligation = OPTIONAL, specification = ISO_19115)
     Collection<Double> getDensities();
 
     /**
@@ -52,16 +48,15 @@ public interface Medium {
      *
      * @return Units of measure for the recording density, or {@code null}.
      */
-    @UML(identifier="densityUnits", obligation=CONDITIONAL, specification=ISO_19115)
+    @UML(identifier = "densityUnits", obligation = CONDITIONAL, specification = ISO_19115)
     Unit<?> getDensityUnits();
 
     /**
-     * Number of items in the media identified.
-     * Returns {@code null} if unknown.
+     * Number of items in the media identified. Returns {@code null} if unknown.
      *
      * @return Number of items in the media identified, or {@code null}.
      */
-    @UML(identifier="volumes", obligation=OPTIONAL, specification=ISO_19115)
+    @UML(identifier = "volumes", obligation = OPTIONAL, specification = ISO_19115)
     Integer getVolumes();
 
     /**
@@ -69,7 +64,7 @@ public interface Medium {
      *
      * @return Method used to write to the medium, or {@code null}.
      */
-    @UML(identifier="mediumFormat", obligation=OPTIONAL, specification=ISO_19115)
+    @UML(identifier = "mediumFormat", obligation = OPTIONAL, specification = ISO_19115)
     Collection<MediumFormat> getMediumFormats();
 
     /**
@@ -77,6 +72,6 @@ public interface Medium {
      *
      * @return Description of other limitations for using the medium, or {@code null}.
      */
-    @UML(identifier="mediumNote", obligation=OPTIONAL, specification=ISO_19115)
+    @UML(identifier = "mediumNote", obligation = OPTIONAL, specification = ISO_19115)
     InternationalString getMediumNote();
 }

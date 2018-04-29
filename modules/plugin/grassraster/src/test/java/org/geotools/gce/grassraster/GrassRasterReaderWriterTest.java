@@ -21,10 +21,9 @@ import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-
 import javax.media.jai.iterator.RectIter;
 import javax.media.jai.iterator.RectIterFactory;
-
+import junit.framework.TestCase;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -36,14 +35,10 @@ import org.opengis.coverage.grid.GridCoverageWriter;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.Envelope;
 
-import junit.framework.TestCase;
-
 /**
  * Test the grass raster reader abd writer.
- * 
+ *
  * @author Andrea Antonello (www.hydrologis.com)
- *
- *
  * @source $URL$
  */
 public class GrassRasterReaderWriterTest extends TestCase {
@@ -52,20 +47,22 @@ public class GrassRasterReaderWriterTest extends TestCase {
     private double w = 1640650.0;
     private double e = 1640950.0;
 
-    public static double[][] mapData = new double[][]{
-            {800, 900, 1000, 1000, 1200, 1250, 1300, 1350, 1450, 1500},
-            {600, 650, 750, 850, 860, 900, 1000, 1200, 1250, 1500},
-            {500, 550, 700, 750, 800, 850, 900, 1000, 1100, 1500},
-            {400, 410, 650, 700, 750, 800, 850, 800, 800, 1500},
-            {450, 550, 430, 500, 600, 700, 800, 800, 800, 1500},
-            {500, 600, 700, 750, 760, 770, 850, 1000, 1150, 1500},
-            {600, 700, 750, 800, 780, 790, 1000, 1100, 1250, 1500},
-            {800, 910, 980, 1001, 1150, 1200, 1250, 1300, 1450, 1500}};
+    public static double[][] mapData =
+            new double[][] {
+                {800, 900, 1000, 1000, 1200, 1250, 1300, 1350, 1450, 1500},
+                {600, 650, 750, 850, 860, 900, 1000, 1200, 1250, 1500},
+                {500, 550, 700, 750, 800, 850, 900, 1000, 1100, 1500},
+                {400, 410, 650, 700, 750, 800, 850, 800, 800, 1500},
+                {450, 550, 430, 500, 600, 700, 800, 800, 800, 1500},
+                {500, 600, 700, 750, 760, 770, 850, 1000, 1150, 1500},
+                {600, 700, 750, 800, 780, 790, 1000, 1100, 1250, 1500},
+                {800, 910, 980, 1001, 1150, 1200, 1250, 1300, 1450, 1500}
+            };
 
     public void test() throws Exception {
         URL pitUrl = this.getClass().getClassLoader().getResource("testlocation/test/cell/pit");
-        AbstractGridFormat format = (AbstractGridFormat) new GrassCoverageFormatFactory()
-                .createFormat();
+        AbstractGridFormat format =
+                (AbstractGridFormat) new GrassCoverageFormatFactory().createFormat();
         File pitFile = URLs.urlToFile(pitUrl);
         assertTrue(format.accepts(pitFile));
 
@@ -83,13 +80,13 @@ public class GrassRasterReaderWriterTest extends TestCase {
 
     public void testFormatAccepts() throws Exception {
         URL pitUrl = this.getClass().getClassLoader().getResource("testlocation/test/cellhd/pit");
-        AbstractGridFormat format = (AbstractGridFormat) new GrassCoverageFormatFactory()
-        .createFormat();
+        AbstractGridFormat format =
+                (AbstractGridFormat) new GrassCoverageFormatFactory().createFormat();
         File pitFile = URLs.urlToFile(pitUrl);
         assertFalse(format.accepts(pitFile));
     }
 
-    private GridCoverage2D readGc( AbstractGridFormat format, File fileToRead ) throws IOException {
+    private GridCoverage2D readGc(AbstractGridFormat format, File fileToRead) throws IOException {
         GridCoverageReader reader = format.getReader(fileToRead);
         GridCoverage2D gc = ((GridCoverage2D) reader.read(null));
         assertTrue(gc != null);
@@ -116,7 +113,7 @@ public class GrassRasterReaderWriterTest extends TestCase {
         return gc;
     }
 
-    protected void checkMatrixEqual( RenderedImage image, double[][] matrix, double delta ) {
+    protected void checkMatrixEqual(RenderedImage image, double[][] matrix, double delta) {
         RectIter rectIter = RectIterFactory.create(image, null);
         int y = 0;
         do {
@@ -130,14 +127,13 @@ public class GrassRasterReaderWriterTest extends TestCase {
                     assertEquals(x + " " + y, expectedResult, value, delta);
                 }
                 x++;
-            } while( !rectIter.nextPixelDone() );
+            } while (!rectIter.nextPixelDone());
             rectIter.startPixels();
             y++;
-        } while( !rectIter.nextLineDone() );
+        } while (!rectIter.nextLineDone());
     }
 
-    public static final void main( String[] args ) throws Exception {
+    public static final void main(String[] args) throws Exception {
         junit.textui.TestRunner.run(GrassRasterReaderWriterTest.class);
     }
-
 }

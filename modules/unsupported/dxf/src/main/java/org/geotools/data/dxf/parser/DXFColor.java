@@ -4,11 +4,7 @@ import java.awt.Color;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public final class DXFColor {
 
     private static final Log log = LogFactory.getLog(DXFColor.class);
@@ -269,7 +265,7 @@ public final class DXFColor {
         new Color(0x98, 0x98, 0x98), // color 252
         new Color(0xbb, 0xbb, 0xbb), // color 253
         new Color(0xdd, 0xdd, 0xdd), // color 254
-        new Color(0x00, 0x00, 0x00)      // color 0	bylayer
+        new Color(0x00, 0x00, 0x00) // color 0	bylayer
     };
 
     public static Color getDefaultColor() {
@@ -292,7 +288,7 @@ public final class DXFColor {
         return ColorMap[3];
     }
 
-    public final static Color getColor(int index) {
+    public static final Color getColor(int index) {
         if ((index >= 0) && (index <= 255)) {
             return ColorMap[index];
         } else {
@@ -300,7 +296,7 @@ public final class DXFColor {
         }
     }
 
-    public final static int getColor(Color c) {
+    public static final int getColor(Color c) {
         if (c == null) {
             return -1;
         }
@@ -312,7 +308,7 @@ public final class DXFColor {
         return defaultColor;
     }
 
-    public final static String getColorRGB(int index) {
+    public static final String getColorRGB(int index) {
         Color cc = getColor(index);
         if (cc == null) {
             return null;

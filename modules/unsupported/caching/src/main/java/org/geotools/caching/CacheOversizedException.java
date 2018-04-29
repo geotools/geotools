@@ -19,19 +19,13 @@ package org.geotools.caching;
 import org.geotools.caching.featurecache.FeatureCacheException;
 
 /**
- * An Exception that is thrown when the
- * size of the features being added to the cache exceeds the
+ * An Exception that is thrown when the size of the features being added to the cache exceeds the
  * size of the cache.
- *
- *
- *
  *
  * @source $URL$
  */
 public class CacheOversizedException extends FeatureCacheException {
-    /**
-     *
-     */
+    /** */
     private static final long serialVersionUID = 3498526657089279151L;
 
     public CacheOversizedException() {

@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,25 +17,22 @@
 package org.geotools.data;
 
 /**
- * Used in conjuction with {@link FeatureLocking} to lock features during a
- * transaction. This class is responsible for supplying a unique Authorization 
- * ID and expiry period.
- * </p> 
- *
+ * Used in conjuction with {@link FeatureLocking} to lock features during a transaction. This class
+ * is responsible for supplying a unique Authorization ID and expiry period.
  *
  * @source $URL$
- * 
  * @deprecated Please use {@link FeatureLock}
  */
 public class DefaultFeatureLock extends FeatureLock {
-    //private final String authorization;
-    //private final long duration;
+    // private final String authorization;
+    // private final long duration;
 
     /**
      * Package private constructor - use DefaultFeatureLockFactory methods.
-     * @see DefaultFeatureLockFactory.     
+     *
+     * @see DefaultFeatureLockFactory.
      */
-    DefaultFeatureLock(String id, long duration){
-        super( id, duration );
+    DefaultFeatureLock(String id, long duration) {
+        super(id, duration);
     }
 }

@@ -19,15 +19,10 @@ package org.geotools.gml3.smil;
 import org.geotools.xml.Configuration;
 import org.picocontainer.MutablePicoContainer;
 
-
 /**
  * Parser configuration for SMIL20 schema.
  *
  * @author Justin Deoliveira, The Open Planning Project
- *
- *
- *
- *
  * @source $URL$
  */
 public class SMIL20Configuration extends Configuration {
@@ -35,6 +30,5 @@ public class SMIL20Configuration extends Configuration {
         super(SMIL20.getInstance());
     }
 
-    protected void registerBindings(MutablePicoContainer container) {
-    }
+    protected void registerBindings(MutablePicoContainer container) {}
 }

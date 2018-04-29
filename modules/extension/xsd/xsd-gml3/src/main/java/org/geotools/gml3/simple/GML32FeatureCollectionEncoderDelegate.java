@@ -24,13 +24,14 @@ import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
+import java.util.List;
+import java.util.Map;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.geometry.jts.CircularRing;
 import org.geotools.geometry.jts.CircularString;
 import org.geotools.geometry.jts.CompoundCurve;
 import org.geotools.geometry.jts.CompoundRing;
-import org.geotools.gml2.GMLConfiguration;
 import org.geotools.gml2.SrsSyntax;
 import org.geotools.gml2.simple.GMLWriter;
 import org.geotools.gml2.simple.GeometryEncoder;
@@ -44,34 +45,36 @@ import org.geotools.xml.XSD;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.FeatureType;
-import org.opengis.feature.type.Name;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
-import java.util.List;
-import java.util.Map;
-
 /**
  * SimpleFeatureCollection encoder delegate for fast GML3 encoding
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
-public class GML32FeatureCollectionEncoderDelegate extends
-        org.geotools.gml2.simple.FeatureCollectionEncoderDelegate {
+public class GML32FeatureCollectionEncoderDelegate
+        extends org.geotools.gml2.simple.FeatureCollectionEncoderDelegate {
 
-    public GML32FeatureCollectionEncoderDelegate(SimpleFeatureCollection features, Encoder encoder) {
+    public GML32FeatureCollectionEncoderDelegate(
+            SimpleFeatureCollection features, Encoder encoder) {
         super(features, encoder, new GML32Delegate(encoder));
         this.encodeGeometryIds = true;
     }
 
     @Override
-    protected Attributes getPropertyAttributes(QualifiedName name, FeatureType featureType, AttributeDescriptor attribute, Object
-            value) {
-        if ("identifier".equals(name.getLocalPart()) && GML.NAMESPACE.equals(name.getNamespaceURI())) {
+    protected Attributes getPropertyAttributes(
+            QualifiedName name,
+            FeatureType featureType,
+            AttributeDescriptor attribute,
+            Object value) {
+        if ("identifier".equals(name.getLocalPart())
+                && GML.NAMESPACE.equals(name.getNamespaceURI())) {
             AttributesImpl atts = new AttributesImpl();
-            atts.addAttribute(null, "codeSpace", "codeSpace", null, featureType.getName().getNamespaceURI());
+            atts.addAttribute(
+                    null, "codeSpace", "codeSpace", null, featureType.getName().getNamespaceURI());
             return atts;
         }
 
@@ -82,8 +85,8 @@ public class GML32FeatureCollectionEncoderDelegate extends
 
         SrsSyntax srsSyntax;
 
-        static final QualifiedName MEMBER = new QualifiedName(GML.NAMESPACE,
-                GML.member.getLocalPart(), "gml");
+        static final QualifiedName MEMBER =
+                new QualifiedName(GML.NAMESPACE, GML.member.getLocalPart(), "gml");
 
         protected QualifiedName member;
 
@@ -94,12 +97,12 @@ public class GML32FeatureCollectionEncoderDelegate extends
         int numDecimals;
 
         public GML32Delegate(Encoder encoder) {
-            this.gmlUri =org.geotools.gml3.v3_2.GML.NAMESPACE;
+            this.gmlUri = org.geotools.gml3.v3_2.GML.NAMESPACE;
             this.gmlPrefix = encoder.getNamespaces().getPrefix(gmlUri);
-            
+
             this.member = MEMBER.derive(gmlPrefix, gmlUri);
-            this.srsSyntax = (SrsSyntax) encoder.getContext().getComponentInstanceOfType(
-                    SrsSyntax.class);
+            this.srsSyntax =
+                    (SrsSyntax) encoder.getContext().getComponentInstanceOfType(SrsSyntax.class);
             this.encodingUtils = new GML32EncodingUtils();
             this.numDecimals = getNumDecimals(encoder.getConfiguration());
         }
@@ -119,9 +122,10 @@ public class GML32FeatureCollectionEncoderDelegate extends
             }
         }
 
-        public List getFeatureProperties(SimpleFeature f, XSDElementDeclaration element, Encoder e) {
-            return encodingUtils.AbstractFeatureTypeGetProperties(f, element,
-                    e.getSchemaIndex(), e.getConfiguration());
+        public List getFeatureProperties(
+                SimpleFeature f, XSDElementDeclaration element, Encoder e) {
+            return encodingUtils.AbstractFeatureTypeGetProperties(
+                    f, element, e.getSchemaIndex(), e.getConfiguration());
         }
 
         public EnvelopeEncoder createEnvelopeEncoder(Encoder e) {
@@ -130,23 +134,25 @@ public class GML32FeatureCollectionEncoderDelegate extends
 
         public void setSrsNameAttribute(AttributesImpl atts, CoordinateReferenceSystem crs) {
 
-            atts.addAttribute(null, "srsName", "srsName", null,
+            atts.addAttribute(
+                    null,
+                    "srsName",
+                    "srsName",
+                    null,
                     GML3EncodingUtils.toURI(crs, srsSyntax).toString());
         }
 
         @Override
         public void setGeometryDimensionAttribute(AttributesImpl atts, int dimension) {
-            atts.addAttribute(null, "srsDimension", "srsDimension", null, String.valueOf(dimension));
-
+            atts.addAttribute(
+                    null, "srsDimension", "srsDimension", null, String.valueOf(dimension));
         }
 
         public void initFidAttribute(AttributesImpl atts) {
             atts.addAttribute(GML.NAMESPACE, "id", "gml:id", null, "");
         }
 
-        public void startFeatures(GMLWriter handler) throws Exception {
-
-        }
+        public void startFeatures(GMLWriter handler) throws Exception {}
 
         public void startFeature(GMLWriter handler) throws Exception {
             handler.startElement(member, null);
@@ -156,24 +162,27 @@ public class GML32FeatureCollectionEncoderDelegate extends
             handler.endElement(member);
         }
 
-        public void endFeatures(GMLWriter handler) throws Exception {
-
-        }
+        public void endFeatures(GMLWriter handler) throws Exception {}
 
         @Override
-        public void registerGeometryEncoders(Map<Class, GeometryEncoder> encoders, Encoder encoder) {
+        public void registerGeometryEncoders(
+                Map<Class, GeometryEncoder> encoders, Encoder encoder) {
             encoders.put(Point.class, new PointEncoder(encoder, gmlPrefix, gmlUri));
             encoders.put(MultiPoint.class, new MultiPointEncoder(encoder, gmlPrefix, gmlUri));
             encoders.put(LineString.class, new LineStringEncoder(encoder, gmlPrefix, gmlUri));
             encoders.put(LinearRing.class, new LinearRingEncoder(encoder, gmlPrefix, gmlUri));
-            encoders.put(MultiLineString.class, new MultiLineStringEncoder(encoder, gmlPrefix, gmlUri, true));
+            encoders.put(
+                    MultiLineString.class,
+                    new MultiLineStringEncoder(encoder, gmlPrefix, gmlUri, true));
             encoders.put(Polygon.class, new PolygonEncoder(encoder, gmlPrefix, gmlUri));
             encoders.put(MultiPolygon.class, new MultiPolygonEncoder(encoder, gmlPrefix, gmlUri));
             encoders.put(CircularString.class, new CurveEncoder(encoder, gmlPrefix, gmlUri));
             encoders.put(CompoundCurve.class, new CurveEncoder(encoder, gmlPrefix, gmlUri));
             encoders.put(CircularRing.class, new CurveEncoder(encoder, gmlPrefix, gmlUri));
             encoders.put(CompoundRing.class, new CurveEncoder(encoder, gmlPrefix, gmlUri));
-            encoders.put(GeometryCollection.class, new GeometryCollectionEncoder(encoder, gmlPrefix, gmlUri));
+            encoders.put(
+                    GeometryCollection.class,
+                    new GeometryCollectionEncoder(encoder, gmlPrefix, gmlUri));
         }
 
         @Override
@@ -187,12 +196,10 @@ public class GML32FeatureCollectionEncoderDelegate extends
         }
 
         @Override
-        public void startTuple(GMLWriter handler) throws SAXException {
-        }
+        public void startTuple(GMLWriter handler) throws SAXException {}
 
         @Override
-        public void endTuple(GMLWriter handler) throws SAXException {
-        }
+        public void endTuple(GMLWriter handler) throws SAXException {}
 
         @Override
         public XSD getSchema() {
@@ -208,6 +215,5 @@ public class GML32FeatureCollectionEncoderDelegate extends
         public boolean forceDecimalEncoding() {
             return false;
         }
-
     }
 }

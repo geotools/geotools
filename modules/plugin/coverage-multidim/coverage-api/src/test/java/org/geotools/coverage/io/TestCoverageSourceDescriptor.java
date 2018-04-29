@@ -24,7 +24,6 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.coverage.grid.io.DimensionDescriptor;
 import org.geotools.coverage.io.CoverageSource.AdditionalDomain;
 import org.geotools.coverage.io.CoverageSource.SpatialDomain;
@@ -45,10 +44,12 @@ import org.opengis.util.ProgressListener;
 
 public class TestCoverageSourceDescriptor extends CoverageSourceDescriptor {
 
-    private final static Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger(TestCoverageSourceDescriptor.class.toString());
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(
+                    TestCoverageSourceDescriptor.class.toString());
 
     private static CoordinateReferenceSystem WGS84;
+
     static {
         try {
             WGS84 = CRS.decode("EPSG:4326", true);
@@ -68,8 +69,8 @@ public class TestCoverageSourceDescriptor extends CoverageSourceDescriptor {
         }
 
         @Override
-        public Set<? extends BoundingBox> getSpatialElements(boolean overall,
-                ProgressListener listener) throws IOException {
+        public Set<? extends BoundingBox> getSpatialElements(
+                boolean overall, ProgressListener listener) throws IOException {
             // TODO Auto-generated method stub
             return null;
         }
@@ -87,11 +88,10 @@ public class TestCoverageSourceDescriptor extends CoverageSourceDescriptor {
         }
 
         @Override
-        public Set<? extends RasterLayout> getRasterElements(boolean overall,
-                ProgressListener listener) throws IOException {
+        public Set<? extends RasterLayout> getRasterElements(
+                boolean overall, ProgressListener listener) throws IOException {
             return layout;
         }
-
     }
 
     static class TestTemporalDomain extends TemporalDomain {
@@ -106,8 +106,8 @@ public class TestCoverageSourceDescriptor extends CoverageSourceDescriptor {
         }
 
         @Override
-        public SortedSet<? extends DateRange> getTemporalElements(boolean overall,
-                ProgressListener listener) throws IOException {
+        public SortedSet<? extends DateRange> getTemporalElements(
+                boolean overall, ProgressListener listener) throws IOException {
             return new DateRangeTreeSet(dates);
         }
 
@@ -115,12 +115,14 @@ public class TestCoverageSourceDescriptor extends CoverageSourceDescriptor {
         public CoordinateReferenceSystem getCoordinateReferenceSystem() {
             return temporalCrs;
         }
-
     }
 
     private static SpatialDomain testSpatialDomain;
 
-    private static TemporalDomain testTemporalDomain = new TestTemporalDomain(DefaultTemporalCRS.JAVA, Collections.singleton(new DateRange(new Date(10000), new Date(20000))));
+    private static TemporalDomain testTemporalDomain =
+            new TestTemporalDomain(
+                    DefaultTemporalCRS.JAVA,
+                    Collections.singleton(new DateRange(new Date(10000), new Date(20000))));
 
     public static final String TEST_COVERAGE = "testCoverage";
 

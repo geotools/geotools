@@ -2,7 +2,7 @@
  *    GeoTools - OpenSource mapping toolkit
  *    http://geotools.org
  *    (C) 2005-2006, GeoTools Project Managment Committee (PMC)
- * 
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,34 +17,29 @@ package org.geotools.data.edigeo;
 
 import java.io.File;
 import java.io.IOException;
-
 import org.geotools.test.TestData;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class EdigeoTestUtils {
-	
-	/**
-	 * DOCUMENT ME!
-	 * 
-	 * @return DOCUMENT ME!
-	 */
-	private static File getDataPath() {
+
+    /**
+     * DOCUMENT ME!
+     *
+     * @return DOCUMENT ME!
+     */
+    private static File getDataPath() {
         try {
-        	return TestData.file(EdigeoTestUtils.class, null);
+            return TestData.file(EdigeoTestUtils.class, null);
         } catch (IOException e) {
             return null;
         }
     }
-	
-	/**
-	 * @param fileName
-	 * @return
-	 */
-	protected static String fileName(String fileName) {
+
+    /**
+     * @param fileName
+     * @return
+     */
+    protected static String fileName(String fileName) {
         if (fileName.equals("")) {
             return getDataPath().getAbsolutePath();
         }
@@ -53,6 +48,4 @@ public class EdigeoTestUtils {
 
         return f.getAbsolutePath();
     }
-	
-	
 }

@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -21,18 +21,18 @@ import org.geotools.styling.Symbolizer;
 import org.opengis.filter.expression.Function;
 
 /**
- * This interface can be implemented by geometry transformation functions
- * that whish to be used in the {@link Symbolizer} geometry property.
+ * This interface can be implemented by geometry transformation functions that whish to be used in
+ * the {@link Symbolizer} geometry property.
+ *
  * <p>It gives the renderer a hint of what area should be queried given a certain rendering area
+ *
  * @author Andrea Aime - GeoSolutions
- *
- *
- *
  * @source $URL$
  */
 public interface GeometryTransformation extends Function {
     /**
-     * Returns a query envelope given a certain 
+     * Returns a query envelope given a certain
+     *
      * @param renderingEnvelope
      * @return
      */

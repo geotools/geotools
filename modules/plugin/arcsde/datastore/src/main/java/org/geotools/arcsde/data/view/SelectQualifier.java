@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.schema.Table;
 import net.sf.jsqlparser.statement.select.FromItem;
@@ -30,39 +29,33 @@ import net.sf.jsqlparser.statement.select.OrderByElement;
 import net.sf.jsqlparser.statement.select.PlainSelect;
 import net.sf.jsqlparser.statement.select.SelectItem;
 import net.sf.jsqlparser.statement.select.Union;
-
 import org.geotools.arcsde.session.ISession;
 
 /**
  * Visitor on a PlainSelect that produces another one but with all the table names and field names
  * fully qualified as expected by ArcSDE.
- * <p>
- * At any time may throw an IllegalArgumentException if a table or field name stated in the
+ *
+ * <p>At any time may throw an IllegalArgumentException if a table or field name stated in the
  * PlainSelect is not found on the arcsde instance.
- * </p>
- * <p>
- * Usage:
- * 
+ *
+ * <p>Usage:
+ *
  * <pre>
  * &lt;code&gt;
  *   PlainSelect unqualifiedSelect = ...
  *   SeConnection conn = ...
  *   SelectVisitor visitor = new SelectVisitor(conn);
  *   visitor.accept(unqualifiedSelect);
- *   
+ *
  *   PlainSelect qualifiedSelect = visitor.getQualifiedQuery();
  * &lt;/code&gt;
  * </pre>
- * 
- * </p>
- * 
+ *
  * @author Gabriel Roldan, Axios Engineering
  * @version $Id$
- *
- *
  * @source $URL$
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *         /org/geotools/arcsde/data/view/SelectQualifier.java $
+ *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
+ *     /org/geotools/arcsde/data/view/SelectQualifier.java $
  * @since 2.3.x
  */
 public class SelectQualifier implements net.sf.jsqlparser.statement.select.SelectVisitor {
@@ -73,7 +66,7 @@ public class SelectQualifier implements net.sf.jsqlparser.statement.select.Selec
 
     /**
      * Creates a new SelectQualifier object.
-     * 
+     *
      * @param session
      */
     public SelectQualifier(ISession session) {
@@ -112,13 +105,14 @@ public class SelectQualifier implements net.sf.jsqlparser.statement.select.Selec
         Expression where = qualifyWhere(aliases, plainSelect.getWhere());
         qualifiedSelect.setWhere(where);
 
-        List<OrderByElement> orderByItems = qualifyOrderBy(aliases, plainSelect.getOrderByElements());
+        List<OrderByElement> orderByItems =
+                qualifyOrderBy(aliases, plainSelect.getOrderByElements());
         qualifiedSelect.setOrderByElements(orderByItems);
     }
 
     private Map<String, Table> extractTableAliases(List<FromItem> fromItems) {
         Map<String, Table> aliases = new HashMap<String, Table>();
-        for (Iterator<FromItem> it = fromItems.iterator(); it.hasNext();) {
+        for (Iterator<FromItem> it = fromItems.iterator(); it.hasNext(); ) {
             FromItem fromItem = it.next();
             if (fromItem instanceof Table) {
                 Table table = (Table) fromItem;
@@ -134,7 +128,7 @@ public class SelectQualifier implements net.sf.jsqlparser.statement.select.Selec
     private List<FromItem> removeTableAliases(final List<FromItem> fromItems) {
         List<FromItem> items = new ArrayList<FromItem>(fromItems);
 
-        for (Iterator<FromItem> it = items.iterator(); it.hasNext();) {
+        for (Iterator<FromItem> it = items.iterator(); it.hasNext(); ) {
 
             FromItem fromItem = it.next();
 
@@ -163,11 +157,11 @@ public class SelectQualifier implements net.sf.jsqlparser.statement.select.Selec
 
         List<OrderByElement> qualifiedOrderElems = new ArrayList<OrderByElement>();
 
-        for (Iterator it = orderByElements.iterator(); it.hasNext();) {
+        for (Iterator it = orderByElements.iterator(); it.hasNext(); ) {
             OrderByElement orderByElem = (OrderByElement) it.next();
 
-            OrderByElement qualified = OrderByElementQualifier.qualify(session, tableAliases,
-                    orderByElem);
+            OrderByElement qualified =
+                    OrderByElementQualifier.qualify(session, tableAliases, orderByElem);
 
             qualifiedOrderElems.add(qualified);
         }
@@ -182,7 +176,7 @@ public class SelectQualifier implements net.sf.jsqlparser.statement.select.Selec
 
         List qualifiedItems = new ArrayList();
 
-        for (Iterator it = selectItems.iterator(); it.hasNext();) {
+        for (Iterator it = selectItems.iterator(); it.hasNext(); ) {
             SelectItem selectItem = (SelectItem) it.next();
 
             List items = SelectItemQualifier.qualify(session, tableAlias, selectItem);
@@ -200,7 +194,7 @@ public class SelectQualifier implements net.sf.jsqlparser.statement.select.Selec
 
         List<FromItem> qualifiedFromItems = new ArrayList<FromItem>();
 
-        for (Iterator it = fromItems.iterator(); it.hasNext();) {
+        for (Iterator it = fromItems.iterator(); it.hasNext(); ) {
             FromItem fromItem = (FromItem) it.next();
 
             FromItem qualifiedItem = FromItemQualifier.qualify(session, fromItem);

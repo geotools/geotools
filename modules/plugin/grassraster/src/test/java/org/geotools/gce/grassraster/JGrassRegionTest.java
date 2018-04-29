@@ -19,17 +19,13 @@ package org.geotools.gce.grassraster;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-
-import org.geotools.util.URLs;
-
 import junit.framework.TestCase;
+import org.geotools.util.URLs;
 
 /**
  * Test the {@link JGrassMapEnvironment} class and the created paths.
- * 
+ *
  * @author Andrea Antonello (www.hydrologis.com)
- *
- *
  * @source $URL$
  */
 @SuppressWarnings("nls")
@@ -85,7 +81,5 @@ public class JGrassRegionTest extends TestCase {
         assertTrue(tmpRegion.getWEResolution() - 8.333332929894731E-4 < EPSI);
         assertEquals(tmpRegion.getRows(), 6001);
         assertEquals(tmpRegion.getCols(), 12001);
-
     }
-
 }

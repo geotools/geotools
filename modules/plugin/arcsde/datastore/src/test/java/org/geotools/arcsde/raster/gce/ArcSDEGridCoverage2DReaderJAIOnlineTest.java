@@ -1,6 +1,4 @@
-/**
- * 
- */
+/** */
 package org.geotools.arcsde.raster.gce;
 
 import static org.geotools.arcsde.raster.info.RasterCellType.TYPE_16BIT_S;
@@ -20,6 +18,7 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import com.esri.sde.sdk.client.SeRaster;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.color.ColorSpace;
@@ -32,9 +31,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.imageio.ImageIO;
-
 import org.geotools.arcsde.ArcSDERasterFormatFactory;
 import org.geotools.arcsde.raster.info.RasterCellType;
 import org.geotools.arcsde.session.ArcSDEConnectionConfig;
@@ -61,16 +58,11 @@ import org.opengis.geometry.Envelope;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import com.esri.sde.sdk.client.SeRaster;
-
 /**
  * @author groldan
- * 
- *
- *
  * @source $URL$
  */
-@SuppressWarnings({ "deprecation", "nls" })
+@SuppressWarnings({"deprecation", "nls"})
 @Ignore
 public class ArcSDEGridCoverage2DReaderJAIOnlineTest {
 
@@ -78,9 +70,7 @@ public class ArcSDEGridCoverage2DReaderJAIOnlineTest {
 
     private static final Logger LOGGER = Logging.getLogger("org.geotools.arcsde.gce");
 
-    /**
-     * Whether to write the fetched rasters to disk or not
-     */
+    /** Whether to write the fetched rasters to disk or not */
     private static boolean DEBUG;
 
     static RasterTestData rasterTestData;
@@ -102,21 +92,18 @@ public class ArcSDEGridCoverage2DReaderJAIOnlineTest {
         // rasterTestData.tearDown();
     }
 
-    /**
-     * @throws java.lang.Exception
-     */
+    /** @throws java.lang.Exception */
     @Before
     public void setUp() throws Exception {
         rasterTestData = new RasterTestData();
         rasterTestData.setUp();
-        DEBUG = Boolean
-                .valueOf(rasterTestData.getRasterTestDataProperty(RASTER_TEST_DEBUG_TO_DISK));
-        //rasterTestData.setOverrideExistingTestTables(false);
+        DEBUG =
+                Boolean.valueOf(
+                        rasterTestData.getRasterTestDataProperty(RASTER_TEST_DEBUG_TO_DISK));
+        // rasterTestData.setOverrideExistingTestTables(false);
     }
 
-    /**
-     * @throws java.lang.Exception
-     */
+    /** @throws java.lang.Exception */
     @After
     public void tearDown() throws Exception {
         try {
@@ -241,7 +228,7 @@ public class ArcSDEGridCoverage2DReaderJAIOnlineTest {
     @Test
     public void testRead_16bit_U_ColorMapped() throws Exception {
         int[] ARGB = new int[65536];
-        ColorUtilities.expand(new Color[] { Color.BLACK, Color.WHITE }, ARGB, 0, ARGB.length);
+        ColorUtilities.expand(new Color[] {Color.BLACK, Color.WHITE}, ARGB, 0, ARGB.length);
         IndexColorModel colorModel = ColorUtilities.getIndexColorModel(ARGB);
         tableName = rasterTestData.getRasterTableName(TYPE_16BIT_U, 1, true);
         rasterTestData.loadTestRaster(tableName, 1, TYPE_16BIT_U, colorModel);
@@ -310,7 +297,6 @@ public class ArcSDEGridCoverage2DReaderJAIOnlineTest {
     public void testReadRasterCatalogFull() throws Exception {
         tableName = rasterTestData.loadRasterCatalog();
         testReadFullLevel0(TYPE_8BIT_U, 3, TYPE_8BIT_U, "RasterCatalog");
-
     }
 
     @Test
@@ -325,8 +311,8 @@ public class ArcSDEGridCoverage2DReaderJAIOnlineTest {
         final int reqWidth = originalGridRange.getSpan(0) / 2;
         final int reqHeight = originalGridRange.getSpan(1) / 2;
 
-        GeneralEnvelope reqEnvelope = new GeneralEnvelope(
-                originalEnvelope.getCoordinateReferenceSystem());
+        GeneralEnvelope reqEnvelope =
+                new GeneralEnvelope(originalEnvelope.getCoordinateReferenceSystem());
         double deltaX = originalEnvelope.getSpan(0) / 6;
         double deltaY = originalEnvelope.getSpan(1) / 6;
 
@@ -356,12 +342,12 @@ public class ArcSDEGridCoverage2DReaderJAIOnlineTest {
         final int reqWidth = originalGridRange.getSpan(0) / 10;
         final int reqHeight = originalGridRange.getSpan(1) / 10;
 
-        GeneralEnvelope reqEnvelope = new GeneralEnvelope(
-                originalEnvelope.getCoordinateReferenceSystem());
+        GeneralEnvelope reqEnvelope =
+                new GeneralEnvelope(originalEnvelope.getCoordinateReferenceSystem());
         double minx = originalEnvelope.getMinimum(0);
         double miny = originalEnvelope.getMinimum(1);
-        double maxx = minx + originalEnvelope.getSpan(0);// / 2;
-        double maxy = miny + originalEnvelope.getSpan(1);// / 2;
+        double maxx = minx + originalEnvelope.getSpan(0); // / 2;
+        double maxy = miny + originalEnvelope.getSpan(1); // / 2;
         reqEnvelope.setEnvelope(minx, miny, maxx, maxy);
 
         assertTrue(originalEnvelope.intersects(reqEnvelope, true));
@@ -377,17 +363,24 @@ public class ArcSDEGridCoverage2DReaderJAIOnlineTest {
         return testReadFullLevel0(cellType, numBands, cellType);
     }
 
-    private GridCoverage2D testReadFullLevel0(final RasterCellType cellType, final int numBands,
-            final RasterCellType resultingCellType) throws Exception {
+    private GridCoverage2D testReadFullLevel0(
+            final RasterCellType cellType,
+            final int numBands,
+            final RasterCellType resultingCellType)
+            throws Exception {
 
         tableName = rasterTestData.getRasterTableName(cellType, numBands, false);
         rasterTestData.loadTestRaster(tableName, numBands, cellType, null);
-        return testReadFullLevel0(cellType, numBands, resultingCellType, tableName + "_" + numBands
-                + "-Band");
+        return testReadFullLevel0(
+                cellType, numBands, resultingCellType, tableName + "_" + numBands + "-Band");
     }
 
-    private GridCoverage2D testReadFullLevel0(final RasterCellType cellType, final int numBands,
-            final RasterCellType resultingCellType, final String fileNamePostFix) throws Exception {
+    private GridCoverage2D testReadFullLevel0(
+            final RasterCellType cellType,
+            final int numBands,
+            final RasterCellType resultingCellType,
+            final String fileNamePostFix)
+            throws Exception {
 
         final AbstractGridCoverage2DReader reader = getReader();
         assertNotNull("Couldn't obtain a reader for " + fileNamePostFix, reader);
@@ -398,8 +391,8 @@ public class ArcSDEGridCoverage2DReaderJAIOnlineTest {
         final int origWidth = originalGridRange.getSpan(0);
         final int origHeight = originalGridRange.getSpan(1);
 
-        final GridCoverage2D coverage = readCoverage(reader, origWidth, origHeight,
-                originalEnvelope);
+        final GridCoverage2D coverage =
+                readCoverage(reader, origWidth, origHeight, originalEnvelope);
         assertNotNull("read coverage returned null", coverage);
 
         assertEquals(numBands, coverage.getNumSampleDimensions());
@@ -429,18 +422,22 @@ public class ArcSDEGridCoverage2DReaderJAIOnlineTest {
 
         if (colorModel instanceof IndexColorModel) {
             switch (cellType) {
-            case TYPE_1BIT:
-                assertEquals("1-bit image should have been promoted to 8-bit", 8, sampleSize[0]);
-                break;
-            case TYPE_8BIT_U:
-                assertEquals("8-bit indexed image should have been "
-                        + "promoted to 16bit to account for no-data values", 16, sampleSize[0]);
-                break;
-            case TYPE_16BIT_U:
-                assertEquals(16, sampleSize[0]);
-                break;
-            default:
-                throw new IllegalArgumentException(cellType.toString());
+                case TYPE_1BIT:
+                    assertEquals(
+                            "1-bit image should have been promoted to 8-bit", 8, sampleSize[0]);
+                    break;
+                case TYPE_8BIT_U:
+                    assertEquals(
+                            "8-bit indexed image should have been "
+                                    + "promoted to 16bit to account for no-data values",
+                            16,
+                            sampleSize[0]);
+                    break;
+                case TYPE_16BIT_U:
+                    assertEquals(16, sampleSize[0]);
+                    break;
+                default:
+                    throw new IllegalArgumentException(cellType.toString());
             }
         } else {
             for (int band = 0; band < numBands; band++) {
@@ -460,8 +457,8 @@ public class ArcSDEGridCoverage2DReaderJAIOnlineTest {
 
         final GeneralEnvelope originalEnvelope = reader.getOriginalEnvelope();
 
-        final CoordinateReferenceSystem originalCrs = originalEnvelope
-                .getCoordinateReferenceSystem();
+        final CoordinateReferenceSystem originalCrs =
+                originalEnvelope.getCoordinateReferenceSystem();
         final GridEnvelope originalGridRange = reader.getOriginalGridRange();
         final int requestedWidth = originalGridRange.getSpan(0);
         final int requestedHeight = originalGridRange.getSpan(1);
@@ -480,8 +477,8 @@ public class ArcSDEGridCoverage2DReaderJAIOnlineTest {
             double y1 = miny + shiftY;
             double y2 = miny + 2 * shiftY;
 
-            requestedEnvelope = new GeneralEnvelope(new ReferencedEnvelope(x1, x2, y1, y2,
-                    originalCrs));
+            requestedEnvelope =
+                    new GeneralEnvelope(new ReferencedEnvelope(x1, x2, y1, y2, originalCrs));
             coverage = readCoverage(reader, requestedWidth, requestedHeight, requestedEnvelope);
         }
         assertNotNull(coverage);
@@ -506,19 +503,35 @@ public class ArcSDEGridCoverage2DReaderJAIOnlineTest {
         assertTrue(tileHeight > 0);
 
         GeneralEnvelope expectedEnvelope = new GeneralEnvelope(originalCrs);
-        expectedEnvelope.setRange(0, originalEnvelope.getMinimum(0), originalEnvelope.getMinimum(0)
-                + (originalEnvelope.getSpan(0) / 2));
+        expectedEnvelope.setRange(
+                0,
+                originalEnvelope.getMinimum(0),
+                originalEnvelope.getMinimum(0) + (originalEnvelope.getSpan(0) / 2));
 
-        expectedEnvelope.setRange(1, originalEnvelope.getMinimum(1), originalEnvelope.getMinimum(1)
-                + (originalEnvelope.getSpan(1) / 2));
+        expectedEnvelope.setRange(
+                1,
+                originalEnvelope.getMinimum(1),
+                originalEnvelope.getMinimum(1) + (originalEnvelope.getSpan(1) / 2));
 
-        LOGGER.info("\nRequested width : " + requestedWidth + "\nReturned width  :"
-                + image.getWidth() + "\nRequested height:" + requestedHeight
-                + "\nReturned height :" + image.getHeight());
+        LOGGER.info(
+                "\nRequested width : "
+                        + requestedWidth
+                        + "\nReturned width  :"
+                        + image.getWidth()
+                        + "\nRequested height:"
+                        + requestedHeight
+                        + "\nReturned height :"
+                        + image.getHeight());
 
-        LOGGER.info("\nOriginal envelope  : " + originalEnvelope + "\n requested envelope :"
-                + requestedEnvelope + "\n expected envelope  :" + expectedEnvelope
-                + "\n returned envelope  :" + returnedEnvelope);
+        LOGGER.info(
+                "\nOriginal envelope  : "
+                        + originalEnvelope
+                        + "\n requested envelope :"
+                        + requestedEnvelope
+                        + "\n expected envelope  :"
+                        + expectedEnvelope
+                        + "\n returned envelope  :"
+                        + returnedEnvelope);
 
         assertEquals(501, image.getWidth());
         assertEquals(501, image.getHeight());
@@ -528,22 +541,31 @@ public class ArcSDEGridCoverage2DReaderJAIOnlineTest {
     @Test
     public void tesReadOverlaps() throws Exception {
         tableName = rasterTestData.getRasterTableName(RasterCellType.TYPE_8BIT_U, 1);
-        rasterTestData.loadTestRaster(tableName, 1, 100, 100, TYPE_8BIT_U, null, true, false,
-                SeRaster.SE_INTERPOLATION_NEAREST, null);
+        rasterTestData.loadTestRaster(
+                tableName,
+                1,
+                100,
+                100,
+                TYPE_8BIT_U,
+                null,
+                true,
+                false,
+                SeRaster.SE_INTERPOLATION_NEAREST,
+                null);
         final AbstractGridCoverage2DReader reader = getReader();
         assertNotNull(reader);
 
         final GeneralEnvelope originalEnvelope = reader.getOriginalEnvelope();
 
-        final CoordinateReferenceSystem originalCrs = originalEnvelope
-                .getCoordinateReferenceSystem();
+        final CoordinateReferenceSystem originalCrs =
+                originalEnvelope.getCoordinateReferenceSystem();
         final GridEnvelope originalGridRange = reader.getOriginalGridRange();
         final int requestedWidth = originalGridRange.getSpan(0);
         final int requestedHeight = originalGridRange.getSpan(1);
 
         final GeneralEnvelope requestedEnvelope;
-        requestedEnvelope = new GeneralEnvelope(new ReferencedEnvelope(-100, 100, -100, 100,
-                originalCrs));
+        requestedEnvelope =
+                new GeneralEnvelope(new ReferencedEnvelope(-100, 100, -100, 100, originalCrs));
 
         final GridCoverage2D coverage;
         coverage = readCoverage(reader, requestedWidth, requestedHeight, requestedEnvelope);
@@ -569,13 +591,25 @@ public class ArcSDEGridCoverage2DReaderJAIOnlineTest {
         expectedEnvelope.setRange(0, 0, 100);
         expectedEnvelope.setRange(1, 0, 100);
 
-        LOGGER.info("\nRequested width : " + requestedWidth + "\nReturned width  :"
-                + image.getWidth() + "\nRequested height:" + requestedHeight
-                + "\nReturned height :" + image.getHeight());
+        LOGGER.info(
+                "\nRequested width : "
+                        + requestedWidth
+                        + "\nReturned width  :"
+                        + image.getWidth()
+                        + "\nRequested height:"
+                        + requestedHeight
+                        + "\nReturned height :"
+                        + image.getHeight());
 
-        LOGGER.info("\nOriginal envelope  : " + originalEnvelope + "\n requested envelope :"
-                + requestedEnvelope + "\n expected envelope  :" + expectedEnvelope
-                + "\n returned envelope  :" + returnedEnvelope);
+        LOGGER.info(
+                "\nOriginal envelope  : "
+                        + originalEnvelope
+                        + "\n requested envelope :"
+                        + requestedEnvelope
+                        + "\n expected envelope  :"
+                        + expectedEnvelope
+                        + "\n returned envelope  :"
+                        + returnedEnvelope);
 
         assertEquals(50, image.getWidth());
         assertEquals(50, image.getHeight());
@@ -585,22 +619,31 @@ public class ArcSDEGridCoverage2DReaderJAIOnlineTest {
     @Test
     public void tesReadNotOverlaps() throws Exception {
         tableName = rasterTestData.getRasterTableName(RasterCellType.TYPE_8BIT_U, 1);
-        rasterTestData.loadTestRaster(tableName, 1, 100, 100, TYPE_8BIT_U, null, true, false,
-                SeRaster.SE_INTERPOLATION_NEAREST, null);
+        rasterTestData.loadTestRaster(
+                tableName,
+                1,
+                100,
+                100,
+                TYPE_8BIT_U,
+                null,
+                true,
+                false,
+                SeRaster.SE_INTERPOLATION_NEAREST,
+                null);
         final AbstractGridCoverage2DReader reader = getReader();
         assertNotNull(reader);
 
         final GeneralEnvelope originalEnvelope = reader.getOriginalEnvelope();
 
-        final CoordinateReferenceSystem originalCrs = originalEnvelope
-                .getCoordinateReferenceSystem();
+        final CoordinateReferenceSystem originalCrs =
+                originalEnvelope.getCoordinateReferenceSystem();
         final GridEnvelope originalGridRange = reader.getOriginalGridRange();
         final int requestedWidth = originalGridRange.getSpan(0);
         final int requestedHeight = originalGridRange.getSpan(1);
 
         final GeneralEnvelope nonOverlappingEnvelope;
-        nonOverlappingEnvelope = new GeneralEnvelope(new ReferencedEnvelope(300, 500, 300, 500,
-                originalCrs));
+        nonOverlappingEnvelope =
+                new GeneralEnvelope(new ReferencedEnvelope(300, 500, 300, 500, originalCrs));
 
         try {
             readCoverage(reader, requestedWidth, requestedHeight, nonOverlappingEnvelope);
@@ -618,15 +661,17 @@ public class ArcSDEGridCoverage2DReaderJAIOnlineTest {
         Object destination;
         {
             String directory = System.getProperty("user.home");
-            directory += File.separator + "arcsde_test" + File.separator + fileName
-                    + "_native.tiff";
+            directory +=
+                    File.separator + "arcsde_test" + File.separator + fileName + "_native.tiff";
             File path = new File(directory);
             path.getParentFile().mkdirs();
             destination = path;
         }
         if (coverage.getRenderedImage().getColorModel() instanceof IndexColorModel) {
-            LOGGER.info("not writing GeoTiff for " + fileName
-                    + " because it fails with IndexColorModel. Don't know why");
+            LOGGER.info(
+                    "not writing GeoTiff for "
+                            + fileName
+                            + " because it fails with IndexColorModel. Don't know why");
         } else {
             GeoTiffWriter writer = new GeoTiffWriter(destination);
             System.out.println("\n --- Writing to " + destination);
@@ -662,18 +707,23 @@ public class ArcSDEGridCoverage2DReaderJAIOnlineTest {
         }
     }
 
-    private GridCoverage2D readCoverage(final AbstractGridCoverage2DReader reader,
-            final int reqWidth, final int reqHeight, final Envelope reqEnv) throws Exception {
+    private GridCoverage2D readCoverage(
+            final AbstractGridCoverage2DReader reader,
+            final int reqWidth,
+            final int reqHeight,
+            final Envelope reqEnv)
+            throws Exception {
 
         GeneralParameterValue[] requestParams = new Parameter[2];
 
         GridGeometry2D gg2d;
         gg2d = new GridGeometry2D(new GridEnvelope2D(new Rectangle(reqWidth, reqHeight)), reqEnv);
 
-        requestParams[0] = new Parameter<GridGeometry2D>(AbstractGridFormat.READ_GRIDGEOMETRY2D,
-                gg2d);
-        requestParams[1] = new Parameter<OverviewPolicy>(AbstractGridFormat.OVERVIEW_POLICY,
-                OverviewPolicy.SPEED);
+        requestParams[0] =
+                new Parameter<GridGeometry2D>(AbstractGridFormat.READ_GRIDGEOMETRY2D, gg2d);
+        requestParams[1] =
+                new Parameter<OverviewPolicy>(
+                        AbstractGridFormat.OVERVIEW_POLICY, OverviewPolicy.SPEED);
 
         final GridCoverage2D coverage;
         coverage = (GridCoverage2D) reader.read(requestParams);
@@ -684,9 +734,19 @@ public class ArcSDEGridCoverage2DReaderJAIOnlineTest {
     private AbstractGridCoverage2DReader getReader() throws IOException {
         final ArcSDEConnectionConfig config = rasterTestData.getConnectionPool().getConfig();
 
-        final String rgbUrl = "sde://" + config.getUserName() + ":" + config.getPassword() + "@"
-                + config.getServerName() + ":" + config.getPortNumber() + "/"
-                + config.getDatabaseName() + "#" + tableName;
+        final String rgbUrl =
+                "sde://"
+                        + config.getUserName()
+                        + ":"
+                        + config.getPassword()
+                        + "@"
+                        + config.getServerName()
+                        + ":"
+                        + config.getPortNumber()
+                        + "/"
+                        + config.getDatabaseName()
+                        + "#"
+                        + tableName;
 
         final ArcSDERasterFormat format = new ArcSDERasterFormatFactory().createFormat();
         // we can't create statistics here so tell ArcSDERasterFormat not to fail
@@ -695,5 +755,4 @@ public class ArcSDEGridCoverage2DReaderJAIOnlineTest {
         AbstractGridCoverage2DReader reader = format.getReader(rgbUrl);
         return reader;
     }
-
 }

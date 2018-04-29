@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2005-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -17,15 +17,13 @@
 package org.geotools.coverage.processing.operation;
 
 // JAI dependencies (for javadoc)
+
 import it.geosolutions.jaiext.JAIExt;
 import it.geosolutions.jaiext.algebra.AlgebraDescriptor.Operator;
-
 import java.awt.image.RenderedImage;
 import java.util.Map;
-
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.operator.SubtractFromConstDescriptor;
-
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.processing.OperationJAI;
 import org.geotools.util.NumberRange;
@@ -33,18 +31,20 @@ import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.util.InternationalString;
+
 // Geotools dependencies
 
-
 /**
- * Subtracts every sample values of the source coverage from constants (one for each band).
- * If the number of constants supplied is less than the number of bands of the destination,
- * then the constant from entry 0 is applied to all the bands. Otherwise, a constant from a
- * different entry is applied to each band.
+ * Subtracts every sample values of the source coverage from constants (one for each band). If the
+ * number of constants supplied is less than the number of bands of the destination, then the
+ * constant from entry 0 is applied to all the bands. Otherwise, a constant from a different entry
+ * is applied to each band.
  *
- * <P><STRONG>Name:</STRONG>&nbsp;<CODE>"SubtractFromConst"</CODE><BR>
- *    <STRONG>JAI operator:</STRONG>&nbsp;<CODE>"{@linkplain SubtractFromConstDescriptor SubtractFromConst}"</CODE><BR>
- *    <STRONG>Parameters:</STRONG></P>
+ * <p><STRONG>Name:</STRONG>&nbsp;<CODE>"SubtractFromConst"</CODE><br>
+ * <STRONG>JAI operator:</STRONG>&nbsp;<CODE>
+ * "{@linkplain SubtractFromConstDescriptor SubtractFromConst}"</CODE><br>
+ * <STRONG>Parameters:</STRONG>
+ *
  * <table border='3' cellpadding='6' bgcolor='F4F8FF'>
  *   <tr bgcolor='#B9DCFF'>
  *     <th>Name</th>
@@ -70,38 +70,30 @@ import org.opengis.util.InternationalString;
  * </table>
  *
  * @since 2.2
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
- *
  * @see org.geotools.coverage.processing.Operations#subtractFrom
  * @see SubtractFromConstDescriptor
- *
- * @todo Should operates on {@code sampleToGeophysics} transform when possible.
- *       See <A HREF="http://jira.codehaus.org/browse/GEOT-610">GEOT-610</A>.
+ * @todo Should operates on {@code sampleToGeophysics} transform when possible. See <A
+ *     HREF="http://jira.codehaus.org/browse/GEOT-610">GEOT-610</A>.
  */
 public class SubtractFromConst extends OperationJAI {
-    /**
-     * Serial number for interoperability with different versions.
-     */
+    /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 6941277637814235474L;
 
-    /**
-     * Constructs a default {@code "SubtractFromConst"} operation.
-     */
+    /** Constructs a default {@code "SubtractFromConst"} operation. */
     public SubtractFromConst() {
-    	super("SubtractFromConst", getOperationDescriptor(JAIExt.getOperationName("SubtractFromConst")));
+        super(
+                "SubtractFromConst",
+                getOperationDescriptor(JAIExt.getOperationName("SubtractFromConst")));
     }
-    
+
     public String getName() {
         return "SubtractFromConst";
     }
 
-    /**
-     * Returns the expected range of values for the resulting image.
-     */
+    /** Returns the expected range of values for the resulting image. */
     protected NumberRange deriveRange(final NumberRange[] ranges, final Parameters parameters) {
         final double[] constants = (double[]) parameters.parameters.getObjectParameter("constants");
         if (constants.length == 1) {
@@ -113,18 +105,24 @@ public class SubtractFromConst extends OperationJAI {
         }
         return super.deriveRange(ranges, parameters);
     }
-    
-    protected void handleJAIEXTParams(ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
+
+    protected void handleJAIEXTParams(
+            ParameterBlockJAI parameters, ParameterValueGroup parameters2) {
         GridCoverage2D source = (GridCoverage2D) parameters2.parameter("source0").getValue();
-        if(JAIExt.isJAIExtOperation("operationConst")){
+        if (JAIExt.isJAIExtOperation("operationConst")) {
             parameters.set(Operator.SUBTRACT_FROM, 1);
         }
         handleROINoDataInternal(parameters, source, "operationConst", 2, 3);
     }
-    
-    protected Map<String, ?> getProperties(RenderedImage data, CoordinateReferenceSystem crs,
-            InternationalString name, MathTransform gridToCRS, GridCoverage2D[] sources,
+
+    protected Map<String, ?> getProperties(
+            RenderedImage data,
+            CoordinateReferenceSystem crs,
+            InternationalString name,
+            MathTransform gridToCRS,
+            GridCoverage2D[] sources,
             Parameters parameters) {
-        return handleROINoDataProperties(null, parameters.parameters, sources[0], "operationConst", 2, 3, 4);
+        return handleROINoDataProperties(
+                null, parameters.parameters, sources[0], "operationConst", 2, 3, 4);
     }
 }

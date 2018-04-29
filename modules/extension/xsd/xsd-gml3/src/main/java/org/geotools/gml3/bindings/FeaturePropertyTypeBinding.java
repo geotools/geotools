@@ -19,10 +19,8 @@ package org.geotools.gml3.bindings;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
-
 import org.geotools.feature.FeatureImpl;
 import org.geotools.feature.NameImpl;
 import org.geotools.gml3.GML;
@@ -36,18 +34,18 @@ import org.opengis.feature.ComplexAttribute;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.type.Name;
-import org.opengis.filter.identity.Identifier;
 import org.opengis.filter.identity.FeatureId;
+import org.opengis.filter.identity.Identifier;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.Attributes;
-
 
 /**
  * Binding object for the type http://www.opengis.net/gml:FeaturePropertyType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;complexType name="FeaturePropertyType"&gt;
  *      &lt;annotation&gt;
@@ -61,10 +59,6 @@ import org.xml.sax.Attributes;
  *
  *          </code>
  *         </pre>
- * </p>
- *
- *
- *
  *
  * @source $URL$
  */
@@ -80,14 +74,13 @@ public class FeaturePropertyTypeBinding extends AbstractComplexBinding {
         this.idSet = idSet;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return GML.FeaturePropertyType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -98,16 +91,16 @@ public class FeaturePropertyTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return node.getChildValue(Feature.class);
     }
-    
+
     @Override
     public Object getProperty(Object object, QName name) throws Exception {
         if (GML._Feature.equals(name)) {
@@ -135,10 +128,10 @@ public class FeaturePropertyTypeBinding extends AbstractComplexBinding {
         }
         return null;
     }
-    
+
     /**
      * @see org.geotools.xml.AbstractComplexBinding#encode(java.lang.Object, org.w3c.dom.Document,
-     *      org.w3c.dom.Element)
+     *     org.w3c.dom.Element)
      */
     @Override
     public Element encode(Object object, Document document, Element value) throws Exception {
@@ -154,11 +147,9 @@ public class FeaturePropertyTypeBinding extends AbstractComplexBinding {
     /**
      * Check if the complex attribute contains a feature which id is pre-existing in the document.
      * If it's true, make sure it's only encoded as an xlink:href to the existing id.
-     * 
-     * @param value
-     *            The complex attribute value
-     * @param att
-     *            The complex attribute itself
+     *
+     * @param value The complex attribute value
+     * @param att The complex attribute itself
      */
     private void checkXlinkHref(ComplexAttribute att) {
 
@@ -191,11 +182,10 @@ public class FeaturePropertyTypeBinding extends AbstractComplexBinding {
 
         return;
     }
-    
-    
+
     /**
      * Convert a {@link QName} to a {@link Name}.
-     * 
+     *
      * @param name
      * @return
      */

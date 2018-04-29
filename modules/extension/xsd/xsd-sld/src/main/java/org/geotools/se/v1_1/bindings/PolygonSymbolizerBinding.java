@@ -16,6 +16,7 @@
  */
 package org.geotools.se.v1_1.bindings;
 
+import javax.xml.namespace.QName;
 import org.geotools.se.v1_1.SE;
 import org.geotools.sld.bindings.SLDPolygonSymbolizerBinding;
 import org.geotools.styling.PolygonSymbolizer;
@@ -24,13 +25,11 @@ import org.geotools.xml.*;
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.Displacement;
 
-import javax.xml.namespace.QName;
-
 /**
  * Binding object for the element http://www.opengis.net/se:PolygonSymbolizer.
- * 
+ *
  * <p>
- * 
+ *
  * <pre>
  *  <code>
  *  &lt;xsd:element name="PolygonSymbolizer" substitutionGroup="se:Symbolizer" type="se:PolygonSymbolizerType"&gt;
@@ -40,16 +39,12 @@ import javax.xml.namespace.QName;
  *          area geometry, including its interior fill and border stroke.
  *        &lt;/xsd:documentation&gt;
  *      &lt;/xsd:annotation&gt;
- *  &lt;/xsd:element&gt; 
- * 	
+ *  &lt;/xsd:element&gt;
+ *
  *   </code>
  * </pre>
- * 
- * </p>
- * 
+ *
  * @generated
- *
- *
  * @source $URL$
  */
 public class PolygonSymbolizerBinding extends SLDPolygonSymbolizerBinding {
@@ -58,9 +53,7 @@ public class PolygonSymbolizerBinding extends SLDPolygonSymbolizerBinding {
         super(styleFactory);
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return SE.PolygonSymbolizer;
     }
@@ -69,25 +62,26 @@ public class PolygonSymbolizerBinding extends SLDPolygonSymbolizerBinding {
     public int getExecutionMode() {
         return BEFORE;
     }
-    
+
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        PolygonSymbolizer sym = (PolygonSymbolizer) super.parse(instance, node, value); 
-        
-        //&lt;xsd:element minOccurs="0" ref="se:Displacement"/&gt;
+        PolygonSymbolizer sym = (PolygonSymbolizer) super.parse(instance, node, value);
+
+        // &lt;xsd:element minOccurs="0" ref="se:Displacement"/&gt;
         if (node.hasChild("Displacement")) {
             sym.setDisplacement((Displacement) node.getChildValue("Displacement"));
         }
-        //&lt;xsd:element minOccurs="0" ref="se:PerpendicularOffset"/&gt;
+        // &lt;xsd:element minOccurs="0" ref="se:PerpendicularOffset"/&gt;
         if (node.hasChild("PerpendicularOffset")) {
-            sym.setPerpendicularOffset((Expression)node.getChildValue("PerpendicularOffset"));
+            sym.setPerpendicularOffset((Expression) node.getChildValue("PerpendicularOffset"));
         }
-        
+
         return sym;
     }
-
 }

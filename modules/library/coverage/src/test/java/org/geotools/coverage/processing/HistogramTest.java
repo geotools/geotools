@@ -20,22 +20,16 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import javax.media.jai.Histogram;
-
 import org.geotools.coverage.grid.GridCoverage2D;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.parameter.ParameterValueGroup;
 
 public class HistogramTest extends GridProcessingTestBase {
-    /**
-     * The grid coverage to test.
-     */
+    /** The grid coverage to test. */
     private GridCoverage2D coverage;
-    
-    /**
-     * Set up common objects used for all tests.
-     */
+
+    /** Set up common objects used for all tests. */
     @Before
     public void setUp() {
         coverage = EXAMPLES.get(0);
@@ -64,8 +58,8 @@ public class HistogramTest extends GridProcessingTestBase {
 
         ParameterValueGroup param = processor.getOperation("Histogram").getParameters();
         param.parameter("Source").setValue(source);
-        param.parameter("numBins").setValue(new int[]{10});
-        
+        param.parameter("numBins").setValue(new int[] {10});
+
         GridCoverage2D processed = (GridCoverage2D) processor.doOperation(param);
 
         Histogram histo = (Histogram) processed.getProperty("histogram");
@@ -81,9 +75,9 @@ public class HistogramTest extends GridProcessingTestBase {
 
         ParameterValueGroup param = processor.getOperation("Histogram").getParameters();
         param.parameter("Source").setValue(source);
-        param.parameter("numBins").setValue(new int[]{10});
-        param.parameter("lowValue").setValue(new double[]{100});
-        param.parameter("highValue").setValue(new double[]{200});
+        param.parameter("numBins").setValue(new int[] {10});
+        param.parameter("lowValue").setValue(new double[] {100});
+        param.parameter("highValue").setValue(new double[] {200});
         GridCoverage2D processed = (GridCoverage2D) processor.doOperation(param);
 
         Histogram histo = (Histogram) processed.getProperty("histogram");

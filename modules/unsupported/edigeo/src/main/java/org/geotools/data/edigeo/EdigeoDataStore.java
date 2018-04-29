@@ -2,7 +2,7 @@
  *    GeoTools - OpenSource mapping toolkit
  *    http://geotools.org
  *    (C) 2005-2006, GeoTools Project Managment Committee (PMC)
- * 
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -19,62 +19,53 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
-
 import org.geotools.data.AbstractDataStore;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureSource;
-import org.opengis.feature.simple.SimpleFeature;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.IllegalAttributeException;
 import org.geotools.feature.SchemaException;
+import org.opengis.feature.IllegalAttributeException;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class EdigeoDataStore extends AbstractDataStore {
 
     // File System constant
     private static String FS = System.getProperty("file.separator", "/");
-    
-    // Data type (reseau/network is not supported) 
+
+    // Data type (reseau/network is not supported)
     private static final String SPAGHETTI = "spaghetti";
     private static final String TOPOLOGIC = "topologique";
-    
+
     // Geometry types of the objects
     private static final String KND_PCTOBJ = "Point";
     private static final String KND_LINOBJ = "LineString";
     private static final String KND_AREOBJ = "Polygon";
     private static final String KND_MULOBJ = "MultiPolygon";
-    
-    private static final HashMap<String, String> edigeoType = 
-            new HashMap<String, String>();
-    
-    public static HashMap<String, HashMap<String, String>> scdObj = 
+
+    private static final HashMap<String, String> edigeoType = new HashMap<String, String>();
+
+    public static HashMap<String, HashMap<String, String>> scdObj =
             new HashMap<String, HashMap<String, String>>();
-    public static HashMap<String, HashMap<String, String>> ftAtt = 
+    public static HashMap<String, HashMap<String, String>> ftAtt =
             new HashMap<String, HashMap<String, String>>();
-    
+
     private static File edigeoDir = null;
-    
+
     private SimpleFeatureType featureType = null;
     private String pciObj;
     private HashMap<String, String> thfmap;
-    
 
-    /**
-     * Static bloc to define static Edigeo Object map content
-     */
+    /** Static bloc to define static Edigeo Object map content */
     static {
 
         /**
          * Metadata for object BATIMENT
+         *
          * @param id string type, unique object
          * @param type string type, Nature de l'objet (CPX, PCT, LIN, ou ARE)
          * @param structure string type, 3 values : spaghetti, reseau, topologique
@@ -179,7 +170,7 @@ public class EdigeoDataStore extends AbstractDataStore {
         mdZonecom.put("type", KND_LINOBJ);
         mdZonecom.put("structure", SPAGHETTI);
 
-        // Do I need to define an object type to get writing label point?? 
+        // Do I need to define an object type to get writing label point??
         scdObj.put("BATIMENT_id", mdBat);
         scdObj.put("E_2_1_0", mdBat);
 
@@ -240,7 +231,6 @@ public class EdigeoDataStore extends AbstractDataStore {
         scdObj.put("ZONCOMMUNI_id", mdZonecom);
         scdObj.put("A_1_0_5", mdZonecom);
 
-
         /*
          * Defines Edigeo Attribut Types
          */
@@ -254,44 +244,39 @@ public class EdigeoDataStore extends AbstractDataStore {
     }
 
     /**
-     * <p>
      * Builds a new EdigeoDataStore given a Edigeo file (THF) path.
-     * </p>
-     * 
-     * @param path The full path of a single Edigeo file (THF). 
+     *
+     * @param path The full path of a single Edigeo file (THF).
      * @param obj Edigeo object id (ie. COMMUNE_id)
-     *
      * @throws IOException Path does not exists, or error accessing files
-     *
      */
     public EdigeoDataStore(String path, String obj) throws IOException {
         super(false); // Does not allow writing
 
         pciObj = checkPciObj(obj);
-        
-        
+
         EdigeoTHF thf = new EdigeoTHF(path);
         edigeoDir = thf.thfFile;
-        LOGGER.info("Reading Edigeo file : "+edigeoDir.getPath());
+        LOGGER.info("Reading Edigeo file : " + edigeoDir.getPath());
         thfmap = thf.readTHFile();
 
-        EdigeoSCD scd = new EdigeoSCD(edigeoDir.getParentFile().getPath() + FS + thfmap.get("scdfname"));
+        EdigeoSCD scd =
+                new EdigeoSCD(edigeoDir.getParentFile().getPath() + FS + thfmap.get("scdfname"));
         HashMap<String, String> scdAtt = scd.readSCDFile(pciObj);
 
         if (!scdAtt.isEmpty()) {
-            EdigeoDIC dic = new EdigeoDIC(edigeoDir.getParentFile().getPath() + FS + thfmap.get("dicfname"));
+            EdigeoDIC dic =
+                    new EdigeoDIC(
+                            edigeoDir.getParentFile().getPath() + FS + thfmap.get("dicfname"));
             ftAtt = dic.readDICFile(scdAtt);
         }
     }
 
     /**
-     * <p>
      * Checks supported Edigeo according to PCI object
-     * </p>
-     *  
-     * @param obj String 
-     * 
-     * @return the Edigeo object (String) 
+     *
+     * @param obj String
+     * @return the Edigeo object (String)
      */
     protected static String checkPciObj(String aObj) {
         if (scdObj.containsKey(aObj)) {
@@ -305,17 +290,14 @@ public class EdigeoDataStore extends AbstractDataStore {
     }
 
     /**
-     * <p>
      * Gets a FeatureReader from an Edigeo object
-     * </p>
-     * 
+     *
      * @param typeName name of the FeatureType
-     * 
      * @return The FeatureReader
-     * 
      * @throws IOException
      */
-    protected FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(String typeName) throws IOException {
+    protected FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(String typeName)
+            throws IOException {
         String fileExt;
         if (pciObj.equals("PARCELLE_id")) {
             fileExt = "T1";
@@ -327,17 +309,19 @@ public class EdigeoDataStore extends AbstractDataStore {
             fileExt = "S1";
         }
         try {
-        	return new EdigeoFeatureReader(edigeoDir, thfmap.get("vecfname_"+fileExt), pciObj, getSchema(getTypeNames()[0]));
+            return new EdigeoFeatureReader(
+                    edigeoDir,
+                    thfmap.get("vecfname_" + fileExt),
+                    pciObj,
+                    getSchema(getTypeNames()[0]));
         } catch (IllegalAttributeException e) {
             throw new IOException(e.getMessage());
         }
     }
 
     /**
-     * <p>
-     *  Creates a Schema (FeatureType) given a typeName.
-     * </p>
-     * 
+     * Creates a Schema (FeatureType) given a typeName.
+     *
      * @param typeName
      * @return SimpleFeatureType
      * @throws java.io.IOException
@@ -357,23 +341,22 @@ public class EdigeoDataStore extends AbstractDataStore {
     }
 
     /**
-     * <p>
-     * Returns the list of type names (EDIGEO files).<BR/>EdigeoDataStore
-     * will always return a single name.
-     * </p>
+     * Returns the list of type names (EDIGEO files).<br>
+     * EdigeoDataStore will always return a single name.
      *
      * @return The list of type names
-     *
      * @throws IOException Couldn't scan path for files
      */
     public String[] getTypeNames() throws IOException {
-        return new String[]{getCurrentTypeName(),};
+        return new String[] {
+            getCurrentTypeName(),
+        };
     }
-    
+
     /**
-     * Create the type name of the single FeatureType this DataStore
-     * represents.<BR/> For example, if the Edigeo file path is
-     * file:///home/foo/athfFile.thf, the type name will be athfFile.
+     * Create the type name of the single FeatureType this DataStore represents.<br>
+     * For example, if the Edigeo file path is file:///home/foo/athfFile.thf, the type name will be
+     * athfFile.
      *
      * @return The name of the THF file without the extension.
      */
@@ -387,18 +370,12 @@ public class EdigeoDataStore extends AbstractDataStore {
         return name;
     }
 
-    /**
-     * 
-     * @return Current Type Name
-     */
+    /** @return Current Type Name */
     protected String getCurrentTypeName() {
         return (featureType == null) ? createFeatureTypeName() : featureType.getTypeName();
     }
 
-    /**
-     * 
-     * @return
-     */
+    /** @return */
     private String property() {
         String typeSpec = "";
         if (ftAtt != null) {
@@ -413,23 +390,25 @@ public class EdigeoDataStore extends AbstractDataStore {
         return typeSpec;
     }
 
-    /**
-     * @param args
-     */
+    /** @param args */
     public static void main(String[] args) throws IllegalAttributeException {
         // TODO Auto-generated method stub
         try {
-            EdigeoDataStore edDS = new EdigeoDataStore("/home/mcoudert/app/geotools/geotools-2.5-M3/modules/unsupported/edigeo/src/test/resources/org/geotools/data/edigeo/test-data/E000AB01.THF", "COMMUNE_id");
-            // pb : EDI0000B.THF  EDI0000E.THF  EDI0000F.THF 
+            EdigeoDataStore edDS =
+                    new EdigeoDataStore(
+                            "/home/mcoudert/app/geotools/geotools-2.5-M3/modules/unsupported/edigeo/src/test/resources/org/geotools/data/edigeo/test-data/E000AB01.THF",
+                            "COMMUNE_id");
+            // pb : EDI0000B.THF  EDI0000E.THF  EDI0000F.THF
             //  /home/mcoudert/public_html/pvs/sample_data/pvs/edigeo2/job_test/com-195/EDIGEO01.THF
             // /home/mcoudert/public_html/pvs/sample_data/pvs/edigeo2/com-029/feuille-029000AA01/E000AA01.THF
             String typeName = edDS.getTypeNames()[0];
-            //FeatureReader readerFR = edDS.getFeatureReader(typeName);
-            //reader.
-            FeatureSource<SimpleFeatureType, SimpleFeature> source = edDS.getFeatureSource(typeName);
+            // FeatureReader readerFR = edDS.getFeatureReader(typeName);
+            // reader.
+            FeatureSource<SimpleFeatureType, SimpleFeature> source =
+                    edDS.getFeatureSource(typeName);
             FeatureCollection<SimpleFeatureType, SimpleFeature> features = source.getFeatures();
             FeatureIterator<SimpleFeature> reader = features.features();
-            while(reader.hasNext()) {
+            while (reader.hasNext()) {
                 SimpleFeature feature = reader.next();
                 System.out.println("feature  :" + feature.getDefaultGeometryProperty().getValue());
             }
@@ -437,6 +416,5 @@ public class EdigeoDataStore extends AbstractDataStore {
             // TODO: handle exception
             System.out.println(e);
         }
-
     }
 }

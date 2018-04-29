@@ -20,32 +20,26 @@
 package org.geotools.referencing.operation;
 
 import java.util.Map;
-
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.Conversion;
+import org.opengis.referencing.operation.CylindricalProjection;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.OperationMethod;
-import org.opengis.referencing.operation.CylindricalProjection;
-
 
 /**
  * Base class for cylindrical map projections.
  *
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
- *
  * @since 2.1
- *
  * @see org.geotools.referencing.crs.DefaultProjectedCRS
- * @see <A HREF="http://mathworld.wolfram.com/CylindricalProjection.html">Cylindrical projection on MathWorld</A>
+ * @see <A HREF="http://mathworld.wolfram.com/CylindricalProjection.html">Cylindrical projection on
+ *     MathWorld</A>
  */
-public class DefaultCylindricalProjection extends DefaultProjection implements CylindricalProjection {
-    /**
-     * Serial number for interoperability with different versions.
-     */
+public class DefaultCylindricalProjection extends DefaultProjection
+        implements CylindricalProjection {
+    /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -969486613826553580L;
 
     /**
@@ -56,35 +50,35 @@ public class DefaultCylindricalProjection extends DefaultProjection implements C
      * @param conversion The defining conversion.
      * @param sourceCRS The source CRS.
      * @param targetCRS The target CRS.
-     * @param transform Transform from positions in the {@linkplain #getSourceCRS source CRS}
-     *                  to positions in the {@linkplain #getTargetCRS target CRS}.
+     * @param transform Transform from positions in the {@linkplain #getSourceCRS source CRS} to
+     *     positions in the {@linkplain #getTargetCRS target CRS}.
      */
-    public DefaultCylindricalProjection(final Conversion                conversion,
-                                        final CoordinateReferenceSystem sourceCRS,
-                                        final CoordinateReferenceSystem targetCRS,
-                                        final MathTransform             transform)
-    {
+    public DefaultCylindricalProjection(
+            final Conversion conversion,
+            final CoordinateReferenceSystem sourceCRS,
+            final CoordinateReferenceSystem targetCRS,
+            final MathTransform transform) {
         super(conversion, sourceCRS, targetCRS, transform);
     }
 
     /**
-     * Constructs a projection from a set of properties. The properties given in argument
-     * follow the same rules than for the {@link AbstractCoordinateOperation} constructor.
+     * Constructs a projection from a set of properties. The properties given in argument follow the
+     * same rules than for the {@link AbstractCoordinateOperation} constructor.
      *
      * @param properties Set of properties. Should contains at least {@code "name"}.
      * @param sourceCRS The source CRS, or {@code null} if not available.
      * @param targetCRS The target CRS, or {@code null} if not available.
      * @param transform Transform from positions in the {@linkplain #getSourceCRS source coordinate
-     *                  reference system} to positions in the {@linkplain #getTargetCRS target
-     *                  coordinate reference system}.
-     * @param method    The operation method.
+     *     reference system} to positions in the {@linkplain #getTargetCRS target coordinate
+     *     reference system}.
+     * @param method The operation method.
      */
-    public DefaultCylindricalProjection(final Map<String,?>             properties,
-                                        final CoordinateReferenceSystem sourceCRS,
-                                        final CoordinateReferenceSystem targetCRS,
-                                        final MathTransform             transform,
-                                        final OperationMethod           method)
-    {
+    public DefaultCylindricalProjection(
+            final Map<String, ?> properties,
+            final CoordinateReferenceSystem sourceCRS,
+            final CoordinateReferenceSystem targetCRS,
+            final MathTransform transform,
+            final OperationMethod method) {
         super(properties, sourceCRS, targetCRS, transform, method);
     }
 }

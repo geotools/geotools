@@ -17,6 +17,7 @@
 package org.geotools.gml3.bindings;
 
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.io.WKTReader;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.custommonkey.xmlunit.XpathEngine;
@@ -28,13 +29,7 @@ import org.geotools.gml3.GMLConfiguration;
 import org.geotools.xml.Configuration;
 import org.w3c.dom.Document;
 
-import com.vividsolutions.jts.geom.LineString;
-
-/**
- * 
- * 
- * @source $URL$
- */
+/** @source $URL$ */
 public class GeometryPropertyTypeBindingTest extends GML3TestSupport {
 
     @Override
@@ -55,19 +50,21 @@ public class GeometryPropertyTypeBindingTest extends GML3TestSupport {
     }
 
     public void testEncodeCurve() throws Exception {
-        LineString curve = new CurvedGeometryFactory(0.1)
-                .createCurvedGeometry(new LiteCoordinateSequence(new double[] { 1, 1, 2, 2, 3, 1,
-                        5, 5, 7, 3 }));
+        LineString curve =
+                new CurvedGeometryFactory(0.1)
+                        .createCurvedGeometry(
+                                new LiteCoordinateSequence(
+                                        new double[] {1, 1, 2, 2, 3, 1, 5, 5, 7, 3}));
 
         Document dom = encode(curve, GML.geometryMember);
         // print(dom);
         XpathEngine xpath = XMLUnit.newXpathEngine();
         String basePath = "/gml:geometryMember/gml:Curve/gml:segments/gml:ArcString";
-        assertEquals(1,
+        assertEquals(
+                1,
                 xpath.getMatchingNodes(basePath + "[@interpolation='circularArc3Points']", dom)
                         .getLength());
-        assertEquals("1 1 2 2 3 1 5 5 7 3",
-                xpath.evaluate(basePath + "/gml:posList", dom));
+        assertEquals("1 1 2 2 3 1 5 5 7 3", xpath.evaluate(basePath + "/gml:posList", dom));
     }
 
     public void testEncodePointWithDecimals() throws Exception {
@@ -78,6 +75,4 @@ public class GeometryPropertyTypeBindingTest extends GML3TestSupport {
         XpathEngine xpath = XMLUnit.newXpathEngine();
         assertEquals("1.23 5.68", xpath.evaluate("/gml:geometryMember/gml:Point/gml:pos", dom));
     }
-
-    
 }

@@ -20,16 +20,11 @@ import org.geotools.data.postgis.PostgisGeometrylessTestSetup;
 import org.geotools.jdbc.JDBCGeometrylessOnlineTest;
 import org.geotools.jdbc.JDBCGeometrylessTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class PostgisGeometrylessOnlineTest extends JDBCGeometrylessOnlineTest {
 
     @Override
     protected JDBCGeometrylessTestSetup createTestSetup() {
         return new PostgisGeometrylessTestSetup(new PostGISPSTestSetup());
     }
-
 }

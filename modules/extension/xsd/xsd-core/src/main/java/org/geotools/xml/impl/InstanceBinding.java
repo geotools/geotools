@@ -17,18 +17,11 @@
 package org.geotools.xml.impl;
 
 /**
- * Marker interfaces for bindings which are registered as an instance and not 
- * as a class.
- * <p>
- * TODO: this is a temporary measure
- * </p>
+ * Marker interfaces for bindings which are registered as an instance and not as a class.
+ *
+ * <p>TODO: this is a temporary measure
+ *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
- *
- *
- *
- *
  * @source $URL$
  */
-public interface InstanceBinding {
-
-}
+public interface InstanceBinding {}

@@ -17,6 +17,9 @@
  */
 package org.geotools.arcsde.filter;
 
+import com.esri.sde.sdk.client.SeConnection;
+import com.esri.sde.sdk.client.SeDate;
+import com.esri.sde.sdk.client.SeException;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Collections;
@@ -28,12 +31,10 @@ import java.util.Set;
 import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.statement.select.PlainSelect;
 import net.sf.jsqlparser.statement.select.SelectExpressionItem;
 import net.sf.jsqlparser.statement.select.SelectItem;
-
 import org.geotools.arcsde.data.ArcSDEAdapter;
 import org.geotools.arcsde.session.Command;
 import org.geotools.arcsde.session.ISession;
@@ -54,27 +55,20 @@ import org.opengis.filter.PropertyIsNull;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.identity.Identifier;
 
-import com.esri.sde.sdk.client.SeConnection;
-import com.esri.sde.sdk.client.SeDate;
-import com.esri.sde.sdk.client.SeException;
-
 /**
  * Encodes an attribute filter into a SQL WHERE statement for arcsde.
- * <p>
- * Although not all filters support is coded yet, the strategy to filtering queries for ArcSDE
+ *
+ * <p>Although not all filters support is coded yet, the strategy to filtering queries for ArcSDE
  * datasources is separated in two parts, the SQL where clause construction, provided here and the
- * spatial filters (or spatial constraints, in SDE vocabulary) provided by
- * <code>GeometryEncoderSDE</code>; mirroring the java SDE api approach for easy programing
- * </p>
- * 
+ * spatial filters (or spatial constraints, in SDE vocabulary) provided by <code>GeometryEncoderSDE
+ * </code>; mirroring the java SDE api approach for easy programing
+ *
  * @author Saul Farber
  * @author Gabriel Roldan
  * @see org.geotools.data.sde.GeometryEncoderSDE
- * 
- * 
  * @source $URL$
- *         http://gtsvn.refractions.net/geotools/branches/2.4.x/modules/unsupported/arcsde/datastore
- *         /src/main/java/org/geotools/arcsde/filter/FilterToSQLSDE.java $
+ *     http://gtsvn.refractions.net/geotools/branches/2.4.x/modules/unsupported/arcsde/datastore
+ *     /src/main/java/org/geotools/arcsde/filter/FilterToSQLSDE.java $
  */
 @SuppressWarnings("deprecation")
 public class FilterToSQLSDE extends FilterToSQL implements FilterVisitor {
@@ -85,9 +79,7 @@ public class FilterToSQLSDE extends FilterToSQL implements FilterVisitor {
 
     private final PlainSelect definitionQuery;
 
-    /**
-     * If definitionQuery != null, holds alias/unaliased attribute names from the sql query
-     */
+    /** If definitionQuery != null, holds alias/unaliased attribute names from the sql query */
     private Map<String, SelectExpressionItem> attributeNames = Collections.emptyMap();
 
     private final ISession conn;
@@ -97,11 +89,15 @@ public class FilterToSQLSDE extends FilterToSQL implements FilterVisitor {
      * @param layerFidColName name of the column that holds fids
      * @param ft
      * @param definitionQuery
-     * @param conn2 only used to encode date literals in a RDBMS specific format according to
-     *        {@link SeDate#toWhereStr(SeConnection)}
+     * @param conn2 only used to encode date literals in a RDBMS specific format according to {@link
+     *     SeDate#toWhereStr(SeConnection)}
      */
-    public FilterToSQLSDE(String layerQName, String layerFidColName, SimpleFeatureType ft,
-            PlainSelect definitionQuery, ISession session) {
+    public FilterToSQLSDE(
+            String layerQName,
+            String layerFidColName,
+            SimpleFeatureType ft,
+            PlainSelect definitionQuery,
+            ISession session) {
         this.layerFidFieldName = layerFidColName;
         this.featureType = ft;
         this.definitionQuery = definitionQuery;
@@ -115,11 +111,12 @@ public class FilterToSQLSDE extends FilterToSQL implements FilterVisitor {
 
             for (SelectItem item : selectItems) {
                 if (!(item instanceof SelectExpressionItem)) {
-                    String msg = "for item '"
-                            + item
-                            + "': only SelectExpressionItems should be in query at this stage."
-                            + " AllColumns and AllTableColumns instances should be resolved to their list "
-                            + " of column names at view registration time.";
+                    String msg =
+                            "for item '"
+                                    + item
+                                    + "': only SelectExpressionItems should be in query at this stage."
+                                    + " AllColumns and AllTableColumns instances should be resolved to their list "
+                                    + " of column names at view registration time.";
                     LOGGER.severe(msg);
                     throw new IllegalStateException(msg);
                 }
@@ -143,7 +140,7 @@ public class FilterToSQLSDE extends FilterToSQL implements FilterVisitor {
     /**
      * Returns the full qualifed name of sql expression that is registered as the source of the
      * attribute named <code>alias</code>.
-     * 
+     *
      * @param alias
      * @return
      */
@@ -174,7 +171,6 @@ public class FilterToSQLSDE extends FilterToSQL implements FilterVisitor {
     /**
      * Overrides the superclass implementation to indicate that we support pushing FeatureId filters
      * down into the data store.
-     * 
      */
     @Override
     protected FilterCapabilities createFilterCapabilities() {
@@ -193,10 +189,7 @@ public class FilterToSQLSDE extends FilterToSQL implements FilterVisitor {
         return capabilities;
     }
 
-    /**
-     * overrides just to avoid the "WHERE" keyword
-     * 
-     */
+    /** overrides just to avoid the "WHERE" keyword */
     @Override
     public void encode(Filter filter) throws FilterToSQLException {
         if (getCapabilities().fullySupports(filter)) {
@@ -209,7 +202,7 @@ public class FilterToSQLSDE extends FilterToSQL implements FilterVisitor {
     /**
      * This only exists the fulfill the interface - unless There is a way of determining the FID
      * column in the database...
-     * 
+     *
      * @param filter the Fid Filter.
      */
     @Override
@@ -242,8 +235,14 @@ public class FilterToSQLSDE extends FilterToSQL implements FilterVisitor {
     }
 
     // return a string
-    private String buildFidFilter(long[] fids, String fidAttribute, String prefix, String suffix,
-            String separator, int groupSize, String groupSeparator) {
+    private String buildFidFilter(
+            long[] fids,
+            String fidAttribute,
+            String prefix,
+            String suffix,
+            String separator,
+            int groupSize,
+            String groupSeparator) {
         final int count = fids.length;
         final int groups = count / groupSize;
         final int remainder = count % groupSize;
@@ -284,7 +283,7 @@ public class FilterToSQLSDE extends FilterToSQL implements FilterVisitor {
      * Writes the SQL for the attribute Expression. NOTE: If the feature type is the product of an
      * in process sql query, the attribute name encoded will be the actual one, not the alias (if
      * any) used in the sql query.
-     * 
+     *
      * @param expression the attribute to turn to SQL.
      * @throws RuntimeException for io exception with writer
      */
@@ -304,9 +303,7 @@ public class FilterToSQLSDE extends FilterToSQL implements FilterVisitor {
         return extraData;
     }
 
-    /**
-     * Overrides to avoid encoding an empty operator if <code>filter</code> has no children.
-     */
+    /** Overrides to avoid encoding an empty operator if <code>filter</code> has no children. */
     @Override
     protected Object visit(BinaryLogicOperator filter, Object extraData) {
         final List<Filter> children = filter.getChildren();
@@ -318,7 +315,7 @@ public class FilterToSQLSDE extends FilterToSQL implements FilterVisitor {
 
     /**
      * @see {@link FilterVisitor#visit(ExcludeFilter, Object)} Writes the SQL for the IncludeFilter
-     *      by writing "FALSE".
+     *     by writing "FALSE".
      * @param the filter to be visited
      */
     @Override
@@ -333,7 +330,7 @@ public class FilterToSQLSDE extends FilterToSQL implements FilterVisitor {
 
     /**
      * @see {@link FilterVisitor#visit(IncludeFilter, Object)} Writes the SQL for the IncludeFilter
-     *      by writing "TRUE".
+     *     by writing "TRUE".
      * @param the filter to be visited
      */
     @Override
@@ -350,20 +347,24 @@ public class FilterToSQLSDE extends FilterToSQL implements FilterVisitor {
     protected void writeLiteral(final Object literal) throws IOException {
 
         if (literal instanceof Date || literal instanceof Calendar) {
-            final String dateLiteral = conn.issue(new Command<String>() {
-                @Override
-                public String execute(ISession session, SeConnection connection)
-                        throws SeException, IOException {
-                    if (literal instanceof Date) {
-                        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-                        cal.setTimeInMillis(((Date) literal).getTime());
-                        return new SeDate(cal).toWhereStr(connection);
-                    } else if (literal instanceof Calendar) {
-                        return new SeDate((Calendar) literal).toWhereStr(connection);
-                    }
-                    throw new IllegalStateException("can't reach here");
-                }
-            });
+            final String dateLiteral =
+                    conn.issue(
+                            new Command<String>() {
+                                @Override
+                                public String execute(ISession session, SeConnection connection)
+                                        throws SeException, IOException {
+                                    if (literal instanceof Date) {
+                                        Calendar cal =
+                                                Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+                                        cal.setTimeInMillis(((Date) literal).getTime());
+                                        return new SeDate(cal).toWhereStr(connection);
+                                    } else if (literal instanceof Calendar) {
+                                        return new SeDate((Calendar) literal)
+                                                .toWhereStr(connection);
+                                    }
+                                    throw new IllegalStateException("can't reach here");
+                                }
+                            });
             out.write(dateLiteral);
         } else {
             super.writeLiteral(literal);

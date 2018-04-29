@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,32 +16,25 @@
  */
 package org.geotools.data;
 
-
 /**
  * A request for a Lock that last the duration of a transaction.
  *
- * <p>
- * The single instance of this class is available as
- * <code>FeatureLock.TRANSACTION</code>.
- * </p>
+ * <p>The single instance of this class is available as <code>FeatureLock.TRANSACTION</code>.
  *
  * @source $URL$
  */
 class CurrentTransactionLock extends FeatureLock {
-    
+
     CurrentTransactionLock() {
-        super( null, -1 );
+        super(null, -1);
     }
     /**
      * Transaction locks do not require Authorization.
      *
-     * <p>
-     * Authorization is based on being on "holding" the Transaction rather than
-     * supplying an authorization id.
-     * </p>
+     * <p>Authorization is based on being on "holding" the Transaction rather than supplying an
+     * authorization id.
      *
      * @return <code>CURRENT_TRANSACTION</code> to aid in debugging.
-     *
      * @see org.geotools.data.FeatureLock#getAuthorization()
      */
     public String getAuthorization() {
@@ -51,13 +44,10 @@ class CurrentTransactionLock extends FeatureLock {
     /**
      * Transaciton locks are not held for a duration.
      *
-     * <p>
-     * Any locking performed against the current Transaction is expected to
-     * expire when the transaction finishes with a close or rollback
-     * </p>
+     * <p>Any locking performed against the current Transaction is expected to expire when the
+     * transaction finishes with a close or rollback
      *
      * @return <code>-1</code> representing an invalid duration
-     *
      * @see org.geotools.data.FeatureLock#getDuration()
      */
     public long getDuration() {

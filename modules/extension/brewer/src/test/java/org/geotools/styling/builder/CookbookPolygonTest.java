@@ -4,9 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import java.awt.Color;
-
-import si.uom.SI;
-
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.Font;
 import org.geotools.styling.Mark;
@@ -15,12 +12,9 @@ import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.Style;
 import org.geotools.styling.TextSymbolizer2;
 import org.junit.Test;
+import si.uom.SI;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class CookbookPolygonTest extends AbstractStyleTest {
 
     @Test
@@ -81,8 +75,12 @@ public class CookbookPolygonTest extends AbstractStyleTest {
 
     @Test
     public void testGraphicFill() {
-        Style style = new FillBuilder().graphicFill().size(93)
-                .externalGraphic("colorblocks.png", "image/png").buildStyle();
+        Style style =
+                new FillBuilder()
+                        .graphicFill()
+                        .size(93)
+                        .externalGraphic("colorblocks.png", "image/png")
+                        .buildStyle();
         // print(style);
 
         // round up the basic elements and check its simple
@@ -93,16 +91,24 @@ public class CookbookPolygonTest extends AbstractStyleTest {
         // check the symbolizer
         PolygonSymbolizer ps = (PolygonSymbolizer) collector.symbolizers.get(0);
         assertNull(ps.getStroke());
-        ExternalGraphic eg = (ExternalGraphic) ps.getFill().getGraphicFill().graphicalSymbols()
-                .get(0);
+        ExternalGraphic eg =
+                (ExternalGraphic) ps.getFill().getGraphicFill().graphicalSymbols().get(0);
         assertEquals("colorblocks.png", eg.getOnlineResource().getLinkage().toString());
         assertEquals("image/png", eg.getFormat());
     }
 
     @Test
     public void testHatch() {
-        Style style = new FillBuilder().graphicFill().size(93).mark().name("shape://times")
-                .stroke().colorHex("#990099").width(1).buildStyle();
+        Style style =
+                new FillBuilder()
+                        .graphicFill()
+                        .size(93)
+                        .mark()
+                        .name("shape://times")
+                        .stroke()
+                        .colorHex("#990099")
+                        .width(1)
+                        .buildStyle();
         // print(style);
 
         // round up the basic elements and check its simple
@@ -173,12 +179,27 @@ public class CookbookPolygonTest extends AbstractStyleTest {
     @Test
     public void testAttributeBased() {
         FeatureTypeStyleBuilder fts = new FeatureTypeStyleBuilder();
-        fts.rule().name("SmallPop").title("Less Than 200,000").filter("pop < 200000").polygon()
-                .fill().colorHex("#66FF66");
-        fts.rule().name("MediumPop").title("200,000 to 500,000")
-                .filter("pop between 200000 and 500000").polygon().fill().colorHex("#33CC33");
-        fts.rule().name("LargePop").title("More than 500,000").filter("pop > 500000").polygon()
-                .fill().colorHex("#009900");
+        fts.rule()
+                .name("SmallPop")
+                .title("Less Than 200,000")
+                .filter("pop < 200000")
+                .polygon()
+                .fill()
+                .colorHex("#66FF66");
+        fts.rule()
+                .name("MediumPop")
+                .title("200,000 to 500,000")
+                .filter("pop between 200000 and 500000")
+                .polygon()
+                .fill()
+                .colorHex("#33CC33");
+        fts.rule()
+                .name("LargePop")
+                .title("More than 500,000")
+                .filter("pop > 500000")
+                .polygon()
+                .fill()
+                .colorHex("#009900");
         Style style = fts.buildStyle();
         // print(style);
 
@@ -190,12 +211,15 @@ public class CookbookPolygonTest extends AbstractStyleTest {
         assertEquals(3, collector.symbolizers.size());
 
         // check rules
-        assertEquals(ff.less(ff.property("pop"), ff.literal("200000")), collector.rules.get(0)
-                .getFilter());
-        assertEquals(ff.between(ff.property("pop"), ff.literal("200000"), ff.literal("500000")),
+        assertEquals(
+                ff.less(ff.property("pop"), ff.literal("200000")),
+                collector.rules.get(0).getFilter());
+        assertEquals(
+                ff.between(ff.property("pop"), ff.literal("200000"), ff.literal("500000")),
                 collector.rules.get(1).getFilter());
-        assertEquals(ff.greater(ff.property("pop"), ff.literal("500000")), collector.rules.get(2)
-                .getFilter());
+        assertEquals(
+                ff.greater(ff.property("pop"), ff.literal("500000")),
+                collector.rules.get(2).getFilter());
 
         // check symbolizers
         PolygonSymbolizer ps = (PolygonSymbolizer) collector.symbolizers.get(0);
@@ -205,7 +229,7 @@ public class CookbookPolygonTest extends AbstractStyleTest {
         ps = (PolygonSymbolizer) collector.symbolizers.get(2);
         assertEquals("#009900", ps.getFill().getColor().evaluate(null, String.class));
     }
-    
+
     @Test
     public void testZoomBased() {
         FeatureTypeStyleBuilder fts = new FeatureTypeStyleBuilder();
@@ -218,27 +242,27 @@ public class CookbookPolygonTest extends AbstractStyleTest {
         tb.newFont().familyName("Arial").size(14).weightName("bold");
         tb.pointPlacement().anchor().x(0.5).y(0.5);
         tb.fill().color(Color.WHITE);
-        
+
         pb = fts.rule().name("Medium").min(100000000).max(200000000).polygon();
         pb.stroke().color(Color.BLACK).width(4);
         pb.fill().colorHex("#0000CC");
-        
+
         pb = fts.rule().name("Small").min(200000000).polygon();
         pb.stroke().color(Color.BLACK).width(1);
         pb.fill().colorHex("#0000CC");
-        
+
         Style style = fts.buildStyle();
         // print(style);
-        
+
         StyleCollector collector = new StyleCollector();
         style.accept(collector);
         assertEquals(1, collector.featureTypeStyles.size());
         assertEquals(3, collector.rules.size());
         assertEquals(4, collector.symbolizers.size());
-        
+
         // happy that it built, does not really add anything that we don't have already tested
     }
-    
+
     @Test
     public void testUomBased() {
         FeatureTypeStyleBuilder fts = new FeatureTypeStyleBuilder();
@@ -253,15 +277,14 @@ public class CookbookPolygonTest extends AbstractStyleTest {
         tb.fill().color(Color.WHITE);
         Style style = fts.buildStyle();
         // print(style);
-        
+
         StyleCollector collector = new StyleCollector();
         style.accept(collector);
         assertEquals(1, collector.featureTypeStyles.size());
         assertEquals(2, collector.rules.size());
         assertEquals(2, collector.symbolizers.size());
-        
+
         assertEquals(SI.METRE, collector.symbolizers.get(0).getUnitOfMeasure());
         // happy that it built, does not really add anything that we don't have already tested
     }
-
 }

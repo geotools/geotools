@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -21,17 +21,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.SQLException;
 
-
 /**
- * A metadata entity which implements (indirectly) metadata
- * interfaces like {@link org.opengis.metadata.MetaData},
- * {@link org.opengis.metadata.citation.Citation}, etc.
+ * A metadata entity which implements (indirectly) metadata interfaces like {@link
+ * org.opengis.metadata.MetaData}, {@link org.opengis.metadata.citation.Citation}, etc.
  *
- * Any call to a method in a metadata interface is redirected toward the
- * {@link #invoke} method. This method use reflection in order to find
- * the caller's method and class name. The class name is translated into
- * a table name, and the method name is translated into a column name.
- * Then the information is fetch in the underlying metadata database.
+ * <p>Any call to a method in a metadata interface is redirected toward the {@link #invoke} method.
+ * This method use reflection in order to find the caller's method and class name. The class name is
+ * translated into a table name, and the method name is translated into a column name. Then the
+ * information is fetch in the underlying metadata database.
  *
  * @since 2.1
  * @source $URL$
@@ -41,45 +38,40 @@ import java.sql.SQLException;
  */
 final class MetadataEntity implements InvocationHandler {
     /**
-     * The identifier used in order to locate the record for
-     * this metadata entity in the database. This is usually
-     * the primary key in the table which contains this entity.
+     * The identifier used in order to locate the record for this metadata entity in the database.
+     * This is usually the primary key in the table which contains this entity.
      */
     private final String identifier;
 
     /**
-     * The connection to the database. All metadata entities
-     * created from a single database should share the same source.
+     * The connection to the database. All metadata entities created from a single database should
+     * share the same source.
      */
     private final MetadataSource source;
 
     /**
      * Creates a new metadata entity.
      *
-     * @param identifier The identifier used in order to locate the record for
-     *                   this metadata entity in the database. This is usually
-     *                   the primary key in the table which contains this entity.
-     * @param source     The connection to the table which contains this entity.
+     * @param identifier The identifier used in order to locate the record for this metadata entity
+     *     in the database. This is usually the primary key in the table which contains this entity.
+     * @param source The connection to the table which contains this entity.
      */
     public MetadataEntity(final String identifier, final MetadataSource source) {
         this.identifier = identifier;
-        this.source     = source;
+        this.source = source;
     }
 
     /**
      * Invoked when any method from a metadata interface is invoked.
      *
-     * @param proxy  The object on which the method is invoked.
+     * @param proxy The object on which the method is invoked.
      * @param method The method invoked.
-     * @param args   The argument given to the method.
+     * @param args The argument given to the method.
      */
-    public Object invoke(final Object proxy,
-                         final Method method,
-                         final Object[] args)
-    {
+    public Object invoke(final Object proxy, final Method method, final Object[] args) {
         final Class<?> type = method.getDeclaringClass();
         if (type.getName().startsWith(source.metadataPackage)) {
-            if (args!=null && args.length!=0) {
+            if (args != null && args.length != 0) {
                 throw new MetadataException("Unexpected argument."); // TODO: localize
             }
             /*

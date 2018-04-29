@@ -17,13 +17,12 @@
 
 package org.geotools.mbstyle.expression;
 
+import static org.junit.Assert.*;
+
+import java.awt.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.junit.Test;
-
-import java.awt.*;
-
-import static org.junit.Assert.*;
 
 public class MBTypeTest extends AbstractMBExpressionTest {
 
@@ -37,9 +36,7 @@ public class MBTypeTest extends AbstractMBExpressionTest {
         return MBTypes.class;
     }
 
-    /**
-     * Verify that the "literal" MBTypes expression can be parsed and evaluated correctly.
-     */
+    /** Verify that the "literal" MBTypes expression can be parsed and evaluated correctly. */
     @Test
     public void testParseLiteralExpression() {
 
@@ -58,12 +55,9 @@ public class MBTypeTest extends AbstractMBExpressionTest {
         JSONObject jobj = (JSONObject) obj;
         assertEquals(2, jobj.size());
         assertEquals(jobj.get("object"), "test");
-
     }
 
-    /**
-     * Verify that the "typeof" MBTypes expression can be parsed and evaluated correctly.
-     */
+    /** Verify that the "typeof" MBTypes expression can be parsed and evaluated correctly. */
     @Test
     public void testParseTypeOfExpression() {
 
@@ -85,9 +79,7 @@ public class MBTypeTest extends AbstractMBExpressionTest {
         assertEquals(String.class.toString(), string);
     }
 
-    /**
-     * Verify that the "boolean" MBTypes expression can be parsed and evaluated correctly.
-     */
+    /** Verify that the "boolean" MBTypes expression can be parsed and evaluated correctly. */
     @Test
     public void testParseBooleanExpression() {
 
@@ -109,9 +101,7 @@ public class MBTypeTest extends AbstractMBExpressionTest {
         }
     }
 
-    /**
-     * Verify that the "number" MBTypes expression can be parsed and evaluated correctly.
-     */
+    /** Verify that the "number" MBTypes expression can be parsed and evaluated correctly. */
     @Test
     public void testParseNumberExpression() {
 
@@ -136,9 +126,7 @@ public class MBTypeTest extends AbstractMBExpressionTest {
         }
     }
 
-    /**
-     * Verify that the "object" MBTypes expression can be parsed and evaluated correctly.
-     */
+    /** Verify that the "object" MBTypes expression can be parsed and evaluated correctly. */
     @Test
     public void testParseObjectExpression() {
 
@@ -160,9 +148,7 @@ public class MBTypeTest extends AbstractMBExpressionTest {
         }
     }
 
-    /**
-     * Verify that the "string" MBTypes expression can be parsed and evaluated correctly.
-     */
+    /** Verify that the "string" MBTypes expression can be parsed and evaluated correctly. */
     @Test
     public void testParseStringExpression() {
 
@@ -184,9 +170,7 @@ public class MBTypeTest extends AbstractMBExpressionTest {
         }
     }
 
-    /**
-     * Verify that the "to-boolean" MBTypes expression can be parsed and evaluated correctly.
-     */
+    /** Verify that the "to-boolean" MBTypes expression can be parsed and evaluated correctly. */
     @Test
     public void testParseToBoolExpression() {
 
@@ -221,12 +205,9 @@ public class MBTypeTest extends AbstractMBExpressionTest {
 
         Object nestedTrue = getExpressionEvaluation(j, "nestedFalse");
         assertEquals(Boolean.FALSE, nestedTrue);
-
     }
 
-    /**
-     * Verify that the "to-boolean" MBTypes expression can be parsed and evaluated correctly.
-     */
+    /** Verify that the "to-boolean" MBTypes expression can be parsed and evaluated correctly. */
     @Test
     public void testParseToStringExpression() {
 
@@ -260,9 +241,7 @@ public class MBTypeTest extends AbstractMBExpressionTest {
         assertEquals("rgba(23,34,45,1.0)", color);
     }
 
-    /**
-     * Verify that the "to-number" MBTypes expression can be parsed and evaluated correctly.
-     */
+    /** Verify that the "to-number" MBTypes expression can be parsed and evaluated correctly. */
     @Test
     public void testParseToNumberExpression() {
 
@@ -291,14 +270,13 @@ public class MBTypeTest extends AbstractMBExpressionTest {
 
         try {
             Object obj = getExpressionEvaluation(j, "object");
-            fail("expected exception function \"mbToColor\" fails if argument can't be converted to a color");
-        } catch (IllegalArgumentException e){
+            fail(
+                    "expected exception function \"mbToColor\" fails if argument can't be converted to a color");
+        } catch (IllegalArgumentException e) {
         }
     }
 
-    /**
-     * Verify that the "to-number" MBTypes expression can be parsed and evaluated correctly.
-     */
+    /** Verify that the "to-number" MBTypes expression can be parsed and evaluated correctly. */
     @Test
     public void testParseToColorExpression() {
 
@@ -327,19 +305,19 @@ public class MBTypeTest extends AbstractMBExpressionTest {
 
         try {
             Object aTrue = getExpressionEvaluation(j, "true");
-            fail("expected exception function \"mbToColor\" fails if argument can't be converted to a color");
-        } catch (IllegalArgumentException e){
+            fail(
+                    "expected exception function \"mbToColor\" fails if argument can't be converted to a color");
+        } catch (IllegalArgumentException e) {
         }
 
         try {
             Object aFalse = getExpressionEvaluation(j, "false");
-            fail("expected exception function \"mbToColor\" fails if argument can't be converted to a color");
-        } catch (IllegalArgumentException e){
+            fail(
+                    "expected exception function \"mbToColor\" fails if argument can't be converted to a color");
+        } catch (IllegalArgumentException e) {
         }
     }
-    /**
-     * Verify that the "array" MBTypes expression can be parsed and evaluated correctly.
-     */
+    /** Verify that the "array" MBTypes expression can be parsed and evaluated correctly. */
     @Test
     public void testParseArrayExpression() {
 
@@ -356,27 +334,30 @@ public class MBTypeTest extends AbstractMBExpressionTest {
 
         try {
             Object obj = getExpressionEvaluation(j, "boolean");
-            fail("expected exception function \"mbType\" fails if argument can't be converted to a color");
-        } catch (IllegalArgumentException e){
+            fail(
+                    "expected exception function \"mbType\" fails if argument can't be converted to a color");
+        } catch (IllegalArgumentException e) {
         }
 
         try {
             Object obj = getExpressionEvaluation(j, "string");
-            fail("expected exception function \"mbType\" fails if argument can't be converted to a color");
-        } catch (IllegalArgumentException e){
+            fail(
+                    "expected exception function \"mbType\" fails if argument can't be converted to a color");
+        } catch (IllegalArgumentException e) {
         }
 
         try {
             Object obj = getExpressionEvaluation(j, "number");
-            fail("expected exception function \"mbType\" fails if argument can't be converted to a color");
-        } catch (IllegalArgumentException e){
+            fail(
+                    "expected exception function \"mbType\" fails if argument can't be converted to a color");
+        } catch (IllegalArgumentException e) {
         }
 
         try {
             Object obj = getExpressionEvaluation(j, "object");
-            fail("expected exception function \"mbType\" fails if argument can't be converted to a color");
-        } catch (IllegalArgumentException e){
+            fail(
+                    "expected exception function \"mbType\" fails if argument can't be converted to a color");
+        } catch (IllegalArgumentException e) {
         }
     }
-
 }

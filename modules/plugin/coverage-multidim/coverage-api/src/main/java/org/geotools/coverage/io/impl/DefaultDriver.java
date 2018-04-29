@@ -22,7 +22,6 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Map;
-
 import org.geotools.coverage.io.CoverageAccess;
 import org.geotools.coverage.io.Driver;
 import org.geotools.data.Parameter;
@@ -33,13 +32,11 @@ import org.opengis.util.ProgressListener;
 
 /**
  * Base Implementation for the {@link Driver} interface.
- * 
- * 
- * 
+ *
  * @source $URL$
  */
 public class DefaultDriver implements Driver {
-    
+
     private final EnumSet<DriverCapabilities> driverCapabilities;
 
     private String name;
@@ -57,8 +54,8 @@ public class DefaultDriver implements Driver {
     private Map<String, Parameter<?>> deleteParameterInfo;
 
     protected DefaultDriver(
-            final String name, 
-            final String description, 
+            final String name,
+            final String description,
             final String title,
             final EnumSet<DriverCapabilities> driverCapabilities,
             final Hints implementationHints) {
@@ -66,7 +63,7 @@ public class DefaultDriver implements Driver {
         org.geotools.util.Utilities.ensureNonNull("description", description);
         org.geotools.util.Utilities.ensureNonNull("title", title);
         org.geotools.util.Utilities.ensureNonNull("driverCapabilities", driverCapabilities);
-        
+
         this.driverCapabilities = driverCapabilities.clone();
         this.name = name;
         this.description = new SimpleInternationalString(description);
@@ -83,8 +80,9 @@ public class DefaultDriver implements Driver {
 
     /**
      * Implementation hints provided during construction.
-     * <p>
-     * Often these hints are configuration and factory settings used to intergrate the driver with application services.
+     *
+     * <p>Often these hints are configuration and factory settings used to intergrate the driver
+     * with application services.
      */
     public Map<Key, ?> getImplementationHints() {
         return this.implementationHints;
@@ -94,39 +92,44 @@ public class DefaultDriver implements Driver {
         return this.description;
     }
 
-    public boolean canAccess(final DriverCapabilities operation,
-            final Map<String, Serializable> params) {
+    public boolean canAccess(
+            final DriverCapabilities operation, final Map<String, Serializable> params) {
 
         if (!getDriverCapabilities().contains(operation))
-            throw new UnsupportedOperationException("Operation " + operation + " is not supported by this driver");
+            throw new UnsupportedOperationException(
+                    "Operation " + operation + " is not supported by this driver");
         switch (operation) {
-        case CONNECT:
-            return canConnect(params);
-        case DELETE:
-            return canDelete(params);
-        case CREATE:
-            return canCreate(params);
-        default:
-            throw new IllegalArgumentException("Operation " + operation + " uknknown ");
+            case CONNECT:
+                return canConnect(params);
+            case DELETE:
+                return canDelete(params);
+            case CREATE:
+                return canCreate(params);
+            default:
+                throw new IllegalArgumentException("Operation " + operation + " uknknown ");
         }
     }
 
-    public CoverageAccess access(final DriverCapabilities operation,
-            final Map<String, Serializable> params, Hints hints, final ProgressListener listener)
+    public CoverageAccess access(
+            final DriverCapabilities operation,
+            final Map<String, Serializable> params,
+            Hints hints,
+            final ProgressListener listener)
             throws IOException {
 
         if (!getDriverCapabilities().contains(operation)) {
-            throw new UnsupportedOperationException("Operation " + operation + " is not supported by this driver");
+            throw new UnsupportedOperationException(
+                    "Operation " + operation + " is not supported by this driver");
         }
         switch (operation) {
-        case CONNECT:
-            return connect(params, hints, listener);
-        case DELETE:
-            return delete(params, hints, listener);
-        case CREATE:
-            return create(params, hints, listener);
-        default:
-            throw new IllegalArgumentException("Operation " + operation + " uknknown ");
+            case CONNECT:
+                return connect(params, hints, listener);
+            case DELETE:
+                return delete(params, hints, listener);
+            case CREATE:
+                return create(params, hints, listener);
+            default:
+                throw new IllegalArgumentException("Operation " + operation + " uknknown ");
         }
     }
 
@@ -162,14 +165,14 @@ public class DefaultDriver implements Driver {
 
     public Map<String, Parameter<?>> getParameterInfo(DriverCapabilities operation) {
         switch (operation) {
-        case CONNECT:
-            return getConnectParameterInfo();
-        case DELETE:
-            return getDeleteParameterInfo();
-        case CREATE:
-            return getCreateParameterInfo();
-        default:
-            throw new IllegalArgumentException("Operation " + operation + " uknknown ");
+            case CONNECT:
+                return getConnectParameterInfo();
+            case DELETE:
+                return getDeleteParameterInfo();
+            case CREATE:
+                return getCreateParameterInfo();
+            default:
+                throw new IllegalArgumentException("Operation " + operation + " uknknown ");
         }
     }
 
@@ -185,14 +188,16 @@ public class DefaultDriver implements Driver {
         return false;
     }
 
-    protected CoverageAccess connect(Map<String, Serializable> params, Hints hints,
-            ProgressListener listener) throws IOException {
+    protected CoverageAccess connect(
+            Map<String, Serializable> params, Hints hints, ProgressListener listener)
+            throws IOException {
 
         throw new UnsupportedOperationException("Operation not currently implemented");
     }
 
-    protected CoverageAccess create(Map<String, Serializable> params, Hints hints,
-            ProgressListener listener) throws IOException {
+    protected CoverageAccess create(
+            Map<String, Serializable> params, Hints hints, ProgressListener listener)
+            throws IOException {
         throw new UnsupportedOperationException("Operation not currently implemented");
     }
 
@@ -208,8 +213,9 @@ public class DefaultDriver implements Driver {
         return Collections.emptyMap();
     }
 
-    protected CoverageAccess delete(Map<String, Serializable> params, Hints hints,
-            ProgressListener listener) throws IOException {
+    protected CoverageAccess delete(
+            Map<String, Serializable> params, Hints hints, ProgressListener listener)
+            throws IOException {
         throw new UnsupportedOperationException("Operation not currently implemented");
     }
 
@@ -220,5 +226,4 @@ public class DefaultDriver implements Driver {
     public boolean isAvailable() {
         return false;
     }
-
 }

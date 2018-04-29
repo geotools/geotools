@@ -16,18 +16,17 @@
  */
 package org.geotools.ows.bindings;
 
-import net.opengis.ows10.IdentificationType;
-import net.opengis.ows10.Ows10Factory;
 import javax.xml.namespace.QName;
+import net.opengis.ows10.Ows10Factory;
 import org.geotools.ows.OWS;
 import org.geotools.xml.*;
-
 
 /**
  * Binding object for the type http://www.opengis.net/ows:IdentificationType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;complexType name="IdentificationType"&gt;
  *      &lt;annotation&gt;
@@ -68,12 +67,8 @@ import org.geotools.xml.*;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class IdentificationTypeBinding extends AbstractComplexEMFBinding {
@@ -81,14 +76,13 @@ public class IdentificationTypeBinding extends AbstractComplexEMFBinding {
         super(factory);
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return OWS.IdentificationType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -99,14 +93,14 @@ public class IdentificationTypeBinding extends AbstractComplexEMFBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
-        //TODO: implement and remove call to super
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
+        // TODO: implement and remove call to super
         return super.parse(instance, node, value);
     }
 }

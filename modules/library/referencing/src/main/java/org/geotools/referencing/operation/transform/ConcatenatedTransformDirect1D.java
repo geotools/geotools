@@ -17,9 +17,8 @@
 package org.geotools.referencing.operation.transform;
 
 import org.opengis.referencing.operation.MathTransform1D;
-import org.opengis.referencing.operation.TransformException;
 import org.opengis.referencing.operation.NoninvertibleTransformException;
-
+import org.opengis.referencing.operation.TransformException;
 
 /**
  * Concatenated transform where both transforms are one-dimensional.
@@ -30,65 +29,49 @@ import org.opengis.referencing.operation.NoninvertibleTransformException;
  * @author Martin Desruisseaux (IRD)
  */
 final class ConcatenatedTransformDirect1D extends ConcatenatedTransformDirect
-                                       implements MathTransform1D
-{
-    /**
-     * Serial number for interoperability with different versions.
-     */
+        implements MathTransform1D {
+    /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 1064398659892864966L;
 
     /**
-     * The first math transform. This field is identical
-     * to {@link ConcatenatedTransform#transform1}. Only
-     * the type is different.
+     * The first math transform. This field is identical to {@link
+     * ConcatenatedTransform#transform1}. Only the type is different.
      */
     private final MathTransform1D transform1;
 
     /**
-     * The second math transform. This field is identical
-     * to {@link ConcatenatedTransform#transform1}. Only
-     * the type is different.
+     * The second math transform. This field is identical to {@link
+     * ConcatenatedTransform#transform1}. Only the type is different.
      */
     private final MathTransform1D transform2;
 
-    /**
-     * Constructs a concatenated transform.
-     */
-    public ConcatenatedTransformDirect1D(final MathTransform1D transform1,
-                                         final MathTransform1D transform2)
-    {
+    /** Constructs a concatenated transform. */
+    public ConcatenatedTransformDirect1D(
+            final MathTransform1D transform1, final MathTransform1D transform2) {
         super(transform1, transform2);
         this.transform1 = transform1;
         this.transform2 = transform2;
     }
 
-    /**
-     * Checks if transforms are compatibles with this implementation.
-     */
+    /** Checks if transforms are compatibles with this implementation. */
     @Override
     boolean isValid() {
-        return super.isValid() && getSourceDimensions()==1 && getTargetDimensions()==1;
+        return super.isValid() && getSourceDimensions() == 1 && getTargetDimensions() == 1;
     }
 
-    /**
-     * Transforms the specified value.
-     */
+    /** Transforms the specified value. */
     public double transform(final double value) throws TransformException {
         return transform2.transform(transform1.transform(value));
     }
 
-    /**
-     * Gets the derivative of this function at a value.
-     */
+    /** Gets the derivative of this function at a value. */
     public double derivative(final double value) throws TransformException {
         final double value1 = transform1.derivative(value);
         final double value2 = transform2.derivative(transform1.transform(value));
         return value2 * value1;
     }
 
-    /**
-     * Creates the inverse transform of this object.
-     */
+    /** Creates the inverse transform of this object. */
     @Override
     public MathTransform1D inverse() throws NoninvertibleTransformException {
         return (MathTransform1D) super.inverse();

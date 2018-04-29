@@ -1,5 +1,9 @@
 package org.geotools.renderer.lite;
 
+import static org.junit.Assert.assertEquals;
+
+import java.io.File;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -13,11 +17,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 
-import java.io.File;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import static org.junit.Assert.assertEquals;
-
 public class FeatureListenerTest {
 
     SimpleFeatureSource squareFS;
@@ -30,9 +29,7 @@ public class FeatureListenerTest {
         PropertyDataStore ds = new PropertyDataStore(property.getParentFile());
         squareFS = ds.getFeatureSource("square");
         bounds = new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
-
     }
-
 
     @Test
     public void testTwoRulesCatchAll() throws Exception {
@@ -53,19 +50,18 @@ public class FeatureListenerTest {
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setMapContent(mc);
         AtomicInteger count = new AtomicInteger();
-        renderer.addRenderListener(new RenderListener() {
+        renderer.addRenderListener(
+                new RenderListener() {
 
-            public void featureRenderer(SimpleFeature feature) {
-                count.incrementAndGet();
-            }
+                    public void featureRenderer(SimpleFeature feature) {
+                        count.incrementAndGet();
+                    }
 
-            public void errorOccurred(Exception e) {
-            }
-        });
+                    public void errorOccurred(Exception e) {}
+                });
 
         RendererBaseTest.renderImage(renderer, bounds, null);
         mc.dispose();
         assertEquals(expectedCount, count.get());
     }
 }
-

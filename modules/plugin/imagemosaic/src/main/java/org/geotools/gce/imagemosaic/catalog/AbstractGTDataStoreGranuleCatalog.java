@@ -29,10 +29,8 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.imageio.spi.ImageInputStreamSpi;
 import javax.imageio.spi.ImageReaderSpi;
-
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROI;
 import org.geotools.data.DataStore;
@@ -66,25 +64,25 @@ import org.opengis.geometry.BoundingBox;
 
 /**
  * This class simply builds an SRTREE spatial index in memory for fast indexed geometric queries.
- * 
- * <p>
- * Since the {@link ImageMosaicReader} heavily uses spatial queries to find out which are the involved tiles during mosaic creation, it is better to
- * do some caching and keep the index in memory as much as possible, hence we came up with this index.
- * 
+ *
+ * <p>Since the {@link ImageMosaicReader} heavily uses spatial queries to find out which are the
+ * involved tiles during mosaic creation, it is better to do some caching and keep the index in
+ * memory as much as possible, hence we came up with this index.
+ *
  * @author Simone Giannecchini, S.A.S.
- * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for jar:file:foo.jar/bar.properties URLs
+ * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for
+ *     jar:file:foo.jar/bar.properties URLs
  * @since 2.5
- * 
  * @source $URL$
  */
 abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
 
     /** Logger. */
-    final static Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger(AbstractGTDataStoreGranuleCatalog.class);
+    static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(AbstractGTDataStoreGranuleCatalog.class);
 
-    final static FilterFactory2 ff = CommonFactoryFinder
-            .getFilterFactory2(GeoTools.getDefaultHints());
+    static final FilterFactory2 ff =
+            CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
 
     private String geometryPropertyName;
 
@@ -93,7 +91,7 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
     String locationAttribute;
 
     ImageReaderSpi suggestedRasterSPI;
-    
+
     AbstractGridFormat suggestedFormat;
 
     ImageInputStreamSpi suggestedIsSPI;
@@ -108,9 +106,11 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
 
     private DataStoreFactorySpi spi;
 
-
-    public AbstractGTDataStoreGranuleCatalog(final Properties params, final boolean create,
-            final DataStoreFactorySpi spi, final Hints hints) {
+    public AbstractGTDataStoreGranuleCatalog(
+            final Properties params,
+            final boolean create,
+            final DataStoreFactorySpi spi,
+            final Hints hints) {
         super(hints);
         Utilities.ensureNonNull("params", params);
         this.spi = spi;
@@ -120,15 +120,14 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
             this.pathType = (PathType) params.get(Utils.Prop.PATH_TYPE);
             this.locationAttribute = (String) params.get(Utils.Prop.LOCATION_ATTRIBUTE);
             final String temp = (String) params.get(Utils.Prop.SUGGESTED_SPI);
-            this.suggestedRasterSPI = temp != null
-                    ? (ImageReaderSpi) Class.forName(temp).newInstance() : null;
+            this.suggestedRasterSPI =
+                    temp != null ? (ImageReaderSpi) Class.forName(temp).newInstance() : null;
             final String temp2 = (String) params.get(Utils.Prop.SUGGESTED_FORMAT);
-            this.suggestedFormat = temp2 != null
-                    ? (AbstractGridFormat) Class.forName(temp2).newInstance() : null;
+            this.suggestedFormat =
+                    temp2 != null ? (AbstractGridFormat) Class.forName(temp2).newInstance() : null;
             final String temp3 = (String) params.get(Utils.Prop.SUGGESTED_IS_SPI);
-            this.suggestedIsSPI = temp3 != null
-                    ? (ImageInputStreamSpi) Class.forName(temp3).newInstance()
-                    : null;
+            this.suggestedIsSPI =
+                    temp3 != null ? (ImageInputStreamSpi) Class.forName(temp3).newInstance() : null;
             this.parentLocation = (String) params.get(Utils.Prop.PARENT_LOCATION);
             if (params.containsKey(Utils.Prop.HETEROGENEOUS)) {
                 this.heterogeneous = (Boolean) params.get(Utils.Prop.HETEROGENEOUS);
@@ -142,7 +141,6 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
             handleInitializationException(e);
             throw new IllegalArgumentException(e);
         }
-
     }
 
     protected void initializeTypeNames(final Properties params) throws IOException {
@@ -183,9 +181,11 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
 
         // if we got here and there is not typename in the list, we could not find one
         if (this.getValidTypeNames().size() == 0) {
-            throw new IllegalArgumentException("Could not find a suitable mosaic type "
-                    + "(with a footprint and a location attribute named "
-                    + getLocationAttributeName() + " in the store");
+            throw new IllegalArgumentException(
+                    "Could not find a suitable mosaic type "
+                            + "(with a footprint and a location attribute named "
+                            + getLocationAttributeName()
+                            + " in the store");
         }
 
         if (this.getValidTypeNames().size() > 0) {
@@ -208,13 +208,11 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
         }
     }
 
-    /**
-     * Called in case the initialization of the class failed, allows subclasses to clean up
-     */
+    /** Called in case the initialization of the class failed, allows subclasses to clean up */
     protected abstract void handleInitializationException(Throwable t);
 
     /**
-     * Allows initialization of the tile index store before scanning type names. 
+     * Allows initialization of the tile index store before scanning type names.
      *
      * @param params
      * @param create
@@ -222,11 +220,13 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
      * @throws IOException
      * @throws MalformedURLException
      */
-    protected abstract void initTileIndexStore(final Properties params, final boolean create,
-            final DataStoreFactorySpi spi) throws IOException, MalformedURLException;
+    protected abstract void initTileIndexStore(
+            final Properties params, final boolean create, final DataStoreFactorySpi spi)
+            throws IOException, MalformedURLException;
 
     /**
-     * Returns true if the type is usable as a mosaic index, that is, it has a geometry and the expected location property
+     * Returns true if the type is usable as a mosaic index, that is, it has a geometry and the
+     * expected location property
      */
     private boolean isValidMosaicSchema(String typeName) throws IOException {
         SimpleFeatureType schema = getTileIndexStore().getSchema(typeName);
@@ -244,7 +244,7 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
 
     /**
      * Checks the provided schema, and throws an exception if not valid
-     * 
+     *
      * @param schema
      * @throws IOException
      */
@@ -259,22 +259,25 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
 
     /**
      * Checks the provided schema, and throws an exception if not valid
-     * 
+     *
      * @param schema
      */
     private void checkMosaicSchema(SimpleFeatureType schema) {
         if (!Utils.isValidMosaicSchema(schema, getLocationAttributeName())) {
-            throw new IllegalArgumentException("Invalid mosaic schema " + schema + ", "
-                    + "it should have a geometry and a location property of name "
-                    + locationAttribute);
+            throw new IllegalArgumentException(
+                    "Invalid mosaic schema "
+                            + schema
+                            + ", "
+                            + "it should have a geometry and a location property of name "
+                            + locationAttribute);
         }
     }
 
     /**
      * If the underlying store has been disposed we throw an {@link IllegalStateException}.
-     * <p>
-     * We need to arrive here with at least a read lock!
-     * 
+     *
+     * <p>We need to arrive here with at least a read lock!
+     *
      * @throws IllegalStateException in case the underlying store has been disposed.
      */
     private void checkStore() throws IllegalStateException {
@@ -304,14 +307,19 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
             // loading all the features into memory to build an in-memory index.
             for (String type : typeNames) {
                 if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.fine("BBOXFilterExtractor::extractBasicProperties(): Looking for type \'"
-                            + typeName + "\' in DataStore:getTypeNames(). Testing: \'" + type
-                            + "\'.");
+                    LOGGER.fine(
+                            "BBOXFilterExtractor::extractBasicProperties(): Looking for type \'"
+                                    + typeName
+                                    + "\' in DataStore:getTypeNames(). Testing: \'"
+                                    + type
+                                    + "\'.");
                 if (type.equalsIgnoreCase(typeName)) {
                     if (LOGGER.isLoggable(Level.FINE))
                         LOGGER.fine(
                                 "BBOXFilterExtractor::extractBasicProperties(): SUCCESS -> type \'"
-                                        + typeName + "\' is equalsIgnoreCase() to \'" + type
+                                        + typeName
+                                        + "\' is equalsIgnoreCase() to \'"
+                                        + type
                                         + "\'.");
                     typeName = type;
                     addTypeName(typeName, false);
@@ -333,13 +341,13 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
             if (LOGGER.isLoggable(Level.FINE))
                 LOGGER.fine(
                         "BBOXFilterExtractor::extractBasicProperties(): geometryPropertyName is set to \'"
-                                + geometryPropertyName + "\'.");
+                                + geometryPropertyName
+                                + "\'.");
 
         } else {
             throw new IOException(
                     "BBOXFilterExtractor::extractBasicProperties(): unable to get a schema from the featureSource");
         }
-
     }
 
     private final ReadWriteLock rwLock = new ReentrantReadWriteLock(true);
@@ -348,7 +356,7 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
         final Lock l = rwLock.writeLock();
         try {
             l.lock();
-            
+
             try {
                 if (multiScaleROIProvider != null) {
                     multiScaleROIProvider.dispose();
@@ -366,9 +374,7 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
         }
     }
 
-    /**
-     * Allows subclasses to dispose the tile index store
-     */
+    /** Allows subclasses to dispose the tile index store */
     protected abstract void disposeTileIndexStore();
 
     @Override
@@ -398,13 +404,15 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
             // do your thing
         } finally {
             lock.unlock();
-
         }
     }
 
     @Override
-    public void addGranules(final String typeName, final Collection<SimpleFeature> granules,
-            final Transaction transaction) throws IOException {
+    public void addGranules(
+            final String typeName,
+            final Collection<SimpleFeature> granules,
+            final Transaction transaction)
+            throws IOException {
         Utilities.ensureNonNull("granuleMetadata", granules);
         final Lock lock = rwLock.writeLock();
         try {
@@ -412,12 +420,12 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
             // check if the index has been cleared
             checkStore();
 
-            SimpleFeatureStore store = (SimpleFeatureStore) getTileIndexStore()
-                    .getFeatureSource(typeName);
+            SimpleFeatureStore store =
+                    (SimpleFeatureStore) getTileIndexStore().getFeatureSource(typeName);
             store.setTransaction(transaction);
 
-            ListFeatureCollection featureCollection = new ListFeatureCollection(
-                    getTileIndexStore().getSchema(typeName));
+            ListFeatureCollection featureCollection =
+                    new ListFeatureCollection(getTileIndexStore().getSchema(typeName));
 
             // add them all
             Set<FeatureId> fids = new HashSet<FeatureId>();
@@ -430,7 +438,6 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
 
         } finally {
             lock.unlock();
-
         }
     }
 
@@ -449,7 +456,8 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
             // Load tiles informations, especially the bounds, which will be
             // reused
             //
-            final SimpleFeatureSource featureSource = getTileIndexStore().getFeatureSource(typeName);
+            final SimpleFeatureSource featureSource =
+                    getTileIndexStore().getFeatureSource(typeName);
             if (featureSource == null) {
                 throw new NullPointerException(
                         "The provided SimpleFeatureSource is null, it's impossible to create an index!");
@@ -460,20 +468,27 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
                 throw new NullPointerException(
                         "The provided SimpleFeatureCollection is null, it's impossible to create an index!");
 
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.fine("Index Loaded");
+            if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("Index Loaded");
 
             // visiting the features from the underlying store, caring for early bail out
-            try(SimpleFeatureIterator fi = features.features()) {
-                while(fi.hasNext() && !visitor.isVisitComplete()) {
+            try (SimpleFeatureIterator fi = features.features()) {
+                while (fi.hasNext() && !visitor.isVisitComplete()) {
                     final SimpleFeature sf = fi.next();
                     MultiLevelROI footprint = getGranuleFootprint(sf);
                     if (footprint == null || !footprint.isEmpty()) {
                         try {
-                            final GranuleDescriptor granule = new GranuleDescriptor(sf,
-                                    suggestedFormat, suggestedRasterSPI, suggestedIsSPI,
-                                    pathType, locationAttribute,
-                                    parentLocation, footprint, heterogeneous, q.getHints());
+                            final GranuleDescriptor granule =
+                                    new GranuleDescriptor(
+                                            sf,
+                                            suggestedFormat,
+                                            suggestedRasterSPI,
+                                            suggestedIsSPI,
+                                            pathType,
+                                            locationAttribute,
+                                            parentLocation,
+                                            footprint,
+                                            heterogeneous,
+                                            q.getHints());
 
                             visitor.visit(granule, sf);
                         } catch (Exception e) {
@@ -488,7 +503,6 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
             throw ioe;
         } finally {
             lock.unlock();
-
         }
     }
 
@@ -506,7 +520,8 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
             // Load tiles informations, especially the bounds, which will be
             // reused
             //
-            final SimpleFeatureSource featureSource = getTileIndexStore().getFeatureSource(typeName);
+            final SimpleFeatureSource featureSource =
+                    getTileIndexStore().getFeatureSource(typeName);
             if (featureSource == null) {
                 throw new NullPointerException(
                         "The provided SimpleFeatureSource is null, it's impossible to create an index!");
@@ -519,7 +534,6 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
             throw ioe;
         } finally {
             lock.unlock();
-
         }
     }
 
@@ -549,8 +563,8 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
             lock.lock();
             checkStore();
 
-            final SimpleFeatureType featureType = DataUtilities.createType(namespace, typeName,
-                    typeSpec);
+            final SimpleFeatureType featureType =
+                    DataUtilities.createType(namespace, typeName, typeSpec);
             checkMosaicSchema(featureType);
             getTileIndexStore().createSchema(featureType);
             type = featureType.getTypeName();
@@ -561,7 +575,6 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
         } finally {
             lock.unlock();
         }
-
     }
 
     private void addTypeName(String typeName, final boolean check) {
@@ -604,7 +617,6 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
         } finally {
             lock.unlock();
         }
-
     }
 
     public void removeType(String typeName) throws IOException {
@@ -620,7 +632,6 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
         } finally {
             lock.unlock();
         }
-
     }
 
     public void createType(String identification, String typeSpec)
@@ -632,8 +643,8 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
         try {
             lock.lock();
             checkStore();
-            final SimpleFeatureType featureType = DataUtilities.createType(identification,
-                    typeSpec);
+            final SimpleFeatureType featureType =
+                    DataUtilities.createType(identification, typeSpec);
             checkMosaicSchema(featureType);
             getTileIndexStore().createSchema(featureType);
             typeName = featureType.getTypeName();
@@ -644,7 +655,6 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
         } finally {
             lock.unlock();
         }
-
     }
 
     @Override
@@ -654,14 +664,14 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
             lock.lock();
             checkStore();
 
-            if (this.getValidTypeNames().isEmpty() || !this.getValidTypeNames().contains(typeName)) {
+            if (this.getValidTypeNames().isEmpty()
+                    || !this.getValidTypeNames().contains(typeName)) {
                 return null;
             }
             return getTileIndexStore().getSchema(typeName);
         } finally {
             lock.unlock();
         }
-
     }
 
     public void computeAggregateFunction(Query query, FeatureCalc function) throws IOException {
@@ -677,12 +687,10 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
             else {
                 final SimpleFeatureCollection collection = fs.getFeatures(query);
                 collection.accepts(function, null);
-
             }
         } finally {
             lock.unlock();
         }
-
     }
 
     @Override
@@ -715,7 +723,6 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
             // try to dispose the underlying store if it has not been disposed yet
             this.dispose();
         }
-
     }
 
     @Override
@@ -732,7 +739,8 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
             // Load tiles informations, especially the bounds, which will be
             // reused
             //
-            final SimpleFeatureSource featureSource = getTileIndexStore().getFeatureSource(typeName);
+            final SimpleFeatureSource featureSource =
+                    getTileIndexStore().getFeatureSource(typeName);
             if (featureSource == null) {
                 throw new NullPointerException(
                         "The provided SimpleFeatureSource is null, it's impossible to create an index!");
@@ -749,7 +757,6 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
             throw ioe;
         } finally {
             lock.unlock();
-
         }
     }
 
@@ -783,6 +790,7 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
 
     /**
      * Returns the tile index store
+     *
      * @return
      */
     protected abstract DataStore getTileIndexStore();
@@ -790,7 +798,7 @@ abstract class AbstractGTDataStoreGranuleCatalog extends GranuleCatalog {
     /**
      * Returns the set of valid type names (this is going to be a live collection, the code is
      * allowed to modify it)
-     * 
+     *
      * @return
      */
     protected abstract Set<String> getValidTypeNames();

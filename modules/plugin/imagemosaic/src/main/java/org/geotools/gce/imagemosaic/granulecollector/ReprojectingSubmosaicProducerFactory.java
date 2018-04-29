@@ -19,7 +19,6 @@ package org.geotools.gce.imagemosaic.granulecollector;
 
 import java.util.Collections;
 import java.util.List;
-
 import org.geotools.gce.imagemosaic.RasterLayerRequest;
 import org.geotools.gce.imagemosaic.RasterLayerResponse;
 import org.geotools.gce.imagemosaic.RasterManager;
@@ -29,8 +28,11 @@ import org.geotools.gce.imagemosaic.RasterManager;
  */
 public class ReprojectingSubmosaicProducerFactory implements SubmosaicProducerFactory {
     @Override
-    public List<SubmosaicProducer> createProducers(RasterLayerRequest request,
-            RasterManager rasterManager, RasterLayerResponse response, boolean dryRun) {
+    public List<SubmosaicProducer> createProducers(
+            RasterLayerRequest request,
+            RasterManager rasterManager,
+            RasterLayerResponse response,
+            boolean dryRun) {
         return Collections.singletonList(
                 new ReprojectingSubmosaicProducer(request, response, rasterManager, dryRun));
     }

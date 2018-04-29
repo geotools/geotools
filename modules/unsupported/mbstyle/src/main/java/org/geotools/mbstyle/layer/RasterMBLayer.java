@@ -13,10 +13,14 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
- *    
+ *
  */
 package org.geotools.mbstyle.layer;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import org.geotools.mbstyle.MBStyle;
 import org.geotools.mbstyle.parse.MBFilter;
 import org.geotools.mbstyle.parse.MBObjectParser;
@@ -28,12 +32,6 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.style.ContrastMethod;
 import org.opengis.style.Rule;
 import org.opengis.style.SemanticType;
-
-import si.uom.NonSI;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 public class RasterMBLayer extends MBLayer {
 
@@ -50,6 +48,7 @@ public class RasterMBLayer extends MBLayer {
             paintJson = new JSONObject();
         }
     }
+
     @Override
     protected SemanticType defaultSemanticType() {
         return SemanticType.RASTER;
@@ -57,63 +56,63 @@ public class RasterMBLayer extends MBLayer {
 
     /**
      * (Optional) The opacity (Number) at which the image will be drawn.
-     * 
-     * Defaults to 1. Range: [0, 1]
+     *
+     * <p>Defaults to 1. Range: [0, 1]
      *
      * @return The opacity of this raster layer.
      */
     public Expression opacity() {
         return parse.percentage(paintJson, "raster-opacity", 1);
     }
-    
+
     /**
      * (Optional) The opacity (Number) at which the image will be drawn.
-     * 
-     * Defaults to 1. Range: [0, 1]
+     *
+     * <p>Defaults to 1. Range: [0, 1]
      *
      * @return The opacity of this raster layer.
      */
     public Number getOpacity() {
-        return parse.optional(Number.class , paintJson, "raster-opacity", 1);        
+        return parse.optional(Number.class, paintJson, "raster-opacity", 1);
     }
 
     /**
      * (Optional) Rotates hues around the color wheel.
-     * 
-     * Number. Units in degrees. Defaults to 0.
+     *
+     * <p>Number. Units in degrees. Defaults to 0.
      *
      * @return The angle to rotate the hue of the raster image by.
      */
     public Expression hueRotate() {
         return parse.number(paintJson, "raster-hue-rotate", 0);
     }
-    
+
     /**
      * (Optional) Rotates hues around the color wheel.
-     * 
-     * Number. Units in degrees. Defaults to 0.
+     *
+     * <p>Number. Units in degrees. Defaults to 0.
      *
      * @return The angle to rotate the hue of the raster image by.
-     */    
+     */
     public Number getHueRotate() {
         return parse.optional(Number.class, paintJson, "raster-hue-rotate", 0);
     }
 
     /**
      * (Optional) Scale the brightness of the image. The value is the minimum brightness.
-     * 
-     * Number. Defaults to 0. Range: [0, 1]
+     *
+     * <p>Number. Defaults to 0. Range: [0, 1]
      *
      * @return The minimum magnitude of the brightness.
      */
     public Expression brightnessMin() {
         return parse.number(paintJson, "raster-brightness-min", 0);
     }
-    
+
     /**
      * (Optional) Scale the brightness of the image. The value is the minimum brightness.
-     * 
-     * Number. Defaults to 0. Range: [0, 1]
+     *
+     * <p>Number. Defaults to 0. Range: [0, 1]
      *
      * @return The minimum magnitude of the brightness.
      */
@@ -123,19 +122,19 @@ public class RasterMBLayer extends MBLayer {
 
     /**
      * (Optional) Scale the brightness of the image. The value is the maximum brightness.
-     * 
-     * Number. Defaults to 1. Range: [0, 1]
+     *
+     * <p>Number. Defaults to 1. Range: [0, 1]
      *
      * @return The maximum magnitude of the brightness.
      */
     public Expression brightnessMax() {
         return parse.number(paintJson, "raster-brightness-max", 1);
     }
-    
+
     /**
      * (Optional) Scale the brightness of the image. The value is the maximum brightness.
-     * 
-     * Number. Defaults to 1. Range: [0, 1]
+     *
+     * <p>Number. Defaults to 1. Range: [0, 1]
      *
      * @return The maximum magnitude of the brightness.
      */
@@ -145,8 +144,8 @@ public class RasterMBLayer extends MBLayer {
 
     /**
      * (Optional) Increase or reduce the saturation of the image.
-     * 
-     * Number. Defaults to 0. Range: [-1, 1]
+     *
+     * <p>Number. Defaults to 0. Range: [-1, 1]
      *
      * @return The change in saturation
      */
@@ -156,41 +155,41 @@ public class RasterMBLayer extends MBLayer {
 
     /**
      * (Optional) Increase or reduce the saturation of the image.
-     * 
-     * Number. Defaults to 0. Range: [-1, 1]
+     *
+     * <p>Number. Defaults to 0. Range: [-1, 1]
      *
      * @return The change in saturation
      */
     public Number getSaturation() {
-        return parse.optional(Number.class, paintJson,  "raster-saturation", 0);
+        return parse.optional(Number.class, paintJson, "raster-saturation", 0);
     }
 
     /**
      * (Optional) Increase or reduce the contrast of the image.
-     * 
-     * Number. Defaults to 0. Range: [-1, 1]
+     *
+     * <p>Number. Defaults to 0. Range: [-1, 1]
      *
      * @return The change in contrast
      */
     public Expression contrast() {
         return parse.number(paintJson, "raster-contrast", 0);
     }
-    
+
     /**
      * (Optional) Increase or reduce the contrast of the image.
-     * 
-     * Number. Defaults to 0. Range: [-1, 1]
+     *
+     * <p>Number. Defaults to 0. Range: [-1, 1]
      *
      * @return The change in contrast
      */
     public Number getContrast() {
-        return parse.optional(Number.class, paintJson,  "raster-contrast", 0);
+        return parse.optional(Number.class, paintJson, "raster-contrast", 0);
     }
 
     /**
      * (Optional) Fade duration when a new tile is added.
-     * 
-     * Number. Units in milliseconds. Defaults to 300.
+     *
+     * <p>Number. Units in milliseconds. Defaults to 300.
      *
      * @return The duration of the fade when a new tile is added.
      */
@@ -201,24 +200,25 @@ public class RasterMBLayer extends MBLayer {
     /**
      * (Optional) Fade duration when a new tile is added.
      *
-     * Number. Units in milliseconds. Defaults to 300.
+     * <p>Number. Units in milliseconds. Defaults to 300.
      *
      * @return The duration of the fade when a new tile is added.
      */
     public Number getFadeDuration() {
-        return parse.optional(Number.class, paintJson,  "raster-fade-duration", 300);
+        return parse.optional(Number.class, paintJson, "raster-fade-duration", 300);
     }
 
     /**
      * Transform {@link RasterMBLayer} to GeoTools FeatureTypeStyle.
-     * <p>
-     * Notes:
-     * </p>
+     *
+     * <p>Notes:
+     *
      * <ul>
-     * <li>Assumes 3-band RGB</li>
+     *   <li>Assumes 3-band RGB
      * </ul>
      *
-     * @param styleContext The MBStyle to which this layer belongs, used as a context for things like resolving sprite and glyph names to full urls.
+     * @param styleContext The MBStyle to which this layer belongs, used as a context for things
+     *     like resolving sprite and glyph names to full urls.
      * @return FeatureTypeStyle
      */
     public List<FeatureTypeStyle> transformInternal(MBStyle styleContext) {
@@ -226,24 +226,44 @@ public class RasterMBLayer extends MBLayer {
 
         // Use of builder is easier for code examples; but fills in SLD defaults
         // Currently only applies the opacity.
-        RasterSymbolizer symbolizer = sf.rasterSymbolizer(getId(), null,
-                sf.description(Text.text("raster"), null), Units.PIXEL, opacity(), null,
-                null, null, ce, null, null);
+        RasterSymbolizer symbolizer =
+                sf.rasterSymbolizer(
+                        getId(),
+                        null,
+                        sf.description(Text.text("raster"), null),
+                        Units.PIXEL,
+                        opacity(),
+                        null,
+                        null,
+                        null,
+                        ce,
+                        null,
+                        null);
 
         List<Rule> rules = new ArrayList<>();
         MBFilter filter = getFilter();
-        org.geotools.styling.Rule rule = sf.rule(getId(), null, null, 0.0, Double.MAX_VALUE,
-                Arrays.asList(symbolizer), filter.filter());
+        org.geotools.styling.Rule rule =
+                sf.rule(
+                        getId(),
+                        null,
+                        null,
+                        0.0,
+                        Double.MAX_VALUE,
+                        Arrays.asList(symbolizer),
+                        filter.filter());
         rules.add(rule);
         rule.setLegendGraphic(new Graphic[0]);
 
-        return Collections.singletonList(sf.featureTypeStyle(getId(),
-                sf.description(Text.text("MBStyle " + getId()),
-                        Text.text("Generated for " + getSourceLayer())),
-                null,
-                Collections.emptySet(),
-                filter.semanticTypeIdentifiers(),
-                rules));
+        return Collections.singletonList(
+                sf.featureTypeStyle(
+                        getId(),
+                        sf.description(
+                                Text.text("MBStyle " + getId()),
+                                Text.text("Generated for " + getSourceLayer())),
+                        null,
+                        Collections.emptySet(),
+                        filter.semanticTypeIdentifiers(),
+                        rules));
     }
 
     /**
@@ -254,5 +274,4 @@ public class RasterMBLayer extends MBLayer {
     public String getType() {
         return TYPE;
     }
-
 }

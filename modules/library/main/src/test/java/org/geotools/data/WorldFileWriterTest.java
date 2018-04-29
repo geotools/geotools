@@ -6,14 +6,13 @@ import java.awt.geom.AffineTransform;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-
 import org.junit.Test;
 
 public class WorldFileWriterTest {
 
     @Test
     public void testWrite() throws Exception {
-        AffineTransform at = new AffineTransform(42.34, 0, 0, -42.34,347671.10, 5196940.18);
+        AffineTransform at = new AffineTransform(42.34, 0, 0, -42.34, 347671.10, 5196940.18);
 
         File tmp = File.createTempFile("write", "wld", new File("target"));
         new WorldFileWriter(tmp, at);

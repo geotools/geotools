@@ -3,7 +3,7 @@
  *    http://geotools.org
  *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -16,15 +16,10 @@
  */
 package org.geotools.data.ows;
 
-
 /**
  * Available WPS Operations are listed in a Request element.
  *
  * @author gdavis
- *
- *
- *
- *
  * @source $URL$
  */
 public class WPSRequest {
@@ -50,19 +45,19 @@ public class WPSRequest {
         this.getCapabilities = getCapabilities;
     }
 
-
     public OperationType getDescribeProcess() {
         return describeProcess;
     }
-    public void setDescribeProcess( OperationType describeProcess ) {
+
+    public void setDescribeProcess(OperationType describeProcess) {
         this.describeProcess = describeProcess;
     }
-    
+
     public OperationType getExecuteProcess() {
         return executeProcess;
     }
-    public void setExecuteProcess( OperationType executeProcess ) {
+
+    public void setExecuteProcess(OperationType executeProcess) {
         this.executeProcess = executeProcess;
-    }    
- 
+    }
 }

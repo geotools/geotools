@@ -17,21 +17,18 @@
 package org.geotools.util;
 
 import java.util.Set;
-
 import javax.media.jai.Interpolation;
 import javax.media.jai.InterpolationBicubic;
 import javax.media.jai.InterpolationBicubic2;
 import javax.media.jai.InterpolationBilinear;
 import javax.media.jai.InterpolationNearest;
-
 import org.junit.Assert;
 import org.junit.Test;
 
 /**
  * Tests for the {@link InterpolationConverterFactory} machinery.
- * 
+ *
  * @author Simone Giannecchini, GeoSolutions
- * 
  */
 public class InterpolationConverterFactoryTest extends Assert {
 
@@ -42,8 +39,8 @@ public class InterpolationConverterFactoryTest extends Assert {
     public void testInterpolationConverterFactory() {
 
         // make sure the class is registered and assigned
-        Set<ConverterFactory> set = Converters.getConverterFactories(String.class,
-                INTERPOLATION_CLASS);
+        Set<ConverterFactory> set =
+                Converters.getConverterFactories(String.class, INTERPOLATION_CLASS);
         assertNotNull(set);
         assertFalse(set.isEmpty());
         assertEquals(set.size(), 1);
@@ -52,9 +49,9 @@ public class InterpolationConverterFactoryTest extends Assert {
         //
         assertNull(new InterpolationConverterFactory().createConverter(null, null, null));
         assertNull(new InterpolationConverterFactory().createConverter(String.class, null, null));
-        assertNull(new InterpolationConverterFactory().createConverter(String.class, Double.class,
-                null));
-
+        assertNull(
+                new InterpolationConverterFactory()
+                        .createConverter(String.class, Double.class, null));
     }
 
     @Test
@@ -69,7 +66,6 @@ public class InterpolationConverterFactoryTest extends Assert {
         assertNull(Converters.convert("Interpolationnearest", INTERPOLATION_CLASS));
         assertNull(Converters.convert("interpolationnearest", INTERPOLATION_CLASS));
         assertNull(Converters.convert("interpolatioNnearest", INTERPOLATION_CLASS));
-
     }
 
     @Test
@@ -98,7 +94,6 @@ public class InterpolationConverterFactoryTest extends Assert {
         assertNull(Converters.convert("interpolationBilinear", INTERPOLATION_CLASS));
         assertNull(Converters.convert("Interpolationbilinear", INTERPOLATION_CLASS));
         assertNull(Converters.convert("interpolationbilinear", INTERPOLATION_CLASS));
-
     }
 
     @Test
@@ -124,7 +119,6 @@ public class InterpolationConverterFactoryTest extends Assert {
         assertNull(Converters.convert("interpolationBicubic(2)", INTERPOLATION_CLASS));
         assertNull(Converters.convert("Interpolationbicubic(2)", INTERPOLATION_CLASS));
         assertNull(Converters.convert("interpolationbicubic(2)", INTERPOLATION_CLASS));
-
     }
 
     @Test
@@ -151,7 +145,5 @@ public class InterpolationConverterFactoryTest extends Assert {
         assertNull(Converters.convert("interpolationBicubic2(2)", INTERPOLATION_CLASS));
         assertNull(Converters.convert("Interpolationbicubic2(2)", INTERPOLATION_CLASS));
         assertNull(Converters.convert("interpolationbicubic2(2)", INTERPOLATION_CLASS));
-
     }
-
 }

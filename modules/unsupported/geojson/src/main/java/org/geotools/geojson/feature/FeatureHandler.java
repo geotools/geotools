@@ -16,10 +16,11 @@
  */
 package org.geotools.geojson.feature;
 
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geojson.DelegatingHandler;
@@ -31,14 +32,7 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class FeatureHandler extends DelegatingHandler<SimpleFeature> {
 
     private int fid = 0;
@@ -63,9 +57,7 @@ public class FeatureHandler extends DelegatingHandler<SimpleFeature> {
 
     private String baseId = "feature";
 
-    /** 
-     * should we attempt to automatically build fids
-     */
+    /** should we attempt to automatically build fids */
     private boolean autoFID = false;
 
     public FeatureHandler() {
@@ -96,7 +88,8 @@ public class FeatureHandler extends DelegatingHandler<SimpleFeature> {
         } else if ("crs".equals(key) && properties == null /* it's top level, not a property */) {
             delegate = new CRSHandler();
             return true;
-        } else if ("geometry".equals(key) && properties == null /* it's top level, not a property */) {
+        } else if ("geometry".equals(key)
+                && properties == null /* it's top level, not a property */) {
             delegate = new GeometryHandler(new GeometryFactory());
             return true;
         } else if ("properties".equals(key) && delegate == NULL) {
@@ -137,8 +130,9 @@ public class FeatureHandler extends DelegatingHandler<SimpleFeature> {
 
             if (delegate instanceof GeometryHandler) {
                 Geometry g = ((IContentHandler<Geometry>) delegate).getValue();
-                if (g == null && ((GeometryHandler) delegate)
-                        .getDelegate() instanceof GeometryCollectionHandler) {
+                if (g == null
+                        && ((GeometryHandler) delegate).getDelegate()
+                                instanceof GeometryCollectionHandler) {
                     // this means that the collecetion handler is still parsing objects, continue
                     // to delegate to it
                 } else {
@@ -290,20 +284,14 @@ public class FeatureHandler extends DelegatingHandler<SimpleFeature> {
     // " 'id':'widgets." + val + "'" +
     // "}";
 
-    /**
-     * set the ID to 0
-     */
+    /** set the ID to 0 */
     private void resetFID() {
         fid = 0;
-
     }
 
-    /**
-     * Add one to the current ID
-     */
+    /** Add one to the current ID */
     private void incrementFID() {
         fid = fid + 1;
-
     }
 
     private void setFID(String f) {
@@ -312,7 +300,7 @@ public class FeatureHandler extends DelegatingHandler<SimpleFeature> {
             index = f.indexOf('-');
             if (index >= 0) {
                 separator = "-";
-            }else {
+            } else {
                 autoFID = false;
                 id = f;
                 return;

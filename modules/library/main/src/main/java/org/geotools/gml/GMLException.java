@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -20,22 +20,15 @@ package org.geotools.gml;
  * An exception used to represent any GML related errors.
  *
  * @author Ian Turton, CCG
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public class GMLException extends java.lang.Exception {
-    /**
-     * Creates a new instance of <code>GMLException</code> without detail
-     * message.
-     */
-    public GMLException() {
-    }
+    /** Creates a new instance of <code>GMLException</code> without detail message. */
+    public GMLException() {}
 
     /**
-     * Constructs an instance of <code>GMLException</code>  with the specified
-     * detail message.
+     * Constructs an instance of <code>GMLException</code> with the specified detail message.
      *
      * @param msg the detail message.
      */

@@ -17,30 +17,26 @@
 package org.geotools.filter.v1_0;
 
 import javax.xml.namespace.QName;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Multiply;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
-
+import org.opengis.filter.FilterFactory;
+import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Multiply;
 
 /**
  * Binding object for the element http://www.opengis.net/ogc:Mul.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:element name="Mul" substitutionGroup="ogc:expression" type="ogc:BinaryOperatorType"/&gt;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class OGCMulBinding extends AbstractComplexBinding {
@@ -50,9 +46,7 @@ public class OGCMulBinding extends AbstractComplexBinding {
         this.filterfactory = filterfactory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return OGC.Mul;
     }
@@ -62,6 +56,7 @@ public class OGCMulBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -72,14 +67,14 @@ public class OGCMulBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
-        return filterfactory.multiply((Expression) node.getChildValue(0),
-            (Expression) node.getChildValue(1));
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
+        return filterfactory.multiply(
+                (Expression) node.getChildValue(0), (Expression) node.getChildValue(1));
     }
 }

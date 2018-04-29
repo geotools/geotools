@@ -4,37 +4,34 @@
  *
  *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2004-2005, Open Geospatial Consortium Inc.
- *    
+ *
  *    All Rights Reserved. http://www.opengis.org/legal/
  */
 package org.opengis.metadata.spatial;
 
-import java.util.List;
-import org.opengis.annotation.UML;
-
 import static org.opengis.annotation.Obligation.*;
 import static org.opengis.annotation.Specification.*;
 
+import java.util.List;
+import org.opengis.annotation.UML;
 
 /**
  * Basic information required to uniquely identify a resource or resources.
  *
- *
- *
  * @source $URL$
  * @version <A HREF="http://www.opengeospatial.org/standards/as#01-111">ISO 19115</A>
- * @author  Martin Desruisseaux (IRD)
- * @author  Cory Horner (Refractions Research)
- * @since   GeoAPI 2.0
+ * @author Martin Desruisseaux (IRD)
+ * @author Cory Horner (Refractions Research)
+ * @since GeoAPI 2.0
  */
-@UML(identifier="MD_GridSpatialRepresentation", specification=ISO_19115)
+@UML(identifier = "MD_GridSpatialRepresentation", specification = ISO_19115)
 public interface GridSpatialRepresentation extends SpatialRepresentation {
     /**
      * Number of independent spatial-temporal axes.
      *
      * @return Number of independent spatial-temporal axes.
      */
-    @UML(identifier="numberOfDimensions", obligation=MANDATORY, specification=ISO_19115)
+    @UML(identifier = "numberOfDimensions", obligation = MANDATORY, specification = ISO_19115)
     Integer getNumberOfDimensions();
 
     /**
@@ -42,7 +39,7 @@ public interface GridSpatialRepresentation extends SpatialRepresentation {
      *
      * @return Information about spatial-temporal axis properties.
      */
-    @UML(identifier="axisDimensionsProperties", obligation=MANDATORY, specification=ISO_19115)
+    @UML(identifier = "axisDimensionsProperties", obligation = MANDATORY, specification = ISO_19115)
     List<? extends Dimension> getAxisDimensionsProperties();
 
     /**
@@ -50,7 +47,7 @@ public interface GridSpatialRepresentation extends SpatialRepresentation {
      *
      * @return Identification of grid data as point or cell.
      */
-    @UML(identifier="cellGeometry", obligation=MANDATORY, specification=ISO_19115)
+    @UML(identifier = "cellGeometry", obligation = MANDATORY, specification = ISO_19115)
     CellGeometry getCellGeometry();
 
     /**
@@ -58,6 +55,10 @@ public interface GridSpatialRepresentation extends SpatialRepresentation {
      *
      * @return Whether or not parameters for transformation exists.
      */
-    @UML(identifier="transformationParameterAvailability", obligation=MANDATORY, specification=ISO_19115)
+    @UML(
+        identifier = "transformationParameterAvailability",
+        obligation = MANDATORY,
+        specification = ISO_19115
+    )
     boolean isTransformationParameterAvailable();
 }

@@ -23,14 +23,12 @@ import org.geotools.tile.TileIdentifier;
 import org.geotools.tile.TileService;
 
 /**
- * <p>
- * The WebMercatorTileFactory is an abstract class that holds some of the tile calculation logic for Mercator-based tile services.
- * </p>
- * <p>
- * <a href="http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames"> OpenStreetMap Wiki</a>
+ * The WebMercatorTileFactory is an abstract class that holds some of the tile calculation logic for
+ * Mercator-based tile services.
+ *
+ * <p><a href="http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames">OpenStreetMap Wiki</a>
  * http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames#Java
- * </p>
- * 
+ *
  * @author Ugo Taddei
  * @since 12
  */
@@ -46,9 +44,13 @@ public abstract class WebMercatorTileFactory extends TileFactory {
 
         final int z = tileName.getZ();
 
-        ReferencedEnvelope extent = new ReferencedEnvelope(tile2lon(tileName.getX(), z),
-                tile2lon(tileName.getX() + 1, z), tile2lat(tileName.getY(), z),
-                tile2lat(tileName.getY() + 1, z), DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope extent =
+                new ReferencedEnvelope(
+                        tile2lon(tileName.getX(), z),
+                        tile2lon(tileName.getX() + 1, z),
+                        tile2lat(tileName.getY(), z),
+                        tile2lat(tileName.getY() + 1, z),
+                        DefaultGeographicCRS.WGS84);
 
         return extent;
     }
@@ -64,5 +66,4 @@ public abstract class WebMercatorTileFactory extends TileFactory {
         // Math.exp(-n)));
         return Math.toDegrees(Math.atan(Math.sinh(n)));
     }
-
 }

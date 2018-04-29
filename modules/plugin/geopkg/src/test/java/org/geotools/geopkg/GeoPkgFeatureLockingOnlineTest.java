@@ -20,9 +20,8 @@ import org.geotools.jdbc.JDBCFeatureLockingOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
 /**
- * TODO: find out how to fix the following
- * Temporarily override all of these as SQLite/GeoPkg throws an SQLException not a FeatureLockException 
- * when the DB is locked, so the tests fail.
+ * TODO: find out how to fix the following Temporarily override all of these as SQLite/GeoPkg throws
+ * an SQLException not a FeatureLockException when the DB is locked, so the tests fail.
  *
  * @source $URL$
  */
@@ -34,43 +33,26 @@ public class GeoPkgFeatureLockingOnlineTest extends JDBCFeatureLockingOnlineTest
     }
 
     @Override
-    public void testLockFeatures() throws Exception {
-        
-    }
+    public void testLockFeatures() throws Exception {}
 
     @Override
-    public void testLockFeaturesWithFilter() throws Exception {
-        
-    }
+    public void testLockFeaturesWithFilter() throws Exception {}
 
     @Override
-    public void testLockFeaturesWithInvalidFilter() throws Exception {
-        
-    }
+    public void testLockFeaturesWithInvalidFilter() throws Exception {}
 
     @Override
-    public void testLockFeaturesWithInvalidQuery() throws Exception {
-        
-    }
+    public void testLockFeaturesWithInvalidQuery() throws Exception {}
 
     @Override
-    public void testUnlockFeatures() throws Exception {
-        
-    }
+    public void testUnlockFeatures() throws Exception {}
 
     @Override
-    public void testUnlockFeaturesInvalidFilter() throws Exception {
-        
-    }
+    public void testUnlockFeaturesInvalidFilter() throws Exception {}
 
     @Override
-    public void testDeleteLockedFeatures() throws Exception {
-        
-    }
+    public void testDeleteLockedFeatures() throws Exception {}
 
     @Override
-    public void testModifyLockedFeatures() throws Exception {
-        
-    }
-
+    public void testModifyLockedFeatures() throws Exception {}
 }

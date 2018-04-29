@@ -16,14 +16,12 @@
  */
 package org.geotools.data.wfs.internal;
 
+import com.vividsolutions.jts.geom.GeometryFactory;
 import java.io.IOException;
-
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.ows.ServiceException;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.FeatureType;
-
-import com.vividsolutions.jts.geom.GeometryFactory;
 
 public class GetFeatureResponse extends WFSResponse {
 
@@ -31,12 +29,12 @@ public class GetFeatureResponse extends WFSResponse {
 
     private boolean featuresReturned;
 
-    public GetFeatureResponse(WFSRequest originatingRequest, HTTPResponse httpResponse,
-            GetFeatureParser features) throws ServiceException, IOException {
+    public GetFeatureResponse(
+            WFSRequest originatingRequest, HTTPResponse httpResponse, GetFeatureParser features)
+            throws ServiceException, IOException {
 
         super(originatingRequest, httpResponse);
         this.features = features;
-
     }
 
     public GetFeatureParser getFeatures() {
@@ -64,5 +62,4 @@ public class GetFeatureResponse extends WFSResponse {
 
         throw new UnsupportedOperationException("implementa adapting to SimpleFeature");
     }
-
 }

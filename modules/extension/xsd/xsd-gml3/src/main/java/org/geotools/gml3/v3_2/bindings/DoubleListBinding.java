@@ -16,20 +16,15 @@
  */
 package org.geotools.gml3.v3_2.bindings;
 
-import java.util.List;
-
 import javax.xml.namespace.QName;
-
 import org.geotools.gml3.v3_2.GML;
-import org.geotools.xml.AbstractSimpleBinding;
-import org.geotools.xml.InstanceComponent;
-
 
 /**
  * Binding object for the type http://www.opengis.net/gml:doubleList.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;simpleType name="doubleList"&gt;
  *      &lt;annotation&gt;
@@ -40,10 +35,8 @@ import org.geotools.xml.InstanceComponent;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
  * @source $URL$
  */
 public class DoubleListBinding extends org.geotools.gml3.bindings.DoubleListBinding {

@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,42 +16,45 @@
  */
 package org.geotools.referencing.operation.builder;
 
+import java.util.List;
+import org.geotools.referencing.datum.BursaWolfParameters;
+import org.geotools.referencing.operation.matrix.GeneralMatrix;
+import org.geotools.referencing.operation.transform.GeocentricTranslation;
+import org.opengis.geometry.DirectPosition;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.cs.CartesianCS;
 import org.opengis.referencing.datum.GeodeticDatum;
 import org.opengis.referencing.operation.MathTransform;
-import org.opengis.geometry.DirectPosition;
-
-import org.geotools.referencing.datum.BursaWolfParameters;
-import org.geotools.referencing.operation.matrix.GeneralMatrix;
-import org.geotools.referencing.operation.transform.GeocentricTranslation;
-
-import java.util.List;
-
 
 /**
- * Builds {@linkplain org.opengis.referencing.operation.MathTransform
- * MathTransform} setup as BursaWolf transformation from a list of {@linkplain
- * org.geotools.referencing.operation.builder.MappedPosition MappedPosition}.
- * The calculation uses least square method.  Calculated parameters can be
- * used for following operations:<p></p>
- *  <p>The equations:<pre> X = q * R * x  +  T ,             </pre>Where X
- * is the Matrix of destination points, q is the scale,  R is the rotation
- * Matrix, x is the Matrix of source points  and T is matrix of translation.
- * Expressing the errors, we get this:<pre>        Err =  A * Dx + l </pre>where
- * Err is the Error Matrix, A is Matrix of derivations, Dx is Matrix  of
- * difference changes of 7 parameters, and l is value of DX, DY, DZ for
- * calculated from approximate values. Using the least square method to
- * minimalize the errors we get this result:<pre>
- *  Dx = (A<sup>T</sup>A)<sup>-1</sup> A<sup>T</sup>l  </pre></p>
+ * Builds {@linkplain org.opengis.referencing.operation.MathTransform MathTransform} setup as
+ * BursaWolf transformation from a list of {@linkplain
+ * org.geotools.referencing.operation.builder.MappedPosition MappedPosition}. The calculation uses
+ * least square method. Calculated parameters can be used for following operations:
+ *
+ * <p>
+ *
+ * <p>The equations:
+ *
+ * <pre> X = q * R * x  +  T ,             </pre>
+ *
+ * Where X is the Matrix of destination points, q is the scale, R is the rotation Matrix, x is the
+ * Matrix of source points and T is matrix of translation. Expressing the errors, we get this:
+ *
+ * <pre>        Err =  A * Dx + l </pre>
+ *
+ * where Err is the Error Matrix, A is Matrix of derivations, Dx is Matrix of difference changes of
+ * 7 parameters, and l is value of DX, DY, DZ for calculated from approximate values. Using the
+ * least square method to minimalize the errors we get this result:
+ *
+ * <pre>
+ *  Dx = (A<sup>T</sup>A)<sup>-1</sup> A<sup>T</sup>l  </pre>
  *
  * @since 2.4
  * @version 14
- *
  * @source $URL$
  * @version $Id$
  * @author Jan Jezek
- *
  */
 public class BursaWolfTransformBuilder extends MathTransformBuilder {
     /** The Geodetic Datum of target reference system */
@@ -100,22 +103,20 @@ public class BursaWolfTransformBuilder extends MathTransformBuilder {
     }
 
     /**
-     * Returns the minimum number of points required by this builder,
-     * which is 3.
+     * Returns the minimum number of points required by this builder, which is 3.
      *
-     * @return the minimum number of points required by this builder which is
-     *         3.
+     * @return the minimum number of points required by this builder which is 3.
      */
     public int getMinimumPointCount() {
         return 3;
     }
 
     /**
-     * Returns the dimension for {@link #getSourceCRS source} and
-     * {@link #getTargetCRS target} CRS, which is 2.
+     * Returns the dimension for {@link #getSourceCRS source} and {@link #getTargetCRS target} CRS,
+     * which is 2.
      *
-     * @return dimension for {@linkplain #getSourceCRS source} and {@link
-     *         #getTargetCRS target} CRS, which is 2.
+     * @return dimension for {@linkplain #getSourceCRS source} and {@link #getTargetCRS target} CRS,
+     *     which is 2.
      */
     @Override
     public int getDimension() {
@@ -123,13 +124,12 @@ public class BursaWolfTransformBuilder extends MathTransformBuilder {
     }
 
     /**
-     * Returns the required coordinate system type, which is
-     * {@linkplain CartesianCS cartesian CS}.
+     * Returns the required coordinate system type, which is {@linkplain CartesianCS cartesian CS}.
      *
      * @return coordinate system type
      */
     @Override
-    public Class <? extends CartesianCS> getCoordinateSystemType() {
+    public Class<? extends CartesianCS> getCoordinateSystemType() {
         return CartesianCS.class;
     }
 
@@ -152,7 +152,7 @@ public class BursaWolfTransformBuilder extends MathTransformBuilder {
     }
 
     /**
-     * Fills the x matrix by  coordinates of destination points.
+     * Fills the x matrix by coordinates of destination points.
      *
      * @return the X matrix
      */
@@ -177,9 +177,9 @@ public class BursaWolfTransformBuilder extends MathTransformBuilder {
      */
     protected GeneralMatrix getRalfa() {
         GeneralMatrix Ralfa = new GeneralMatrix(3, 3);
-        double[] m0 = { 1, 0, 0 };
-        double[] m1 = { 0, Math.cos(alfa), Math.sin(alfa) };
-        double[] m2 = { 0, -Math.sin(alfa), Math.cos(alfa) };
+        double[] m0 = {1, 0, 0};
+        double[] m1 = {0, Math.cos(alfa), Math.sin(alfa)};
+        double[] m2 = {0, -Math.sin(alfa), Math.cos(alfa)};
         Ralfa.setRow(0, m0);
         Ralfa.setRow(1, m1);
         Ralfa.setRow(2, m2);
@@ -194,9 +194,9 @@ public class BursaWolfTransformBuilder extends MathTransformBuilder {
      */
     protected GeneralMatrix getRbeta() {
         GeneralMatrix Rbeta = new GeneralMatrix(3, 3);
-        double[] m0 = { Math.cos(beta), 0, -Math.sin(beta) };
-        double[] m1 = { 0, 1, 0 };
-        double[] m2 = { Math.sin(beta), 0, Math.cos(beta) };
+        double[] m0 = {Math.cos(beta), 0, -Math.sin(beta)};
+        double[] m1 = {0, 1, 0};
+        double[] m2 = {Math.sin(beta), 0, Math.cos(beta)};
         Rbeta.setRow(0, m0);
         Rbeta.setRow(1, m1);
         Rbeta.setRow(2, m2);
@@ -211,9 +211,9 @@ public class BursaWolfTransformBuilder extends MathTransformBuilder {
      */
     protected GeneralMatrix getRgamma() {
         GeneralMatrix Rgamma = new GeneralMatrix(3, 3);
-        double[] m0 = { Math.cos(gamma), Math.sin(gamma), 0 };
-        double[] m1 = { -Math.sin(gamma), Math.cos(gamma), 0 };
-        double[] m2 = { 0, 0, 1 };
+        double[] m0 = {Math.cos(gamma), Math.sin(gamma), 0};
+        double[] m1 = {-Math.sin(gamma), Math.cos(gamma), 0};
+        double[] m2 = {0, 0, 1};
         Rgamma.setRow(0, m0);
         Rgamma.setRow(1, m1);
         Rgamma.setRow(2, m2);
@@ -224,15 +224,14 @@ public class BursaWolfTransformBuilder extends MathTransformBuilder {
     /**
      * Generates partial derivative with respect to alfa.
      *
-     * @return Matrix, that represents partial derivation of rotation Matrix
-     *         with respect to  alfa.
+     * @return Matrix, that represents partial derivation of rotation Matrix with respect to alfa.
      */
     protected GeneralMatrix getDRalfa() {
         GeneralMatrix dRa = new GeneralMatrix(3, 3);
 
-        double[] m0 = { 0, 0, 0 };
-        double[] m1 = { 0, -Math.sin(alfa), Math.cos(alfa) };
-        double[] m2 = { 0, -Math.cos(alfa), -Math.sin(alfa) };
+        double[] m0 = {0, 0, 0};
+        double[] m1 = {0, -Math.sin(alfa), Math.cos(alfa)};
+        double[] m2 = {0, -Math.cos(alfa), -Math.sin(alfa)};
 
         dRa.setRow(0, m0);
         dRa.setRow(1, m1);
@@ -247,15 +246,14 @@ public class BursaWolfTransformBuilder extends MathTransformBuilder {
     /**
      * Generates partial derivative with respect to beta.
      *
-     * @return Matrix, that represents partial derivation of rotation Matrix
-     *         with respect to  beta.
+     * @return Matrix, that represents partial derivation of rotation Matrix with respect to beta.
      */
     protected GeneralMatrix getDRbeta() {
-        //GeneralMatrix dRbeta = new GeneralMatrix(3 * sourcePoints.size(), 1);
+        // GeneralMatrix dRbeta = new GeneralMatrix(3 * sourcePoints.size(), 1);
         GeneralMatrix dRb = new GeneralMatrix(3, 3);
-        double[] m0 = { -Math.sin(beta), 0, -Math.cos(beta) };
-        double[] m1 = { 0, 0, 0 };
-        double[] m2 = { Math.cos(beta), 0, -Math.sin(beta) };
+        double[] m0 = {-Math.sin(beta), 0, -Math.cos(beta)};
+        double[] m1 = {0, 0, 0};
+        double[] m2 = {Math.cos(beta), 0, -Math.sin(beta)};
         dRb.setRow(0, m0);
         dRb.setRow(1, m1);
         dRb.setRow(2, m2);
@@ -269,16 +267,15 @@ public class BursaWolfTransformBuilder extends MathTransformBuilder {
     /**
      * Generates partial derivative with respect to gamma.
      *
-     * @return Matrix, that represents partial derivation of rotation Matrix
-     *         with respect to  gamma.
+     * @return Matrix, that represents partial derivation of rotation Matrix with respect to gamma.
      */
     protected GeneralMatrix getDRgamma() {
         //	GeneralMatrix dRgamma = new GeneralMatrix(3 * sourcePoints.size(), 1);
         GeneralMatrix dRg = new GeneralMatrix(3, 3);
         GeneralMatrix pom = new GeneralMatrix(3, 3);
-        double[] m0 = { -Math.sin(gamma), Math.cos(gamma), 0 };
-        double[] m1 = { -Math.cos(gamma), -Math.sin(gamma), 0 };
-        double[] m2 = { 0, 0, 0 };
+        double[] m0 = {-Math.sin(gamma), Math.cos(gamma), 0};
+        double[] m1 = {-Math.cos(gamma), -Math.sin(gamma), 0};
+        double[] m2 = {0, 0, 0};
         dRg.setRow(0, m0);
         dRg.setRow(1, m1);
         dRg.setRow(2, m2);
@@ -304,16 +301,15 @@ public class BursaWolfTransformBuilder extends MathTransformBuilder {
     }
 
     /**
-     * Calculates the matrix of errors from aproximate values of
-     * prameters.
+     * Calculates the matrix of errors from aproximate values of prameters.
      *
      * @return the l matrix.
      */
     protected GeneralMatrix getl() {
         GeneralMatrix l = new GeneralMatrix(3 * getMappedPositions().size(), 1);
         GeneralMatrix R = new GeneralMatrix(3, 3);
-        GeneralMatrix T = new GeneralMatrix(3, 1, new double[] { -dx, -dy, -dz });
-        GeneralMatrix qMatrix = new GeneralMatrix(1, 1, new double[] { q });
+        GeneralMatrix T = new GeneralMatrix(3, 1, new double[] {-dx, -dy, -dz});
+        GeneralMatrix qMatrix = new GeneralMatrix(1, 1, new double[] {q});
         GeneralMatrix qx = new GeneralMatrix(X.getNumRow(), X.getNumCol());
         qx.mul(x, qMatrix);
         R.mul(getRalfa(), getRbeta());
@@ -326,12 +322,10 @@ public class BursaWolfTransformBuilder extends MathTransformBuilder {
     }
 
     /**
-     * Method for multiplying  matrix (3,3) by matrix of  coordintes (3
-     * number of coordinates,1)
+     * Method for multiplying matrix (3,3) by matrix of coordintes (3 number of coordinates,1)
      *
      * @param R ratrix
      * @param x matrix
-     *
      * @return matrix
      */
     protected GeneralMatrix specialMul(GeneralMatrix R, GeneralMatrix x) {
@@ -348,12 +342,10 @@ public class BursaWolfTransformBuilder extends MathTransformBuilder {
     }
 
     /**
-     * Method for addition matrix (3,3) with matrix of coordintes (3
-     * number of coordinates,1)
+     * Method for addition matrix (3,3) with matrix of coordintes (3 number of coordinates,1)
      *
      * @param R ratrix
      * @param x matrix
-     *
      * @return matrix
      */
     private GeneralMatrix specialSub(GeneralMatrix R, GeneralMatrix x) {
@@ -380,9 +372,9 @@ public class BursaWolfTransformBuilder extends MathTransformBuilder {
         GeneralMatrix DT = new GeneralMatrix(3, 3);
 
         // the partial derivative with respect to dx,dy,dz.
-        double[] m0 = { 1, 0, 0 };
-        double[] m1 = { 0, 1, 0 };
-        double[] m2 = { 0, 0, 1 };
+        double[] m0 = {1, 0, 0};
+        double[] m1 = {0, 1, 0};
+        double[] m2 = {0, 0, 1};
         DT.setRow(0, m0);
         DT.setRow(1, m1);
         DT.setRow(2, m2);
@@ -400,20 +392,17 @@ public class BursaWolfTransformBuilder extends MathTransformBuilder {
     }
 
     /**
-     * Returns array of doubles of transformation parameters (dx, dy,
-     * dz, ex, ey, ez, scale).
+     * Returns array of doubles of transformation parameters (dx, dy, dz, ex, ey, ez, scale).
      *
-     * @return array of doubles of transformation parameters (dx, dy, dz, ex,
-     *         ey, ez, scale).
+     * @return array of doubles of transformation parameters (dx, dy, dz, ex, ey, ez, scale).
      */
     protected double[] getParameters() {
         return getDxMatrix().getElements()[0];
     }
 
     /**
-     * Method that claculates the parameters by iteration. The
-     * tolarance is set to 1  10<sub>-8</sub>  and max ï¿½number of steps is set
-     * to 20.
+     * Method that claculates the parameters by iteration. The tolarance is set to 1 10<sub>-8</sub>
+     * and max ï¿½number of steps is set to 20.
      *
      * @return Matrix of parameters (dx, dy, dz, ex, ey, ez, scale).
      */
@@ -424,10 +413,8 @@ public class BursaWolfTransformBuilder extends MathTransformBuilder {
     /**
      * Iterates the parameters..
      *
-     * @param tolerance for iteration steps (the max difference between last
-     *        two steps)
+     * @param tolerance for iteration steps (the max difference between last two steps)
      * @param maxSteps highest number of iteations.
-     *
      * @return GeneralMatrix of calculated parameters.
      */
     private GeneralMatrix getDxMatrix(double tolerance, int maxSteps) {
@@ -448,7 +435,7 @@ public class BursaWolfTransformBuilder extends MathTransformBuilder {
 
         // cicle for iteration
         do {
-            xOld.set(new double[] { dx, dy, dz, alfa, beta, gamma, q });
+            xOld.set(new double[] {dx, dy, dz, alfa, beta, gamma, q});
 
             GeneralMatrix A = getA();
             GeneralMatrix l = getl();
@@ -491,7 +478,6 @@ public class BursaWolfTransformBuilder extends MathTransformBuilder {
      * Coverts radians to seconds.
      *
      * @param rad Angle in radians
-     *
      * @return Angle is seconds
      */
     private static double radiansToSeconds(double rad) {
@@ -502,7 +488,6 @@ public class BursaWolfTransformBuilder extends MathTransformBuilder {
      * Returns Bursa Wolf Transformation parameters.
      *
      * @param Datum The target datum for this parameters.
-     *
      * @return parameters the BursaWolfParameters
      */
     public BursaWolfParameters getBursaWolfParameters(GeodeticDatum Datum) {
@@ -526,10 +511,8 @@ public class BursaWolfTransformBuilder extends MathTransformBuilder {
      * Returns MathtTransform setup as BursaWolf transformation.
      *
      * @return calculated MathTransform
-     *
-     * @throws FactoryException when the size of source and destination point
-     *         is not the same or if the number of points is too small to
-     *         define such transformation.
+     * @throws FactoryException when the size of source and destination point is not the same or if
+     *     the number of points is too small to define such transformation.
      */
     protected MathTransform computeMathTransform() throws FactoryException {
         return new GeocentricTranslation(getBursaWolfParameters(targetDatum));

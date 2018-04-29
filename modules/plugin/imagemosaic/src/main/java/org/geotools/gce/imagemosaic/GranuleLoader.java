@@ -19,11 +19,9 @@ package org.geotools.gce.imagemosaic;
 import java.awt.Dimension;
 import java.awt.RenderingHints;
 import java.util.concurrent.Callable;
-
 import javax.imageio.ImageReadParam;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
-
 import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.GranuleDescriptor.GranuleLoadingResult;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -32,11 +30,10 @@ import org.opengis.geometry.BoundingBox;
 import org.opengis.referencing.operation.MathTransform2D;
 
 /**
- * Specific {@link Callable} implementation that can be used to load the result of a request on a single {@link GranuleDescriptor} via
- * {@link GranuleLoadingResult}.
- * 
+ * Specific {@link Callable} implementation that can be used to load the result of a request on a
+ * single {@link GranuleDescriptor} via {@link GranuleLoadingResult}.
+ *
  * @author Simone Giannecchini, GeoSolutions SAS
- * 
  */
 public class GranuleLoader implements Callable<GranuleLoadingResult> {
 
@@ -54,9 +51,13 @@ public class GranuleLoader implements Callable<GranuleLoadingResult> {
 
     RasterLayerRequest request;
 
-    public GranuleLoader(final ImageReadParam readParameters, final int imageIndex,
-            final ReferencedEnvelope cropBBox, final MathTransform2D mosaicWorldToGrid,
-            final GranuleDescriptor granuleDescriptor, final RasterLayerRequest request,
+    public GranuleLoader(
+            final ImageReadParam readParameters,
+            final int imageIndex,
+            final ReferencedEnvelope cropBBox,
+            final MathTransform2D mosaicWorldToGrid,
+            final GranuleDescriptor granuleDescriptor,
+            final RasterLayerRequest request,
             final Hints hints) {
         this.readParameters = ImageUtilities.cloneImageReadParam(readParameters);
         this.imageIndex = imageIndex;
@@ -104,11 +105,11 @@ public class GranuleLoader implements Callable<GranuleLoadingResult> {
 
     public GranuleLoadingResult call() throws Exception {
         try {
-            return granuleDescriptor.loadRaster(readParameters, imageIndex, cropBBox, mosaicWorldToGrid,
-                    request, hints);
-        } catch(Exception e) {
-            throw new GranuleLoadingException("Failed to load granule " + granuleDescriptor.getGranuleUrl(), e);
+            return granuleDescriptor.loadRaster(
+                    readParameters, imageIndex, cropBBox, mosaicWorldToGrid, request, hints);
+        } catch (Exception e) {
+            throw new GranuleLoadingException(
+                    "Failed to load granule " + granuleDescriptor.getGranuleUrl(), e);
         }
     }
-
 }

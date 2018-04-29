@@ -19,34 +19,38 @@ package org.geotools.data.wfs.online.v1_1;
 
 import static org.geotools.data.wfs.WFSTestData.CUBEWERX_GOVUNITCE;
 
+import com.vividsolutions.jts.geom.Polygon;
 import org.geotools.data.wfs.WFSDataStoreFactory;
 import org.geotools.data.wfs.online.AbstractWfsDataStoreOnlineTest;
 import org.junit.Ignore;
-import com.vividsolutions.jts.geom.Polygon;
 
-/**
- * 
- * 
- * @source $URL$
- */
+/** @source $URL$ */
 @Ignore
 public class CubeWerxOnlineTest extends AbstractWfsDataStoreOnlineTest {
 
-    public static final String SERVER_URL = "http://frameworkwfs.usgs.gov/framework/wfs/wfs.cgi?request=GetCapabilities&version=1.1.0"; //$NON-NLS-1$
+    public static final String SERVER_URL =
+            "http://frameworkwfs.usgs.gov/framework/wfs/wfs.cgi?request=GetCapabilities&version=1.1.0"; // $NON-NLS-1$
 
     /**
      * A GetFeature request to the CubeWerx server does not return the {@code numberOfFeatures}
-     * attribute in the FeatureCollection root element, even if the request includes
-     * {@code restultType=hits}, so the WFS FeatureSource is expected to return -1 as the number of
+     * attribute in the FeatureCollection root element, even if the request includes {@code
+     * restultType=hits}, so the WFS FeatureSource is expected to return -1 as the number of
      * features is too expensive to calculate if we have to do a full scan
      */
     private static final int EXPECTED_FEATURE_COUNT = -1;
 
     public CubeWerxOnlineTest() {
-        super(SERVER_URL, CUBEWERX_GOVUNITCE, "geometry", Polygon.class, EXPECTED_FEATURE_COUNT,
-                null, null, WFSDataStoreFactory.AXIS_ORDER_COMPLIANT);
+        super(
+                SERVER_URL,
+                CUBEWERX_GOVUNITCE,
+                "geometry",
+                Polygon.class,
+                EXPECTED_FEATURE_COUNT,
+                null,
+                null,
+                WFSDataStoreFactory.AXIS_ORDER_COMPLIANT);
     }
-    
-    //TODO: test whether all of the (new) tests actually work with CubeWerx    
-    
+
+    // TODO: test whether all of the (new) tests actually work with CubeWerx
+
 }

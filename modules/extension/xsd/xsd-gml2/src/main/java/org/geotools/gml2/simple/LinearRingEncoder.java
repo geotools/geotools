@@ -21,11 +21,10 @@ import org.geotools.xml.Encoder;
 
 /**
  * Encodes a GML2 linear ring
- * 
+ *
  * @author Justin Deoliveira, OpenGeo
  * @author Andrea Aime - GeoSolutions
  */
-
 class LinearRingEncoder extends LineStringEncoder {
 
     static final QualifiedName LINEAR_RING = new QualifiedName(GML.NAMESPACE, "LinearRing", "gml");

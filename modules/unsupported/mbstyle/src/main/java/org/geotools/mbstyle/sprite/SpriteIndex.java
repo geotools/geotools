@@ -17,16 +17,15 @@
 package org.geotools.mbstyle.sprite;
 
 import com.google.common.collect.ImmutableMap;
-import org.geotools.util.logging.Logging;
-import org.json.simple.JSONObject;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
+import org.geotools.util.logging.Logging;
+import org.json.simple.JSONObject;
 
 /**
- * Wrapper that takes the sprite index file (as a JSONObject) for a Mapbox Sprite Sheet and parses the all the individual icons as
- * {@link IconInfo} objects. For example:
+ * Wrapper that takes the sprite index file (as a JSONObject) for a Mapbox Sprite Sheet and parses
+ * the all the individual icons as {@link IconInfo} objects. For example:
  *
  * <pre>
  * <code>
@@ -49,9 +48,8 @@ import java.util.logging.Logger;
  * </code>
  * </pre>
  *
- *
- * @see <a href="https://www.mapbox.com/mapbox-gl-js/style-spec/#sprite">https://www.mapbox.com/mapbox-gl-js/style-spec/#sprite</a>
- *
+ * @see <a
+ *     href="https://www.mapbox.com/mapbox-gl-js/style-spec/#sprite">https://www.mapbox.com/mapbox-gl-js/style-spec/#sprite</a>
  */
 public class SpriteIndex {
 
@@ -64,7 +62,6 @@ public class SpriteIndex {
     private static final Logger LOGGER = Logging.getLogger(SpriteIndex.class);
 
     /**
-     *
      * @param spriteIndexUrl The URL of the sprite index file (used for error messages).
      * @param json The sprite index file as a {@link JSONObject}.
      */
@@ -80,9 +77,13 @@ public class SpriteIndex {
                     IconInfo iconInfo = parseIconInfoFromIndex(this.json, iconName);
                     icons.put(iconName, iconInfo);
                 } catch (Exception e) {
-                    LOGGER.warning("Mapbox sprite icon index file " + this.spriteIndexUrl
-                            + " contained invalid value for key \"" + iconName
-                            + "\". Exception was: " + e.getMessage());
+                    LOGGER.warning(
+                            "Mapbox sprite icon index file "
+                                    + this.spriteIndexUrl
+                                    + " contained invalid value for key \""
+                                    + iconName
+                                    + "\". Exception was: "
+                                    + e.getMessage());
                 }
             }
         }
@@ -103,8 +104,11 @@ public class SpriteIndex {
 
         Object o = iconIndex.get(iconName);
         if (!(o instanceof JSONObject)) {
-            throw new MBSpriteException("Error parsing sprite index for \"" + iconName
-                    + "\": Expected JSONObject, but is " + o.getClass().getSimpleName());
+            throw new MBSpriteException(
+                    "Error parsing sprite index for \""
+                            + iconName
+                            + "\": Expected JSONObject, but is "
+                            + o.getClass().getSimpleName());
         }
         return new IconInfo(iconName, (JSONObject) o);
     }
@@ -120,20 +124,25 @@ public class SpriteIndex {
 
     /**
      * Get information about a single icon from the index
+     *
      * @param iconName Name of the icon
      * @return Info object describing the icons
      */
     public IconInfo getIcon(String iconName) {
         if (!icons.containsKey(iconName)) {
-            throw new MBSpriteException("Mapbox sprite icon index file "
-                    + this.spriteIndexUrl + " does not contain icon with name: " + iconName);
+            throw new MBSpriteException(
+                    "Mapbox sprite icon index file "
+                            + this.spriteIndexUrl
+                            + " does not contain icon with name: "
+                            + iconName);
         } else {
             return icons.get(iconName);
         }
     }
 
     /**
-     * Wrapper for parsing the properties of an individual sprite index entry (JSONObject) for a single icon. For example:
+     * Wrapper for parsing the properties of an individual sprite index entry (JSONObject) for a
+     * single icon. For example:
      *
      * <pre>
      * <code>
@@ -147,9 +156,8 @@ public class SpriteIndex {
      * </code>
      * </pre>
      *
-     *
-     * @see <a href="https://www.mapbox.com/mapbox-gl-js/style-spec/#sprite">https://www.mapbox.com/mapbox-gl-js/style-spec/#sprite</a>
-     *
+     * @see <a
+     *     href="https://www.mapbox.com/mapbox-gl-js/style-spec/#sprite">https://www.mapbox.com/mapbox-gl-js/style-spec/#sprite</a>
      */
     public static class IconInfo {
 
@@ -158,7 +166,6 @@ public class SpriteIndex {
         private JSONObject json;
 
         /**
-         *
          * @param iconName The name of this sprite icon (used for error messages)
          * @param json The sprite index entry for this icon, as a {@link JSONObject}
          */
@@ -189,8 +196,11 @@ public class SpriteIndex {
 
         private int intOrException(String k) {
             if (!json.containsKey(k)) {
-                throw new MBSpriteException("Mapbox sprite icon with name \"" + iconName
-                        + "\" is missing required property: " + k);
+                throw new MBSpriteException(
+                        "Mapbox sprite icon with name \""
+                                + iconName
+                                + "\" is missing required property: "
+                                + k);
             }
             Object o = json.get(k);
 
@@ -204,13 +214,14 @@ public class SpriteIndex {
                 }
             } catch (Exception e) {
                 throw new MBSpriteException(
-                        "Mapbox sprite icon with name \"" + iconName
-                                + "\" contains invalid value for property \"" + k
-                                + "\". Expected integer, but was: " + o.getClass().getSimpleName(),
+                        "Mapbox sprite icon with name \""
+                                + iconName
+                                + "\" contains invalid value for property \""
+                                + k
+                                + "\". Expected integer, but was: "
+                                + o.getClass().getSimpleName(),
                         e);
             }
-
         }
-
     }
 }

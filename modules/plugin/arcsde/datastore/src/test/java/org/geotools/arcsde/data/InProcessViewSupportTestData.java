@@ -17,17 +17,6 @@
  */
 package org.geotools.arcsde.data;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Logger;
-
-import org.geotools.arcsde.session.Command;
-import org.geotools.arcsde.session.ISession;
-import org.geotools.arcsde.session.UnavailableConnectionException;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-
 import com.esri.sde.sdk.client.SDEPoint;
 import com.esri.sde.sdk.client.SeColumnDefinition;
 import com.esri.sde.sdk.client.SeConnection;
@@ -38,23 +27,31 @@ import com.esri.sde.sdk.client.SeLayer;
 import com.esri.sde.sdk.client.SeRow;
 import com.esri.sde.sdk.client.SeShape;
 import com.esri.sde.sdk.client.SeTable;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
+import org.geotools.arcsde.session.Command;
+import org.geotools.arcsde.session.ISession;
+import org.geotools.arcsde.session.UnavailableConnectionException;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Data setup and utilities for testing the support of in-process views
- * 
+ *
  * @author Gabriel Roldan, Axios Engineering
- *
- *
  * @source $URL$
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/test/java
- *         /org/geotools/arcsde/data/InProcessViewSupportTestData.java $
+ *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/test/java
+ *     /org/geotools/arcsde/data/InProcessViewSupportTestData.java $
  * @version $Id$
  * @since 2.4.x
  */
 public class InProcessViewSupportTestData {
 
-    private static final Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger(InProcessViewSupportTestData.class.getPackage().getName());
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(
+                    InProcessViewSupportTestData.class.getPackage().getName());
 
     public static final String MASTER_UNQUALIFIED = "GT_SDE_TEST_MASTER";
 
@@ -76,19 +73,33 @@ public class InProcessViewSupportTestData {
 
     public static final String typeName = "MasterChildTest";
 
-    public static void setUp(ISession session, TestData td) throws IOException,
-            UnavailableConnectionException {
+    public static void setUp(ISession session, TestData td)
+            throws IOException, UnavailableConnectionException {
 
         testCrs = DefaultGeographicCRS.WGS84;
 
-        /**
-         * Remember, shape field has to be the last one
-         */
-        masterChildSql = "SELECT " + MASTER_UNQUALIFIED + ".ID, " + MASTER_UNQUALIFIED + ".NAME, "
-                + CHILD_UNQUALIFIED + ".DESCRIPTION, " + MASTER_UNQUALIFIED + ".SHAPE " + "FROM "
-                + MASTER_UNQUALIFIED + ", " + CHILD_UNQUALIFIED + " WHERE " + CHILD_UNQUALIFIED
-                + ".MASTER_ID = " + MASTER_UNQUALIFIED + ".ID ORDER BY " + MASTER_UNQUALIFIED
-                + ".ID";
+        /** Remember, shape field has to be the last one */
+        masterChildSql =
+                "SELECT "
+                        + MASTER_UNQUALIFIED
+                        + ".ID, "
+                        + MASTER_UNQUALIFIED
+                        + ".NAME, "
+                        + CHILD_UNQUALIFIED
+                        + ".DESCRIPTION, "
+                        + MASTER_UNQUALIFIED
+                        + ".SHAPE "
+                        + "FROM "
+                        + MASTER_UNQUALIFIED
+                        + ", "
+                        + CHILD_UNQUALIFIED
+                        + " WHERE "
+                        + CHILD_UNQUALIFIED
+                        + ".MASTER_ID = "
+                        + MASTER_UNQUALIFIED
+                        + ".ID ORDER BY "
+                        + MASTER_UNQUALIFIED
+                        + ".ID";
 
         final String user = session.getUser();
         MASTER = user + "." + MASTER_UNQUALIFIED;
@@ -106,41 +117,45 @@ public class InProcessViewSupportTestData {
 
         final SeTable table = session.createSeTable(MASTER);
 
-        final Command<SeLayer> createLayerCmd = new Command<SeLayer>() {
+        final Command<SeLayer> createLayerCmd =
+                new Command<SeLayer>() {
 
-            @Override
-            public SeLayer execute(ISession session, SeConnection connection) throws SeException,
-                    IOException {
-                SeLayer layer;
-                try {
-                    table.delete();
-                } catch (SeException e) {
-                    // no-op, table didn't existed
-                }
+                    @Override
+                    public SeLayer execute(ISession session, SeConnection connection)
+                            throws SeException, IOException {
+                        SeLayer layer;
+                        try {
+                            table.delete();
+                        } catch (SeException e) {
+                            // no-op, table didn't existed
+                        }
 
-                SeColumnDefinition[] colDefs = new SeColumnDefinition[2];
+                        SeColumnDefinition[] colDefs = new SeColumnDefinition[2];
 
-                colDefs[0] = new SeColumnDefinition("ID", SeColumnDefinition.TYPE_INT32, 10, 0,
-                        false);
-                colDefs[1] = new SeColumnDefinition("NAME", SeColumnDefinition.TYPE_STRING, 255, 0,
-                        false);
+                        colDefs[0] =
+                                new SeColumnDefinition(
+                                        "ID", SeColumnDefinition.TYPE_INT32, 10, 0, false);
+                        colDefs[1] =
+                                new SeColumnDefinition(
+                                        "NAME", SeColumnDefinition.TYPE_STRING, 255, 0, false);
 
-                layer = new SeLayer(connection);
-                layer.setTableName(MASTER);
-                table.create(colDefs, td.getConfigKeyword());
+                        layer = new SeLayer(connection);
+                        layer.setTableName(MASTER);
+                        table.create(colDefs, td.getConfigKeyword());
 
-                layer.setSpatialColumnName("SHAPE");
-                layer.setShapeTypes(SeLayer.SE_POINT_TYPE_MASK);
-                layer.setGridSizes(1100.0, 0.0, 0.0);
-                layer.setDescription("Geotools sde pluing join support testing master table");
-                SeCoordinateReference coordref = new SeCoordinateReference();
-                coordref.setCoordSysByDescription(testCrs.toWKT());
+                        layer.setSpatialColumnName("SHAPE");
+                        layer.setShapeTypes(SeLayer.SE_POINT_TYPE_MASK);
+                        layer.setGridSizes(1100.0, 0.0, 0.0);
+                        layer.setDescription(
+                                "Geotools sde pluing join support testing master table");
+                        SeCoordinateReference coordref = new SeCoordinateReference();
+                        coordref.setCoordSysByDescription(testCrs.toWKT());
 
-                layer.setCreationKeyword(td.getConfigKeyword());
-                layer.create(3, 4);
-                return layer;
-            }
-        };
+                        layer.setCreationKeyword(td.getConfigKeyword());
+                        layer.create(3, 4);
+                        return layer;
+                    }
+                };
 
         SeLayer layer = session.issue(createLayerCmd);
 
@@ -151,33 +166,42 @@ public class InProcessViewSupportTestData {
     private static void createChildTable(final ISession session, final TestData td)
             throws IOException, UnavailableConnectionException {
         final SeTable table = session.createSeTable(CHILD);
-        Command<Void> createCmd = new Command<Void>() {
+        Command<Void> createCmd =
+                new Command<Void>() {
 
-            @SuppressWarnings("deprecation")
-            @Override
-            public Void execute(ISession session, SeConnection connection) throws SeException,
-                    IOException {
-                try {
-                    table.delete();
-                } catch (SeException e) {
-                    // no-op, table didn't existed
-                }
+                    @SuppressWarnings("deprecation")
+                    @Override
+                    public Void execute(ISession session, SeConnection connection)
+                            throws SeException, IOException {
+                        try {
+                            table.delete();
+                        } catch (SeException e) {
+                            // no-op, table didn't existed
+                        }
 
-                SeColumnDefinition[] colDefs = new SeColumnDefinition[4];
+                        SeColumnDefinition[] colDefs = new SeColumnDefinition[4];
 
-                colDefs[0] = new SeColumnDefinition("ID", SeColumnDefinition.TYPE_INTEGER, 10, 0,
-                        false);
-                colDefs[1] = new SeColumnDefinition("MASTER_ID", SeColumnDefinition.TYPE_INTEGER,
-                        10, 0, false);
-                colDefs[2] = new SeColumnDefinition("NAME", SeColumnDefinition.TYPE_STRING, 255, 0,
-                        false);
-                colDefs[3] = new SeColumnDefinition("DESCRIPTION", SeColumnDefinition.TYPE_STRING,
-                        255, 0, false);
+                        colDefs[0] =
+                                new SeColumnDefinition(
+                                        "ID", SeColumnDefinition.TYPE_INTEGER, 10, 0, false);
+                        colDefs[1] =
+                                new SeColumnDefinition(
+                                        "MASTER_ID", SeColumnDefinition.TYPE_INTEGER, 10, 0, false);
+                        colDefs[2] =
+                                new SeColumnDefinition(
+                                        "NAME", SeColumnDefinition.TYPE_STRING, 255, 0, false);
+                        colDefs[3] =
+                                new SeColumnDefinition(
+                                        "DESCRIPTION",
+                                        SeColumnDefinition.TYPE_STRING,
+                                        255,
+                                        0,
+                                        false);
 
-                table.create(colDefs, td.getConfigKeyword());
-                return null;
-            }
-        };
+                        table.create(colDefs, td.getConfigKeyword());
+                        return null;
+                    }
+                };
 
         session.issue(createCmd);
 
@@ -193,6 +217,8 @@ public class InProcessViewSupportTestData {
     }
 
     /**
+     *
+     *
      * <pre>
      * &lt;code&gt;
      *  -----------------------------------------------
@@ -208,47 +234,50 @@ public class InProcessViewSupportTestData {
      *  -----------------------------------------------
      * &lt;/code&gt;
      * </pre>
-     * 
+     *
      * @param session
      * @throws SeException
      * @throws Exception
      */
     private static void insertMasterData(final ISession session, final SeLayer layer)
             throws IOException {
-        Command<Void> insertCmd = new Command<Void>() {
+        Command<Void> insertCmd =
+                new Command<Void>() {
 
-            @Override
-            public Void execute(ISession session, SeConnection connection) throws SeException,
-                    IOException {
-                SeInsert insert = null;
-                SeCoordinateReference coordref = layer.getCoordRef();
-                final String[] columns = { "ID", "NAME", "SHAPE" };
+                    @Override
+                    public Void execute(ISession session, SeConnection connection)
+                            throws SeException, IOException {
+                        SeInsert insert = null;
+                        SeCoordinateReference coordref = layer.getCoordRef();
+                        final String[] columns = {"ID", "NAME", "SHAPE"};
 
-                for (int i = 1; i < 4; i++) {
-                    insert = new SeInsert(connection);
-                    insert.intoTable(layer.getName(), columns);
-                    insert.setWriteMode(true);
+                        for (int i = 1; i < 4; i++) {
+                            insert = new SeInsert(connection);
+                            insert.intoTable(layer.getName(), columns);
+                            insert.setWriteMode(true);
 
-                    SeRow row = insert.getRowToSet();
-                    SeShape shape = new SeShape(coordref);
-                    SDEPoint[] points = { new SDEPoint(i, i) };
-                    shape.generatePoint(1, points);
+                            SeRow row = insert.getRowToSet();
+                            SeShape shape = new SeShape(coordref);
+                            SDEPoint[] points = {new SDEPoint(i, i)};
+                            shape.generatePoint(1, points);
 
-                    row.setInteger(0, Integer.valueOf(i));
-                    row.setString(1, "name" + i);
-                    row.setShape(2, shape);
-                    insert.execute();
-                    insert.close();
-                }
-                return null;
-            }
-        };
+                            row.setInteger(0, Integer.valueOf(i));
+                            row.setString(1, "name" + i);
+                            row.setShape(2, shape);
+                            insert.execute();
+                            insert.close();
+                        }
+                        return null;
+                    }
+                };
 
         session.issue(insertCmd);
         session.commitTransaction();
     }
 
     /**
+     *
+     *
      * <pre>
      * &lt;code&gt;
      *  ---------------------------------------------------------------------
@@ -268,13 +297,13 @@ public class InProcessViewSupportTestData {
      *  ---------------------------------------------------------------------
      *  |    6      |      3         |   child6       |    description6     |
      *  ---------------------------------------------------------------------
-     *  |    7      |      3         |   child6       |    description7     | 
+     *  |    7      |      3         |   child6       |    description7     |
      *  ---------------------------------------------------------------------
      * &lt;/code&gt;
      * </pre>
-     * 
+     *
      * Note last row has the same name than child6, for testing group by.
-     * 
+     *
      * @param session
      * @param table
      * @throws IOException
@@ -282,47 +311,48 @@ public class InProcessViewSupportTestData {
     private static void insertChildData(final ISession session, final SeTable table)
             throws IOException {
 
-        Command<Void> insertCmd = new Command<Void>() {
+        Command<Void> insertCmd =
+                new Command<Void>() {
 
-            @Override
-            public Void execute(ISession session, SeConnection connection) throws SeException,
-                    IOException {
-                final String[] columns = { "ID", "MASTER_ID", "NAME", "DESCRIPTION" };
-                int childId = 0;
+                    @Override
+                    public Void execute(ISession session, SeConnection connection)
+                            throws SeException, IOException {
+                        final String[] columns = {"ID", "MASTER_ID", "NAME", "DESCRIPTION"};
+                        int childId = 0;
 
-                for (int master = 1; master < 4; master++) {
-                    for (int child = 0; child < master; child++) {
-                        childId++;
+                        for (int master = 1; master < 4; master++) {
+                            for (int child = 0; child < master; child++) {
+                                childId++;
 
+                                SeInsert insert = new SeInsert(connection);
+                                insert.intoTable(table.getName(), columns);
+                                insert.setWriteMode(true);
+
+                                SeRow row = insert.getRowToSet();
+
+                                row.setInteger(0, Integer.valueOf(childId));
+                                row.setInteger(1, Integer.valueOf(master));
+                                row.setString(2, "child" + (childId));
+                                row.setString(3, "description" + (childId));
+                                insert.execute();
+                                // insert.close();
+                            }
+                        }
+                        // add the 7th row to test group by
                         SeInsert insert = new SeInsert(connection);
                         insert.intoTable(table.getName(), columns);
                         insert.setWriteMode(true);
-
                         SeRow row = insert.getRowToSet();
 
-                        row.setInteger(0, Integer.valueOf(childId));
-                        row.setInteger(1, Integer.valueOf(master));
-                        row.setString(2, "child" + (childId));
-                        row.setString(3, "description" + (childId));
+                        row.setInteger(0, new Integer(7));
+                        row.setInteger(1, new Integer(3));
+                        row.setString(2, "child6");
+                        row.setString(3, "description7");
                         insert.execute();
                         // insert.close();
+                        return null;
                     }
-                }
-                // add the 7th row to test group by
-                SeInsert insert = new SeInsert(connection);
-                insert.intoTable(table.getName(), columns);
-                insert.setWriteMode(true);
-                SeRow row = insert.getRowToSet();
-
-                row.setInteger(0, new Integer(7));
-                row.setInteger(1, new Integer(3));
-                row.setString(2, "child6");
-                row.setString(3, "description7");
-                insert.execute();
-                // insert.close();
-                return null;
-            }
-        };
+                };
         session.issue(insertCmd);
         session.commitTransaction();
     }

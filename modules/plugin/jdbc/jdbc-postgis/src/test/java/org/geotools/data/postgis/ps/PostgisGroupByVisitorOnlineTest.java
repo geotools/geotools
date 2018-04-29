@@ -16,27 +16,18 @@
  */
 package org.geotools.data.postgis.ps;
 
+import java.io.IOException;
+import java.util.List;
 import org.geotools.data.Query;
-import org.geotools.data.postgis.PostGISAggregateTestSetup;
-import org.geotools.data.postgis.PostGISDialect;
 import org.geotools.data.postgis.PostGISPSDialect;
 import org.geotools.data.postgis.PostgisGroupByVisitorTestSetup;
 import org.geotools.feature.visitor.Aggregate;
-import org.geotools.jdbc.JDBCAggregateFunctionOnlineTest;
-import org.geotools.jdbc.JDBCAggregateTestSetup;
 import org.geotools.jdbc.JDBCGroupByVisitorOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Function;
 
-import java.io.IOException;
-import java.util.List;
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class PostgisGroupByVisitorOnlineTest extends JDBCGroupByVisitorOnlineTest {
 
     @Override
@@ -68,11 +59,12 @@ public class PostgisGroupByVisitorOnlineTest extends JDBCGroupByVisitorOnlineTes
 
     public void testAggregateOnFunction(boolean expectOptimized) throws IOException {
         FilterFactory ff = dataStore.getFilterFactory();
-        Function buildingTypeSub = ff.function("strSubstring",
-                ff.property("building_type"), ff.literal(0), ff.literal(3));
+        Function buildingTypeSub =
+                ff.function(
+                        "strSubstring", ff.property("building_type"), ff.literal(0), ff.literal(3));
 
-
-        List<Object[]> value  = genericGroupByTestTest(Query.ALL, Aggregate.MAX, expectOptimized, buildingTypeSub);
+        List<Object[]> value =
+                genericGroupByTestTest(Query.ALL, Aggregate.MAX, expectOptimized, buildingTypeSub);
         assertNotNull(value);
 
         assertTrue(value.size() == 3);

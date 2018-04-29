@@ -27,9 +27,6 @@ import org.geotools.grid.PolygonElement;
  *
  * @author mbedward
  * @since 2.7
- *
- *
- *
  * @source $URL$
  * @version $Id$
  */
@@ -41,7 +38,8 @@ public class HexagonBuilder extends PolygonBuilder {
     private int xIndex = 0;
     private int yIndex = 0;
 
-    public HexagonBuilder(ReferencedEnvelope gridBounds, double sideLen, HexagonOrientation orientation) {
+    public HexagonBuilder(
+            ReferencedEnvelope gridBounds, double sideLen, HexagonOrientation orientation) {
         super(gridBounds);
         this.sideLen = sideLen;
         this.orientation = orientation;
@@ -51,7 +49,7 @@ public class HexagonBuilder extends PolygonBuilder {
             nextY[0] = Neighbor.UPPER_RIGHT;
             nextY[1] = Neighbor.UPPER_LEFT;
 
-        } else {  // FLAT
+        } else { // FLAT
             nextX[0] = Neighbor.LOWER_RIGHT;
             nextX[1] = Neighbor.UPPER_RIGHT;
             nextY[0] = nextY[1] = Neighbor.UPPER;
@@ -59,17 +57,13 @@ public class HexagonBuilder extends PolygonBuilder {
     }
 
     /**
-     * Tests whether a neighbor position is valid for a given orientation.
-     * Since the {@code Hexagon} class is intended to work within a grid
-     * (ie. a perfect tesselation) some combinations of neighbour position
-     * and hexagon orientation are invalid. For example, a {@code FLAT}
-     * hexagon does not have a {@code LEFT}, rather it has {@code UPPER_LEFT}
-     * and {@code LOWER_LEFT}.
+     * Tests whether a neighbor position is valid for a given orientation. Since the {@code Hexagon}
+     * class is intended to work within a grid (ie. a perfect tesselation) some combinations of
+     * neighbour position and hexagon orientation are invalid. For example, a {@code FLAT} hexagon
+     * does not have a {@code LEFT}, rather it has {@code UPPER_LEFT} and {@code LOWER_LEFT}.
      *
      * @param orientation hexagon orientation
-     *
      * @param neighbor neighbor position
-     *
      * @return {@code true} if the combination is valid; {@code false} otherwise
      */
     @Override
@@ -95,28 +89,21 @@ public class HexagonBuilder extends PolygonBuilder {
     }
 
     /**
-     * Creates a new {@code Hexagon} positioned at the given neighbor position
-     * relative to the reference element.
+     * Creates a new {@code Hexagon} positioned at the given neighbor position relative to the
+     * reference element.
      *
      * @param el the reference hexagon
-     *
-     * @param neighbor a valid neighbour position given the reference hexagon's
-     *        orientation
-     *
+     * @param neighbor a valid neighbour position given the reference hexagon's orientation
      * @return a new {@code Hexagon} object
-     *
-     * @throws IllegalArgumentException if either argument is {@code null} or
-     *         if {@code el} is not an instance of {@code Hexagon} or
-     *         if the neighbor position is not valid for the reference hexagon's
-     *         orientation
-     *
+     * @throws IllegalArgumentException if either argument is {@code null} or if {@code el} is not
+     *     an instance of {@code Hexagon} or if the neighbor position is not valid for the reference
+     *     hexagon's orientation
      * @see #isValidNeighbor(Hexagon.Orientation, Hexagon.Neighbor)
      */
     @Override
     public Hexagon createNeighbor(PolygonElement el, Neighbor neighbor) {
         if (el == null || neighbor == null) {
-            throw new IllegalArgumentException(
-                    "el and neighbour position must both be non-null");
+            throw new IllegalArgumentException("el and neighbour position must both be non-null");
         }
 
         if (!(el instanceof Hexagon)) {
@@ -127,8 +114,9 @@ public class HexagonBuilder extends PolygonBuilder {
 
         if (!isValidNeighbor(neighbor)) {
             throw new IllegalArgumentException(
-                    neighbor + " is not a valid neighbour position for orientation " +
-                    hexagon.getOrientation());
+                    neighbor
+                            + " is not a valid neighbour position for orientation "
+                            + hexagon.getOrientation());
         }
 
         ReferencedEnvelope bounds = hexagon.getBounds();
@@ -149,7 +137,7 @@ public class HexagonBuilder extends PolygonBuilder {
                 if (hexagon.getOrientation() == HexagonOrientation.FLAT) {
                     dx = -0.75 * bounds.getWidth();
                     dy = -0.5 * bounds.getHeight();
-                } else {  // ANGLED
+                } else { // ANGLED
                     dx = -0.5 * bounds.getWidth();
                     dy = -0.75 * bounds.getHeight();
                 }
@@ -159,7 +147,7 @@ public class HexagonBuilder extends PolygonBuilder {
                 if (hexagon.getOrientation() == HexagonOrientation.FLAT) {
                     dx = 0.75 * bounds.getWidth();
                     dy = -0.5 * bounds.getHeight();
-                } else {  // ANGLED
+                } else { // ANGLED
                     dx = 0.5 * bounds.getWidth();
                     dy = -0.75 * bounds.getHeight();
                 }
@@ -179,7 +167,7 @@ public class HexagonBuilder extends PolygonBuilder {
                 if (hexagon.getOrientation() == HexagonOrientation.FLAT) {
                     dx = -0.75 * bounds.getWidth();
                     dy = 0.5 * bounds.getHeight();
-                } else {  // ANGLED
+                } else { // ANGLED
                     dx = -0.5 * bounds.getWidth();
                     dy = 0.75 * bounds.getHeight();
                 }
@@ -189,7 +177,7 @@ public class HexagonBuilder extends PolygonBuilder {
                 if (hexagon.getOrientation() == HexagonOrientation.FLAT) {
                     dx = 0.75 * bounds.getWidth();
                     dy = 0.5 * bounds.getHeight();
-                } else {  // ANGLED
+                } else { // ANGLED
                     dx = 0.5 * bounds.getWidth();
                     dy = 0.75 * bounds.getHeight();
                 }
@@ -199,16 +187,22 @@ public class HexagonBuilder extends PolygonBuilder {
                 throw new IllegalArgumentException("Unrecognized value for neighbor");
         }
 
-        return Hexagons.create(bounds.getMinX() + dx, bounds.getMinY() + dy,
-                hexagon.getSideLength(), hexagon.getOrientation(),
+        return Hexagons.create(
+                bounds.getMinX() + dx,
+                bounds.getMinY() + dy,
+                hexagon.getSideLength(),
+                hexagon.getOrientation(),
                 bounds.getCoordinateReferenceSystem());
     }
 
     @Override
     public PolygonElement getFirstElement() {
         return Hexagons.create(
-                gridBounds.getMinX(), gridBounds.getMinY(),
-                sideLen, orientation, gridBounds.getCoordinateReferenceSystem());
+                gridBounds.getMinX(),
+                gridBounds.getMinY(),
+                sideLen,
+                orientation,
+                gridBounds.getCoordinateReferenceSystem());
     }
 
     @Override
@@ -230,6 +224,4 @@ public class HexagonBuilder extends PolygonBuilder {
     public boolean isValidDenseVertexSpacing(double v) {
         return v > 0 && v < sideLen / 2.0;
     }
-
-
 }

@@ -16,6 +16,9 @@ package org.geotools.mbstyle.function;
  *    Lesser General Public License for more details.
  */
 
+import static org.geotools.filter.capability.FunctionNameImpl.parameter;
+
+import java.util.Collection;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
@@ -23,18 +26,14 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Function;
 
-import java.util.Collection;
-
-import static org.geotools.filter.capability.FunctionNameImpl.parameter;
-
-/**
- * Returns the size of a list or the length of a string
- */
+/** Returns the size of a list or the length of a string */
 public class MapBoxLengthFunction extends FunctionExpressionImpl {
     public FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-    public static FunctionName NAME = new FunctionNameImpl("mbLength",
-            parameter("object", Object.class),
-            parameter("fallback", Object.class));
+    public static FunctionName NAME =
+            new FunctionNameImpl(
+                    "mbLength",
+                    parameter("object", Object.class),
+                    parameter("fallback", Object.class));
 
     public MapBoxLengthFunction() {
         super(NAME);

@@ -23,10 +23,13 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import com.esri.sde.sdk.client.SeConnection;
+import com.esri.sde.sdk.client.SeDBMSInfo;
+import com.esri.sde.sdk.client.SeException;
+import com.esri.sde.sdk.client.SeRegistration;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-
 import org.geotools.arcsde.session.Command;
 import org.geotools.arcsde.session.ISession;
 import org.geotools.arcsde.session.ISessionPool;
@@ -57,22 +60,14 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.identity.FeatureId;
 
-import com.esri.sde.sdk.client.SeConnection;
-import com.esri.sde.sdk.client.SeDBMSInfo;
-import com.esri.sde.sdk.client.SeException;
-import com.esri.sde.sdk.client.SeRegistration;
-
 /**
  * {@link ArcSDEDataStore} integration test for the case of registered, non spatial tables as
  * required by the new feature <a href="http://jira.codehaus.org/browse/GEOT-2548">GEOT-2548</a>
- * 
+ *
  * @author Gabriel Roldan, OpenGeo
- * 
- *
- *
  * @source $URL$
- *         http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/test/java/org
- *         /geotools/arcsde/data/ArcSDEDataStoreNonSpatialTest.java $
+ *     http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/test/java/org
+ *     /geotools/arcsde/data/ArcSDEDataStoreNonSpatialTest.java $
  * @version $Id$
  * @since 2.5.6
  */
@@ -80,13 +75,12 @@ public class ArcSDEDataStoreNonSpatialTest {
 
     /**
      * Flag that indicates whether the underlying database is MS SQL Server.
-     * <p>
-     * This is used to decide what's the expected result count in some transaction tests, and its
+     *
+     * <p>This is used to decide what's the expected result count in some transaction tests, and its
      * value is obtained from an {@link SeDBMSInfo} object. Hacky as it seems it is. The problem is
      * that ArcSDE for SQL Server _explicitly_ sets the transaction isolation level to READ
      * UNCOMMITTED for all and every transaction, while for other databases it uses READ COMMITTED.
      * And no, ESRI documentation says there's no way to change nor workaround this behaviour.
-     * </p>
      */
     private static boolean databaseIsMsSqlServer;
 
@@ -116,38 +110,55 @@ public class ArcSDEDataStoreNonSpatialTest {
             SeDBMSInfo dbInfo = session.getDBMSInfo();
             databaseIsMsSqlServer = dbInfo.dbmsId == SeDBMSInfo.SE_DBMS_IS_SQLSERVER;
 
-            session.issue(new Command<Void>() {
-                @Override
-                public Void execute(ISession session, SeConnection connection) throws SeException,
-                        IOException {
+            session.issue(
+                    new Command<Void>() {
+                        @Override
+                        public Void execute(ISession session, SeConnection connection)
+                                throws SeException, IOException {
 
-                    final String rowIdColName = "ROW_ID";
-                    // just register the non spatial table
-                    final boolean createLayer = false;
-                    final int shapeTypeMask = -1;// not relevant
+                            final String rowIdColName = "ROW_ID";
+                            // just register the non spatial table
+                            final boolean createLayer = false;
+                            final int shapeTypeMask = -1; // not relevant
 
-                    int rowIdColumnType = SeRegistration.SE_REGISTRATION_ROW_ID_COLUMN_TYPE_NONE;
-                    testData.createTestTable(session, seRowidNoneTable, rowIdColName,
-                            rowIdColumnType, createLayer, shapeTypeMask);
+                            int rowIdColumnType =
+                                    SeRegistration.SE_REGISTRATION_ROW_ID_COLUMN_TYPE_NONE;
+                            testData.createTestTable(
+                                    session,
+                                    seRowidNoneTable,
+                                    rowIdColName,
+                                    rowIdColumnType,
+                                    createLayer,
+                                    shapeTypeMask);
 
-                    rowIdColumnType = SeRegistration.SE_REGISTRATION_ROW_ID_COLUMN_TYPE_USER;
-                    testData.createTestTable(session, seRowidUserTable, rowIdColName,
-                            rowIdColumnType, createLayer, shapeTypeMask);
+                            rowIdColumnType =
+                                    SeRegistration.SE_REGISTRATION_ROW_ID_COLUMN_TYPE_USER;
+                            testData.createTestTable(
+                                    session,
+                                    seRowidUserTable,
+                                    rowIdColName,
+                                    rowIdColumnType,
+                                    createLayer,
+                                    shapeTypeMask);
 
-                    rowIdColumnType = SeRegistration.SE_REGISTRATION_ROW_ID_COLUMN_TYPE_SDE;
-                    testData.createTestTable(session, seRowidSdeTable, rowIdColName,
-                            rowIdColumnType, createLayer, shapeTypeMask);
-                    return null;
-                }
-            });
+                            rowIdColumnType = SeRegistration.SE_REGISTRATION_ROW_ID_COLUMN_TYPE_SDE;
+                            testData.createTestTable(
+                                    session,
+                                    seRowidSdeTable,
+                                    rowIdColName,
+                                    rowIdColumnType,
+                                    createLayer,
+                                    shapeTypeMask);
+                            return null;
+                        }
+                    });
         } finally {
             session.dispose();
         }
     }
 
     @AfterClass
-    public static void oneTimeTearDown() {
-    }
+    public static void oneTimeTearDown() {}
 
     @Before
     public void setUp() throws Exception {
@@ -204,8 +215,8 @@ public class ArcSDEDataStoreNonSpatialTest {
         testFeatureSource(seRowidSdeTable);
     }
 
-    private void testFeatureSource(final String tableName) throws IOException, DataSourceException,
-            UnavailableConnectionException, CQLException {
+    private void testFeatureSource(final String tableName)
+            throws IOException, DataSourceException, UnavailableConnectionException, CQLException {
 
         testData.truncateTestTable(tableName);
 
@@ -246,8 +257,8 @@ public class ArcSDEDataStoreNonSpatialTest {
     }
 
     @Test
-    public void testFeatureWriter_RowIDSDE_Transaction() throws IOException,
-            UnavailableConnectionException {
+    public void testFeatureWriter_RowIDSDE_Transaction()
+            throws IOException, UnavailableConnectionException {
         final String tableName = seRowidSdeTable;
         final Transaction transaction = new DefaultTransaction();
         try {
@@ -274,8 +285,8 @@ public class ArcSDEDataStoreNonSpatialTest {
         testFeatureWriterAutoCommit(tableName);
     }
 
-    private void testFeatureWriterAutoCommit(final String tableName) throws IOException,
-            CQLException, UnavailableConnectionException {
+    private void testFeatureWriterAutoCommit(final String tableName)
+            throws IOException, CQLException, UnavailableConnectionException {
         final Transaction transaction = Transaction.AUTO_COMMIT;
         FeatureWriter<SimpleFeatureType, SimpleFeature> writer;
 
@@ -304,8 +315,8 @@ public class ArcSDEDataStoreNonSpatialTest {
     }
 
     @Test
-    public void testFeatureWriter_RowID_USER_Transaction() throws IOException,
-            UnavailableConnectionException {
+    public void testFeatureWriter_RowID_USER_Transaction()
+            throws IOException, UnavailableConnectionException {
         final String tableName = seRowidUserTable;
         final Transaction transaction = new DefaultTransaction();
         try {
@@ -332,8 +343,9 @@ public class ArcSDEDataStoreNonSpatialTest {
         }
     }
 
-    private FeatureWriter<SimpleFeatureType, SimpleFeature> addFeatures(final String tableName,
-            final Transaction transaction) throws IOException, UnavailableConnectionException {
+    private FeatureWriter<SimpleFeatureType, SimpleFeature> addFeatures(
+            final String tableName, final Transaction transaction)
+            throws IOException, UnavailableConnectionException {
 
         testData.truncateTestTable(tableName);
 
@@ -365,8 +377,8 @@ public class ArcSDEDataStoreNonSpatialTest {
     }
 
     @Test
-    public void testFetureStore_ROWID_SDE_AutoCommit() throws IOException,
-            UnavailableConnectionException {
+    public void testFetureStore_ROWID_SDE_AutoCommit()
+            throws IOException, UnavailableConnectionException {
         String tableName = seRowidSdeTable;
 
         List<FeatureId> fids = testFeatureStore(tableName, Transaction.AUTO_COMMIT);
@@ -375,8 +387,8 @@ public class ArcSDEDataStoreNonSpatialTest {
     }
 
     @Test
-    public void testFetureStore_ROWID_SDE_Transaction() throws IOException,
-            UnavailableConnectionException {
+    public void testFetureStore_ROWID_SDE_Transaction()
+            throws IOException, UnavailableConnectionException {
         String tableName = seRowidSdeTable;
 
         Transaction transaction = new DefaultTransaction();
@@ -393,8 +405,8 @@ public class ArcSDEDataStoreNonSpatialTest {
     }
 
     @Test
-    public void testFetureStore_ROWID_USER_AutoCommit() throws IOException,
-            UnavailableConnectionException {
+    public void testFetureStore_ROWID_USER_AutoCommit()
+            throws IOException, UnavailableConnectionException {
         String tableName = seRowidUserTable;
 
         List<FeatureId> fids = testFeatureStore(tableName, Transaction.AUTO_COMMIT);
@@ -404,8 +416,8 @@ public class ArcSDEDataStoreNonSpatialTest {
     }
 
     @Test
-    public void testFetureStore_ROWID_USER_Transaction() throws IOException,
-            UnavailableConnectionException {
+    public void testFetureStore_ROWID_USER_Transaction()
+            throws IOException, UnavailableConnectionException {
         String tableName = seRowidUserTable;
 
         Transaction transaction = new DefaultTransaction();

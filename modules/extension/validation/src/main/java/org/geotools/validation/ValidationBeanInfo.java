@@ -27,24 +27,19 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-
 /**
  * Utility class extending SimpleBeanInfo with our own helper functions.
  *
  * @author David Zwiers, Refractions Research, Inc.
  * @author $Author: jive $ (last modification)
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public class ValidationBeanInfo extends SimpleBeanInfo {
     /**
      * ValidationBeanInfo constructor.
-     * 
-     * <p>
-     * Description
-     * </p>
+     *
+     * <p>Description
      */
     public ValidationBeanInfo() {
         super();
@@ -52,10 +47,8 @@ public class ValidationBeanInfo extends SimpleBeanInfo {
     }
 
     /**
-     * Implementation of getPropertyDescriptors.  This method should be called
-     * by all overriding sub-class methods.  Property names 'name',
-     * 'description', 'typeNames'
-     *
+     * Implementation of getPropertyDescriptors. This method should be called by all overriding
+     * sub-class methods. Property names 'name', 'description', 'typeNames'
      *
      * @see java.beans.BeanInfo#getPropertyDescriptors()
      */
@@ -64,11 +57,9 @@ public class ValidationBeanInfo extends SimpleBeanInfo {
             PropertyDescriptor[] pd = new PropertyDescriptor[2];
             ResourceBundle resourceBundle = getResourceBundle(Validation.class);
 
-            pd[0] = createPropertyDescriptor("name", Validation.class,
-                    resourceBundle);
+            pd[0] = createPropertyDescriptor("name", Validation.class, resourceBundle);
             pd[0].setExpert(false);
-            pd[1] = createPropertyDescriptor("description", Validation.class,
-                    resourceBundle);
+            pd[1] = createPropertyDescriptor("description", Validation.class, resourceBundle);
             pd[1].setExpert(false);
 
             return pd;
@@ -80,23 +71,23 @@ public class ValidationBeanInfo extends SimpleBeanInfo {
         }
     }
     /** Based on getCLass().getName() return target Bean type */
-    protected Class beanType(){
-    	Class type = getClass();
-    	String typeName = type.getName();
-    	if( typeName.endsWith( "BeanInfo" ) ){
-    		typeName = typeName.substring(0,typeName.length()-8);
-    		try {
-				return Class.forName( typeName );
-			} catch (ClassNotFoundException e) {
-				return null;
-			}    		
-    	}
-    	return null;    	
+    protected Class beanType() {
+        Class type = getClass();
+        String typeName = type.getName();
+        if (typeName.endsWith("BeanInfo")) {
+            typeName = typeName.substring(0, typeName.length() - 8);
+            try {
+                return Class.forName(typeName);
+            } catch (ClassNotFoundException e) {
+                return null;
+            }
+        }
+        return null;
     }
     /** Return bundle for the property file for out beanType */
     protected ResourceBundle getResourceBundle() {
-    	return getResourceBundle( beanType () );
-    }    
+        return getResourceBundle(beanType());
+    }
     /** Return bundle for the property file for the provided class */
     protected ResourceBundle getResourceBundle(Class cls) {
         Locale locale = Locale.getDefault();
@@ -107,11 +98,14 @@ public class ValidationBeanInfo extends SimpleBeanInfo {
             return ResourceBundle.getBundle(cls.getName());
         }
     }
-    protected PropertyDescriptor createPropertyDescriptor(String name, ResourceBundle bundle) throws IntrospectionException {
-    	return createPropertyDescriptor( name, beanType(), bundle );
-    }    
-    protected PropertyDescriptor createPropertyDescriptor(String name,
-        Class cls, ResourceBundle resourceBundle) throws IntrospectionException {
+
+    protected PropertyDescriptor createPropertyDescriptor(String name, ResourceBundle bundle)
+            throws IntrospectionException {
+        return createPropertyDescriptor(name, beanType(), bundle);
+    }
+
+    protected PropertyDescriptor createPropertyDescriptor(
+            String name, Class cls, ResourceBundle resourceBundle) throws IntrospectionException {
         PropertyDescriptor pd = new PropertyDescriptor(name, cls);
         String s = resourceBundle.getString(pd.getName() + ".DisplayName");
 
@@ -133,10 +127,8 @@ public class ValidationBeanInfo extends SimpleBeanInfo {
 
     /**
      * URLPropertyEditor purpose.
-     * 
-     * <p>
-     * Used to support java.net.URL properties in BeanInfo's
-     * </p>
+     *
+     * <p>Used to support java.net.URL properties in BeanInfo's
      *
      * @author dzwiers, Refractions Research, Inc.
      * @author $Author: jive $ (last modification)
@@ -149,7 +141,6 @@ public class ValidationBeanInfo extends SimpleBeanInfo {
         /**
          * Implementation of getAsText.
          *
-         *
          * @see java.beans.PropertyEditor#getAsText()
          */
         public String getAsText() {
@@ -160,9 +151,7 @@ public class ValidationBeanInfo extends SimpleBeanInfo {
          * Implementation of setAsText.
          *
          * @param text
-         *
          * @throws IllegalArgumentException
-         *
          * @see java.beans.PropertyEditor#setAsText(java.lang.String)
          */
         public void setAsText(String text) throws IllegalArgumentException {
@@ -176,7 +165,6 @@ public class ValidationBeanInfo extends SimpleBeanInfo {
         /**
          * Implementation of supportsCustomEditor.
          *
-         *
          * @see java.beans.PropertyEditor#supportsCustomEditor()
          */
         public boolean supportsCustomEditor() {
@@ -185,7 +173,6 @@ public class ValidationBeanInfo extends SimpleBeanInfo {
 
         /**
          * Implementation of getJavaInitializationString.
-         *
          *
          * @see java.beans.PropertyEditor#getJavaInitializationString()
          */
@@ -196,7 +183,6 @@ public class ValidationBeanInfo extends SimpleBeanInfo {
         /**
          * Implementation of isPaintable.
          *
-         *
          * @see java.beans.PropertyEditor#isPaintable()
          */
         public boolean isPaintable() {
@@ -205,7 +191,6 @@ public class ValidationBeanInfo extends SimpleBeanInfo {
 
         /**
          * Implementation of toString.
-         *
          *
          * @see java.lang.Object#toString()
          */
@@ -217,21 +202,19 @@ public class ValidationBeanInfo extends SimpleBeanInfo {
          * Implementation of setValue.
          *
          * @param value
-         *
          * @see java.beans.PropertyEditor#setValue(java.lang.Object)
          */
         public void setValue(Object value) {
             try {
                 url = new URL(value.toString());
             } catch (MalformedURLException e) {
-                //TODO error, log this
+                // TODO error, log this
                 e.printStackTrace();
             }
         }
 
         /**
          * Implementation of getValue.
-         *
          *
          * @see java.beans.PropertyEditor#getValue()
          */

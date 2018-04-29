@@ -19,12 +19,7 @@ package org.geotools.xml.impl;
 import org.picocontainer.MutablePicoContainer;
 import org.xml.sax.SAXException;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public abstract class HandlerImpl implements Handler {
     MutablePicoContainer context;
 
@@ -37,10 +32,8 @@ public abstract class HandlerImpl implements Handler {
     }
 
     @Override
-    public void startPrefixMapping(String prefix, String uri) throws SAXException {
-    }
+    public void startPrefixMapping(String prefix, String uri) throws SAXException {}
 
     @Override
-    public void endPrefixMapping(String prefix) throws SAXException {
-    }
+    public void endPrefixMapping(String prefix) throws SAXException {}
 }

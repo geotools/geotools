@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,17 +17,14 @@
  */
 package org.geotools.ysld.transform.sld;
 
-import org.yaml.snakeyaml.emitter.Emitable;
-import org.yaml.snakeyaml.events.*;
-
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
+import org.yaml.snakeyaml.emitter.Emitable;
+import org.yaml.snakeyaml.events.*;
 
-/**
- * Wrapper for a yaml {@link Emitable} which logs {@link Event}s.
- */
+/** Wrapper for a yaml {@link Emitable} which logs {@link Event}s. */
 public class TracingEmitter implements Emitable {
 
     Emitable delegate;
@@ -67,6 +64,7 @@ public class TracingEmitter implements Emitable {
 
     /**
      * Writes logged events to out
+     *
      * @param out
      */
     public void dump(PrintStream out) {

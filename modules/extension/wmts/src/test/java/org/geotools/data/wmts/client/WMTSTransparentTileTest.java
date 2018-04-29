@@ -16,6 +16,17 @@
  */
 package org.geotools.data.wmts.client;
 
+import static org.geotools.data.wmts.client.WMTSTileFactory4326Test.createCapabilities;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.net.URISyntaxException;
+import java.net.URL;
 import org.geotools.data.wmts.model.TileMatrixSet;
 import org.geotools.data.wmts.model.WMTSCapabilities;
 import org.geotools.data.wmts.model.WMTSLayer;
@@ -31,18 +42,6 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.net.URISyntaxException;
-import java.net.URL;
-
-import static org.geotools.data.wmts.client.WMTSTileFactory4326Test.createCapabilities;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
 
 /**
  * @author Ludovic Pecquot (E-IS) on 21/12/2017.
@@ -64,8 +63,10 @@ public class WMTSTransparentTileTest {
 
     private WMTSTileService createKVPService() throws Exception {
         try {
-            URL capaResource = getClass().getClassLoader()
-                    .getResource("test-data/geosolutions_getcapa_kvp.xml");
+            URL capaResource =
+                    getClass()
+                            .getClassLoader()
+                            .getResource("test-data/geosolutions_getcapa_kvp.xml");
             assertNotNull("Can't find KVP getCapa file", capaResource);
             File capaFile = new File(capaResource.toURI());
             WMTSCapabilities capa = createCapabilities(capaFile);
@@ -98,11 +99,14 @@ public class WMTSTransparentTileTest {
         ReferencedEnvelope mapBounds = service.getBounds();
         double heightToWidth = mapBounds.getSpan(1) / mapBounds.getSpan(0);
         int imageWidth = 600;
-        Rectangle imageBounds = new Rectangle(0, 0, imageWidth, (int) Math.round(imageWidth * heightToWidth));
+        Rectangle imageBounds =
+                new Rectangle(0, 0, imageWidth, (int) Math.round(imageWidth * heightToWidth));
         map.getViewport().setScreenArea(imageBounds);
         map.getViewport().setBounds(mapBounds);
 
-        BufferedImage image = new BufferedImage(imageBounds.width, imageBounds.height, BufferedImage.TYPE_INT_RGB);
+        BufferedImage image =
+                new BufferedImage(
+                        imageBounds.width, imageBounds.height, BufferedImage.TYPE_INT_RGB);
         Graphics2D gr = image.createGraphics();
 
         // set background color for assertion

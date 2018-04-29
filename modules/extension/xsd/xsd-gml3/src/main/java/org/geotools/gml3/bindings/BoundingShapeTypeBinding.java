@@ -16,22 +16,20 @@
  */
 package org.geotools.gml3.bindings;
 
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Polygon;
 import javax.xml.namespace.QName;
-
 import org.geotools.gml3.GML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Polygon;
-
-
 /**
  * Binding object for the type http://www.opengis.net/gml:BoundingShapeType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;complexType name="BoundingShapeType"&gt;
  *      &lt;annotation&gt;
@@ -47,23 +45,18 @@ import com.vividsolutions.jts.geom.Polygon;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class BoundingShapeTypeBinding extends AbstractComplexBinding {
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return GML.BoundingShapeType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -74,13 +67,13 @@ public class BoundingShapeTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Envelope envelope = (Envelope) node.getChildValue(Envelope.class);
 
         if (envelope == null) {
@@ -92,12 +85,12 @@ public class BoundingShapeTypeBinding extends AbstractComplexBinding {
     }
 
     public Object getProperty(Object object, QName name) {
-        //check for a polygon
+        // check for a polygon
         if (object instanceof Polygon) {
             object = ((Polygon) object).getEnvelopeInternal();
         }
         Envelope e = (Envelope) object;
-        
+
         if ("Envelope".equals(name.getLocalPart()) && !e.isNull()) {
             return e;
         }

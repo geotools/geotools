@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2015 - 2016, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -16,22 +16,20 @@
  */
 package org.geotools.xml;
 
-import org.xml.sax.helpers.NamespaceSupport;
-
 import javax.xml.namespace.QName;
+import org.xml.sax.helpers.NamespaceSupport;
 
 /**
  * XML related utilities not otherwise found in base libraries
- * 
- * @author Andrea Aime - GeoSolutions
  *
+ * @author Andrea Aime - GeoSolutions
  */
 public class XMLUtils {
 
     /**
      * Checks the string for XML invalid chars, and in case any is found, create a copy with the
      * invalid ones removed.
-     * 
+     *
      * @param input
      * @return
      */
@@ -66,9 +64,9 @@ public class XMLUtils {
     }
 
     /**
-     * Creates a qualified name from a string by parsing out the colon as the 
-     * prefix / local separator. 
-     * 
+     * Creates a qualified name from a string by parsing out the colon as the prefix / local
+     * separator.
+     *
      * @param name The possibly qualified name.
      * @param namespaces The namespace prefix uri mappings.
      */
@@ -78,7 +76,7 @@ public class XMLUtils {
             String[] split = name.split(":");
             String prefix = split[0];
             String local = split[1];
-            
+
             return new QName(namespaces.getURI(prefix), local, prefix);
         }
 
@@ -87,13 +85,16 @@ public class XMLUtils {
 
     /**
      * Returns true if the character provided is valid according to XML 1.0
-     * 
+     *
      * @param c
      * @return
      */
     private static boolean isXMLValidChar(char c) {
-        return (c == 0x9) || (c == 0xA) || (c == 0xD) || ((c >= 0x20) && (c <= 0xD7FF))
-                || ((c >= 0xE000) && (c <= 0xFFFD)) || ((c >= 0x10000) && (c <= 0x10FFFF));
+        return (c == 0x9)
+                || (c == 0xA)
+                || (c == 0xD)
+                || ((c >= 0x20) && (c <= 0xD7FF))
+                || ((c >= 0xE000) && (c <= 0xFFFD))
+                || ((c >= 0x10000) && (c <= 0x10FFFF));
     }
-
 }

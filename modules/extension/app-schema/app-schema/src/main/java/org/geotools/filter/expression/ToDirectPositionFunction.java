@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2009-2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -19,7 +19,6 @@ package org.geotools.filter.expression;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.geotools.geometry.DirectPosition1D;
@@ -39,18 +38,15 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 /**
  * This function converts double values to DirectPosition geometry type. This is needed when the
  * data store doesn't have geometry type columns. This function expects:
+ *
  * <ol>
- * <li>Literal: SRS_NAME (optional)
- * <li>Expression: expression of srs name if SRS_NAME is defined
- * <li>Expression: name of column pointing to first double value
- * <li>Expression: name of column pointing to second double value (optional, only for 2D)
+ *   <li>Literal: SRS_NAME (optional)
+ *   <li>Expression: expression of srs name if SRS_NAME is defined
+ *   <li>Expression: name of column pointing to first double value
+ *   <li>Expression: name of column pointing to second double value (optional, only for 2D)
  * </ol>
- * 
+ *
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
- *
- *
- *
- *
  * @source $URL$
  */
 public class ToDirectPositionFunction implements Function {
@@ -58,12 +54,15 @@ public class ToDirectPositionFunction implements Function {
     private final List<Expression> parameters;
 
     private final Literal fallback;
-    
-    private static final String USAGE = "Usage: toDirectPosition('SRS_NAME'(optional), srsName(optional), point 1, point 2(optional))";
 
-    public static final FunctionName NAME = new FunctionNameImpl("toDirectPosition",
-            FunctionNameImpl.parameter("return", DirectPosition.class), FunctionNameImpl.parameter(
-                    "parameter", Object.class, 1, 4));
+    private static final String USAGE =
+            "Usage: toDirectPosition('SRS_NAME'(optional), srsName(optional), point 1, point 2(optional))";
+
+    public static final FunctionName NAME =
+            new FunctionNameImpl(
+                    "toDirectPosition",
+                    FunctionNameImpl.parameter("return", DirectPosition.class),
+                    FunctionNameImpl.parameter("parameter", Object.class, 1, 4));
 
     private static FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
 
@@ -81,6 +80,7 @@ public class ToDirectPositionFunction implements Function {
     public String getName() {
         return NAME.getName();
     }
+
     public FunctionName getFunctionName() {
         return NAME;
     }
@@ -112,7 +112,9 @@ public class ToDirectPositionFunction implements Function {
             if (parameters.size() < 3 || parameters.size() > 4) {
                 throw new IllegalArgumentException(
                         "Wrong number of parameters toDirectPosition function: "
-                                + parameters.toString() + ". " + USAGE);
+                                + parameters.toString()
+                                + ". "
+                                + USAGE);
             }
             String srsName = parameters.get(1).evaluate(object, String.class);
             try {
@@ -120,7 +122,9 @@ public class ToDirectPositionFunction implements Function {
             } catch (NoSuchAuthorityCodeException e) {
                 throw new IllegalArgumentException(
                         "Invalid or unsupported SRS name detected for toDirectPosition function: "
-                                + srsName + ". Cause: " + e.getMessage());
+                                + srsName
+                                + ". Cause: "
+                                + e.getMessage());
             } catch (FactoryException e) {
                 throw new RuntimeException("Unable to decode SRS name. Cause: " + e.getMessage());
             }
@@ -138,7 +142,9 @@ public class ToDirectPositionFunction implements Function {
             if (parameters.size() > 2) {
                 throw new IllegalArgumentException(
                         "Too many parameters for toDirectPosition function: "
-                                + parameters.toString() + ". " + USAGE);
+                                + parameters.toString()
+                                + ". "
+                                + USAGE);
             }
             if (parameters.size() == 1) {
                 // 1D
@@ -153,5 +159,4 @@ public class ToDirectPositionFunction implements Function {
 
         return (T) geom;
     }
-
 }

@@ -19,18 +19,16 @@ package org.geotools.data.complex.config;
 
 import java.util.Collection;
 import java.util.Map;
-
 import org.opengis.feature.type.ComplexType;
 import org.opengis.feature.type.Name;
 import org.opengis.feature.type.PropertyDescriptor;
 
 /**
- * 
  * @author Gabriel Roldan (Axios Engineering)
  * @version $Id$
  * @source $URL:
- *         http://svn.geotools.org/trunk/modules/unsupported/community-schemas/community-schema-ds/src/main/java/org/geotools/data/complex/config
- *         /ComplexTypeProxy.java $
+ *     http://svn.geotools.org/trunk/modules/unsupported/community-schemas/community-schema-ds/src/main/java/org/geotools/data/complex/config
+ *     /ComplexTypeProxy.java $
  * @since 2.4
  */
 class ComplexTypeProxy extends AttributeTypeProxy implements ComplexType {
@@ -54,5 +52,4 @@ class ComplexTypeProxy extends AttributeTypeProxy implements ComplexType {
     public boolean isInline() {
         return ((ComplexType) getSubject()).isInline();
     }
-
 }

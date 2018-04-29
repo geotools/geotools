@@ -4,10 +4,12 @@
  *
  *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2003-2005, Open Geospatial Consortium Inc.
- *    
+ *
  *    All Rights Reserved. http://www.opengis.org/legal/
  */
 package org.opengis.util;
+
+import static org.junit.Assert.*;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -18,56 +20,46 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-
-import org.opengis.metadata.identification.CharacterSet;
-
 import org.junit.*;
-import static org.junit.Assert.*;
-
+import org.opengis.metadata.identification.CharacterSet;
 
 /**
  * Tests every {@link CodeList}.
  *
  * @author Martin desruisseaux (IRD)
- *
- *
  * @source $URL$
  */
 public final class CodeListTest {
-    /**
-     * The logger to use.
-     */
+    /** The logger to use. */
     private static final Logger LOGGER = Logger.getLogger("org.opengis");
 
     /**
-     * For avoiding to pollute the output stream if {@code ArrayList.capacity()}
-     * method invocation failed.
+     * For avoiding to pollute the output stream if {@code ArrayList.capacity()} method invocation
+     * failed.
      */
     private static boolean capacityFailed = false;
 
     /**
-     * Tests the {@link CharacterSet} code list. At the difference of other code lists,
-     * its {@link CodeList#matches} method is overriden.
+     * Tests the {@link CharacterSet} code list. At the difference of other code lists, its {@link
+     * CodeList#matches} method is overriden.
      */
     @Test
     public void testCharacterSet() {
         final CodeList code = CharacterSet.UTF_8;
-        assertEquals ("UTF_8", code.name());
-        assertEquals ("utf8",  code.identifier());
-        assertTrue   (code.matches("UTF8"));
-        assertTrue   (code.matches("UTF_8"));
-        assertTrue   (code.matches("UTF-8"));
-        assertFalse  (code.matches("UTF 8"));
-        assertSame   (code, CharacterSet.valueOf("UTF_8"));
-        assertSame   (code, CharacterSet.valueOf("UTF-8"));
-        assertSame   (code, CharacterSet.valueOf("UTF8"));
-        assertSame   (code, CharacterSet.valueOf("utf8"));
+        assertEquals("UTF_8", code.name());
+        assertEquals("utf8", code.identifier());
+        assertTrue(code.matches("UTF8"));
+        assertTrue(code.matches("UTF_8"));
+        assertTrue(code.matches("UTF-8"));
+        assertFalse(code.matches("UTF 8"));
+        assertSame(code, CharacterSet.valueOf("UTF_8"));
+        assertSame(code, CharacterSet.valueOf("UTF-8"));
+        assertSame(code, CharacterSet.valueOf("UTF8"));
+        assertSame(code, CharacterSet.valueOf("utf8"));
         assertNotSame(code, CharacterSet.valueOf("UTF_7"));
     }
 
-    /**
-     * Tests the instantiation of every code lists.
-     */
+    /** Tests the instantiation of every code lists. */
     @Test
     public void testAll() {
         int count = 0;
@@ -94,9 +86,7 @@ public final class CodeListTest {
         }
     }
 
-    /**
-     * Ensures that the name declared in the code list match the field names.
-     */
+    /** Ensures that the name declared in the code list match the field names. */
     private static void assertValid(final Class<? extends CodeList> classe) {
         Method method;
         int modifiers;
@@ -141,8 +131,8 @@ public final class CodeListTest {
         }
         assertNotNull(method);
         modifiers = method.getModifiers();
-        assertTrue (fullName + " is not public.", Modifier.isPublic(modifiers));
-        assertFalse(fullName + " is static.",     Modifier.isStatic(modifiers));
+        assertTrue(fullName + " is not public.", Modifier.isPublic(modifiers));
+        assertFalse(fullName + " is static.", Modifier.isStatic(modifiers));
         /*
          * Tests every CodeList instances returned by values().
          * Every field should be public, static and final.
@@ -166,9 +156,9 @@ public final class CodeListTest {
             assertNotNull(field);
             modifiers = field.getModifiers();
             assertEquals(fullName + ": unexpected name mismatch.", name, field.getName());
-            assertTrue  (fullName + " is not public.", Modifier.isPublic(modifiers));
-            assertTrue  (fullName + " is not static.", Modifier.isStatic(modifiers));
-            assertTrue  (fullName + " is not final.",  Modifier.isFinal (modifiers));
+            assertTrue(fullName + " is not public.", Modifier.isPublic(modifiers));
+            assertTrue(fullName + " is not static.", Modifier.isStatic(modifiers));
+            assertTrue(fullName + " is not final.", Modifier.isFinal(modifiers));
             Object constant;
             try {
                 constant = field.get(null);
@@ -202,15 +192,16 @@ public final class CodeListTest {
                 return;
             }
             modifiers = field.getModifiers();
-            assertTrue (Modifier.isStatic   (modifiers));
-            assertTrue (Modifier.isFinal    (modifiers));
-            assertFalse(Modifier.isPublic   (modifiers));
+            assertTrue(Modifier.isStatic(modifiers));
+            assertTrue(Modifier.isFinal(modifiers));
+            assertFalse(Modifier.isPublic(modifiers));
             assertFalse(Modifier.isProtected(modifiers));
             field.setAccessible(true);
             final ArrayList<?> asList;
             try {
                 final Object candidate = field.get(null);
-                assertEquals(fullName + " is not an ArrayList.", ArrayList.class, candidate.getClass());
+                assertEquals(
+                        fullName + " is not an ArrayList.", ArrayList.class, candidate.getClass());
                 asList = (ArrayList<?>) candidate;
             } catch (IllegalAccessException e) {
                 fail(className + ".VALUES is not accessible.");

@@ -19,16 +19,11 @@ package org.geotools.data.postgis.ps;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTransactionOnlineTest;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class PostgisTransactionOnlineTest extends JDBCTransactionOnlineTest {
 
     @Override
     protected JDBCTestSetup createTestSetup() {
         return new PostGISPSTestSetup();
     }
-
 }

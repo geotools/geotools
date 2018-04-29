@@ -17,31 +17,23 @@
 package org.geotools.validation.spatial;
 
 import java.beans.PropertyDescriptor;
-
 import org.geotools.validation.DefaultFeatureValidationBeanInfo;
-
 
 /**
  * IsValidGeometryValidationBeanInfo purpose.
- * 
- * <p>
- * Description of IsValidGeometryValidationBeanInfo ...
- * </p>
+ *
+ * <p>Description of IsValidGeometryValidationBeanInfo ...
  *
  * @author dzwiers, Refractions Research, Inc.
  * @author $Author: dmzwiers $ (last modification)
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public class IsValidGeometryValidationBeanInfo extends DefaultFeatureValidationBeanInfo {
     /**
      * IsValidGeometryValidationBeanInfo constructor.
-     * 
-     * <p>
-     * Description
-     * </p>
+     *
+     * <p>Description
      */
     public IsValidGeometryValidationBeanInfo() {
         super();
@@ -49,7 +41,6 @@ public class IsValidGeometryValidationBeanInfo extends DefaultFeatureValidationB
 
     /**
      * Implementation of getPropertyDescriptors.
-     *
      *
      * @see java.beans.BeanInfo#getPropertyDescriptors()
      */

@@ -21,25 +21,21 @@ import org.geotools.graph.structure.Node;
 import org.geotools.graph.structure.line.OptXYNode;
 
 /**
- * An inmplementation extended from OptGraphBuilder used to build optimized
- * components for line networks.
- * 
+ * An inmplementation extended from OptGraphBuilder used to build optimized components for line
+ * networks.
+ *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- *
- *
- *
  * @source $URL$
  */
 public class OptLineGraphBuilder extends OptGraphBuilder {
 
-  /**
-   * Returns a node of type OptXYNode.
-   * 
-   * @see OptXYNode
-   * @see org.geotools.graph.build.GraphBuilder#buildNode()
-   */
-  public Node buildNode() {
-    return(new OptXYNode());  
-  }
- 
+    /**
+     * Returns a node of type OptXYNode.
+     *
+     * @see OptXYNode
+     * @see org.geotools.graph.build.GraphBuilder#buildNode()
+     */
+    public Node buildNode() {
+        return (new OptXYNode());
+    }
 }

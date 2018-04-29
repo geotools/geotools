@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -28,25 +28,26 @@ public class DelegateProgressListener implements org.opengis.util.ProgressListen
     private InternationalString task;
     private boolean isCanceled;
 
-    public DelegateProgressListener( org.opengis.util.ProgressListener progress ){
-        if( progress == null ) progress = new NullProgressListener();
+    public DelegateProgressListener(org.opengis.util.ProgressListener progress) {
+        if (progress == null) progress = new NullProgressListener();
         this.delegate = progress;
     }
 
     public void started() {
-        delegate.started();        
+        delegate.started();
     }
+
     public void complete() {
         delegate.complete();
     }
 
     public void dispose() {
         delegate.dispose();
-        delegate = null;       
+        delegate = null;
     }
 
-    public void exceptionOccurred( Throwable exception ) {
-        delegate.exceptionOccurred( exception );
+    public void exceptionOccurred(Throwable exception) {
+        delegate.exceptionOccurred(exception);
     }
 
     public String getDescription() {
@@ -61,33 +62,31 @@ public class DelegateProgressListener implements org.opengis.util.ProgressListen
         return delegate.isCanceled();
     }
 
-    public void progress( float progress) {
-        delegate.progress( progress );
+    public void progress(float progress) {
+        delegate.progress(progress);
     }
-    
+
     public float getProgress() {
         return delegate.getProgress();
     }
-    
-    public void setCanceled( boolean cancel) {
-        delegate.setCanceled( cancel );
-        
+
+    public void setCanceled(boolean cancel) {
+        delegate.setCanceled(cancel);
     }
 
-    public void setDescription( String description ) {
-        delegate.setDescription( description );
+    public void setDescription(String description) {
+        delegate.setDescription(description);
     }
 
-    public void setTask( InternationalString task ) {
-        delegate.setTask( task );
+    public void setTask(InternationalString task) {
+        delegate.setTask(task);
     }
 
-    public void warningOccurred( String source, String location, String warning ){
-        delegate.warningOccurred( source, location, warning );
+    public void warningOccurred(String source, String location, String warning) {
+        delegate.warningOccurred(source, location, warning);
     }
 
     public org.opengis.util.ProgressListener getDelegate() {
         return delegate;
     }
-    
 }

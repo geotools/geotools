@@ -1,10 +1,8 @@
 package org.geotools.data.aggregate;
 
 import java.util.List;
-
 import org.geotools.xml.transform.TransformerBase;
 import org.geotools.xml.transform.Translator;
-import org.opengis.feature.type.Name;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.helpers.AttributesImpl;
 
@@ -29,10 +27,11 @@ class AggregateTypeEncoder extends TransformerBase {
             for (AggregateTypeConfiguration config : configs) {
                 start("AggregateType", attributes("name", config.getName()));
                 for (SourceType st : config.getSourceTypes()) {
-                    element("Source",
+                    element(
+                            "Source",
                             null,
-                            attributes("store", st.getStoreName().getURI(), "type",
-                                    st.getTypeName()));
+                            attributes(
+                                    "store", st.getStoreName().getURI(), "type", st.getTypeName()));
                 }
                 end("AggregateType");
             }
@@ -49,7 +48,5 @@ class AggregateTypeEncoder extends TransformerBase {
             }
             return attributes;
         }
-
     }
-
 }

@@ -19,16 +19,10 @@ package org.geotools.data.teradata;
 import org.geotools.jdbc.JDBCNoPrimaryKeyOnlineTest;
 import org.geotools.jdbc.JDBCNoPrimaryKeyTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class TeradataNoPrimaryKeyOnlineTest extends JDBCNoPrimaryKeyOnlineTest {
-
 
     protected JDBCNoPrimaryKeyTestSetup createTestSetup() {
         return new TeradataNoPrimaryKeyTestSetup(new TeradataTestSetup());
     }
-
 }

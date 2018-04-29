@@ -3,7 +3,7 @@
  *    http://geotools.org
  *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -26,10 +26,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.ServiceInfo;
 import org.geotools.data.ows.AbstractOpenWebService;
@@ -64,70 +62,64 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-
 /**
- * WebMapServer is a class representing a WMS. It is used to access the 
- * Capabilities document and perform requests. It supports multiple versions
- * and will perform version negotiation automatically and use the highest
- * known version that the server can communicate.
- * 
- * If restriction of versions to be used is desired, this class should be
- * subclassed and it's setupSpecifications() method over-ridden. It should
- * add which version/specifications are to be used to the specs array. See
- * the current implementation for an example.
- * 
- * Example usage:
- * <code><pre>
+ * WebMapServer is a class representing a WMS. It is used to access the Capabilities document and
+ * perform requests. It supports multiple versions and will perform version negotiation
+ * automatically and use the highest known version that the server can communicate.
+ *
+ * <p>If restriction of versions to be used is desired, this class should be subclassed and it's
+ * setupSpecifications() method over-ridden. It should add which version/specifications are to be
+ * used to the specs array. See the current implementation for an example.
+ *
+ * <p>Example usage: <code><pre>
  * WebMapServer wms = new WebMapServer("http://some.example.com/wms");
  * WMSCapabilities capabilities = wms.getCapabilities();
  * GetMapRequest request = wms.getMapRequest();
- * 
+ *
  * ... //configure request
- * 
+ *
  * GetMapResponse response = (GetMapResponse) wms.issueRequest(request);
- * 
+ *
  * ... //extract image from the response
  * </pre></code>
- * 
+ *
  * @author Richard Gould, Refractions Research
- *
- *
  * @source $URL$
  */
-public class WebMapServer extends AbstractOpenWebService<WMSCapabilities,Layer> {
+public class WebMapServer extends AbstractOpenWebService<WMSCapabilities, Layer> {
 
     /**
      * Class quickly describing Web Map Service.
-     * 
+     *
      * @author Jody
      */
     protected class WMSInfo implements ServiceInfo {
-        
+
         private Set<String> keywords;
         private Icon icon;
 
-        WMSInfo(){
+        WMSInfo() {
             keywords = new HashSet<String>();
-            if( capabilities.getService() != null ){
-              String array[] = capabilities.getService().getKeywordList();
-              if( array != null ){
-                  keywords.addAll( Arrays.asList( array ));                  
-              }
+            if (capabilities.getService() != null) {
+                String array[] = capabilities.getService().getKeywordList();
+                if (array != null) {
+                    keywords.addAll(Arrays.asList(array));
+                }
             }
             keywords.add("WMS");
-            keywords.add( serverURL.toString() );
-            
+            keywords.add(serverURL.toString());
+
             URL globe2 = WebMapServer.class.getResource("Globe2.png");
-            icon = new ImageIcon( globe2 );
+            icon = new ImageIcon(globe2);
         }
-        
+
         public String getDescription() {
             String description = null;
             if (capabilities != null && capabilities.getService() != null) {
                 description = capabilities.getService().get_abstract();
             }
-            if( description == null ) {
-                description = "Web Map Server "+ serverURL;
+            if (description == null) {
+                description = "Web Map Server " + serverURL;
             }
             return description;
         }
@@ -142,12 +134,16 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities,Layer> 
 
         public URI getPublisher() {
             try {
-                return capabilities.getService().getContactInformation().getContactInfo().getOnLineResource().getLinkage();
-            }
-            catch( NullPointerException publisherNotAvailable ){               
+                return capabilities
+                        .getService()
+                        .getContactInformation()
+                        .getContactInfo()
+                        .getOnLineResource()
+                        .getLinkage();
+            } catch (NullPointerException publisherNotAvailable) {
             }
             try {
-                return new URI( serverURL.getProtocol()+":"+serverURL.getHost() );
+                return new URI(serverURL.getProtocol() + ":" + serverURL.getHost());
             } catch (URISyntaxException e) {
             }
             return null;
@@ -155,6 +151,7 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities,Layer> 
 
         /**
          * We are a Web Map Service:
+         *
          * @return WMSSchema.NAMESPACE;
          */
         public URI getSchema() {
@@ -163,20 +160,17 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities,Layer> 
 
         /**
          * The source of this WMS is the capabilities document.
-         * <p>
-         * We make an effort here to look in the capabilities document
-         * provided for the unambiguous capabilities URI. This covers
-         * the case where the capabilities document has been cached
-         * on disk and we are restoring a WebMapServer instance.
+         *
+         * <p>We make an effort here to look in the capabilities document provided for the
+         * unambiguous capabilities URI. This covers the case where the capabilities document has
+         * been cached on disk and we are restoring a WebMapServer instance.
          */
         public URI getSource() {
             try {
                 URL source = getCapabilities().getRequest().getGetCapabilities().getGet();
                 return source.toURI();
-            }
-            catch( NullPointerException huh ){                
-            }
-            catch (URISyntaxException e) {
+            } catch (NullPointerException huh) {
+            } catch (URISyntaxException e) {
             }
             try {
                 return serverURL.toURI();
@@ -195,28 +189,27 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities,Layer> 
             }
         }
     }
-    
+
     /**
      * Quickly describe a layer.
-     * 
+     *
      * @author Jody
      */
     public class LayerInfo implements ResourceInfo {
-        
+
         private ReferencedEnvelope bounds;
         private Set<String> keywords;
         private Icon icon;
         private Layer layer;
-        
-        LayerInfo( Layer layer ){
+
+        LayerInfo(Layer layer) {
             this.layer = layer;
             org.opengis.geometry.Envelope env = null;
             CoordinateReferenceSystem crs = null;
 
             if (layer.getBoundingBoxes().isEmpty()) {
                 env = layer.getEnvelope(DefaultGeographicCRS.WGS84);
-            }
-            else {
+            } else {
                 CRSEnvelope bbox;
                 String epsg4326 = "EPSG:4326";
                 String epsg4269 = "EPSG:4269";
@@ -227,11 +220,16 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities,Layer> 
                 } else {
                     bbox = layer.getBoundingBoxes().values().iterator().next();
                 }
-                
+
                 try {
                     crs = CRS.decode(bbox.getEPSGCode());
-                    env = new ReferencedEnvelope(bbox.getMinX(), bbox.getMaxX(), bbox.getMinY(),
-                            bbox.getMaxY(), crs);
+                    env =
+                            new ReferencedEnvelope(
+                                    bbox.getMinX(),
+                                    bbox.getMaxX(),
+                                    bbox.getMinY(),
+                                    bbox.getMaxY(),
+                                    crs);
                 } catch (NoSuchAuthorityCodeException e) {
                     crs = DefaultGeographicCRS.WGS84;
                     env = layer.getEnvelope(crs);
@@ -240,30 +238,33 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities,Layer> 
                     env = layer.getEnvelope(crs);
                 }
             }
-            bounds = new ReferencedEnvelope(
-                    env.getMinimum(0), env.getMaximum(0),
-                    env.getMinimum(1), env.getMaximum(1),
-                    crs);
-            
+            bounds =
+                    new ReferencedEnvelope(
+                            env.getMinimum(0),
+                            env.getMaximum(0),
+                            env.getMinimum(1),
+                            env.getMaximum(1),
+                            crs);
+
             String source = getInfo().getSource().toString();
-            
+
             keywords = new TreeSet<String>();
-            
+
             if (layer.getKeywords() != null) {
-                List<String> more = Arrays.asList( layer.getKeywords() );
-                keywords.addAll( more );    
+                List<String> more = Arrays.asList(layer.getKeywords());
+                keywords.addAll(more);
             }
-            if( layer.getName() != null ){
-                keywords.add( layer.getName() );
+            if (layer.getName() != null) {
+                keywords.add(layer.getName());
             }
-            if( layer.getTitle() != null ){
-                keywords.add( layer.getTitle() );
+            if (layer.getTitle() != null) {
+                keywords.add(layer.getTitle());
             }
-            keywords.add( capabilities.getService().getName() );
-            keywords.add( source );
-            keywords.addAll( getInfo().getKeywords() );            
+            keywords.add(capabilities.getService().getName());
+            keywords.add(source);
+            keywords.addAll(getInfo().getKeywords());
         }
-        
+
         public ReferencedEnvelope getBounds() {
             return bounds;
         }
@@ -274,28 +275,29 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities,Layer> 
 
         public String getDescription() {
             String description = layer.get_abstract();
-            if ( description != null && description.length() != 0) {
+            if (description != null && description.length() != 0) {
                 return description;
             } else {
                 return getCapabilities().getService().get_abstract();
-            }            
+            }
         }
 
         public synchronized Icon getIcon() {
-            if( icon == null ){
+            if (icon == null) {
                 URL image = WebMapServer.class.getResource("image.png");
-                icon = new ImageIcon( image );                
-                if ( layer.getChildren() != null && layer.getChildren().length != 0) {
-                    // Do not request "parent" layer graphics - this kills Mapserver                    
-                    return icon; 
+                icon = new ImageIcon(image);
+                if (layer.getChildren() != null && layer.getChildren().length != 0) {
+                    // Do not request "parent" layer graphics - this kills Mapserver
+                    return icon;
                 }
-                OperationType getLegendGraphic = getCapabilities().getRequest().getGetLegendGraphic();
-                if( getLegendGraphic == null ){
+                OperationType getLegendGraphic =
+                        getCapabilities().getRequest().getGetLegendGraphic();
+                if (getLegendGraphic == null) {
                     // this wms server does not support legend graphics
                     return icon;
                 }
                 GetLegendGraphicRequest request = createGetLegendGraphicRequest();
-                request.setLayer( layer.getName() );
+                request.setLayer(layer.getName());
                 request.setWidth("16");
                 request.setHeight("16");
 
@@ -303,11 +305,9 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities,Layer> 
                 List<String> formats = getLegendGraphic.getFormats();
                 if (formats.contains("image/png")) {
                     desiredFormat = "image/png";
-                }
-                else if (formats.contains("image/gif")) {
+                } else if (formats.contains("image/gif")) {
                     desiredFormat = "image/gif";
-                }
-                else {
+                } else {
                     // there is no format that I am sure we can deal with :-(
                     // the danger here is requesting PDF from geoserver
                     // (because everyone wants a PDF legend graphics - wot?)
@@ -317,7 +317,7 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities,Layer> 
                 request.setStyle("");
 
                 URL legendGraphics = request.getFinalURL();
-                icon = new ImageIcon( legendGraphics );
+                icon = new ImageIcon(legendGraphics);
             }
             return icon;
         }
@@ -346,75 +346,75 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities,Layer> 
         }
     }
 
-    /** 
+    /**
      * Creates a new WebMapServer from a WMSCapablitiles document.
-     * <p>
-     * The implementation assumes that the server is located at:
+     *
+     * <p>The implementation assumes that the server is located at:
      * capabilities.getRequest().getGetCapabilities().getGet()
-     * 
+     *
      * @param capabilities
      * @throws IOException
      * @throws ServiceException
      */
-    public WebMapServer( WMSCapabilities capabilities ) throws IOException, ServiceException {
-        super( capabilities, capabilities.getRequest().getGetCapabilities().getGet() );
-    }
-    
-    /**
-     * Creates a new WebMapServer instance and attempts to retrieve the 
-     * Capabilities document specified by serverURL. 
-     * 
-     * @param serverURL a URL that points to the capabilities document of a server
-     * @throws IOException if there is an error communicating with the server
-     * @throws ServiceException if the server responds with an error
-     */
-    public WebMapServer( final URL serverURL ) throws IOException, ServiceException {
-        super(serverURL);
-    }
-    
-    /**
-     * Creates a new WebMapServer instance and attempts to retrieve the 
-     * Capabilities document specified by serverURL. 
-     * 
-     * @param serverURL a URL that points to the capabilities document of a server
-     * @throws IOException if there is an error communicating with the server
-     * @throws ServiceException if the server responds with an error
-     */
-    public WebMapServer( final URL serverURL, final HTTPClient httpClient ) throws IOException, ServiceException {
-        super(serverURL, httpClient, null);
-    }
-    
-    /**
-     * Creates a new WebMapServer instance and attempts to retrieve the 
-     * Capabilities document specified by serverURL. 
-     * 
-     * @param serverURL a URL that points to the capabilities document of a server
-     * @param httpClient The client to be used when performing HTTP requests
-     * @param hints A map of hints. Can be used to control some aspects of the XML parsing, see {@link XMLHandlerHints} for a reference
-     * @throws IOException if there is an error communicating with the server
-     * @throws ServiceException if the server responds with an error
-     */
-    public WebMapServer( final URL serverURL, final HTTPClient httpClient, Map<String, Object> hints) throws IOException, ServiceException {
-        super(serverURL, httpClient, null, hints); 
+    public WebMapServer(WMSCapabilities capabilities) throws IOException, ServiceException {
+        super(capabilities, capabilities.getRequest().getGetCapabilities().getGet());
     }
 
     /**
-     * Creates a new WebMapServer instance and attempts to retrieve the 
-     * Capabilities document specified by serverURL. 
-     * 
+     * Creates a new WebMapServer instance and attempts to retrieve the Capabilities document
+     * specified by serverURL.
+     *
+     * @param serverURL a URL that points to the capabilities document of a server
+     * @throws IOException if there is an error communicating with the server
+     * @throws ServiceException if the server responds with an error
+     */
+    public WebMapServer(final URL serverURL) throws IOException, ServiceException {
+        super(serverURL);
+    }
+
+    /**
+     * Creates a new WebMapServer instance and attempts to retrieve the Capabilities document
+     * specified by serverURL.
+     *
+     * @param serverURL a URL that points to the capabilities document of a server
+     * @throws IOException if there is an error communicating with the server
+     * @throws ServiceException if the server responds with an error
+     */
+    public WebMapServer(final URL serverURL, final HTTPClient httpClient)
+            throws IOException, ServiceException {
+        super(serverURL, httpClient, null);
+    }
+
+    /**
+     * Creates a new WebMapServer instance and attempts to retrieve the Capabilities document
+     * specified by serverURL.
+     *
+     * @param serverURL a URL that points to the capabilities document of a server
+     * @param httpClient The client to be used when performing HTTP requests
+     * @param hints A map of hints. Can be used to control some aspects of the XML parsing, see
+     *     {@link XMLHandlerHints} for a reference
+     * @throws IOException if there is an error communicating with the server
+     * @throws ServiceException if the server responds with an error
+     */
+    public WebMapServer(final URL serverURL, final HTTPClient httpClient, Map<String, Object> hints)
+            throws IOException, ServiceException {
+        super(serverURL, httpClient, null, hints);
+    }
+
+    /**
+     * Creates a new WebMapServer instance and attempts to retrieve the Capabilities document
+     * specified by serverURL.
+     *
      * @param serverURL a URL that points to the capabilities document of a server
      * @param timeout a time to be wait a server response
      * @throws IOException if there is an error communicating with the server
      * @throws ServiceException if the server responds with an error
      */
-    public WebMapServer( final URL serverURL, int timeout ) throws IOException, ServiceException {
-        super(serverURL,timeout);
+    public WebMapServer(final URL serverURL, int timeout) throws IOException, ServiceException {
+        super(serverURL, timeout);
     }
 
-    /**
-     * Sets up the specifications/versions that this server is capable of
-     * communicating with.
-     */
+    /** Sets up the specifications/versions that this server is capable of communicating with. */
     protected void setupSpecifications() {
         specs = new Specification[4];
         specs[0] = new WMS1_0_0();
@@ -422,70 +422,74 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities,Layer> 
         specs[2] = new WMS1_1_1();
         specs[3] = new WMS1_3_0();
     }
-    
+
     @Override
     protected ServiceInfo createInfo() {
         return new WMSInfo();
     }
-    protected ResourceInfo createInfo( Layer layer ){
-        return new LayerInfo( (Layer) layer );
+
+    protected ResourceInfo createInfo(Layer layer) {
+        return new LayerInfo((Layer) layer);
     }
-    
-    public GetCapabilitiesResponse issueRequest(GetCapabilitiesRequest request) throws IOException, ServiceException {
+
+    public GetCapabilitiesResponse issueRequest(GetCapabilitiesRequest request)
+            throws IOException, ServiceException {
         return (GetCapabilitiesResponse) internalIssueRequest(request);
     }
-    
+
     public GetMapResponse issueRequest(GetMapRequest request) throws IOException, ServiceException {
         return (GetMapResponse) internalIssueRequest(request);
     }
-    
-    public GetFeatureInfoResponse issueRequest(GetFeatureInfoRequest request) throws IOException, ServiceException {
+
+    public GetFeatureInfoResponse issueRequest(GetFeatureInfoRequest request)
+            throws IOException, ServiceException {
         return (GetFeatureInfoResponse) internalIssueRequest(request);
     }
-    
-    public DescribeLayerResponse issueRequest(DescribeLayerRequest request) throws IOException, ServiceException {
+
+    public DescribeLayerResponse issueRequest(DescribeLayerRequest request)
+            throws IOException, ServiceException {
         return (DescribeLayerResponse) internalIssueRequest(request);
     }
-    
-    public GetLegendGraphicResponse issueRequest(GetLegendGraphicRequest request) throws IOException, ServiceException {
+
+    public GetLegendGraphicResponse issueRequest(GetLegendGraphicRequest request)
+            throws IOException, ServiceException {
         return (GetLegendGraphicResponse) internalIssueRequest(request);
     }
-    
-    public GetStylesResponse issueRequest(GetStylesRequest request) throws IOException, ServiceException {
+
+    public GetStylesResponse issueRequest(GetStylesRequest request)
+            throws IOException, ServiceException {
         return (GetStylesResponse) internalIssueRequest(request);
     }
-    
-    public PutStylesResponse issueRequest(PutStylesRequest request) throws IOException, ServiceException {
+
+    public PutStylesResponse issueRequest(PutStylesRequest request)
+            throws IOException, ServiceException {
         return (PutStylesResponse) internalIssueRequest(request);
     }
-    
+
     /**
-     * Get the getCapabilities document. If there was an error parsing it
-     * during creation, it will return null (and it should have thrown an
-     * exception during creation).
-     * 
+     * Get the getCapabilities document. If there was an error parsing it during creation, it will
+     * return null (and it should have thrown an exception during creation).
+     *
      * @return a WMSCapabilities object, representing the Capabilities of the server
      */
-    public WMSCapabilities getCapabilities() {        
+    public WMSCapabilities getCapabilities() {
         return (WMSCapabilities) capabilities;
     }
-    
+
     private WMSSpecification getSpecification() {
         return (WMSSpecification) specification;
     }
-    
-    
+
     private URL findURL(OperationType operation) {
         if (operation.getGet() != null) {
-                return operation.getGet();
+            return operation.getGet();
         }
         return serverURL;
     }
-    
+
     /**
-     * Creates a GetMapRequest that can be configured and then passed to 
-     * issueRequest(). 
-     * 
+     * Creates a GetMapRequest that can be configured and then passed to issueRequest().
+     *
      * @return a configureable GetMapRequest object
      */
     public GetMapRequest createGetMapRequest() {
@@ -495,94 +499,100 @@ public class WebMapServer extends AbstractOpenWebService<WMSCapabilities,Layer> 
     }
 
     /**
-     * Creates a GetFeatureInfoRequest that can be configured and then passed to
-     * issueRequest(). 
-     * 
+     * Creates a GetFeatureInfoRequest that can be configured and then passed to issueRequest().
+     *
      * @param getMapRequest a previous configured GetMapRequest
      * @return a GetFeatureInfoRequest
      * @throws UnsupportedOperationException if the server does not support GetFeatureInfo
      */
-    public GetFeatureInfoRequest createGetFeatureInfoRequest( GetMapRequest getMapRequest ) {
+    public GetFeatureInfoRequest createGetFeatureInfoRequest(GetMapRequest getMapRequest) {
         if (getCapabilities().getRequest().getGetFeatureInfo() == null) {
-            throw new UnsupportedOperationException("This Web Map Server does not support GetFeatureInfo requests");
+            throw new UnsupportedOperationException(
+                    "This Web Map Server does not support GetFeatureInfo requests");
         }
 
         URL onlineResource = findURL(getCapabilities().getRequest().getGetFeatureInfo());
-        
-        GetFeatureInfoRequest request = getSpecification().createGetFeatureInfoRequest(onlineResource,
-                getMapRequest);
+
+        GetFeatureInfoRequest request =
+                getSpecification().createGetFeatureInfoRequest(onlineResource, getMapRequest);
 
         return request;
     }
-    
+
     public DescribeLayerRequest createDescribeLayerRequest() throws UnsupportedOperationException {
-        if (getCapabilities().getRequest().getDescribeLayer() == null ) {
-            throw new UnsupportedOperationException("Server does not specify a DescribeLayer operation. Cannot be performed");
+        if (getCapabilities().getRequest().getDescribeLayer() == null) {
+            throw new UnsupportedOperationException(
+                    "Server does not specify a DescribeLayer operation. Cannot be performed");
         }
-        
+
         URL onlineResource = getCapabilities().getRequest().getDescribeLayer().getGet();
         if (onlineResource == null) {
             onlineResource = serverURL;
         }
-        
-        DescribeLayerRequest request = getSpecification().createDescribeLayerRequest(onlineResource);
-        
+
+        DescribeLayerRequest request =
+                getSpecification().createDescribeLayerRequest(onlineResource);
+
         return request;
     }
-    
-    public GetLegendGraphicRequest createGetLegendGraphicRequest() throws UnsupportedOperationException {
+
+    public GetLegendGraphicRequest createGetLegendGraphicRequest()
+            throws UnsupportedOperationException {
         if (getCapabilities().getRequest().getGetLegendGraphic() == null) {
-            throw new UnsupportedOperationException("Server does not specify a GetLegendGraphic operation. Cannot be performed");
+            throw new UnsupportedOperationException(
+                    "Server does not specify a GetLegendGraphic operation. Cannot be performed");
         }
-        
+
         URL onlineResource = getCapabilities().getRequest().getGetLegendGraphic().getGet();
         if (onlineResource == null) {
             onlineResource = serverURL;
         }
-        
-        GetLegendGraphicRequest request = getSpecification().createGetLegendGraphicRequest(onlineResource);
-        
-        return request;        
+
+        GetLegendGraphicRequest request =
+                getSpecification().createGetLegendGraphicRequest(onlineResource);
+
+        return request;
     }
-    
-    public GetStylesRequest createGetStylesRequest() throws UnsupportedOperationException{
+
+    public GetStylesRequest createGetStylesRequest() throws UnsupportedOperationException {
         if (getCapabilities().getRequest().getGetStyles() == null) {
-            throw new UnsupportedOperationException("Server does not specify a GetStyles operation. Cannot be performed");
+            throw new UnsupportedOperationException(
+                    "Server does not specify a GetStyles operation. Cannot be performed");
         }
-        
+
         URL onlineResource = getCapabilities().getRequest().getGetStyles().getGet();
         if (onlineResource == null) {
             onlineResource = serverURL;
         }
-        
+
         GetStylesRequest request = getSpecification().createGetStylesRequest(onlineResource);
-       
+
         return request;
     }
-    
+
     public PutStylesRequest createPutStylesRequest() throws UnsupportedOperationException {
         if (getCapabilities().getRequest().getPutStyles() == null) {
-            throw new UnsupportedOperationException("Server does not specify a PutStyles operation. Cannot be performed");
+            throw new UnsupportedOperationException(
+                    "Server does not specify a PutStyles operation. Cannot be performed");
         }
-        
+
         URL onlineResource = getCapabilities().getRequest().getPutStyles().getGet();
         if (onlineResource == null) {
             onlineResource = serverURL;
         }
-        
+
         PutStylesRequest request = getSpecification().createPutStylesRequest(onlineResource);
         return request;
     }
-    
+
     /**
-     * Given a layer and a coordinate reference system, will locate an envelope
-     * for that layer in that CRS. If the layer is declared to support that CRS,
-     * but no envelope can be found, it will try to calculate an appropriate 
-     * bounding box.
-     * 
-     * If null is returned, no valid bounding box could be found and one couldn't
-     * be transformed from another.
-     * 
+     * Given a layer and a coordinate reference system, will locate an envelope for that layer in
+     * that CRS. If the layer is declared to support that CRS, but no envelope can be found, it will
+     * try to calculate an appropriate bounding box.
+     *
+     * <p>If null is returned, no valid bounding box could be found and one couldn't be transformed
+     * from another.
+     *
      * @param layer
      * @param crs
      * @return an Envelope containing a valid bounding box, or null if none are found

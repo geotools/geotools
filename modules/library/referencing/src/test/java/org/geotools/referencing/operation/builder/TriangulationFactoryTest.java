@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,26 +16,19 @@
  */
 package org.geotools.referencing.operation.builder;
 
-import org.geotools.geometry.DirectPosition2D;
-import org.opengis.geometry.DirectPosition;
+import static org.junit.Assert.*;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-
+import org.geotools.geometry.DirectPosition2D;
 import org.junit.*;
-import static org.junit.Assert.*;
+import org.opengis.geometry.DirectPosition;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public final class TriangulationFactoryTest {
-    /**
-     * Test (@link TringulationFactory).
-     */
+    /** Test (@link TringulationFactory). */
     @Test
     public void testTringulationFactory() {
         DirectPosition sp1 = new DirectPosition2D(10, 10);
@@ -64,23 +57,20 @@ public final class TriangulationFactoryTest {
         Quadrilateral quad = new Quadrilateral(mtp1, mtp2, mtp3, mtp4);
 
         try {
-            new TriangulationFactory(quad,
-                    vertices);
+            new TriangulationFactory(quad, vertices);
         } catch (TriangulationException e) {
             System.out.println(e.getMessage());
         }
     }
-    
-    /**
-     * Test (@link TriangulationFactory). Triangles are tested with delaunay test.
-     */
+
+    /** Test (@link TriangulationFactory). Triangles are tested with delaunay test. */
     @Test
     public void testDelaunay() throws TriangulationException {
         // coordinates of quadrilateral for triangulation
-        DirectPosition2D leftDown  = new DirectPosition2D(100, 100);
+        DirectPosition2D leftDown = new DirectPosition2D(100, 100);
         DirectPosition2D rightDown = new DirectPosition2D(200, 100);
-        DirectPosition2D rightTop  = new DirectPosition2D(200, 250);
-        DirectPosition2D leftTop   = new DirectPosition2D(100, 250);
+        DirectPosition2D rightTop = new DirectPosition2D(200, 250);
+        DirectPosition2D leftTop = new DirectPosition2D(100, 250);
 
         // generator for points within the quadrilateral:
         Random randomCoord = new Random(872066443);
@@ -91,7 +81,7 @@ public final class TriangulationFactoryTest {
 
         for (int i = 0; i < number; i++) {
             double x = leftDown.x + (randomCoord.nextDouble() * (rightDown.x - leftDown.x));
-            double y = leftDown.y + (randomCoord.nextDouble() * (leftTop  .y - leftDown.y));
+            double y = leftDown.y + (randomCoord.nextDouble() * (leftTop.y - leftDown.y));
             vertices[i] = new DirectPosition2D(x, y);
         }
 
@@ -104,7 +94,7 @@ public final class TriangulationFactoryTest {
 
         int j = 1;
 
-        for (Iterator<TINTriangle> i = triangles.iterator(); i.hasNext();) {
+        for (Iterator<TINTriangle> i = triangles.iterator(); i.hasNext(); ) {
             TINTriangle triangle = i.next();
 
             for (j = 0; j < vertices.length; j++) {

@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -19,16 +19,13 @@ package org.geotools.ysld;
 
 import java.io.InputStream;
 
-/**
- * Test class for loading SLD data.
- */
+/** Test class for loading SLD data. */
 public class YsldTests {
     /**
      * Loads a test SLD.
      *
      * @param dir One of point, line, polygon, raster.
      * @param file The filename.
-     *
      * @return The input stream for the SLD file.
      */
     public static InputStream sld(String dir, String file) {

@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,6 +17,11 @@
  */
 package org.geotools.ysld.validate;
 
+import java.io.IOException;
+import java.io.Reader;
+import java.util.Collections;
+import java.util.EmptyStackException;
+import java.util.List;
 import org.geotools.ysld.parse.ZoomContextFinder;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.error.MarkedYAMLException;
@@ -28,23 +33,17 @@ import org.yaml.snakeyaml.events.ScalarEvent;
 import org.yaml.snakeyaml.events.SequenceEndEvent;
 import org.yaml.snakeyaml.events.SequenceStartEvent;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.util.Collections;
-import java.util.EmptyStackException;
-import java.util.List;
-
-/**
- * Validates a YSLD style
- */
+/** Validates a YSLD style */
 public class YsldValidator {
 
     List<ZoomContextFinder> zCtxtFinders = Collections.emptyList();
 
     /**
      * Validate the passed style
+     *
      * @param input Reader for the style
-     * @return List of {@link MarkedYAMLException} representing any errors, or an empty list if the style is valid
+     * @return List of {@link MarkedYAMLException} representing any errors, or an empty list if the
+     *     style is valid
      * @throws IOException
      */
     public List<MarkedYAMLException> validate(Reader input) throws IOException {
@@ -86,8 +85,7 @@ public class YsldValidator {
     }
 
     public void setZCtxtFinders(List<ZoomContextFinder> zCtxtFinders) {
-        if (zCtxtFinders == null)
-            throw new NullPointerException("zCtxtFinders can not be null");
+        if (zCtxtFinders == null) throw new NullPointerException("zCtxtFinders can not be null");
         this.zCtxtFinders = zCtxtFinders;
     }
 }

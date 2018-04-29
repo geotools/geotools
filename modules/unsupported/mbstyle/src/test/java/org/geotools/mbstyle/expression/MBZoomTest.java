@@ -1,22 +1,10 @@
 package org.geotools.mbstyle.expression;
 
-import org.geotools.filter.function.EnvFunction;
-import org.geotools.mbstyle.MapboxTestUtils;
-import org.geotools.mbstyle.parse.MBObjectParser;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.ParseException;
-import org.junit.Before;
-import org.junit.Test;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Expression;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-
 import static org.junit.Assert.assertEquals;
+
+import org.geotools.filter.function.EnvFunction;
+import org.json.simple.JSONObject;
+import org.junit.Test;
 
 public class MBZoomTest extends AbstractMBExpressionTest {
     @Override
@@ -29,9 +17,7 @@ public class MBZoomTest extends AbstractMBExpressionTest {
         return MBZoom.class;
     }
 
-    /**
-     * Verify that the "zoom" MBTypes expression can be parsed correctly.
-     */
+    /** Verify that the "zoom" MBTypes expression can be parsed correctly. */
     @Test
     public void testParseLiteralExpression() {
         EnvFunction.setGlobalValue("wms_scale_denominator", "2132.729584");

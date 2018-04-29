@@ -19,48 +19,43 @@ package org.geotools.graph.io;
 import org.geotools.graph.structure.Graph;
 
 /**
- * Reads and writes features to and from some permanent form. 
- *  
+ * Reads and writes features to and from some permanent form.
+ *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- *
- *
- *
  * @source $URL$
  */
 public interface GraphReaderWriter {
-  
-  /**
-   * Sets a property for the reader/writer.
-   * 
-   * @param name Name of the property.
-   * @param obj Value of the property.
-   */
-  public void setProperty(String name, Object obj);
-  
-  /**
-   * Returns a property for the reader/writer. This method will return null
-   * if the property has not been set with a call to setProperty(String,Object).
-   * 
-   * @param name Name of the property.
-   * @return Value of the property or null if the property is undefined.
-   */
-  public Object getProperty(String name);
-  
-  /**
-   * Creates a Graph from some permanent representation.
-   * 
-   * @return The represented graph.
-   * 
-   * @throws Exception
-   */
-  public Graph read() throws Exception;
-  
-  /**
-   * Writes the graph to a permanent representation.
-   * 
-   * @param g The graph to be 
-   * @throws Exception
-   */
-  public void write(Graph g) throws Exception; 
 
+    /**
+     * Sets a property for the reader/writer.
+     *
+     * @param name Name of the property.
+     * @param obj Value of the property.
+     */
+    public void setProperty(String name, Object obj);
+
+    /**
+     * Returns a property for the reader/writer. This method will return null if the property has
+     * not been set with a call to setProperty(String,Object).
+     *
+     * @param name Name of the property.
+     * @return Value of the property or null if the property is undefined.
+     */
+    public Object getProperty(String name);
+
+    /**
+     * Creates a Graph from some permanent representation.
+     *
+     * @return The represented graph.
+     * @throws Exception
+     */
+    public Graph read() throws Exception;
+
+    /**
+     * Writes the graph to a permanent representation.
+     *
+     * @param g The graph to be
+     * @throws Exception
+     */
+    public void write(Graph g) throws Exception;
 }

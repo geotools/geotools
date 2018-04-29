@@ -16,29 +16,26 @@
  */
 package org.geotools.coverage.grid;
 
-import java.io.IOException;
-import java.net.InetAddress;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.geotools.referencing.crs.DefaultGeographicCRS;
-
-import org.junit.*;
 import static org.junit.Assert.*;
 
+import java.io.IOException;
+import java.net.InetAddress;
+import org.geotools.referencing.crs.DefaultGeographicCRS;
+import org.junit.*;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Tests the {@link GridCoverage2D} implementation.
- *
- *
  *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
 public final class GridCoverageTest extends GridCoverageTestBase {
-    
+
     /** Used to avoid errors if building on a system where hostname is not defined */
     private boolean hostnameDefined;
-    
+
     @Before
     public void setup() {
         try {
@@ -49,15 +46,15 @@ public final class GridCoverageTest extends GridCoverageTestBase {
         }
     }
 
-    /**
-     * Tests a grid coverage filled with random values.
-     */
+    /** Tests a grid coverage filled with random values. */
     @Test
     public void testRandomCoverage() {
         final CoordinateReferenceSystem crs = DefaultGeographicCRS.WGS84;
         final GridCoverage2D coverage = getRandomCoverage(crs);
         assertRasterEquals(coverage, coverage); // Actually a test of assertEqualRasters(...).
-        assertSame(coverage.getRenderedImage(), coverage.getRenderableImage(0,1).createDefaultRendering());
+        assertSame(
+                coverage.getRenderedImage(),
+                coverage.getRenderableImage(0, 1).createDefaultRendering());
     }
 
     /**
@@ -76,5 +73,4 @@ public final class GridCoverageTest extends GridCoverageTestBase {
             assertRasterEquals(coverage, serial);
         }
     }
-
 }

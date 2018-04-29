@@ -17,15 +17,14 @@
 package org.geotools.data.ogr;
 
 import java.io.IOException;
-
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Encapsulates calls to the OGR library.
+ *
  * <p>
- * </p>
- * 
+ *
  * @author Justin Deoliveira, OpenGeo
  */
 public interface OGR {
@@ -45,7 +44,7 @@ public interface OGR {
 
     /**
      * Checks the ogr error status code and throws java exceptions accordingly.
-     * 
+     *
      * @param code The ogr error code.
      * @throws IOException
      */
@@ -53,9 +52,8 @@ public interface OGR {
 
     String GetLastErrorMsg();
 
-
     //
-    //Driver
+    // Driver
     //
     String DriverGetName(Object driver);
 
@@ -78,8 +76,8 @@ public interface OGR {
 
     void DataSourceRelease(Object dataSource);
 
-    Object DataSourceCreateLayer(Object dataSource, String name, Object spatialReference, 
-        long geomType, String[] opts);
+    Object DataSourceCreateLayer(
+            Object dataSource, String name, Object spatialReference, long geomType, String[] opts);
 
     Object DataSourceExecuteSQL(Object dataSource, String sql, Object spatialFilter);
 
@@ -129,7 +127,7 @@ public interface OGR {
     void LayerSetAttributeFilter(Object layer, String attFilter);
 
     int LayerSetIgnoredFields(Object layer, String[] fields);
-    
+
     void LayerResetReading(Object layer);
 
     Object LayerGetNextFeature(Object layer);
@@ -137,11 +135,11 @@ public interface OGR {
     boolean LayerDeleteFeature(Object layer, long fid);
 
     int LayerSetFeature(Object layer, Object feature);
-    
+
     int LayerCreateFeature(Object layer, Object feature);
-    
+
     String LayerGetFIDColumnName(Object layer);
-    
+
     //
     // Field
     //
@@ -156,7 +154,7 @@ public interface OGR {
     void FieldSetJustifyRight(Object field);
 
     void FieldSetPrecision(Object field, int precision);
-    
+
     boolean FieldIsIntegerType(long type);
 
     boolean FieldIsRealType(long type);
@@ -172,7 +170,7 @@ public interface OGR {
     boolean FieldIsIntegerListType(long type);
 
     boolean FieldIsRealListType(long type);
-    
+
     Object CreateStringField(String name);
 
     Object CreateIntegerField(String name);
@@ -207,8 +205,16 @@ public interface OGR {
 
     void FeatureSetFieldBinary(Object feature, int field, int length, byte[] value);
 
-    void FeatureSetFieldDateTime(Object feature, int field, int year, int month,
-            int day, int hour, int minute, int second, int tz);
+    void FeatureSetFieldDateTime(
+            Object feature,
+            int field,
+            int year,
+            int month,
+            int day,
+            int hour,
+            int minute,
+            int second,
+            int tz);
 
     void FeatureSetFieldString(Object feature, int field, String str);
 
@@ -218,8 +224,16 @@ public interface OGR {
 
     double FeatureGetFieldAsDouble(Object feature, int i);
 
-    void FeatureGetFieldAsDateTime(Object feature, int i, int[] year, int[] month, int[] day, 
-        int[] hour, int[] minute, int[] second, int[] tzFlag);
+    void FeatureGetFieldAsDateTime(
+            Object feature,
+            int i,
+            int[] year,
+            int[] month,
+            int[] day,
+            int[] hour,
+            int[] minute,
+            int[] second,
+            int[] tzFlag);
 
     void FeatureDestroy(Object feature);
 

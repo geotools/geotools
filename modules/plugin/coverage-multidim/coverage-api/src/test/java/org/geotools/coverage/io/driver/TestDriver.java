@@ -24,7 +24,6 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Map;
 import java.util.logging.Logger;
-
 import org.geotools.coverage.io.CoverageAccess;
 import org.geotools.coverage.io.CoverageAccess.AccessType;
 import org.geotools.coverage.io.CoverageReadRequest;
@@ -45,24 +44,23 @@ import org.opengis.feature.type.Name;
 import org.opengis.util.ProgressListener;
 
 /**
- * 
  * @author Simone Giannecchini, GeoSolutions
  * @source $URL$
- * 
- *         A simple TestDriver supporting only connections to a single TEST_URL resource. No support on delete and create,
+ *     <p>A simple TestDriver supporting only connections to a single TEST_URL resource. No support
+ *     on delete and create,
  */
 public class TestDriver extends DefaultFileDriver implements Driver {
 
     public static final String TEST_URL = "file:/" + TestCoverageSourceDescriptor.TEST_COVERAGE;
 
-    public  static final String TEST_DRIVER = "test driver";
+    public static final String TEST_DRIVER = "test driver";
 
     private static TestDriver testDriver = new TestDriver();
 
     private static Map<String, Parameter<?>> emptyMap = Collections.emptyMap();
 
-    private final static Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger(TestDriver.class.toString());
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(TestDriver.class.toString());
 
     private static final String EXTENSION = ".EXT";
 
@@ -72,17 +70,25 @@ public class TestDriver extends DefaultFileDriver implements Driver {
     }
 
     public TestDriver() {
-        super(TEST_DRIVER, TEST_DRIVER, TEST_DRIVER, new Hints(), Collections
-                .singletonList(EXTENSION), EnumSet.of(DriverCapabilities.CONNECT,
-                DriverCapabilities.CREATE, DriverCapabilities.DELETE));
+        super(
+                TEST_DRIVER,
+                TEST_DRIVER,
+                TEST_DRIVER,
+                new Hints(),
+                Collections.singletonList(EXTENSION),
+                EnumSet.of(
+                        DriverCapabilities.CONNECT,
+                        DriverCapabilities.CREATE,
+                        DriverCapabilities.DELETE));
     }
 
     @Override
     protected boolean canConnect(Map<String, Serializable> params) {
         return params != null
                 && params.containsKey(DefaultFileDriver.URL.key)
-                && ((URL) params.get(DefaultFileDriver.URL.key)).getPath().contains(
-                        TestCoverageSourceDescriptor.TEST_COVERAGE);
+                && ((URL) params.get(DefaultFileDriver.URL.key))
+                        .getPath()
+                        .contains(TestCoverageSourceDescriptor.TEST_COVERAGE);
     }
 
     @Override
@@ -96,20 +102,23 @@ public class TestDriver extends DefaultFileDriver implements Driver {
     }
 
     @Override
-    protected CoverageAccess connect(Map<String, Serializable> params, Hints hints,
-            ProgressListener listener) throws IOException {
+    protected CoverageAccess connect(
+            Map<String, Serializable> params, Hints hints, ProgressListener listener)
+            throws IOException {
         return new TestCoverageAccess(this, EnumSet.of(AccessType.READ_ONLY), emptyMap, params);
     }
 
     @Override
-    protected CoverageAccess create(Map<String, Serializable> params, Hints hints,
-            ProgressListener listener) throws IOException {
+    protected CoverageAccess create(
+            Map<String, Serializable> params, Hints hints, ProgressListener listener)
+            throws IOException {
         return new TestCoverageAccess(this, EnumSet.of(AccessType.READ_WRITE), emptyMap, params);
     }
 
     @Override
-    protected CoverageAccess delete(Map<String, Serializable> params, Hints hints,
-            ProgressListener listener) throws IOException {
+    protected CoverageAccess delete(
+            Map<String, Serializable> params, Hints hints, ProgressListener listener)
+            throws IOException {
         // TODO Auto-generated method stub
         return super.delete(params, hints, listener);
     }
@@ -118,7 +127,6 @@ public class TestDriver extends DefaultFileDriver implements Driver {
 
         protected TestCoverageSource(Name name, CoverageSourceDescriptor descriptor) {
             super(name, descriptor);
-
         }
 
         @Override
@@ -126,20 +134,27 @@ public class TestDriver extends DefaultFileDriver implements Driver {
                 throws IOException {
             return null;
         }
-
     }
 
     static class TestCoverageAccess extends DefaultFileCoverageAccess implements CoverageAccess {
 
         @Override
-        public CoverageSource access(Name name, Map<String, Serializable> params,
-                AccessType accessType, Hints hints, ProgressListener listener) throws IOException {
-            return new TestCoverageSource(name, new TestCoverageSourceDescriptor(TestCoverageSourceDescriptor.TEST_COVERAGE));
+        public CoverageSource access(
+                Name name,
+                Map<String, Serializable> params,
+                AccessType accessType,
+                Hints hints,
+                ProgressListener listener)
+                throws IOException {
+            return new TestCoverageSource(
+                    name,
+                    new TestCoverageSourceDescriptor(TestCoverageSourceDescriptor.TEST_COVERAGE));
         }
 
         @Override
-        public boolean canCreate(Name name, Map<String, Serializable> params, Hints hints,
-                ProgressListener listener) throws IOException {
+        public boolean canCreate(
+                Name name, Map<String, Serializable> params, Hints hints, ProgressListener listener)
+                throws IOException {
             return super.canCreate(name, params, hints, listener);
         }
 
@@ -150,8 +165,9 @@ public class TestDriver extends DefaultFileDriver implements Driver {
         }
 
         @Override
-        public CoverageStore create(Name name, Map<String, Serializable> params, Hints hints,
-                ProgressListener listener) throws IOException {
+        public CoverageStore create(
+                Name name, Map<String, Serializable> params, Hints hints, ProgressListener listener)
+                throws IOException {
             return super.create(name, params, hints, listener);
         }
 
@@ -161,14 +177,15 @@ public class TestDriver extends DefaultFileDriver implements Driver {
             throw new UnsupportedOperationException();
         }
 
-        public TestCoverageAccess(Driver driver, EnumSet<AccessType> allowedAccessTypes,
+        public TestCoverageAccess(
+                Driver driver,
+                EnumSet<AccessType> allowedAccessTypes,
                 Map<String, Parameter<?>> accessParams,
-                Map<String, Serializable> connectionParameters) throws DataSourceException {
+                Map<String, Serializable> connectionParameters)
+                throws DataSourceException {
             super(driver, allowedAccessTypes, accessParams, null, connectionParameters);
             names = new ArrayList<Name>();
             names.add(new NameImpl(TestCoverageSourceDescriptor.TEST_COVERAGE));
         }
-
     }
-
 }

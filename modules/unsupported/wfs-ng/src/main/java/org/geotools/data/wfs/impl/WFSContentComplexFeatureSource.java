@@ -23,9 +23,7 @@ import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.xml.namespace.QName;
-
 import org.geotools.data.DataAccess;
 import org.geotools.data.FeatureListener;
 import org.geotools.data.FeatureSource;
@@ -44,65 +42,48 @@ import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
- * Combines the WFSClient and DataAccess objects and exposes methods to access the features by using the XmlComplexFeatureParser.
- * 
+ * Combines the WFSClient and DataAccess objects and exposes methods to access the features by using
+ * the XmlComplexFeatureParser.
  */
 public class WFSContentComplexFeatureSource implements FeatureSource<FeatureType, Feature> {
-    /**
-     * The name of the feature type of the source.
-     */
+    /** The name of the feature type of the source. */
     private Name typeName;
 
-    /**
-     * The wfs client object.
-     */
+    /** The wfs client object. */
     private WFSClient client;
 
-    /**
-     * The data access object.
-     */
+    /** The data access object. */
     private WFSContentDataAccess dataAccess;
 
     /**
      * Initialises a new instance of the class WFSContentComplexFeatureSource.
-     * 
-	 * @param typeName
-	 * 		The name of the feature you want to retrieve.
-	 * @param client
-	 * 		The WFSClient responsible for making the WFS requests.
-	 * @param dataAccess
-	 * 		The data access object.
+     *
+     * @param typeName The name of the feature you want to retrieve.
+     * @param client The WFSClient responsible for making the WFS requests.
+     * @param dataAccess The data access object.
      */
-    public WFSContentComplexFeatureSource(Name typeName, WFSClient client,
-            WFSContentDataAccess dataAccess) {
+    public WFSContentComplexFeatureSource(
+            Name typeName, WFSClient client, WFSContentDataAccess dataAccess) {
         this.typeName = typeName;
         this.client = client;
         this.dataAccess = dataAccess;
     }
 
-    /**
-	 * Get features based on the specified filter.
-	 */
-	@Override
-	public FeatureCollection<FeatureType, Feature> getFeatures(Filter filter)
-			throws IOException {
-		return getFeatures( new Query(this.typeName.toString(), filter ) );
-	}
+    /** Get features based on the specified filter. */
+    @Override
+    public FeatureCollection<FeatureType, Feature> getFeatures(Filter filter) throws IOException {
+        return getFeatures(new Query(this.typeName.toString(), filter));
+    }
 
-    /**
-     * Get features using the default Query.ALL.
-     */
+    /** Get features using the default Query.ALL. */
     @Override
     public FeatureCollection<FeatureType, Feature> getFeatures() throws IOException {
         return getFeatures(Query.ALL);
     }
 
-    /**
-     * Get features based on the query specified.
-     */
+    /** Get features based on the query specified. */
     @Override
-	public FeatureCollection<FeatureType, Feature> getFeatures(Query query)
-			throws IOException {
+    public FeatureCollection<FeatureType, Feature> getFeatures(Query query) throws IOException {
 
         GetFeatureRequest request = client.createGetFeatureRequest();
         FeatureType schema = dataAccess.getSchema(typeName);
@@ -121,7 +102,7 @@ public class WFSContentComplexFeatureSource implements FeatureSource<FeatureType
         }
 
         request.setSrsName(srsName);
-        
+
         return new WFSContentComplexFeatureCollection(request, schema, name);
     }
 
@@ -134,6 +115,7 @@ public class WFSContentComplexFeatureSource implements FeatureSource<FeatureType
     public ResourceInfo getInfo() {
         return new ResourceInfo() {
             final Set<String> words = new HashSet<String>();
+
             {
                 words.add("features");
                 words.add(WFSContentComplexFeatureSource.this.getName().getURI());
@@ -148,7 +130,8 @@ public class WFSContentComplexFeatureSource implements FeatureSource<FeatureType
             }
 
             public CoordinateReferenceSystem getCRS() {
-                return WFSContentComplexFeatureSource.this.getSchema()
+                return WFSContentComplexFeatureSource.this
+                        .getSchema()
                         .getCoordinateReferenceSystem();
             }
 
@@ -179,7 +162,6 @@ public class WFSContentComplexFeatureSource implements FeatureSource<FeatureType
                 Name name = WFSContentComplexFeatureSource.this.getSchema().getName();
                 return name.getLocalPart();
             }
-
         };
     }
 
@@ -233,5 +215,4 @@ public class WFSContentComplexFeatureSource implements FeatureSource<FeatureType
     public Set<Key> getSupportedHints() {
         return Collections.emptySet();
     }
-
 }

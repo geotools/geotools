@@ -20,21 +20,19 @@ import org.geotools.jdbc.JDBCTypeNamesTestSetup;
 
 public class PostgisTypeNamesTestSetup extends JDBCTypeNamesTestSetup {
 
-	protected PostgisTypeNamesTestSetup() {
-		super(new PostGISTestSetup());
-	}
+    protected PostgisTypeNamesTestSetup() {
+        super(new PostGISTestSetup());
+    }
 
-	@Override
-	protected void createTypes() throws Exception {
-		run("CREATE TABLE \"ftntable\" ("
-				+ "\"id\" INT, \"name\" VARCHAR, \"geom\" GEOMETRY)");
-		run("CREATE VIEW \"ftnview\" AS SELECT \"id\", \"geom\" FROM \"ftntable\"");
-	}
+    @Override
+    protected void createTypes() throws Exception {
+        run("CREATE TABLE \"ftntable\" (" + "\"id\" INT, \"name\" VARCHAR, \"geom\" GEOMETRY)");
+        run("CREATE VIEW \"ftnview\" AS SELECT \"id\", \"geom\" FROM \"ftntable\"");
+    }
 
-	@Override
-	protected void dropTypes() throws Exception {
-		runSafe("DROP VIEW \"ftnview\"");
-		runSafe("DROP TABLE \"ftntable\"");
-	}
-
+    @Override
+    protected void dropTypes() throws Exception {
+        runSafe("DROP VIEW \"ftnview\"");
+        runSafe("DROP TABLE \"ftntable\"");
+    }
 }

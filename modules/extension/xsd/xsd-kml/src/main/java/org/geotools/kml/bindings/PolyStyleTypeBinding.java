@@ -26,12 +26,12 @@ import org.geotools.xml.Binding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 
-
 /**
  * Binding object for the type http://earth.google.com/kml/2.1:PolyStyleType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;complexType final="#all" name="PolyStyleType"&gt;
  *      &lt;complexContent&gt;
@@ -46,12 +46,8 @@ import org.geotools.xml.Node;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class PolyStyleTypeBinding extends AbstractComplexBinding {
@@ -61,14 +57,13 @@ public class PolyStyleTypeBinding extends AbstractComplexBinding {
         this.sb = sb;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return KML.PolyStyleType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -83,13 +78,13 @@ public class PolyStyleTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Color color = (Color) value;
         PolygonSymbolizer poly = sb.createPolygonSymbolizer();
 

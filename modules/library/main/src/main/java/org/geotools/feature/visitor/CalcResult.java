@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -16,72 +16,59 @@
  */
 package org.geotools.feature.visitor;
 
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.Point;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Point;
-
-
 /**
- * Encapsulates the results from a FeatureCalc, and includes methods for
- * obtaining and merging results.
+ * Encapsulates the results from a FeatureCalc, and includes methods for obtaining and merging
+ * results.
  *
  * @author Cory Horner, Refractions
- *
  * @see FeatureCalc
  * @since 2.2.M2
- *
- *
  * @source $URL$
  */
 public interface CalcResult {
-	/**
-	 * The result obtained when a FeatureCalc found no features to visit.
-	 * It lets itself merge with any other result by just returning the other result
-	 * as the output of the merge
-	 */
-	public static final CalcResult NULL_RESULT = new AbstractCalcResult() {
-		/**
-		 * Always compatible
-		 */
-		public boolean isCompatible(CalcResult targetResults) {
-			return true;
-		};
-		
-		/**
-		 * Just returns the other result
-		 */
-		public CalcResult merge(CalcResult resultsToAdd) {
-			return resultsToAdd;
-		};
-	};
-	
     /**
-     * Returns true if the target results is a compatible type with the current
-     * results, with compatible meaning that the two results may be merged.
+     * The result obtained when a FeatureCalc found no features to visit. It lets itself merge with
+     * any other result by just returning the other result as the output of the merge
+     */
+    public static final CalcResult NULL_RESULT =
+            new AbstractCalcResult() {
+                /** Always compatible */
+                public boolean isCompatible(CalcResult targetResults) {
+                    return true;
+                };
+
+                /** Just returns the other result */
+                public CalcResult merge(CalcResult resultsToAdd) {
+                    return resultsToAdd;
+                };
+            };
+
+    /**
+     * Returns true if the target results is a compatible type with the current results, with
+     * compatible meaning that the two results may be merged.
      *
      * @param targetResults the second CalcResult Object
-     *
      * @return true if the targetResults can be merged with the current results
      */
     public boolean isCompatible(CalcResult targetResults);
 
     /**
-     * Returns the merged results of two CalcResult. The way in which the
-     * results are merged is dependent on the type of the results added. A new
-     * instance is created containing the merged results.
-     * 
-     * <p>
-     * For example: merging two min functions would return the smaller of the
-     * two values; merging a count and a sum would return an average.
-     * </p>
+     * Returns the merged results of two CalcResult. The way in which the results are merged is
+     * dependent on the type of the results added. A new instance is created containing the merged
+     * results.
+     *
+     * <p>For example: merging two min functions would return the smaller of the two values; merging
+     * a count and a sum would return an average.
      *
      * @param resultsToAdd
-     *
      * @return the merged results
      */
     public CalcResult merge(CalcResult resultsToAdd);
@@ -95,9 +82,9 @@ public interface CalcResult {
 
     /**
      * Access getValue as an int
-     * 
+     *
      * @return the calculation result as a int (or 0 if not applicable)
-     * @throws IOException 
+     * @throws IOException
      */
     public int toInt();
 

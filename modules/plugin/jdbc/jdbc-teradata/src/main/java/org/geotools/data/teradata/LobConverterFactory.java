@@ -20,16 +20,11 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.sql.Blob;
 import java.sql.Clob;
-
 import org.geotools.factory.Hints;
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class LobConverterFactory implements ConverterFactory {
 
     public Converter createConverter(Class<?> source, Class<?> target, Hints hints) {

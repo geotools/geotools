@@ -25,5 +25,4 @@ public class OracleJoinOnlineTest extends JDBCJoinOnlineTest {
     protected JDBCJoinTestSetup createTestSetup() {
         return new OracleJoinTestSetup();
     }
-
 }

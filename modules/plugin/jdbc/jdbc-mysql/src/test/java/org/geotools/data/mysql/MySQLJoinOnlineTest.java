@@ -25,5 +25,4 @@ public class MySQLJoinOnlineTest extends JDBCJoinOnlineTest {
     protected JDBCJoinTestSetup createTestSetup() {
         return new MySQLJoinTestSetup();
     }
-
 }

@@ -17,50 +17,44 @@
 
 package org.geotools.grid;
 
+import com.vividsolutions.jts.geom.Envelope;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
-
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 
-import com.vividsolutions.jts.geom.Envelope;
-
 /**
  * The base class for builders that generate polygonal grid elements.
- * 
+ *
  * @see org.geotools.grid.hexagon.HexagonGridBuilder
  * @see org.geotools.grid.oblong.OblongGridBuilder
- *
  * @author mbedward
  * @since 8.0
- *
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public abstract class PolygonBuilder {
 
     private static final Logger LOGGER = Logger.getLogger("org.geotools.grid");
-    
+
     protected final ReferencedEnvelope gridBounds;
 
     public PolygonBuilder(ReferencedEnvelope gridBounds) {
         this.gridBounds = gridBounds;
     }
 
-    public boolean buildGrid(GridFeatureBuilder gridFeatureBuilder,
-            double vertexSpacing,
-            ListFeatureCollection fc) {
+    public boolean buildGrid(
+            GridFeatureBuilder gridFeatureBuilder, double vertexSpacing, ListFeatureCollection fc) {
 
         boolean result = true;
 
         final boolean densify = isValidDenseVertexSpacing(vertexSpacing);
 
         final SimpleFeatureBuilder fb = new SimpleFeatureBuilder(gridFeatureBuilder.getType());
-        final String geomPropName = gridFeatureBuilder.getType().getGeometryDescriptor().getLocalName();
+        final String geomPropName =
+                gridFeatureBuilder.getType().getGeometryDescriptor().getLocalName();
 
         PolygonElement el0 = getFirstElement();
         PolygonElement el = el0;

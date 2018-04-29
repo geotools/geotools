@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -21,10 +21,8 @@ import static org.junit.Assert.assertEquals;
 import it.geosolutions.jaiext.classifier.LinearColorMap;
 import it.geosolutions.jaiext.classifier.LinearColorMap.LinearColorMapType;
 import it.geosolutions.jaiext.classifier.LinearColorMapElement;
-
 import java.util.HashMap;
 import java.util.Map;
-
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.styling.ColorMapEntry;
@@ -37,28 +35,27 @@ public class SLDColorMapBuilderTest {
     private SLDColorMapBuilder builder;
     private ColorMapEntry entry;
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-    Map<String, Object> envValues; 
-    
+    Map<String, Object> envValues;
+
     @Before
     public void setUp() {
         builder = new SLDColorMapBuilder();
         builder.setNumberColorMapEntries(1);
         builder.setLinearColorMapType(LinearColorMapType.TYPE_VALUES);
-        
+
         entry = new ColorMapEntryImpl();
         entry.setColor(ff.literal("#000000"));
         entry.setQuantity(ff.literal(1.0));
         entry.setOpacity(ff.literal(1.0));
         entry.setLabel("label");
-        
+
         envValues = new HashMap<String, Object>();
-        
     }
-    
+
     @Test
     public void testDynamicQuantity() {
         entry.setQuantity(ff.literal("${6.0+4.0}"));
-        
+
         builder.addColorMapEntry(entry);
         LinearColorMap colorMap = builder.buildLinearColorMap();
         LinearColorMapElement[] domainElements = colorMap.getDomainElements();
@@ -66,13 +63,13 @@ public class SLDColorMapBuilderTest {
         assertEquals(10.0, domainElements[0].getInputMinimum(), 0.0);
         assertEquals(10.0, domainElements[0].getInputMaximum(), 0.0);
     }
-    
+
     @Test
     public void testDynamicQuantityEnv() {
         EnvFunction.setLocalValue("quantity", 10.0);
         try {
             entry.setQuantity(ff.literal("${env('quantity')}"));
-            
+
             builder.addColorMapEntry(entry);
             LinearColorMap colorMap = builder.buildLinearColorMap();
             LinearColorMapElement[] domainElements = colorMap.getDomainElements();
@@ -83,11 +80,11 @@ public class SLDColorMapBuilderTest {
             EnvFunction.clearLocalValues();
         }
     }
-    
+
     @Test
     public void testDynamicColor() {
         entry.setColor(ff.literal("${strConcat('#FF','0000')}"));
-       
+
         builder.addColorMapEntry(entry);
         LinearColorMap colorMap = builder.buildLinearColorMap();
         LinearColorMapElement[] domainElements = colorMap.getDomainElements();
@@ -97,13 +94,13 @@ public class SLDColorMapBuilderTest {
         assertEquals(0, domainElements[0].getColors()[0].getGreen());
         assertEquals(0, domainElements[0].getColors()[0].getBlue());
     }
-    
+
     @Test
     public void testDynamicColorEnv() {
         EnvFunction.setLocalValue("color", "#FF0000");
         try {
             entry.setColor(ff.literal("${env('color')}"));
-           
+
             builder.addColorMapEntry(entry);
             LinearColorMap colorMap = builder.buildLinearColorMap();
             LinearColorMapElement[] domainElements = colorMap.getDomainElements();
@@ -116,13 +113,13 @@ public class SLDColorMapBuilderTest {
             EnvFunction.clearLocalValues();
         }
     }
-    
+
     @Test
     public void testDynamicOpacityEnv() {
         EnvFunction.setLocalValue("opacity", 0.5);
         try {
             entry.setOpacity(ff.literal("${env('opacity')}"));
-           
+
             builder.addColorMapEntry(entry);
             LinearColorMap colorMap = builder.buildLinearColorMap();
             LinearColorMapElement[] domainElements = colorMap.getDomainElements();
@@ -133,11 +130,11 @@ public class SLDColorMapBuilderTest {
             EnvFunction.clearLocalValues();
         }
     }
-    
+
     @Test
     public void testDynamicOpacity() {
         entry.setOpacity(ff.literal("${0.25*2}"));
-       
+
         builder.addColorMapEntry(entry);
         LinearColorMap colorMap = builder.buildLinearColorMap();
         LinearColorMapElement[] domainElements = colorMap.getDomainElements();

@@ -20,9 +20,8 @@ import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.net.URL;
-
-import org.geotools.data.wmts.model.WMTSLayer;
 import org.geotools.data.wmts.WebMapTileServer;
+import org.geotools.data.wmts.model.WMTSLayer;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -34,10 +33,7 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/**
- * @author ian
- *
- */
+/** @author ian */
 public class WMTSMapLayerTest extends OnlineTestCase {
 
     private URL serverURL;
@@ -63,7 +59,7 @@ public class WMTSMapLayerTest extends OnlineTestCase {
 
     /**
      * Test method for {@link org.geotools.map.WMTSMapLayer#getBounds()}.
-     * 
+     *
      * @throws FactoryException
      */
     @Test
@@ -80,7 +76,9 @@ public class WMTSMapLayerTest extends OnlineTestCase {
      * @throws FactoryException
      */
     private void checkEnv(ReferencedEnvelope env) throws FactoryException {
-        assertEquals("wrong CRS", "EPSG:3857",
+        assertEquals(
+                "wrong CRS",
+                "EPSG:3857",
                 CRS.lookupIdentifier(env.getCoordinateReferenceSystem(), true));
         assertEquals(env.getMinimum(0), -1.3885038382923e7, 0.001);
         assertEquals(env.getMinimum(1), 2870337.130793, 0.001);
@@ -89,23 +87,24 @@ public class WMTSMapLayerTest extends OnlineTestCase {
     }
 
     /**
-     * Test method for
-     * {@link org.geotools.map.WMTSMapLayer#getCoordinateReferenceSystem()}.
-     * 
+     * Test method for {@link org.geotools.map.WMTSMapLayer#getCoordinateReferenceSystem()}.
+     *
      * @throws FactoryException
      */
     @Test
     public void testGetCoordinateReferenceSystem() throws FactoryException {
 
-        assertEquals("wrong CRS", "EPSG:3857",
+        assertEquals(
+                "wrong CRS",
+                "EPSG:3857",
                 CRS.lookupIdentifier(kvpMapLayer.getCoordinateReferenceSystem(), true));
-        assertEquals("wrong CRS", "EPSG:4326",
+        assertEquals(
+                "wrong CRS",
+                "EPSG:4326",
                 CRS.lookupIdentifier(restMapLayer.getCoordinateReferenceSystem(), true));
     }
 
-    /**
-     * Test method for {@link org.geotools.map.WMTSMapLayer#getLastGetMap()}.
-     */
+    /** Test method for {@link org.geotools.map.WMTSMapLayer#getLastGetMap()}. */
     @Test
     public void testGetLastGetMap() {
         StreamingRenderer renderer = new StreamingRenderer();
@@ -115,16 +114,16 @@ public class WMTSMapLayerTest extends OnlineTestCase {
         BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
 
         Rectangle paintArea = new Rectangle(0, 0, 100, 100);
-        AffineTransform transform = RendererUtilities
-                .worldToScreenTransform(kvpMapLayer.getBounds(), paintArea);
+        AffineTransform transform =
+                RendererUtilities.worldToScreenTransform(kvpMapLayer.getBounds(), paintArea);
         renderer.paint(image.createGraphics(), paintArea, transform);
         assertNotNull(kvpMapLayer.getLastGetMap());
     }
 
     /**
-     * Test method for
-     * {@link org.geotools.map.WMTSMapLayer#isNativelySupported(org.opengis.referencing.crs.CoordinateReferenceSystem)}.
-     * 
+     * Test method for {@link
+     * org.geotools.map.WMTSMapLayer#isNativelySupported(org.opengis.referencing.crs.CoordinateReferenceSystem)}.
+     *
      * @throws FactoryException
      * @throws NoSuchAuthorityCodeException
      */

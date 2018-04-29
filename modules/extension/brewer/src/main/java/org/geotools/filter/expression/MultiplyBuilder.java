@@ -21,12 +21,7 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Multiply;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class MultiplyBuilder implements Builder<Multiply> {
 
     protected FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);

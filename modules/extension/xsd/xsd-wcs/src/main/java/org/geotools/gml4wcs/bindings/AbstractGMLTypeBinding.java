@@ -1,18 +1,16 @@
 package org.geotools.gml4wcs.bindings;
 
-
+import javax.xml.namespace.QName;
 import org.geotools.gml4wcs.GML;
 import org.geotools.xml.*;
-
-
-import javax.xml.namespace.QName;
 
 /**
  * Binding object for the type http://www.opengis.net/gml:AbstractGMLType.
  *
  * <p>
- *	<pre>
- *	 <code>
+ *
+ * <pre>
+ *  <code>
  *  &lt;complexType abstract="true" name="AbstractGMLType"&gt;
  *      &lt;annotation&gt;
  *          &lt;documentation&gt; The optional attribute "id" is omitted from this profile. &lt;/documentation&gt;
@@ -27,47 +25,42 @@ import javax.xml.namespace.QName;
  *              &lt;/annotation&gt;
  *          &lt;/element&gt;
  *      &lt;/sequence&gt;
- *  &lt;/complexType&gt; 
- *		
- *	  </code>
- *	 </pre>
- * </p>
+ *  &lt;/complexType&gt;
+ *
+ *   </code>
+ *  </pre>
  *
  * @generated
- *
- *
  * @source $URL$
  */
 public class AbstractGMLTypeBinding extends AbstractComplexBinding {
 
-	/**
-	 * @generated
-	 */
-	public QName getTarget() {
-		return GML.AbstractGMLType;
-	}
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 *	
-	 * @generated modifiable
-	 */	
-	public Class getType() {
-		return null;
-	}
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 *	
-	 * @generated modifiable
-	 */	
-	public Object parse(ElementInstance instance, Node node, Object value) 
-		throws Exception {
-		
-		//TODO: implement and remove call to super
-		return super.parse(instance,node,value);
-	}
+    /** @generated */
+    public QName getTarget() {
+        return GML.AbstractGMLType;
+    }
 
+    /**
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated modifiable
+     */
+    public Class getType() {
+        return null;
+    }
+
+    /**
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated modifiable
+     */
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
+
+        // TODO: implement and remove call to super
+        return super.parse(instance, node, value);
+    }
 }

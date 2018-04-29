@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -18,15 +18,13 @@ package org.geotools.styling;
 
 import org.opengis.filter.Filter;
 
-
 /**
- * A FeatureTypeConstraint identifies a specific feature type and supplies
- * fitlering.
+ * A FeatureTypeConstraint identifies a specific feature type and supplies fitlering.
  *
- * <p>
- * The details of this object are taken from the <a
- * href="https://portal.opengeospatial.org/files/?artifact_id=1188"> OGC
- * Styled-Layer Descriptor Report (OGC 02-070) version 1.0.0.</a>:
+ * <p>The details of this object are taken from the <a
+ * href="https://portal.opengeospatial.org/files/?artifact_id=1188">OGC Styled-Layer Descriptor
+ * Report (OGC 02-070) version 1.0.0.</a>:
+ *
  * <pre><code>
  * &lt;xsd:element name="FeatureTypeConstraint"&gt;
  *   &lt;xsd:annotation&gt;
@@ -44,13 +42,10 @@ import org.opengis.filter.Filter;
  *   &lt;/xsd:complexType&gt;
  * &lt;/xsd:element&gt;
  * </code></pre>
- * </p>
  *
- * <p></p>
+ * <p>
  *
  * @author James Macgill
- *
- *
  * @source $URL$
  */
 public interface FeatureTypeConstraint {

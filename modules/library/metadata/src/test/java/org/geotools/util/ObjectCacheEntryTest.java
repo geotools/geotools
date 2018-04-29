@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,17 +16,14 @@
  */
 package org.geotools.util;
 
-import org.junit.*;
 import static org.junit.Assert.*;
 
+import org.junit.*;
 
 /**
  * Simple deadlock tests for {@link ObjectCacheEntry}.
  *
  * @author Cory Horner (Refractions Research)
- *
- *
- *
  * @source $URL$
  */
 public final class ObjectCacheEntryTest {
@@ -37,8 +34,7 @@ public final class ObjectCacheEntryTest {
 
         Object[] values = null;
 
-        public EntryReaderThread() {
-        }
+        public EntryReaderThread() {}
 
         public void run() {
             try {
@@ -57,8 +53,7 @@ public final class ObjectCacheEntryTest {
 
         Object[] values = null;
 
-        public EntryWriterThread() {
-        }
+        public EntryWriterThread() {}
 
         public void run() {
             try {
@@ -78,27 +73,27 @@ public final class ObjectCacheEntryTest {
 
     @Test
     public void testWriteReadDeadlock() throws InterruptedException {
-        //lock the entry as if we were writing
+        // lock the entry as if we were writing
         entry = new DefaultObjectCache.ObjectCacheEntry();
         entry.writeLock();
 
-        //create another thread which starts reading
+        // create another thread which starts reading
         Runnable thread1 = new EntryReaderThread();
         Thread t1 = new Thread(thread1);
         t1.start();
         Thread.yield();
 
-        //write
+        // write
         entry.setValue(1);
 
-        //check that the read thread was blocked
+        // check that the read thread was blocked
         Object[] values = ((EntryReaderThread) thread1).getValue();
         assertArrayEquals(null, values);
 
-        //unlock
+        // unlock
         entry.writeUnLock();
 
-        //check that the read thread is unblocked
+        // check that the read thread is unblocked
         t1.join();
         values = ((EntryReaderThread) thread1).getValue();
         assertNotNull(values);
@@ -107,28 +102,28 @@ public final class ObjectCacheEntryTest {
 
     @Test
     public void testWriteWriteDeadlock() throws InterruptedException {
-        //lock the entry as if we were writing
+        // lock the entry as if we were writing
         entry = new DefaultObjectCache.ObjectCacheEntry();
         entry.writeLock();
 
-        //write the value 2
+        // write the value 2
         entry.setValue(2);
 
-        //create another thread which starts writing
+        // create another thread which starts writing
         Runnable thread1 = new EntryWriterThread();
         Thread t1 = new Thread(thread1);
         t1.start();
         Thread.yield();
 
-        //check that the write thread was blocked
+        // check that the write thread was blocked
         Object[] values = ((EntryWriterThread) thread1).getValue();
         assertNull(values);
         assertEquals(2, entry.getValue());
 
-        //unlock
+        // unlock
         entry.writeUnLock();
 
-        //check that the write thread is unblocked
+        // check that the write thread is unblocked
         t1.join();
         values = ((EntryWriterThread) thread1).getValue();
         assertNotNull(values);

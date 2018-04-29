@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2015, Boundless
  *
@@ -17,27 +17,25 @@
  */
 package org.geotools.data.mongodb;
 
+import static org.geotools.data.mongodb.MongoSchemaFileStore.*;
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import static org.geotools.data.mongodb.MongoSchemaFileStore.*;
 import org.geotools.feature.NameImpl;
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
 import org.junit.Ignore;
 import org.junit.Test;
 
-/**
- *
- * @author tkunicki@boundlessgeo.com
- */
-public class MongoSchemaFileStoreTest extends MongoSchemaStoreTest<MongoSchemaFileStore>{
-    
+/** @author tkunicki@boundlessgeo.com */
+public class MongoSchemaFileStoreTest extends MongoSchemaStoreTest<MongoSchemaFileStore> {
+
     Map<MongoSchemaFileStore, File> directories = new HashMap<MongoSchemaFileStore, File>();
-    
+
     @Override
     MongoSchemaFileStore createUniqueStore() throws IOException {
         File directory = createUniqueTempDirectory();
@@ -55,19 +53,22 @@ public class MongoSchemaFileStoreTest extends MongoSchemaStoreTest<MongoSchemaFi
             }
         }
     }
-    
+
     static File createUniqueTempDirectory() {
         return new File(
-                new File(System.getProperty("java.io.tmpdir")),
-                UUID.randomUUID().toString());
+                new File(System.getProperty("java.io.tmpdir")), UUID.randomUUID().toString());
     }
-    
+
     private static void resursiveDelete(File f) {
         File[] l = f.listFiles();
-        if (l != null) { for (File c : l) { resursiveDelete(c); } }
+        if (l != null) {
+            for (File c : l) {
+                resursiveDelete(c);
+            }
+        }
         f.delete();
     }
-    
+
     @Test
     public void test_Constructor_String() throws URISyntaxException, IOException {
         File test = createUniqueTempDirectory();
@@ -80,7 +81,7 @@ public class MongoSchemaFileStoreTest extends MongoSchemaStoreTest<MongoSchemaFi
             test.delete();
         }
     }
-    
+
     @Test
     public void test_Constructor_URI() throws IOException {
         File test = createUniqueTempDirectory();
@@ -93,7 +94,7 @@ public class MongoSchemaFileStoreTest extends MongoSchemaStoreTest<MongoSchemaFi
             test.delete();
         }
     }
-    
+
     @Test
     public void test_Constructor_File() throws IOException {
         File test = createUniqueTempDirectory();
@@ -109,11 +110,11 @@ public class MongoSchemaFileStoreTest extends MongoSchemaStoreTest<MongoSchemaFi
 
     @Test
     public void testTypeName() {
-        assertThat(typeName(new File("testMe.json")),
-                is(equalTo("testMe")));
-        assertThat(typeName(new File("c:/testMe.json")),
-                is(equalTo("testMe")));
-        assertThat(typeName(new File("/opt/tomcat/webapps/data/mongodb-schemas/teststore/testMe.json")),
+        assertThat(typeName(new File("testMe.json")), is(equalTo("testMe")));
+        assertThat(typeName(new File("c:/testMe.json")), is(equalTo("testMe")));
+        assertThat(
+                typeName(
+                        new File("/opt/tomcat/webapps/data/mongodb-schemas/teststore/testMe.json")),
                 is(equalTo("testMe")));
     }
 
@@ -136,13 +137,13 @@ public class MongoSchemaFileStoreTest extends MongoSchemaStoreTest<MongoSchemaFi
         // method takes name but ignores URI and separator
         assertThat(store.schemaFile("test"), is(equalTo(expected)));
     }
-    
+
     @Test
     public void test_validateDirectory_Exists() throws IOException {
         File tempDirectory = new File(System.getProperty("java.io.tmpdir"));
         MongoSchemaFileStore.validateDirectory(tempDirectory);
     }
-    
+
     @Test
     public void test_validateDirectory_DoesNotExistAndNeedsCreation() throws IOException {
         File needsToBeCreated = createUniqueTempDirectory();
@@ -152,17 +153,17 @@ public class MongoSchemaFileStoreTest extends MongoSchemaStoreTest<MongoSchemaFi
             assertThat(needsToBeCreated.isDirectory(), is(equalTo(true)));
             assertThat(needsToBeCreated.exists(), is(equalTo(true)));
         } finally {
-           needsToBeCreated.delete();
+            needsToBeCreated.delete();
         }
     }
-    
+
     @Ignore // not platform independent
     @Test(expected = IOException.class)
     public void test_validateDirectory_CanNotWrite() throws IOException {
         File root = new File("/");
         MongoSchemaFileStore.validateDirectory(root);
     }
-    
+
     @Ignore // not platform independent
     @Test(expected = IOException.class)
     public void test_validateDirectory_CanNotCreate() throws IOException {
@@ -173,14 +174,14 @@ public class MongoSchemaFileStoreTest extends MongoSchemaStoreTest<MongoSchemaFi
             canNotCreate.delete();
         }
     }
-    
+
     @Test(expected = IOException.class)
     public void test_validateDirectory_ExistsAndIsNotADirectory() throws IOException {
         File fileThatExists = File.createTempFile(getClass().getSimpleName(), "test");
         try {
             MongoSchemaFileStore.validateDirectory(fileThatExists);
         } finally {
-           fileThatExists.delete();
+            fileThatExists.delete();
         }
     }
 }

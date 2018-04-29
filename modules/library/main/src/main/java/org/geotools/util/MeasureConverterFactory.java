@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2014 - 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -21,81 +21,76 @@ import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import javax.measure.Unit;
-
 import org.geotools.factory.Hints;
 import org.geotools.measure.Measure;
-import org.geotools.measure.Units;
-
-import si.uom.NonSI;
 import tec.uom.se.format.SimpleUnitFormat;
-import tec.uom.se.internal.format.UnitFormatParser;
 
 /**
  * ConverterFactory which converts between the {@link Measure} and String.
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  * @since 12.0
  */
 public class MeasureConverterFactory implements ConverterFactory {
 
-    static final Pattern MEASURE_PATTERN = Pattern
-            .compile("\\s*([-\\+]?[0-9]*\\.?[0-9]*(?:[eE][-\\+]?[0-9]+)?)(.*)?");
-    
-    public static final Converter CONVERTER = new Converter() {
-        @Override
-        public <T> T convert(Object source, Class<T> target) throws Exception {
-            if (source == null) {
-                return null;
-            } else if (String.class.equals(target)) {
-                Measure m = (Measure) source;
-                DecimalFormat format = (DecimalFormat) NumberFormat
-                        .getNumberInstance(Locale.ENGLISH);
-                if (m.doubleValue() < 1e-5) {
-                    format.applyPattern("0.###E0");
-                } else {
-                    format.applyPattern("#0.##");
-                }
-                String v = format.format(m.doubleValue());
-                if (m.getUnit() != null) {
-                    return (T) (v + m.getUnit());
-                } else {
-                    return (T) v;
-                }
-            }
+    static final Pattern MEASURE_PATTERN =
+            Pattern.compile("\\s*([-\\+]?[0-9]*\\.?[0-9]*(?:[eE][-\\+]?[0-9]+)?)(.*)?");
 
-            if (!Measure.class.isAssignableFrom(target) || source == null) {
-                return null;
-            }
+    public static final Converter CONVERTER =
+            new Converter() {
+                @Override
+                public <T> T convert(Object source, Class<T> target) throws Exception {
+                    if (source == null) {
+                        return null;
+                    } else if (String.class.equals(target)) {
+                        Measure m = (Measure) source;
+                        DecimalFormat format =
+                                (DecimalFormat) NumberFormat.getNumberInstance(Locale.ENGLISH);
+                        if (m.doubleValue() < 1e-5) {
+                            format.applyPattern("0.###E0");
+                        } else {
+                            format.applyPattern("#0.##");
+                        }
+                        String v = format.format(m.doubleValue());
+                        if (m.getUnit() != null) {
+                            return (T) (v + m.getUnit());
+                        } else {
+                            return (T) v;
+                        }
+                    }
 
-            String str = (String) source;
-            if (str.trim().isEmpty()) {
-                return null;
-            }
-            Matcher matcher = MEASURE_PATTERN.matcher(str);
-            if (matcher.matches()) {
-                double value = Double.parseDouble(matcher.group(1));
-                Unit unit = null;
-                if (matcher.groupCount() == 2) {
-                    // this will throw an exception in case of failure
-                    String group = matcher.group(2).trim();
-                    if (!group.isEmpty()) {
-                        unit = SimpleUnitFormat.getInstance().parse(group);
+                    if (!Measure.class.isAssignableFrom(target) || source == null) {
+                        return null;
+                    }
+
+                    String str = (String) source;
+                    if (str.trim().isEmpty()) {
+                        return null;
+                    }
+                    Matcher matcher = MEASURE_PATTERN.matcher(str);
+                    if (matcher.matches()) {
+                        double value = Double.parseDouble(matcher.group(1));
+                        Unit unit = null;
+                        if (matcher.groupCount() == 2) {
+                            // this will throw an exception in case of failure
+                            String group = matcher.group(2).trim();
+                            if (!group.isEmpty()) {
+                                unit = SimpleUnitFormat.getInstance().parse(group);
+                            }
+                        }
+                        return (T) new Measure(value, unit);
+                    } else {
+                        throw new IllegalArgumentException("Invalid measure " + str);
                     }
                 }
-                return (T) new Measure(value, unit);
-            } else {
-                throw new IllegalArgumentException("Invalid measure " + str);
-            }
-
-        }
-    };
+            };
 
     public Converter createConverter(Class source, Class target, Hints hints) {
         if (CharSequence.class.isAssignableFrom(source) && Measure.class.isAssignableFrom(target)) {
             return CONVERTER;
-        } else if (String.class.isAssignableFrom(target) && Measure.class.isAssignableFrom(source)) {
+        } else if (String.class.isAssignableFrom(target)
+                && Measure.class.isAssignableFrom(source)) {
             return CONVERTER;
         }
 

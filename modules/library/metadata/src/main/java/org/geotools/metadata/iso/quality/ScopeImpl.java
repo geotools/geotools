@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -20,35 +20,26 @@
 package org.geotools.metadata.iso.quality;
 
 import java.util.Collection;
-
+import org.geotools.metadata.iso.MetadataEntity;
 import org.opengis.metadata.extent.Extent;
-import org.opengis.metadata.quality.Scope;
 import org.opengis.metadata.maintenance.ScopeCode;
 import org.opengis.metadata.maintenance.ScopeDescription;
-import org.geotools.metadata.iso.MetadataEntity;
-
+import org.opengis.metadata.quality.Scope;
 
 /**
  * Description of the data specified by the scope.
- *
- *
  *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane
- *
  * @since 2.1
  */
 public class ScopeImpl extends MetadataEntity implements Scope {
-    /**
-     * Serial number for interoperability with different versions.
-     */
+    /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -8021256328527422972L;
 
-    /**
-     * Hierarchical level of the data specified by the scope.
-     */
+    /** Hierarchical level of the data specified by the scope. */
     private ScopeCode level;
 
     /**
@@ -57,16 +48,11 @@ public class ScopeImpl extends MetadataEntity implements Scope {
      */
     private Extent extent;
 
-    /**
-     * Detailed description about the level of the data specified by the scope.
-     */
+    /** Detailed description about the level of the data specified by the scope. */
     private Collection<ScopeDescription> levelDescription;
 
-    /**
-     * Constructs an initially empty scope.
-     */
-    public ScopeImpl() {
-    }
+    /** Constructs an initially empty scope. */
+    public ScopeImpl() {}
 
     /**
      * Constructs a metadata entity initialized with the values from the specified metadata.
@@ -77,32 +63,26 @@ public class ScopeImpl extends MetadataEntity implements Scope {
         super(source);
     }
 
-    /**
-     * Creates a scope initialized to the given level.
-     */
+    /** Creates a scope initialized to the given level. */
     public ScopeImpl(final ScopeCode level) {
         setLevel(level);
     }
 
-    /**
-     * Hierarchical level of the data specified by the scope.
-     */
+    /** Hierarchical level of the data specified by the scope. */
     public ScopeCode getLevel() {
         return level;
     }
 
-    /**
-     * Set the hierarchical level of the data specified by the scope.
-     */
+    /** Set the hierarchical level of the data specified by the scope. */
     public synchronized void setLevel(final ScopeCode newValue) {
         checkWritePermission();
         level = newValue;
     }
 
     /**
-     * Returns detailed descriptions about the level of the data specified by the scope.
-     * Should be defined only if the {@linkplain #getLevel level} is not equal
-     * to {@link ScopeCode#DATASET DATASET} or {@link ScopeCode#SERIES SERIES}.
+     * Returns detailed descriptions about the level of the data specified by the scope. Should be
+     * defined only if the {@linkplain #getLevel level} is not equal to {@link ScopeCode#DATASET
+     * DATASET} or {@link ScopeCode#SERIES SERIES}.
      *
      * @since 2.4
      */
@@ -116,8 +96,7 @@ public class ScopeImpl extends MetadataEntity implements Scope {
      * @since 2.4
      */
     public synchronized void setLevelDescription(
-            final Collection<? extends ScopeDescription> newValues)
-    {
+            final Collection<? extends ScopeDescription> newValues) {
         levelDescription = copyCollection(newValues, levelDescription, ScopeDescription.class);
     }
 
@@ -130,8 +109,8 @@ public class ScopeImpl extends MetadataEntity implements Scope {
     }
 
     /**
-     * Set information about the spatial, vertical and temporal extent of the data specified
-     * by the scope.
+     * Set information about the spatial, vertical and temporal extent of the data specified by the
+     * scope.
      */
     public synchronized void setExtent(final Extent newValue) {
         checkWritePermission();

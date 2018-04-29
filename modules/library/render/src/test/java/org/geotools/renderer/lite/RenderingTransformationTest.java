@@ -27,7 +27,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import org.geotools.TestData;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
@@ -67,7 +66,7 @@ public class RenderingTransformationTest {
     @Before
     public void setup() {
         // System.setProperty("org.geotools.test.interactive", "true");
-        System.setProperty( GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER, "false" );
+        System.setProperty(GeoTools.FORCE_LONGITUDE_FIRST_AXIS_ORDER, "false");
         CRS.reset("all");
     }
 
@@ -88,17 +87,20 @@ public class RenderingTransformationTest {
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setMapContent(mc);
 
-        ReferencedEnvelope reWgs84 = new ReferencedEnvelope(-70, 70, -160, 160,
-                CRS.decode("EPSG:4326"));
+        ReferencedEnvelope reWgs84 =
+                new ReferencedEnvelope(-70, 70, -160, 160, CRS.decode("EPSG:4326"));
         ReferencedEnvelope re = reWgs84.transform(CRS.decode("EPSG:3857"), true);
 
-        BufferedImage image = RendererBaseTest.showRender("Lines with circle stroke", renderer,
-                TIME, re);
+        BufferedImage image =
+                RendererBaseTest.showRender("Lines with circle stroke", renderer, TIME, re);
         // if everything worked we are going to have a red dot in the middle of the map
         assertEquals(Color.RED, getPixelColor(image, image.getWidth() / 2, image.getHeight() / 2));
-        assertEquals(Color.WHITE, getPixelColor(image, image.getWidth() / 4, image.getHeight() / 2));
-        assertEquals(Color.WHITE, getPixelColor(image, image.getWidth() / 2, image.getHeight() / 4));
-        assertEquals(Color.WHITE, getPixelColor(image, image.getWidth() / 4, image.getHeight() / 4));
+        assertEquals(
+                Color.WHITE, getPixelColor(image, image.getWidth() / 4, image.getHeight() / 2));
+        assertEquals(
+                Color.WHITE, getPixelColor(image, image.getWidth() / 2, image.getHeight() / 4));
+        assertEquals(
+                Color.WHITE, getPixelColor(image, image.getWidth() / 4, image.getHeight() / 4));
     }
 
     @Test
@@ -114,16 +116,19 @@ public class RenderingTransformationTest {
         CRSAuthorityFactory factory = CRS.getAuthorityFactory(true);
         CoordinateReferenceSystem crs = factory.createCoordinateReferenceSystem("EPSG:4326");
 
-        ReferencedEnvelope reWgs84 = new ReferencedEnvelope(
-            9.848993475036622,
-            11.958867853088378,
-            40.74254816253662,
-            41.64941961090088,
-            crs);
+        ReferencedEnvelope reWgs84 =
+                new ReferencedEnvelope(
+                        9.848993475036622,
+                        11.958867853088378,
+                        40.74254816253662,
+                        41.64941961090088,
+                        crs);
 
-        BufferedImage image = RendererBaseTest.showRender("Transform BBOX", renderer,  4000, reWgs84);
-        //last pixel is white when doing a transformation and the rendering transform BBOX transforms are
-        //incorrect, it shouldn't be
+        BufferedImage image =
+                RendererBaseTest.showRender("Transform BBOX", renderer, 4000, reWgs84);
+        // last pixel is white when doing a transformation and the rendering transform BBOX
+        // transforms are
+        // incorrect, it shouldn't be
         assertNotEquals(Color.WHITE, getPixelColor(image, 299, 0));
         assertEquals(new Color(133, 130, 188), getPixelColor(image, 299, 0));
     }
@@ -140,38 +145,43 @@ public class RenderingTransformationTest {
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setMapContent(mc);
 
-        ReferencedEnvelope reWgs84 = new ReferencedEnvelope(-70, 70, -160, 160,
-                CRS.decode("EPSG:4326"));
+        ReferencedEnvelope reWgs84 =
+                new ReferencedEnvelope(-70, 70, -160, 160, CRS.decode("EPSG:4326"));
         ReferencedEnvelope re = reWgs84.transform(CRS.decode("EPSG:3857"), true);
 
-        BufferedImage image = RendererBaseTest.showRender("Lines with circle stroke", renderer,
-                TIME, re);
+        BufferedImage image =
+                RendererBaseTest.showRender("Lines with circle stroke", renderer, TIME, re);
         // if everything worked we are going to have a red dot in the middle of the map
         assertEquals(Color.RED, getPixelColor(image, image.getWidth() / 2, image.getHeight() / 2));
-        assertEquals(Color.WHITE, getPixelColor(image, image.getWidth() / 4, image.getHeight() / 2));
-        assertEquals(Color.WHITE, getPixelColor(image, image.getWidth() / 2, image.getHeight() / 4));
-        assertEquals(Color.WHITE, getPixelColor(image, image.getWidth() / 4, image.getHeight() / 4));
+        assertEquals(
+                Color.WHITE, getPixelColor(image, image.getWidth() / 4, image.getHeight() / 2));
+        assertEquals(
+                Color.WHITE, getPixelColor(image, image.getWidth() / 2, image.getHeight() / 4));
+        assertEquals(
+                Color.WHITE, getPixelColor(image, image.getWidth() / 4, image.getHeight() / 4));
     }
-    
+
     @Test
     public void testTransformNullCoverage() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "coverageCenter.sld");
 
-        GridCoverage2DReader reader = new AbstractGridCoverage2DReader() {
-            
-            @Override
-            public Format getFormat() {
-                return null;
-            }
-            
-            @Override
-            public GridCoverage2D read(GeneralParameterValue[] parameters)
-                    throws IllegalArgumentException, IOException {
-                // we return null on purpose, simulating a reader queried outside of its area, or 
-                // on a dimension value it does not have
-                return null;
-            }
-        };
+        GridCoverage2DReader reader =
+                new AbstractGridCoverage2DReader() {
+
+                    @Override
+                    public Format getFormat() {
+                        return null;
+                    }
+
+                    @Override
+                    public GridCoverage2D read(GeneralParameterValue[] parameters)
+                            throws IllegalArgumentException, IOException {
+                        // we return null on purpose, simulating a reader queried outside of its
+                        // area, or
+                        // on a dimension value it does not have
+                        return null;
+                    }
+                };
 
         MapContent mc = new MapContent();
         mc.addLayer(new GridReaderLayer(reader, style));
@@ -179,11 +189,10 @@ public class RenderingTransformationTest {
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setMapContent(mc);
 
-        ReferencedEnvelope re = new ReferencedEnvelope(-70, 70, -160, 160,
-                CRS.decode("EPSG:4326"));
+        ReferencedEnvelope re = new ReferencedEnvelope(-70, 70, -160, 160, CRS.decode("EPSG:4326"));
 
-        BufferedImage image = RendererBaseTest.showRender("Transformation with null input", renderer,
-                TIME, re);
+        BufferedImage image =
+                RendererBaseTest.showRender("Transformation with null input", renderer, TIME, re);
         // full white, no NPE
         double[] minimums = new ImageWorker(image).getMinimums();
         assertEquals(255, minimums[0], 0d);
@@ -202,11 +211,13 @@ public class RenderingTransformationTest {
         testTransformWithQuery(true);
     }
 
-    private void testTransformWithQuery(boolean invert) throws IOException, URISyntaxException,
-            CQLException, NoSuchAuthorityCodeException, FactoryException, Exception {
+    private void testTransformWithQuery(boolean invert)
+            throws IOException, URISyntaxException, CQLException, NoSuchAuthorityCodeException,
+                    FactoryException, Exception {
         // grab the style
-        Style style = RendererBaseTest.loadStyle(this, invert ? "attributeRename.sld"
-                : "attributeRenameNoInvert.sld");
+        Style style =
+                RendererBaseTest.loadStyle(
+                        this, invert ? "attributeRename.sld" : "attributeRenameNoInvert.sld");
         // grab the data
         File property = new File(TestData.getResource(this, "point.properties").toURI());
         PropertyDataStore ds = new PropertyDataStore(property.getParentFile());
@@ -221,21 +232,21 @@ public class RenderingTransformationTest {
         mc.addLayer(layer);
         StreamingRenderer renderer = new StreamingRenderer();
         final AtomicInteger counter = new AtomicInteger();
-        renderer.addRenderListener(new RenderListener() {
+        renderer.addRenderListener(
+                new RenderListener() {
 
-            @Override
-            public void featureRenderer(SimpleFeature feature) {
-                counter.incrementAndGet();
-            }
+                    @Override
+                    public void featureRenderer(SimpleFeature feature) {
+                        counter.incrementAndGet();
+                    }
 
-            @Override
-            public void errorOccurred(Exception e) {
-            }
-        });
+                    @Override
+                    public void errorOccurred(Exception e) {}
+                });
         renderer.setMapContent(mc);
         ReferencedEnvelope re = new ReferencedEnvelope(0, 12, 0, 12, CRS.decode("EPSG:4326"));
-        BufferedImage image = RendererBaseTest.showRender("Lines with circle stroke", renderer,
-                TIME, re);
+        BufferedImage image =
+                RendererBaseTest.showRender("Lines with circle stroke", renderer, TIME, re);
 
         // if everything went fine we'll have a single red dot in the middle, and we rendered
         // just one feature
@@ -254,7 +265,7 @@ public class RenderingTransformationTest {
 
         // prepare a feature layer with a query and the rendering tx
         FeatureLayer layer = new FeatureLayer(fs, style);
-        
+
         // prepare a bbox in UTM-32N
         ReferencedEnvelope reWgs84 = new ReferencedEnvelope(0, 12, 0, 12, CRS.decode("EPSG:4326"));
         ReferencedEnvelope reUTM32N = reWgs84.transform(CRS.decode("EPSG:3857"), true);
@@ -264,20 +275,20 @@ public class RenderingTransformationTest {
         mc.addLayer(layer);
         StreamingRenderer renderer = new StreamingRenderer();
         final AtomicInteger counter = new AtomicInteger();
-        renderer.addRenderListener(new RenderListener() {
+        renderer.addRenderListener(
+                new RenderListener() {
 
-            @Override
-            public void featureRenderer(SimpleFeature feature) {
-                counter.incrementAndGet();
-            }
+                    @Override
+                    public void featureRenderer(SimpleFeature feature) {
+                        counter.incrementAndGet();
+                    }
 
-            @Override
-            public void errorOccurred(Exception e) {
-            }
-        });
+                    @Override
+                    public void errorOccurred(Exception e) {}
+                });
         renderer.setMapContent(mc);
-        BufferedImage image = RendererBaseTest.showRender("Lines with circle stroke", renderer,
-                TIME, reUTM32N);
+        BufferedImage image =
+                RendererBaseTest.showRender("Lines with circle stroke", renderer, TIME, reUTM32N);
 
         // if everything went fine we rendered all the features
         assertEquals(10, counter.get());
@@ -286,7 +297,7 @@ public class RenderingTransformationTest {
 
     /**
      * Gets a specific pixel color from the specified buffered image
-     * 
+     *
      * @param image
      * @param i
      * @param j
@@ -300,8 +311,12 @@ public class RenderingTransformationTest {
 
         Color actual;
         if (cm.hasAlpha()) {
-            actual = new Color(cm.getRed(pixel), cm.getGreen(pixel), cm.getBlue(pixel),
-                    cm.getAlpha(pixel));
+            actual =
+                    new Color(
+                            cm.getRed(pixel),
+                            cm.getGreen(pixel),
+                            cm.getBlue(pixel),
+                            cm.getAlpha(pixel));
         } else {
             actual = new Color(cm.getRed(pixel), cm.getGreen(pixel), cm.getBlue(pixel), 255);
         }

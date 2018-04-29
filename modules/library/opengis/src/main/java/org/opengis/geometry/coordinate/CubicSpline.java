@@ -4,18 +4,17 @@
  *
  *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2003-2005, Open Geospatial Consortium Inc.
- *    
+ *
  *    All Rights Reserved. http://www.opengis.org/legal/
  */
 package org.opengis.geometry.coordinate;
 
-import java.util.List;
-import org.opengis.geometry.primitive.CurveInterpolation;
-import org.opengis.annotation.UML;
-
 import static org.opengis.annotation.Obligation.*;
 import static org.opengis.annotation.Specification.*;
 
+import java.util.List;
+import org.opengis.annotation.UML;
+import org.opengis.geometry.primitive.CurveInterpolation;
 
 /**
  * Cubic splines.
@@ -44,30 +43,28 @@ import static org.opengis.annotation.Specification.*;
  * @author Martin Desruisseaux (IRD)
  * @since GeoAPI 2.0
  */
-@UML(identifier="GM_CubicSpline", specification=ISO_19107)
+@UML(identifier = "GM_CubicSpline", specification = ISO_19107)
 public interface CubicSpline extends PolynomialSpline {
     /**
-     * The interpolation mechanism for a {@code CubicSpline}
-     * is {@link CurveInterpolation#CUBIC_SPLINE CUBIC_SPLINE}.
+     * The interpolation mechanism for a {@code CubicSpline} is {@link
+     * CurveInterpolation#CUBIC_SPLINE CUBIC_SPLINE}.
      */
-    @UML(identifier="interpolation", obligation=MANDATORY, specification=ISO_19107)
+    @UML(identifier = "interpolation", obligation = MANDATORY, specification = ISO_19107)
     CurveInterpolation getInterpolation();
 
     /**
-     * The values used for the initial derivative.
-     * The restriction on {@code vectorAtStart} and {@code vectorAtEnd} reduce these
-     * sequences to a single tangent vector each. Consequently, the {@linkplain List#size size}
-     * of the returned list is 1.
+     * The values used for the initial derivative. The restriction on {@code vectorAtStart} and
+     * {@code vectorAtEnd} reduce these sequences to a single tangent vector each. Consequently, the
+     * {@linkplain List#size size} of the returned list is 1.
      */
-    @UML(identifier="vectorAtStart", obligation=MANDATORY, specification=ISO_19107)
-    List/*double[]*/ getVectorAtStart();
+    @UML(identifier = "vectorAtStart", obligation = MANDATORY, specification = ISO_19107)
+    List /*double[]*/ getVectorAtStart();
 
     /**
-     * The values used for the final derivative.
-     * The restriction on {@code vectorAtStart} and {@code vectorAtEnd} reduce these
-     * sequences to a single tangent vector each. Consequently, the {@linkplain List#size size}
-     * of the returned list is 1.
+     * The values used for the final derivative. The restriction on {@code vectorAtStart} and {@code
+     * vectorAtEnd} reduce these sequences to a single tangent vector each. Consequently, the
+     * {@linkplain List#size size} of the returned list is 1.
      */
-    @UML(identifier="vectorAtEnd", obligation=MANDATORY, specification=ISO_19107)
-    List/*double[]*/ getVectorAtEnd();
+    @UML(identifier = "vectorAtEnd", obligation = MANDATORY, specification = ISO_19107)
+    List /*double[]*/ getVectorAtEnd();
 }

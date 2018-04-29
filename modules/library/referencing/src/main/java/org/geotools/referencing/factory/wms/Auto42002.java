@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *   
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,15 +17,14 @@
 package org.geotools.referencing.factory.wms;
 
 // OpenGIS dependencies
+
 import org.opengis.parameter.ParameterValueGroup;
 
-
 /**
- * Auto Transverse Mercator ({@code AUTO:42002}).
- * In the notation below, "<code>${var}</code>" denotes a reference to the value of a variable
- * "{@code var}". The variables "{@code lat0}" and "{@code lon0}" are the central point of the
- * projection appearing in the CRS parameter of the map request. The coordinate operation method
- * uses ellipsoidal formulas.
+ * Auto Transverse Mercator ({@code AUTO:42002}). In the notation below, "<code>${var}</code>"
+ * denotes a reference to the value of a variable "{@code var}". The variables "{@code lat0}" and
+ * "{@code lon0}" are the central point of the projection appearing in the CRS parameter of the map
+ * request. The coordinate operation method uses ellipsoidal formulas.
  *
  * <pre>
  * PROJCS["WGS 84 / Auto Tr. Mercator",
@@ -57,49 +56,36 @@ import org.opengis.parameter.ParameterValueGroup;
  * @author Martin Desruisseaux
  */
 final class Auto42002 extends Factlet {
-    /**
-     * A shared (thread-safe) instance.
-     */
+    /** A shared (thread-safe) instance. */
     public static final Auto42002 DEFAULT = new Auto42002();
 
-    /**
-     * Do not allows instantiation except the {@link #DEFAULT} constant.
-     */
-    private Auto42002() {
-    }
+    /** Do not allows instantiation except the {@link #DEFAULT} constant. */
+    private Auto42002() {}
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public int code() {
         return 42002;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public String getName() {
         return "WGS 84 / Auto Tr. Mercator";
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public String getClassification() {
         return "Transverse_Mercator";
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     protected void setProjectionParameters(final ParameterValueGroup parameters, final Code code) {
-        final double   centralMeridian = code.longitude;
-        final double   falseNorthing   = code.latitude >= 0.0 ? 0.0 : 10000000.0;
+        final double centralMeridian = code.longitude;
+        final double falseNorthing = code.latitude >= 0.0 ? 0.0 : 10000000.0;
 
         parameters.parameter("latitude_of_origin").setValue(0.0);
-        parameters.parameter("central_meridian")  .setValue(centralMeridian);
-        parameters.parameter("false_easting")     .setValue(500000.0);
-        parameters.parameter("false_northing")    .setValue(falseNorthing);
-        parameters.parameter("scale_factor")      .setValue(0.9996);
+        parameters.parameter("central_meridian").setValue(centralMeridian);
+        parameters.parameter("false_easting").setValue(500000.0);
+        parameters.parameter("false_northing").setValue(falseNorthing);
+        parameters.parameter("scale_factor").setValue(0.9996);
     }
 }

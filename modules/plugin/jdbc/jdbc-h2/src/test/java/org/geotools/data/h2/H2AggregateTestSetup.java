@@ -26,19 +26,23 @@ public class H2AggregateTestSetup extends JDBCAggregateTestSetup {
 
     @Override
     protected void createAggregateTable() throws Exception {
-        run("CREATE TABLE \"geotools\".\"aggregate\"(\"fid\" int AUTO_INCREMENT(0) PRIMARY KEY, \"id\" int, "
-                + "\"geom\" POLYGON, \"name\" varchar )");
+        run(
+                "CREATE TABLE \"geotools\".\"aggregate\"(\"fid\" int AUTO_INCREMENT(0) PRIMARY KEY, \"id\" int, "
+                        + "\"geom\" POLYGON, \"name\" varchar )");
         run("CALL AddGeometryColumn('geotools', 'aggregate', 'geom', 4326, 'POLYGON', 2)");
         run("CALL CreateSpatialIndex('geotools', 'aggregate', 'geom', 4326)");
-        run("INSERT INTO \"geotools\".\"aggregate\" (\"id\",\"geom\",\"name\") VALUES ( 0,"
-                + "ST_GeomFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',4326),"
-                + "'muddy1')");
-        run("INSERT INTO \"geotools\".\"aggregate\" (\"id\",\"geom\",\"name\") VALUES ( 1,"
-                + "ST_GeomFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',4326),"
-                + "'muddy1')");
-        run("INSERT INTO \"geotools\".\"aggregate\" (\"id\",\"geom\",\"name\") VALUES ( 2,"
-                + "ST_GeomFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',4326),"
-                + "'muddy2')");
+        run(
+                "INSERT INTO \"geotools\".\"aggregate\" (\"id\",\"geom\",\"name\") VALUES ( 0,"
+                        + "ST_GeomFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',4326),"
+                        + "'muddy1')");
+        run(
+                "INSERT INTO \"geotools\".\"aggregate\" (\"id\",\"geom\",\"name\") VALUES ( 1,"
+                        + "ST_GeomFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',4326),"
+                        + "'muddy1')");
+        run(
+                "INSERT INTO \"geotools\".\"aggregate\" (\"id\",\"geom\",\"name\") VALUES ( 2,"
+                        + "ST_GeomFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',4326),"
+                        + "'muddy2')");
     }
 
     @Override
@@ -47,5 +51,4 @@ public class H2AggregateTestSetup extends JDBCAggregateTestSetup {
         runSafe("CALL DropGeometryColumn('geotools', 'aggregate', 'geom')");
         runSafe("DROP TABLE \"geotools\".\"aggregate_HATBOX\"");
     }
-
 }

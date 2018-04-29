@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -23,7 +23,6 @@ import java.util.Date;
 import java.util.NoSuchElementException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.data.FeatureReader;
 import org.geotools.xml.DocumentFactory;
 import org.geotools.xml.XMLHandlerHints;
@@ -31,22 +30,17 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.xml.sax.SAXException;
 
-
 /**
- * <p>
- * Feature Buffer ... acts as a  FeatureReader<SimpleFeatureType, SimpleFeature> by making itself as a seperate
- * thread prior starting execution with the SAX Parser.
- * </p>
+ * Feature Buffer ... acts as a FeatureReader<SimpleFeatureType, SimpleFeature> by making itself as
+ * a seperate thread prior starting execution with the SAX Parser.
  *
  * @author dzwiers
- *
- *
  * @source $URL$
  */
-public class FCBuffer extends Thread implements  FeatureReader<SimpleFeatureType, SimpleFeature> {
+public class FCBuffer extends Thread implements FeatureReader<SimpleFeatureType, SimpleFeature> {
     /** Last feature is in the buffer */
     public static final int FINISH = -1;
-    
+
     /** DOCUMENT ME! */
     public static final int STOP = -2;
 
@@ -57,6 +51,7 @@ public class FCBuffer extends Thread implements  FeatureReader<SimpleFeatureType
 
     /** DOCUMENT ME! */
     protected int state = 0;
+
     private SimpleFeature[] features;
 
     private int end;
@@ -68,18 +63,17 @@ public class FCBuffer extends Thread implements  FeatureReader<SimpleFeatureType
 
     private FCBuffer() {
         // should not be called
-    	super("Feature Collection Buffer");
+        super("Feature Collection Buffer");
     }
 
     /**
-     * 
      * @param document
      * @param capacity
      * @param timeout
      * @param ft Nullable
      */
     protected FCBuffer(URI document, int capacity, int timeout, SimpleFeatureType ft) {
-    	super("Feature Collection Buffer");
+        super("Feature Collection Buffer");
         features = new SimpleFeature[capacity];
         this.timeout = timeout;
         this.document = document;
@@ -91,9 +85,9 @@ public class FCBuffer extends Thread implements  FeatureReader<SimpleFeatureType
      * Returns the logger to be used for this class.
      *
      * @todo Logger.setLevel(...) should not be invoked, because it override any user setting in
-     *       {@code jre/lib/logging.properties}. Users should edit their properties file instead.
-     *       If Geotools is too verbose below the warning level, then some log messages should
-     *       probably be changed from Level.INFO to Level.FINE.
+     *     {@code jre/lib/logging.properties}. Users should edit their properties file instead. If
+     *     Geotools is too verbose below the warning level, then some log messages should probably
+     *     be changed from Level.INFO to Level.FINE.
      */
     private static final Logger getLogger() {
         Logger l = org.geotools.util.logging.Logging.getLogger("org.geotools.xml.gml");
@@ -129,12 +123,9 @@ public class FCBuffer extends Thread implements  FeatureReader<SimpleFeatureType
     }
 
     /**
-     * <p>
      * Adds a feature to the buffer
-     * </p>
      *
      * @param f Feature to add
-     *
      * @return false if unable to add the feature
      */
     protected boolean addFeature(SimpleFeature f) {
@@ -145,85 +136,81 @@ public class FCBuffer extends Thread implements  FeatureReader<SimpleFeatureType
         if (size >= features.length) {
             return false;
         }
-        
+
         synchronized (this) {
             notify();
-        
 
-	        features[end] = f;
-	        end++;
-	
-	        if (end == features.length) {
-	            end = 0;
-	        }
-	
-	        size++;
+            features[end] = f;
+            end++;
+
+            if (end == features.length) {
+                end = 0;
+            }
+
+            size++;
         }
         return true;
     }
 
     /**
-     * <p>
-     * The prefered method of using this class, this will return the Feature
-     * Reader for the document specified, using the specified buffer capacity.
-     * </p>
+     * The prefered method of using this class, this will return the Feature Reader for the document
+     * specified, using the specified buffer capacity.
      *
      * @param document URL to parse
      * @param capacity
-     *
-     *
      * @throws SAXException
      */
-    public static  FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(URI document, int capacity)
-        throws SAXException {
-        return getFeatureReader(document,capacity,1000,null);
-    }
-    
-    public static  FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(URI document, int capacity, SimpleFeatureType ft)
-    throws SAXException {
-        return getFeatureReader(document,capacity,1000,ft);
-}
-
-    public static  FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(URI document, int capacity,
-        int timeout) throws SAXException {
-
-        return getFeatureReader(document,capacity,timeout,null);
+    public static FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(
+            URI document, int capacity) throws SAXException {
+        return getFeatureReader(document, capacity, 1000, null);
     }
 
-    public static  FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(URI document, int capacity,
-        int timeout, SimpleFeatureType ft) throws SAXException {
-        FCBuffer fc = new FCBuffer(document, capacity, timeout,ft);
+    public static FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(
+            URI document, int capacity, SimpleFeatureType ft) throws SAXException {
+        return getFeatureReader(document, capacity, 1000, ft);
+    }
+
+    public static FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(
+            URI document, int capacity, int timeout) throws SAXException {
+
+        return getFeatureReader(document, capacity, timeout, null);
+    }
+
+    public static FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(
+            URI document, int capacity, int timeout, SimpleFeatureType ft) throws SAXException {
+        FCBuffer fc = new FCBuffer(document, capacity, timeout, ft);
         fc.start(); // calls run
 
         if (fc.exception != null) {
             throw fc.exception;
         }
 
-        if(fc.getFeatureType()!=null && fc.getFeatureType().getGeometryDescriptor()!=null && fc.getFeatureType().getGeometryDescriptor().getCoordinateReferenceSystem() == null){
-                // load crs
-//                Feature f = fc.peek();
-                // TODO set crs here.
+        if (fc.getFeatureType() != null
+                && fc.getFeatureType().getGeometryDescriptor() != null
+                && fc.getFeatureType().getGeometryDescriptor().getCoordinateReferenceSystem()
+                        == null) {
+            // load crs
+            //                Feature f = fc.peek();
+            // TODO set crs here.
         }
         return fc;
     }
 
     protected SimpleFeatureType ft = null;
 
-	private volatile Date lastUpdate;
+    private volatile Date lastUpdate;
     /**
      * DOCUMENT ME!
      *
      * @return DOCUMENT ME!
-     *
      * @see org.geotools.data.FeatureReader#getFeatureType()
      */
     public SimpleFeatureType getFeatureType() {
-        if(ft != null)
-            return ft;
+        if (ft != null) return ft;
         Date d = new Date(Calendar.getInstance().getTimeInMillis() + timeout);
 
         while ((ft == null) && ((state != FINISH) && (state != STOP))) {
-            yield(); // let the parser run ... this is being called from 
+            yield(); // let the parser run ... this is being called from
 
             if (d.before(Calendar.getInstance().getTime())) {
                 exception = new SAXException("Timeout");
@@ -239,11 +226,8 @@ public class FCBuffer extends Thread implements  FeatureReader<SimpleFeatureType
         return ft;
     }
 
-    /**
-     * @see org.geotools.data.FeatureReader#next()
-     */
-    public SimpleFeature next()
-        throws IOException, NoSuchElementException {
+    /** @see org.geotools.data.FeatureReader#next() */
+    public SimpleFeature next() throws IOException, NoSuchElementException {
         if (exception != null) {
             state = STOP;
             IOException e = new IOException(exception.toString());
@@ -253,23 +237,19 @@ public class FCBuffer extends Thread implements  FeatureReader<SimpleFeatureType
 
         SimpleFeature f = null;
         synchronized (this) {
-	        size--;
-	         f = features[head++];
+            size--;
+            f = features[head++];
             notify();
-        
-        
-	        if (head == features.length) {
-	            head = 0;
-	        }
+
+            if (head == features.length) {
+                head = 0;
+            }
         }
         return f;
     }
 
-    /**
-     * @see org.geotools.data.FeatureReader#next()
-     */
-    public SimpleFeature peek()
-        throws IOException, NoSuchElementException {
+    /** @see org.geotools.data.FeatureReader#next() */
+    public SimpleFeature peek() throws IOException, NoSuchElementException {
         if (exception != null) {
             state = STOP;
             IOException e = new IOException(exception.toString());
@@ -281,9 +261,7 @@ public class FCBuffer extends Thread implements  FeatureReader<SimpleFeatureType
         return f;
     }
 
-    /**
-     * @see org.geotools.data.FeatureReader#hasNext()
-     */
+    /** @see org.geotools.data.FeatureReader#hasNext() */
     public boolean hasNext() throws IOException {
         if (exception instanceof StopException) {
             return false;
@@ -299,8 +277,8 @@ public class FCBuffer extends Thread implements  FeatureReader<SimpleFeatureType
 
         resetTimer();
 
-        while ((size <= 1) && (state != FINISH) && (state != STOP)) { //&& t>0) {
-        	
+        while ((size <= 1) && (state != FINISH) && (state != STOP)) { // && t>0) {
+
             if (exception != null) {
                 state = STOP;
                 IOException e = new IOException(exception.toString());
@@ -314,7 +292,7 @@ public class FCBuffer extends Thread implements  FeatureReader<SimpleFeatureType
                     wait(200);
                 }
             } catch (InterruptedException e) {
-                //just continue;
+                // just continue;
             }
 
             if (lastUpdate.before(new Date(Calendar.getInstance().getTimeInMillis() - timeout))) {
@@ -325,9 +303,9 @@ public class FCBuffer extends Thread implements  FeatureReader<SimpleFeatureType
 
         if (state == STOP) {
             if (exception != null) {
-            	IOException e = new IOException(exception.toString());
-            	e.initCause(exception);
-            	throw e;
+                IOException e = new IOException(exception.toString());
+                e.initCause(exception);
+                throw e;
             }
 
             return false;
@@ -350,17 +328,13 @@ public class FCBuffer extends Thread implements  FeatureReader<SimpleFeatureType
         return true;
     }
 
-    /**
-     * @see org.geotools.data.FeatureReader#close()
-     */
-    public void close(){
+    /** @see org.geotools.data.FeatureReader#close() */
+    public void close() {
         state = STOP; // note for the sax parser
         interrupt();
     }
 
-    /**
-     * @see java.lang.Runnable#run()
-     */
+    /** @see java.lang.Runnable#run() */
     public void run() {
         XMLHandlerHints hints = new XMLHandlerHints();
         initHints(hints);
@@ -381,13 +355,14 @@ public class FCBuffer extends Thread implements  FeatureReader<SimpleFeatureType
     }
 
     /**
-     * Called before parsing the FeatureCollection.  Subclasses may override to set their custom hints.  
+     * Called before parsing the FeatureCollection. Subclasses may override to set their custom
+     * hints.
      */
-    protected void initHints(XMLHandlerHints hints)  {
+    protected void initHints(XMLHandlerHints hints) {
         hints.put(XMLHandlerHints.STREAM_HINT, this);
         hints.put(XMLHandlerHints.FLOW_HANDLER_HINT, new FCFlowHandler());
-        if( this.ft!=null ){
-        	hints.put("DEBUG_INFO_FEATURE_TYPE_NAME", ft.getTypeName());
+        if (this.ft != null) {
+            hints.put("DEBUG_INFO_FEATURE_TYPE_NAME", ft.getTypeName());
         }
     }
 
@@ -402,12 +377,12 @@ public class FCBuffer extends Thread implements  FeatureReader<SimpleFeatureType
             super("Stopping");
         }
     }
-    
+
     public int getInternalState() {
-    	return state;
+        return state;
     }
 
-	public void resetTimer() {
-		this.lastUpdate = Calendar.getInstance().getTime();		
-	}
+    public void resetTimer() {
+        this.lastUpdate = Calendar.getInstance().getTime();
+    }
 }

@@ -17,7 +17,6 @@
 package org.geotools.processing.jai;
 
 import java.awt.image.renderable.RenderedImageFactory;
-
 import javax.media.jai.OperationRegistry;
 import javax.media.jai.OperationRegistrySpi;
 import javax.media.jai.registry.RenderedRegistryMode;
@@ -30,7 +29,6 @@ public class ClassBreaksSpi implements OperationRegistrySpi {
     /** Default constructor. */
     public ClassBreaksSpi() {}
 
-
     public void updateRegistry(OperationRegistry registry) {
         ClassBreaksDescriptor op = new ClassBreaksDescriptor();
         registry.registerDescriptor(op);
@@ -40,5 +38,4 @@ public class ClassBreaksSpi implements OperationRegistrySpi {
         RenderedImageFactory rif = new ClassBreaksRIF();
         registry.registerFactory(RenderedRegistryMode.MODE_NAME, descName, productName, rif);
     }
-
 }

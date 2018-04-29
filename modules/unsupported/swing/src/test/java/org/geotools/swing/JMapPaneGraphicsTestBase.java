@@ -19,34 +19,30 @@ package org.geotools.swing;
 
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
-
-import org.geotools.swing.event.MapPaneListener;
-
 import org.fest.swing.fixture.FrameFixture;
+import org.geotools.swing.event.MapPaneListener;
 
 /**
  * Test base class which adds a frame fixture for graphics tests.
- * 
+ *
  * @author Michael Bedward
  * @since 8.0
- *
  * @source $URL$
  * @version $Id$
  */
 public class JMapPaneGraphicsTestBase extends JMapPaneTestBase {
-    
+
     protected FrameFixture window;
-    
+
     protected class TestFrame extends JFrame {
-        
+
         public TestFrame(MapPaneListener listener) {
             mapPane = new JMapPane();
             mapPane.addMapPaneListener(listener);
-            
+
             setLayout(new BorderLayout());
             add(mapPane, BorderLayout.CENTER);
             pack();
         }
     }
-    
 }

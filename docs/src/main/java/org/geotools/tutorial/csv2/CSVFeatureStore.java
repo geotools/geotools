@@ -9,7 +9,6 @@
 package org.geotools.tutorial.csv2;
 
 import java.io.IOException;
-
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
@@ -27,7 +26,7 @@ import org.opengis.feature.type.Name;
 
 /**
  * Read-write access to CSV File.
- * 
+ *
  * @author Jody Garnett (Boundless)
  * @author Ian Turton (Astun Technology)
  */
@@ -41,34 +40,36 @@ public class CSVFeatureStore extends ContentFeatureStore {
     // CSVFeatureStore implementations
     //
     @Override
-    protected FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterInternal(Query query,
-            int flags) throws IOException {
+    protected FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterInternal(
+            Query query, int flags) throws IOException {
         return new CSVFeatureWriter(getState(), query);
     }
     // getWriter end
-    
+
     // transaction start
     /**
-     * Delegate used for FeatureSource methods (We do this because Java cannot inherit from both ContentFeatureStore and CSVFeatureSource at the same
-     * time
+     * Delegate used for FeatureSource methods (We do this because Java cannot inherit from both
+     * ContentFeatureStore and CSVFeatureSource at the same time
      */
-    CSVFeatureSource delegate = new CSVFeatureSource(entry, query) {
-        @Override
-        public void setTransaction(Transaction transaction) {
-            super.setTransaction(transaction);
-            CSVFeatureStore.this.setTransaction(transaction); // Keep these two implementations on the same transaction
-        }
-    };
+    CSVFeatureSource delegate =
+            new CSVFeatureSource(entry, query) {
+                @Override
+                public void setTransaction(Transaction transaction) {
+                    super.setTransaction(transaction);
+                    CSVFeatureStore.this.setTransaction(
+                            transaction); // Keep these two implementations on the same transaction
+                }
+            };
 
     @Override
     public void setTransaction(Transaction transaction) {
         super.setTransaction(transaction);
-        if( delegate.getTransaction() != transaction ){
-            delegate.setTransaction( transaction );
+        if (delegate.getTransaction() != transaction) {
+            delegate.setTransaction(transaction);
         }
     }
     // transaction end
-    
+
     // internal start
     //
     // Internal Delegate Methods
@@ -88,7 +89,7 @@ public class CSVFeatureStore extends ContentFeatureStore {
     protected int getCountInternal(Query query) throws IOException {
         return delegate.getCountInternal(query);
     }
-    
+
     @Override
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
             throws IOException {
@@ -102,7 +103,7 @@ public class CSVFeatureStore extends ContentFeatureStore {
         return delegate.handleVisitor(query, visitor);
     }
     // visitor end
-    
+
     // public start
     //
     // Public Delegate Methods

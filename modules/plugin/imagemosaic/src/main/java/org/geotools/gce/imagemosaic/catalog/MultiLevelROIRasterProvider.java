@@ -16,13 +16,12 @@
  */
 package org.geotools.gce.imagemosaic.catalog;
 
+import com.vividsolutions.jts.geom.Polygon;
 import it.geosolutions.imageio.maskband.DatasetLayout;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridFormatFinder;
@@ -33,7 +32,6 @@ import org.geotools.coverage.grid.io.footprint.SidecarFootprintProvider;
 import org.geotools.factory.Hints;
 import org.geotools.feature.FeatureTypes;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -43,11 +41,9 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import com.vividsolutions.jts.geom.Polygon;
-
 /**
  * {@link MultiLevelROIProvider} implementation returning a {@link MultiLevelROIRaster} instance
- * 
+ *
  * @author Nicola Lagomarsini
  */
 public class MultiLevelROIRasterProvider implements MultiLevelROIProvider {
@@ -60,7 +56,7 @@ public class MultiLevelROIRasterProvider implements MultiLevelROIProvider {
 
     /** Mosaic Folder used as root folder */
     private File mosaicFolder;
-    
+
     public MultiLevelROIRasterProvider(File mosaicFolder) {
         this.mosaicFolder = mosaicFolder;
     }
@@ -79,38 +75,49 @@ public class MultiLevelROIRasterProvider implements MultiLevelROIProvider {
             MultiLevelROI result = null;
             if (file.exists() && file.canRead()) {
                 try {
-                    // When looking for formats which may parse this file, make sure to exclude the ImageMosaicFormat as return
-                    AbstractGridFormat format = (AbstractGridFormat) GridFormatFinder
-                            .findFormat(file, EXCLUDE_MOSAIC);
+                    // When looking for formats which may parse this file, make sure to exclude the
+                    // ImageMosaicFormat as return
+                    AbstractGridFormat format =
+                            (AbstractGridFormat) GridFormatFinder.findFormat(file, EXCLUDE_MOSAIC);
                     AbstractGridCoverage2DReader reader = format.getReader(file);
                     // Getting Dataset Layout
                     DatasetLayout layout = reader.getDatasetLayout();
                     // If present use it
                     if (layout != null) {
                         // Getting Total Number of masks
-                        int numExternalMasks = layout.getNumExternalMasks() > 0
-                                ? layout.getNumExternalMasks() : 0;
-                        int numInternalMasks = layout.getNumInternalMasks() > 0
-                                ? layout.getNumInternalMasks() : 0;
-                        int numExternalMaskOverviews = layout.getNumExternalMaskOverviews() > 0
-                                ? layout.getNumExternalMaskOverviews() : 0;
-                        int totalMasks = numExternalMasks + numInternalMasks
-                                + numExternalMaskOverviews;
-                        
+                        int numExternalMasks =
+                                layout.getNumExternalMasks() > 0 ? layout.getNumExternalMasks() : 0;
+                        int numInternalMasks =
+                                layout.getNumInternalMasks() > 0 ? layout.getNumInternalMasks() : 0;
+                        int numExternalMaskOverviews =
+                                layout.getNumExternalMaskOverviews() > 0
+                                        ? layout.getNumExternalMaskOverviews()
+                                        : 0;
+                        int totalMasks =
+                                numExternalMasks + numInternalMasks + numExternalMaskOverviews;
+
                         // Check if masks are present
                         // NOTE No Mask: Outside ROI
                         if (totalMasks > 0) {
                             CoordinateReferenceSystem crs = reader.getCoordinateReferenceSystem();
                             final SimpleFeatureType indexSchema = sf.getFeatureType();
-                            if(crs != null &&  indexSchema != null && indexSchema.getCoordinateReferenceSystem() != null && 
-                                    !CRS.equalsIgnoreMetadata(crs, indexSchema.getCoordinateReferenceSystem())) {
+                            if (crs != null
+                                    && indexSchema != null
+                                    && indexSchema.getCoordinateReferenceSystem() != null
+                                    && !CRS.equalsIgnoreMetadata(
+                                            crs, indexSchema.getCoordinateReferenceSystem())) {
                                 // do not trust the feature footprint, it's reprojected
-                                ReferencedEnvelope envelope = ReferencedEnvelope.reference(reader.getOriginalEnvelope());
+                                ReferencedEnvelope envelope =
+                                        ReferencedEnvelope.reference(reader.getOriginalEnvelope());
                                 Polygon nativeFootprint = JTS.toGeometry(envelope);
-                                SimpleFeatureType ftNative = FeatureTypes.transform(indexSchema, reader.getCoordinateReferenceSystem());
+                                SimpleFeatureType ftNative =
+                                        FeatureTypes.transform(
+                                                indexSchema, reader.getCoordinateReferenceSystem());
                                 SimpleFeatureBuilder fb = new SimpleFeatureBuilder(ftNative);
                                 fb.init(sf);
-                                fb.set(indexSchema.getGeometryDescriptor().getLocalName(), nativeFootprint);
+                                fb.set(
+                                        indexSchema.getGeometryDescriptor().getLocalName(),
+                                        nativeFootprint);
                                 SimpleFeature nativeFeature = fb.buildFeature(sf.getID());
                                 return new MultiLevelROIRaster(layout, file, nativeFeature);
                             } else {
@@ -119,15 +126,17 @@ public class MultiLevelROIRasterProvider implements MultiLevelROIProvider {
                         }
                     }
                 } catch (Exception e) {
-                    throw new IOException("Failed to load the footprint for granule " + strValue,
-                            e);
+                    throw new IOException(
+                            "Failed to load the footprint for granule " + strValue, e);
                 }
             }
             return result;
         } else {
             if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.fine("Could not use the location attribute value to search for "
-                        + "the file, the value was: " + value);
+                LOGGER.fine(
+                        "Could not use the location attribute value to search for "
+                                + "the file, the value was: "
+                                + value);
             }
             return null;
         }
@@ -143,7 +152,5 @@ public class MultiLevelROIRasterProvider implements MultiLevelROIProvider {
     }
 
     @Override
-    public void dispose() {
-    }
-
+    public void dispose() {}
 }

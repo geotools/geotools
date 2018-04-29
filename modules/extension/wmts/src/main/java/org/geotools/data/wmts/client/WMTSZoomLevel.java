@@ -29,9 +29,7 @@ class WMTSZoomLevel extends ZoomLevel {
 
     private final WMTSTileService service;
 
-    /**
-     * @param zoomLevel
-     */
+    /** @param zoomLevel */
     public WMTSZoomLevel(int zoomLevel, WMTSTileService service) {
         // super(zoomLevel);
         this.service = service;
@@ -55,7 +53,12 @@ class WMTSZoomLevel extends ZoomLevel {
     }
 
     public String toString() {
-        return "ZoomLevel [z:" + getZoomLevel() + " col: " + getMaxTilePerColNumber() + " rows:"
-                + getMaxTilePerRowNumber() + "]";
+        return "ZoomLevel [z:"
+                + getZoomLevel()
+                + " col: "
+                + getMaxTilePerColNumber()
+                + " rows:"
+                + getMaxTilePerRowNumber()
+                + "]";
     }
 }

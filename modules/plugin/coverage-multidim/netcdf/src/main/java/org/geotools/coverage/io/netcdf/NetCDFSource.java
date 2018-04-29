@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.coverage.io.CoverageReadRequest;
 import org.geotools.coverage.io.CoverageResponse;
 import org.geotools.coverage.io.impl.DefaultCoverageSource;
@@ -32,23 +31,25 @@ import org.opengis.feature.type.Name;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.util.ProgressListener;
+
 /**
  * Implementation of a coverage source for netcdf data
- * @author Simone Giannecchini, GeoSolutions SAS
  *
+ * @author Simone Giannecchini, GeoSolutions SAS
  * @source $URL$
  */
 @SuppressWarnings("rawtypes")
 public class NetCDFSource extends DefaultCoverageSource {
 
     /** Logger. */
-    private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(NetCDFSource.class.toString());
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(NetCDFSource.class.toString());
 
     NetCDFImageReader reader;
 
     Set<ParameterDescriptor<List>> dynamicParameters = null;
 
-    public NetCDFSource(final NetCDFImageReader reader, final Name name ) {
+    public NetCDFSource(final NetCDFImageReader reader, final Name name) {
         super(name, reader.getCoverageDescriptor(name));
         this.reader = reader;
     }
@@ -68,7 +69,7 @@ public class NetCDFSource extends DefaultCoverageSource {
     public boolean isParameterSupported(ReferenceIdentifier name) throws IOException {
         getDynamicParameters();
         if (dynamicParameters != null && !dynamicParameters.isEmpty()) {
-            for (ParameterDescriptor<List> desc: dynamicParameters) {
+            for (ParameterDescriptor<List> desc : dynamicParameters) {
                 if (desc.getName().equals(name)) {
                     return true;
                 }
@@ -83,12 +84,13 @@ public class NetCDFSource extends DefaultCoverageSource {
             List<AdditionalDomain> domains = getAdditionalDomains();
             if (domains != null && !domains.isEmpty()) {
                 for (AdditionalDomain domain : domains) {
-                    dynamicParameters.add(DefaultParameterDescriptor.create(
-                            domain.getName().toUpperCase() , 
-                            "Additional " + domain.getName() + " domain", 
-                            List.class, 
-                            null, 
-                            false));
+                    dynamicParameters.add(
+                            DefaultParameterDescriptor.create(
+                                    domain.getName().toUpperCase(),
+                                    "Additional " + domain.getName() + " domain",
+                                    List.class,
+                                    null,
+                                    false));
                 }
             }
         }

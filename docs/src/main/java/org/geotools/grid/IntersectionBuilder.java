@@ -14,7 +14,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 
-
 public class IntersectionBuilder extends GridFeatureBuilder {
     final FilterFactory2 ff2 = CommonFactoryFinder.getFilterFactory2();
     final GeometryFactory gf = JTSFactoryFinder.getGeometryFactory();

@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,24 +17,16 @@
  */
 package org.geotools.ysld;
 
-import org.geotools.util.Converters;
-import org.geotools.util.KVP;
-import org.yaml.snakeyaml.DumperOptions;
-import org.yaml.snakeyaml.Yaml;
-
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.NoSuchElementException;
+import org.geotools.util.KVP;
 
-/**
- * Wrapper around a parsed Yaml mapping.
- */
+/** Wrapper around a parsed Yaml mapping. */
 public class YamlMap extends YamlObject<Map<String, Object>> implements Iterable<String> {
 
     /**
      * Quick inline map creation.
-     * 
+     *
      * @param pairs Key value pairs
      * @return Map of provided key value pairs.
      */
@@ -45,7 +37,7 @@ public class YamlMap extends YamlObject<Map<String, Object>> implements Iterable
 
     /**
      * Internal cast to map used by constructor.
-     * 
+     *
      * @param obj
      * @return Map
      * @throws IllegalArgumentException
@@ -59,7 +51,7 @@ public class YamlMap extends YamlObject<Map<String, Object>> implements Iterable
 
     /**
      * Yaml mapping.
-     * 
+     *
      * @param obj Wrapped {@link Map}
      * @throws IllegalArgumentException {@link Map} is required
      */
@@ -69,7 +61,7 @@ public class YamlMap extends YamlObject<Map<String, Object>> implements Iterable
 
     /**
      * String access.
-     * 
+     *
      * @param key
      * @return String access, converting if necessary.
      */
@@ -79,7 +71,7 @@ public class YamlMap extends YamlObject<Map<String, Object>> implements Iterable
 
     /**
      * String access.
-     * 
+     *
      * @param key
      * @param def default if value not provided
      * @return String access, converting if necessary.
@@ -90,7 +82,7 @@ public class YamlMap extends YamlObject<Map<String, Object>> implements Iterable
 
     /**
      * Integer access.
-     * 
+     *
      * @param key
      * @return Integer access, converting if necessary.
      */
@@ -100,7 +92,7 @@ public class YamlMap extends YamlObject<Map<String, Object>> implements Iterable
 
     /**
      * Integer access.
-     * 
+     *
      * @param key
      * @param def default if value not provided
      * @return Integer access, converting if necessary.
@@ -111,7 +103,7 @@ public class YamlMap extends YamlObject<Map<String, Object>> implements Iterable
 
     /**
      * Double access.
-     * 
+     *
      * @param key
      * @return Integer access, converting if necessary.
      */
@@ -121,7 +113,7 @@ public class YamlMap extends YamlObject<Map<String, Object>> implements Iterable
 
     /**
      * Double access.
-     * 
+     *
      * @param key
      * @param def default if value not provided
      * @return Integer access, converting if necessary.
@@ -132,7 +124,7 @@ public class YamlMap extends YamlObject<Map<String, Object>> implements Iterable
 
     /**
      * Boolean access.
-     * 
+     *
      * @param key
      * @return Boolean access, converting if necessary.
      */
@@ -142,7 +134,7 @@ public class YamlMap extends YamlObject<Map<String, Object>> implements Iterable
 
     /**
      * Boolean access.
-     * 
+     *
      * @param key
      * @param def default if value not provided
      * @return Boolean access, converting if necessary.
@@ -153,7 +145,7 @@ public class YamlMap extends YamlObject<Map<String, Object>> implements Iterable
 
     /**
      * Check if mapping available for key
-     * 
+     *
      * @param key
      * @return true if mapping available for key
      */
@@ -163,7 +155,7 @@ public class YamlMap extends YamlObject<Map<String, Object>> implements Iterable
 
     /**
      * Value access
-     * 
+     *
      * @param key
      * @return Value access
      */
@@ -173,9 +165,9 @@ public class YamlMap extends YamlObject<Map<String, Object>> implements Iterable
 
     /**
      * Access value as a Yaml wrapper.
-     * <p>
-     * Wrappers are provided for Map and List
-     * 
+     *
+     * <p>Wrappers are provided for Map and List
+     *
      * @param key
      * @return Access as Yaml wrapper
      */
@@ -185,7 +177,7 @@ public class YamlMap extends YamlObject<Map<String, Object>> implements Iterable
 
     /**
      * Access value as a YamlMap
-     * 
+     *
      * @param key
      * @return Access as YamlMap
      */
@@ -202,7 +194,7 @@ public class YamlMap extends YamlObject<Map<String, Object>> implements Iterable
 
     /**
      * Access value as a YamlSeq
-     * 
+     *
      * @param key
      * @return Access as YamlSeq
      */
@@ -219,7 +211,7 @@ public class YamlMap extends YamlObject<Map<String, Object>> implements Iterable
 
     /**
      * Access key by index, order provided by {@link #iterator()}.
-     * 
+     *
      * @param i index
      * @return key access by index
      */
@@ -234,9 +226,7 @@ public class YamlMap extends YamlObject<Map<String, Object>> implements Iterable
         throw new IndexOutOfBoundsException("Index: " + i + ", Size: " + this.raw.size());
     }
 
-    /**
-     * Iterate over keys.
-     */
+    /** Iterate over keys. */
     @Override
     public Iterator<String> iterator() {
         return raw.keySet().iterator();
@@ -244,7 +234,7 @@ public class YamlMap extends YamlObject<Map<String, Object>> implements Iterable
 
     /**
      * Typed access
-     * 
+     *
      * @param key
      * @param def default if value not provided
      * @return Typed access, converting if necessary.

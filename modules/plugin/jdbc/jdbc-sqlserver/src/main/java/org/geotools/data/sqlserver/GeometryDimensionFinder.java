@@ -16,18 +16,17 @@
  */
 package org.geotools.data.sqlserver;
 
-import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
-
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryComponentFilter;
+import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
 
 class GeometryDimensionFinder implements GeometryComponentFilter {
-    
+
     boolean z = false;
 
     @Override
     public void filter(Geometry geom) {
-        if(geom != null) {
+        if (geom != null) {
             z |= CoordinateSequences.coordinateDimension(geom) > 2;
         }
     }
@@ -35,7 +34,4 @@ class GeometryDimensionFinder implements GeometryComponentFilter {
     public boolean hasZ() {
         return z;
     }
-    
-    
-
 }

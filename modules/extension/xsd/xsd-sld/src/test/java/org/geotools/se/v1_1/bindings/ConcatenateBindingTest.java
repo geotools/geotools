@@ -19,18 +19,13 @@ package org.geotools.se.v1_1.bindings;
 import org.geotools.se.v1_1.SETestSupport;
 import org.opengis.filter.expression.Expression;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class ConcatenateBindingTest extends SETestSupport {
 
     public void testParse() throws Exception {
         SEMockData.concatenate(document, document);
-        
+
         Expression e = (Expression) parse();
         assertEquals("onetwothree", e.evaluate(null, String.class));
     }
-
 }

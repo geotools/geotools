@@ -18,7 +18,6 @@ package org.geotools.gml3;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import org.custommonkey.xmlunit.SimpleNamespaceContext;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.geotools.xml.Configuration;
@@ -31,50 +30,46 @@ import org.w3c.dom.NodeList;
 
 /*
  * Test bindings by extending this class with test cases that follow this pattern:
- * 
+ *
  *  Debugging hints:
- *  
+ *
  *  XMLTestSupport has javadoc on how things work.
- *  TODO - add hints for eclipse breakpoint debugging. 
- *  
- *  // parse using the binding - 
+ *  TODO - add hints for eclipse breakpoint debugging.
+ *
+ *  // parse using the binding -
  *  // NB should have separate tests for all the type bindings supported
  *  // test methods must start with "test"
- *  
+ *
  *    test1D() throws Exception {
- *  
+ *
  *       // create a DOM representation
- *    
+ *
  *       GML3MockData.element(GML.pos, document, document);
  *       document.getDocumentElement().appendChild(document.createTextNode("1.0"));
- *  
+ *
  *  	 //  then parse (using standard XMLTestSupport parse method)
- *      
+ *
  *       DirectPosition pos = (DirectPosition) parse();
- * 
+ *
  *       // test aspects of the result
- *       
+ *
  *       assertNotNull(pos);
  *       assertTrue(pos instanceof DirectPosition1D);
  *       assertEquals(pos.getOrdinate(0), 1.0, 0);
  *    }
- *        
+ *
  *    // test encodings with something like this:
- *    
+ *
  *    public void testEncode() throws Exception {
  *        Document dom = encode(GML3MockData.bounds(), GML.Envelope);
- *    
+ *
  *        // debugging method:
  *        print(dom);
- *        
+ *
  *        assertEquals("something", dom.getElementsByTagNameNS(GML.NAMESPACE, "lowerCorner").getLength());
  *
  */
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public abstract class GML3TestSupport extends XMLTestSupport {
 
     @Override
@@ -95,77 +90,73 @@ public abstract class GML3TestSupport extends XMLTestSupport {
         root.setAttribute("xmlns:gml", "http://www.opengis.net/gml");
     }
 
-    /* 
-     * binds to the GMLConfiguration in the current package 
-     * i.e. this is a GML3 specific binding configuration. 
+    /*
+     * binds to the GMLConfiguration in the current package
+     * i.e. this is a GML3 specific binding configuration.
      */
     protected Configuration createConfiguration() {
         return new GMLConfiguration(enableExtendedArcSurfaceSupport());
     }
 
-    protected void checkPosOrdinates(Document doc,  int expectedNumOrdinates) 
-    {
-    	checkOrdinates(doc, GML.pos.getLocalPart(), expectedNumOrdinates);
+    protected void checkPosOrdinates(Document doc, int expectedNumOrdinates) {
+        checkOrdinates(doc, GML.pos.getLocalPart(), expectedNumOrdinates);
     }
-    
-    protected void checkPosListOrdinates(Document doc,  int expectedNumOrdinates) 
-    {
-    	checkOrdinates(doc, GML.posList.getLocalPart(), expectedNumOrdinates);
-    }
-    
-    
-	/**
-	 * Checks that a posList exists, has a string as content,
-	 * and the string encodes nOrdinates ordinates correctly
-	 * (i.e. blank-separated).
-	 * 
-	 * @param doc
-	 * @param expectedNumOrdinates
-	 */
-	private void checkOrdinates(Document doc, String ordTag, int expectedNumOrdinates) {
-	    NodeList nl = doc.getElementsByTagNameNS(GML.NAMESPACE, ordTag);
-	    Node posListNode = nl.item(0);
-	    assertEquals(1, posListNode.getChildNodes().getLength());
-	    String content = posListNode.getChildNodes().item(0).getNodeValue();
-		String[] ord = content.split("\\s+");
-		assertEquals(expectedNumOrdinates, ord.length);
-	}
 
-	/**
-	 * Checks that a given geometry element has an srsDimension attribute with an expected value
-	 * 
-	 * @param doc
-	 * @param tag
-	 * @param expectedDim  
-	 */
-	protected void checkDimension(Document doc, String tag, int expectedDim) {
-	    NodeList lsNL = doc.getElementsByTagNameNS(GML.NAMESPACE, tag);
-	    Node geomNode = lsNL.item(0);
-	    NamedNodeMap attrMap = geomNode.getAttributes();
-	    Node dimNode = attrMap.getNamedItem("srsDimension");
-	    assertNotNull(dimNode);
-	    String dimStr = dimNode.getChildNodes().item(0).getNodeValue();
-		int dim = Integer.parseInt(dimStr);
-		assertEquals(dim, expectedDim);
-	}
-    
+    protected void checkPosListOrdinates(Document doc, int expectedNumOrdinates) {
+        checkOrdinates(doc, GML.posList.getLocalPart(), expectedNumOrdinates);
+    }
+
+    /**
+     * Checks that a posList exists, has a string as content, and the string encodes nOrdinates
+     * ordinates correctly (i.e. blank-separated).
+     *
+     * @param doc
+     * @param expectedNumOrdinates
+     */
+    private void checkOrdinates(Document doc, String ordTag, int expectedNumOrdinates) {
+        NodeList nl = doc.getElementsByTagNameNS(GML.NAMESPACE, ordTag);
+        Node posListNode = nl.item(0);
+        assertEquals(1, posListNode.getChildNodes().getLength());
+        String content = posListNode.getChildNodes().item(0).getNodeValue();
+        String[] ord = content.split("\\s+");
+        assertEquals(expectedNumOrdinates, ord.length);
+    }
+
+    /**
+     * Checks that a given geometry element has an srsDimension attribute with an expected value
+     *
+     * @param doc
+     * @param tag
+     * @param expectedDim
+     */
+    protected void checkDimension(Document doc, String tag, int expectedDim) {
+        NodeList lsNL = doc.getElementsByTagNameNS(GML.NAMESPACE, tag);
+        Node geomNode = lsNL.item(0);
+        NamedNodeMap attrMap = geomNode.getAttributes();
+        Node dimNode = attrMap.getNamedItem("srsDimension");
+        assertNotNull(dimNode);
+        String dimStr = dimNode.getChildNodes().item(0).getNodeValue();
+        int dim = Integer.parseInt(dimStr);
+        assertEquals(dim, expectedDim);
+    }
+
     /*
      * To be overriden by subclasses that require the extended arc/surface bindings
-     * enabled. 
+     * enabled.
      */
     protected boolean enableExtendedArcSurfaceSupport() {
         return false;
     }
-    
+
     /**
      * Return the gml:id of a Node (must be an Element).
-     * 
+     *
      * @param node
      * @return the gml:id
      */
     protected String getID(Node node) {
-        return node.getAttributes().getNamedItemNS(GML.NAMESPACE, GML.id.getLocalPart())
+        return node.getAttributes()
+                .getNamedItemNS(GML.NAMESPACE, GML.id.getLocalPart())
                 .getNodeValue();
     }
-    
 }

@@ -26,44 +26,67 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
 import javax.xml.transform.TransformerException;
-
 import org.geotools.data.AbstractDataStoreFactory;
 import org.geotools.data.DataStore;
 import org.geotools.data.Repository;
 import org.geotools.util.KVP;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class AggregatingDataStoreFactory extends AbstractDataStoreFactory {
 
-    public static final Param REPOSITORY_PARAM = new Param("repository", Repository.class,
-            "The repository that will provide the store intances", true, null, new KVP(Param.LEVEL,
-                    "advanced"));
+    public static final Param REPOSITORY_PARAM =
+            new Param(
+                    "repository",
+                    Repository.class,
+                    "The repository that will provide the store intances",
+                    true,
+                    null,
+                    new KVP(Param.LEVEL, "advanced"));
 
-    public static final Param STORES_PARAM = new Param("stores", String[].class,
-            "List of data stores to connect to", false, null, new KVP(Param.ELEMENT, String.class));
+    public static final Param STORES_PARAM =
+            new Param(
+                    "stores",
+                    String[].class,
+                    "List of data stores to connect to",
+                    false,
+                    null,
+                    new KVP(Param.ELEMENT, String.class));
 
-    public static final Param TOLERATE_CONNECTION_FAILURE = new Param(
-            "tolerate connection failure", Boolean.class,
-            "Is failure to connect to a store tolerated", false, Boolean.TRUE);
+    public static final Param TOLERATE_CONNECTION_FAILURE =
+            new Param(
+                    "tolerate connection failure",
+                    Boolean.class,
+                    "Is failure to connect to a store tolerated",
+                    false,
+                    Boolean.TRUE);
 
-    public static final Param NAMESPACE = new Param("namespace", String.class, "Namespace prefix",
-            false);
+    public static final Param NAMESPACE =
+            new Param("namespace", String.class, "Namespace prefix", false);
 
-    public static final Param PARALLELISM = new Param("parallelism", Integer.class,
-            "Number of allowed concurrent queries on the delegate stores (unlimited by default)",
-            false, new Integer(-1));
+    public static final Param PARALLELISM =
+            new Param(
+                    "parallelism",
+                    Integer.class,
+                    "Number of allowed concurrent queries on the delegate stores (unlimited by default)",
+                    false,
+                    new Integer(-1));
 
-    public static final Param CONFIGURATION = new Param("configuration", URL.class,
-            "Location of the aggregated type configuration file", false, null);
+    public static final Param CONFIGURATION =
+            new Param(
+                    "configuration",
+                    URL.class,
+                    "Location of the aggregated type configuration file",
+                    false,
+                    null);
 
-    public static final Param CONFIGURATION_XML = new Param("configuration xml", String.class,
-            "The aggregated type configuration, as a xml document in a string", false, null);
+    public static final Param CONFIGURATION_XML =
+            new Param(
+                    "configuration xml",
+                    String.class,
+                    "The aggregated type configuration, as a xml document in a string",
+                    false,
+                    null);
 
     public String getDisplayName() {
         return "Aggregating data store";
@@ -74,8 +97,9 @@ public class AggregatingDataStoreFactory extends AbstractDataStoreFactory {
     }
 
     public Param[] getParametersInfo() {
-        return new Param[] { REPOSITORY_PARAM, NAMESPACE, CONFIGURATION,
-                TOLERATE_CONNECTION_FAILURE, PARALLELISM };
+        return new Param[] {
+            REPOSITORY_PARAM, NAMESPACE, CONFIGURATION, TOLERATE_CONNECTION_FAILURE, PARALLELISM
+        };
     }
 
     public boolean isAvailable() {
@@ -105,8 +129,10 @@ public class AggregatingDataStoreFactory extends AbstractDataStoreFactory {
         }
         String configurationXml = lookup(CONFIGURATION_XML, params, String.class);
         if (configurationXml != null && !"".equals(configurationXml.trim())) {
-            configs = new AggregateTypeParser().parseConfigurations(new ByteArrayInputStream(
-                    configurationXml.getBytes()));
+            configs =
+                    new AggregateTypeParser()
+                            .parseConfigurations(
+                                    new ByteArrayInputStream(configurationXml.getBytes()));
         }
 
         AggregatingDataStore store = new AggregatingDataStore(repository, executor);
@@ -126,8 +152,8 @@ public class AggregatingDataStoreFactory extends AbstractDataStoreFactory {
 
     public List<AggregateTypeConfiguration> parseConfiguration(String xml) throws IOException {
         if (xml != null && !"".equals(xml.trim())) {
-            return new AggregateTypeParser().parseConfigurations(new ByteArrayInputStream(xml
-                    .getBytes()));
+            return new AggregateTypeParser()
+                    .parseConfigurations(new ByteArrayInputStream(xml.getBytes()));
         } else {
             return null;
         }
@@ -150,7 +176,7 @@ public class AggregatingDataStoreFactory extends AbstractDataStoreFactory {
     /**
      * Looks up a parameter, if not found it returns the default value, assuming there is one, or
      * null otherwise
-     * 
+     *
      * @param <T>
      * @param param
      * @param params
@@ -158,14 +184,13 @@ public class AggregatingDataStoreFactory extends AbstractDataStoreFactory {
      * @return
      * @throws IOException
      */
-    <T> T lookup(Param param, Map<String, Serializable> params, Class<T> target) throws IOException {
+    <T> T lookup(Param param, Map<String, Serializable> params, Class<T> target)
+            throws IOException {
         T result = (T) param.lookUp(params);
         if (result == null) {
             return (T) param.getDefaultValue();
         } else {
             return result;
         }
-
     }
-
 }

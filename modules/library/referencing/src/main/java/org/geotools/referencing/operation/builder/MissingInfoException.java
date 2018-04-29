@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -17,39 +17,33 @@
 package org.geotools.referencing.operation.builder;
 
 import org.opengis.referencing.FactoryException;
+
 /**
- * Thrown when a required operation can't be performed because some information is missing or isn't set up properly.
- * 
+ * Thrown when a required operation can't be performed because some information is missing or isn't
+ * set up properly.
+ *
  * @since 2.4
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Jan Jezek
- *
  */
 public class MissingInfoException extends FactoryException {
 
-    /**
-     * Serial number for interoperability with different versions.
-     */
+    /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -3128525157353302290L;
 
     /**
      * Constructs an exception with the specified detail message.
      *
-     * @param  message The cause for this exception. The cause is saved
-     *         for later retrieval by the {@link #getCause()} method.
+     * @param message The cause for this exception. The cause is saved for later retrieval by the
+     *     {@link #getCause()} method.
      */
     public MissingInfoException(String message) {
         super(message);
     }
 
-/**
-     * Constructs an exception with no detail message.
-     */
+    /** Constructs an exception with no detail message. */
     public MissingInfoException() {
         super();
     }
 }
-

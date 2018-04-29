@@ -24,7 +24,6 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.TimeZone;
 import java.util.logging.Level;
-
 import org.geotools.data.shapefile.fid.FidIndexer;
 import org.geotools.data.shapefile.fid.IndexedFidWriter;
 import org.geotools.data.shapefile.files.FileWriter;
@@ -47,8 +46,11 @@ class IndexedShapefileFeatureWriter extends ShapefileFeatureWriter implements Fi
 
     private IndexManager indexes;
 
-    public IndexedShapefileFeatureWriter(IndexManager indexes,
-            ShapefileFeatureReader featureReader, Charset charset, TimeZone timeZone)
+    public IndexedShapefileFeatureWriter(
+            IndexManager indexes,
+            ShapefileFeatureReader featureReader,
+            Charset charset,
+            TimeZone timeZone)
             throws IOException {
         super(indexes.shpFiles, featureReader, charset, timeZone);
         this.indexes = indexes;
@@ -96,9 +98,7 @@ class IndexedShapefileFeatureWriter extends ShapefileFeatureWriter implements Fi
         super.write();
     }
 
-    /**
-     * Release resources and flush the header information.
-     */
+    /** Release resources and flush the header information. */
     public void close() throws IOException {
         super.close();
         fidWriter.close();
@@ -122,8 +122,8 @@ class IndexedShapefileFeatureWriter extends ShapefileFeatureWriter implements Fi
         try {
             fidWriter.close();
         } catch (Throwable e) {
-            ShapefileDataStoreFactory.LOGGER.log(Level.WARNING, "Error creating Feature ID index",
-                    e);
+            ShapefileDataStoreFactory.LOGGER.log(
+                    Level.WARNING, "Error creating Feature ID index", e);
         }
     }
 

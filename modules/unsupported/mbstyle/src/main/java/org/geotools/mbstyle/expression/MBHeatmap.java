@@ -26,16 +26,16 @@ public class MBHeatmap extends MBExpression {
         super(json);
     }
 
-    //TODO The MBHeatmap layer needs to be implemented
+    // TODO The MBHeatmap layer needs to be implemented
 
     /**
-     * Gets the kernel density estimation of a pixel in a heatmap layer, which is a relative measure of how many data
-     * points are crowded around a particular pixel. Can only be used in the heatmap-color property.
-     * Example:
-     *   ["heatmap-density"]: number
+     * Gets the kernel density estimation of a pixel in a heatmap layer, which is a relative measure
+     * of how many data points are crowded around a particular pixel. Can only be used in the
+     * heatmap-color property. Example: ["heatmap-density"]: number
+     *
      * @return
      */
-    public Expression heatmapDensity(){
+    public Expression heatmapDensity() {
         return null;
     }
 

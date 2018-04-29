@@ -16,6 +16,9 @@
  */
 package org.geotools.data.mongodb.complex;
 
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 import org.geotools.data.complex.AttributeMapping;
 import org.geotools.data.complex.FeatureTypeMapping;
 import org.geotools.data.complex.NestedAttributeMapping;
@@ -23,28 +26,25 @@ import org.geotools.data.complex.filter.XPathUtil;
 import org.geotools.data.complex.spi.CustomAttributeExpressionFactory;
 import org.geotools.filter.ConstantExpression;
 import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Literal;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-/**
- * Custom nested attribute expressions builder for MongoDB.
- */
+/** Custom nested attribute expressions builder for MongoDB. */
 public class MongoNestedAttributeExpressionFactory implements CustomAttributeExpressionFactory {
 
-
     @Override
-    public Expression createNestedAttributeExpression(FeatureTypeMapping mappings, XPathUtil.StepList xpath,
-                                                      NestedAttributeMapping nestedMapping) {
+    public Expression createNestedAttributeExpression(
+            FeatureTypeMapping mappings,
+            XPathUtil.StepList xpath,
+            NestedAttributeMapping nestedMapping) {
         return getSourceExpression(mappings, xpath, nestedMapping);
     }
 
-    private Expression getSourceExpression(FeatureTypeMapping mappings, XPathUtil.StepList xpath,
-                                           NestedAttributeMapping nestedMapping) {
-        if (!nestedMapping.getTargetXPath().equalsIgnoreIndex(xpath.subList(0, nestedMapping.getTargetXPath().size()))) {
+    private Expression getSourceExpression(
+            FeatureTypeMapping mappings,
+            XPathUtil.StepList xpath,
+            NestedAttributeMapping nestedMapping) {
+        if (!nestedMapping
+                .getTargetXPath()
+                .equalsIgnoreIndex(xpath.subList(0, nestedMapping.getTargetXPath().size()))) {
             return Expression.NIL;
         }
         int steps = xpath.size();
@@ -73,7 +73,8 @@ public class MongoNestedAttributeExpressionFactory implements CustomAttributeExp
         if (sourceExpression instanceof JsonSelectFunction) {
             JsonSelectAllFunction jsonSelect = new JsonSelectAllFunction();
             jsonPath = addPath(jsonPath, ((JsonSelectFunction) sourceExpression).getJsonPath());
-            List<Expression> parameters = Collections.singletonList(ConstantExpression.constant(jsonPath));
+            List<Expression> parameters =
+                    Collections.singletonList(ConstantExpression.constant(jsonPath));
             jsonSelect.setParameters(parameters);
             return jsonSelect;
         }
@@ -110,7 +111,8 @@ public class MongoNestedAttributeExpressionFactory implements CustomAttributeExp
         }
     }
 
-    private SearchResult search(XPathUtil.StepList xpath, AttributeMapping attributeMapping) throws Exception {
+    private SearchResult search(XPathUtil.StepList xpath, AttributeMapping attributeMapping)
+            throws Exception {
         for (int i = xpath.size(); i > 0; i--) {
             AttributeMapping foundAttributeMapping = match(attributeMapping, xpath.subList(0, i));
             if (foundAttributeMapping != null) {
@@ -120,9 +122,11 @@ public class MongoNestedAttributeExpressionFactory implements CustomAttributeExp
         return SearchResult.NOT_FOUND;
     }
 
-    private AttributeMapping match(AttributeMapping attributeMapping, XPathUtil.StepList xpath) throws IOException {
+    private AttributeMapping match(AttributeMapping attributeMapping, XPathUtil.StepList xpath)
+            throws IOException {
         if (attributeMapping instanceof NestedAttributeMapping) {
-            FeatureTypeMapping mappings = ((NestedAttributeMapping) attributeMapping).getFeatureTypeMapping(null);
+            FeatureTypeMapping mappings =
+                    ((NestedAttributeMapping) attributeMapping).getFeatureTypeMapping(null);
             List<AttributeMapping> attributesMappings = mappings.getAttributeMappings();
             for (AttributeMapping candidateAttributeMapping : attributesMappings) {
                 if (xpath.equalsIgnoreIndex(candidateAttributeMapping.getTargetXPath())) {

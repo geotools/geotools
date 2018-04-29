@@ -20,36 +20,36 @@ import org.geotools.data.efeature.DataTypes;
 
 /**
  * @author kengu - 12. juni 2011
- *
- *
  * @source $URL$
  */
 public class BooleanAdapter extends org.eclipse.emf.query.conditions.booleans.BooleanAdapter {
-    
-    public static final org.geotools.data.efeature.adapters.BooleanAdapter 
-        DEFAULT = new org.geotools.data.efeature.adapters.BooleanAdapter();
+
+    public static final org.geotools.data.efeature.adapters.BooleanAdapter DEFAULT =
+            new org.geotools.data.efeature.adapters.BooleanAdapter();
 
     /** Hide constructor */
-    private BooleanAdapter() { /*NOP*/};
-    
+    private BooleanAdapter() {
+        /*NOP*/
+    };
+
     @Override
     public Boolean getBoolean(Object value) {
         //
         // Direct conversion?
         //
-        if(value instanceof Boolean) {
-            return (Boolean)value;
-        } 
+        if (value instanceof Boolean) {
+            return (Boolean) value;
+        }
         //
         // Try string conversion?
         //
-        else if( DataTypes.isBoolean(value, true) ) {
+        else if (DataTypes.isBoolean(value, true)) {
             return Boolean.valueOf(value.toString());
         }
         //
         // Conversion failed
-        //        
-        throw new IllegalArgumentException("Value " 
-                + value + " can not be converted into a boolean");
+        //
+        throw new IllegalArgumentException(
+                "Value " + value + " can not be converted into a boolean");
     }
 }

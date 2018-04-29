@@ -17,12 +17,9 @@
 package org.geotools.gml3.bindings;
 
 import java.util.List;
-
 import javax.xml.namespace.QName;
-
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.geotools.gml2.FeatureTypeCache;
-import org.geotools.gml2.bindings.GMLEncodingUtils;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.XSDIdRegistry;
 import org.geotools.xml.AbstractComplexBinding;
@@ -35,12 +32,12 @@ import org.opengis.feature.Feature;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-
 /**
  * Binding object for the type http://www.opengis.net/gml:AbstractFeatureType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;complexType abstract="true" name="AbstractFeatureType"&gt;
  *      &lt;annotation&gt;
@@ -64,12 +61,8 @@ import org.w3c.dom.Element;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class AbstractFeatureTypeBinding extends AbstractComplexBinding {
@@ -79,9 +72,14 @@ public class AbstractFeatureTypeBinding extends AbstractComplexBinding {
     SchemaIndex schemaIndex;
     Configuration configuration;
     GML3EncodingUtils encodingUtils;
-    
-    public AbstractFeatureTypeBinding(FeatureTypeCache ftCache, BindingWalkerFactory bwFactory,
-            SchemaIndex schemaIndex, Configuration configuration, XSDIdRegistry idRegistry, GML3EncodingUtils encodingUtils ) {
+
+    public AbstractFeatureTypeBinding(
+            FeatureTypeCache ftCache,
+            BindingWalkerFactory bwFactory,
+            SchemaIndex schemaIndex,
+            Configuration configuration,
+            XSDIdRegistry idRegistry,
+            GML3EncodingUtils encodingUtils) {
         this.ftCache = ftCache;
         this.bwFactory = bwFactory;
         this.schemaIndex = schemaIndex;
@@ -90,14 +88,13 @@ public class AbstractFeatureTypeBinding extends AbstractComplexBinding {
         this.encodingUtils = encodingUtils;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return GML.AbstractFeatureType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -108,13 +105,13 @@ public class AbstractFeatureTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return GML3ParsingUtils.parseFeature(instance, node, value, ftCache, bwFactory);
 
         //        //get the definition of the element
@@ -128,21 +125,20 @@ public class AbstractFeatureTypeBinding extends AbstractComplexBinding {
         //            ftCache.put(fType);
         //        }
         //
-        //        //TODO: this could pick up wrong thing, node api needs to be 
+        //        //TODO: this could pick up wrong thing, node api needs to be
         //        // namespace aware
         //        String fid = (String) node.getAttributeValue("id");
         //
         //        return GML3ParsingUtils.feature(fType, fid, node);
     }
 
-    public Element encode(Object object, Document document, Element value)
-        throws Exception {
-        return encodingUtils.AbstractFeatureTypeEncode(object,document,value,idSet);
+    public Element encode(Object object, Document document, Element value) throws Exception {
+        return encodingUtils.AbstractFeatureTypeEncode(object, document, value, idSet);
     }
 
     @Override
     public List getProperties(Object object, XSDElementDeclaration element) throws Exception {
-        return encodingUtils.AbstractFeatureTypeGetProperties(object, element, schemaIndex,
-                configuration);
+        return encodingUtils.AbstractFeatureTypeGetProperties(
+                object, element, schemaIndex, configuration);
     }
 }

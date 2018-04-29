@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -19,33 +19,24 @@
  */
 package org.geotools.metadata.iso.spatial;
 
-import org.opengis.metadata.spatial.SpatialRepresentation;
 import org.geotools.metadata.iso.MetadataEntity;
-
+import org.opengis.metadata.spatial.SpatialRepresentation;
 
 /**
  * Method used to represent geographic information in the dataset.
- *
- *
  *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane
- *
  * @since 2.1
  */
 public class SpatialRepresentationImpl extends MetadataEntity implements SpatialRepresentation {
-    /**
-     * Serial number for interoperability with different versions.
-     */
+    /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 1443170876207840116L;
 
-    /**
-     * Constructs an initially empty spatial representation.
-     */
-    public SpatialRepresentationImpl() {
-    }
+    /** Constructs an initially empty spatial representation. */
+    public SpatialRepresentationImpl() {}
 
     /**
      * Constructs a metadata entity initialized with the values from the specified metadata.

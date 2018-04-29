@@ -19,7 +19,6 @@ package org.geotools.process.raster;
 
 import java.util.Collection;
 import java.util.Iterator;
-
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.process.ProcessException;
 import org.geotools.referencing.CRS;
@@ -32,56 +31,60 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 
 /**
- *
  * @author Daniele Romagnoli, GeoSolutions
- *
- *
  * @source $URL$
  */
 public class BaseCoverageAlgebraProcess {
-    
-    static final String MISMATCHING_ENVELOPE_MESSAGE = "coverageA and coverageB should share the same Envelope";
-    
-    static final String MISMATCHING_GRID_MESSAGE = "coverageA and coverageB should have the same gridRange";
-    
-    static final String MISMATCHING_CRS_MESSAGE = "coverageA and coverageB should share the same CoordinateReferenceSystem";
-    
-    private BaseCoverageAlgebraProcess() {
-        
-    }
 
-    public static void checkCompatibleCoverages(GridCoverage2D coverageA, GridCoverage2D coverageB) throws ProcessException {
-        if (coverageA == null || coverageB == null){
-            String coveragesNull = coverageA == null ? (coverageB == null ? "coverageA and coverageB" : "coverageA") : "coverageB";  
+    static final String MISMATCHING_ENVELOPE_MESSAGE =
+            "coverageA and coverageB should share the same Envelope";
+
+    static final String MISMATCHING_GRID_MESSAGE =
+            "coverageA and coverageB should have the same gridRange";
+
+    static final String MISMATCHING_CRS_MESSAGE =
+            "coverageA and coverageB should share the same CoordinateReferenceSystem";
+
+    private BaseCoverageAlgebraProcess() {}
+
+    public static void checkCompatibleCoverages(GridCoverage2D coverageA, GridCoverage2D coverageB)
+            throws ProcessException {
+        if (coverageA == null || coverageB == null) {
+            String coveragesNull =
+                    coverageA == null
+                            ? (coverageB == null ? "coverageA and coverageB" : "coverageA")
+                            : "coverageB";
             throw new ProcessException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, coveragesNull));
         }
-        
-        // 
+
+        //
         // checking same CRS
-        // 
+        //
         CoordinateReferenceSystem crsA = coverageA.getCoordinateReferenceSystem();
         CoordinateReferenceSystem crsB = coverageB.getCoordinateReferenceSystem();
-        if (!CRS.equalsIgnoreMetadata(crsA, crsB)){
+        if (!CRS.equalsIgnoreMetadata(crsA, crsB)) {
             MathTransform mathTransform = null;
             try {
                 mathTransform = CRS.findMathTransform(crsA, crsB);
             } catch (FactoryException e) {
-                throw new ProcessException("Exceptions occurred while looking for a mathTransform between the 2 coverage's CRSs", e );
+                throw new ProcessException(
+                        "Exceptions occurred while looking for a mathTransform between the 2 coverage's CRSs",
+                        e);
             }
-            if (mathTransform != null && !mathTransform.isIdentity()){
+            if (mathTransform != null && !mathTransform.isIdentity()) {
                 throw new ProcessException(MISMATCHING_CRS_MESSAGE);
             }
         }
-        
-        // 
+
+        //
         // checking same Envelope and grid range
-        // 
+        //
         Envelope envA = coverageA.getEnvelope();
         Envelope envB = coverageB.getEnvelope();
         if (!envA.equals(envB)) {
             throw new ProcessException(MISMATCHING_ENVELOPE_MESSAGE);
         }
-        
+
         GridEnvelope gridRangeA = coverageA.getGridGeometry().getGridRange();
         GridEnvelope gridRangeB = coverageA.getGridGeometry().getGridRange();
         if (gridRangeA.getSpan(0) != gridRangeB.getSpan(0)
@@ -92,56 +95,61 @@ public class BaseCoverageAlgebraProcess {
 
     /**
      * Utility method for ensuring that all the Input Coverages have the same CRS
-     * 
+     *
      * @param coverages
      * @throws ProcessException
      */
-    public static void checkCompatibleCoveragesForMerge(Collection<GridCoverage2D> coverages) throws ProcessException {
-        if (coverages == null || coverages.isEmpty()){
-            throw new ProcessException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "Input coverage List"));
+    public static void checkCompatibleCoveragesForMerge(Collection<GridCoverage2D> coverages)
+            throws ProcessException {
+        if (coverages == null || coverages.isEmpty()) {
+            throw new ProcessException(
+                    Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "Input coverage List"));
         }
-        
-        // 
+
+        //
         // checking same CRS
-        // 
-        
+        //
+
         // CRS which must be equal for all
         CoordinateReferenceSystem crs = null;
-        
+
         // Iterator on all the coverages
         Iterator<GridCoverage2D> it = coverages.iterator();
-        
-        while(it.hasNext()){
+
+        while (it.hasNext()) {
             // Selection of the coverage
             GridCoverage2D coverage = it.next();
             // Get the CRS associated
-            if(crs==null){
+            if (crs == null) {
                 crs = coverage.getCoordinateReferenceSystem();
-            }else{
+            } else {
                 CoordinateReferenceSystem crs1 = coverage.getCoordinateReferenceSystem();
                 // Check that the CRS are the same
-                checkCompatibleCRS(crs,crs1);
+                checkCompatibleCRS(crs, crs1);
             }
         }
     }
-    
+
     /**
      * Utility method for checking if two CRS are equals
-     * 
+     *
      * @param crsA
      * @param crsB
      */
-    public static void checkCompatibleCRS(CoordinateReferenceSystem crsA, CoordinateReferenceSystem crsB){
+    public static void checkCompatibleCRS(
+            CoordinateReferenceSystem crsA, CoordinateReferenceSystem crsB) {
         // check if they are equal
-        if (!CRS.equalsIgnoreMetadata(crsA, crsB)){
+        if (!CRS.equalsIgnoreMetadata(crsA, crsB)) {
             MathTransform mathTransform = null;
             try {
                 mathTransform = CRS.findMathTransform(crsA, crsB);
             } catch (FactoryException e) {
-                throw new ProcessException("Exceptions occurred while looking for a mathTransform between the coverage's CRSs", e );
+                throw new ProcessException(
+                        "Exceptions occurred while looking for a mathTransform between the coverage's CRSs",
+                        e);
             }
             // Check if their transformation is an identity
-            if (mathTransform != null && !mathTransform.isIdentity()){
+            if (mathTransform != null && !mathTransform.isIdentity()) {
                 throw new ProcessException(MISMATCHING_CRS_MESSAGE);
             }
         }

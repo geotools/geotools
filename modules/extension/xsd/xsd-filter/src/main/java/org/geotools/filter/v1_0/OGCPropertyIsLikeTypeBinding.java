@@ -17,7 +17,6 @@
 package org.geotools.filter.v1_0;
 
 import javax.xml.namespace.QName;
-
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
@@ -26,12 +25,12 @@ import org.opengis.filter.PropertyIsLike;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 
-
 /**
  * Binding object for the type http://www.opengis.net/ogc:PropertyIsLikeType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:complexType name="PropertyIsLikeType"&gt;
  *      &lt;xsd:complexContent&gt;
@@ -49,12 +48,8 @@ import org.opengis.filter.expression.PropertyName;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class OGCPropertyIsLikeTypeBinding extends AbstractComplexBinding {
@@ -64,14 +59,13 @@ public class OGCPropertyIsLikeTypeBinding extends AbstractComplexBinding {
         this.factory = factory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return OGC.PropertyIsLikeType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -82,13 +76,13 @@ public class OGCPropertyIsLikeTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         PropertyName name = (PropertyName) node.getChildValue(PropertyName.class);
         Literal literal = (Literal) node.getChildValue(Literal.class);
 
@@ -97,20 +91,19 @@ public class OGCPropertyIsLikeTypeBinding extends AbstractComplexBinding {
         String escape = (String) node.getAttributeValue("escape");
         boolean matchCase = true;
 
-        if (node.getAttributeValue("matchCase") != null){
+        if (node.getAttributeValue("matchCase") != null) {
             matchCase = (Boolean) node.getAttributeValue("matchCase");
         }
 
         if (escape == null) {
-            //1.1 uses "escapeChar", suppot that too
+            // 1.1 uses "escapeChar", suppot that too
             escape = (String) node.getAttributeValue("escapeChar");
         }
 
         return factory.like(name, literal.toString(), wildcard, single, escape, matchCase);
     }
 
-    public Object getProperty(Object object, QName name)
-        throws Exception {
+    public Object getProperty(Object object, QName name) throws Exception {
         PropertyIsLike isLike = (PropertyIsLike) object;
 
         if (OGC.PropertyName.equals(name)) {
@@ -118,7 +111,7 @@ public class OGCPropertyIsLikeTypeBinding extends AbstractComplexBinding {
         }
 
         if (OGC.Literal.equals(name)) {
-            return isLike.getLiteral() != null ? factory.literal( isLike.getLiteral() ) : null; 
+            return isLike.getLiteral() != null ? factory.literal(isLike.getLiteral()) : null;
         }
 
         if ("wildCard".equals(name.getLocalPart())) {
@@ -136,7 +129,7 @@ public class OGCPropertyIsLikeTypeBinding extends AbstractComplexBinding {
         if ("matchCase".equals(name.getLocalPart())) {
             return isLike.isMatchingCase();
         }
-        
+
         return null;
     }
 }

@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -19,19 +19,14 @@ package org.geotools.filter.text.commons;
 import org.geotools.filter.text.generated.parsers.Token;
 
 /**
- * Interface must be implemented by the specific compiler.
- * This will be used to send the token to the {@link CQLFilterBuilder}.
- * 
- * <p>
- * Warning: This component is not published. It is part of module implementation. 
- * Client module should not use this feature.
- * </p>
- * 
+ * Interface must be implemented by the specific compiler. This will be used to send the token to
+ * the {@link CQLFilterBuilder}.
+ *
+ * <p>Warning: This component is not published. It is part of module implementation. Client module
+ * should not use this feature.
+ *
  * @author Mauricio Pazos (Axios Engineering)
  * @since 2.5
- *
- *
- *
  * @source $URL$
  */
 public interface IToken {
@@ -47,5 +42,4 @@ public interface IToken {
     public int endColumn();
 
     public Token getAdapted();
-
 }

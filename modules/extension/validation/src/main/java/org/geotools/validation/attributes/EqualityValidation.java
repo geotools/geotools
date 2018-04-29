@@ -17,34 +17,28 @@
 package org.geotools.validation.attributes;
 
 import java.util.logging.Logger;
-
 import org.geotools.validation.DefaultFeatureValidation;
 import org.geotools.validation.ValidationResults;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 
-
 /**
  * Tests to see if an attribute is equal to a provided value.
- * 
- * <p>
- * I can only see this test being useful if a Filter is also used. Online
- * research shows that this test is used in the wild, so we are adding it into
- * our system.
- * </p>
+ *
+ * <p>I can only see this test being useful if a Filter is also used. Online research shows that
+ * this test is used in the wild, so we are adding it into our system.
  *
  * @author Jody Garnett, Refractions Research, Inc.
  * @author $Author: dmzwiers $ (last modification)
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public class EqualityValidation extends DefaultFeatureValidation {
     /** The logger for the validation module. */
-    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(
-            "org.geotools.validation");
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.validation");
+
     private String attributeName;
 
     /** Expected value that attribute are supposed to equal */
@@ -53,17 +47,13 @@ public class EqualityValidation extends DefaultFeatureValidation {
     /** Filter used to limit the number of Features we check */
     private Filter filter = Filter.INCLUDE;
 
-    /**
-     * No argument constructor, required by the Java Bean Specification.
-     */
-    public EqualityValidation() {
-    }
+    /** No argument constructor, required by the Java Bean Specification. */
+    public EqualityValidation() {}
 
     /**
      * The priority level used to schedule this Validation.
      *
      * @return PRORITY_SIMPLE
-     *
      * @see org.geotools.validation.Validation#getPriority()
      */
     public int getPriority() {
@@ -74,7 +64,6 @@ public class EqualityValidation extends DefaultFeatureValidation {
      * Implementation of getTypeNames.
      *
      * @return Array of typeNames, or empty array for all, null for disabled
-     *
      * @see org.geotools.validation.Validation#getTypeRefs()
      */
     public String[] getTypeRefs() {
@@ -86,26 +75,24 @@ public class EqualityValidation extends DefaultFeatureValidation {
             return ALL;
         }
 
-        return new String[] { getTypeRef(), };
+        return new String[] {
+            getTypeRef(),
+        };
     }
 
     /**
      * Validation test for feature.
-     * 
-     * <p>
-     * Description of test ...
-     * </p>
+     *
+     * <p>Description of test ...
      *
      * @param feature The Feature to be validated
      * @param type The FeatureType of the feature
      * @param results The storage for error messages.
-     *
      * @return <code>true</code> if the feature is a valid geometry.
-     *
      * @see org.geotools.validation.FeatureValidation#validate
      */
-    public boolean validate(SimpleFeature feature, SimpleFeatureType type,
-        ValidationResults results) {
+    public boolean validate(
+            SimpleFeature feature, SimpleFeatureType type, ValidationResults results) {
         if (!filter.evaluate(feature)) {
             return true;
         }
@@ -116,8 +103,7 @@ public class EqualityValidation extends DefaultFeatureValidation {
             return true;
         }
 
-        results.error(feature, attributeName + " did not not equals "
-            + expected);
+        results.error(feature, attributeName + " did not not equals " + expected);
 
         return false;
     }

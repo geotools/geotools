@@ -1412,6 +1412,11 @@
           <artifactId>maven-plugin-plugin</artifactId>
           <version>3.4</version>
         </plugin>
+        <plugin>
+          <groupId>com.coveo</groupId>
+            <artifactId>fmt-maven-plugin</artifactId>
+            <version>2.4.0</version>
+        </plugin>
       </plugins>
     </pluginManagement>
 
@@ -1791,6 +1796,23 @@
           </groups>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>com.coveo</groupId>
+            <artifactId>fmt-maven-plugin</artifactId>
+            <configuration>
+                <verbose>false</verbose>
+                <filesNamePattern>.*\.java</filesNamePattern>
+                <skip>false</skip>
+                <style>aosp</style>
+            </configuration>
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>format</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
     </plugins>
   </build>
 

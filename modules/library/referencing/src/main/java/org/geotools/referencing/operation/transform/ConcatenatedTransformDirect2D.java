@@ -18,14 +18,11 @@ package org.geotools.referencing.operation.transform;
 
 import java.awt.Shape;
 import java.awt.geom.Point2D;
-
-import org.opengis.referencing.operation.Matrix;
-import org.opengis.referencing.operation.MathTransform2D;
-import org.opengis.referencing.operation.TransformException;
-import org.opengis.referencing.operation.NoninvertibleTransformException;
-
 import org.geotools.referencing.operation.matrix.XMatrix;
-
+import org.opengis.referencing.operation.MathTransform2D;
+import org.opengis.referencing.operation.Matrix;
+import org.opengis.referencing.operation.NoninvertibleTransformException;
+import org.opengis.referencing.operation.TransformException;
 
 /**
  * Concatenated transform where both transforms are two-dimensional.
@@ -36,60 +33,45 @@ import org.geotools.referencing.operation.matrix.XMatrix;
  * @author Martin Desruisseaux (IRD)
  */
 final class ConcatenatedTransformDirect2D extends ConcatenatedTransformDirect
-                                       implements MathTransform2D
-{
-    /**
-     * Serial number for interoperability with different versions.
-     */
+        implements MathTransform2D {
+    /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 6009454091075588885L;
 
     /**
-     * The first math transform. This field is identical
-     * to {@link ConcatenatedTransform#transform1}. Only
-     * the type is different.
+     * The first math transform. This field is identical to {@link
+     * ConcatenatedTransform#transform1}. Only the type is different.
      */
     private final MathTransform2D transform1;
 
     /**
-     * The second math transform. This field is identical
-     * to {@link ConcatenatedTransform#transform1}. Only
-     * the type is different.
+     * The second math transform. This field is identical to {@link
+     * ConcatenatedTransform#transform1}. Only the type is different.
      */
     private final MathTransform2D transform2;
 
-    /**
-     * Constructs a concatenated transform.
-     */
-    public ConcatenatedTransformDirect2D(final MathTransform2D transform1,
-                                         final MathTransform2D transform2)
-    {
+    /** Constructs a concatenated transform. */
+    public ConcatenatedTransformDirect2D(
+            final MathTransform2D transform1, final MathTransform2D transform2) {
         super(transform1, transform2);
         this.transform1 = transform1;
         this.transform2 = transform2;
     }
 
-    /**
-     * Checks if transforms are compatibles with this implementation.
-     */
+    /** Checks if transforms are compatibles with this implementation. */
     @Override
     boolean isValid() {
-        return super.isValid() && getSourceDimensions()==2 && getTargetDimensions()==2;
+        return super.isValid() && getSourceDimensions() == 2 && getTargetDimensions() == 2;
     }
 
-    /**
-     * Transforms the specified {@code ptSrc}
-     * and stores the result in {@code ptDst}.
-     */
+    /** Transforms the specified {@code ptSrc} and stores the result in {@code ptDst}. */
     @Override
     public Point2D transform(final Point2D ptSrc, Point2D ptDst) throws TransformException {
         assert isValid();
         ptDst = transform1.transform(ptSrc, ptDst);
-        return  transform2.transform(ptDst, ptDst);
+        return transform2.transform(ptDst, ptDst);
     }
 
-    /**
-     * Transforms the specified shape.
-     */
+    /** Transforms the specified shape. */
     @Override
     public Shape createTransformedShape(final Shape shape) throws TransformException {
         assert isValid();
@@ -99,21 +81,19 @@ final class ConcatenatedTransformDirect2D extends ConcatenatedTransformDirect
     /**
      * Gets the derivative of this transform at a point.
      *
-     * @param  point The coordinate point where to evaluate the derivative.
+     * @param point The coordinate point where to evaluate the derivative.
      * @return The derivative at the specified point (never {@code null}).
      * @throws TransformException if the derivative can't be evaluated at the specified point.
      */
     @Override
     public Matrix derivative(final Point2D point) throws TransformException {
         final XMatrix matrix1 = toXMatrix(transform1.derivative(point));
-        final XMatrix matrix2 = toXMatrix(transform2.derivative(transform1.transform(point,null)));
+        final XMatrix matrix2 = toXMatrix(transform2.derivative(transform1.transform(point, null)));
         matrix2.multiply(matrix1);
         return matrix2;
     }
 
-    /**
-     * Creates the inverse transform of this object.
-     */
+    /** Creates the inverse transform of this object. */
     @Override
     public MathTransform2D inverse() throws NoninvertibleTransformException {
         return (MathTransform2D) super.inverse();

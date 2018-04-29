@@ -17,60 +17,47 @@
 package org.geotools.gce.imagemosaic.jdbc;
 
 import java.awt.image.BufferedImage;
-
 import org.geotools.geometry.GeneralEnvelope;
 
 /**
- * Class for holding tile info for composing the resulting image. Objects of
- * this class will be put in the queue from ImageDecoderThread and read from
- * ImageComposerThread
- * 
+ * Class for holding tile info for composing the resulting image. Objects of this class will be put
+ * in the queue from ImageDecoderThread and read from ImageComposerThread
+ *
  * @author mcr
- * 
- *
- *
  * @source $URL$
  */
 public class TileQueueElement {
 
-	public static TileQueueElement ENDELEMENT = new TileQueueElement(null, null, null);
+    public static TileQueueElement ENDELEMENT = new TileQueueElement(null, null, null);
 
-	/**
-	 * name of the tile
-	 */
-	private String name;
+    /** name of the tile */
+    private String name;
 
-	/**
-	 * the BufferedImage
-	 */
-	private BufferedImage tileImage;
+    /** the BufferedImage */
+    private BufferedImage tileImage;
 
-	/**
-	 * The georeferencing information
-	 */
-	private GeneralEnvelope envelope;
+    /** The georeferencing information */
+    private GeneralEnvelope envelope;
 
-	public GeneralEnvelope getEnvelope() {
-		return envelope;
-	}
+    public GeneralEnvelope getEnvelope() {
+        return envelope;
+    }
 
-	public TileQueueElement(String name, BufferedImage tileImage,
-			GeneralEnvelope envelope) {
-		this.name = name;
-		this.tileImage = tileImage;
-		this.envelope = envelope;
-	}
+    public TileQueueElement(String name, BufferedImage tileImage, GeneralEnvelope envelope) {
+        this.name = name;
+        this.tileImage = tileImage;
+        this.envelope = envelope;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public BufferedImage getTileImage() {
-		return tileImage;
-	}
+    public BufferedImage getTileImage() {
+        return tileImage;
+    }
 
-	public boolean isEndElement() {
-		return getName() == null && getTileImage() == null
-				&& getEnvelope() == null;
-	}
+    public boolean isEndElement() {
+        return getName() == null && getTileImage() == null && getEnvelope() == null;
+    }
 }

@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,18 +17,14 @@
  */
 package org.geotools.ysld.transform.sld;
 
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-
-import org.geotools.ysld.Ysld;
-
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import org.geotools.ysld.Ysld;
 
-/**
- * Handles xml parse events for {@link org.geotools.styling.Symbolizer} elements.
- */
+/** Handles xml parse events for {@link org.geotools.styling.Symbolizer} elements. */
 public class SymbolizerHandler extends SldTransformHandler {
 
     Map<String, String> options = new LinkedHashMap<String, String>();

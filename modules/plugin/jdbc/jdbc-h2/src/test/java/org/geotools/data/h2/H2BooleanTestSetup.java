@@ -19,11 +19,7 @@ package org.geotools.data.h2;
 import org.geotools.jdbc.JDBCBooleanTestSetup;
 import org.geotools.jdbc.JDBCDataStore;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class H2BooleanTestSetup extends JDBCBooleanTestSetup {
 
     protected H2BooleanTestSetup() {
@@ -33,19 +29,19 @@ public class H2BooleanTestSetup extends JDBCBooleanTestSetup {
     @Override
     protected void setUpDataStore(JDBCDataStore dataStore) {
         super.setUpDataStore(dataStore);
-        dataStore.setDatabaseSchema( null );
+        dataStore.setDatabaseSchema(null);
     }
-    
+
     @Override
     protected void createBooleanTable() throws Exception {
-        run( "CREATE TABLE \"b\" (fid int AUTO_INCREMENT(0) PRIMARY KEY, \"id\" int, \"boolProperty\" boolean)");
-        run( "INSERT INTO \"b\" (\"id\",\"boolProperty\") VALUES (0, false)");
-        run( "INSERT INTO \"b\" (\"id\",\"boolProperty\") VALUES (1, true)");
+        run(
+                "CREATE TABLE \"b\" (fid int AUTO_INCREMENT(0) PRIMARY KEY, \"id\" int, \"boolProperty\" boolean)");
+        run("INSERT INTO \"b\" (\"id\",\"boolProperty\") VALUES (0, false)");
+        run("INSERT INTO \"b\" (\"id\",\"boolProperty\") VALUES (1, true)");
     }
 
     @Override
     protected void dropBooleanTable() throws Exception {
-        run( "DROP TABLE \"b\"");
+        run("DROP TABLE \"b\"");
     }
-
 }

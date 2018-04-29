@@ -2,7 +2,7 @@
  *    GeoTools - OpenSource mapping toolkit
  *    http://geotools.org
  *    (C) 2005-2006, GeoTools Project Managment Committee (PMC)
- * 
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -22,17 +22,12 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import org.geotools.data.FeatureReader;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.IllegalAttributeException;
 
 /**
- * <p>
  * Private FeatureReader inner class for reading Features from the MIF file
- * </p>
- *
- *
- *
  *
  * @source $URL$
  */
@@ -44,15 +39,14 @@ public class EdigeoFeatureReader implements FeatureReader<SimpleFeatureType, Sim
     private Iterator<SimpleFeature> featureListIterator = null;
 
     protected class Visitor {
-        public void visit(Object[] values, String fid)
-                throws IllegalAttributeException {
+        public void visit(Object[] values, String fid) throws IllegalAttributeException {
             // create feature and add it to list
             SimpleFeature f = SimpleFeatureBuilder.build(ft, values, fid);
             featureList.add(f);
         }
     }
 
-    public EdigeoFeatureReader (File dir, String filename, String obj, SimpleFeatureType ft)
+    public EdigeoFeatureReader(File dir, String filename, String obj, SimpleFeatureType ft)
             throws IOException, IllegalAttributeException {
         this.ft = ft;
         featureList = new ArrayList<SimpleFeature>();
@@ -70,7 +64,6 @@ public class EdigeoFeatureReader implements FeatureReader<SimpleFeatureType, Sim
             featureListIterator = featureList.iterator();
         }
         return featureListIterator.next();
-
     }
 
     public boolean hasNext() throws IOException {
@@ -80,6 +73,5 @@ public class EdigeoFeatureReader implements FeatureReader<SimpleFeatureType, Sim
         return featureListIterator.hasNext();
     }
 
-    public void close() throws IOException {
-    }
+    public void close() throws IOException {}
 }

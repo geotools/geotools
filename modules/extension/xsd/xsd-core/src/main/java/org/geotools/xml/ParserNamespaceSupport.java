@@ -17,12 +17,11 @@
  */
 package org.geotools.xml;
 
-import org.xml.sax.helpers.NamespaceSupport;
-
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
+import org.xml.sax.helpers.NamespaceSupport;
 
 /**
  * NamespaceSupport implementation that allows additional NamespaceSupport objects to be part of the
@@ -37,7 +36,7 @@ public class ParserNamespaceSupport extends NamespaceSupport {
         String uri = super.getURI(prefix);
         if (uri == null) {
             Iterator<NamespaceSupport> it = others.iterator();
-            while(uri == null && it.hasNext()) {
+            while (uri == null && it.hasNext()) {
                 uri = it.next().getURI(prefix);
             }
         }
@@ -49,7 +48,7 @@ public class ParserNamespaceSupport extends NamespaceSupport {
         String prefix = super.getPrefix(uri);
         if (prefix == null) {
             Iterator<NamespaceSupport> it = others.iterator();
-            while(prefix == null && it.hasNext()) {
+            while (prefix == null && it.hasNext()) {
                 prefix = it.next().getPrefix(uri);
             }
         }
@@ -106,8 +105,8 @@ public class ParserNamespaceSupport extends NamespaceSupport {
                 return true;
             }
 
-            while(it.hasNext() && !e.hasMoreElements()) {
-                e =  next(it.next());
+            while (it.hasNext() && !e.hasMoreElements()) {
+                e = next(it.next());
             }
 
             return e.hasMoreElements();

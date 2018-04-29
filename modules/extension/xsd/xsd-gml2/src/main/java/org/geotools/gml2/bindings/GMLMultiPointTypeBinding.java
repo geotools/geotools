@@ -16,22 +16,20 @@
  */
 package org.geotools.gml2.bindings;
 
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.MultiPoint;
 import javax.xml.namespace.QName;
-
 import org.geotools.gml2.GML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.MultiPoint;
-
-
 /**
  * Binding object for the type http://www.opengis.net/gml:MultiPointType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;complexType name="MultiPointType"&gt;
  *      &lt;annotation&gt;
@@ -51,12 +49,8 @@ import com.vividsolutions.jts.geom.MultiPoint;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class GMLMultiPointTypeBinding extends AbstractComplexBinding {
@@ -66,9 +60,7 @@ public class GMLMultiPointTypeBinding extends AbstractComplexBinding {
         this.gFactory = gFactory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return GML.MultiPointType;
     }
@@ -78,6 +70,7 @@ public class GMLMultiPointTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -88,19 +81,18 @@ public class GMLMultiPointTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return GML2ParsingUtils.GeometryCollectionType_parse(node, MultiPoint.class, gFactory);
     }
 
-    public Object getProperty(Object object, QName name)
-        throws Exception {
-      
+    public Object getProperty(Object object, QName name) throws Exception {
+
         if (GML.pointMember.equals(name)) {
             return GML2ParsingUtils.asCollection((MultiPoint) object);
         }

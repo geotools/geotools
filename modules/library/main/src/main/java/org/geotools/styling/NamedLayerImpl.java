@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -21,43 +21,41 @@ package org.geotools.styling;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import org.geotools.util.Utilities;
 
 /**
  * Default implementation of named layer.
  *
  * @author jamesm
- *
- *
  * @source $URL$
  */
 public class NamedLayerImpl extends StyledLayerImpl implements NamedLayer {
     List<Style> styles = new ArrayList<Style>();
 
-    //FeatureTypeConstraint[] featureTypeConstraints = new FeatureTypeConstraint[0];    
+    // FeatureTypeConstraint[] featureTypeConstraints = new FeatureTypeConstraint[0];
     List<FeatureTypeConstraint> featureTypeConstraints = new ArrayList<FeatureTypeConstraint>();
-    
+
     public List<FeatureTypeConstraint> layerFeatureConstraints() {
-    	return featureTypeConstraints;
+        return featureTypeConstraints;
     }
+
     public FeatureTypeConstraint[] getLayerFeatureConstraints() {
         return featureTypeConstraints.toArray(new FeatureTypeConstraint[0]);
     }
 
     public void setLayerFeatureConstraints(FeatureTypeConstraint[] featureTypeConstraints) {
-    	this.featureTypeConstraints.clear();
-    	this.featureTypeConstraints.addAll(Arrays.asList(featureTypeConstraints));
+        this.featureTypeConstraints.clear();
+        this.featureTypeConstraints.addAll(Arrays.asList(featureTypeConstraints));
     }
-    
+
     public Style[] getStyles() {
         return styles.toArray(new Style[0]);
     }
 
     public List<Style> styles() {
-    	return styles;
+        return styles;
     }
-    
+
     public void addStyle(Style sl) {
         styles.add(sl);
     }
@@ -66,24 +64,22 @@ public class NamedLayerImpl extends StyledLayerImpl implements NamedLayer {
         visitor.visit(this);
     }
 
-	public boolean equals(Object oth) {
+    public boolean equals(Object oth) {
         if (this == oth) {
             return true;
         }
-        
-        if (oth instanceof NamedLayerImpl) {
-        	NamedLayerImpl other = (NamedLayerImpl) oth;
 
-        	if (!Utilities.equals(styles, other.styles))
-        		return false;
-        	
-        	if(!Utilities.equals(featureTypeConstraints, other.featureTypeConstraints)){
-        		return false;
-        	}
-        	return true;
+        if (oth instanceof NamedLayerImpl) {
+            NamedLayerImpl other = (NamedLayerImpl) oth;
+
+            if (!Utilities.equals(styles, other.styles)) return false;
+
+            if (!Utilities.equals(featureTypeConstraints, other.featureTypeConstraints)) {
+                return false;
+            }
+            return true;
         }
 
         return false;
-	}
-	
+    }
 }

@@ -29,11 +29,10 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
-
 import org.geotools.gce.grassraster.core.color.AttributeTable;
+import org.geotools.gce.grassraster.core.color.AttributeTable.CellAttribute;
 import org.geotools.gce.grassraster.core.color.JGrassColorTable;
 import org.geotools.gce.grassraster.core.color.JlsTokenizer;
-import org.geotools.gce.grassraster.core.color.AttributeTable.CellAttribute;
 import org.geotools.gce.grassraster.metadata.GrassBinaryImageMetadata;
 import org.geotools.gce.grassraster.spi.GrassBinaryImageReaderSpi;
 import org.geotools.referencing.CRS;
@@ -43,138 +42,100 @@ import org.opengis.referencing.datum.PixelInCell;
 
 /**
  * Represents the structure around a map inside a grass database.
- * <p>
- * Given a map file path, all the related files to that map in the
- * GRASS Location/Mapset are defined.
- * </p>
- * 
+ *
+ * <p>Given a map file path, all the related files to that map in the GRASS Location/Mapset are
+ * defined.
+ *
  * @author Andrea Antonello (www.hydrologis.com)
  * @since 3.0
  * @see {@link JGrassConstants}
  * @see {@link JGrassRegion}
- *
- *
  * @source $URL$
  */
 public class JGrassMapEnvironment {
 
-    /**
-     * A minimum value to be used when no range is available for a map.
-     */
+    /** A minimum value to be used when no range is available for a map. */
     public static double defaultMapMin = 0.0;
 
-    /**
-     * A maximum value to be used when no range is available for a map.
-     */
+    /** A maximum value to be used when no range is available for a map. */
     public static double defaultMapMax = 5000.0;
 
-    /**
-     * The default, always existing Mapset inside a Location.
-     */
+    /** The default, always existing Mapset inside a Location. */
     private File PERMANENT_MAPSET = null;
 
     /**
-     * The Mapset file of the map, through which the 
-     * {@linkplain JGrassMapEnvironment} was built.
+     * The Mapset file of the map, through which the {@linkplain JGrassMapEnvironment} was built.
      */
     private File MAPSET = null;
     /**
-     * The Location file of the map, through which the 
-     * {@linkplain JGrassMapEnvironment} was built.
+     * The Location file of the map, through which the {@linkplain JGrassMapEnvironment} was built.
      */
     private File LOCATION = null;
-    /**
-     * The DEFAULT_WIND file, that keeps the default region informations.
-     */
+    /** The DEFAULT_WIND file, that keeps the default region informations. */
     private File DEFAULT_WIND = null;
 
     /**
-     * The PROJ_INFO file, that keeps the projection informations as defined 
-     * by GRASS through the g.proj command.
+     * The PROJ_INFO file, that keeps the projection informations as defined by GRASS through the
+     * g.proj command.
      */
     private File PROJ_INFO = null;
 
     /**
-     * The PROJ_WKT file, that keeps the projection informations as defined by
-     * JGRASS to be compatible with geotools.
+     * The PROJ_WKT file, that keeps the projection informations as defined by JGRASS to be
+     * compatible with geotools.
      */
     private File PROJ_WKT = null;
 
-    /**
-     * The PROJ_WKT file, that keeps the projection units informations as 
-     * defined by GRASS.
-     */
+    /** The PROJ_WKT file, that keeps the projection units informations as defined by GRASS. */
     private File PROJ_UNITS = null;
 
     /**
-     * The WIND file, that keeps the current active region information, 
-     * i.e. the region on which calculations are executed.
+     * The WIND file, that keeps the current active region information, i.e. the region on which
+     * calculations are executed.
      */
     private File WIND = null;
 
-    /**
-     * The FCELL file, i.e. the file that holds the raw data for floating 
-     * value maps.
-     */
+    /** The FCELL file, i.e. the file that holds the raw data for floating value maps. */
     private File FCELL = null;
 
     /**
-     * The CELL file, i.e. the file that holds the raw data for integer 
-     * value maps. This file also always exist since it is placeholder also 
-     * for floating point maps.
+     * The CELL file, i.e. the file that holds the raw data for integer value maps. This file also
+     * always exist since it is placeholder also for floating point maps.
      */
     private File CELL = null;
 
-    /**
-     * The CATS file, holding the categories for the map.
-     */
+    /** The CATS file, holding the categories for the map. */
     private File CATS = null;
 
-    /**
-     * The HIST file, holding the history of the map.
-     */
+    /** The HIST file, holding the history of the map. */
     private File HIST = null;
 
-    /**
-     * The CELLHD file, holding the native file region information of the file.
-     */
+    /** The CELLHD file, holding the native file region information of the file. */
     private File CELLHD = null;
 
-    /**
-     * The COLR file, holding the colortable for the map.
-     */
+    /** The COLR file, holding the colortable for the map. */
     private File COLR = null;
 
-    /**
-     * The CELLMISC_FORMAT file, holding the format and compression information 
-     * for the map.
-     */
+    /** The CELLMISC_FORMAT file, holding the format and compression information for the map. */
     private File CELLMISC_FORMAT = null;
 
     /**
-     * The CELLMISC_QUANT file, holding quantization rules for passing from 
-     * floating points to integers.
+     * The CELLMISC_QUANT file, holding quantization rules for passing from floating points to
+     * integers.
      */
     private File CELLMISC_QUANT = null;
 
-    /**
-     * The CELLMISC_RANGE file, holding the range values for the map.
-     */
+    /** The CELLMISC_RANGE file, holding the range values for the map. */
     private File CELLMISC_RANGE = null;
-    /**
-     * The CELLMISC_NULL file, holding bitmap for novalues for the map.
-     */
+    /** The CELLMISC_NULL file, holding bitmap for novalues for the map. */
     private File CELLMISC_NULL = null;
 
     /**
-     * The {@linkplain JGrassMapEnvironment} that is created in the case a raster
-     * map was reclassed. 
+     * The {@linkplain JGrassMapEnvironment} that is created in the case a raster map was reclassed.
      */
     private JGrassMapEnvironment RECLASSEDENVIRONMENT = null;
 
-    /**
-     * The name of the map to which the environment refers to.
-     */
+    /** The name of the map to which the environment refers to. */
     private String mapName;
 
     private GrassBinaryImageReader coverageReader;
@@ -183,101 +144,170 @@ public class JGrassMapEnvironment {
 
     /**
      * Constructs an instance of {@linkplain JGrassMapEnvironment}.
-     * 
-     * @param cellFile the absolute path to a grass raster map, through which 
-     * the environment is defined.
+     *
+     * @param cellFile the absolute path to a grass raster map, through which the environment is
+     *     defined.
      */
-    public JGrassMapEnvironment( File cellFile ) {
+    public JGrassMapEnvironment(File cellFile) {
         CELL = cellFile;
         mapName = CELL.getName();
         MAPSET = CELL.getParentFile().getParentFile();
         LOCATION = MAPSET.getParentFile();
-        String permanentFolderPath = LOCATION.getAbsolutePath() + File.separator
-                + JGrassConstants.PERMANENT_MAPSET;
+        String permanentFolderPath =
+                LOCATION.getAbsolutePath() + File.separator + JGrassConstants.PERMANENT_MAPSET;
         PERMANENT_MAPSET = new File(permanentFolderPath);
-        DEFAULT_WIND = new File(permanentFolderPath + File.separator + JGrassConstants.DEFAULT_WIND);
+        DEFAULT_WIND =
+                new File(permanentFolderPath + File.separator + JGrassConstants.DEFAULT_WIND);
         PROJ_INFO = new File(permanentFolderPath + File.separator + JGrassConstants.PROJ_INFO);
         PROJ_WKT = new File(permanentFolderPath + File.separator + JGrassConstants.PROJ_WKT);
         PROJ_UNITS = new File(permanentFolderPath + File.separator + JGrassConstants.PROJ_UNITS);
 
         String mapsetPath = MAPSET.getAbsolutePath();
         WIND = new File(mapsetPath + File.separator + JGrassConstants.WIND);
-        FCELL = new File(mapsetPath + File.separator + JGrassConstants.FCELL + File.separator
-                + mapName);
-        CELLHD = new File(mapsetPath + File.separator + JGrassConstants.CELLHD + File.separator
-                + mapName);
-        CATS = new File(mapsetPath + File.separator + JGrassConstants.CATS + File.separator
-                + mapName);
-        COLR = new File(mapsetPath + File.separator + JGrassConstants.COLR + File.separator
-                + mapName);
-        HIST = new File(mapsetPath + File.separator + JGrassConstants.HIST + File.separator
-                + mapName);
+        FCELL =
+                new File(
+                        mapsetPath
+                                + File.separator
+                                + JGrassConstants.FCELL
+                                + File.separator
+                                + mapName);
+        CELLHD =
+                new File(
+                        mapsetPath
+                                + File.separator
+                                + JGrassConstants.CELLHD
+                                + File.separator
+                                + mapName);
+        CATS =
+                new File(
+                        mapsetPath
+                                + File.separator
+                                + JGrassConstants.CATS
+                                + File.separator
+                                + mapName);
+        COLR =
+                new File(
+                        mapsetPath
+                                + File.separator
+                                + JGrassConstants.COLR
+                                + File.separator
+                                + mapName);
+        HIST =
+                new File(
+                        mapsetPath
+                                + File.separator
+                                + JGrassConstants.HIST
+                                + File.separator
+                                + mapName);
 
-        String cellMiscPath = mapsetPath + File.separator + JGrassConstants.CELL_MISC
-                + File.separator + mapName + File.separator;
+        String cellMiscPath =
+                mapsetPath
+                        + File.separator
+                        + JGrassConstants.CELL_MISC
+                        + File.separator
+                        + mapName
+                        + File.separator;
         CELLMISC_NULL = new File(cellMiscPath + JGrassConstants.CELLMISC_NULL);
         CELLMISC_FORMAT = new File(cellMiscPath + JGrassConstants.CELLMISC_FORMAT);
         CELLMISC_QUANT = new File(cellMiscPath + JGrassConstants.CELLMISC_QUANT);
         CELLMISC_RANGE = new File(cellMiscPath + JGrassConstants.CELLMISC_RANGE);
-
     }
 
     /**
      * Constructs an instance of {@linkplain JGrassMapEnvironment}.
-     * <p>
-     * This constructor is a facility method in the case the mapset file and the 
-     * name of the GRASS raster map are passed.
-     * </p>
-     * 
+     *
+     * <p>This constructor is a facility method in the case the mapset file and the name of the
+     * GRASS raster map are passed.
+     *
      * @param mapsetFile file of the mapset path
      * @param mapName name of the GRASS raster map
      */
-    public JGrassMapEnvironment( File mapsetFile, String mapName ) {
-        this(new File(mapsetFile.getAbsolutePath() + File.separator + JGrassConstants.CELL
-                + File.separator + mapName));
+    public JGrassMapEnvironment(File mapsetFile, String mapName) {
+        this(
+                new File(
+                        mapsetFile.getAbsolutePath()
+                                + File.separator
+                                + JGrassConstants.CELL
+                                + File.separator
+                                + mapName));
     }
 
     /**
      * Reclasses the environment.
-     * 
-     * <p>
-     * In the case a reclassed map was found, this method has to be called, in 
-     * order to set the current environment to the new reclassed one.
-     * </p>
-     * 
+     *
+     * <p>In the case a reclassed map was found, this method has to be called, in order to set the
+     * current environment to the new reclassed one.
+     *
      * @param reclassedMapset the name of the mapset holding the reclassed map
      * @param reclassedMap the name of the reclassed map
      */
-    public void setReclassed( String reclassedMapset, String reclassedMap ) {
-        String reclassedCell = LOCATION.getAbsolutePath() + File.separator + reclassedMapset
-                + File.separator + JGrassConstants.CELL + File.separator + reclassedMap;
+    public void setReclassed(String reclassedMapset, String reclassedMap) {
+        String reclassedCell =
+                LOCATION.getAbsolutePath()
+                        + File.separator
+                        + reclassedMapset
+                        + File.separator
+                        + JGrassConstants.CELL
+                        + File.separator
+                        + reclassedMap;
         CELL = new File(reclassedCell);
         mapName = CELL.getName();
         MAPSET = CELL.getParentFile().getParentFile();
         LOCATION = MAPSET.getParentFile();
-        String permanentFolderPath = LOCATION.getAbsolutePath() + File.separator
-                + JGrassConstants.PERMANENT_MAPSET;
+        String permanentFolderPath =
+                LOCATION.getAbsolutePath() + File.separator + JGrassConstants.PERMANENT_MAPSET;
         PERMANENT_MAPSET = new File(permanentFolderPath);
-        DEFAULT_WIND = new File(permanentFolderPath + File.separator + JGrassConstants.DEFAULT_WIND);
+        DEFAULT_WIND =
+                new File(permanentFolderPath + File.separator + JGrassConstants.DEFAULT_WIND);
         PROJ_INFO = new File(permanentFolderPath + File.separator + JGrassConstants.PROJ_INFO);
         PROJ_WKT = new File(permanentFolderPath + File.separator + JGrassConstants.PROJ_WKT);
         PROJ_UNITS = new File(permanentFolderPath + File.separator + JGrassConstants.PROJ_UNITS);
 
         String mapsetPath = MAPSET.getAbsolutePath();
         WIND = new File(mapsetPath + File.separator + JGrassConstants.WIND);
-        FCELL = new File(mapsetPath + File.separator + JGrassConstants.FCELL + File.separator
-                + mapName);
-        CELLHD = new File(mapsetPath + File.separator + JGrassConstants.CELLHD + File.separator
-                + mapName);
-        CATS = new File(mapsetPath + File.separator + JGrassConstants.CATS + File.separator
-                + mapName);
-        COLR = new File(mapsetPath + File.separator + JGrassConstants.COLR + File.separator
-                + mapName);
-        HIST = new File(mapsetPath + File.separator + JGrassConstants.HIST + File.separator
-                + mapName);
+        FCELL =
+                new File(
+                        mapsetPath
+                                + File.separator
+                                + JGrassConstants.FCELL
+                                + File.separator
+                                + mapName);
+        CELLHD =
+                new File(
+                        mapsetPath
+                                + File.separator
+                                + JGrassConstants.CELLHD
+                                + File.separator
+                                + mapName);
+        CATS =
+                new File(
+                        mapsetPath
+                                + File.separator
+                                + JGrassConstants.CATS
+                                + File.separator
+                                + mapName);
+        COLR =
+                new File(
+                        mapsetPath
+                                + File.separator
+                                + JGrassConstants.COLR
+                                + File.separator
+                                + mapName);
+        HIST =
+                new File(
+                        mapsetPath
+                                + File.separator
+                                + JGrassConstants.HIST
+                                + File.separator
+                                + mapName);
 
-        String cellMiscPath = mapsetPath + File.separator + JGrassConstants.CELL_MISC
-                + File.separator + mapName + File.separator;
+        String cellMiscPath =
+                mapsetPath
+                        + File.separator
+                        + JGrassConstants.CELL_MISC
+                        + File.separator
+                        + mapName
+                        + File.separator;
         CELLMISC_NULL = new File(cellMiscPath + JGrassConstants.CELLMISC_NULL);
         CELLMISC_FORMAT = new File(cellMiscPath + JGrassConstants.CELLMISC_FORMAT);
         CELLMISC_QUANT = new File(cellMiscPath + JGrassConstants.CELLMISC_QUANT);
@@ -288,7 +318,7 @@ public class JGrassMapEnvironment {
 
     /**
      * Getter for mapName.
-     * 
+     *
      * @return the map name.
      */
     public String getMapName() {
@@ -297,7 +327,7 @@ public class JGrassMapEnvironment {
 
     /**
      * Getter for PERMANENT MAPSET folder.
-     * 
+     *
      * @return the PERMANENT MAPSET folder file.
      */
     public File getPERMANENT_MAPSET() {
@@ -306,7 +336,7 @@ public class JGrassMapEnvironment {
 
     /**
      * Getter for MAPSET folder.
-     * 
+     *
      * @return the MAPSET folder file.
      */
     public File getMAPSET() {
@@ -315,7 +345,7 @@ public class JGrassMapEnvironment {
 
     /**
      * Getter for LOCATION folder.
-     * 
+     *
      * @return the LOCATION file folder.
      */
     public File getLOCATION() {
@@ -324,7 +354,7 @@ public class JGrassMapEnvironment {
 
     /**
      * Getter for DEFAULT_WIND file.
-     * 
+     *
      * @return the DEFAULT_WIND file.
      */
     public File getDEFAULT_WIND() {
@@ -333,7 +363,7 @@ public class JGrassMapEnvironment {
 
     /**
      * Getter for PROJ_INFO file.
-     * 
+     *
      * @return the PROJ_INFO file.
      */
     public File getPROJ_INFO() {
@@ -342,7 +372,7 @@ public class JGrassMapEnvironment {
 
     /**
      * Getter for PROJ_WKT file.
-     * 
+     *
      * @return the PROJ_WKT file.
      */
     public File getPROJ_WKT() {
@@ -351,7 +381,7 @@ public class JGrassMapEnvironment {
 
     /**
      * Getter for PROJ_UNITS file.
-     * 
+     *
      * @return the PROJ_UNITS file.
      */
     public File getPROJ_UNITS() {
@@ -360,7 +390,7 @@ public class JGrassMapEnvironment {
 
     /**
      * Getter for WIND file.
-     * 
+     *
      * @return the WIND file.
      */
     public File getWIND() {
@@ -369,7 +399,7 @@ public class JGrassMapEnvironment {
 
     /**
      * Getter for FCELL file.
-     * 
+     *
      * @return the FCELL file.
      */
     public File getFCELL() {
@@ -378,7 +408,7 @@ public class JGrassMapEnvironment {
 
     /**
      * Getter for FCELL folder.
-     * 
+     *
      * @return the FCELL folder file.
      */
     public File getFcellFolder() {
@@ -387,7 +417,7 @@ public class JGrassMapEnvironment {
 
     /**
      * Getter for CELL file, i.e. the main map file.
-     * 
+     *
      * @return the CELL file.
      */
     public File getCELL() {
@@ -396,7 +426,7 @@ public class JGrassMapEnvironment {
 
     /**
      * Getter for the main map file.
-     * 
+     *
      * @return the main map file.
      */
     public File getMapFile() {
@@ -405,7 +435,7 @@ public class JGrassMapEnvironment {
 
     /**
      * Getter for CELL folder.
-     * 
+     *
      * @return the CELL folder file.
      */
     public File getCellFolder() {
@@ -414,7 +444,7 @@ public class JGrassMapEnvironment {
 
     /**
      * Getter for CATS file.
-     * 
+     *
      * @return the CATS file.
      */
     public File getCATS() {
@@ -423,7 +453,7 @@ public class JGrassMapEnvironment {
 
     /**
      * Getter for CATS folder.
-     * 
+     *
      * @return the CATS folder file.
      */
     public File getCatsFolder() {
@@ -432,7 +462,7 @@ public class JGrassMapEnvironment {
 
     /**
      * Getter for the history file.
-     * 
+     *
      * @return the HIST file.
      */
     public File getHIST() {
@@ -441,7 +471,7 @@ public class JGrassMapEnvironment {
 
     /**
      * Getter for CELLHD file.
-     * 
+     *
      * @return the CELLHD file.
      */
     public File getCELLHD() {
@@ -450,7 +480,7 @@ public class JGrassMapEnvironment {
 
     /**
      * Getter for COLR file.
-     * 
+     *
      * @return the COLR file.
      */
     public File getCOLR() {
@@ -459,7 +489,7 @@ public class JGrassMapEnvironment {
 
     /**
      * Getter for COLR folder.
-     * 
+     *
      * @return the COLR folder file.
      */
     public File getColrFolder() {
@@ -468,7 +498,7 @@ public class JGrassMapEnvironment {
 
     /**
      * Getter for CELLMISC_FORMAT file.
-     * 
+     *
      * @return the CELLMISC_FORMAT file.
      */
     public File getCELLMISC_FORMAT() {
@@ -477,7 +507,7 @@ public class JGrassMapEnvironment {
 
     /**
      * Getter for CELLMISC_QUANT file.
-     * 
+     *
      * @return the CELLMISC_QUANT file.
      */
     public File getCELLMISC_QUANT() {
@@ -486,7 +516,7 @@ public class JGrassMapEnvironment {
 
     /**
      * Getter for CELLMISC_RANGE file.
-     * 
+     *
      * @return the CELLMISC_RANGE file.
      */
     public File getCELLMISC_RANGE() {
@@ -495,7 +525,7 @@ public class JGrassMapEnvironment {
 
     /**
      * Getter for CELLMISC_NULL file.
-     * 
+     *
      * @return the CELLMISC_NULL file.
      */
     public File getCELLMISC_NULL() {
@@ -504,7 +534,7 @@ public class JGrassMapEnvironment {
 
     /**
      * Getter for RECLASSEDENVIRONMENT.
-     * 
+     *
      * @return the RECLASSEDENVIRONMENT.
      */
     public JGrassMapEnvironment getRECLASSEDENVIRONMENT() {
@@ -513,15 +543,15 @@ public class JGrassMapEnvironment {
 
     /**
      * Read the colorrules for the map wrapped by this {@link JGrassMapEnvironment}.
-     * 
-     * @param range the range to use for the default colortable, in the case of 
-     *              missing color file. Can be null.
+     *
+     * @param range the range to use for the default colortable, in the case of missing color file.
+     *     Can be null.
      * @return a {@link List} of color rules in string format.
      * @throws IOException
      */
-    public List<String> getColorRules( double[] range ) throws IOException {
+    public List<String> getColorRules(double[] range) throws IOException {
         if (range == null) {
-            range = new double[]{defaultMapMin, defaultMapMax};
+            range = new double[] {defaultMapMin, defaultMapMax};
         }
         JGrassColorTable colorTable = new JGrassColorTable(this, range);
         return colorTable.getColorRules();
@@ -529,18 +559,16 @@ public class JGrassMapEnvironment {
 
     /**
      * Reads the categories for the map wrapped by this {@link JGrassMapEnvironment}.
-     * 
-     * <p>
-     * The categories are returned in a {@link List} of strings that may 
-     * be of two types:<br>
+     *
+     * <p>The categories are returned in a {@link List} of strings that may be of two types:<br>
+     *
      * <ul>
-     *  <li>value:categorytext</li>
-     *  <li>value1-value2:categorytext</li>
+     *   <li>value:categorytext
+     *   <li>value1-value2:categorytext
      * </ul>
-     * </p>
-     * 
+     *
      * @return the list of categories in text format.
-     * @throws IOException 
+     * @throws IOException
      */
     public List<String> getCategories() throws IOException {
         List<String> categoriesList = new ArrayList<String>();
@@ -559,10 +587,10 @@ public class JGrassMapEnvironment {
             rdr.readLine();
             /* Read next n lines */
             String line;
-            while( (line = rdr.readLine()) != null ) {
+            while ((line = rdr.readLine()) != null) {
                 /* All lines other than '0:no data' are processed */
                 //            if (line.indexOf("0:no data") == -1) { //$NON-NLS-1$
-                JlsTokenizer tk = new JlsTokenizer(line, ":"); //$NON-NLS-1$
+                JlsTokenizer tk = new JlsTokenizer(line, ":"); // $NON-NLS-1$
                 if (tk.countTokens() == 2) {
                     float f = Float.parseFloat(tk.nextToken());
                     String att = tk.nextToken().trim();
@@ -577,7 +605,7 @@ public class JGrassMapEnvironment {
             }
 
             Enumeration<CellAttribute> categories = attTable.getCategories();
-            while( categories.hasMoreElements() ) {
+            while (categories.hasMoreElements()) {
                 AttributeTable.CellAttribute object = categories.nextElement();
                 categoriesList.add(object.toString());
             }
@@ -586,12 +614,11 @@ public class JGrassMapEnvironment {
         }
 
         return categoriesList;
-
     }
 
     /**
      * Read the {@link JGrassRegion} from the active region file.
-     * 
+     *
      * @return the active grass region.
      * @throws IOException
      */
@@ -602,7 +629,7 @@ public class JGrassMapEnvironment {
 
     /**
      * Reads the data range from a color table file, if existing.
-     * 
+     *
      * @return the data range or null if no range could be read.
      * @throws IOException
      */
@@ -613,7 +640,7 @@ public class JGrassMapEnvironment {
         if (rules.size() == 0) {
             return null;
         }
-        for( int i = 0; i < rules.size(); i++ ) {
+        for (int i = 0; i < rules.size(); i++) {
             String rule = rules.get(i);
             double[] values = new double[2];
             JGrassColorTable.parseColorRule(rule, values, null);
@@ -625,8 +652,11 @@ public class JGrassMapEnvironment {
                 dataRange[1] = values[1];
             }
         }
-        if (dataRange == null || Double.isNaN(dataRange[0]) || Double.isInfinite(dataRange[0])
-                || Double.isNaN(dataRange[1]) || Double.isInfinite(dataRange[1])) {
+        if (dataRange == null
+                || Double.isNaN(dataRange[0])
+                || Double.isInfinite(dataRange[0])
+                || Double.isNaN(dataRange[1])
+                || Double.isInfinite(dataRange[1])) {
             return null;
         }
         return dataRange;
@@ -634,7 +664,7 @@ public class JGrassMapEnvironment {
 
     /**
      * Reads the data range from the GRASS range file.
-     * 
+     *
      * @return the data range or null if the content is infinite or NaN.
      * @throws IOException
      */
@@ -657,15 +687,18 @@ public class JGrassMapEnvironment {
                 dataRange[1] = rangeBuffer.getDouble();
             }
         }
-        if (dataRange == null || Double.isNaN(dataRange[0]) || Double.isInfinite(dataRange[0])
-                || Double.isNaN(dataRange[1]) || Double.isInfinite(dataRange[1])) {
+        if (dataRange == null
+                || Double.isNaN(dataRange[0])
+                || Double.isInfinite(dataRange[0])
+                || Double.isNaN(dataRange[1])
+                || Double.isInfinite(dataRange[1])) {
             return null;
         }
         return dataRange;
     }
     /**
      * Reads the data range by reading the map.
-     * 
+     *
      * @return the data range.
      * @throws IOException
      */
@@ -674,8 +707,7 @@ public class JGrassMapEnvironment {
          * if the range file doesn't exist, the only way is to scan the whole map.
          */
         GrassCoverageReader coverageReader = new GrassCoverageReader(getCELL());
-        coverageReader.setParams(PixelInCell.CELL_CENTER, null,
-                false, false, null);
+        coverageReader.setParams(PixelInCell.CELL_CENTER, null, false, false, null);
         coverageReader.read(null);
         double[] dataRange = coverageReader.getRange();
 
@@ -689,31 +721,31 @@ public class JGrassMapEnvironment {
 
     /**
      * Getter for the legend string.
-     * 
+     *
      * @return the legendstring.
      */
     public String getLegendString() throws IOException {
         checkReader();
-        String legendString = coverageMetadataMap
-                .get(GrassBinaryImageMetadata.COLOR_RULES_DESCRIPTOR);
+        String legendString =
+                coverageMetadataMap.get(GrassBinaryImageMetadata.COLOR_RULES_DESCRIPTOR);
         return legendString;
     }
 
     /**
      * Getter for the categories string.
-     * 
+     *
      * @return the categories string.
      */
     public String getCategoriesString() throws IOException {
         checkReader();
-        String categoriesString = coverageMetadataMap
-                .get(GrassBinaryImageMetadata.CATEGORIES_DESCRIPTOR);
+        String categoriesString =
+                coverageMetadataMap.get(GrassBinaryImageMetadata.CATEGORIES_DESCRIPTOR);
         return categoriesString;
     }
 
     /**
      * Read the {@link CoordinateReferenceSystem crs} from the location.
-     * 
+     *
      * @return the crs of the location containing the map.
      * @throws Exception
      */
@@ -724,7 +756,7 @@ public class JGrassMapEnvironment {
             StringBuffer wtkString = new StringBuffer();
             try {
                 String line = null;
-                while( (line = crsReader.readLine()) != null ) {
+                while ((line = crsReader.readLine()) != null) {
                     wtkString.append(line.trim());
                 }
 
@@ -741,14 +773,13 @@ public class JGrassMapEnvironment {
         } else {
             return null;
         }
-
     }
 
     /**
      * Read the file region of the map.
-     * 
+     *
      * @return the {@link JGrassRegion} of the file.
-     * @throws IOException 
+     * @throws IOException
      */
     public JGrassRegion getFileRegion() throws IOException {
         // checkReader();
@@ -774,19 +805,18 @@ public class JGrassMapEnvironment {
         if (coverageReader == null) {
             coverageReader = new GrassBinaryImageReader(new GrassBinaryImageReaderSpi());
             coverageReader.setInput(getCELL());
-            coverageMetadataMap = ((GrassBinaryImageMetadata) coverageReader.getImageMetadata(0))
-                    .toHashMap();
+            coverageMetadataMap =
+                    ((GrassBinaryImageMetadata) coverageReader.getImageMetadata(0)).toHashMap();
         }
     }
-    
-    private static byte[] double2bytearray( double doubleValue ) {
+
+    private static byte[] double2bytearray(double doubleValue) {
         long l = Double.doubleToLongBits(doubleValue);
         byte[] b = new byte[8];
         int shift = 64 - 8;
-        for( int k = 0; k < 8; k++, shift -= 8 ) {
+        for (int k = 0; k < 8; k++, shift -= 8) {
             b[k] = (byte) (l >>> shift);
         }
         return b;
     }
-
 }

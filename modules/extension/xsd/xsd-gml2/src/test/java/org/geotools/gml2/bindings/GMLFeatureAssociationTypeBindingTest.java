@@ -20,12 +20,7 @@ import org.geotools.gml2.GML;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class GMLFeatureAssociationTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance featureAssociation;
     ElementInstance feature;
@@ -33,8 +28,9 @@ public class GMLFeatureAssociationTypeBindingTest extends AbstractGMLBindingTest
     protected void setUp() throws Exception {
         super.setUp();
 
-        featureAssociation = createElement(GML.NAMESPACE, "myFeatureAssociation",
-                GML.FEATUREASSOCIATIONTYPE, null);
+        featureAssociation =
+                createElement(
+                        GML.NAMESPACE, "myFeatureAssociation", GML.FEATUREASSOCIATIONTYPE, null);
         feature = createElement(GML.NAMESPACE, "myFeature", GML.ABSTRACTFEATURETYPE, null);
     }
 
@@ -43,13 +39,13 @@ public class GMLFeatureAssociationTypeBindingTest extends AbstractGMLBindingTest
     //			new String[]{"geom","count"},new Class[]{Point.class,Integer.class},
     //			new Object[]{new GeometryFactory().createPoint(new Coordinate(1,1)), new Integer(2)}
     //		);
-    //		
+    //
     //		Node node = createNode(
     //			featureAssociation,new ElementInstance[]{feature},new Object[]{f},
     //			null,null
     //		);
-    //		
-    //		GMLFeatureAssociationTypeBinding s = 
+    //
+    //		GMLFeatureAssociationTypeBinding s =
     //			(GMLFeatureAssociationTypeBinding)getBinding(GML.FEATUREASSOCIATIONTYPE);
     //		Feature f1 = (Feature) s.parse(featureAssociation,node,null);
     //		assertNotNull(f1);
@@ -58,12 +54,13 @@ public class GMLFeatureAssociationTypeBindingTest extends AbstractGMLBindingTest
     public void testWithoutFeature() throws Exception {
         Node node = createNode(featureAssociation, null, null, null, null);
 
-        GMLFeatureAssociationTypeBinding s = (GMLFeatureAssociationTypeBinding) getBinding(GML.FEATUREASSOCIATIONTYPE);
+        GMLFeatureAssociationTypeBinding s =
+                (GMLFeatureAssociationTypeBinding) getBinding(GML.FEATUREASSOCIATIONTYPE);
 
         try {
             assertNull(s.parse(featureAssociation, node, null));
         } catch (Exception e) {
-            //ok
+            // ok
         }
     }
 }

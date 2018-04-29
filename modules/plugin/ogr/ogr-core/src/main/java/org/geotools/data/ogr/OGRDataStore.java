@@ -16,6 +16,8 @@
  */
 package org.geotools.data.ogr;
 
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
@@ -24,7 +26,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
-
 import org.geotools.data.DataSourceException;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -39,13 +40,10 @@ import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.Name;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-
 /**
  * A data store based on the OGR native library, bound to it via <a
  * href="http://code.google.com/p/bridj/">BridJ</a>
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 @SuppressWarnings("rawtypes")
@@ -108,14 +106,23 @@ public class OGRDataStore extends ContentDataStore {
             }
             ds = ogr.DriverOpen(driver, ogrSourceName, mode);
             if (ds == null) {
-                throw new IOException("OGR could not open '" + ogrSourceName + "' in "
-                        + (update ? "read-write" : "read-only") + " mode with driver " + ogrDriver);
+                throw new IOException(
+                        "OGR could not open '"
+                                + ogrSourceName
+                                + "' in "
+                                + (update ? "read-write" : "read-only")
+                                + " mode with driver "
+                                + ogrDriver);
             }
         } else {
             ds = ogr.OpenShared(ogrSourceName, mode);
             if (ds == null) {
-                throw new IOException("OGR could not open '" + ogrSourceName + "' in "
-                        + (update ? "read-write" : "read-only") + " mode");
+                throw new IOException(
+                        "OGR could not open '"
+                                + ogrSourceName
+                                + "' in "
+                                + (update ? "read-write" : "read-only")
+                                + " mode");
             }
         }
 
@@ -149,7 +156,7 @@ public class OGRDataStore extends ContentDataStore {
                 return false;
             }
             l = openOGRLayer(ds, typeName);
-            
+
             // for the moment we support working only with random writers
             boolean canDelete = ogr.LayerCanDeleteFeature(l);
             boolean canWriteRandom = ogr.LayerCanWriteRandom(l);
@@ -168,10 +175,10 @@ public class OGRDataStore extends ContentDataStore {
 
     /**
      * Creates a new OGR layer with provided schema and options
-     * 
+     *
      * @param schema the geotools schema
      * @param approximateFields if true, OGR will try to create fields that are approximations of
-     *        the required ones when an exact match cannt be provided
+     *     the required ones when an exact match cannt be provided
      * @param options OGR data source/layer creation options
      * @throws IOException
      */
@@ -192,10 +199,10 @@ public class OGRDataStore extends ContentDataStore {
             Object driver = ogr.DataSourceGetDriver(dataSource);
             String driverName = ogr.DriverGetName(driver);
             ogr.DriverRelease(driver);
-            if (!driverName.equalsIgnoreCase("georss") &&
-                !driverName.equalsIgnoreCase("gpx") &&
-                !driverName.equalsIgnoreCase("sosi") &&
-                !ogr.LayerCanCreateField(layer)) {
+            if (!driverName.equalsIgnoreCase("georss")
+                    && !driverName.equalsIgnoreCase("gpx")
+                    && !driverName.equalsIgnoreCase("sosi")
+                    && !ogr.LayerCanCreateField(layer)) {
                 throw new DataSourceException(
                         "OGR reports it's not possible to create fields on this layer");
             }
@@ -203,8 +210,7 @@ public class OGRDataStore extends ContentDataStore {
             // create fields
             for (int i = 0; i < schema.getAttributeCount(); i++) {
                 AttributeDescriptor ad = schema.getDescriptor(i);
-                if (ad == schema.getGeometryDescriptor())
-                    continue;
+                if (ad == schema.getGeometryDescriptor()) continue;
 
                 Object fieldDefinition = mapper.getOGRFieldDefinition(ad);
                 ogr.LayerCreateField(layer, fieldDefinition, approximateFields ? 1 : 0);
@@ -228,15 +234,16 @@ public class OGRDataStore extends ContentDataStore {
      * the schema definition without having data too. Also, in those formats, the output is writable
      * only so as long as it's empty, it's not possible to write against an existing GML file for
      * example.
-     * 
+     *
      * @param schema the geotools schema
      * @param approximateFields if true, OGR will try to create fields that are approximations of
-     *        the required ones when an exact match cannt be provided
+     *     the required ones when an exact match cannt be provided
      * @param options OGR data source/layer creation options
      * @throws IOException
      */
-    public void createSchema(SimpleFeatureCollection data, boolean approximateFields,
-            String[] options) throws IOException {
+    public void createSchema(
+            SimpleFeatureCollection data, boolean approximateFields, String[] options)
+            throws IOException {
         Object dataSource = null;
         Object layer = null;
         SimpleFeatureType schema = data.getSchema();
@@ -247,17 +254,17 @@ public class OGRDataStore extends ContentDataStore {
 
             FeatureTypeMapper mapper = new FeatureTypeMapper(ogr);
 
-            //layer = createNewLayer(schema, dataSource, optionsPointer, mapper);
+            // layer = createNewLayer(schema, dataSource, optionsPointer, mapper);
             layer = createNewLayer(schema, dataSource, options, mapper);
 
             // check the ability to create fields
             Object driver = ogr.DataSourceGetDriver(dataSource);
             String driverName = ogr.DriverGetName(driver);
             ogr.DriverRelease(driver);
-            if (!driverName.equalsIgnoreCase("georss") &&
-                !driverName.equalsIgnoreCase("gpx") &&
-                !driverName.equalsIgnoreCase("sosi") &&
-                !ogr.LayerCanCreateField(layer)) {
+            if (!driverName.equalsIgnoreCase("georss")
+                    && !driverName.equalsIgnoreCase("gpx")
+                    && !driverName.equalsIgnoreCase("sosi")
+                    && !ogr.LayerCanCreateField(layer)) {
                 throw new DataSourceException(
                         "OGR reports it's not possible to create fields on this layer");
             }
@@ -324,7 +331,8 @@ public class OGRDataStore extends ContentDataStore {
                     } else {
                         // remap index
                         int ogrIndex = indexMap.get(i);
-                        FeatureMapper.setFieldValue(layerDefinition, ogrFeature, ogrIndex, value, ogr);
+                        FeatureMapper.setFieldValue(
+                                layerDefinition, ogrFeature, ogrIndex, value, ogr);
                     }
                 }
 
@@ -345,24 +353,28 @@ public class OGRDataStore extends ContentDataStore {
         }
     }
 
-    private Object createNewLayer(SimpleFeatureType schema, Object dataSource, String[] options, 
-        FeatureTypeMapper mapper) throws IOException, DataSourceException {
+    private Object createNewLayer(
+            SimpleFeatureType schema, Object dataSource, String[] options, FeatureTypeMapper mapper)
+            throws IOException, DataSourceException {
         Object layer;
         // get the spatial reference corresponding to the default geometry
         GeometryDescriptor geomType = schema.getGeometryDescriptor();
         long ogrGeomType = mapper.getOGRGeometryType(geomType);
-        Object spatialReference = mapper.getSpatialReference(geomType
-                .getCoordinateReferenceSystem());
+        Object spatialReference =
+                mapper.getSpatialReference(geomType.getCoordinateReferenceSystem());
 
         // create the layer
-        layer = ogr.DataSourceCreateLayer(dataSource, schema.getTypeName(), spatialReference, ogrGeomType, options);
+        layer =
+                ogr.DataSourceCreateLayer(
+                        dataSource, schema.getTypeName(), spatialReference, ogrGeomType, options);
         if (layer == null) {
-            throw new DataSourceException("Could not create the OGR layer: "+ogr.GetLastErrorMsg());
+            throw new DataSourceException(
+                    "Could not create the OGR layer: " + ogr.GetLastErrorMsg());
         }
         return layer;
     }
 
-    private Object openOrCreateDataSource(String[] options, Object dataSource) 
+    private Object openOrCreateDataSource(String[] options, Object dataSource)
             throws IOException, DataSourceException {
         try {
             dataSource = openOGRDataSource(true);
@@ -374,14 +386,16 @@ public class OGRDataStore extends ContentDataStore {
                     ogr.DriverRelease(driver);
                 }
                 if (dataSource == null)
-                    throw new IOException("Could not create OGR data source with driver "
-                            + ogrDriver + " and options " + options);
+                    throw new IOException(
+                            "Could not create OGR data source with driver "
+                                    + ogrDriver
+                                    + " and options "
+                                    + options);
             } else {
-                throw new DataSourceException("Driver not provided, and could not "
-                        + "open data source neither");
+                throw new DataSourceException(
+                        "Driver not provided, and could not " + "open data source neither");
             }
         }
         return dataSource;
     }
-
 }

@@ -18,7 +18,6 @@ package org.geotools.coverage.io.catalog;
 
 import java.io.IOException;
 import java.util.List;
-
 import org.geotools.coverage.grid.io.GranuleSource;
 import org.geotools.data.Query;
 import org.geotools.data.collection.ListFeatureCollection;
@@ -29,7 +28,7 @@ import org.opengis.filter.Filter;
 
 /**
  * A {@link GranuleSource} implementation wrapping a {@link CoverageSlicesCatalog}.
- * 
+ *
  * @author Daniele Romagnoli, GeoSolutions SAS
  */
 public class CoverageSlicesCatalogSource implements GranuleSource {
@@ -45,34 +44,35 @@ public class CoverageSlicesCatalogSource implements GranuleSource {
 
     @Override
     public SimpleFeatureCollection getGranules(Query q) throws IOException {
-        //TODO: optimize this. It's currently "putting" all the features. No iterator is used. 
-        
+        // TODO: optimize this. It's currently "putting" all the features. No iterator is used.
+
         // Filtering by typeName
         if (q == null) {
             q = new Query(typeName);
         } else {
             q.setTypeName(typeName);
         }
-        
+
         Filter filter = q.getFilter();
         q.setFilter(filter);
         List<CoverageSlice> granules = innerCatalog.getGranules(q);
-        SimpleFeatureCollection collection = new ListFeatureCollection(innerCatalog.getSchema(typeName));
-        for (CoverageSlice granule: granules) {
-            ((ListFeatureCollection)collection).add(granule.getOriginator());
+        SimpleFeatureCollection collection =
+                new ListFeatureCollection(innerCatalog.getSchema(typeName));
+        for (CoverageSlice granule : granules) {
+            ((ListFeatureCollection) collection).add(granule.getOriginator());
         }
         return collection;
     }
 
     @Override
     public int getCount(Query q) throws IOException {
-        //TODO: quick implementation. think about something less expensive
+        // TODO: quick implementation. think about something less expensive
         return innerCatalog.getGranules(q).size();
     }
 
     @Override
     public ReferencedEnvelope getBounds(Query q) throws IOException {
-        //TODO: quick implementation. think about something less expensive
+        // TODO: quick implementation. think about something less expensive
         return getGranules(q).getBounds();
     }
 
@@ -85,5 +85,4 @@ public class CoverageSlicesCatalogSource implements GranuleSource {
     public void dispose() throws IOException {
         // do nothing
     }
-
 }

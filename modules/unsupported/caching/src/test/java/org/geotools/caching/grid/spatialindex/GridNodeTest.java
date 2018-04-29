@@ -17,20 +17,13 @@
 package org.geotools.caching.grid.spatialindex;
 
 import java.util.Iterator;
-
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-
 import org.geotools.caching.spatialindex.Region;
 import org.geotools.caching.spatialindex.RegionNodeIdentifier;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class GridNodeTest extends TestCase {
     GridNode node;
     Region mbr;
@@ -42,7 +35,7 @@ public class GridNodeTest extends TestCase {
     }
 
     public void setUp() {
-        mbr = new Region(new double[] { 0, 1 }, new double[] { 2, 3 });
+        mbr = new Region(new double[] {0, 1}, new double[] {2, 3});
         node = new GridNode(new RegionNodeIdentifier(mbr));
     }
 
@@ -57,37 +50,36 @@ public class GridNodeTest extends TestCase {
     }
 
     void populate() {
-    	node.data.clear();
+        node.data.clear();
         for (int i = 0; i < 10; i++) {
-        	GridData gd1 = new GridData(mbr, data+i);
-        	GridData gd2 = new GridData(mbr, data2+i);
+            GridData gd1 = new GridData(mbr, data + i);
+            GridData gd2 = new GridData(mbr, data2 + i);
             node.insertData(gd1);
             node.insertData(gd2);
         }
-        
     }
 
     public void testInsert() {
         populate();
         assertEquals(20, node.getDataCount());
-        for (int i = 0; i < 10; i ++){
-        	assertEquals(true, node.getData().contains(new GridData(mbr, data + i)));
-        	assertEquals(true, node.getData().contains(new GridData(mbr, data2 + i)));
+        for (int i = 0; i < 10; i++) {
+            assertEquals(true, node.getData().contains(new GridData(mbr, data + i)));
+            assertEquals(true, node.getData().contains(new GridData(mbr, data2 + i)));
         }
     }
 
     public void testDelete() {
         populate();
-        
-        GridData del = new GridData(mbr, data + 5 );
+
+        GridData del = new GridData(mbr, data + 5);
         node.deleteData(del);
         assertEquals(false, node.getData().contains(del));
-        
-        del = new GridData(mbr, data2 + 9 );
+
+        del = new GridData(mbr, data2 + 9);
         node.deleteData(del);
         assertEquals(false, node.getData().contains(del));
-        
-        assertEquals(20-2, node.getDataCount());
+
+        assertEquals(20 - 2, node.getDataCount());
     }
 
     Object getData(GridNode n, int index) {

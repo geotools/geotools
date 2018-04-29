@@ -19,23 +19,21 @@ package org.geotools.data.efeature.query;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.query.conditions.Condition;
 import org.eclipse.emf.query.conditions.eobjects.structuralfeatures.EObjectAttributeValueCondition;
-
 import org.geotools.data.efeature.EFeatureInfo;
 
 /**
  * @author kengu - 11. juni 2011
- *
- *
  * @source $URL$
  */
 public class EFeatureValueCondition extends EObjectAttributeValueCondition {
-    
-    // ----------------------------------------------------- 
+
+    // -----------------------------------------------------
     //  Constructors
     // -----------------------------------------------------
-    
+
     /**
      * Default constructor
+     *
      * @param attribute
      * @param condition
      */
@@ -48,6 +46,7 @@ public class EFeatureValueCondition extends EObjectAttributeValueCondition {
 
     /**
      * {@link EAttribute} mapping constructor.
+     *
      * @param attribute
      * @param condition
      */
@@ -57,5 +56,4 @@ public class EFeatureValueCondition extends EObjectAttributeValueCondition {
         //
         super(eInfo.eMappedTo(eAttribute), condition);
     }
-    
 }

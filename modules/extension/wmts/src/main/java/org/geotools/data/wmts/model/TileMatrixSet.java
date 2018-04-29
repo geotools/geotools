@@ -18,10 +18,7 @@ package org.geotools.data.wmts.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.geotools.data.ows.CRSEnvelope;
-
 import org.geotools.referencing.CRS;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
@@ -30,10 +27,9 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 /**
  * The geometry of the tiled space.
  *
- * In a tiled map layer, the representation of the space is constrained in a discrete set of
- * parameters. A tile matrix set defines these parameters. Each tile matrix set contains one
- * or more "tile matrices" defining the tiles that are available for that coordinate reference
- * system.
+ * <p>In a tiled map layer, the representation of the space is constrained in a discrete set of
+ * parameters. A tile matrix set defines these parameters. Each tile matrix set contains one or more
+ * "tile matrices" defining the tiles that are available for that coordinate reference system.
  *
  * @author Emanuele Tajariol (etj at geo-solutions dot it)
  */
@@ -71,8 +67,8 @@ public class TileMatrixSet {
         try {
             this.coordinateReferenceSystem = parseCoordinateReferenceSystem(crs);
         } catch (Exception ex) {
-            throw new IllegalArgumentException("Can't parse crs " + crs + ":" + ex.getMessage(),
-                    ex);
+            throw new IllegalArgumentException(
+                    "Can't parse crs " + crs + ":" + ex.getMessage(), ex);
         }
 
         this.crs = crs;
@@ -82,9 +78,7 @@ public class TileMatrixSet {
         matrices.add(tileMatrix);
     }
 
-    /**
-     * @return the crs
-     */
+    /** @return the crs */
     public String getCrs() {
         return crs;
     }
@@ -96,7 +90,8 @@ public class TileMatrixSet {
     /**
      * Try and parse the crs string.
      *
-     * Also takes care of including deprecated codes like EPSG:900913 replacing them with EPSG:3857.
+     * <p>Also takes care of including deprecated codes like EPSG:900913 replacing them with
+     * EPSG:3857.
      */
     protected CoordinateReferenceSystem parseCoordinateReferenceSystem(String crs)
             throws NoSuchAuthorityCodeException, FactoryException {
@@ -109,23 +104,17 @@ public class TileMatrixSet {
         return CRS.decode(crs);
     }
 
-    /**
-     * @return the matrices
-     */
+    /** @return the matrices */
     public List<TileMatrix> getMatrices() {
         return matrices;
     }
 
-    /**
-     * @param matrices the matrices to set
-     */
+    /** @param matrices the matrices to set */
     public void setMatrices(ArrayList<TileMatrix> matrices) {
         this.matrices = matrices;
     }
 
-    /**
-     * @return the identifier
-     */
+    /** @return the identifier */
     public String getIdentifier() {
         return identifier;
     }
@@ -155,9 +144,7 @@ public class TileMatrixSet {
         return sb.toString();
     }
 
-    /**
-     * @return the number of levels in this MatrixSet
-     */
+    /** @return the number of levels in this MatrixSet */
     public int size() {
         return matrices.size();
     }

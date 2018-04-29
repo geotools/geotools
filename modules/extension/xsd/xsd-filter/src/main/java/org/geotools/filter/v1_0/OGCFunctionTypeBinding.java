@@ -16,21 +16,21 @@
  */
 package org.geotools.filter.v1_0;
 
-import org.picocontainer.MutablePicoContainer;
 import javax.xml.namespace.QName;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
-
+import org.opengis.filter.FilterFactory;
+import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.Function;
+import org.picocontainer.MutablePicoContainer;
 
 /**
  * Binding object for the type http://www.opengis.net/ogc:FunctionType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:complexType name="FunctionType"&gt;
  *      &lt;xsd:complexContent&gt;
@@ -45,12 +45,8 @@ import org.geotools.xml.Node;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class OGCFunctionTypeBinding extends AbstractComplexBinding {
@@ -60,14 +56,13 @@ public class OGCFunctionTypeBinding extends AbstractComplexBinding {
         this.factory = factory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return OGC.FunctionType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -78,22 +73,22 @@ public class OGCFunctionTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {
-    }
+    public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Expression[] args = new Expression[node.getChildren().size()];
 
         for (int i = 0; i < node.getChildren().size(); i++) {
@@ -106,16 +101,15 @@ public class OGCFunctionTypeBinding extends AbstractComplexBinding {
         return factory.function(name, args);
     }
 
-    public Object getProperty(Object object, QName name)
-        throws Exception {
+    public Object getProperty(Object object, QName name) throws Exception {
         Function function = (Function) object;
 
-        //&lt;xsd:element maxOccurs="unbounded" minOccurs="0" ref="ogc:expression"/&gt;
+        // &lt;xsd:element maxOccurs="unbounded" minOccurs="0" ref="ogc:expression"/&gt;
         if ("expression".equals(name.getLocalPart())) {
             return function.getParameters();
         }
 
-        //&lt;xsd:attribute name="name" type="xsd:string" use="required"/&gt;
+        // &lt;xsd:attribute name="name" type="xsd:string" use="required"/&gt;
         if ("name".equals(name.getLocalPart())) {
             return function.getName();
         }

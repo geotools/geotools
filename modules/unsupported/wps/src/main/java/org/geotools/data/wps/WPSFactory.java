@@ -20,16 +20,12 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
-
-import net.opengis.wps10.DescriptionType;
 import net.opengis.wps10.ProcessDescriptionType;
-
 import org.geotools.data.Parameter;
 import org.geotools.process.Process;
 import org.geotools.process.impl.SingleProcessFactory;
 import org.geotools.text.Text;
 import org.opengis.util.InternationalString;
-
 
 /**
  * This class acts as a ProcessFactory for any process. It handles converting related bean
@@ -39,15 +35,9 @@ import org.opengis.util.InternationalString;
  * to execute the process and return the results.
  *
  * @author GDavis
- *
- *
- *
- *
- *
  * @source $URL$
  */
-public class WPSFactory extends SingleProcessFactory
-{
+public class WPSFactory extends SingleProcessFactory {
 
     private ProcessDescriptionType pdt;
 
@@ -65,8 +55,7 @@ public class WPSFactory extends SingleProcessFactory
 
     private Map<String, Parameter<?>> resultInfo = new TreeMap<String, Parameter<?>>();
 
-    public WPSFactory(ProcessDescriptionType pdt, URL serverUrl)
-    {
+    public WPSFactory(ProcessDescriptionType pdt, URL serverUrl) {
         this.pdt = pdt;
         this.serverUrl = serverUrl;
         buildValuesFromProcessDescriptionType();
@@ -77,68 +66,56 @@ public class WPSFactory extends SingleProcessFactory
      *
      * @param pdt
      */
-    private void buildValuesFromProcessDescriptionType()
-    {
+    private void buildValuesFromProcessDescriptionType() {
         this.version = this.pdt.getProcessVersion();
         this.title = this.pdt.getTitle().getValue();
         this.identifier = this.pdt.getIdentifier().getValue();
-        this.description = WPSUtils.isAbstractNull(this.pdt) ? "" : this.pdt.getAbstract().getValue();
+        this.description =
+                WPSUtils.isAbstractNull(this.pdt) ? "" : this.pdt.getAbstract().getValue();
         this.parameterInfo = WPSUtils.createInputParamMap(this.pdt, this.parameterInfo);
         this.resultInfo = WPSUtils.createOutputParamMap(this.pdt, this.resultInfo);
     }
 
-    /**
-     * Create a representation of a process
-     */
-    public Process create()
-    {
+    /** Create a representation of a process */
+    public Process create() {
         return new WPSProcess(this);
     }
 
-    public InternationalString getDescription()
-    {
+    public InternationalString getDescription() {
         return Text.text(description);
     }
 
-    public Map<String, Parameter<?>> getParameterInfo()
-    {
+    public Map<String, Parameter<?>> getParameterInfo() {
         return Collections.unmodifiableMap(parameterInfo);
     }
 
-    public Map<String, Parameter<?>> getResultInfo(Map<String, Object> parameters) throws IllegalArgumentException
-    {
+    public Map<String, Parameter<?>> getResultInfo(Map<String, Object> parameters)
+            throws IllegalArgumentException {
         return Collections.unmodifiableMap(resultInfo);
     }
 
-    public InternationalString getTitle()
-    {
+    public InternationalString getTitle() {
         return Text.text(title);
     }
 
-    public String getIdentifier()
-    {
+    public String getIdentifier() {
         return identifier;
     }
 
-    public String getVersion()
-    {
+    public String getVersion() {
         return version;
     }
 
-    public boolean supportsProgress()
-    {
+    public boolean supportsProgress() {
         // unknown, so return false
         return false;
     }
 
-    public ProcessDescriptionType getProcessDescriptionType()
-    {
+    public ProcessDescriptionType getProcessDescriptionType() {
         return this.pdt;
     }
 
-    public URL getServerURL()
-    {
+    public URL getServerURL() {
         return this.serverUrl;
     }
-
 }

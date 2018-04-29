@@ -16,11 +16,8 @@
  */
 package org.geotools.ows.bindings;
 
-
 import javax.xml.namespace.QName;
-
 import net.opengis.ows10.Ows10Factory;
-
 import org.eclipse.emf.ecore.EFactory;
 import org.geotools.ows.OWS;
 
@@ -28,7 +25,8 @@ import org.geotools.ows.OWS;
  * Binding object for the type http://www.opengis.net/ows:WGS84BoundingBoxType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;complexType name="WGS84BoundingBoxType"&gt;
  *      &lt;annotation&gt;
@@ -67,27 +65,21 @@ import org.geotools.ows.OWS;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class WGS84BoundingBoxTypeBinding extends BoundingBoxTypeBinding {
-    
+
     public WGS84BoundingBoxTypeBinding() {
         super(Ows10Factory.eINSTANCE, OWS.WGS84BoundingBoxType);
     }
-    
+
     public WGS84BoundingBoxTypeBinding(EFactory owsFactory, QName target) {
         super(owsFactory, target);
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return OWS.WGS84BoundingBoxType;
     }

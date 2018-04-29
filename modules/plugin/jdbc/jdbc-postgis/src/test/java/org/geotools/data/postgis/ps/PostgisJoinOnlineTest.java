@@ -26,5 +26,4 @@ public class PostgisJoinOnlineTest extends JDBCJoinOnlineTest {
     protected JDBCJoinTestSetup createTestSetup() {
         return new PostgisJoinTestSetup(new PostGISPSTestSetup());
     }
-
 }

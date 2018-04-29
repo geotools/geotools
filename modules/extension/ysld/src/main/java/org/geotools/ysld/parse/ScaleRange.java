@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -20,8 +20,8 @@ package org.geotools.ysld.parse;
 import org.geotools.styling.Rule;
 
 /**
- * Represents and provides utility methods for a scale range (e.g., "scale: [min, max]") that can be applied to a given {@link Rule}.
- *
+ * Represents and provides utility methods for a scale range (e.g., "scale: [min, max]") that can be
+ * applied to a given {@link Rule}.
  */
 public class ScaleRange {
     final double minDenom;

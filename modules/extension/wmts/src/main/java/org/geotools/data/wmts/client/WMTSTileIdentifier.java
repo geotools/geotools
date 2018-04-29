@@ -20,7 +20,8 @@ import org.geotools.tile.TileIdentifier;
 import org.geotools.tile.impl.ZoomLevel;
 
 /**
- * A TileIdentifier locates a tile in the grid space of a given tile server by giving its column, row and zoom level.
+ * A TileIdentifier locates a tile in the grid space of a given tile server by giving its column,
+ * row and zoom level.
  *
  * @author ian
  * @author Emanuele Tajariol (etj at geo-solutions dot it)
@@ -28,8 +29,7 @@ import org.geotools.tile.impl.ZoomLevel;
 class WMTSTileIdentifier extends TileIdentifier {
 
     /**
-     * create an identifier based on
-     * /layername/{TileMatrixSet}/{TileMatrix}/{TileCol}/{TileRow}.png
+     * create an identifier based on /layername/{TileMatrixSet}/{TileMatrix}/{TileCol}/{TileRow}.png
      *
      * @param x
      * @param y
@@ -64,20 +64,15 @@ class WMTSTileIdentifier extends TileIdentifier {
     @Override
     public TileIdentifier getRightNeighbour() {
         int newX = getX() + 1;
-        if (newX >= getZoomLevel().getMaxTilePerRowNumber())
-            return null;
-        else
-            return new WMTSTileIdentifier(newX, getY(), getZoomLevel(), getServiceName());
+        if (newX >= getZoomLevel().getMaxTilePerRowNumber()) return null;
+        else return new WMTSTileIdentifier(newX, getY(), getZoomLevel(), getServiceName());
     }
 
     @Override
     public TileIdentifier getLowerNeighbour() {
         int height = ((WMTSZoomLevel) getZoomLevel()).getMaxTilePerColNumber();
         int newY = getY() + 1;
-        if (newY >= ((WMTSZoomLevel) getZoomLevel()).getMaxTilePerColNumber())
-            return null;
-        else
-            return new WMTSTileIdentifier(getX(), newY, getZoomLevel(), getServiceName());
+        if (newY >= ((WMTSZoomLevel) getZoomLevel()).getMaxTilePerColNumber()) return null;
+        else return new WMTSTileIdentifier(getX(), newY, getZoomLevel(), getServiceName());
     }
-
 }

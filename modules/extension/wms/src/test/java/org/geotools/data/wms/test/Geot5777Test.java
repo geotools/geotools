@@ -21,11 +21,9 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.MockHttpClient;
 import org.geotools.data.ows.MockHttpResponse;
-import org.geotools.data.wms.WMS1_1_0;
 import org.geotools.data.wms.WebMapServer;
 import org.geotools.data.wms.request.GetMapRequest;
 import org.geotools.ows.ServiceException;
@@ -33,37 +31,31 @@ import org.geotools.test.TestData;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * @author ian
- *
- */
+/** @author ian */
 public class Geot5777Test {
 
-    /**
-     * @throws java.lang.Exception
-     */
+    /** @throws java.lang.Exception */
     @Before
-    public void setUp() throws Exception {
-    }
+    public void setUp() throws Exception {}
 
     @Test
     public void test() throws ServiceException, MalformedURLException, IOException {
-     // prepare the responses
-        MockHttpClient client = new MockHttpClient() {
+        // prepare the responses
+        MockHttpClient client =
+                new MockHttpClient() {
 
-            public HTTPResponse get(URL url) throws IOException {
-                if (url.getQuery().contains("GetCapabilities")) {
-                    URL caps = TestData.getResource(this, "geot553capabilities.xml");
-                    return new MockHttpResponse(caps, "text/xml");
-                } else {
-                    throw new IllegalArgumentException(
-                            "Don't know how to handle a get request over " + url.toExternalForm());
-                }
-            }
+                    public HTTPResponse get(URL url) throws IOException {
+                        if (url.getQuery().contains("GetCapabilities")) {
+                            URL caps = TestData.getResource(this, "geot553capabilities.xml");
+                            return new MockHttpResponse(caps, "text/xml");
+                        } else {
+                            throw new IllegalArgumentException(
+                                    "Don't know how to handle a get request over "
+                                            + url.toExternalForm());
+                        }
+                    }
+                };
 
-        };
-        
-        
         WebMapServer wms = new WebMapServer(new URL("http://test.org"), client);
         GetMapRequest request = wms.createGetMapRequest();
         request.setFormat("image/png");
@@ -72,5 +64,4 @@ public class Geot5777Test {
         request.setBBox("-180, -85.0511287798, 180, 85.011287798");
         assertFalse(request.getFinalURL().toString().contains(" "));
     }
-
 }

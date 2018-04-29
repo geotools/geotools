@@ -18,12 +18,7 @@ package org.geotools.ml;
 
 import java.util.Calendar;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class Envelope {
     String from;
     String to;

@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -20,28 +20,21 @@
 package org.geotools.metadata.iso.constraint;
 
 import java.util.Collection;
-
-import org.opengis.util.InternationalString;
-import org.opengis.metadata.constraint.Constraints;
 import org.geotools.metadata.iso.MetadataEntity;
-
+import org.opengis.metadata.constraint.Constraints;
+import org.opengis.util.InternationalString;
 
 /**
  * Restrictions on the access and use of a resource or metadata.
- *
- *
  *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane
- *
  * @since 2.1
  */
 public class ConstraintsImpl extends MetadataEntity implements Constraints {
-    /**
-     * Serial number for interoperability with different versions.
-     */
+    /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 7197823876215294777L;
 
     /**
@@ -50,11 +43,8 @@ public class ConstraintsImpl extends MetadataEntity implements Constraints {
      */
     private Collection<InternationalString> useLimitation;
 
-    /**
-     * Constructs an initially empty constraints.
-     */
-    public ConstraintsImpl() {
-    }
+    /** Constructs an initially empty constraints. */
+    public ConstraintsImpl() {}
 
     /**
      * Constructs a metadata entity initialized with the values from the specified metadata.
@@ -66,20 +56,19 @@ public class ConstraintsImpl extends MetadataEntity implements Constraints {
     }
 
     /**
-     * Returns the limitation affecting the fitness for use of the resource. Example, "not to be used for
-     * navigation".
+     * Returns the limitation affecting the fitness for use of the resource. Example, "not to be
+     * used for navigation".
      */
     public synchronized Collection<InternationalString> getUseLimitation() {
         return (useLimitation = nonNullCollection(useLimitation, InternationalString.class));
     }
 
     /**
-     * Set the limitation affecting the fitness for use of the resource. Example, "not to be used for
-     * navigation".
+     * Set the limitation affecting the fitness for use of the resource. Example, "not to be used
+     * for navigation".
      */
     public synchronized void setUseLimitation(
-            final Collection<? extends InternationalString> newValues)
-    {
+            final Collection<? extends InternationalString> newValues) {
         useLimitation = copyCollection(newValues, useLimitation, InternationalString.class);
     }
 }

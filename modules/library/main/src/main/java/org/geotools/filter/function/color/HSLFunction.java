@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2017, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -19,7 +19,6 @@ package org.geotools.filter.function.color;
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 import java.awt.Color;
-
 import org.geotools.filter.FunctionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
@@ -31,9 +30,13 @@ import org.opengis.filter.capability.FunctionName;
  */
 public class HSLFunction extends FunctionImpl {
 
-    public static FunctionName NAME = new FunctionNameImpl("hsl", parameter("result", Color.class),
-            parameter("hue", Double.class), parameter("saturation", Double.class),
-            parameter("lightness", Double.class));
+    public static FunctionName NAME =
+            new FunctionNameImpl(
+                    "hsl",
+                    parameter("result", Color.class),
+                    parameter("hue", Double.class),
+                    parameter("saturation", Double.class),
+                    parameter("lightness", Double.class));
 
     public HSLFunction() {
         this.functionName = NAME;
@@ -47,5 +50,4 @@ public class HSLFunction extends FunctionImpl {
 
         return new HSLColor(hue, saturation, lightness).toRGB();
     }
-
 }

@@ -22,26 +22,20 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.BitSet;
 import java.util.zip.Deflater;
-
 import javax.imageio.stream.ImageOutputStream;
 import javax.media.jai.iterator.RandomIter;
 import javax.media.jai.iterator.RandomIterFactory;
 import javax.media.jai.iterator.RectIter;
-
 import org.geotools.gce.grassraster.DummyProgressListener;
 import org.geotools.gce.grassraster.JGrassRegion;
 import org.geotools.util.SimpleInternationalString;
 import org.opengis.util.ProgressListener;
 
 /**
- * <p>
  * Write compressed JGrass rasters to disk
- * </p>
- * 
+ *
  * @author Andrea Antonello (www.hydrologis.com)
  * @since 1.1.0
- *
- *
  * @source $URL$
  */
 public class CompressesRasterWriter {
@@ -52,7 +46,7 @@ public class CompressesRasterWriter {
 
     private boolean jump = false;
 
-    private double[] range = new double[]{Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY};
+    private double[] range = new double[] {Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY};
 
     private long pointerInFilePosition = 0;
 
@@ -66,7 +60,7 @@ public class CompressesRasterWriter {
 
     /**
      * Preparing the environment for compressing and writing the map to disk
-     * 
+     *
      * @param _outputToDiskType
      * @param _novalue
      * @param _jump
@@ -76,9 +70,16 @@ public class CompressesRasterWriter {
      * @param _dataWindow
      * @param monitor
      */
-    public CompressesRasterWriter( int _outputToDiskType, double _novalue, boolean _jump,
-            double[] _range, long _pointerInFilePosition, long[] _rowaddresses,
-            JGrassRegion _dataWindow, ProgressListener monitor, String mapName ) {
+    public CompressesRasterWriter(
+            int _outputToDiskType,
+            double _novalue,
+            boolean _jump,
+            double[] _range,
+            long _pointerInFilePosition,
+            long[] _rowaddresses,
+            JGrassRegion _dataWindow,
+            ProgressListener monitor,
+            String mapName) {
         outputToDiskType = _outputToDiskType;
         novalue = _novalue;
         jump = _jump;
@@ -87,28 +88,29 @@ public class CompressesRasterWriter {
         rowaddresses = _rowaddresses;
         dataWindow = _dataWindow;
         this.mapName = mapName;
-        if (monitor != null)
-            this.monitor = monitor;
+        if (monitor != null) this.monitor = monitor;
     }
 
     /**
      * Compress and write data from a {@link RectIter map iterator}.
-     * <p>
-     * This method converts every single row of the buffer of values to bytes, as needed by the
+     *
+     * <p>This method converts every single row of the buffer of values to bytes, as needed by the
      * deflater. Then the byterows are compressed and then written to file. Every rows first byte
      * carries the information about compression (0 = not compressed, 1 = compressed). At the begin
      * the place for the header is written to file, in the end the header is re-written with the
      * right rowaddresses (at the begin we do not know how much compression will influence).
-     * </p>
-     * 
+     *
      * @param theCreatedFile - handler for the main map file
      * @param theCreatedNullFile - handler for the file of the null map (in cell_misc)
      * @param renderedImage
      * @return successfull or not
      * @throws IOException
      */
-    public void compressAndWrite( ImageOutputStream theCreatedFile,
-            ImageOutputStream theCreatedNullFile, RenderedImage renderedImage ) throws IOException {
+    public void compressAndWrite(
+            ImageOutputStream theCreatedFile,
+            ImageOutputStream theCreatedNullFile,
+            RenderedImage renderedImage)
+            throws IOException {
         // set the number of bytes needed for the values to write to disk
         int numberofbytes = outputToDiskType * 4;
         // set the the novalue to identify the nulls
@@ -138,8 +140,8 @@ public class CompressesRasterWriter {
         int width = renderedImage.getWidth();
         // FIXME here I want to exploit tiling, not have the whole image loaded,
         // but when I do, I get an
-        RandomIter iterator = RandomIterFactory.create(renderedImage,
-                new Rectangle(0, 0, width, height));
+        RandomIter iterator =
+                RandomIterFactory.create(renderedImage, new Rectangle(0, 0, width, height));
         // NewWritableFileRandomIter iterator =
         // NewFileImageRandomIterFactory.createWritableFileRandomIter((FileImage) renderedImage,
         // new Rectangle(0, 0, width, height));
@@ -147,9 +149,9 @@ public class CompressesRasterWriter {
         monitor.started();
         monitor.setTask(new SimpleInternationalString("Writing map to disk: " + mapName));
         float progress = 0;
-        for( int i = 0; i < dataWindowRows; i++ ) {
-            for( int j = 0; j < dataWindowCols; j++ ) {
-                double value = iterator.getSampleDouble(j,i,0);
+        for (int i = 0; i < dataWindowRows; i++) {
+            for (int j = 0; j < dataWindowCols; j++) {
+                double value = iterator.getSampleDouble(j, i, 0);
 
                 if (Double.isNaN(value) || value == novalue) {
                     // put in the map the placeholder = 0.0 ...
@@ -164,10 +166,8 @@ public class CompressesRasterWriter {
                 } else {
                     // since we have to reread all the values, let's get the
                     // range
-                    if (value < range[0])
-                        range[0] = value;
-                    if (value > range[1])
-                        range[1] = value;
+                    if (value < range[0]) range[0] = value;
+                    if (value > range[1]) range[1] = value;
 
                     /*
                      * convert the double row in a sequence of byte as needed by the deflater
@@ -182,21 +182,18 @@ public class CompressesRasterWriter {
                      * increment the counter k
                      */
                     k++;
-
-        
-
                 }
             }
-//iterator.done();
+            // iterator.done();
             /*
              * now the bitset is complete... just need to write it to disk to create in one time the
              * row (in cell_misc)
              */
             int l = 0;
             byte[] bytearray = new byte[(numberOfValuesPerRow + paddings) / 8];
-            for( int e = 0; e < (numberOfValuesPerRow + paddings) / 8; e++ ) {
+            for (int e = 0; e < (numberOfValuesPerRow + paddings) / 8; e++) {
                 bytearray[e] = 0;
-                for( int f = 0; f < 8; f++ ) {
+                for (int f = 0; f < 8; f++) {
                     if (nullbits.get(l)) {
                         bytearray[e] += (byte) Math.pow(2.0, (double) (7 - f));
                     }
@@ -233,10 +230,11 @@ public class CompressesRasterWriter {
             theCreatedFile.write(output, 0, compressedDataLength);
 
             rowaddresses[i + 1] = pointerInFilePosition = theCreatedFile.getStreamPosition();
-//            System.out.println("row: " + (i+1) + " position: " + pointerInFilePosition);
-            
+            //            System.out.println("row: " + (i+1) + " position: " +
+            // pointerInFilePosition);
+
             rowAsByteBuffer.clear();
-            
+
             progress = (float) (progress + 100f * i / dataWindowRows);
             monitor.progress(progress);
         }
@@ -246,10 +244,11 @@ public class CompressesRasterWriter {
          * the header
          */
         theCreatedFile.seek(1);
-        for( int i = 0; i < rowaddresses.length; i++ ) {
+        for (int i = 0; i < rowaddresses.length; i++) {
             theCreatedFile.writeInt((int) rowaddresses[i]);
         }
     }
+
     public JGrassRegion getDataWindow() {
         return dataWindow;
     }

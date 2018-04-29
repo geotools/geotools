@@ -1,6 +1,4 @@
-/**
- * 
- */
+/** */
 package org.geotools.arcsde.raster.io;
 
 public final class TileInfo {
@@ -40,16 +38,14 @@ public final class TileInfo {
         return bitmaskData;
     }
 
-    /**
-     * @return number of pixels in the tile data
-     */
+    /** @return number of pixels in the tile data */
     public int getNumPixels() {
         return numPixels;
     }
 
     /**
-     * @return number of pixels actually read. It shall be either {@code 0} or equal to
-     *         {@link #getNumPixels()}
+     * @return number of pixels actually read. It shall be either {@code 0} or equal to {@link
+     *     #getNumPixels()}
      */
     public int getNumPixelsRead() {
         return numPixelsRead;

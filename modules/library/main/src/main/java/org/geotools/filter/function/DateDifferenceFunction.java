@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2018, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,23 +17,22 @@
 
 package org.geotools.filter.function;
 
+import static org.geotools.filter.capability.FunctionNameImpl.parameter;
+
+import java.util.Date;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
 
-import java.util.Date;
-
-import static org.geotools.filter.capability.FunctionNameImpl.parameter;
-
-/**
- * The function computes the difference between two date objects, in milliseconds (as a-b)
- */
+/** The function computes the difference between two date objects, in milliseconds (as a-b) */
 public class DateDifferenceFunction extends FunctionExpressionImpl {
 
-    public static FunctionName NAME = new FunctionNameImpl("dateDifference",
-            parameter("result", Long.class),
-            parameter("a", Date.class),
-            parameter("b", Date.class));
+    public static FunctionName NAME =
+            new FunctionNameImpl(
+                    "dateDifference",
+                    parameter("result", Long.class),
+                    parameter("a", Date.class),
+                    parameter("b", Date.class));
 
     public DateDifferenceFunction() {
         super(NAME);
@@ -55,7 +54,7 @@ public class DateDifferenceFunction extends FunctionExpressionImpl {
         if (a == null || b == null) {
             return null;
         }
-        
+
         return a.getTime() - b.getTime();
     }
 }

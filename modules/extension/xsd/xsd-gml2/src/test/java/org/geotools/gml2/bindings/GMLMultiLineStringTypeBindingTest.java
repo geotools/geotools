@@ -16,21 +16,15 @@
  */
 package org.geotools.gml2.bindings;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.MultiLineString;
 import org.geotools.gml2.GML;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 import org.picocontainer.defaults.DefaultPicoContainer;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.MultiLineString;
-
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class GMLMultiLineStringTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance ml;
     ElementInstance line1;
@@ -51,18 +45,32 @@ public class GMLMultiLineStringTypeBindingTest extends AbstractGMLBindingTest {
     }
 
     public void test() throws Exception {
-        Node node = createNode(ml, new ElementInstance[] { line1, line2 },
-                new Object[] {
-                    new GeometryFactory().createLineString(
-                        new Coordinate[] { new Coordinate(0, 0), new Coordinate(1, 1) }),
-                    new GeometryFactory().createLineString(
-                        new Coordinate[] { new Coordinate(2, 2), new Coordinate(3, 3) })
-                }, null, null);
+        Node node =
+                createNode(
+                        ml,
+                        new ElementInstance[] {line1, line2},
+                        new Object[] {
+                            new GeometryFactory()
+                                    .createLineString(
+                                            new Coordinate[] {
+                                                new Coordinate(0, 0), new Coordinate(1, 1)
+                                            }),
+                            new GeometryFactory()
+                                    .createLineString(
+                                            new Coordinate[] {
+                                                new Coordinate(2, 2), new Coordinate(3, 3)
+                                            })
+                        },
+                        null,
+                        null);
 
-        GMLGeometryCollectionTypeBinding s1 = (GMLGeometryCollectionTypeBinding) container
-            .getComponentInstanceOfType(GMLGeometryCollectionTypeBinding.class);
-        GMLMultiLineStringTypeBinding s2 = (GMLMultiLineStringTypeBinding) container
-            .getComponentInstanceOfType(GMLMultiLineStringTypeBinding.class);
+        GMLGeometryCollectionTypeBinding s1 =
+                (GMLGeometryCollectionTypeBinding)
+                        container.getComponentInstanceOfType(
+                                GMLGeometryCollectionTypeBinding.class);
+        GMLMultiLineStringTypeBinding s2 =
+                (GMLMultiLineStringTypeBinding)
+                        container.getComponentInstanceOfType(GMLMultiLineStringTypeBinding.class);
 
         MultiLineString mline = (MultiLineString) s2.parse(ml, node, s1.parse(ml, node, null));
 

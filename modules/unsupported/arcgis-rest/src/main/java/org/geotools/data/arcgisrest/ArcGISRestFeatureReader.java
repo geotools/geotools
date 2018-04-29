@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.NoSuchElementException;
 import java.util.logging.Logger;
-
 import org.geotools.data.FeatureReader;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -32,8 +31,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
  *
  * @author lmorandini
  */
-public class ArcGISRestFeatureReader
-    implements FeatureReader<SimpleFeatureType, SimpleFeature> {
+public class ArcGISRestFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
 
     protected SimpleFeatureType featureType;
     protected GeoJSONParser parser;
@@ -41,8 +39,9 @@ public class ArcGISRestFeatureReader
 
     protected int featIndex = 0;
 
-    public ArcGISRestFeatureReader(SimpleFeatureType featureTypeIn,
-                                   InputStream iStream, Logger logger) throws IOException {
+    public ArcGISRestFeatureReader(
+            SimpleFeatureType featureTypeIn, InputStream iStream, Logger logger)
+            throws IOException {
         this.featureType = featureTypeIn;
         this.featIndex = 0;
         this.LOGGER = logger;
@@ -51,21 +50,17 @@ public class ArcGISRestFeatureReader
         this.parser.parseFeatureCollection();
     }
 
-    /**
-     * @see FeatureReader#getFeatureType()
-     */
+    /** @see FeatureReader#getFeatureType() */
     @Override
     public SimpleFeatureType getFeatureType() {
         if (this.featureType == null) {
             throw new IllegalStateException(
-                "No features were retrieved, shouldn't be calling getFeatureType()");
+                    "No features were retrieved, shouldn't be calling getFeatureType()");
         }
         return this.featureType;
     }
 
-    /**
-     * @see FeatureReader#hasNext()
-     */
+    /** @see FeatureReader#hasNext() */
     @Override
     public boolean hasNext() {
         return this.parser.hasNext();
@@ -84,5 +79,4 @@ public class ArcGISRestFeatureReader
     public void close() {
         this.parser.close();
     }
-
 }

@@ -27,7 +27,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
@@ -35,11 +34,8 @@ import org.geotools.util.logging.Logging;
 
 /**
  * Implementation of the DataStore service provider interface for OGR.
- * 
- * @author Andrea Aime, GeoSolution
- * 
- * 
  *
+ * @author Andrea Aime, GeoSolution
  * @source $URL$
  * @version $Id$
  */
@@ -48,17 +44,22 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
 
     protected static Logger LOGGER = Logging.getLogger("org.geotools.data.ogr");
 
-    public static final Param OGR_NAME = new Param("DatasourceName", String.class,
-            "Name of the file, or data source to try and open", true);
+    public static final Param OGR_NAME =
+            new Param(
+                    "DatasourceName",
+                    String.class,
+                    "Name of the file, or data source to try and open",
+                    true);
 
-    public static final Param OGR_DRIVER_NAME = new Param(
-            "DriverName",
-            String.class,
-            "Name of the OGR driver to be used. Required to create a new data source, optional when opening an existing one",
-            false);
+    public static final Param OGR_DRIVER_NAME =
+            new Param(
+                    "DriverName",
+                    String.class,
+                    "Name of the OGR driver to be used. Required to create a new data source, optional when opening an existing one",
+                    false);
 
-    public static final Param NAMESPACEP = new Param("namespace", URI.class,
-            "uri to a the namespace", false); // not required
+    public static final Param NAMESPACEP =
+            new Param("namespace", URI.class, "uri to a the namespace", false); // not required
 
     /**
      * Caches opened data stores. TODO: is this beneficial or problematic? It's a static cache, so
@@ -99,18 +100,15 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
             } catch (MalformedURLException mue) {
                 throw new DataSourceException("Unable to attatch datastore to " + url, mue);
             }
-        } else
-            ds = (DataStore) liveStores.get(params);
+        } else ds = (DataStore) liveStores.get(params);
         return ds;
     }
 
     /**
      * Not implemented yet.
-     * 
+     *
      * @param params
-     * 
      * @throws IOException
-     * 
      * @throws IOException DOCUMENT ME!
      * @throws UnsupportedOperationException
      */
@@ -132,9 +130,9 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
 
     /**
      * Describes the type of data the datastore returned by this factory works with.
-     * 
+     *
      * @return String a human readable description of the type of restore supported by this
-     *         datastore.
+     *     datastore.
      */
     public String getDescription() {
         return "Uses OGR as a data source";
@@ -143,22 +141,20 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
     /**
      * Test to see if this datastore is available, if it has all the appropriate libraries to
      * construct a datastore.
-     * 
+     *
      * @return <tt>true</tt> if and only if this factory is available to create DataStores.
-     * 
      * @task REVISIT: I'm just adding this method to compile, maintainer should revisit to check for
-     *       any libraries that may be necessary for datastore creations.
+     *     any libraries that may be necessary for datastore creations.
      */
     public final boolean isAvailable() {
         return isAvailable(true);
     }
 
     /**
-     * Performs the available test specifying how to handle errors. 
-     * <p>
-     * Specifying true for <tt>handleError</tt> will cause any exceptions to be caught and logged, 
-     * and return false
-     * </p>
+     * Performs the available test specifying how to handle errors.
+     *
+     * <p>Specifying true for <tt>handleError</tt> will cause any exceptions to be caught and
+     * logged, and return false
      */
     public final boolean isAvailable(boolean handleError) {
         try {
@@ -167,8 +163,7 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
             if (handleError) {
                 LOGGER.log(Level.FINE, "Error initializing GDAL/OGR library", t);
                 return false;
-            }
-            else {
+            } else {
                 throw new RuntimeException(t);
             }
         }
@@ -176,26 +171,24 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
 
     /**
      * Performs the actual test to see if the OGR library and this datastore is available.
-     * <p>
-     * Implemetnations of this method should not attempt to handle any fatal exceptions.
-     * </p>
+     *
+     * <p>Implemetnations of this method should not attempt to handle any fatal exceptions.
      */
     protected abstract boolean doIsAvailable() throws Throwable;
 
     /**
      * Describe parameters.
-     * 
-     * 
+     *
      * @see org.geotools.data.DataStoreFactorySpi#getParametersInfo()
      */
     public Param[] getParametersInfo() {
-        return new Param[] { OGR_NAME, OGR_DRIVER_NAME, NAMESPACEP };
+        return new Param[] {OGR_NAME, OGR_DRIVER_NAME, NAMESPACEP};
     }
 
     /**
      * Assume we can process an ogrName if the ogrName exists and can be opened, or if the specified
      * driver does exist.
-     * 
+     *
      * @param ogrName
      * @param driverName
      * @return
@@ -205,7 +198,7 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
         Object dataset = ogr.OpenShared(ogrName, 0);
 
         if (dataset != null) {
-            //OGRReleaseDataSource(dataset);
+            // OGRReleaseDataSource(dataset);
             ogr.DataSourceRelease(dataset);
             return true;
         }
@@ -213,20 +206,18 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
         if (driverName != null) {
             try {
                 Object driver = ogr.GetDriverByName(driverName);
-        
+
                 if (driver != null) {
                     return true;
                 }
-            }
-            catch(Exception e) {
+            } catch (Exception e) {
                 LOGGER.log(Level.FINE, "Error loading driver", e);
             }
         }
 
         return false;
-
     }
-    
+
     public Set<String> getAvailableDrivers() {
         OGR ogr = createOGR();
 
@@ -237,12 +228,11 @@ public abstract class OGRDataStoreFactory implements DataStoreFactorySpi {
             String name = ogr.DriverGetName(driver);
             result.add(name);
         }
-        
+
         return result;
     }
 
     public Map getImplementationHints() {
         return Collections.EMPTY_MAP;
     }
-
 }

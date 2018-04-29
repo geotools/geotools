@@ -18,17 +18,14 @@
 package org.geotools.arcsde.raster.info;
 
 import java.awt.image.RenderedImage;
-
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.geometry.GeneralEnvelope;
 import org.opengis.coverage.grid.GridEnvelope;
 
 /**
  * Captures information about a query for a single raster in a raster dataset.
- * 
+ *
  * @author Gabriel Roldan
- *
- *
  * @source $URL$
  * @version $Id$
  * @since 2.5.6
@@ -65,9 +62,7 @@ public final class RasterQueryInfo {
 
     private int rasterIndex;
 
-    /**
-     * The full tile range for the matching pyramid level
-     */
+    /** The full tile range for the matching pyramid level */
     private GridEnvelope levelTileRange;
 
     private GridEnvelope resultGridRange;
@@ -83,16 +78,18 @@ public final class RasterQueryInfo {
         StringBuilder s = new StringBuilder("[Raster query info:");
         s.append("\n\tRaster ID            : ").append(getRasterId());
         s.append("\n\tPyramid level        : ").append(getPyramidLevel());
-        s.append("\n\tResolution           : ").append(
-                getResolution()[0] + "," + getResolution()[1]);
+        s.append("\n\tResolution           : ")
+                .append(getResolution()[0] + "," + getResolution()[1]);
         s.append("\n\tRequested envelope   : ").append(getRequestedEnvelope());
         s.append("\n\tRequested dimension  : ").append(getRequestedDim());
         GridEnvelope mt = getMatchingTiles();
-//        GridEnvelope ltr = getLevelTileRange();
-//        String matching = "x=" + mt.getLow(0) + "-" + mt.getHigh(0) + ", y=" + mt.getLow(1) + "-"
-//                + mt.getHigh(1);
-//        String level = "x=" + ltr.getLow(0) + "-" + ltr.getHigh(0) + ", y=" + ltr.getLow(1) + "-"
-//                + ltr.getHigh(1);
+        //        GridEnvelope ltr = getLevelTileRange();
+        //        String matching = "x=" + mt.getLow(0) + "-" + mt.getHigh(0) + ", y=" +
+        // mt.getLow(1) + "-"
+        //                + mt.getHigh(1);
+        //        String level = "x=" + ltr.getLow(0) + "-" + ltr.getHigh(0) + ", y=" +
+        // ltr.getLow(1) + "-"
+        //                + ltr.getHigh(1);
         s.append("\n\tMatching tiles       : ").append(mt).append(" out of ").append("level");
         s.append("\n\tTiled image size     : ").append(getTiledImageGridRange());
         s.append("\n\tResult dimension     : ").append(getResultDimensionInsideTiledImage());
@@ -104,7 +101,7 @@ public final class RasterQueryInfo {
 
     /**
      * @return the rasterId (as in SeRaster.getId()) for the raster in the raster dataset this query
-     *         works upon
+     *     works upon
      */
     public Long getRasterId() {
         return rasterId;
@@ -198,7 +195,7 @@ public final class RasterQueryInfo {
     }
 
     public double[] getResolution() {
-        return resolution == null ? new double[] { -1, -1 } : resolution;
+        return resolution == null ? new double[] {-1, -1} : resolution;
     }
 
     void setRasterIndex(int rasterN) {
@@ -220,10 +217,10 @@ public final class RasterQueryInfo {
     }
 
     void setResultGridRange(GridEnvelope resultGridRange) {
-        this.resultGridRange = resultGridRange;     
+        this.resultGridRange = resultGridRange;
     }
-    
-    public GridEnvelope getResultGridRange(){
+
+    public GridEnvelope getResultGridRange() {
         return resultGridRange;
     }
 }

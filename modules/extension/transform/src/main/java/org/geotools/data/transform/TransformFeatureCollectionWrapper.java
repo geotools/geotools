@@ -19,7 +19,6 @@ package org.geotools.data.transform;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
-
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.collection.AbstractFeatureCollection;
@@ -32,7 +31,7 @@ import org.opengis.geometry.BoundingBox;
 
 /**
  * A reshaping collection based on a user provided feature collection
- * 
+ *
  * @author Andrea Aime - GeoSolution
  */
 class TransformFeatureCollectionWrapper extends AbstractFeatureCollection {
@@ -51,8 +50,8 @@ class TransformFeatureCollectionWrapper extends AbstractFeatureCollection {
     @Override
     protected Iterator<SimpleFeature> openIterator() {
         try {
-            return new SimpleFeatureIteratorIterator(new TransformFeatureIteratorWrapper(
-                    wrapped.features(), transformer));
+            return new SimpleFeatureIteratorIterator(
+                    new TransformFeatureIteratorWrapper(wrapped.features(), transformer));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -75,7 +74,6 @@ class TransformFeatureCollectionWrapper extends AbstractFeatureCollection {
             Expression expression = transformer.getExpression(name);
             if (expression != null && !(expression instanceof PropertyName)) {
                 geometryTransformed = true;
-
             }
         }
         if (!geometryTransformed) {

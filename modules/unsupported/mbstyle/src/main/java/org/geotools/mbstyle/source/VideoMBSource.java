@@ -19,16 +19,14 @@ package org.geotools.mbstyle.source;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.json.simple.JSONObject;
 
 /**
- * 
  * Wrapper around a {@link JSONObject} containing a Mapbox video source.
- * 
- * @see <a href="https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-video">https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-video</a>
  *
+ * @see <a
+ *     href="https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-video">https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-video</a>
  */
 public class VideoMBSource extends MediaMBSource {
 
@@ -42,7 +40,7 @@ public class VideoMBSource extends MediaMBSource {
 
     /**
      * (Required) URLs to video content in order of preferred format.
-     * 
+     *
      * @return List of String urls
      */
     public List<String> getUrls() {
@@ -59,5 +57,4 @@ public class VideoMBSource extends MediaMBSource {
     public String getType() {
         return "video";
     }
-
 }

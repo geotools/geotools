@@ -18,10 +18,10 @@ package org.geotools.gce.imagemosaic;
 
 import static org.junit.Assert.assertTrue;
 
+import com.google.common.io.Files;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
-
 import org.geotools.TestData;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
@@ -42,23 +42,21 @@ import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 
-import com.google.common.io.Files;
-
 public class MultiResolutionTest {
 
     @Test
     public void testCatalogBuilderSample() throws IOException, TransformException {
         ImageMosaicFormat format = new ImageMosaicFormat();
         ImageMosaicReader reader = format.getReader(TestData.file(this, "multiresolution"));
-        //the following code is copied from GeoServer's CatalogBuilder
-        //which is the code our case failed on
-        //the idea is to create a 5x5 test sample image
+        // the following code is copied from GeoServer's CatalogBuilder
+        // which is the code our case failed on
+        // the idea is to create a 5x5 test sample image
         final GridCoverage2D gc;
         GridEnvelope originalRange = reader.getOriginalGridRange();
         GeneralEnvelope envelope = reader.getOriginalEnvelope();
         CoordinateReferenceSystem nativeCRS = envelope.getCoordinateReferenceSystem();
-        //final ParameterValueGroup readParams = format.getReadParameters();
-        //final Map parameters = CoverageUtils.getParametersKVP(readParams);
+        // final ParameterValueGroup readParams = format.getReadParameters();
+        // final Map parameters = CoverageUtils.getParametersKVP(readParams);
         final int minX = originalRange.getLow(0);
         final int minY = originalRange.getLow(1);
         final int width = originalRange.getSpan(0);
@@ -68,13 +66,15 @@ public class MultiResolutionTest {
         // we have to be sure that we are working against a valid grid range.
         final GridEnvelope2D testRange = new GridEnvelope2D(minX, minY, maxX, maxY);
         // build the corresponding envelope
-        final MathTransform gridToWorldCorner = reader.getOriginalGridToWorld(PixelInCell.CELL_CORNER);
-        final GeneralEnvelope testEnvelope = CRS.transform(gridToWorldCorner, new GeneralEnvelope(testRange.getBounds()));
-        testEnvelope.setCoordinateReferenceSystem(nativeCRS);      
+        final MathTransform gridToWorldCorner =
+                reader.getOriginalGridToWorld(PixelInCell.CELL_CORNER);
+        final GeneralEnvelope testEnvelope =
+                CRS.transform(gridToWorldCorner, new GeneralEnvelope(testRange.getBounds()));
+        testEnvelope.setCoordinateReferenceSystem(nativeCRS);
         ParameterValue<GridGeometry2D> pam = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         pam.setValue(new GridGeometry2D(testRange, testEnvelope));
         gc = reader.read(new ParameterValue<?>[] {pam});
-        //gc would be null before bug fix
+        // gc would be null before bug fix
         Assert.assertNotNull(gc);
     }
 
@@ -92,10 +92,11 @@ public class MultiResolutionTest {
         MathTransform g2w = reader.getOriginalGridToWorld(PixelInCell.CELL_CORNER);
         AffineTransform2D at = (AffineTransform2D) g2w;
 
-        ParameterValue<double[]> virtualNativeRes = ImageMosaicFormat.VIRTUAL_NATIVE_RESOLUTION.createValue();
+        ParameterValue<double[]> virtualNativeRes =
+                ImageMosaicFormat.VIRTUAL_NATIVE_RESOLUTION.createValue();
 
         // Specifying a lower virtual native resolution
-        virtualNativeRes.setValue(new double[] { at.getScaleX() * 16, -at.getScaleY() * 16 });
+        virtualNativeRes.setValue(new double[] {at.getScaleX() * 16, -at.getScaleY() * 16});
 
         ParameterValue<GridGeometry2D> pam = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         pam.setValue(new GridGeometry2D(originalRange, envelope));
@@ -103,11 +104,10 @@ public class MultiResolutionTest {
         GridCoverage2D gc = reader.read(new ParameterValue<?>[] {virtualNativeRes, pam});
         RenderedImage ri = gc.getRenderedImage();
 
-        // The Virtual Native Resolution resulted into getting back an image with 
-        // few pixels (Very low resolution) 
+        // The Virtual Native Resolution resulted into getting back an image with
+        // few pixels (Very low resolution)
         assertTrue(ri.getWidth() < 20);
         assertTrue(ri.getHeight() < 20);
-
     }
 
     @Test
@@ -124,10 +124,11 @@ public class MultiResolutionTest {
         MathTransform g2w = reader.getOriginalGridToWorld(PixelInCell.CELL_CORNER);
         AffineTransform2D at = (AffineTransform2D) g2w;
 
-        ParameterValue<double[]> virtualNativeRes = ImageMosaicFormat.VIRTUAL_NATIVE_RESOLUTION.createValue();
+        ParameterValue<double[]> virtualNativeRes =
+                ImageMosaicFormat.VIRTUAL_NATIVE_RESOLUTION.createValue();
 
         // Specifying a lower virtual native resolution
-        virtualNativeRes.setValue(new double[] { at.getScaleX() * 16, -at.getScaleY() * 16 });
+        virtualNativeRes.setValue(new double[] {at.getScaleX() * 16, -at.getScaleY() * 16});
 
         ParameterValue<GridGeometry2D> pam = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         pam.setValue(new GridGeometry2D(originalRange, envelope));
@@ -135,11 +136,10 @@ public class MultiResolutionTest {
         GridCoverage2D gc = reader.read(new ParameterValue<?>[] {virtualNativeRes, pam});
         RenderedImage ri = gc.getRenderedImage();
 
-        // The Virtual Native Resolution resulted into getting back an image with 
-        // few pixels (Very low resolution) 
+        // The Virtual Native Resolution resulted into getting back an image with
+        // few pixels (Very low resolution)
         assertTrue(ri.getWidth() < 20);
         assertTrue(ri.getHeight() < 20);
-
     }
 
     @Test
@@ -150,21 +150,20 @@ public class MultiResolutionTest {
         File sfdem = folder.newFile("sfdem.tiff");
         Files.copy(TestData.file(this, "multiresolution/srtm.tiff"), srtm);
         Files.copy(TestData.file(this, "multiresolution/sfdem.tiff"), sfdem);
-       
+
         ImageMosaicFormat format = new ImageMosaicFormat();
         ImageMosaicReader reader = format.getReader(folder.getRoot());
-        
+
         GeoTiffFormat tiffFormat = new GeoTiffFormat();
         GeoTiffReader sfdemReader = tiffFormat.getReader(sfdem);
-                
+
         assertEquals(sfdemReader.getResolutionLevels()[0], reader.getResolutionLevels()[0], 0.001);
     }
-    
+
     private void assertEquals(double[] expected, double[] actuals, double epsilon) {
         Assert.assertEquals(expected.length, actuals.length);
         for (int i = 0; i < expected.length; i++) {
             Assert.assertEquals(expected[i], actuals[i], epsilon);
-        }        
+        }
     }
-
 }

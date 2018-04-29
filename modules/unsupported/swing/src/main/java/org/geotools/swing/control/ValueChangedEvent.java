@@ -20,17 +20,12 @@ package org.geotools.swing.control;
 import java.awt.Component;
 
 /**
- * An event published when the value of a control derived from {@code JValueField}
- * changes.
+ * An event published when the value of a control derived from {@code JValueField} changes.
  *
  * @see JValueField
  * @see ValueChangedListener
- *
  * @author Michael Bedward
  * @since 2.6.1
- *
- *
- *
  * @source $URL$
  * @version $Id$
  */
@@ -41,6 +36,7 @@ public class ValueChangedEvent<T> {
 
     /**
      * Create a value changed event
+     *
      * @param source the control holding the value
      * @param newValue the updated value
      */

@@ -16,19 +16,18 @@
  */
 package org.geotools.se.v1_1.bindings;
 
+import javax.xml.namespace.QName;
 import org.geotools.se.v1_1.SE;
 import org.geotools.sld.bindings.SLDShadedReliefBinding;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xml.*;
 import org.opengis.filter.FilterFactory;
 
-import javax.xml.namespace.QName;
-
 /**
  * Binding object for the element http://www.opengis.net/se:ShadedRelief.
- * 
+ *
  * <p>
- * 
+ *
  * <pre>
  *  <code>
  *  &lt;xsd:element name="ShadedRelief" type="se:ShadedReliefType"&gt;
@@ -40,16 +39,12 @@ import javax.xml.namespace.QName;
  *          visible.
  *        &lt;/xsd:documentation&gt;
  *      &lt;/xsd:annotation&gt;
- *  &lt;/xsd:element&gt; 
- * 	
+ *  &lt;/xsd:element&gt;
+ *
  *   </code>
  * </pre>
- * 
- * </p>
- * 
+ *
  * @generated
- *
- *
  * @source $URL$
  */
 public class ShadedReliefBinding extends SLDShadedReliefBinding {
@@ -58,11 +53,8 @@ public class ShadedReliefBinding extends SLDShadedReliefBinding {
         super(styleFactory, filterFactory);
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return SE.ShadedRelief;
     }
-
 }

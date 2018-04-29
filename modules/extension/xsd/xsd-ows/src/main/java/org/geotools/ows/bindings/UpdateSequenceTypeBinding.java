@@ -16,17 +16,17 @@
  */
 package org.geotools.ows.bindings;
 
-import net.opengis.ows10.Ows10Factory;
 import javax.xml.namespace.QName;
+import net.opengis.ows10.Ows10Factory;
 import org.geotools.ows.OWS;
 import org.geotools.xml.*;
-
 
 /**
  * Binding object for the type http://www.opengis.net/ows:UpdateSequenceType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;simpleType name="UpdateSequenceType"&gt;
  *      &lt;annotation&gt;
@@ -37,26 +37,20 @@ import org.geotools.xml.*;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class UpdateSequenceTypeBinding extends AbstractSimpleBinding {
-    public UpdateSequenceTypeBinding(Ows10Factory factory) {
-    }
+    public UpdateSequenceTypeBinding(Ows10Factory factory) {}
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return OWS.UpdateSequenceType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -67,14 +61,14 @@ public class UpdateSequenceTypeBinding extends AbstractSimpleBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(InstanceComponent instance, Object value)
-        throws Exception {
-        //TODO: implement and remove call to super
+    public Object parse(InstanceComponent instance, Object value) throws Exception {
+        // TODO: implement and remove call to super
         return super.parse(instance, value);
     }
 }

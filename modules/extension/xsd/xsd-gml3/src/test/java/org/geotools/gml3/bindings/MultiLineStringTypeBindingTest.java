@@ -16,24 +16,18 @@
  */
 package org.geotools.gml3.bindings;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.MultiLineString;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiLineString;
-
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class MultiLineStringTypeBindingTest extends GML3TestSupport {
-    
+
     public void test() throws Exception {
         GML3MockData.multiLineString(document, document);
 
@@ -42,7 +36,7 @@ public class MultiLineStringTypeBindingTest extends GML3TestSupport {
 
         assertEquals(2, multiLineString.getNumGeometries());
     }
-    
+
     public void test3D() throws Exception {
         GML3MockData.multiLineString3D(document, document);
 
@@ -50,7 +44,7 @@ public class MultiLineStringTypeBindingTest extends GML3TestSupport {
         assertNotNull(multiLineString);
 
         assertEquals(2, multiLineString.getNumGeometries());
-        
+
         LineString line = (LineString) multiLineString.getGeometryN(0);
         assertTrue(new Coordinate(1d, 2d, 10d).equals3D(line.getPointN(0).getCoordinate()));
         assertTrue(new Coordinate(3d, 4d, 20d).equals3D(line.getPointN(1).getCoordinate()));
@@ -63,7 +57,8 @@ public class MultiLineStringTypeBindingTest extends GML3TestSupport {
         // print(dom);
         assertEquals("geometry", getID(dom.getDocumentElement()));
         assertEquals(2, dom.getElementsByTagNameNS(GML.NAMESPACE, "lineStringMember").getLength());
-        NodeList children = dom.getElementsByTagNameNS(GML.NAMESPACE, GML.LineString.getLocalPart());
+        NodeList children =
+                dom.getElementsByTagNameNS(GML.NAMESPACE, GML.LineString.getLocalPart());
         assertEquals(2, children.getLength());
         assertEquals("geometry.1", getID(children.item(0)));
         assertEquals("geometry.2", getID(children.item(1)));

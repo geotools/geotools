@@ -18,9 +18,7 @@ package org.geotools.wfs.bindings;
 
 import java.net.URL;
 import java.util.List;
-
 import javax.xml.namespace.QName;
-
 import net.opengis.ows10.KeywordsType;
 import net.opengis.ows10.Ows10Factory;
 import net.opengis.ows10.WGS84BoundingBoxType;
@@ -29,7 +27,6 @@ import net.opengis.wfs.FeatureTypeType;
 import net.opengis.wfs.OperationType;
 import net.opengis.wfs.OperationsType;
 import net.opengis.wfs.OutputFormatListType;
-
 import org.geotools.ows.OWS;
 import org.geotools.test.TestData;
 import org.geotools.wfs.WFS;
@@ -41,13 +38,10 @@ import org.w3c.dom.NodeList;
 
 /**
  * Unit test suite for {@link FeatureTypeListTypeBinding}
- * 
+ *
  * @author Gabriel Roldan
- * @version $Id: FeatureTypeListTypeBindingTest.java 27749 2007-11-05 09:51:33Z
- *          groldan $
+ * @version $Id: FeatureTypeListTypeBindingTest.java 27749 2007-11-05 09:51:33Z groldan $
  * @since 2.5.x
- *
- *
  * @source $URL$
  */
 public class FeatureTypeListTypeBindingTest extends WFSTestSupport {
@@ -98,7 +92,7 @@ public class FeatureTypeListTypeBindingTest extends WFSTestSupport {
         assertOperations(root);
         Element ft = getElementByQName(root, new QName(WFS.NAMESPACE, "FeatureType"));
         assertNotNull(ft);
-        assertFeatureType(ft);        
+        assertFeatureType(ft);
     }
 
     private void assertFeatureType(Element ft) {
@@ -110,13 +104,14 @@ public class FeatureTypeListTypeBindingTest extends WFSTestSupport {
         assertEquals("Abstract1", abstract_.getFirstChild().getNodeValue());
         Element keywords = getElementByQName(ft, OWS.Keywords);
         assertNotNull(keywords);
-        assertEquals(2, getElementsByQName(keywords, new QName(OWS.NAMESPACE, "Keyword")).getLength());
-        
+        assertEquals(
+                2, getElementsByQName(keywords, new QName(OWS.NAMESPACE, "Keyword")).getLength());
+
         Element defaultCrs = getElementByQName(ft, new QName(WFS.NAMESPACE, "DefaultSRS"));
         assertEquals("urn:ogc:crs:EPSG:6.7:4326", defaultCrs.getFirstChild().getNodeValue());
         Element otherSrs = getElementByQName(ft, new QName(WFS.NAMESPACE, "OtherSRS"));
         assertEquals("urn:ogc:crs:EPSG:6.7:23030", otherSrs.getFirstChild().getNodeValue());
-        
+
         Element operations = getElementByQName(ft, new QName(WFS.NAMESPACE, "Operations"));
         assertNotNull(operations);
         NodeList ops = getElementsByQName(operations, new QName(WFS.NAMESPACE, "Operation"));
@@ -125,7 +120,7 @@ public class FeatureTypeListTypeBindingTest extends WFSTestSupport {
         assertEquals("Insert", ops.item(1).getFirstChild().getNodeValue());
         assertEquals("Update", ops.item(2).getFirstChild().getNodeValue());
         assertEquals("Delete", ops.item(3).getFirstChild().getNodeValue());
-        
+
         Element outputFormats = getElementByQName(ft, new QName(WFS.NAMESPACE, "OutputFormats"));
         assertNotNull(outputFormats);
         NodeList formats = getElementsByQName(outputFormats, new QName(WFS.NAMESPACE, "Format"));

@@ -18,14 +18,11 @@ package org.geotools.brewer.color;
 
 import java.awt.Color;
 
-
 /**
  * A ColorPalette with additional ColorBrewer information (suitability data and colour selection).
  *
  * @author James Macgill
  * @author Cory Horner, Refractions Research Inc.
- *
- *
  * @source $URL$
  */
 public class BrewerPalette extends ColorPalette {
@@ -33,11 +30,8 @@ public class BrewerPalette extends ColorPalette {
     private SampleScheme sampler;
     private PaletteType type;
 
-    /**
-     * Creates a new instance of BrewerPalette
-     */
-    public BrewerPalette() {
-    }
+    /** Creates a new instance of BrewerPalette */
+    public BrewerPalette() {}
 
     /**
      * Getter for property type.
@@ -70,7 +64,7 @@ public class BrewerPalette extends ColorPalette {
         int countSampler = sampler.getMaxCount();
         int numColors = getCount();
 
-        //return the lesser of countSampler and numColors
+        // return the lesser of countSampler and numColors
         if (countSampler < numColors) {
             return countSampler;
         } else {
@@ -87,12 +81,10 @@ public class BrewerPalette extends ColorPalette {
         return sampler.getMinCount();
     }
 
-    /**
-     * Obtains a set of colours from the palette.
-     */
+    /** Obtains a set of colours from the palette. */
     public Color[] getColors(int length) {
         if (length < 2) {
-            length = 2; //if they ask for 1 colour, give them 2 instead of crashing
+            length = 2; // if they ask for 1 colour, give them 2 instead of crashing
         }
 
         int[] lookup = sampler.getSampleScheme(length);

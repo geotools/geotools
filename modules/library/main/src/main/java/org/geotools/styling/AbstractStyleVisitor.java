@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2012, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -16,13 +16,11 @@
  */
 package org.geotools.styling;
 
-
 /**
  * A basic implementation of the StyleVisitor interface.
- * <p>
- * This class implements the full StyleVisitor interface and visits all components of a style object
- * tree. 
- * </p>
+ *
+ * <p>This class implements the full StyleVisitor interface and visits all components of a style
+ * object tree.
  */
 public class AbstractStyleVisitor implements StyleVisitor {
 
@@ -30,9 +28,9 @@ public class AbstractStyleVisitor implements StyleVisitor {
     public void visit(StyledLayerDescriptor sld) {
         for (StyledLayer sl : sld.getStyledLayers()) {
             if (sl instanceof UserLayer) {
-                ((UserLayer)sl).accept(this);
+                ((UserLayer) sl).accept(this);
             } else if (sl instanceof NamedLayer) {
-                ((NamedLayer)sl).accept(this);
+                ((NamedLayer) sl).accept(this);
             }
         }
     }
@@ -58,8 +56,7 @@ public class AbstractStyleVisitor implements StyleVisitor {
     }
 
     @Override
-    public void visit(FeatureTypeConstraint ftc) {
-    }
+    public void visit(FeatureTypeConstraint ftc) {}
 
     @Override
     public void visit(Style style) {
@@ -85,23 +82,23 @@ public class AbstractStyleVisitor implements StyleVisitor {
     @Override
     public void visit(Fill fill) {
         if (fill.getColor() != null) {
-            //fill.getColor().accept(visitor, extraData)
+            // fill.getColor().accept(visitor, extraData)
         }
         if (fill.getGraphicFill() != null) {
             fill.getGraphicFill().accept(this);
         }
         if (fill.getOpacity() != null) {
-            //fill.getOpacity().accept(visitor, extraData)
+            // fill.getOpacity().accept(visitor, extraData)
         }
     }
 
     @Override
     public void visit(Stroke stroke) {
         if (stroke.getColor() != null) {
-            //stroke.getColor().accept(visitor, extraData)
+            // stroke.getColor().accept(visitor, extraData)
         }
         if (stroke.getDashOffset() != null) {
-            //stroke.getDashOffset().accept(visitor, extraData)
+            // stroke.getDashOffset().accept(visitor, extraData)
         }
         if (stroke.getGraphicFill() != null) {
             stroke.getGraphicFill().accept(this);
@@ -110,37 +107,32 @@ public class AbstractStyleVisitor implements StyleVisitor {
             stroke.getGraphicStroke().accept(this);
         }
         if (stroke.getLineCap() != null) {
-            //stroke.getLineCap().accept(visitor, extraData)
+            // stroke.getLineCap().accept(visitor, extraData)
         }
         if (stroke.getLineJoin() != null) {
-            //stroke.getLineJoin().accept(visitor, extraData)
+            // stroke.getLineJoin().accept(visitor, extraData)
         }
         if (stroke.getOpacity() != null) {
-            //stroke.getOpacity().accept(visitor, extraData)
+            // stroke.getOpacity().accept(visitor, extraData)
         }
         if (stroke.getWidth() != null) {
-            //stroke.getWidth().accept(visitor, extraData)
+            // stroke.getWidth().accept(visitor, extraData)
         }
     }
 
     @Override
     public void visit(Symbolizer sym) {
-        if( sym instanceof RasterSymbolizer){
-            visit( (RasterSymbolizer) sym );
-        }
-        else if( sym instanceof LineSymbolizer){
-            visit( (LineSymbolizer) sym );
-        }
-        else if( sym instanceof PolygonSymbolizer){
-            visit( (PolygonSymbolizer) sym );
-        }
-        else if( sym instanceof PointSymbolizer){
-            visit( (PointSymbolizer) sym );
-        }
-        else if( sym instanceof TextSymbolizer){
-            visit( (TextSymbolizer) sym );
-        }
-        else {
+        if (sym instanceof RasterSymbolizer) {
+            visit((RasterSymbolizer) sym);
+        } else if (sym instanceof LineSymbolizer) {
+            visit((LineSymbolizer) sym);
+        } else if (sym instanceof PolygonSymbolizer) {
+            visit((PolygonSymbolizer) sym);
+        } else if (sym instanceof PointSymbolizer) {
+            visit((PointSymbolizer) sym);
+        } else if (sym instanceof TextSymbolizer) {
+            visit((TextSymbolizer) sym);
+        } else {
             throw new RuntimeException("visit(Symbolizer) unsupported");
         }
     }
@@ -151,7 +143,7 @@ public class AbstractStyleVisitor implements StyleVisitor {
             ps.getDescription().accept(this);
         }
         if (ps.getGeometry() != null) {
-            //ps.getGeometry().accept(visitor, extraData)
+            // ps.getGeometry().accept(visitor, extraData)
         }
         if (ps.getGraphic() != null) {
             ps.getGraphic().accept(this);
@@ -164,10 +156,10 @@ public class AbstractStyleVisitor implements StyleVisitor {
             line.getDescription().accept(this);
         }
         if (line.getGeometry() != null) {
-            //line.getGeometry().accept(visitor, extraData)
+            // line.getGeometry().accept(visitor, extraData)
         }
         if (line.getPerpendicularOffset() != null) {
-            //line.getPerpendicularOffset().accept(visitor, extraData)
+            // line.getPerpendicularOffset().accept(visitor, extraData)
         }
         if (line.getStroke() != null) {
             line.getStroke().accept(this);
@@ -186,10 +178,10 @@ public class AbstractStyleVisitor implements StyleVisitor {
             poly.getFill().accept(this);
         }
         if (poly.getGeometry() != null) {
-            //poly.getGeometry().accept(visitor, extraData);
+            // poly.getGeometry().accept(visitor, extraData);
         }
         if (poly.getPerpendicularOffset() != null) {
-            //poly.getPerpendicularOffset().accept(visitor, extraData)
+            // poly.getPerpendicularOffset().accept(visitor, extraData)
         }
         if (poly.getStroke() != null) {
             poly.getStroke().accept(this);
@@ -205,22 +197,22 @@ public class AbstractStyleVisitor implements StyleVisitor {
             text.getFill().accept(this);
         }
         if (text.getFont() != null) {
-            //text.getFont().accept(this, null);
+            // text.getFont().accept(this, null);
         }
         if (text.getGeometry() != null) {
-            //text.getGeometry().accept(visitor, extraData)
+            // text.getGeometry().accept(visitor, extraData)
         }
         if (text.getHalo() != null) {
             text.getHalo().accept(this);
         }
         if (text.getLabel() != null) {
-            //text.getLabel().accept(visitor, extraData)
+            // text.getLabel().accept(visitor, extraData)
         }
         if (text.getLabelPlacement() != null) {
             text.getLabelPlacement().accept(this);
         }
         if (text.getPriority() != null) {
-            //text.getPriority().accept(visitor, extraData)
+            // text.getPriority().accept(visitor, extraData)
         }
     }
 
@@ -239,18 +231,18 @@ public class AbstractStyleVisitor implements StyleVisitor {
             raster.getDescription().accept(this);
         }
         if (raster.getGeometry() != null) {
-            //raster.getGeometry().accept(visitor, extraData)
+            // raster.getGeometry().accept(visitor, extraData)
         }
         if (raster.getImageOutline() != null) {
             raster.getImageOutline().accept(this);
         }
         if (raster.getOpacity() != null) {
-            //raster.getOpacity().accept(visitor, extraData)
+            // raster.getOpacity().accept(visitor, extraData)
         }
         if (raster.getOverlap() != null) {
-            //raster.getOverlap().accept(visitor, extraData);
+            // raster.getOverlap().accept(visitor, extraData);
         }
-        
+
         if (raster.getShadedRelief() != null) {
             raster.getShadedRelief().accept(this);
         }
@@ -269,30 +261,29 @@ public class AbstractStyleVisitor implements StyleVisitor {
         }
 
         if (gr.getGap() != null) {
-            //gr.getGap().accept(visitor, extraData)
+            // gr.getGap().accept(visitor, extraData)
         }
         if (gr.getInitialGap() != null) {
-            //gr.getInitialGap().accept(visitor, extraData)
+            // gr.getInitialGap().accept(visitor, extraData)
         }
         for (Mark m : gr.getMarks()) {
             m.accept(this);
         }
         if (gr.getOpacity() != null) {
-            //gr.getOpacity().accept(visitor, extraData)
+            // gr.getOpacity().accept(visitor, extraData)
         }
         if (gr.getRotation() != null) {
-            //gr.getRotation().accept(visitor, extraData)
+            // gr.getRotation().accept(visitor, extraData)
         }
         if (gr.getSize() != null) {
-            //gr.getSize().accept(visitor, extraData)
+            // gr.getSize().accept(visitor, extraData)
         }
-
     }
 
     @Override
     public void visit(Mark mark) {
         if (mark.getExternalMark() != null) {
-            //mark.getExternalMark().accept(this, extraData);
+            // mark.getExternalMark().accept(this, extraData);
         }
         if (mark.getFill() != null) {
             mark.getFill().accept(this);
@@ -301,14 +292,14 @@ public class AbstractStyleVisitor implements StyleVisitor {
             mark.getStroke().accept(this);
         }
         if (mark.getWellKnownName() != null) {
-            //mark.getWellKnownName().accept(visitor, extraData)
+            // mark.getWellKnownName().accept(visitor, extraData)
         }
     }
 
     @Override
     public void visit(ExternalGraphic exgr) {
         for (org.opengis.style.ColorReplacement cr : exgr.getColorReplacements()) {
-            //cr.accept(visitor, extraData)
+            // cr.accept(visitor, extraData)
         }
     }
 
@@ -321,40 +312,40 @@ public class AbstractStyleVisitor implements StyleVisitor {
             pp.getDisplacement().accept(this);
         }
         if (pp.getRotation() != null) {
-            //pp.getRotation().accept(visitor, extraData)
+            // pp.getRotation().accept(visitor, extraData)
         }
     }
 
     @Override
     public void visit(AnchorPoint ap) {
         if (ap.getAnchorPointX() != null) {
-            //ap.getAnchorPointX().accept(visitor, extraData)
+            // ap.getAnchorPointX().accept(visitor, extraData)
         }
         if (ap.getAnchorPointY() != null) {
-            //ap.getAnchorPointY().accept(visitor, extraData)
+            // ap.getAnchorPointY().accept(visitor, extraData)
         }
     }
 
     @Override
     public void visit(Displacement dis) {
         if (dis.getDisplacementX() != null) {
-            //dis.getDisplacementX().accept(visitor, extraData)
+            // dis.getDisplacementX().accept(visitor, extraData)
         }
         if (dis.getDisplacementY() != null) {
-            //dis.getDisplacementY().accept(visitor, extraData)
+            // dis.getDisplacementY().accept(visitor, extraData)
         }
     }
 
     @Override
     public void visit(LinePlacement lp) {
         if (lp.getGap() != null) {
-            //lp.getGap().accept(visitor, extraData)
+            // lp.getGap().accept(visitor, extraData)
         }
         if (lp.getInitialGap() != null) {
-            //lp.getInitialGap().accept(visitor, extraData)
+            // lp.getInitialGap().accept(visitor, extraData)
         }
         if (lp.getPerpendicularOffset() != null) {
-            //lp.getPerpendicularOffset().accept(visitor, extraData)
+            // lp.getPerpendicularOffset().accept(visitor, extraData)
         }
     }
 
@@ -364,7 +355,7 @@ public class AbstractStyleVisitor implements StyleVisitor {
             halo.getFill().accept(this);
         }
         if (halo.getRadius() != null) {
-            //halo.getRadius().accept(visitor, extraData)
+            // halo.getRadius().accept(visitor, extraData)
         }
     }
 
@@ -374,27 +365,27 @@ public class AbstractStyleVisitor implements StyleVisitor {
             cme.accept(this);
         }
         if (colorMap.getFunction() != null) {
-            //colorMap.getFunction().accept(visitor, extraData)
+            // colorMap.getFunction().accept(visitor, extraData)
         }
     }
 
     @Override
     public void visit(ColorMapEntry colorMapEntry) {
         if (colorMapEntry.getColor() != null) {
-            //colorMapEntry.getColor().accept(visitor, extraData)
+            // colorMapEntry.getColor().accept(visitor, extraData)
         }
         if (colorMapEntry.getOpacity() != null) {
-            //colorMapEntry.getOpacity().accept(visitor, extraData)
+            // colorMapEntry.getOpacity().accept(visitor, extraData)
         }
         if (colorMapEntry.getQuantity() != null) {
-            //colorMapEntry.getQuantity().accept(visitor, extraData)
+            // colorMapEntry.getQuantity().accept(visitor, extraData)
         }
     }
 
     @Override
     public void visit(ContrastEnhancement contrastEnhancement) {
         if (contrastEnhancement.getGammaValue() != null) {
-            //contrastEnhancement.getGammaValue().accept(visitor, extraData)
+            // contrastEnhancement.getGammaValue().accept(visitor, extraData)
         }
     }
 
@@ -418,23 +409,19 @@ public class AbstractStyleVisitor implements StyleVisitor {
     }
 
     @Override
-    public void visit(OverlapBehavior ob) {
-    }
+    public void visit(OverlapBehavior ob) {}
 
     @Override
     public void visit(SelectedChannelType sct) {
         if (sct.getContrastEnhancement() != null) {
-            sct.getContrastEnhancement().accept(this);    
+            sct.getContrastEnhancement().accept(this);
         }
     }
 
     @Override
     public void visit(ShadedRelief sr) {
         if (sr.getReliefFactor() != null) {
-            //sr.getReliefFactor().accept(visitor, extraData)
+            // sr.getReliefFactor().accept(visitor, extraData)
         }
     }
-
-   
-
 }

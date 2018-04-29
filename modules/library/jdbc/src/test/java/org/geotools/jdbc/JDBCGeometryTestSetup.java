@@ -16,9 +16,6 @@
  */
 package org.geotools.jdbc;
 
-import java.util.Arrays;
-import java.util.List;
-
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.LineString;
@@ -28,17 +25,14 @@ import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
+import java.util.Arrays;
+import java.util.List;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public abstract class JDBCGeometryTestSetup extends JDBCDelegatingTestSetup {
 
     protected JDBCGeometryTestSetup(JDBCTestSetup delegate) {
         super(delegate);
-
     }
 
     @Override
@@ -54,28 +48,35 @@ public abstract class JDBCGeometryTestSetup extends JDBCDelegatingTestSetup {
             }
         }
     }
-    
+
     @Override
     protected void setUpData() throws Exception {
         // nothing to do, the tables are setup within the test
         // this method is overridden so that we avoid calling the delegate setUpData method
     }
 
-    /**
-     * The list of geometry classes the datastore will be tested against.
-     */
+    /** The list of geometry classes the datastore will be tested against. */
     protected List<Class> getGeometryClasses() {
-        return Arrays.asList(new Class[] {Point.class, LineString.class, LinearRing.class, Polygon.class,
-                MultiPoint.class, MultiLineString.class, MultiPolygon.class, Geometry.class, GeometryCollection.class});
+        return Arrays.asList(
+                new Class[] {
+                    Point.class,
+                    LineString.class,
+                    LinearRing.class,
+                    Polygon.class,
+                    MultiPoint.class,
+                    MultiLineString.class,
+                    MultiPolygon.class,
+                    Geometry.class,
+                    GeometryCollection.class
+                });
     }
 
     /**
-     * Must remove the spatial table and all metadata associated to it, leaving
-     * the DBMS in a state where the same table can be re-created without issues
-     * 
+     * Must remove the spatial table and all metadata associated to it, leaving the DBMS in a state
+     * where the same table can be re-created without issues
+     *
      * @param tableName
      * @throws Exception
      */
     protected abstract void dropSpatialTable(String tableName) throws Exception;
-
 }

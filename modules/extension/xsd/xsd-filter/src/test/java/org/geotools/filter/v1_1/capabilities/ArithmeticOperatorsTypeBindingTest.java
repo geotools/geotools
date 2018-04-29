@@ -16,18 +16,18 @@
  */
 package org.geotools.filter.v1_1.capabilities;
 
-import org.w3c.dom.Document;
 import javax.xml.namespace.QName;
-import org.opengis.filter.capability.ArithmeticOperators;
 import org.geotools.filter.v1_1.OGC;
 import org.geotools.xml.Binding;
-
+import org.opengis.filter.capability.ArithmeticOperators;
+import org.w3c.dom.Document;
 
 /**
  * Binding test case for http://www.opengis.net/ogc:ArithmeticOperatorsType.
  *
  * <p>
- *  <pre>
+ *
+ * <pre>
  *   <code>
  *  &lt;xsd:complexType name="ArithmeticOperatorsType"&gt;
  *      &lt;xsd:choice maxOccurs="unbounded"&gt;
@@ -38,12 +38,8 @@ import org.geotools.xml.Binding;
  *
  *    </code>
  *   </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class ArithmeticOperatorsTypeBindingTest extends OGCTestSupport {
@@ -74,14 +70,20 @@ public class ArithmeticOperatorsTypeBindingTest extends OGCTestSupport {
     }
 
     public void testEncode() throws Exception {
-        Document dom = encode(FilterMockData.arithmetic(true),
-                new QName(OGC.NAMESPACE, "Arithmetic_Operators"), OGC.ArithmeticOperatorsType);
+        Document dom =
+                encode(
+                        FilterMockData.arithmetic(true),
+                        new QName(OGC.NAMESPACE, "Arithmetic_Operators"),
+                        OGC.ArithmeticOperatorsType);
 
         assertNotNull(getElementByQName(dom, OGC.SimpleArithmetic));
         assertNotNull(getElementByQName(dom, new QName(OGC.NAMESPACE, "Functions")));
 
-        dom = encode(FilterMockData.arithmetic(false),
-                new QName(OGC.NAMESPACE, "Arithmetic_Operators"), OGC.ArithmeticOperatorsType);
+        dom =
+                encode(
+                        FilterMockData.arithmetic(false),
+                        new QName(OGC.NAMESPACE, "Arithmetic_Operators"),
+                        OGC.ArithmeticOperatorsType);
         assertNull(getElementByQName(dom, OGC.SimpleArithmetic));
         assertNotNull(getElementByQName(dom, new QName(OGC.NAMESPACE, "Functions")));
     }

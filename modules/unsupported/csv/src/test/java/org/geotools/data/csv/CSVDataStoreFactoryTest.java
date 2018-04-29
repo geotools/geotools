@@ -19,7 +19,6 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.geotools.TestData;
 import org.geotools.data.FileDataStore;
 import org.geotools.data.csv.parse.CSVAttributesOnlyStrategy;
@@ -52,7 +51,7 @@ public class CSVDataStoreFactoryTest {
         assertEquals("Comma delimited text file", csvDataStoreFactory.getDescription());
         assertTrue(csvDataStoreFactory.canProcess(locationsResource));
         assertTrue(csvDataStoreFactory.getImplementationHints().isEmpty());
-        assertArrayEquals(new String[] { ".csv" }, csvDataStoreFactory.getFileExtensions());
+        assertArrayEquals(new String[] {".csv"}, csvDataStoreFactory.getFileExtensions());
         assertNotNull("Invalid Parameter Info", csvDataStoreFactory.getParametersInfo());
     }
 
@@ -129,7 +128,9 @@ public class CSVDataStoreFactoryTest {
     public void testCSVStrategyDefault() throws Exception {
         CSVDataStore datastore = (CSVDataStore) csvDataStoreFactory.createDataStoreFromFile(file);
         CSVStrategy csvStrategy = datastore.getCSVStrategy();
-        assertEquals("Unexpected default csv strategy", CSVAttributesOnlyStrategy.class,
+        assertEquals(
+                "Unexpected default csv strategy",
+                CSVAttributesOnlyStrategy.class,
                 csvStrategy.getClass());
     }
 
@@ -165,8 +166,7 @@ public class CSVDataStoreFactoryTest {
         params.put("lngField", "bar");
         CSVDataStore datastore = (CSVDataStore) csvDataStoreFactory.createDataStore(params);
         CSVStrategy csvStrategy = datastore.getCSVStrategy();
-        assertEquals("Unexpected strategy", CSVLatLonStrategy.class,
-                csvStrategy.getClass());
+        assertEquals("Unexpected strategy", CSVLatLonStrategy.class, csvStrategy.getClass());
     }
 
     @Test

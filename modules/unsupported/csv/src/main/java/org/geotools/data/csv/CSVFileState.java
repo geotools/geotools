@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- *    
+ *
  * 	  (c) 2014 Open Source Geospatial Foundation - all rights reserved
  * 	  (c) 2012 - 2014 OpenPlans
  *
@@ -17,6 +17,7 @@
  */
 package org.geotools.data.csv;
 
+import com.csvreader.CsvReader;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -24,13 +25,10 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.net.URI;
-
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.referencing.CRS;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-
-import com.csvreader.CsvReader;
 
 public class CSVFileState {
 
@@ -103,6 +101,7 @@ public class CSVFileState {
         }
     }
 
+    // docs start openCSVReader
     public CsvReader openCSVReader() throws IOException {
         Reader reader;
         if (file != null) {
@@ -116,7 +115,9 @@ public class CSVFileState {
         }
         return csvReader;
     }
+    // docs end openCSVReader
 
+    // docs start getCSVHeaders
     public String[] getCSVHeaders() {
         if (headers == null) {
             synchronized (this) {
@@ -141,4 +142,5 @@ public class CSVFileState {
             }
         }
     }
+    // docs end readCSVHeaders
 }

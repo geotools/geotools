@@ -7,7 +7,6 @@ import org.junit.Test;
 import org.opengis.feature.type.Name;
 
 public class NameConverterTest {
-    
 
     @Test
     public void testToName() {
@@ -15,12 +14,10 @@ public class NameConverterTest {
         assertEquals(new NameImpl("a", "b"), Converters.convert("a:b", Name.class));
         assertNull(Converters.convert("a:b:c", Name.class));
     }
-    
+
     @Test
     public void testNameToString() {
         assertEquals("test", Converters.convert(new NameImpl("test"), String.class));
         assertEquals("a:b", Converters.convert(new NameImpl("a", "b"), String.class));
     }
-    
-    
 }

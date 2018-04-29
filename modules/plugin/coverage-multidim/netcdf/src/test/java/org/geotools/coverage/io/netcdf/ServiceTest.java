@@ -22,10 +22,8 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.logging.Logger;
-
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
-
 import org.geotools.coverage.io.Driver;
 import org.geotools.coverage.io.impl.CoverageIO;
 import org.geotools.imageio.netcdf.NetCDFImageReader;
@@ -37,15 +35,14 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
 
 /**
  * Class for testing availability of NetCDF format factory
- * 
+ *
  * @author Simone Giannecchini
  * @author Daniele Romagnoli
- * 
  * @source $URL$
  */
 public class ServiceTest {
 
-    private final static Logger LOGGER = Logging.getLogger(ServiceTest.class.toString());
+    private static final Logger LOGGER = Logging.getLogger(ServiceTest.class.toString());
 
     @Test
     public void isAvailable() throws NoSuchAuthorityCodeException, FactoryException {
@@ -78,7 +75,6 @@ public class ServiceTest {
             if (reader instanceof NetCDFImageReader) {
                 found = true;
             }
-
         }
         assertTrue("DummyUnidataReader not registered", found);
     }

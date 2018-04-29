@@ -18,11 +18,7 @@ package org.geotools.data.h2;
 
 import org.geotools.jdbc.JDBCPrimaryKeyFinderTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class H2PrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestSetup {
 
     protected H2PrimaryKeyFinderTestSetup() {
@@ -31,9 +27,14 @@ public class H2PrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestSetup {
 
     @Override
     protected void createMetadataTable() throws Exception {
-        run("CREATE TABLE gt_pk_metadata ( " + "table_schema VARCHAR, "
-                + "table_name VARCHAR NOT NULL, " + "pk_column VARCHAR NOT NULL, "
-                + "pk_column_idx INTEGER, " + "pk_policy VARCHAR, " + "pk_sequence VARCHAR)");
+        run(
+                "CREATE TABLE gt_pk_metadata ( "
+                        + "table_schema VARCHAR, "
+                        + "table_name VARCHAR NOT NULL, "
+                        + "pk_column VARCHAR NOT NULL, "
+                        + "pk_column_idx INTEGER, "
+                        + "pk_policy VARCHAR, "
+                        + "pk_sequence VARCHAR)");
     }
 
     @Override
@@ -43,20 +44,25 @@ public class H2PrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestSetup {
 
     @Override
     protected void createSequencedPrimaryKeyTable() throws Exception {
-        run("CREATE TABLE \"seqtable\" ( \"key\" int PRIMARY KEY, "
-                + "\"name\" VARCHAR, \"geom\" GEOMETRY)");
+        run(
+                "CREATE TABLE \"seqtable\" ( \"key\" int PRIMARY KEY, "
+                        + "\"name\" VARCHAR, \"geom\" GEOMETRY)");
         run("CALL AddGeometryColumn(NULL, 'seqtable', 'geom', 4326, 'GEOMETRY', 2)");
         run("CREATE SEQUENCE pksequence START WITH 1");
 
-        run("INSERT INTO \"seqtable\" (\"key\", \"name\",\"geom\" ) VALUES ("
-                + "(SELECT NEXTVAL('pksequence')),'one',NULL)");
-        run("INSERT INTO \"seqtable\" (\"key\", \"name\",\"geom\" ) VALUES ("
-                + "(SELECT NEXTVAL('pksequence')),'two',NULL)");
-        run("INSERT INTO \"seqtable\" (\"key\", \"name\",\"geom\" ) VALUES ("
-                + "(SELECT NEXTVAL('pksequence')),'three',NULL)");
+        run(
+                "INSERT INTO \"seqtable\" (\"key\", \"name\",\"geom\" ) VALUES ("
+                        + "(SELECT NEXTVAL('pksequence')),'one',NULL)");
+        run(
+                "INSERT INTO \"seqtable\" (\"key\", \"name\",\"geom\" ) VALUES ("
+                        + "(SELECT NEXTVAL('pksequence')),'two',NULL)");
+        run(
+                "INSERT INTO \"seqtable\" (\"key\", \"name\",\"geom\" ) VALUES ("
+                        + "(SELECT NEXTVAL('pksequence')),'three',NULL)");
 
-        run("INSERT INTO gt_pk_metadata VALUES"
-                + "(NULL, 'seqtable', 'key', 0, 'sequence', 'pksequence')");
+        run(
+                "INSERT INTO gt_pk_metadata VALUES"
+                        + "(NULL, 'seqtable', 'key', 0, 'sequence', 'pksequence')");
     }
 
     @Override
@@ -67,8 +73,9 @@ public class H2PrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestSetup {
 
     @Override
     protected void createPlainTable() throws Exception {
-        run("CREATE TABLE \"plaintable\" ( \"key1\" int, \"key2\" int, "
-                + "\"name\" VARCHAR, \"geom\" GEOMETRY)");
+        run(
+                "CREATE TABLE \"plaintable\" ( \"key1\" int, \"key2\" int, "
+                        + "\"name\" VARCHAR, \"geom\" GEOMETRY)");
         run("CALL AddGeometryColumn(NULL, 'plaintable', 'geom', 4326, 'GEOMETRY', 2)");
         run("INSERT INTO \"plaintable\" VALUES (1, 2, 'one', NULL)");
         run("INSERT INTO \"plaintable\" VALUES (2, 3, 'two', NULL)");
@@ -83,8 +90,9 @@ public class H2PrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestSetup {
     @Override
     protected void createAssignedSinglePkView() throws Exception {
         run("CREATE VIEW \"assignedsinglepk\" AS SELECT * FROM \"plaintable\"");
-        run("INSERT INTO gt_pk_metadata VALUES"
-                + "(NULL, 'assignedsinglepk', 'key1', 0, 'assigned', NULL)");
+        run(
+                "INSERT INTO gt_pk_metadata VALUES"
+                        + "(NULL, 'assignedsinglepk', 'key1', 0, 'assigned', NULL)");
     }
 
     @Override
@@ -95,16 +103,16 @@ public class H2PrimaryKeyFinderTestSetup extends JDBCPrimaryKeyFinderTestSetup {
     @Override
     protected void createAssignedMultiPkView() throws Exception {
         run("CREATE VIEW \"assignedmultipk\" AS SELECT * FROM \"plaintable\"");
-        run("INSERT INTO gt_pk_metadata VALUES"
-                + "(NULL, 'assignedmultipk', 'key1', 0, 'assigned', NULL)");
-        run("INSERT INTO gt_pk_metadata VALUES"
-                + "(NULL, 'assignedmultipk', 'key2', 1, 'assigned', NULL)");
-
+        run(
+                "INSERT INTO gt_pk_metadata VALUES"
+                        + "(NULL, 'assignedmultipk', 'key1', 0, 'assigned', NULL)");
+        run(
+                "INSERT INTO gt_pk_metadata VALUES"
+                        + "(NULL, 'assignedmultipk', 'key2', 1, 'assigned', NULL)");
     }
 
     @Override
     protected void dropAssignedMultiPkView() throws Exception {
         runSafe("DROP VIEW \"assignedmultipk\"");
     }
-
 }

@@ -23,12 +23,13 @@ import org.json.simple.JSONObject;
 import org.opengis.filter.expression.Expression;
 
 /**
- * The expressions in this section are provided for the purpose of testing for and converting between different
- * data types like strings, numbers, and boolean values.
+ * The expressions in this section are provided for the purpose of testing for and converting
+ * between different data types like strings, numbers, and boolean values.
  *
- * Often, such tests and conversions are unnecessary, but they may be necessary in some expressions where the type of a
- * certain sub-expression is ambiguous. They can also be useful in cases where your feature data has inconsistent types;
- * for example, you could use to-number to make sure that values like ""1.5"" (instead of 1.5) are treated as numeric
+ * <p>Often, such tests and conversions are unnecessary, but they may be necessary in some
+ * expressions where the type of a certain sub-expression is ambiguous. They can also be useful in
+ * cases where your feature data has inconsistent types; for example, you could use to-number to
+ * make sure that values like ""1.5"" (instead of 1.5) are treated as numeric
  */
 public class MBTypes extends MBExpression {
     public MBTypes(JSONArray json) {
@@ -36,39 +37,34 @@ public class MBTypes extends MBExpression {
     }
 
     /**
-     * Asserts that the input is an array (optionally with a specific item type and length). If, when the input
-     * expression is evaluated, it is not of the asserted type, then this assertion will cause the whole expression to be aborted.
-     * Example:
-     *   ["array", value]: array
-     *   ["array", type: "string" | "number" | "boolean", value]: array<type>
-     *   ["array",
-     *   type: "string" | "number" | "boolean",
-     *   N: number (literal),
-     *   value
-     *   ]: array<type, N>
+     * Asserts that the input is an array (optionally with a specific item type and length). If,
+     * when the input expression is evaluated, it is not of the asserted type, then this assertion
+     * will cause the whole expression to be aborted. Example: ["array", value]: array ["array",
+     * type: "string" | "number" | "boolean", value]: array<type> ["array", type: "string" |
+     * "number" | "boolean", N: number (literal), value ]: array<type, N>
+     *
      * @return
      */
-    public Expression typesArray(){
+    public Expression typesArray() {
         return ff.function("mbType", exprList());
     }
 
     /**
-     * Asserts that the input value is a boolean. If multiple values are provided, each one is evaluated in order until
-     * a boolean is obtained. If none of the inputs are booleans, the expression is an error.
-     * Example:
-     *   ["boolean", value]: boolean
-     *   ["boolean", value, fallback: value, fallback: value, ...]: boolean
+     * Asserts that the input value is a boolean. If multiple values are provided, each one is
+     * evaluated in order until a boolean is obtained. If none of the inputs are booleans, the
+     * expression is an error. Example: ["boolean", value]: boolean ["boolean", value, fallback:
+     * value, fallback: value, ...]: boolean
+     *
      * @return
      */
-    public Expression typesBoolean(){
+    public Expression typesBoolean() {
         return ff.function("mbType", exprList());
     }
 
     /**
-     * Provides a literal array or object value.
-     * Example:
-     *   ["literal", [...] (JSON array literal)]: array<T, N>
-     *   ["literal", {...} (JSON object literal)]: Object
+     * Provides a literal array or object value. Example: ["literal", [...] (JSON array literal)]:
+     * array<T, N> ["literal", {...} (JSON object literal)]: Object
+     *
      * @return
      */
     private Expression typesLiteral() {
@@ -80,115 +76,117 @@ public class MBTypes extends MBExpression {
                 JSONArray arr = (JSONArray) json.get(1);
                 return ff.literal(arr);
             } else {
-                throw new MBFormatException("The \"literal\" expression requires a JSONObject or JSONArray but was " +
-                        json.get(1).getClass());
+                throw new MBFormatException(
+                        "The \"literal\" expression requires a JSONObject or JSONArray but was "
+                                + json.get(1).getClass());
             }
         }
         throw new MBFormatException("The \"literal\" expression requires exactly 1 argument");
     }
 
     /**
-     * Asserts that the input value is a number. If multiple values are provided, each one is evaluated in order until
-     * a number is obtained. If none of the inputs are numbers, the expression is an error.
-     * Example:
-     *   ["number", value]: number
-     *   ["number", value, fallback: value, fallback: value, ...]: number
+     * Asserts that the input value is a number. If multiple values are provided, each one is
+     * evaluated in order until a number is obtained. If none of the inputs are numbers, the
+     * expression is an error. Example: ["number", value]: number ["number", value, fallback: value,
+     * fallback: value, ...]: number
+     *
      * @return
      */
-    public Expression typesNumber(){
+    public Expression typesNumber() {
         return ff.function("mbType", exprList());
     }
 
     /**
-     * Asserts that the input value is an object. If multiple values are provided, each one is evaluated in order until
-     * an object is obtained. If none of the inputs are objects, the expression is an error.
-     * Example:
-     *   ["object", value]: object
-     *   ["object", value, fallback: value, fallback: value, ...]: object
+     * Asserts that the input value is an object. If multiple values are provided, each one is
+     * evaluated in order until an object is obtained. If none of the inputs are objects, the
+     * expression is an error. Example: ["object", value]: object ["object", value, fallback: value,
+     * fallback: value, ...]: object
+     *
      * @return
      */
-    public Expression typesObject(){
+    public Expression typesObject() {
         return ff.function("mbType", exprList());
     }
 
     /**
-     * Asserts that the input value is a string. If multiple values are provided, each one is evaluated in order until
-     * a string is obtained. If none of the inputs are strings, the expression is an error.
-     * Example:
-     *   ["string", value]: string
-     *   ["string", value, fallback: value, fallback: value, ...]: string
+     * Asserts that the input value is a string. If multiple values are provided, each one is
+     * evaluated in order until a string is obtained. If none of the inputs are strings, the
+     * expression is an error. Example: ["string", value]: string ["string", value, fallback: value,
+     * fallback: value, ...]: string
+     *
      * @return
      */
-    public Expression typesString(){
+    public Expression typesString() {
         return ff.function("mbType", exprList());
     }
 
     /**
-     * Converts the input value to a boolean. The result is false when then input is an empty string, 0, false, null,
-     * or NaN; otherwise it is true.
-     * Example:
-     *   ["to-boolean", value]: boolean
+     * Converts the input value to a boolean. The result is false when then input is an empty
+     * string, 0, false, null, or NaN; otherwise it is true. Example: ["to-boolean", value]: boolean
+     *
      * @return
      */
-    public Expression typesToBoolean(){
+    public Expression typesToBoolean() {
         return ff.function("toBool", parse.string(json, 1));
     }
 
     /**
-     * Converts the input value to a color. If multiple values are provided, each one is evaluated in order until the
-     * first successful conversion is obtained. If none of the inputs can be converted, the expression is an error.
-     * Example:
-     *   ["to-color", value, fallback: value, fallback: value, ...]: color
+     * Converts the input value to a color. If multiple values are provided, each one is evaluated
+     * in order until the first successful conversion is obtained. If none of the inputs can be
+     * converted, the expression is an error. Example: ["to-color", value, fallback: value,
+     * fallback: value, ...]: color
+     *
      * @return
      */
-    public Expression typesToColor(){
+    public Expression typesToColor() {
         return ff.function("toColor", exprList());
     }
 
     /**
-     * Converts the input value to a number, if possible. If the input is null or false, the result is 0. If the input
-     * is true, the result is 1. If the input is a string, it is converted to a number as specified by the
-     * "ToNumber Applied to the String Type" algorithm of the ECMAScript Language Specification. If multiple values are
-     * provided, each one is evaluated in order until the first successful conversion is obtained.
-     * If none of the inputs can be converted, the expression is an error.
-     * Example:
-     *   ["to-number", value, fallback: value, fallback: value, ...]: number
+     * Converts the input value to a number, if possible. If the input is null or false, the result
+     * is 0. If the input is true, the result is 1. If the input is a string, it is converted to a
+     * number as specified by the "ToNumber Applied to the String Type" algorithm of the ECMAScript
+     * Language Specification. If multiple values are provided, each one is evaluated in order until
+     * the first successful conversion is obtained. If none of the inputs can be converted, the
+     * expression is an error. Example: ["to-number", value, fallback: value, fallback: value, ...]:
+     * number
+     *
      * @return
      */
-    public Expression typesToNumber(){
+    public Expression typesToNumber() {
         return ff.function("toNumber", exprList());
     }
 
     /**
-     * Converts the input value to a string. If the input is null, the result is "null". If the input is a boolean,
-     * the result is "true" or "false". If the input is a number, it is converted to a string as specified by the
-     * "NumberToString" algorithm of the ECMAScript Language Specification. If the input is a color, it is converted to
-     * a string of the form "rgba(r,g,b,a)", where r, g, and b are numerals ranging from 0 to 255, and a ranges from
-     * 0 to 1. Otherwise, the input is converted to a string in the format specified by the JSON.stringify function of
-     * the ECMAScript Language Specification.
-     * Example:
-     *   ["to-string", value]: string
+     * Converts the input value to a string. If the input is null, the result is "null". If the
+     * input is a boolean, the result is "true" or "false". If the input is a number, it is
+     * converted to a string as specified by the "NumberToString" algorithm of the ECMAScript
+     * Language Specification. If the input is a color, it is converted to a string of the form
+     * "rgba(r,g,b,a)", where r, g, and b are numerals ranging from 0 to 255, and a ranges from 0 to
+     * 1. Otherwise, the input is converted to a string in the format specified by the
+     * JSON.stringify function of the ECMAScript Language Specification. Example: ["to-string",
+     * value]: string
+     *
      * @return
      */
-    public Expression typesToString(){
+    public Expression typesToString() {
         return ff.function("toString", parse.string(json, 1));
     }
 
     /**
-     * Returns a string describing the type of the given value.
-     * Example:
-     *   ["typeof", value]: string
+     * Returns a string describing the type of the given value. Example: ["typeof", value]: string
+     *
      * @return
      */
-    public Expression typesTypeOf(){
+    public Expression typesTypeOf() {
         Expression value = parse.string(json, 1);
         return ff.function("mbTypeOf", value);
     }
 
-    private Expression[] exprList(){
+    private Expression[] exprList() {
         // Build an array of Expression arguments for functions that accept multiple parameters.
         Expression[] args = new Expression[json.size()];
-        for (Integer i = 0; i <= json.size() -1 ; i++) {
+        for (Integer i = 0; i <= json.size() - 1; i++) {
             Expression obj = parse.string(json, i);
             args[i] = obj;
         }

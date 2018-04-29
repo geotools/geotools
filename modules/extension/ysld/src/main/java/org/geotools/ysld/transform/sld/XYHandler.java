@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,13 +17,11 @@
  */
 package org.geotools.ysld.transform.sld;
 
+import java.io.IOException;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import java.io.IOException;
 
-/**
- * Handles xml parse events for co-ordinate tuples.
- */
+/** Handles xml parse events for co-ordinate tuples. */
 public class XYHandler extends SldTransformHandler {
 
     String x, y;
@@ -33,24 +31,26 @@ public class XYHandler extends SldTransformHandler {
             throws XMLStreamException, IOException {
         String name = xml.getLocalName();
         if (name.endsWith("X")) {
-            context.push(new ExpressionHandler() {
-                @Override
-                protected SldTransformContext onValue(String value, SldTransformContext context)
-                        throws IOException {
-                    x = value;
-                    return context;
-                }
-            });
+            context.push(
+                    new ExpressionHandler() {
+                        @Override
+                        protected SldTransformContext onValue(
+                                String value, SldTransformContext context) throws IOException {
+                            x = value;
+                            return context;
+                        }
+                    });
         }
         if (name.endsWith("Y")) {
-            context.push(new ExpressionHandler() {
-                @Override
-                protected SldTransformContext onValue(String value, SldTransformContext context)
-                        throws IOException {
-                    y = value;
-                    return context;
-                }
-            });
+            context.push(
+                    new ExpressionHandler() {
+                        @Override
+                        protected SldTransformContext onValue(
+                                String value, SldTransformContext context) throws IOException {
+                            y = value;
+                            return context;
+                        }
+                    });
         }
     }
 

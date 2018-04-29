@@ -17,8 +17,9 @@
  */
 package org.geotools.process.vector;
 
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryCollection;
 import java.io.IOException;
-
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.geometry.jts.GeometryCollector;
@@ -27,24 +28,26 @@ import org.geotools.process.factory.DescribeProcess;
 import org.geotools.process.factory.DescribeResult;
 import org.opengis.util.ProgressListener;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-
 /**
  * Collects all geometries from the specified vector layer into a single GeometryCollection (or
  * specialized subclass of it in case the geometries are uniform)
- * 
- * @author Andrea Aime - GeoSolutions
  *
+ * @author Andrea Aime - GeoSolutions
  * @source $URL$
  */
-@DescribeProcess(title = "Collect Geometries", description = "Collects the default geometries of the input features and combines them into a single geometry collection")
+@DescribeProcess(
+    title = "Collect Geometries",
+    description =
+            "Collects the default geometries of the input features and combines them into a single geometry collection"
+)
 public class CollectGeometries implements VectorProcess {
 
     @DescribeResult(name = "result", description = "Geometry collection of all input geometries")
     public GeometryCollection execute(
-            @DescribeParameter(name = "features", description = "Input feature collection") FeatureCollection features,
-            ProgressListener progressListener) throws IOException {
+            @DescribeParameter(name = "features", description = "Input feature collection")
+                    FeatureCollection features,
+            ProgressListener progressListener)
+            throws IOException {
         int count = features.size();
         float done = 0;
 
@@ -52,10 +55,10 @@ public class CollectGeometries implements VectorProcess {
         GeometryCollector collector = new GeometryCollector();
         try {
             fi = features.features();
-            while(fi.hasNext()) {
+            while (fi.hasNext()) {
                 Geometry g = (Geometry) fi.next().getDefaultGeometryProperty().getValue();
                 collector.add(g);
-    
+
                 // progress notification
                 done++;
                 if (progressListener != null && done % 100 == 0) {
@@ -67,9 +70,7 @@ public class CollectGeometries implements VectorProcess {
                 fi.close();
             }
         }
-        
+
         return collector.collect();
     }
-
-   
 }

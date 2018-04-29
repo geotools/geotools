@@ -27,13 +27,10 @@ import org.restlet.resource.StringRepresentation;
 import org.restlet.resource.Variant;
 
 /**
- * This class will handle requests like:
- * http://localhost:8082/simplefeatureservice/capabilities
- * It generates a list of available layers
- * @author 
+ * This class will handle requests like: http://localhost:8082/simplefeatureservice/capabilities It
+ * generates a list of available layers
  *
- *
- *
+ * @author
  * @source $URL$
  */
 public class CapabilitiesResource extends Resource {
@@ -48,6 +45,7 @@ public class CapabilitiesResource extends Resource {
     /**
      * This method is used to server a list of available layers
      * http://localhost:8084/simplefeatureservice-mockup-service-1.0-SNAPSHOT/capabilities
+     *
      * @param variant
      * @return
      * @throws ResourceException
@@ -55,22 +53,24 @@ public class CapabilitiesResource extends Resource {
     @Override
     public Representation represent(Variant variant) throws ResourceException {
 
-        String _jsonText = "[{"
-                + "   \"name\": \"layerAsia\","
-                + "   \"bbox\": [-10,-40,30,80],"
-                + "   \"crs\": \"urn:ogc:def:crs:EPSG:4326\","
-                + "   \"axisorder\": \"yx\"},"
-                + "{"
-                + "   \"name\": \"layerAmerica\","
-                + "   \"crs\": \"urn:ogc:def:crs:EPSG:32632\" ,"
-                + "   \"axisorder\": \"xy\" },"
-                + "{"
-                + "   \"name\": \"layerEurope\","
-                + "   \"bbox\": [15000000,49000000,18000000,52000000],"
-                + "   \"crs\": \"urn:ogc:def:crs:EPSG:32632\" "
-                + " }]";
+        String _jsonText =
+                "[{"
+                        + "   \"name\": \"layerAsia\","
+                        + "   \"bbox\": [-10,-40,30,80],"
+                        + "   \"crs\": \"urn:ogc:def:crs:EPSG:4326\","
+                        + "   \"axisorder\": \"yx\"},"
+                        + "{"
+                        + "   \"name\": \"layerAmerica\","
+                        + "   \"crs\": \"urn:ogc:def:crs:EPSG:32632\" ,"
+                        + "   \"axisorder\": \"xy\" },"
+                        + "{"
+                        + "   \"name\": \"layerEurope\","
+                        + "   \"bbox\": [15000000,49000000,18000000,52000000],"
+                        + "   \"crs\": \"urn:ogc:def:crs:EPSG:32632\" "
+                        + " }]";
 
-        Representation representation = new StringRepresentation(_jsonText, MediaType.APPLICATION_JSON);
+        Representation representation =
+                new StringRepresentation(_jsonText, MediaType.APPLICATION_JSON);
         return representation;
     }
 }

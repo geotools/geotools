@@ -22,53 +22,40 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.MessageDigest;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
-
 /**
  * XML Schema resolver that maps absolute URLs to local URL resources.
- * 
- * <p>
- * 
- * Resources are sought, in order:
- * 
+ *
+ * <p>Resources are sought, in order:
+ *
  * <ol>
- * 
- * <li>In an <a href="http://www.oasis-open.org/committees/entity/spec-2001-08-06.html">OASIS
- * Catalog</a> (with URI resolution semantics), which maps URLs to arbitrary filesystem locations.</li>
- * 
- * <li>On the classpath, where resources are located by their Simple HTTP Resource Path (see
- * {@link #getSimpleHttpResourcePath(URI)}).
- * 
- * <li>In a cache, with optional downloading support.
- * 
+ *   <li>In an <a href="http://www.oasis-open.org/committees/entity/spec-2001-08-06.html">OASIS
+ *       Catalog</a> (with URI resolution semantics), which maps URLs to arbitrary filesystem
+ *       locations.
+ *   <li>On the classpath, where resources are located by their Simple HTTP Resource Path (see
+ *       {@link #getSimpleHttpResourcePath(URI)}).
+ *   <li>In a cache, with optional downloading support.
  * </ol>
- * 
+ *
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
- * 
  * @source $URL$
  */
 public class SchemaResolver {
 
-    private static final Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger(SchemaResolver.class.getPackage().getName());
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(
+                    SchemaResolver.class.getPackage().getName());
 
-    /**
-     * A local OASIS catalog (null if not present).
-     */
+    /** A local OASIS catalog (null if not present). */
     private SchemaCatalog catalog;
 
-    /**
-     * True if schemas can be resolved on the classpath.
-     */
+    /** True if schemas can be resolved on the classpath. */
     private boolean classpath = true;
 
-    /**
-     * Cache of schemas with optional downloading support(null if not present).
-     */
+    /** Cache of schemas with optional downloading support(null if not present). */
     private SchemaCache cache;
 
     /**
@@ -78,14 +65,14 @@ public class SchemaResolver {
      * import om in a schema, where one is supplied locally and the other must be downloaded and
      * cached. Another example is when the schemas are in different jar files.
      */
-    private Map<String, String> resolvedLocationToOriginalLocationMap = new ConcurrentHashMap<String, String>();
+    private Map<String, String> resolvedLocationToOriginalLocationMap =
+            new ConcurrentHashMap<String, String>();
 
     /**
      * Constructor.
-     * 
+     *
      * @param catalog
-     * @param classpath
-     *            whether schemas can be located on the classpath
+     * @param classpath whether schemas can be located on the classpath
      * @param cache
      */
     public SchemaResolver(SchemaCatalog catalog, boolean classpath, SchemaCache cache) {
@@ -96,7 +83,7 @@ public class SchemaResolver {
 
     /**
      * Constructor.
-     * 
+     *
      * @param catalog
      * @param cache
      */
@@ -104,16 +91,14 @@ public class SchemaResolver {
         this(catalog, true, cache);
     }
 
-    /**
-     * Convenience constructor for a resolver with neither catalog nor cache (just classpath).
-     */
+    /** Convenience constructor for a resolver with neither catalog nor cache (just classpath). */
     public SchemaResolver() {
         this(null, null);
     }
 
     /**
      * Convenience constructor for a resolver with no cache.
-     * 
+     *
      * @param catalog
      */
     public SchemaResolver(SchemaCatalog catalog) {
@@ -122,7 +107,7 @@ public class SchemaResolver {
 
     /**
      * Convenience constructor for a resolver with no catalog.
-     * 
+     *
      * @param cache
      */
     public SchemaResolver(SchemaCache cache) {
@@ -132,15 +117,12 @@ public class SchemaResolver {
     /**
      * Resolve an absolute or relative URL to a local file or jar URL. Relative URLs are resolved
      * against a context schema URL if provided.
-     * 
-     * @param location
-     *            an absolute or relative URL for a schema
-     * @param context
-     *            an absolute URL specifying the context schema of a relative location, or null if
-     *            none
+     *
+     * @param location an absolute or relative URL for a schema
+     * @param context an absolute URL specifying the context schema of a relative location, or null
+     *     if none
      * @return the string representation of a file or jar URL
-     * @throws RuntimeException
-     *             if a local resource could not be found
+     * @throws RuntimeException if a local resource could not be found
      */
     public String resolve(String location, String context) {
         URI locationUri;
@@ -152,8 +134,10 @@ public class SchemaResolver {
         if (!locationUri.isAbsolute()) {
             // Location is relative, so need to resolve against context.
             if (context == null) {
-                throw new RuntimeException("Could not determine absolute schema location for "
-                        + location + " because context schema location is unknown");
+                throw new RuntimeException(
+                        "Could not determine absolute schema location for "
+                                + location
+                                + " because context schema location is unknown");
             }
             // Find the original absolute http/https (canonical) URL used to obtain the
             // context schema, so relative imports can be honoured across resolution source
@@ -177,12 +161,10 @@ public class SchemaResolver {
 
     /**
      * Resolve an absolute URL to a local file or jar URL.
-     * 
-     * @param location
-     *            an absolute URL
+     *
+     * @param location an absolute URL
      * @return the string representation of a file or jar URL
-     * @throws RuntimeException
-     *             if a local resource could not be found
+     * @throws RuntimeException if a local resource could not be found
      */
     public String resolve(String location) {
         String resolvedLocation = null;
@@ -206,8 +188,8 @@ public class SchemaResolver {
         if (resolvedLocation == null) {
             throw new RuntimeException(String.format("Failed to resolve %s", location));
         }
-        synchronized(this) {
-            if(!resolvedLocationToOriginalLocationMap.containsKey(resolvedLocation)) {
+        synchronized (this) {
+            if (!resolvedLocationToOriginalLocationMap.containsKey(resolvedLocation)) {
                 resolvedLocationToOriginalLocationMap.put(resolvedLocation, location);
             }
         }
@@ -218,9 +200,8 @@ public class SchemaResolver {
     /**
      * Return the Simple HTTP Resource Path for an absolute http/https URL. Does not include query
      * components in the path.
-     * 
-     * @param location
-     *            not null
+     *
+     * @param location not null
      * @return the resource path with a leading slash
      * @see #getSimpleHttpResourcePath(URI)
      */
@@ -230,13 +211,11 @@ public class SchemaResolver {
 
     /**
      * Return the Simple HTTP Resource Path for an absolute http/https URL.
-     * 
-     * @param location
-     *            not null
-     * @param keepQuery
-     *            indicates whether or not the query components should be included in the path. If
-     *            this is set to true then the query portion is converted to an MD5 message digest
-     *            and that string is used to identify the file in the cache.
+     *
+     * @param location not null
+     * @param keepQuery indicates whether or not the query components should be included in the
+     *     path. If this is set to true then the query portion is converted to an MD5 message digest
+     *     and that string is used to identify the file in the cache.
      * @return the resource path with a leading slash
      * @see #getSimpleHttpResourcePath(URI, boolean)
      */
@@ -252,31 +231,26 @@ public class SchemaResolver {
 
     /**
      * Return the Simple HTTP Resource Path for an absolute http/https URL.
-     * 
-     * <p>
-     * 
-     * The Simple HTTP Resource Path maps an HTTP or HTTPS URL to a path on the classpath or
+     *
+     * <p>The Simple HTTP Resource Path maps an HTTP or HTTPS URL to a path on the classpath or
      * relative to some other root. To form the Simple HTTP Resource Path from an http/https URL:
-     * 
+     *
      * <ol>
-     * <li>Protocol, port, fragment, and query are ignored.</li>
-     * <li>Take the host name, split it into its components, reverse their order, prepend a forward
-     * slash to each, and concatenate them.</li>
-     * <li>Append the path component of the URL.</li>
+     *   <li>Protocol, port, fragment, and query are ignored.
+     *   <li>Take the host name, split it into its components, reverse their order, prepend a
+     *       forward slash to each, and concatenate them.
+     *   <li>Append the path component of the URL.
      * </ol>
-     * 
-     * For example <code>http://schemas.example.org/exampleml/exml.xsd</code> becomes
-     * <code>/org/example/schemas/exampleml/exml.xsd</code> .
-     * 
-     * <p>
-     * 
-     * The Simple HTTP Resource Path always starts with a forward slash (if not null). Does not
+     *
+     * For example <code>http://schemas.example.org/exampleml/exml.xsd</code> becomes <code>
+     * /org/example/schemas/exampleml/exml.xsd</code> .
+     *
+     * <p>The Simple HTTP Resource Path always starts with a forward slash (if not null). Does not
      * include query components in the path.
-     * 
-     * @param location
-     *            not null
+     *
+     * @param location not null
      * @return the Simple HTTP Resource Path as a string, or null if the URI is not an absolute
-     *         HTTP/HTTPS URL.
+     *     HTTP/HTTPS URL.
      */
     public static String getSimpleHttpResourcePath(URI location) {
         return getSimpleHttpResourcePath(location, false);
@@ -284,35 +258,29 @@ public class SchemaResolver {
 
     /**
      * Return the Simple HTTP Resource Path for an absolute http/https URL.
-     * 
-     * <p>
-     * 
-     * The Simple HTTP Resource Path maps an HTTP or HTTPS URL to a path on the classpath or
+     *
+     * <p>The Simple HTTP Resource Path maps an HTTP or HTTPS URL to a path on the classpath or
      * relative to some other root. To form the Simple HTTP Resource Path from an http/https URL:
-     * 
+     *
      * <ol>
-     * <li>Protocol, port, fragment, and query are ignored.</li>
-     * <li>Take the host name, split it into its components, reverse their order, prepend a forward
-     * slash to each, and concatenate them.</li>
-     * <li>Append the path component of the URL.</li>
+     *   <li>Protocol, port, fragment, and query are ignored.
+     *   <li>Take the host name, split it into its components, reverse their order, prepend a
+     *       forward slash to each, and concatenate them.
+     *   <li>Append the path component of the URL.
      * </ol>
-     * 
-     * For example <code>http://schemas.example.org/exampleml/exml.xsd</code> becomes
-     * <code>/org/example/schemas/exampleml/exml.xsd</code> .
-     * 
-     * <p>
-     * 
-     * The Simple HTTP Resource Path always starts with a forward slash (if not null). Does not
+     *
+     * For example <code>http://schemas.example.org/exampleml/exml.xsd</code> becomes <code>
+     * /org/example/schemas/exampleml/exml.xsd</code> .
+     *
+     * <p>The Simple HTTP Resource Path always starts with a forward slash (if not null). Does not
      * include query components in the path.
-     * 
-     * @param location
-     *            not null
-     * @param keepQuery
-     *            indicates whether or not the query components should be included in the path. If
-     *            this is set to true then the query portion is converted to an MD5 message digest
-     *            and that string is used to identify the file in the cache.
+     *
+     * @param location not null
+     * @param keepQuery indicates whether or not the query components should be included in the
+     *     path. If this is set to true then the query portion is converted to an MD5 message digest
+     *     and that string is used to identify the file in the cache.
      * @return the Simple HTTP Resource Path as a string, or null if the URI is not an absolute
-     *         HTTP/HTTPS URL.
+     *     HTTP/HTTPS URL.
      */
     public static String getSimpleHttpResourcePath(URI location, boolean keepQuery) {
         String scheme = location.getScheme();
@@ -342,7 +310,7 @@ public class SchemaResolver {
      * Return the URL for a resource found on the classpath at the Simple HTTP Resource Path. This
      * allows (for example) schema documents in jar files to be loaded from the classpath using
      * their canonical HTTP URLs.
-     * 
+     *
      * @param location
      * @return the URL or null if not found
      */
@@ -359,7 +327,7 @@ public class SchemaResolver {
      * Return the string representation of URL for a resource found on the classpath at the Simple
      * HTTP Resource Path. This allows (for example) schema documents in jar files to be loaded from
      * the classpath using their canonical HTTP URLs.
-     * 
+     *
      * @param location
      * @return the string representation of a classpath URL, or null if not found
      */
@@ -374,12 +342,10 @@ public class SchemaResolver {
 
     /**
      * Convert a string into an MD5 digest.
-     * 
-     * @param message
-     *            The string whose MD5 digest you want to generate.
-     * 
+     *
+     * @param message The string whose MD5 digest you want to generate.
      * @return An MD5 digest generated from message, this string is always 32 characters long. Or
-     *         returns null if there was an error.
+     *     returns null if there was an error.
      */
     private static String stringToMD5String(String message) {
         byte[] bytesOfMessage = null;
@@ -392,6 +358,4 @@ public class SchemaResolver {
         }
         return String.format("%032x", new BigInteger(1, md.digest(bytesOfMessage)));
     }
-
 }
-

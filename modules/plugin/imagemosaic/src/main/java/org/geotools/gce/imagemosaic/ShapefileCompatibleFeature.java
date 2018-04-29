@@ -19,7 +19,6 @@ package org.geotools.gce.imagemosaic;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-
 import org.opengis.feature.GeometryAttribute;
 import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.Property;
@@ -32,7 +31,7 @@ import org.opengis.geometry.BoundingBox;
 
 /**
  * This is a workaround for shapefiles having a limit on attribute names at 10 chars length.
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 class ShapefileCompatibleFeature implements SimpleFeature {
@@ -182,5 +181,4 @@ class ShapefileCompatibleFeature implements SimpleFeature {
     public void setDefaultGeometry(Object geometry) {
         delegate.setDefaultGeometry(geometry);
     }
-
 }

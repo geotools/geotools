@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,7 +16,7 @@
  */
 /**
  * {@linkplain org.geotools.metadata.iso.extent.ExtentImpl Extent} implementation. An explanation
- * for this package is provided in the {@linkplain org.opengis.metadata.extent OpenGIS&reg; javadoc}.
- * The remaining discussion on this page is specific to the Geotools implementation.
+ * for this package is provided in the {@linkplain org.opengis.metadata.extent OpenGIS&reg;
+ * javadoc}. The remaining discussion on this page is specific to the Geotools implementation.
  */
 package org.geotools.metadata.iso.extent;

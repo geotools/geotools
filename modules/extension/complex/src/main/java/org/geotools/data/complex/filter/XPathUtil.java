@@ -22,10 +22,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Logger;
-
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
-
 import org.geotools.data.complex.ComplexFeatureConstants;
 import org.geotools.feature.type.Types;
 import org.geotools.util.CheckedArrayList;
@@ -34,26 +32,23 @@ import org.opengis.feature.type.Name;
 import org.opengis.util.Cloneable;
 import org.xml.sax.helpers.NamespaceSupport;
 
-
 /**
  * Utility class to evaluate XPath expressions against an Attribute instance, which may be any
  * Attribute, whether it is simple, complex, a feature, etc.
- * <p>
- * At the difference of the Filter subsystem, which works against Attribute contents (for example to
- * evaluate a comparison filter), the XPath subsystem, for which this class is the single entry
+ *
+ * <p>At the difference of the Filter subsystem, which works against Attribute contents (for example
+ * to evaluate a comparison filter), the XPath subsystem, for which this class is the single entry
  * point, works against Attribute instances. That is, the result of an XPath expression, if a single
  * value, is an Attribtue, not the attribute content, or a List of Attributes, for instance.
- * </p>
- * 
+ *
  * @author Gabriel Roldan (Axios Engineering)
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
  * @version $Id$
- *
  */
 public class XPathUtil {
 
-    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(XPathUtil.class
-            .getPackage().getName());
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(XPathUtil.class.getPackage().getName());
 
     public static class StepList extends CheckedArrayList<Step> {
         private static final long serialVersionUID = -5612786286175355862L;
@@ -69,7 +64,7 @@ public class XPathUtil {
 
         public String toString() {
             StringBuffer sb = new StringBuffer();
-            for (Iterator<Step> it = iterator(); it.hasNext();) {
+            for (Iterator<Step> it = iterator(); it.hasNext(); ) {
                 Step s = (Step) it.next();
                 sb.append(s.toString());
                 if (it.hasNext()) {
@@ -78,17 +73,17 @@ public class XPathUtil {
             }
             return sb.toString();
         }
-        
+
         public boolean containsPredicate() {
-            for (int i=0; i< size(); i++) {
+            for (int i = 0; i < size(); i++) {
                 if (get(i).getPredicate() != null) {
                     return true;
                 }
             }
-            
+
             return false;
         }
-        
+
         public boolean startsWith(StepList other) {
             if (other.size() > this.size()) {
                 return false;
@@ -106,13 +101,11 @@ public class XPathUtil {
         }
 
         public StepList subList(int fromIndex, int toIndex) {
-            if (fromIndex < 0)
-                throw new IndexOutOfBoundsException("fromIndex = " + fromIndex);
-            if (toIndex > size())
-                throw new IndexOutOfBoundsException("toIndex = " + toIndex);
+            if (fromIndex < 0) throw new IndexOutOfBoundsException("fromIndex = " + fromIndex);
+            if (toIndex > size()) throw new IndexOutOfBoundsException("toIndex = " + toIndex);
             if (fromIndex > toIndex)
-                throw new IllegalArgumentException("fromIndex(" + fromIndex + ") > toIndex("
-                        + toIndex + ")");
+                throw new IllegalArgumentException(
+                        "fromIndex(" + fromIndex + ") > toIndex(" + toIndex + ")");
             StepList subList = new StepList();
             for (int i = fromIndex; i < toIndex; i++) {
                 subList.add(this.get(i));
@@ -131,11 +124,10 @@ public class XPathUtil {
         /**
          * Compares this StepList with another for equivalence regardless of the indexes of each
          * Step.
-         * 
+         *
          * @param propertyName
-         * @return <code>true</code> if this step list has the same location paths than
-         *         <code>propertyName</code> ignoring the indexes in each step. <code>false</code>
-         *         otherwise.
+         * @return <code>true</code> if this step list has the same location paths than <code>
+         *     propertyName</code> ignoring the indexes in each step. <code>false</code> otherwise.
          */
         public boolean equalsIgnoreIndex(final StepList propertyName) {
             if (propertyName == null) {
@@ -160,14 +152,12 @@ public class XPathUtil {
             }
             return true;
         }
-        
+
         /**
          * Find the first steps matching the xpath within this list, and set an index to it.
-         * 
-         * @param index
-         *            the new index for the matching steps
-         * @param xpath
-         *            the xpath to be searched
+         *
+         * @param index the new index for the matching steps
+         * @param xpath the xpath to be searched
          */
         public void setIndex(int index, String xpath, String separator) {
             if (this.toString().contains(xpath)) {
@@ -194,15 +184,11 @@ public class XPathUtil {
         }
     }
 
-    /**
-     * 
-     * @author Gabriel Roldan
-     * 
-     */
+    /** @author Gabriel Roldan */
     public static class Step implements Cloneable {
         private int index;
-        
-        private String predicate =  null;
+
+        private String predicate = null;
 
         private QName attributeName;
 
@@ -212,7 +198,7 @@ public class XPathUtil {
 
         /**
          * Creates a "property" xpath step (i.e. isXmlAttribute() == false).
-         * 
+         *
          * @param name
          * @param index
          */
@@ -223,19 +209,14 @@ public class XPathUtil {
         /**
          * Creates an xpath step for the given qualified name and index; and the given flag to
          * indicate if it it an "attribute" or "property" step.
-         * 
-         * @param name
-         *            the qualified name of the step (name should include prefix to be reflected in
-         *            toString())
-         * @param index
-         *            the index (indexing starts at 1 for Xpath) of the step
-         * @param isXmlAttribute
-         *            whether the step referers to an "attribute" or a "property" (like for
-         *            attributes and elements in xml)
-         * @throws NullPointerException
-         *             if <code>name==null</code>
-         * @throws IllegalArgumentException
-         *             if <code>index &lt; 1</code>
+         *
+         * @param name the qualified name of the step (name should include prefix to be reflected in
+         *     toString())
+         * @param index the index (indexing starts at 1 for Xpath) of the step
+         * @param isXmlAttribute whether the step referers to an "attribute" or a "property" (like
+         *     for attributes and elements in xml)
+         * @throws NullPointerException if <code>name==null</code>
+         * @throws IllegalArgumentException if <code>index &lt; 1</code>
          */
         public Step(final QName name, final int index, boolean isXmlAttribute) {
             this(name, index, isXmlAttribute, false);
@@ -244,22 +225,16 @@ public class XPathUtil {
         /**
          * Creates an xpath step for the given qualified name and index; and the given flag to
          * indicate if it it an "attribute" or "property" step.
-         * 
-         * @param name
-         *            the qualified name of the step (name should include prefix to be reflected in
-         *            toString())
-         * @param index
-         *            the index (indexing starts at 1 for Xpath) of the step
-         * @param isXmlAttribute
-         *            whether the step referers to an "attribute" or a "property" (like for
-         *            attributes and elements in xml)
-         * @param isIndexed
-         *            whether or not the index is to be shown in the string representation even if
-         *            index = 1
-         * @throws NullPointerException
-         *             if <code>name==null</code>
-         * @throws IllegalArgumentException
-         *             if <code>index &lt; 1</code>
+         *
+         * @param name the qualified name of the step (name should include prefix to be reflected in
+         *     toString())
+         * @param index the index (indexing starts at 1 for Xpath) of the step
+         * @param isXmlAttribute whether the step referers to an "attribute" or a "property" (like
+         *     for attributes and elements in xml)
+         * @param isIndexed whether or not the index is to be shown in the string representation
+         *     even if index = 1
+         * @throws NullPointerException if <code>name==null</code>
+         * @throws IllegalArgumentException if <code>index &lt; 1</code>
          */
         public Step(final QName name, final int index, boolean isXmlAttribute, boolean isIndexed) {
             if (name == null) {
@@ -273,7 +248,7 @@ public class XPathUtil {
             this.isXmlAttribute = isXmlAttribute;
             this.isIndexed = isIndexed;
         }
-        
+
         public Step(final QName name, boolean isXmlAttribute, final String predicate) {
             if (name == null) {
                 throw new NullPointerException("name");
@@ -287,7 +262,7 @@ public class XPathUtil {
 
         /**
          * Compares this Step with another for equivalence ignoring the steps indexes.
-         * 
+         *
          * @param hisStep
          * @return
          */
@@ -305,7 +280,7 @@ public class XPathUtil {
         public int getIndex() {
             return index;
         }
-        
+
         public String getPredicate() {
             return predicate;
         }
@@ -341,7 +316,8 @@ public class XPathUtil {
                 return false;
             }
             Step s = (Step) o;
-            return attributeName.equals(s.attributeName) && index == s.index
+            return attributeName.equals(s.attributeName)
+                    && index == s.index
                     && isXmlAttribute == s.isXmlAttribute
                     && predicate == s.predicate;
         }
@@ -351,48 +327,47 @@ public class XPathUtil {
         }
 
         public Step clone() {
-            return predicate==null?
-                    new Step(this.attributeName, this.index, this.isXmlAttribute, this.isIndexed):
-                    new Step(this.attributeName, this.isXmlAttribute, this.predicate);
+            return predicate == null
+                    ? new Step(this.attributeName, this.index, this.isXmlAttribute, this.isIndexed)
+                    : new Step(this.attributeName, this.isXmlAttribute, this.predicate);
         }
 
         /**
          * Flag that indicates that this single step refers to an "attribute" rather than a
          * "property".
-         * <p>
-         * I.e. it was created from the last step of an expression like
-         * <code>foo/bar@attribute</code>.
-         * </p>
-         * 
+         *
+         * <p>I.e. it was created from the last step of an expression like <code>foo/bar@attribute
+         * </code>.
+         *
          * @return
          */
         public boolean isXmlAttribute() {
             return isXmlAttribute;
         }
-        
+
         public void setIndex(int index) {
             this.index = index;
             isIndexed = true;
         }
     }
-    
+
     /**
-     * Split X-path string in to string steps, ignoring / characters inside [] 
-     * 
+     * Split X-path string in to string steps, ignoring / characters inside []
+     *
      * @param s x-path string
      * @return list of string steps
      */
     private static List<String> splitPath(String s) {
         ArrayList<String> parts = new ArrayList<String>();
-        
+
         StringBuffer b = new StringBuffer();
         int insideIndex = 0;
-        for (int pos = 0 ; pos < s.length() ; pos++) {
-            if (s.charAt(pos) == '/' && insideIndex==0) {
+        for (int pos = 0; pos < s.length(); pos++) {
+            if (s.charAt(pos) == '/' && insideIndex == 0) {
                 parts.add(b.toString());
                 b = new StringBuffer();
             } else {
-                if (s.charAt(pos) == '[') {                
+                if (s.charAt(pos) == '[') {
                     insideIndex++;
                 } else if (s.charAt(pos) == ']') {
                     insideIndex--;
@@ -406,17 +381,15 @@ public class XPathUtil {
 
     /**
      * Returns the list of steps in an x-path expression that represents the root element.
-     * 
-     * @param root
-     *            non null descriptor of the root attribute, generally the Feature descriptor.
-     * @param namespaces
-     *            namespace support for generating qnames from namespaces.
+     *
+     * @param root non null descriptor of the root attribute, generally the Feature descriptor.
+     * @param namespaces namespace support for generating qnames from namespaces.
      * @return A list of unique of steps in an xpath expression.
-     * @throws IllegalArgumentException
-     *             if <code>root</code> is undefined.
+     * @throws IllegalArgumentException if <code>root</code> is undefined.
      */
-    public static StepList rootElementSteps(final AttributeDescriptor rootElement,
-            final NamespaceSupport namespaces) throws IllegalArgumentException {
+    public static StepList rootElementSteps(
+            final AttributeDescriptor rootElement, final NamespaceSupport namespaces)
+            throws IllegalArgumentException {
 
         if (rootElement == null) {
             throw new NullPointerException("root");
@@ -430,22 +403,22 @@ public class XPathUtil {
     /**
      * Returns the list of stepts in <code>xpathExpression</code> by cleaning it up removing
      * unnecessary elements.
+     *
      * <p>
-     * </p>
-     * 
-     * @param root
-     *            non null descriptor of the root attribute, generally the Feature descriptor. Used
-     *            to ignore the first step in xpathExpression if the expression's first step is
-     *            named as rootName.
-     * 
+     *
+     * @param root non null descriptor of the root attribute, generally the Feature descriptor. Used
+     *     to ignore the first step in xpathExpression if the expression's first step is named as
+     *     rootName.
      * @param xpathExpression
      * @return
-     * @throws IllegalArgumentException
-     *             if <code>xpathExpression</code> has no steps or it isn't a valid XPath expression
-     *             against <code>type</code>.
+     * @throws IllegalArgumentException if <code>xpathExpression</code> has no steps or it isn't a
+     *     valid XPath expression against <code>type</code>.
      */
-    public static StepList steps(final AttributeDescriptor root, final String xpathExpression,
-            final NamespaceSupport namespaces) throws IllegalArgumentException {
+    public static StepList steps(
+            final AttributeDescriptor root,
+            final String xpathExpression,
+            final NamespaceSupport namespaces)
+            throws IllegalArgumentException {
 
         if (root == null) {
             throw new NullPointerException("root");
@@ -515,9 +488,8 @@ public class XPathUtil {
                 } else {
                     steps.add(new Step(qName, isXmlAttribute, predicate));
                 }
-                 
             }
-            //            
+            //
             // if (step.indexOf('[') != -1) {
             // int start = step.indexOf('[');
             // int end = step.indexOf(']');
@@ -534,7 +506,7 @@ public class XPathUtil {
             // steps.add(new Step(qName, 1));
             // }
         }
-        
+
         // XPath simplification phase: if the xpath expression contains more
         // nodes
         // than the root node itself, and the root node is present, remove the
@@ -549,12 +521,15 @@ public class XPathUtil {
                 steps.remove(0);
             }
         }
-        
+
         return steps;
     }
 
-    private static QName deglose(final String prefixedName, final AttributeDescriptor root,
-            final NamespaceSupport namespaces, boolean isXmlAttribute) {
+    private static QName deglose(
+            final String prefixedName,
+            final AttributeDescriptor root,
+            final NamespaceSupport namespaces,
+            boolean isXmlAttribute) {
         if (prefixedName == null) {
             throw new NullPointerException("prefixedName");
         }
@@ -571,23 +546,33 @@ public class XPathUtil {
             localName = prefixedName;
             final Name rootName = root.getName();
             // don't use default namespace for client properties (xml attribute), and FEATURE_LINK
-            final String defaultNamespace = (isXmlAttribute
-                    || localName.equals(ComplexFeatureConstants.FEATURE_CHAINING_LINK_NAME
-                            .getLocalPart()) || rootName.getNamespaceURI() == null) ? XMLConstants.NULL_NS_URI
-                    : namespaces.getURI("") == null ? rootName.getNamespaceURI() : namespaces
-                            .getURI("");
+            final String defaultNamespace =
+                    (isXmlAttribute
+                                    || localName.equals(
+                                            ComplexFeatureConstants.FEATURE_CHAINING_LINK_NAME
+                                                    .getLocalPart())
+                                    || rootName.getNamespaceURI() == null)
+                            ? XMLConstants.NULL_NS_URI
+                            : namespaces.getURI("") == null
+                                    ? rootName.getNamespaceURI()
+                                    : namespaces.getURI("");
             namespaceUri = defaultNamespace;
             if (XMLConstants.NULL_NS_URI.equals(defaultNamespace)) {
                 prefix = XMLConstants.DEFAULT_NS_PREFIX;
             } else {
                 if (!localName.equals(rootName.getLocalPart())) {
-                    LOGGER.fine("Using root's namespace " + defaultNamespace
-                            + " for step named '" + localName + "', as no prefix was stated");
+                    LOGGER.fine(
+                            "Using root's namespace "
+                                    + defaultNamespace
+                                    + " for step named '"
+                                    + localName
+                                    + "', as no prefix was stated");
                 }
                 prefix = namespaces.getPrefix(defaultNamespace);
 
                 if (prefix == null) {
-                    //throw new IllegalStateException("Default namespace is not mapped to a prefix: "
+                    // throw new IllegalStateException("Default namespace is not mapped to a prefix:
+                    // "
                     //        + defaultNamespace);
                     prefix = "";
                 }
@@ -602,7 +587,7 @@ public class XPathUtil {
 
         return name;
     }
-    
+
     public static boolean equals(Name targetNodeName, StepList targetXPath) {
         if (targetXPath.size() == 1) {
             Step rootStep = targetXPath.get(0);
@@ -612,7 +597,5 @@ public class XPathUtil {
             }
         }
         return false;
-    }      
-
-
+    }
 }

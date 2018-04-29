@@ -18,20 +18,20 @@ package org.geotools.filter.v1_1.capabilities;
 
 import java.util.List;
 import javax.xml.namespace.QName;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.capability.SpatialOperator;
-import org.opengis.filter.capability.SpatialOperators;
 import org.geotools.filter.v1_1.OGC;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
-
+import org.opengis.filter.FilterFactory;
+import org.opengis.filter.capability.SpatialOperator;
+import org.opengis.filter.capability.SpatialOperators;
 
 /**
  * Binding object for the type http://www.opengis.net/ogc:SpatialOperatorsType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:complexType name="SpatialOperatorsType"&gt;
  *      &lt;xsd:sequence&gt;
@@ -41,12 +41,8 @@ import org.geotools.xml.Node;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class SpatialOperatorsTypeBinding extends AbstractComplexBinding {
@@ -56,14 +52,13 @@ public class SpatialOperatorsTypeBinding extends AbstractComplexBinding {
         this.factory = factory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return OGC.SpatialOperatorsType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -74,21 +69,20 @@ public class SpatialOperatorsTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         List sops = node.getChildValues(SpatialOperator.class);
 
-        return factory.spatialOperators((SpatialOperator[]) sops.toArray(
-                new SpatialOperator[sops.size()]));
+        return factory.spatialOperators(
+                (SpatialOperator[]) sops.toArray(new SpatialOperator[sops.size()]));
     }
 
-    public Object getProperty(Object object, QName name)
-        throws Exception {
+    public Object getProperty(Object object, QName name) throws Exception {
         SpatialOperators sops = (SpatialOperators) object;
 
         if ("SpatialOperator".equals(name.getLocalPart())) {

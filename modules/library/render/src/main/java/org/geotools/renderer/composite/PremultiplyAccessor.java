@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -20,9 +20,8 @@ import java.awt.image.WritableRaster;
 
 /**
  * Wraps an iterator against a non pre-multiplied color iterator, and premultiplies rgb accordingly
- * 
- * @author Andrea Aime - GeoSolutions
  *
+ * @author Andrea Aime - GeoSolutions
  */
 class PremultiplyAccessor implements RgbaAccessor {
 
@@ -66,6 +65,4 @@ class PremultiplyAccessor implements RgbaAccessor {
     public void writeRow(int y, WritableRaster destination) {
         delegate.writeRow(y, destination);
     }
-
-
 }

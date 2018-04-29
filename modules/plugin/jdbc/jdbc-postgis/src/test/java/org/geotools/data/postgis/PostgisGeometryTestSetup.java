@@ -15,15 +15,11 @@
  *    Lesser General Public License for more details.
  */
 package org.geotools.data.postgis;
+
 import org.geotools.jdbc.JDBCGeometryTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class PostgisGeometryTestSetup extends JDBCGeometryTestSetup {
 
     public PostgisGeometryTestSetup(JDBCTestSetup delegate) {
@@ -34,15 +30,19 @@ public class PostgisGeometryTestSetup extends JDBCGeometryTestSetup {
     protected void setUpData() throws Exception {
         super.setUpData();
 
-        //create tables for dimension test
-        run("CREATE TABLE dim_point AS SELECT ST_GeomFromText('POINT(-120.0 40.0)',"
-                + "4326) as geom;");
-        run("CREATE TABLE dim_line AS SELECT ST_GeomFromText('LINESTRING(-120.0 40.0,"
-                + "-130.0 50.0)', 4326) as geom;");
-        run("CREATE TABLE dim_polygon AS SELECT ST_GeomFromText('POLYGON((-120.0 40.0,"
-                + "-130.0 40.0, -130.0 50.0, -130.0 40.0, -120.0 40.0))', 4326) as geom;");
-        run("CREATE TABLE dim_collection AS SELECT ST_GeomFromText('GEOMETRYCOLLECTION("
-                + "POINT(-120.0 40.0),LINESTRING(-120.0 40.0,-130.0 50.0))',4326) as geom");
+        // create tables for dimension test
+        run(
+                "CREATE TABLE dim_point AS SELECT ST_GeomFromText('POINT(-120.0 40.0)',"
+                        + "4326) as geom;");
+        run(
+                "CREATE TABLE dim_line AS SELECT ST_GeomFromText('LINESTRING(-120.0 40.0,"
+                        + "-130.0 50.0)', 4326) as geom;");
+        run(
+                "CREATE TABLE dim_polygon AS SELECT ST_GeomFromText('POLYGON((-120.0 40.0,"
+                        + "-130.0 40.0, -130.0 50.0, -130.0 40.0, -120.0 40.0))', 4326) as geom;");
+        run(
+                "CREATE TABLE dim_collection AS SELECT ST_GeomFromText('GEOMETRYCOLLECTION("
+                        + "POINT(-120.0 40.0),LINESTRING(-120.0 40.0,-130.0 50.0))',4326) as geom");
     }
 
     @Override
@@ -57,7 +57,5 @@ public class PostgisGeometryTestSetup extends JDBCGeometryTestSetup {
     protected void dropSpatialTable(String tableName) throws Exception {
         runSafe("DELETE FROM GEOMETRY_COLUMNS WHERE F_TABLE_NAME = '" + tableName + "'");
         runSafe("DROP TABLE \"" + tableName + "\"");
-        
     }
-
 }

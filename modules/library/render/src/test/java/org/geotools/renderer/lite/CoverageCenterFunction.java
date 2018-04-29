@@ -2,6 +2,9 @@ package org.geotools.renderer.lite;
 
 import static org.geotools.filter.capability.FunctionNameImpl.*;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.data.DataUtilities;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -13,19 +16,15 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.geometry.Envelope;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Point;
-
 /**
  * A test rendering transformation that returns the center of the provided coverage
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 public class CoverageCenterFunction extends FunctionExpressionImpl {
 
-    public static FunctionName NAME = new FunctionNameImpl("CoverageCenter", parameter("coverage",
-            GridCoverage2D.class));
+    public static FunctionName NAME =
+            new FunctionNameImpl("CoverageCenter", parameter("coverage", GridCoverage2D.class));
 
     public CoverageCenterFunction() {
         super(NAME);
@@ -46,7 +45,7 @@ public class CoverageCenterFunction extends FunctionExpressionImpl {
         SimpleFeatureBuilder fb = new SimpleFeatureBuilder(ft);
         fb.add(center);
         SimpleFeature f = fb.buildFeature(null);
-        
+
         return DataUtilities.collection(f);
     }
 }

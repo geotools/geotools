@@ -16,19 +16,15 @@
  */
 package org.geotools.filter.v1_0.capabilities;
 
-import org.picocontainer.MutablePicoContainer;
-import org.opengis.filter.FilterFactory;
 import org.geotools.filter.FilterFactoryImpl;
 import org.geotools.xml.Configuration;
-
+import org.opengis.filter.FilterFactory;
+import org.picocontainer.MutablePicoContainer;
 
 /**
  * Parser configuration for the http://www.opengis.net/ogc schema.
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class OGCConfiguration extends Configuration {
@@ -47,42 +43,42 @@ public class OGCConfiguration extends Configuration {
      * @generated
      */
     protected final void registerBindings(MutablePicoContainer container) {
-        //Types
-        container.registerComponentImplementation(OGC.Arithmetic_OperatorsType,
-            Arithmetic_OperatorsTypeBinding.class);
-        container.registerComponentImplementation(OGC.Comparison_OperatorsType,
-            Comparison_OperatorsTypeBinding.class);
-        container.registerComponentImplementation(OGC.Function_NamesType,
-            Function_NamesTypeBinding.class);
-        container.registerComponentImplementation(OGC.Function_NameType,
-            Function_NameTypeBinding.class);
+        // Types
+        container.registerComponentImplementation(
+                OGC.Arithmetic_OperatorsType, Arithmetic_OperatorsTypeBinding.class);
+        container.registerComponentImplementation(
+                OGC.Comparison_OperatorsType, Comparison_OperatorsTypeBinding.class);
+        container.registerComponentImplementation(
+                OGC.Function_NamesType, Function_NamesTypeBinding.class);
+        container.registerComponentImplementation(
+                OGC.Function_NameType, Function_NameTypeBinding.class);
         container.registerComponentImplementation(OGC.FunctionsType, FunctionsTypeBinding.class);
-        container.registerComponentImplementation(OGC.Scalar_CapabilitiesType,
-            Scalar_CapabilitiesTypeBinding.class);
-        container.registerComponentImplementation(OGC.Spatial_CapabilitiesType,
-            Spatial_CapabilitiesTypeBinding.class);
-        container.registerComponentImplementation(OGC.Spatial_OperatorsType,
-            Spatial_OperatorsTypeBinding.class);
-        //container.registerComponentImplementation(OGC._BBOX,_BBOXBinding.class);
-        //container.registerComponentImplementation(OGC._Between,_BetweenBinding.class);
-        //container.registerComponentImplementation(OGC._Beyond,_BeyondBinding.class);
-        //container.registerComponentImplementation(OGC._Contains,_ContainsBinding.class);
-        //container.registerComponentImplementation(OGC._Crosses,_CrossesBinding.class);
-        //container.registerComponentImplementation(OGC._Disjoint,_DisjointBinding.class);
-        //container.registerComponentImplementation(OGC._DWithin,_DWithinBinding.class);
-        //container.registerComponentImplementation(OGC._Equals,_EqualsBinding.class);
-        container.registerComponentImplementation(OGC._Filter_Capabilities,
-            _Filter_CapabilitiesBinding.class);
+        container.registerComponentImplementation(
+                OGC.Scalar_CapabilitiesType, Scalar_CapabilitiesTypeBinding.class);
+        container.registerComponentImplementation(
+                OGC.Spatial_CapabilitiesType, Spatial_CapabilitiesTypeBinding.class);
+        container.registerComponentImplementation(
+                OGC.Spatial_OperatorsType, Spatial_OperatorsTypeBinding.class);
+        // container.registerComponentImplementation(OGC._BBOX,_BBOXBinding.class);
+        // container.registerComponentImplementation(OGC._Between,_BetweenBinding.class);
+        // container.registerComponentImplementation(OGC._Beyond,_BeyondBinding.class);
+        // container.registerComponentImplementation(OGC._Contains,_ContainsBinding.class);
+        // container.registerComponentImplementation(OGC._Crosses,_CrossesBinding.class);
+        // container.registerComponentImplementation(OGC._Disjoint,_DisjointBinding.class);
+        // container.registerComponentImplementation(OGC._DWithin,_DWithinBinding.class);
+        // container.registerComponentImplementation(OGC._Equals,_EqualsBinding.class);
+        container.registerComponentImplementation(
+                OGC._Filter_Capabilities, _Filter_CapabilitiesBinding.class);
 
-        //container.registerComponentImplementation(OGC._Intersect,_IntersectBinding.class);
-        //container.registerComponentImplementation(OGC._Like,_LikeBinding.class);
-        //container.registerComponentImplementation(OGC._Logical_Operators,_Logical_OperatorsBinding.class);
-        //container.registerComponentImplementation(OGC._NullCheck,_NullCheckBinding.class);
-        //container.registerComponentImplementation(OGC._Overlaps,_OverlapsBinding.class);
-        //container.registerComponentImplementation(OGC._Simple_Arithmetic,_Simple_ArithmeticBinding.class);
-        //container.registerComponentImplementation(OGC._Simple_Comparisons,_Simple_ComparisonsBinding.class);
-        //container.registerComponentImplementation(OGC._Touches,_TouchesBinding.class);
-        //container.registerComponentImplementation(OGC._Within,_WithinBinding.class);
+        // container.registerComponentImplementation(OGC._Intersect,_IntersectBinding.class);
+        // container.registerComponentImplementation(OGC._Like,_LikeBinding.class);
+        // container.registerComponentImplementation(OGC._Logical_Operators,_Logical_OperatorsBinding.class);
+        // container.registerComponentImplementation(OGC._NullCheck,_NullCheckBinding.class);
+        // container.registerComponentImplementation(OGC._Overlaps,_OverlapsBinding.class);
+        // container.registerComponentImplementation(OGC._Simple_Arithmetic,_Simple_ArithmeticBinding.class);
+        // container.registerComponentImplementation(OGC._Simple_Comparisons,_Simple_ComparisonsBinding.class);
+        // container.registerComponentImplementation(OGC._Touches,_TouchesBinding.class);
+        // container.registerComponentImplementation(OGC._Within,_WithinBinding.class);
     }
 
     protected void configureContext(MutablePicoContainer container) {

@@ -20,13 +20,13 @@ package org.geotools.data.complex.config;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import org.geotools.xml.resolver.SchemaCatalog;
 import org.geotools.xml.AppSchemaConfiguration;
-import org.geotools.xml.resolver.SchemaResolver;
 import org.geotools.xml.Binding;
 import org.geotools.xml.Configuration;
 import org.geotools.xml.SchemaIndex;
 import org.geotools.xml.Schemas;
+import org.geotools.xml.resolver.SchemaCatalog;
+import org.geotools.xml.resolver.SchemaResolver;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.AttributeType;
 import org.xmlpull.mxp1.MXParser;
@@ -34,28 +34,27 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 /**
- * Parses an application schema given by a gtxml {@link Configuration} into a set of {@link AttributeType}s and {@link AttributeDescriptor}s.
- * <p>
- * All the XSD schema locations that comprise the application schema are obtained from the main {@link Configuration} and its dependencies.
- * </p>
- * <p>
- * Of particular interest might be the {@link ApplicationSchemaConfiguration} object, which allows to provide the location of the root xsd schema for
- * a given application schema.
- * </p>
- * 
+ * Parses an application schema given by a gtxml {@link Configuration} into a set of {@link
+ * AttributeType}s and {@link AttributeDescriptor}s.
+ *
+ * <p>All the XSD schema locations that comprise the application schema are obtained from the main
+ * {@link Configuration} and its dependencies.
+ *
+ * <p>Of particular interest might be the {@link ApplicationSchemaConfiguration} object, which
+ * allows to provide the location of the root xsd schema for a given application schema.
+ *
  * @author Gabriel Roldan
  * @version $Id$
- * 
- * 
- * 
- * @source $URL$ http://svn.geotools.org/geotools/branches/2.4.x/modules/unsupported/community-schemas /community
- *         -schema-ds/src/main/java/org/geotools/data/complex/config/EmfAppSchemaReader.java $
+ * @source $URL$
+ *     http://svn.geotools.org/geotools/branches/2.4.x/modules/unsupported/community-schemas
+ *     /community -schema-ds/src/main/java/org/geotools/data/complex/config/EmfAppSchemaReader.java
+ *     $
  * @since 2.4
  */
 public class EmfComplexFeatureReader {
     /**
-     * The initial resolver has support for only file and classpath resolution. Anything more than a test should probably set this to something more
-     * useful.
+     * The initial resolver has support for only file and classpath resolution. Anything more than a
+     * test should probably set this to something more useful.
      */
     private SchemaResolver resolver = new SchemaResolver();
 
@@ -72,8 +71,9 @@ public class EmfComplexFeatureReader {
     }
 
     /**
-     * Set resolver based on catalog. Use this for testing only, because it does not support cached downloads.
-     * 
+     * Set resolver based on catalog. Use this for testing only, because it does not support cached
+     * downloads.
+     *
      * @param catalogLocation
      */
     public void setResolver(URL catalogLocation) {
@@ -81,10 +81,11 @@ public class EmfComplexFeatureReader {
     }
 
     /**
-     * Parses the GML schema represented by the <code>configuration</code>'s {@link Configuration#getSchemaFileURL() schema location} into a
-     * {@link SchemaIndex}.
-     * 
-     * @param configuration configuration object used to access the XSDSchema to parse. This configuration object might contain {@link Binding}s
+     * Parses the GML schema represented by the <code>configuration</code>'s {@link
+     * Configuration#getSchemaFileURL() schema location} into a {@link SchemaIndex}.
+     *
+     * @param configuration configuration object used to access the XSDSchema to parse. This
+     *     configuration object might contain {@link Binding}s
      * @throws IOException
      */
     public SchemaIndex parse(Configuration configuration) throws IOException {
@@ -96,24 +97,26 @@ public class EmfComplexFeatureReader {
 
     /**
      * Parses the schema referenced by <code>location</code> into a {@link SchemaIndex}
-     * 
+     *
      * @param nameSpace the location namespace
-     * @param location the physical location of the root xsd schema that comprises the application schema to parse.
-     * @throws IOException if any non recoverable problem occurs while parsing the application schema pointed out by <code>location</code> or one of
-     *         its dependencies.
+     * @param location the physical location of the root xsd schema that comprises the application
+     *     schema to parse.
+     * @throws IOException if any non recoverable problem occurs while parsing the application
+     *     schema pointed out by <code>location</code> or one of its dependencies.
      */
     public SchemaIndex parse(String nameSpace, String schemaLocation) throws IOException {
-        AppSchemaConfiguration configuration = new AppSchemaConfiguration(nameSpace,
-                schemaLocation, resolver);
+        AppSchemaConfiguration configuration =
+                new AppSchemaConfiguration(nameSpace, schemaLocation, resolver);
         return parse(configuration);
     }
 
     /**
      * Parses the gml schema referenced by <code>location</code> into a {@link SchemaIndex}
-     * 
-     * @param location the physical location of the root xsd schema that comprises the application schema to parse.
-     * @throws IOException if any non recoverable problem occurs while parsing the application schema pointed out by <code>location</code> or one of
-     *         its dependencies.
+     *
+     * @param location the physical location of the root xsd schema that comprises the application
+     *     schema to parse.
+     * @throws IOException if any non recoverable problem occurs while parsing the application
+     *     schema pointed out by <code>location</code> or one of its dependencies.
      */
     public SchemaIndex parse(final URL location) throws IOException {
 
@@ -126,7 +129,7 @@ public class EmfComplexFeatureReader {
 
     /**
      * Finds out the targetNamespace of the xsd schema referenced by <code>location</code>
-     * 
+     *
      * @param location
      * @return
      * @throws IOException
@@ -173,5 +176,4 @@ public class EmfComplexFeatureReader {
     public static EmfComplexFeatureReader newInstance() {
         return new EmfComplexFeatureReader();
     }
-
 }

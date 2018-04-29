@@ -17,9 +17,7 @@
 package org.geotools.data.wfs;
 
 import java.io.IOException;
-
 import javax.xml.namespace.QName;
-
 import org.geotools.data.FeatureEvent;
 import org.geotools.data.FeatureEvent.Type;
 import org.geotools.data.FeatureReader;
@@ -246,8 +244,8 @@ class WFSFeatureStore extends ContentFeatureStore {
         if (Transaction.AUTO_COMMIT.equals(transaction)) {
             // we're in auto commit. Do a batch update and commit right away
             WFSLocalTransactionState localState = getState().getLocalTransactionState();
-            WFSRemoteTransactionState committingState = new WFSRemoteTransactionState(
-                    getDataStore());
+            WFSRemoteTransactionState committingState =
+                    new WFSRemoteTransactionState(getDataStore());
             committingState.watch(localState.getState());
 
             WFSDiff diff = localState.getDiff();
@@ -273,6 +271,5 @@ class WFSFeatureStore extends ContentFeatureStore {
             FeatureEvent event = new FeatureEvent(this, Type.CHANGED, affectedBounds, filter);
             contentState.fireFeatureEvent(event);
         }
-
     }
 }

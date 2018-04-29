@@ -18,15 +18,10 @@ package org.geotools.geopkg;
 
 import java.io.IOException;
 import java.sql.SQLException;
-
 import org.geotools.jdbc.JDBCFeatureStoreOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class GeoPkgFeatureStoreOnlineTest extends JDBCFeatureStoreOnlineTest {
 
     @Override
@@ -36,22 +31,21 @@ public class GeoPkgFeatureStoreOnlineTest extends JDBCFeatureStoreOnlineTest {
 
     @Override
     public void testAddNullAttributes() throws IOException {
-        //JD: as far as I can tell you can't have null geometries
+        // JD: as far as I can tell you can't have null geometries
         // in GeoPkg...
     }
+
     @Override
-    public void testModifyNullAttributes() throws IOException {
-    }
-    
+    public void testModifyNullAttributes() throws IOException {}
+
     @Override
     public void testAddInTransaction() throws IOException {
         // does not work, see GEOT-2832
     }
-    
+
     @Override
     public void testExternalConnection() throws IOException, SQLException {
-        //SQLite locking does not allow one connection to write while another one reads on the 
+        // SQLite locking does not allow one connection to write while another one reads on the
         // same table
     }
-    
 }

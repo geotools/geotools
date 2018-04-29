@@ -10,10 +10,12 @@ import org.w3c.dom.Document;
 public class FunctionTypeBindingTest extends FESTestSupport {
 
     public void testParse() throws Exception {
-        String xml = 
-            "<fes:Function xmlns:fes='" + FES.NAMESPACE + "' name='abs'>" + 
-            "   <fes:Literal>12</fes:Literal> " + 
-            "</fes:Function>";
+        String xml =
+                "<fes:Function xmlns:fes='"
+                        + FES.NAMESPACE
+                        + "' name='abs'>"
+                        + "   <fes:Literal>12</fes:Literal> "
+                        + "</fes:Function>";
         buildDocument(xml);
 
         Function f = (Function) parse();
@@ -22,12 +24,12 @@ public class FunctionTypeBindingTest extends FESTestSupport {
         assertEquals(1, f.getParameters().size());
         assertTrue(f.getParameters().get(0) instanceof Literal);
     }
-    
+
     public void testEncode() throws Exception {
         Document dom = encode(FilterMockData.function(), FES.Function);
         assertEquals("fes:Function", dom.getDocumentElement().getNodeName());
         assertEquals("abs", dom.getDocumentElement().getAttribute("name"));
-        
+
         assertNotNull(getElementByQName(dom, FES.ValueReference));
     }
 }

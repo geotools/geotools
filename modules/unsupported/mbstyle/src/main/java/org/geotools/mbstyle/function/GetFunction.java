@@ -17,21 +17,21 @@
 
 package org.geotools.mbstyle.function;
 
+import static org.geotools.filter.capability.FunctionNameImpl.parameter;
+
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.json.simple.JSONObject;
 import org.opengis.filter.capability.FunctionName;
 
-import static org.geotools.filter.capability.FunctionNameImpl.parameter;
-
-/**
- * Returns the value of a given object key in a JSONObject.
- */
+/** Returns the value of a given object key in a JSONObject. */
 public class GetFunction extends FunctionExpressionImpl {
-    public static FunctionName NAME = new FunctionNameImpl("get",
-            parameter("value", String.class),
-            parameter("object", JSONObject.class),
-            parameter("fallback", Object.class));
+    public static FunctionName NAME =
+            new FunctionNameImpl(
+                    "get",
+                    parameter("value", String.class),
+                    parameter("object", JSONObject.class),
+                    parameter("fallback", Object.class));
 
     public GetFunction() {
         super(NAME);

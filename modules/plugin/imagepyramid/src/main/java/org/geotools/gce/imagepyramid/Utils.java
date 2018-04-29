@@ -31,12 +31,10 @@ import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
-import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
 import org.geotools.gce.imagemosaic.ImageMosaicFormat;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
@@ -46,10 +44,9 @@ import org.geotools.util.logging.Logging;
 
 /**
  * Code to build a pyramid from a gdal_retile output
- * 
+ *
  * @author Andrea Aime - GeoSolutions SAS
  * @author Simone Giannecchini, GeoSolutions SAS
- *
  */
 class Utils {
 
@@ -92,8 +89,10 @@ class Utils {
         } else {
             // we really don't know how to convert the thing... give up
             if (LOGGER.isLoggable(Level.WARNING)) {
-                LOGGER.warning("we really don't know how to convert the thing: " + source != null ? source
-                        .toString() : "null");
+                LOGGER.warning(
+                        "we really don't know how to convert the thing: " + source != null
+                                ? source.toString()
+                                : "null");
             }
             return null;
         }
@@ -146,16 +145,19 @@ class Utils {
         // do we have at least one numeric? sub-directory?
         if (numericDirectories.length == 0) {
             if (LOGGER.isLoggable(Level.INFO)) {
-                LOGGER.info("I was unable to determine a structure similar to the GDAL Retile one for the provided path: "
-                        + directory);
+                LOGGER.info(
+                        "I was unable to determine a structure similar to the GDAL Retile one for the provided path: "
+                                + directory);
             }
             return null;
         }
 
         // check the gdal case and move files if necessary
         if (!zeroLevelDirectory.exists() && numericDirectories.length == directories.length) {
-            LOGGER.log(Level.INFO, "Detected gdal_retile file structure, "
-                    + "moving root files to the '0' subdirectory");
+            LOGGER.log(
+                    Level.INFO,
+                    "Detected gdal_retile file structure, "
+                            + "moving root files to the '0' subdirectory");
             if (zeroLevelDirectory.mkdir()) {
                 if (LOGGER.isLoggable(Level.FINE)) {
                     LOGGER.fine("Created '0' subidr, now moving files");
@@ -171,17 +173,21 @@ class Utils {
                     if (!f.renameTo(new File(zeroLevelDirectory, f.getName())))
                         LOGGER.log(
                                 Level.WARNING,
-                                "Could not move " + f.getAbsolutePath() + " to "
+                                "Could not move "
+                                        + f.getAbsolutePath()
+                                        + " to "
                                         + zeroLevelDirectory
                                         + " check the permission inside the source directory "
-                                        + f.getParent() + " and target directory "
+                                        + f.getParent()
+                                        + " and target directory "
                                         + zeroLevelDirectory);
                 }
                 directories = directory.listFiles((FileFilter) directoryFilter);
             } else {
                 if (LOGGER.isLoggable(Level.INFO)) {
-                    LOGGER.info("I was unable to create the 0 directory. check the file permission in the parent directory:"
-                            + sourceFile.getParent());
+                    LOGGER.info(
+                            "I was unable to create the 0 directory. check the file permission in the parent directory:"
+                                    + sourceFile.getParent());
                 }
                 return null;
             }
@@ -193,8 +199,8 @@ class Utils {
         for (File subdir : directories) {
             if (mosaicFactory.accepts(subdir, hints)) {
                 if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine("Trying to build mosaic for the directory:"
-                            + subdir.getAbsolutePath());
+                    LOGGER.fine(
+                            "Trying to build mosaic for the directory:" + subdir.getAbsolutePath());
                 }
                 ImageMosaicReader reader = null;
                 try {
@@ -213,8 +219,8 @@ class Utils {
                 }
             } else {
                 if (LOGGER.isLoggable(Level.INFO)) {
-                    LOGGER.info("Unable to build mosaic for the directory:"
-                            + subdir.getAbsolutePath());
+                    LOGGER.info(
+                            "Unable to build mosaic for the directory:" + subdir.getAbsolutePath());
                 }
             }
         }
@@ -231,10 +237,14 @@ class Utils {
             double[] resprev = mosaics.get(i - 1).getResolutions()[0];
             double[] res = mosaics.get(i).getResolutions()[0];
             if (resprev[1] > res[1]) {
-                LOGGER.log(Level.INFO, "Invalid mosaic, y resolution in "
-                        + mosaics.get(i - 1).getPath() + " is greater than the one in "
-                        + mosaics.get(i).getPath() + " whilst x resolutions "
-                        + "have the opposite relationship");
+                LOGGER.log(
+                        Level.INFO,
+                        "Invalid mosaic, y resolution in "
+                                + mosaics.get(i - 1).getPath()
+                                + " is greater than the one in "
+                                + mosaics.get(i).getPath()
+                                + " whilst x resolutions "
+                                + "have the opposite relationship");
                 return null;
             }
         }
@@ -256,15 +266,24 @@ class Utils {
         properties.put("LevelsDirs", sbDirNames.toString());
         properties.put("Levels", sbLevels.toString().trim());
         GeneralEnvelope envelope = mosaics.get(0).getEnvelope();
-        properties.put("Envelope2D", envelope.getMinimum(0) + "," + envelope.getMinimum(1) + " "
-                + envelope.getMaximum(0) + "," + envelope.getMaximum(1));
+        properties.put(
+                "Envelope2D",
+                envelope.getMinimum(0)
+                        + ","
+                        + envelope.getMinimum(1)
+                        + " "
+                        + envelope.getMaximum(0)
+                        + ","
+                        + envelope.getMaximum(1));
         OutputStream os = null;
         try {
             os = new FileOutputStream(sourceFile);
             properties.store(os, "Automatically generated");
         } catch (IOException e) {
-            LOGGER.log(Level.INFO,
-                    "We could not generate the pyramid property file " + sourceFile.getPath(), e);
+            LOGGER.log(
+                    Level.INFO,
+                    "We could not generate the pyramid property file " + sourceFile.getPath(),
+                    e);
             return null;
         } finally {
             if (os != null) {
@@ -280,8 +299,10 @@ class Utils {
                 pw = new PrintWriter(new FileOutputStream(prjFile));
                 pw.print(envelope.getCoordinateReferenceSystem().toString());
             } catch (IOException e) {
-                LOGGER.log(Level.INFO,
-                        "We could not write out the projection file " + prjFile.getPath(), e);
+                LOGGER.log(
+                        Level.INFO,
+                        "We could not write out the projection file " + prjFile.getPath(),
+                        e);
                 return null;
             } finally {
                 pw.close();
@@ -293,11 +314,11 @@ class Utils {
 
     private static void appendResolutionLevels(StringBuilder sbLevels, double[][] resolutions) {
         final int numResolutions = resolutions.length;
-        for (int i=0; i < numResolutions - 1;i++) {
+        for (int i = 0; i < numResolutions - 1; i++) {
             // separate overviews with ";"
             appendXYResolutions(sbLevels, resolutions[i]);
             sbLevels.append(";");
-        } 
+        }
         appendXYResolutions(sbLevels, resolutions[numResolutions - 1]);
         sbLevels.append(" ");
     }
@@ -326,8 +347,9 @@ class Utils {
                         continue;
                     }
                     double compareLevels[][] = reader.getResolutionLevels(coverageName);
-                    boolean homogeneous = org.geotools.gce.imagemosaic.Utils.homogeneousCheck(
-                            resolutionLevels.length, resolutionLevels, compareLevels);
+                    boolean homogeneous =
+                            org.geotools.gce.imagemosaic.Utils.homogeneousCheck(
+                                    resolutionLevels.length, resolutionLevels, compareLevels);
                     if (!homogeneous) {
                         // Relax this in the future
                         throw new IllegalArgumentException(
@@ -343,10 +365,10 @@ class Utils {
 
     /**
      * Prepares a message with the status of the provided file.
-     * 
+     *
      * @param sourceFile The {@link File} to provided the status message for
      * @return a status message for the provided {@link File} or a {@link NullPointerException} in
-     *         case the {@link File}is <code>null</code>.
+     *     case the {@link File}is <code>null</code>.
      */
     private static String fileStatus(File sourceFile) {
         if (sourceFile == null) {
@@ -354,7 +376,8 @@ class Utils {
         }
         final StringBuilder builder = new StringBuilder();
         builder.append("Checking file: ")
-                .append(FilenameUtils.getFullPath(sourceFile.getAbsolutePath())).append("\n");
+                .append(FilenameUtils.getFullPath(sourceFile.getAbsolutePath()))
+                .append("\n");
         builder.append("exists: ").append(sourceFile.exists()).append("\n");
         builder.append("isFile: ").append(sourceFile.isFile()).append("\n");
         builder.append("canRead: ").append(sourceFile.canRead()).append("\n");
@@ -366,14 +389,15 @@ class Utils {
         return builder.toString();
     }
 
-    /**
-     * Stores informations about a mosaic
-     */
+    /** Stores informations about a mosaic */
     static class MosaicInfo implements Comparable<MosaicInfo> {
         @Override
         public String toString() {
-            return "MosaicInfo [directory=" + directory + ", resolutions="
-                    + Arrays.toString(resolutions) + "]";
+            return "MosaicInfo [directory="
+                    + directory
+                    + ", resolutions="
+                    + Arrays.toString(resolutions)
+                    + "]";
         }
 
         File directory;
@@ -436,14 +460,13 @@ class Utils {
 
     /**
      * A file filter that only returns directories whose name is an integer number
-     * 
+     *
      * @author Andrea Aime - OpenGeo
      */
     static class NumericDirectoryFilter implements FileFilter {
 
         public boolean accept(File pathname) {
-            if (!pathname.isDirectory())
-                return false;
+            if (!pathname.isDirectory()) return false;
             try {
                 Integer.parseInt(pathname.getName());
                 return true;
@@ -452,5 +475,4 @@ class Utils {
             }
         }
     }
-
 }

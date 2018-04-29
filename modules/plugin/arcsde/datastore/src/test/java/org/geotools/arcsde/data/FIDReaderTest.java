@@ -22,8 +22,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import com.esri.sde.sdk.client.SeLayer;
+import com.esri.sde.sdk.client.SeRegistration;
+import com.esri.sde.sdk.client.SeTable;
 import java.io.IOException;
-
 import org.geotools.arcsde.session.ISession;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -32,18 +34,11 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.esri.sde.sdk.client.SeLayer;
-import com.esri.sde.sdk.client.SeRegistration;
-import com.esri.sde.sdk.client.SeTable;
-
 /**
  * @author Gabriel Roldan (TOPP)
- * 
- *
- *
  * @source $URL$
- *         http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/test/java/org
- *         /geotools/arcsde/data/FIDReaderTest.java $
+ *     http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/test/java/org
+ *     /geotools/arcsde/data/FIDReaderTest.java $
  * @version $Id$
  * @since 2.5.x
  */
@@ -54,9 +49,7 @@ public class FIDReaderTest {
 
     private ISession session;
 
-    /**
-     * @throws java.lang.Exception
-     */
+    /** @throws java.lang.Exception */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
         testData = new TestData();
@@ -64,9 +57,7 @@ public class FIDReaderTest {
         testData.createSimpleTestTables();
     }
 
-    /**
-     * @throws java.lang.Exception
-     */
+    /** @throws java.lang.Exception */
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
         final boolean cleanTestTable = false;
@@ -75,27 +66,24 @@ public class FIDReaderTest {
         testData = null;
     }
 
-    /**
-     * @throws java.lang.Exception
-     */
+    /** @throws java.lang.Exception */
     @Before
     public void setUp() throws Exception {
         session = testData.getConnectionPool().getSession();
     }
 
-    /**
-     * @throws java.lang.Exception
-     */
+    /** @throws java.lang.Exception */
     @After
     public void tearDown() throws Exception {
         session.dispose();
     }
 
     /**
-     * Test method for
-     * {@link org.geotools.arcsde.data.FIDReader#getFidReader(org.geotools.arcsde.session.ISession, com.esri.sde.sdk.client.SeTable, com.esri.sde.sdk.client.SeLayer, com.esri.sde.sdk.client.SeRegistration)}
-     * .
-     * 
+     * Test method for {@link
+     * org.geotools.arcsde.data.FIDReader#getFidReader(org.geotools.arcsde.session.ISession,
+     * com.esri.sde.sdk.client.SeTable, com.esri.sde.sdk.client.SeLayer,
+     * com.esri.sde.sdk.client.SeRegistration)} .
+     *
      * @throws IOException
      */
     @Test
@@ -124,8 +112,11 @@ public class FIDReaderTest {
     private FIDReader getFidReader(String tableName) throws IOException {
         FIDReader fidReader;
         String dbName = session.getDatabaseName();
-        tableName = ((dbName == null || "".equals(dbName)) ? "" : (dbName + "."))
-                + session.getUser() + "." + tableName;
+        tableName =
+                ((dbName == null || "".equals(dbName)) ? "" : (dbName + "."))
+                        + session.getUser()
+                        + "."
+                        + tableName;
         tableName = tableName.toUpperCase();
 
         SeTable table = session.getTable(tableName);
@@ -135,27 +126,21 @@ public class FIDReaderTest {
         return fidReader;
     }
 
-    /**
-     * Test method for {@link org.geotools.arcsde.data.FIDReader#getFidColumn()}.
-     */
+    /** Test method for {@link org.geotools.arcsde.data.FIDReader#getFidColumn()}. */
     @Test
     @Ignore
     public void testGetFidColumn() {
         fail("Not yet implemented");
     }
 
-    /**
-     * Test method for {@link org.geotools.arcsde.data.FIDReader#setColumnIndex(int)}.
-     */
+    /** Test method for {@link org.geotools.arcsde.data.FIDReader#setColumnIndex(int)}. */
     @Test
     @Ignore
     public void testSetColumnIndex() {
         fail("Not yet implemented");
     }
 
-    /**
-     * Test method for {@link org.geotools.arcsde.data.FIDReader#getColumnIndex()}.
-     */
+    /** Test method for {@link org.geotools.arcsde.data.FIDReader#getColumnIndex()}. */
     @Test
     @Ignore
     public void testGetColumnIndex() {
@@ -163,8 +148,8 @@ public class FIDReaderTest {
     }
 
     /**
-     * Test method for
-     * {@link org.geotools.arcsde.data.FIDReader#readFid(org.geotools.arcsde.data.SdeRow)}.
+     * Test method for {@link
+     * org.geotools.arcsde.data.FIDReader#readFid(org.geotools.arcsde.data.SdeRow)}.
      */
     @Test
     @Ignore
@@ -173,8 +158,8 @@ public class FIDReaderTest {
     }
 
     /**
-     * Test method for
-     * {@link org.geotools.arcsde.data.FIDReader#getPropertiesToFetch(org.opengis.feature.simple.SimpleFeatureType)}
+     * Test method for {@link
+     * org.geotools.arcsde.data.FIDReader#getPropertiesToFetch(org.opengis.feature.simple.SimpleFeatureType)}
      * .
      */
     @Test
@@ -182,5 +167,4 @@ public class FIDReaderTest {
     public void testGetPropertiesToFetch() {
         fail("Not yet implemented");
     }
-
 }

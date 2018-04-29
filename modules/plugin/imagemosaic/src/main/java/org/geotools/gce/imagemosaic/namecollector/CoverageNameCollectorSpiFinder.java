@@ -17,17 +17,14 @@
 
 package org.geotools.gce.imagemosaic.namecollector;
 
+import static org.geotools.util.Utilities.toInstanceByClassNameMap;
+
 import java.util.Arrays;
 import java.util.Map;
-
 import org.geotools.factory.FactoryCreator;
 import org.geotools.factory.FactoryRegistry;
 
-import static org.geotools.util.Utilities.toInstanceByClassNameMap;
-
-/**
- * Access the {@link CoverageNameCollectorSPI}s
- */
+/** Access the {@link CoverageNameCollectorSPI}s */
 public class CoverageNameCollectorSpiFinder {
 
     private static FactoryCreator registry;
@@ -47,8 +44,9 @@ public class CoverageNameCollectorSpiFinder {
      */
     private static FactoryRegistry getServiceRegistry() {
         if (registry == null) {
-            registry = new FactoryCreator(
-                    Arrays.asList(new Class<?>[] { CoverageNameCollectorSPI.class }));
+            registry =
+                    new FactoryCreator(
+                            Arrays.asList(new Class<?>[] {CoverageNameCollectorSPI.class}));
         }
         return registry;
     }

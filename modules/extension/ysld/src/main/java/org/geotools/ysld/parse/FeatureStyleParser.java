@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -23,10 +23,7 @@ import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 import org.geotools.ysld.YamlSeq;
 
-/**
- * Handles parsing a Ysld "feature-styles" property into a {@link FeatureTypeStyle} object.
- * 
- */
+/** Handles parsing a Ysld "feature-styles" property into a {@link FeatureTypeStyle} object. */
 public class FeatureStyleParser extends YsldParseHandler {
 
     Style style;

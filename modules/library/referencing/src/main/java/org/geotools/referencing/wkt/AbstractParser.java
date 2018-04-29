@@ -26,56 +26,48 @@ import java.text.Format;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.ParsePosition;
-
+import org.geotools.resources.i18n.ErrorKeys;
+import org.geotools.resources.i18n.Errors;
+import org.geotools.util.Utilities;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.parameter.GeneralParameterValue;
 import org.opengis.parameter.InvalidParameterValueException;
 import org.opengis.referencing.IdentifiedObject;
 import org.opengis.referencing.operation.MathTransform;
 
-import org.geotools.util.Utilities;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.ErrorKeys;
-
-
 /**
  * Base class for <cite>Well Know Text</cite> (WKT) parser.
  *
  * @since 2.0
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Remi Eve
  * @author Martin Desruisseaux (IRD)
- *
- * @see <A HREF="http://geoapi.sourceforge.net/snapshot/javadoc/org/opengis/referencing/doc-files/WKT.html">Well Know Text specification</A>
+ * @see <A
+ *     HREF="http://geoapi.sourceforge.net/snapshot/javadoc/org/opengis/referencing/doc-files/WKT.html">Well
+ *     Know Text specification</A>
  * @see <A HREF="http://gdal.org/wktproblems.html">OGC WKT Coordinate System Issues</A>
  */
 public abstract class AbstractParser extends Format {
     /**
-     * Set to {@code true} if parsing of number in scientific notation is allowed.
-     * The way to achieve that is currently a hack, because {@link NumberFormat} has no
-     * API for managing that as of J2SE 1.5.
+     * Set to {@code true} if parsing of number in scientific notation is allowed. The way to
+     * achieve that is currently a hack, because {@link NumberFormat} has no API for managing that
+     * as of J2SE 1.5.
      *
      * @todo See if a future version of J2SE allows us to get ride of this ugly hack.
      */
     private static final boolean SCIENTIFIC_NOTATION = true;
 
     /**
-     * A formatter using the same symbols than this parser.
-     * Will be created by the {@link #format} method only when first needed.
+     * A formatter using the same symbols than this parser. Will be created by the {@link #format}
+     * method only when first needed.
      */
     private transient Formatter formatter;
 
-    /**
-     * The symbols to use for parsing WKT.
-     */
+    /** The symbols to use for parsing WKT. */
     final Symbols symbols;
 
-    /**
-     * The object to use for parsing numbers.
-     */
+    /** The object to use for parsing numbers. */
     private final NumberFormat numberFormat;
 
     /**
@@ -84,7 +76,7 @@ public abstract class AbstractParser extends Format {
      * @param symbols The set of symbols to use.
      */
     public AbstractParser(final Symbols symbols) {
-        this.symbols      = symbols;
+        this.symbols = symbols;
         this.numberFormat = (NumberFormat) symbols.numberFormat.clone();
         if (SCIENTIFIC_NOTATION && numberFormat instanceof DecimalFormat) {
             final DecimalFormat numberFormat = (DecimalFormat) this.numberFormat;
@@ -101,9 +93,8 @@ public abstract class AbstractParser extends Format {
     }
 
     /**
-     * Returns the preferred authority for formatting WKT entities.
-     * The {@link #format format} methods will uses the name specified
-     * by this authority, if available.
+     * Returns the preferred authority for formatting WKT entities. The {@link #format format}
+     * methods will uses the name specified by this authority, if available.
      *
      * @return The expected authority.
      */
@@ -112,26 +103,23 @@ public abstract class AbstractParser extends Format {
     }
 
     /**
-     * Set the preferred authority for formatting WKT entities.
-     * The {@link #format format} methods will uses the name specified
-     * by this authority, if available.
+     * Set the preferred authority for formatting WKT entities. The {@link #format format} methods
+     * will uses the name specified by this authority, if available.
      *
      * @param authority The new authority.
      */
     public void setAuthority(final Citation authority) {
         if (authority == null) {
-            throw new IllegalArgumentException(Errors.format(
-                      ErrorKeys.NULL_ARGUMENT_$1, "authority"));
+            throw new IllegalArgumentException(
+                    Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "authority"));
         }
         getFormatter().setAuthority(authority);
     }
 
     /**
-     * Returns {@code true} if syntax coloring is enabled.
-     * By default, syntax coloring is disabled.
+     * Returns {@code true} if syntax coloring is enabled. By default, syntax coloring is disabled.
      *
      * @return {@code true} if syntax coloring are enabled.
-     *
      * @since 2.4
      */
     public boolean isColorEnabled() {
@@ -140,12 +128,11 @@ public abstract class AbstractParser extends Format {
 
     /**
      * Enables or disables syntax coloring on ANSI X3.64 (aka ECMA-48 and ISO/IEC 6429) compatible
-     * terminal. This apply only when formatting text. By default, syntax coloring is disabled.
-     * When enabled, {@link #format(Object)} tries to highlight most of the elements compared by
-     * {@link org.geotools.referencing.CRS#equalsIgnoreMetadata}.
+     * terminal. This apply only when formatting text. By default, syntax coloring is disabled. When
+     * enabled, {@link #format(Object)} tries to highlight most of the elements compared by {@link
+     * org.geotools.referencing.CRS#equalsIgnoreMetadata}.
      *
      * @param enabled {@code true} for enabling syntax coloring.
-     *
      * @since 2.4
      */
     public void setColorEnabled(final boolean enabled) {
@@ -155,7 +142,7 @@ public abstract class AbstractParser extends Format {
     /**
      * Parses a <cite>Well Know Text</cite> (WKT).
      *
-     * @param  text The text to be parsed.
+     * @param text The text to be parsed.
      * @return The object.
      * @throws ParseException if the string can't be parsed.
      */
@@ -170,8 +157,8 @@ public abstract class AbstractParser extends Format {
     /**
      * Parses a <cite>Well Know Text</cite> (WKT).
      *
-     * @param  text The text to be parsed.
-     * @param  position The position to start parsing from.
+     * @param text The text to be parsed.
+     * @param position The position to start parsing from.
      * @return The object.
      */
     public final Object parseObject(final String text, final ParsePosition position) {
@@ -187,9 +174,7 @@ public abstract class AbstractParser extends Format {
         }
     }
 
-    /**
-     * Parse the number at the given position.
-     */
+    /** Parse the number at the given position. */
     final Number parseNumber(String text, final ParsePosition position) {
         if (SCIENTIFIC_NOTATION) {
             /*
@@ -200,7 +185,7 @@ public abstract class AbstractParser extends Format {
             Number number = numberFormat.parse(text, position);
             if (number != null) {
                 int i = position.getIndex();
-                if (i<text.length() && text.charAt(i)=='e') {
+                if (i < text.length() && text.charAt(i) == 'e') {
                     final StringBuilder buffer = new StringBuilder(text);
                     buffer.setCharAt(i, 'E');
                     text = buffer.toString();
@@ -217,7 +202,7 @@ public abstract class AbstractParser extends Format {
     /**
      * Parses the next element in the specified <cite>Well Know Text</cite> (WKT) tree.
      *
-     * @param  element The element to be parsed.
+     * @param element The element to be parsed.
      * @return The object.
      * @throws ParseException if the element can't be parsed.
      */
@@ -226,21 +211,18 @@ public abstract class AbstractParser extends Format {
     /**
      * Returns a tree of {@link Element} for the specified text.
      *
-     * @param  text       The text to parse.
-     * @param  position   In input, the position where to start parsing from.
-     *                    In output, the first character after the separator.
+     * @param text The text to parse.
+     * @param position In input, the position where to start parsing from. In output, the first
+     *     character after the separator.
      * @return The tree of elements to parse.
      * @throws ParseException If an parsing error occured while creating the tree.
      */
     protected final Element getTree(final String text, final ParsePosition position)
-            throws ParseException
-    {
+            throws ParseException {
         return new Element(new Element(this, text, position));
     }
 
-    /**
-     * Returns the formatter. Creates it if needed.
-     */
+    /** Returns the formatter. Creates it if needed. */
     private Formatter getFormatter() {
         if (formatter == null) {
             if (SCIENTIFIC_NOTATION) {
@@ -256,19 +238,16 @@ public abstract class AbstractParser extends Format {
     }
 
     /**
-     * Format the specified object as a Well Know Text.
-     * Formatting will uses the same set of symbols than the one used for parsing.
+     * Format the specified object as a Well Know Text. Formatting will uses the same set of symbols
+     * than the one used for parsing.
      *
-     * @param object     The object to format.
+     * @param object The object to format.
      * @param toAppendTo Where the text is to be appended.
-     * @param pos        An identification of a field in the formatted text.
-     *
+     * @param pos An identification of a field in the formatted text.
      * @see #getWarning
      */
-    public StringBuffer format(final Object        object,
-                               final StringBuffer  toAppendTo,
-                               final FieldPosition pos)
-    {
+    public StringBuffer format(
+            final Object object, final StringBuffer toAppendTo, final FieldPosition pos) {
         final Formatter formatter = getFormatter();
         try {
             formatter.clear();
@@ -291,25 +270,23 @@ public abstract class AbstractParser extends Format {
     }
 
     /**
-     * Read WKT strings from an input stream and reformat them to the specified
-     * output stream. WKT strings are read until the the end-of-stream, or until
-     * an unparsable WKT has been hit. In this later case, an error message is
-     * formatted to the specified error stream.
+     * Read WKT strings from an input stream and reformat them to the specified output stream. WKT
+     * strings are read until the the end-of-stream, or until an unparsable WKT has been hit. In
+     * this later case, an error message is formatted to the specified error stream.
      *
-     * @param  in  The input stream.
-     * @param  out The output stream.
-     * @param  err The error stream.
-     * @throws IOException if an error occured while reading from the input stream
-     *         or writting to the output stream.
+     * @param in The input stream.
+     * @param out The output stream.
+     * @param err The error stream.
+     * @throws IOException if an error occured while reading from the input stream or writting to
+     *     the output stream.
      */
     public void reformat(final BufferedReader in, final Writer out, final PrintWriter err)
-            throws IOException
-    {
+            throws IOException {
         final String lineSeparator = System.getProperty("line.separator", "\n");
         String line = null;
         try {
-            while ((line=in.readLine()) != null) {
-                if ((line=line.trim()).length() != 0) {
+            while ((line = in.readLine()) != null) {
+                if ((line = line.trim()).length() != 0) {
                     out.write(lineSeparator);
                     out.write(format(parseObject(line)));
                     out.write(lineSeparator);
@@ -330,12 +307,11 @@ public abstract class AbstractParser extends Format {
     }
 
     /**
-     * If a warning occured during the last WKT {@linkplain #format formatting},
-     * returns the warning. Otherwise returns {@code null}. The warning is cleared
-     * every time a new object is formatted.
+     * If a warning occured during the last WKT {@linkplain #format formatting}, returns the
+     * warning. Otherwise returns {@code null}. The warning is cleared every time a new object is
+     * formatted.
      *
      * @return The last warning, or {@code null} if none.
-     *
      * @since 2.4
      */
     public String getWarning() {
@@ -343,7 +319,8 @@ public abstract class AbstractParser extends Format {
             if (formatter.warning != null) {
                 return formatter.warning;
             }
-            return Errors.format(ErrorKeys.INVALID_WKT_FORMAT_$1, formatter.getUnformattableClass());
+            return Errors.format(
+                    ErrorKeys.INVALID_WKT_FORMAT_$1, formatter.getUnformattableClass());
         }
         return null;
     }
@@ -351,18 +328,18 @@ public abstract class AbstractParser extends Format {
     /**
      * Report a failure while parsing the specified line.
      *
-     * @param err  The stream where to report the failure.
+     * @param err The stream where to report the failure.
      * @param line The line that failed.
-     * @param errorOffset The error offset in the specified line. This is usually the
-     *        value provided by {@link ParseException#getErrorOffset}.
+     * @param errorOffset The error offset in the specified line. This is usually the value provided
+     *     by {@link ParseException#getErrorOffset}.
      */
     static void reportError(final PrintWriter err, String line, int errorOffset) {
         line = line.replace('\r', ' ').replace('\n', ' ');
-        final int WINDOW_WIDTH    = 80; // Arbitrary value.
-        int           stop        = line.length();
-        int           base        = errorOffset - WINDOW_WIDTH/2;
-        final int     baseMax     = stop - WINDOW_WIDTH;
-        final boolean hasTrailing = (Math.max(base,0) < baseMax);
+        final int WINDOW_WIDTH = 80; // Arbitrary value.
+        int stop = line.length();
+        int base = errorOffset - WINDOW_WIDTH / 2;
+        final int baseMax = stop - WINDOW_WIDTH;
+        final boolean hasTrailing = (Math.max(base, 0) < baseMax);
         if (!hasTrailing) {
             base = baseMax;
         }

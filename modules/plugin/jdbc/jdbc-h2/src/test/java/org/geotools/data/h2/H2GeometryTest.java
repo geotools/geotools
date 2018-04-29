@@ -14,7 +14,4 @@ public class H2GeometryTest extends JDBCGeometryOnlineTest {
     public void testLinearRing() throws Exception {
         // linear ring type is not a supported type in postgis
     }
-
-    
-    
 }

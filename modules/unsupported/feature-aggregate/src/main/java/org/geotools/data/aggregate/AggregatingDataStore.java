@@ -14,7 +14,6 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.logging.Logger;
-
 import org.geotools.data.DataStore;
 import org.geotools.data.Repository;
 import org.geotools.data.store.ContentDataStore;
@@ -40,11 +39,7 @@ import org.opengis.feature.type.Name;
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class AggregatingDataStore extends ContentDataStore {
 
     static final Logger LOGGER = Logging.getLogger(AggregatingDataStore.class);
@@ -53,7 +48,8 @@ public class AggregatingDataStore extends ContentDataStore {
 
     boolean tolerant;
 
-    Map<String, AggregateTypeConfiguration> typeMap = new LinkedHashMap<String, AggregateTypeConfiguration>();
+    Map<String, AggregateTypeConfiguration> typeMap =
+            new LinkedHashMap<String, AggregateTypeConfiguration>();
 
     ExecutorService executor;
 
@@ -92,7 +88,7 @@ public class AggregatingDataStore extends ContentDataStore {
     /**
      * Adds all feature types found in the specified stores, aggregating the ones with the same
      * names (the structure will be picked form the first store having that type in the list)
-     * 
+     *
      * @param storeNames
      * @throws IOException
      */
@@ -106,8 +102,8 @@ public class AggregatingDataStore extends ContentDataStore {
         for (String storeName : storeNames) {
             DataStore store = getStore(storeName, tolerant);
             if (store != null) {
-                Set<String> typeNames = new LinkedHashSet<String>(Arrays.asList(store
-                        .getTypeNames()));
+                Set<String> typeNames =
+                        new LinkedHashSet<String>(Arrays.asList(store.getTypeNames()));
                 allNames.put(storeName, typeNames);
             } else {
                 allNames.put(storeName, (Set<String>) Collections.EMPTY_SET);
@@ -131,19 +127,16 @@ public class AggregatingDataStore extends ContentDataStore {
                 addType(config);
             }
         }
-
     }
 
-    /**
-     * Adds a new aggregate type to the store
-     */
+    /** Adds a new aggregate type to the store */
     public void addType(AggregateTypeConfiguration config) throws IOException {
         try {
             typeMap.put(config.getName(), config);
             // force the feature type configuration to check the config is ok
             // but don't do that in tolerant setup as the repository might not be
             // fully available on startup (this happens in GeoServer)
-            if(!tolerant) {
+            if (!tolerant) {
                 getSchema(config.getName());
             }
             // the new vtable might be overriding a previous definition
@@ -155,7 +148,7 @@ public class AggregatingDataStore extends ContentDataStore {
 
     /**
      * Returns the configuration for the specified type, or null if not found
-     * 
+     *
      * @param name
      * @return
      */
@@ -165,7 +158,7 @@ public class AggregatingDataStore extends ContentDataStore {
 
     /**
      * Removes and returns the configuration of specified aggregate type
-     * 
+     *
      * @param name
      * @return
      */
@@ -178,9 +171,7 @@ public class AggregatingDataStore extends ContentDataStore {
         return config;
     }
 
-    /**
-     * Resets the store configuration, leaving no feature types
-     */
+    /** Resets the store configuration, leaving no feature types */
     public void resetConfiguration() {
         typeMap.clear();
         entries.clear();
@@ -188,11 +179,12 @@ public class AggregatingDataStore extends ContentDataStore {
 
     /**
      * Returns a immutable view of the aggregate type configurations
-     * 
+     *
      * @return
      */
     public Map<String, AggregateTypeConfiguration> getConfigurations() {
-        Map<String, AggregateTypeConfiguration> result = new HashMap<String, AggregateTypeConfiguration>();
+        Map<String, AggregateTypeConfiguration> result =
+                new HashMap<String, AggregateTypeConfiguration>();
         for (String key : typeMap.keySet()) {
             result.put(key, new AggregateTypeConfiguration(typeMap.get(key)));
         }
@@ -201,7 +193,7 @@ public class AggregatingDataStore extends ContentDataStore {
 
     /**
      * Gets a store from the repository given its name
-     * 
+     *
      * @param storeName
      * @return
      * @throws IOException
@@ -229,5 +221,4 @@ public class AggregatingDataStore extends ContentDataStore {
     <V> Future<V> submit(Callable<V> callable) {
         return executor.submit(callable);
     }
-
 }

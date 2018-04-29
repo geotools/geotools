@@ -2,33 +2,34 @@ package org.geotools.data.dxf.entities;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
-import org.geotools.data.dxf.parser.DXFLineNumberReader;
 import java.awt.geom.Point2D;
 import java.io.EOFException;
 import java.io.IOException;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.geotools.data.GeometryType;
-import org.geotools.data.dxf.parser.DXFUnivers;
 import org.geotools.data.dxf.header.DXFLayer;
 import org.geotools.data.dxf.header.DXFTables;
 import org.geotools.data.dxf.parser.DXFCodeValuePair;
 import org.geotools.data.dxf.parser.DXFGroupCode;
+import org.geotools.data.dxf.parser.DXFLineNumberReader;
 import org.geotools.data.dxf.parser.DXFParseException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.geotools.data.dxf.parser.DXFUnivers;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class DXFPoint extends DXFEntity {
 
     private static final Log log = LogFactory.getLog(DXFPoint.class);
     public Point2D.Double _point = new Point2D.Double(0, 0);
 
     public DXFPoint(DXFPoint newPoint) {
-        this(newPoint._point.x, newPoint._point.y, newPoint.getColor(), newPoint.getRefLayer(), 0, newPoint.getThickness());
+        this(
+                newPoint._point.x,
+                newPoint._point.y,
+                newPoint.getColor(),
+                newPoint.getRefLayer(),
+                0,
+                newPoint.getThickness());
 
         setType(newPoint.getType());
         setStartingLineNumber(newPoint.getStartingLineNumber());
@@ -63,11 +64,19 @@ public class DXFPoint extends DXFEntity {
         _point = new Point2D.Double(x, y);
         setName("DXFPoint");
     }
-    public DXFPoint(double x, double y, int c, DXFLayer l, int visibility, double thickness, DXFExtendedData extData) {
-    	super(c, l, visibility, null, DXFTables.defaultThickness);
-    	_point = new Point2D.Double(x, y);
-    	setName("DXFPoint");
-    	_extendedData = extData;
+
+    public DXFPoint(
+            double x,
+            double y,
+            int c,
+            DXFLayer l,
+            int visibility,
+            double thickness,
+            DXFExtendedData extData) {
+        super(c, l, visibility, null, DXFTables.defaultThickness);
+        _point = new Point2D.Double(x, y);
+        setName("DXFPoint");
+        _extendedData = extData;
     }
 
     public void setX(double x) {
@@ -86,7 +95,8 @@ public class DXFPoint extends DXFEntity {
         return _point.getY();
     }
 
-    public static DXFPoint read(DXFLineNumberReader br, DXFUnivers univers) throws NumberFormatException, IOException {
+    public static DXFPoint read(DXFLineNumberReader br, DXFUnivers univers)
+            throws NumberFormatException, IOException {
         DXFLayer l = null;
         int visibility = 0, c = -1;
         double x = 0, y = 0, thickness = 0;
@@ -97,7 +107,7 @@ public class DXFPoint extends DXFEntity {
         DXFCodeValuePair cvp = null;
         DXFGroupCode gc = null;
         DXFExtendedData _extData = null;
-        
+
         boolean doLoop = true;
         while (doLoop) {
             cvp = new DXFCodeValuePair();
@@ -117,28 +127,28 @@ public class DXFPoint extends DXFEntity {
                     br.reset();
                     doLoop = false;
                     break;
-                case LAYER_NAME: //"8"
+                case LAYER_NAME: // "8"
                     l = univers.findLayer(cvp.getStringValue());
                     break;
-                case X_1: //"10"
+                case X_1: // "10"
                     x = cvp.getDoubleValue();
                     break;
-                case Y_1: //"20"
+                case Y_1: // "20"
                     y = cvp.getDoubleValue();
                     break;
-                case COLOR: //"62"
+                case COLOR: // "62"
                     c = cvp.getShortValue();
                     break;
-                case VISIBILITY: //"60"
+                case VISIBILITY: // "60"
                     visibility = cvp.getShortValue();
                     break;
-                case THICKNESS: //"39"
+                case THICKNESS: // "39"
                     thickness = cvp.getDoubleValue();
                     break;
                 case XDATA_APPLICATION_NAME:
-                	String appName = cvp.getStringValue();
-            		_extData = DXFExtendedData.getExtendedData(br);
-            		_extData.setAppName(appName);
+                    String appName = cvp.getStringValue();
+                    _extData = DXFExtendedData.getExtendedData(br);
+                    _extData.setAppName(appName);
                     break;
                 default:
                     break;
@@ -157,16 +167,15 @@ public class DXFPoint extends DXFEntity {
     @Override
     public Geometry getGeometry() {
         if (geometry == null) {
-           updateGeometry();
+            updateGeometry();
         }
         return super.getGeometry();
     }
 
     @Override
-    public void updateGeometry(){
-         geometry = getUnivers().getGeometryFactory().createPoint(toCoordinate());
+    public void updateGeometry() {
+        geometry = getUnivers().getGeometryFactory().createPoint(toCoordinate());
     }
-
 
     public Coordinate toCoordinate() {
         if (_point == null) {

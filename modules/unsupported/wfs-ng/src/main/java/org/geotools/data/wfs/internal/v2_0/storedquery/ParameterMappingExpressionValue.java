@@ -18,7 +18,6 @@
 package org.geotools.data.wfs.internal.v2_0.storedquery;
 
 import java.io.Serializable;
-
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
 import org.opengis.filter.expression.Expression;
@@ -37,8 +36,7 @@ public class ParameterMappingExpressionValue implements ParameterMapping, Serial
         setExpression(expression);
     }
 
-    public ParameterMappingExpressionValue() {
-    }
+    public ParameterMappingExpressionValue() {}
 
     public void setForcible(boolean forcible) {
         this.forcible = forcible;
@@ -78,9 +76,9 @@ public class ParameterMappingExpressionValue implements ParameterMapping, Serial
         if (cqlExpression != null) return cqlExpression;
 
         try {
-            cqlExpression = CQL.toExpression(expression,
-                    new ParameterCQLExpressionFilterFactoryImpl());
-        } catch(CQLException ce) {
+            cqlExpression =
+                    CQL.toExpression(expression, new ParameterCQLExpressionFilterFactoryImpl());
+        } catch (CQLException ce) {
             throw new IllegalArgumentException("Illegal CQL expression", ce);
         }
 
@@ -96,11 +94,10 @@ public class ParameterMappingExpressionValue implements ParameterMapping, Serial
         if (obj == null) {
             ret = null;
         } else if (obj instanceof String) {
-            ret = (String)obj;
+            ret = (String) obj;
         } else {
             ret = obj.toString();
         }
         return ret;
     }
-
 }

@@ -18,12 +18,7 @@ package org.geotools.sld.bindings;
 
 import org.geotools.styling.Graphic;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class SLDGraphicStrokeBindingTest extends SLDTestSupport {
     public void testType() throws Exception {
         assertEquals(Graphic.class, new SLDGraphicStrokeBinding().getType());

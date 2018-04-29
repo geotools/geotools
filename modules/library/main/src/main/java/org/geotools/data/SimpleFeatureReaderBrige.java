@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -18,14 +18,13 @@ package org.geotools.data;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
-
 import org.geotools.data.simple.SimpleFeatureReader;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
- * Bridges between {@link FeatureReader<SimpleFeatureType, SimpleFeature>} and
- * {@link SimpleFeatureReader}
+ * Bridges between {@link FeatureReader<SimpleFeatureType, SimpleFeature>} and {@link
+ * SimpleFeatureReader}
  */
 class SimpleFeatureReaderBrige implements SimpleFeatureReader {
 
@@ -39,8 +38,8 @@ class SimpleFeatureReaderBrige implements SimpleFeatureReader {
         return reader.getFeatureType();
     }
 
-    public SimpleFeature next() throws IOException, IllegalArgumentException,
-            NoSuchElementException {
+    public SimpleFeature next()
+            throws IOException, IllegalArgumentException, NoSuchElementException {
         return reader.next();
     }
 
@@ -51,5 +50,4 @@ class SimpleFeatureReaderBrige implements SimpleFeatureReader {
     public void close() throws IOException {
         reader.close();
     }
-
 }

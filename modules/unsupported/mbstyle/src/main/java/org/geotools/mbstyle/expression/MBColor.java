@@ -22,19 +22,18 @@ import org.json.simple.JSONArray;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 
-/**
- * A class to transform mapbox color expressions into geotools expressions.
- */
-public class MBColor extends MBExpression{
+/** A class to transform mapbox color expressions into geotools expressions. */
+public class MBColor extends MBExpression {
 
     public MBColor(JSONArray json) {
         super(json);
     }
 
     /**
-     * Creates a color value from red, green, and blue components, which must range between 0 and 255,
-     * and an alpha component of 1. If any component is out of range, the expression is an error.
-     * Example: ["rgb", number, number, number]: color
+     * Creates a color value from red, green, and blue components, which must range between 0 and
+     * 255, and an alpha component of 1. If any component is out of range, the expression is an
+     * error. Example: ["rgb", number, number, number]: color
+     *
      * @return
      */
     public Expression colorRGB() {
@@ -46,7 +45,6 @@ public class MBColor extends MBExpression{
             Expression eg = parse.string(json, 2);
             eg = transformLiteral(eg);
             Function roundg = ff.function("round_2", eg);
-
 
             Expression eb = parse.string(json, 3);
             eb = transformLiteral(eb);
@@ -60,9 +58,9 @@ public class MBColor extends MBExpression{
     }
 
     /**
-     * Creates a color value from red, green, blue components, which must range between 0 and 255, and an alpha
-     * component which must range between 0 and 1. If any component is out of range, the expression is an error.
-     * Example: ["rgba", number, number, number, number]: color
+     * Creates a color value from red, green, blue components, which must range between 0 and 255,
+     * and an alpha component which must range between 0 and 1. If any component is out of range,
+     * the expression is an error. Example: ["rgba", number, number, number, number]: color
      *
      * @return
      */
@@ -72,13 +70,13 @@ public class MBColor extends MBExpression{
     }
 
     /**
-     * Returns a four-element array containing the input color's red, green, blue, and alpha components, in that order.
-     * Example: ["to-rgba", color]: array<number, 4>
+     * Returns a four-element array containing the input color's red, green, blue, and alpha
+     * components, in that order. Example: ["to-rgba", color]: array<number, 4>
      *
      * @return
      */
     // Currently unsupported
-    public Expression colorToRGBA(){
+    public Expression colorToRGBA() {
         throw new UnsupportedOperationException("RGBA colors are currently unsupported.");
     }
 

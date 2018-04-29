@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -17,18 +17,15 @@
 package org.geotools.renderer.style;
 
 // J2SE dependencies
+
 import java.awt.Composite;
 import java.awt.Paint;
-
 import org.geotools.resources.Classes;
-
 
 /**
  * A style that contains the specification to renderer both the contour and the interior of a shape
  *
  * @author Andrea Aime
- *
- *
  * @source $URL$
  * @version $Id$
  */
@@ -37,18 +34,16 @@ public class PolygonStyle2D extends LineStyle2D {
     protected Style2D graphicFill;
     protected Composite fillComposite;
 
-
     /**
-     * Returns a Style2D used for filling the {@linkplain org.geotools.renderer.geom.Polygon polygon}
-     * to be rendered, or <code>null</code> if none.
-     * 
+     * Returns a Style2D used for filling the {@linkplain org.geotools.renderer.geom.Polygon
+     * polygon} to be rendered, or <code>null</code> if none.
+     *
      * @return the current fill or null if none
      */
-    public Style2D getGraphicFill()
-    {
-    	return graphicFill;
+    public Style2D getGraphicFill() {
+        return graphicFill;
     }
-    
+
     /**
      * Sets a Style2D for filling the {@linkplain org.geotools.renderer.geom.Polygon polygon} to be
      * rendered. Set it to <code>null</code> if no Style2D filling is to be performed.
@@ -99,9 +94,7 @@ public class PolygonStyle2D extends LineStyle2D {
         this.fillComposite = fillComposite;
     }
 
-    /**
-     * Returns a string representation of this style.
-     */
+    /** Returns a string representation of this style. */
     public String toString() {
         return Classes.getShortClassName(this) + '[' + fill + ']';
     }

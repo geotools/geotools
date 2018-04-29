@@ -20,16 +20,11 @@ import org.geotools.data.postgis.PostGIS3DTestSetup;
 import org.geotools.jdbc.JDBC3DOnlineTest;
 import org.geotools.jdbc.JDBC3DTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class PostGIS3DOnlineTest extends JDBC3DOnlineTest {
 
     @Override
     protected JDBC3DTestSetup createTestSetup() {
         return new PostGIS3DTestSetup(new PostGISPSTestSetup());
     }
-    
 }

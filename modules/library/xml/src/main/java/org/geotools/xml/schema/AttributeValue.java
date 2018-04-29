@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,25 +17,15 @@
 package org.geotools.xml.schema;
 
 /**
- * <p>
  * DOCUMENT ME!
- * </p>
  *
  * @author dzwiers
- *
- *
  * @source $URL$
  */
 public interface AttributeValue {
-    /**
-     * DOCUMENT ME!
-     *
-     */
+    /** DOCUMENT ME! */
     public String getValue();
 
-    /**
-     * DOCUMENT ME!
-     *
-     */
+    /** DOCUMENT ME! */
     public Attribute getAttribute();
 }

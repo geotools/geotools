@@ -29,35 +29,31 @@ import org.opengis.filter.expression.Function;
  * @author Mauricio Pazos (Axios Engineering)
  * @since 2.6
  */
-final class RelateBuilder extends FunctionBuilder{
+final class RelateBuilder extends FunctionBuilder {
 
-
-    public RelateBuilder(BuildResultStack resultStack,
-            FilterFactory filterFactory) {
+    public RelateBuilder(BuildResultStack resultStack, FilterFactory filterFactory) {
 
         super(resultStack, filterFactory);
     }
 
     @Override
     public Function build() throws CQLException {
-        
+
         Expression[] args = buildParameters();
-        
-        Function relate = getFilterFactory().function("relate", args);         
+
+        Function relate = getFilterFactory().function("relate", args);
 
         return relate;
     }
 
     private Expression[] buildParameters() throws CQLException {
 
-        Expression[] args =new Expression[2];
+        Expression[] args = new Expression[2];
 
         args[1] = getResultStack().popExpression();
-        
+
         args[0] = getResultStack().popExpression();
 
         return args;
     }
-    
-
 }

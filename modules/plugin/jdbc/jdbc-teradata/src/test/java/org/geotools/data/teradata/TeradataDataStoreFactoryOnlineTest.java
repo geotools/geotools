@@ -16,25 +16,19 @@
  */
 package org.geotools.data.teradata;
 
-import org.geotools.jdbc.JDBCDataStore;
-import org.geotools.jdbc.JDBCTestSetup;
-import org.geotools.jdbc.JDBCTestSupport;
+import static org.geotools.data.teradata.TeradataDataStoreFactory.PORT;
+import static org.geotools.jdbc.JDBCDataStoreFactory.*;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import org.geotools.jdbc.JDBCDataStore;
+import org.geotools.jdbc.JDBCTestSetup;
+import org.geotools.jdbc.JDBCTestSupport;
 
-import static org.geotools.data.teradata.TeradataDataStoreFactory.PORT;
-import static org.geotools.jdbc.JDBCDataStoreFactory.*;
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class TeradataDataStoreFactoryOnlineTest extends JDBCTestSupport {
-
 
     protected JDBCTestSetup createTestSetup() {
         return new TeradataTestSetup();
@@ -45,7 +39,8 @@ public class TeradataDataStoreFactoryOnlineTest extends JDBCTestSupport {
         checkCreateConnection(factory, factory.getDatabaseID());
     }
 
-    private void checkCreateConnection(TeradataDataStoreFactory factory, String dbtype) throws IOException {
+    private void checkCreateConnection(TeradataDataStoreFactory factory, String dbtype)
+            throws IOException {
         Properties db = fixture;
 
         Map<String, Object> params = new HashMap<String, Object>();
@@ -71,5 +66,4 @@ public class TeradataDataStoreFactoryOnlineTest extends JDBCTestSupport {
             store.dispose();
         }
     }
-
 }

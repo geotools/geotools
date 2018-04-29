@@ -17,24 +17,20 @@
 
 package org.geotools.filter.function;
 
+import static org.junit.Assert.*;
+
 import java.awt.Color;
 import java.util.ArrayList;
-
+import org.junit.Before;
+import org.junit.Test;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
-
-import org.junit.Before;
-import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  * Test the Recode function against the Symbology Encoding 1.1 specs.
  *
  * @author mbedward
- *
- *
- *
  * @source $URL$
  */
 public class RecodeFunctionTest extends SEFunctionTestBase {
@@ -57,8 +53,7 @@ public class RecodeFunctionTest extends SEFunctionTestBase {
         Function fn = finder.findFunction("recode", parameters, fallback);
         Object result = fn.evaluate(feature(ints[0]));
 
-        assertFalse("Could not locate 'recode' function",
-                result.equals(fallback.getValue()));
+        assertFalse("Could not locate 'recode' function", result.equals(fallback.getValue()));
     }
 
     @Test
@@ -73,19 +68,21 @@ public class RecodeFunctionTest extends SEFunctionTestBase {
         }
     }
 
-//    @Test
-//    public void testCaseInsensitiveLookup() throws Exception {
-//        System.out.println("   testCaseInsensitiveLookup");
-//
-//        setupParameters(words, ints);
-//        Function fn = finder.findFunction("recode", parameters);
-//
-//        for (int i = 0; i < words.length; i++) {
-//            assertEquals(ints[i], fn.evaluate(feature(words[i].toLowerCase()), Integer.class));
-//            assertEquals(ints[i], fn.evaluate(feature(words[i].toUpperCase()), Integer.class));
-//        }
-//    }
-    
+    //    @Test
+    //    public void testCaseInsensitiveLookup() throws Exception {
+    //        System.out.println("   testCaseInsensitiveLookup");
+    //
+    //        setupParameters(words, ints);
+    //        Function fn = finder.findFunction("recode", parameters);
+    //
+    //        for (int i = 0; i < words.length; i++) {
+    //            assertEquals(ints[i], fn.evaluate(feature(words[i].toLowerCase()),
+    // Integer.class));
+    //            assertEquals(ints[i], fn.evaluate(feature(words[i].toUpperCase()),
+    // Integer.class));
+    //        }
+    //    }
+
     @Test
     public void testRecodeUndefinedValueReturnsNull() throws Exception {
         System.out.println("   testRecodeUndefinedValueReturnsNull");
@@ -97,10 +94,7 @@ public class RecodeFunctionTest extends SEFunctionTestBase {
         assertNull(fn.evaluate(feature(missing)));
     }
 
-    /**
-     * Set up parameters for the Interpolate function with a set of
-     * input data and output values
-     */
+    /** Set up parameters for the Interpolate function with a set of input data and output values */
     private void setupParameters(Object[] data, Object[] values) {
 
         if (data.length != values.length) {
@@ -115,5 +109,4 @@ public class RecodeFunctionTest extends SEFunctionTestBase {
             parameters.add(ff2.literal(values[i]));
         }
     }
-
 }

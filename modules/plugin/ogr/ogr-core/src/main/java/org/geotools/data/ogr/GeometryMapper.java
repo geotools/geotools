@@ -16,8 +16,6 @@
  */
 package org.geotools.data.ogr;
 
-import java.io.IOException;
-
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.io.ParseException;
@@ -25,16 +23,15 @@ import com.vividsolutions.jts.io.WKBReader;
 import com.vividsolutions.jts.io.WKBWriter;
 import com.vividsolutions.jts.io.WKTReader;
 import com.vividsolutions.jts.io.WKTWriter;
+import java.io.IOException;
 
 /**
  * Converts between JTS and OGR geometries
- * 
+ *
  * @author Andrea Aime - GeoSolutions
- * 
- * 
  * @source $URL:
- *         http://svn.osgeo.org/geotools/trunk/modules/unsupported/ogr/src/main/java/org/geotools
- *         /data/ogr/GeometryMapper.java $
+ *     http://svn.osgeo.org/geotools/trunk/modules/unsupported/ogr/src/main/java/org/geotools
+ *     /data/ogr/GeometryMapper.java $
  */
 @SuppressWarnings("rawtypes")
 abstract class GeometryMapper {
@@ -66,7 +63,7 @@ abstract class GeometryMapper {
         /**
          * Reads the current feature's geometry using wkb encoding. A wkbReader should be provided
          * since it's not thread safe by design.
-         * 
+         *
          * @throws IOException
          */
         Geometry parseOgrGeometry(Object geom) throws IOException {
@@ -107,7 +104,7 @@ abstract class GeometryMapper {
         /**
          * Reads the current feature's geometry using wkb encoding. A wkbReader should be provided
          * since it's not thread safe by design.
-         * 
+         *
          * @throws IOException
          */
         Geometry parseOgrGeometry(Object geom) throws IOException {
@@ -128,6 +125,5 @@ abstract class GeometryMapper {
             ogr.CheckError(ret[0]);
             return result;
         }
-
     }
 }

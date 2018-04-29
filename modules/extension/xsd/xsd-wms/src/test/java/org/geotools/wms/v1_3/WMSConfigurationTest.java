@@ -5,9 +5,7 @@ import static junit.framework.TestCase.fail;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
-
 import javax.xml.parsers.ParserConfigurationException;
-
 import org.geotools.xml.Parser;
 import org.junit.Test;
 import org.xml.sax.SAXException;
@@ -23,13 +21,12 @@ public class WMSConfigurationTest {
             p.parse(is);
         }
         if (!p.getValidationErrors().isEmpty()) {
-            for (Iterator e = p.getValidationErrors().iterator(); e.hasNext();) {
+            for (Iterator e = p.getValidationErrors().iterator(); e.hasNext(); ) {
                 SAXParseException ex = (SAXParseException) e.next();
                 System.out.println(
                         ex.getLineNumber() + "," + ex.getColumnNumber() + " -" + ex.toString());
             }
             fail("Document did not validate.");
         }
-
     }
 }

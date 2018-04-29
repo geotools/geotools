@@ -25,5 +25,4 @@ public class MySQLDateOnlineTest extends JDBCDateOnlineTest {
     protected JDBCDateTestSetup createTestSetup() {
         return new MySQLDateTestSetup();
     }
-
 }

@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
@@ -107,8 +106,12 @@ class DataAccessStoreWrapper implements DataStore {
     @Override
     public String[] getTypeNames() throws IOException {
         List<Name> names = delegate.getNames();
-        String[] typeNames = names.stream().map(name -> name.getLocalPart()).distinct().sorted()
-                .toArray(String[]::new);
+        String[] typeNames =
+                names.stream()
+                        .map(name -> name.getLocalPart())
+                        .distinct()
+                        .sorted()
+                        .toArray(String[]::new);
         return typeNames;
     }
 
@@ -131,7 +134,7 @@ class DataAccessStoreWrapper implements DataStore {
 
     /**
      * Returns a qualified name from an unqualified type name. Ensures a single value is found.
-     * 
+     *
      * @param typeName
      * @return
      * @throws IOException
@@ -139,8 +142,9 @@ class DataAccessStoreWrapper implements DataStore {
     private Name getNameFromLocal(String typeName) throws IOException {
         // TODO: cache?
         Stream<Name> stream = delegate.getNames().stream();
-        Set<Name> names = stream.filter(name -> typeName.equals(name.getLocalPart()))
-                .collect(Collectors.toSet());
+        Set<Name> names =
+                stream.filter(name -> typeName.equals(name.getLocalPart()))
+                        .collect(Collectors.toSet());
         if (names.isEmpty()) {
             throw new IOException("Could not find a type name '" + typeName + "'");
         } else if (names.size() > 1) {
@@ -151,36 +155,38 @@ class DataAccessStoreWrapper implements DataStore {
     }
 
     @Override
-    public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(Query query,
-            Transaction transaction) throws IOException {
+    public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(
+            Query query, Transaction transaction) throws IOException {
         SimpleFeatureSource fs = getFeatureSource(query.getTypeName());
         if (fs == null) {
-            throw new IOException("Could not find feature type mentioned in query: '"
-                    + query.getTypeName() + "'");
+            throw new IOException(
+                    "Could not find feature type mentioned in query: '"
+                            + query.getTypeName()
+                            + "'");
         }
         if (fs instanceof SimpleFeatureStore) {
             ((SimpleFeatureStore) fs).setTransaction(transaction);
         }
         SimpleFeatureIterator iterator = fs.getFeatures().features();
-        return new DelegateFeatureReader<SimpleFeatureType, SimpleFeature>(fs.getSchema(),
-                iterator);
+        return new DelegateFeatureReader<SimpleFeatureType, SimpleFeature>(
+                fs.getSchema(), iterator);
     }
 
     @Override
-    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(String typeName,
-            Filter filter, Transaction transaction) throws IOException {
+    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
+            String typeName, Filter filter, Transaction transaction) throws IOException {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(String typeName,
-            Transaction transaction) throws IOException {
+    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
+            String typeName, Transaction transaction) throws IOException {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriterAppend(String typeName,
-            Transaction transaction) throws IOException {
+    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriterAppend(
+            String typeName, Transaction transaction) throws IOException {
         throw new UnsupportedOperationException();
     }
 
@@ -188,5 +194,4 @@ class DataAccessStoreWrapper implements DataStore {
     public LockingManager getLockingManager() {
         return null;
     }
-
 }

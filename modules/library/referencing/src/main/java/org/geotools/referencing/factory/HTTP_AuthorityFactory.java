@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -17,6 +17,11 @@
 
 package org.geotools.referencing.factory;
 
+import org.geotools.factory.Hints;
+import org.geotools.metadata.iso.citation.Citations;
+import org.geotools.resources.i18n.ErrorKeys;
+import org.geotools.resources.i18n.Errors;
+import org.geotools.util.GenericName;
 import org.opengis.metadata.citation.Citation;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
@@ -25,45 +30,35 @@ import org.opengis.referencing.cs.CSAuthorityFactory;
 import org.opengis.referencing.datum.DatumAuthorityFactory;
 import org.opengis.referencing.operation.CoordinateOperationAuthorityFactory;
 
-import org.geotools.factory.Hints;
-import org.geotools.util.GenericName;
-import org.geotools.metadata.iso.citation.Citations;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.resources.i18n.Errors;
-
-
 /**
  * Wraps {@linkplain AllAuthoritiesFactory all factories} in a {@code "http://www.opengis.net/"}
  * name space. An exemple of complete URL is {@code "http://www.opengis.net/gml/srs/epsg.xml#4326"}.
- * <p>
- * Implementation note: this class requires some cooperation from the
- * {@link AllAuthoritiesFactory#getSeparator} method, since the separator is not the usual
- * {@value org.geotools.util.GenericName#DEFAULT_SEPARATOR} character.
+ *
+ * <p>Implementation note: this class requires some cooperation from the {@link
+ * AllAuthoritiesFactory#getSeparator} method, since the separator is not the usual {@value
+ * org.geotools.util.GenericName#DEFAULT_SEPARATOR} character.
  *
  * @author Martin Desruisseaux
- *
  * @source $URL$
  */
-public class HTTP_AuthorityFactory extends AuthorityFactoryAdapter implements CRSAuthorityFactory,
-        CSAuthorityFactory, DatumAuthorityFactory, CoordinateOperationAuthorityFactory
-{
-    /**
-     * The base URL, which is {@value}.
-     */
+public class HTTP_AuthorityFactory extends AuthorityFactoryAdapter
+        implements CRSAuthorityFactory,
+                CSAuthorityFactory,
+                DatumAuthorityFactory,
+                CoordinateOperationAuthorityFactory {
+    /** The base URL, which is {@value}. */
     public static final String BASE_URL = "http://www.opengis.net/gml/srs/";
 
-    /**
-     * Creates a default wrapper.
-     */
+    /** Creates a default wrapper. */
     public HTTP_AuthorityFactory() {
         this((Hints) null);
     }
 
     /**
-     * Creates a wrapper using the specified hints. For strict compliance with OGC
-     * definition of CRS defined by URL, the supplied hints should contains at least the
-     * {@link Hints#FORCE_LONGITUDE_FIRST_AXIS_ORDER FORCE_LONGITUDE_FIRST_AXIS_ORDER} hint
-     * with value {@link Boolean#FALSE FALSE}.
+     * Creates a wrapper using the specified hints. For strict compliance with OGC definition of CRS
+     * defined by URL, the supplied hints should contains at least the {@link
+     * Hints#FORCE_LONGITUDE_FIRST_AXIS_ORDER FORCE_LONGITUDE_FIRST_AXIS_ORDER} hint with value
+     * {@link Boolean#FALSE FALSE}.
      *
      * @param userHints The hints to be given to backing factories.
      */
@@ -72,9 +67,9 @@ public class HTTP_AuthorityFactory extends AuthorityFactoryAdapter implements CR
     }
 
     /**
-     * Creates a wrapper around the specified factory. The supplied factory is given unchanged
-     * to the {@linkplain AuthorityFactoryAdapter#AuthorityFactoryAdapter(AuthorityFactory)
-     * super class constructor}.
+     * Creates a wrapper around the specified factory. The supplied factory is given unchanged to
+     * the {@linkplain AuthorityFactoryAdapter#AuthorityFactoryAdapter(AuthorityFactory) super class
+     * constructor}.
      */
     public HTTP_AuthorityFactory(final AllAuthoritiesFactory factory) {
         super(factory);
@@ -82,12 +77,11 @@ public class HTTP_AuthorityFactory extends AuthorityFactoryAdapter implements CR
 
     /**
      * Returns {@code false} if {@link Hints#FORCE_LONGITUDE_FIRST_AXIS_ORDER} should be set to
-     * {@link Boolean#FALSE}. This method compares {@link Hints#FORCE_AXIS_ORDER_HONORING} with
-     * the specified authority.
+     * {@link Boolean#FALSE}. This method compares {@link Hints#FORCE_AXIS_ORDER_HONORING} with the
+     * specified authority.
      *
-     * @param  hints The hints to use (may be {@code null}).
-     * @param  authority The authority factory under creation.
-     *
+     * @param hints The hints to use (may be {@code null}).
+     * @param authority The authority factory under creation.
      * @todo Should not looks at system hints; this is {@link ReferencingFactoryFinder}'s job.
      */
     static boolean defaultAxisOrderHints(final Hints hints, final String authority) {
@@ -102,9 +96,9 @@ public class HTTP_AuthorityFactory extends AuthorityFactoryAdapter implements CR
             final String list = value.toString();
             int i = 0;
             while ((i = list.indexOf(authority, i)) >= 0) {
-                if (i==0 || !Character.isJavaIdentifierPart(list.charAt(i - 1))) {
+                if (i == 0 || !Character.isJavaIdentifierPart(list.charAt(i - 1))) {
                     final int j = i + authority.length();
-                    if (j==list.length() || !Character.isJavaIdentifierPart(list.charAt(j))) {
+                    if (j == list.length() || !Character.isJavaIdentifierPart(list.charAt(j))) {
                         // Found the authority in the list: we need to use the global setting.
                         return true;
                     }
@@ -116,8 +110,8 @@ public class HTTP_AuthorityFactory extends AuthorityFactoryAdapter implements CR
     }
 
     /**
-     * Returns a factory from the specified hints. Used by {@link URN_AuthorityFactory}
-     * constructor as well.
+     * Returns a factory from the specified hints. Used by {@link URN_AuthorityFactory} constructor
+     * as well.
      */
     static AllAuthoritiesFactory getFactory(Hints hints, final String authority) {
         if (!defaultAxisOrderHints(hints, authority)) {
@@ -127,19 +121,17 @@ public class HTTP_AuthorityFactory extends AuthorityFactoryAdapter implements CR
         return new AllAuthoritiesFactory(hints);
     }
 
-    /**
-     * Returns the authority, which contains the {@code "http://www.opengis.net"} identifier.
-     */
+    /** Returns the authority, which contains the {@code "http://www.opengis.net"} identifier. */
     @Override
     public Citation getAuthority() {
         return Citations.HTTP_OGC;
     }
 
     /**
-     * Removes the URL base ({@value #BASE_URL}) from the specified code
-     * before to pass it to the wrapped factories.
+     * Removes the URL base ({@value #BASE_URL}) from the specified code before to pass it to the
+     * wrapped factories.
      *
-     * @param  code The code given to this factory.
+     * @param code The code given to this factory.
      * @return The code to give to the underlying factories.
      * @throws FactoryException if the code can't be converted.
      */
@@ -151,7 +143,7 @@ public class HTTP_AuthorityFactory extends AuthorityFactoryAdapter implements CR
             code = code.substring(length);
             if (code.indexOf('/') < 0) {
                 final int split = code.indexOf('#');
-                if (split >= 0 && code.indexOf('#', split+1) < 0) {
+                if (split >= 0 && code.indexOf('#', split + 1) < 0) {
                     String authority = code.substring(0, split).trim();
                     final int ext = authority.lastIndexOf('.');
                     if (ext > 0) {
@@ -164,7 +156,7 @@ public class HTTP_AuthorityFactory extends AuthorityFactoryAdapter implements CR
                 }
             }
         }
-        throw new NoSuchAuthorityCodeException(Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2,
-                "code", code), BASE_URL, code);
+        throw new NoSuchAuthorityCodeException(
+                Errors.format(ErrorKeys.ILLEGAL_ARGUMENT_$2, "code", code), BASE_URL, code);
     }
 }

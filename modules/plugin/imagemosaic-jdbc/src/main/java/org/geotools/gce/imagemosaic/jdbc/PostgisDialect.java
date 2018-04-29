@@ -18,117 +18,132 @@ package org.geotools.gce.imagemosaic.jdbc;
 
 /**
  * This class implements the db dialect for postgis
- * 
+ *
  * @author mcr
- * 
- *
- *
- *
  * @source $URL$
  */
 public class PostgisDialect extends DBDialect {
-	public PostgisDialect(Config config) {
-		super(config);
-	}
+    public PostgisDialect(Config config) {
+        super(config);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geotools.gce.imagemosaic.jdbc.DBDialect#getRegisterSpatialStatement(java.lang.String,
-	 *      java.lang.String)
-	 */
-	@Override
-	protected String getRegisterSpatialStatement(String tn, String srs) {
-		return "select AddGeometryColumn('" + tn + "','"
-				+ config.getGeomAttributeNameInSpatialTable() + "'," + srs
-				+ ",'" + getMultiPolygonSQLType() + "',2)";
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.geotools.gce.imagemosaic.jdbc.DBDialect#getRegisterSpatialStatement(java.lang.String,
+     *      java.lang.String)
+     */
+    @Override
+    protected String getRegisterSpatialStatement(String tn, String srs) {
+        return "select AddGeometryColumn('"
+                + tn
+                + "','"
+                + config.getGeomAttributeNameInSpatialTable()
+                + "',"
+                + srs
+                + ",'"
+                + getMultiPolygonSQLType()
+                + "',2)";
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geotools.gce.imagemosaic.jdbc.DBDialect#getUnregisterSpatialStatement(java.lang.String)
-	 */
-	@Override
-	protected String getUnregisterSpatialStatement(String tn) {
-		return "select DropGeometryColumn('" + tn + "','"
-				+ getConfig().getGeomAttributeNameInSpatialTable() + "')";
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.geotools.gce.imagemosaic.jdbc.DBDialect#getUnregisterSpatialStatement(java.lang.String)
+     */
+    @Override
+    protected String getUnregisterSpatialStatement(String tn) {
+        return "select DropGeometryColumn('"
+                + tn
+                + "','"
+                + getConfig().getGeomAttributeNameInSpatialTable()
+                + "')";
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geotools.gce.imagemosaic.jdbc.DBDialect#getCreateSpatialTableStatement(java.lang.String)
-	 */
-	@Override
-	protected String getCreateSpatialTableStatement(String tableName)
-			throws Exception {
-		String statement = " CREATE TABLE " + tableName;
-		statement += (" (" + getConfig().getKeyAttributeNameInSpatialTable() + " CHAR(64) NOT NULL ");
-		statement += (",CONSTRAINT " + tableName + "_PK PRIMARY KEY(" + getConfig()
-				.getKeyAttributeNameInSpatialTable());
-		statement += "))";
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.geotools.gce.imagemosaic.jdbc.DBDialect#getCreateSpatialTableStatement(java.lang.String)
+     */
+    @Override
+    protected String getCreateSpatialTableStatement(String tableName) throws Exception {
+        String statement = " CREATE TABLE " + tableName;
+        statement +=
+                (" (" + getConfig().getKeyAttributeNameInSpatialTable() + " CHAR(64) NOT NULL ");
+        statement +=
+                (",CONSTRAINT "
+                        + tableName
+                        + "_PK PRIMARY KEY("
+                        + getConfig().getKeyAttributeNameInSpatialTable());
+        statement += "))";
 
-		return statement;
-	}
+        return statement;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geotools.gce.imagemosaic.jdbc.DBDialect#getCreateSpatialTableStatementJoined(java.lang.String)
-	 */
-	@Override
-	protected String getCreateSpatialTableStatementJoined(String tableName)
-			throws Exception {
-		String statement = " CREATE TABLE " + tableName;
-		statement += (" (" + getConfig().getKeyAttributeNameInSpatialTable() + " CHAR(64) NOT NULL ");
-		statement += ("," + getConfig().getBlobAttributeNameInTileTable() + " " + getBLOBSQLType());
-		statement += (",CONSTRAINT " + tableName + "_PK PRIMARY KEY(" + getConfig()
-				.getKeyAttributeNameInSpatialTable());
-		statement += "))";
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.geotools.gce.imagemosaic.jdbc.DBDialect#getCreateSpatialTableStatementJoined(java.lang.String)
+     */
+    @Override
+    protected String getCreateSpatialTableStatementJoined(String tableName) throws Exception {
+        String statement = " CREATE TABLE " + tableName;
+        statement +=
+                (" (" + getConfig().getKeyAttributeNameInSpatialTable() + " CHAR(64) NOT NULL ");
+        statement += ("," + getConfig().getBlobAttributeNameInTileTable() + " " + getBLOBSQLType());
+        statement +=
+                (",CONSTRAINT "
+                        + tableName
+                        + "_PK PRIMARY KEY("
+                        + getConfig().getKeyAttributeNameInSpatialTable());
+        statement += "))";
 
-		return statement;
-	}
+        return statement;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geotools.gce.imagemosaic.jdbc.DBDialect#getBLOBSQLType()
-	 */
-	@Override
-	protected String getBLOBSQLType() {
-		return "BYTEA";
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.geotools.gce.imagemosaic.jdbc.DBDialect#getBLOBSQLType()
+     */
+    @Override
+    protected String getBLOBSQLType() {
+        return "BYTEA";
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geotools.gce.imagemosaic.jdbc.DBDialect#getMultiPolygonSQLType()
-	 */
-	@Override
-	protected String getMultiPolygonSQLType() {
-		return "MULTIPOLYGON";
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.geotools.gce.imagemosaic.jdbc.DBDialect#getMultiPolygonSQLType()
+     */
+    @Override
+    protected String getMultiPolygonSQLType() {
+        return "MULTIPOLYGON";
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geotools.gce.imagemosaic.jdbc.DBDialect#getDoubleSQLType()
-	 */
-	@Override
-	protected String getDoubleSQLType() {
-		return "FLOAT8";
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.geotools.gce.imagemosaic.jdbc.DBDialect#getDoubleSQLType()
+     */
+    @Override
+    protected String getDoubleSQLType() {
+        return "FLOAT8";
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geotools.gce.imagemosaic.jdbc.DBDialect#getCreateIndexStatement(java.lang.String)
-	 */
-	@Override
-	protected String getCreateIndexStatement(String tn) throws Exception {
-		return "CREATE INDEX IX_" + tn + " ON " + tn + " USING gist("
-				+ getConfig().getGeomAttributeNameInSpatialTable() + ") ";
-	}
-
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.geotools.gce.imagemosaic.jdbc.DBDialect#getCreateIndexStatement(java.lang.String)
+     */
+    @Override
+    protected String getCreateIndexStatement(String tn) throws Exception {
+        return "CREATE INDEX IX_"
+                + tn
+                + " ON "
+                + tn
+                + " USING gist("
+                + getConfig().getGeomAttributeNameInSpatialTable()
+                + ") ";
+    }
 }

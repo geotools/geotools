@@ -22,7 +22,7 @@ import javax.xml.namespace.QName;
  * A QName subclass holding the fully qualified name as a field (important performance wise,
  * ContentHandler writes out XML much faster if given the fully qualified name as opposed to
  * namespace URI and local name)
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 public class QualifiedName extends QName {
@@ -49,7 +49,7 @@ public class QualifiedName extends QName {
     /**
      * Derives a new {@link QualifiedName} with the given prefix, or returns itself if the prefix is
      * the same alredy in use
-     * 
+     *
      * @param prefix
      * @return
      */
@@ -66,19 +66,19 @@ public class QualifiedName extends QName {
     }
 
     /**
-     * This method is used to replicate a "feature" of the standard encoder, when no prefix
-     * can be found, "null" will be used instead of having the code throw an exception
+     * This method is used to replicate a "feature" of the standard encoder, when no prefix can be
+     * found, "null" will be used instead of having the code throw an exception
+     *
      * @param targetNamespace
      * @param name
      * @param prefix2
      * @return
      */
     public static QualifiedName build(String targetNamespace, String name, String prefix) {
-        if(prefix == null) {
+        if (prefix == null) {
             return new QualifiedName(targetNamespace, name, "null");
         } else {
             return new QualifiedName(targetNamespace, name, prefix);
         }
     }
-
-} 
+}

@@ -29,37 +29,32 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  *
  * @author Martin Desruisseaux
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
- *
  * @source $URL$
  */
 final class URN_Parser extends URI_Parser {
 
     /**
-     * The beginning parts of the URN, typically {@code "urn:ogc:def:"} and {@code "urn:x-ogc:def:"}.
-     * All elements in the array are treated as synonymous. Those parts are up to, but do not
-     * include, the type part ({@code "crs"}, {@code "cs"}, {@code "datum"}, <cite>etc.</cite>).
-     * They must include a trailing (@value #URN_SEPARATOR} character.
+     * The beginning parts of the URN, typically {@code "urn:ogc:def:"} and {@code
+     * "urn:x-ogc:def:"}. All elements in the array are treated as synonymous. Those parts are up
+     * to, but do not include, the type part ({@code "crs"}, {@code "cs"}, {@code "datum"},
+     * <cite>etc.</cite>). They must include a trailing (@value #URN_SEPARATOR} character.
      */
-    private static final String[] URN_BASES = new String[] {
-        "urn:ogc:def:",
-        "urn:x-ogc:def:"
-    };
+    private static final String[] URN_BASES = new String[] {"urn:ogc:def:", "urn:x-ogc:def:"};
 
-    /**
-     * The parts separator in the URN.
-     */
+    /** The parts separator in the URN. */
     private static final char URN_SEPARATOR = ':';
 
     /**
      * Constructor.
-     * 
+     *
      * @param urn the full URN string
      * @param type the resource type, for example "crs"
      * @param authority the resource authority, for example "EPSG"
      * @param version the version of the resource or null if none
      * @param code the resource code
      */
-    protected URN_Parser(String urn, URI_Type type, String authority, Version version, String code) {
+    protected URN_Parser(
+            String urn, URI_Type type, String authority, Version version, String code) {
         super(urn, type, authority, version, code);
     }
 
@@ -68,10 +63,9 @@ final class URN_Parser extends URI_Parser {
      *
      * @param urn The URN to parse.
      * @throws NoSuchAuthorityCodeException if the URN syntax is invalid.
-     *
-     * @todo Implementation should be replaced by some mechanism using {@code GenericName}
-     *       (at least the call to {@code String.regionMatches}) otherwise this method will
-     *       fails if there is spaces around the separator.
+     * @todo Implementation should be replaced by some mechanism using {@code GenericName} (at least
+     *     the call to {@code String.regionMatches}) otherwise this method will fails if there is
+     *     spaces around the separator.
      */
     public static URN_Parser buildParser(final String urn) throws NoSuchAuthorityCodeException {
         final String code = urn.trim();
@@ -93,16 +87,19 @@ final class URN_Parser extends URI_Parser {
                             String urnAuthority;
                             String urnCode;
                             if (versionEnd != lastEnd && versionEnd != -1) {
-                                urnVersion = (lastEnd <= nameEnd) ?
-                                    null :
-                                    new Version(code.substring(nameEnd + 1, versionEnd));
+                                urnVersion =
+                                        (lastEnd <= nameEnd)
+                                                ? null
+                                                : new Version(
+                                                        code.substring(nameEnd + 1, versionEnd));
                                 urnAuthority = code.substring(typeEnd + 1, nameEnd);
                                 urnCode = code.substring(versionEnd + 1).trim();
                                 urnCode = urnCode.replaceAll(String.valueOf(URN_SEPARATOR), ",");
                             } else {
-                                urnVersion = (lastEnd <= nameEnd) ?
-                                    null :
-                                    new Version(code.substring(nameEnd + 1, lastEnd));
+                                urnVersion =
+                                        (lastEnd <= nameEnd)
+                                                ? null
+                                                : new Version(code.substring(nameEnd + 1, lastEnd));
                                 urnAuthority = code.substring(typeEnd + 1, nameEnd).trim();
                                 urnCode = code.substring(lastEnd + 1).trim();
                             }
@@ -123,5 +120,4 @@ final class URN_Parser extends URI_Parser {
         throw new NoSuchAuthorityCodeException(
                 Errors.format(ErrorKeys.ILLEGAL_IDENTIFIER_$1, type), "urn:ogc:def", type);
     }
-
 }

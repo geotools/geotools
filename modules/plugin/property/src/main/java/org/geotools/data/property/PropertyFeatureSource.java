@@ -16,12 +16,13 @@
  */
 package org.geotools.data.property;
 
+import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
+import com.vividsolutions.jts.geom.GeometryFactory;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Set;
-
 import org.geotools.data.DataSourceException;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
@@ -38,52 +39,49 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 
-import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
-import com.vividsolutions.jts.geom.GeometryFactory;
-
 /**
  * @author Jody Garnett
  * @author Torben Barsballe (Boundless)
- * 
  * @source $URL$
  */
 public class PropertyFeatureSource extends ContentFeatureSource {
     String typeName;
     SimpleFeatureType featureType;
     PropertyDataStore store;
-    
+
     public PropertyFeatureSource(ContentEntry entry, Query query) {
         super(entry, query);
         this.store = (PropertyDataStore) entry.getDataStore();
         this.typeName = entry.getTypeName();
     }
-    
+
     @Override
     protected void addHints(Set<Hints.Key> hints) {
         // mark the features as detached, that is, the user can directly alter them
         // without altering the state of the DataStore
         hints.add(Hints.FEATURE_DETACHED);
     }
-    
+
     public PropertyDataStore getDataStore() {
         return (PropertyDataStore) super.getDataStore();
     }
-    
+
     @Override
     protected QueryCapabilities buildQueryCapabilities() {
-        return new QueryCapabilities(){
+        return new QueryCapabilities() {
             public boolean isUseProvidedFIDSupported() {
                 return true;
             }
         };
     }
-    
+
     @Override
     protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
-        if (query.getFilter() == Filter.INCLUDE) { //filtering not implemented
-            ReferencedEnvelope bounds = ReferencedEnvelope.create( 
-                    getSchema().getCoordinateReferenceSystem() ); 
-            FeatureReader<SimpleFeatureType, SimpleFeature> featureReader = getReaderInternal(query);
+        if (query.getFilter() == Filter.INCLUDE) { // filtering not implemented
+            ReferencedEnvelope bounds =
+                    ReferencedEnvelope.create(getSchema().getCoordinateReferenceSystem());
+            FeatureReader<SimpleFeatureType, SimpleFeature> featureReader =
+                    getReaderInternal(query);
             try {
                 while (featureReader.hasNext()) {
                     SimpleFeature feature = featureReader.next();
@@ -96,12 +94,13 @@ public class PropertyFeatureSource extends ContentFeatureSource {
         }
         return null; // feature by feature scan required to count records
     }
-    
+
     @Override
     protected int getCountInternal(Query query) throws IOException {
-        if (query.getFilter() == Filter.INCLUDE) { //filtering not implemented
+        if (query.getFilter() == Filter.INCLUDE) { // filtering not implemented
             int count = 0;
-            FeatureReader<SimpleFeatureType, SimpleFeature> featureReader = getReaderInternal(query);
+            FeatureReader<SimpleFeatureType, SimpleFeature> featureReader =
+                    getReaderInternal(query);
             try {
                 while (featureReader.hasNext()) {
                     featureReader.next();
@@ -114,12 +113,12 @@ public class PropertyFeatureSource extends ContentFeatureSource {
         }
         return -1; // feature by feature scan required to count records
     }
-    
+
     @Override
     protected SimpleFeatureType buildFeatureType() throws IOException {
         String typeName = getEntry().getTypeName();
         String namespace = getEntry().getName().getNamespaceURI();
-        
+
         String typeSpec = property("_");
         try {
             return DataUtilities.createType(namespace, typeName, typeSpec);
@@ -128,10 +127,10 @@ public class PropertyFeatureSource extends ContentFeatureSource {
             throw new DataSourceException(typeName + " schema not available", e);
         }
     }
-    
+
     private String property(String key) throws IOException {
-        File file = new File( store.dir, typeName+".properties");
-        
+        File file = new File(store.dir, typeName + ".properties");
+
         BufferedReader reader = new BufferedReader(new FileReader(file));
         try {
             for (String line = reader.readLine(); line != null; line = reader.readLine()) {
@@ -144,30 +143,30 @@ public class PropertyFeatureSource extends ContentFeatureSource {
         }
         return null;
     }
-    
+
     @Override
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
             throws IOException {
-        File file = new File( store.dir, typeName+".properties");
-        PropertyFeatureReader reader = new PropertyFeatureReader(store.getNamespaceURI(), file,
-                getGeometryFactory(query));
-        
-        Double tolerance = (Double)query.getHints().get(Hints.LINEARIZATION_TOLERANCE);
+        File file = new File(store.dir, typeName + ".properties");
+        PropertyFeatureReader reader =
+                new PropertyFeatureReader(store.getNamespaceURI(), file, getGeometryFactory(query));
+
+        Double tolerance = (Double) query.getHints().get(Hints.LINEARIZATION_TOLERANCE);
         if (tolerance != null) {
             reader.setWKTReader(new WKTReader2(tolerance));
         }
-        
+
         return reader;
     }
-    
+
     private GeometryFactory getGeometryFactory(Query query) {
         Hints hints = query.getHints();
         // grab a geometry factory... check for a special hint
         GeometryFactory geometryFactory = (GeometryFactory) hints.get(Hints.JTS_GEOMETRY_FACTORY);
         if (geometryFactory == null) {
             // look for a coordinate sequence factory
-            CoordinateSequenceFactory csFactory = (CoordinateSequenceFactory) hints
-                    .get(Hints.JTS_COORDINATE_SEQUENCE_FACTORY);
+            CoordinateSequenceFactory csFactory =
+                    (CoordinateSequenceFactory) hints.get(Hints.JTS_COORDINATE_SEQUENCE_FACTORY);
 
             if (csFactory != null) {
                 geometryFactory = new GeometryFactory(csFactory);
@@ -180,8 +179,8 @@ public class PropertyFeatureSource extends ContentFeatureSource {
     }
 
     /**
-     * Make handleVisitor package visible allowing PropertyFeatureStore to delegate to
-     * this implementation.
+     * Make handleVisitor package visible allowing PropertyFeatureStore to delegate to this
+     * implementation.
      */
     @Override
     protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {

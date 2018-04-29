@@ -17,12 +17,12 @@
  */
 package org.geotools.arcsde.data.view;
 
+import com.esri.sde.sdk.client.SeColumnDefinition;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.schema.Table;
@@ -30,28 +30,25 @@ import net.sf.jsqlparser.statement.select.AllColumns;
 import net.sf.jsqlparser.statement.select.AllTableColumns;
 import net.sf.jsqlparser.statement.select.SelectExpressionItem;
 import net.sf.jsqlparser.statement.select.SelectItem;
-
 import org.geotools.arcsde.session.ISession;
-
-import com.esri.sde.sdk.client.SeColumnDefinition;
 
 /**
  * Qualifies instances of {@link net.sf.jsqlparser.statement.select.SelectExpressionItem}, and
  * creates a list of qualified {@link net.sf.jsqlparser.statement.select.SelectExpressionItem} for
- * each {@link net.sf.jsqlparser.statement.select.AllColumns} and
- * {@link net.sf.jsqlparser.statement.select.AllTableColumns} instances. So, this visitor may
- * produce more items than the visited.
- * 
+ * each {@link net.sf.jsqlparser.statement.select.AllColumns} and {@link
+ * net.sf.jsqlparser.statement.select.AllTableColumns} instances. So, this visitor may produce more
+ * items than the visited.
+ *
  * @author Gabriel Roldan, Axios Engineering
  * @version $Id$
  * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *         /org/geotools/arcsde/data/view/SelectItemQualifier.java $
+ *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
+ *     /org/geotools/arcsde/data/view/SelectItemQualifier.java $
  * @since 2.3.x
  */
 class SelectItemQualifier implements net.sf.jsqlparser.statement.select.SelectItemVisitor {
 
-    private List /* <SelectExpressionItem> */qualifiedItems = Collections.EMPTY_LIST;
+    private List /* <SelectExpressionItem> */ qualifiedItems = Collections.EMPTY_LIST;
 
     private ISession session;
 
@@ -59,7 +56,7 @@ class SelectItemQualifier implements net.sf.jsqlparser.statement.select.SelectIt
 
     /**
      * Creates a new SelectItemQualifier object.
-     * 
+     *
      * @param session
      */
     private SelectItemQualifier(ISession session, Map tableAliases) {
@@ -132,8 +129,8 @@ class SelectItemQualifier implements net.sf.jsqlparser.statement.select.SelectIt
 
         Expression selectExpression = selectExpressionItem.getExpression();
 
-        Expression qualifiedExpression = ExpressionQualifier.qualify(session, tableAliases,
-                selectExpression);
+        Expression qualifiedExpression =
+                ExpressionQualifier.qualify(session, tableAliases, selectExpression);
 
         qualifiedItem.setExpression(qualifiedExpression);
 

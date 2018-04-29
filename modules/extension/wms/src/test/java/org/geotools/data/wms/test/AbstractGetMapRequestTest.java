@@ -19,66 +19,59 @@ package org.geotools.data.wms.test;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
-
 import junit.framework.TestCase;
-
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.Response;
 import org.geotools.data.wms.request.AbstractGetMapRequest;
 import org.geotools.data.wms.request.GetMapRequest;
 import org.geotools.ows.ServiceException;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class AbstractGetMapRequestTest extends TestCase {
 
-	public void testGetFinalURL() throws Exception {
-		URL badURL = new URL("http://test.com/map.php?LAYERS=Provincial Boundary");
-		
-		GetMapRequest request = new RequestTestHelp(badURL, null);
-		
-		request.addLayer("Provincial Boundary", "Two words");
-		request.addLayer("Layer2", "");
-		
-		URL finalURL = request.getFinalURL();
-        //System.out.println(finalURL);
-		String processedURL = finalURL.toExternalForm();
-		assertTrue(processedURL.indexOf("LAYERS=Layer2,Provincial%20Boundary") != -1);
-		assertTrue(processedURL.indexOf("STYLES=,Two%20words") != -1);
+    public void testGetFinalURL() throws Exception {
+        URL badURL = new URL("http://test.com/map.php?LAYERS=Provincial Boundary");
+
+        GetMapRequest request = new RequestTestHelp(badURL, null);
+
+        request.addLayer("Provincial Boundary", "Two words");
+        request.addLayer("Layer2", "");
+
+        URL finalURL = request.getFinalURL();
+        // System.out.println(finalURL);
+        String processedURL = finalURL.toExternalForm();
+        assertTrue(processedURL.indexOf("LAYERS=Layer2,Provincial%20Boundary") != -1);
+        assertTrue(processedURL.indexOf("STYLES=,Two%20words") != -1);
         assertTrue(processedURL.indexOf("SERVICE=WMS") != -1);
-	}
-	
-	private class RequestTestHelp extends AbstractGetMapRequest {
+    }
 
-		/**
-		 * @param onlineResource
-		 * @param properties
-		 * @param availableLayers
-		 * @param availableSRSs
-		 * @param availableFormats
-		 * @param availableExceptions
-		 */
-		public RequestTestHelp(URL onlineResource, Properties properties) {
-			super(onlineResource, properties);
-			// TODO Auto-generated constructor stub
-		}
+    private class RequestTestHelp extends AbstractGetMapRequest {
 
-		/* (non-Javadoc)
-		 * @see org.geotools.data.wms.request.AbstractGetMapRequest#initVersion()
-		 */
-		protected void initVersion() {
-			// TODO Auto-generated method stub
-			
-		}
+        /**
+         * @param onlineResource
+         * @param properties
+         * @param availableLayers
+         * @param availableSRSs
+         * @param availableFormats
+         * @param availableExceptions
+         */
+        public RequestTestHelp(URL onlineResource, Properties properties) {
+            super(onlineResource, properties);
+            // TODO Auto-generated constructor stub
+        }
 
-		public Response createResponse(HTTPResponse httpResponse) throws ServiceException, IOException {
-			// TODO Auto-generated method stub
-			return null;
-		}
+        /* (non-Javadoc)
+         * @see org.geotools.data.wms.request.AbstractGetMapRequest#initVersion()
+         */
+        protected void initVersion() {
+            // TODO Auto-generated method stub
 
-	}
+        }
 
+        public Response createResponse(HTTPResponse httpResponse)
+                throws ServiceException, IOException {
+            // TODO Auto-generated method stub
+            return null;
+        }
+    }
 }

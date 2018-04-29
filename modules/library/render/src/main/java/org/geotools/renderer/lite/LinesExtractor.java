@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,34 +16,38 @@
  */
 package org.geotools.renderer.lite;
 
-import java.awt.geom.Line2D;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.GeometryFilter;
 import com.vividsolutions.jts.geom.LineString;
+import java.awt.geom.Line2D;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Class collecting unclosed straight lines from a geometry. If a non straight line is found,
- * or any other type of geometry is found, the "simple" property will return false.
- * The class is stateful and can be only used once
- * 
+ * Class collecting unclosed straight lines from a geometry. If a non straight line is found, or any
+ * other type of geometry is found, the "simple" property will return false. The class is stateful
+ * and can be only used once
+ *
  * @author Andrea Aime
  */
 class LinesExtractor implements GeometryFilter {
 
     List<Line2D> lines = new ArrayList<>();
     boolean isSimple = true;
-    
+
     @Override
     public void filter(Geometry geom) {
-        if(geom instanceof LineString && ((LineString) geom).getCoordinateSequence().size() == 2) {
+        if (geom instanceof LineString && ((LineString) geom).getCoordinateSequence().size() == 2) {
             CoordinateSequence cs = ((LineString) geom).getCoordinateSequence();
-            lines.add(new Line2D.Double(cs.getOrdinate(0, 0), cs.getOrdinate(0, 1), cs.getOrdinate(1, 0), cs.getOrdinate(1, 1)));
-        } else if(!(geom instanceof GeometryCollection)) {
+            lines.add(
+                    new Line2D.Double(
+                            cs.getOrdinate(0, 0),
+                            cs.getOrdinate(0, 1),
+                            cs.getOrdinate(1, 0),
+                            cs.getOrdinate(1, 1)));
+        } else if (!(geom instanceof GeometryCollection)) {
             // collections are not a problem
             isSimple = false;
         }
@@ -56,5 +60,4 @@ class LinesExtractor implements GeometryFilter {
     public boolean isSimple() {
         return isSimple;
     }
-
 }

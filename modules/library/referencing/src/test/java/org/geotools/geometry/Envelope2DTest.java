@@ -23,7 +23,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.awt.geom.Rectangle2D;
-
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Before;
@@ -35,11 +34,9 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.TransformException;
 
 /**
- * Test case for Envelope2D; mostly added to ensure it correctly meets the BoundingBox
- * API contract.
- * 
- * @author Paul Pfeiffer
+ * Test case for Envelope2D; mostly added to ensure it correctly meets the BoundingBox API contract.
  *
+ * @author Paul Pfeiffer
  * @source $URL$
  */
 public class Envelope2DTest {
@@ -54,7 +51,7 @@ public class Envelope2DTest {
 
     private Envelope2D somewhereInAustralia;
 
-    final private CoordinateReferenceSystem crs = DefaultGeographicCRS.WGS84;
+    private final CoordinateReferenceSystem crs = DefaultGeographicCRS.WGS84;
 
     @Before
     public void setupTest() {
@@ -76,7 +73,6 @@ public class Envelope2DTest {
         this.somewhereInAustralia = new Envelope2D(this.crs);
         somewhereInAustralia.include(35, 140);
         somewhereInAustralia.include(40, 145);
-
     }
 
     @Test
@@ -208,5 +204,4 @@ public class Envelope2DTest {
             fail("Missmatch of CoordinateReferenceSystem");
         }
     }
-
 }

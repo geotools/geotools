@@ -16,18 +16,18 @@
  */
 package org.geotools.filter.v1_1.capabilities;
 
-import org.w3c.dom.Document;
 import javax.xml.namespace.QName;
-import org.opengis.filter.capability.ComparisonOperators;
 import org.geotools.filter.v1_1.OGC;
 import org.geotools.xml.Binding;
-
+import org.opengis.filter.capability.ComparisonOperators;
+import org.w3c.dom.Document;
 
 /**
  * Binding test case for http://www.opengis.net/ogc:ComparisonOperatorsType.
  *
  * <p>
- *  <pre>
+ *
+ * <pre>
  *   <code>
  *  &lt;xsd:complexType name="ComparisonOperatorsType"&gt;
  *      &lt;xsd:sequence maxOccurs="unbounded"&gt;
@@ -37,12 +37,8 @@ import org.geotools.xml.Binding;
  *
  *    </code>
  *   </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class ComparisonOperatorsTypeBindingTest extends OGCTestSupport {
@@ -87,10 +83,15 @@ public class ComparisonOperatorsTypeBindingTest extends OGCTestSupport {
     }
 
     public void testEncode() throws Exception {
-        Document dom = encode(FilterMockData.comparison(),
-                new QName(OGC.NAMESPACE, "Comparison_Operators"), OGC.ComparisonOperatorsType);
+        Document dom =
+                encode(
+                        FilterMockData.comparison(),
+                        new QName(OGC.NAMESPACE, "Comparison_Operators"),
+                        OGC.ComparisonOperatorsType);
 
-        assertEquals(9,
-            getElementsByQName(dom, new QName(OGC.NAMESPACE, "ComparisonOperator")).getLength());
+        assertEquals(
+                9,
+                getElementsByQName(dom, new QName(OGC.NAMESPACE, "ComparisonOperator"))
+                        .getLength());
     }
 }

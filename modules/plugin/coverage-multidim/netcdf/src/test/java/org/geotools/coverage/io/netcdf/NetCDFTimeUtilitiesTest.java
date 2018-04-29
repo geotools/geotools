@@ -21,13 +21,12 @@ import static org.junit.Assert.assertEquals;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
-
 import org.geotools.imageio.netcdf.utilities.NetCDFTimeUtilities;
 import org.junit.Test;
 
 /**
  * Test UnidataTimeUtilities
- * 
+ *
  * @source $URL$
  */
 public final class NetCDFTimeUtilitiesTest {

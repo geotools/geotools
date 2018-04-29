@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,17 +17,14 @@
  */
 package org.geotools.ysld.parse;
 
-import org.geotools.ysld.Tuple;
 import org.geotools.styling.ColorMap;
 import org.geotools.styling.ColorMapEntry;
+import org.geotools.ysld.Tuple;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 import org.geotools.ysld.YamlSeq;
 
-/**
- * Handles the parsing of a Ysld "color-map" property to a {@link ColorMap} object.
- *
- */
+/** Handles the parsing of a Ysld "color-map" property to a {@link ColorMap} object. */
 public abstract class ColorMapParser extends YsldParseHandler {
 
     ColorMap colorMap;
@@ -74,9 +71,11 @@ public abstract class ColorMapParser extends YsldParseHandler {
                 try {
                     q = Tuple.of(4).parse(o);
                 } catch (IllegalArgumentException e) {
-                    throw new IllegalArgumentException(String.format(
-                            "Bad entry: '%s', must be of form [<color>,[<opacity>],[<value>],[<label>]]",
-                            o.toString()), e);
+                    throw new IllegalArgumentException(
+                            String.format(
+                                    "Bad entry: '%s', must be of form [<color>,[<opacity>],[<value>],[<label>]]",
+                                    o.toString()),
+                            e);
                 }
 
                 ColorMapEntry e = factory.style.createColorMapEntry();

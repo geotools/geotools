@@ -16,13 +16,11 @@
  */
 package org.geotools.feature.visitor;
 
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 
 import java.util.List;
-
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -30,9 +28,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-/**
- * @author Sebastian Graca, ISPiK S.A.
- */
+/** @author Sebastian Graca, ISPiK S.A. */
 public abstract class VisitorTestCase<T, R> {
     private final Class<T> valueClass;
     private final List<T> values;
@@ -40,7 +36,7 @@ public abstract class VisitorTestCase<T, R> {
     private SimpleFeatureType featureType;
     private SimpleFeatureBuilder featureBuilder;
     ListFeatureCollection featureCollection;
-    
+
     protected VisitorTestCase(Class<T> valueClass, List<T> values, R expectedValue) {
         this.valueClass = valueClass;
         this.values = values;
@@ -69,9 +65,9 @@ public abstract class VisitorTestCase<T, R> {
 
     @Test
     public void onlyNulls() throws Exception {
-        featureCollection.add(featureBuilder.buildFeature("f1", new Object[]{null, 1}));
-        featureCollection.add(featureBuilder.buildFeature("f2", new Object[]{null, 2}));
-        featureCollection.add(featureBuilder.buildFeature("f3", new Object[]{null, 3}));
+        featureCollection.add(featureBuilder.buildFeature("f1", new Object[] {null, 1}));
+        featureCollection.add(featureBuilder.buildFeature("f2", new Object[] {null, 2}));
+        featureCollection.add(featureBuilder.buildFeature("f3", new Object[] {null, 3}));
 
         FeatureCalc calc = createVisitor(0, featureType);
         featureCollection.accepts(calc, null);
@@ -82,7 +78,8 @@ public abstract class VisitorTestCase<T, R> {
     public void onlyNotNulls() throws Exception {
         int idx = 1;
         for (T value : values) {
-            featureCollection.add(featureBuilder.buildFeature("f" + idx, new Object[]{value, idx}));
+            featureCollection.add(
+                    featureBuilder.buildFeature("f" + idx, new Object[] {value, idx}));
             ++idx;
         }
 
@@ -97,9 +94,10 @@ public abstract class VisitorTestCase<T, R> {
     public void mixed() throws Exception {
         int idx = 1;
         for (T value : values) {
-            featureCollection.add(featureBuilder.buildFeature("f" + idx, new Object[]{value, idx}));
+            featureCollection.add(
+                    featureBuilder.buildFeature("f" + idx, new Object[] {value, idx}));
             ++idx;
-            featureCollection.add(featureBuilder.buildFeature("f" + idx, new Object[]{null, idx}));
+            featureCollection.add(featureBuilder.buildFeature("f" + idx, new Object[] {null, idx}));
             ++idx;
         }
 
@@ -109,5 +107,4 @@ public abstract class VisitorTestCase<T, R> {
         assertEquals(expectedValue, value);
         assertSame(expectedValue.getClass(), value.getClass());
     }
-
 }

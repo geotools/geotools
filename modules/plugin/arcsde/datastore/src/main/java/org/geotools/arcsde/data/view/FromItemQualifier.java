@@ -21,25 +21,23 @@ import net.sf.jsqlparser.schema.Table;
 import net.sf.jsqlparser.statement.select.FromItem;
 import net.sf.jsqlparser.statement.select.FromItemVisitor;
 import net.sf.jsqlparser.statement.select.SubSelect;
-
 import org.geotools.arcsde.session.ISession;
 
 /**
  * Fully qualifies a table names.
- * <p>
- * {@link net.sf.jsqlparser.schema.Table} has provitions only to store schema and table names, in
+ *
+ * <p>{@link net.sf.jsqlparser.schema.Table} has provitions only to store schema and table names, in
  * the traditional sense. ArcSDE uses fully qualified names formed by
  * "databaseName"."userName"."tableName". Though "databaseName" is optional in some ArcSDE systems
  * (sql server, for example), it is required in Oracle. Schema and table stands for user and table
  * in sde land. So this visitor will create new Tables where schema if formed by SDE's
  * "databaseName"."userName"
- * </p>
- * 
+ *
  * @author Gabriel Roldan, Axios Engineering
  * @version $Id$
  * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *         /org/geotools/arcsde/data/view/FromItemQualifier.java $
+ *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
+ *     /org/geotools/arcsde/data/view/FromItemQualifier.java $
  * @since 2.3.x
  */
 class FromItemQualifier implements FromItemVisitor {
@@ -50,7 +48,7 @@ class FromItemQualifier implements FromItemVisitor {
 
     /**
      * Creates a new FromItemQualifier object.
-     * 
+     *
      * @param session
      * @throws IllegalStateException
      */

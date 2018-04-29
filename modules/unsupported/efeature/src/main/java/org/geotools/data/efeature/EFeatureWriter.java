@@ -19,7 +19,6 @@ package org.geotools.data.efeature;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.geotools.data.DataSourceException;
@@ -33,117 +32,97 @@ import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
  * @author kengu - 23. juni 2011
- * 
- *
  * @source $URL$
  */
 public class EFeatureWriter implements SimpleFeatureWriter {
 
-    /**
-     * Cached {@link EFeatureReader} instance
-     */
+    /** Cached {@link EFeatureReader} instance */
     private final EFeatureReader eReader;
-    
-    /**
-     * Next feature in line for a add, update or remove
-     */
+
+    /** Next feature in line for a add, update or remove */
     private ESimpleFeature eNext;
 
     /**
      * Copy of feature returned by {@link #eReader}.
-     * <p> 
-     * It is this instance which is returned by 
-     * {@link #next()}, allowing the writer to detect 
-     * any changes made to it on the next call to 
-     * {@link #next()} {@link #hasNext()} or {@link #write()}
-     * by comparing to the {@link #eNext} instance.
-     * </p> 
+     *
+     * <p>It is this instance which is returned by {@link #next()}, allowing the writer to detect
+     * any changes made to it on the next call to {@link #next()} {@link #hasNext()} or {@link
+     * #write()} by comparing to the {@link #eNext} instance.
      */
     private ESimpleFeature eLive;
-    
-    /**
-     * Writer mode flags ({@link #UPDATE} | {@link #APPEND})
-     */
+
+    /** Writer mode flags ({@link #UPDATE} | {@link #APPEND}) */
     private final int flags;
-    
-    /**
-     * Writer append mode flag. 
-     * <p>
-     * If set, the writer returns a new 
-     * {@link EFeature} of given type when the writer has
-     * no more updateable features. If this flag can be 
-     * bit-wise OR'ed with the {@link #UPDATE} flag.
-     * </p>  
-     */
-    public final static int APPEND = 0x01<<0;
 
     /**
-     * Writer update mode flag. 
-     * <p>
-     * If set, the writer returns updateable 
-     * features as long as there exists {@link EFeature}s
-     * matching given query. This flag can be 
-     * bit-wise OR'ed with the {@link #UPDATE} flag.
-     * </p>  
+     * Writer append mode flag.
+     *
+     * <p>If set, the writer returns a new {@link EFeature} of given type when the writer has no
+     * more updateable features. If this flag can be bit-wise OR'ed with the {@link #UPDATE} flag.
      */
-    public final static int UPDATE = 0x01<<1;
-    
-    
+    public static final int APPEND = 0x01 << 0;
+
+    /**
+     * Writer update mode flag.
+     *
+     * <p>If set, the writer returns updateable features as long as there exists {@link EFeature}s
+     * matching given query. This flag can be bit-wise OR'ed with the {@link #UPDATE} flag.
+     */
+    public static final int UPDATE = 0x01 << 1;
+
     // -----------------------------------------------------
     // Constructors
     // -----------------------------------------------------
 
     /**
      * The {@link EFeatureWriter} constructor.
-     * <p>
-     * This constructor create a writer that supports both 
-     * {@link #UPDATE updates} and {@link #UPDATE appending} of new
-     * features. 
-     * </p>
-     * @param eStore - {@link EFeatureDataStore} instance containing 
-     * {@link EFeature} resource information
-     * @param query - {@link Query} instance. Note that {@link Query#getTypeName()}
-     * is expected to be a name of a {@link SimpleFeatureType} in given data store. 
-     * <p>
-     * {@link SimpleFeatureType} names have the following format:
-     * 
-     * <pre>
+     *
+     * <p>This constructor create a writer that supports both {@link #UPDATE updates} and {@link
+     * #UPDATE appending} of new features.
+     *
+     * @param eStore - {@link EFeatureDataStore} instance containing {@link EFeature} resource
+     *     information
+     * @param query - {@link Query} instance. Note that {@link Query#getTypeName()} is expected to
+     *     be a name of a {@link SimpleFeatureType} in given data store.
+     *     <p>{@link SimpleFeatureType} names have the following format:
+     *     <pre>
      * eName=&lt;eFolder&gt;.&lt;eReference&gt;
-     * 
+     *
      * where
-     * 
+     *
      * eFolder = {@link EFeature} folder name
      * eReference = {@link EFeature} reference name
      * </pre>
+     *
      * @throws IOException
-     */        
+     */
     public EFeatureWriter(EFeatureDataStore eStore, Query query) throws IOException {
         this(eStore, query, Transaction.AUTO_COMMIT, 0);
     }
-    
+
     /**
      * The {@link EFeatureWriter} constructor.
-     * 
-     * @param eStore - {@link EFeatureDataStore} instance containing 
-     * {@link EFeature} resource information
-     * @param query - {@link Query} instance. Note that {@link Query#getTypeName()}
-     * is expected to be a name of a {@link SimpleFeatureType} in given data store. 
-     * <p>
-     * {@link SimpleFeatureType} names have the following format:
-     * 
-     * <pre>
+     *
+     * @param eStore - {@link EFeatureDataStore} instance containing {@link EFeature} resource
+     *     information
+     * @param query - {@link Query} instance. Note that {@link Query#getTypeName()} is expected to
+     *     be a name of a {@link SimpleFeatureType} in given data store.
+     *     <p>{@link SimpleFeatureType} names have the following format:
+     *     <pre>
      * eName=&lt;eFolder&gt;.&lt;eReference&gt;
-     * 
+     *
      * where
-     * 
+     *
      * eFolder = {@link EFeature} folder name
      * eReference = {@link EFeature} reference name
      * </pre>
+     *
      * @param eTx {@link Transaction} instance
      * @param flags - writer move flags ({@link #UPDATE} | {@link #APPEND})
      * @throws IOException
-     */    
-    public EFeatureWriter(EFeatureDataStore eStore, Query query, Transaction eTx, int flags) throws IOException {
+     */
+    public EFeatureWriter(EFeatureDataStore eStore, Query query, Transaction eTx, int flags)
+            throws IOException {
         this.eReader = new EFeatureReader(eStore, query, eTx);
         this.flags = flags;
     }
@@ -151,30 +130,27 @@ public class EFeatureWriter implements SimpleFeatureWriter {
     // -----------------------------------------------------
     // SimpleFeatureWriter implementation
     // -----------------------------------------------------
-    
+
     /**
-     * Check if this writer supports updating. 
-     * <p>
-     * If set, the writer returns updateable 
-     * features as long as there exists {@link EFeature}s
-     * matching given query. 
-     * </p>  
-     */    
+     * Check if this writer supports updating.
+     *
+     * <p>If set, the writer returns updateable features as long as there exists {@link EFeature}s
+     * matching given query.
+     */
     public boolean isUpdating() {
         return (flags & APPEND) == APPEND;
     }
-    
+
     /**
-     * Check if this writer supports appending. 
-     * <p>
-     * If <code>true</code>, the writer returns a new 
-     * {@link EFeature} of given type when the writer has
-     * no more updateable features. </p>  
-     */    
+     * Check if this writer supports appending.
+     *
+     * <p>If <code>true</code>, the writer returns a new {@link EFeature} of given type when the
+     * writer has no more updateable features.
+     */
     public boolean isAppending() {
         return (flags & APPEND) == APPEND;
     }
-    
+
     @Override
     public SimpleFeatureType getFeatureType() {
         return eReader.getFeatureType();
@@ -183,7 +159,7 @@ public class EFeatureWriter implements SimpleFeatureWriter {
     @Override
     public boolean hasNext() throws IOException {
         if (eReader == null) {
-            return false; //writer has been closed
+            return false; // writer has been closed
         }
         if (isModified()) {
             write();
@@ -218,8 +194,8 @@ public class EFeatureWriter implements SimpleFeatureWriter {
                 // Finished
                 //
                 return eLive;
-                
-            } else if(isAppending()) {
+
+            } else if (isAppending()) {
                 //
                 //  No more EObject found, create new from structure
                 //
@@ -235,22 +211,21 @@ public class EFeatureWriter implements SimpleFeatureWriter {
                 //
                 // Finished
                 //
-                return (ESimpleFeature)eFeature.getData(eReader.eTx);
+                return (ESimpleFeature) eFeature.getData(eReader.eTx);
             }
             //
             // Illegal writer mode
             //
-            if(bHasNext) {
+            if (bHasNext) {
                 throw new IOException("EFeatureWriter does allow updates");
             } else {
-                throw new IOException("EFeatureWriter does allow appending");                
+                throw new IOException("EFeatureWriter does allow appending");
             }
-            
+
         } catch (IllegalAttributeException e) {
-            String message = "Problem creating feature "
-                    + (fid != null ? fid : "");
+            String message = "Problem creating feature " + (fid != null ? fid : "");
             throw new DataSourceException(message, e);
-        }    
+        }
     }
 
     @Override
@@ -258,14 +233,14 @@ public class EFeatureWriter implements SimpleFeatureWriter {
         //
         // Do sanity check
         //
-        if (eNext  == null) {
+        if (eNext == null) {
             throw new IOException("No current feature to remove");
         }
         //
         // Remove from resource?
         //
         EObject eObject = eNext.eObject();
-        if(eObject.eResource()!=null) {            
+        if (eObject.eResource() != null) {
             EcoreUtil.delete(eObject);
         }
         //
@@ -284,7 +259,7 @@ public class EFeatureWriter implements SimpleFeatureWriter {
             throw new IOException("No current feature to write");
         }
         if (!isModified()) {
-            throw new IOException("Feature is not modified");            
+            throw new IOException("Feature is not modified");
         }
         //
         // Write feature values to EObject
@@ -293,13 +268,13 @@ public class EFeatureWriter implements SimpleFeatureWriter {
         //
         // Add to resource backing given data store?
         //
-        if(eNext==null) {
+        if (eNext == null) {
             EObject eObject = eLive.eObject();
-            if(eObject.eResource()==null) {   
+            if (eObject.eResource() == null) {
                 eReader.eDataStore().eResource().getContents().add(eObject);
             }
         }
-        //eReader.eDataStore.listenerManager;
+        // eReader.eDataStore.listenerManager;
         //
         // Release strong references
         //
@@ -309,24 +284,23 @@ public class EFeatureWriter implements SimpleFeatureWriter {
 
     /**
      * Reset current iterator.
-     * <p>
-     * Any changes made to the feature
-     * returned by last call to {@link #next()}
-     * is discarded.
+     *
+     * <p>Any changes made to the feature returned by last call to {@link #next()} is discarded.
+     *
      * @throws IOException
-     */    
+     */
     public void reset() throws IOException {
         //
         // Forward
         //
-        eReader.reset();       
+        eReader.reset();
         //
         // Release strong references
         //
-        eNext = null;        
+        eNext = null;
         eLive = null;
     }
-    
+
     @Override
     public void close() throws IOException {
         //
@@ -336,26 +310,25 @@ public class EFeatureWriter implements SimpleFeatureWriter {
         //
         // Release strong references
         //
-        eNext = null;        
+        eNext = null;
         eLive = null;
     }
-    
-    // ----------------------------------------------------- 
+
+    // -----------------------------------------------------
     //  Helper methods
     // -----------------------------------------------------
-    
+
     protected EFeature eNewInstance() {
         EFeatureInfo eStructure = eReader.eStructure;
-        EObject eObject = eStructure.eNewInstance();        
-        return EFeatureReader.eAdapt(eStructure, eObject,eReader.eHints);
-    }
-    
-    protected void eSetValues(EObject eObject, List<Object> eValues) {
-        EFeatureUtils.eSetFeatureValues(eReader.eStructure,eObject,eValues,eReader.eTx);        
-    }
-    
-    protected boolean isModified(){
-        return eLive!=null && (eNext == null || !eLive.equals(eNext));
+        EObject eObject = eStructure.eNewInstance();
+        return EFeatureReader.eAdapt(eStructure, eObject, eReader.eHints);
     }
 
+    protected void eSetValues(EObject eObject, List<Object> eValues) {
+        EFeatureUtils.eSetFeatureValues(eReader.eStructure, eObject, eValues, eReader.eTx);
+    }
+
+    protected boolean isModified() {
+        return eLive != null && (eNext == null || !eLive.equals(eNext));
+    }
 }

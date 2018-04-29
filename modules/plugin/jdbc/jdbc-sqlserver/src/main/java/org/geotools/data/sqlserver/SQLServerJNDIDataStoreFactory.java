@@ -25,17 +25,12 @@ import static org.geotools.data.sqlserver.SQLServerDataStoreFactory.TABLE_HINTS;
 
 import java.util.Map;
 import org.geotools.jdbc.JDBCDataStoreFactory;
-
 import org.geotools.jdbc.JDBCJNDIDataStoreFactory;
 
 /**
  * JNDI DataStoreFactory for sql server database.
- * 
+ *
  * @author Christian Mueller
- * 
- *
- *
- *
  * @source $URL$
  */
 public class SQLServerJNDIDataStoreFactory extends JDBCJNDIDataStoreFactory {
@@ -52,7 +47,7 @@ public class SQLServerJNDIDataStoreFactory extends JDBCJNDIDataStoreFactory {
     @Override
     protected void setupParameters(Map parameters) {
         super.setupParameters(parameters);
-        //parameters.put(PORT.key, PORT);
+        // parameters.put(PORT.key, PORT);
         parameters.put(INTSEC.key, INTSEC);
         parameters.put(NATIVE_PAGING.key, NATIVE_PAGING);
         parameters.put(NATIVE_SERIALIZATION.key, NATIVE_SERIALIZATION);

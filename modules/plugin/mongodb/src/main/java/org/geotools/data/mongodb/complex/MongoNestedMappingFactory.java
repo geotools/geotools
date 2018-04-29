@@ -16,6 +16,7 @@
  */
 package org.geotools.data.mongodb.complex;
 
+import java.util.Map;
 import org.geotools.data.complex.NestedAttributeMapping;
 import org.geotools.data.complex.config.AppSchemaDataAccessConfigurator;
 import org.geotools.data.complex.filter.XPathUtil;
@@ -24,22 +25,31 @@ import org.opengis.feature.type.Name;
 import org.opengis.filter.expression.Expression;
 import org.xml.sax.helpers.NamespaceSupport;
 
-import java.util.Map;
-
-/**
- * Custom nested attributes mappings builder for MongoDB.
- */
+/** Custom nested attributes mappings builder for MongoDB. */
 public class MongoNestedMappingFactory implements CustomMappingFactory {
 
     @Override
-    public NestedAttributeMapping createNestedAttributeMapping(AppSchemaDataAccessConfigurator configuration, Expression idExpression,
-                                                               Expression parentExpression, XPathUtil.StepList targetXPath, boolean isMultiValued,
-                                                               Map<Name, Expression> clientProperties, Expression sourceElement,
-                                                               XPathUtil.StepList sourcePath, NamespaceSupport namespaces) {
+    public NestedAttributeMapping createNestedAttributeMapping(
+            AppSchemaDataAccessConfigurator configuration,
+            Expression idExpression,
+            Expression parentExpression,
+            XPathUtil.StepList targetXPath,
+            boolean isMultiValued,
+            Map<Name, Expression> clientProperties,
+            Expression sourceElement,
+            XPathUtil.StepList sourcePath,
+            NamespaceSupport namespaces) {
         try {
             if (parentExpression instanceof CollectionLinkFunction) {
-                return new MongoNestedMapping(idExpression, parentExpression, targetXPath,
-                        isMultiValued, clientProperties, sourceElement, sourcePath, namespaces);
+                return new MongoNestedMapping(
+                        idExpression,
+                        parentExpression,
+                        targetXPath,
+                        isMultiValued,
+                        clientProperties,
+                        sourceElement,
+                        sourcePath,
+                        namespaces);
             }
             // not a MongoDB mapping
             return null;

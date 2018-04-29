@@ -16,56 +16,46 @@
  */
 package org.geotools.referencing.operation.projection;
 
+import org.geotools.metadata.iso.citation.Citations;
+import org.geotools.referencing.NamedIdentifier;
+import org.geotools.resources.i18n.Vocabulary;
+import org.geotools.resources.i18n.VocabularyKeys;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptorGroup;
 import org.opengis.parameter.ParameterNotFoundException;
 import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.operation.CylindricalProjection;
 import org.opengis.referencing.operation.MathTransform;
-import org.geotools.metadata.iso.citation.Citations;
-import org.geotools.referencing.NamedIdentifier;
-import org.geotools.resources.i18n.VocabularyKeys;
-import org.geotools.resources.i18n.Vocabulary;
-
 
 /**
  * Mercator Cylindrical 1SP Projection.
  *
- * @see <A HREF="http://www.remotesensing.org/geotiff/proj_list/mercator_1sp.html">"Mercator 1SP" on RemoteSensing.org</A>
- *
+ * @see <A HREF="http://www.remotesensing.org/geotiff/proj_list/mercator_1sp.html">"Mercator 1SP" on
+ *     RemoteSensing.org</A>
  * @since 2.2
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  * @author Rueben Schulz
  */
 public class Mercator1SP extends Mercator {
-    /**
-     * For cross-version compatibility.
-     */
+    /** For cross-version compatibility. */
     private static final long serialVersionUID = 8391549772210490073L;
 
     /**
      * Constructs a new map projection from the supplied parameters.
      *
-     * @param  parameters The parameter values in standard units.
+     * @param parameters The parameter values in standard units.
      * @throws ParameterNotFoundException if a mandatory parameter is missing.
      */
-    protected Mercator1SP(final ParameterValueGroup parameters)
-            throws ParameterNotFoundException
-    {
+    protected Mercator1SP(final ParameterValueGroup parameters) throws ParameterNotFoundException {
         super(parameters);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public ParameterDescriptorGroup getParameterDescriptors() {
         return Provider.PARAMETERS;
     }
-
 
     /**
      * Provides the transform equations for the spherical case of the Mercator projection.
@@ -75,33 +65,25 @@ public class Mercator1SP extends Mercator {
      * @author Rueben Schulz
      */
     private static final class Spherical extends Mercator.Spherical {
-        /**
-         * For cross-version compatibility.
-         */
+        /** For cross-version compatibility. */
         private static final long serialVersionUID = 1347778643385433516L;
 
         /**
          * Constructs a new map projection from the suplied parameters.
          *
-         * @param  parameters The parameter values in standard units.
+         * @param parameters The parameter values in standard units.
          * @throws ParameterNotFoundException if a mandatory parameter is missing.
          */
         protected Spherical(final ParameterValueGroup parameters)
-                throws ParameterNotFoundException
-        {
+                throws ParameterNotFoundException {
             super(parameters);
         }
 
-        /**
-         * {@inheritDoc}
-         */
+        /** {@inheritDoc} */
         public ParameterDescriptorGroup getParameterDescriptors() {
             return Provider.PARAMETERS;
         }
     }
-
-
-
 
     //////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////
@@ -119,43 +101,43 @@ public class Mercator1SP extends Mercator {
      * @version $Id$
      * @author Martin Desruisseaux
      * @author Rueben Schulz
-     *
      * @see org.geotools.referencing.operation.DefaultMathTransformFactory
      */
     public static class Provider extends AbstractProvider {
-        /**
-         * For cross-version compatibility.
-         */
+        /** For cross-version compatibility. */
         private static final long serialVersionUID = -5886510621481710072L;
 
-        /**
-         * The parameters group.
-         */
-        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(new NamedIdentifier[] {
-                new NamedIdentifier(Citations.OGC,      "Mercator_1SP"),
-                new NamedIdentifier(Citations.EPSG,     "Mercator (1SP)"),
-                new NamedIdentifier(Citations.EPSG,     "Mercator (1SP) (Spherical)"),
-                new NamedIdentifier(Citations.EPSG,     "Mercator (variant A)"),
-                new NamedIdentifier(Citations.EPSG,     "9804"),
-                new NamedIdentifier(Citations.GEOTIFF,  "CT_Mercator"),
-                new NamedIdentifier(Citations.GEOTOOLS, Vocabulary.formatInternational(
-                                    VocabularyKeys.CYLINDRICAL_MERCATOR_PROJECTION))
-            }, new ParameterDescriptor[] {
-                SEMI_MAJOR, SEMI_MINOR,
-                LATITUDE_OF_ORIGIN, CENTRAL_MERIDIAN, SCALE_FACTOR,
-                FALSE_EASTING, FALSE_NORTHING
-            });
+        /** The parameters group. */
+        static final ParameterDescriptorGroup PARAMETERS =
+                createDescriptorGroup(
+                        new NamedIdentifier[] {
+                            new NamedIdentifier(Citations.OGC, "Mercator_1SP"),
+                            new NamedIdentifier(Citations.EPSG, "Mercator (1SP)"),
+                            new NamedIdentifier(Citations.EPSG, "Mercator (1SP) (Spherical)"),
+                            new NamedIdentifier(Citations.EPSG, "Mercator (variant A)"),
+                            new NamedIdentifier(Citations.EPSG, "9804"),
+                            new NamedIdentifier(Citations.GEOTIFF, "CT_Mercator"),
+                            new NamedIdentifier(
+                                    Citations.GEOTOOLS,
+                                    Vocabulary.formatInternational(
+                                            VocabularyKeys.CYLINDRICAL_MERCATOR_PROJECTION))
+                        },
+                        new ParameterDescriptor[] {
+                            SEMI_MAJOR,
+                            SEMI_MINOR,
+                            LATITUDE_OF_ORIGIN,
+                            CENTRAL_MERIDIAN,
+                            SCALE_FACTOR,
+                            FALSE_EASTING,
+                            FALSE_NORTHING
+                        });
 
-        /**
-         * Constructs a new provider.
-         */
+        /** Constructs a new provider. */
         public Provider() {
             super(PARAMETERS);
         }
 
-        /**
-         * Returns the operation type for this map projection.
-         */
+        /** Returns the operation type for this map projection. */
         @Override
         public Class<CylindricalProjection> getOperationType() {
             return CylindricalProjection.class;
@@ -164,13 +146,12 @@ public class Mercator1SP extends Mercator {
         /**
          * Creates a transform from the specified group of parameter values.
          *
-         * @param  parameters The group of parameter values.
+         * @param parameters The group of parameter values.
          * @return The created math transform.
          * @throws ParameterNotFoundException if a required parameter was not found.
          */
         protected MathTransform createMathTransform(final ParameterValueGroup parameters)
-                throws ParameterNotFoundException
-        {
+                throws ParameterNotFoundException {
             if (isSpherical(parameters)) {
                 return new Spherical(parameters);
             } else {

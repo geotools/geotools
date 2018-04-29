@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,38 +16,33 @@
  */
 package org.geotools.resources;
 
-import java.util.Arrays;
-//import java.io.Console;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.lang.reflect.Method;
-
+import java.util.Arrays;
 
 /**
- * Temporary methods to be removed when we will be allowed to compile for Java 6.
- * The Java 6 methods that we would like to use are commented-out at the begining
- * of each method.
- *
- *
+ * Temporary methods to be removed when we will be allowed to compile for Java 6. The Java 6 methods
+ * that we would like to use are commented-out at the begining of each method.
  *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */
 public final class Java6 {
-    private Java6() {
-    }
+    private Java6() {}
 
     /**
      * Placeholder for {@link Arrays#binarySearch(int[], int, int, int)}.
      *
-     * Note that I'm too lazy for implementing a real binary search.
-     * Lets switch to Java 6 and throw away this code soon!
+     * <p>Note that I'm too lazy for implementing a real binary search. Lets switch to Java 6 and
+     * throw away this code soon!
      */
-    public static int binarySearch(final int[] a, final int fromIndex, final int toIndex, final int key) {
-//      return Arrays.binarySearch(a, fromIndex, toIndex, key);
+    public static int binarySearch(
+            final int[] a, final int fromIndex, final int toIndex, final int key) {
+        //      return Arrays.binarySearch(a, fromIndex, toIndex, key);
 
-        for (int i=fromIndex; i<toIndex; i++) {
+        for (int i = fromIndex; i < toIndex; i++) {
             final int v = a[i];
             if (v == key) {
                 return i;
@@ -59,12 +54,10 @@ public final class Java6 {
         return ~toIndex;
     }
 
-    /**
-     * Returns the console reader, or {@code null} if none.
-     */
+    /** Returns the console reader, or {@code null} if none. */
     public static Reader consoleReader() {
-//      Console console = System.console();
-//      return (console != null) ? console.reader() : null;
+        //      Console console = System.console();
+        //      return (console != null) ? console.reader() : null;
 
         Method method;
         try {
@@ -87,12 +80,10 @@ public final class Java6 {
         return null;
     }
 
-    /**
-     * Returns the console writer, or {@code null} if none.
-     */
+    /** Returns the console writer, or {@code null} if none. */
     public static PrintWriter consoleWriter() {
-//      Console console = System.console();
-//      return (console != null) ? console.writer() : null;
+        //      Console console = System.console();
+        //      return (console != null) ? console.writer() : null;
 
         Method method;
         try {

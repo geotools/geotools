@@ -15,7 +15,5 @@
  *    Lesser General Public License for more details.
  */
 
-/**
- * SWT controls, wizards and dialogs used to do common tasks.
- */
+/** SWT controls, wizards and dialogs used to do common tasks. */
 package org.geotools.swt.control;

@@ -16,20 +16,19 @@
  */
 package org.geotools.mbstyle.source;
 
-import org.geotools.mbstyle.MBStyle;
-import org.geotools.mbstyle.MapboxTestUtils;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.ParseException;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.*;
 
 import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import static org.junit.Assert.*;
+import org.geotools.mbstyle.MBStyle;
+import org.geotools.mbstyle.MapboxTestUtils;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
+import org.junit.Before;
+import org.junit.Test;
 
 public class StyleSourcesTest {
 
@@ -74,9 +73,13 @@ public class StyleSourcesTest {
         ImageMBSource image = (ImageMBSource) sourceMap.get("image");
         assertEquals("image", image.getType());
         assertEquals("/mapbox-gl-js/assets/radar.gif", image.getUrl());
-        assertEquals(Arrays.asList(new Point2D.Double(-80.425, 46.437),
-                new Point2D.Double(-71.516, 46.437), new Point2D.Double(-71.516, 37.936),
-                new Point2D.Double(-80.425, 37.936)), image.getCoordinates());
+        assertEquals(
+                Arrays.asList(
+                        new Point2D.Double(-80.425, 46.437),
+                        new Point2D.Double(-71.516, 46.437),
+                        new Point2D.Double(-71.516, 37.936),
+                        new Point2D.Double(-80.425, 37.936)),
+                image.getCoordinates());
     }
 
     @Test
@@ -87,7 +90,8 @@ public class StyleSourcesTest {
         assertEquals("canvas", canvas.getType());
         assertEquals(true, canvas.getAnimate());
         assertEquals(
-                Arrays.asList(new Point2D.Double(-122.51596391201019, 37.56238816766053),
+                Arrays.asList(
+                        new Point2D.Double(-122.51596391201019, 37.56238816766053),
                         new Point2D.Double(-122.51467645168304, 37.56410183312965),
                         new Point2D.Double(-122.51309394836426, 37.563391708549425),
                         new Point2D.Double(-122.51423120498657, 37.56161849366671)),
@@ -130,8 +134,11 @@ public class StyleSourcesTest {
         assertEquals(null, vector.getUrl());
         assertEquals(10, vector.getMinZoom().intValue());
         assertEquals(14, vector.getMaxZoom().intValue());
-        assertEquals(Arrays.asList("http://a.example.com/tiles/{z}/{x}/{y}.pbf",
-                "http://b.example.com/tiles/{z}/{x}/{y}.pbf"), vector.getTiles());
+        assertEquals(
+                Arrays.asList(
+                        "http://a.example.com/tiles/{z}/{x}/{y}.pbf",
+                        "http://b.example.com/tiles/{z}/{x}/{y}.pbf"),
+                vector.getTiles());
     }
 
     @Test
@@ -140,10 +147,14 @@ public class StyleSourcesTest {
         assertTrue(sourceMap.get("video") instanceof VideoMBSource);
         VideoMBSource video = (VideoMBSource) sourceMap.get("video");
         assertEquals("video", video.getType());
-        assertEquals(Arrays.asList("https://www.mapbox.com/drone/video/drone.mp4",
-                "https://www.mapbox.com/drone/video/drone.webm"), video.getUrls());
         assertEquals(
-                Arrays.asList(new Point2D.Double(-122.51596391201019, 37.56238816766053),
+                Arrays.asList(
+                        "https://www.mapbox.com/drone/video/drone.mp4",
+                        "https://www.mapbox.com/drone/video/drone.webm"),
+                video.getUrls());
+        assertEquals(
+                Arrays.asList(
+                        new Point2D.Double(-122.51596391201019, 37.56238816766053),
                         new Point2D.Double(-122.51467645168304, 37.56410183312965),
                         new Point2D.Double(-122.51309394836426, 37.563391708549425),
                         new Point2D.Double(-122.51423120498657, 37.56161849366671)),
@@ -160,7 +171,6 @@ public class StyleSourcesTest {
         assertEquals(0, raster.getMinZoom().intValue());
         assertEquals(22, raster.getMaxZoom().intValue());
         assertEquals(512, raster.getTileSize().intValue());
-
     }
 
     @Test
@@ -178,5 +188,4 @@ public class StyleSourcesTest {
                         "http://a.example.com/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&width=256&height=256&layers=example"),
                 raster.getTiles());
     }
-
 }

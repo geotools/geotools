@@ -18,32 +18,30 @@
 package org.geotools.swing.action;
 
 import java.awt.event.ActionEvent;
-
-import org.geotools.swing.locale.LocaleUtils;
 import org.geotools.swing.MapPane;
+import org.geotools.swing.locale.LocaleUtils;
 
 /**
  * An action to de-select any active map cursor tool.
- * 
+ *
  * @author Michael Bedward
  * @since 8.0
- *
  * @source $URL$
  * @version $Id$
  */
 public class NoToolAction extends MapAction {
     /** Name for this tool */
     public static final String TOOL_NAME = LocaleUtils.getValue("CursorTool", "None");
-    
+
     /** Tool tip text */
     public static final String TOOL_TIP = LocaleUtils.getValue("CursorTool", "NoneTooltip");
-    
+
     /** Icon for the control */
     public static final String ICON_IMAGE = "/org/geotools/swing/icons/pointer.png";
-    
+
     /**
      * Constructor. The associated control will be labelled with an icon.
-     * 
+     *
      * @param mapPane the map pane being serviced by this action
      */
     public NoToolAction(MapPane mapPane) {
@@ -51,22 +49,21 @@ public class NoToolAction extends MapAction {
     }
 
     /**
-     * Constructor. The associated control will be labelled with an icon and,
-     * optionally, the tool name.
-     * 
+     * Constructor. The associated control will be labelled with an icon and, optionally, the tool
+     * name.
+     *
      * @param mapPane the map pane being serviced by this action
      * @param showToolName set to true for the control to display the tool name
      */
     public NoToolAction(MapPane mapPane, boolean showToolName) {
         String toolName = showToolName ? TOOL_NAME : null;
-        
+
         String iconImagePath = null;
         super.init(mapPane, toolName, TOOL_TIP, ICON_IMAGE);
     }
-    
+
     /**
-     * Called when the control is activated. Calls the map pane to reset the 
-     * display 
+     * Called when the control is activated. Calls the map pane to reset the display
      *
      * @param ev the event (not used)
      */
@@ -74,5 +71,4 @@ public class NoToolAction extends MapAction {
     public void actionPerformed(ActionEvent ev) {
         getMapPane().setCursorTool(null);
     }
-
 }

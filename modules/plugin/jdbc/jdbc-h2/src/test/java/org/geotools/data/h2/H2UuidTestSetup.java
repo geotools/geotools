@@ -19,7 +19,6 @@ package org.geotools.data.h2;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCUuidTestSetup;
 
-
 public class H2UuidTestSetup extends JDBCUuidTestSetup {
 
     public H2UuidTestSetup(JDBCTestSetup delegate) {
@@ -29,21 +28,22 @@ public class H2UuidTestSetup extends JDBCUuidTestSetup {
     @Override
     protected void createUuidTable() throws Exception {
         run("CREATE SCHEMA \"geotools\";");
-        run( "CREATE TABLE \"geotools\".\"guid\" ( \"id\" serial PRIMARY KEY, \"uuidProperty\" uuid)" );
-        run( "INSERT INTO \"geotools\".\"guid\" (\"uuidProperty\") VALUES ('" + uuid1 + "')");
-        run( "INSERT INTO \"geotools\".\"guid\" (\"uuidProperty\") VALUES ('" + uuid2 + "')");
+        run(
+                "CREATE TABLE \"geotools\".\"guid\" ( \"id\" serial PRIMARY KEY, \"uuidProperty\" uuid)");
+        run("INSERT INTO \"geotools\".\"guid\" (\"uuidProperty\") VALUES ('" + uuid1 + "')");
+        run("INSERT INTO \"geotools\".\"guid\" (\"uuidProperty\") VALUES ('" + uuid2 + "')");
 
         /*
-         * A table with UUID as primary key 
+         * A table with UUID as primary key
          */
-        run( "CREATE TABLE \"geotools\".\"uuidt\" ( \"id\" uuid PRIMARY KEY, \"the_geom\" POINT)" );
-        run( "CALL AddGeometryColumn('geotools', 'uuidt', 'the_geom', 4326, 'POINT', 2)" );
+        run("CREATE TABLE \"geotools\".\"uuidt\" ( \"id\" uuid PRIMARY KEY, \"the_geom\" POINT)");
+        run("CALL AddGeometryColumn('geotools', 'uuidt', 'the_geom', 4326, 'POINT', 2)");
     }
 
     @Override
     protected void dropUuidTable() throws Exception {
-       runSafe("DROP SCHEMA \"geotools\"; COMMIT;");
-       run("DROP TABLE \"geotools\".\"guid\"");
-       run("DROP TABLE \"geotools\".\"uuidt\"");
+        runSafe("DROP SCHEMA \"geotools\"; COMMIT;");
+        run("DROP TABLE \"geotools\".\"guid\"");
+        run("DROP TABLE \"geotools\".\"uuidt\"");
     }
 }

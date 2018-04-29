@@ -7,5 +7,4 @@ public class BridjOGRPerformanceTest extends OGRPeformanceTest {
     public BridjOGRPerformanceTest() {
         super(BridjOGRDataStoreFactory.class);
     }
-
 }

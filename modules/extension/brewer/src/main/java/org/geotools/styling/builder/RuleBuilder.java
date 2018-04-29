@@ -18,18 +18,13 @@ package org.geotools.styling.builder;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.geotools.Builder;
 import org.geotools.styling.GraphicLegend;
 import org.geotools.styling.Rule;
 import org.geotools.styling.Symbolizer;
 import org.opengis.filter.Filter;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class RuleBuilder extends AbstractStyleBuilder<Rule> {
     List<Symbolizer> symbolizers = new ArrayList<Symbolizer>();
 
@@ -124,48 +119,42 @@ public class RuleBuilder extends AbstractStyleBuilder<Rule> {
 
     public PointSymbolizerBuilder point() {
         unset = false;
-        if (symbolizerBuilder != null)
-            symbolizers.add(symbolizerBuilder.build());
+        if (symbolizerBuilder != null) symbolizers.add(symbolizerBuilder.build());
         symbolizerBuilder = new PointSymbolizerBuilder(this);
         return (PointSymbolizerBuilder) symbolizerBuilder;
     }
 
     public LineSymbolizerBuilder line() {
         unset = false;
-        if (symbolizerBuilder != null)
-            symbolizers.add(symbolizerBuilder.build());
+        if (symbolizerBuilder != null) symbolizers.add(symbolizerBuilder.build());
         symbolizerBuilder = new LineSymbolizerBuilder(this);
         return (LineSymbolizerBuilder) symbolizerBuilder;
     }
 
     public PolygonSymbolizerBuilder polygon() {
         unset = false;
-        if (symbolizerBuilder != null)
-            symbolizers.add(symbolizerBuilder.build());
+        if (symbolizerBuilder != null) symbolizers.add(symbolizerBuilder.build());
         symbolizerBuilder = new PolygonSymbolizerBuilder(this);
         return (PolygonSymbolizerBuilder) symbolizerBuilder;
     }
 
     public TextSymbolizerBuilder text() {
         unset = false;
-        if (symbolizerBuilder != null)
-            symbolizers.add(symbolizerBuilder.build());
+        if (symbolizerBuilder != null) symbolizers.add(symbolizerBuilder.build());
         symbolizerBuilder = new TextSymbolizerBuilder(this);
         return (TextSymbolizerBuilder) symbolizerBuilder;
     }
 
     public RasterSymbolizerBuilder raster() {
         unset = false;
-        if (symbolizerBuilder != null)
-            symbolizers.add(symbolizerBuilder.build());
+        if (symbolizerBuilder != null) symbolizers.add(symbolizerBuilder.build());
         symbolizerBuilder = new RasterSymbolizerBuilder(this);
         return (RasterSymbolizerBuilder) symbolizerBuilder;
     }
 
     public ExtensionSymbolizerBuilder extension() {
         unset = false;
-        if (symbolizerBuilder != null)
-            symbolizers.add(symbolizerBuilder.build());
+        if (symbolizerBuilder != null) symbolizers.add(symbolizerBuilder.build());
         symbolizerBuilder = new ExtensionSymbolizerBuilder(this);
         return (ExtensionSymbolizerBuilder) symbolizerBuilder;
     }
@@ -242,5 +231,4 @@ public class RuleBuilder extends AbstractStyleBuilder<Rule> {
     protected void buildStyleInternal(StyleBuilder sb) {
         sb.featureTypeStyle().rule().init(this);
     }
-
 }

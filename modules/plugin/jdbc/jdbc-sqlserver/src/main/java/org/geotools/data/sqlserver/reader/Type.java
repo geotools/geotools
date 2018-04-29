@@ -2,12 +2,10 @@ package org.geotools.data.sqlserver.reader;
 
 /**
  * @author Anders Bakkevold, Bouvet
- *
  * @source $URL$
  */
 public enum Type {
-
-    POINT (1),
+    POINT(1),
     LINESTRING(2),
     POLYGON(3),
     MULTIPOINT(4),

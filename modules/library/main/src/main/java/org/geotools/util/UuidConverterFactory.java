@@ -21,16 +21,15 @@ import org.geotools.factory.Hints;
 
 /**
  * ConverterFactory for handling uuid (uniqueidentifier) conversions.
- * <p>
- * Supported conversions:
+ *
+ * <p>Supported conversions:
+ *
  * <ul>
- * <li>string -> UUID
- * <li>byte[] -> UUID
+ *   <li>string -> UUID
+ *   <li>byte[] -> UUID
  * </ul>
- * </p>
- * 
+ *
  * @author Andrea Briganti <kbyte@ciotoni.net>
- * 
  */
 public class UuidConverterFactory implements ConverterFactory {
 
@@ -54,13 +53,10 @@ public class UuidConverterFactory implements ConverterFactory {
                     public Object convert(Object source, Class target) throws Exception {
                         return UUID.nameUUIDFromBytes((byte[]) source);
                     }
-
                 };
             }
-
         }
 
         return null;
     }
-
 }

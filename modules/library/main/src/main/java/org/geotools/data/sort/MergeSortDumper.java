@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2015, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -16,6 +16,7 @@
  */
 package org.geotools.data.sort;
 
+import com.vividsolutions.jts.geom.Geometry;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -23,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
 import org.geotools.data.Query;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.DelegateSimpleFeatureReader;
@@ -34,8 +34,6 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.filter.sort.SortBy;
-
-import com.vividsolutions.jts.geom.Geometry;
 
 class MergeSortDumper {
 
@@ -55,13 +53,13 @@ class MergeSortDumper {
         // check all sorting attributes are comparable
         for (SortBy sb : sortBy) {
             if (sb != SortBy.NATURAL_ORDER && sb != SortBy.REVERSE_ORDER) {
-                AttributeDescriptor ad = schema.getDescriptor(sb.getPropertyName()
-                        .getPropertyName());
+                AttributeDescriptor ad =
+                        schema.getDescriptor(sb.getPropertyName().getPropertyName());
                 if (ad == null) {
                     return false;
                 }
                 Class<?> binding = ad.getType().getBinding();
-                if (!Comparable.class.isAssignableFrom(binding) 
+                if (!Comparable.class.isAssignableFrom(binding)
                         || Geometry.class.isAssignableFrom(binding)) {
                     return false;
                 }
@@ -80,7 +78,7 @@ class MergeSortDumper {
 
     /**
      * Gets the max amount amount of features to keep in memory from the query and system hints
-     * 
+     *
      * @param query
      * @return
      */
@@ -98,8 +96,8 @@ class MergeSortDumper {
         return maxFeatures;
     }
 
-    static SimpleFeatureReader getDelegateReader(SimpleFeatureReader reader, SortBy[] sortBy,
-            int maxFeatures) throws IOException {
+    static SimpleFeatureReader getDelegateReader(
+            SimpleFeatureReader reader, SortBy[] sortBy, int maxFeatures) throws IOException {
         if (maxFeatures < 0) {
             maxFeatures = getMaxFeatures(Query.ALL);
         }
@@ -179,7 +177,7 @@ class MergeSortDumper {
 
     /**
      * Writes the feature attributes to a binary file
-     * 
+     *
      * @param features
      * @return
      * @throws IOException
@@ -195,5 +193,4 @@ class MergeSortDumper {
 
         return new FeatureBlockReader(io, start, features.size());
     }
-
 }

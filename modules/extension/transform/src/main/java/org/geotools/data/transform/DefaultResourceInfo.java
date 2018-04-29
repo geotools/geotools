@@ -21,7 +21,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashSet;
 import java.util.Set;
-
 import org.geotools.data.FeatureSource;
 import org.geotools.data.ResourceInfo;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -31,7 +30,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 /**
  * A default implementaiton of a {@link ResourceInfo} based solely on the information that can be
  * obtained from {@link FeatureSource} (schema and bounds)
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 class DefaultResourceInfo implements ResourceInfo {
@@ -95,5 +94,4 @@ class DefaultResourceInfo implements ResourceInfo {
         Name name = fs.getSchema().getName();
         return name.getLocalPart();
     }
-
 }

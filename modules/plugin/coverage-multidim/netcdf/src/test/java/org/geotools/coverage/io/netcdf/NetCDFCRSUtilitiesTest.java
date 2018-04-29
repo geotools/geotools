@@ -18,7 +18,6 @@ package org.geotools.coverage.io.netcdf;
 
 import java.io.IOException;
 import java.util.List;
-
 import org.geotools.imageio.netcdf.utilities.NetCDFCRSUtilities;
 import org.geotools.referencing.crs.DefaultTemporalCRS;
 import org.geotools.referencing.crs.DefaultVerticalCRS;
@@ -27,14 +26,13 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.opengis.referencing.crs.TemporalCRS;
 import org.opengis.referencing.crs.VerticalCRS;
-
 import ucar.nc2.constants.AxisType;
 import ucar.nc2.dataset.CoordinateAxis;
 import ucar.nc2.dataset.NetcdfDataset;
 
 /**
  * Test UnidataTimeUtilities
- * 
+ *
  * @source $URL$
  */
 public final class NetCDFCRSUtilitiesTest extends Assert {

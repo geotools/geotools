@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2016, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -13,26 +13,24 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
- *    
+ *
  */
 package org.geotools.process.geometry;
-
-import java.util.PriorityQueue;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import org.geotools.geometry.jts.GeometryBuilder;
-import org.geotools.util.logging.Logging;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
+import java.util.PriorityQueue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.geotools.geometry.jts.GeometryBuilder;
+import org.geotools.util.logging.Logging;
 
 /**
  * Based on Vladimir Agafonkin's Algorithm https://www.mapbox.com/blog/polygon-center/
- * 
+ *
  * @author Ian Turton
  * @author Casper Børgesen
  */
@@ -95,15 +93,18 @@ public class PolyLabeller {
             if (cell.getD() > bestCell.getD()) {
                 bestCell = cell;
                 if (LOGGER.isLoggable(Level.FINER)) {
-                    LOGGER.finer("found best " + (Math.round(1e4 * cell.getD()) / 1e4) + " after "
-                            + numProbes + " probes");
+                    LOGGER.finer(
+                            "found best "
+                                    + (Math.round(1e4 * cell.getD()) / 1e4)
+                                    + " after "
+                                    + numProbes
+                                    + " probes");
                 }
             }
 
             // do not drill down further if there's no chance of a better
             // solution
-            if (cell.getMax() - bestCell.getD() <= precision)
-                continue;
+            if (cell.getMax() - bestCell.getD() <= precision) continue;
 
             // split the cell into four cells
             h = cell.getH() / 2;

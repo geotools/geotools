@@ -16,27 +16,24 @@
  */
 package org.geotools.gml2.bindings;
 
+import com.vividsolutions.jts.geom.CoordinateSequence;
+import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
 import java.util.List;
-
 import javax.xml.namespace.QName;
-
 import org.geotools.geometry.jts.JTS;
 import org.geotools.gml2.GML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-
-
 /**
  * Binding object for the type http://www.opengis.net/gml:LineStringType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;complexType name="LineStringType"&gt;
  *      &lt;annotation&gt;
@@ -58,12 +55,8 @@ import com.vividsolutions.jts.geom.LineString;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class GMLLineStringTypeBinding extends AbstractComplexBinding {
@@ -75,9 +68,7 @@ public class GMLLineStringTypeBinding extends AbstractComplexBinding {
         this.gFactory = gFactory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return GML.LineStringType;
     }
@@ -87,6 +78,7 @@ public class GMLLineStringTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -97,13 +89,13 @@ public class GMLLineStringTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         List coordinates = node.getChildren("coord");
 
         if (coordinates.size() == 1) {
@@ -115,7 +107,8 @@ public class GMLLineStringTypeBinding extends AbstractComplexBinding {
             CoordinateSequence seq = (CoordinateSequence) cnode.getValue();
             int dimension = GMLUtil.getDimension(seq);
 
-            CoordinateSequence lineSeq = seq = JTS.createCS(csFactory, coordinates.size(), dimension);
+            CoordinateSequence lineSeq =
+                    seq = JTS.createCS(csFactory, coordinates.size(), dimension);
 
             for (int i = 0; i < coordinates.size(); i++) {
                 cnode = (Node) coordinates.get(i);
@@ -139,8 +132,7 @@ public class GMLLineStringTypeBinding extends AbstractComplexBinding {
         throw new RuntimeException("Could not find coordinates to build linestring");
     }
 
-    public Object getProperty(Object object, QName name)
-        throws Exception {
+    public Object getProperty(Object object, QName name) throws Exception {
         LineString lineString = (LineString) object;
 
         if (GML.coordinates.equals(name)) {

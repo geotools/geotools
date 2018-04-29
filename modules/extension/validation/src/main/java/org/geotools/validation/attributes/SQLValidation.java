@@ -21,18 +21,13 @@ import org.geotools.validation.ValidationResults;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-
 /**
  * PointCoveredByLineValidation purpose.
- * 
- * <p>
- * SQL Validation
- * </p>
+ *
+ * <p>SQL Validation
  *
  * @author dzwiers, Refractions Research, Inc.
  * @author $Author: dmzwiers $ (last modification)
- *
- *
  * @source $URL$
  * @version $Id$
  */
@@ -41,10 +36,8 @@ public class SQLValidation extends DefaultFeatureValidation {
 
     /**
      * PointCoveredByLineValidation constructor.
-     * 
-     * <p>
-     * Super
-     * </p>
+     *
+     * <p>Super
      */
     public SQLValidation() {
         super();
@@ -56,14 +49,11 @@ public class SQLValidation extends DefaultFeatureValidation {
      * @param feature Feature to be Validated
      * @param type FeatureTypeInfo schema of feature
      * @param results coallate results information
-     *
-     *
      * @see org.geotools.validation.FeatureValidation#validate(org.geotools.feature.Feature,
-     *      org.geotools.feature.FeatureType,
-     *      org.geotools.validation.ValidationResults)
+     *     org.geotools.feature.FeatureType, org.geotools.validation.ValidationResults)
      */
-    public boolean validate(SimpleFeature feature, SimpleFeatureType type,
-        ValidationResults results) {
+    public boolean validate(
+            SimpleFeature feature, SimpleFeatureType type, ValidationResults results) {
         return false;
     }
 

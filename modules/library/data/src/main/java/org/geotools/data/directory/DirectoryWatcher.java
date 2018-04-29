@@ -17,22 +17,16 @@
 package org.geotools.data.directory;
 
 /**
- * Implementors will provide a service that checks if directory contents are
- * changed since last refresh.
- * 
+ * Implementors will provide a service that checks if directory contents are changed since last
+ * refresh.
+ *
  * @author Andrea Aime
- * 
  */
 interface DirectoryWatcher {
 
-    /**
-     * Reports if the directory last modified has changed since {@link #mark()}
-     * was last called
-     */
+    /** Reports if the directory last modified has changed since {@link #mark()} was last called */
     public boolean isStale();
 
-    /**
-     * Marks the time the directory has been last checked at
-     */
+    /** Marks the time the directory has been last checked at */
     public void mark();
 }

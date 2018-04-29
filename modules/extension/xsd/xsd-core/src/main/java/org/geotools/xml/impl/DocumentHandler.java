@@ -18,22 +18,17 @@ package org.geotools.xml.impl;
 
 import org.xml.sax.SAXException;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public interface DocumentHandler extends Handler {
     /**
-     * Returns the element handler for the root element of
-     * an instance document.
+     * Returns the element handler for the root element of an instance document.
      *
      * @return An element handler, or null.
      */
 
-    //ElementHandler getDocumentElementHandler();
-    
+    // ElementHandler getDocumentElementHandler();
+
     void startDocument() throws SAXException;
-    
+
     void endDocument() throws SAXException;
 }

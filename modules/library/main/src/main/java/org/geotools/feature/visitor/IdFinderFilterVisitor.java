@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -21,18 +21,15 @@ import org.opengis.filter.Id;
 
 /**
  * Quick check to see if an ID filter is found.
- * <p>
- * Example:<code>found = (Boolean) filter.accept( new IdFinderFilter(), null )</code>
  *
- *
+ * <p>Example:<code>found = (Boolean) filter.accept( new IdFinderFilter(), null )</code>
  *
  * @source $URL$
  */
 public class IdFinderFilterVisitor extends AbstractFinderFilterVisitor {
 
-    public Object visit( Id filter, Object data ) {
+    public Object visit(Id filter, Object data) {
         found = true;
         return found;
     }
-        
 }

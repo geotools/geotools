@@ -40,7 +40,8 @@ public class GeoPkgSchemaTest {
 
     @Before
     public void setUp() throws Exception {
-        geopackage = new GeoPackage(File.createTempFile("GeoPkgSchemaTest", "db", new File("target")));
+        geopackage =
+                new GeoPackage(File.createTempFile("GeoPkgSchemaTest", "db", new File("target")));
         geopackage.init();
     }
 
@@ -188,5 +189,4 @@ public class GeoPkgSchemaTest {
         }
         return columnDefinitions;
     }
-
 }

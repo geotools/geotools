@@ -16,6 +16,14 @@
  */
 package org.geotools.xml.impl;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import javax.xml.namespace.QName;
 import org.apache.commons.collections.OrderedMap;
 import org.apache.commons.collections.map.ListOrderedMap;
 import org.eclipse.emf.common.notify.Adapter;
@@ -33,80 +41,56 @@ import org.eclipse.xsd.XSDParticle;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDSimpleTypeDefinition;
 import org.eclipse.xsd.XSDTypeDefinition;
-import org.eclipse.xsd.util.XSDSchemaBuildingTools;
-import org.eclipse.xsd.util.XSDUtil;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import javax.xml.namespace.QName;
-
 import org.geotools.util.SoftValueHashMap;
 import org.geotools.xml.SchemaIndex;
 import org.geotools.xml.Schemas;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class SchemaIndexImpl implements SchemaIndex {
-    /**
-     * The schemas
-     */
+    /** The schemas */
     XSDSchema[] schemas;
 
-    /**
-     * Indexes
-     */
+    /** Indexes */
     HashMap elementIndex;
+
     HashMap attributeIndex;
     HashMap attributeGroupIndex;
     HashMap complexTypeIndex;
     HashMap simpleTypeIndex;
 
-    /**
-     * Cache of elements to children
-     */
-    SoftValueHashMap /*<XSDElementDeclaration,OrderedMap>*/ element2children = new SoftValueHashMap(1000);
+    /** Cache of elements to children */
+    SoftValueHashMap /*<XSDElementDeclaration,OrderedMap>*/ element2children =
+            new SoftValueHashMap(1000);
 
-    /**
-     * Cache of elemnets to attributes
-     */
+    /** Cache of elemnets to attributes */
     HashMap /*<XSDElementDeclaratoin,List>*/ element2attributes = new HashMap();
 
-    /**
-     * Adapter for tracking changes to schemas.
-     */
+    /** Adapter for tracking changes to schemas. */
     SchemaAdapter adapter;
-    
+
     public SchemaIndexImpl(XSDSchema[] schemas) {
         this.schemas = new XSDSchema[schemas.length + 1];
         adapter = new SchemaAdapter();
-        
-        //set the schemas passed in
+
+        // set the schemas passed in
         for (int i = 0; i < schemas.length; i++) {
             this.schemas[i] = schemas[i];
-            synchronized(this.schemas[i].eAdapters()) {
+            synchronized (this.schemas[i].eAdapters()) {
                 this.schemas[i].eAdapters().add(adapter);
             }
         }
 
-        //add the schema for xml schema itself
+        // add the schema for xml schema itself
         this.schemas[schemas.length] = schemas[0].getSchemaForSchema();
     }
-    
+
     public void destroy() {
-        //remove the adapter from the schemas
+        // remove the adapter from the schemas
         if (schemas == null) {
             return;
         }
         for (int i = 0; i < schemas.length; i++) {
-            synchronized(this.schemas[i].eAdapters()) {
+            synchronized (this.schemas[i].eAdapters()) {
                 this.schemas[i].eAdapters().remove(adapter);
             }
         }
@@ -132,31 +116,31 @@ public class SchemaIndexImpl implements SchemaIndex {
     public XSDElementDeclaration getElementDeclaration(QName qName) {
         return (XSDElementDeclaration) lookup(getElementIndex(), qName);
 
-        //return (XSDElementDeclaration) getElementIndex().get(qName);
+        // return (XSDElementDeclaration) getElementIndex().get(qName);
     }
 
     public XSDAttributeDeclaration getAttributeDeclaration(QName qName) {
         return (XSDAttributeDeclaration) lookup(getAttributeIndex(), qName);
 
-        //return (XSDAttributeDeclaration) getAttributeIndex().get(qName);
+        // return (XSDAttributeDeclaration) getAttributeIndex().get(qName);
     }
 
     public XSDAttributeGroupDefinition getAttributeGroupDefinition(QName qName) {
         return (XSDAttributeGroupDefinition) lookup(getAttributeGroupIndex(), qName);
 
-        //return (XSDAttributeGroupDefinition) getAttributeGroupIndex().get(qName);
+        // return (XSDAttributeGroupDefinition) getAttributeGroupIndex().get(qName);
     }
 
     public XSDComplexTypeDefinition getComplexTypeDefinition(QName qName) {
         return (XSDComplexTypeDefinition) lookup(getComplexTypeIndex(), qName);
 
-        //return (XSDComplexTypeDefinition) getComplexTypeIndex().get(qName);
+        // return (XSDComplexTypeDefinition) getComplexTypeIndex().get(qName);
     }
 
     public XSDSimpleTypeDefinition getSimpleTypeDefinition(QName qName) {
         return (XSDSimpleTypeDefinition) lookup(getSimpleTypeIndex(), qName);
 
-        //return (XSDSimpleTypeDefinition) getSimpleTypeIndex().get(qName);
+        // return (XSDSimpleTypeDefinition) getSimpleTypeIndex().get(qName);
     }
 
     public XSDTypeDefinition getTypeDefinition(QName qName) {
@@ -176,11 +160,11 @@ public class SchemaIndexImpl implements SchemaIndex {
             return component;
         }
 
-        //check for namespace wildcard
+        // check for namespace wildcard
         if ("*".equals(qName.getNamespaceURI())) {
             ArrayList matches = new ArrayList();
 
-            for (Iterator e = index.entrySet().iterator(); e.hasNext();) {
+            for (Iterator e = index.entrySet().iterator(); e.hasNext(); ) {
                 Map.Entry entry = (Map.Entry) e.next();
                 QName name = (QName) entry.getKey();
 
@@ -205,8 +189,10 @@ public class SchemaIndexImpl implements SchemaIndex {
                 if (children == null) {
                     children = new ListOrderedMap();
 
-                    for (Iterator i = Schemas.getChildElementParticles(parent.getType(), true)
-                                             .iterator(); i.hasNext();) {
+                    for (Iterator i =
+                                    Schemas.getChildElementParticles(parent.getType(), true)
+                                            .iterator();
+                            i.hasNext(); ) {
                         XSDParticle particle = (XSDParticle) i.next();
                         XSDElementDeclaration child = (XSDElementDeclaration) particle.getContent();
 
@@ -221,8 +207,9 @@ public class SchemaIndexImpl implements SchemaIndex {
                         } else if (parent.getTargetNamespace() != null) {
                             childName = new QName(parent.getTargetNamespace(), child.getName());
                         } else if (parent.getType().getTargetNamespace() != null) {
-                            childName = new QName(parent.getType().getTargetNamespace(),
-                                    child.getName());
+                            childName =
+                                    new QName(
+                                            parent.getType().getTargetNamespace(), child.getName());
                         } else {
                             childName = new QName(null, child.getName());
                         }
@@ -253,10 +240,10 @@ public class SchemaIndexImpl implements SchemaIndex {
         }
 
         if ("*".equals(childName.getNamespaceURI())) {
-            //do a check just on local name
+            // do a check just on local name
             ArrayList matches = new ArrayList();
 
-            for (Iterator e = children.entrySet().iterator(); e.hasNext();) {
+            for (Iterator e = children.entrySet().iterator(); e.hasNext(); ) {
                 Map.Entry entry = (Map.Entry) e.next();
                 QName name = (QName) entry.getKey();
 
@@ -304,7 +291,7 @@ public class SchemaIndexImpl implements SchemaIndex {
 
             List content = schema.getContents();
 
-            for (Iterator itr = content.iterator(); itr.hasNext();) {
+            for (Iterator itr = content.iterator(); itr.hasNext(); ) {
                 Object o = itr.next();
 
                 if (c.isAssignableFrom(o.getClass())) {
@@ -382,7 +369,7 @@ public class SchemaIndexImpl implements SchemaIndex {
         for (int i = 0; i < schemas.length; i++) {
             XSDSchema schema = schemas[i];
 
-            for (Iterator e = schema.getElementDeclarations().iterator(); e.hasNext();) {
+            for (Iterator e = schema.getElementDeclarations().iterator(); e.hasNext(); ) {
                 XSDElementDeclaration element = (XSDElementDeclaration) e.next();
 
                 QName qName = new QName(element.getTargetNamespace(), element.getName());
@@ -397,7 +384,7 @@ public class SchemaIndexImpl implements SchemaIndex {
         for (int i = 0; i < schemas.length; i++) {
             XSDSchema schema = schemas[i];
 
-            for (Iterator a = schema.getAttributeDeclarations().iterator(); a.hasNext();) {
+            for (Iterator a = schema.getAttributeDeclarations().iterator(); a.hasNext(); ) {
                 XSDAttributeDeclaration attribute = (XSDAttributeDeclaration) a.next();
 
                 QName qName = new QName(attribute.getTargetNamespace(), attribute.getName());
@@ -412,7 +399,7 @@ public class SchemaIndexImpl implements SchemaIndex {
         for (int i = 0; i < schemas.length; i++) {
             XSDSchema schema = schemas[i];
 
-            for (Iterator g = schema.getAttributeGroupDefinitions().iterator(); g.hasNext();) {
+            for (Iterator g = schema.getAttributeGroupDefinitions().iterator(); g.hasNext(); ) {
                 XSDAttributeGroupDefinition group = (XSDAttributeGroupDefinition) g.next();
 
                 QName qName = new QName(group.getTargetNamespace(), group.getName());
@@ -427,7 +414,7 @@ public class SchemaIndexImpl implements SchemaIndex {
         for (int i = 0; i < schemas.length; i++) {
             XSDSchema schema = schemas[i];
 
-            for (Iterator t = schema.getTypeDefinitions().iterator(); t.hasNext();) {
+            for (Iterator t = schema.getTypeDefinitions().iterator(); t.hasNext(); ) {
                 XSDTypeDefinition type = (XSDTypeDefinition) t.next();
 
                 if (type instanceof XSDComplexTypeDefinition) {
@@ -444,7 +431,7 @@ public class SchemaIndexImpl implements SchemaIndex {
         for (int i = 0; i < schemas.length; i++) {
             XSDSchema schema = schemas[i];
 
-            for (Iterator t = schema.getTypeDefinitions().iterator(); t.hasNext();) {
+            for (Iterator t = schema.getTypeDefinitions().iterator(); t.hasNext(); ) {
                 XSDTypeDefinition type = (XSDTypeDefinition) t.next();
 
                 if (type instanceof XSDSimpleTypeDefinition) {
@@ -474,38 +461,34 @@ public class SchemaIndexImpl implements SchemaIndex {
         public void notifyChanged(Notification notification) {
             if (notification.getEventType() == Notification.ADD) {
                 switch (notification.getFeatureID(XSDSchema.class)) {
-                case XSDPackage.XSD_SCHEMA__ATTRIBUTE_DECLARATIONS:
+                    case XSDPackage.XSD_SCHEMA__ATTRIBUTE_DECLARATIONS:
+                        synchronized (SchemaIndexImpl.this) {
+                            attributeIndex = null;
+                        }
 
-                    synchronized (SchemaIndexImpl.this) {
-                        attributeIndex = null;
-                    }
+                        break;
 
-                    break;
+                    case XSDPackage.XSD_SCHEMA__ELEMENT_DECLARATIONS:
+                        synchronized (SchemaIndexImpl.this) {
+                            elementIndex = null;
+                        }
 
-                case XSDPackage.XSD_SCHEMA__ELEMENT_DECLARATIONS:
+                        break;
 
-                    synchronized (SchemaIndexImpl.this) {
-                        elementIndex = null;
-                    }
+                    case XSDPackage.XSD_SCHEMA__TYPE_DEFINITIONS:
+                        synchronized (SchemaIndexImpl.this) {
+                            complexTypeIndex = null;
+                            simpleTypeIndex = null;
+                        }
 
-                    break;
+                        break;
 
-                case XSDPackage.XSD_SCHEMA__TYPE_DEFINITIONS:
+                    case XSDPackage.XSD_SCHEMA__ATTRIBUTE_GROUP_DEFINITIONS:
+                        synchronized (SchemaIndexImpl.this) {
+                            attributeGroupIndex = null;
+                        }
 
-                    synchronized (SchemaIndexImpl.this) {
-                        complexTypeIndex = null;
-                        simpleTypeIndex = null;
-                    }
-
-                    break;
-
-                case XSDPackage.XSD_SCHEMA__ATTRIBUTE_GROUP_DEFINITIONS:
-
-                    synchronized (SchemaIndexImpl.this) {
-                        attributeGroupIndex = null;
-                    }
-
-                    break;
+                        break;
                 }
             }
         }

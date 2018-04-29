@@ -23,24 +23,18 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.logging.Logger;
-
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-
 import org.geotools.util.logging.Logging;
 
 /**
  * A NetCDF CF (ClimateForecast) parser.
- * 
- * It can be used to load from a standard name table (XML) all the 
- * available CF compliant standard names and the related information,
- * such as canonical units, descriptions and alias.
  *
+ * <p>It can be used to load from a standard name table (XML) all the available CF compliant
+ * standard names and the related information, such as canonical units, descriptions and alias.
  *
- * See <a href="http://cfconventions.org/standard-names.html">CF Convention: Standard names</a>
- * 
- *
+ * <p>See <a href="http://cfconventions.org/standard-names.html">CF Convention: Standard names</a>
  */
 public class NetCDFCFParser {
 
@@ -50,7 +44,7 @@ public class NetCDFCFParser {
     /** Map containing all the defined alias */
     private Map<String, Alias> aliasMap;
 
-    /** {@link Set} containing all the keys*/
+    /** {@link Set} containing all the keys */
     private Set<String> keys;
 
     public boolean hasEntryId(String id) {
@@ -68,7 +62,7 @@ public class NetCDFCFParser {
         return null;
     }
 
-    public Set<String> getEntryIds(){
+    public Set<String> getEntryIds() {
         return keys;
     }
 
@@ -84,7 +78,8 @@ public class NetCDFCFParser {
 
     private static JAXBContext context;
 
-    private final static Logger LOGGER = Logging.getLogger(NetCDFCFParser.class.toString());
+    private static final Logger LOGGER = Logging.getLogger(NetCDFCFParser.class.toString());
+
     static {
         try {
             context = JAXBContext.newInstance(StandardNameTable.class);
@@ -105,7 +100,7 @@ public class NetCDFCFParser {
 
     /**
      * Create a {@link NetCDFCFParser} instance for the specified file.
-     * 
+     *
      * @param file
      * @return
      * @throws JAXBException
@@ -115,7 +110,7 @@ public class NetCDFCFParser {
         // We assume we have a single (or reduced number) of files to be unmarshalled
         // since the CF standard name table is a single one.
         // Therefore we instantiated an unmarshaller each time we need to do an unmarshalling
-        // Note that we can't use the same unmarshaller for concurrent unmarshalling. 
+        // Note that we can't use the same unmarshaller for concurrent unmarshalling.
         Unmarshaller unmarshaller = context.createUnmarshaller();
         StandardNameTable table = (StandardNameTable) unmarshaller.unmarshal(file);
         List<Entry> entries = table.getEntry();
@@ -130,5 +125,4 @@ public class NetCDFCFParser {
         }
         return new NetCDFCFParser(entriesMap, aliasMap);
     }
-
 }

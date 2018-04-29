@@ -25,13 +25,11 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.imageio.netcdf.cv.CoordinateHandlerSpi.CoordinateHandler;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-
 import ucar.ma2.Array;
 import ucar.ma2.ArrayChar;
 import ucar.ma2.ArrayChar.StringIterator;
@@ -47,23 +45,26 @@ import ucar.nc2.dataset.CoordinateAxis2D;
  * @author Simone Giannecchini GeoSolutions SAS
  * @author Niels Charlier
  * @param <T>
- * 
  */
 public abstract class CoordinateVariable<T> {
 
     protected interface AxisHelper<T> {
         int getSize();
+
         T get(Map<String, Integer> indexMap);
+
         List<T> getAll();
+
         T getMinimum();
+
         T getMaximum();
     }
-    
+
     protected class CoordinateAxis1DNumericHelper implements AxisHelper<T> {
         private CoordinateAxis1D axis1D;
 
         public CoordinateAxis1DNumericHelper() {
-            this.axis1D =  (CoordinateAxis1D) coordinateAxis;
+            this.axis1D = (CoordinateAxis1D) coordinateAxis;
         }
 
         @Override
@@ -103,11 +104,10 @@ public abstract class CoordinateVariable<T> {
             };
         }
     }
-    
+
     /**
-     * To use in case that 
-     *  (1) coordinate axis is not one-dimensional
-     *  (2) coordinate axis is not numerical
+     * To use in case that (1) coordinate axis is not one-dimensional (2) coordinate axis is not
+     * numerical
      */
     protected class CoordinateAxisGeneralHelper implements AxisHelper<T> {
         private List<T> convertedData = new ArrayList<T>();
@@ -152,10 +152,12 @@ public abstract class CoordinateVariable<T> {
         }
 
         @Override
-        public synchronized T get(Map<String, Integer> indexMap)  {
+        public synchronized T get(Map<String, Integer> indexMap) {
             int i = indexMap.get(coordinateAxis.getFullName());
-            int j = coordinateAxis instanceof CoordinateAxis2D ?
-                    indexMap.get(coordinateAxis.getDimension(0).getFullName()) : 0;
+            int j =
+                    coordinateAxis instanceof CoordinateAxis2D
+                            ? indexMap.get(coordinateAxis.getDimension(0).getFullName())
+                            : 0;
             return convertedData.get(j * coordinateAxis.getDimension(1).getLength() + i);
         }
 
@@ -178,74 +180,17 @@ public abstract class CoordinateVariable<T> {
         public List<T> getAll() {
             return new ArrayList<T>(orderedSet);
         }
-
     }
 
     private static final double KM_TO_M = 1000d;
 
-    private final static Logger LOGGER = Logging.getLogger(CoordinateVariable.class);
+    private static final Logger LOGGER = Logging.getLogger(CoordinateVariable.class);
 
     public static Class<?> suggestBinding(CoordinateAxis coordinateAxis) {
         Utilities.ensureNonNull("coordinateAxis", coordinateAxis);
         final AxisType axisType = coordinateAxis.getAxisType();
 
         switch (axisType) {
-        case GeoX:
-        case GeoY:
-        case GeoZ:
-        case Height:
-        case Lat:
-        case Lon:
-        case Pressure:
-        case Spectral:
-            // numeric ?
-            final DataType dataType = coordinateAxis.getDataType();
-            // scale and offset are there?
-            Attribute scaleFactor = coordinateAxis.findAttribute("scale_factor");
-            Attribute offsetFactor = coordinateAxis.findAttribute("offset");
-            if (scaleFactor != null || offsetFactor != null) {
-                return Double.class;
-            }
-            switch (dataType) {
-            case DOUBLE:
-                return Double.class;
-            case BYTE:
-                return Byte.class;
-            case FLOAT:
-                return Float.class;
-            case INT:
-                return Integer.class;
-            case LONG:
-                return Long.class;
-            case SHORT:
-                return Short.class;
-            default:
-                break;
-
-            }
-            break;
-        case Time:
-        case RunTime:
-            // numeric
-            LOGGER.log(Level.FINE, "Date mapping for axis:" + coordinateAxis.toString());
-            return java.util.Date.class;
-        default:
-            break;
-        }
-        // unable to recognize this one
-        LOGGER.log(Level.FINE, "Unable to find mapping for axis:" + coordinateAxis.toString());
-        return null;
-    }
-
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    public static CoordinateVariable<?> create(CoordinateAxis coordinateAxis) {
-        Utilities.ensureNonNull("coordinateAxis", coordinateAxis);
-
-        final AxisType axisType = coordinateAxis.getAxisType();
-        if (coordinateAxis.isNumeric()) {
-
-            // AxisType?
-            switch (axisType) {
             case GeoX:
             case GeoY:
             case GeoZ:
@@ -254,35 +199,92 @@ public abstract class CoordinateVariable<T> {
             case Lon:
             case Pressure:
             case Spectral:
-                return new NumericCoordinateVariable(suggestBinding(coordinateAxis), coordinateAxis);
-            case RunTime:
+                // numeric ?
+                final DataType dataType = coordinateAxis.getDataType();
+                // scale and offset are there?
+                Attribute scaleFactor = coordinateAxis.findAttribute("scale_factor");
+                Attribute offsetFactor = coordinateAxis.findAttribute("offset");
+                if (scaleFactor != null || offsetFactor != null) {
+                    return Double.class;
+                }
+                switch (dataType) {
+                    case DOUBLE:
+                        return Double.class;
+                    case BYTE:
+                        return Byte.class;
+                    case FLOAT:
+                        return Float.class;
+                    case INT:
+                        return Integer.class;
+                    case LONG:
+                        return Long.class;
+                    case SHORT:
+                        return Short.class;
+                    default:
+                        break;
+                }
+                break;
             case Time:
-                return new TimeCoordinateVariable(coordinateAxis);
+            case RunTime:
+                // numeric
+                LOGGER.log(Level.FINE, "Date mapping for axis:" + coordinateAxis.toString());
+                return java.util.Date.class;
             default:
-                throw new IllegalArgumentException("Unsupported axis type: " + axisType
-                        + " for coordinate variable: " + coordinateAxis.toStringDebug());
+                break;
+        }
+        // unable to recognize this one
+        LOGGER.log(Level.FINE, "Unable to find mapping for axis:" + coordinateAxis.toString());
+        return null;
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public static CoordinateVariable<?> create(CoordinateAxis coordinateAxis) {
+        Utilities.ensureNonNull("coordinateAxis", coordinateAxis);
+
+        final AxisType axisType = coordinateAxis.getAxisType();
+        if (coordinateAxis.isNumeric()) {
+
+            // AxisType?
+            switch (axisType) {
+                case GeoX:
+                case GeoY:
+                case GeoZ:
+                case Height:
+                case Lat:
+                case Lon:
+                case Pressure:
+                case Spectral:
+                    return new NumericCoordinateVariable(
+                            suggestBinding(coordinateAxis), coordinateAxis);
+                case RunTime:
+                case Time:
+                    return new TimeCoordinateVariable(coordinateAxis);
+                default:
+                    throw new IllegalArgumentException(
+                            "Unsupported axis type: "
+                                    + axisType
+                                    + " for coordinate variable: "
+                                    + coordinateAxis.toStringDebug());
             }
         }
-        if (NetCDFUtilities.isCheckCoordinatePlugins()){
+        if (NetCDFUtilities.isCheckCoordinatePlugins()) {
             if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("Checking for registered coordinate plugins");
             }
             CoordinateHandler handler = CoordinateHandlerFinder.findHandler(coordinateAxis);
-            if (handler != null){
+            if (handler != null) {
                 return handler.createCoordinateVariable(coordinateAxis);
             }
-
         }
         // If the axis is not numeric and it isn't a parseable time, we can't process any further.
-        throw new IllegalArgumentException("Unable to process non numeric coordinate variable: "
-                        + coordinateAxis.toString());
-
+        throw new IllegalArgumentException(
+                "Unable to process non numeric coordinate variable: " + coordinateAxis.toString());
     }
 
     protected final Class<T> binding;
 
     protected final CoordinateAxis coordinateAxis;
-    
+
     private CoordinateReferenceSystem crs;
 
     private double conversionFactor = Double.NaN;
@@ -303,15 +305,16 @@ public abstract class CoordinateVariable<T> {
         this.conversionFactor = 1d;
         AxisType axisType = coordinateAxis.getAxisType();
         // Special management for projected coordinates with unit = km
-        if ((axisType == AxisType.GeoX || axisType == AxisType.GeoY) && 
-                coordinateAxis.getUnitsString().equalsIgnoreCase("km")) {
+        if ((axisType == AxisType.GeoX || axisType == AxisType.GeoY)
+                && coordinateAxis.getUnitsString().equalsIgnoreCase("km")) {
             conversionFactor = KM_TO_M;
             convertAxis = true;
         }
     }
 
     protected void init() {
-        if (coordinateAxis.isNumeric() && coordinateAxis instanceof CoordinateAxis1D
+        if (coordinateAxis.isNumeric()
+                && coordinateAxis instanceof CoordinateAxis1D
                 && !coordinateAxis.hasMissing()) {
             axisHelper = new CoordinateAxis1DNumericHelper();
         } else {
@@ -321,7 +324,7 @@ public abstract class CoordinateVariable<T> {
 
     protected boolean isMissing(Object val) {
         if (val instanceof Number) {
-            return coordinateAxis.isMissing( ((Number) val).doubleValue());
+            return coordinateAxis.isMissing(((Number) val).doubleValue());
         } else {
             return val == null;
         }
@@ -352,23 +355,26 @@ public abstract class CoordinateVariable<T> {
     }
 
     public boolean isRegular() {
-        return coordinateAxis instanceof CoordinateAxis1D && ((CoordinateAxis1D) coordinateAxis).isRegular();
+        return coordinateAxis instanceof CoordinateAxis1D
+                && ((CoordinateAxis1D) coordinateAxis).isRegular();
     }
 
     public double getIncrement() {
         if (!(coordinateAxis instanceof CoordinateAxis1D)) {
             return Double.NaN;
         }
-        return convertAxis ? ((CoordinateAxis1D) coordinateAxis).getIncrement() * conversionFactor : 
-            ((CoordinateAxis1D) coordinateAxis).getIncrement();
+        return convertAxis
+                ? ((CoordinateAxis1D) coordinateAxis).getIncrement() * conversionFactor
+                : ((CoordinateAxis1D) coordinateAxis).getIncrement();
     }
 
     public double getStart() {
         if (!(coordinateAxis instanceof CoordinateAxis1D)) {
             return Double.NaN;
         }
-        return convertAxis ? ((CoordinateAxis1D) coordinateAxis).getStart() * conversionFactor : 
-            ((CoordinateAxis1D) coordinateAxis).getStart();
+        return convertAxis
+                ? ((CoordinateAxis1D) coordinateAxis).getStart() * conversionFactor
+                : ((CoordinateAxis1D) coordinateAxis).getStart();
     }
 
     public T getMinimum() throws IOException {
@@ -390,25 +396,46 @@ public abstract class CoordinateVariable<T> {
     public final CoordinateReferenceSystem getCoordinateReferenceSystem() {
         if (crs == null) {
             crs = buildCoordinateReferenceSystem();
-        } 
+        }
         return crs;
     }
 
-    abstract public boolean isNumeric();
+    public abstract boolean isNumeric();
 
-    abstract protected T convertValue(Object o);
+    protected abstract T convertValue(Object o);
 
-    abstract protected CoordinateReferenceSystem buildCoordinateReferenceSystem();
+    protected abstract CoordinateReferenceSystem buildCoordinateReferenceSystem();
 
     @Override
     public String toString() {
         try {
-            return "CoordinateVariable [binding=" + binding + ", coordinateAxis=" + coordinateAxis
-                    + ", getType()=" + getType() + ", getUnit()=" + getUnit() + ", getAxisType()="
-                    + getAxisType() + ", getName()=" + getName() + ", getSize()=" + getSize()
-                    + ", isRegular()=" + isRegular() + ", getIncrement()=" + getIncrement()
-                    + ", getStart()=" + getStart() + ", isNumeric()=" + isNumeric()
-                    + ", getMinimum()=" + getMinimum() + ", getMaximum()=" + getMaximum() + "]";
+            return "CoordinateVariable [binding="
+                    + binding
+                    + ", coordinateAxis="
+                    + coordinateAxis
+                    + ", getType()="
+                    + getType()
+                    + ", getUnit()="
+                    + getUnit()
+                    + ", getAxisType()="
+                    + getAxisType()
+                    + ", getName()="
+                    + getName()
+                    + ", getSize()="
+                    + getSize()
+                    + ", isRegular()="
+                    + isRegular()
+                    + ", getIncrement()="
+                    + getIncrement()
+                    + ", getStart()="
+                    + getStart()
+                    + ", isNumeric()="
+                    + isNumeric()
+                    + ", getMinimum()="
+                    + getMinimum()
+                    + ", getMaximum()="
+                    + getMaximum()
+                    + "]";
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

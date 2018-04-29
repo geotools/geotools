@@ -2,21 +2,16 @@ package org.geotools.geometry.jts;
 
 import static org.junit.Assert.*;
 
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryCollection;
+import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.io.WKTReader;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.junit.Test;
 import org.opengis.filter.FilterFactory2;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.io.WKTReader;
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class GeometryCollectorTest {
 
     FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
@@ -54,7 +49,7 @@ public class GeometryCollectorTest {
         assertSame(p0, result.getGeometryN(0));
         assertSame(p1, result.getGeometryN(1));
     }
-    
+
     @Test
     public void testInvalidMultipolygon() throws Exception {
         WKTReader reader = new WKTReader();
@@ -89,7 +84,7 @@ public class GeometryCollectorTest {
             // fine
         }
     }
-    
+
     @Test
     public void testCRSSimple() throws Exception {
         WKTReader reader = new WKTReader();
@@ -109,7 +104,7 @@ public class GeometryCollectorTest {
         assertSame(p0, result.getGeometryN(0));
         assertSame(p1, result.getGeometryN(1));
     }
-    
+
     @Test
     public void testCRSNested() throws Exception {
         WKTReader reader = new WKTReader();
@@ -128,5 +123,4 @@ public class GeometryCollectorTest {
         assertSame(DefaultGeographicCRS.WGS84, result.getUserData());
         assertEquals(reader.read("POINT(0 0)"), result.getGeometryN(0));
     }
-
 }

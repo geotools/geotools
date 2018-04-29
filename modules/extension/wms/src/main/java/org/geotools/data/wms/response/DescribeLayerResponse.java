@@ -3,7 +3,7 @@
  *    http://geotools.org
  *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -21,7 +21,6 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
-
 import org.apache.commons.io.IOUtils;
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.LayerDescription;
@@ -33,12 +32,9 @@ import org.geotools.xml.handlers.DocumentHandler;
 import org.xml.sax.SAXException;
 
 /**
- * Represents the response from a server after a DescribeLayer request
- * has been issued.
- * 
+ * Represents the response from a server after a DescribeLayer request has been issued.
+ *
  * @author Richard Gould
- *
- *
  * @source $URL$
  */
 public class DescribeLayerResponse extends Response {
@@ -49,13 +45,14 @@ public class DescribeLayerResponse extends Response {
         this(httpResponse, null);
     }
 
-    public DescribeLayerResponse(HTTPResponse httpResponse, Map<String, Object> hints) throws IOException, ServiceException {
+    public DescribeLayerResponse(HTTPResponse httpResponse, Map<String, Object> hints)
+            throws IOException, ServiceException {
         super(httpResponse);
 
         try {
             hints = hints == null ? new HashMap<>() : new HashMap<>(hints);
             hints.put(DocumentHandler.DEFAULT_NAMESPACE_HINT_KEY, WMSSchema.getInstance());
-            
+
             Object object;
             InputStream inputStream = null;
             try {
@@ -76,5 +73,4 @@ public class DescribeLayerResponse extends Response {
     public LayerDescription[] getLayerDescs() {
         return layerDescs;
     }
-
 }

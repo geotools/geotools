@@ -18,15 +18,15 @@ package org.geotools.filter.v1_0.capabilities;
 
 import java.util.List;
 import javax.xml.namespace.QName;
-import org.opengis.filter.capability.FunctionName;
 import org.geotools.xml.*;
-
+import org.opengis.filter.capability.FunctionName;
 
 /**
  * Binding object for the type http://www.opengis.net/ogc:Function_NamesType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:complexType name="Function_NamesType"&gt;
  *      &lt;xsd:sequence maxOccurs="unbounded"&gt;
@@ -36,23 +36,18 @@ import org.geotools.xml.*;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class Function_NamesTypeBinding extends AbstractComplexBinding {
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return OGC.Function_NamesType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -63,20 +58,19 @@ public class Function_NamesTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         List functions = node.getChildValues(FunctionName.class);
 
         return functions.toArray(new FunctionName[functions.size()]);
     }
 
-    public Object getProperty(Object object, QName name)
-        throws Exception {
+    public Object getProperty(Object object, QName name) throws Exception {
         if (name.getLocalPart().equals("Function_Name")
                 || name.getLocalPart().equals("FunctionName") /* 1.1 */) {
             return object;

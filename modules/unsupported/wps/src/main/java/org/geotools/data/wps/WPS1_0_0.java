@@ -21,7 +21,6 @@ import java.math.BigInteger;
 import java.net.URL;
 import java.util.List;
 import java.util.Properties;
-
 import net.opengis.ows11.BoundingBoxType;
 import net.opengis.ows11.CodeType;
 import net.opengis.ows11.Ows11Factory;
@@ -32,7 +31,6 @@ import net.opengis.wps10.OutputDefinitionType;
 import net.opengis.wps10.ResponseDocumentType;
 import net.opengis.wps10.ResponseFormType;
 import net.opengis.wps10.Wps10Factory;
-
 import org.geotools.data.ows.AbstractGetCapabilitiesRequest;
 import org.geotools.data.ows.GetCapabilitiesRequest;
 import org.geotools.data.ows.HTTPResponse;
@@ -46,46 +44,32 @@ import org.geotools.data.wps.response.ExecuteProcessResponse;
 import org.geotools.data.wps.response.WPSGetCapabilitiesResponse;
 import org.geotools.ows.ServiceException;
 
-
 /**
  * Provides support for the Web Processing Service 1.0.0 Specification.
- * <p>
- * WPS1_0_0 provides both name and version information that may be checked against
- * a GetCapabilities document during version negotiation.
- * </p>
+ *
+ * <p>WPS1_0_0 provides both name and version information that may be checked against a
+ * GetCapabilities document during version negotiation.
  *
  * @author gdavis
- *
- *
- *
- *
  * @source $URL$
  */
-public class WPS1_0_0 extends WPSSpecification
-{
+public class WPS1_0_0 extends WPSSpecification {
 
     private static final Wps10Factory wpsFactory = Wps10Factory.eINSTANCE;
 
-    private static String processKey(String key)
-    {
+    private static String processKey(String key) {
         return key.trim().toLowerCase();
     }
 
-    /**
-     * Public constructor creates the WMS1_0_0 object.
-     */
-    public WPS1_0_0()
-    {
-
-    }
+    /** Public constructor creates the WMS1_0_0 object. */
+    public WPS1_0_0() {}
 
     /**
      * Expected version attribute for root element.
      *
      * @return the expect version value for this specification
      */
-    public String getVersion()
-    {
+    public String getVersion() {
         return "1.0.0"; // $NON-NLS-1$
     }
 
@@ -96,27 +80,24 @@ public class WPS1_0_0 extends WPSSpecification
      * @param server a URL that points to the 1.0.0 server
      * @return a AbstractGetCapabilitiesRequest object that can provide a valid request
      */
-    public GetCapabilitiesRequest createGetCapabilitiesRequest(URL server)
-    {
+    public GetCapabilitiesRequest createGetCapabilitiesRequest(URL server) {
         return new GetCapsRequest(server);
     }
 
     @Override
-    public DescribeProcessRequest createDescribeProcessRequest(
-        URL onlineResource) throws UnsupportedOperationException
-    {
+    public DescribeProcessRequest createDescribeProcessRequest(URL onlineResource)
+            throws UnsupportedOperationException {
         return new InternalDescribeProcessRequest(onlineResource, null);
     }
 
     @Override
-    public ExecuteProcessRequest createExecuteProcessRequest(URL onlineResource) throws UnsupportedOperationException
-    {
+    public ExecuteProcessRequest createExecuteProcessRequest(URL onlineResource)
+            throws UnsupportedOperationException {
         return new InternalExecuteProcessRequest(onlineResource, null);
     }
 
     @Override
-    public DataType createLiteralInputValue(String literalValue)
-    {
+    public DataType createLiteralInputValue(String literalValue) {
         DataType literalInputValue = wpsFactory.createDataType();
         LiteralDataType literalDataType = wpsFactory.createLiteralDataType();
         literalDataType.setValue(literalValue);
@@ -126,9 +107,8 @@ public class WPS1_0_0 extends WPSSpecification
     }
 
     @Override
-    public DataType createBoundingBoxInputValue(String crs, int dimensions, List<Double> lowerCorner,
-        List<Double> upperCorner)
-    {
+    public DataType createBoundingBoxInputValue(
+            String crs, int dimensions, List<Double> lowerCorner, List<Double> upperCorner) {
         DataType bbox = wpsFactory.createDataType();
         BoundingBoxType bboxType = Ows11Factory.eINSTANCE.createBoundingBoxType();
         bboxType.setCrs(crs);
@@ -141,18 +121,15 @@ public class WPS1_0_0 extends WPSSpecification
     }
 
     @Override
-    public ResponseFormType createResponseForm(ResponseDocumentType responseDoc,
-        OutputDefinitionType rawOutput)
-    {
+    public ResponseFormType createResponseForm(
+            ResponseDocumentType responseDoc, OutputDefinitionType rawOutput) {
         ResponseFormType responseForm = wpsFactory.createResponseFormType();
 
-        if (responseDoc != null)
-        {
+        if (responseDoc != null) {
             responseForm.setResponseDocument(responseDoc);
         }
 
-        if (rawOutput != null)
-        {
+        if (rawOutput != null) {
             responseForm.setRawDataOutput(rawOutput);
         }
 
@@ -160,8 +137,7 @@ public class WPS1_0_0 extends WPSSpecification
     }
 
     @Override
-    public OutputDefinitionType createOutputDefinitionType(String identifier)
-    {
+    public OutputDefinitionType createOutputDefinitionType(String identifier) {
         CodeType inputType = Ows11Factory.eINSTANCE.createCodeType();
         inputType.setValue(identifier);
 
@@ -172,16 +148,14 @@ public class WPS1_0_0 extends WPSSpecification
     }
 
     @Override
-    public ResponseDocumentType createResponseDocumentType(boolean lineage, boolean status,
-        boolean storeExecuteResponse, String outputType)
-    {
+    public ResponseDocumentType createResponseDocumentType(
+            boolean lineage, boolean status, boolean storeExecuteResponse, String outputType) {
         ResponseDocumentType responseDoc = wpsFactory.createResponseDocumentType();
         responseDoc.setLineage(lineage);
         responseDoc.setStatus(status);
         responseDoc.setStoreExecuteResponse(storeExecuteResponse);
 
-        if (outputType != null)
-        {
+        if (outputType != null) {
             DocumentOutputDefinitionType output = wpsFactory.createDocumentOutputDefinitionType();
             CodeType inputType = Ows11Factory.eINSTANCE.createCodeType();
             inputType.setValue(outputType);
@@ -192,93 +166,78 @@ public class WPS1_0_0 extends WPSSpecification
         return responseDoc;
     }
 
-    /**
-     * We need a custom request object.
-     */
-    public static class GetCapsRequest extends AbstractGetCapabilitiesRequest
-    {
+    /** We need a custom request object. */
+    public static class GetCapsRequest extends AbstractGetCapabilitiesRequest {
 
         /**
          * Construct a Request compatible with a 1.0.0 Web Process Server.
          *
          * @param urlGetCapabilities URL of GetCapabilities document.
          */
-        public GetCapsRequest(URL urlGetCapabilities)
-        {
+        public GetCapsRequest(URL urlGetCapabilities) {
             super(urlGetCapabilities);
         }
 
-        protected void initVersion()
-        {
+        protected void initVersion() {
             properties.setProperty(VERSION, "1.0.0");
         }
 
-        protected void initRequest()
-        {
+        protected void initRequest() {
             setProperty("REQUEST", "GetCapabilities");
         }
 
-        protected void initService()
-        {
+        protected void initService() {
             setProperty("SERVICE", "WPS");
         }
 
-        protected String processKey(String key)
-        {
+        protected String processKey(String key) {
             return WPS1_0_0.processKey(key);
         }
 
-        public Response createResponse(HTTPResponse httpResponse) throws ServiceException, IOException
-        {
+        public Response createResponse(HTTPResponse httpResponse)
+                throws ServiceException, IOException {
             return new WPSGetCapabilitiesResponse(httpResponse, hints);
         }
     }
 
-    public static class InternalDescribeProcessRequest extends AbstractDescribeProcessRequest
-    {
+    public static class InternalDescribeProcessRequest extends AbstractDescribeProcessRequest {
 
         /**
          * @param onlineResource
          * @param properties
          */
-        public InternalDescribeProcessRequest(URL onlineResource, Properties properties)
-        {
+        public InternalDescribeProcessRequest(URL onlineResource, Properties properties) {
             super(onlineResource, properties);
         }
 
-        protected void initVersion()
-        {
+        protected void initVersion() {
             setProperty(VERSION, "1.0.0");
         }
 
-        public Response createResponse(HTTPResponse httpResponse) throws ServiceException, IOException
-        {
+        public Response createResponse(HTTPResponse httpResponse)
+                throws ServiceException, IOException {
             return new DescribeProcessResponse(httpResponse);
         }
     }
 
-    public static class InternalExecuteProcessRequest extends AbstractExecuteProcessRequest
-    {
+    public static class InternalExecuteProcessRequest extends AbstractExecuteProcessRequest {
 
         /**
          * @param onlineResource
          * @param properties
          */
-        public InternalExecuteProcessRequest(URL onlineResource, Properties properties)
-        {
+        public InternalExecuteProcessRequest(URL onlineResource, Properties properties) {
             super(onlineResource, properties);
         }
 
-        protected void initVersion()
-        {
+        protected void initVersion() {
             setProperty(VERSION, "1.0.0");
         }
 
-        public Response createResponse(HTTPResponse httpResponse) throws ServiceException, IOException
-        {
-            return new ExecuteProcessResponse(httpResponse, responseForm != null && responseForm.getRawDataOutput() != null);
+        public Response createResponse(HTTPResponse httpResponse)
+                throws ServiceException, IOException {
+            return new ExecuteProcessResponse(
+                    httpResponse, responseForm != null && responseForm.getRawDataOutput() != null);
         }
-
     }
-
 }

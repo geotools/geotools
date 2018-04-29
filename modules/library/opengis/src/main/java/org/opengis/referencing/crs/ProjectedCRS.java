@@ -4,19 +4,18 @@
  *
  *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2003-2005, Open Geospatial Consortium Inc.
- *    
+ *
  *    All Rights Reserved. http://www.opengis.org/legal/
  */
 package org.opengis.referencing.crs;
 
-import org.opengis.referencing.cs.CartesianCS;
-import org.opengis.referencing.datum.GeodeticDatum;
-import org.opengis.referencing.operation.Projection;
-import org.opengis.annotation.UML;
-
 import static org.opengis.annotation.Obligation.*;
 import static org.opengis.annotation.Specification.*;
 
+import org.opengis.annotation.UML;
+import org.opengis.referencing.cs.CartesianCS;
+import org.opengis.referencing.datum.GeodeticDatum;
+import org.opengis.referencing.operation.Projection;
 
 /**
  * A 2D coordinate reference system used to approximate the shape of the earth on a planar surface.
@@ -30,33 +29,24 @@ import static org.opengis.annotation.Specification.*;
  *   {@link org.opengis.referencing.cs.CartesianCS Cartesian}
  * </TD></TR></TABLE>
  *
- *
- *
  * @source $URL$
- * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract specification 2.0</A>
- * @author  Martin Desruisseaux (IRD)
- * @since   GeoAPI 1.0
+ * @version <A HREF="http://portal.opengeospatial.org/files/?artifact_id=6716">Abstract
+ *     specification 2.0</A>
+ * @author Martin Desruisseaux (IRD)
+ * @since GeoAPI 1.0
  */
-@UML(identifier="SC_ProjectedCRS", specification=ISO_19111)
+@UML(identifier = "SC_ProjectedCRS", specification = ISO_19111)
 public interface ProjectedCRS extends GeneralDerivedCRS {
-    /**
-     * Returns the base coordinate reference system, which must be geographic.
-     */
+    /** Returns the base coordinate reference system, which must be geographic. */
     GeographicCRS getBaseCRS();
 
-    /**
-     * Returns the map projection from the {@linkplain #getBaseCRS base CRS} to this CRS.
-     */
+    /** Returns the map projection from the {@linkplain #getBaseCRS base CRS} to this CRS. */
     Projection getConversionFromBase();
 
-    /**
-     * Returns the coordinate system, which must be cartesian.
-     */
-    @UML(identifier="usesCS", obligation=MANDATORY, specification=ISO_19111)
+    /** Returns the coordinate system, which must be cartesian. */
+    @UML(identifier = "usesCS", obligation = MANDATORY, specification = ISO_19111)
     CartesianCS getCoordinateSystem();
 
-    /**
-     * Returns the datum.
-     */
+    /** Returns the datum. */
     GeodeticDatum getDatum();
 }

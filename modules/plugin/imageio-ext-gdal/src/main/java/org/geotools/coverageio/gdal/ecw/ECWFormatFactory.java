@@ -17,30 +17,25 @@
 package org.geotools.coverageio.gdal.ecw;
 
 import it.geosolutions.imageio.plugins.ecw.ECWImageReaderSpi;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 import org.geotools.coverageio.BaseGridFormatFactorySPI;
 import org.opengis.coverage.grid.Format;
 
-
 /**
- * Implementation of the {@link Format} service provider interface for ECW
- * files.
+ * Implementation of the {@link Format} service provider interface for ECW files.
  *
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
  * @since 2.5.x
- *
- *
  * @source $URL$
  */
-public final class ECWFormatFactory extends BaseGridFormatFactorySPI implements GridFormatFactorySpi {
+public final class ECWFormatFactory extends BaseGridFormatFactorySPI
+        implements GridFormatFactorySpi {
     /** Logger. */
-    private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(
-            "org.geotools.coverageio.gdal.ecw");
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.gdal.ecw");
 
     /**
      * Tells me if the coverage plugin to access ECW is available or not.
@@ -57,14 +52,11 @@ public final class ECWFormatFactory extends BaseGridFormatFactorySPI implements 
             available = new ECWImageReaderSpi().isAvailable();
 
             if (LOGGER.isLoggable(Level.FINE)) {
-                if (available) 
-                    LOGGER.fine("ECWFormatFactory is availaible.");
-                else 
-                    LOGGER.fine("ECWFormatFactory is not availaible.");
+                if (available) LOGGER.fine("ECWFormatFactory is availaible.");
+                else LOGGER.fine("ECWFormatFactory is not availaible.");
             }
         } catch (ClassNotFoundException cnf) {
-            if (LOGGER.isLoggable(Level.FINE)) 
-                LOGGER.fine("ECWFormatFactory is not availaible.");
+            if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("ECWFormatFactory is not availaible.");
 
             available = false;
         }

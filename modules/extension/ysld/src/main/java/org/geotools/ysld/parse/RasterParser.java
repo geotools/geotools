@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -18,17 +18,13 @@
 package org.geotools.ysld.parse;
 
 import java.util.Map;
-
 import org.geotools.styling.*;
 import org.geotools.ysld.Band;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 import org.opengis.style.ContrastMethod;
 
-/**
- * Handles the parsing of a Ysld "raster" symbolizer property into a {@link Symbolizer} object.
- *
- */
+/** Handles the parsing of a Ysld "raster" symbolizer property into a {@link Symbolizer} object. */
 public class RasterParser extends SymbolizerParser<RasterSymbolizer> {
 
     public RasterParser(Rule rule, Factory factory) {
@@ -45,12 +41,14 @@ public class RasterParser extends SymbolizerParser<RasterSymbolizer> {
             sym.setOpacity(Util.expression(map.str("opacity"), factory));
         }
 
-        context.push("color-map", new ColorMapParser(factory) {
-            @Override
-            protected void colorMap(ColorMap colorMap) {
-                sym.setColorMap(colorMap);
-            }
-        });
+        context.push(
+                "color-map",
+                new ColorMapParser(factory) {
+                    @Override
+                    protected void colorMap(ColorMap colorMap) {
+                        sym.setColorMap(colorMap);
+                    }
+                });
         context.push("contrast-enhancement", new ContrastEnhancementHandler());
         context.push("channels", new ChannelsHandler());
     }
@@ -83,7 +81,6 @@ public class RasterParser extends SymbolizerParser<RasterSymbolizer> {
             }
             if (map.has("gamma")) {
                 contrast.setGammaValue(Util.expression(map.str("gamma"), factory));
-
             }
         }
     }
@@ -127,7 +124,6 @@ public class RasterParser extends SymbolizerParser<RasterSymbolizer> {
                 parse(Band.BLUE, blue, map, context);
             }
         }
-
     }
 
     class SelectedChannelHandler extends YsldParseHandler {
@@ -142,14 +138,15 @@ public class RasterParser extends SymbolizerParser<RasterSymbolizer> {
         public void handle(YamlObject<?> obj, YamlParseContext context) {
             String name = obj.map().str("name");
             sel.setChannelName(name);
-            context.push("contrast-enhancement", new ContrastEnhancementHandler() {
+            context.push(
+                    "contrast-enhancement",
+                    new ContrastEnhancementHandler() {
 
-                @Override
-                protected void set() {
-                    sel.setContrastEnhancement(this.contrast);
-                }
-
-            });
+                        @Override
+                        protected void set() {
+                            sel.setContrastEnhancement(this.contrast);
+                        }
+                    });
         }
     }
 }

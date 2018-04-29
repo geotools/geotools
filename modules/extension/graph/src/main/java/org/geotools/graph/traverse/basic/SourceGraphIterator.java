@@ -20,34 +20,30 @@ import org.geotools.graph.structure.Graphable;
 
 /**
  * A GraphIterator that starts iteration from a specefied point.
- * 
+ *
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- *
- *
- *
  * @source $URL$
  */
 public abstract class SourceGraphIterator extends AbstractGraphIterator {
-  
-  /** source of the iteration **/
-  private Graphable m_source;
-  
-  /**
-   * Sets the source for the iteration.
-   * 
-   * @param source The source of the iteration.
-   */
-  public void setSource(Graphable source) {
-    m_source = source;  
-  }
-  
-  /**
-   * Returns the source of the iteration.
-   *  
-   * @return The source of the iteration.
-   */
-  public Graphable getSource() {
-    return(m_source);  
-  }
-   
+
+    /** source of the iteration * */
+    private Graphable m_source;
+
+    /**
+     * Sets the source for the iteration.
+     *
+     * @param source The source of the iteration.
+     */
+    public void setSource(Graphable source) {
+        m_source = source;
+    }
+
+    /**
+     * Returns the source of the iteration.
+     *
+     * @return The source of the iteration.
+     */
+    public Graphable getSource() {
+        return (m_source);
+    }
 }

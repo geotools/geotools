@@ -17,8 +17,8 @@
  */
 package org.geotools.tile.impl;
 
+import com.vividsolutions.jts.geom.Coordinate;
 import java.util.Arrays;
-
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
@@ -26,11 +26,9 @@ import org.geotools.renderer.lite.RendererUtilities;
 import org.geotools.tile.Tile;
 import org.geotools.tile.TileFactory;
 import org.geotools.tile.TileService;
+import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
-
-import com.vividsolutions.jts.geom.Coordinate;
-import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.operation.TransformException;
 
 /**
@@ -49,9 +47,7 @@ public class ScaleZoomLevelMatcher {
     /** Transformation: MapCrs -> TileCrs (mostly WGS_84) */
     private MathTransform transformMapToTileCrs;
 
-    /**
-     * Transformation: TileCrs (mostly WGS_84) -> MapCrs (needed for the blank tiles)
-     **/
+    /** Transformation: TileCrs (mostly WGS_84) -> MapCrs (needed for the blank tiles) */
     private MathTransform transformTileCrsToMap;
 
     /** the extent that should be drawn in TileCrs */
@@ -64,19 +60,24 @@ public class ScaleZoomLevelMatcher {
     private double scale;
 
     private static int DPI;
+
     static {
         try {
-            DPI = 96;// TODO ?????Toolkit.getDefaultToolkit().getd
+            DPI = 96; // TODO ?????Toolkit.getDefaultToolkit().getd
             // Display.getDefault().getDPI().x;
         } catch (Exception exc) {
             DPI = 96;
         }
     }
 
-    public ScaleZoomLevelMatcher(CoordinateReferenceSystem crsMap,
-            CoordinateReferenceSystem crsTiles, MathTransform transformMapToTileCrs,
-            MathTransform transformTileCrsToMap, ReferencedEnvelope mapExtentTileCrs,
-            ReferencedEnvelope mapExtentMapCrs, double scale) {
+    public ScaleZoomLevelMatcher(
+            CoordinateReferenceSystem crsMap,
+            CoordinateReferenceSystem crsTiles,
+            MathTransform transformMapToTileCrs,
+            MathTransform transformTileCrsToMap,
+            ReferencedEnvelope mapExtentTileCrs,
+            ReferencedEnvelope mapExtentMapCrs,
+            double scale) {
 
         this.crsMap = crsMap;
         this.crsTiles = crsTiles;
@@ -87,12 +88,11 @@ public class ScaleZoomLevelMatcher {
         this.scale = scale;
     }
 
-    /**
-     * @deprecated is wmtSource.getTileCrs() really meaningful?
-     */
+    /** @deprecated is wmtSource.getTileCrs() really meaningful? */
     @Deprecated
-    public static ScaleZoomLevelMatcher createMatcher(ReferencedEnvelope mapExtentMapCrs,
-            double scale, TileService wmtSource) throws Exception {
+    public static ScaleZoomLevelMatcher createMatcher(
+            ReferencedEnvelope mapExtentMapCrs, double scale, TileService wmtSource)
+            throws Exception {
 
         CoordinateReferenceSystem crsMap = mapExtentMapCrs.getCoordinateReferenceSystem();
         // the CRS used for the tile cutting
@@ -106,15 +106,21 @@ public class ScaleZoomLevelMatcher {
         MathTransform transformTileCrsToMap = CRS.findMathTransform(crsTiles, crsMap);
 
         // Get the mapExtent in the tiles CRS
-        ReferencedEnvelope mapExtentTileCrs = getProjectedEnvelope(mapExtentMapCrs, crsTiles,
-                transformMapToTileCrs);
+        ReferencedEnvelope mapExtentTileCrs =
+                getProjectedEnvelope(mapExtentMapCrs, crsTiles, transformMapToTileCrs);
 
-        return new ScaleZoomLevelMatcher(crsMap, crsTiles, transformMapToTileCrs,
-                transformTileCrsToMap, mapExtentTileCrs, mapExtentMapCrs, scale);
+        return new ScaleZoomLevelMatcher(
+                crsMap,
+                crsTiles,
+                transformMapToTileCrs,
+                transformTileCrsToMap,
+                mapExtentTileCrs,
+                mapExtentMapCrs,
+                scale);
     }
 
-    public static ScaleZoomLevelMatcher createMatcher(ReferencedEnvelope requestExtent,
-            CoordinateReferenceSystem crsTiles, double scale)
+    public static ScaleZoomLevelMatcher createMatcher(
+            ReferencedEnvelope requestExtent, CoordinateReferenceSystem crsTiles, double scale)
             throws FactoryException, TransformException {
 
         CoordinateReferenceSystem crsMap = requestExtent.getCoordinateReferenceSystem();
@@ -126,11 +132,17 @@ public class ScaleZoomLevelMatcher {
         MathTransform transformTileToMap = CRS.findMathTransform(crsTiles, crsMap);
 
         // Get the mapExtent in the tiles CRS
-        ReferencedEnvelope mapExtentTileCrs = getProjectedEnvelope(requestExtent, crsTiles,
-                transformMapToTile);
+        ReferencedEnvelope mapExtentTileCrs =
+                getProjectedEnvelope(requestExtent, crsTiles, transformMapToTile);
 
-        return new ScaleZoomLevelMatcher(crsMap, crsTiles, transformMapToTile, transformTileToMap,
-                mapExtentTileCrs, requestExtent, scale);
+        return new ScaleZoomLevelMatcher(
+                crsMap,
+                crsTiles,
+                transformMapToTile,
+                transformTileToMap,
+                mapExtentTileCrs,
+                requestExtent,
+                scale);
     }
 
     /**
@@ -142,8 +154,10 @@ public class ScaleZoomLevelMatcher {
      * @return
      * @throws Exception
      */
-    public static ReferencedEnvelope getProjectedEnvelope(ReferencedEnvelope envelope,
-            CoordinateReferenceSystem destinationCRS, MathTransform transformation)
+    public static ReferencedEnvelope getProjectedEnvelope(
+            ReferencedEnvelope envelope,
+            CoordinateReferenceSystem destinationCRS,
+            MathTransform transformation)
             throws TransformException, FactoryException {
 
         CoordinateReferenceSystem sourceCRS = envelope.getCoordinateReferenceSystem();
@@ -157,8 +171,8 @@ public class ScaleZoomLevelMatcher {
             // ReferencedEnvelope.transform
             try {
 
-                return new ReferencedEnvelope(JTS.transform(envelope, transformation),
-                        destinationCRS);
+                return new ReferencedEnvelope(
+                        JTS.transform(envelope, transformation), destinationCRS);
             } catch (Exception exc) {
 
                 return envelope.transform(destinationCRS, false);
@@ -214,16 +228,17 @@ public class ScaleZoomLevelMatcher {
     }
 
     /**
-     * Calculates the "best" scale for a given zoom-level by calculating the scale for a tile in the center of the map-extent and by taking the mapCrs
-     * in account. "Best" scale is the scale where a 256x256 tile has also this size when displayed in uDig.
+     * Calculates the "best" scale for a given zoom-level by calculating the scale for a tile in the
+     * center of the map-extent and by taking the mapCrs in account. "Best" scale is the scale where
+     * a 256x256 tile has also this size when displayed in uDig.
      *
      * @param zoomLevel
      * @param service
      * @param tempScaleList
      * @return
      */
-    public double getOptimumScaleFromZoomLevel(int zoomLevel, TileService service,
-            double[] tempScaleList) {
+    public double getOptimumScaleFromZoomLevel(
+            int zoomLevel, TileService service, double[] tempScaleList) {
         // check if we have calculated this already
         if (!Double.isNaN(tempScaleList[zoomLevel])) {
             return tempScaleList[zoomLevel];
@@ -232,8 +247,9 @@ public class ScaleZoomLevelMatcher {
         try {
             ReferencedEnvelope centerTileBounds = getBoundsOfCenterTileInMapCrs(zoomLevel, service);
 
-            double _scale = RendererUtilities.calculateScale(centerTileBounds,
-                    service.getTileWidth(), service.getTileHeight(), DPI);
+            double _scale =
+                    RendererUtilities.calculateScale(
+                            centerTileBounds, service.getTileWidth(), service.getTileHeight(), DPI);
 
             // cache the scale
             tempScaleList[zoomLevel] = _scale;
@@ -255,7 +271,8 @@ public class ScaleZoomLevelMatcher {
     }
 
     /**
-     * Returns the bounds of the tile which covers the center of the map extent in the CRS of the map.
+     * Returns the bounds of the tile which covers the center of the map extent in the CRS of the
+     * map.
      *
      * @param zoomLevel
      * @param wmtSource
@@ -285,8 +302,8 @@ public class ScaleZoomLevelMatcher {
         // get the coordinates of the map centre (in TileCrs)
         Coordinate centerPoint = mapExtentTileCrs.centre();
 
-        return tileFactory.findTileAtCoordinate(centerPoint.x, centerPoint.y, zoomLevelInstance,
-                wmtSource);
+        return tileFactory.findTileAtCoordinate(
+                centerPoint.x, centerPoint.y, zoomLevelInstance, wmtSource);
     }
 
     public ReferencedEnvelope projectTileToMapCrs(ReferencedEnvelope boundsInTileCrs)

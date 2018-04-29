@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
-
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
@@ -33,8 +32,9 @@ import org.geotools.data.FileDataStoreFinder;
 
 /**
  * A file chooser dialog to get user choices for data stores.
- * <p>
- * Examples of use:
+ *
+ * <p>Examples of use:
+ *
  * <pre>{@code
  * // prompt the user for a shapefile
  * File file = JFileDataStoreChooser.showOpenFile("shp", parentFrame);
@@ -48,9 +48,6 @@ import org.geotools.data.FileDataStoreFinder;
  *
  * @author Jody Garnett
  * @author Andrea Antonello (www.hydrologis.com)
- *
- *
- *
  * @source $URL$
  */
 public class JFileDataStoreChooser {
@@ -62,14 +59,14 @@ public class JFileDataStoreChooser {
      *
      * @param extension the file extension, with or without the leading '.'
      */
-    public JFileDataStoreChooser( Shell parent, int style, final String extension ) {
-        this(parent, style, new String[]{extension});
+    public JFileDataStoreChooser(Shell parent, int style, final String extension) {
+        this(parent, style, new String[] {extension});
     }
 
-    static Map<String, String> associations( List<String> extensions ) {
+    static Map<String, String> associations(List<String> extensions) {
         Map<String, String> fileAssociations = new TreeMap<String, String>();
 
-        for( String extension : extensions ) {
+        for (String extension : extensions) {
             String ext = extension.toLowerCase().trim();
             if (!ext.startsWith("*.")) {
                 if (ext.startsWith(".")) {
@@ -93,7 +90,8 @@ public class JFileDataStoreChooser {
 
                 } else {
                     // fallback
-                    fileAssociations.put(ext, ext.toUpperCase().substring(1) + "files (*" + ext + ")");
+                    fileAssociations.put(
+                            ext, ext.toUpperCase().substring(1) + "files (*" + ext + ")");
                 }
             }
         }
@@ -105,7 +103,7 @@ public class JFileDataStoreChooser {
      *
      * @param extensions the file extensions, with or without the leading '.'
      */
-    public JFileDataStoreChooser( Shell parent, int style, final List<String> extensions ) {
+    public JFileDataStoreChooser(Shell parent, int style, final List<String> extensions) {
         this(parent, style, associations(extensions));
     }
 
@@ -114,7 +112,7 @@ public class JFileDataStoreChooser {
      *
      * @param extensions the file extensions, with or without the leading '.'
      */
-    public JFileDataStoreChooser( Shell parent, int style, final String[] extensions ) {
+    public JFileDataStoreChooser(Shell parent, int style, final String[] extensions) {
         this(parent, style, associations(Arrays.asList(extensions)));
     }
 
@@ -128,10 +126,11 @@ public class JFileDataStoreChooser {
      * JFileDataStoreChooser chooser = new JFileDataStoreChooser(assoc);
      * </code></pre>
      *
-     * @param fileAssociations a {@code Map} where keys are extensions (with or
-     *        wirhout the leading dot) and values are descriptions.
+     * @param fileAssociations a {@code Map} where keys are extensions (with or wirhout the leading
+     *     dot) and values are descriptions.
      */
-    public JFileDataStoreChooser( Shell parent, int style, final Map<String, String> fileAssociations ) {
+    public JFileDataStoreChooser(
+            Shell parent, int style, final Map<String, String> fileAssociations) {
         fileDialog = new FileDialog(parent, style);
         init(fileAssociations);
     }
@@ -139,14 +138,14 @@ public class JFileDataStoreChooser {
     /**
      * Helper method for constructors that creates file filters.
      *
-     * @param fileAssociations a {@code Map} where keys are extensions (with or
-     *        wirhout the leading dot) and values are descriptions.
+     * @param fileAssociations a {@code Map} where keys are extensions (with or wirhout the leading
+     *     dot) and values are descriptions.
      */
-    private void init( final Map<String, String> fileAssociations ) {
+    private void init(final Map<String, String> fileAssociations) {
         String[] exts = new String[fileAssociations.size()];
         String[] descr = new String[fileAssociations.size()];
         int i = 0;
-        for( final Entry<String, String> entry : fileAssociations.entrySet() ) {
+        for (final Entry<String, String> entry : fileAssociations.entrySet()) {
 
             exts[i] = entry.getKey();
             descr[i] = entry.getValue();
@@ -157,12 +156,11 @@ public class JFileDataStoreChooser {
     }
 
     /**
-     * Creates a dialog that filters for files matching the specified
-     * data format. 
+     * Creates a dialog that filters for files matching the specified data format.
      *
      * @param format data file format
      */
-    public JFileDataStoreChooser( Shell parent, int style, final FileDataStoreFactorySpi format ) {
+    public JFileDataStoreChooser(Shell parent, int style, final FileDataStoreFactorySpi format) {
         fileDialog = new FileDialog(parent, style);
         fileDialog.setFilterExtensions(format.getFileExtensions());
     }
@@ -176,11 +174,10 @@ public class JFileDataStoreChooser {
      *
      * @param extension file extension, with or without leading '.'
      * @param parent parent GUI component (may be {@code null})
-     *
      * @return the selected file or null if the user cancelled the selection
      * @throws java.awt.HeadlessException if run in an unsupported environment
      */
-    public static File showOpenFile( String extension, Shell parent ) {
+    public static File showOpenFile(String extension, Shell parent) {
         return showOpenFile(extension, null, parent);
     }
 
@@ -188,14 +185,13 @@ public class JFileDataStoreChooser {
      * Show a file open dialog that filters for files with the given extension.
      *
      * @param extension file extension, with or without leading '.'
-     * @param initialDir initial directory to display; if {@code null} the initial directory
-     *        will be the user's default directory
+     * @param initialDir initial directory to display; if {@code null} the initial directory will be
+     *     the user's default directory
      * @param parent parent GUI component (may be {@code null})
-     *
      * @return the selected file or null if the user cancelled the selection
      * @throws java.awt.HeadlessException if run in an unsupported environment
      */
-    public static File showOpenFile( String extension, File initialDir, Shell parent ) {
+    public static File showOpenFile(String extension, File initialDir, Shell parent) {
         JFileDataStoreChooser dialog = new JFileDataStoreChooser(parent, SWT.OPEN, extension);
         FileDialog fileDialogInternal = dialog.getFileDialog();
         if (initialDir != null) {
@@ -217,11 +213,10 @@ public class JFileDataStoreChooser {
      *
      * @param extensions array of file extension, with or without leading '.'
      * @param parent parent GUI component (may be null)
-     *
      * @return the selected file or null if the user cancelled the selection
      * @throws java.awt.HeadlessException if run in an unsupported environment
      */
-    public static File showOpenFile( String[] extensions, Shell parent ) {
+    public static File showOpenFile(String[] extensions, Shell parent) {
         return showOpenFile(extensions, null, parent);
     }
 
@@ -229,14 +224,13 @@ public class JFileDataStoreChooser {
      * Show a file open dialog that filters for files with the given extensions.
      *
      * @param extensions array of file extension, with or without leading '.'
-     * @param initialDir initial directory to display; if {@code null} the initial directory
-     *        will be the user's default directory
+     * @param initialDir initial directory to display; if {@code null} the initial directory will be
+     *     the user's default directory
      * @param parent parent GUI component (may be null)
-     *
      * @return the selected file or null if the user cancelled the selection
      * @throws java.awt.HeadlessException if run in an unsupported environment
      */
-    public static File showOpenFile( String[] extensions, File initialDir, Shell parent ) {
+    public static File showOpenFile(String[] extensions, File initialDir, Shell parent) {
 
         JFileDataStoreChooser dialog = new JFileDataStoreChooser(parent, SWT.OPEN, extensions);
         FileDialog fileDialogInternal = dialog.getFileDialog();
@@ -257,32 +251,28 @@ public class JFileDataStoreChooser {
     }
 
     /**
-     * Show a file open dialog that filters for files that match a given file
-     * data store format
+     * Show a file open dialog that filters for files that match a given file data store format
      *
      * @param format the file data store format
      * @param parent parent GUI component (may be null)
-     *
      * @return the selected file or null if the user cancelled the selection
      * @throws java.awt.HeadlessException if run in an unsupported environment
      */
-    public static File showOpenFile( FileDataStoreFactorySpi format, Shell parent ) {
+    public static File showOpenFile(FileDataStoreFactorySpi format, Shell parent) {
         return showOpenFile(format, null, parent);
     }
 
     /**
-     * Show a file open dialog that filters for files that match a given file
-     * data store format
+     * Show a file open dialog that filters for files that match a given file data store format
      *
      * @param format the file data store format
-     * @param initialDir initial directory to display; if {@code null} the initial directory
-     *        will be the user's default directory
+     * @param initialDir initial directory to display; if {@code null} the initial directory will be
+     *     the user's default directory
      * @param parent parent GUI component (may be null)
-     *
      * @return the selected file or null if the user cancelled the selection
      * @throws java.awt.HeadlessException if run in an unsupported environment
      */
-    public static File showOpenFile( FileDataStoreFactorySpi format, File initialDir, Shell parent ) {
+    public static File showOpenFile(FileDataStoreFactorySpi format, File initialDir, Shell parent) {
 
         JFileDataStoreChooser dialog = new JFileDataStoreChooser(parent, SWT.OPEN, format);
         FileDialog fileDialogInternal = dialog.getFileDialog();
@@ -305,7 +295,7 @@ public class JFileDataStoreChooser {
      *
      * @param arg ignored
      */
-    public static void main( String arg[] ) {
+    public static void main(String arg[]) {
         Display display = new Display();
         Shell shell = new Shell(display);
         File file = JFileDataStoreChooser.showOpenFile("shp", shell);
@@ -316,13 +306,12 @@ public class JFileDataStoreChooser {
         }
     }
     /**
-     * Consider the provided file as a candidate for a new filename. 
-     * A number will be appended to the filename if there is a
-     * conflict.
-     * 
+     * Consider the provided file as a candidate for a new filename. A number will be appended to
+     * the filename if there is a conflict.
+     *
      * @param file the candidate file name
      */
-    public void setSaveFile( File file ) {
+    public void setSaveFile(File file) {
         String path = file.getAbsolutePath();
         int split = path.lastIndexOf('.');
         String base;
@@ -336,7 +325,7 @@ public class JFileDataStoreChooser {
         }
         File saveFile = new File(path);
         int number = 0;
-        while( saveFile.exists() ) {
+        while (saveFile.exists()) {
             saveFile = new File(base + (number++) + extension);
         }
         fileDialog.setFileName(saveFile.getAbsolutePath());

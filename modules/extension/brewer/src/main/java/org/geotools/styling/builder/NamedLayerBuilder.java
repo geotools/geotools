@@ -18,19 +18,15 @@ package org.geotools.styling.builder;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.geotools.styling.FeatureTypeConstraint;
 import org.geotools.styling.NamedLayer;
 import org.geotools.styling.Style;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class NamedLayerBuilder extends AbstractSLDBuilder<NamedLayer> {
 
-    List<FeatureTypeConstraintBuilder> featureTypeConstraint = new ArrayList<FeatureTypeConstraintBuilder>();
+    List<FeatureTypeConstraintBuilder> featureTypeConstraint =
+            new ArrayList<FeatureTypeConstraintBuilder>();
 
     private String name;
 
@@ -96,8 +92,8 @@ public class NamedLayerBuilder extends AbstractSLDBuilder<NamedLayer> {
         featureTypeConstraint.clear();
         if (layer.layerFeatureConstraints() != null) {
             for (FeatureTypeConstraint featureConstraint : layer.layerFeatureConstraints()) {
-                featureTypeConstraint.add(new FeatureTypeConstraintBuilder(this)
-                        .reset(featureConstraint));
+                featureTypeConstraint.add(
+                        new FeatureTypeConstraintBuilder(this).reset(featureConstraint));
             }
         }
         styles.clear();
@@ -116,5 +112,4 @@ public class NamedLayerBuilder extends AbstractSLDBuilder<NamedLayer> {
     protected void buildSLDInternal(StyledLayerDescriptorBuilder sb) {
         sb.namedLayer().init(this);
     }
-
 }

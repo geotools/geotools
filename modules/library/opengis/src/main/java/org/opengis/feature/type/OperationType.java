@@ -4,68 +4,62 @@
  *
  *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2004-2007 Open Geospatial Consortium Inc.
- *    
+ *
  *    All Rights Reserved. http://www.opengis.org/legal/
  */
 package org.opengis.feature.type;
 
 import java.util.List;
-
 import org.opengis.filter.Filter;
 
 /**
  * The type of operations to be invoked on an attribute.
- * <p>
- * Invoking an operation on an attribute is used to calculate a derived quantity
- * or update attribute state. OperationType is used to define the required
- * parameters and expected result for an Operation.
+ *
+ * <p>Invoking an operation on an attribute is used to calculate a derived quantity or update
+ * attribute state. OperationType is used to define the required parameters and expected result for
+ * an Operation.
  *
  * @author Jody Garnett, Refractions Research, Inc.
- *
- *
  * @source $URL$
  */
- public interface OperationType extends PropertyType {
+public interface OperationType extends PropertyType {
 
     /**
      * Access to super type information.
-     * <p>
-     * The super type of an operation provides additional
-     * restrictions and description for this operation.
-     * </p>
+     *
+     * <p>The super type of an operation provides additional restrictions and description for this
+     * operation.
+     *
      * @return super type
      */
-     OperationType getSuper();
+    OperationType getSuper();
 
     /**
      * Indicate that this OperationType may not be used directly.
-     * <p>
-     * This indicates that a sub type will need to actually define the operation
-     * meaning here. As an example a graph system could have an Edge that would
-     * have "related" operation returning that was abstract, and a sub type road
-     * would define "related" based on touches, or "contains" or "common vertex".
-     * </p>
+     *
+     * <p>This indicates that a sub type will need to actually define the operation meaning here. As
+     * an example a graph system could have an Edge that would have "related" operation returning
+     * that was abstract, and a sub type road would define "related" based on touches, or "contains"
+     * or "common vertex".
      */
-     boolean isAbstract();
+    boolean isAbstract();
+
+    /** AttributeType this operation type can function against. */
+    AttributeType getTarget();
 
     /**
-     * AttributeType this operation type can function against.
+     * Indicates the expected result type, may be <code>null</code>.
+     *
+     * @return expected result type, may be <code>null</code>
      */
-     AttributeType getTarget();
-
-     /**
-      * Indicates the expected result type, may be <code>null</code>.
-      *
-      * @return expected result type, may be <code>null</code>
-      */
-     AttributeType getResult();
+    AttributeType getResult();
 
     /**
      * We need the following AttributeTypes as parameters.
-     * <p>
-     * Note we do not need AttributeDescriptors here as parameters
-     * are ordered, so name is not needed.
-     * </p>
+     *
+     * <p>Note we do not need AttributeDescriptors here as parameters are ordered, so name is not
+     * needed.
+     *
      * @return indicates paramters required for operation
      */
     List<AttributeType> getParameters();
@@ -75,5 +69,5 @@ import org.opengis.filter.Filter;
      *
      * @return Restrictions on valid return values
      */
-     List<Filter> getRestrictions();
+    List<Filter> getRestrictions();
 }

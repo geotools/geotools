@@ -20,9 +20,7 @@ package org.geotools.gce.imagemosaic.acceptors;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Acceptor factory that only checks color model limitations
- */
+/** Acceptor factory that only checks color model limitations */
 public class HeterogeneousCRSAcceptorFactory implements GranuleAcceptorFactorySPI {
     @Override
     public List<GranuleAcceptor> create() {

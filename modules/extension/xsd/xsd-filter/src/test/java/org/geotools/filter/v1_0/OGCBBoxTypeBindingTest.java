@@ -16,17 +16,12 @@
  */
 package org.geotools.filter.v1_0;
 
-import org.w3c.dom.Document;
-import org.opengis.filter.spatial.BBOX;
 import org.geotools.gml2.GML;
 import org.geotools.xml.Binding;
+import org.opengis.filter.spatial.BBOX;
+import org.w3c.dom.Document;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class OGCBBoxTypeBindingTest extends FilterTestSupport {
     public void testType() {
         assertEquals(BBOX.class, binding(OGC.BBOXType).getType());
@@ -52,9 +47,11 @@ public class OGCBBoxTypeBindingTest extends FilterTestSupport {
     public void testEncode() throws Exception {
         Document doc = encode(FilterMockData.bbox(), OGC.BBOX);
 
-        assertEquals(1,
-            doc.getElementsByTagNameNS(OGC.NAMESPACE, OGC.PropertyName.getLocalPart()).getLength());
-        assertEquals(1,
-            doc.getElementsByTagNameNS(GML.NAMESPACE, GML.Box.getLocalPart()).getLength());
+        assertEquals(
+                1,
+                doc.getElementsByTagNameNS(OGC.NAMESPACE, OGC.PropertyName.getLocalPart())
+                        .getLength());
+        assertEquals(
+                1, doc.getElementsByTagNameNS(GML.NAMESPACE, GML.Box.getLocalPart()).getLength());
     }
 }

@@ -16,36 +16,33 @@
  */
 package org.geotools.referencing.factory.epsg;
 
-import java.util.Set;
-import java.util.AbstractSet;
-import java.util.AbstractMap;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.NoSuchElementException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.logging.LogRecord;
-import java.io.Serializable;
 import java.io.ObjectStreamException;
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import java.util.AbstractMap;
+import java.util.AbstractSet;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
+import org.geotools.resources.i18n.LoggingKeys;
+import org.geotools.resources.i18n.Loggings;
+import org.geotools.util.logging.Logging;
 import org.opengis.referencing.operation.Projection;
 
-import org.geotools.util.logging.Logging;
-import org.geotools.resources.i18n.Loggings;
-import org.geotools.resources.i18n.LoggingKeys;
-
-
 /**
- * A set of EPSG authority codes. This set requires a living connection to the EPSG database.
- * All {@link #iterator} method call creates a new {@link ResultSet} holding the codes. However,
- * call to {@link #contains} map directly to a SQL call.
- * <p>
- * Serialization of this class store a copy of all authority codes. The serialization
- * do not preserve any connection to the database.
+ * A set of EPSG authority codes. This set requires a living connection to the EPSG database. All
+ * {@link #iterator} method call creates a new {@link ResultSet} holding the codes. However, call to
+ * {@link #contains} map directly to a SQL call.
+ *
+ * <p>Serialization of this class store a copy of all authority codes. The serialization do not
+ * preserve any connection to the database.
  *
  * @since 2.2
  * @source $URL$
@@ -53,9 +50,7 @@ import org.geotools.resources.i18n.LoggingKeys;
  * @author Martin Desruisseaux (IRD)
  */
 final class AuthorityCodes extends AbstractSet<String> implements Serializable {
-    /**
-     * For compatibility with different versions.
-     */
+    /** For compatibility with different versions. */
     private static final long serialVersionUID = 7105664579449680562L;
 
     /**
@@ -67,44 +62,36 @@ final class AuthorityCodes extends AbstractSet<String> implements Serializable {
     private final DirectEpsgFactory factory;
 
     /**
-     * The type for this code set. This is translated to the most appropriate
-     * interface type even if the user supplied an implementation type.
+     * The type for this code set. This is translated to the most appropriate interface type even if
+     * the user supplied an implementation type.
      */
     public final Class<?> type;
 
-    /**
-     * {@code true} if {@link #type} is assignable to {@link Projection}.
-     */
+    /** {@code true} if {@link #type} is assignable to {@link Projection}. */
     private final boolean isProjection;
 
     /**
-     * A view of this set as a map with object's name as values, or {@code null} if none.
-     * Will be created only when first needed.
+     * A view of this set as a map with object's name as values, or {@code null} if none. Will be
+     * created only when first needed.
      */
-    private transient java.util.Map<String,String> asMap;
+    private transient java.util.Map<String, String> asMap;
 
     /**
-     * The SQL command to use for creating the {@code queryAll} statement.
-     * Used for iteration over all codes.
+     * The SQL command to use for creating the {@code queryAll} statement. Used for iteration over
+     * all codes.
      */
     final String sqlAll;
 
     /**
-     * The SQL command to use for creating the {@code querySingle} statement.
-     * Used for fetching the description from a code.
+     * The SQL command to use for creating the {@code querySingle} statement. Used for fetching the
+     * description from a code.
      */
     private final String sqlSingle;
 
-    /**
-     * The statement to use for querying all codes.
-     * Will be created only when first needed.
-     */
+    /** The statement to use for querying all codes. Will be created only when first needed. */
     private transient PreparedStatement queryAll;
 
-    /**
-     * The statement to use for querying a single code.
-     * Will be created only when first needed.
-     */
+    /** The statement to use for querying a single code. Will be created only when first needed. */
     private transient PreparedStatement querySingle;
 
     /**
@@ -117,15 +104,14 @@ final class AuthorityCodes extends AbstractSet<String> implements Serializable {
     /**
      * Creates a new set of authority codes for the specified type.
      *
-     * @param  connection The provider of connection to the EPSG database.
-     * @param  table      The table to query.
-     * @param  type       The type to query.
-     * @param  factory    The factory originator.
+     * @param connection The provider of connection to the EPSG database.
+     * @param table The table to query.
+     * @param type The type to query.
+     * @param factory The factory originator.
      */
-    public AuthorityCodes(final TableInfo table,
-                          final Class<?> type, final DirectEpsgFactory factory)
-    {
-        this.factory    = factory;
+    public AuthorityCodes(
+            final TableInfo table, final Class<?> type, final DirectEpsgFactory factory) {
+        this.factory = factory;
         final StringBuilder buffer = new StringBuilder("SELECT ");
         buffer.append(table.codeColumn);
         if (table.nameColumn != null) {
@@ -135,11 +121,14 @@ final class AuthorityCodes extends AbstractSet<String> implements Serializable {
         boolean hasWhere = false;
         Class<?> tableType = table.type;
         if (table.typeColumn != null) {
-            for (int i=0; i<table.subTypes.length; i++) {
+            for (int i = 0; i < table.subTypes.length; i++) {
                 final Class<?> candidate = table.subTypes[i];
                 if (candidate.isAssignableFrom(type)) {
-                    buffer.append(" WHERE (").append(table.typeColumn)
-                          .append(" LIKE '").append(table.typeNames[i]).append("%'");
+                    buffer.append(" WHERE (")
+                            .append(table.typeColumn)
+                            .append(" LIKE '")
+                            .append(table.typeNames[i])
+                            .append("%'");
                     hasWhere = true;
                     tableType = candidate;
                     break;
@@ -158,8 +147,9 @@ final class AuthorityCodes extends AbstractSet<String> implements Serializable {
         buffer.append(hasWhere ? " AND " : " WHERE ").append(table.codeColumn).append(" = ?");
         sqlSingle = factory.adaptSQL(buffer.toString());
     }
-    
-    protected PreparedStatement validateStatement(PreparedStatement stmt, String sql) throws SQLException {
+
+    protected PreparedStatement validateStatement(PreparedStatement stmt, String sql)
+            throws SQLException {
         Connection conn = null;
         if (stmt != null) {
             try {
@@ -169,18 +159,16 @@ final class AuthorityCodes extends AbstractSet<String> implements Serializable {
                 stmt = null;
             }
         }
-        if(conn != null && !factory.isConnectionValid(conn)) {
+        if (conn != null && !factory.isConnectionValid(conn)) {
             stmt = null;
         }
         if (stmt == null) {
             stmt = factory.getConnection().prepareStatement(sql);
-        } 
+        }
         return stmt;
     }
 
-    /**
-     * Returns all codes.
-     */
+    /** Returns all codes. */
     private ResultSet getAll() throws SQLException {
         assert Thread.holdsLock(this);
         queryAll = validateStatement(queryAll, sqlAll);
@@ -203,9 +191,7 @@ final class AuthorityCodes extends AbstractSet<String> implements Serializable {
         return queryAll.executeQuery();
     }
 
-    /**
-     * Returns a single code.
-     */
+    /** Returns a single code. */
     private ResultSet getSingle(final Object code) throws SQLException {
         assert Thread.holdsLock(this);
         querySingle = validateStatement(querySingle, sqlSingle);
@@ -214,8 +200,8 @@ final class AuthorityCodes extends AbstractSet<String> implements Serializable {
     }
 
     /**
-     * Returns {@code true} if the code in the specified result set is acceptable.
-     * This method handle projections in a special way.
+     * Returns {@code true} if the code in the specified result set is acceptable. This method
+     * handle projections in a special way.
      */
     private boolean isAcceptable(final ResultSet results) throws SQLException {
         if (!isProjection) {
@@ -228,8 +214,8 @@ final class AuthorityCodes extends AbstractSet<String> implements Serializable {
     }
 
     /**
-     * Returns {@code true} if the code in the specified code is acceptable.
-     * This method handle projections in a special way.
+     * Returns {@code true} if the code in the specified code is acceptable. This method handle
+     * projections in a special way.
      */
     private boolean isAcceptable(final String code) throws SQLException {
         if (!isProjection) {
@@ -241,8 +227,8 @@ final class AuthorityCodes extends AbstractSet<String> implements Serializable {
     }
 
     /**
-     * Returns {@code true} if this collection contains no elements.
-     * This method fetch at most one row instead of counting all rows.
+     * Returns {@code true} if this collection contains no elements. This method fetch at most one
+     * row instead of counting all rows.
      */
     @Override
     public synchronized boolean isEmpty() {
@@ -266,9 +252,7 @@ final class AuthorityCodes extends AbstractSet<String> implements Serializable {
         return empty;
     }
 
-    /**
-     * Count the number of elements in the underlying result set.
-     */
+    /** Count the number of elements in the underlying result set. */
     public synchronized int size() {
         if (size >= 0) {
             return size;
@@ -289,24 +273,23 @@ final class AuthorityCodes extends AbstractSet<String> implements Serializable {
         return count;
     }
 
-    /**
-     * Returns {@code true} if this collection contains the specified element.
-     */
+    /** Returns {@code true} if this collection contains the specified element. */
     @Override
     public synchronized boolean contains(final Object code) {
         boolean exists = false;
-        if (code != null) try {
-            final ResultSet results = getSingle(code);
-            while (results.next()) {
-                if (isAcceptable(results)) {
-                    exists = true;
-                    break;
+        if (code != null)
+            try {
+                final ResultSet results = getSingle(code);
+                while (results.next()) {
+                    if (isAcceptable(results)) {
+                        exists = true;
+                        break;
+                    }
                 }
+                results.close();
+            } catch (SQLException exception) {
+                unexpectedException("contains", exception);
             }
-            results.close();
-        } catch (SQLException exception) {
-            unexpectedException("contains", exception);
-        }
         return exists;
     }
 
@@ -342,9 +325,9 @@ final class AuthorityCodes extends AbstractSet<String> implements Serializable {
     }
 
     /**
-     * Closes the underlying statements. Note: this method is also invoked directly
-     * by {@link DirectEpsgFactory#dispose}, which is okay in this particular case since
-     * the implementation of this method can be executed an arbitrary amount of times.
+     * Closes the underlying statements. Note: this method is also invoked directly by {@link
+     * DirectEpsgFactory#dispose}, which is okay in this particular case since the implementation of
+     * this method can be executed an arbitrary amount of times.
      */
     @Override
     protected synchronized void finalize() throws SQLException {
@@ -358,28 +341,18 @@ final class AuthorityCodes extends AbstractSet<String> implements Serializable {
         }
     }
 
-    /**
-     * Invoked when an exception occured. This method just log a warning.
-     */
-    private static void unexpectedException(final String       method,
-                                            final SQLException exception)
-    {
+    /** Invoked when an exception occured. This method just log a warning. */
+    private static void unexpectedException(final String method, final SQLException exception) {
         unexpectedException(AuthorityCodes.class, method, exception);
     }
 
-    /**
-     * Invoked when an exception occured. This method just log a warning.
-     */
-    static void unexpectedException(final Class<?>     classe,
-                                    final String       method,
-                                    final SQLException exception)
-    {
+    /** Invoked when an exception occured. This method just log a warning. */
+    static void unexpectedException(
+            final Class<?> classe, final String method, final SQLException exception) {
         Logging.unexpectedException(classe, method, exception);
     }
 
-    /**
-     * Invoked when a recoverable exception occured.
-     */
+    /** Invoked when a recoverable exception occured. */
     private static void recoverableException(final String method, final SQLException exception) {
         // Uses the FINE level instead of WARNING because it may be a recoverable error.
         LogRecord record = Loggings.format(Level.FINE, LoggingKeys.UNEXPECTED_EXCEPTION);
@@ -393,8 +366,8 @@ final class AuthorityCodes extends AbstractSet<String> implements Serializable {
 
     /**
      * The iterator over the codes. This inner class must kept a reference toward the enclosing
-     * {@link AuthorityCodes} in order to prevent a call to {@link AuthorityCodes#finalize}
-     * before the iteration is finished.
+     * {@link AuthorityCodes} in order to prevent a call to {@link AuthorityCodes#finalize} before
+     * the iteration is finished.
      */
     private final class Iterator implements java.util.Iterator<String> {
         /** The result set, or {@code null} if there is no more elements. */
@@ -472,10 +445,8 @@ final class AuthorityCodes extends AbstractSet<String> implements Serializable {
         }
     }
 
-    /**
-     * Returns a view of this set as a map with object's name as value, or {@code null} if none.
-     */
-    final java.util.Map<String,String> asMap() {
+    /** Returns a view of this set as a map with object's name as value, or {@code null} if none. */
+    final java.util.Map<String, String> asMap() {
         if (asMap == null) {
             asMap = new Map();
         }
@@ -483,60 +454,51 @@ final class AuthorityCodes extends AbstractSet<String> implements Serializable {
     }
 
     /**
-     * A view of {@link AuthorityCodes} as a map, with authority codes as key and
-     * object names as values.
+     * A view of {@link AuthorityCodes} as a map, with authority codes as key and object names as
+     * values.
      */
-    private final class Map extends AbstractMap<String,String> {
-        /**
-         * Returns the number of key-value mappings in this map.
-         */
+    private final class Map extends AbstractMap<String, String> {
+        /** Returns the number of key-value mappings in this map. */
         @Override
         public int size() {
             return AuthorityCodes.this.size();
         }
 
-        /**
-         * Returns {@code true} if this map contains no key-value mappings.
-         */
+        /** Returns {@code true} if this map contains no key-value mappings. */
         @Override
         public boolean isEmpty() {
             return AuthorityCodes.this.isEmpty();
         }
 
-        /**
-         * Returns the description to which this map maps the specified EPSG code.
-         */
+        /** Returns the description to which this map maps the specified EPSG code. */
         @Override
         public String get(final Object code) {
             String value = null;
-            if (code != null) try {
-                synchronized (AuthorityCodes.this) {
-                    final ResultSet results = getSingle(code);
-                    while (results.next()) {
-                        if (isAcceptable(results)) {
-                            value = results.getString(2);
-                            break;
+            if (code != null)
+                try {
+                    synchronized (AuthorityCodes.this) {
+                        final ResultSet results = getSingle(code);
+                        while (results.next()) {
+                            if (isAcceptable(results)) {
+                                value = results.getString(2);
+                                break;
+                            }
                         }
+                        results.close();
                     }
-                    results.close();
+                } catch (SQLException exception) {
+                    unexpectedException("get", exception);
                 }
-            } catch (SQLException exception) {
-                unexpectedException("get", exception);
-            }
             return value;
         }
 
-        /**
-         * Returns {@code true} if this map contains a mapping for the specified EPSG code.
-         */
+        /** Returns {@code true} if this map contains a mapping for the specified EPSG code. */
         @Override
         public boolean containsKey(final Object key) {
             return contains(key);
         }
 
-        /**
-         * Returns a set view of the keys contained in this map.
-         */
+        /** Returns a set view of the keys contained in this map. */
         @Override
         public Set<String> keySet() {
             return AuthorityCodes.this;
@@ -547,7 +509,7 @@ final class AuthorityCodes extends AbstractSet<String> implements Serializable {
          *
          * @todo Not yet implemented.
          */
-        public Set<java.util.Map.Entry<String,String>> entrySet() {
+        public Set<java.util.Map.Entry<String, String>> entrySet() {
             throw new UnsupportedOperationException();
         }
     }

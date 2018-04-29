@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -56,11 +56,11 @@ import org.opengis.filter.temporal.TEquals;
 import org.opengis.filter.temporal.TOverlaps;
 
 /**
- * Base filter visitor class that aggregates the individual visit methods based on filter 
+ * Base filter visitor class that aggregates the individual visit methods based on filter
  * hierarchy.
  * <p>
  * Methods are grouped by the {@link BinaryLogicOperator}, {@link BinaryComparisonOperator},
- *  {@link BinarySpatialOperator}, and {@link BinaryTemporalOperator} and subclasses should 
+ *  {@link BinarySpatialOperator}, and {@link BinaryTemporalOperator} and subclasses should
  *  implement:
  *  <ul>
  *    <li>{@link #visit(BinaryLogicOperator, Object)}
@@ -71,148 +71,148 @@ import org.opengis.filter.temporal.TOverlaps;
  *  For visitors looking for a base class that simply stubs out the various visit methods should use
  *  {@link DefaultFilterVisitor} instead.
  * </p>
- * 
+ *
  * @author Justin Deoliveira, OpenGeo
  *
  */
 public abstract class FilterVisitorSupport implements FilterVisitor {
 
     public Object visit(And filter, Object extraData) {
-        return visit((BinaryLogicOperator)filter, extraData);
+        return visit((BinaryLogicOperator) filter, extraData);
     }
 
     public Object visit(Or filter, Object extraData) {
-        return visit((BinaryLogicOperator)filter, extraData);
+        return visit((BinaryLogicOperator) filter, extraData);
     }
 
     protected abstract Object visit(BinaryLogicOperator op, Object extraData);
 
     public Object visit(PropertyIsEqualTo filter, Object extraData) {
-        return visit((BinaryComparisonOperator)filter, extraData);
+        return visit((BinaryComparisonOperator) filter, extraData);
     }
 
     public Object visit(PropertyIsNotEqualTo filter, Object extraData) {
-        return visit((BinaryComparisonOperator)filter, extraData);
+        return visit((BinaryComparisonOperator) filter, extraData);
     }
 
     public Object visit(PropertyIsGreaterThan filter, Object extraData) {
-        return visit((BinaryComparisonOperator)filter, extraData);
+        return visit((BinaryComparisonOperator) filter, extraData);
     }
 
     public Object visit(PropertyIsGreaterThanOrEqualTo filter, Object extraData) {
-        return visit((BinaryComparisonOperator)filter, extraData);
+        return visit((BinaryComparisonOperator) filter, extraData);
     }
 
     public Object visit(PropertyIsLessThan filter, Object extraData) {
-        return visit((BinaryComparisonOperator)filter, extraData);
+        return visit((BinaryComparisonOperator) filter, extraData);
     }
 
     public Object visit(PropertyIsLessThanOrEqualTo filter, Object extraData) {
-        return visit((BinaryComparisonOperator)filter, extraData);
+        return visit((BinaryComparisonOperator) filter, extraData);
     }
 
     protected abstract Object visit(BinaryComparisonOperator op, Object extraData);
 
     public Object visit(BBOX filter, Object extraData) {
-        return visit((BinarySpatialOperator)filter, extraData);
+        return visit((BinarySpatialOperator) filter, extraData);
     }
 
     public Object visit(Beyond filter, Object extraData) {
-        return visit((BinarySpatialOperator)filter, extraData);
+        return visit((BinarySpatialOperator) filter, extraData);
     }
 
     public Object visit(Contains filter, Object extraData) {
-        return visit((BinarySpatialOperator)filter, extraData);
+        return visit((BinarySpatialOperator) filter, extraData);
     }
 
     public Object visit(Crosses filter, Object extraData) {
-        return visit((BinarySpatialOperator)filter, extraData);
+        return visit((BinarySpatialOperator) filter, extraData);
     }
 
     public Object visit(Disjoint filter, Object extraData) {
-        return visit((BinarySpatialOperator)filter, extraData);
+        return visit((BinarySpatialOperator) filter, extraData);
     }
 
     public Object visit(DWithin filter, Object extraData) {
-        return visit((BinarySpatialOperator)filter, extraData);
+        return visit((BinarySpatialOperator) filter, extraData);
     }
 
     public Object visit(Equals filter, Object extraData) {
-        return visit((BinarySpatialOperator)filter, extraData);
+        return visit((BinarySpatialOperator) filter, extraData);
     }
 
     public Object visit(Intersects filter, Object extraData) {
-        return visit((BinarySpatialOperator)filter, extraData);
+        return visit((BinarySpatialOperator) filter, extraData);
     }
 
     public Object visit(Overlaps filter, Object extraData) {
-        return visit((BinarySpatialOperator)filter, extraData);
+        return visit((BinarySpatialOperator) filter, extraData);
     }
 
     public Object visit(Touches filter, Object extraData) {
-        return visit((BinarySpatialOperator)filter, extraData);
+        return visit((BinarySpatialOperator) filter, extraData);
     }
 
     public Object visit(Within filter, Object extraData) {
-        return visit((BinarySpatialOperator)filter, extraData);
+        return visit((BinarySpatialOperator) filter, extraData);
     }
 
     protected abstract Object visit(BinarySpatialOperator op, Object extraData);
-    
+
     public Object visit(After filter, Object extraData) {
-        return visit((BinaryTemporalOperator)filter, extraData);
+        return visit((BinaryTemporalOperator) filter, extraData);
     }
 
     public Object visit(AnyInteracts filter, Object extraData) {
-        return visit((BinaryTemporalOperator)filter, extraData);
+        return visit((BinaryTemporalOperator) filter, extraData);
     }
 
     public Object visit(Before filter, Object extraData) {
-        return visit((BinaryTemporalOperator)filter, extraData);
+        return visit((BinaryTemporalOperator) filter, extraData);
     }
 
     public Object visit(Begins filter, Object extraData) {
-        return visit((BinaryTemporalOperator)filter, extraData);
+        return visit((BinaryTemporalOperator) filter, extraData);
     }
 
     public Object visit(BegunBy filter, Object extraData) {
-        return visit((BinaryTemporalOperator)filter, extraData);
+        return visit((BinaryTemporalOperator) filter, extraData);
     }
 
     public Object visit(During filter, Object extraData) {
-        return visit((BinaryTemporalOperator)filter, extraData);
+        return visit((BinaryTemporalOperator) filter, extraData);
     }
 
     public Object visit(EndedBy filter, Object extraData) {
-        return visit((BinaryTemporalOperator)filter, extraData);
+        return visit((BinaryTemporalOperator) filter, extraData);
     }
 
     public Object visit(Ends filter, Object extraData) {
-        return visit((BinaryTemporalOperator)filter, extraData);
+        return visit((BinaryTemporalOperator) filter, extraData);
     }
 
     public Object visit(Meets filter, Object extraData) {
-        return visit((BinaryTemporalOperator)filter, extraData);
+        return visit((BinaryTemporalOperator) filter, extraData);
     }
 
     public Object visit(MetBy filter, Object extraData) {
-        return visit((BinaryTemporalOperator)filter, extraData);
+        return visit((BinaryTemporalOperator) filter, extraData);
     }
 
     public Object visit(OverlappedBy filter, Object extraData) {
-        return visit((BinaryTemporalOperator)filter, extraData);
+        return visit((BinaryTemporalOperator) filter, extraData);
     }
 
     public Object visit(TContains filter, Object extraData) {
-        return visit((BinaryTemporalOperator)filter, extraData);
+        return visit((BinaryTemporalOperator) filter, extraData);
     }
 
     public Object visit(TEquals filter, Object extraData) {
-        return visit((BinaryTemporalOperator)filter, extraData);
+        return visit((BinaryTemporalOperator) filter, extraData);
     }
 
     public Object visit(TOverlaps filter, Object extraData) {
-        return visit((BinaryTemporalOperator)filter, extraData);
+        return visit((BinaryTemporalOperator) filter, extraData);
     }
 
     protected abstract Object visit(BinaryTemporalOperator op, Object extraData);

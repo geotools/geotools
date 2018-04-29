@@ -22,28 +22,24 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-
 import javax.xml.namespace.QName;
-
 import net.opengis.ows11.KeywordsType;
 import net.opengis.ows11.Ows11Factory;
 import net.opengis.wfs20.FeatureTypeType;
 import net.opengis.wfs20.OutputFormatListType;
 import net.opengis.wfs20.Wfs20Factory;
-
 import org.eclipse.emf.ecore.EObject;
 import org.geotools.wfs.v2_0.WFS;
 import org.geotools.xml.AbstractComplexEMFBinding;
 
-
-public class FeatureTypeTypeBinding extends AbstractComplexEMFBinding {      
+public class FeatureTypeTypeBinding extends AbstractComplexEMFBinding {
     private Wfs20Factory factory;
-    
+
     public FeatureTypeTypeBinding(Wfs20Factory factory) {
         super(factory);
         this.factory = factory;
     }
-    
+
     @Override
     public QName getTarget() {
         return WFS.FeatureTypeType;
@@ -53,8 +49,8 @@ public class FeatureTypeTypeBinding extends AbstractComplexEMFBinding {
     public Class getType() {
         return FeatureTypeType.class;
     }
-    
-    @SuppressWarnings({ "unchecked", "nls" })
+
+    @SuppressWarnings({"unchecked", "nls"})
     @Override
     protected void setProperty(EObject object, String property, Object value, boolean lax) {
         if ("OtherCRS".equals(property)) {
@@ -64,7 +60,7 @@ public class FeatureTypeTypeBinding extends AbstractComplexEMFBinding {
             } else if (value instanceof URI) {
                 stringValue = ((URI) value).toString();
             }
-            
+
             if (stringValue != null) {
                 ((FeatureTypeType) object).getOtherCRS().add(stringValue);
                 return;
@@ -82,11 +78,11 @@ public class FeatureTypeTypeBinding extends AbstractComplexEMFBinding {
                     value = ((URI) value).toString();
                 }
             }
-        } else if ("Keywords".equals(property)){
+        } else if ("Keywords".equals(property)) {
             if (value instanceof String) {
                 String[] split = ((String) value).split(",");
                 KeywordsType kwd = Ows11Factory.eINSTANCE.createKeywordsType();
-                for(int i = 0; i < split.length; i++){
+                for (int i = 0; i < split.length; i++) {
                     String kw = split[i].trim();
                     kwd.getKeyword().add(kw);
                 }
@@ -95,23 +91,23 @@ public class FeatureTypeTypeBinding extends AbstractComplexEMFBinding {
             }
         } else if ("OutputFormats".equals(property)) {
             if (value != null) {
-                OutputFormatListType oflt = ((FeatureTypeType)object).getOutputFormats();
-                
+                OutputFormatListType oflt = ((FeatureTypeType) object).getOutputFormats();
+
                 if (oflt == null) {
-                    oflt = ((Wfs20Factory)factory).createOutputFormatListType();
+                    oflt = ((Wfs20Factory) factory).createOutputFormatListType();
                 }
-                
+
                 if (value instanceof Map<?, ?>) {
                     oflt.getFormat().addAll(((Map<String, ArrayList<String>>) value).get("Format"));
                 } else {
                     oflt.getFormat().add(value.toString());
                 }
-                
+
                 ((FeatureTypeType) object).setOutputFormats(oflt);
                 return;
             }
         }
-        
+
         super.setProperty(object, property, value, lax);
     }
 }

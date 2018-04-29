@@ -16,9 +16,9 @@ package org.geotools.data.geojson;
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
+
 import java.io.IOException;
 import java.util.logging.Logger;
-
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.store.ContentEntry;
@@ -43,7 +43,6 @@ public class GeoJSONFeatureSource extends ContentFeatureSource {
         if (schema == null) {
             // first see if our datastore knows what the schema is
             schema = getDataStore().schema;
-
         }
         if (schema == null) {
             try {
@@ -123,7 +122,8 @@ public class GeoJSONFeatureSource extends ContentFeatureSource {
     }
 
     /**
-     * Make handleVisitor package visible allowing CSVFeatureStore to delegate to this implementation.
+     * Make handleVisitor package visible allowing CSVFeatureStore to delegate to this
+     * implementation.
      */
     @Override
     protected boolean handleVisitor(Query query, FeatureVisitor visitor) throws IOException {

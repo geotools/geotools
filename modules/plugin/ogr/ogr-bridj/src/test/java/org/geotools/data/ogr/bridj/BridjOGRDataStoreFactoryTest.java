@@ -7,5 +7,4 @@ public class BridjOGRDataStoreFactoryTest extends OGRDataStoreFactoryTest {
     public BridjOGRDataStoreFactoryTest() {
         super(BridjOGRDataStoreFactory.class);
     }
-
 }

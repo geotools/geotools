@@ -1,25 +1,21 @@
 package org.geotools.data.dxf.entities;
 
 import java.io.EOFException;
-import org.geotools.data.dxf.parser.DXFLineNumberReader;
 import java.io.IOException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.geotools.data.GeometryType;
-import org.geotools.data.dxf.parser.DXFUnivers;
 import org.geotools.data.dxf.header.DXFBlock;
 import org.geotools.data.dxf.header.DXFBlockReference;
 import org.geotools.data.dxf.header.DXFLayer;
 import org.geotools.data.dxf.header.DXFLineType;
 import org.geotools.data.dxf.parser.DXFCodeValuePair;
 import org.geotools.data.dxf.parser.DXFGroupCode;
+import org.geotools.data.dxf.parser.DXFLineNumberReader;
 import org.geotools.data.dxf.parser.DXFParseException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.geotools.data.dxf.parser.DXFUnivers;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class DXFInsert extends DXFBlockReference {
 
     private static final Log log = LogFactory.getLog(DXFInsert.class);
@@ -27,25 +23,54 @@ public class DXFInsert extends DXFBlockReference {
     public double _angle = 0.0;
 
     public DXFInsert(DXFInsert newInsert) {
-        this(newInsert._point._point.x, newInsert._point._point.y, newInsert._blockName, newInsert._refBlock, newInsert.getRefLayer(), 0, newInsert.getColor(), newInsert.getLineType(), newInsert._angle);
+        this(
+                newInsert._point._point.x,
+                newInsert._point._point.y,
+                newInsert._blockName,
+                newInsert._refBlock,
+                newInsert.getRefLayer(),
+                0,
+                newInsert.getColor(),
+                newInsert.getLineType(),
+                newInsert._angle);
 
         setType(newInsert.getType());
         setStartingLineNumber(newInsert.getStartingLineNumber());
         setUnivers(newInsert.getUnivers());
     }
 
-    public DXFInsert(double x, double y, String nomBlock, DXFBlock refBlock, DXFLayer l, int visibility, int c, DXFLineType lineType, double angle) {
+    public DXFInsert(
+            double x,
+            double y,
+            String nomBlock,
+            DXFBlock refBlock,
+            DXFLayer l,
+            int visibility,
+            int c,
+            DXFLineType lineType,
+            double angle) {
         super(c, l, visibility, lineType, nomBlock, refBlock);
         _point = new DXFPoint(x, y, c, null, visibility, 1);
         _angle = angle;
         setName("DXFInsert");
     }
-    public DXFInsert(double x, double y, String nomBlock, DXFBlock refBlock, DXFLayer l, int visibility, int c, DXFLineType lineType, double angle, DXFExtendedData extData) {
-    	super(c, l, visibility, lineType, nomBlock, refBlock);
-    	_point = new DXFPoint(x, y, c, null, visibility, 1);
-    	_angle = angle;
-    	setName("DXFInsert");
-    	_extendedData = extData;
+
+    public DXFInsert(
+            double x,
+            double y,
+            String nomBlock,
+            DXFBlock refBlock,
+            DXFLayer l,
+            int visibility,
+            int c,
+            DXFLineType lineType,
+            double angle,
+            DXFExtendedData extData) {
+        super(c, l, visibility, lineType, nomBlock, refBlock);
+        _point = new DXFPoint(x, y, c, null, visibility, 1);
+        _angle = angle;
+        setName("DXFInsert");
+        _extendedData = extData;
     }
 
     public static DXFInsert read(DXFLineNumberReader br, DXFUnivers univers) throws IOException {
@@ -64,7 +89,7 @@ public class DXFInsert extends DXFBlockReference {
         DXFCodeValuePair cvp = null;
         DXFGroupCode gc = null;
         DXFExtendedData _extData = null;
-        
+
         boolean doLoop = true;
         while (doLoop) {
             cvp = new DXFCodeValuePair();
@@ -84,34 +109,34 @@ public class DXFInsert extends DXFBlockReference {
                     br.reset();
                     doLoop = false;
                     break;
-                case LAYER_NAME: //"8"
+                case LAYER_NAME: // "8"
                     l = univers.findLayer(cvp.getStringValue());
                     break;
-                case NAME: //"2"
+                case NAME: // "2"
                     nomBlock = cvp.getStringValue();
                     break;
-                case X_1: //"10"
+                case X_1: // "10"
                     x = cvp.getDoubleValue();
                     break;
-                case Y_1: //"20"
+                case Y_1: // "20"
                     y = cvp.getDoubleValue();
                     break;
-                case ANGLE_1: //"20"
+                case ANGLE_1: // "20"
                     angle = cvp.getDoubleValue();
                     break;
-                case COLOR: //"62"
+                case COLOR: // "62"
                     c = cvp.getShortValue();
                     break;
-                case VISIBILITY: //"60"
+                case VISIBILITY: // "60"
                     visibility = cvp.getShortValue();
                     break;
-                case LINETYPE_NAME: //"6"
+                case LINETYPE_NAME: // "6"
                     lineType = univers.findLType(cvp.getStringValue());
                     break;
                 case XDATA_APPLICATION_NAME:
-                	String appName = cvp.getStringValue();
-            		_extData = DXFExtendedData.getExtendedData(br);
-            		_extData.setAppName(appName);
+                    String appName = cvp.getStringValue();
+                    _extData = DXFExtendedData.getExtendedData(br);
+                    _extData.setAppName(appName);
                     break;
                 default:
                     break;

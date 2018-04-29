@@ -26,33 +26,33 @@ public abstract class JDBCJoinTestSetup extends JDBCDelegatingTestSetup {
 
     protected final void setUpData() throws Exception {
         delegate.setUpData();
-        
-        //kill all the data
+
+        // kill all the data
         try {
             dropJoinTable();
         } catch (SQLException e) {
         }
 
-        //create all the data
+        // create all the data
         createJoinTable();
     }
 
     /**
      * Creates two tables with the following schema:
-     * <p>
-     * ftjoin( id:Integer; name:String; geom:POLYGON; join1intProperty:Integer )
-     * </p>
-     * The table should be populated with the following data:
+     *
+     * <p>ftjoin( id:Integer; name:String; geom:POLYGON; join1intProperty:Integer ) The table should
+     * be populated with the following data:
+     *
      * <pre>
      * 0 | 'zero' | POLYGON ((-0.1 -0.1, -0.1 0.1, 0.1 0.1, 0.1 -0.1, -0.1 -0.1)) | 0
      * 1 | 'one' | POLYGON ((-1.1 -1.1, -1.1 1.1, 1.1 1.1, 1.1 -1.1, -1.1 -1.1)) | 1
      * 2 | 'two' | POLYGON ((-10 -10, -10 10, 10 10, 10 -10, -10 -10)) | 2
      * 3 | 'three' | NULL | 3
      * </pre>
-     * <p>
-     * ftjoin2( id:Integer; join2intProperty:Integer; stringProperty2:String )
-     * </p>
-     * The table should be populated with the following data:
+     *
+     * <p>ftjoin2( id:Integer; join2intProperty:Integer; stringProperty2:String ) The table should
+     * be populated with the following data:
+     *
      * <pre>
      * 0 | 0 | '2nd zero'
      * 1 | 1 | '2nd one'
@@ -63,5 +63,4 @@ public abstract class JDBCJoinTestSetup extends JDBCDelegatingTestSetup {
     protected abstract void createJoinTable() throws Exception;
 
     protected abstract void dropJoinTable() throws Exception;
-
 }

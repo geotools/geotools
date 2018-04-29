@@ -27,8 +27,6 @@ import org.opengis.filter.expression.Expression;
  * ExpressionBuilder is the main entry point from a fluent programming point of view. We will mostly
  * test using this as a starting point; and break out other test cases on an as needed basis.
  *
- *
- *
  * @source $URL$
  */
 public class ExpressionBuilderTest {
@@ -77,55 +75,86 @@ public class ExpressionBuilderTest {
 
         assertEquals(ff.property(null), b.property(null).build());
     }
+
     @Test
     public void testFunction() {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory2(null);
         ExpressionBuilder b = new ExpressionBuilder();
         Expression e;
-    
+
         // function
         assertEquals(ff.function("pi"), b.function().name("pi").build());
-        assertEquals(ff.function("abs", ff.literal(-2)), b.function().name("abs").param().literal(-2).build());        
-        assertEquals(ff.function("abs", ff.literal(-2)), b.function("abs").param().literal(-2).build());
+        assertEquals(
+                ff.function("abs", ff.literal(-2)),
+                b.function().name("abs").param().literal(-2).build());
+        assertEquals(
+                ff.function("abs", ff.literal(-2)), b.function("abs").param().literal(-2).build());
 
-        assertEquals(ff.function("min", ff.literal(1), ff.literal(2)),
+        assertEquals(
+                ff.function("min", ff.literal(1), ff.literal(2)),
                 b.function("min").param().literal(1).param().literal(2).build());
-        
-        assertEquals(ff.function("min", ff.literal(1), ff.literal(2)),
+
+        assertEquals(
+                ff.function("min", ff.literal(1), ff.literal(2)),
                 b.function("min").literal(1).literal(2).build());
 
-        assertEquals(ff.function("max", ff.literal(1), ff.property("x")),
+        assertEquals(
+                ff.function("max", ff.literal(1), ff.property("x")),
                 b.function("max").literal(1).property("x").build());
-        
-        assertEquals(ff.function("max", ff.literal(1), ff.property("x")),
+
+        assertEquals(
+                ff.function("max", ff.literal(1), ff.property("x")),
                 b.function("max").literal(1).param().property("x").build());
     }
-    
+
     @Test
     public void testNestedFunction() {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory2(null);
         ExpressionBuilder b = new ExpressionBuilder();
-    
-        assertEquals(ff.function("min", ff.function("max", ff.property("a"), ff.property("b")), ff.function("log", ff.property("c"))),
-                b.function("min").param().function("max").property("a").property("b").end().param().function("log").property("c").end().build());
-        
-        assertEquals(ff.function("min", ff.function("max", ff.property("a"), ff.property("b")), ff.function("log", ff.property("c"))),
-                b.function("min").function("max").property("a").property("b").end().function("log").property("c").end().build());
+
+        assertEquals(
+                ff.function(
+                        "min",
+                        ff.function("max", ff.property("a"), ff.property("b")),
+                        ff.function("log", ff.property("c"))),
+                b.function("min")
+                        .param()
+                        .function("max")
+                        .property("a")
+                        .property("b")
+                        .end()
+                        .param()
+                        .function("log")
+                        .property("c")
+                        .end()
+                        .build());
+
+        assertEquals(
+                ff.function(
+                        "min",
+                        ff.function("max", ff.property("a"), ff.property("b")),
+                        ff.function("log", ff.property("c"))),
+                b.function("min")
+                        .function("max")
+                        .property("a")
+                        .property("b")
+                        .end()
+                        .function("log")
+                        .property("c")
+                        .end()
+                        .build());
     }
-    
+
     @Test
     public void testAdd() {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory2(null);
         ExpressionBuilder b = new ExpressionBuilder();
         Expression e;
-        
+
         assertEquals(
-                ff.add( ff.literal(1), ff.literal(2)),
+                ff.add(ff.literal(1), ff.literal(2)),
                 b.add().expr1().literal(1).expr2().literal(2).build());
-        
-        assertEquals(
-                ff.add( ff.literal(1), ff.literal(2)),
-                b.add().expr1(1).expr2(2).build());
-        
+
+        assertEquals(ff.add(ff.literal(1), ff.literal(2)), b.add().expr1(1).expr2(2).build());
     }
 }

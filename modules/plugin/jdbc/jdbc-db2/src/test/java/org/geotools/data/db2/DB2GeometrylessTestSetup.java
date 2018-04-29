@@ -17,16 +17,10 @@
 package org.geotools.data.db2;
 
 import java.sql.Connection;
-import java.sql.SQLException;
-
 import org.geotools.jdbc.JDBCGeometrylessTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class DB2GeometrylessTestSetup extends JDBCGeometrylessTestSetup {
 
     protected DB2GeometrylessTestSetup(JDBCTestSetup delegate) {
@@ -35,30 +29,41 @@ public class DB2GeometrylessTestSetup extends JDBCGeometrylessTestSetup {
 
     @Override
     protected void createPersonTable() throws Exception {
-        //set up table
-    	Connection con = getDataSource().getConnection();
-        con.prepareStatement("CREATE TABLE "+DB2TestUtil.SCHEMA_QUOTED+".\"person\" (\"fid\" int  generated always as identity (start with 0, increment by 1) , "
-        	+ "\"id\" int , "
-            + " \"name\" varchar(255), \"age\" int, PRIMARY KEY (\"fid\") )").execute();
-        
+        // set up table
+        Connection con = getDataSource().getConnection();
+        con.prepareStatement(
+                        "CREATE TABLE "
+                                + DB2TestUtil.SCHEMA_QUOTED
+                                + ".\"person\" (\"fid\" int  generated always as identity (start with 0, increment by 1) , "
+                                + "\"id\" int , "
+                                + " \"name\" varchar(255), \"age\" int, PRIMARY KEY (\"fid\") )")
+                .execute();
+
         // insert data
-        con.prepareStatement("INSERT INTO "+DB2TestUtil.SCHEMA_QUOTED+".\"person\"(\"id\",\"name\",\"age\") VALUES ( 0, 'Paul', 32)").execute();
-        con.prepareStatement("INSERT INTO "+DB2TestUtil.SCHEMA_QUOTED+".\"person\"(\"id\",\"name\",\"age\") VALUES ( 1, 'Anne', 40)").execute();
+        con.prepareStatement(
+                        "INSERT INTO "
+                                + DB2TestUtil.SCHEMA_QUOTED
+                                + ".\"person\"(\"id\",\"name\",\"age\") VALUES ( 0, 'Paul', 32)")
+                .execute();
+        con.prepareStatement(
+                        "INSERT INTO "
+                                + DB2TestUtil.SCHEMA_QUOTED
+                                + ".\"person\"(\"id\",\"name\",\"age\") VALUES ( 1, 'Anne', 40)")
+                .execute();
         con.close();
     }
 
     @Override
     protected void dropPersonTable() throws Exception {
         Connection con = getDataSource().getConnection();
-    	DB2TestUtil.dropTable(DB2TestUtil.SCHEMA, "person", con);
+        DB2TestUtil.dropTable(DB2TestUtil.SCHEMA, "person", con);
         con.close();
     }
 
     @Override
     protected void dropZipCodeTable() throws Exception {
-    	Connection con = getDataSource().getConnection();
-    	DB2TestUtil.dropTable(DB2TestUtil.SCHEMA, "zipcode", con);        
+        Connection con = getDataSource().getConnection();
+        DB2TestUtil.dropTable(DB2TestUtil.SCHEMA, "zipcode", con);
         con.close();
     }
-
 }

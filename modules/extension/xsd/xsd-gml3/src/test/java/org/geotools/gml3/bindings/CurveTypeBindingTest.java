@@ -20,12 +20,7 @@ import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
 import org.w3c.dom.Document;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class CurveTypeBindingTest extends GML3TestSupport {
 
     @Override

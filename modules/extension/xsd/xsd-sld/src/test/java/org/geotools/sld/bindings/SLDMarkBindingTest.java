@@ -20,12 +20,7 @@ import java.awt.Color;
 import org.geotools.filter.Filters;
 import org.geotools.styling.Mark;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class SLDMarkBindingTest extends SLDTestSupport {
     public void testType() throws Exception {
         assertEquals(Mark.class, new SLDMarkBinding(null, null).getType());

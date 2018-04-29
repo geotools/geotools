@@ -16,24 +16,25 @@
  */
 package org.geotools.console;
 
-import java.util.Map;
-import java.util.TreeMap;
-import java.io.PrintWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.util.Locale;
+import java.util.Map;
+import java.util.TreeMap;
 import org.geotools.io.TableWriter;
-import org.geotools.resources.Classes;
 import org.geotools.resources.Arguments;
-import org.geotools.resources.i18n.Errors;
+import org.geotools.resources.Classes;
 import org.geotools.resources.i18n.ErrorKeys;
-
+import org.geotools.resources.i18n.Errors;
 
 /**
- * Base class for command line tools. Subclasses define fields annotated with {@link Option},
- * while will be initialized automatically by the constructor. The following options are
- * automatically recognized by this class:
+ * Base class for command line tools. Subclasses define fields annotated with {@link Option}, while
+ * will be initialized automatically by the constructor. The following options are automatically
+ * recognized by this class:
+ *
  * <p>
+ *
  * <table>
  *   <tr><td>{@code -encoding} </td><td>&nbsp;Set the input and output encoding.</td></tr>
  *   <tr><td>{@code -help}     </td><td>&nbsp;Print the {@linkplain #help help} summary.</td></tr>
@@ -41,76 +42,66 @@ import org.geotools.resources.i18n.ErrorKeys;
  * </table>
  *
  * @since 2.5
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  * @author Cédric Briançon
  */
 public class CommandLine {
-    /**
-     * The prefix to prepend to option names.
-     */
+    /** The prefix to prepend to option names. */
     private static final String OPTION_PREFIX = "--";
 
     // There is no clear convention on exit code, except 0 == SUCCES.
     // However a typical usage is to use higher values for more sever causes.
 
     /**
-     * The code given to {@link System#exit} when the program failed because of an illegal
-     * user argument.
+     * The code given to {@link System#exit} when the program failed because of an illegal user
+     * argument.
      */
     public static final int ILLEGAL_ARGUMENT_EXIT_CODE = 1;
 
-    /**
-     * The code given to {@link System#exit} when the program aborted at user request.
-     */
+    /** The code given to {@link System#exit} when the program aborted at user request. */
     public static final int ABORT_EXIT_CODE = 2;
 
     /**
-     * The code given to {@link System#exit} when the program failed because of bad
-     * content in a file.
+     * The code given to {@link System#exit} when the program failed because of bad content in a
+     * file.
      */
     public static final int BAD_CONTENT_EXIT_CODE = 3;
 
     /**
-     * The code given to {@link System#exit} when the program failed because of an
-     * {@link java.io.IOException}.
+     * The code given to {@link System#exit} when the program failed because of an {@link
+     * java.io.IOException}.
      */
     public static final int IO_EXCEPTION_EXIT_CODE = 100;
 
     /**
-     * The code given to {@link System#exit} when the program failed because of a
-     * {@link java.sql.SQLException}.
+     * The code given to {@link System#exit} when the program failed because of a {@link
+     * java.sql.SQLException}.
      */
     public static final int SQL_EXCEPTION_EXIT_CODE = 101;
 
     /**
-     * Output stream to the console. This output stream may use the encoding
-     * specified by the {@code "-encoding"} argument, if presents.
+     * Output stream to the console. This output stream may use the encoding specified by the {@code
+     * "-encoding"} argument, if presents.
      */
     protected final PrintWriter out;
 
-    /**
-     * Error stream to the console.
-     */
+    /** Error stream to the console. */
     protected final PrintWriter err;
 
     /**
-     * The locale inferred from the {@code "-locale"} option. If no such option was
-     * provided, then this field is set to the {@linkplain Locale#getDefault default locale}.
+     * The locale inferred from the {@code "-locale"} option. If no such option was provided, then
+     * this field is set to the {@linkplain Locale#getDefault default locale}.
      */
     protected final Locale locale;
 
-    /**
-     * The remaining arguments after all option values have been assigned to the fields.
-     */
+    /** The remaining arguments after all option values have been assigned to the fields. */
     protected final String[] arguments;
 
     /**
-     * Creates a new {@code CommandLine} instance from the given arguments. This constructor
-     * expects no additional argument after the one annoted as {@linkplain Option}.
+     * Creates a new {@code CommandLine} instance from the given arguments. This constructor expects
+     * no additional argument after the one annoted as {@linkplain Option}.
      *
      * @param args The command-line arguments.
      */
@@ -120,21 +111,21 @@ public class CommandLine {
 
     /**
      * Creates a new {@code CommandLine} instance from the given arguments. If this constructor
-     * fails because of a programming error (for example a type not handled by {@link #parse
-     * parse} method), then an exception is thrown like usual. If this constructor fails because
-     * of some user error (e.g. if a mandatory argument is not provided) or some other external
-     * conditions (e.g. an {@link IOException}), then it prints a short error message and invokes
-     * {@link System#exit} with one the {@code EXIT_CODE} constants.
+     * fails because of a programming error (for example a type not handled by {@link #parse parse}
+     * method), then an exception is thrown like usual. If this constructor fails because of some
+     * user error (e.g. if a mandatory argument is not provided) or some other external conditions
+     * (e.g. an {@link IOException}), then it prints a short error message and invokes {@link
+     * System#exit} with one the {@code EXIT_CODE} constants.
      *
-     * @param  args The command-line arguments.
-     * @param  maximumRemaining The maximum number of arguments that may remain after processing
-     *         of annotated fields. This is the maximum length of the {@link #arguments} array.
-     *         The default value is 0.
+     * @param args The command-line arguments.
+     * @param maximumRemaining The maximum number of arguments that may remain after processing of
+     *     annotated fields. This is the maximum length of the {@link #arguments} array. The default
+     *     value is 0.
      */
     protected CommandLine(final String[] args, final int maximumRemaining) {
         final Arguments arguments = new Arguments(args);
-        out    = arguments.out;
-        err    = arguments.err;
+        out = arguments.out;
+        err = arguments.err;
         locale = arguments.locale;
         if (arguments.getFlag(OPTION_PREFIX + "help")) {
             help();
@@ -145,14 +136,13 @@ public class CommandLine {
     }
 
     /**
-     * Sets the argument values for the fields of the given class.
-     * The parent classes are processed before the given class.
+     * Sets the argument values for the fields of the given class. The parent classes are processed
+     * before the given class.
      *
      * @throws UnsupportedOperationException if a field can not be set.
      */
     private void setArgumentValues(final Class<?> classe, final Arguments arguments)
-            throws UnsupportedOperationException
-    {
+            throws UnsupportedOperationException {
         final Class<?> parent = classe.getSuperclass();
         if (!CommandLine.class.equals(parent)) {
             setArgumentValues(parent, arguments);
@@ -214,29 +204,31 @@ public class CommandLine {
 
     /**
      * Parses the given string as a value of the given type. This method is invoked automatically
-     * for values that are not of one of the pre-defined types. The default implementation thrown
-     * an exception in all cases.
+     * for values that are not of one of the pre-defined types. The default implementation thrown an
+     * exception in all cases.
      *
      * @param  <T> The field type.
-     * @param  type The field type.
-     * @param  value The value given on the command line.
+     * @param type The field type.
+     * @param value The value given on the command line.
      * @return The value for the given string to parse.
      * @throws UnsupportedOperationException if the value can't be parsed.
      */
-    protected <T> T parse(final Class<T> type, final String value) throws UnsupportedOperationException {
+    protected <T> T parse(final Class<T> type, final String value)
+            throws UnsupportedOperationException {
         throw new UnsupportedOperationException(Errors.format(ErrorKeys.UNKNOW_TYPE_$1, type));
     }
 
     /**
      * Gets the arguments for the given class. The arguments are added in the given set.
      *
-     * @param classe    The class to parse for arguments.
+     * @param classe The class to parse for arguments.
      * @param mantatory The set where to put mandatory arguments.
-     * @param optional  The set where to put optional arguments.
+     * @param optional The set where to put optional arguments.
      */
-    private void getArguments(final Class<?> classe,
-                              final Map<String,String> mandatory,
-                              final Map<String,String> optional) {
+    private void getArguments(
+            final Class<?> classe,
+            final Map<String, String> mandatory,
+            final Map<String, String> optional) {
         final Class<?> parent = classe.getSuperclass();
         if (!CommandLine.class.equals(parent)) {
             getArguments(parent, mandatory, optional);
@@ -268,17 +260,21 @@ public class CommandLine {
     }
 
     /**
-     * Prints a description of all arguments to the {@linkplain #out standard output}.
-     * This method is invoked automatically if the user provided the {@code --help}
-     * argument on the command line. Subclasses can override this method in order to
-     * prints a summary before the option list.
+     * Prints a description of all arguments to the {@linkplain #out standard output}. This method
+     * is invoked automatically if the user provided the {@code --help} argument on the command
+     * line. Subclasses can override this method in order to prints a summary before the option
+     * list.
      */
     protected void help() {
-        final Map<String,String> mandatory = new TreeMap<String,String>();
-        final Map<String,String> optional  = new TreeMap<String,String>();
-        optional.put("help",       "Print this summary.");
-        optional.put("locale=S",   "Set the locale for string, number and date formatting. Examples: \"fr\", \"fr_CA\".");
-        optional.put("encoding=S", "Set the input and output encoding. Examples: \"UTF-8\", \"ISO-8859-1\".");
+        final Map<String, String> mandatory = new TreeMap<String, String>();
+        final Map<String, String> optional = new TreeMap<String, String>();
+        optional.put("help", "Print this summary.");
+        optional.put(
+                "locale=S",
+                "Set the locale for string, number and date formatting. Examples: \"fr\", \"fr_CA\".");
+        optional.put(
+                "encoding=S",
+                "Set the input and output encoding. Examples: \"UTF-8\", \"ISO-8859-1\".");
         getArguments(getClass(), mandatory, optional);
         if (!mandatory.isEmpty()) {
             out.println("Mandatory arguments:");
@@ -288,12 +284,10 @@ public class CommandLine {
         print(optional);
     }
 
-    /**
-     * Prints the specified options to the standard output stream.
-     */
-    private void print(final Map<String,String> options) {
+    /** Prints the specified options to the standard output stream. */
+    private void print(final Map<String, String> options) {
         final TableWriter table = new TableWriter(out, "  ");
-        for (final Map.Entry<String,String> entry : options.entrySet()) {
+        for (final Map.Entry<String, String> entry : options.entrySet()) {
             table.write("  ");
             table.write(OPTION_PREFIX);
             table.write(entry.getKey());

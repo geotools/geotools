@@ -4,7 +4,7 @@
  *
  *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2005, Open Geospatial Consortium Inc.
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -22,17 +22,13 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.temporal.Ends;
 import org.opengis.temporal.RelativePosition;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class EndsImpl extends BinaryTemporalOperatorImpl implements Ends {
-    
+
     public EndsImpl(Expression e1, Expression e2) {
         super(e1, e2);
     }
-    
+
     public EndsImpl(Expression e1, Expression e2, MatchAction matchAction) {
         super(e1, e2, matchAction);
     }
@@ -41,9 +37,8 @@ public class EndsImpl extends BinaryTemporalOperatorImpl implements Ends {
     protected boolean doEvaluate(RelativePosition pos) {
         return pos == RelativePosition.ENDS;
     }
-    
+
     public Object accept(FilterVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }
-
 }

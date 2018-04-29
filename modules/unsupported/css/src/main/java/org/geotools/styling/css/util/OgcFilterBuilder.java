@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.visitor.SimplifyingFilterVisitor;
 import org.geotools.styling.css.selector.Accept;
@@ -42,9 +41,8 @@ import org.opengis.filter.identity.Identifier;
 
 /**
  * Turns a Selector into an OGC filter
- * 
+ *
  * @author Andrea Aime - GeoSolutions
- * 
  */
 public class OgcFilterBuilder implements SelectorVisitor {
 
@@ -142,5 +140,4 @@ public class OgcFilterBuilder implements SelectorVisitor {
         simplifier.setFeatureType(targetFeatureType);
         return (Filter) filter.accept(simplifier, null);
     }
-
 }

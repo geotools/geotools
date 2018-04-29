@@ -18,94 +18,100 @@ package org.geotools.gce.imagemosaic.jdbc;
 
 /**
  * This class implements a common db dialect (no spatial extensions used)
- * 
+ *
  * @author mcr
- * 
- *
- *
- *
  * @source $URL$
  */
 public class UniversalDialect extends DBDialect {
-	public UniversalDialect(Config config) {
-		super(config);
-	}
+    public UniversalDialect(Config config) {
+        super(config);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geotools.gce.imagemosaic.jdbc.DBDialect#getBLOBSQLType()
-	 */
-	@Override
-	protected String getBLOBSQLType() {
-		return "BLOB";
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.geotools.gce.imagemosaic.jdbc.DBDialect#getBLOBSQLType()
+     */
+    @Override
+    protected String getBLOBSQLType() {
+        return "BLOB";
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geotools.gce.imagemosaic.jdbc.DBDialect#getMultiPolygonSQLType()
-	 */
-	@Override
-	protected String getMultiPolygonSQLType() {
-		// return "blob";
-		return null;
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.geotools.gce.imagemosaic.jdbc.DBDialect#getMultiPolygonSQLType()
+     */
+    @Override
+    protected String getMultiPolygonSQLType() {
+        // return "blob";
+        return null;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geotools.gce.imagemosaic.jdbc.DBDialect#getCreateSpatialTableStatement(java.lang.String)
-	 */
-	@Override
-	protected String getCreateSpatialTableStatement(String tableName)
-			throws Exception {
-		String statement = " CREATE TABLE " + tableName;
-		statement += (" ( " + getConfig().getKeyAttributeNameInSpatialTable() + " CHAR(64) NOT NULL,");
-		statement += (getConfig().getTileMinXAttribute() + " DOUBLE NOT NULL,");
-		statement += (getConfig().getTileMinYAttribute() + " DOUBLE NOT NULL,");
-		statement += (getConfig().getTileMaxXAttribute() + " DOUBLE NOT NULL,");
-		statement += (getConfig().getTileMaxYAttribute() + " DOUBLE NOT NULL,");
-		statement += ("CONSTRAINT " + tableName + "_PK PRIMARY KEY(" + getConfig()
-				.getKeyAttributeNameInSpatialTable());
-		statement += "))";
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.geotools.gce.imagemosaic.jdbc.DBDialect#getCreateSpatialTableStatement(java.lang.String)
+     */
+    @Override
+    protected String getCreateSpatialTableStatement(String tableName) throws Exception {
+        String statement = " CREATE TABLE " + tableName;
+        statement +=
+                (" ( " + getConfig().getKeyAttributeNameInSpatialTable() + " CHAR(64) NOT NULL,");
+        statement += (getConfig().getTileMinXAttribute() + " DOUBLE NOT NULL,");
+        statement += (getConfig().getTileMinYAttribute() + " DOUBLE NOT NULL,");
+        statement += (getConfig().getTileMaxXAttribute() + " DOUBLE NOT NULL,");
+        statement += (getConfig().getTileMaxYAttribute() + " DOUBLE NOT NULL,");
+        statement +=
+                ("CONSTRAINT "
+                        + tableName
+                        + "_PK PRIMARY KEY("
+                        + getConfig().getKeyAttributeNameInSpatialTable());
+        statement += "))";
 
-		return statement;
-	}
+        return statement;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geotools.gce.imagemosaic.jdbc.DBDialect#getCreateSpatialTableStatementJoined(java.lang.String)
-	 */
-	@Override
-	protected String getCreateSpatialTableStatementJoined(String tableName)
-			throws Exception {
-		String statement = " CREATE TABLE " + tableName;
-		statement += (" ( " + getConfig().getKeyAttributeNameInSpatialTable() + " CHAR(64) NOT NULL,");
-		statement += (getConfig().getTileMinXAttribute() + " DOUBLE NOT NULL,");
-		statement += (getConfig().getTileMinYAttribute() + " DOUBLE NOT NULL,");
-		statement += (getConfig().getTileMaxXAttribute() + " DOUBLE NOT NULL,");
-		statement += (getConfig().getTileMaxYAttribute() + " DOUBLE NOT NULL,");
-		statement += (getConfig().getBlobAttributeNameInTileTable() + " "
-				+ getBLOBSQLType() + ",");
-		statement += ("CONSTRAINT " + tableName + "_PK PRIMARY KEY(" + getConfig()
-				.getKeyAttributeNameInSpatialTable());
-		statement += "))";
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.geotools.gce.imagemosaic.jdbc.DBDialect#getCreateSpatialTableStatementJoined(java.lang.String)
+     */
+    @Override
+    protected String getCreateSpatialTableStatementJoined(String tableName) throws Exception {
+        String statement = " CREATE TABLE " + tableName;
+        statement +=
+                (" ( " + getConfig().getKeyAttributeNameInSpatialTable() + " CHAR(64) NOT NULL,");
+        statement += (getConfig().getTileMinXAttribute() + " DOUBLE NOT NULL,");
+        statement += (getConfig().getTileMinYAttribute() + " DOUBLE NOT NULL,");
+        statement += (getConfig().getTileMaxXAttribute() + " DOUBLE NOT NULL,");
+        statement += (getConfig().getTileMaxYAttribute() + " DOUBLE NOT NULL,");
+        statement += (getConfig().getBlobAttributeNameInTileTable() + " " + getBLOBSQLType() + ",");
+        statement +=
+                ("CONSTRAINT "
+                        + tableName
+                        + "_PK PRIMARY KEY("
+                        + getConfig().getKeyAttributeNameInSpatialTable());
+        statement += "))";
 
-		return statement;
-	}
+        return statement;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geotools.gce.imagemosaic.jdbc.DBDialect#getCreateIndexStatement(java.lang.String)
-	 */
-	@Override
-	protected String getCreateIndexStatement(String tn) throws Exception {
-		return "CREATE  INDEX IX_" + tn + " ON " + tn + "("
-				+ getConfig().getTileMinXAttribute() + ","
-				+ getConfig().getTileMinYAttribute() + ")";
-	}
-
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.geotools.gce.imagemosaic.jdbc.DBDialect#getCreateIndexStatement(java.lang.String)
+     */
+    @Override
+    protected String getCreateIndexStatement(String tn) throws Exception {
+        return "CREATE  INDEX IX_"
+                + tn
+                + " ON "
+                + tn
+                + "("
+                + getConfig().getTileMinXAttribute()
+                + ","
+                + getConfig().getTileMinYAttribute()
+                + ")";
+    }
 }

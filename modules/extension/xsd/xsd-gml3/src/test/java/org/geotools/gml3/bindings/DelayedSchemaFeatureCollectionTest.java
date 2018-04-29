@@ -35,7 +35,7 @@ public class DelayedSchemaFeatureCollectionTest extends DataTestCase {
         assertFalse(fc.getBounds().isEmpty());
         assertEquals(riverType, fc.getSchema());
     }
-    
+
     @Test
     public void testTwoTypes() {
         DelayedSchemaFeatureCollection fc = new DelayedSchemaFeatureCollection();
@@ -44,7 +44,7 @@ public class DelayedSchemaFeatureCollectionTest extends DataTestCase {
         // the type is the one of the first feature
         assertEquals(riverType, fc.getSchema());
         // but we can get both un-modified
-        try(SimpleFeatureIterator it = fc.features()) {
+        try (SimpleFeatureIterator it = fc.features()) {
             assertEquals(riverFeatures[0], it.next());
             assertEquals(lakeFeatures[0], it.next());
             assertFalse(it.hasNext());

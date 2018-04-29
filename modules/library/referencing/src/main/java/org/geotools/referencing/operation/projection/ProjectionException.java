@@ -17,33 +17,25 @@
 package org.geotools.referencing.operation.projection;
 
 import org.geotools.measure.Latitude;
-import org.geotools.resources.i18n.Errors;
 import org.geotools.resources.i18n.ErrorKeys;
+import org.geotools.resources.i18n.Errors;
 import org.opengis.referencing.operation.TransformException;
-
 
 /**
  * Thrown by {@link MapProjection} when a map projection failed.
  *
  * @since 2.0
- *
- *
  * @source $URL$
  * @version $Id$
  * @author André Gosselin
  * @author Martin Desruisseaux (IRD)
  */
 public class ProjectionException extends TransformException {
-    /**
-     * Serial number for interoperability with different versions.
-     */
+    /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 3031350727691500915L;
 
-    /**
-     * Constructs a new exception with no detail message.
-     */
-    public ProjectionException() {
-    }
+    /** Constructs a new exception with no detail message. */
+    public ProjectionException() {}
 
     /**
      * Constructs a new exception with the specified detail message.
@@ -65,16 +57,14 @@ public class ProjectionException extends TransformException {
     }
 
     /**
-     * Constructs a new exception with a detail message
-     * formatted for a latitude too close from a pole.
+     * Constructs a new exception with a detail message formatted for a latitude too close from a
+     * pole.
      */
     ProjectionException(final double latitude) {
         this(Errors.format(ErrorKeys.POLE_PROJECTION_$1, new Latitude(Math.toDegrees(latitude))));
     }
 
-    /**
-     * Constructs a new exception with the specified detail message.
-     */
+    /** Constructs a new exception with the specified detail message. */
     public ProjectionException(final String message) {
         super(message);
     }
@@ -88,9 +78,7 @@ public class ProjectionException extends TransformException {
         super(cause.getLocalizedMessage(), cause);
     }
 
-    /**
-     * Constructs a new exception with the specified detail message and cause.
-     */
+    /** Constructs a new exception with the specified detail message and cause. */
     public ProjectionException(final String message, final Throwable cause) {
         super(message, cause);
     }

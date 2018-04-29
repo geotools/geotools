@@ -16,6 +16,7 @@
  */
 package org.geotools.gml3.simple;
 
+import com.vividsolutions.jts.geom.Envelope;
 import org.geotools.gml2.simple.GMLWriter;
 import org.geotools.gml2.simple.ObjectEncoder;
 import org.geotools.gml2.simple.QualifiedName;
@@ -23,11 +24,9 @@ import org.geotools.gml3.GML;
 import org.geotools.xml.Encoder;
 import org.xml.sax.helpers.AttributesImpl;
 
-import com.vividsolutions.jts.geom.Envelope;
-
 /**
  * Encodes a GML3 envelope
- * 
+ *
  * @author Justin Deoliveira, OpenGeo
  * @author Andrea Aime - GeoSolutions
  */
@@ -35,9 +34,11 @@ class EnvelopeEncoder extends ObjectEncoder<Envelope> {
 
     static final QualifiedName ENVELOPE = new QualifiedName(GML.NAMESPACE, "Envelope", "gml");
 
-    static final QualifiedName LOWER_CORNER = new QualifiedName(GML.NAMESPACE, "lowerCorner", "gml");
+    static final QualifiedName LOWER_CORNER =
+            new QualifiedName(GML.NAMESPACE, "lowerCorner", "gml");
 
-    static final QualifiedName UPPER_CORNER = new QualifiedName(GML.NAMESPACE, "upperCorner", "gml");
+    static final QualifiedName UPPER_CORNER =
+            new QualifiedName(GML.NAMESPACE, "upperCorner", "gml");
 
     QualifiedName box;
 

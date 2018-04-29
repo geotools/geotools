@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -23,39 +23,35 @@ import org.opengis.temporal.OrdinalEra;
 import org.opengis.util.InternationalString;
 
 /**
- *
  * @author Mehdi Sidhoum (Geomatys)
- *
- *
- *
  * @source $URL$
  */
 public class DefaultOrdinalEra implements OrdinalEra {
 
-    /**
-     * This is a string that identifies the ordinal era within the TM_OrdinalReferenceSystem.
-     */
+    /** This is a string that identifies the ordinal era within the TM_OrdinalReferenceSystem. */
     private InternationalString name;
-    /**
-     * This is the temporal position at which the ordinal era began, if it is known.
-     */
+    /** This is the temporal position at which the ordinal era began, if it is known. */
     private Date beginning;
-    /**
-     * This is the temporal position at which the ordinal era ended.
-     */
+    /** This is the temporal position at which the ordinal era ended. */
     private Date end;
+
     private Collection<OrdinalEra> composition;
     private DefaultOrdinalEra group;
 
     public DefaultOrdinalEra(InternationalString name, Date beginning, Date end) {
-        if (! beginning.before(end))
-            throw new IllegalArgumentException("The beginning date of the OrdinalEra must be less than (i.e. earlier than) the end date of this OrdinalEra.");
+        if (!beginning.before(end))
+            throw new IllegalArgumentException(
+                    "The beginning date of the OrdinalEra must be less than (i.e. earlier than) the end date of this OrdinalEra.");
         this.name = name;
         this.beginning = beginning;
         this.end = end;
     }
 
-    public DefaultOrdinalEra(InternationalString name, Date beginning, Date end, Collection<OrdinalEra> composition) {
+    public DefaultOrdinalEra(
+            InternationalString name,
+            Date beginning,
+            Date end,
+            Collection<OrdinalEra> composition) {
         this.name = name;
         this.beginning = beginning;
         this.end = end;
@@ -106,11 +102,11 @@ public class DefaultOrdinalEra implements OrdinalEra {
         if (object instanceof DefaultOrdinalEra) {
             final DefaultOrdinalEra that = (DefaultOrdinalEra) object;
 
-            return Utilities.equals(this.beginning, that.beginning) &&
-                    Utilities.equals(this.end, that.end) &&
-                    Utilities.equals(this.composition, that.composition) &&
-                    Utilities.equals(this.group, that.group) &&
-                    Utilities.equals(this.name, that.name);
+            return Utilities.equals(this.beginning, that.beginning)
+                    && Utilities.equals(this.end, that.end)
+                    && Utilities.equals(this.composition, that.composition)
+                    && Utilities.equals(this.group, that.group)
+                    && Utilities.equals(this.name, that.name);
         }
         return false;
     }

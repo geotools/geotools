@@ -19,40 +19,31 @@ package org.geotools.coverage.processing;
 import static org.junit.Assert.assertEquals;
 
 import it.geosolutions.jaiext.JAIExt;
-
 import java.awt.image.RenderedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.media.jai.operator.ExtremaDescriptor;
-
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.image.ImageWorker;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.parameter.ParameterValueGroup;
 
-
 /**
  * Tests some binary operations like add and multiply.
  *
  * @author Daniele Romagnoli, GeoSolutions SAS
  * @since 2.7
- *
  * @source $URL$
  */
 public class BinaryOpTest extends GridProcessingTestBase {
-    
-    private final static double DELTA = 1E-6d;
-    /**
-     * The processor to be used for all tests.
-     */
+
+    private static final double DELTA = 1E-6d;
+    /** The processor to be used for all tests. */
     private CoverageProcessor processor;
 
-    /**
-     * Set up common objects used for all tests.
-     */
+    /** Set up common objects used for all tests. */
     @Before
     public void setUp() {
         processor = CoverageProcessor.getInstance(null);
@@ -60,7 +51,8 @@ public class BinaryOpTest extends GridProcessingTestBase {
 
     /**
      * Tests the "Add" operation.
-     * @throws IOException 
+     *
+     * @throws IOException
      */
     @Test
     public void testAdd() throws IOException {
@@ -74,10 +66,11 @@ public class BinaryOpTest extends GridProcessingTestBase {
         assertEquals(min[0], 1.0, DELTA);
         assertEquals(max[0], 66401.0, DELTA);
     }
-    
+
     /**
      * Tests the "Multiply" operation.
-     * @throws IOException 
+     *
+     * @throws IOException
      */
     @Test
     public void testMultiply() throws IOException {
@@ -91,36 +84,34 @@ public class BinaryOpTest extends GridProcessingTestBase {
         assertEquals(minMax[1][0], 6.5272192E7, DELTA);
     }
 
-
     /**
      * Applies the specified operation to the given coverages.
      *
      * @param coverage0 The coverage to scale.
      * @param interp The interpolation to use.
-     * @throws IOException 
+     * @throws IOException
      */
-    private GridCoverage2D doOp(final String operationName, 
-            final GridCoverage2D coverage0, 
-            final GridCoverage2D coverage1) throws IOException {
+    private GridCoverage2D doOp(
+            final String operationName,
+            final GridCoverage2D coverage0,
+            final GridCoverage2D coverage1)
+            throws IOException {
 
         // Getting parameters for doing a scale.
         final ParameterValueGroup param = processor.getOperation(operationName).getParameters();
-        if(JAIExt.isJAIExtOperation(JAIExt.getOperationName(operationName))){
+        if (JAIExt.isJAIExtOperation(JAIExt.getOperationName(operationName))) {
             List<GridCoverage2D> sources = new ArrayList<>();
             sources.add(coverage0);
             sources.add(coverage1);
             param.parameter("Sources").setValue(sources);
-        }else{
+        } else {
             param.parameter("Source0").setValue(coverage0);
             param.parameter("Source1").setValue(coverage1);
         }
-
 
         // Doing a first scale.
         GridCoverage2D result = (GridCoverage2D) processor.doOperation(param);
         assertEnvelopeEquals(coverage0, result);
         return result;
-        
-
     }
 }

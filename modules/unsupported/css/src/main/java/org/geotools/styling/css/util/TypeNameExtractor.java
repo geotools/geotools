@@ -18,7 +18,6 @@ package org.geotools.styling.css.util;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
-
 import org.geotools.styling.css.selector.AbstractSelectorVisitor;
 import org.geotools.styling.css.selector.Accept;
 import org.geotools.styling.css.selector.And;
@@ -32,7 +31,7 @@ import org.geotools.styling.css.selector.TypeName;
 
 /**
  * Grabs the type names mentioned in the selectors given to it
- * 
+ *
  * @author Andrea Aime
  */
 public class TypeNameExtractor extends AbstractSelectorVisitor {

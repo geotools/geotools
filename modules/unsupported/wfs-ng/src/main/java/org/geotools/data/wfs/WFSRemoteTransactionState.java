@@ -29,9 +29,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import javax.xml.namespace.QName;
-
 import org.geotools.data.Diff;
 import org.geotools.data.Transaction;
 import org.geotools.data.Transaction.State;
@@ -99,9 +97,7 @@ class WFSRemoteTransactionState implements State {
         }
     }
 
-    /**
-     * This state takes ownership of each type's diff, so lets clear them all
-     */
+    /** This state takes ownership of each type's diff, so lets clear them all */
     private void clear() {
         for (WFSContentState localState : localStates.values()) {
             WFSLocalTransactionState localTransactionState = localState.getLocalTransactionState();
@@ -128,12 +124,22 @@ class WFSRemoteTransactionState implements State {
         List<FeatureId> insertedFids = transactionResponse.getInsertedFids();
         int deleteCount = transactionResponse.getDeleteCount();
         int updatedCount = transactionResponse.getUpdatedCount();
-        trace(getClass().getSimpleName(), "::commit(): Updated: ", updatedCount, ", Deleted: ",
-                deleteCount, ", Inserted: ", insertedFids);
+        trace(
+                getClass().getSimpleName(),
+                "::commit(): Updated: ",
+                updatedCount,
+                ", Deleted: ",
+                deleteCount,
+                ", Inserted: ",
+                insertedFids);
 
         if (requestedInsertFids.size() != insertedFids.size()) {
-            throw new IllegalStateException("Asked to add " + requestedInsertFids.size()
-                    + " Features but got " + insertedFids.size() + " insert results");
+            throw new IllegalStateException(
+                    "Asked to add "
+                            + requestedInsertFids.size()
+                            + " Features but got "
+                            + insertedFids.size()
+                            + " insert results");
         }
 
         for (int i = 0; i < requestedInsertFids.size(); i++) {
@@ -144,12 +150,12 @@ class WFSRemoteTransactionState implements State {
         }
     }
 
-    private List<MutableFeatureId> applyDiff(final Name localTypeName,
-            TransactionRequest transactionRequest) throws IOException {
+    private List<MutableFeatureId> applyDiff(
+            final Name localTypeName, TransactionRequest transactionRequest) throws IOException {
 
         final WFSContentState localState = localStates.get(localTypeName);
-        final WFSLocalTransactionState localTransactionState = localState
-                .getLocalTransactionState();
+        final WFSLocalTransactionState localTransactionState =
+                localState.getLocalTransactionState();
         final WFSDiff diff = localTransactionState.getDiff();
 
         List<MutableFeatureId> addedFeatureIds = new LinkedList<MutableFeatureId>();
@@ -189,7 +195,7 @@ class WFSRemoteTransactionState implements State {
         Set<Identifier> ids = new LinkedHashSet<Identifier>();
         for (Map.Entry<String, SimpleFeature> entry : modified.entrySet()) {
             if (!(Diff.NULL == entry.getValue())) {
-                continue;// not a delete
+                continue; // not a delete
             }
             String rid = entry.getKey();
             if (ignored.contains(rid)) {
@@ -211,7 +217,7 @@ class WFSRemoteTransactionState implements State {
             SimpleFeature feature = entry.getValue();
 
             if (Diff.NULL == feature) {
-                continue;// not an update
+                continue; // not an update
             }
             if (ignored.contains(fid)) {
                 continue;
@@ -222,8 +228,9 @@ class WFSRemoteTransactionState implements State {
         return addedFeatureIds;
     }
 
-    private void applySingleUpdate(QName remoteTypeName, SimpleFeature feature,
-            TransactionRequest transactionRequest) throws IOException {
+    private void applySingleUpdate(
+            QName remoteTypeName, SimpleFeature feature, TransactionRequest transactionRequest)
+            throws IOException {
 
         // so bad, this is going to update a lot of unnecessary properties. We'd need to make
         // DiffContentFeatureWriter's live and current attributes protected and extend write so that
@@ -241,16 +248,17 @@ class WFSRemoteTransactionState implements State {
             newValues.add(attValue);
         }
 
-        Filter updateFilter = dataStore.getFilterFactory().id(
-                Collections.singleton(feature.getIdentifier()));
+        Filter updateFilter =
+                dataStore.getFilterFactory().id(Collections.singleton(feature.getIdentifier()));
 
-        Update update = transactionRequest.createUpdate(remoteTypeName, propertyNames, newValues,
-                updateFilter);
+        Update update =
+                transactionRequest.createUpdate(
+                        remoteTypeName, propertyNames, newValues, updateFilter);
         transactionRequest.add(update);
     }
 
-    private void applyBatchUpdates(QName remoteTypeName, WFSDiff diff,
-            TransactionRequest transactionRequest) {
+    private void applyBatchUpdates(
+            QName remoteTypeName, WFSDiff diff, TransactionRequest transactionRequest) {
 
         List<BatchUpdate> batchUpdates = diff.getBatchUpdates();
 
@@ -258,18 +266,18 @@ class WFSRemoteTransactionState implements State {
 
             List<QName> propertyNames = new ArrayList<QName>(batch.properties.length);
             for (Name attName : batch.properties) {
-                propertyNames.add(new QName(remoteTypeName.getNamespaceURI(), attName
-                        .getLocalPart()));
+                propertyNames.add(
+                        new QName(remoteTypeName.getNamespaceURI(), attName.getLocalPart()));
             }
             List<Object> newValues = Arrays.asList(batch.values);
             Filter updateFilter = batch.filter;
 
-            Update update = transactionRequest.createUpdate(remoteTypeName, propertyNames,
-                    newValues, updateFilter);
+            Update update =
+                    transactionRequest.createUpdate(
+                            remoteTypeName, propertyNames, newValues, updateFilter);
 
             transactionRequest.add(update);
         }
-
     }
 
     private Identifier featureId(final String rid) {

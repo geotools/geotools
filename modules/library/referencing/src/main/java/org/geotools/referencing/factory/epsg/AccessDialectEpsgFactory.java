@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
- *   
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -16,21 +16,15 @@
  */
 package org.geotools.referencing.factory.epsg;
 
-// J2SE dependencies and extensions
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-
-// Geotools dependencies
 import org.geotools.factory.Hints;
-
 
 /**
  * This factory uses the MS-Access dialect of SQL. Because the primary distribution format for the
  * EPSG database is MS-Access there is very little work to do in our {@link #adaptSQL} method.
  *
  * @since 2.4
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Jody Garnett
@@ -48,11 +42,11 @@ public class AccessDialectEpsgFactory extends AbstractEpsgFactory {
 
     /**
      * Invoked when a new {@link PreparedStatement} is about to be created from a SQL string.
-     * 
-     * Since the <A HREF="http://www.epsg.org">EPSG database</A> is available mainly in MS-Access
+     *
+     * <p>Since the <A HREF="http://www.epsg.org">EPSG database</A> is available mainly in MS-Access
      * format, and this is the target of our super class, we have no work to do here.
      *
-     * @param  statement The statement in MS-Access syntax.
+     * @param statement The statement in MS-Access syntax.
      * @return The SQL statement to use. This implementation returns the string unchanged.
      */
     protected String adaptSQL(final String statement) {

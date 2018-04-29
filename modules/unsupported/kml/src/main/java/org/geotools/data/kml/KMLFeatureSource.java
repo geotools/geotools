@@ -17,9 +17,7 @@
 package org.geotools.data.kml;
 
 import java.io.IOException;
-
 import javax.xml.namespace.QName;
-
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
@@ -31,30 +29,28 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
- * 
  * @author Niels Charlier, Scitus Development
- * 
  * @source $URL$
  */
 public class KMLFeatureSource extends ContentFeatureSource {
-    
+
     public KMLFeatureSource(ContentEntry entry, Query query) {
         super(entry, query);
     }
-    
+
     @Override
     protected QueryCapabilities buildQueryCapabilities() {
-        return new QueryCapabilities(){
+        return new QueryCapabilities() {
             public boolean isUseProvidedFIDSupported() {
                 return true;
             }
         };
     }
-    
+
     @Override
     protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
-        ReferencedEnvelope bounds = new ReferencedEnvelope(getSchema()
-                .getCoordinateReferenceSystem());
+        ReferencedEnvelope bounds =
+                new ReferencedEnvelope(getSchema().getCoordinateReferenceSystem());
 
         FeatureReader<SimpleFeatureType, SimpleFeature> featureReader = getReaderInternal(query);
         try {
@@ -87,19 +83,18 @@ public class KMLFeatureSource extends ContentFeatureSource {
     protected SimpleFeatureType buildFeatureType() throws IOException {
         String typeName = getEntry().getTypeName();
         String namespace = getEntry().getName().getNamespaceURI();
-                
+
         SimpleFeatureType type;
         FeatureReader<SimpleFeatureType, SimpleFeature> featureReader = getReaderInternal(query);
         try {
             type = featureReader.getFeatureType();
-        }
-        finally {
+        } finally {
             featureReader.close();
         }
-        
-        //rename
+
+        // rename
         SimpleFeatureTypeBuilder b = new SimpleFeatureTypeBuilder();
-        if (type!=null) {
+        if (type != null) {
             b.init(type);
         }
         b.setName(typeName);
@@ -111,6 +106,9 @@ public class KMLFeatureSource extends ContentFeatureSource {
     protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
             throws IOException {
         KMLDataStore dataStore = (KMLDataStore) getEntry().getDataStore();
-        return new KMLFeatureReader(dataStore.getNamespaceURI(),dataStore.file, new QName (getEntry().getName().getNamespaceURI(), getEntry().getTypeName()));
+        return new KMLFeatureReader(
+                dataStore.getNamespaceURI(),
+                dataStore.file,
+                new QName(getEntry().getName().getNamespaceURI(), getEntry().getTypeName()));
     }
 }

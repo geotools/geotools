@@ -19,7 +19,6 @@ package org.geotools.wfs.v2_0.bindings;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
-
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -34,11 +33,11 @@ public class CopyingHandler extends DefaultHandler {
     public CopyingHandler() {
         this(null);
     }
-    
+
     public CopyingHandler(NamespaceSupport namespaceContext) {
         this.namespaceContext = namespaceContext;
     }
-    
+
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes)
             throws SAXException {
@@ -49,7 +48,7 @@ public class CopyingHandler extends DefaultHandler {
         }
 
         buffer.append("<");
-        if(qName.startsWith(":")) {
+        if (qName.startsWith(":")) {
             buffer.append(localName);
         } else {
             buffer.append(qName);
@@ -61,11 +60,14 @@ public class CopyingHandler extends DefaultHandler {
                 if (attributeName.startsWith("xmlns")) {
                     xmlnsAttributes.add(attributeName);
                 }
-                buffer.append(" ").append(attributeName).append("=\"")
-                    .append(attributes.getValue(i)).append("\"");
+                buffer.append(" ")
+                        .append(attributeName)
+                        .append("=\"")
+                        .append(attributes.getValue(i))
+                        .append("\"");
             }
         }
-        
+
         if (root > 0) {
             if (namespaceContext != null) {
                 // dump out namespace context (mind, it may contain duplicates)
@@ -94,7 +96,7 @@ public class CopyingHandler extends DefaultHandler {
         }
         buffer.append(">");
     }
-    
+
     @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
         if (buffer == null) {
@@ -115,5 +117,4 @@ public class CopyingHandler extends DefaultHandler {
     public void endDocument() throws SAXException {
         buffer = null;
     }
-
 }

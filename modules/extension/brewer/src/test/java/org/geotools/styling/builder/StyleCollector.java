@@ -2,7 +2,6 @@ package org.geotools.styling.builder;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.geotools.styling.AbstractStyleVisitor;
 import org.geotools.styling.AnchorPoint;
 import org.geotools.styling.ChannelSelection;
@@ -38,11 +37,7 @@ import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.UserLayer;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class StyleCollector extends AbstractStyleVisitor implements StyleVisitor {
 
     List<FeatureTypeStyle> featureTypeStyles = new ArrayList<FeatureTypeStyle>();
@@ -50,9 +45,9 @@ public class StyleCollector extends AbstractStyleVisitor implements StyleVisitor
     List<Rule> rules = new ArrayList<Rule>();
 
     List<Symbolizer> symbolizers = new ArrayList<Symbolizer>();
-    
+
     List<Style> styles = new ArrayList<Style>();
-    
+
     List<StyledLayer> layers = new ArrayList<StyledLayer>();
 
     @Override
@@ -60,10 +55,9 @@ public class StyleCollector extends AbstractStyleVisitor implements StyleVisitor
         for (StyledLayer sl : sld.getStyledLayers()) {
             if (sl instanceof UserLayer) {
                 ((UserLayer) sl).accept(this);
-            } else if(sl instanceof NamedLayer) {
+            } else if (sl instanceof NamedLayer) {
                 ((NamedLayer) sl).accept(this);
             }
-            
         }
     }
 
@@ -84,9 +78,7 @@ public class StyleCollector extends AbstractStyleVisitor implements StyleVisitor
     }
 
     @Override
-    public void visit(FeatureTypeConstraint ftc) {
-
-    }
+    public void visit(FeatureTypeConstraint ftc) {}
 
     @Override
     public void visit(Style style) {
@@ -95,7 +87,6 @@ public class StyleCollector extends AbstractStyleVisitor implements StyleVisitor
             featureTypeStyles.add(fts);
             fts.accept(this);
         }
-
     }
 
     @Override
@@ -111,127 +102,77 @@ public class StyleCollector extends AbstractStyleVisitor implements StyleVisitor
             rules.add(rule);
             rule.accept(this);
         }
-
     }
 
     @Override
-    public void visit(Fill fill) {
-
-    }
+    public void visit(Fill fill) {}
 
     @Override
-    public void visit(Stroke stroke) {
-
-    }
+    public void visit(Stroke stroke) {}
 
     @Override
-    public void visit(Symbolizer sym) {
-
-    }
+    public void visit(Symbolizer sym) {}
 
     @Override
-    public void visit(PointSymbolizer ps) {
-
-    }
+    public void visit(PointSymbolizer ps) {}
 
     @Override
-    public void visit(LineSymbolizer line) {
-
-    }
+    public void visit(LineSymbolizer line) {}
 
     @Override
-    public void visit(PolygonSymbolizer poly) {
-
-    }
+    public void visit(PolygonSymbolizer poly) {}
 
     @Override
-    public void visit(TextSymbolizer text) {
-
-    }
+    public void visit(TextSymbolizer text) {}
 
     @Override
-    public void visit(RasterSymbolizer raster) {
-
-    }
+    public void visit(RasterSymbolizer raster) {}
 
     @Override
-    public void visit(Graphic gr) {
-
-    }
+    public void visit(Graphic gr) {}
 
     @Override
-    public void visit(Mark mark) {
-
-    }
+    public void visit(Mark mark) {}
 
     @Override
-    public void visit(ExternalGraphic exgr) {
-
-    }
+    public void visit(ExternalGraphic exgr) {}
 
     @Override
-    public void visit(PointPlacement pp) {
-
-    }
+    public void visit(PointPlacement pp) {}
 
     @Override
-    public void visit(AnchorPoint ap) {
-
-    }
+    public void visit(AnchorPoint ap) {}
 
     @Override
-    public void visit(Displacement dis) {
-
-    }
+    public void visit(Displacement dis) {}
 
     @Override
-    public void visit(LinePlacement lp) {
-
-    }
+    public void visit(LinePlacement lp) {}
 
     @Override
-    public void visit(Halo halo) {
-
-    }
+    public void visit(Halo halo) {}
 
     @Override
-    public void visit(ColorMap colorMap) {
-
-    }
+    public void visit(ColorMap colorMap) {}
 
     @Override
-    public void visit(ColorMapEntry colorMapEntry) {
-
-    }
+    public void visit(ColorMapEntry colorMapEntry) {}
 
     @Override
-    public void visit(ContrastEnhancement contrastEnhancement) {
-
-    }
+    public void visit(ContrastEnhancement contrastEnhancement) {}
 
     @Override
-    public void visit(ImageOutline outline) {
-
-    }
+    public void visit(ImageOutline outline) {}
 
     @Override
-    public void visit(ChannelSelection cs) {
-
-    }
+    public void visit(ChannelSelection cs) {}
 
     @Override
-    public void visit(OverlapBehavior ob) {
-
-    }
+    public void visit(OverlapBehavior ob) {}
 
     @Override
-    public void visit(SelectedChannelType sct) {
-
-    }
+    public void visit(SelectedChannelType sct) {}
 
     @Override
-    public void visit(ShadedRelief sr) {
-
-    }
-
+    public void visit(ShadedRelief sr) {}
 }

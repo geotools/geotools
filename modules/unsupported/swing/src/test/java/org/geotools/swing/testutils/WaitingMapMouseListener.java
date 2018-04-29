@@ -8,19 +8,17 @@ import org.geotools.swing.event.MapMouseEvent;
 import org.geotools.swing.event.MapMouseListener;
 
 /**
- * A MapMouseListener that can be set to expect specified events
- * and test if they are received.
- * 
+ * A MapMouseListener that can be set to expect specified events and test if they are received.
+ *
  * @author Michael Bedward
  * @since 8.0
- *
  * @source $URL$
  * @version $Id$
  */
-public class WaitingMapMouseListener 
-        extends WaitingListener<MapMouseEvent, WaitingMapMouseListener.Type> 
+public class WaitingMapMouseListener
+        extends WaitingListener<MapMouseEvent, WaitingMapMouseListener.Type>
         implements MapMouseListener {
-    
+
     public static enum Type {
         CLICKED,
         DRAGGED,
@@ -35,7 +33,6 @@ public class WaitingMapMouseListener
     public WaitingMapMouseListener() {
         super(Type.values().length);
     }
-    
 
     @Override
     public void onMouseClicked(MapMouseEvent ev) {
@@ -76,5 +73,4 @@ public class WaitingMapMouseListener
     public void onMouseWheelMoved(MapMouseEvent ev) {
         catchEvent(Type.WHEEL_MOVED.ordinal(), ev);
     }
-    
 }

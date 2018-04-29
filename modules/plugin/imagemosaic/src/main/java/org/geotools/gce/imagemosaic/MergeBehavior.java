@@ -16,10 +16,10 @@
  */
 package org.geotools.gce.imagemosaic;
 
+import it.geosolutions.jaiext.utilities.ImageLayout2;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.image.RenderedImage;
-
 import javax.media.jai.BorderExtender;
 import javax.media.jai.BorderExtenderConstant;
 import javax.media.jai.ImageLayout;
@@ -28,27 +28,37 @@ import javax.media.jai.PlanarImage;
 import javax.media.jai.ROI;
 import javax.media.jai.operator.MosaicDescriptor;
 import javax.media.jai.operator.MosaicType;
-
 import org.geotools.image.ImageWorker;
-import it.geosolutions.jaiext.utilities.ImageLayout2;
 
 /**
- * This class is responsible for implementing the strategies for the mosaicking which can be a flat merge of band-stacking merge.
- * 
- * @author Simone Giannecchini, GeoSolutions TODO check more conditions to use {@link MosaicDescriptor}
+ * This class is responsible for implementing the strategies for the mosaicking which can be a flat
+ * merge of band-stacking merge.
+ *
+ * @author Simone Giannecchini, GeoSolutions TODO check more conditions to use {@link
+ *     MosaicDescriptor}
  */
 public enum MergeBehavior {
-
     STACK {
         @Override
-        public RenderedImage process(RenderedImage[] sources, double[] backgroundValues,
-                double[][] inputThreshold, PlanarImage[] sourceAlpha, ROI[] sourceROI,
-                MosaicType mosaicType, RenderingHints hints) {
+        public RenderedImage process(
+                RenderedImage[] sources,
+                double[] backgroundValues,
+                double[][] inputThreshold,
+                PlanarImage[] sourceAlpha,
+                ROI[] sourceROI,
+                MosaicType mosaicType,
+                RenderingHints hints) {
 
             // checks
             if (sources.length == 1) {
-                return FLAT.process(sources, backgroundValues, inputThreshold, sourceAlpha,
-                        sourceROI, mosaicType, hints);
+                return FLAT.process(
+                        sources,
+                        backgroundValues,
+                        inputThreshold,
+                        sourceAlpha,
+                        sourceROI,
+                        mosaicType,
+                        hints);
             }
 
             // Step 1 check if we need to create a background mosaic
@@ -63,7 +73,6 @@ public enum MergeBehavior {
                     // union
                     union = union.union(currentExtent);
                 }
-
             }
 
             // Step 2 (Optional) use Border operator to bring the images to the same extent
@@ -80,21 +89,22 @@ public enum MergeBehavior {
             }
             if (performMosaic) {
                 // BORDER extender
-                final BorderExtender borderExtenderConstant = new BorderExtenderConstant(
-                        backgroundValues);
+                final BorderExtender borderExtenderConstant =
+                        new BorderExtenderConstant(backgroundValues);
                 // loop on sources
                 for (int i = 0; i < sources.length; i++) {
                     if (border) {
                         // do we need to extend?
                         if (!PlanarImage.wrapRenderedImage(sources[i]).getBounds().equals(union)) {
                             // current extent
-                            Rectangle currentExtent = PlanarImage.wrapRenderedImage(sources[0])
-                                    .getBounds();
+                            Rectangle currentExtent =
+                                    PlanarImage.wrapRenderedImage(sources[0]).getBounds();
 
                             // add BORDER to the current source
-                            ImageWorker worker = new ImageWorker(sources[i])
-                                    .setRenderingHints(hints);
-                            worker.border(union.x - currentExtent.x,
+                            ImageWorker worker =
+                                    new ImageWorker(sources[i]).setRenderingHints(hints);
+                            worker.border(
+                                    union.x - currentExtent.x,
                                     union.x + union.width - currentExtent.x - currentExtent.width,
                                     union.y - currentExtent.y,
                                     union.y + union.height - currentExtent.y - currentExtent.height,
@@ -103,9 +113,14 @@ public enum MergeBehavior {
                         }
                     } else {
                         // use msoaic in case we have source ROIs
-                        final ImageLayout layout = (ImageLayout) (hints != null
-                                ? hints.get(JAI.KEY_IMAGE_LAYOUT) : new ImageLayout2());
-                        layout.setWidth(union.width).setHeight(union.height).setMinX(union.x)
+                        final ImageLayout layout =
+                                (ImageLayout)
+                                        (hints != null
+                                                ? hints.get(JAI.KEY_IMAGE_LAYOUT)
+                                                : new ImageLayout2());
+                        layout.setWidth(union.width)
+                                .setHeight(union.height)
+                                .setMinX(union.x)
                                 .setMinY(union.y);
                         final RenderingHints localHints;
                         if (hints != null) {
@@ -114,9 +129,15 @@ public enum MergeBehavior {
                         } else {
                             localHints = new RenderingHints(JAI.KEY_IMAGE_LAYOUT, layout);
                         }
-                        return new ImageWorker(localHints).setBackground(backgroundValues)
-                                .mosaic(sources, MosaicDescriptor.MOSAIC_TYPE_OVERLAY, sourceAlpha,
-                                        sourceROI, inputThreshold, null)
+                        return new ImageWorker(localHints)
+                                .setBackground(backgroundValues)
+                                .mosaic(
+                                        sources,
+                                        MosaicDescriptor.MOSAIC_TYPE_OVERLAY,
+                                        sourceAlpha,
+                                        sourceROI,
+                                        inputThreshold,
+                                        null)
                                 .getRenderedImage();
                     }
                 }
@@ -136,10 +157,16 @@ public enum MergeBehavior {
     },
     FLAT {
         @Override
-        public RenderedImage process(RenderedImage[] sources, double[] backgroundValues,
-                double[][] inputThreshold, PlanarImage[] sourceAlpha, ROI[] sourceROI,
-                MosaicType mosaicType, RenderingHints localHints) {
-            return new ImageWorker(localHints).setBackground(backgroundValues)
+        public RenderedImage process(
+                RenderedImage[] sources,
+                double[] backgroundValues,
+                double[][] inputThreshold,
+                PlanarImage[] sourceAlpha,
+                ROI[] sourceROI,
+                MosaicType mosaicType,
+                RenderingHints localHints) {
+            return new ImageWorker(localHints)
+                    .setBackground(backgroundValues)
                     .mosaic(sources, mosaicType, sourceAlpha, sourceROI, inputThreshold, null)
                     .getRenderedImage();
         }
@@ -147,26 +174,30 @@ public enum MergeBehavior {
 
     /**
      * Process input {@link RenderedImage} to produce the output of this mosaic.
-     * 
+     *
      * @return a {@link RenderedImage}.
      */
-    public abstract RenderedImage process(RenderedImage[] sources, double[] backgroundValues,
-            double[][] inputThreshold, PlanarImage[] sourceAlpha, javax.media.jai.ROI[] sourceROI,
-            MosaicType mosaicType, RenderingHints localHints);
+    public abstract RenderedImage process(
+            RenderedImage[] sources,
+            double[] backgroundValues,
+            double[][] inputThreshold,
+            PlanarImage[] sourceAlpha,
+            javax.media.jai.ROI[] sourceROI,
+            MosaicType mosaicType,
+            RenderingHints localHints);
 
     /**
      * Retrieves the default {@link MergeBehavior}.
-     * 
+     *
      * @return the default {@link MergeBehavior}.
      */
     public static MergeBehavior getDefault() {
         return FLAT;
-
     }
 
     /**
      * Retrieves the possible values as Strings.
-     * 
+     *
      * @return an arrays of {@link String} that contains the representation of each value.
      */
     public static String[] valuesAsStrings() {
@@ -176,7 +207,5 @@ public enum MergeBehavior {
             valuesS[i] = values[i].toString();
         }
         return valuesS;
-
     }
-
 }

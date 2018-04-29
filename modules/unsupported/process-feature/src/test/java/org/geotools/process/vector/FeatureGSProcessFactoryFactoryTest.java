@@ -24,8 +24,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.EnumSet;
 import java.util.Map;
-import java.util.Set;
-
 import org.geotools.data.DataStore;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -41,43 +39,44 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class FeatureGSProcessFactoryFactoryTest {
 
     DataStore bugs;
-    
+
     @Before
     public void setup() throws IOException {
-        File file = TestData.file(this, null );
-        bugs = new PropertyDataStore( file );
+        File file = TestData.file(this, null);
+        bugs = new PropertyDataStore(file);
     }
+
     @After
-    public void tearDown(){
+    public void tearDown() {
         bugs.dispose();
     }
-    
+
     @Test
     public void testSum() throws Exception {
         SimpleFeatureSource source = bugs.getFeatureSource("bugsites");
-        
-        Map<String,Object> input = new KVP(
-                "features", source.getFeatures(),
-                "aggregationAttribute","cat",
-                "function",EnumSet.of(AggregationFunction.Sum),
-                "singlePass", true);
-        
-        NameImpl name = new NameImpl("vec","Aggregate");
-        Process process = Processors.createProcess( name );
+
+        Map<String, Object> input =
+                new KVP(
+                        "features",
+                        source.getFeatures(),
+                        "aggregationAttribute",
+                        "cat",
+                        "function",
+                        EnumSet.of(AggregationFunction.Sum),
+                        "singlePass",
+                        true);
+
+        NameImpl name = new NameImpl("vec", "Aggregate");
+        Process process = Processors.createProcess(name);
         assertNotNull("aggregateProcess not found", process);
         NullProgressListener monitor = new NullProgressListener();
-        Map<String, Object> output = process.execute(input, monitor );
-        
+        Map<String, Object> output = process.execute(input, monitor);
+
         Results result = (Results) output.get("result");
-        assertTrue( result.sum > 0 );
+        assertTrue(result.sum > 0);
     }
-    
 }

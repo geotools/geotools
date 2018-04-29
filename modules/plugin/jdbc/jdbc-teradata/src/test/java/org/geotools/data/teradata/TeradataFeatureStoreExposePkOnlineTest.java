@@ -16,17 +16,12 @@
  */
 package org.geotools.data.teradata;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import org.geotools.jdbc.JDBCFeatureStoreExposePkOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
-import java.io.IOException;
-import java.sql.SQLException;
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class TeradataFeatureStoreExposePkOnlineTest extends JDBCFeatureStoreExposePkOnlineTest {
 
     protected JDBCTestSetup createTestSetup() {

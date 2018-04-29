@@ -1,9 +1,9 @@
 /*
  *  GeoTools - The Open Source Java GIS Toolkit
  *  http://geotools.org
- * 
+ *
  *  (C) 2015, Open Source Geospatial Foundation (OSGeo)
- * 
+ *
  * The JTS Topology Suite is a collection of Java classes that
  * implement the fundamental operations required to validate a given
  * geo-spatial data set to a known topological specification.
@@ -37,16 +37,6 @@
  */
 package org.geotools.data.postgis;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.geotools.geometry.jts.CircularArc;
-import org.geotools.geometry.jts.CompoundCurve;
-import org.geotools.geometry.jts.CompoundRing;
-import org.geotools.geometry.jts.CurvedGeometryFactory;
-import org.geotools.geometry.jts.JTS;
-
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.CoordinateSequenceFactory;
@@ -68,17 +58,25 @@ import com.vividsolutions.jts.io.ByteOrderValues;
 import com.vividsolutions.jts.io.InStream;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKBWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import org.geotools.geometry.jts.CircularArc;
+import org.geotools.geometry.jts.CompoundCurve;
+import org.geotools.geometry.jts.CompoundRing;
+import org.geotools.geometry.jts.CurvedGeometryFactory;
+import org.geotools.geometry.jts.JTS;
 
 /**
  * Reads a {@link Geometry}from a byte stream in Postgis Extended Well-Known Binary format. Supports
  * use of an {@link InStream}, which allows easy use with arbitrary byte stream sources.
- * <p>
- * This class reads the format describe in {@link WKBWriter}. It also partially handles the
+ *
+ * <p>This class reads the format describe in {@link WKBWriter}. It also partially handles the
  * <b>Extended WKB</b> format used by PostGIS, by parsing and storing SRID values and supporting .
  * The reader repairs structurally-invalid input (specifically, LineStrings and LinearRings which
  * contain too few points have vertices added, and non-closed rings are closed).
- * <p>
- * This class is designed to support reuse of a single instance to read multiple geometries. This
+ *
+ * <p>This class is designed to support reuse of a single instance to read multiple geometries. This
  * class is not thread-safe; each thread should create its own instance.
  *
  * @see WKBWriter for a formal format specification
@@ -110,8 +108,7 @@ public class WKBReader {
 
     private static int hexToInt(char hex) {
         int nib = Character.digit(hex, 16);
-        if (nib < 0)
-            throw new IllegalArgumentException("Invalid hex digit: '" + hex + "'");
+        if (nib < 0) throw new IllegalArgumentException("Invalid hex digit: '" + hex + "'");
         return nib;
     }
 
@@ -185,8 +182,10 @@ public class WKBReader {
         // determine byte order
         byte byteOrderWKB = dis.readByte();
         // always set byte order, since it may change from geometry to geometry
-        int byteOrder = byteOrderWKB == WKBConstants.wkbNDR ? ByteOrderValues.LITTLE_ENDIAN
-                : ByteOrderValues.BIG_ENDIAN;
+        int byteOrder =
+                byteOrderWKB == WKBConstants.wkbNDR
+                        ? ByteOrderValues.LITTLE_ENDIAN
+                        : ByteOrderValues.BIG_ENDIAN;
         dis.setOrder(byteOrder);
 
         int typeInt = dis.readInt();
@@ -214,41 +213,41 @@ public class WKBReader {
     protected Geometry readGeometry(int geometryType) throws IOException, ParseException {
         Geometry geom = null;
         switch (geometryType) {
-        case WKBConstants.wkbPoint:
-            geom = readPoint();
-            break;
-        case WKBConstants.wkbLineString:
-            geom = readLineString();
-            break;
-        case WKBConstants.wkbPolygon:
-            geom = readPolygon();
-            break;
-        case WKBConstants.wkbMultiPoint:
-            geom = readMultiPoint();
-            break;
-        case WKBConstants.wkbMultiCurve:
-        case WKBConstants.wkbMultiLineString:
-            geom = readMultiLineString();
-            break;
-        case WKBConstants.wkbMultiPolygon:
-        case WKBConstants.wkbMultiSurface:
-            geom = readMultiPolygon();
-            break;
-        case WKBConstants.wkbGeometryCollection:
-            geom = readGeometryCollection();
-            break;
-        case WKBConstants.wkbCircularString:
-            geom = readCircularString();
-            break;
-        case WKBConstants.wkbCompoundCurve:
-            geom = readCompoundCurve();
-            break;
-        case WKBConstants.wkbCurvePolygon:
-            geom = readCurvePolygon();
-            break;
+            case WKBConstants.wkbPoint:
+                geom = readPoint();
+                break;
+            case WKBConstants.wkbLineString:
+                geom = readLineString();
+                break;
+            case WKBConstants.wkbPolygon:
+                geom = readPolygon();
+                break;
+            case WKBConstants.wkbMultiPoint:
+                geom = readMultiPoint();
+                break;
+            case WKBConstants.wkbMultiCurve:
+            case WKBConstants.wkbMultiLineString:
+                geom = readMultiLineString();
+                break;
+            case WKBConstants.wkbMultiPolygon:
+            case WKBConstants.wkbMultiSurface:
+                geom = readMultiPolygon();
+                break;
+            case WKBConstants.wkbGeometryCollection:
+                geom = readGeometryCollection();
+                break;
+            case WKBConstants.wkbCircularString:
+                geom = readCircularString();
+                break;
+            case WKBConstants.wkbCompoundCurve:
+                geom = readCompoundCurve();
+                break;
+            case WKBConstants.wkbCurvePolygon:
+                geom = readCurvePolygon();
+                break;
 
-        default:
-            throw new ParseException("Unknown WKB type " + geometryType);
+            default:
+                throw new ParseException("Unknown WKB type " + geometryType);
         }
         return geom;
     }
@@ -260,8 +259,7 @@ public class WKBReader {
      * @return the geometry with an updated SRID value, if required
      */
     private Geometry setSRID(Geometry g, int SRID) {
-        if (SRID != 0)
-            g.setSRID(SRID);
+        if (SRID != 0) g.setSRID(SRID);
         return g;
     }
 
@@ -303,8 +301,7 @@ public class WKBReader {
     protected Polygon readPolygon() throws IOException {
         int numRings = dis.readInt();
         LinearRing[] holes = null;
-        if (numRings > 1)
-            holes = new LinearRing[numRings - 1];
+        if (numRings > 1) holes = new LinearRing[numRings - 1];
 
         LinearRing shell = readLinearRing();
         for (int i = 0; i < numRings - 1; i++) {
@@ -316,8 +313,7 @@ public class WKBReader {
     protected Polygon readCurvePolygon() throws IOException, ParseException {
         int numRings = dis.readInt();
         LinearRing[] holes = null;
-        if (numRings > 1)
-            holes = new LinearRing[numRings - 1];
+        if (numRings > 1) holes = new LinearRing[numRings - 1];
 
         LinearRing shell = readRing();
         for (int i = 0; i < numRings - 1; i++) {
@@ -336,13 +332,13 @@ public class WKBReader {
                     Coordinate start = components.get(0).getCoordinateN(0);
                     LineString lastGeom = components.get(components.size() - 1);
                     Coordinate end = lastGeom.getCoordinateN((lastGeom.getNumPoints() - 1));
-                    components.add(factory.createLineString(new Coordinate[] { start, end }));
+                    components.add(factory.createLineString(new Coordinate[] {start, end}));
                     ls = factory.createCurvedGeometry(components);
                 } else {
                     Coordinate start = ls.getCoordinateN(0);
                     Coordinate end = ls.getCoordinateN((ls.getNumPoints() - 1));
                     // turn it into a compound and add the segment that closes it
-                    LineString closer = factory.createLineString(new Coordinate[] { start, end });
+                    LineString closer = factory.createLineString(new Coordinate[] {start, end});
                     ls = factory.createCurvedGeometry(ls, closer);
                 }
             } else {
@@ -356,9 +352,8 @@ public class WKBReader {
                 }
             }
         }
-        
-        return (LinearRing) ls;
 
+        return (LinearRing) ls;
     }
 
     private MultiPoint readMultiPoint() throws IOException, ParseException {
@@ -407,11 +402,9 @@ public class WKBReader {
     }
 
     private CoordinateSequence readCoordinateSequence(int size) throws IOException {
-        CoordinateSequence seq =
-            JTS.createCS(csFactory, size, inputDimension);
+        CoordinateSequence seq = JTS.createCS(csFactory, size, inputDimension);
         int targetDim = seq.getDimension();
-        if (targetDim > inputDimension)
-            targetDim = inputDimension;
+        if (targetDim > inputDimension) targetDim = inputDimension;
         for (int i = 0; i < size; i++) {
             readCoordinate();
             for (int j = 0; j < targetDim; j++) {
@@ -423,28 +416,22 @@ public class WKBReader {
 
     private CoordinateSequence readCoordinateSequenceCircularString(int size) throws IOException {
         CoordinateSequence seq = readCoordinateSequence(size);
-        if (isStrict)
-            return seq;
-        if (seq.size() == 0 || seq.size() >= 3)
-            return seq;
+        if (isStrict) return seq;
+        if (seq.size() == 0 || seq.size() >= 3) return seq;
         return CoordinateSequences.extend(csFactory, seq, 3);
     }
 
     private CoordinateSequence readCoordinateSequenceLineString(int size) throws IOException {
         CoordinateSequence seq = readCoordinateSequence(size);
-        if (isStrict)
-            return seq;
-        if (seq.size() == 0 || seq.size() >= 2)
-            return seq;
+        if (isStrict) return seq;
+        if (seq.size() == 0 || seq.size() >= 2) return seq;
         return CoordinateSequences.extend(csFactory, seq, 2);
     }
 
     private CoordinateSequence readCoordinateSequenceRing(int size) throws IOException {
         CoordinateSequence seq = readCoordinateSequence(size);
-        if (isStrict)
-            return seq;
-        if (CoordinateSequences.isRing(seq))
-            return seq;
+        if (isStrict) return seq;
+        if (CoordinateSequences.isRing(seq)) return seq;
         return CoordinateSequences.ensureValidRing(csFactory, seq);
     }
 
@@ -459,7 +446,6 @@ public class WKBReader {
             } else {
                 ordValues[i] = dis.readDouble();
             }
-
         }
     }
 
@@ -467,7 +453,7 @@ public class WKBReader {
      * Casts the provided geometry factory to a curved one if possible, or wraps it into one with
      * infinite tolerance (the linearization will happen using the default base segments number set
      * in {@link CircularArc}
-     * 
+     *
      * @param gf
      * @return
      */
@@ -480,5 +466,4 @@ public class WKBReader {
         }
         return curvedFactory;
     }
-
 }

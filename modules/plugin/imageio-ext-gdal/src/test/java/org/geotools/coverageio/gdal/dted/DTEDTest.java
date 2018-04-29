@@ -23,10 +23,8 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.logging.Level;
-
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
-
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -48,24 +46,18 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
 /**
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
- *
- * Testing {@link DTEDReader}
- *
- *
- *
+ *     <p>Testing {@link DTEDReader}
  * @source $URL$
  */
 public final class DTEDTest extends GDALTestCase {
 
-	/**
-     * file name of a valid DTED sample data to be used for tests. 
-     */
-    private final static String fileName = "n43.dt0";
+    /** file name of a valid DTED sample data to be used for tests. */
+    private static final String fileName = "n43.dt0";
 
     public DTEDTest() {
-		super( "DTED", new DTEDFormatFactory());
-	}
-    
+        super("DTED", new DTEDFormatFactory());
+    }
+
     @Test
     public void test() throws Exception {
         if (!testingEnabled()) {
@@ -90,10 +82,10 @@ public final class DTEDTest extends GDALTestCase {
         // /////////////////////////////////////////////////////////////////////
         GridCoverage2D gc = (GridCoverage2D) reader.read(null);
         forceDataLoading(gc);
-        
+
         // log band names (check they are not all UNKNOWN)
         if (LOGGER.isLoggable(Level.FINE))
-        	LOGGER.log(Level.FINE, Arrays.toString(gc.getSampleDimensions()));
+            LOGGER.log(Level.FINE, Arrays.toString(gc.getSampleDimensions()));
 
         // /////////////////////////////////////////////////////////////////////
         //
@@ -103,33 +95,40 @@ public final class DTEDTest extends GDALTestCase {
         final double cropFactor = 2.0;
         final int oldW = gc.getRenderedImage().getWidth();
         final int oldH = gc.getRenderedImage().getHeight();
-        final Rectangle range = ((GridEnvelope2D)reader.getOriginalGridRange());
+        final Rectangle range = ((GridEnvelope2D) reader.getOriginalGridRange());
         final GeneralEnvelope oldEnvelope = reader.getOriginalEnvelope();
-        final GeneralEnvelope cropEnvelope = new GeneralEnvelope(new double[] {
-                    oldEnvelope.getLowerCorner().getOrdinate(0)
-                    + (oldEnvelope.getSpan(0) / cropFactor),
-                    
-                oldEnvelope.getLowerCorner().getOrdinate(1)
-                    + (oldEnvelope.getSpan(1) / cropFactor)
-                },
-                new double[] {
-                    oldEnvelope.getUpperCorner().getOrdinate(0),
-                    oldEnvelope.getUpperCorner().getOrdinate(1)
-                });
+        final GeneralEnvelope cropEnvelope =
+                new GeneralEnvelope(
+                        new double[] {
+                            oldEnvelope.getLowerCorner().getOrdinate(0)
+                                    + (oldEnvelope.getSpan(0) / cropFactor),
+                            oldEnvelope.getLowerCorner().getOrdinate(1)
+                                    + (oldEnvelope.getSpan(1) / cropFactor)
+                        },
+                        new double[] {
+                            oldEnvelope.getUpperCorner().getOrdinate(0),
+                            oldEnvelope.getUpperCorner().getOrdinate(1)
+                        });
         cropEnvelope.setCoordinateReferenceSystem(reader.getCrs());
 
-        final ParameterValue gg = (ParameterValue) ((AbstractGridFormat) reader.getFormat()).READ_GRIDGEOMETRY2D
-            .createValue();
-        gg.setValue(new GridGeometry2D(
-                new GridEnvelope2D(
-                    new Rectangle(0, 0, (int) (range.width / 2.0 / cropFactor),
-                        (int) (range.height / 2.0 / cropFactor))), cropEnvelope));
-        gc = (GridCoverage2D) reader.read(new GeneralParameterValue[] { gg });
+        final ParameterValue gg =
+                (ParameterValue)
+                        ((AbstractGridFormat) reader.getFormat()).READ_GRIDGEOMETRY2D.createValue();
+        gg.setValue(
+                new GridGeometry2D(
+                        new GridEnvelope2D(
+                                new Rectangle(
+                                        0,
+                                        0,
+                                        (int) (range.width / 2.0 / cropFactor),
+                                        (int) (range.height / 2.0 / cropFactor))),
+                        cropEnvelope));
+        gc = (GridCoverage2D) reader.read(new GeneralParameterValue[] {gg});
         forceDataLoading(gc);
     }
-    
+
     @Test
-	public void testService() throws NoSuchAuthorityCodeException, FactoryException {
+    public void testService() throws NoSuchAuthorityCodeException, FactoryException {
         if (!testingEnabled()) {
             return;
         }
@@ -153,5 +152,5 @@ public final class DTEDTest extends GDALTestCase {
         Assert.assertTrue("DTEDFormatFactory not registered", found);
         Assert.assertTrue("DTEDFormatFactory not available", fac.isAvailable());
         Assert.assertNotNull(new DTEDFormatFactory().createFormat());
-    }    
+    }
 }

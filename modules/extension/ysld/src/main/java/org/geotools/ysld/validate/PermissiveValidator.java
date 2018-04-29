@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -28,12 +28,14 @@ import org.yaml.snakeyaml.events.SequenceStartEvent;
 /**
  * Validator which accepts a YAML subtree and then removes itself from the stack.
  *
- * This Validator is stateful, do not re-use it.
+ * <p>This Validator is stateful, do not re-use it.
  */
 public class PermissiveValidator extends StatefulValidator {
 
     enum State {
-        NEW, STARTED, DONE
+        NEW,
+        STARTED,
+        DONE
     }
 
     int depth = 0;
@@ -99,16 +101,17 @@ public class PermissiveValidator extends StatefulValidator {
     @Override
     public void alias(AliasEvent evt, YsldValidateContext context) {
         switch (state) {
-        case NEW:
-            state = State.DONE;
-            context.pop();
-            break;
-        case STARTED:
-            break;
-        default:
-            context.error(String.format("Unexpected alias '%s'", evt.getAnchor()),
-                    evt.getStartMark());
-            break;
+            case NEW:
+                state = State.DONE;
+                context.pop();
+                break;
+            case STARTED:
+                break;
+            default:
+                context.error(
+                        String.format("Unexpected alias '%s'", evt.getAnchor()),
+                        evt.getStartMark());
+                break;
         }
     }
 }

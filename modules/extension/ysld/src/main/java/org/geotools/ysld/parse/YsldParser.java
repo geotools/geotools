@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,10 +17,6 @@
  */
 package org.geotools.ysld.parse;
 
-import org.geotools.styling.ResourceLocator;
-import org.geotools.styling.StyledLayerDescriptor;
-import org.geotools.ysld.UomMapper;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
@@ -30,10 +26,13 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.geotools.styling.ResourceLocator;
+import org.geotools.styling.StyledLayerDescriptor;
+import org.geotools.ysld.UomMapper;
 
 /**
- * Parses a Yaml/Ysld stream into GeoTools style objects by returning a {@link StyledLayerDescriptor} from the {@link #parse()} method.
- * 
+ * Parses a Yaml/Ysld stream into GeoTools style objects by returning a {@link
+ * StyledLayerDescriptor} from the {@link #parse()} method.
  */
 public class YsldParser extends YamlParser {
 
@@ -41,19 +40,19 @@ public class YsldParser extends YamlParser {
 
     UomMapper uomMapper = new UomMapper();
 
-    ResourceLocator locator = new ResourceLocator() {
+    ResourceLocator locator =
+            new ResourceLocator() {
 
-        @Override
-        public URL locateResource(String uri) {
-            try {
-                return new URL(uri);
-            } catch (MalformedURLException e) {
-                throw new IllegalArgumentException(String.format("'%s' is not a valid URI", uri),
-                        e);
-            }
-        }
-
-    };
+                @Override
+                public URL locateResource(String uri) {
+                    try {
+                        return new URL(uri);
+                    } catch (MalformedURLException e) {
+                        throw new IllegalArgumentException(
+                                String.format("'%s' is not a valid URI", uri), e);
+                    }
+                }
+            };
 
     public YsldParser(InputStream ysld) throws IOException {
         super(ysld);
@@ -76,13 +75,15 @@ public class YsldParser extends YamlParser {
     }
 
     /**
-     * Parse the yaml provided to this instance into a {@link StyledLayerDescriptor} and return the result.
-     * 
+     * Parse the yaml provided to this instance into a {@link StyledLayerDescriptor} and return the
+     * result.
+     *
      * @throws IOException
      */
     public StyledLayerDescriptor parse() throws IOException {
 
-        // Hand off to the base class to parse the yaml, and provide a Ysld parser handler that will transform the resulting
+        // Hand off to the base class to parse the yaml, and provide a Ysld parser handler that will
+        // transform the resulting
         // YamlObject into GeoTools-style objects.
 
         Map<String, Object> hints = new HashMap();

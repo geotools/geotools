@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2014 - 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -21,10 +21,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Arrays;
-
-import org.junit.Test;
-
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.Envelope;
@@ -33,6 +29,8 @@ import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
+import java.util.Arrays;
+import org.junit.Test;
 
 public class CurvedGeometryTest {
 
@@ -74,8 +72,8 @@ public class CurvedGeometryTest {
 
         // verify a close-by, mis-aligned (angle wise) arc with the minimum segmentation
         // (cannot do 9.999 or the control points will cause the intersection)
-        double[] controlPoints2 = new Circle(9.9).samplePoints(Math.PI * 3 / 5, Math.PI / 4,
-                Math.PI / 10);
+        double[] controlPoints2 =
+                new Circle(9.9).samplePoints(Math.PI * 3 / 5, Math.PI / 4, Math.PI / 10);
         CircularString cs2 = new CircularString(controlPoints2, GEOMETRY_FACTORY, Double.MAX_VALUE);
         // they should not intersect
         assertFalse(cs.intersects(cs2));
@@ -127,8 +125,8 @@ public class CurvedGeometryTest {
 
         // verify a close-by, mis-aligned (angle wise) arc with the minimum segmentation
         // (cannot do 9.999 or the control points will cause the intersection)
-        double[] controlPoints2 = new Circle(9.9).samplePoints(Math.PI * 3 / 5, Math.PI / 4,
-                Math.PI / 10);
+        double[] controlPoints2 =
+                new Circle(9.9).samplePoints(Math.PI * 3 / 5, Math.PI / 4, Math.PI / 10);
         CircularString cs2 = new CircularString(controlPoints2, GEOMETRY_FACTORY, Double.MAX_VALUE);
         // they should not intersect
         assertFalse(cs.intersects(cs2));
@@ -158,8 +156,8 @@ public class CurvedGeometryTest {
     @Test
     public void testSimpleCircle() {
         Circle circle = new Circle(10);
-        double[] circleControlPoints = circle.samplePoints(0, Math.PI / 2, Math.PI,
-                Math.PI * 3 / 2, 0);
+        double[] circleControlPoints =
+                circle.samplePoints(0, Math.PI / 2, Math.PI, Math.PI * 3 / 2, 0);
 
         CircularRing cr = new CircularRing(circleControlPoints, GEOMETRY_FACTORY, Double.MAX_VALUE);
         Envelope env = cr.getEnvelopeInternal();
@@ -167,8 +165,7 @@ public class CurvedGeometryTest {
 
         // check linearization
         assertEquals(CircularArc.BASE_SEGMENTS_QUADRANT * 4 + 1, cr.getNumPoints());
-        CoordinateSequence coordinates = cr.linearize()
-                .getCoordinateSequence();
+        CoordinateSequence coordinates = cr.linearize().getCoordinateSequence();
         circle.assertTolerance(coordinates, 0.1);
 
         // check cloning
@@ -183,8 +180,8 @@ public class CurvedGeometryTest {
 
         // verify a close-by, mis-aligned (angle wise) arc with the minimum segmentation
         // (cannot do 9.999 or the control points will cause the intersection)
-        double[] controlPoints2 = new Circle(9.9).samplePoints(Math.PI * 3 / 5, Math.PI / 4,
-                Math.PI / 10);
+        double[] controlPoints2 =
+                new Circle(9.9).samplePoints(Math.PI * 3 / 5, Math.PI / 4, Math.PI / 10);
         CircularString cs2 = new CircularString(controlPoints2, GEOMETRY_FACTORY, Double.MAX_VALUE);
         // they should not intersect
         assertFalse(cr.intersects(cs2));
@@ -215,13 +212,20 @@ public class CurvedGeometryTest {
 
     @Test
     public void testCompoundCurve() {
-        double[] halfCircle = new double[] { 10, 10, 0, 20, -10, 10 };
+        double[] halfCircle = new double[] {10, 10, 0, 20, -10, 10};
         CircularString cs = new CircularString(halfCircle, GEOMETRY_FACTORY, Double.MAX_VALUE);
-        LineString ls = new LineString(new CoordinateArraySequence(new Coordinate[] {
-                new Coordinate(-10, 10), new Coordinate(-10, 0), new Coordinate(10, 0),
-                new Coordinate(10, 10) }), GEOMETRY_FACTORY);
-        CompoundCurve curve = new CompoundCurve(Arrays.asList(cs, ls), GEOMETRY_FACTORY,
-                Double.MAX_VALUE);
+        LineString ls =
+                new LineString(
+                        new CoordinateArraySequence(
+                                new Coordinate[] {
+                                    new Coordinate(-10, 10),
+                                    new Coordinate(-10, 0),
+                                    new Coordinate(10, 0),
+                                    new Coordinate(10, 10)
+                                }),
+                        GEOMETRY_FACTORY);
+        CompoundCurve curve =
+                new CompoundCurve(Arrays.asList(cs, ls), GEOMETRY_FACTORY, Double.MAX_VALUE);
 
         assertFalse("Check that this should not be a rectangle.", curve.isRectangle());
 
@@ -252,13 +256,20 @@ public class CurvedGeometryTest {
 
     @Test
     public void testCompoundRing() {
-        double[] halfCircle = new double[] { 10, 10, 0, 20, -10, 10 };
+        double[] halfCircle = new double[] {10, 10, 0, 20, -10, 10};
         CircularString cs = new CircularString(halfCircle, GEOMETRY_FACTORY, Double.MAX_VALUE);
-        LineString ls = new LineString(new CoordinateArraySequence(new Coordinate[] {
-                new Coordinate(-10, 10), new Coordinate(-10, 0), new Coordinate(10, 0),
-                new Coordinate(10, 10) }), GEOMETRY_FACTORY);
-        CompoundRing ring = new CompoundRing(Arrays.asList(cs, ls), GEOMETRY_FACTORY,
-                Double.MAX_VALUE);
+        LineString ls =
+                new LineString(
+                        new CoordinateArraySequence(
+                                new Coordinate[] {
+                                    new Coordinate(-10, 10),
+                                    new Coordinate(-10, 0),
+                                    new Coordinate(10, 0),
+                                    new Coordinate(10, 10)
+                                }),
+                        GEOMETRY_FACTORY);
+        CompoundRing ring =
+                new CompoundRing(Arrays.asList(cs, ls), GEOMETRY_FACTORY, Double.MAX_VALUE);
 
         // envelope check
         Envelope env = ring.getEnvelopeInternal();
@@ -318,16 +329,32 @@ public class CurvedGeometryTest {
     public void testMultiSurface() {
         CurvePolygon p1 = buildCurvePolygon();
 
-        LinearRing shell = new LinearRing(new CoordinateArraySequence(new Coordinate[] {
-                new Coordinate(20, 20), new Coordinate(24, 20), new Coordinate(24, 24),
-                new Coordinate(20, 24), new Coordinate(20, 20) }), GEOMETRY_FACTORY);
-        LinearRing hole = new LinearRing(new CoordinateArraySequence(new Coordinate[] {
-                new Coordinate(22, 22), new Coordinate(23, 22), new Coordinate(23, 23),
-                new Coordinate(23, 22), new Coordinate(22, 22) }), GEOMETRY_FACTORY);
-        Polygon p2 = new Polygon(shell, new LinearRing[] { hole }, GEOMETRY_FACTORY);
-        
-        MultiSurface ms = new MultiSurface(new Polygon[] {p1, p2}, GEOMETRY_FACTORY,
-                Double.MAX_VALUE);
+        LinearRing shell =
+                new LinearRing(
+                        new CoordinateArraySequence(
+                                new Coordinate[] {
+                                    new Coordinate(20, 20),
+                                    new Coordinate(24, 20),
+                                    new Coordinate(24, 24),
+                                    new Coordinate(20, 24),
+                                    new Coordinate(20, 20)
+                                }),
+                        GEOMETRY_FACTORY);
+        LinearRing hole =
+                new LinearRing(
+                        new CoordinateArraySequence(
+                                new Coordinate[] {
+                                    new Coordinate(22, 22),
+                                    new Coordinate(23, 22),
+                                    new Coordinate(23, 23),
+                                    new Coordinate(23, 22),
+                                    new Coordinate(22, 22)
+                                }),
+                        GEOMETRY_FACTORY);
+        Polygon p2 = new Polygon(shell, new LinearRing[] {hole}, GEOMETRY_FACTORY);
+
+        MultiSurface ms =
+                new MultiSurface(new Polygon[] {p1, p2}, GEOMETRY_FACTORY, Double.MAX_VALUE);
 
         // envelope check
         Envelope env = ms.getEnvelopeInternal();
@@ -358,27 +385,36 @@ public class CurvedGeometryTest {
 
     @Test
     public void testNormalize() {
-        double[] circleControlPoints = new double[] { 0, 0, 0, 10, 0, 0 };
+        double[] circleControlPoints = new double[] {0, 0, 0, 10, 0, 0};
         CircularRing circle = new CircularRing(circleControlPoints, GEOMETRY_FACTORY, 1e-6);
 
         CircularRing normalized = circle.normalizeRing();
         assertEquals(2, normalized.getNumArcs());
         CircularArc a1 = normalized.getArcN(0);
-        assertArrayEquals(new double[] { 0, 0, 5, 5, 0, 10 }, a1.getControlPoints(), 1e-6);
+        assertArrayEquals(new double[] {0, 0, 5, 5, 0, 10}, a1.getControlPoints(), 1e-6);
         CircularArc a2 = normalized.getArcN(1);
-        assertArrayEquals(new double[] { 0, 10, -5, 5, 0, 0 }, a2.getControlPoints(), 1e-6);
+        assertArrayEquals(new double[] {0, 10, -5, 5, 0, 0}, a2.getControlPoints(), 1e-6);
     }
 
     private CurvePolygon buildCurvePolygon() {
-        double[] circleControlPoints = new double[] { -10, 0, 0, 10, 10, 0, 0, -10, -10, 0 };
-        CircularRing shell = new CircularRing(circleControlPoints, GEOMETRY_FACTORY,
-                Double.MAX_VALUE);
+        double[] circleControlPoints = new double[] {-10, 0, 0, 10, 10, 0, 0, -10, -10, 0};
+        CircularRing shell =
+                new CircularRing(circleControlPoints, GEOMETRY_FACTORY, Double.MAX_VALUE);
 
-        LinearRing hole = new LinearRing(new CoordinateArraySequence(new Coordinate[] {
-                new Coordinate(-1, -1), new Coordinate(-1, 1), new Coordinate(1, 1),
-                new Coordinate(1, -1), new Coordinate(-1, -1) }), GEOMETRY_FACTORY);
-        CurvePolygon curved = new CurvePolygon(shell, new LinearRing[] { hole }, GEOMETRY_FACTORY,
-                Double.MAX_VALUE);
+        LinearRing hole =
+                new LinearRing(
+                        new CoordinateArraySequence(
+                                new Coordinate[] {
+                                    new Coordinate(-1, -1),
+                                    new Coordinate(-1, 1),
+                                    new Coordinate(1, 1),
+                                    new Coordinate(1, -1),
+                                    new Coordinate(-1, -1)
+                                }),
+                        GEOMETRY_FACTORY);
+        CurvePolygon curved =
+                new CurvePolygon(
+                        shell, new LinearRing[] {hole}, GEOMETRY_FACTORY, Double.MAX_VALUE);
         return curved;
     }
 
@@ -388,5 +424,4 @@ public class CurvedGeometryTest {
         assertEquals(envelope.getMinX(), env.getMinX(), Circle.EPS);
         assertEquals(envelope.getMaxY(), env.getMaxY(), Circle.EPS);
     }
-
 }

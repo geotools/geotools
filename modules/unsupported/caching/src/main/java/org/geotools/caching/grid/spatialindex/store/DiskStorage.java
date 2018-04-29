@@ -39,7 +39,6 @@ import java.util.Properties;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.caching.grid.spatialindex.GridNode;
 import org.geotools.caching.spatialindex.Node;
 import org.geotools.caching.spatialindex.NodeIdentifier;
@@ -50,53 +49,48 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.FeatureType;
 
-
-/** A storage that stores data in a file on disk.
- * 
- * Create new instances with static factory method <code>DiskStorage.createInstance()</code>
- * or <code>DiskStorage.createInstance(PropertySet)</code>
- * 
- * @author Christophe Rousson <christophe.rousson@gmail.com>, Google SoC 2007 
+/**
+ * A storage that stores data in a file on disk.
  *
+ * <p>Create new instances with static factory method <code>DiskStorage.createInstance()</code> or
+ * <code>DiskStorage.createInstance(PropertySet)</code>
  *
- *
- *
- *
+ * @author Christophe Rousson <christophe.rousson@gmail.com>, Google SoC 2007
  * @source $URL$
  */
 public class DiskStorage implements Storage {
-    public final static String DATA_FILE_PROPERTY = "DiskStorage.DataFile";
-    public final static String INDEX_FILE_PROPERTY = "DiskStorage.IndexFile";
-    public final static String PAGE_SIZE_PROPERTY = "DiskStorage.PageSize";
-    
-    protected static Logger logger = org.geotools.util.logging.Logging.getLogger("org.geotools.caching.spatialindex.store");
-    
+    public static final String DATA_FILE_PROPERTY = "DiskStorage.DataFile";
+    public static final String INDEX_FILE_PROPERTY = "DiskStorage.IndexFile";
+    public static final String PAGE_SIZE_PROPERTY = "DiskStorage.PageSize";
+
+    protected static Logger logger =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.caching.spatialindex.store");
+
     private int stats_bytes = 0;
     private int stats_n = 0;
     private int page_size;
     private int nextPage = 0;
-    
-    private File dataFile;		//this is the file that stores the data
+
+    private File dataFile; // this is the file that stores the data
     private RandomAccessFile data_file;
     private FileChannel data_channel;
-    
-    private File indexFile;		//this is the index file that tracks nodes & pages
-    
-    
-    private TreeSet<Integer> emptyPages;				//list of empty pages for reuse
-    private HashMap<NodeIdentifier, Entry> pageIndex;	//page index list
-   
-    private Collection<FeatureType> featureTypes;		//feature types in store
-    private ReferencedEnvelope bounds;					//bounds of store
-        
+
+    private File indexFile; // this is the index file that tracks nodes & pages
+
+    private TreeSet<Integer> emptyPages; // list of empty pages for reuse
+    private HashMap<NodeIdentifier, Entry> pageIndex; // page index list
+
+    private Collection<FeatureType> featureTypes; // feature types in store
+    private ReferencedEnvelope bounds; // bounds of store
+
     private DiskStorage(File f, int page_size) throws IOException {
         this(f, page_size, new File(f.getCanonicalPath() + ".idx"));
     }
 
     private DiskStorage(File f, File index_file) throws IOException {
-    	this(f, 1000, index_file);
+        this(f, 1000, index_file);
     }
-    
+
     private DiskStorage(File f, int page_size, File index_file) throws IOException {
         this.indexFile = index_file;
         this.page_size = page_size;
@@ -104,35 +98,39 @@ public class DiskStorage implements Storage {
         this.emptyPages = new TreeSet<Integer>();
         this.pageIndex = new HashMap<NodeIdentifier, Entry>();
         this.featureTypes = new HashSet<FeatureType>();
-        
+
         if (index_file.exists()) {
-            try{
+            try {
                 initializeFromIndex();
-            }catch (Exception ex){
-                //lets clear out any existing info
+            } catch (Exception ex) {
+                // lets clear out any existing info
                 this.indexFile.createNewFile();
                 this.dataFile.createNewFile();
-                
+
                 this.emptyPages = new TreeSet<Integer>();
                 this.pageIndex = new HashMap<NodeIdentifier, Entry>();
                 this.featureTypes = new HashSet<FeatureType>();
             }
-        }   
-        
+        }
+
         data_file = new RandomAccessFile(f, "rw");
-        data_channel = data_file.getChannel();      
+        data_channel = data_file.getChannel();
     }
 
-    /** Factory method : create a new Storage of type DiskStorage.
-     * 
-     * Valid properties are :
+    /**
+     * Factory method : create a new Storage of type DiskStorage.
+     *
+     * <p>Valid properties are :
+     *
      * <ul>
-     *   <li>DiskStorage.DATA_FILE_PROPERTY : filename (mandatory) ; overrides given file if index is not provided.
-     *   <li>DiskStorage.INDEX_FILE_PROPERTY : filename ;
-     *                                         if exists, must be a valid index file
-     *                                         and data file must be the valid data file associated with this index.
-     *   <li>DiskStorage.PAGE_SIZE_PROPERTY : int, required if INDEX_FILE does not exist, or is not provided.
+     *   <li>DiskStorage.DATA_FILE_PROPERTY : filename (mandatory) ; overrides given file if index
+     *       is not provided.
+     *   <li>DiskStorage.INDEX_FILE_PROPERTY : filename ; if exists, must be a valid index file and
+     *       data file must be the valid data file associated with this index.
+     *   <li>DiskStorage.PAGE_SIZE_PROPERTY : int, required if INDEX_FILE does not exist, or is not
+     *       provided.
      * </ul>
+     *
      * @param property set
      * @return new instance of DiskStorage
      */
@@ -156,15 +154,19 @@ public class DiskStorage implements Storage {
                 return new DiskStorage(f, page_size);
             }
         } catch (IOException e) {
-            logger.log(Level.WARNING, "DiskStorage : error occured when creating new instance : "+e.getMessage(),e);
+            logger.log(
+                    Level.WARNING,
+                    "DiskStorage : error occured when creating new instance : " + e.getMessage(),
+                    e);
             return null;
         } catch (NullPointerException e) {
-            throw new IllegalArgumentException("DiskStorage : invalid property set.",e);
+            throw new IllegalArgumentException("DiskStorage : invalid property set.", e);
         }
     }
 
-    /** Default factory method : create a new Storage of type DiskStorage,
-     * with page size set to default 1000 bytes, and data file is a new temporary file.
+    /**
+     * Default factory method : create a new Storage of type DiskStorage, with page size set to
+     * default 1000 bytes, and data file is a new temporary file.
      *
      * @return new instance of DiskStorage with default parameters.
      */
@@ -172,108 +174,104 @@ public class DiskStorage implements Storage {
         try {
             return new DiskStorage(File.createTempFile("storage", ".tmp"), 1000);
         } catch (IOException e) {
-            logger.log(Level.WARNING,
-                "DiskStorage : error occured when creating new instance : " + e);
+            logger.log(
+                    Level.WARNING, "DiskStorage : error occured when creating new instance : " + e);
 
             return null;
         }
     }
 
-    /**
-     * Removes all entries from the disk store and clears the
-     * associated feature types.
-     */
+    /** Removes all entries from the disk store and clears the associated feature types. */
     public synchronized void clear() {
-        for (Iterator<java.util.Map.Entry<NodeIdentifier, Entry>> it = pageIndex.entrySet().iterator();it.hasNext();) {
+        for (Iterator<java.util.Map.Entry<NodeIdentifier, Entry>> it =
+                        pageIndex.entrySet().iterator();
+                it.hasNext(); ) {
             java.util.Map.Entry<NodeIdentifier, Entry> next = it.next();
             Entry e = next.getValue();
             int n = 0;
             while (n < e.pages.size()) {
-            	emptyPages.add(e.pages.get(n));
-            	n++;
+                emptyPages.add(e.pages.get(n));
+                n++;
             }
             it.remove();
         }
     }
 
-    /**
-     * Gets a particular node
-     */
+    /** Gets a particular node */
     public synchronized Node get(NodeIdentifier id) {
         Node node = null;
-                
+
         Entry e = pageIndex.get(id);
         if (e == null) {
-        	return null;
+            return null;
         }
         byte[] data = new byte[e.length];
         readData(data, e);
         try {
             node = readNode(data, id);
         } catch (IOException e1) {
-        	throw new IllegalStateException(e1);
+            throw new IllegalStateException(e1);
         } catch (ClassNotFoundException e1) {
-        	throw new IllegalStateException(e1);
-        } catch (Exception ex){
+            throw new IllegalStateException(e1);
+        } catch (Exception ex) {
             logger.log(Level.WARNING, "Error reading node.", ex);
         }
         return node;
     }
-    
+
     /*
      * Reads data from the file into data array
      */
     private void readData(byte[] data, Entry e) {
-    	ByteBuffer buffer = ByteBuffer.allocate(page_size);
-    	int page = 0;
+        ByteBuffer buffer = ByteBuffer.allocate(page_size);
+        int page = 0;
         int rem = data.length;
         int len = 0;
         int next = 0;
         int index = 0;
-        while (next < e.pages.size()) {	//for each page
-        	page = e.pages.get(next);
-        	len = (rem > page_size) ? page_size : rem;
+        while (next < e.pages.size()) { // for each page
+            page = e.pages.get(next);
+            len = (rem > page_size) ? page_size : rem;
 
-        	try {
-        		buffer.clear();
-        		data_channel.position(page * page_size);
-        		int bytes_read = data_channel.read(buffer);
-        		if (bytes_read != page_size) {
-        			throw new IllegalStateException("Data file might be corrupted.");
-        		}
+            try {
+                buffer.clear();
+                data_channel.position(page * page_size);
+                int bytes_read = data_channel.read(buffer);
+                if (bytes_read != page_size) {
+                    throw new IllegalStateException("Data file might be corrupted.");
+                }
 
-        		buffer.rewind();
-        		buffer.get(data, index, len);
-        		rem -= bytes_read;
-        		index += bytes_read;
-        		next++;
-        	} catch (IOException io) {
-        		throw new IllegalStateException(io);
-        	}
+                buffer.rewind();
+                buffer.get(data, index, len);
+                rem -= bytes_read;
+                index += bytes_read;
+                next++;
+            } catch (IOException io) {
+                throw new IllegalStateException(io);
+            }
         }
     }
-    
-    /* 
-     * Converts an array of bytes into a node 
+
+    /*
+     * Converts an array of bytes into a node
      */
-    private Node readNode(byte[] data, NodeIdentifier id) throws IOException, ClassNotFoundException {
-    	ByteArrayInputStream bais = new ByteArrayInputStream(data);
+    private Node readNode(byte[] data, NodeIdentifier id)
+            throws IOException, ClassNotFoundException {
+        ByteArrayInputStream bais = new ByteArrayInputStream(data);
         ObjectInputStream ois = new ObjectInputStream(bais);
         Node node = null;
-        try{
+        try {
             node = (Node) ois.readObject();
-        }finally{
+        } finally {
             ois.close();
-            bais.close();            
+            bais.close();
         }
         id = findUniqueInstance(id);
         node.setIdentifier(id);
         return node;
     }
 
-    /**
-     * Adds a node to the store.
-     */
+    /** Adds a node to the store. */
     public synchronized void put(Node n) {
         byte[] data = null;
         try {
@@ -293,28 +291,28 @@ public class DiskStorage implements Storage {
                 throw new IllegalStateException("old entry null");
             }
         } else {
-        	if (!pageIndex.containsKey(e.id)) {
-        		pageIndex.put(e.id, null); // advertise we created a new entry        	} else {
-        		old = pageIndex.get(e.id);
-        	}
+            if (!pageIndex.containsKey(e.id)) {
+                pageIndex.put(e.id, null); // advertise we created a new entry        	} else {
+                old = pageIndex.get(e.id);
+            }
         }
         writeData(data, e, old);
         pageIndex.put(e.id, e);
     }
-    
+
     /*
      * converts a node to a byte array
      */
     private byte[] writeNode(Node n) throws IOException {
-    	ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);
-        try{
+        try {
             oos.writeObject(n);
             byte[] data = baos.toByteArray();
             stats_bytes += data.length;
             stats_n++;
             return data;
-        }finally{
+        } finally {
             oos.close();
             baos.close();
         }
@@ -334,50 +332,48 @@ public class DiskStorage implements Storage {
         int next = 0;
 
         while (rem > 0) {
-        	if ((old != null) && (next < old.pages.size())) {
-        		page = old.pages.get(next);
-        		next++;
-        	} else if (!emptyPages.isEmpty()) {
-        		synchronized (emptyPages) {
-        			Integer i = emptyPages.first();
-        			page = i.intValue();
+            if ((old != null) && (next < old.pages.size())) {
+                page = old.pages.get(next);
+                next++;
+            } else if (!emptyPages.isEmpty()) {
+                synchronized (emptyPages) {
+                    Integer i = emptyPages.first();
+                    page = i.intValue();
 
-        			if (!emptyPages.remove(i)) {
-        				throw new RuntimeException("buggy here !!!!");
-        			}
-        		}
-        	} else {
-        		page = nextPage++;
-        	}
+                    if (!emptyPages.remove(i)) {
+                        throw new RuntimeException("buggy here !!!!");
+                    }
+                }
+            } else {
+                page = nextPage++;
+            }
 
-        	len = (rem > page_size) ? page_size : rem;
-        	buffer.clear();
-        	buffer.put(data, index, len);
+            len = (rem > page_size) ? page_size : rem;
+            buffer.clear();
+            buffer.put(data, index, len);
 
-        	try {
-        		buffer.rewind();
-        		data_channel.position(page * page_size);
-        		data_channel.write(buffer);
-        	} catch (IOException io) {
-        		throw new IllegalStateException(io);
-        	}
+            try {
+                buffer.rewind();
+                data_channel.position(page * page_size);
+                data_channel.write(buffer);
+            } catch (IOException io) {
+                throw new IllegalStateException(io);
+            }
 
-        	rem -= len;
-        	index += len;
-        	e.pages.add(new Integer(page));
+            rem -= len;
+            index += len;
+            e.pages.add(new Integer(page));
         }
 
         if (old != null) { // don't forget to recycle pages
-        	while (next < old.pages.size()) {
-        		emptyPages.add(new Integer(old.pages.get(next)));
-        		next++;
-        	}
+            while (next < old.pages.size()) {
+                emptyPages.add(new Integer(old.pages.get(next)));
+                next++;
+            }
         }
     }
 
-    /**
-     * Removes a node from the store.
-     */
+    /** Removes a node from the store. */
     public synchronized void remove(NodeIdentifier id) {
         Entry e = pageIndex.get(id);
         if (e == null) {
@@ -387,29 +383,31 @@ public class DiskStorage implements Storage {
 
         int next = 0;
         while (next < e.pages.size()) {
-        	emptyPages.add(new Integer(e.pages.get(next)));
-        	next++;
+            emptyPages.add(new Integer(e.pages.get(next)));
+            next++;
         }
         pageIndex.remove(id);
     }
 
     /**
-     * Disposes of the store. 
-     * <p>This flushes all data and closes file handles</p>
+     * Disposes of the store.
+     *
+     * <p>This flushes all data and closes file handles
      */
-    public synchronized void dispose(){
+    public synchronized void dispose() {
         flush();
-        try{
+        try {
             this.data_channel.close();
             this.data_file.close();
-        }catch (Exception ex){
+        } catch (Exception ex) {
             logger.log(Level.WARNING, "Error disposing of disk storage", ex);
         }
     }
-    
+
     /**
      * Writes the index file.
-     * <p>This does not close the data files.</p>
+     *
+     * <p>This does not close the data files.
      */
     public void flush() {
         try {
@@ -423,10 +421,12 @@ public class DiskStorage implements Storage {
                 oos.writeObject(this.bounds);
 
                 oos.writeInt(this.featureTypes.size());
-                for( Iterator<FeatureType> iterator = featureTypes.iterator(); iterator.hasNext(); ) {
+                for (Iterator<FeatureType> iterator = featureTypes.iterator();
+                        iterator.hasNext(); ) {
                     FeatureType type = (FeatureType) iterator.next();
                     String rep = DataUtilities.spec((SimpleFeatureType) type);
-                    oos.writeObject(type.getName().getNamespaceURI() + "." + type.getName().getLocalPart());
+                    oos.writeObject(
+                            type.getName().getNamespaceURI() + "." + type.getName().getLocalPart());
                     oos.writeObject(rep);
                 }
             } finally {
@@ -437,10 +437,10 @@ public class DiskStorage implements Storage {
             logger.log(Level.WARNING, "Cannot close DiskStorage normally : " + e, e);
         }
     }
-    
+
     /**
      * Initializes the store from the index file.
-     * 
+     *
      * @throws IOException
      */
     protected void initializeFromIndex() throws IOException {
@@ -449,16 +449,16 @@ public class DiskStorage implements Storage {
         try {
             this.page_size = ois.readInt();
             this.nextPage = ois.readInt();
-            
+
             this.emptyPages = (TreeSet<Integer>) ois.readObject();
             this.pageIndex = (HashMap<NodeIdentifier, Entry>) ois.readObject();
-            this.bounds = (ReferencedEnvelope)ois.readObject();
-            
+            this.bounds = (ReferencedEnvelope) ois.readObject();
+
             int featuretypesize = ois.readInt();
             this.featureTypes = new HashSet<FeatureType>();
-            for(int i = 0; i < featuretypesize; i++){
-                String name = (String)ois.readObject();
-                String rep = (String)ois.readObject();
+            for (int i = 0; i < featuretypesize; i++) {
+                String name = (String) ois.readObject();
+                String rep = (String) ois.readObject();
                 try {
                     FeatureType ft = DataUtilities.createType(name, rep);
                     featureTypes.add(ft);
@@ -488,7 +488,6 @@ public class DiskStorage implements Storage {
         return pset;
     }
 
-
     public NodeIdentifier findUniqueInstance(NodeIdentifier id) {
         if (pageIndex.containsKey(id)) {
             return pageIndex.get(id).id;
@@ -500,18 +499,25 @@ public class DiskStorage implements Storage {
     void logPageAccess(int page, int length) throws IOException {
         File log = new File("log/" + page + ".log");
         FileWriter fw = new FileWriter(log, true);
-        try{
-            fw.write(System.currentTimeMillis() + " : " + Thread.currentThread().getName() + " writing " + length + " bytes.\n");
-        }finally{
+        try {
+            fw.write(
+                    System.currentTimeMillis()
+                            + " : "
+                            + Thread.currentThread().getName()
+                            + " writing "
+                            + length
+                            + " bytes.\n");
+        } finally {
             fw.close();
         }
     }
 
     void logGet() throws IOException {
         FileWriter getlog = new FileWriter("log/get.log", true);
-        try{
-            getlog.write(Thread.currentThread().getName() + " : " + System.currentTimeMillis() + "\n");
-        }finally{
+        try {
+            getlog.write(
+                    Thread.currentThread().getName() + " : " + System.currentTimeMillis() + "\n");
+        } finally {
             getlog.close();
         }
     }
@@ -519,9 +525,9 @@ public class DiskStorage implements Storage {
     void writeReadable(Node n, int page) {
         try {
             FileWriter fw = new FileWriter("log/" + page + ".node");
-            try{
+            try {
                 fw.write(((GridNode) n).toReadableText());
-            }finally{
+            } finally {
                 fw.close();
             }
         } catch (IOException e) {
@@ -529,47 +535,33 @@ public class DiskStorage implements Storage {
         }
     }
 
-    /**
-     * Adds a feature type to the store.
-     */
-    public void addFeatureType( FeatureType ft ) {
+    /** Adds a feature type to the store. */
+    public void addFeatureType(FeatureType ft) {
         featureTypes.add(ft);
     }
 
-    /**
-     * Gets the feature types supported by the store.
-     */
+    /** Gets the feature types supported by the store. */
     public Collection<FeatureType> getFeatureTypes() {
         return Collections.unmodifiableCollection(this.featureTypes);
     }
-    
-    /**
-     * Clears all feature types associated with store
-     */
-    public void clearFeatureTypes(){
+
+    /** Clears all feature types associated with store */
+    public void clearFeatureTypes() {
         this.featureTypes.clear();
     }
-    
-    /**
-     * Sets the bounds of the store
-     */
-    public void setBounds(ReferencedEnvelope bounds){
+
+    /** Sets the bounds of the store */
+    public void setBounds(ReferencedEnvelope bounds) {
         this.bounds = bounds;
     }
-    
-    /**
-     * Get the bounds of data in the store.
-     */
-    public ReferencedEnvelope getBounds(){
+
+    /** Get the bounds of data in the store. */
+    public ReferencedEnvelope getBounds() {
         return this.bounds;
     }
 }
 
-/**
- * This is a class to track the pages a particular
- * node is written to. 
- * 
- */
+/** This is a class to track the pages a particular node is written to. */
 class Entry implements Serializable {
     private static final long serialVersionUID = -9013786524696213884L;
     protected int length = 0;
@@ -585,11 +577,10 @@ class Entry implements Serializable {
         sb.append("Id : " + id);
         sb.append(", Length : " + length);
 
-        for (Iterator<Integer> it = pages.iterator(); it.hasNext();) {
+        for (Iterator<Integer> it = pages.iterator(); it.hasNext(); ) {
             sb.append("\n    page = " + it.next());
         }
 
         return sb.toString();
     }
 }
-

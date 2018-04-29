@@ -16,8 +16,11 @@
  */
 package org.geotools.validation.spatial;
 
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.Polygon;
 import java.util.Map;
-
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -25,34 +28,21 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.validation.ValidationResults;
 import org.opengis.feature.simple.SimpleFeature;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.Polygon;
-
-
 /**
  * PointCoveredByLineValidation purpose.
- * 
- * <p>
- * Checks to ensure the Line is covered by the Polygon Boundary.
- * </p>
+ *
+ * <p>Checks to ensure the Line is covered by the Polygon Boundary.
  *
  * @author dzwiers, Refractions Research, Inc.
  * @author $Author: dmzwiers $ (last modification)
- *
- *
  * @source $URL$
  * @version $Id$
  */
-public class LineCoveredByPolygonBoundaryValidation
-    extends LinePolygonAbstractValidation {
+public class LineCoveredByPolygonBoundaryValidation extends LinePolygonAbstractValidation {
     /**
      * PointCoveredByLineValidation constructor.
-     * 
-     * <p>
-     * Super
-     * </p>
+     *
+     * <p>Super
      */
     public LineCoveredByPolygonBoundaryValidation() {
         super();
@@ -60,65 +50,65 @@ public class LineCoveredByPolygonBoundaryValidation
 
     /**
      * Ensure Line is covered by the Polygon Boundary.
-     * 
-     * <p></p>
+     *
+     * <p>
      *
      * @param layers a HashMap of key="TypeName" value="FeatureSource"
      * @param envelope The bounding box of modified features
      * @param results Storage for the error and warning messages
-     *
-     * @return True if no features intersect. If they do then the validation
-     *         failed.
-     *
+     * @return True if no features intersect. If they do then the validation failed.
      * @throws Exception DOCUMENT ME!
-     *
      * @see org.geotools.validation.IntegrityValidation#validate(java.util.Map,
-     *      com.vividsolutions.jts.geom.Envelope,
-     *      org.geotools.validation.ValidationResults)
+     *     com.vividsolutions.jts.geom.Envelope, org.geotools.validation.ValidationResults)
      */
-    public boolean validate(Map layers, Envelope envelope,
-        ValidationResults results) throws Exception {
+    public boolean validate(Map layers, Envelope envelope, ValidationResults results)
+            throws Exception {
 
-    	boolean r = true;
-    	
+        boolean r = true;
+
         SimpleFeatureSource fsLine = (SimpleFeatureSource) layers.get(getLineTypeRef());
-        
+
         SimpleFeatureCollection fcLine = fsLine.getFeatures();
         SimpleFeatureIterator fLine = fcLine.features();
-        
-        SimpleFeatureSource fsPoly = (SimpleFeatureSource) layers.get(getRestrictedPolygonTypeRef());
-         
-        ListFeatureCollection fcPoly = new ListFeatureCollection( fsPoly.getFeatures() );
-                
-        while(fLine.hasNext()){
-        	SimpleFeature line = fLine.next();
+
+        SimpleFeatureSource fsPoly =
+                (SimpleFeatureSource) layers.get(getRestrictedPolygonTypeRef());
+
+        ListFeatureCollection fcPoly = new ListFeatureCollection(fsPoly.getFeatures());
+
+        while (fLine.hasNext()) {
+            SimpleFeature line = fLine.next();
             SimpleFeatureIterator fPoly = fcPoly.features();
             Geometry lineGeom = (Geometry) line.getDefaultGeometry();
-            if(envelope.contains(lineGeom.getEnvelopeInternal())){
-            	// 	check for valid comparison
-            	if(LineString.class.isAssignableFrom(lineGeom.getClass())){
-            		while(fPoly.hasNext()){
-            			SimpleFeature poly = fPoly.next();
-            			Geometry polyGeom = (Geometry) poly.getDefaultGeometry(); 
-                        if(envelope.contains(polyGeom.getEnvelopeInternal())){
-                        	if(Polygon.class.isAssignableFrom(polyGeom.getClass())){
-                        		Geometry polyGeomBoundary = polyGeom.getBoundary();
-                        		if(!polyGeomBoundary.contains(lineGeom)){
-                        			results.error(poly,"Boundary does not contain the specified Line.");
-                        			r = false;
-                        		}
-                        		// do next.
-                        	}else{
-                        		fcPoly.remove(poly);
-                        		results.warning(poly,"Invalid type: this feature is not a derivative of a Polygon");
-                        	}
-                        }else{
-                    		fcPoly.remove(poly);
+            if (envelope.contains(lineGeom.getEnvelopeInternal())) {
+                // 	check for valid comparison
+                if (LineString.class.isAssignableFrom(lineGeom.getClass())) {
+                    while (fPoly.hasNext()) {
+                        SimpleFeature poly = fPoly.next();
+                        Geometry polyGeom = (Geometry) poly.getDefaultGeometry();
+                        if (envelope.contains(polyGeom.getEnvelopeInternal())) {
+                            if (Polygon.class.isAssignableFrom(polyGeom.getClass())) {
+                                Geometry polyGeomBoundary = polyGeom.getBoundary();
+                                if (!polyGeomBoundary.contains(lineGeom)) {
+                                    results.error(
+                                            poly, "Boundary does not contain the specified Line.");
+                                    r = false;
+                                }
+                                // do next.
+                            } else {
+                                fcPoly.remove(poly);
+                                results.warning(
+                                        poly,
+                                        "Invalid type: this feature is not a derivative of a Polygon");
+                            }
+                        } else {
+                            fcPoly.remove(poly);
                         }
-            		}
-            	}else{
-            		results.warning(line,"Invalid type: this feature is not a derivative of a LineString");
-            	}
+                    }
+                } else {
+                    results.warning(
+                            line, "Invalid type: this feature is not a derivative of a LineString");
+                }
             }
         }
         return r;
@@ -128,7 +118,6 @@ public class LineCoveredByPolygonBoundaryValidation
      * The priority level used to schedule this Validation.
      *
      * @return PRORITY_SIMPLE
-     *
      * @see org.geotools.validation.Validation#getPriority()
      */
     public int getPriority() {

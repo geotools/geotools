@@ -19,7 +19,6 @@ package org.geotools.mbstyle.function;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.FunctionFactory;
 import org.opengis.feature.type.Name;
@@ -29,8 +28,8 @@ import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 
 /**
- * Custom functions to support the use of MBStyle, {@link ZoomLevelFunction},
- * {@link ExponentialFunction}.
+ * Custom functions to support the use of MBStyle, {@link ZoomLevelFunction}, {@link
+ * ExponentialFunction}.
  */
 public class MBFunctionFactory implements FunctionFactory {
 
@@ -103,7 +102,7 @@ public class MBFunctionFactory implements FunctionFactory {
             f.setFallbackValue(fallback);
             return f;
         }
-        if (ToRgb.NAME.getFunctionName().equals(name)){
+        if (ToRgb.NAME.getFunctionName().equals(name)) {
             ToRgb f = new ToRgb();
             f.setParameters(args);
             f.setFallbackValue(fallback);
@@ -151,37 +150,37 @@ public class MBFunctionFactory implements FunctionFactory {
             f.setFallbackValue(fallback);
             return f;
         }
-        if (ListSizeFunction.NAME.getFunctionName().equals(name)){
+        if (ListSizeFunction.NAME.getFunctionName().equals(name)) {
             ListSizeFunction f = new ListSizeFunction();
             f.setParameters(args);
             f.setFallbackValue(fallback);
             return f;
         }
-        if (MapBoxLengthFunction.NAME.getFunctionName().equals(name)){
+        if (MapBoxLengthFunction.NAME.getFunctionName().equals(name)) {
             MapBoxLengthFunction f = new MapBoxLengthFunction();
             f.setParameters(args);
             f.setFallbackValue(fallback);
             return f;
         }
-        if (AtFunction.NAME.getFunctionName().equals(name)){
+        if (AtFunction.NAME.getFunctionName().equals(name)) {
             AtFunction f = new AtFunction();
             f.setParameters(args);
             f.setFallbackValue(fallback);
             return f;
         }
-        if (GetFunction.NAME.getFunctionName().equals(name)){
+        if (GetFunction.NAME.getFunctionName().equals(name)) {
             GetFunction f = new GetFunction();
             f.setParameters(args);
             f.setFallbackValue(fallback);
             return f;
         }
-        if (HasFunction.NAME.getFunctionName().equals(name)){
+        if (HasFunction.NAME.getFunctionName().equals(name)) {
             HasFunction f = new HasFunction();
             f.setParameters(args);
             f.setFallbackValue(fallback);
             return f;
         }
-        if (RemainderFunction.NAME.getFunctionName().equals(name)){
+        if (RemainderFunction.NAME.getFunctionName().equals(name)) {
             RemainderFunction f = new RemainderFunction();
             f.setParameters(args);
             f.setFallbackValue(fallback);

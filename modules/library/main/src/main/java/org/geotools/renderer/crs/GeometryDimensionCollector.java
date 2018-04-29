@@ -17,13 +17,10 @@
 package org.geotools.renderer.crs;
 
 import com.vividsolutions.jts.geom.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Collects component of a given geometry that have the desired dimension
- */
+/** Collects component of a given geometry that have the desired dimension */
 public class GeometryDimensionCollector implements GeometryComponentFilter {
 
     int targetDimension;
@@ -35,38 +32,42 @@ public class GeometryDimensionCollector implements GeometryComponentFilter {
 
     @Override
     public void filter(Geometry geom) {
-        if(!(geom instanceof GeometryCollection) && geom.getDimension() == targetDimension && !geom.isEmpty()) {
+        if (!(geom instanceof GeometryCollection)
+                && geom.getDimension() == targetDimension
+                && !geom.isEmpty()) {
             geometries.add(geom);
         }
     }
 
     /**
      * Returns the collected elements as either:
+     *
      * <ul>
-     *     <li>null: in case the colletion is empty</li>
-     *     <li>single geometry: in case there is a single item</li>
-     *     <li>multi-geometry: in all other cases</li>
+     *   <li>null: in case the colletion is empty
+     *   <li>single geometry: in case there is a single item
+     *   <li>multi-geometry: in all other cases
      * </ul>
+     *
      * @return
      */
     public Geometry collect() {
-        if(geometries.isEmpty()) {
+        if (geometries.isEmpty()) {
             return null;
         } else if (geometries.size() == 1) {
             return geometries.get(0);
-        } else  {
+        } else {
             GeometryFactory factory = geometries.get(0).getFactory();
-            if(targetDimension == 0){
+            if (targetDimension == 0) {
                 return factory.createMultiPoint(geometries.toArray(new Point[geometries.size()]));
-            } else if(targetDimension == 1){
-                return factory.createMultiLineString(geometries.toArray(new LineString[geometries.size()]));
-            } else if(targetDimension == 2){
-                return factory.createMultiPolygon(geometries.toArray(new Polygon[geometries.size()]));
+            } else if (targetDimension == 1) {
+                return factory.createMultiLineString(
+                        geometries.toArray(new LineString[geometries.size()]));
+            } else if (targetDimension == 2) {
+                return factory.createMultiPolygon(
+                        geometries.toArray(new Polygon[geometries.size()]));
             }
         }
 
         return null;
     }
 }
-
-

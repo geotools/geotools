@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -21,12 +21,12 @@ import java.util.Map;
 
 /**
  * Factory used to construct a DataStore from a set of parameters.
- * <p>
- * The following example shows how a user might connect to a PostGIS database,
- * and maintain the resulting DataStore in a Registry:
- * </p>
+ *
+ * <p>The following example shows how a user might connect to a PostGIS database, and maintain the
+ * resulting DataStore in a Registry:
  *
  * <p>
+ *
  * <pre><code>
  * HashMap params = new HashMap();
  * params.put("namespace", "leeds");
@@ -43,80 +43,54 @@ import java.util.Map;
  * DataStore postgis = registry.getDataStore( "leeds" );
  * SimpleFeatureSource = postgis.getFeatureSource( "table" );
  * </code></pre>
- * </p> 
+ *
  * <h2>Implementation Notes</h2>
- * <p>
- * An instance of this interface should exist for all data stores which want to
- * take advantage of the dynamic plug-in system. In addition to implementing
- * this factory interface each DataStore implementation should have a services file:
- * </p>
  *
- * <p>
- * <code>META-INF/services/org.geotools.data.DataStoreFactorySpi</code>
- * </p>
+ * <p>An instance of this interface should exist for all data stores which want to take advantage of
+ * the dynamic plug-in system. In addition to implementing this factory interface each DataStore
+ * implementation should have a services file:
  *
- * <p>
- * The file should contain a single line which gives the full name of the
- * implementing class.
- * </p>
+ * <p><code>META-INF/services/org.geotools.data.DataStoreFactorySpi</code>
  *
- * <p>
- * example:<br/><code>e.g.
+ * <p>The file should contain a single line which gives the full name of the implementing class.
+ *
+ * <p>example:<br>
+ * <code>e.g.
  * org.geotools.data.mytype.MyTypeDataSourceFacotry</code>
- * </p>
  *
- * <p>
- * The factories are never called directly by client code, instead the
- * DataStoreFinder class is used.
- * </p>
- * 
+ * <p>The factories are never called directly by client code, instead the DataStoreFinder class is
+ * used.
+ *
  * @author Jody Garnett, Refractions Research
- *
- *
  * @source $URL$
  */
 public interface DataStoreFactorySpi extends DataAccessFactory {
     /**
      * Construct a live data source using the params specifed.
      *
-     * <p>
-     * You can think of this as setting up a connection to the back end data
-     * source.
-     * </p>
+     * <p>You can think of this as setting up a connection to the back end data source.
      *
-     * <p>
-     * Magic Params: the following params are magic and are honoured by
-     * convention by the GeoServer and uDig application.
+     * <p>Magic Params: the following params are magic and are honoured by convention by the
+     * GeoServer and uDig application.
      *
      * <ul>
-     * <li>
-     * "user": is taken to be the user name
-     * </li>
-     * <li>
-     * "passwd": is taken to be the password
-     * </li>
-     * <li>
-     * "namespace": is taken to be the namespace prefix (and will be kept in
-     * sync with GeoServer namespace management.
-     * </li>
+     *   <li>"user": is taken to be the user name
+     *   <li>"passwd": is taken to be the password
+     *   <li>"namespace": is taken to be the namespace prefix (and will be kept in sync with
+     *       GeoServer namespace management.
      * </ul>
      *
-     * When we eventually move over to the use of OpperationalParam we will
-     * have to find someway to codify this convention.
-     * </p>
+     * When we eventually move over to the use of OpperationalParam we will have to find someway to
+     * codify this convention.
      *
-     * @param params The full set of information needed to construct a live
-     *        data store. Typical key values for the map include: url -
-     *        location of a resource, used by file reading datasources. dbtype
-     *        - the type of the database to connect to, e.g. postgis, mysql
-     *
-     * @return The created DataStore, this may be null if the required resource
-     *         was not found or if insufficent parameters were given. Note
-     *         that canProcess() should have returned false if the problem is
-     *         to do with insuficent parameters.
-     *
-     * @throws IOException if there were any problems setting up (creating or
-     *         connecting) the datasource.
+     * @param params The full set of information needed to construct a live data store. Typical key
+     *     values for the map include: url - location of a resource, used by file reading
+     *     datasources. dbtype - the type of the database to connect to, e.g. postgis, mysql
+     * @return The created DataStore, this may be null if the required resource was not found or if
+     *     insufficent parameters were given. Note that canProcess() should have returned false if
+     *     the problem is to do with insuficent parameters.
+     * @throws IOException if there were any problems setting up (creating or connecting) the
+     *     datasource.
      */
     DataStore createDataStore(Map<String, java.io.Serializable> params) throws IOException;
 
@@ -131,7 +105,7 @@ public interface DataStoreFactorySpi extends DataAccessFactory {
     //     * @param params The full set of information needed to construct a live
     //     *        data store
     //     * @return MetadataEntity with descriptive information (including
-    //     *         internationlization support). 
+    //     *         internationlization support).
     //     * @throws IOException
     //     */
     //    DataSourceMetadataEnity createMetadata( Map params ) throws IOException;

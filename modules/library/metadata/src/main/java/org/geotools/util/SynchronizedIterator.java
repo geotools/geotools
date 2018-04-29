@@ -18,7 +18,6 @@ package org.geotools.util;
 
 import java.util.Iterator;
 
-
 /**
  * An iterator synchronized on the given lock. The functionality is equivalent to the one provided
  * by {@link java.util.Collections#synchronizedSet}'s iterator, except that the synchronization is
@@ -29,14 +28,10 @@ import java.util.Iterator;
  * @author Martin Desruisseaux (IRD)
  */
 final class SynchronizedIterator<E> implements Iterator<E> {
-    /**
-     * The wrapped iterator.
-     */
+    /** The wrapped iterator. */
     private final Iterator<E> iterator;
 
-    /**
-     * The lock.
-     */
+    /** The lock. */
     private final Object lock;
 
     SynchronizedIterator(final Iterator<E> iterator, final Object lock) {
@@ -44,31 +39,24 @@ final class SynchronizedIterator<E> implements Iterator<E> {
         this.lock = lock;
     }
 
-    /**
-     * Returns {@code true} if there is more elements to iterate over.
-     */
+    /** Returns {@code true} if there is more elements to iterate over. */
     public boolean hasNext() {
         synchronized (lock) {
             return iterator.hasNext();
         }
     }
 
-    /**
-     * Returns the next element in iteratior order.
-     */
+    /** Returns the next element in iteratior order. */
     public E next() {
         synchronized (lock) {
             return iterator.next();
         }
     }
 
-    /**
-     * Removes the last iterated element.
-     */
+    /** Removes the last iterated element. */
     public void remove() {
         synchronized (lock) {
             iterator.remove();
         }
     }
-
 }

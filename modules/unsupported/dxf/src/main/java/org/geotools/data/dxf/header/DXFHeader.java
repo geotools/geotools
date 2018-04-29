@@ -3,22 +3,16 @@ package org.geotools.data.dxf.header;
 import java.awt.geom.Point2D;
 import java.io.EOFException;
 import java.io.IOException;
-
-
-import org.geotools.data.dxf.parser.DXFParseException;
-import org.geotools.data.dxf.parser.DXFLineNumberReader;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.geotools.data.dxf.entities.DXFPoint;
 import org.geotools.data.dxf.parser.DXFCodeValuePair;
 import org.geotools.data.dxf.parser.DXFConstants;
 import org.geotools.data.dxf.parser.DXFGroupCode;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.geotools.data.dxf.parser.DXFLineNumberReader;
+import org.geotools.data.dxf.parser.DXFParseException;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class DXFHeader implements DXFConstants {
 
     private static final Log log = LogFactory.getLog(DXFHeader.class);
@@ -29,7 +23,6 @@ public class DXFHeader implements DXFConstants {
     public int _FILLMODE;
     public String _ACADVER;
     public int _SRID;
- 
 
     public DXFHeader() {
         _LIMMIN = new DXFPoint(new Point2D.Double(0, 0));
@@ -41,7 +34,14 @@ public class DXFHeader implements DXFConstants {
         _SRID = 28992;
     }
 
-    public DXFHeader(DXFPoint limmin, DXFPoint limmax, DXFPoint extmin, DXFPoint extmax, int fillmode, String version, int srid) {
+    public DXFHeader(
+            DXFPoint limmin,
+            DXFPoint limmax,
+            DXFPoint extmin,
+            DXFPoint extmax,
+            int fillmode,
+            String version,
+            int srid) {
         _LIMMIN = limmin;
         _LIMMAX = limmax;
         _EXTMIN = extmin;
@@ -59,7 +59,6 @@ public class DXFHeader implements DXFConstants {
         int fillmode = 0;
         String version = "AC1006";
         int srid = 28992; // default rd new
-
 
         int sln = br.getLineNumber();
         log.debug(">Enter at line: " + sln);
@@ -88,8 +87,7 @@ public class DXFHeader implements DXFConstants {
                     break;
                 case VARIABLE_NAME:
                     String variableName = cvp.getStringValue();
-                    double x = 0,
-                     y = 0;
+                    double x = 0, y = 0;
                     int tfillmode = 0;
                     String tversion = null;
 
@@ -153,17 +151,28 @@ public class DXFHeader implements DXFConstants {
             }
         }
 
-        DXFHeader e = new DXFHeader(new DXFPoint(limmin, -1, null, 1, 1),
-                new DXFPoint(limmax, -1, null, 1, 1),
-                new DXFPoint(extmin, -1, null, 1, 1),
-                new DXFPoint(extmax, -1, null, 1, 1),
-                fillmode, version, srid);
+        DXFHeader e =
+                new DXFHeader(
+                        new DXFPoint(limmin, -1, null, 1, 1),
+                        new DXFPoint(limmax, -1, null, 1, 1),
+                        new DXFPoint(extmin, -1, null, 1, 1),
+                        new DXFPoint(extmax, -1, null, 1, 1),
+                        fillmode,
+                        version,
+                        srid);
         log.debug(e.toString(limmin, limmax, extmin, extmax, fillmode, version, srid));
         log.debug(">Exit at line: " + br.getLineNumber());
         return e;
     }
 
-    public String toString(Point2D.Double limmin, Point2D.Double limmax, Point2D.Double extmin, Point2D.Double extmax, int fillmode, String version, int srid) {
+    public String toString(
+            Point2D.Double limmin,
+            Point2D.Double limmax,
+            Point2D.Double extmin,
+            Point2D.Double extmax,
+            int fillmode,
+            String version,
+            int srid) {
         StringBuffer s = new StringBuffer();
         s.append("DXFHeader [");
         s.append("limmin: ");

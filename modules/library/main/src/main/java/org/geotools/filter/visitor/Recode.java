@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -18,28 +18,25 @@
 package org.geotools.filter.visitor;
 
 import java.util.List;
-
 import org.opengis.annotation.XmlElement;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 
-
 /**
- * Recoding: Transformation of discrete values to any other values. This is needed
- * when integers have to be translated into text or, reversely, text contents into other
- * texts or numeric values or colors.
+ * Recoding: Transformation of discrete values to any other values. This is needed when integers
+ * have to be translated into text or, reversely, text contents into other texts or numeric values
+ * or colors.
  *
- * This function recodes values from a property or expression into corresponding values of
+ * <p>This function recodes values from a property or expression into corresponding values of
  * arbitrary type. The comparisons are performed checking for identical values.
  *
- *
- *
  * @source $URL$
- * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding Implementation Specification 1.1.0</A>
+ * @version <A HREF="http://www.opengeospatial.org/standards/symbol">Symbology Encoding
+ *     Implementation Specification 1.1.0</A>
  * @author Johann Sorel (Geomatys)
  */
 @XmlElement("Recode")
-public interface Recode extends Function{
+public interface Recode extends Function {
 
     /**
      * Get lookup value.
@@ -49,9 +46,6 @@ public interface Recode extends Function{
     @XmlElement("LookupValue")
     Expression getLookupValue();
 
-    /**
-     * See {@link MapItem} for details.
-     */
+    /** See {@link MapItem} for details. */
     List<MapItem> getMapItems();
-
 }

@@ -17,35 +17,28 @@
 package org.geotools.coverageio.gdal.vrt;
 
 import it.geosolutions.imageio.plugins.vrt.VRTImageReaderSpi;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.geotools.coverageio.gdal.BaseGDALGridFormat;
 import org.geotools.data.DataSourceException;
 import org.geotools.factory.Hints;
 import org.opengis.coverage.grid.Format;
 import org.opengis.geometry.MismatchedDimensionException;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  * An implementation of {@link Format} for the VRT format
- * 
+ *
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
  * @since 2.10.x
- *
- *
  * @source $URL$
  */
 public final class VRTFormat extends BaseGDALGridFormat implements Format {
-    /**
-     * Logger.
-     */
-    private final static Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger("org.geotools.coverageio.gdal.vrt");
+    /** Logger. */
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.gdal.vrt");
 
-    /**
-     * Creates an instance and sets the metadata.
-     */
+    /** Creates an instance and sets the metadata. */
     public VRTFormat() {
         super(new VRTImageReaderSpi());
 

@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2007-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,15 +16,16 @@
  */
 package org.geotools.factory;
 
+import static org.junit.Assert.*;
+
+import com.vividsolutions.jts.geom.Geometry;
 import java.awt.RenderingHints;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
-
 import javax.media.jai.JAI;
-
 import org.apache.commons.logging.LogFactory;
 import org.geotools.util.Version;
 import org.geotools.xml.NullEntityResolver;
@@ -33,40 +34,29 @@ import org.junit.*;
 import org.opengis.filter.Filter;
 import org.xml.sax.EntityResolver;
 
-import com.vividsolutions.jts.geom.Geometry;
-
-import static org.junit.Assert.*;
-
-
 /**
  * Tests {@link GeoTools}.
  *
  * @since 2.4
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Jody Garnett
  * @author Martin Desruisseaux
  */
 public final class GeoToolsTest {
-    /**
-     * Makes sures that J2SE 1.4 assertions are enabled.
-     */
+    /** Makes sures that J2SE 1.4 assertions are enabled. */
     @Test
     public void testAssertionEnabled() {
         assertTrue("Assertions not enabled.", GeoToolsTest.class.desiredAssertionStatus());
     }
 
-    /**
-     * Tests the removal of keys from a hashmap. Required for {@link FactoryRegistry} working.
-     */
+    /** Tests the removal of keys from a hashmap. Required for {@link FactoryRegistry} working. */
     @Test
     public void testHintsKey() {
         final Hints hints = new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE);
         assertFalse(hints.isEmpty());
 
-        Map<RenderingHints.Key,Object> map = new HashMap<RenderingHints.Key,Object>();
+        Map<RenderingHints.Key, Object> map = new HashMap<RenderingHints.Key, Object>();
         assertNull(map.put(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.FALSE));
         map = Collections.unmodifiableMap(map);
         assertFalse(map.isEmpty());
@@ -76,11 +66,9 @@ public final class GeoToolsTest {
         assertTrue(remaining.isEmpty());
     }
 
-    /**
-     * Tests addition of custom hints.
-     */
+    /** Tests addition of custom hints. */
     @Test
-    public void testMyHints(){
+    public void testMyHints() {
         Hints hints = GeoTools.getDefaultHints();
         assertTrue(hints.isEmpty());
         assertNull(Hints.putSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.FALSE));
@@ -98,81 +86,85 @@ public final class GeoToolsTest {
             String text = hints.toString().trim();
             assertTrue(text.matches("Hints:\\s+FORCE_LONGITUDE_FIRST_AXIS_ORDER = false"));
 
-            assertEquals(hints.put(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE), Boolean.FALSE);
+            assertEquals(
+                    hints.put(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE), Boolean.FALSE);
             text = hints.toString().trim();
             assertTrue(text.matches("Hints:\\s+FORCE_LONGITUDE_FIRST_AXIS_ORDER = true"));
 
             assertEquals(hints.remove(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER), Boolean.TRUE);
             text = hints.toString().trim();
-            assertTrue(text.matches("Hints:\\s+System defaults:\\s+FORCE_LONGITUDE_FIRST_AXIS_ORDER = false"));
+            assertTrue(
+                    text.matches(
+                            "Hints:\\s+System defaults:\\s+FORCE_LONGITUDE_FIRST_AXIS_ORDER = false"));
         } finally {
             assertNotNull(Hints.removeSystemDefault(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER));
         }
         assertTrue(GeoTools.getDefaultHints().isEmpty());
     }
 
-    /**
-     * Test Manifest version lookup
-     */
+    /** Test Manifest version lookup */
     @Test
     public void testManifest() {
-        // jar manifest lookup 
-        Manifest jai = GeoTools.getManifest( JAI.class );
-        assertFalse("manifest metadata", jai.getMainAttributes().isEmpty() );
+        // jar manifest lookup
+        Manifest jai = GeoTools.getManifest(JAI.class);
+        assertFalse("manifest metadata", jai.getMainAttributes().isEmpty());
 
         // this should always be generated during a maven or ide build
-        Manifest metadata = GeoTools.getManifest( GeoTools.class );
-        assertFalse("manifest metadata", metadata.getMainAttributes().isEmpty() );
+        Manifest metadata = GeoTools.getManifest(GeoTools.class);
+        assertFalse("manifest metadata", metadata.getMainAttributes().isEmpty());
         Attributes attributes = metadata.getAttributes("Project-Version");
-        assertEquals( GeoTools.getVersion().toString(), metadata.getMainAttributes().getValue("Project-Version") );
-        
+        assertEquals(
+                GeoTools.getVersion().toString(),
+                metadata.getMainAttributes().getValue("Project-Version"));
+
         // should be a jar durning maven build, generated during IDE build
-        Manifest opengis = GeoTools.getManifest( Filter.class );
-        assertFalse("manifest metadata", opengis.getMainAttributes().isEmpty() );
-        
-        Manifest commons_logging = GeoTools.getManifest( LogFactory.class );
-        assertNotNull( commons_logging );
-        assertFalse("manifest metadata", commons_logging.getMainAttributes().isEmpty() );
-        assertEquals("1.1.1", commons_logging.getMainAttributes().getValue("Implementation-Version"));
+        Manifest opengis = GeoTools.getManifest(Filter.class);
+        assertFalse("manifest metadata", opengis.getMainAttributes().isEmpty());
+
+        Manifest commons_logging = GeoTools.getManifest(LogFactory.class);
+        assertNotNull(commons_logging);
+        assertFalse("manifest metadata", commons_logging.getMainAttributes().isEmpty());
+        assertEquals(
+                "1.1.1", commons_logging.getMainAttributes().getValue("Implementation-Version"));
     }
 
-    /**
-     * Test version lookup
-     */
+    /** Test version lookup */
     @Test
-    public void testVersion(){
+    public void testVersion() {
         String location;
-        
-        location = "jar:file:/Users/jody/.m2/repository/com/vividsolutions/jts/1.14/jts-1.14.jar!/com/vividsolutions/jts/geom/Geometry.class";
-        assertEquals( "1.14", GeoTools.jarVersion( location ));
-        
-        location = "jar:file:/Users/jody/.m2/repository/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar!/org/apache/commons/logging/LogFactory.class";
-        assertEquals( "1.1.1", GeoTools.jarVersion( location ));
-        
-        location = "jar:file:/Users/jody/Library/Java/Extensions/jai_core.jar!/javax/media/jai/JAI.class";
-        assertNull( GeoTools.jarVersion( location ));
-        
-        location = "vfs:/var/jboss/workspace/BuildSvr_FNMOC/jboss/geoserver/deployments/geoserver.war/WEB-INF/lib/gt-xsd-wcs-13.2.jar/org/geotools/wcs/WCS.class";
-        assertEquals( "13.2", GeoTools.jarVersion( location ));
-        
-        Version version = GeoTools.getVersion( Filter.class );
-        assertNotNull( version );
-        
-        version = GeoTools.getVersion( JAI.class );
-        assertNotNull( version );
-        assertEquals("1.1.3", version.toString() );
-        
-        version = GeoTools.getVersion( LogFactory.class );
-        assertNotNull( version );
-        assertEquals("1.1.1", version.toString() );
 
-        version = GeoTools.getVersion( Geometry.class );
-        assertNotNull( version );
-        assertEquals("1.14.0", version.toString() );
+        location =
+                "jar:file:/Users/jody/.m2/repository/com/vividsolutions/jts/1.14/jts-1.14.jar!/com/vividsolutions/jts/geom/Geometry.class";
+        assertEquals("1.14", GeoTools.jarVersion(location));
+
+        location =
+                "jar:file:/Users/jody/.m2/repository/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar!/org/apache/commons/logging/LogFactory.class";
+        assertEquals("1.1.1", GeoTools.jarVersion(location));
+
+        location =
+                "jar:file:/Users/jody/Library/Java/Extensions/jai_core.jar!/javax/media/jai/JAI.class";
+        assertNull(GeoTools.jarVersion(location));
+
+        location =
+                "vfs:/var/jboss/workspace/BuildSvr_FNMOC/jboss/geoserver/deployments/geoserver.war/WEB-INF/lib/gt-xsd-wcs-13.2.jar/org/geotools/wcs/WCS.class";
+        assertEquals("13.2", GeoTools.jarVersion(location));
+
+        Version version = GeoTools.getVersion(Filter.class);
+        assertNotNull(version);
+
+        version = GeoTools.getVersion(JAI.class);
+        assertNotNull(version);
+        assertEquals("1.1.3", version.toString());
+
+        version = GeoTools.getVersion(LogFactory.class);
+        assertNotNull(version);
+        assertEquals("1.1.1", version.toString());
+
+        version = GeoTools.getVersion(Geometry.class);
+        assertNotNull(version);
+        assertEquals("1.14.0", version.toString());
     }
-    /**
-     * Tests the use of system properties.
-     */
+    /** Tests the use of system properties. */
     @Test
     public void testSystemHints() {
         Hints hints = GeoTools.getDefaultHints();
@@ -198,57 +190,70 @@ public final class GeoToolsTest {
     }
 
     /**
-     * Tests {@link GeoTools#fixName} using simpliest name or no context.
-     * We avoid the tests that would require a real initial context.
+     * Tests {@link GeoTools#fixName} using simpliest name or no context. We avoid the tests that
+     * would require a real initial context.
      */
     @Test
     public void testFixName() {
-        assertNull  (GeoTools.fixName(null));
+        assertNull(GeoTools.fixName(null));
         assertEquals("simpleName", GeoTools.fixName("simpleName"));
-        assertEquals("jdbc:EPSG",  GeoTools.fixName(null, "jdbc:EPSG"));
-        assertEquals("jdbc/EPSG",  GeoTools.fixName(null, "jdbc/EPSG"));
+        assertEquals("jdbc:EPSG", GeoTools.fixName(null, "jdbc:EPSG"));
+        assertEquals("jdbc/EPSG", GeoTools.fixName(null, "jdbc/EPSG"));
     }
+
     @Test
     public void testEntityResolver() {
-        
+
         // confirm instantiate works
         EntityResolver resolver;
-        
-        resolver = GeoTools.instantiate("org.geotools.factory.PlaceholderEntityResolver",
-                EntityResolver.class, PreventLocalEntityResolver.INSTANCE);
+
+        resolver =
+                GeoTools.instantiate(
+                        "org.geotools.factory.PlaceholderEntityResolver",
+                        EntityResolver.class,
+                        PreventLocalEntityResolver.INSTANCE);
         assertTrue(resolver instanceof PlaceholderEntityResolver);
 
-        resolver = GeoTools.instantiate("org.geotools.xml.NullEntityResolver", EntityResolver.class,
-                PreventLocalEntityResolver.INSTANCE);
+        resolver =
+                GeoTools.instantiate(
+                        "org.geotools.xml.NullEntityResolver",
+                        EntityResolver.class,
+                        PreventLocalEntityResolver.INSTANCE);
         assertTrue(resolver instanceof NullEntityResolver);
 
-        resolver = GeoTools.instantiate("invalid.class.reference", EntityResolver.class,
-                PreventLocalEntityResolver.INSTANCE);
+        resolver =
+                GeoTools.instantiate(
+                        "invalid.class.reference",
+                        EntityResolver.class,
+                        PreventLocalEntityResolver.INSTANCE);
         assertTrue(resolver instanceof PreventLocalEntityResolver);
 
-        resolver = GeoTools.instantiate(null, EntityResolver.class,
-                PreventLocalEntityResolver.INSTANCE);
+        resolver =
+                GeoTools.instantiate(
+                        null, EntityResolver.class, PreventLocalEntityResolver.INSTANCE);
         assertTrue(resolver instanceof PreventLocalEntityResolver);
-        
+
         // confirm system hints work
         try {
             Hints.putSystemDefault(Hints.ENTITY_RESOLVER, NullEntityResolver.INSTANCE);
             assertSame(NullEntityResolver.INSTANCE, GeoTools.getEntityResolver(null));
-            
+
             // test default behavor
             Hints.removeSystemDefault(Hints.ENTITY_RESOLVER);
             assertSame(PreventLocalEntityResolver.INSTANCE, GeoTools.getEntityResolver(null));
 
             // test system property functions with default constructor
-            System.getProperties().put(GeoTools.ENTITY_RESOLVER,
-                    "org.geotools.factory.PlaceholderEntityResolver");
+            System.getProperties()
+                    .put(
+                            GeoTools.ENTITY_RESOLVER,
+                            "org.geotools.factory.PlaceholderEntityResolver");
             Hints.scanSystemProperties();
             EntityResolver entityResolver = GeoTools.getEntityResolver(null);
             assertTrue(entityResolver instanceof PlaceholderEntityResolver);
 
             // test system property functions with INSTANCE field constructor
-            System.getProperties().put(GeoTools.ENTITY_RESOLVER,
-                    "org.geotools.xml.NullEntityResolver");
+            System.getProperties()
+                    .put(GeoTools.ENTITY_RESOLVER, "org.geotools.xml.NullEntityResolver");
             Hints.scanSystemProperties();
             entityResolver = GeoTools.getEntityResolver(null);
             assertTrue(entityResolver instanceof NullEntityResolver);

@@ -16,13 +16,11 @@
  */
 package org.geotools.coverage.grid.io.footprint;
 
-import java.io.File;
-import java.io.FileReader;
-
-import org.apache.commons.io.IOUtils;
-
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.WKTReader;
+import java.io.File;
+import java.io.FileReader;
+import org.apache.commons.io.IOUtils;
 
 public class WKTLoaderSPI implements FootprintLoaderSpi {
 
@@ -31,9 +29,7 @@ public class WKTLoaderSPI implements FootprintLoaderSpi {
         return new WKTLoader();
     }
 
-    /**
-     * Loads WKT files
-     */
+    /** Loads WKT files */
     public static class WKTLoader implements FootprintLoader {
 
         WKTReader reader = new WKTReader();

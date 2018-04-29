@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -21,30 +21,21 @@ package org.geotools.metadata.iso.quality;
 
 import org.opengis.metadata.quality.TemporalValidity;
 
-
 /**
  * Validity of data specified by the scope with respect to time.
- *
- *
  *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane
- *
  * @since 2.1
  */
 public class TemporalValidityImpl extends TemporalAccuracyImpl implements TemporalValidity {
-    /**
-     * Serial number for interoperability with different versions.
-     */
+    /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 2866684429712027839L;
 
-    /**
-     * Constructs an initially empty temporal validity.
-     */
-    public TemporalValidityImpl() {
-    }
+    /** Constructs an initially empty temporal validity. */
+    public TemporalValidityImpl() {}
 
     /**
      * Constructs a metadata entity initialized with the values from the specified metadata.

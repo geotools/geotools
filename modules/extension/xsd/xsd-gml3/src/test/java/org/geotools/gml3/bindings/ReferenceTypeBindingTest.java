@@ -25,21 +25,27 @@ import org.opengis.feature.type.AttributeType;
 
 /**
  * Test ReferenceTypeBinding.
- * 
+ *
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
- * 
  * @source $URL$
  */
 public class ReferenceTypeBindingTest extends GML3TestSupport {
 
     /**
      * Make sure no xlink:href is created if id is not set.
-     * 
+     *
      * @throws Exception
      */
     public void testXlinkHrefNull() throws Exception {
-        AttributeType attType = new AttributeTypeImpl(new NameImpl("someAttributeType"),
-                String.class, false, false, null, null, null);
+        AttributeType attType =
+                new AttributeTypeImpl(
+                        new NameImpl("someAttributeType"),
+                        String.class,
+                        false,
+                        false,
+                        null,
+                        null,
+                        null);
         AttributeImpl node = new AttributeImpl(null, attType, null);
         ReferenceTypeBinding binding = new ReferenceTypeBinding();
         Object xlink = binding.getProperty(node, XLINK.HREF);
@@ -48,12 +54,19 @@ public class ReferenceTypeBindingTest extends GML3TestSupport {
 
     /**
      * Test xlink:href returns gml:id.
-     * 
+     *
      * @throws Exception
      */
     public void testXlinkHref() throws Exception {
-        AttributeType attType = new AttributeTypeImpl(new NameImpl("someAttributeType"),
-                String.class, false, false, null, null, null);
+        AttributeType attType =
+                new AttributeTypeImpl(
+                        new NameImpl("someAttributeType"),
+                        String.class,
+                        false,
+                        false,
+                        null,
+                        null,
+                        null);
         AttributeImpl node = new AttributeImpl(null, attType, null);
         final String ID = "something";
         node.getUserData().put("gml:id", ID);
@@ -62,5 +75,4 @@ public class ReferenceTypeBindingTest extends GML3TestSupport {
         assertNotNull(xlink);
         assertEquals("#" + ID, xlink.toString());
     }
-
 }

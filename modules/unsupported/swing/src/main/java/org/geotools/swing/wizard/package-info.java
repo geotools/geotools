@@ -15,7 +15,5 @@
  *    Lesser General Public License for more details.
  */
 
-/**
- * Classes to construct wizards for user input
- */
+/** Classes to construct wizards for user input */
 package org.geotools.swing.wizard;

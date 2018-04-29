@@ -16,16 +16,11 @@
  */
 package org.geotools.filter.v1_1;
 
-import org.w3c.dom.Document;
-import org.opengis.filter.Not;
 import org.geotools.xml.Binding;
+import org.opengis.filter.Not;
+import org.w3c.dom.Document;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class NotBindingTest extends FilterTestSupport {
     public void testType() {
         assertEquals(Not.class, binding(OGC.Not).getType());
@@ -45,8 +40,9 @@ public class NotBindingTest extends FilterTestSupport {
 
     public void testEncode() throws Exception {
         Document dom = encode(FilterMockData.not(), OGC.Not);
-        assertEquals(1,
-            dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.PropertyIsEqualTo.getLocalPart())
-               .getLength());
+        assertEquals(
+                1,
+                dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.PropertyIsEqualTo.getLocalPart())
+                        .getLength());
     }
 }

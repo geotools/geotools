@@ -20,7 +20,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
 import org.junit.runners.Parameterized.Parameters;
 
 public class CookbookLineTranslationTest extends AbstractIntegrationTest {
@@ -35,7 +34,7 @@ public class CookbookLineTranslationTest extends AbstractIntegrationTest {
         File root = new File("./src/test/resources/css/cookbook/line");
         for (File file : root.listFiles()) {
             if (file.getName().endsWith(".css")) {
-                result.add(new Object[] { file.getName(), file });
+                result.add(new Object[] {file.getName(), file});
             }
         }
 

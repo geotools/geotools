@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,12 +17,11 @@
 package org.geotools.data.sort;
 
 import java.util.Comparator;
-
 import org.opengis.feature.simple.SimpleFeature;
 
 /**
  * Compares two feature based on their feature id
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 class FidComparator implements Comparator<SimpleFeature> {
@@ -31,7 +30,7 @@ class FidComparator implements Comparator<SimpleFeature> {
 
     /**
      * Builds a new comparator
-     * 
+     *
      * @param inverse If true the comparator will force an ascending order (descending otherwise)
      */
     public FidComparator(boolean ascending) {
@@ -63,5 +62,4 @@ class FidComparator implements Comparator<SimpleFeature> {
             return id1.compareTo(id2);
         }
     }
-
 }

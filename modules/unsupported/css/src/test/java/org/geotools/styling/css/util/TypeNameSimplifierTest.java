@@ -55,8 +55,10 @@ public class TypeNameSimplifierTest {
         Selector s1 = Selector.and(restricted, code2);
         // two without
         Selector s2 = new Data(ECQL.toFilter("code = '3'"));
-        Selector s3 = Selector.and(new Data(ECQL.toFilter("code = '4'")),
-                new ScaleRange(new NumberRange<Double>(Double.class, 10000d, 20000d)));
+        Selector s3 =
+                Selector.and(
+                        new Data(ECQL.toFilter("code = '4'")),
+                        new ScaleRange(new NumberRange<Double>(Double.class, 10000d, 20000d)));
 
         Selector combined = new Or(s1, s2, s3);
 
@@ -70,6 +72,5 @@ public class TypeNameSimplifierTest {
         simplifier = new TypeNameSimplifier(restricted);
         Selector restrictedSelector = (Selector) combined.accept(simplifier);
         assertEquals(new Or(code2, s2, s3), restrictedSelector);
-
     }
 }

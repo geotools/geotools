@@ -22,7 +22,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -31,12 +30,9 @@ import org.opengis.feature.simple.SimpleFeature;
 
 /**
  * A builder to generate a grid of horizontal and/or vertical ortho-lines.
- * 
+ *
  * @author mbedward
  * @since 8.0
- *
- *
- *
  * @source $URL$
  * @version $Id$
  */
@@ -52,7 +48,7 @@ public class OrthoLineBuilder {
 
     /**
      * Creates a new builder for the specified envelope.
-     * 
+     *
      * @param gridBounds bounds of the area for which lines will be generated
      */
     public OrthoLineBuilder(ReferencedEnvelope gridBounds) {
@@ -60,23 +56,26 @@ public class OrthoLineBuilder {
     }
 
     /**
-     * Creates line features according to the provided {@code OrthoLineDef} objects and 
-     * places them into the provided {@link ListFeatureCollection}.
-     * Densified lines (lines strings with additional vertices along their length) can be
-     * created by setting the value of {@code vertexSpacing} greater than zero; if so, any
-     * lines more than twice as long as this value will be densified.
-     * 
+     * Creates line features according to the provided {@code OrthoLineDef} objects and places them
+     * into the provided {@link ListFeatureCollection}. Densified lines (lines strings with
+     * additional vertices along their length) can be created by setting the value of {@code
+     * vertexSpacing} greater than zero; if so, any lines more than twice as long as this value will
+     * be densified.
+     *
      * @param lineDefs line definitions specifying the orientation, spacing and level of lines
-     * @param lineFeatureBuilder the feature build to create {@code SimpleFeatures} from
-     *        line elements
+     * @param lineFeatureBuilder the feature build to create {@code SimpleFeatures} from line
+     *     elements
      * @param vertexSpacing maximum distance between adjacent vertices along a line
      * @param fc the feature collection into which generated line features are placed
      */
-    public void buildGrid(Collection<OrthoLineDef> lineDefs, 
-            GridFeatureBuilder lineFeatureBuilder, double vertexSpacing, ListFeatureCollection fc) {
-        
+    public void buildGrid(
+            Collection<OrthoLineDef> lineDefs,
+            GridFeatureBuilder lineFeatureBuilder,
+            double vertexSpacing,
+            ListFeatureCollection fc) {
+
         init(lineDefs, lineFeatureBuilder, vertexSpacing);
-        
+
         List<OrthoLineDef> horizontal = new ArrayList<OrthoLineDef>();
         List<OrthoLineDef> vertical = new ArrayList<OrthoLineDef>();
 
@@ -90,18 +89,23 @@ public class OrthoLineBuilder {
                     vertical.add(lineDef);
                     break;
             }
-        } 
+        }
 
-        doBuildLineFeatures(horizontal, LineOrientation.HORIZONTAL, 
-                lineFeatureBuilder, densify, vertexSpacing, fc);
-        doBuildLineFeatures(vertical, LineOrientation.VERTICAL, 
-                lineFeatureBuilder, densify, vertexSpacing, fc);
+        doBuildLineFeatures(
+                horizontal,
+                LineOrientation.HORIZONTAL,
+                lineFeatureBuilder,
+                densify,
+                vertexSpacing,
+                fc);
+        doBuildLineFeatures(
+                vertical, LineOrientation.VERTICAL, lineFeatureBuilder, densify, vertexSpacing, fc);
     }
 
-
-    private void doBuildLineFeatures(List<OrthoLineDef> lineDefs, 
+    private void doBuildLineFeatures(
+            List<OrthoLineDef> lineDefs,
             LineOrientation orientation,
-            GridFeatureBuilder lineFeatureBuilder, 
+            GridFeatureBuilder lineFeatureBuilder,
             boolean densify,
             double vertexSpacing,
             ListFeatureCollection fc) {
@@ -109,7 +113,7 @@ public class OrthoLineBuilder {
         final int NDEFS = lineDefs.size();
         if (NDEFS > 0) {
             double minOrdinate, maxOrdinate;
-            
+
             if (orientation == LineOrientation.HORIZONTAL) {
                 minOrdinate = gridBounds.getMinY();
                 maxOrdinate = gridBounds.getMaxY();
@@ -117,20 +121,21 @@ public class OrthoLineBuilder {
                 minOrdinate = gridBounds.getMinX();
                 maxOrdinate = gridBounds.getMaxX();
             }
-            
+
             double[] pos = new double[NDEFS];
             boolean[] active = new boolean[NDEFS];
             boolean[] atCurPos = new boolean[NDEFS];
             boolean[] generate = new boolean[NDEFS];
 
             Map<String, Object> attributes = new HashMap<String, Object>();
-            String geomPropName = lineFeatureBuilder.getType().getGeometryDescriptor().getLocalName();
-            
+            String geomPropName =
+                    lineFeatureBuilder.getType().getGeometryDescriptor().getLocalName();
+
             for (int i = 0; i < NDEFS; i++) {
                 pos[i] = minOrdinate;
                 active[i] = true;
             }
-            
+
             int numActive = NDEFS;
             while (numActive > 0) {
                 /*
@@ -149,7 +154,7 @@ public class OrthoLineBuilder {
                 for (int i = 0; i < NDEFS; i++) {
                     atCurPos[i] = active[i] && Math.abs(pos[i] - curPos) < TOL;
                 }
-                
+
                 /*
                  * Get line with highest precedence for the current position
                  */
@@ -176,22 +181,27 @@ public class OrthoLineBuilder {
                  */
                 for (int i = 0; i < NDEFS; i++) {
                     if (generate[i]) {
-                        OrthoLine element = new OrthoLine(gridBounds, orientation, 
-                                pos[i], lineDefs.get(i).getLevel());
+                        OrthoLine element =
+                                new OrthoLine(
+                                        gridBounds,
+                                        orientation,
+                                        pos[i],
+                                        lineDefs.get(i).getLevel());
 
                         if (lineFeatureBuilder.getCreateFeature(element)) {
                             lineFeatureBuilder.setAttributes(element, attributes);
 
                             if (densify) {
-                                featureBuilder.set(geomPropName, element.toDenseGeometry(vertexSpacing));
+                                featureBuilder.set(
+                                        geomPropName, element.toDenseGeometry(vertexSpacing));
                             } else {
                                 featureBuilder.set(geomPropName, element.toGeometry());
                             }
-    
+
                             for (String propName : attributes.keySet()) {
                                 featureBuilder.set(propName, attributes.get(propName));
                             }
-    
+
                             String featureID = lineFeatureBuilder.getFeatureID(element);
                             SimpleFeature feature = featureBuilder.buildFeature(featureID);
                             fc.add(feature);
@@ -200,21 +210,20 @@ public class OrthoLineBuilder {
                 }
 
                 /*
-                 * Update line element positions 
+                 * Update line element positions
                  */
                 for (int i = 0; i < NDEFS; i++) {
                     if (atCurPos[i]) {
                         pos[i] += lineDefs.get(i).getSpacing();
                         if (pos[i] > maxOrdinate + TOL) {
                             active[i] = false;
-                            numActive-- ;
+                            numActive--;
                         }
                     }
                 }
             }
         }
     }
-
 
     private boolean isValidDenseVertexSpacing(double v) {
         double minDim;
@@ -228,11 +237,12 @@ public class OrthoLineBuilder {
         } else {
             minDim = gridBounds.getWidth();
         }
-        
+
         return v > 0 && v < minDim / 2;
     }
 
-    private void init(Collection<OrthoLineDef> controls,
+    private void init(
+            Collection<OrthoLineDef> controls,
             GridFeatureBuilder lineFeatureBuilder,
             double vertexSpacing) {
 
@@ -242,7 +252,7 @@ public class OrthoLineBuilder {
         if (controls == null || controls.isEmpty()) {
             throw new IllegalArgumentException("required one or more line parameters");
         }
-        
+
         for (OrthoLineDef param : controls) {
             if (param.getOrientation() == LineOrientation.HORIZONTAL) {
                 hasHorizontals = true;
@@ -253,9 +263,8 @@ public class OrthoLineBuilder {
                         "Only horizontal and vertical lines are supported");
             }
         }
-        
+
         densify = isValidDenseVertexSpacing(vertexSpacing);
         featureBuilder = new SimpleFeatureBuilder(lineFeatureBuilder.getType());
     }
-
 }

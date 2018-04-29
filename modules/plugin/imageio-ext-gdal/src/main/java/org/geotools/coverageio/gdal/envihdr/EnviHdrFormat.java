@@ -17,10 +17,8 @@
 package org.geotools.coverageio.gdal.envihdr;
 
 import it.geosolutions.imageio.plugins.envihdr.ENVIHdrImageReaderSpi;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.coverageio.gdal.BaseGDALGridFormat;
 import org.geotools.data.DataSourceException;
 import org.geotools.factory.Hints;
@@ -30,21 +28,17 @@ import org.opengis.geometry.MismatchedDimensionException;
 /**
  * @author Mathew Wyatt, CSIRO Australia
  * @author Daniele Romagnoli, GeoSolutions SAS
- *
- *
  * @source $URL$
  */
 public final class EnviHdrFormat extends BaseGDALGridFormat implements Format {
 
-    /**
-     * Logger.
-     */
-    private final static Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger("org.geotools.coverageio.gdal.envihdr");
+    /** Logger. */
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.gdal.envihdr");
 
     /**
-     * Constructor for the {@code BaseGDALGridFormat}. It is invoked by the
-     * underlying implementations.
+     * Constructor for the {@code BaseGDALGridFormat}. It is invoked by the underlying
+     * implementations.
      *
      * @param spi the format specific {@code ImageReaderSpi} instance
      */
@@ -60,16 +54,12 @@ public final class EnviHdrFormat extends BaseGDALGridFormat implements Format {
 
     private static InfoWrapper INFO = new InfoWrapper("ENVIHdr Coverage Format", "ENVIHdr");
 
-    /**
-     * Sets the metadata information.
-     */
+    /** Sets the metadata information. */
     protected void setInfo() {
         setInfo(INFO);
     }
 
-    /**
-     * @see org.geotools.data.coverage.grid.AbstractGridFormat#getReader(Object, Hints)
-     */
+    /** @see org.geotools.data.coverage.grid.AbstractGridFormat#getReader(Object, Hints) */
     public EnviHdrReader getReader(Object source, Hints hints) {
         try {
             return new EnviHdrReader(source, hints);

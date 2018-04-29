@@ -33,10 +33,7 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-
-/**
- * @author Davide Savazzi - GeoSolutions
- */
+/** @author Davide Savazzi - GeoSolutions */
 public class IsCoverageTest extends GridCoverageTestBase {
 
     static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
@@ -53,7 +50,7 @@ public class IsCoverageTest extends GridCoverageTestBase {
         SimpleFeature feature = featureCollection.features().next();
         assertTrue(isCoverage.evaluate(feature));
         assertFalse(isNotCoverage.evaluate(feature));
-        
+
         // not a coverage
         SimpleFeatureType type = DataUtilities.createType("ns", "name:string,geom:Geometry");
         SimpleFeatureBuilder build = new SimpleFeatureBuilder(type);
@@ -61,16 +58,16 @@ public class IsCoverageTest extends GridCoverageTestBase {
         build.add(null);
         feature = build.buildFeature(null);
         assertEquals(false, isCoverage.evaluate(feature));
-        assertEquals(true, isNotCoverage.evaluate(feature));        
+        assertEquals(true, isNotCoverage.evaluate(feature));
     }
-    
+
     @Test
     public void testSimplify() throws Exception {
         Filter isCoverage = FF.equals(FF.function("isCoverage"), FF.literal("true"));
 
         SimplifyingFilterVisitor visitor = new SimplifyingFilterVisitor();
         Filter result = (Filter) isCoverage.accept(visitor, null);
-        
+
         assertEquals(isCoverage, result);
     }
 }

@@ -5,11 +5,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
- *
  * @author Chris
- *
- *
- *
  * @source $URL$
  */
 public class DXFCodeValuePair {
@@ -75,7 +71,6 @@ public class DXFCodeValuePair {
             default:
                 throw new DXFParseException(br, "Unknown value type for Group Code: " + gc);
         }
-
 
         return gc;
     }
@@ -146,5 +141,4 @@ public class DXFCodeValuePair {
         }
         return binHexValue;
     }
-
 }

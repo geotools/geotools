@@ -17,17 +17,14 @@
 
 package org.geotools.gce.imagemosaic.granulehandler;
 
+import static org.geotools.util.Utilities.toInstanceByClassNameMap;
+
 import java.util.Arrays;
 import java.util.Map;
-
 import org.geotools.factory.FactoryCreator;
 import org.geotools.factory.FactoryRegistry;
 
-import static org.geotools.util.Utilities.toInstanceByClassNameMap;
-
-/**
- * Access the granule handler factories
- */
+/** Access the granule handler factories */
 public class GranuleHandlerFactoryFinder {
 
     private static FactoryCreator registry;
@@ -42,12 +39,14 @@ public class GranuleHandlerFactoryFinder {
     }
 
     /**
-     * Returns the service registry. The registry will be created the first time this method is invoked.
+     * Returns the service registry. The registry will be created the first time this method is
+     * invoked.
      */
     private static FactoryRegistry getServiceRegistry() {
         if (registry == null) {
-            registry = new FactoryCreator(
-                    Arrays.asList(new Class<?>[] { GranuleHandlerFactorySPI.class }));
+            registry =
+                    new FactoryCreator(
+                            Arrays.asList(new Class<?>[] {GranuleHandlerFactorySPI.class}));
         }
         return registry;
     }

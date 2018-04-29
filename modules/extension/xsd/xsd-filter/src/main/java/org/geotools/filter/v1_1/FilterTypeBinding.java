@@ -16,31 +16,23 @@
  */
 package org.geotools.filter.v1_1;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-
 import javax.xml.namespace.QName;
-
-import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.feature.NameImpl;
 import org.geotools.filter.FilterParsingUtils;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
-import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Expression;
 import org.opengis.filter.identity.Identifier;
-
 
 /**
  * Binding object for the type http://www.opengis.net/ogc:FilterType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:complexType name="FilterType"&gt;
  *      &lt;xsd:choice&gt;
@@ -53,12 +45,8 @@ import org.opengis.filter.identity.Identifier;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class FilterTypeBinding extends AbstractComplexBinding {
@@ -68,14 +56,13 @@ public class FilterTypeBinding extends AbstractComplexBinding {
         this.filterFactory = filterFactory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return OGC.FilterType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -86,37 +73,36 @@ public class FilterTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
-        //&lt;xsd:element ref="ogc:spatialOps"/&gt;
-        //&lt;xsd:element ref="ogc:comparisonOps"/&gt;
-        //&lt;xsd:element ref="ogc:logicOps"/&gt;
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
+        // &lt;xsd:element ref="ogc:spatialOps"/&gt;
+        // &lt;xsd:element ref="ogc:comparisonOps"/&gt;
+        // &lt;xsd:element ref="ogc:logicOps"/&gt;
         if (node.hasChild(Filter.class)) {
             return node.getChildValue(Filter.class);
         }
 
-        //no direct child filter, check for ids
-        //&lt;xsd:element maxOccurs="unbounded" ref="ogc:_Id"/&gt;
+        // no direct child filter, check for ids
+        // &lt;xsd:element maxOccurs="unbounded" ref="ogc:_Id"/&gt;
         List ids = node.getChildValues(Identifier.class);
         if (!ids.isEmpty()) {
             return filterFactory.id(new HashSet(ids));
         }
-        
-        //try an extended operator (part of filter/fes 2.0)
+
+        // try an extended operator (part of filter/fes 2.0)
         List<Filter> extOps = FilterParsingUtils.parseExtendedOperators(node, filterFactory);
         if (!extOps.isEmpty()) {
-            return extOps.get(0); 
+            return extOps.get(0);
         }
         return null;
     }
 
-    public Object getProperty(Object object, QName name)
-        throws Exception {
+    public Object getProperty(Object object, QName name) throws Exception {
         return FilterParsingUtils.Filter_getProperty(object, name);
     }
 }

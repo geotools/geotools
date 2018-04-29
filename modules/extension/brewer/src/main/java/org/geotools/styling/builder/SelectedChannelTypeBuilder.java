@@ -18,17 +18,13 @@ package org.geotools.styling.builder;
 
 import org.geotools.styling.SelectedChannelType;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class SelectedChannelTypeBuilder extends AbstractStyleBuilder<SelectedChannelType> {
 
     private String channelName;
 
-    private ContrastEnhancementBuilder contrastEnhancement = new ContrastEnhancementBuilder(this)
-            .unset();
+    private ContrastEnhancementBuilder contrastEnhancement =
+            new ContrastEnhancementBuilder(this).unset();
 
     public SelectedChannelTypeBuilder() {
         this(null);
@@ -54,8 +50,8 @@ public class SelectedChannelTypeBuilder extends AbstractStyleBuilder<SelectedCha
         if (unset) {
             return null;
         }
-        SelectedChannelType selectedChannelType = sf.selectedChannelType(channelName,
-                contrastEnhancement.build());
+        SelectedChannelType selectedChannelType =
+                sf.selectedChannelType(channelName, contrastEnhancement.build());
         return selectedChannelType;
     }
 
@@ -84,5 +80,4 @@ public class SelectedChannelTypeBuilder extends AbstractStyleBuilder<SelectedCha
     protected void buildStyleInternal(StyleBuilder sb) {
         sb.featureTypeStyle().rule().raster().channelSelection().gray().init(this);
     }
-
 }

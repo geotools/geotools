@@ -16,11 +16,11 @@ package org.geotools.data.excel;
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-
 import org.geotools.data.FeatureReader;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -28,21 +28,20 @@ import org.opengis.feature.simple.SimpleFeatureType;
 class ExcelFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature> {
 
     private ExcelFeatureSource source;
-    
+
     private Iterator<SimpleFeature> iterator;
 
     private ArrayList<SimpleFeature> features;
 
-    public ExcelFeatureReader(ArrayList<SimpleFeature> features2, ExcelFeatureSource excelFeatureSource) {
+    public ExcelFeatureReader(
+            ArrayList<SimpleFeature> features2, ExcelFeatureSource excelFeatureSource) {
         features = features2;
         source = excelFeatureSource;
         iterator = features.iterator();
     }
 
-    
-
-    public SimpleFeature next() throws IOException, IllegalArgumentException,
-            NoSuchElementException {
+    public SimpleFeature next()
+            throws IOException, IllegalArgumentException, NoSuchElementException {
         // TODO Auto-generated method stub
         return iterator.next();
     }
@@ -57,8 +56,6 @@ class ExcelFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeatu
         iterator = features.iterator();
     }
 
-
-
     /* (non-Javadoc)
      * @see org.geotools.data.FeatureReader#getFeatureType()
      */
@@ -66,5 +63,4 @@ class ExcelFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeatu
         // TODO Auto-generated method stub
         return source.getSchema();
     }
-
 }

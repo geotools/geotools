@@ -16,19 +16,18 @@
  */
 package org.geotools.se.v1_1.bindings;
 
+import javax.xml.namespace.QName;
 import org.geotools.se.v1_1.SE;
 import org.geotools.xml.*;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 
-import javax.xml.namespace.QName;
-
 /**
  * Binding object for the element http://www.opengis.net/se:FormatDate.
- * 
+ *
  * <p>
- * 
+ *
  * <pre>
  *  <code>
  *  &lt;xsd:element name="FormatDate" substitutionGroup="se:Function" type="se:FormatDateType"&gt;
@@ -37,11 +36,11 @@ import javax.xml.namespace.QName;
  *  Function for dates.
  *               &lt;/xsd:documentation&gt;
  *      &lt;/xsd:annotation&gt;
- *  &lt;/xsd:element&gt; 
- * 	
+ *  &lt;/xsd:element&gt;
+ *
  *   </code>
  * </pre>
- * 
+ *
  * <pre>
  *       <code>
  *  &lt;xsd:complexType name="FormatDateType"&gt;
@@ -53,36 +52,32 @@ import javax.xml.namespace.QName;
  *              &lt;/xsd:sequence&gt;
  *          &lt;/xsd:extension&gt;
  *      &lt;/xsd:complexContent&gt;
- *  &lt;/xsd:complexType&gt; 
- *              
+ *  &lt;/xsd:complexType&gt;
+ *
  *        </code>
  * </pre>
- * 
- * </p>
- * 
+ *
  * @generated
- *
- *
  * @source $URL$
  */
 public class FormatDateBinding extends AbstractComplexBinding {
 
     FilterFactory filterFactory;
-    
+
     public FormatDateBinding(FilterFactory filterFactory) {
         this.filterFactory = filterFactory;
     }
-    
-    /**
-     * @generated
-     */
+
+    /** @generated */
     public QName getTarget() {
         return SE.FormatDate;
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Class getType() {
@@ -90,19 +85,20 @@ public class FormatDateBinding extends AbstractComplexBinding {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
-        //&lt;xsd:element ref="se:DateValue"/&gt;
+        // &lt;xsd:element ref="se:DateValue"/&gt;
         Expression date = (Expression) node.getChildValue("DateValue");
-        
-        //&lt;xsd:element ref="se:Pattern"/&gt;
+
+        // &lt;xsd:element ref="se:Pattern"/&gt;
         Expression format = filterFactory.literal(node.getChildValue("Pattern"));
-        
+
         return filterFactory.function("dateFormat", format, date);
     }
-
 }

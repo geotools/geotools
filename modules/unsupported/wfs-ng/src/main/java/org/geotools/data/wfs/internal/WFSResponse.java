@@ -20,9 +20,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.xml.namespace.QName;
-
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.Response;
 import org.geotools.ows.ServiceException;
@@ -32,13 +30,10 @@ import org.opengis.feature.simple.SimpleFeatureType;
 /**
  * A handle to a WFS response that contains the input stream to the actual contents and some well
  * known response information derived from the HTTP response headers.
- * 
+ *
  * @author Gabriel Roldan (OpenGeo)
  * @version $Id$
  * @since 2.6
- * 
- * 
- * 
  * @source $URL$
  */
 @SuppressWarnings("nls")
@@ -87,7 +82,7 @@ public class WFSResponse extends Response {
     /**
      * Returns the character encoding if set by the server as an http header, if unknown assumes
      * {@code UTF-8}
-     * 
+     *
      * @return the character set for the response if set, or {@code null}
      */
     public Charset getCharacterEncoding() {
@@ -96,7 +91,7 @@ public class WFSResponse extends Response {
 
     /**
      * Returns the WFS response declared content type
-     * 
+     *
      * @return the content type of the response
      */
     public String getContentType() {
@@ -109,8 +104,12 @@ public class WFSResponse extends Response {
 
     @Override
     public String toString() {
-        return new StringBuilder("WFSResponse[charset=").append(charset).append(", contentType=")
-                .append(contentType).append("]").toString();
+        return new StringBuilder("WFSResponse[charset=")
+                .append(charset)
+                .append(", contentType=")
+                .append(contentType)
+                .append("]")
+                .toString();
     }
 
     public SimpleFeatureType getQueryType() {

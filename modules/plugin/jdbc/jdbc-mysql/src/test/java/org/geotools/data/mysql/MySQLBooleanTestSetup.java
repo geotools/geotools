@@ -19,16 +19,11 @@ package org.geotools.data.mysql;
 import org.geotools.jdbc.JDBCBooleanTestSetup;
 import org.geotools.jdbc.JDBCDataStore;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class MySQLBooleanTestSetup extends JDBCBooleanTestSetup {
 
     protected MySQLBooleanTestSetup() {
         super(new MySQLTestSetup());
-        
     }
 
     @Override
@@ -36,17 +31,16 @@ public class MySQLBooleanTestSetup extends JDBCBooleanTestSetup {
         super.setUpDataStore(dataStore);
         dataStore.setDatabaseSchema(null);
     }
-    
+
     @Override
     protected void createBooleanTable() throws Exception {
-        run( "CREATE TABLE b (id int AUTO_INCREMENT PRIMARY KEY, boolProperty BOOL)");
-        run( "INSERT INTO b (boolProperty) VALUES (false)");
-        run( "INSERT INTO b (boolProperty) VALUES (true)");
+        run("CREATE TABLE b (id int AUTO_INCREMENT PRIMARY KEY, boolProperty BOOL)");
+        run("INSERT INTO b (boolProperty) VALUES (false)");
+        run("INSERT INTO b (boolProperty) VALUES (true)");
     }
 
     @Override
     protected void dropBooleanTable() throws Exception {
-        run( "DROP TABLE b");
+        run("DROP TABLE b");
     }
-
 }

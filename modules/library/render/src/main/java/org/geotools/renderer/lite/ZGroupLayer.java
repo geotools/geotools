@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -26,7 +26,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
-
 import org.geotools.data.FeatureSource;
 import org.geotools.data.sort.SortedFeatureReader;
 import org.geotools.feature.FeatureCollection;
@@ -50,18 +49,17 @@ import org.opengis.util.ProgressListener;
 
 /**
  * A special layer owning multiple feature sources and styles, all in the same z-group
- * 
- * @author Andrea Aime - GeoSolutions
  *
+ * @author Andrea Aime - GeoSolutions
  */
 class ZGroupLayer extends Layer {
 
     private String groupId;
 
     private List<Layer> layers = new ArrayList<>();
-    
+
     private boolean compositingBase = false;
-    
+
     private Composite composite;
 
     public ZGroupLayer(String groupId, FeatureLayer layer) {
@@ -71,7 +69,7 @@ class ZGroupLayer extends Layer {
 
     public void drawFeatures(Graphics2D graphics, final StreamingRenderer renderer, String layerId)
             throws IOException, FactoryException, NoninvertibleTransformException, SchemaException,
-            TransformException {
+                    TransformException {
         // 1) init all the readers and the lfts associated to them (one at a time to avoid deadlock)
         // and create one RenderableFeature for each
         // 2) process all the features one z-level at a time, backtracking if there are multiple
@@ -79,11 +77,12 @@ class ZGroupLayer extends Layer {
 
         // a listener passed around to stop data reading/painting if rendering stop request is
         // issued
-        ProgressListener cancellationListener = new DefaultProgressListener() {
-            public boolean isCanceled() {
-                return renderer.renderingStopRequested;
-            };
-        };
+        ProgressListener cancellationListener =
+                new DefaultProgressListener() {
+                    public boolean isCanceled() {
+                        return renderer.renderingStopRequested;
+                    };
+                };
 
         List<ZGroupLayerPainter> painters = null;
         try {
@@ -101,15 +100,16 @@ class ZGroupLayer extends Layer {
                 SortKey smallestKey = getSmallestKey(painters, comparator);
                 if (previousKey == null) {
                     previousKey = smallestKey;
-                } else if(comparator.compare(previousKey, smallestKey) >= 0) {
-                    throw new IllegalStateException("The sorted rendering moved from a set of "
-                            + "sort attributes, to one that's equal or greater, this is unexpected, "
-                            + "bailing out to avoid an infinite loop");
+                } else if (comparator.compare(previousKey, smallestKey) >= 0) {
+                    throw new IllegalStateException(
+                            "The sorted rendering moved from a set of "
+                                    + "sort attributes, to one that's equal or greater, this is unexpected, "
+                                    + "bailing out to avoid an infinite loop");
                 } else {
                     previousKey = smallestKey;
                 }
 
-                for (Iterator it = painters.iterator(); it.hasNext();) {
+                for (Iterator it = painters.iterator(); it.hasNext(); ) {
                     ZGroupLayerPainter painter = (ZGroupLayerPainter) it.next();
                     painter.paintKey(smallestKey);
                     // if the painter is done, close it
@@ -128,8 +128,8 @@ class ZGroupLayer extends Layer {
         }
     }
 
-    private SortKey getSmallestKey(List<ZGroupLayerPainter> painters,
-            Comparator<SortKey> comparator) {
+    private SortKey getSmallestKey(
+            List<ZGroupLayerPainter> painters, Comparator<SortKey> comparator) {
         SortKey smallest = null;
         for (ZGroupLayerPainter painter : painters) {
             SortKey key = painter.getCurrentKey();
@@ -143,10 +143,13 @@ class ZGroupLayer extends Layer {
         return new SortKey(smallest);
     }
 
-    private List<ZGroupLayerPainter> buildLayerPainters(Graphics2D graphics,
-            StreamingRenderer renderer, String layerId, ProgressListener cancellationListener)
-                    throws IOException, FactoryException, NoninvertibleTransformException,
-                    SchemaException, TransformException {
+    private List<ZGroupLayerPainter> buildLayerPainters(
+            Graphics2D graphics,
+            StreamingRenderer renderer,
+            String layerId,
+            ProgressListener cancellationListener)
+            throws IOException, FactoryException, NoninvertibleTransformException, SchemaException,
+                    TransformException {
         List<ZGroupLayerPainter> painters = new ArrayList<>();
         boolean closePainters = true;
         try {
@@ -159,8 +162,8 @@ class ZGroupLayer extends Layer {
                 }
                 final FeatureType schema = featureSource.getSchema();
 
-                final ArrayList<LiteFeatureTypeStyle> lfts = renderer
-                        .createLiteFeatureTypeStyles(layer, graphics, false);
+                final ArrayList<LiteFeatureTypeStyle> lfts =
+                        renderer.createLiteFeatureTypeStyles(layer, graphics, false);
                 if (lfts.isEmpty()) {
                     continue;
                 } else {
@@ -181,11 +184,11 @@ class ZGroupLayer extends Layer {
                 // but we'd have to delay opening the MarkFeatureIterator to recognize the
                 // situation
                 int maxFeatures = SortedFeatureReader.getMaxFeaturesInMemory(layer.getQuery());
-                MarkFeatureIterator fi = MarkFeatureIterator.create(features,
-                        maxFeatures, cancellationListener);
+                MarkFeatureIterator fi =
+                        MarkFeatureIterator.create(features, maxFeatures, cancellationListener);
                 if (fi.hasNext()) {
-                    ZGroupLayerPainter painter = new ZGroupLayerPainter(fi, lfts, renderer,
-                            layerId);
+                    ZGroupLayerPainter painter =
+                            new ZGroupLayerPainter(fi, lfts, renderer, layerId);
                     painters.add(painter);
                 } else {
                     fi.close();
@@ -202,8 +205,8 @@ class ZGroupLayer extends Layer {
                     try {
                         painter.close();
                     } catch (Exception e) {
-                        LOGGER.log(Level.FINE, "Failed to close cleanly layer painter " + painter,
-                                e);
+                        LOGGER.log(
+                                Level.FINE, "Failed to close cleanly layer painter " + painter, e);
                     }
                 }
             }
@@ -216,7 +219,7 @@ class ZGroupLayer extends Layer {
      * Ensures that all SortBy are meaningful for a cross layer z-order. We need the SortKey for all
      * the layers to have the same structure, be comparable, and be class compatible with each other
      * (and of course, exist in the first place)
-     * 
+     *
      * @param painters
      */
     private void validateSortBy(List<ZGroupLayerPainter> painters) {
@@ -234,17 +237,24 @@ class ZGroupLayer extends Layer {
                     for (int i = 0; i < referenceClasses.length; i++) {
                         if (!Comparable.class.isAssignableFrom(referenceClasses[i])) {
                             throw new IllegalArgumentException(
-                                    "Found non comparable attribute in z group " + groupId + ": "
-                                            + sortByToString(style, getSortByAttributeClasses(style))
-                                            + " at position " + (i + 1));
+                                    "Found non comparable attribute in z group "
+                                            + groupId
+                                            + ": "
+                                            + sortByToString(
+                                                    style, getSortByAttributeClasses(style))
+                                            + " at position "
+                                            + (i + 1));
                         }
                     }
                 } else {
                     if (styleClasses.length != referenceClasses.length) {
                         throw new IllegalArgumentException(
                                 "Found two sortBy clauses with different number "
-                                        + "of attributes in group " + groupId + ": "
-                                        + sortByToString(reference, referenceClasses) + " vs "
+                                        + "of attributes in group "
+                                        + groupId
+                                        + ": "
+                                        + sortByToString(reference, referenceClasses)
+                                        + " vs "
                                         + sortByToString(style, styleClasses));
                     } else {
                         for (int i = 0; i < styleClasses.length; i++) {
@@ -254,19 +264,27 @@ class ZGroupLayer extends Layer {
                                     && !currClass.isAssignableFrom(referenceClass)
                                     && !referenceClass.isAssignableFrom(currClass)) {
                                 throw new IllegalArgumentException(
-                                        "Found two incompatible classes at position " + (i + 1)
-                                                + " of the sortBy clauses in group " + groupId
-                                                + ": " + sortByToString(reference, referenceClasses)
-                                                + " vs " + sortByToString(style, styleClasses));
+                                        "Found two incompatible classes at position "
+                                                + (i + 1)
+                                                + " of the sortBy clauses in group "
+                                                + groupId
+                                                + ": "
+                                                + sortByToString(reference, referenceClasses)
+                                                + " vs "
+                                                + sortByToString(style, styleClasses));
                             }
                             SortOrder currOrder = styleOrders[i];
                             SortOrder referenceOrder = referenceOrders[i];
                             if (!currOrder.equals(referenceOrder)) {
                                 throw new IllegalArgumentException(
-                                        "Found two different sort orders at position " + (i + 1)
-                                                + " of the sortBy clauses in group " + groupId
-                                                + ": " + sortByToString(reference, referenceClasses)
-                                                + " vs " + sortByToString(style, styleClasses));
+                                        "Found two different sort orders at position "
+                                                + (i + 1)
+                                                + " of the sortBy clauses in group "
+                                                + groupId
+                                                + ": "
+                                                + sortByToString(reference, referenceClasses)
+                                                + " vs "
+                                                + sortByToString(style, styleClasses));
                             }
                         }
                     }
@@ -288,12 +306,15 @@ class ZGroupLayer extends Layer {
                 PropertyDescriptor pd = property.evaluate(schema, null);
                 if (pd == null) {
                     throw new IllegalArgumentException(
-                            "Property " + property + " could not be found in feature type "
-                                    + schema.getName() + " in layer " + style.layer.getTitle());
+                            "Property "
+                                    + property
+                                    + " could not be found in feature type "
+                                    + schema.getName()
+                                    + " in layer "
+                                    + style.layer.getTitle());
                 }
                 classes[i] = pd.getType().getBinding();
             }
-
         }
 
         return classes;
@@ -333,13 +354,13 @@ class ZGroupLayer extends Layer {
 
         return sb.toString();
     }
-    
+
     @Override
     public ReferencedEnvelope getBounds() {
         // no bounds to report
         return null;
     }
-    
+
     public boolean isCompositingBase() {
         return compositingBase;
     }
@@ -358,35 +379,34 @@ class ZGroupLayer extends Layer {
         for (FeatureTypeStyle fts : featureTypeStyles) {
             Map<String, String> options = fts.getOptions();
             String compositingBaseDefinition = options.get(FeatureTypeStyle.COMPOSITE_BASE);
-            if("true".equalsIgnoreCase(compositingBaseDefinition)) {
+            if ("true".equalsIgnoreCase(compositingBaseDefinition)) {
                 this.compositingBase = true;
             }
             // cannot really rely on equals here, we use a simple "last one wins" logic
             Composite composite = SLDStyleFactory.getComposite(options);
-            if(composite != null) {
+            if (composite != null) {
                 this.composite = composite;
                 cleanupStyle = true;
             }
         }
-        // compositing is now handled at the ZGroupLayer level, remove it from the 
+        // compositing is now handled at the ZGroupLayer level, remove it from the
         // inner layer
-        if(cleanupStyle) {
-            DuplicatingStyleVisitor cleaner = new DuplicatingStyleVisitor() {
-                @Override
-                public void visit(FeatureTypeStyle fts) {
-                    super.visit(fts);
-                    FeatureTypeStyle copy = (FeatureTypeStyle) pages.peek();
-                    copy.getOptions().remove(FeatureTypeStyle.COMPOSITE);
-                    copy.getOptions().remove(FeatureTypeStyle.COMPOSITE_BASE);
-                }
-            };
+        if (cleanupStyle) {
+            DuplicatingStyleVisitor cleaner =
+                    new DuplicatingStyleVisitor() {
+                        @Override
+                        public void visit(FeatureTypeStyle fts) {
+                            super.visit(fts);
+                            FeatureTypeStyle copy = (FeatureTypeStyle) pages.peek();
+                            copy.getOptions().remove(FeatureTypeStyle.COMPOSITE);
+                            copy.getOptions().remove(FeatureTypeStyle.COMPOSITE_BASE);
+                        }
+                    };
             layer.getStyle().accept(cleaner);
             Style cleaned = (Style) cleaner.getCopy();
             layer.setStyle(cleaned);
         }
-        
+
         layers.add(layer);
     }
-
-
 }

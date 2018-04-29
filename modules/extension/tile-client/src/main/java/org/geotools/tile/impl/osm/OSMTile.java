@@ -18,7 +18,6 @@
 package org.geotools.tile.impl.osm;
 
 import java.net.URL;
-
 import org.geotools.tile.Tile;
 import org.geotools.tile.TileIdentifier;
 import org.geotools.tile.TileService;
@@ -27,7 +26,7 @@ import org.geotools.tile.impl.ZoomLevel;
 
 /**
  * The tile implementation for the OpenStreetMap family
- * 
+ *
  * @author Tobias Sauerwein
  * @author Ugo Taddei
  * @since 12

@@ -17,17 +17,17 @@
 package org.geotools.filter.v1_0.capabilities;
 
 import javax.xml.namespace.QName;
+import org.geotools.xml.*;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.capability.Functions;
-import org.geotools.xml.*;
-
 
 /**
  * Binding object for the type http://www.opengis.net/ogc:FunctionsType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:complexType name="FunctionsType"&gt;
  *      &lt;xsd:sequence&gt;
@@ -37,12 +37,8 @@ import org.geotools.xml.*;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class FunctionsTypeBinding extends AbstractComplexBinding {
@@ -52,14 +48,13 @@ public class FunctionsTypeBinding extends AbstractComplexBinding {
         this.factory = factory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return OGC.FunctionsType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -70,20 +65,19 @@ public class FunctionsTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         FunctionName[] functionNames = (FunctionName[]) node.getChildValue(FunctionName[].class);
 
         return factory.functions(functionNames);
     }
 
-    public Object getProperty(Object object, QName name)
-        throws Exception {
+    public Object getProperty(Object object, QName name) throws Exception {
         if ("Function_Names".equals(name.getLocalPart())
                 || "FunctionNames".equals(name.getLocalPart()) /* 1.1 */) {
             Functions functions = (Functions) object;

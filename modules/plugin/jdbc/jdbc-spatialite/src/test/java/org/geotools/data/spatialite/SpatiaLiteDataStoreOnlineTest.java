@@ -19,29 +19,24 @@ package org.geotools.data.spatialite;
 import org.geotools.jdbc.JDBCDataStoreOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class SpatiaLiteDataStoreOnlineTest extends JDBCDataStoreOnlineTest {
 
     @Override
     protected JDBCTestSetup createTestSetup() {
         return new SpatiaLiteTestSetup();
     }
-    
+
     @Override
     public void testCreateSchemaWithConstraints() throws Exception {
-        //SQLite does not enforce length restrictions on strings
-        //See FAQ (9) from http://www.sqlite.org/faq.html 
-    }
-    
-    @Override
-    public void testCreateSchema() throws Exception {
-        //SQLite only has a few types, date not being one of them. So it is currently 
-        // not really possible to create a feature attribute of type Date, and have that 
-        // information round tripped
+        // SQLite does not enforce length restrictions on strings
+        // See FAQ (9) from http://www.sqlite.org/faq.html
     }
 
+    @Override
+    public void testCreateSchema() throws Exception {
+        // SQLite only has a few types, date not being one of them. So it is currently
+        // not really possible to create a feature attribute of type Date, and have that
+        // information round tripped
+    }
 }

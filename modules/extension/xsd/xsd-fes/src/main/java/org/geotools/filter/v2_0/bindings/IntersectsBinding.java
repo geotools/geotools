@@ -16,34 +16,23 @@
  */
 package org.geotools.filter.v2_0.bindings;
 
-import java.util.List;
-
-import javax.xml.namespace.QName;
 import com.vividsolutions.jts.geom.GeometryFactory;
-import org.opengis.filter.FilterFactory2;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.spatial.Intersects;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.eclipse.xsd.XSDElementDeclaration;
+import javax.xml.namespace.QName;
 import org.geotools.filter.v1_0.OGCIntersectsBinding;
 import org.geotools.filter.v2_0.FES;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
-
+import org.opengis.filter.FilterFactory2;
 
 /**
  * Binding object for the element http://www.opengis.net/fes/2.0:Intersects.
  *
  * <p>
- *      <pre>
+ *
+ * <pre>
  *       <code>
- *  &lt;xsd:element name="Intersects" substitutionGroup="fes:spatialOps" type="fes:BinarySpatialOpType"/&gt; 
- *              
+ *  &lt;xsd:element name="Intersects" substitutionGroup="fes:spatialOps" type="fes:BinarySpatialOpType"/&gt;
+ *
  *        </code>
  *       </pre>
- * </p>
  *
  * @generated
  */

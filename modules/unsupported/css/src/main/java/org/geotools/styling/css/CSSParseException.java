@@ -17,7 +17,6 @@
 package org.geotools.styling.css;
 
 import java.util.List;
-
 import org.parboiled.errors.DefaultInvalidInputErrorFormatter;
 import org.parboiled.errors.InvalidInputError;
 import org.parboiled.errors.ParseError;
@@ -25,9 +24,8 @@ import org.parboiled.support.Position;
 
 /**
  * Exception thrown when a CSS parsing error occurs
- * 
- * @author Andrea Aime - GeoSolutions
  *
+ * @author Andrea Aime - GeoSolutions
  */
 public class CSSParseException extends IllegalArgumentException {
     private static final long serialVersionUID = -2624556764086947780L;
@@ -48,12 +46,19 @@ public class CSSParseException extends IllegalArgumentException {
         StringBuilder sb = new StringBuilder();
         for (ParseError pe : errors) {
             Position pos = pe.getInputBuffer().getPosition(pe.getStartIndex());
-            String message = pe.getErrorMessage() != null ? pe.getErrorMessage()
-                    : pe instanceof InvalidInputError
-                            ? new DefaultInvalidInputErrorFormatter().format((InvalidInputError) pe)
-                            : pe.getClass().getSimpleName();
-            sb.append(message).append(" (line ").append(pos.line).append(", column ")
-                    .append(pos.column).append(")");
+            String message =
+                    pe.getErrorMessage() != null
+                            ? pe.getErrorMessage()
+                            : pe instanceof InvalidInputError
+                                    ? new DefaultInvalidInputErrorFormatter()
+                                            .format((InvalidInputError) pe)
+                                    : pe.getClass().getSimpleName();
+            sb.append(message)
+                    .append(" (line ")
+                    .append(pos.line)
+                    .append(", column ")
+                    .append(pos.column)
+                    .append(")");
             sb.append('\n');
         }
         sb.setLength(sb.length() - 1);
@@ -62,11 +67,10 @@ public class CSSParseException extends IllegalArgumentException {
 
     /**
      * The parse errors
-     * 
+     *
      * @return
      */
     public List<ParseError> getErrors() {
         return errors;
     }
-
 }

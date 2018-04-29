@@ -16,56 +16,34 @@
  */
 package org.geotools.gml3;
 
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.io.WKTReader;
-import junit.framework.TestCase;
-import org.custommonkey.xmlunit.SimpleNamespaceContext;
-import org.custommonkey.xmlunit.XMLUnit;
-import org.eclipse.xsd.XSDSchema;
-import org.geotools.data.DataUtilities;
-import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
-import org.geotools.gml2.SrsSyntax;
-import org.geotools.gml3.bindings.GML3MockData;
-import org.geotools.gml3.bindings.TEST;
-import org.geotools.gml3.bindings.TestConfiguration;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.Encoder;
-import org.geotools.xml.Parser;
-import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
-import org.xml.sax.helpers.DefaultHandler;
-
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.net.URI;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import javax.xml.XMLConstants;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.math.BigDecimal;
-import java.net.URI;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import junit.framework.TestCase;
+import org.custommonkey.xmlunit.SimpleNamespaceContext;
+import org.custommonkey.xmlunit.XMLUnit;
+import org.eclipse.xsd.XSDSchema;
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.gml3.bindings.TEST;
+import org.geotools.gml3.bindings.TestConfiguration;
+import org.geotools.xml.Configuration;
+import org.geotools.xml.Encoder;
+import org.geotools.xml.Parser;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
+import org.xml.sax.helpers.DefaultHandler;
 
-import static org.custommonkey.xmlunit.XMLAssert.assertXpathEvaluatesTo;
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class GML3EncodingOnlineTest extends TestCase {
 
     @Override
@@ -101,8 +79,9 @@ public class GML3EncodingOnlineTest extends TestCase {
 
         // first parse in test data
         Parser parser = new Parser(configuration);
-        SimpleFeatureCollection fc = (SimpleFeatureCollection) parser.parse(TestConfiguration.class
-                .getResourceAsStream("test.xml"));
+        SimpleFeatureCollection fc =
+                (SimpleFeatureCollection)
+                        parser.parse(TestConfiguration.class.getResourceAsStream("test.xml"));
         assertNotNull(fc);
 
         XSDSchema schema = TEST.getInstance().getSchema();
@@ -123,13 +102,14 @@ public class GML3EncodingOnlineTest extends TestCase {
         // The schema location needs to be a well formed URI/URL, a file path is not sufficient.
         String schemaLocation = TestConfiguration.class.getResource("test.xsd").toString();
 
-        ApplicationSchemaConfiguration configuration = new ApplicationSchemaConfiguration(
-                TEST.NAMESPACE, schemaLocation);
+        ApplicationSchemaConfiguration configuration =
+                new ApplicationSchemaConfiguration(TEST.NAMESPACE, schemaLocation);
 
         // first parse in test data
         Parser parser = new Parser(configuration);
-        SimpleFeatureCollection fc = (SimpleFeatureCollection) parser.parse(TestConfiguration.class
-                .getResourceAsStream("test.xml"));
+        SimpleFeatureCollection fc =
+                (SimpleFeatureCollection)
+                        parser.parse(TestConfiguration.class.getResourceAsStream("test.xml"));
         assertNotNull(fc);
 
         XSDSchema schema = TEST.getInstance().getSchema();
@@ -151,23 +131,22 @@ public class GML3EncodingOnlineTest extends TestCase {
         Validator v = s.newValidator();
 
         final ArrayList errors = new ArrayList();
-        DefaultHandler handler = new DefaultHandler() {
-            public void error(SAXParseException e) throws SAXException {
-                System.out.println(e.getMessage());
-                errors.add(e);
-            }
+        DefaultHandler handler =
+                new DefaultHandler() {
+                    public void error(SAXParseException e) throws SAXException {
+                        System.out.println(e.getMessage());
+                        errors.add(e);
+                    }
 
-            public void fatalError(SAXParseException e) throws SAXException {
-                System.out.println(e.getMessage());
-                errors.add(e);
-            }
-        };
+                    public void fatalError(SAXParseException e) throws SAXException {
+                        System.out.println(e.getMessage());
+                        errors.add(e);
+                    }
+                };
 
         v.setErrorHandler(handler);
         v.validate(new StreamSource(new ByteArrayInputStream(data)));
 
         assertTrue(errors.isEmpty());
     }
-
-
 }

@@ -1,18 +1,16 @@
 package org.geotools.wcs.bindings;
 
-
+import javax.xml.namespace.QName;
 import org.geotools.wcs.WCS;
 import org.geotools.xml.*;
-
-
-import javax.xml.namespace.QName;
 
 /**
  * Binding object for the type http://www.opengis.net/wcs:SupportedCRSsType.
  *
  * <p>
- *	<pre>
- *	 <code>
+ *
+ * <pre>
+ *  <code>
  *  &lt;complexType name="SupportedCRSsType"&gt;
  *      &lt;annotation&gt;
  *          &lt;documentation&gt;Unordered list(s) of identifiers of Coordinate Reference Systems (CRSs) supported in server operation requests and responses. &lt;/documentation&gt;
@@ -43,47 +41,42 @@ import javax.xml.namespace.QName;
  *              &lt;/annotation&gt;
  *          &lt;/element&gt;
  *      &lt;/sequence&gt;
- *  &lt;/complexType&gt; 
- *		
- *	  </code>
- *	 </pre>
- * </p>
+ *  &lt;/complexType&gt;
+ *
+ *   </code>
+ *  </pre>
  *
  * @generated
- *
- *
  * @source $URL$
  */
 public class SupportedCRSsTypeBinding extends AbstractComplexBinding {
 
-	/**
-	 * @generated
-	 */
-	public QName getTarget() {
-		return WCS.SupportedCRSsType;
-	}
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 *	
-	 * @generated modifiable
-	 */	
-	public Class getType() {
-		return null;
-	}
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 *	
-	 * @generated modifiable
-	 */	
-	public Object parse(ElementInstance instance, Node node, Object value) 
-		throws Exception {
-		
-		//TODO: implement and remove call to super
-		return super.parse(instance,node,value);
-	}
+    /** @generated */
+    public QName getTarget() {
+        return WCS.SupportedCRSsType;
+    }
 
+    /**
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated modifiable
+     */
+    public Class getType() {
+        return null;
+    }
+
+    /**
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated modifiable
+     */
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
+
+        // TODO: implement and remove call to super
+        return super.parse(instance, node, value);
+    }
 }

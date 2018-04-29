@@ -17,7 +17,6 @@
 package org.geotools.sld.bindings;
 
 import javax.xml.namespace.QName;
-
 import org.geotools.styling.Fill;
 import org.geotools.styling.Halo;
 import org.geotools.styling.StyleFactory;
@@ -28,12 +27,12 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.picocontainer.MutablePicoContainer;
 
-
 /**
  * Binding object for the element http://www.opengis.net/sld:Halo.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:element name="Halo"&gt;
  *      &lt;xsd:annotation&gt;
@@ -51,12 +50,8 @@ import org.picocontainer.MutablePicoContainer;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class SLDHaloBinding extends AbstractComplexBinding {
@@ -68,14 +63,13 @@ public class SLDHaloBinding extends AbstractComplexBinding {
         this.filterFactory = filterFactory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return SLD.HALO;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -86,6 +80,7 @@ public class SLDHaloBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -96,29 +91,29 @@ public class SLDHaloBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {
-    }
+    public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // get the children and apply the defaults in case they are missing
         Fill fill = (Fill) node.getChildValue("Fill");
-        if(fill == null) {
-            fill = styleFactory.createFill(filterFactory.literal("#FFFFFF"));   
+        if (fill == null) {
+            fill = styleFactory.createFill(filterFactory.literal("#FFFFFF"));
         }
         Expression radius = (Expression) node.getChildValue("Radius");
-        if(radius == null) {
+        if (radius == null) {
             radius = filterFactory.literal(1.0);
         }
         return styleFactory.createHalo(fill, radius);

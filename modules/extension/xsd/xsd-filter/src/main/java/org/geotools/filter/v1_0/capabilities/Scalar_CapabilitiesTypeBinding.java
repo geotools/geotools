@@ -17,18 +17,18 @@
 package org.geotools.filter.v1_0.capabilities;
 
 import javax.xml.namespace.QName;
+import org.geotools.xml.*;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.capability.ArithmeticOperators;
 import org.opengis.filter.capability.ComparisonOperators;
 import org.opengis.filter.capability.ScalarCapabilities;
-import org.geotools.xml.*;
-
 
 /**
  * Binding object for the type http://www.opengis.net/ogc:Scalar_CapabilitiesType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:complexType name="Scalar_CapabilitiesType"&gt;
  *      &lt;xsd:choice maxOccurs="unbounded"&gt;
@@ -40,12 +40,8 @@ import org.geotools.xml.*;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class Scalar_CapabilitiesTypeBinding extends AbstractComplexBinding {
@@ -55,14 +51,13 @@ public class Scalar_CapabilitiesTypeBinding extends AbstractComplexBinding {
         this.factory = factory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return OGC.Scalar_CapabilitiesType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -73,31 +68,33 @@ public class Scalar_CapabilitiesTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
-        //&lt;xsd:element ref="ogc:Logical_Operators"/&gt;
-        boolean logical = node.hasChild("Logical_Operators") || node.hasChild("LogicalOperators"); /* 1.1 */
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
+        // &lt;xsd:element ref="ogc:Logical_Operators"/&gt;
+        boolean logical =
+                node.hasChild("Logical_Operators") || node.hasChild("LogicalOperators"); /* 1.1 */
 
-        //&lt;xsd:element name="Comparison_Operators" type="ogc:Comparison_OperatorsType"/&gt;
-        ComparisonOperators comparison = (ComparisonOperators) node.getChildValue(ComparisonOperators.class);
+        // &lt;xsd:element name="Comparison_Operators" type="ogc:Comparison_OperatorsType"/&gt;
+        ComparisonOperators comparison =
+                (ComparisonOperators) node.getChildValue(ComparisonOperators.class);
 
-        //&lt;xsd:element name="Arithmetic_Operators" type="ogc:Arithmetic_OperatorsType"/&gt;
-        ArithmeticOperators arithmetic = (ArithmeticOperators) node.getChildValue(ArithmeticOperators.class);
+        // &lt;xsd:element name="Arithmetic_Operators" type="ogc:Arithmetic_OperatorsType"/&gt;
+        ArithmeticOperators arithmetic =
+                (ArithmeticOperators) node.getChildValue(ArithmeticOperators.class);
 
         return factory.scalarCapabilities(comparison, arithmetic, logical);
     }
 
-    public Object getProperty(Object object, QName name)
-        throws Exception {
+    public Object getProperty(Object object, QName name) throws Exception {
         ScalarCapabilities scalar = (ScalarCapabilities) object;
 
         if ((OGC.Logical_Operators.equals(name)
-                || org.geotools.filter.v1_1.OGC.LogicalOperators.equals(name))
+                        || org.geotools.filter.v1_1.OGC.LogicalOperators.equals(name))
                 && scalar.hasLogicalOperators()) {
             return new Object();
         }

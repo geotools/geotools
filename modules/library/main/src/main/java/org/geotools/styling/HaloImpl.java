@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -16,8 +16,8 @@
  */
 package org.geotools.styling;
 
-
 // OpenGIS dependencies
+
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.GeoTools;
 import org.geotools.util.Utilities;
@@ -26,47 +26,46 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.style.StyleVisitor;
 import org.opengis.util.Cloneable;
 
-
 /**
  * Direct implementation of Halo.
  *
  * @author Ian Turton, CCG
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public class HaloImpl implements Halo, Cloneable {
     /** The logger for the default core module. */
-    private static final java.util.logging.Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.core");
+    private static final java.util.logging.Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.core");
+
     private FilterFactory filterFactory;
     private FillImpl fill;
     private Expression radius = null;
 
     /**
      * Cast to HaloImpl (creating a copy if needed).
+     *
      * @param halo
      * @return HaloImpl equal to the provided halo
      */
-    static HaloImpl cast( org.opengis.style.Halo halo ){
-        if( halo == null){
+    static HaloImpl cast(org.opengis.style.Halo halo) {
+        if (halo == null) {
             return null;
-        }
-        else if( halo instanceof HaloImpl){
+        } else if (halo instanceof HaloImpl) {
             return (HaloImpl) halo;
-        }
-        else {
+        } else {
             HaloImpl copy = new HaloImpl();
-            copy.setFill( halo.getFill() );
-            copy.setRadius( halo.getRadius() );
-            
+            copy.setFill(halo.getFill());
+            copy.setRadius(halo.getRadius());
+
             return copy;
         }
     }
+
     public HaloImpl() {
-        this( CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints()));
+        this(CommonFactoryFinder.getFilterFactory(GeoTools.getDefaultHints()));
     }
-    
+
     public HaloImpl(FilterFactory factory) {
         filterFactory = factory;
         init();
@@ -103,7 +102,7 @@ public class HaloImpl implements Halo, Cloneable {
      * @param fill New value of property fill.
      */
     public void setFill(org.opengis.style.Fill fill) {
-        this.fill = FillImpl.cast( fill );
+        this.fill = FillImpl.cast(fill);
     }
 
     /**
@@ -124,19 +123,18 @@ public class HaloImpl implements Halo, Cloneable {
         this.radius = radius;
     }
 
-    public Object accept(StyleVisitor visitor,Object data) {
-        return visitor.visit(this,data);
+    public Object accept(StyleVisitor visitor, Object data) {
+        return visitor.visit(this, data);
     }
 
     public void accept(org.geotools.styling.StyleVisitor visitor) {
         visitor.visit(this);
     }
-    
+
     /**
      * Creates a deep copy clone of the Halo.
      *
      * @return The clone.
-     *
      * @throws RuntimeException DOCUMENT ME!
      */
     public Object clone() {
@@ -154,10 +152,7 @@ public class HaloImpl implements Halo, Cloneable {
      * Compares this HaloImpl with another for equality.
      *
      * @param obj THe other HaloImpl.
-     *
-     * @return True if they are equal.  They are equal if their fill and radius
-     *         is equal.
-     *
+     * @return True if they are equal. They are equal if their fill and radius is equal.
      * @see java.lang.Object#equals(java.lang.Object)
      */
     public boolean equals(Object obj) {
@@ -168,8 +163,7 @@ public class HaloImpl implements Halo, Cloneable {
         if (obj instanceof HaloImpl) {
             HaloImpl other = (HaloImpl) obj;
 
-            return Utilities.equals(radius, other.radius)
-            && Utilities.equals(fill, other.fill);
+            return Utilities.equals(radius, other.radius) && Utilities.equals(fill, other.fill);
         }
 
         return false;
@@ -192,6 +186,4 @@ public class HaloImpl implements Halo, Cloneable {
 
         return result;
     }
-
-    
 }

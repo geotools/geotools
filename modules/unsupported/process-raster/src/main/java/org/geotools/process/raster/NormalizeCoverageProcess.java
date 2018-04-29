@@ -16,6 +16,8 @@
  */
 package org.geotools.process.raster;
 
+import java.io.IOException;
+import java.lang.reflect.Array;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.processing.CoverageProcessor;
 import org.geotools.process.factory.DescribeParameter;
@@ -24,19 +26,19 @@ import org.geotools.process.factory.DescribeResult;
 import org.geotools.util.Converters;
 import org.opengis.parameter.ParameterValueGroup;
 
-import java.io.IOException;
-import java.lang.reflect.Array;
-
-@DescribeProcess(title = "Normalize Coverage", description = "Normalizes a coverage by dividing values by the max value")
+@DescribeProcess(
+    title = "Normalize Coverage",
+    description = "Normalizes a coverage by dividing values by the max value"
+)
 public class NormalizeCoverageProcess implements RasterProcess {
 
     private final CoverageProcessor PROCESSOR = new CoverageProcessor();
 
     @DescribeResult(name = "result", description = "Normalized raster")
     public GridCoverage2D execute(
-        @DescribeParameter(name = "data", description = "Input raster") GridCoverage2D coverage
-    ) throws IOException {
-        
+            @DescribeParameter(name = "data", description = "Input raster") GridCoverage2D coverage)
+            throws IOException {
+
         ParameterValueGroup param = PROCESSOR.getOperation("Extrema").getParameters();
         param.parameter("Source").setValue(coverage);
 
@@ -47,7 +49,7 @@ public class NormalizeCoverageProcess implements RasterProcess {
         boolean allZero = true;
         for (int i = 0; i < Array.getLength(max); i++) {
             Object num = Array.get(max, i);
-            boolean isZero = num instanceof Number && ((Number)num).doubleValue() == 0d;
+            boolean isZero = num instanceof Number && ((Number) num).doubleValue() == 0d;
 
             allZero = allZero && isZero;
             if (isZero) {
@@ -63,8 +65,7 @@ public class NormalizeCoverageProcess implements RasterProcess {
         param = PROCESSOR.getOperation("DivideByConst").getParameters();
         param.parameter("source").setValue(coverage);
         param.parameter("constants").setValue(max);
-    
+
         return (GridCoverage2D) PROCESSOR.doOperation(param);
     }
-
 }

@@ -16,14 +16,17 @@ public class SchemaTypeBindingTest extends KMLTestSupport {
     }
 
     public void testParse() throws Exception {
-        String xml = "<Schema name=\"foo\">"
-                + "<SimpleField type=\"int\" name=\"quux\"></SimpleField>" + "</Schema>";
+        String xml =
+                "<Schema name=\"foo\">"
+                        + "<SimpleField type=\"int\" name=\"quux\"></SimpleField>"
+                        + "</Schema>";
         buildDocument(xml);
         SimpleFeatureType ft = (SimpleFeatureType) parse();
         assertEquals("Unexpected number of attributes", 1, ft.getAttributeCount());
-        assertEquals("Unexpected column type", Integer.class, ft.getDescriptor("quux").getType()
-                .getBinding());
+        assertEquals(
+                "Unexpected column type",
+                Integer.class,
+                ft.getDescriptor("quux").getType().getBinding());
         assertEquals("foo", ft.getName().getLocalPart());
     }
-
 }

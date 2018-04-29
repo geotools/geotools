@@ -15,32 +15,24 @@
  *    Lesser General Public License for more details.
  */
 
-
 package org.geotools.gce.imagemosaic.jdbc;
 
 import java.util.concurrent.LinkedBlockingQueue;
-
 import org.geotools.geometry.GeneralEnvelope;
 
-
 /**
- * Holds the state of the {@link ImageMosaicJDBCReader}
- * making the reader thread safe
- *  
+ * Holds the state of the {@link ImageMosaicJDBCReader} making the reader thread safe
+ *
  * @author mcr
  * @since 2.6
- * 
- *
- *
  * @source $URL$
-*/
+ */
 public class ImageMosaicJDBCReaderState {
 
     private boolean xAxisSwitch = false;
-    private final LinkedBlockingQueue<TileQueueElement> tileQueue= 
-        new LinkedBlockingQueue<TileQueueElement>();
-    
-    
+    private final LinkedBlockingQueue<TileQueueElement> tileQueue =
+            new LinkedBlockingQueue<TileQueueElement>();
+
     public GeneralEnvelope getRequestedEnvelope() {
         return requestedEnvelope;
     }
@@ -64,7 +56,6 @@ public class ImageMosaicJDBCReaderState {
     private GeneralEnvelope requestedEnvelope = null;
     private GeneralEnvelope requestEnvelopeTransformed = null;
 
-
     public boolean isXAxisSwitch() {
         return xAxisSwitch;
     }
@@ -72,5 +63,4 @@ public class ImageMosaicJDBCReaderState {
     public void setXAxisSwitch(boolean axisSwitch) {
         xAxisSwitch = axisSwitch;
     }
-
 }

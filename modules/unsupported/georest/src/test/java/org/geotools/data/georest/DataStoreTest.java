@@ -4,16 +4,12 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-
 import junit.framework.Assert;
 import junit.framework.TestCase;
-
 import org.geotools.data.DataStore;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
-import org.geotools.data.georest.GeoRestDataStoreFactory;
-import org.geotools.data.georest.GeoRestFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -21,11 +17,7 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.spatial.BBOX;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class DataStoreTest extends TestCase {
 
     private static final String URL = "http://localhost:5000/";
@@ -75,8 +67,8 @@ public class DataStoreTest extends TestCase {
     public void testGetFeatureReader() throws Exception {
         GeoRestDataStoreFactory factory = new GeoRestDataStoreFactory();
         DataStore ds = factory.createDataStore(createParams());
-        FeatureReader<SimpleFeatureType, SimpleFeature> r = ds.getFeatureReader(new Query(
-                FEATURESOURCE), Transaction.AUTO_COMMIT);
+        FeatureReader<SimpleFeatureType, SimpleFeature> r =
+                ds.getFeatureReader(new Query(FEATURESOURCE), Transaction.AUTO_COMMIT);
         assertNotNull(r);
         assertTrue(r.hasNext());
     }

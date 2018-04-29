@@ -16,25 +16,21 @@
  */
 package org.geotools.gml3.bindings;
 
+import com.vividsolutions.jts.geom.LineString;
 import org.geotools.geometry.jts.CircularString;
 import org.geotools.gml3.GML3TestSupport;
 
-import com.vividsolutions.jts.geom.LineString;
-
 /**
- *
  * @author Erik van de Pol
- *
- *
  * @source $URL$
  */
 public class ArcTypeBindingTest extends GML3TestSupport {
-    
+
     @Override
     protected boolean enableExtendedArcSurfaceSupport() {
-        return true; 
+        return true;
     }
-    
+
     public void testParse() throws Exception {
         GML3MockData.arcWithPosList(document, document);
         LineString lineString = (LineString) parse();
@@ -49,5 +45,4 @@ public class ArcTypeBindingTest extends GML3TestSupport {
         assertEquals(3.0, controlPoints[4]);
         assertEquals(1.0, controlPoints[5]);
     }
-
 }

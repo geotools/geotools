@@ -18,10 +18,8 @@
 package org.geotools.wfs.v2_0.bindings;
 
 import javax.xml.namespace.QName;
-
 import net.opengis.wfs20.QueryType;
 import net.opengis.wfs20.Wfs20Factory;
-
 import org.geotools.wfs.v2_0.WFS;
 import org.geotools.wfs.v2_0.WFSTestSupport;
 import org.w3c.dom.Document;
@@ -33,17 +31,16 @@ public class WfsQueryTypeTest extends WFSTestSupport {
         QName typeName = new QName("http://www.test.com/query", "theType");
         QueryType query = Wfs20Factory.eINSTANCE.createQueryType();
         query.getTypeNames().add(typeName);
-        
+
         Document doc = encode(query, WFS.Query);
         Element root = doc.getDocumentElement();
         String attr = root.getAttribute("typeNames");
         assertNotNull(attr);
-        
+
         String tmp = typeName.getLocalPart();
-        
+
         assertFalse(attr.startsWith("[{"));
         assertTrue(attr.indexOf(tmp) != -1);
         assertEquals(attr.length(), attr.indexOf(tmp) + tmp.length()); // 8 == ":theType".length
-        
     }
 }

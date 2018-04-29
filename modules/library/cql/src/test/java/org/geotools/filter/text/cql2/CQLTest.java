@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -17,7 +17,6 @@
 package org.geotools.filter.text.cql2;
 
 import java.util.List;
-
 import org.geotools.filter.FilterFactoryImpl;
 import org.geotools.filter.IsNullImpl;
 import org.geotools.filter.function.FilterFunction_relatePattern;
@@ -50,85 +49,80 @@ import org.opengis.filter.spatial.Disjoint;
 import org.opengis.filter.spatial.DistanceBufferOperator;
 import org.opengis.filter.temporal.Before;
 
-
-
 /**
  * CQL Test
- * 
- * <p>
- * Test Common CQL language
- * </p>
+ *
+ * <p>Test Common CQL language
  *
  * @author Mauricio Pazos (Axios Engineering)
- * @since 2.5 
- *
- *
- *
+ * @since 2.5
  * @source $URL$
  */
 public class CQLTest {
 
     /**
      * Between predicate sample
-     * 
+     *
      * @see ECQLBetweenPredicateTest
-     * 
      * @throws CQLException
      */
     @Test
-    public void betweenPredicate() throws CQLException{
+    public void betweenPredicate() throws CQLException {
 
         Filter filter = CQL.toFilter("QUANTITY BETWEEN 10 AND 20");
-        
+
         Assert.assertTrue(filter instanceof PropertyIsBetween);
     }
 
     /**
      * Equals predicate sample
-     * 
+     *
      * @see ECQLComparisonPredicateTest
-     * 
      * @throws Exception
      */
     @Test
-    public void comparisonPredicate() throws Exception{
+    public void comparisonPredicate() throws Exception {
 
-        Filter filter; 
-        
+        Filter filter;
+
         filter = CQL.toFilter("POP_RANK > 6");
-        
+
         Assert.assertTrue(filter instanceof PropertyIsGreaterThan);
     }
 
     /**
      * GeoOperation predicate sample
-     * 
+     *
      * @see ECQLGeoOperationTest
-     * 
      * @throws CQLException
      */
     @Test
-    public void geoOperationPredicate() throws CQLException{
-        
+    public void geoOperationPredicate() throws CQLException {
+
         Filter filter;
-        
+
         filter = CQL.toFilter("DISJOINT(the_geom, POINT(1 2))");
 
         Assert.assertTrue("Disjoint was expected", filter instanceof Disjoint);
     }
-    
+
     @Test
-    public void relateGeoOperation() throws CQLException{
-        
-        PropertyIsEqualTo filter = (PropertyIsEqualTo) CQL.toFilter( "RELATE(geometry, LINESTRING (-134.921387 58.687767, -135.303391 59.092838), T*****FF*)");
-        
-        Assert.assertTrue("Relate Pattern Function was expected", filter.getExpression1() instanceof FilterFunction_relatePattern);
-        
+    public void relateGeoOperation() throws CQLException {
+
+        PropertyIsEqualTo filter =
+                (PropertyIsEqualTo)
+                        CQL.toFilter(
+                                "RELATE(geometry, LINESTRING (-134.921387 58.687767, -135.303391 59.092838), T*****FF*)");
+
+        Assert.assertTrue(
+                "Relate Pattern Function was expected",
+                filter.getExpression1() instanceof FilterFunction_relatePattern);
+
         Assert.assertTrue("Literal TRUE was expected", filter.getExpression2() instanceof Literal);
     }
-    
+
     @Test
-    public void dwithinGeometry() throws Exception{
+    public void dwithinGeometry() throws Exception {
         Filter resultFilter;
 
         // DWITHIN
@@ -136,192 +130,187 @@ public class CQLTest {
 
         Assert.assertTrue(resultFilter instanceof DistanceBufferOperator);
     }
-    
 
     /**
      * Temporal predicate sample
-     * 
+     *
      * @see ECQLTemporalPredicateTest
-     * 
      * @throws Exception
      */
     @Test
-    public void temporalPredicate() throws Exception{
+    public void temporalPredicate() throws Exception {
 
         Filter filter = CQL.toFilter("DATE BEFORE 2006-12-31T01:30:00Z");
 
-        Assert.assertTrue( filter instanceof Before);
+        Assert.assertTrue(filter instanceof Before);
     }
 
     /**
      * And / Or / Not predicate
-     * @throws Exception 
-     * 
+     *
+     * @throws Exception
      * @see ECQLBooleanValueExpressionTest
      */
     @Test
-    public void booleanPredicate() throws Exception{
+    public void booleanPredicate() throws Exception {
 
-        Filter  filter;
-       
+        Filter filter;
+
         // and sample
         filter = CQL.toFilter("QUANTITY < 10 AND QUANTITY < 2 ");
-       
+
         Assert.assertTrue(filter instanceof And);
-        
-       // or sample
+
+        // or sample
         filter = CQL.toFilter("QUANTITY < 10 OR QUANTITY < 2 ");
-     
+
         Assert.assertTrue(filter instanceof Or);
 
         // not sample
         filter = CQL.toFilter("NOT QUANTITY < 10");
-        
+
         Assert.assertTrue(filter instanceof Not);
     }
 
     /**
      * Like predicate sample
-     * 
+     *
      * @see ECQLLikePredicateTest
-     * 
      * @throws Exception
      */
-    @Test 
-    public void likePredicate() throws Exception{
-        
+    @Test
+    public void likePredicate() throws Exception {
+
         Filter filter = CQL.toFilter("NAME like '%new%'");
-        
+
         Assert.assertTrue(filter instanceof PropertyIsLike);
-        
-        
     }
-    
+
     /**
      * Null predicate sample
-     * 
+     *
      * @see ECQLNullPredicateTest
-     * 
      * @throws Exception
      */
     @Test
     public void isNullPredicate() throws Exception {
-        
+
         Filter filter = CQL.toFilter("SHAPE IS NULL");
-        
+
         Assert.assertTrue(filter instanceof IsNullImpl);
-     
-        
     }
 
     /**
      * Exist property predicate sample
-     * 
+     *
      * @see ECQLExistenceTest
-     * @throws Exception 
+     * @throws Exception
      */
     @Test
-    public void existProperty() throws Exception{
+    public void existProperty() throws Exception {
 
         Filter resultFilter = CQL.toFilter("NAME EXISTS");
 
         Assert.assertTrue(resultFilter instanceof PropertyIsEqualTo);
-        
+
         PropertyIsEqualTo eq = (PropertyIsEqualTo) resultFilter;
-        
-        Expression expr = eq.getExpression1() ;
+
+        Expression expr = eq.getExpression1();
 
         Assert.assertTrue(expr instanceof PropertyExistsFunction);
-        
     }
-    
+
     @Test
-    public void addExpression() throws Exception{
+    public void addExpression() throws Exception {
 
         Expression expr = CQL.toExpression("QUANTITY + 1");
-        
+
         Assert.assertTrue(expr instanceof Add);
     }
-    
+
     @Test
-    public void listOfPredicates() throws Exception{
+    public void listOfPredicates() throws Exception {
 
         List<Filter> list = CQL.toFilterList("QUANTITY=1; YEAR<1963");
-        
+
         Assert.assertTrue(list.size() == 2);
-        
-        Assert.assertTrue(list.get(0) instanceof PropertyIsEqualTo );
-        
-        Assert.assertTrue(list.get(1) instanceof PropertyIsLessThan );
+
+        Assert.assertTrue(list.get(0) instanceof PropertyIsEqualTo);
+
+        Assert.assertTrue(list.get(1) instanceof PropertyIsLessThan);
     }
-    
+
     @Test
-    public void filterListToCQL() throws Exception{
-    	
+    public void filterListToCQL() throws Exception {
+
         String expectedCQL = "QUANTITY = 1; YEAR < 1963";
-		List<Filter> list = CQL.toFilterList(expectedCQL);
-        
+        List<Filter> list = CQL.toFilterList(expectedCQL);
+
         Assert.assertTrue(list.size() == 2);
-        
+
         String cqlResult = CQL.toCQL(list);
-        
-        Assert.assertEquals(expectedCQL, cqlResult );
+
+        Assert.assertEquals(expectedCQL, cqlResult);
     }
-    
+
     @Test
-    public void filterToCQL() throws Exception{
-    	
+    public void filterToCQL() throws Exception {
+
         String expectedCQL = "QUANTITY = 1";
-		Filter list = CQL.toFilter(expectedCQL);
+        Filter list = CQL.toFilter(expectedCQL);
         String cqlResult = CQL.toCQL(list);
-        
-        Assert.assertEquals(expectedCQL, cqlResult );
+
+        Assert.assertEquals(expectedCQL, cqlResult);
     }
-    
+
     @Test
-    public void expressionToCQLExpression() throws Exception{
-    	
+    public void expressionToCQLExpression() throws Exception {
+
         String expectedCQL = "abs(-10) + 1";
-		Expression list = CQL.toExpression(expectedCQL);
+        Expression list = CQL.toExpression(expectedCQL);
         String cqlResult = CQL.toCQL(list);
-        
-        Assert.assertEquals(expectedCQL, cqlResult );
+
+        Assert.assertEquals(expectedCQL, cqlResult);
     }
-    
+
     /**
      * Verify the parser uses the provided FilterFactory implementation
+     *
      * @throws ParseException
      */
     @Test
     public void toFilterUsesProvidedFilterFactory() throws Exception {
-        final boolean[] called = { false };
-        
-        FilterFactory ff = new FilterFactoryImpl() {
-                public PropertyName property(String propName) {
-                    called[0] = true;
+        final boolean[] called = {false};
 
-                    return super.property(propName);
-                }
-            };
+        FilterFactory ff =
+                new FilterFactoryImpl() {
+                    public PropertyName property(String propName) {
+                        called[0] = true;
+
+                        return super.property(propName);
+                    }
+                };
 
         CQL.toFilter("attName > 20", ff);
         Assert.assertTrue("Provided FilterFactory was not called", called[0]);
     }
     /**
      * Verify the parser uses the provided FilterFactory implementation
+     *
      * @throws ParseException
      */
     @Test
     public void toExpressionUsesProvidedFilterFactory() throws Exception {
-        final boolean[] called = { false };
-        
-        FilterFactory ff = new FilterFactoryImpl() {
-                public PropertyName property(String propName) {
-                    called[0] = true;
+        final boolean[] called = {false};
 
-                    return super.property(propName);
-                }
-            };
+        FilterFactory ff =
+                new FilterFactoryImpl() {
+                    public PropertyName property(String propName) {
+                        called[0] = true;
+
+                        return super.property(propName);
+                    }
+                };
 
         CQL.toExpression("attName", ff);
         Assert.assertTrue("Provided FilterFactory was not called", called[0]);

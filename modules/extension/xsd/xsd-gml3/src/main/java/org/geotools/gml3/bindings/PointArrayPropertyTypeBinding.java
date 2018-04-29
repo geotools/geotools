@@ -16,23 +16,20 @@
  */
 package org.geotools.gml3.bindings;
 
+import com.vividsolutions.jts.geom.Point;
 import java.util.List;
-
 import javax.xml.namespace.QName;
-
 import org.geotools.gml3.GML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 
-import com.vividsolutions.jts.geom.Point;
-
-
 /**
  * Binding object for the type http://www.opengis.net/gml:PointArrayPropertyType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;complexType name="PointArrayPropertyType"&gt;
  *      &lt;annotation&gt;
@@ -46,23 +43,18 @@ import com.vividsolutions.jts.geom.Point;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class PointArrayPropertyTypeBinding extends AbstractComplexBinding {
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return GML.PointArrayPropertyType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -73,13 +65,13 @@ public class PointArrayPropertyTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         List points = node.getChildValues(Point.class);
 
         return (Point[]) points.toArray(new Point[points.size()]);

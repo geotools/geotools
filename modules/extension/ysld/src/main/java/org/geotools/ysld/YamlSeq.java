@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -20,18 +20,17 @@ package org.geotools.ysld;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Wrapper around a parsed Yaml sequence.
- * 
- * Wrapper requires {@link List} as sequence order is required.
+ *
+ * <p>Wrapper requires {@link List} as sequence order is required.
  */
 public class YamlSeq extends YamlObject<List<Object>> implements Iterable<YamlObject<Object>> {
 
     /**
      * Quick inline sequence creation.
-     * 
+     *
      * @param values
      * @return sequence of provided values.
      */
@@ -41,7 +40,7 @@ public class YamlSeq extends YamlObject<List<Object>> implements Iterable<YamlOb
 
     /**
      * Internal cast to List used by constructor.
-     * 
+     *
      * @param obj
      * @return List
      * @throws IllegalArgumentException List required
@@ -58,18 +57,17 @@ public class YamlSeq extends YamlObject<List<Object>> implements Iterable<YamlOb
 
     /**
      * Yaml mapping.
-     * 
+     *
      * @param obj Wrapped {@link List}
      * @throws IllegalArgumentException {@link List} is required
      */
-
     public YamlSeq(Object obj) {
         super(cast(obj));
     }
 
     /**
      * String access
-     * 
+     *
      * @param i index
      * @return String access, converting as needed
      */
@@ -79,7 +77,7 @@ public class YamlSeq extends YamlObject<List<Object>> implements Iterable<YamlOb
 
     /**
      * Integer access
-     * 
+     *
      * @param i index
      * @return Integer access, converting as needed
      */
@@ -89,7 +87,7 @@ public class YamlSeq extends YamlObject<List<Object>> implements Iterable<YamlOb
 
     /**
      * Double access
-     * 
+     *
      * @param i index
      * @return Double access, converting as needed
      */
@@ -99,7 +97,7 @@ public class YamlSeq extends YamlObject<List<Object>> implements Iterable<YamlOb
 
     /**
      * Boolean access
-     * 
+     *
      * @param i index
      * @return Boolean access, converting as needed
      */
@@ -109,7 +107,7 @@ public class YamlSeq extends YamlObject<List<Object>> implements Iterable<YamlOb
 
     /**
      * Value access
-     * 
+     *
      * @param i index
      * @return Value access
      */
@@ -119,9 +117,9 @@ public class YamlSeq extends YamlObject<List<Object>> implements Iterable<YamlOb
 
     /**
      * Yaml wrapper access
-     * <p>
-     * Wrappers are provided for Map and List
-     * 
+     *
+     * <p>Wrappers are provided for Map and List
+     *
      * @param i index
      * @return Access as Yaml wrapper
      */
@@ -131,7 +129,7 @@ public class YamlSeq extends YamlObject<List<Object>> implements Iterable<YamlOb
 
     /**
      * Map access
-     * 
+     *
      * @param i index
      * @return Map access, provided as {@link YamlMap} wrapper
      */
@@ -148,7 +146,7 @@ public class YamlSeq extends YamlObject<List<Object>> implements Iterable<YamlOb
 
     /**
      * YamlSeq access
-     * 
+     *
      * @param i index
      * @return Sequence access, provided as {@link YamlSeq} wrapper
      */
@@ -165,9 +163,9 @@ public class YamlSeq extends YamlObject<List<Object>> implements Iterable<YamlOb
 
     /**
      * Iterator access, requires all contents be wrapped as {@link YamlObject}.
-     * <p>
-     * To traverse a list of atomic values use {@link #raw()} iterator().
-     * 
+     *
+     * <p>To traverse a list of atomic values use {@link #raw()} iterator().
+     *
      * @return {@link YamlObject} iterator access
      */
     @Override

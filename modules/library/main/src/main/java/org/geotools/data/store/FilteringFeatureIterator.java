@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -17,70 +17,59 @@
 package org.geotools.data.store;
 
 import java.util.NoSuchElementException;
-
 import org.geotools.feature.FeatureIterator;
 import org.opengis.feature.Feature;
 import org.opengis.filter.Filter;
 
 /**
- * Decorates a FeatureIterator  with one that filters content.
- * 
+ * Decorates a FeatureIterator with one that filters content.
+ *
  * @author Justin Deoliveira, The Open Planning Project
- *
- *
  * @source $URL$
  */
 public class FilteringFeatureIterator<F extends Feature> implements FeatureIterator<F> {
 
-    /**
-     * delegate iterator
-     */
+    /** delegate iterator */
     protected FeatureIterator<F> delegate;
-    /**
-     * The Filter
-     */
+    /** The Filter */
     protected Filter filter;
-    /**
-     * Next feature
-     */
+    /** Next feature */
     protected F next;
-    
-    public FilteringFeatureIterator( FeatureIterator<F> delegate, Filter filter ) {
+
+    public FilteringFeatureIterator(FeatureIterator<F> delegate, Filter filter) {
         this.delegate = delegate;
         this.filter = filter;
     }
-    
+
     public boolean hasNext() {
-        if ( next != null ) {
+        if (next != null) {
             return true;
         }
-        
-        while( delegate.hasNext() ) {
+
+        while (delegate.hasNext()) {
             F peek = (F) delegate.next();
-            if ( filter.evaluate( peek ) ) {
+            if (filter.evaluate(peek)) {
                 next = peek;
                 break;
             }
         }
-        
+
         return next != null;
     }
 
     public F next() throws NoSuchElementException {
-        if(next==null && !this.hasNext()) {
+        if (next == null && !this.hasNext()) {
             throw new NoSuchElementException();
         }
         F f = next;
         next = null;
         return f;
     }
-    
+
     public void close() {
         delegate.close();
         delegate = null;
         next = null;
         filter = null;
     }
-
-
 }

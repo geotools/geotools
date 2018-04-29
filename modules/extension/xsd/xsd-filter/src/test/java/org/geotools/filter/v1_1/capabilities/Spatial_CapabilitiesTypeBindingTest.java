@@ -16,18 +16,18 @@
  */
 package org.geotools.filter.v1_1.capabilities;
 
-import org.w3c.dom.Document;
 import javax.xml.namespace.QName;
-import org.opengis.filter.capability.SpatialCapabilities;
 import org.geotools.filter.v1_1.OGC;
 import org.geotools.xml.Binding;
-
+import org.opengis.filter.capability.SpatialCapabilities;
+import org.w3c.dom.Document;
 
 /**
  * Binding test case for http://www.opengis.net/ogc:Spatial_CapabilitiesType.
  *
  * <p>
- *  <pre>
+ *
+ * <pre>
  *   <code>
  *  &lt;xsd:complexType name="Spatial_CapabilitiesType"&gt;
  *      &lt;xsd:sequence&gt;
@@ -38,12 +38,8 @@ import org.geotools.xml.Binding;
  *
  *    </code>
  *   </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class Spatial_CapabilitiesTypeBindingTest extends OGCTestSupport {
@@ -64,8 +60,11 @@ public class Spatial_CapabilitiesTypeBindingTest extends OGCTestSupport {
     }
 
     public void testEncode() throws Exception {
-        Document dom = encode(FilterMockData.spatialCapabilities(),
-                new QName(OGC.NAMESPACE, "SpatialCapabilities"), OGC.Spatial_CapabilitiesType);
+        Document dom =
+                encode(
+                        FilterMockData.spatialCapabilities(),
+                        new QName(OGC.NAMESPACE, "SpatialCapabilities"),
+                        OGC.Spatial_CapabilitiesType);
 
         assertNotNull(getElementByQName(dom, new QName(OGC.NAMESPACE, "SpatialOperators")));
     }

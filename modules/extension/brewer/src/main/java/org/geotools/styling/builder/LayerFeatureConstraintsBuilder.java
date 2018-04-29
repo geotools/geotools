@@ -23,21 +23,17 @@ import org.geotools.styling.FeatureTypeConstraint;
 import org.geotools.styling.LayerFeatureConstraints;
 import org.geotools.styling.StyleFactory;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class LayerFeatureConstraintsBuilder<P> implements Builder<LayerFeatureConstraints> {
     private StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
 
     private P parent;
 
-    private ChildExpressionBuilder<LayerFeatureConstraintsBuilder<P>> x = new ChildExpressionBuilder<LayerFeatureConstraintsBuilder<P>>(
-            this);
+    private ChildExpressionBuilder<LayerFeatureConstraintsBuilder<P>> x =
+            new ChildExpressionBuilder<LayerFeatureConstraintsBuilder<P>>(this);
 
-    private ChildExpressionBuilder<LayerFeatureConstraintsBuilder<P>> y = new ChildExpressionBuilder<LayerFeatureConstraintsBuilder<P>>(
-            this);
+    private ChildExpressionBuilder<LayerFeatureConstraintsBuilder<P>> y =
+            new ChildExpressionBuilder<LayerFeatureConstraintsBuilder<P>>(this);
 
     boolean unset = true; // current value is null
 
@@ -55,8 +51,8 @@ public class LayerFeatureConstraintsBuilder<P> implements Builder<LayerFeatureCo
             return null;
         }
         FeatureTypeConstraint[] featureTypeConstraints = null;
-        LayerFeatureConstraints constraints = sf
-                .createLayerFeatureConstraints(featureTypeConstraints);
+        LayerFeatureConstraints constraints =
+                sf.createLayerFeatureConstraints(featureTypeConstraints);
         return constraints;
     }
 
@@ -86,5 +82,4 @@ public class LayerFeatureConstraintsBuilder<P> implements Builder<LayerFeatureCo
         unset = true;
         return this;
     }
-
 }

@@ -5,31 +5,23 @@ package org.geotools.data.dxf;
 
 import java.io.IOException;
 import java.net.URL;
-import org.geotools.data.GeometryType;
-import org.geotools.data.dxf.parser.DXFParseException;
+import java.util.ArrayList;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.geotools.data.AbstractFileDataStore;
 import org.geotools.data.FeatureReader;
-import java.util.ArrayList;
+import org.geotools.data.GeometryType;
 import org.geotools.data.ServiceInfo;
+import org.geotools.data.dxf.parser.DXFParseException;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
  * DataStore for reading a DXF file produced by Autodesk.
- * 
- * The attributes are always the same:
- * key: String
- * name: String
- * urlLink: String
- * entryLineNumber: Integer
- * parseError: Boolean
- * error: String
- *  * 
+ *
+ * <p>The attributes are always the same: key: String name: String urlLink: String entryLineNumber:
+ * Integer parseError: Boolean error: String *
+ *
  * @author Chris van Lith B3Partners
- *
- *
- *
  * @source $URL$
  */
 public class DXFDataStore extends AbstractFileDataStore {
@@ -49,7 +41,8 @@ public class DXFDataStore extends AbstractFileDataStore {
     }
 
     public String[] getTypeNames() throws IOException {
-        //return GeometryType.getTypeNames(strippedFileName, GeometryType.LINE, GeometryType.POINT, GeometryType.POLYGON);
+        // return GeometryType.getTypeNames(strippedFileName, GeometryType.LINE, GeometryType.POINT,
+        // GeometryType.POLYGON);
         return GeometryType.getTypeNames(strippedFileName, GeometryType.ALL);
     }
 
@@ -86,8 +79,9 @@ public class DXFDataStore extends AbstractFileDataStore {
 
     public SimpleFeatureType getSchema() throws IOException {
         if (typeName == null) {
-            log.warn("Typename is null, probably because of using getFeatureSource().\n" +
-                    "\tPlease use getFeatureSource(typename)");
+            log.warn(
+                    "Typename is null, probably because of using getFeatureSource().\n"
+                            + "\tPlease use getFeatureSource(typename)");
         }
         return getSchema(typeName);
     }
@@ -117,7 +111,9 @@ public class DXFDataStore extends AbstractFileDataStore {
 
             if (featureReader == null) {
                 try {
-                    featureReader = new DXFFeatureReader(url, typeName, srs, geometryType, dxfInsertsFilter);
+                    featureReader =
+                            new DXFFeatureReader(
+                                    url, typeName, srs, geometryType, dxfInsertsFilter);
                 } catch (DXFParseException e) {
                     throw new IOException("DXF parse exception" + e.getLocalizedMessage());
                 }

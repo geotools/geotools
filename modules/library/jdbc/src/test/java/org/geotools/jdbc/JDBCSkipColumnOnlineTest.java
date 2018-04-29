@@ -25,10 +25,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
  * Checks the datastore can work against unknown columns
+ *
  * @author Andrea Aime - OpenGeo
- *
- *
- *
  * @source $URL$
  */
 public abstract class JDBCSkipColumnOnlineTest extends JDBCTestSupport {
@@ -37,32 +35,35 @@ public abstract class JDBCSkipColumnOnlineTest extends JDBCTestSupport {
     protected static final String ID = "id";
     protected static final String NAME = "name";
     protected static final String GEOM = "geom";
-    
+
     protected SimpleFeatureType schema;
 
     protected abstract JDBCSkipColumnTestSetup createTestSetup();
-    
+
     @Override
     protected void connect() throws Exception {
         super.connect();
-        schema = DataUtilities.createType(dataStore.getNamespaceURI() + "." + SKIPCOLUMN, ID + ":0," + GEOM + ":Point," + NAME + ":String");
+        schema =
+                DataUtilities.createType(
+                        dataStore.getNamespaceURI() + "." + SKIPCOLUMN,
+                        ID + ":0," + GEOM + ":Point," + NAME + ":String");
     }
 
     public void testSkippedColumn() throws Exception {
-        SimpleFeatureType ft =  dataStore.getSchema(tname(SKIPCOLUMN));
+        SimpleFeatureType ft = dataStore.getSchema(tname(SKIPCOLUMN));
         assertFeatureTypesEqual(schema, ft);
     }
-    
+
     public void testReadFeatures() throws Exception {
-    	SimpleFeatureCollection fc = dataStore.getFeatureSource(tname(SKIPCOLUMN)).getFeatures();
+        SimpleFeatureCollection fc = dataStore.getFeatureSource(tname(SKIPCOLUMN)).getFeatures();
         assertEquals(1, fc.size());
-        try(SimpleFeatureIterator fr = fc.features()) {
+        try (SimpleFeatureIterator fr = fc.features()) {
             assertTrue(fr.hasNext());
             SimpleFeature f = fr.next();
             assertFalse(fr.hasNext());
         }
     }
-    
+
     public void testGetBounds() throws Exception {
         ReferencedEnvelope env = dataStore.getFeatureSource(tname(SKIPCOLUMN)).getBounds();
         assertEquals(0.0, env.getMinX());

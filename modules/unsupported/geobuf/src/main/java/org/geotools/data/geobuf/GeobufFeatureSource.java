@@ -16,6 +16,9 @@
  */
 package org.geotools.data.geobuf;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import org.geotools.data.DataStore;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
@@ -25,10 +28,6 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 
 public class GeobufFeatureSource extends ContentFeatureSource {
 
@@ -53,7 +52,8 @@ public class GeobufFeatureSource extends ContentFeatureSource {
     }
 
     @Override
-    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query) throws IOException {
+    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
+            throws IOException {
         return new GeobufFeatureReader(getState(), query, precision, dimension);
     }
 

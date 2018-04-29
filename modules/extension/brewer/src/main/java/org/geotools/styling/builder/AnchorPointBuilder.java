@@ -21,18 +21,18 @@ import org.opengis.filter.expression.Expression;
 
 /**
  * AnchorPoint allows you specify which part of a graphic indicates the location.
- * 
+ *
  * As an example if your graphic is a pin the AnchorPoint will be the end of the pin.
- * 
+ *
  * <pre>
  * <code>AnchorPointBuilder<?> b = new AnchorPointBuilder();
  * AnchorPoint anchor = b.x(0.5).y(0.9).build();
  * </code>
  * </pre
- * 
+ *
  * @author Jody Garnett (LISAsoft)
- * 
- * 
+ *
+ *
  *
  * @source $URL$
  */
@@ -128,9 +128,6 @@ public class AnchorPointBuilder extends AbstractStyleBuilder<AnchorPoint> {
 
     @Override
     protected void buildStyleInternal(StyleBuilder sb) {
-        sb.featureTypeStyle().rule().text().labelText("label").pointPlacement().anchor()
-                .init(this);
-
+        sb.featureTypeStyle().rule().text().labelText("label").pointPlacement().anchor().init(this);
     }
-
 }

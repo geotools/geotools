@@ -21,12 +21,10 @@ package org.geotools.referencing.wkt;
 
 import java.lang.reflect.Modifier;
 import java.util.Set;
-
 import javax.measure.unit.NonSI;
 import javax.measure.unit.SI;
 import javax.measure.unit.Unit;
 import javax.measure.unit.UnitFormat;
-
 import org.geotools.measure.Units;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.CRS;
@@ -34,6 +32,7 @@ import org.opengis.metadata.citation.Citation;
 
 /**
  * Provides unit formatting for EPSG and ESRI WKT dialects
+ *
  * @author Andrea Aime - GeoSolutions
  */
 abstract class GeoToolsUnitFormat extends UnitFormat {
@@ -48,9 +47,10 @@ abstract class GeoToolsUnitFormat extends UnitFormat {
 
     /**
      * Base class that just copies {@link UnitFormat} default instance contents
+     *
      * @author Andrea Aime - GeoSolutions
      */
-    static abstract class BaseGT2Format extends DefaultFormat {
+    abstract static class BaseGT2Format extends DefaultFormat {
 
         public BaseGT2Format() {
             // make sure Units registers the extar units in the default format
@@ -91,12 +91,12 @@ abstract class GeoToolsUnitFormat extends UnitFormat {
                     }
                 }
             }
-
         }
     }
 
     /**
      * Subclass adding overrides for the EPSG dialect
+     *
      * @author Andrea Aime - GeoSolutions
      */
     static class EPSGFormat extends GeoToolsUnitFormat.BaseGT2Format {
@@ -109,6 +109,7 @@ abstract class GeoToolsUnitFormat extends UnitFormat {
 
     /**
      * Subclass adding overrides for the ESRI dialect
+     *
      * @author Andrea Aime - GeoSolutions
      */
     static class ESRIFormat extends DefaultFormat {

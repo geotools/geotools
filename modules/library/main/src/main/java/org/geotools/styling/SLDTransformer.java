@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2003 - 2016, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -28,10 +28,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.logging.Logger;
-
 import javax.measure.quantity.Length;
 import javax.measure.unit.Unit;
-
 import org.geotools.data.DataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -64,43 +62,42 @@ import org.xml.sax.helpers.AttributesImpl;
  * Produces SLD to an output stream.
  *
  * @author Ian Schneider
- *
- *
  * @source $URL$
  */
 public class SLDTransformer extends TransformerBase {
     /** The logger for this package. */
-    private static final Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger("org.geotools.styling");
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.styling");
 
     static final String XLINK_NAMESPACE = "http://www.w3.org/1999/xlink";
 
     static final FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
-    
+
     static final Font DEFAULT_FONT = CommonFactoryFinder.getStyleFactory().getDefaultFont();
 
     /**
-     * Additional namespace mappings to emit in the start element of the generated. Each entry has a URI key and an associated prefix string value.
+     * Additional namespace mappings to emit in the start element of the generated. Each entry has a
+     * URI key and an associated prefix string value.
      */
-    final private Map uri2prefix;
-    
-    /**
-     * don't suppress the export of default values
-     */
+    private final Map uri2prefix;
+
+    /** don't suppress the export of default values */
     private boolean exportDefaultValues = false;
 
     /**
-     * Construct a new instance of <code>SLDTransformer</code> with the default namespace mappings usually found in a simple Styled Layer Descriptor
-     * element.
+     * Construct a new instance of <code>SLDTransformer</code> with the default namespace mappings
+     * usually found in a simple Styled Layer Descriptor element.
      */
     public SLDTransformer() {
         this(null);
     }
 
     /**
-     * Construct a new instance of <code>SLDTransformer</code> with the additional namespace mappings contained in <code>nsBindings</code>.
-     * <p>
-     * The designated collection contains mappings of {@link URI} to associated prefix (string) to emit in the generated XML element.
+     * Construct a new instance of <code>SLDTransformer</code> with the additional namespace
+     * mappings contained in <code>nsBindings</code>.
+     *
+     * <p>The designated collection contains mappings of {@link URI} to associated prefix (string)
+     * to emit in the generated XML element.
      */
     public SLDTransformer(Map nsBindings) {
         super();
@@ -109,7 +106,7 @@ public class SLDTransformer extends TransformerBase {
         } else {
             uri2prefix = new HashMap(nsBindings.size());
             int count = 0;
-            for (Iterator it = nsBindings.entrySet().iterator(); it.hasNext();) {
+            for (Iterator it = nsBindings.entrySet().iterator(); it.hasNext(); ) {
                 Map.Entry e = (Entry) it.next();
                 URI uri = (URI) e.getKey();
                 String prefix = (String) e.getValue();
@@ -118,30 +115,30 @@ public class SLDTransformer extends TransformerBase {
                     count++;
                 }
             }
-            LOGGER.info("Added [" + count + "] namespace entries resulting in [" + uri2prefix.size()
-                    + "] distinct entries");
+            LOGGER.info(
+                    "Added ["
+                            + count
+                            + "] namespace entries resulting in ["
+                            + uri2prefix.size()
+                            + "] distinct entries");
         }
     }
 
-    /**
-     * @return the exportDefaultValues
-     */
+    /** @return the exportDefaultValues */
     public boolean isExportDefaultValues() {
         return exportDefaultValues;
     }
 
-    /**
-     * @param exportDefaultValues the exportDefaultValues to set
-     */
+    /** @param exportDefaultValues the exportDefaultValues to set */
     public void setExportDefaultValues(boolean exportDefaultValues) {
         this.exportDefaultValues = exportDefaultValues;
     }
-    
+
     public Translator createTranslator(ContentHandler handler) {
         Translator result = new SLDTranslator(handler);
         // add pre-configured namespace mappings
         if (!uri2prefix.isEmpty()) {
-            for (Iterator it = uri2prefix.entrySet().iterator(); it.hasNext();) {
+            for (Iterator it = uri2prefix.entrySet().iterator(); it.hasNext(); ) {
                 Map.Entry e = (Entry) it.next();
                 URI uri = (URI) e.getKey();
                 if (uri != null) {
@@ -154,16 +151,14 @@ public class SLDTransformer extends TransformerBase {
                 }
             }
         }
-        ((SLDTranslator)result).setExportDefaultValues(isExportDefaultValues());
+        ((SLDTranslator) result).setExportDefaultValues(isExportDefaultValues());
         return result;
     }
 
-
     /**
      * Currently does nothing.
-     * 
+     *
      * @param args DOCUMENT ME!
-     * 
      * @throws Exception DOCUMENT ME!
      */
     public static final void main(String[] args) throws Exception {
@@ -171,32 +166,32 @@ public class SLDTransformer extends TransformerBase {
         SLDParser s = new SLDParser(CommonFactoryFinder.getStyleFactory(null), url);
         SLDTransformer transformer = new SLDTransformer();
         transformer.setIndentation(4);
-        transformer.transform(s.readXML(),
+        transformer.transform(
+                s.readXML(),
                 new FileOutputStream(System.getProperty("java.io.tmpdir") + "/junk.eraseme"));
     }
 
     /**
      * Translates the Style data structure into a series of XML events that can be encoded etc...
-     * <p>
-     * This Translator makes use of the following (currently hardcoded) information:
+     *
+     * <p>This Translator makes use of the following (currently hardcoded) information:
+     *
      * <ul>
-     * <li>prefix: sld
-     * <li>namespace: http://www.opengis.net/sld
+     *   <li>prefix: sld
+     *   <li>namespace: http://www.opengis.net/sld
      * </ul>
-     * 
+     *
      * @author Jody
      */
     static class SLDTranslator extends TranslatorSupport implements StyleVisitor {
-        /**
-         * Handles any Filters used in our data structure.
-         */
+        /** Handles any Filters used in our data structure. */
         FilterTransformer.FilterTranslator filterTranslator;
-        
+
         private boolean exportDefaultValues = false;
-        
+
         /**
          * Translates into the default of prefix "sld" for "http://www.opengis.net/sld".
-         * 
+         *
          * @param handler
          */
         public SLDTranslator(ContentHandler handler) {
@@ -204,7 +199,7 @@ public class SLDTransformer extends TransformerBase {
         }
         /**
          * Translates
-         * 
+         *
          * @param handler
          */
         public SLDTranslator(ContentHandler handler, String prefix, String uri) {
@@ -214,10 +209,8 @@ public class SLDTransformer extends TransformerBase {
         }
 
         boolean isNull(Expression expr) {
-            if (expr == null)
-                return true;
-            if (expr == Expression.NIL)
-                return true;
+            if (expr == null) return true;
+            if (expr == Expression.NIL) return true;
             if (expr instanceof Literal) {
                 Literal literal = (Literal) expr;
                 return literal.getValue() == null;
@@ -229,13 +222,10 @@ public class SLDTransformer extends TransformerBase {
             if (isExportDefaultValues()) {
                 return false;
             }
-            if (defaultValue == null)
-                return isNull(expr);
+            if (defaultValue == null) return isNull(expr);
 
-            if (expr == null)
-                return false;
-            if (expr == Expression.NIL)
-                return false;
+            if (expr == null) return false;
+            if (expr == Expression.NIL) return false;
             if (expr instanceof Literal) {
                 Literal literal = (Literal) expr;
                 if (defaultValue.equals(literal.getValue())) {
@@ -248,29 +238,19 @@ public class SLDTransformer extends TransformerBase {
             return false;
         }
 
-        /**
-         * @param exportDefaultValues
-         */
+        /** @param exportDefaultValues */
         public void setExportDefaultValues(boolean exportDefaultValues) {
-          this.exportDefaultValues = exportDefaultValues; 
-            
+            this.exportDefaultValues = exportDefaultValues;
         }
 
-        /**
-         * @return the exportDefaultValues
-         */
+        /** @return the exportDefaultValues */
         public boolean isExportDefaultValues() {
             return exportDefaultValues;
         }
 
-
-
-
-       
-
         /**
          * Utility method used to quickly package up the provided expression.
-         * 
+         *
          * @param element
          * @param expr
          */
@@ -280,7 +260,7 @@ public class SLDTransformer extends TransformerBase {
 
         /**
          * Utility method used to quickly package up the provided InternationalString.
-         * 
+         *
          * @param element
          * @param expr
          */
@@ -308,7 +288,7 @@ public class SLDTransformer extends TransformerBase {
 
         /**
          * Utility method used to quickly package up the provided expression.
-         * 
+         *
          * @param element
          * @param expr
          */
@@ -317,14 +297,13 @@ public class SLDTransformer extends TransformerBase {
         }
 
         void element(String element, Expression expr, Object defaultValue, AttributesImpl atts) {
-            if (expr == null || expr == Expression.NIL)
-                return;
+            if (expr == null || expr == Expression.NIL) return;
 
             // skip encoding if we are using the default value
             if (expr instanceof Literal) {
                 if (defaultValue != null) {
                     Object value = expr.evaluate(null, defaultValue.getClass());
-                    if (value != null && (!value.equals(defaultValue)||isExportDefaultValues())) {
+                    if (value != null && (!value.equals(defaultValue) || isExportDefaultValues())) {
                         element(element, value.toString(), atts);
                     }
                 } else {
@@ -353,9 +332,10 @@ public class SLDTransformer extends TransformerBase {
                         chars(label);
                     }
                 }
-            } else if (expr instanceof Function && ("strConcat".equals(((Function) expr).getName())
-                    || "concat".equals(((Function) expr).getName())
-                    || "Concatenate".equals(((Function) expr).getName()))) {
+            } else if (expr instanceof Function
+                    && ("strConcat".equals(((Function) expr).getName())
+                            || "concat".equals(((Function) expr).getName())
+                            || "Concatenate".equals(((Function) expr).getName()))) {
                 List<Expression> parameters = ((Function) expr).getParameters();
                 for (Expression parameter : parameters) {
                     labelContent(parameter);
@@ -366,15 +346,14 @@ public class SLDTransformer extends TransformerBase {
         }
 
         /**
-         * To be used when the expression is a single literal whose value must be written out as element.
-         * <p>
-         * For Example OverlapBehaviour is represented as an expression but v 1.0.0 specifications do not define it as an expression. (&ltAVERAGE/&gt)
-         * </p>
-         * 
+         * To be used when the expression is a single literal whose value must be written out as
+         * element.
+         *
+         * <p>For Example OverlapBehaviour is represented as an expression but v 1.0.0
+         * specifications do not define it as an expression. (&ltAVERAGE/&gt)
          */
         void elementLiteral(String element, Expression e, String defaultValue) {
-            if (e == null || e == Expression.NIL)
-                return;
+            if (e == null || e == Expression.NIL) return;
 
             final String value = e.evaluate(null, String.class);
             if (defaultValue == null || !defaultValue.equals(value)) {
@@ -431,14 +410,14 @@ public class SLDTransformer extends TransformerBase {
             if (expressions == null || expressions.isEmpty()) return;
             boolean isLiteral = true;
             for (Expression expression : expressions) {
-                if(!(expression instanceof Literal)) isLiteral = false;
+                if (!(expression instanceof Literal)) isLiteral = false;
             }
-            if(isLiteral) encodeLiteralStrokeDasharray(expressions);
+            if (isLiteral) encodeLiteralStrokeDasharray(expressions);
             else encodeMixedStrokeDasharray(expressions);
         }
 
         private void encodeLiteralStrokeDasharray(List<Expression> expressions) {
-           StringBuilder literalDash = new StringBuilder();
+            StringBuilder literalDash = new StringBuilder();
             for (Expression expression : expressions) {
                 literalDash.append(((Literal) expression).getValue()).append(" ");
             }
@@ -494,13 +473,13 @@ public class SLDTransformer extends TransformerBase {
 
             if ((text.fonts() != null) && (!text.fonts().isEmpty())) {
                 List<Font> fonts = text.fonts();
-                if(areFontsUniform(fonts)) {
-                    // go for standard encoding, SLD 1.0 does not allow more than one 
+                if (areFontsUniform(fonts)) {
+                    // go for standard encoding, SLD 1.0 does not allow more than one
                     // Font item in a TextSymbolizer
                     start("Font");
-                    
+
                     Font initialFont = fonts.get(0);
-                    for (Font font : fonts ) {
+                    for (Font font : fonts) {
                         encodeCssParam("font-family", font.getFamily().get(0));
                     }
                     encodeCssParam("font-size", initialFont.getSize());
@@ -510,7 +489,7 @@ public class SLDTransformer extends TransformerBase {
                 } else {
                     // use a GT specific encoding with multiple fonts, matching our
                     // internal data model (which we can also parse)
-                    for (Font font : fonts ) {
+                    for (Font font : fonts) {
                         start("Font");
                         encodeCssParam("font-family", font.getFamily().get(0));
                         encodeCssParam("font-size", font.getSize());
@@ -535,10 +514,8 @@ public class SLDTransformer extends TransformerBase {
 
             if (text instanceof TextSymbolizer2) {
                 TextSymbolizer2 text2 = (TextSymbolizer2) text;
-                if (text2.getGraphic() != null)
-                    visit(text2.getGraphic());
-                if (text2.getSnippet() != null)
-                    element("Snippet", text2.getSnippet());
+                if (text2.getGraphic() != null) visit(text2.getGraphic());
+                if (text2.getSnippet() != null) element("Snippet", text2.getSnippet());
                 if (text2.getFeatureDescription() != null)
                     element("FeatureDescription", text2.getFeatureDescription());
                 OtherText otherText = text2.getOtherText();
@@ -561,44 +538,45 @@ public class SLDTransformer extends TransformerBase {
         }
 
         /**
-         * Returns true if the list of fonts has the same settings for
-         * everything besides the font family, and can thus be represented
-         * as a single Font element
+         * Returns true if the list of fonts has the same settings for everything besides the font
+         * family, and can thus be represented as a single Font element
+         *
          * @param fonts
          * @return
          */
         private boolean areFontsUniform(List<Font> fonts) {
-            if(fonts.size() == 1) {
+            if (fonts.size() == 1) {
                 return true;
             }
-            
+
             Font reference = fonts.get(0);
             Expression referenceSize = reference.getSize();
             Expression referenceStyle = reference.getStyle();
             Expression referenceWeight = reference.getWeight();
-            for (int i = 1; i < fonts.size() ; i++) {
+            for (int i = 1; i < fonts.size(); i++) {
                 Font f = fonts.get(i);
                 Expression size = f.getSize();
-                if(!expressionEquals(referenceSize, size, DEFAULT_FONT.getSize())) {
+                if (!expressionEquals(referenceSize, size, DEFAULT_FONT.getSize())) {
                     return false;
                 }
                 Expression style = f.getStyle();
-                if(!expressionEquals(referenceStyle, style, DEFAULT_FONT.getStyle())) {
+                if (!expressionEquals(referenceStyle, style, DEFAULT_FONT.getStyle())) {
                     return false;
                 }
                 Expression weight = f.getWeight();
-                if(!expressionEquals(referenceWeight, weight, DEFAULT_FONT.getWeight())) {
+                if (!expressionEquals(referenceWeight, weight, DEFAULT_FONT.getWeight())) {
                     return false;
                 }
             }
-            
+
             return true;
         }
 
-        private boolean expressionEquals(Expression reference, Expression exp, Expression defaultValue) {
-            if(exp == null) {
+        private boolean expressionEquals(
+                Expression reference, Expression exp, Expression defaultValue) {
+            if (exp == null) {
                 return reference == null || defaultValue.equals(reference);
-            } else if(reference == null) {
+            } else if (reference == null) {
                 return defaultValue.equals(exp);
             } else {
                 return reference.equals(exp);
@@ -633,8 +611,10 @@ public class SLDTransformer extends TransformerBase {
                     end("GrayChannel");
 
                     end("ChannelSelection");
-                } else if (cs.getRGBChannels() != null && cs.getRGBChannels().length == 3
-                        && cs.getRGBChannels()[0] != null && cs.getRGBChannels()[1] != null
+                } else if (cs.getRGBChannels() != null
+                        && cs.getRGBChannels().length == 3
+                        && cs.getRGBChannels()[0] != null
+                        && cs.getRGBChannels()[1] != null
                         && cs.getRGBChannels()[2] != null) {
                     start("ChannelSelection");
                     SelectedChannelType[] rgb = cs.getRGBChannels();
@@ -675,7 +655,8 @@ public class SLDTransformer extends TransformerBase {
             }
 
             ColorMap colorMap = raster.getColorMap();
-            if (colorMap != null && colorMap.getColorMapEntries() != null
+            if (colorMap != null
+                    && colorMap.getColorMapEntries() != null
                     && colorMap.getColorMapEntries().length > 0) {
                 colorMap.accept(this);
             }
@@ -702,12 +683,9 @@ public class SLDTransformer extends TransformerBase {
             // string-values: "ramp", "intervals" or "values".
             AttributesImpl atts = new AttributesImpl();
             String typeString;
-            if (colorMap.getType() == ColorMap.TYPE_INTERVALS)
-                typeString = "intervals";
-            else if (colorMap.getType() == ColorMap.TYPE_VALUES)
-                typeString = "values";
-            else
-                typeString = "ramp"; // Also the default in the parser
+            if (colorMap.getType() == ColorMap.TYPE_INTERVALS) typeString = "intervals";
+            else if (colorMap.getType() == ColorMap.TYPE_VALUES) typeString = "values";
+            else typeString = "ramp"; // Also the default in the parser
             if (!"ramp".equals(typeString)) {
                 atts.addAttribute("", "type", "type", "", typeString);
             }
@@ -727,15 +705,19 @@ public class SLDTransformer extends TransformerBase {
         public void visit(ColorMapEntry colorEntry) {
             if (colorEntry != null) {
                 AttributesImpl atts = new AttributesImpl();
-                atts.addAttribute("", "color", "color", "",
+                atts.addAttribute(
+                        "",
+                        "color",
+                        "color",
+                        "",
                         colorEntry.getColor().evaluate(null, String.class));
                 if (colorEntry.getOpacity() != null) {
-                    atts.addAttribute("", "opacity", "opacity", "",
-                            colorEntry.getOpacity().toString());
+                    atts.addAttribute(
+                            "", "opacity", "opacity", "", colorEntry.getOpacity().toString());
                 }
                 if (colorEntry.getQuantity() != null) {
-                    atts.addAttribute("", "quantity", "quantity", "",
-                            colorEntry.getQuantity().toString());
+                    atts.addAttribute(
+                            "", "quantity", "quantity", "", colorEntry.getQuantity().toString());
                 }
                 if (colorEntry.getLabel() != null) {
                     atts.addAttribute("", "label", "label", "", colorEntry.getLabel());
@@ -832,8 +814,7 @@ public class SLDTransformer extends TransformerBase {
 
         public void visit(Rule rule) {
             start("Rule");
-            if (rule.getName() != null)
-                element("Name", rule.getName());
+            if (rule.getName() != null) element("Name", rule.getName());
             if (rule.getDescription() != null && rule.getDescription().getTitle() != null)
                 element("Title", rule.getDescription().getTitle());
             if (rule.getDescription() != null && rule.getDescription().getAbstract() != null)
@@ -877,7 +858,8 @@ public class SLDTransformer extends TransformerBase {
         public void visit(Mark mark) {
             start("Mark");
             if (mark.getWellKnownName() != null
-                    && (!"square".equals(mark.getWellKnownName().evaluate(null))||isExportDefaultValues())) {
+                    && (!"square".equals(mark.getWellKnownName().evaluate(null))
+                            || isExportDefaultValues())) {
                 encodeValue("WellKnownName", null, mark.getWellKnownName(), null);
             }
 
@@ -1046,8 +1028,8 @@ public class SLDTransformer extends TransformerBase {
                 ftrax.setCollectionPrefix(null);
                 ftrax.setGmlPrefixing(true);
                 ftrax.setIndentation(2);
-                final CoordinateReferenceSystem crs = featureType.getGeometryDescriptor()
-                        .getCoordinateReferenceSystem();
+                final CoordinateReferenceSystem crs =
+                        featureType.getGeometryDescriptor().getCoordinateReferenceSystem();
                 String srsName = null;
                 if (crs == null) {
                     LOGGER.warning("Null CRS in feature type named [" + ftName + "]. Ignore CRS");
@@ -1060,8 +1042,13 @@ public class SLDTransformer extends TransformerBase {
                         // qualified code; e.g. authoriy and SRID
                         Set<ReferenceIdentifier> ids = crs.getIdentifiers();
                         if (ids == null || ids.isEmpty()) {
-                            LOGGER.warning("Null or empty set of named identifiers " + "in CRS ["
-                                    + crs + "] of feature type named [" + ftName + "]. Ignore CRS");
+                            LOGGER.warning(
+                                    "Null or empty set of named identifiers "
+                                            + "in CRS ["
+                                            + crs
+                                            + "] of feature type named ["
+                                            + ftName
+                                            + "]. Ignore CRS");
                         } else {
                             for (ReferenceIdentifier id : ids) {
                                 if (id != null) {
@@ -1092,8 +1079,10 @@ public class SLDTransformer extends TransformerBase {
                 ftrax.getFeatureTypeNamespaces().declareDefaultNamespace("", defaultNS);
                 final String ns = featureType.getName().getNamespaceURI();
                 if (ns == null) {
-                    LOGGER.info("Null namespace URI in feature type named [" + ftName
-                            + "]. Ignore namespace in features");
+                    LOGGER.info(
+                            "Null namespace URI in feature type named ["
+                                    + ftName
+                                    + "]. Ignore namespace in features");
                 } else {
                     // find the URI's prefix mapping in this namespace support
                     // delegate and use it; otherwise ignore it
@@ -1247,7 +1236,6 @@ public class SLDTransformer extends TransformerBase {
             start("Geometry");
             filterTranslator.encode(expression);
             end("Geometry");
-
         }
 
         void encodeGeometryExpression(Expression geom) {
@@ -1258,7 +1246,6 @@ public class SLDTransformer extends TransformerBase {
             start("Geometry");
             filterTranslator.encode(geom);
             end("Geometry");
-
         }
 
         void encodeCssParam(String name, Expression expression) {
@@ -1275,12 +1262,12 @@ public class SLDTransformer extends TransformerBase {
             encodeValue("CssParameter", atts, expression, defaultValue);
         }
 
-        void encodeValue(String elementName, Attributes atts, Expression expression,
-                Object defaultValue) {
+        void encodeValue(
+                String elementName, Attributes atts, Expression expression, Object defaultValue) {
             if (expression == null) {
                 return; // protect ourselves from things like a null Stroke Color
             }
-            
+
             if (!isExportDefaultValues()) {
                 // skip encoding if we are using the default value
                 if (expression instanceof Literal && defaultValue != null) {
@@ -1361,9 +1348,9 @@ public class SLDTransformer extends TransformerBase {
                 Class c = o.getClass();
 
                 try {
-                    java.lang.reflect.Method m = c.getMethod("accept",
-                            new Class[] { StyleVisitor.class });
-                    m.invoke(o, new Object[] { this });
+                    java.lang.reflect.Method m =
+                            c.getMethod("accept", new Class[] {StyleVisitor.class});
+                    m.invoke(o, new Object[] {this});
                 } catch (NoSuchMethodException nsme) {
                     throw new IllegalArgumentException("Cannot encode " + o);
                 } catch (Exception e) {
@@ -1373,8 +1360,7 @@ public class SLDTransformer extends TransformerBase {
         }
 
         public void visit(ContrastEnhancement ce) {
-            if (ce == null )
-                return;
+            if (ce == null) return;
 
             start("ContrastEnhancement");
             // histogram
@@ -1388,8 +1374,7 @@ public class SLDTransformer extends TransformerBase {
                 for (Entry<String, Expression> entry : opts.entrySet()) {
                     AttributesImpl atts = new AttributesImpl();
                     atts.addAttribute("", "name", "name", "", entry.getKey());
-                    element("VendorOption", 
-                            entry.getValue().evaluate(null).toString(), atts);
+                    element("VendorOption", entry.getValue().evaluate(null).toString(), atts);
                 }
 
                 end(val);
@@ -1403,26 +1388,21 @@ public class SLDTransformer extends TransformerBase {
                 // element("GammaValue", exp);
             }
             end("ContrastEnhancement");
-
         }
 
         public void visit(ImageOutline outline) {
-            if (outline == null)
-                return;
+            if (outline == null) return;
             start("ImageOutline");
             outline.getSymbolizer().accept(this);
             end("ImageOutline");
         }
 
         public void visit(ChannelSelection cs) {
-            if (cs == null)
-                return;
+            if (cs == null) return;
             start("ChannelSelection");
             final SelectedChannelType[] sct = cs.getSelectedChannels();
-            for (int i = 0; i < sct.length && sct != null; i++)
-                visit(sct[i]);
+            for (int i = 0; i < sct.length && sct != null; i++) visit(sct[i]);
             end("ChannelSelection");
-
         }
 
         public void visit(OverlapBehavior ob) {
@@ -1431,24 +1411,19 @@ public class SLDTransformer extends TransformerBase {
             start(pn);
             end(pn);
             end("OverlapBehavior");
-
         }
 
         public void visit(SelectedChannelType sct) {
             element("SourceChannelName", sct.getChannelName());
             final ContrastEnhancement ce = sct.getContrastEnhancement();
-            if (ce != null)
-                ce.accept(this);
-
+            if (ce != null) ce.accept(this);
         }
 
         public void visit(ShadedRelief sr) {
             start("ShadedRelief");
             // brightnessonly
-            if (sr.isBrightnessOnly())
-                element("BrightnessOnly", "true");
-            else
-                element("BrightnessOnly", "false");
+            if (sr.isBrightnessOnly()) element("BrightnessOnly", "true");
+            else element("BrightnessOnly", "false");
 
             // relief factor
             if (sr.getReliefFactor() != null) {
@@ -1459,11 +1434,6 @@ public class SLDTransformer extends TransformerBase {
                 element("ReliefFactor", l.getValue().toString());
             }
             end("ShadedRelief");
-
         }
-
-      
-       
-        
     }
 }

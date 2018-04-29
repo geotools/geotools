@@ -20,8 +20,6 @@ import org.geotools.data.DataSourceException;
 
 /**
  * Thrown when an error relating to the shapefile occurs.
- * 
- *
  *
  * @source $URL$
  */

@@ -2,18 +2,12 @@ package org.geotools.feature;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
-
 import junit.framework.TestCase;
-
 import org.geotools.data.FeatureReader;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class FeatureReaderIteratorTest extends TestCase {
 
     public void testCloseOnException() {
@@ -37,10 +31,9 @@ public class FeatureReaderIteratorTest extends TestCase {
             throw new IllegalStateException("The exception we saw in GEOT-2068");
         }
 
-        public SimpleFeature next() throws IOException, IllegalArgumentException,
-                NoSuchElementException {
+        public SimpleFeature next()
+                throws IOException, IllegalArgumentException, NoSuchElementException {
             return null;
         }
-
     }
 }

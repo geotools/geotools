@@ -16,18 +16,17 @@
  */
 package org.geotools.data.oracle;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.xml.transform.TransformerException;
-
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
-import org.geotools.filter.FilterTransformer;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
 import org.opengis.feature.simple.SimpleFeature;
@@ -36,47 +35,54 @@ import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Point;
-
-
 public class OracleNearestNeighborOnlineTest extends JDBCTestSupport {
 
     GeometryFactory geomFactory = new GeometryFactory();
 
     @Override
     protected JDBCDataStoreAPITestSetup createTestSetup() {
-        return new EmptyJDBCDataStoreAPITestSetup(new OracleTestSetup() {
-            @Override
-            protected void initializeDatabase() throws Exception {
-                super.initializeDatabase();
-                
-                // Non-Earth (meters)
-                int srid = 262148;
+        return new EmptyJDBCDataStoreAPITestSetup(
+                new OracleTestSetup() {
+                    @Override
+                    protected void initializeDatabase() throws Exception {
+                        super.initializeDatabase();
 
-                deleteSpatialTable("NEIGHBORS");
+                        // Non-Earth (meters)
+                        int srid = 262148;
 
-                run("CREATE TABLE NEIGHBORS (id INT, magicnumber INT, geometry MDSYS.SDO_GEOMETRY, PRIMARY KEY(id))");
+                        deleteSpatialTable("NEIGHBORS");
 
-                String sql = "INSERT INTO USER_SDO_GEOM_METADATA (TABLE_NAME, COLUMN_NAME, DIMINFO, SRID) "
-                        + "VALUES ('NEIGHBORS','geometry', MDSYS.SDO_DIM_ARRAY(MDSYS.SDO_DIM_ELEMENT('X',-180,180,0.5), "
-                        + "MDSYS.SDO_DIM_ELEMENT('Y',-90,90,0.5)), " + srid + ")";
-                run(sql);
+                        run(
+                                "CREATE TABLE NEIGHBORS (id INT, magicnumber INT, geometry MDSYS.SDO_GEOMETRY, PRIMARY KEY(id))");
 
-                sql = "CREATE INDEX NEIGHBORS_GEOMETRY_IDX ON NEIGHBORS(GEOMETRY) INDEXTYPE IS MDSYS.SPATIAL_INDEX "
-                        + "PARAMETERS ('SDO_INDX_DIMS=2 LAYER_GTYPE=\"POINT\"')";
-                run(sql);
+                        String sql =
+                                "INSERT INTO USER_SDO_GEOM_METADATA (TABLE_NAME, COLUMN_NAME, DIMINFO, SRID) "
+                                        + "VALUES ('NEIGHBORS','geometry', MDSYS.SDO_DIM_ARRAY(MDSYS.SDO_DIM_ELEMENT('X',-180,180,0.5), "
+                                        + "MDSYS.SDO_DIM_ELEMENT('Y',-90,90,0.5)), "
+                                        + srid
+                                        + ")";
+                        run(sql);
 
-                int id = 0;
-                for (int i = 0; i < 5; i++) {
-                    for (int j = 0; j < 5; j++) {
-                        run("INSERT INTO NEIGHBORS (id, geometry, magicnumber) VALUES (" + (++id) + ","
-                                + pointSql(srid, i * 10, j * 10) + ", " + (i * j) + ")");
+                        sql =
+                                "CREATE INDEX NEIGHBORS_GEOMETRY_IDX ON NEIGHBORS(GEOMETRY) INDEXTYPE IS MDSYS.SPATIAL_INDEX "
+                                        + "PARAMETERS ('SDO_INDX_DIMS=2 LAYER_GTYPE=\"POINT\"')";
+                        run(sql);
+
+                        int id = 0;
+                        for (int i = 0; i < 5; i++) {
+                            for (int j = 0; j < 5; j++) {
+                                run(
+                                        "INSERT INTO NEIGHBORS (id, geometry, magicnumber) VALUES ("
+                                                + (++id)
+                                                + ","
+                                                + pointSql(srid, i * 10, j * 10)
+                                                + ", "
+                                                + (i * j)
+                                                + ")");
+                            }
+                        }
                     }
-                }                
-            }          
-        });
+                });
     }
 
     public void testNearestNeighbor() throws Exception {
@@ -109,7 +115,7 @@ public class OracleNearestNeighborOnlineTest extends JDBCTestSupport {
 
         features = execSdoNN(source, ff, -10, -10, 3, -1, null);
         try {
-            checkSizeAndMagicNumber(features, 3, -1);            
+            checkSizeAndMagicNumber(features, 3, -1);
         } finally {
             features.close();
         }
@@ -117,7 +123,7 @@ public class OracleNearestNeighborOnlineTest extends JDBCTestSupport {
         // test using sdo_batch_size hint
         features = execSdoNN(source, ff, -10, -10, 3, 10, "magicnumber >= 10");
         try {
-            checkSizeAndMagicNumber(features, 3, 10);            
+            checkSizeAndMagicNumber(features, 3, 10);
         } finally {
             features.close();
         }
@@ -139,7 +145,8 @@ public class OracleNearestNeighborOnlineTest extends JDBCTestSupport {
         }
     }
 
-    private void checkSizeAndMagicNumber(SimpleFeatureIterator features, int size, int magicNumberMinValue) {
+    private void checkSizeAndMagicNumber(
+            SimpleFeatureIterator features, int size, int magicNumberMinValue) {
         int counter = 0;
         while (features.hasNext()) {
             SimpleFeature sf = features.next();
@@ -147,15 +154,22 @@ public class OracleNearestNeighborOnlineTest extends JDBCTestSupport {
                 int magicNumber = ((Number) sf.getAttribute("MAGICNUMBER")).intValue();
                 assertTrue(magicNumber >= magicNumberMinValue);
             }
-            
+
             counter++;
         }
-        
+
         assertEquals(size, counter);
     }
 
-    private SimpleFeatureIterator execSdoNN(ContentFeatureSource source, FilterFactory2 ff,
-            double x, double y, int limit, int batch, String cql) throws IOException {
+    private SimpleFeatureIterator execSdoNN(
+            ContentFeatureSource source,
+            FilterFactory2 ff,
+            double x,
+            double y,
+            int limit,
+            int batch,
+            String cql)
+            throws IOException {
         List<Expression> params = new ArrayList<Expression>();
         params.add(ff.literal(point(x, y)));
         params.add(ff.literal(limit));
@@ -171,7 +185,7 @@ public class OracleNearestNeighborOnlineTest extends JDBCTestSupport {
         Function sdo_nn = ff.function("sdo_nn", params.toArray(new Expression[params.size()]));
         PropertyIsEqualTo equalsFilter = ff.equal(sdo_nn, ff.literal(true), false);
         Query query = new Query(tname("NEIGHBORS"), equalsFilter);
-        
+
         SimpleFeatureCollection features = source.getFeatures(query);
         return features.features();
     }

@@ -17,7 +17,6 @@
 package org.geotools.wfs.v2_0.bindings;
 
 import java.util.Enumeration;
-
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -31,37 +30,39 @@ public class CopyingHandler extends DefaultHandler {
     public CopyingHandler() {
         this(null);
     }
-    
+
     public CopyingHandler(NamespaceSupport namespaceContext) {
         this.namespaceContext = namespaceContext;
     }
-    
+
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes)
             throws SAXException {
-        
+
         boolean root = false;
         if (buffer == null) {
             buffer = new StringBuffer();
             root = true;
         }
-        
+
         buffer.append("<").append(qName);
         if (attributes.getLength() > 0) {
             for (int i = 0; i < attributes.getLength(); i++) {
-                buffer.append(" ").append(attributes.getQName(i)).append("=\"")
-                    .append(attributes.getValue(i)).append("\"");
+                buffer.append(" ")
+                        .append(attributes.getQName(i))
+                        .append("=\"")
+                        .append(attributes.getValue(i))
+                        .append("\"");
             }
         }
-        
+
         if (root && namespaceContext != null) {
-            //dump out namespace context
+            // dump out namespace context
             for (Enumeration e = namespaceContext.getPrefixes(); e.hasMoreElements(); ) {
                 String prefix = (String) e.nextElement();
                 if ("".equals(prefix)) {
-                    buffer.append(" xmlns");    
-                }
-                else {
+                    buffer.append(" xmlns");
+                } else {
                     buffer.append(" xmlns:").append(prefix);
                 }
                 buffer.append("='").append(namespaceContext.getURI(prefix)).append("'");
@@ -69,7 +70,7 @@ public class CopyingHandler extends DefaultHandler {
         }
         buffer.append(">");
     }
-    
+
     @Override
     public void characters(char[] ch, int start, int length) throws SAXException {
         if (buffer == null) {
@@ -78,14 +79,14 @@ public class CopyingHandler extends DefaultHandler {
 
         buffer.append(ch, start, length);
     }
-    
+
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
         if (buffer != null) {
             buffer.append("</").append(qName).append(">");
         }
     }
-    
+
     @Override
     public void endDocument() throws SAXException {
         buffer = null;

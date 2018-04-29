@@ -1,30 +1,31 @@
 package org.geotools.data.dxf.entities;
 
 import java.io.EOFException;
-import org.geotools.data.dxf.parser.DXFLineNumberReader;
 import java.io.IOException;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.geotools.data.GeometryType;
-import org.geotools.data.dxf.parser.DXFUnivers;
 import org.geotools.data.dxf.header.DXFLayer;
 import org.geotools.data.dxf.parser.DXFCodeValuePair;
 import org.geotools.data.dxf.parser.DXFGroupCode;
+import org.geotools.data.dxf.parser.DXFLineNumberReader;
 import org.geotools.data.dxf.parser.DXFParseException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.geotools.data.dxf.parser.DXFUnivers;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class DXFVertex extends DXFPoint {
 
     private static final Log log = LogFactory.getLog(DXFVertex.class);
     protected double _bulge = 0;
 
     public DXFVertex(DXFVertex newVertex) {
-        this(newVertex._point.x, newVertex._point.y, newVertex._bulge, newVertex.getColor(), newVertex.getRefLayer(), 0);
+        this(
+                newVertex._point.x,
+                newVertex._point.y,
+                newVertex._bulge,
+                newVertex.getColor(),
+                newVertex.getRefLayer(),
+                0);
 
         setType(newVertex.getType());
         setStartingLineNumber(newVertex.getStartingLineNumber());
@@ -36,11 +37,19 @@ public class DXFVertex extends DXFPoint {
         setName("DXFVertex");
         _bulge = b;
     }
-    public DXFVertex(double x, double y, double b, int c, DXFLayer l, int visibility, DXFExtendedData extData) {
-    	super(x, y, c, l, visibility, 1);
-    	setName("DXFVertex");
-    	_bulge = b;
-    	_extendedData = extData;
+
+    public DXFVertex(
+            double x,
+            double y,
+            double b,
+            int c,
+            DXFLayer l,
+            int visibility,
+            DXFExtendedData extData) {
+        super(x, y, c, l, visibility, 1);
+        setName("DXFVertex");
+        _bulge = b;
+        _extendedData = extData;
     }
 
     public static DXFVertex read(DXFLineNumberReader br, DXFUnivers univers) throws IOException {
@@ -74,33 +83,32 @@ public class DXFVertex extends DXFPoint {
                     br.reset();
                     doLoop = false;
                     break;
-                case LAYER_NAME: //"8"
+                case LAYER_NAME: // "8"
                     l = univers.findLayer(cvp.getStringValue());
                     break;
-                case DOUBLE_3: //"42"
+                case DOUBLE_3: // "42"
                     b = cvp.getDoubleValue();
                     break;
-                case X_1: //"10"
+                case X_1: // "10"
                     x = cvp.getDoubleValue();
                     break;
-                case Y_1: //"20"
+                case Y_1: // "20"
                     y = cvp.getDoubleValue();
                     break;
-                case COLOR: //"62"
+                case COLOR: // "62"
                     c = cvp.getShortValue();
                     break;
-                case VISIBILITY: //"60"
+                case VISIBILITY: // "60"
                     visibility = cvp.getShortValue();
                     break;
                 case XDATA_APPLICATION_NAME:
-                	String appName = cvp.getStringValue();
-            		_extData = DXFExtendedData.getExtendedData(br);
-            		_extData.setAppName(appName);
+                    String appName = cvp.getStringValue();
+                    _extData = DXFExtendedData.getExtendedData(br);
+                    _extData.setAppName(appName);
                     break;
                 default:
                     break;
             }
-
         }
 
         DXFVertex e = new DXFVertex(x, y, b, c, l, visibility, _extData);

@@ -25,7 +25,7 @@ import org.picocontainer.MutablePicoContainer;
 
 /**
  * Base class for visitors that invoke a callback on a complex binding.
- * 
+ *
  * @author Justin Deoliveira, OpenGeo
  */
 public abstract class ComplexBindingCallback implements Visitor {
@@ -34,7 +34,8 @@ public abstract class ComplexBindingCallback implements Visitor {
     protected final Node node;
     protected final MutablePicoContainer context;
 
-    public ComplexBindingCallback(ElementInstance instance, Node node, MutablePicoContainer context) {
+    public ComplexBindingCallback(
+            ElementInstance instance, Node node, MutablePicoContainer context) {
         this.instance = instance;
         this.node = node;
         this.context = context;

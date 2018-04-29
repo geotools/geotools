@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,28 +16,22 @@
  */
 package org.geotools.metadata.sql;
 
-
 /**
- * Throws when a metadata method failed. The cause for this exception
- * is typically a {@link java.sql.SQLException}.
+ * Throws when a metadata method failed. The cause for this exception is typically a {@link
+ * java.sql.SQLException}.
  *
  * @since 2.1
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Touraïvane
  * @author Martin Desruisseaux (IRD)
  */
 public class MetadataException extends RuntimeException {
-    /**
-     * For cross-version compatibility.
-     */
+    /** For cross-version compatibility. */
     private static final long serialVersionUID = -7156617726114815455L;
 
     /**
-     * Constructs an instance of {@code MetadataException} with the specified
-     * detail message.
+     * Constructs an instance of {@code MetadataException} with the specified detail message.
      *
      * @param message The detail message.
      */

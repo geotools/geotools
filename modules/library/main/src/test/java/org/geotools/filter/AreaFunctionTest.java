@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,13 +16,16 @@
  */
 package org.geotools.filter;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LinearRing;
+import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.PrecisionModel;
 import java.util.Arrays;
 import java.util.logging.Logger;
-
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.SchemaException;
@@ -32,67 +35,54 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.expression.PropertyName;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.geom.PrecisionModel;
-
-
 /**
- * Unit test for expressions.  This is a complimentary test suite with the
- * filter test suite.
+ * Unit test for expressions. This is a complimentary test suite with the filter test suite.
  *
  * @author James MacGill, CCG
  * @author Rob Hranac, TOPP
- *
- *
  * @source $URL$
- */                                
+ */
 public class AreaFunctionTest extends TestCase {
 
-      /** Standard logging instance */
-    protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(
-            "org.geotools.filter");
+    /** Standard logging instance */
+    protected static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
     /** Feature on which to preform tests */
     private static SimpleFeature testFeature = null;
 
     /** Schema on which to preform tests */
     private static SimpleFeatureType testSchema = null;
+
     boolean setup = false;
     /** Test suite for this test case */
     TestSuite suite = null;
 
-
-    /** 
-     * Constructor with test name.
-     */
+    /** Constructor with test name. */
     public AreaFunctionTest(String testName) {
         super(testName);
-        //BasicConfigurator.configure();
-    
-        
-    }        
-    
-    /** 
-     * Main for test runner.
-     */
+        // BasicConfigurator.configure();
+
+    }
+
+    /** Main for test runner. */
     public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
     }
-    
-    /** 
+
+    /**
      * Required suite builder.
+     *
      * @return A test suite for this unit test.
      */
     public static Test suite() {
-       
+
         TestSuite suite = new TestSuite(AreaFunctionTest.class);
         return suite;
     }
-    
-    /** 
+
+    /**
      * Sets up a schema and a test feature.
+     *
      * @throws SchemaException If there is a problem setting up the schema.
      * @throws IllegalFeatureException If problem setting up the feature.
      */
@@ -105,11 +95,10 @@ public class AreaFunctionTest extends TestCase {
         setup = true;
     }
 
-    //HACK - this is cut and pasted from filter module tests.  Should be 
-    //in a test support module.
-    protected void prepareFeatures()
-        throws SchemaException, IllegalAttributeException {
-        //_log.getLoggerRepository().setThreshold(Level.INFO);
+    // HACK - this is cut and pasted from filter module tests.  Should be
+    // in a test support module.
+    protected void prepareFeatures() throws SchemaException, IllegalAttributeException {
+        // _log.getLoggerRepository().setThreshold(Level.INFO);
         // Create the schema attributes
         LOGGER.finer("creating flat feature...");
 
@@ -144,7 +133,7 @@ public class AreaFunctionTest extends TestCase {
         Object[] attributes = new Object[10];
         GeometryFactory gf = new GeometryFactory(new PrecisionModel());
         LinearRing ring = gf.createLinearRing(coords);
-        attributes[0] = gf.createPolygon(ring,null);
+        attributes[0] = gf.createPolygon(ring, null);
         attributes[1] = new Boolean(true);
         attributes[2] = new Character('t');
         attributes[3] = new Byte("10");
@@ -159,24 +148,19 @@ public class AreaFunctionTest extends TestCase {
         testFeature = SimpleFeatureBuilder.build(testSchema, attributes, null);
         LOGGER.finer("...flat feature created");
 
-        //_log.getLoggerRepository().setThreshold(Level.DEBUG);
+        // _log.getLoggerRepository().setThreshold(Level.DEBUG);
     }
 
-    static org.opengis.filter.FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory(null);
-    
-     /** 
-     * Tests the min function expression.
-     */
-    public void testAreaFunction()
-        throws IllegalFilterException {
-            
-        PropertyName a = filterFactory.property("testGeometry");         
-        
+    static org.opengis.filter.FilterFactory filterFactory =
+            CommonFactoryFinder.getFilterFactory(null);
+
+    /** Tests the min function expression. */
+    public void testAreaFunction() throws IllegalFilterException {
+
+        PropertyName a = filterFactory.property("testGeometry");
+
         AreaFunction area = new AreaFunction();
-        area.setParameters(Arrays.asList(new org.opengis.filter.expression.Expression[] {a}));         
-        assertEquals(100d,((Double)area.evaluate(testFeature)).doubleValue(),0);
+        area.setParameters(Arrays.asList(new org.opengis.filter.expression.Expression[] {a}));
+        assertEquals(100d, ((Double) area.evaluate(testFeature)).doubleValue(), 0);
     }
-    
-   
-    
 }

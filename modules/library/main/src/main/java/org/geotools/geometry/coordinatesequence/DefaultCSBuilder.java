@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -18,19 +18,13 @@
  */
 package org.geotools.geometry.coordinatesequence;
 
-
 /**
- * A CSBuilder that generates DefaultCoordinateSequence objects, that is, 
- * coordinate sequences backed by a Coordinate[] array.
- * 
+ * A CSBuilder that generates DefaultCoordinateSequence objects, that is, coordinate sequences
+ * backed by a Coordinate[] array.
+ *
  * @author wolf
- * 
  * @deprecated Moved to {@link org.geotools.geometry.jts.coordinatesequence.DefaultCSBuilder}
- * 
- *
- *
  * @source $URL$
  */
-public class DefaultCSBuilder extends org.geotools.geometry.jts.coordinatesequence.DefaultCSBuilder {
-
-}
+public class DefaultCSBuilder
+        extends org.geotools.geometry.jts.coordinatesequence.DefaultCSBuilder {}

@@ -16,19 +16,13 @@
  */
 package org.geotools.gml2.bindings;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.CoordinateSequence;
 import org.geotools.gml2.GML;
 import org.geotools.xml.Binding;
 import org.w3c.dom.Document;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.CoordinateSequence;
-
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class GMLCoordinatesTypeBinding2Test extends GMLTestSupport {
     public void testType() {
         assertEquals(CoordinateSequence.class, binding(GML.CoordinatesType).getType());

@@ -18,21 +18,21 @@ package org.geotools.data.efeature.adapters;
 
 /**
  * @author kengu - 15. juni 2011
- *
- *
  * @source $URL$
  */
-public class LongAdapter extends org.eclipse.emf.query.conditions.numbers.NumberAdapter.LongAdapter {
+public class LongAdapter
+        extends org.eclipse.emf.query.conditions.numbers.NumberAdapter.LongAdapter {
 
-    public static final org.geotools.data.efeature.adapters.LongAdapter 
-        DEFAULT = new org.geotools.data.efeature.adapters.LongAdapter();
+    public static final org.geotools.data.efeature.adapters.LongAdapter DEFAULT =
+            new org.geotools.data.efeature.adapters.LongAdapter();
 
     /** Hide constructor */
-    private LongAdapter() { /*NOP*/};
-    
+    private LongAdapter() {
+        /*NOP*/
+    };
+
     @Override
     public long longValue(Object value) {
-        return value instanceof Long ? ((Long)value).longValue() : (Long)value;
+        return value instanceof Long ? ((Long) value).longValue() : (Long) value;
     }
-
 }

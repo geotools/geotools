@@ -1,7 +1,6 @@
 package org.geotools.kml.bindings;
 
 import javax.xml.namespace.QName;
-
 import org.geotools.kml.Folder;
 import org.geotools.kml.FolderStack;
 import org.geotools.kml.v22.KML;
@@ -47,5 +46,4 @@ public class FolderBinding extends AbstractComplexBinding {
         folderStack.pop();
         return value;
     }
-
 }

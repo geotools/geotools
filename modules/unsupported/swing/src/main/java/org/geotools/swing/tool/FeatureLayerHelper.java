@@ -17,12 +17,10 @@
 
 package org.geotools.swing.tool;
 
-import java.util.Collection;
-
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
-
+import java.util.Collection;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
 import org.geotools.factory.CommonFactoryFinder;
@@ -34,7 +32,6 @@ import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.Layer;
-
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.feature.type.Name;
@@ -44,40 +41,35 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
- * Helper class used by {@linkplain InfoTool} to query vector features in a
- * {@linkplain org.geotools.map.FeatureLayer}.
+ * Helper class used by {@linkplain InfoTool} to query vector features in a {@linkplain
+ * org.geotools.map.FeatureLayer}.
  *
  * @author Michael Bedward
  * @since 2.6
- *
  * @source $URL$
  * @version $URL$
  */
 public class FeatureLayerHelper extends InfoToolHelper {
 
     /**
-     * Default distance fraction used with line and point features.
-     * When the user clicks on the map, this tool searches for features within
-     * a rectangle of width w centred on the mouse location, where w is the
-     * average map side length multiplied by the value of this constant.
+     * Default distance fraction used with line and point features. When the user clicks on the map,
+     * this tool searches for features within a rectangle of width w centred on the mouse location,
+     * where w is the average map side length multiplied by the value of this constant.
      */
     public static final double DEFAULT_DISTANCE_FRACTION = 0.01d;
 
-    private static final GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory(null);
+    private static final GeometryFactory geometryFactory =
+            JTSFactoryFinder.getGeometryFactory(null);
     private static final FilterFactory2 filterFactory = CommonFactoryFinder.getFilterFactory2(null);
 
     private String attrName;
     private Geometries geomType;
 
-    /**
-     * No argument constructor required by the helper lookup system.
-     */
-    public FeatureLayerHelper() {
-    }
+    /** No argument constructor required by the helper lookup system. */
+    public FeatureLayerHelper() {}
 
     /**
-     * {@inheritDoc}
-     * The {@code layer} argument must be an instance of {@linkplain FeatureLayer}.
+     * {@inheritDoc} The {@code layer} argument must be an instance of {@linkplain FeatureLayer}.
      */
     @Override
     public void setLayer(Layer layer) {
@@ -90,7 +82,8 @@ public class FeatureLayerHelper extends InfoToolHelper {
         GeometryDescriptor geomDesc = layer.getFeatureSource().getSchema().getGeometryDescriptor();
         attrName = geomDesc.getLocalName();
 
-        Class<? extends Geometry> geomClass = (Class<? extends Geometry>) geomDesc.getType().getBinding();
+        Class<? extends Geometry> geomClass =
+                (Class<? extends Geometry>) geomDesc.getType().getBinding();
         geomType = Geometries.getForBinding(geomClass);
     }
 
@@ -107,9 +100,9 @@ public class FeatureLayerHelper extends InfoToolHelper {
             Filter filter = null;
             if (geomType == Geometries.POLYGON || geomType == Geometries.MULTIPOLYGON) {
                 Geometry posGeom = createSearchPoint(pos);
-                filter = filterFactory.intersects(
-                        filterFactory.property(attrName),
-                        filterFactory.literal(posGeom));
+                filter =
+                        filterFactory.intersects(
+                                filterFactory.property(attrName), filterFactory.literal(posGeom));
 
             } else {
                 ReferencedEnvelope env = createSearchEnv(pos);
@@ -153,8 +146,8 @@ public class FeatureLayerHelper extends InfoToolHelper {
     }
 
     /**
-     * Converts the query position, in map content coordinates, to a position
-     * in layer coordinates and returns it as a JTS {@code Point}.
+     * Converts the query position, in map content coordinates, to a position in layer coordinates
+     * and returns it as a JTS {@code Point}.
      *
      * @param pos query position in map content coordaintes
      * @return point in layer coordinates
@@ -183,14 +176,17 @@ public class FeatureLayerHelper extends InfoToolHelper {
             mapBounds = getLayer().getBounds();
         }
 
-        double halfWidth = 0.5 * DEFAULT_DISTANCE_FRACTION
-                * (mapBounds.getWidth() + mapBounds.getHeight());
+        double halfWidth =
+                0.5 * DEFAULT_DISTANCE_FRACTION * (mapBounds.getWidth() + mapBounds.getHeight());
 
         CoordinateReferenceSystem contentCRS = getMapContent().getCoordinateReferenceSystem();
-        ReferencedEnvelope env = new ReferencedEnvelope(
-                pos.x - halfWidth, pos.x + halfWidth,
-                pos.y - halfWidth, pos.y + halfWidth,
-                contentCRS);
+        ReferencedEnvelope env =
+                new ReferencedEnvelope(
+                        pos.x - halfWidth,
+                        pos.x + halfWidth,
+                        pos.y - halfWidth,
+                        pos.y + halfWidth,
+                        contentCRS);
 
         if (isTransformRequired()) {
             CoordinateReferenceSystem layerCRS =

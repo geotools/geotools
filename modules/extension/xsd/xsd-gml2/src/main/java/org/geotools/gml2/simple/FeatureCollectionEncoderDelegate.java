@@ -16,15 +16,16 @@
  */
 package org.geotools.gml2.simple;
 
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.MultiLineString;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import javax.xml.namespace.QName;
-
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDFactory;
 import org.eclipse.xsd.XSDParticle;
@@ -54,13 +55,9 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 import org.xml.sax.helpers.NamespaceSupport;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.MultiLineString;
-
 /**
  * Base class for feature collection optimized GML encoder delegates
- * 
+ *
  * @author Justin Deoliveira, OpenGeo
  * @author Andrea Aime, GeoSolutions
  */
@@ -80,8 +77,8 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
 
     QName name;
 
-    protected FeatureCollectionEncoderDelegate(SimpleFeatureCollection features, Encoder encoder,
-            GMLDelegate gml) {
+    protected FeatureCollectionEncoderDelegate(
+            SimpleFeatureCollection features, Encoder encoder, GMLDelegate gml) {
         this.features = features;
         this.gml = gml;
         this.encoder = encoder;
@@ -94,11 +91,15 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
     }
 
     public void encode(ContentHandler handler) throws Exception {
-        GMLWriter output = new GMLWriter(handler, namespaces, gml.getNumDecimals(),
-                gml.forceDecimalEncoding(),
-                gml.getGmlPrefix());
-        boolean featureBounds = !encoder.getConfiguration().hasProperty(
-                GMLConfiguration.NO_FEATURE_BOUNDS);
+        GMLWriter output =
+                new GMLWriter(
+                        handler,
+                        namespaces,
+                        gml.getNumDecimals(),
+                        gml.forceDecimalEncoding(),
+                        gml.getGmlPrefix());
+        boolean featureBounds =
+                !encoder.getConfiguration().hasProperty(GMLConfiguration.NO_FEATURE_BOUNDS);
 
         try (SimpleFeatureIterator fi = features.features()) {
             if (!fi.hasNext()) {
@@ -135,19 +136,20 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
                 } else {
                     f = null;
                 }
-                
             }
 
             gml.endFeatures(output);
-
         }
     }
 
-    /**
-     * Encodes a single feature
-     */
-    private void encodeFeature(GMLWriter output, boolean featureBounds, ObjectEncoder ee,
-            AttributesImpl idatts, SimpleFeature f, FeatureTypeContextCache ftCache)
+    /** Encodes a single feature */
+    private void encodeFeature(
+            GMLWriter output,
+            boolean featureBounds,
+            ObjectEncoder ee,
+            AttributesImpl idatts,
+            SimpleFeature f,
+            FeatureTypeContextCache ftCache)
             throws SAXException, Exception {
         gml.startFeature(output);
 
@@ -177,27 +179,30 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
         }
 
         output.endElement(ftContext.featureQualifiedName);
-        
+
         gml.endFeature(output);
     }
 
-    private void encodeValue(GMLWriter output, ObjectEncoder ee, Object value,
-            AttributeContext attribute) throws SAXException, Exception {
+    private void encodeValue(
+            GMLWriter output, ObjectEncoder ee, Object value, AttributeContext attribute)
+            throws SAXException, Exception {
         output.startElement(attribute.name, null);
 
         if (value instanceof Geometry) {
             Geometry g = (Geometry) value;
-            Integer dimension = GML2EncodingUtils.getGeometryDimension(g,
-                    encoder.getConfiguration());
-            AttributesImpl atts = buildSrsAttributes(
-                    ((GeometryDescriptor) attribute.descriptor).getCoordinateReferenceSystem(),
-                    dimension);
+            Integer dimension =
+                    GML2EncodingUtils.getGeometryDimension(g, encoder.getConfiguration());
+            AttributesImpl atts =
+                    buildSrsAttributes(
+                            ((GeometryDescriptor) attribute.descriptor)
+                                    .getCoordinateReferenceSystem(),
+                            dimension);
             GeometryEncoder geometryEncoder = getGeometryEncoder(value, attribute);
             geometryEncoder.encode(g, atts, output);
         } else if (value instanceof Envelope) {
             ReferencedEnvelope e = (ReferencedEnvelope) value;
-            Integer dimension = GML2EncodingUtils.getEnvelopeDimension(e,
-                    encoder.getConfiguration());
+            Integer dimension =
+                    GML2EncodingUtils.getEnvelopeDimension(e, encoder.getConfiguration());
             AttributesImpl atts = buildSrsAttributes(e.getCoordinateReferenceSystem(), dimension);
             ee.encode(e, atts, output);
         } else if (attribute.binding instanceof SimpleBinding) {
@@ -212,10 +217,10 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
 
     private GeometryEncoder getGeometryEncoder(Object value, AttributeContext attribute) {
         Class<? extends Object> clazz = value.getClass();
-        if(MultiLineString.class.equals(clazz)) {
+        if (MultiLineString.class.equals(clazz)) {
             // we have a wrinkle with curve support, were we supposed to encode the
             // multi line string as a curve or not?
-            if(attribute.binding.getTarget().getLocalPart().startsWith("MultiCurve")) {
+            if (attribute.binding.getTarget().getLocalPart().startsWith("MultiCurve")) {
                 clazz = MultiCurve.class;
             }
         }
@@ -226,8 +231,8 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
         }
 
         if (encoder == null) {
-            throw new RuntimeException("Failed to find an appropriate geometry encoder for class "
-                    + value.getClass());
+            throw new RuntimeException(
+                    "Failed to find an appropriate geometry encoder for class " + value.getClass());
         } else {
             return encoder;
         }
@@ -264,9 +269,8 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
     /**
      * Encoding context for a single attribute, contains all the information we need repeatedly, so
      * that we don't need to look it up over and over
-     * 
-     * @author Andrea Aime - GeoSolutions
      *
+     * @author Andrea Aime - GeoSolutions
      */
     static final class AttributeContext {
         QualifiedName name;
@@ -274,13 +278,12 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
         int attributeIndex;
 
         Binding binding;
-        
+
         AttributeDescriptor descriptor;
 
         public AttributeContext(QualifiedName name) {
             this.name = name;
         }
-
     }
 
     /**
@@ -297,19 +300,21 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
 
         public FeatureTypeContext(SimpleFeature f, GMLDelegate gml) {
             this.featureType = f.getFeatureType();
-            QName featureName = new QName(featureType.getName().getNamespaceURI(), featureType
-                    .getName().getLocalPart());
+            QName featureName =
+                    new QName(
+                            featureType.getName().getNamespaceURI(),
+                            featureType.getName().getLocalPart());
 
             // look up the element in the schema
-            XSDElementDeclaration element = encoder.getSchemaIndex().getElementDeclaration(
-                    featureName);
+            XSDElementDeclaration element =
+                    encoder.getSchemaIndex().getElementDeclaration(featureName);
             if (element == null) {
                 // create one
                 element = XSDFactory.eINSTANCE.createXSDElementDeclaration();
                 element.setName(featureType.getName().getLocalPart());
                 element.setTargetNamespace(featureType.getName().getNamespaceURI());
-                element.setTypeDefinition(encoder.getSchemaIndex().getTypeDefinition(
-                        GML.AbstractFeatureType));
+                element.setTypeDefinition(
+                        encoder.getSchemaIndex().getTypeDefinition(GML.AbstractFeatureType));
             }
 
             // look up all the bindings for each property
@@ -325,19 +330,18 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
 
         /**
          * Builds the list of {@link AttributeContext} for each attribute to be encoded
-         * 
+         *
          * @param properties
          * @param schema
          * @param bindingLoader
          * @return
          */
-        private List<AttributeContext> setupAttributeContexts(List properties,
-                SimpleFeatureType schema,
-                BindingLoader bindingLoader) {
-            ArrayList<AttributeContext> attributes = new ArrayList<AttributeContext>(
-                    properties.size());
+        private List<AttributeContext> setupAttributeContexts(
+                List properties, SimpleFeatureType schema, BindingLoader bindingLoader) {
+            ArrayList<AttributeContext> attributes =
+                    new ArrayList<AttributeContext>(properties.size());
             List<AttributeDescriptor> attributeDescriptors = schema.getAttributeDescriptors();
-            for (Iterator p = properties.iterator(); p.hasNext();) {
+            for (Iterator p = properties.iterator(); p.hasNext(); ) {
                 Object[] o = (Object[]) p.next();
                 XSDParticle particle = (XSDParticle) o[0];
                 XSDElementDeclaration content = (XSDElementDeclaration) particle.getContent();
@@ -348,10 +352,12 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
                 String prefix = namespaces.getPrefix(content.getTargetNamespace());
                 QualifiedName contentName;
                 if (prefix != null) {
-                    contentName = QualifiedName.build(content.getTargetNamespace(),
-                            content.getName(), prefix);
+                    contentName =
+                            QualifiedName.build(
+                                    content.getTargetNamespace(), content.getName(), prefix);
                 } else {
-                    contentName = new QualifiedName(content.getTargetNamespace(), content.getName());
+                    contentName =
+                            new QualifiedName(content.getTargetNamespace(), content.getName());
                 }
                 AttributeContext attribute = new AttributeContext(contentName);
                 attributes.add(attribute);
@@ -380,17 +386,16 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
 
                             contentType = baseType;
                         }
-
                     }
                     if (contentType == null || content.getName() == null) {
                         throw new IllegalArgumentException("Could not find non annonymous type");
                     }
 
-                    QName contentTypeName = new QName(contentType.getTargetNamespace(),
-                            contentType.getName());
+                    QName contentTypeName =
+                            new QName(contentType.getTargetNamespace(), contentType.getName());
 
-                    Binding binding = bindingLoader.loadBinding(contentTypeName,
-                            encoder.getContext());
+                    Binding binding =
+                            bindingLoader.loadBinding(contentTypeName, encoder.getContext());
                     attribute.binding = binding;
                 }
             }
@@ -411,8 +416,8 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
             String featureNamespaceURI = featureName.getNamespaceURI();
             String featureLocalName = featureName.getLocalPart();
             String featurePrefix = namespaces.getPrefix(featureNamespaceURI);
-            QualifiedName featureQualifiedName = QualifiedName.build(featureNamespaceURI,
-                    featureLocalName, featurePrefix);
+            QualifiedName featureQualifiedName =
+                    QualifiedName.build(featureNamespaceURI, featureLocalName, featurePrefix);
             return featureQualifiedName;
         }
 
@@ -420,7 +425,6 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
             SimpleFeatureType schema = sf.getFeatureType();
             return this.featureType == schema || this.featureType.equals(schema);
         }
-
     }
 
     /**
@@ -448,7 +452,5 @@ public abstract class FeatureCollectionEncoderDelegate implements EncoderDelegat
                 return result;
             }
         }
-
     }
-
 }

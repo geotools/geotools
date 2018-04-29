@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -17,11 +17,8 @@
 package org.geotools.wcs;
 
 import java.util.Map;
-
 import javax.xml.namespace.QName;
-
 import net.opengis.wcs10.Wcs10Factory;
-
 import org.eclipse.emf.ecore.EFactory;
 import org.geotools.gml4wcs.GMLConfiguration;
 import org.geotools.wcs.bindings.AbstractDescriptionBaseTypeBinding;
@@ -47,27 +44,25 @@ import org.picocontainer.MutablePicoContainer;
  * Parser configuration for the http://www.opengis.net/wcs schema.
  *
  * @generated
- *
- *
  * @source $URL$
  */
 public class WCSConfiguration extends Configuration {
 
     /**
      * Creates a new configuration.
-     * 
+     *
      * @generated
-     */     
+     */
     public WCSConfiguration() {
-       super(WCS.getInstance());
-       
-       addDependency(new GMLConfiguration());
+        super(WCS.getInstance());
+
+        addDependency(new GMLConfiguration());
     }
-    
+
     @Override
     protected void registerBindings(Map bindings) {
         super.registerBindings(bindings);
-        
+
         final EFactory wcsFactory = Wcs10Factory.eINSTANCE;
         register(bindings, wcsFactory, WCS._GetCapabilities);
         register(bindings, wcsFactory, WCS._DescribeCoverage);
@@ -77,7 +72,7 @@ public class WCSConfiguration extends Configuration {
 
         bindings.put(WCS.AbstractDescriptionBaseType, new AbstractDescriptionBaseTypeBinding());
         bindings.put(WCS.AbstractDescriptionType, new AbstractDescriptionTypeBinding());
-        
+
         register(bindings, wcsFactory, WCS.DomainSubsetType);
         register(bindings, wcsFactory, WCS.SpatialSubsetType);
 
@@ -86,7 +81,7 @@ public class WCSConfiguration extends Configuration {
         bindings.put(WCS.RangeSubsetType_axisSubset, new RangeSubsetType_axisSubsetBinding());
         bindings.put(WCS.AxisDescriptionType, new AxisDescriptionTypeBinding());
         bindings.put(WCS.TypedLiteralType, new TypedLiteralTypeBinding());
-        
+
         bindings.put(WCS.valueEnumBaseType, new ValueEnumBaseTypeBinding());
         bindings.put(WCS.valueEnumType, new ValueEnumTypeBinding());
         bindings.put(WCS.valueRangeType, new ValueRangeTypeBinding());
@@ -101,18 +96,18 @@ public class WCSConfiguration extends Configuration {
         register(bindings, wcsFactory, WCS.DCPTypeType_HTTP);
 
         bindings.put(WCS.CapabilitiesSectionType, new CapabilitiesSectionTypeBinding());
-//        register(bindings, wcsFactory, WCS.WCS_CapabilitiesType);
-//        register(bindings, wcsFactory, WCS.WCSCapabilityType);
-//        register(bindings, wcsFactory, WCS.WCSCapabilityType_Exception);
-//        register(bindings, wcsFactory, WCS.WCSCapabilityType_Request);
-//        register(bindings, wcsFactory, WCS.WCSCapabilityType_VendorSpecificCapabilities);
+        //        register(bindings, wcsFactory, WCS.WCS_CapabilitiesType);
+        //        register(bindings, wcsFactory, WCS.WCSCapabilityType);
+        //        register(bindings, wcsFactory, WCS.WCSCapabilityType_Exception);
+        //        register(bindings, wcsFactory, WCS.WCSCapabilityType_Request);
+        //        register(bindings, wcsFactory, WCS.WCSCapabilityType_VendorSpecificCapabilities);
 
         bindings.put(WCS.LonLatEnvelopeBaseType, new LonLatEnvelopeBaseTypeBinding());
         bindings.put(WCS.LonLatEnvelopeType, new LonLatEnvelopeTypeBinding());
         bindings.put(WCS.TimePeriodType, new TimePeriodTypeBinding());
         bindings.put(WCS.TimeSequenceType, new TimeSequenceTypeBinding());
     }
-    
+
     private void register(Map bindings, EFactory factory, QName qname) {
         bindings.put(qname, new ComplexEMFBinding(factory, qname));
     }
@@ -120,4 +115,4 @@ public class WCSConfiguration extends Configuration {
     protected void configureContext(MutablePicoContainer container) {
         container.registerComponentInstance(Wcs10Factory.eINSTANCE);
     }
-} 
+}

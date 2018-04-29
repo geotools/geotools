@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -26,9 +26,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import junit.framework.TestCase;
-
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.factory.FactoryCreator;
@@ -36,8 +34,8 @@ import org.geotools.factory.FactoryRegistry;
 
 public class SolrDataStoreFinderTest extends TestCase {
 
-    protected static final Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger(SolrDataStoreFinderTest.class);
+    protected static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(SolrDataStoreFinderTest.class);
 
     private DataStore source;
 
@@ -69,8 +67,8 @@ public class SolrDataStoreFinderTest extends TestCase {
     }
 
     private FactoryRegistry getServiceRegistry() {
-        FactoryRegistry registry = new FactoryCreator(
-                Arrays.asList(new Class<?>[] { DataStoreFactorySpi.class }));
+        FactoryRegistry registry =
+                new FactoryCreator(Arrays.asList(new Class<?>[] {DataStoreFactorySpi.class}));
         return registry;
     }
 
@@ -80,8 +78,8 @@ public class SolrDataStoreFinderTest extends TestCase {
 
     public Iterator getAvailableDataSources() {
         Set availableDS = new HashSet();
-        Iterator it = getServiceRegistry().getServiceProviders(DataStoreFactorySpi.class, null,
-                null);
+        Iterator it =
+                getServiceRegistry().getServiceProviders(DataStoreFactorySpi.class, null, null);
         SolrDataStoreFactory dsFactory;
         while (it.hasNext()) {
             Object ds = it.next();
@@ -94,5 +92,4 @@ public class SolrDataStoreFinderTest extends TestCase {
         }
         return availableDS.iterator();
     }
-
 }

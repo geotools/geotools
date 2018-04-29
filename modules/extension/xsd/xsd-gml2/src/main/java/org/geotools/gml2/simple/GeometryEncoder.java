@@ -16,17 +16,15 @@
  */
 package org.geotools.gml2.simple;
 
+import com.vividsolutions.jts.geom.Geometry;
 import org.geotools.xml.Encoder;
 import org.xml.sax.helpers.AttributesImpl;
 
-import com.vividsolutions.jts.geom.Geometry;
-
 /**
  * Base class for all encoders writing a Geometry
- * 
+ *
  * @author Justin Deoliveira, OpenGeo
  * @author Andrea Aime - GeoSolutions
- *
  * @param <T>
  */
 public abstract class GeometryEncoder<T extends Geometry> extends ObjectEncoder<T> {

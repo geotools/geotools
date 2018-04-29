@@ -37,23 +37,22 @@ public class BingTileIdentifierTest extends TileIdentifierTest {
 
     @Test
     public void testGetRightNeighbour() {
-        BingTileIdentifier neighbour = new BingTileIdentifier(11, 12, new WebMercatorZoomLevel(5),
-                "SomeService");
+        BingTileIdentifier neighbour =
+                new BingTileIdentifier(11, 12, new WebMercatorZoomLevel(5), "SomeService");
 
         Assert.assertEquals(neighbour, this.tileId.getRightNeighbour());
     }
 
     @Test
     public void testGetLowertNeighbour() {
-        BingTileIdentifier neighbour = new BingTileIdentifier(10, 13, new WebMercatorZoomLevel(5),
-                "SomeService");
+        BingTileIdentifier neighbour =
+                new BingTileIdentifier(10, 13, new WebMercatorZoomLevel(5), "SomeService");
 
         Assert.assertEquals(neighbour, this.tileId.getLowerNeighbour());
     }
 
-    protected TileIdentifier createTestTileIdentifier(ZoomLevel zoomLevel, int x, int y,
-            String name) {
+    protected TileIdentifier createTestTileIdentifier(
+            ZoomLevel zoomLevel, int x, int y, String name) {
         return new BingTileIdentifier(x, y, zoomLevel, name);
-
     }
 }

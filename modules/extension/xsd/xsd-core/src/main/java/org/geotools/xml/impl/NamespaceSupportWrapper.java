@@ -16,16 +16,13 @@
  */
 package org.geotools.xml.impl;
 
-import org.xml.sax.helpers.NamespaceSupport;
 import java.util.Enumeration;
 import java.util.Iterator;
 import javax.xml.namespace.NamespaceContext;
-
+import org.xml.sax.helpers.NamespaceSupport;
 
 /**
  * NamespaceContext wrapper around namespace support.
- *
- *
  *
  * @source $URL$
  */
@@ -52,17 +49,17 @@ public class NamespaceSupportWrapper implements NamespaceContext {
         final Enumeration e = namespaceSupport.getPrefixes(namespaceURI);
 
         return new Iterator() {
-                public void remove() {
-                    throw new UnsupportedOperationException();
-                }
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
 
-                public boolean hasNext() {
-                    return e.hasMoreElements();
-                }
+            public boolean hasNext() {
+                return e.hasMoreElements();
+            }
 
-                public Object next() {
-                    return e.nextElement();
-                }
-            };
+            public Object next() {
+                return e.nextElement();
+            }
+        };
     }
 }

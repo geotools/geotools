@@ -16,23 +16,21 @@
  */
 package org.geotools.gml2.bindings;
 
+import com.vividsolutions.jts.geom.MultiPoint;
 import java.util.List;
-
 import javax.xml.namespace.QName;
-
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.geotools.gml2.GML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 
-import com.vividsolutions.jts.geom.MultiPoint;
-
 /**
  * Binding object for the type http://www.opengis.net/gml:MultiPointPropertyType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;complexType name="MultiPointPropertyType"&gt;
  *      &lt;annotation&gt;
@@ -54,23 +52,18 @@ import com.vividsolutions.jts.geom.MultiPoint;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class GMLMultiPointPropertyTypeBinding extends AbstractComplexBinding {
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return GML.MultiPointPropertyType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -81,24 +74,23 @@ public class GMLMultiPointPropertyTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
-        return node.getChildValue( MultiPoint.class );
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
+        return node.getChildValue(MultiPoint.class);
     }
-    
+
     @Override
     public Object getProperty(Object object, QName name) throws Exception {
-        return GML2EncodingUtils.GeometryPropertyType_getProperty((MultiPoint)object,name,false);
+        return GML2EncodingUtils.GeometryPropertyType_getProperty((MultiPoint) object, name, false);
     }
-    
+
     @Override
-    public List getProperties(Object object, XSDElementDeclaration element)
-            throws Exception {
-        return GML2EncodingUtils.GeometryPropertyType_getProperties((MultiPoint)object);
+    public List getProperties(Object object, XSDElementDeclaration element) throws Exception {
+        return GML2EncodingUtils.GeometryPropertyType_getProperties((MultiPoint) object);
     }
 }

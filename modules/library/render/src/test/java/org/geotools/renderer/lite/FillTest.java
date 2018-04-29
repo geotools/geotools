@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2009 - 2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -27,9 +27,6 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.factory.CommonFactoryFinder;
@@ -48,11 +45,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.opengis.filter.FilterFactory2;
 
-/**
- * 
- * 
- * @source $URL$
- */
+/** @source $URL$ */
 public class FillTest {
     private static final long TIME = 40000;
 
@@ -72,14 +65,16 @@ public class FillTest {
         bounds.expandBy(0.2, 0.2);
 
         // load font
-        Font f = Font.createFont(Font.TRUETYPE_FONT, TestData.getResource(this, "recreate.ttf")
-                .openStream());
+        Font f =
+                Font.createFont(
+                        Font.TRUETYPE_FONT,
+                        TestData.getResource(this, "recreate.ttf").openStream());
         FontCache.getDefaultInstance().registerFont(f);
 
         // System.setProperty("org.geotools.test.interactive", "true");
 
     }
-    
+
     private void runSingleLayerTest(String styleName) throws Exception {
         runSingleLayerTest(styleName, 100);
     }
@@ -93,13 +88,15 @@ public class FillTest {
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setMapContent(mc);
         renderer.setJava2DHints(new RenderingHints(KEY_ANTIALIASING, VALUE_ANTIALIAS_ON));
-        
+
         BufferedImage image = RendererBaseTest.showRender(styleName, renderer, TIME, bounds);
-        File reference = new File("./src/test/resources/org/geotools/renderer/lite/test-data/"
-                + styleName + ".png");
+        File reference =
+                new File(
+                        "./src/test/resources/org/geotools/renderer/lite/test-data/"
+                                + styleName
+                                + ".png");
         ImageAssert.assertEquals(reference, image, threshold);
     }
-    
 
     @Test
     public void testSolidFill() throws Exception {
@@ -160,47 +157,47 @@ public class FillTest {
     public void testFontFill() throws Exception {
         runSingleLayerTest("fillTTFDecorative.sld");
     }
-    
+
     @Test
     public void testRandomSlash() throws Exception {
         runSingleLayerTest("fillRandomSlash.sld");
     }
-    
+
     @Test
     public void testRandomRotatedSlash() throws Exception {
         runSingleLayerTest("fillRandomRotatedSlash.sld");
     }
-    
+
     @Test
     public void testFillRandomGraphic() throws Exception {
         runSingleLayerTest("fillRandomGraphic.sld");
     }
-    
+
     @Test
     public void testFillRandomRotatedGraphic() throws Exception {
         runSingleLayerTest("fillRandomRotatedGraphic.sld");
     }
-    
+
     @Test
     public void testFillRandomTwoMarks() throws Exception {
         runSingleLayerTest("fillRandomTwoMarks.sld");
     }
-    
+
     @Test
     public void testFillRandomGridSlash() throws Exception {
         runSingleLayerTest("fillRandomGridSlash.sld");
     }
-    
+
     @Test
     public void testFillRandomGridGraphic() throws Exception {
         runSingleLayerTest("fillRandomGridGraphic.sld");
     }
-    
+
     @Test
     public void testFillRandomGridRotatedSlash() throws Exception {
         runSingleLayerTest("fillRandomGridRotatedSlash.sld");
     }
-    
+
     @Test
     public void testFillRandomGridRotatedGraphic() throws Exception {
         runSingleLayerTest("fillRandomGridRotatedGraphic.sld");
@@ -226,8 +223,9 @@ public class FillTest {
     public void testGEOT3111() throws Exception {
         FilterFactory2 ff2 = CommonFactoryFinder.getFilterFactory2(null);
         StyleFactory sf = CommonFactoryFinder.getStyleFactory(null);
-        Symbolizer sym = sf.createPolygonSymbolizer(Stroke.NULL,
-                sf.createFill(ff2.literal(Color.CYAN)), null);
+        Symbolizer sym =
+                sf.createPolygonSymbolizer(
+                        Stroke.NULL, sf.createFill(ff2.literal(Color.CYAN)), null);
         Style style = SLD.wrapSymbolizers(sym);
 
         MapContent mc = new MapContent();

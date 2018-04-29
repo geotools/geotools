@@ -19,29 +19,25 @@ package org.geotools.data.sqlserver;
 import org.geotools.jdbc.JDBCDataStoreAPIOnlineTest;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class SQLServerDataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest {
 
     @Override
     protected JDBCDataStoreAPITestSetup createTestSetup() {
         return new SQLServerDataStoreAPITestSetup();
     }
-    
-    //JD: disabled these tests b/c sql server does not seem to play well with 
-    // concurrent transactions no matter what transaction mode (READ_COMMITTED,READ_UNCOMITTED,etc...) 
+
+    // JD: disabled these tests b/c sql server does not seem to play well with
+    // concurrent transactions no matter what transaction mode
+    // (READ_COMMITTED,READ_UNCOMITTED,etc...)
     // is specified. Might be a configuration issue, i leave to an expert.
     @Override
     public void testTransactionIsolation() throws Exception {
-        //super.testTransactionIsolation();
-    }
-    
-    @Override
-    public void testGetFeatureWriterConcurrency() throws Exception {
-        //super.testGetFeatureWriterConcurrency();
+        // super.testTransactionIsolation();
     }
 
+    @Override
+    public void testGetFeatureWriterConcurrency() throws Exception {
+        // super.testGetFeatureWriterConcurrency();
+    }
 }

@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-
 import org.geotools.data.DataUtilities;
 import org.geotools.data.store.DataFeatureCollection;
 import org.geotools.feature.FeatureCollection;
@@ -31,25 +30,17 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.identity.FeatureId;
 
-
 /**
  * Wraps multiple feature collections into a single.
- * <p>
- * This feature collection is used for wfs feature collections which can be made
- * up of features from different schemas.
- * </p>
+ *
+ * <p>This feature collection is used for wfs feature collections which can be made up of features
+ * from different schemas.
  *
  * @author Justin Deoliveira, The Open Planning Project
- *
- *
- *
- *
  * @source $URL$
  */
 public class CompositeFeatureCollection extends DataFeatureCollection {
-    /**
-     * wrapped collecitons
-     */
+    /** wrapped collecitons */
     List<FeatureCollection> collections;
 
     public CompositeFeatureCollection(List<FeatureCollection> collections) {
@@ -92,23 +83,22 @@ public class CompositeFeatureCollection extends DataFeatureCollection {
             index = 0;
         }
 
-        public void remove() {
-        }
+        public void remove() {}
 
         public boolean hasNext() {
-            //is there a current iterator that has another element
+            // is there a current iterator that has another element
             if ((iterator != null) && iterator.hasNext()) {
                 return true;
             }
 
-            //get the next iterator
+            // get the next iterator
             while (index < collections.size()) {
-                //close current before we move to next
+                // close current before we move to next
                 if (iterator != null) {
                     iterator.close();
                 }
 
-                //grap next
+                // grap next
                 iterator = ((FeatureCollection) collections.get(index++)).features();
 
                 if (iterator.hasNext()) {
@@ -116,9 +106,9 @@ public class CompositeFeatureCollection extends DataFeatureCollection {
                 }
             }
 
-            //no more
+            // no more
             if (iterator != null) {
-                //close the last iterator
+                // close the last iterator
                 iterator.close();
             }
             return false;
@@ -130,28 +120,30 @@ public class CompositeFeatureCollection extends DataFeatureCollection {
     }
 
     public boolean addAll(Collection arg0) {
-        throw new RuntimeException("Can't add to a composite featurecollection; you need to add to one of the constituent collections direclty.");
+        throw new RuntimeException(
+                "Can't add to a composite featurecollection; you need to add to one of the constituent collections direclty.");
     }
+
     public <T> T[] toArray(T[] arg0) {
         List<T> list = new ArrayList<T>();
         Iterator it = collections.iterator();
-        while(it.hasNext()){
-            FeatureCollection col = (FeatureCollection)it.next();
+        while (it.hasNext()) {
+            FeatureCollection col = (FeatureCollection) it.next();
             FeatureIterator it2 = col.features();
             try {
-                while (it2.hasNext()){
-                    list.add((T)it.next());
+                while (it2.hasNext()) {
+                    list.add((T) it.next());
                 }
-            }
-            finally {
+            } finally {
                 it2.close();
             }
         }
-        
+
         return list.toArray(arg0);
     }
 
     public FeatureId getIdentifier() {
-        throw new RuntimeException("Can't get the id for a composite featurecollection; you need to identify the consituent collections directly.");
+        throw new RuntimeException(
+                "Can't get the id for a composite featurecollection; you need to identify the consituent collections directly.");
     }
 }

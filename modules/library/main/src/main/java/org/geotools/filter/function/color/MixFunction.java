@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2017, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -19,21 +19,25 @@ package org.geotools.filter.function.color;
 import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 import java.awt.Color;
-
 import org.geotools.filter.FunctionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
 
 /**
- * Mix lesscss.org color function. Takes two colors and mixes them together based on a weight (and their eventual alpha)
+ * Mix lesscss.org color function. Takes two colors and mixes them together based on a weight (and
+ * their eventual alpha)
  *
  * @author Andrea Aime - GeoSolutions
  */
 public class MixFunction extends FunctionImpl {
 
-    public static FunctionName NAME = new FunctionNameImpl("mix", parameter("result", Color.class),
-            parameter("color1", Color.class), parameter("color2", Color.class),
-            parameter("weight", Double.class));
+    public static FunctionName NAME =
+            new FunctionNameImpl(
+                    "mix",
+                    parameter("result", Color.class),
+                    parameter("color1", Color.class),
+                    parameter("color2", Color.class),
+                    parameter("weight", Double.class));
 
     public MixFunction() {
         this.functionName = NAME;
@@ -66,5 +70,4 @@ public class MixFunction extends FunctionImpl {
         }
         return new Color(red, green, blue, alpha);
     }
-
 }

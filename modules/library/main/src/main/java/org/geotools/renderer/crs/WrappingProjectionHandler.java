@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,16 +16,6 @@
  */
 package org.geotools.renderer.crs;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-
-import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.referencing.CRS;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
-
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
@@ -33,14 +23,20 @@ import com.vividsolutions.jts.geom.GeometryComponentFilter;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.referencing.CRS;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.MathTransform;
 
 /**
  * A {@link ProjectionHandler} for projections that do warp in the East/West direction, it will
  * replicate the geometries generating a Google Maps like effect
- * 
+ *
  * @author Andrea Aime - OpenGeo
- *
- *
  * @source $URL$
  */
 public class WrappingProjectionHandler extends ProjectionHandler {
@@ -52,10 +48,16 @@ public class WrappingProjectionHandler extends ProjectionHandler {
     /**
      * Provides the strategy with the area we want to render and its CRS (the SPI lookup will do
      * this step)
-     * @throws FactoryException 
+     *
+     * @throws FactoryException
      */
-    public WrappingProjectionHandler(ReferencedEnvelope renderingEnvelope,
-            ReferencedEnvelope validArea, CoordinateReferenceSystem sourceCrs, double centralMeridian, int maxWraps) throws FactoryException {
+    public WrappingProjectionHandler(
+            ReferencedEnvelope renderingEnvelope,
+            ReferencedEnvelope validArea,
+            CoordinateReferenceSystem sourceCrs,
+            double centralMeridian,
+            int maxWraps)
+            throws FactoryException {
         super(sourceCrs, validArea, renderingEnvelope);
         this.maxWraps = maxWraps;
         // if we are wrapping, we query across the dateline no matter what
@@ -72,16 +74,15 @@ public class WrappingProjectionHandler extends ProjectionHandler {
         final double width;
         final double reWidth;
         final boolean northEast = CRS.getAxisOrder(targetCRS) == CRS.AxisOrder.NORTH_EAST;
-        if(northEast) {
+        if (northEast) {
             width = env.getHeight();
             reWidth = renderingEnvelope.getHeight();
         } else {
             width = env.getWidth();
             reWidth = renderingEnvelope.getWidth();
         }
-        
-        if (width < radius && renderingEnvelope.contains(env)
-                && reWidth <= radius * 2) {
+
+        if (width < radius && renderingEnvelope.contains(env) && reWidth <= radius * 2) {
             return geometry;
         }
 
@@ -112,20 +113,29 @@ public class WrappingProjectionHandler extends ProjectionHandler {
         // search the west-most location inside the current rendering envelope
         // (there may be many)
         double base, curr, lowLimit, highLimit;
-        if(northEast) {
+        if (northEast) {
             base = env.getMinY();
             curr = env.getMinY();
-            lowLimit = Math.max(renderingEnvelope.getMinY(), renderingEnvelope.getMedian(1) - maxWraps * radius * 2); 
-            highLimit = Math.min(renderingEnvelope.getMaxY(), renderingEnvelope.getMedian(1) + maxWraps * radius * 2);
+            lowLimit =
+                    Math.max(
+                            renderingEnvelope.getMinY(),
+                            renderingEnvelope.getMedian(1) - maxWraps * radius * 2);
+            highLimit =
+                    Math.min(
+                            renderingEnvelope.getMaxY(),
+                            renderingEnvelope.getMedian(1) + maxWraps * radius * 2);
         } else {
             base = env.getMinX();
             curr = env.getMinX();
             double geometryWidth = geometry.getEnvelopeInternal().getWidth();
-            lowLimit = Math.max(
-                    renderingEnvelope.getMinX() - geometryWidth,
-                    renderingEnvelope.getMedian(0) - maxWraps * radius * 2);
-            highLimit = Math.min(renderingEnvelope.getMaxX() + geometryWidth,
-                    renderingEnvelope.getMedian(0) + maxWraps * radius * 2);
+            lowLimit =
+                    Math.max(
+                            renderingEnvelope.getMinX() - geometryWidth,
+                            renderingEnvelope.getMedian(0) - maxWraps * radius * 2);
+            highLimit =
+                    Math.min(
+                            renderingEnvelope.getMaxX() + geometryWidth,
+                            renderingEnvelope.getMedian(0) + maxWraps * radius * 2);
         }
         while (curr > lowLimit) {
             curr -= radius * 2;
@@ -141,20 +151,20 @@ public class WrappingProjectionHandler extends ProjectionHandler {
                 // in all other cases we make a copy and offset it
                 Geometry offseted = (Geometry) geometry.clone();
                 offseted.apply(new OffsetOrdinateFilter(northEast ? 1 : 0, offset));
-                offseted.geometryChanged();       
+                offseted.geometryChanged();
                 geomType = accumulate(geoms, offseted, geomType);
             }
 
             curr += radius * 2;
         }
-        
+
         // if we could not find any geom type we stumbled int an empty geom collection
-        if(geomType == null) {
+        if (geomType == null) {
             return null;
         }
-        
+
         // if we did not have to actually clone the geometries
-        if(geoms.size() == 1) {
+        if (geoms.size() == 1) {
             return geoms.get(0);
         }
 
@@ -169,41 +179,40 @@ public class WrappingProjectionHandler extends ProjectionHandler {
             Polygon[] polys = geoms.toArray(new Polygon[geoms.size()]);
             return geometry.getFactory().createMultiPolygon(polys);
         } else {
-            return geometry.getFactory().createGeometryCollection(
-                    geoms.toArray(new Geometry[geoms.size()]));
+            return geometry.getFactory()
+                    .createGeometryCollection(geoms.toArray(new Geometry[geoms.size()]));
         }
     }
 
     private boolean isUnwrapped(final Geometry geometry) {
         if (geometry instanceof GeometryCollection) {
             final AtomicBoolean unwrapped = new AtomicBoolean(true);
-            geometry.apply(new GeometryComponentFilter() {
+            geometry.apply(
+                    new GeometryComponentFilter() {
 
-                @Override
-                public void filter(Geometry geom) {
-                    if (geom != geometry && geom.getEnvelopeInternal().getWidth() > radius) {
-                        unwrapped.set(false);
-                    }
-
-                }
-            });
+                        @Override
+                        public void filter(Geometry geom) {
+                            if (geom != geometry
+                                    && geom.getEnvelopeInternal().getWidth() > radius) {
+                                unwrapped.set(false);
+                            }
+                        }
+                    });
             return unwrapped.get();
         } else {
             return geometry.getEnvelopeInternal().getWidth() <= radius;
         }
-
     }
 
     /**
      * Adds the geometries into the collection by recursively splitting apart geometry collections,
      * so that geoms will contains only simple geometries.
-     * 
+     *
      * @param geoms
      * @param geometry
      * @param geomType
-     * 
      * @return the geometry type that all geometries added to the collection conform to. Worst case
-     *         it's going to be Geometry.class
+     *     it's going to be Geometry.class
      */
     private Class accumulate(List<Geometry> geoms, Geometry geometry, Class geomType) {
         for (int i = 0; i < geometry.getNumGeometries(); i++) {
@@ -212,12 +221,12 @@ public class WrappingProjectionHandler extends ProjectionHandler {
             if (g instanceof GeometryCollection) {
                 gtype = accumulate(geoms, g, geomType);
             } else {
-                if(renderingEnvelope.intersects(g.getEnvelopeInternal())) {
+                if (renderingEnvelope.intersects(g.getEnvelopeInternal())) {
                     geoms.add(g);
                     gtype = g.getClass();
                 }
             }
-            
+
             if (geomType == null) {
                 geomType = g.getClass();
             } else if (!g.getClass().equals(geomType)) {
@@ -239,7 +248,7 @@ public class WrappingProjectionHandler extends ProjectionHandler {
     /**
      * Enables the check using the "half world" heuristic on the input geometries, if larger it
      * assumes they spanned the dateline. Enabled by default
-     * 
+     *
      * @param datelineWrappingCheckEnabled
      */
     public void setDatelineWrappingCheckEnabled(boolean datelineWrappingCheckEnabled) {

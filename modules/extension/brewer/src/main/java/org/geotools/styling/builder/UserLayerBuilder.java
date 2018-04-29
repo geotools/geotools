@@ -18,18 +18,13 @@ package org.geotools.styling.builder;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.geotools.data.DataStore;
 import org.geotools.styling.FeatureTypeConstraint;
 import org.geotools.styling.Style;
 import org.geotools.styling.UserLayer;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class UserLayerBuilder extends AbstractSLDBuilder<UserLayer> {
 
     DataStore inlineFeatureDataStore;
@@ -38,7 +33,8 @@ public class UserLayerBuilder extends AbstractSLDBuilder<UserLayer> {
 
     RemoteOWSBuilder remoteOWS = new RemoteOWSBuilder().unset();
 
-    List<FeatureTypeConstraintBuilder> featureTypeConstraint = new ArrayList<FeatureTypeConstraintBuilder>();
+    List<FeatureTypeConstraintBuilder> featureTypeConstraint =
+            new ArrayList<FeatureTypeConstraintBuilder>();
 
     List<StyleBuilder> userStyles = new ArrayList<StyleBuilder>();
 
@@ -78,9 +74,7 @@ public class UserLayerBuilder extends AbstractSLDBuilder<UserLayer> {
         return sb;
     }
 
-    /**
-     * Reset stroke to default values.
-     */
+    /** Reset stroke to default values. */
     public UserLayerBuilder reset() {
         unset = false;
         inlineFeatureDataStore = null;
@@ -93,7 +87,7 @@ public class UserLayerBuilder extends AbstractSLDBuilder<UserLayer> {
 
     /**
      * Reset builder to provided original stroke.
-     * 
+     *
      * @param stroke
      */
     public UserLayerBuilder reset(UserLayer other) {
@@ -131,8 +125,8 @@ public class UserLayerBuilder extends AbstractSLDBuilder<UserLayer> {
         layer.setInlineFeatureDatastore(inlineFeatureDataStore);
         layer.setInlineFeatureType(inlineFeatureType);
         if (featureTypeConstraint.size() > 0) {
-            FeatureTypeConstraint[] constraints = new FeatureTypeConstraint[featureTypeConstraint
-                    .size()];
+            FeatureTypeConstraint[] constraints =
+                    new FeatureTypeConstraint[featureTypeConstraint.size()];
             for (int i = 0; i < constraints.length; i++) {
                 constraints[i] = featureTypeConstraint.get(i).build();
             }

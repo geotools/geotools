@@ -4,25 +4,20 @@
  *
  *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2005, Open Geospatial Consortium Inc.
- *    
+ *
  *    All Rights Reserved. http://www.opengis.org/legal/
  */
 package org.opengis.filter.spatial;
 
 // OpenGIS direct dependencies
 
-
 /**
  * Marker interface for spatial operators that are a subset of the BBOX relationship.
- * <p>
- * This interface can be used to quickly check when an BBox optimization is applicable.
- * </p>
+ *
+ * <p>This interface can be used to quickly check when an BBox optimization is applicable.
+ *
  * @author Jody Garnett, Refractions Research
  * @since GeoAPI 2.1
- *
- *
  * @source $URL$
  */
-public interface BoundedSpatialOperator extends SpatialOperator {
-
-}
+public interface BoundedSpatialOperator extends SpatialOperator {}

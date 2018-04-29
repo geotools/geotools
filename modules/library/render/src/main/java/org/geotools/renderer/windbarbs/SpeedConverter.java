@@ -18,24 +18,22 @@ package org.geotools.renderer.windbarbs;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.measure.converter.UnitConverter;
 import javax.measure.unit.NonSI;
 import javax.measure.unit.Unit;
 import javax.measure.unit.UnitFormat;
-
 import org.geotools.util.Utilities;
 
 /**
  * Utility class doing speed conversion since windBarbs are based on knots
- * 
+ *
  * @author Daniele Romagnoli, GeoSolutions SAS
  */
 class SpeedConverter {
 
     /** The logger. */
-    private static final Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger(SpeedConverter.class);
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(SpeedConverter.class);
 
     /** UCUM_FORMAT_INSTANCE */
     private static final UnitFormat UCUM_FORMAT_INSTANCE = UnitFormat.getUCUMInstance();
@@ -46,14 +44,14 @@ class SpeedConverter {
 
     private static final double METERS_IN_NAUTICAL_MILE = 1852d;
 
-    private static final double METERS_PER_SECOND_TO_KNOTS = SECONDS_IN_HOUR
-            / METERS_IN_NAUTICAL_MILE;
+    private static final double METERS_PER_SECOND_TO_KNOTS =
+            SECONDS_IN_HOUR / METERS_IN_NAUTICAL_MILE;
 
-    private static final double CENTIMETERS_PER_SECOND_TO_KNOTS = SECONDS_IN_HOUR
-            / (METERS_IN_NAUTICAL_MILE * 100);
+    private static final double CENTIMETERS_PER_SECOND_TO_KNOTS =
+            SECONDS_IN_HOUR / (METERS_IN_NAUTICAL_MILE * 100);
 
-    private static final double KILOMETERS_PER_HOUR_TO_KNOTS = METERS_IN_KILOMETER
-            / METERS_IN_NAUTICAL_MILE;
+    private static final double KILOMETERS_PER_HOUR_TO_KNOTS =
+            METERS_IN_KILOMETER / METERS_IN_NAUTICAL_MILE;
 
     private static final String METER_PER_SECOND = "m/s";
 
@@ -71,7 +69,7 @@ class SpeedConverter {
 
     private static final String KN = NonSI.KNOT.toString();
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({"rawtypes", "unchecked"})
     static double toKnots(double speed, String uom) {
         Utilities.ensureNonNull("uom", uom);
         if (LOGGER.isLoggable(Level.FINE)) {
@@ -109,8 +107,8 @@ class SpeedConverter {
             UnitConverter converter = unit.getConverterTo(NonSI.KNOT);
             return converter.convert(speed);
         } catch (Exception e) {
-            throw new IllegalArgumentException("The supplied units isn't currently supported:"
-                    + uom, e);
+            throw new IllegalArgumentException(
+                    "The supplied units isn't currently supported:" + uom, e);
         }
     }
 }

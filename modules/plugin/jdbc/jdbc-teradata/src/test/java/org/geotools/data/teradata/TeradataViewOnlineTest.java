@@ -29,11 +29,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.spatial.BBOX;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class TeradataViewOnlineTest extends JDBCViewOnlineTest {
 
     @Override
@@ -53,14 +49,17 @@ public class TeradataViewOnlineTest extends JDBCViewOnlineTest {
 
         org.geotools.util.logging.Logging.getLogger("org.geotools.jdbc").setLevel(Level.FINEST);
 
-
         SimpleFeatureType schema = dataStore.getSchema("lakesview2");
-        TessellationInfo tesselation = (TessellationInfo) schema.getGeometryDescriptor().getUserData().get(TessellationInfo.KEY);
+        TessellationInfo tesselation =
+                (TessellationInfo)
+                        schema.getGeometryDescriptor().getUserData().get(TessellationInfo.KEY);
         assertNotNull("expected tessleation info", tesselation);
         assertEquals("lakesview2_geom_idx", tesselation.getIndexTableName());
 
-        // this will use the index but since the index is empty, it will return 0 (despite actually intersecting)
-        BBOX bbox = CommonFactoryFinder.getFilterFactory2(null).bbox("geom", -20, -20, 20, 20, null);
+        // this will use the index but since the index is empty, it will return 0 (despite actually
+        // intersecting)
+        BBOX bbox =
+                CommonFactoryFinder.getFilterFactory2(null).bbox("geom", -20, -20, 20, 20, null);
         assertEquals(0, query(bbox));
 
         // the filter will not use the index since this is essentially a table scan
@@ -85,5 +84,4 @@ public class TeradataViewOnlineTest extends JDBCViewOnlineTest {
         }
         return r;
     }
-
 }

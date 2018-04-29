@@ -17,7 +17,6 @@
 package org.geotools.processing.jai;
 
 import java.awt.image.renderable.RenderedImageFactory;
-
 import javax.media.jai.OperationRegistry;
 import javax.media.jai.OperationRegistrySpi;
 import javax.media.jai.registry.RenderedRegistryMode;
@@ -30,7 +29,6 @@ public class TransparencyFillSpi implements OperationRegistrySpi {
     /** Default constructor. */
     public TransparencyFillSpi() {}
 
-
     public void updateRegistry(OperationRegistry registry) {
         TransparencyFillDescriptor op = new TransparencyFillDescriptor();
         registry.registerDescriptor(op);
@@ -40,5 +38,4 @@ public class TransparencyFillSpi implements OperationRegistrySpi {
         RenderedImageFactory rif = new TransparencyFillRIF();
         registry.registerFactory(RenderedRegistryMode.MODE_NAME, descName, productName, rif);
     }
-
 }

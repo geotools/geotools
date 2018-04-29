@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -21,28 +21,28 @@ import java.awt.image.WritableRaster;
 /**
  * Allows access to a grid of pixels in terms of red, green, blue and alpha components as opposed to
  * raw values
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 interface RgbaAccessor {
 
     /**
      * Sets the current row. This will cause the current row to be read in memory
-     * 
+     *
      * @param y
      */
     void readRow(int y);
-    
+
     /**
      * Gets the color at the current row/column from the in memory buffer of the current row
-     * 
+     *
      * @param rgba
      */
     void getColor(int x, int[] rgba);
-    
+
     /**
      * Sets the color in the current row memory buffer
-     * 
+     *
      * @param x The column to be written
      * @param r
      * @param g
@@ -51,8 +51,6 @@ interface RgbaAccessor {
      */
     public void setColor(int x, int r, int g, int b, int a);
 
-    /**
-     * Writes the current row memory buffer back into the Raster
-     */
+    /** Writes the current row memory buffer back into the Raster */
     public void writeRow(int y, WritableRaster destination);
 }

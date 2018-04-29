@@ -9,5 +9,4 @@ public class SQLServerUuidOnlineTest extends JDBCUuidOnlineTest {
     protected JDBCUuidTestSetup createTestSetup() {
         return new SQLServerUuidTestSetup();
     }
-
 }

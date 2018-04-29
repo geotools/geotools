@@ -22,7 +22,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import org.geotools.gce.imagemosaic.MergeBehavior;
 import org.geotools.gce.imagemosaic.RasterLayerRequest;
 import org.geotools.gce.imagemosaic.RasterLayerResponse;
@@ -37,8 +36,11 @@ import org.opengis.filter.Filter;
 public class DefaultSubmosaicProducerFactory implements SubmosaicProducerFactory {
 
     @Override
-    public List<SubmosaicProducer> createProducers(RasterLayerRequest request,
-            RasterManager rasterManager, RasterLayerResponse response, boolean dryRun) {
+    public List<SubmosaicProducer> createProducers(
+            RasterLayerRequest request,
+            RasterManager rasterManager,
+            RasterLayerResponse response,
+            boolean dryRun) {
         // get merge behavior as per request
         List<SubmosaicProducer> defaultSubmosaicProducers = new ArrayList<>();
         MergeBehavior mergeBehavior = request.getMergeBehavior();
@@ -48,13 +50,14 @@ public class DefaultSubmosaicProducerFactory implements SubmosaicProducerFactory
 
             // create filter to filter results
             // === Custom Domains Management
-            final Map<String, List> requestedAdditionalDomains = request
-                    .getRequestedAdditionalDomains();
+            final Map<String, List> requestedAdditionalDomains =
+                    request.getRequestedAdditionalDomains();
             if (!requestedAdditionalDomains.isEmpty()) {
                 Set<Map.Entry<String, List>> entries = requestedAdditionalDomains.entrySet();
 
                 // Preliminary check on additional domains specification
-                // we can't do stack in case there are multiple values selections for more than one domain
+                // we can't do stack in case there are multiple values selections for more than one
+                // domain
                 checkMultipleSelection(entries);
 
                 // Prepare filtering
@@ -68,37 +71,46 @@ public class DefaultSubmosaicProducerFactory implements SubmosaicProducerFactory
                         multipleSelectionEntry = entry;
                     } else {
                         // create single value domain filter
-                        String domainName = entry.getKey()
-                                + RasterManager.DomainDescriptor.DOMAIN_SUFFIX;
-                        filters.add(rasterManager.getDomainsManager().createFilter(domainName,
-                                Arrays.asList(entry.getValue())));
+                        String domainName =
+                                entry.getKey() + RasterManager.DomainDescriptor.DOMAIN_SUFFIX;
+                        filters.add(
+                                rasterManager
+                                        .getDomainsManager()
+                                        .createFilter(domainName, Arrays.asList(entry.getValue())));
                     }
                 }
 
                 // Anding all filters together
-                Filter andFilter = filters.size() > 0
-                        ? FeatureUtilities.DEFAULT_FILTER_FACTORY.and(filters) : null;
+                Filter andFilter =
+                        filters.size() > 0
+                                ? FeatureUtilities.DEFAULT_FILTER_FACTORY.and(filters)
+                                : null;
 
                 if (multipleSelectionEntry == null) {
                     // Simpler case... no multiple selections. All filter have already been combined
-                    defaultSubmosaicProducers
-                            .add(new DefaultSubmosaicProducer(response, andFilter, dryRun));
+                    defaultSubmosaicProducers.add(
+                            new DefaultSubmosaicProducer(response, andFilter, dryRun));
                 } else {
-                    final String domainName = multipleSelectionEntry.getKey()
-                            + RasterManager.DomainDescriptor.DOMAIN_SUFFIX;
+                    final String domainName =
+                            multipleSelectionEntry.getKey()
+                                    + RasterManager.DomainDescriptor.DOMAIN_SUFFIX;
 
                     // Need to loop over the multiple values of a custom domains
                     final List values = multipleSelectionEntry.getValue();
                     for (Object o : values) {
 
                         // create a filter for this value
-                        Filter valueFilter = rasterManager.getDomainsManager()
-                                .createFilter(domainName, Arrays.asList(o));
+                        Filter valueFilter =
+                                rasterManager
+                                        .getDomainsManager()
+                                        .createFilter(domainName, Arrays.asList(o));
 
                         // combine that filter with the previously merged ones
-                        Filter combinedFilter = andFilter == null ? valueFilter
-                                : FeatureUtilities.DEFAULT_FILTER_FACTORY.and(andFilter,
-                                        valueFilter);
+                        Filter combinedFilter =
+                                andFilter == null
+                                        ? valueFilter
+                                        : FeatureUtilities.DEFAULT_FILTER_FACTORY.and(
+                                                andFilter, valueFilter);
                         defaultSubmosaicProducers.add(
                                 new DefaultSubmosaicProducer(response, combinedFilter, dryRun));
                     }
@@ -106,19 +118,21 @@ public class DefaultSubmosaicProducerFactory implements SubmosaicProducerFactory
             }
         }
 
-        // we don't stack them, either because we are not asked to or because we don't need to although
+        // we don't stack them, either because we are not asked to or because we don't need to
+        // although
         // we were asked
         // let's use a default marker
         if (defaultSubmosaicProducers.isEmpty()) {
-            defaultSubmosaicProducers
-                    .add(new DefaultSubmosaicProducer(response, Filter.INCLUDE, dryRun));
+            defaultSubmosaicProducers.add(
+                    new DefaultSubmosaicProducer(response, Filter.INCLUDE, dryRun));
         }
 
         return defaultSubmosaicProducers;
     }
 
     /**
-     * Check whether the specified custom domains contain multiple selection. That case isn't supported so we will throw an exception
+     * Check whether the specified custom domains contain multiple selection. That case isn't
+     * supported so we will throw an exception
      *
      * @param entries
      */

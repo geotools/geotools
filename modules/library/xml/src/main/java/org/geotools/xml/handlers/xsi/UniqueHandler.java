@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -18,51 +18,41 @@ package org.geotools.xml.handlers.xsi;
 
 import java.util.LinkedList;
 import java.util.List;
-
 import org.geotools.xml.XSIElementHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotRecognizedException;
 
-
 /**
  * UniqueHandler purpose.
- * 
- * <p>
- * represents a unique element. This class is not currently used except as a
- * placeholder.
- * </p>
- * TODO used this class semantically
+ *
+ * <p>represents a unique element. This class is not currently used except as a placeholder. TODO
+ * used this class semantically
  *
  * @author dzwiers, Refractions Research, Inc. http://www.refractions.net
  * @author $Author:$ (last modification)
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public class UniqueHandler extends XSIElementHandler {
     /** 'unique' */
-    public final static String LOCALNAME = "unique";
+    public static final String LOCALNAME = "unique";
+
     private String id;
     private String xpath;
     private SelectorHandler selector;
     private List fields;
 
-    /**
-     * @see java.lang.Object#hashCode()
-     */
+    /** @see java.lang.Object#hashCode() */
     public int hashCode() {
-        return LOCALNAME.hashCode() * ((id == null) ? 1 : id.hashCode()) * ((xpath == null)
-        ? 1 : xpath.hashCode()) * ((fields == null) ? 1 : fields.hashCode());
+        return LOCALNAME.hashCode()
+                * ((id == null) ? 1 : id.hashCode())
+                * ((xpath == null) ? 1 : xpath.hashCode())
+                * ((fields == null) ? 1 : fields.hashCode());
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String,
-     *      java.lang.String)
-     */
-    public XSIElementHandler getHandler(String namespaceURI, String localName)
-        throws SAXException {
+    /** @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String, java.lang.String) */
+    public XSIElementHandler getHandler(String namespaceURI, String localName) throws SAXException {
         if (SchemaHandler.namespaceURI.equalsIgnoreCase(namespaceURI)) {
             // child types
             //
@@ -86,8 +76,7 @@ public class UniqueHandler extends XSIElementHandler {
                 if (selector == null) {
                     selector = sth;
                 } else {
-                    throw new SAXNotRecognizedException(LOCALNAME
-                        + " may only have one child.");
+                    throw new SAXNotRecognizedException(LOCALNAME + " may only have one child.");
                 }
 
                 return sth;
@@ -98,11 +87,10 @@ public class UniqueHandler extends XSIElementHandler {
     }
 
     /**
-     * @see org.geotools.xml.XSIElementHandler#startElement(java.lang.String,
-     *      java.lang.String, org.xml.sax.Attributes)
+     * @see org.geotools.xml.XSIElementHandler#startElement(java.lang.String, java.lang.String,
+     *     org.xml.sax.Attributes)
      */
-    public void startElement(String namespaceURI, String localName,
-        Attributes atts){
+    public void startElement(String namespaceURI, String localName, Attributes atts) {
         id = atts.getValue("", "id");
 
         if (id == null) {
@@ -116,9 +104,7 @@ public class UniqueHandler extends XSIElementHandler {
         }
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#getLocalName()
-     */
+    /** @see org.geotools.xml.XSIElementHandler#getLocalName() */
     public String getLocalName() {
         return LOCALNAME;
     }
@@ -159,18 +145,13 @@ public class UniqueHandler extends XSIElementHandler {
         return selector;
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#getHandlerType()
-     */
+    /** @see org.geotools.xml.XSIElementHandler#getHandlerType() */
     public int getHandlerType() {
         return DEFAULT;
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#endElement(java.lang.String,
-     *      java.lang.String)
-     */
-    public void endElement(String namespaceURI, String localName){
+    /** @see org.geotools.xml.XSIElementHandler#endElement(java.lang.String, java.lang.String) */
+    public void endElement(String namespaceURI, String localName) {
         // do nothing
     }
 }

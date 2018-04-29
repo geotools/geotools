@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -21,22 +21,17 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.impl.Jdk14Logger;
 
-
 /**
- * A factory for loggers that redirect all Java logging events to the Apache's
- * <A HREF="http://jakarta.apache.org/commons/logging/">Commons-logging</A> framework.
+ * A factory for loggers that redirect all Java logging events to the Apache's <A
+ * HREF="http://jakarta.apache.org/commons/logging/">Commons-logging</A> framework.
  *
  * @since 2.4
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */
 public class CommonsLoggerFactory extends LoggerFactory<Log> {
-    /**
-     * The unique instance of this factory.
-     */
+    /** The unique instance of this factory. */
     private static CommonsLoggerFactory factory;
 
     /**
@@ -61,8 +56,8 @@ public class CommonsLoggerFactory extends LoggerFactory<Log> {
     }
 
     /**
-     * Returns the implementation to use for the logger of the specified name,
-     * or {@code null} if the logger would delegates to Java logging anyway.
+     * Returns the implementation to use for the logger of the specified name, or {@code null} if
+     * the logger would delegates to Java logging anyway.
      */
     protected Log getImplementation(final String name) {
         final Log log = LogFactory.getLog(name);
@@ -72,9 +67,7 @@ public class CommonsLoggerFactory extends LoggerFactory<Log> {
         return log;
     }
 
-    /**
-     * Wraps the specified {@linkplain #getImplementation implementation} in a Java logger.
-     */
+    /** Wraps the specified {@linkplain #getImplementation implementation} in a Java logger. */
     protected Logger wrap(String name, Log implementation) {
         return new CommonsLogger(name, implementation);
     }

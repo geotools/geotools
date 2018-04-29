@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2011, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -22,7 +22,7 @@ import java.net.URL;
 
 /**
  * Defines the inteface by which an {@link AbstractOpenWebService} executes HTTP requests.
- * 
+ *
  * @author groldan
  * @see HTTPResponse
  * @see SimpleHttpClient
@@ -31,26 +31,23 @@ import java.net.URL;
 public interface HTTPClient {
 
     /**
-     * Executes an HTTP POST request against the provided URL, sending the contents of
-     * {@code postContent} as the POST method body and setting the Content-Type request header to
-     * {@code postContentType} if given, and returns the server response.
-     * <p>
-     * If an HTTP authentication {@link #getUser() user} and {@link #getPassword() password} is set,
-     * the appropriate authentication HTTP header will be sent with the request.
-     * </p>
-     * <p>
-     * If a {@link #getConnectTimeout() connection timeout} is set, the http connection will be set
-     * to respect that timeout.
-     * <p>
-     * If a {@link #getReadTimeout() read timeout} is set, the http connection will be set to
+     * Executes an HTTP POST request against the provided URL, sending the contents of {@code
+     * postContent} as the POST method body and setting the Content-Type request header to {@code
+     * postContentType} if given, and returns the server response.
+     *
+     * <p>If an HTTP authentication {@link #getUser() user} and {@link #getPassword() password} is
+     * set, the appropriate authentication HTTP header will be sent with the request.
+     *
+     * <p>If a {@link #getConnectTimeout() connection timeout} is set, the http connection will be
+     * set to respect that timeout.
+     *
+     * <p>If a {@link #getReadTimeout() read timeout} is set, the http connection will be set to
      * respect it.
-     * 
-     * @param url
-     *            the URL against which to execute the POST request
-     * @param postContent
-     *            an input stream with the contents of the POST body
-     * @param postContentType
-     *            the MIME type of the contents sent as the request POST body, can be {@code null}
+     *
+     * @param url the URL against which to execute the POST request
+     * @param postContent an input stream with the contents of the POST body
+     * @param postContentType the MIME type of the contents sent as the request POST body, can be
+     *     {@code null}
      * @return the {@link HTTPResponse} encapsulating the response to the HTTP POST request
      * @throws IOException
      */
@@ -58,75 +55,49 @@ public interface HTTPClient {
 
     /**
      * Executes an HTTP GET request against the provided URL and returns the server response.
-     * <p>
-     * If an HTTP authentication {@link #getUser() user} and {@link #getPassword() password} is set,
-     * the appropriate authentication HTTP header will be sent with the request.
-     * </p>
-     * <p>
-     * If a {@link #getConnectTimeout() connection timeout} is set, the http connection will be set
-     * to respect that timeout.
-     * <p>
-     * If a {@link #getReadTimeout() read timeout} is set, the http connection will be set to
+     *
+     * <p>If an HTTP authentication {@link #getUser() user} and {@link #getPassword() password} is
+     * set, the appropriate authentication HTTP header will be sent with the request.
+     *
+     * <p>If a {@link #getConnectTimeout() connection timeout} is set, the http connection will be
+     * set to respect that timeout.
+     *
+     * <p>If a {@link #getReadTimeout() read timeout} is set, the http connection will be set to
      * respect it.
-     * 
-     * @param url
-     *            the URL to retrieve
+     *
+     * @param url the URL to retrieve
      * @return an {@link HTTPResponse} encapsulating the response to the HTTP GET request
      * @throws IOException
      */
     HTTPResponse get(URL url) throws IOException;
 
-    /**
-     * @return the HTTP BASIC Authentication user name, or {@code null} if not set
-     */
+    /** @return the HTTP BASIC Authentication user name, or {@code null} if not set */
     public String getUser();
 
-    /**
-     * @param user
-     *            the HTTP BASIC Authentication user name
-     */
+    /** @param user the HTTP BASIC Authentication user name */
     public void setUser(String user);
 
-    /**
-     * @return the HTTP BASIC Authentication password, or {@code null} if not set
-     */
+    /** @return the HTTP BASIC Authentication password, or {@code null} if not set */
     public String getPassword();
 
-    /**
-     * @param password
-     *            the HTTP BASIC Authentication password
-     */
+    /** @param password the HTTP BASIC Authentication password */
     public void setPassword(String password);
 
-    /**
-     * @return the tcp/ip connect timeout in seconds
-     */
+    /** @return the tcp/ip connect timeout in seconds */
     public int getConnectTimeout();
 
-    /**
-     * @param connectTimeout
-     *            tcp/ip connect timeout in seconds
-     */
+    /** @param connectTimeout tcp/ip connect timeout in seconds */
     public void setConnectTimeout(int connectTimeout);
 
-    /**
-     * @return the socket read timeout in seconds
-     */
+    /** @return the socket read timeout in seconds */
     public int getReadTimeout();
 
-    /**
-     * @param readTimeout
-     *            socket read timeout in seconds
-     */
+    /** @param readTimeout socket read timeout in seconds */
     public void setReadTimeout(int readTimeout);
 
-    /**
-     * @param tryGZIP
-     */
+    /** @param tryGZIP */
     void setTryGzip(boolean tryGZIP);
-    
-    /**
-     * @return whether gzip content encoding will be attempted; defaults to {@code false}
-     */
+
+    /** @return whether gzip content encoding will be attempted; defaults to {@code false} */
     boolean isTryGzip();
 }

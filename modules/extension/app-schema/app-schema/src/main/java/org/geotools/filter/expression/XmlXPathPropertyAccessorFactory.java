@@ -18,7 +18,6 @@
 package org.geotools.filter.expression;
 
 import java.util.List;
-
 import org.geotools.data.complex.xml.XmlXpathFilterData;
 import org.geotools.factory.Hints;
 import org.geotools.feature.IllegalAttributeException;
@@ -29,20 +28,17 @@ import org.xml.sax.helpers.NamespaceSupport;
 /**
  * PropertyAccessorFactory used to create property accessors which can handle xpath expressions
  * against instances of {@link Feature}.
- * 
- * @author Russell Petty (GeoScience Victoria)
- * @author Rini Angreani (CSIRO Earth Science and Resource Engineering) 
  *
+ * @author Russell Petty (GeoScience Victoria)
+ * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
  * @source $URL$
  */
 public class XmlXPathPropertyAccessorFactory implements PropertyAccessorFactory {
-    /**
-     * Namespace support hint
-     */
+    /** Namespace support hint */
     public static Hints.Key NAMESPACE_SUPPORT = new Hints.Key(NamespaceSupport.class);
 
-    public PropertyAccessor createPropertyAccessor(Class type, String xpath, Class target,
-            Hints hints) {
+    public PropertyAccessor createPropertyAccessor(
+            Class type, String xpath, Class target, Hints hints) {
         if (XmlXpathFilterData.class.isAssignableFrom(type)) {
             return new XmlXPathPropertyAcessor();
         }
@@ -61,8 +57,9 @@ public class XmlXPathPropertyAccessorFactory implements PropertyAccessorFactory 
             XmlXpathFilterData xmlResponse = (XmlXpathFilterData) object;
             String indexXpath = createIndexedXpath(xmlResponse, xpath);
 
-            List<String> ls = XmlXpathUtilites.getXPathValues(xmlResponse.getNamespaces(),
-                    indexXpath, xmlResponse.getDoc());
+            List<String> ls =
+                    XmlXpathUtilites.getXPathValues(
+                            xmlResponse.getNamespaces(), indexXpath, xmlResponse.getDoc());
             if (ls != null && !ls.isEmpty()) {
                 return ls.get(0);
             }
@@ -85,14 +82,18 @@ public class XmlXPathPropertyAccessorFactory implements PropertyAccessorFactory 
             String unindexedXpath = XmlXpathUtilites.removeIndexes(itemXpath);
             int position = xpathString.indexOf(unindexedXpath);
             if (position != 0) {
-                throw new RuntimeException("xpath passed in does not begin with itemXpath"
-                        + "/n xpathString =" + xpathString + "/n itemXpath =" + itemXpath);
+                throw new RuntimeException(
+                        "xpath passed in does not begin with itemXpath"
+                                + "/n xpathString ="
+                                + xpathString
+                                + "/n itemXpath ="
+                                + itemXpath);
             }
 
             StringBuffer sb = new StringBuffer(itemXpath);
             int count = xmlResponse.getCount();
             if (count > -1) {
-                    sb.append("[" + xmlResponse.getCount() + "]");
+                sb.append("[" + xmlResponse.getCount() + "]");
             }
             sb.append(xpathString.substring(unindexedXpath.length()));
             return sb.toString();

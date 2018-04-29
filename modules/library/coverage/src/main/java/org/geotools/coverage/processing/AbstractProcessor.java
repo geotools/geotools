@@ -18,17 +18,13 @@ package org.geotools.coverage.processing;
 
 import org.opengis.coverage.Coverage;
 
-
 /**
  * Base class for {@linkplain Coverage coverage} processor implementations.
  *
  * @since 2.2
- *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @deprecated use {@link CoverageProcessor}
  */
-public abstract class AbstractProcessor extends CoverageProcessor{
-	
-}
+public abstract class AbstractProcessor extends CoverageProcessor {}

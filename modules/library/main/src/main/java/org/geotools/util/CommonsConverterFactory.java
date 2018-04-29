@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -25,59 +25,56 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-
 import java.util.TimeZone;
 import org.geotools.factory.Hints;
 
 /**
  * Convert String to common scalar values.
- * <p>
- * Formally this class made use of the apache commons {@link org.apache.commons.beanutils.Converter}
- * interface.
- * 
+ *
+ * <p>Formally this class made use of the apache commons {@link
+ * org.apache.commons.beanutils.Converter} interface.
+ *
  * @author Justin Deoliveira, The Open Planning Project
  * @since 2.4
  * @version 2.7
- *
- *
  * @source $URL$
  */
 public class CommonsConverterFactory implements ConverterFactory {
-	
+
     // some additional converters
-    /**
-     * converts a string to a uri.
-     */
+    /** converts a string to a uri. */
     static class URIConverter implements Converter {
         public <T> T convert(Object source, Class<T> target) throws Exception {
-            if( source == null ) return null;
+            if (source == null) return null;
             String string = (String) source;
             try {
-                    URI uri = new URI( string );
-                    return target.cast( uri );
-            } 
-            catch (URISyntaxException e) { } 
+                URI uri = new URI(string);
+                return target.cast(uri);
+            } catch (URISyntaxException e) {
+            }
             return null;
         }
     }
+
     static class NumberConverter implements Converter {
         public <T> T convert(Object source, Class<T> target) throws Exception {
-            if( source == null ) return null;
+            if (source == null) return null;
             String string = (String) source;
             Number parsed = null;
-            try { //first try integer
-                parsed = (Number) new IntegerConverter().convert(string,Integer.class);
+            try { // first try integer
+                parsed = (Number) new IntegerConverter().convert(string, Integer.class);
+            } catch (Exception e) {
             }
-            catch(Exception e) {}            
-            if ( parsed == null ) { //try double
-                parsed = (Number) new DoubleConverter().convert(string,Double.class);
-            }            
+            if (parsed == null) { // try double
+                parsed = (Number) new DoubleConverter().convert(string, Double.class);
+            }
             return target.cast(parsed);
         }
     }
+
     static class ByteConverter implements Converter {
         public <T> T convert(Object source, Class<T> target) throws Exception {
-            if( source == null ) return null;
+            if (source == null) return null;
             String string = (String) source;
             try {
                 Byte parsed = new Byte(string);
@@ -87,9 +84,10 @@ public class CommonsConverterFactory implements ConverterFactory {
             }
         }
     }
+
     static class ShortConverter implements Converter {
         public <T> T convert(Object source, Class<T> target) throws Exception {
-            if( source == null ) return null;
+            if (source == null) return null;
             String string = (String) source;
             try {
                 Short parsed = new Short(string);
@@ -99,9 +97,10 @@ public class CommonsConverterFactory implements ConverterFactory {
             }
         }
     }
+
     static class IntegerConverter implements Converter {
         public <T> T convert(Object source, Class<T> target) throws Exception {
-            if( source == null ) return null;
+            if (source == null) return null;
             String string = (String) source;
             try {
                 Integer parsed = new Integer(string);
@@ -111,9 +110,10 @@ public class CommonsConverterFactory implements ConverterFactory {
             }
         }
     }
+
     static class LongConverter implements Converter {
         public <T> T convert(Object source, Class<T> target) throws Exception {
-            if( source == null ) return null;
+            if (source == null) return null;
             String string = (String) source;
             try {
                 Long parsed = new Long(string);
@@ -123,9 +123,10 @@ public class CommonsConverterFactory implements ConverterFactory {
             }
         }
     }
+
     static class BigIntegerConverter implements Converter {
         public <T> T convert(Object source, Class<T> target) throws Exception {
-            if( source == null ) return null;
+            if (source == null) return null;
             String string = (String) source;
             try {
                 BigInteger parsed = new BigInteger(string);
@@ -135,9 +136,10 @@ public class CommonsConverterFactory implements ConverterFactory {
             }
         }
     }
+
     static class FloatConverter implements Converter {
         public <T> T convert(Object source, Class<T> target) throws Exception {
-            if( source == null ) return null;
+            if (source == null) return null;
             String string = (String) source;
             try {
                 Float parsed = new Float(string);
@@ -147,9 +149,10 @@ public class CommonsConverterFactory implements ConverterFactory {
             }
         }
     }
+
     static class DoubleConverter implements Converter {
         public <T> T convert(Object source, Class<T> target) throws Exception {
-            if( source == null ) return null;
+            if (source == null) return null;
             String string = (String) source;
             try {
                 Double parsed = new Double(string);
@@ -159,9 +162,10 @@ public class CommonsConverterFactory implements ConverterFactory {
             }
         }
     }
+
     static class BigDecimalConverter implements Converter {
         public <T> T convert(Object source, Class<T> target) throws Exception {
-            if( source == null ) return null;
+            if (source == null) return null;
             String string = (String) source;
             try {
                 BigDecimal parsed = new BigDecimal(string);
@@ -171,82 +175,82 @@ public class CommonsConverterFactory implements ConverterFactory {
             }
         }
     }
+
     static class BooleanConverter implements Converter {
-//        static final Set<String> YES = new HashSet<String>(
-//                Arrays.asList(new String[]{"YES","Y","TRUE","ON","1"}) );
-//        static final Set<String> NO = new HashSet<String>(
-//                Arrays.asList(new String[]{"NO","N","FALSE","OFF","0"}) );
-        
+        //        static final Set<String> YES = new HashSet<String>(
+        //                Arrays.asList(new String[]{"YES","Y","TRUE","ON","1"}) );
+        //        static final Set<String> NO = new HashSet<String>(
+        //                Arrays.asList(new String[]{"NO","N","FALSE","OFF","0"}) );
+
         public <T> T convert(Object source, Class<T> target) throws Exception {
-            if( source == null ) return null;
+            if (source == null) return null;
             String string = (String) source;
-//            string = string.toUpperCase();
-//            if( YES.contains(string) ){
-//                return target.cast( Boolean.TRUE );
-//            }
-//            else if( NO.contains(string)){
-//                return target.cast( Boolean.FALSE );
-//            }
-//            else {
-//                return null;
-//            }
-            if (string.equalsIgnoreCase("yes") ||
-                string.equalsIgnoreCase("y") ||
-                string.equalsIgnoreCase("true") ||
-                string.equalsIgnoreCase("on") ||
-                string.equalsIgnoreCase("1")) {
+            //            string = string.toUpperCase();
+            //            if( YES.contains(string) ){
+            //                return target.cast( Boolean.TRUE );
+            //            }
+            //            else if( NO.contains(string)){
+            //                return target.cast( Boolean.FALSE );
+            //            }
+            //            else {
+            //                return null;
+            //            }
+            if (string.equalsIgnoreCase("yes")
+                    || string.equalsIgnoreCase("y")
+                    || string.equalsIgnoreCase("true")
+                    || string.equalsIgnoreCase("on")
+                    || string.equalsIgnoreCase("1")) {
                 return target.cast(Boolean.TRUE);
-            } else if (string.equalsIgnoreCase("no") ||
-                       string.equalsIgnoreCase("n") ||
-                       string.equalsIgnoreCase("false") ||
-                       string.equalsIgnoreCase("off") ||
-                       string.equalsIgnoreCase("0")) {
+            } else if (string.equalsIgnoreCase("no")
+                    || string.equalsIgnoreCase("n")
+                    || string.equalsIgnoreCase("false")
+                    || string.equalsIgnoreCase("off")
+                    || string.equalsIgnoreCase("0")) {
                 return target.cast(Boolean.FALSE);
             } else {
                 return null;
             }
         }
     }
+
     static class CharacterConverter implements Converter {
         public <T> T convert(Object source, Class<T> target) throws Exception {
-            if( source == null ) return null;
+            if (source == null) return null;
             String string = (String) source;
-            if( string.length() > 0 ){
-                return target.cast( string.charAt(0) );
+            if (string.length() > 0) {
+                return target.cast(string.charAt(0));
             }
             return null;
         }
     }
-    
+
     static class DateConverter implements Converter {
         public <T> T convert(Object source, Class<T> target) throws Exception {
-            if( source == null ) return null;
+            if (source == null) return null;
             String string = (String) source;
-            
+
             try {
-                SimpleDateFormat format1 = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss.S a" );
+                SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S a");
                 Date parsed = format1.parse(string);
-                return target.cast( parsed );
-            }
-            catch( Exception ignore){
+                return target.cast(parsed);
+            } catch (Exception ignore) {
             }
             try {
-                SimpleDateFormat format2 = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ssa" );
+                SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssa");
                 Date parsed = format2.parse(string);
-                return target.cast( parsed );
-            }
-            catch( Exception ignore){
+                return target.cast(parsed);
+            } catch (Exception ignore) {
             }
             return null;
         }
     }
-    
+
     static class URLConverter implements Converter {
         public <T> T convert(Object source, Class<T> target) throws Exception {
-            if( source == null ) return null;
+            if (source == null) return null;
             String string = (String) source;
             try {
-                URL parsed = new URL( string );
+                URL parsed = new URL(string);
                 return target.cast(parsed);
             } catch (Exception e) {
                 try {
@@ -258,10 +262,10 @@ public class CommonsConverterFactory implements ConverterFactory {
             }
         }
     }
-    
+
     static class SQLDateConverter implements Converter {
         public <T> T convert(Object source, Class<T> target) throws Exception {
-            if( source == null ) return null;
+            if (source == null) return null;
             String string = (String) source;
             try {
                 java.sql.Date parsed = java.sql.Date.valueOf(string);
@@ -271,10 +275,10 @@ public class CommonsConverterFactory implements ConverterFactory {
             }
         }
     }
-    
+
     static class SQLTimeConverter implements Converter {
         public <T> T convert(Object source, Class<T> target) throws Exception {
-            if( source == null ) return null;
+            if (source == null) return null;
             String string = (String) source;
             try {
                 java.sql.Time parsed = java.sql.Time.valueOf(string);
@@ -284,9 +288,10 @@ public class CommonsConverterFactory implements ConverterFactory {
             }
         }
     }
+
     static class SQLTimestampConverter implements Converter {
         public <T> T convert(Object source, Class<T> target) throws Exception {
-            if( source == null ) return null;
+            if (source == null) return null;
             String string = (String) source;
             try {
                 java.sql.Timestamp parsed = java.sql.Timestamp.valueOf(string);
@@ -296,9 +301,10 @@ public class CommonsConverterFactory implements ConverterFactory {
             }
         }
     }
+
     static class FileConverter implements Converter {
         public <T> T convert(Object source, Class<T> target) throws Exception {
-            if( source == null ) return null;
+            if (source == null) return null;
             String string = (String) source;
             try {
                 File parsed = new File(string);
@@ -308,9 +314,10 @@ public class CommonsConverterFactory implements ConverterFactory {
             }
         }
     }
+
     static class TimeZoneConverter implements Converter {
         public <T> T convert(Object source, Class<T> target) throws Exception {
-            if( source == null ) return null;
+            if (source == null) return null;
             String string = (String) source;
             TimeZone timezone = TimeZone.getTimeZone(string);
             if (!string.equals(timezone.getID())) {
@@ -321,10 +328,9 @@ public class CommonsConverterFactory implements ConverterFactory {
             return target.cast(timezone);
         }
     }
-    /**
-     * No need for FastHashMap - we are only registering during construction
-     */
+    /** No need for FastHashMap - we are only registering during construction */
     private static HashMap<Class<?>, Converter> register = new HashMap<Class<?>, Converter>();
+
     static {
         register.put(URI.class, new URIConverter());
         register.put(Number.class, new NumberConverter());
@@ -348,36 +354,33 @@ public class CommonsConverterFactory implements ConverterFactory {
         register.put(Boolean.TYPE, new BooleanConverter());
         register.put(Character.class, new CharacterConverter());
         register.put(Character.TYPE, new CharacterConverter());
-        
+
         // the follow was required to pass tests
         // (they were not registered explicitly)
         // java.lang.Class</li>
-        register.put( File.class, new FileConverter() );
-        register.put( URL.class, new URLConverter() );
-        register.put(java.sql.Date.class, new SQLDateConverter() );
-        register.put(java.sql.Time.class, new SQLTimeConverter() );
-        register.put(java.sql.Timestamp.class, new SQLTimestampConverter() );
+        register.put(File.class, new FileConverter());
+        register.put(URL.class, new URLConverter());
+        register.put(java.sql.Date.class, new SQLDateConverter());
+        register.put(java.sql.Time.class, new SQLTimeConverter());
+        register.put(java.sql.Timestamp.class, new SQLTimestampConverter());
         register.put(TimeZone.class, new TimeZoneConverter());
-        
-        register.put(Date.class, new DateConverter() );
 
+        register.put(Date.class, new DateConverter());
     }
-	
-	
-	/**
-	 * Delegates to {@link ConvertUtils#lookup(java.lang.Class)} to create a 
-	 * converter instance.
-	 * 
-	 * @see ConverterFactory#createConverter(Class, Class, Hints). 
-	 */
-	public Converter createConverter(Class<?> source, Class<?> target, Hints hints) {
-		if ( source == null || !source.equals( String.class ) ) {
-		    return null; // only do strings
-		}
-		Converter converter = register.get(target);
-		if( converter != null ){
-		    return converter;
-		}
-		return null;
-	}
+
+    /**
+     * Delegates to {@link ConvertUtils#lookup(java.lang.Class)} to create a converter instance.
+     *
+     * @see ConverterFactory#createConverter(Class, Class, Hints).
+     */
+    public Converter createConverter(Class<?> source, Class<?> target, Hints hints) {
+        if (source == null || !source.equals(String.class)) {
+            return null; // only do strings
+        }
+        Converter converter = register.get(target);
+        if (converter != null) {
+            return converter;
+        }
+        return null;
+    }
 }

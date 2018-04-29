@@ -3,7 +3,7 @@
  *    http://geotools.org
  *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -16,6 +16,8 @@
  */
 package org.geotools.validation.xml;
 
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -24,10 +26,8 @@ import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
-
 import org.geotools.filter.ExpressionDOMParser;
 import org.geotools.filter.FilterDOMParser;
 import org.geotools.filter.FilterTransformer;
@@ -36,17 +36,11 @@ import org.opengis.filter.Filter;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-
-
 /**
  * ArgHelper purpose.
  *
  * @author dzwiers, Refractions Research, Inc.
  * @author $Author: dmzwiers $ (last modification)
- *
- *
  * @source $URL$
  * @version $Id$
  */
@@ -60,22 +54,17 @@ public class ArgHelper {
 
     /**
      * getArgumentInstance purpose.
-     * 
-     * <p>
-     * Returns an instance for the specified argument type from the Element
-     * provided.
-     * </p>
+     *
+     * <p>Returns an instance for the specified argument type from the Element provided.
      *
      * @param elementName String the argument element name (type name).
      * @param value Element the element to create the Argument from.
-     *
      * @return The Specified argument in Object form.
-     *
      * @throws ValidationException DOCUMENT ME!
      * @throws NullPointerException DOCUMENT ME!
      */
     public static Object getArgumentInstance(String elementName, Element value)
-        throws ValidationException {
+            throws ValidationException {
         if (elementName == null) {
             throw new NullPointerException("A Typename must be specified.");
         }
@@ -91,22 +80,17 @@ public class ArgHelper {
 
     /**
      * getArgumentInstance purpose.
-     * 
-     * <p>
-     * Returns an instance for the specified argument type from the Element
-     * provided.
-     * </p>
+     *
+     * <p>Returns an instance for the specified argument type from the Element provided.
      *
      * @param elementName String the argument element name (type name).
      * @param value String the element to create the Argument from.
-     *
      * @return The Specified argument in Object form.
-     *
      * @throws ValidationException DOCUMENT ME!
      * @throws NullPointerException DOCUMENT ME!
      */
     public static Object getArgumentInstance(String elementName, String value)
-        throws ValidationException {
+            throws ValidationException {
         if (elementName == null) {
             throw new NullPointerException("A Typename must be specified.");
         }
@@ -122,21 +106,16 @@ public class ArgHelper {
 
     /**
      * getArgumentType purpose.
-     * 
-     * <p>
-     * Finds the appropriate argument type if one exists.
-     * </p>
+     *
+     * <p>Finds the appropriate argument type if one exists.
      *
      * @param o The Object to search for it's type.
-     *
      * @return The Object type or "" if not found.
-     *
      * @throws NullPointerException DOCUMENT ME!
      */
     public static String getArgumentType(Object o) {
         if (o == null) {
-            throw new NullPointerException(
-                "An argument instance must be specified.");
+            throw new NullPointerException("An argument instance must be specified.");
         }
 
         if (o instanceof Class) {
@@ -156,23 +135,17 @@ public class ArgHelper {
 
     /**
      * getArgumentEncoding purpose.
-     * 
-     * <p>
-     * Creates an XML encodeing of the Object if it is a known argument type.
-     * </p>
+     *
+     * <p>Creates an XML encodeing of the Object if it is a known argument type.
      *
      * @param o Object the object to attempt to encode.
-     *
      * @return an XML string if it is a known type, "" otherwise.
-     *
      * @throws ValidationException DOCUMENT ME!
      * @throws NullPointerException DOCUMENT ME!
      */
-    public static String getArgumentEncoding(Object o)
-        throws ValidationException {
+    public static String getArgumentEncoding(Object o) throws ValidationException {
         if (o == null) {
-            throw new NullPointerException(
-                "An argument instance must be specified.");
+            throw new NullPointerException("An argument instance must be specified.");
         }
 
         for (int i = 0; i < argumentTypeMappings.length; i++)
@@ -185,8 +158,7 @@ public class ArgHelper {
 
     public static String getArgumentStringEncoding(Object o) {
         if (o == null) {
-            throw new NullPointerException(
-                "An argument instance must be specified.");
+            throw new NullPointerException("An argument instance must be specified.");
         }
 
         for (int i = 0; i < argumentTypeMappings.length; i++)
@@ -199,10 +171,8 @@ public class ArgHelper {
 
     /**
      * Mapping purpose.
-     * 
-     * <p>
-     * Used to mask attribute specific fucntions from the user.
-     * </p>
+     *
+     * <p>Used to mask attribute specific fucntions from the user.
      *
      * @author dzwiers, Refractions Research, Inc.
      * @author $Author: dmzwiers $ (last modification)
@@ -211,10 +181,8 @@ public class ArgHelper {
     protected interface Mapping {
         /**
          * getType purpose.
-         * 
-         * <p>
-         * Returns a constant type name.
-         * </p>
+         *
+         * <p>Returns a constant type name.
          *
          * @return String a constant type name.
          */
@@ -222,43 +190,32 @@ public class ArgHelper {
 
         /**
          * getInstance purpose.
-         * 
-         * <p>
-         * Creates an instance of the appropriate type for this Mapping.  This
-         * is where type-dependant magic occurs
-         * </p>
+         *
+         * <p>Creates an instance of the appropriate type for this Mapping. This is where
+         * type-dependant magic occurs
          *
          * @param value The Element to interpret.
-         *
          * @return The particular argument type expected.
          */
-        public abstract Object getInstance(Element value)
-            throws ValidationException;
+        public abstract Object getInstance(Element value) throws ValidationException;
 
         /**
          * getInstance purpose.
-         * 
-         * <p>
-         * Creates an instance of the appropriate type for this Mapping.  This
-         * is where type-dependant magic occurs
-         * </p>
+         *
+         * <p>Creates an instance of the appropriate type for this Mapping. This is where
+         * type-dependant magic occurs
          *
          * @param value The Element to interpret.
-         *
          * @return The particular argument type expected.
          */
-        public abstract Object getInstance(String value)
-            throws ValidationException;
+        public abstract Object getInstance(String value) throws ValidationException;
 
         /**
          * isClassInstance purpose.
-         * 
-         * <p>
-         * Tests to see if this class is of the expected type.
-         * </p>
+         *
+         * <p>Tests to see if this class is of the expected type.
          *
          * @param obj The object to test.
-         *
          * @return true when they are compatible
          */
         public abstract boolean isClassInstance(Object obj);
@@ -267,16 +224,12 @@ public class ArgHelper {
 
         /**
          * encode purpose.
-         * 
-         * <p>
-         * Creates an XML String from the obj provided, if the  object is of
-         * the expected type for this mapping.
-         * </p>
+         *
+         * <p>Creates an XML String from the obj provided, if the object is of the expected type for
+         * this mapping.
          *
          * @param obj The object to try and encode.
-         *
-         * @return An XML String if the type is correct, ClassCastException
-         *         otherwise.
+         * @return An XML String if the type is correct, ClassCastException otherwise.
          */
         public abstract String encode(Object obj) throws ValidationException;
 
@@ -284,26 +237,20 @@ public class ArgHelper {
 
         /**
          * getElementName purpose.
-         * 
-         * <p>
-         * This is the name of the element represented.
-         * </p>
          *
+         * <p>This is the name of the element represented.
          */
         public abstract String getElementName();
     }
 
     /**
      * FilterMapping purpose.
-     * 
-     * <p>
-     * Represents the specifics for the Filter Argument type
-     * </p>
+     *
+     * <p>Represents the specifics for the Filter Argument type
      *
      * @author dzwiers, Refractions Research, Inc.
      * @author $Author: dmzwiers $ (last modification)
      * @version $Id$
-     *
      * @see Mapping
      */
     protected static class FilterMapping implements Mapping {
@@ -311,7 +258,6 @@ public class ArgHelper {
          * Implementation of getType.
          *
          * @return the type name
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#getType()
          */
         public String getType() {
@@ -322,7 +268,6 @@ public class ArgHelper {
          * Implementation of getElementName.
          *
          * @return the element name
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#getElementName()
          */
         public String getElementName() {
@@ -332,17 +277,13 @@ public class ArgHelper {
         /**
          * Implementation of getInstance.
          *
-         * @param value Element the element to parse into an instance of type
-         *        Filter
-         *
+         * @param value Element the element to parse into an instance of type Filter
          * @return Filter the filter instance if posible, null otherwise.
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#getInstance(org.w3c.dom.Element)
          */
         public Object getInstance(Element value) {
             // value must be the node for "ogc:Filter"
-            if ((value != null)
-                    && ((value = ReaderUtils.getFirstChildElement(value)) != null)) {
+            if ((value != null) && ((value = ReaderUtils.getFirstChildElement(value)) != null)) {
                 return FilterDOMParser.parseFilter(value);
             }
 
@@ -374,8 +315,7 @@ public class ArgHelper {
             }
 
             // value must be the node for "ogc:Filter"
-            if ((value != null)
-                    && ((value = ReaderUtils.getFirstChildElement(value)) != null)) {
+            if ((value != null) && ((value = ReaderUtils.getFirstChildElement(value)) != null)) {
                 return FilterDOMParser.parseFilter(value);
             }
 
@@ -386,9 +326,7 @@ public class ArgHelper {
          * Implementation of isClassInstance.
          *
          * @param c The Object to test
-         *
          * @return true when both of type Filter
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#isClassInstance(java.lang.Object)
          */
         public boolean isClassInstance(Object c) {
@@ -403,13 +341,10 @@ public class ArgHelper {
          * Implementation of encode.
          *
          * @param obj An object to encode as a filter.
-         *
          * @return String the XML encoding
-         *
          * @throws ValidationException DOCUMENT ME!
          * @throws NullPointerException DOCUMENT ME!
          * @throws ClassCastException when obj is not of type Filter
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#encode(java.lang.Object)
          */
         public String encode(Object obj) throws ValidationException {
@@ -420,14 +355,14 @@ public class ArgHelper {
             }
 
             if (!(obj instanceof Filter)) {
-                throw new ClassCastException("Cannot cast "
-                    + obj.getClass().toString() + " to a Filter.");
+                throw new ClassCastException(
+                        "Cannot cast " + obj.getClass().toString() + " to a Filter.");
             }
 
             f = (Filter) obj;
 
             StringWriter sw = new StringWriter();
-            
+
             try {
                 sw.write((new FilterTransformer()).transform(f));
             } catch (TransformerException e) {
@@ -445,8 +380,8 @@ public class ArgHelper {
             }
 
             if (!(obj instanceof Filter)) {
-                throw new ClassCastException("Cannot cast "
-                    + obj.getClass().toString() + " to a Filter.");
+                throw new ClassCastException(
+                        "Cannot cast " + obj.getClass().toString() + " to a Filter.");
             }
 
             f = (Filter) obj;
@@ -465,10 +400,8 @@ public class ArgHelper {
 
     /**
      * GeometryMapping purpose.
-     * 
-     * <p>
-     * Represents the workings for a Geometry Mapping
-     * </p>
+     *
+     * <p>Represents the workings for a Geometry Mapping
      *
      * @author dzwiers, Refractions Research, Inc.
      * @author $Author: dmzwiers $ (last modification)
@@ -479,7 +412,6 @@ public class ArgHelper {
          * Implementation of getType.
          *
          * @return the type name
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#getType()
          */
         public String getType() {
@@ -490,7 +422,6 @@ public class ArgHelper {
          * Implementation of getElementName.
          *
          * @return the element name
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#getElementName()
          */
         public String getElementName() {
@@ -501,10 +432,7 @@ public class ArgHelper {
          * Implementation of getInstance.
          *
          * @param value Element the element to parse into a Geometry.
-         *
-         * @return Geometry an instance of Geometry if one can be created, null
-         *         otherwise.
-         *
+         * @return Geometry an instance of Geometry if one can be created, null otherwise.
          * @see org.geotools.validation.xml.ArgHelper.Mapping#getInstance(org.w3c.dom.Element)
          */
         public Object getInstance(Element value) {
@@ -542,9 +470,7 @@ public class ArgHelper {
          * Implementation of isClassInstance.
          *
          * @param c The Object to test
-         *
          * @return true when both of type Geometry
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#isClassInstance(java.lang.Object)
          */
         public boolean isClassInstance(Object c) {
@@ -559,11 +485,8 @@ public class ArgHelper {
          * Implementation of encode.
          *
          * @param obj An object to encode as a geometry.
-         *
          * @return String the XML encoding
-         *
          * @throws ValidationException when obj is not of type geometry
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#encode(java.lang.Object)
          */
         public String encode(Object obj) throws ValidationException {
@@ -595,10 +518,8 @@ public class ArgHelper {
 
     /**
      * EnvelopeMapping purpose.
-     * 
-     * <p>
-     * Represents the workings for a Envelope Mapping
-     * </p>
+     *
+     * <p>Represents the workings for a Envelope Mapping
      *
      * @author dzwiers, Refractions Research, Inc.
      * @author $Author: dmzwiers $ (last modification)
@@ -609,7 +530,6 @@ public class ArgHelper {
          * Implementation of getType.
          *
          * @return the type name
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#getType()
          */
         public String getType() {
@@ -620,7 +540,6 @@ public class ArgHelper {
          * Implementation of getElementName.
          *
          * @return the element name
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#getElementName()
          */
         public String getElementName() {
@@ -631,34 +550,24 @@ public class ArgHelper {
          * Implementation of getInstance.
          *
          * @param bboxElem Element the element to parse into a Envelope.
-         *
-         * @return Geometry an instance of Envelope if one can be created, null
-         *         otherwise.
-         *
+         * @return Geometry an instance of Envelope if one can be created, null otherwise.
          * @throws ValidationException DOCUMENT ME!
          * @throws NullPointerException DOCUMENT ME!
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#getInstance(org.w3c.dom.Element)
          */
         public Object getInstance(Element bboxElem) throws ValidationException {
             if (bboxElem == null) {
-                throw new NullPointerException(
-                    "The bounding Box element passed in was null");
+                throw new NullPointerException("The bounding Box element passed in was null");
             }
 
             try {
-                boolean dynamic = ReaderUtils.getBooleanAttribute(bboxElem,
-                        "dynamic", false);
+                boolean dynamic = ReaderUtils.getBooleanAttribute(bboxElem, "dynamic", false);
 
                 if (!dynamic) {
-                    double minx = ReaderUtils.getDoubleAttribute(bboxElem,
-                            "minx", true);
-                    double miny = ReaderUtils.getDoubleAttribute(bboxElem,
-                            "miny", true);
-                    double maxx = ReaderUtils.getDoubleAttribute(bboxElem,
-                            "maxx", true);
-                    double maxy = ReaderUtils.getDoubleAttribute(bboxElem,
-                            "maxy", true);
+                    double minx = ReaderUtils.getDoubleAttribute(bboxElem, "minx", true);
+                    double miny = ReaderUtils.getDoubleAttribute(bboxElem, "miny", true);
+                    double maxx = ReaderUtils.getDoubleAttribute(bboxElem, "maxx", true);
+                    double maxy = ReaderUtils.getDoubleAttribute(bboxElem, "maxy", true);
 
                     return new Envelope(minx, maxx, miny, maxy);
                 }
@@ -671,8 +580,7 @@ public class ArgHelper {
 
         public Object getInstance(String bbox) throws ValidationException {
             if (bbox == null) {
-                throw new NullPointerException(
-                    "The bounding Box element passed in was null");
+                throw new NullPointerException("The bounding Box element passed in was null");
             }
 
             try {
@@ -692,9 +600,7 @@ public class ArgHelper {
          * Implementation of isClassInstance.
          *
          * @param c The Object to test
-         *
          * @return true when both of type Envelope
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#isClassInstance(java.lang.Object)
          */
         public boolean isClassInstance(Object c) {
@@ -709,23 +615,18 @@ public class ArgHelper {
          * Implementation of encode.
          *
          * @param obj An object to encode as a Envelope.
-         *
          * @return String the XML encoding
-         *
          * @throws NullPointerException DOCUMENT ME!
          * @throws ClassCastException when obj is not of type Envelope
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#encode(java.lang.Object)
          */
         public String encode(Object obj) {
             if (obj == null) {
-                throw new NullPointerException(
-                    "The bounding Box obj passed in was null");
+                throw new NullPointerException("The bounding Box obj passed in was null");
             }
 
             if (!(obj instanceof Envelope)) {
-                throw new ClassCastException(
-                    "Object of type Envelope was expected.");
+                throw new ClassCastException("Object of type Envelope was expected.");
             }
 
             String s = "";
@@ -749,13 +650,11 @@ public class ArgHelper {
 
         public String toString(Object obj) {
             if (obj == null) {
-                throw new NullPointerException(
-                    "The bounding Box obj passed in was null");
+                throw new NullPointerException("The bounding Box obj passed in was null");
             }
 
             if (!(obj instanceof Envelope)) {
-                throw new ClassCastException(
-                    "Object of type Envelope was expected.");
+                throw new ClassCastException("Object of type Envelope was expected.");
             }
 
             String s = "";
@@ -774,10 +673,8 @@ public class ArgHelper {
 
     /**
      * ShortMapping purpose.
-     * 
-     * <p>
-     * Represents the workings for a Short Mapping
-     * </p>
+     *
+     * <p>Represents the workings for a Short Mapping
      *
      * @author dzwiers, Refractions Research, Inc.
      * @author $Author: dmzwiers $ (last modification)
@@ -788,7 +685,6 @@ public class ArgHelper {
          * Implementation of getType.
          *
          * @return the type name
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#getType()
          */
         public String getType() {
@@ -799,7 +695,6 @@ public class ArgHelper {
          * Implementation of getElementName.
          *
          * @return the element name
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#getElementName()
          */
         public String getElementName() {
@@ -810,18 +705,13 @@ public class ArgHelper {
          * Implementation of getInstance.
          *
          * @param elem Element the element to parse into a Short.
-         *
-         * @return Geometry an instance of Short if one can be created, null
-         *         otherwise.
-         *
+         * @return Geometry an instance of Short if one can be created, null otherwise.
          * @throws NullPointerException DOCUMENT ME!
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#getInstance(org.w3c.dom.Element)
          */
         public Object getInstance(Element elem) {
             if (elem == null) {
-                throw new NullPointerException(
-                    "The short element passed in was null");
+                throw new NullPointerException("The short element passed in was null");
             }
 
             return new Short(ReaderUtils.getElementText(elem));
@@ -829,8 +719,7 @@ public class ArgHelper {
 
         public Object getInstance(String value) {
             if (value == null) {
-                throw new NullPointerException(
-                    "The short element passed in was null");
+                throw new NullPointerException("The short element passed in was null");
             }
 
             return new Short(value);
@@ -840,9 +729,7 @@ public class ArgHelper {
          * Implementation of isClassInstance.
          *
          * @param c The Object to test
-         *
          * @return true when both of type Short
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#isClassInstance(java.lang.Object)
          */
         public boolean isClassInstance(Object c) {
@@ -850,31 +737,25 @@ public class ArgHelper {
         }
 
         public boolean isClass(Class c) {
-            return ((c != null)
-            && (Short.class.equals(c) || short.class.equals(c)));
+            return ((c != null) && (Short.class.equals(c) || short.class.equals(c)));
         }
 
         /**
          * Implementation of encode.
          *
          * @param obj An object to encode as a short.
-         *
          * @return String the XML encoding
-         *
          * @throws NullPointerException DOCUMENT ME!
          * @throws ClassCastException when obj is not of type short
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#encode(java.lang.Object)
          */
         public String encode(Object obj) {
             if (obj == null) {
-                throw new NullPointerException(
-                    "The short obj passed in was null");
+                throw new NullPointerException("The short obj passed in was null");
             }
 
             if (!(obj instanceof Short)) {
-                throw new ClassCastException(
-                    "Object of type Short was expected.");
+                throw new ClassCastException("Object of type Short was expected.");
             }
 
             return "<short>" + ((Short) obj).toString() + "</short>\n";
@@ -887,10 +768,8 @@ public class ArgHelper {
 
     /**
      * IntegerMapping purpose.
-     * 
-     * <p>
-     * Represents the workings for a Integer Mapping
-     * </p>
+     *
+     * <p>Represents the workings for a Integer Mapping
      *
      * @author dzwiers, Refractions Research, Inc.
      * @author $Author: dmzwiers $ (last modification)
@@ -901,7 +780,6 @@ public class ArgHelper {
          * Implementation of getType.
          *
          * @return the type name
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#getType()
          */
         public String getType() {
@@ -912,7 +790,6 @@ public class ArgHelper {
          * Implementation of getElementName.
          *
          * @return the element name
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#getElementName()
          */
         public String getElementName() {
@@ -923,12 +800,8 @@ public class ArgHelper {
          * Implementation of getInstance.
          *
          * @param elem Element the element to parse into a Integer.
-         *
-         * @return Geometry an instance of Integer if one can be created, null
-         *         otherwise.
-         *
+         * @return Geometry an instance of Integer if one can be created, null otherwise.
          * @throws NullPointerException DOCUMENT ME!
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#getInstance(org.w3c.dom.Element)
          */
         public Object getInstance(Element elem) {
@@ -951,9 +824,7 @@ public class ArgHelper {
          * Implementation of isClassInstance.
          *
          * @param c The Object to test
-         *
          * @return true when both of type Integer
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#isClassInstance(java.lang.Object)
          */
         public boolean isClassInstance(Object c) {
@@ -961,31 +832,25 @@ public class ArgHelper {
         }
 
         public boolean isClass(Class c) {
-            return ((c != null)
-            && (Integer.class.equals(c) || int.class.equals(c)));
+            return ((c != null) && (Integer.class.equals(c) || int.class.equals(c)));
         }
 
         /**
          * Implementation of encode.
          *
          * @param obj An object to encode as a Integer.
-         *
          * @return String the XML encoding
-         *
          * @throws NullPointerException DOCUMENT ME!
          * @throws ClassCastException when obj is not of type Integer
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#encode(java.lang.Object)
          */
         public String encode(Object obj) {
             if (obj == null) {
-                throw new NullPointerException(
-                    "The integer obj passed in was null");
+                throw new NullPointerException("The integer obj passed in was null");
             }
 
             if (!(obj instanceof Integer)) {
-                throw new ClassCastException(
-                    "Object of type Integer was expected.");
+                throw new ClassCastException("Object of type Integer was expected.");
             }
 
             return "<integer>" + ((Integer) obj).toString() + "</integer>\n";
@@ -998,10 +863,8 @@ public class ArgHelper {
 
     /**
      * LongMapping purpose.
-     * 
-     * <p>
-     * Represents the workings for a Long Mapping
-     * </p>
+     *
+     * <p>Represents the workings for a Long Mapping
      *
      * @author dzwiers, Refractions Research, Inc.
      * @author $Author: dmzwiers $ (last modification)
@@ -1012,7 +875,6 @@ public class ArgHelper {
          * Implementation of getType.
          *
          * @return the type name
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#getType()
          */
         public String getType() {
@@ -1023,7 +885,6 @@ public class ArgHelper {
          * Implementation of getElementName.
          *
          * @return the element name
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#getElementName()
          */
         public String getElementName() {
@@ -1034,12 +895,8 @@ public class ArgHelper {
          * Implementation of getInstance.
          *
          * @param elem Element the element to parse into a Long.
-         *
-         * @return Geometry an instance of Long if one can be created, null
-         *         otherwise.
-         *
+         * @return Geometry an instance of Long if one can be created, null otherwise.
          * @throws NullPointerException DOCUMENT ME!
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#getInstance(org.w3c.dom.Element)
          */
         public Object getInstance(Element elem) {
@@ -1062,9 +919,7 @@ public class ArgHelper {
          * Implementation of isClassInstance.
          *
          * @param c The Object to test
-         *
          * @return true when both of type Long
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#isClassInstance(java.lang.Object)
          */
         public boolean isClassInstance(Object c) {
@@ -1072,31 +927,25 @@ public class ArgHelper {
         }
 
         public boolean isClass(Class c) {
-            return ((c != null)
-            && (Long.class.equals(c) || long.class.equals(c)));
+            return ((c != null) && (Long.class.equals(c) || long.class.equals(c)));
         }
 
         /**
          * Implementation of encode.
          *
          * @param obj An object to encode as a Integer.
-         *
          * @return String the XML encoding
-         *
          * @throws NullPointerException DOCUMENT ME!
          * @throws ClassCastException when obj is not of type Integer
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#encode(java.lang.Object)
          */
         public String encode(Object obj) {
             if (obj == null) {
-                throw new NullPointerException(
-                    "The long obj passed in was null");
+                throw new NullPointerException("The long obj passed in was null");
             }
 
             if (!(obj instanceof Long)) {
-                throw new ClassCastException(
-                    "Object of type Long was expected.");
+                throw new ClassCastException("Object of type Long was expected.");
             }
 
             return "<long>" + ((Long) obj).toString() + "</long>\n";
@@ -1109,10 +958,8 @@ public class ArgHelper {
 
     /**
      * FloatMapping purpose.
-     * 
-     * <p>
-     * Represents the workings for a Float Mapping
-     * </p>
+     *
+     * <p>Represents the workings for a Float Mapping
      *
      * @author dzwiers, Refractions Research, Inc.
      * @author $Author: dmzwiers $ (last modification)
@@ -1123,7 +970,6 @@ public class ArgHelper {
          * Implementation of getType.
          *
          * @return the type name
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#getType()
          */
         public String getType() {
@@ -1134,7 +980,6 @@ public class ArgHelper {
          * Implementation of getElementName.
          *
          * @return the element name
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#getElementName()
          */
         public String getElementName() {
@@ -1145,12 +990,8 @@ public class ArgHelper {
          * Implementation of getInstance.
          *
          * @param elem Element the element to parse into a Float.
-         *
-         * @return Geometry an instance of Float if one can be created, null
-         *         otherwise.
-         *
+         * @return Geometry an instance of Float if one can be created, null otherwise.
          * @throws NullPointerException DOCUMENT ME!
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#getInstance(org.w3c.dom.Element)
          */
         public Object getInstance(Element elem) {
@@ -1173,9 +1014,7 @@ public class ArgHelper {
          * Implementation of isClassInstance.
          *
          * @param c The Object to test
-         *
          * @return true when both of type Long
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#isClassInstance(java.lang.Object)
          */
         public boolean isClassInstance(Object c) {
@@ -1183,31 +1022,25 @@ public class ArgHelper {
         }
 
         public boolean isClass(Class c) {
-            return ((c != null)
-            && (Float.class.equals(c) || float.class.equals(c)));
+            return ((c != null) && (Float.class.equals(c) || float.class.equals(c)));
         }
 
         /**
          * Implementation of encode.
          *
          * @param obj An object to encode as a Float.
-         *
          * @return String the XML encoding
-         *
          * @throws NullPointerException DOCUMENT ME!
          * @throws ClassCastException when obj is not of type Float
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#encode(java.lang.Object)
          */
         public String encode(Object obj) {
             if (obj == null) {
-                throw new NullPointerException(
-                    "The float obj passed in was null");
+                throw new NullPointerException("The float obj passed in was null");
             }
 
             if (!(obj instanceof Float)) {
-                throw new ClassCastException(
-                    "Object of type Long was expected.");
+                throw new ClassCastException("Object of type Long was expected.");
             }
 
             return "<float>" + ((Float) obj).toString() + "</float>\n";
@@ -1220,10 +1053,8 @@ public class ArgHelper {
 
     /**
      * DoubleMapping purpose.
-     * 
-     * <p>
-     * Represents the workings for a Double Mapping
-     * </p>
+     *
+     * <p>Represents the workings for a Double Mapping
      *
      * @author dzwiers, Refractions Research, Inc.
      * @author $Author: dmzwiers $ (last modification)
@@ -1234,7 +1065,6 @@ public class ArgHelper {
          * Implementation of getType.
          *
          * @return the type name
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#getType()
          */
         public String getType() {
@@ -1245,7 +1075,6 @@ public class ArgHelper {
          * Implementation of getElementName.
          *
          * @return the element name
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#getElementName()
          */
         public String getElementName() {
@@ -1256,12 +1085,8 @@ public class ArgHelper {
          * Implementation of getInstance.
          *
          * @param elem Element the element to parse into a Double.
-         *
-         * @return Geometry an instance of Double if one can be created, null
-         *         otherwise.
-         *
+         * @return Geometry an instance of Double if one can be created, null otherwise.
          * @throws NullPointerException DOCUMENT ME!
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#getInstance(org.w3c.dom.Element)
          */
         public Object getInstance(Element elem) {
@@ -1284,9 +1109,7 @@ public class ArgHelper {
          * Implementation of isClassInstance.
          *
          * @param c The Object to test
-         *
          * @return true when both of type Long
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#isClassInstance(java.lang.Object)
          */
         public boolean isClassInstance(Object c) {
@@ -1294,31 +1117,25 @@ public class ArgHelper {
         }
 
         public boolean isClass(Class c) {
-            return ((c != null)
-            && (Double.class.equals(c) || double.class.equals(c)));
+            return ((c != null) && (Double.class.equals(c) || double.class.equals(c)));
         }
 
         /**
          * Implementation of encode.
          *
          * @param obj An object to encode as a Double.
-         *
          * @return String the XML encoding
-         *
          * @throws NullPointerException DOCUMENT ME!
          * @throws ClassCastException when obj is not of type Double
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#encode(java.lang.Object)
          */
         public String encode(Object obj) {
             if (obj == null) {
-                throw new NullPointerException(
-                    "The double obj passed in was null");
+                throw new NullPointerException("The double obj passed in was null");
             }
 
             if (!(obj instanceof Double)) {
-                throw new ClassCastException(
-                    "Object of type Long was expected.");
+                throw new ClassCastException("Object of type Long was expected.");
             }
 
             return "<double>" + ((Double) obj).toString() + "</double>\n";
@@ -1331,10 +1148,8 @@ public class ArgHelper {
 
     /**
      * DateMapping purpose.
-     * 
-     * <p>
-     * Represents the workings for a Date Mapping
-     * </p>
+     *
+     * <p>Represents the workings for a Date Mapping
      *
      * @author dzwiers, Refractions Research, Inc.
      * @author $Author: dmzwiers $ (last modification)
@@ -1345,7 +1160,6 @@ public class ArgHelper {
          * Implementation of getType.
          *
          * @return the type name
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#getType()
          */
         public String getType() {
@@ -1356,7 +1170,6 @@ public class ArgHelper {
          * Implementation of getElementName.
          *
          * @return the element name
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#getElementName()
          */
         public String getElementName() {
@@ -1367,23 +1180,17 @@ public class ArgHelper {
          * Implementation of getInstance.
          *
          * @param elem Element the element to parse into a Date.
-         *
-         * @return Geometry an instance of Date if one can be created, null
-         *         otherwise.
-         *
+         * @return Geometry an instance of Date if one can be created, null otherwise.
          * @throws ValidationException DOCUMENT ME!
          * @throws NullPointerException DOCUMENT ME!
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#getInstance(org.w3c.dom.Element)
          */
         public Object getInstance(Element elem) throws ValidationException {
             if (elem == null) {
-                throw new NullPointerException(
-                    "The dateTime passed in was null");
+                throw new NullPointerException("The dateTime passed in was null");
             }
 
-            SimpleDateFormat sdf = new SimpleDateFormat(
-                    "yyyy-mm-dd'T'hh:mm:ssZ");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd'T'hh:mm:ssZ");
 
             try {
                 return sdf.parse(ReaderUtils.getElementText(elem));
@@ -1394,12 +1201,10 @@ public class ArgHelper {
 
         public Object getInstance(String elem) throws ValidationException {
             if (elem == null) {
-                throw new NullPointerException(
-                    "The dateTime passed in was null");
+                throw new NullPointerException("The dateTime passed in was null");
             }
 
-            SimpleDateFormat sdf = new SimpleDateFormat(
-                    "yyyy-mm-dd'T'hh:mm:ssZ");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd'T'hh:mm:ssZ");
 
             try {
                 return sdf.parse(elem);
@@ -1412,9 +1217,7 @@ public class ArgHelper {
          * Implementation of isClassInstance.
          *
          * @param c The Object to test
-         *
          * @return true when both of type Long
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#isClassInstance(java.lang.Object)
          */
         public boolean isClassInstance(Object c) {
@@ -1429,34 +1232,27 @@ public class ArgHelper {
          * Implementation of encode.
          *
          * @param obj An object to encode as a Date.
-         *
          * @return String the XML encoding
-         *
          * @throws NullPointerException DOCUMENT ME!
          * @throws ClassCastException when obj is not of type Date
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#encode(java.lang.Object)
          */
         public String encode(Object obj) {
             if (obj == null) {
-                throw new NullPointerException(
-                    "The dateTime obj passed in was null");
+                throw new NullPointerException("The dateTime obj passed in was null");
             }
 
             if (!(obj instanceof Date)) {
-                throw new ClassCastException(
-                    "Object of type Long was expected.");
+                throw new ClassCastException("Object of type Long was expected.");
             }
 
-            SimpleDateFormat sdf = new SimpleDateFormat(
-                    "yyyy-mm-dd'T'hh:mm:ssZ");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd'T'hh:mm:ssZ");
 
             return "<dateTime>" + sdf.format((Date) obj) + "</dateTime>\n";
         }
 
         public String toString(Object o) {
-            SimpleDateFormat sdf = new SimpleDateFormat(
-                    "yyyy-mm-dd'T'hh:mm:ssZ");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd'T'hh:mm:ssZ");
 
             return sdf.format((Date) o);
         }
@@ -1464,10 +1260,8 @@ public class ArgHelper {
 
     /**
      * URIMapping purpose.
-     * 
-     * <p>
-     * Represents the workings for a URI Mapping
-     * </p>
+     *
+     * <p>Represents the workings for a URI Mapping
      *
      * @author dzwiers, Refractions Research, Inc.
      * @author $Author: dmzwiers $ (last modification)
@@ -1478,7 +1272,6 @@ public class ArgHelper {
          * Implementation of getType.
          *
          * @return the type name
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#getType()
          */
         public String getType() {
@@ -1489,7 +1282,6 @@ public class ArgHelper {
          * Implementation of getElementName.
          *
          * @return the element name
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#getElementName()
          */
         public String getElementName() {
@@ -1500,13 +1292,9 @@ public class ArgHelper {
          * Implementation of getInstance.
          *
          * @param elem Element the element to parse into a URI.
-         *
-         * @return Geometry an instance of URI if one can be created, null
-         *         otherwise.
-         *
+         * @return Geometry an instance of URI if one can be created, null otherwise.
          * @throws ValidationException DOCUMENT ME!
          * @throws NullPointerException DOCUMENT ME!
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#getInstance(org.w3c.dom.Element)
          */
         public Object getInstance(Element elem) throws ValidationException {
@@ -1537,9 +1325,7 @@ public class ArgHelper {
          * Implementation of isClassInstance.
          *
          * @param c The Object to test
-         *
          * @return true when both of type Long
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#isClassInstance(java.lang.Object)
          */
         public boolean isClassInstance(Object c) {
@@ -1554,23 +1340,18 @@ public class ArgHelper {
          * Implementation of encode.
          *
          * @param obj An object to encode as a URI.
-         *
          * @return String the XML encoding
-         *
          * @throws NullPointerException DOCUMENT ME!
          * @throws ClassCastException when obj is not of type URI
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#encode(java.lang.Object)
          */
         public String encode(Object obj) {
             if (obj == null) {
-                throw new NullPointerException(
-                    "The anyUri obj passed in was null");
+                throw new NullPointerException("The anyUri obj passed in was null");
             }
 
             if (!(obj instanceof URI)) {
-                throw new ClassCastException(
-                    "Object of type Long was expected.");
+                throw new ClassCastException("Object of type Long was expected.");
             }
 
             return "<anyURI>" + ((URI) obj).toString() + "</anyURI>\n";
@@ -1583,10 +1364,8 @@ public class ArgHelper {
 
     /**
      * BooleanMapping purpose.
-     * 
-     * <p>
-     * Represents the workings for a Boolean Mapping
-     * </p>
+     *
+     * <p>Represents the workings for a Boolean Mapping
      *
      * @author dzwiers, Refractions Research, Inc.
      * @author $Author: dmzwiers $ (last modification)
@@ -1597,7 +1376,6 @@ public class ArgHelper {
          * Implementation of getType.
          *
          * @return the type name
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#getType()
          */
         public String getType() {
@@ -1608,7 +1386,6 @@ public class ArgHelper {
          * Implementation of getElementName.
          *
          * @return the element name
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#getElementName()
          */
         public String getElementName() {
@@ -1619,12 +1396,8 @@ public class ArgHelper {
          * Implementation of getInstance.
          *
          * @param elem Element the element to parse into a Boolean.
-         *
-         * @return Geometry an instance of Boolean if one can be created, null
-         *         otherwise.
-         *
+         * @return Geometry an instance of Boolean if one can be created, null otherwise.
          * @throws NullPointerException DOCUMENT ME!
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#getInstance(org.w3c.dom.Element)
          */
         public Object getInstance(Element elem) {
@@ -1647,9 +1420,7 @@ public class ArgHelper {
          * Implementation of isClassInstance.
          *
          * @param c The Object to test
-         *
          * @return true when both of type Long
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#isClassInstance(java.lang.Object)
          */
         public boolean isClassInstance(Object c) {
@@ -1657,31 +1428,25 @@ public class ArgHelper {
         }
 
         public boolean isClass(Class c) {
-            return ((c != null)
-            && (Boolean.class.equals(c) || boolean.class.equals(c)));
+            return ((c != null) && (Boolean.class.equals(c) || boolean.class.equals(c)));
         }
 
         /**
          * Implementation of encode.
          *
          * @param obj An object to encode as a Boolean.
-         *
          * @return String the XML encoding
-         *
          * @throws NullPointerException DOCUMENT ME!
          * @throws ClassCastException when obj is not of type Boolean
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#encode(java.lang.Object)
          */
         public String encode(Object obj) {
             if (obj == null) {
-                throw new NullPointerException(
-                    "The boolean obj passed in was null");
+                throw new NullPointerException("The boolean obj passed in was null");
             }
 
             if (!(obj instanceof Boolean)) {
-                throw new ClassCastException(
-                    "Object of type Long was expected.");
+                throw new ClassCastException("Object of type Long was expected.");
             }
 
             return "<boolean>" + ((Boolean) obj).toString() + "</boolean>\n";
@@ -1694,10 +1459,8 @@ public class ArgHelper {
 
     /**
      * StringMapping purpose.
-     * 
-     * <p>
-     * Represents the workings for a String Mapping
-     * </p>
+     *
+     * <p>Represents the workings for a String Mapping
      *
      * @author dzwiers, Refractions Research, Inc.
      * @author $Author: dmzwiers $ (last modification)
@@ -1708,7 +1471,6 @@ public class ArgHelper {
          * Implementation of getType.
          *
          * @return the type name
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#getType()
          */
         public String getType() {
@@ -1719,7 +1481,6 @@ public class ArgHelper {
          * Implementation of getElementName.
          *
          * @return the element name
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#getElementName()
          */
         public String getElementName() {
@@ -1730,12 +1491,8 @@ public class ArgHelper {
          * Implementation of getInstance.
          *
          * @param elem Element the element to parse into a String.
-         *
-         * @return Geometry an instance of String if one can be created, null
-         *         otherwise.
-         *
+         * @return Geometry an instance of String if one can be created, null otherwise.
          * @throws NullPointerException DOCUMENT ME!
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#getInstance(org.w3c.dom.Element)
          */
         public Object getInstance(Element elem) {
@@ -1758,9 +1515,7 @@ public class ArgHelper {
          * Implementation of isClassInstance.
          *
          * @param c The Object to test
-         *
          * @return true when both of type Long
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#isClassInstance(java.lang.Object)
          */
         public boolean isClassInstance(Object c) {
@@ -1775,23 +1530,18 @@ public class ArgHelper {
          * Implementation of encode.
          *
          * @param obj An object to encode as a String.
-         *
          * @return String the XML encoding
-         *
          * @throws NullPointerException DOCUMENT ME!
          * @throws ClassCastException when obj is not of type String
-         *
          * @see org.geotools.validation.xml.ArgHelper.Mapping#encode(java.lang.Object)
          */
         public String encode(Object obj) {
             if (obj == null) {
-                throw new NullPointerException(
-                    "The string obj passed in was null");
+                throw new NullPointerException("The string obj passed in was null");
             }
 
             if (!(obj instanceof String)) {
-                throw new ClassCastException(
-                    "Object of type Long was expected.");
+                throw new ClassCastException("Object of type Long was expected.");
             }
 
             return "<string>" + ((String) obj).toString() + "</string>\n";

@@ -20,36 +20,27 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-
 /**
  * The set of symbols to use for WKT parsing and formatting.
  *
  * @since 2.1
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
 public class Symbols {
-    /**
-     * The default set of symbols.
-     */
+    /** The default set of symbols. */
     public static final Symbols DEFAULT = new Symbols(Locale.US);
     // DONT't invoke the default constructor for this one.
 
-    /**
-     * A set of symbols with parameters between square brackets, like {@code [...]}.
-     */
+    /** A set of symbols with parameters between square brackets, like {@code [...]}. */
     public static final Symbols SQUARE_BRACKETS = DEFAULT;
 
-    /**
-     * A set of symbols with parameters between parentheses,
-     * like {@code (...)}.
-     */
+    /** A set of symbols with parameters between parentheses, like {@code (...)}. */
     public static final Symbols CURLY_BRACKETS = new Symbols();
+
     static {
-        CURLY_BRACKETS.open  = '(';
+        CURLY_BRACKETS.open = '(';
         CURLY_BRACKETS.close = ')';
     }
 
@@ -61,20 +52,16 @@ public class Symbols {
      *       them private and declare accessors instead.
      * ---------------------------------------------------------- */
 
-    /**
-     * The locale for querying localizable information.
-     */
+    /** The locale for querying localizable information. */
     final Locale locale;
 
     /**
-     * The character used for opening brace.
-     * Usually {@code '['}, but {@code '('} is legal as well.
+     * The character used for opening brace. Usually {@code '['}, but {@code '('} is legal as well.
      */
     char open = '[';
 
     /**
-     * The character used for closing brace.
-     * Usually {@code ']'}, but {@code ')'} is legal as well.
+     * The character used for closing brace. Usually {@code ']'}, but {@code ')'} is legal as well.
      */
     char close = ']';
 
@@ -84,62 +71,49 @@ public class Symbols {
      */
     final char openArray = '{';
 
-    /**
-     * The character used for closing an array or enumeration.
-     * Usually {@code '}'}.
-     */
+    /** The character used for closing an array or enumeration. Usually {@code '}'}. */
     final char closeArray = '}';
 
-    /**
-     * The character used for quote.
-     * Usually {@code '"'}.
-     */
+    /** The character used for quote. Usually {@code '"'}. */
     final char quote = '"';
 
     /**
-     * The character used as a separator. Usually {@code ','}, but would need
-     * to be changed if a non-English locale is used for formatting numbers.
+     * The character used as a separator. Usually {@code ','}, but would need to be changed if a
+     * non-English locale is used for formatting numbers.
      */
     char separator = ',';
 
     /**
-     * The character used for space.
-     * Usually <code>'&nbsp;'</code>, but could be a no-break space too if unicode is allowed.
+     * The character used for space. Usually <code>'&nbsp;'</code>, but could be a no-break space
+     * too if unicode is allowed.
      */
     final char space = ' ';
 
     /**
-     * List of caracters acceptable as opening bracket. The closing bracket must
-     * be the character in the {@code closingBrackets} array at the same index
-     * than the opening bracket.
+     * List of caracters acceptable as opening bracket. The closing bracket must be the character in
+     * the {@code closingBrackets} array at the same index than the opening bracket.
      */
     final char[] openingBrackets = {'[', '('};
 
-    /**
-     * List of caracters acceptable as closing bracket.
-     */
+    /** List of caracters acceptable as closing bracket. */
     final char[] closingBrackets = {']', ')'};
 
     /**
      * The object to use for parsing and formatting numbers.
      *
-     * <STRONG>Note:</STRONG> {@link NumberFormat} object are usually not thread safe.
-     * Consequently, each instances of {@link Parser} or {@link Formatter} must use a
-     * clone of this object, not this object directly (unless they synchronize on it).
+     * <p><STRONG>Note:</STRONG> {@link NumberFormat} object are usually not thread safe.
+     * Consequently, each instances of {@link Parser} or {@link Formatter} must use a clone of this
+     * object, not this object directly (unless they synchronize on it).
      */
     final NumberFormat numberFormat;
 
-    /**
-     * Creates a new instance initialized to the default symbols.
-     */
+    /** Creates a new instance initialized to the default symbols. */
     private Symbols() {
         locale = Locale.US;
         numberFormat = DEFAULT.numberFormat;
     }
 
-    /**
-     * Creates a new set of symbols for the specified locale.
-     */
+    /** Creates a new set of symbols for the specified locale. */
     public Symbols(final Locale locale) {
         this.locale = locale;
         numberFormat = NumberFormat.getNumberInstance(locale);
@@ -156,8 +130,8 @@ public class Symbols {
          * often want to avoid exponential notation as well.
          */
         if (numberFormat instanceof DecimalFormat) {
-            final char decimalSeparator = ((DecimalFormat) numberFormat)
-                       .getDecimalFormatSymbols().getDecimalSeparator();
+            final char decimalSeparator =
+                    ((DecimalFormat) numberFormat).getDecimalFormatSymbols().getDecimalSeparator();
             if (decimalSeparator == ',') {
                 separator = ';';
             }
@@ -175,13 +149,13 @@ public class Symbols {
     }
 
     /**
-     * Returns the index after the specified element in the specified WKT, or -1 if not found.
-     * The element must be followed (ignoring spaces) by an opening bracket. If found, this
-     * method returns the index of the opening bracket after the element.
+     * Returns the index after the specified element in the specified WKT, or -1 if not found. The
+     * element must be followed (ignoring spaces) by an opening bracket. If found, this method
+     * returns the index of the opening bracket after the element.
      *
-     * @param  wkt The WKT to parse.
-     * @param  element The element to search. Must contains only uppercase letters.
-     * @param  index The index to start the search from.
+     * @param wkt The WKT to parse.
+     * @param element The element to search. Must contains only uppercase letters.
+     * @param index The index to start the search from.
      */
     private int indexOf(final CharSequence wkt, final String element, int index) {
         assert element.equals(element.trim().toUpperCase(locale)) : element;
@@ -191,7 +165,8 @@ public class Symbols {
         final int length = wkt.length();
         if (index < length) {
             char c = wkt.charAt(index);
-search:     while (true) {
+            search:
+            while (true) {
                 // Do not parse any content between quotes.
                 if (c == quote) {
                     isQuoting = !isQuoting;
@@ -204,7 +179,7 @@ search:     while (true) {
                     continue;
                 }
                 // Checks if we have a match.
-                for (int j=0; j<elementLength; j++) {
+                for (int j = 0; j < elementLength; j++) {
                     c = Character.toUpperCase(c);
                     if (c != element.charAt(j)) {
                         // No match. Skip all remaining letters and resume the search.
@@ -228,7 +203,7 @@ search:     while (true) {
                     }
                     c = wkt.charAt(index);
                 }
-                for (int i=0; i<openingBrackets.length; i++) {
+                for (int i = 0; i < openingBrackets.length; i++) {
                     if (c == openingBrackets[i]) {
                         return index;
                     }

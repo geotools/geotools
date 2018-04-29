@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -21,7 +21,6 @@ import static java.awt.RenderingHints.*;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
-
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -33,11 +32,7 @@ import org.geotools.test.TestData;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * 
- * 
- * @source $URL$
- */
+/** @source $URL$ */
 public class CurveTest {
     private static final long TIME = 40000;
 
@@ -65,10 +60,11 @@ public class CurveTest {
         hints.add(new RenderingHints(KEY_STROKE_CONTROL, VALUE_STROKE_PURE));
         renderer.setJava2DHints(hints);
 
-        BufferedImage image = RendererBaseTest
-                .showRender("Curved polygons", renderer, TIME, bounds);
-        File reference = new File(
-                "./src/test/resources/org/geotools/renderer/lite/test-data/curvedPolygons.png");
+        BufferedImage image =
+                RendererBaseTest.showRender("Curved polygons", renderer, TIME, bounds);
+        File reference =
+                new File(
+                        "./src/test/resources/org/geotools/renderer/lite/test-data/curvedPolygons.png");
         ImageAssert.assertEquals(reference, image, 100);
     }
 
@@ -92,9 +88,9 @@ public class CurveTest {
         renderer.setJava2DHints(hints);
 
         BufferedImage image = RendererBaseTest.showRender("Curved lines", renderer, TIME, bounds);
-        File reference = new File(
-                "./src/test/resources/org/geotools/renderer/lite/test-data/curvedLines.png");
+        File reference =
+                new File(
+                        "./src/test/resources/org/geotools/renderer/lite/test-data/curvedLines.png");
         ImageAssert.assertEquals(reference, image, 100);
     }
-
 }

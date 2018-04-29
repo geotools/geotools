@@ -19,7 +19,6 @@ package org.geotools.jdbc;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
-
 import org.geotools.data.DelegatingFeatureReader;
 import org.geotools.data.FeatureReader;
 import org.geotools.jdbc.JoinInfo.JoinPart;
@@ -28,16 +27,16 @@ import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
  * Feature reader that wraps multiple feature readers in a joining / post filtered query.
- * 
- * @author Justin Deoliveira, OpenGeo
  *
+ * @author Justin Deoliveira, OpenGeo
  */
-public class JDBCJoiningFilteringFeatureReader implements DelegatingFeatureReader<SimpleFeatureType, SimpleFeature> {
+public class JDBCJoiningFilteringFeatureReader
+        implements DelegatingFeatureReader<SimpleFeatureType, SimpleFeature> {
 
-    FeatureReader<SimpleFeatureType,SimpleFeature> delegate;
+    FeatureReader<SimpleFeatureType, SimpleFeature> delegate;
     JoinInfo join;
     SimpleFeature next;
-    
+
     public JDBCJoiningFilteringFeatureReader(FeatureReader delegate, JoinInfo join) {
         this.delegate = delegate;
         this.join = join;
@@ -56,9 +55,9 @@ public class JDBCJoiningFilteringFeatureReader implements DelegatingFeatureReade
             return true;
         }
 
-        //scroll through the delegate reader until we get a feature whose joined features match
+        // scroll through the delegate reader until we get a feature whose joined features match
         // all the post features
-        while(delegate.hasNext()) {
+        while (delegate.hasNext()) {
             SimpleFeature peek = delegate.next();
 
             for (JoinPart part : join.getParts()) {
@@ -70,18 +69,18 @@ public class JDBCJoiningFilteringFeatureReader implements DelegatingFeatureReade
                     }
                 }
             }
-            
+
             if (peek != null) {
                 next = peek;
                 break;
             }
         }
-        
+
         return next != null;
     }
 
-    public SimpleFeature next() throws IOException, IllegalArgumentException,
-            NoSuchElementException {
+    public SimpleFeature next()
+            throws IOException, IllegalArgumentException, NoSuchElementException {
         if (!hasNext()) {
             throw new NoSuchElementException("No more features");
         }

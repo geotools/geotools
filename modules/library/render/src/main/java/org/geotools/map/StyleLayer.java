@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -21,17 +21,19 @@ import org.geotools.styling.Style;
 
 /**
  * Layer responsible for rendering under control of a user supplied Style object.
- * <p>
- * The StyleLayer is expected to be subclassed; and is responsible for:
+ *
+ * <p>The StyleLayer is expected to be subclassed; and is responsible for:
+ *
  * <ul>
- * <li>style: Style</li>
+ *   <li>style: Style
  * </ul>
+ *
  * Please note that a StyleLayerDescriptor (defined by SLD) document is usually used to describe the
  * rendering requirements for an entire Map; while a Style (defined by SE) is focused on a single
  * layer of content
+ *
  * @since 8.0
  * @version 8.0
- *
  * @source $URL$
  */
 public abstract class StyleLayer extends Layer {
@@ -40,9 +42,8 @@ public abstract class StyleLayer extends Layer {
 
     /**
      * Creates a new instance of StyleLayer
-     * 
-     * @param style
-     *            the style used to control drawing of this layer
+     *
+     * @param style the style used to control drawing of this layer
      */
     public StyleLayer(Style style) {
         this.style = style;
@@ -55,18 +56,18 @@ public abstract class StyleLayer extends Layer {
 
     @Override
     public void dispose() {
-        // We assume that preDispose has been called by 
+        // We assume that preDispose has been called by
         // the sub-class
-        
+
         style = null;
         super.dispose();
     }
 
     /**
      * Get the style for this layer.
-     * <p>
-     * If style has not been set, then null is returned.
-     * 
+     *
+     * <p>If style has not been set, then null is returned.
+     *
      * @return The style (SLD).
      */
     public Style getStyle() {
@@ -75,9 +76,8 @@ public abstract class StyleLayer extends Layer {
 
     /**
      * Sets the style for this layer.
-     * 
-     * @param style
-     *            The new style
+     *
+     * @param style The new style
      */
     public void setStyle(Style style) {
         if (style == null) {
@@ -86,5 +86,4 @@ public abstract class StyleLayer extends Layer {
         this.style = style;
         fireMapLayerListenerLayerChanged(MapLayerEvent.STYLE_CHANGED);
     }
-
 }

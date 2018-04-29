@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,10 +16,10 @@
  */
 package org.geotools.feature;
 
+import com.vividsolutions.jts.geom.Geometry;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-
 import org.opengis.feature.GeometryAttribute;
 import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
@@ -29,20 +29,13 @@ import org.opengis.feature.type.Name;
 import org.opengis.filter.identity.FeatureId;
 import org.opengis.geometry.BoundingBox;
 
-import com.vividsolutions.jts.geom.Geometry;
-
 /**
  * Base class for feature decorators.
- * <p>
- * Subclasses should override those methods which are relevant to the decorator.
- * </p>
- * 
+ *
+ * <p>Subclasses should override those methods which are relevant to the decorator.
+ *
  * @author Justin Deoliveira, The Open Planning Project
  * @since 2.5
- * 
- *
- *
- *
  * @source $URL$
  */
 public class DecoratingFeature implements SimpleFeature {
@@ -92,9 +85,11 @@ public class DecoratingFeature implements SimpleFeature {
     public SimpleFeatureType getFeatureType() {
         return delegate.getFeatureType();
     }
-	public FeatureId getIdentifier() {
-		return delegate.getIdentifier();
-	}
+
+    public FeatureId getIdentifier() {
+        return delegate.getIdentifier();
+    }
+
     public String getID() {
         return delegate.getID();
     }
@@ -167,8 +162,7 @@ public class DecoratingFeature implements SimpleFeature {
         delegate.setDefaultGeometryProperty(arg0);
     }
 
-    public void setDefaultGeometry(Geometry geometry)
-            throws IllegalAttributeException {
+    public void setDefaultGeometry(Geometry geometry) throws IllegalAttributeException {
         delegate.setDefaultGeometry(geometry);
     }
 
@@ -179,14 +173,17 @@ public class DecoratingFeature implements SimpleFeature {
     public void setValue(Object arg0) {
         delegate.setValue(arg0);
     }
+
     public boolean equals(Object obj) {
         return delegate.equals(obj);
     }
+
     public int hashCode() {
         return delegate.hashCode();
     }
+
     public String toString() {
-        return "<"+getClass().getCanonicalName()+">"+delegate.toString();
+        return "<" + getClass().getCanonicalName() + ">" + delegate.toString();
     }
 
     public void validate() {

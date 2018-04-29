@@ -16,16 +16,12 @@
  */
 package org.geotools.renderer.style;
 
-
 /**
- * Interface for {@link ExternalGraphicFactory} and {@link MarkFactory} implementations
- * that cache graphics. This interface allows hosting applications to clean up any
- * cached content.
+ * Interface for {@link ExternalGraphicFactory} and {@link MarkFactory} implementations that cache
+ * graphics. This interface allows hosting applications to clean up any cached content.
  */
 public interface GraphicCache extends ExternalGraphicFactory {
-    
-    /**
-     * Clear the graphic cache.
-     */
+
+    /** Clear the graphic cache. */
     public void clearCache();
 }

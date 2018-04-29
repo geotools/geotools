@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -18,16 +18,15 @@ package org.geotools.geometry.jts;
 
 import static org.junit.Assert.*;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import com.vividsolutions.jts.algorithm.CGAlgorithms;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 public class CircularArcTest {
 
@@ -44,7 +43,7 @@ public class CircularArcTest {
         // we want to run the test at a higher precision
         CircularArc.setBaseSegmentsQuadrant(32);
     }
-    
+
     @AfterClass
     public static void resetBaseSegmentsQuadrant() {
         // we want to run the test at a higher precision
@@ -59,7 +58,7 @@ public class CircularArcTest {
         env.expandToInclude(arc.controlPoints[4], arc.controlPoints[5]);
         if (otherPoints != null) {
             // add the other points
-            for (int i = 0; i < otherPoints.length;) {
+            for (int i = 0; i < otherPoints.length; ) {
                 env.expandToInclude(otherPoints[i++], otherPoints[i++]);
             }
         }
@@ -82,7 +81,7 @@ public class CircularArcTest {
         assertEquals(CircularArc.COLLINEARS, arc.getRadius(), 0d);
         assertCoordinateEquals(null, arc.getCenter());
         double[] linearized = arc.linearize(0);
-        assertArrayEquals(new double[] { 0, 0, 0, 10, 0, 20 }, linearized, 0d);
+        assertArrayEquals(new double[] {0, 0, 0, 10, 0, 20}, linearized, 0d);
         assertEquals(envelopeFrom(arc), arc.getEnvelope());
     }
 
@@ -92,7 +91,7 @@ public class CircularArcTest {
         assertEquals(0, arc.getRadius(), 0d);
         assertCoordinateEquals(ORIGIN, arc.getCenter());
         double[] linearized = arc.linearize(0);
-        assertArrayEquals(new double[] { 0, 0, 0, 0, 0, 0 }, linearized, 0d);
+        assertArrayEquals(new double[] {0, 0, 0, 0, 0, 0}, linearized, 0d);
         assertEquals(envelopeFrom(arc), arc.getEnvelope());
         assertEquals(0, arc.getEnvelope().getArea(), 0d);
     }
@@ -100,8 +99,8 @@ public class CircularArcTest {
     @Test
     public void testMinuscule() {
         Circle circle = new Circle(100);
-        CircularArc arc = circle.getCircularArc(0, CircularArc.HALF_PI / 128,
-                CircularArc.HALF_PI / 64);
+        CircularArc arc =
+                circle.getCircularArc(0, CircularArc.HALF_PI / 128, CircularArc.HALF_PI / 64);
         assertEquals(100, arc.getRadius(), 1e-9);
         assertCoordinateEquals(ORIGIN, arc.getCenter());
         // linearize with a large tolerance, we should get back just the control points
@@ -113,8 +112,8 @@ public class CircularArcTest {
     public void testMatchingSequence() {
         Circle circle = new Circle(100);
         // create control points that will match exactly the points the algo should generate
-        CircularArc arc = circle.getCircularArc(0, CircularArc.HALF_PI / 32,
-                CircularArc.HALF_PI / 16);
+        CircularArc arc =
+                circle.getCircularArc(0, CircularArc.HALF_PI / 32, CircularArc.HALF_PI / 16);
         assertEquals(100, arc.getRadius(), 1e-9);
         assertCoordinateEquals(ORIGIN, arc.getCenter());
         // linearize with a large tolerance, we should get back just the control points
@@ -130,8 +129,9 @@ public class CircularArcTest {
         assertEquals(100, arc.getRadius(), 1e-9);
         assertCoordinateEquals(ORIGIN, arc.getCenter());
         // linearize, we should get back the control points, plus the regular points in the middle
-        double[] expected = circle.samplePoints(halfStep, halfStep * 2, halfStep * 3, halfStep * 4,
-                halfStep * 5);
+        double[] expected =
+                circle.samplePoints(
+                        halfStep, halfStep * 2, halfStep * 3, halfStep * 4, halfStep * 5);
         assertArrayEquals(expected, arc.linearize(0.1), Circle.EPS);
     }
 
@@ -144,8 +144,9 @@ public class CircularArcTest {
         assertEquals(100, arc.getRadius(), 1e-9);
         assertCoordinateEquals(ORIGIN, arc.getCenter());
         // linearize, we should get back the control points, plus the regular points in the middle
-        double[] expected = circle.samplePoints(halfStep * 5, halfStep * 4, halfStep * 3,
-                halfStep * 2, halfStep);
+        double[] expected =
+                circle.samplePoints(
+                        halfStep * 5, halfStep * 4, halfStep * 3, halfStep * 2, halfStep);
         assertArrayEquals(expected, arc.linearize(0.1), Circle.EPS);
         assertEquals(envelopeFrom(arc), arc.getEnvelope());
     }
@@ -159,8 +160,8 @@ public class CircularArcTest {
         assertEquals(100, arc.getRadius(), 1e-9);
         assertCoordinateEquals(ORIGIN, arc.getCenter());
         // linearize, we should get back the control points, plus the regular points in the middle
-        double[] expected = circle.samplePoints(0, halfStep * 2, halfStep * 3, halfStep * 4,
-                halfStep * 5);
+        double[] expected =
+                circle.samplePoints(0, halfStep * 2, halfStep * 3, halfStep * 4, halfStep * 5);
         assertArrayEquals(expected, arc.linearize(0.2), Circle.EPS);
     }
 
@@ -248,37 +249,41 @@ public class CircularArcTest {
     public void testOrientations() {
         Circle circle = new Circle(100);
         // half circle up
-        assertEquals(COUNTER_CLOCKWISE,
+        assertEquals(
+                COUNTER_CLOCKWISE,
                 getOrientationIndex(getLinearizedArc(circle, 0, Math.PI / 2, Math.PI)));
-        assertEquals(CLOCKWISE,
-                getOrientationIndex(getLinearizedArc(circle, Math.PI, Math.PI / 2, 0)));
-        assertEquals(CLOCKWISE,
-                getOrientationIndex(getLinearizedArc(circle, -Math.PI, Math.PI / 2, 0)));
+        assertEquals(
+                CLOCKWISE, getOrientationIndex(getLinearizedArc(circle, Math.PI, Math.PI / 2, 0)));
+        assertEquals(
+                CLOCKWISE, getOrientationIndex(getLinearizedArc(circle, -Math.PI, Math.PI / 2, 0)));
         // half circle down
-        assertEquals(COUNTER_CLOCKWISE,
+        assertEquals(
+                COUNTER_CLOCKWISE,
                 getOrientationIndex(getLinearizedArc(circle, Math.PI, Math.PI * 3 / 2, 0)));
-        assertEquals(CLOCKWISE,
+        assertEquals(
+                CLOCKWISE,
                 getOrientationIndex(getLinearizedArc(circle, 0, Math.PI * 3 / 2, Math.PI)));
-        assertEquals(CLOCKWISE,
+        assertEquals(
+                CLOCKWISE,
                 getOrientationIndex(getLinearizedArc(circle, 0, -Math.PI / 2, -Math.PI)));
         // end between start and mid, wrapping
         assertEquals(
                 COUNTER_CLOCKWISE,
-                getOrientationIndex(getLinearizedArc(circle, Math.PI / 2, Math.PI / 4,
-                        Math.PI * 3 / 8)));
+                getOrientationIndex(
+                        getLinearizedArc(circle, Math.PI / 2, Math.PI / 4, Math.PI * 3 / 8)));
         assertEquals(
                 CLOCKWISE,
-                getOrientationIndex(getLinearizedArc(circle, Math.PI * 3 / 8, Math.PI / 4,
-                        Math.PI / 2)));
+                getOrientationIndex(
+                        getLinearizedArc(circle, Math.PI * 3 / 8, Math.PI / 4, Math.PI / 2)));
     }
 
     private int getOrientationIndex(LineString ls) {
-        return CGAlgorithms.orientationIndex(ls.getCoordinateN(0), ls.getCoordinateN(1),
-                ls.getCoordinateN(2));
+        return CGAlgorithms.orientationIndex(
+                ls.getCoordinateN(0), ls.getCoordinateN(1), ls.getCoordinateN(2));
     }
 
-    private LineString getLinearizedArc(Circle c, double startAngle, double midAngle,
-            double endAngle) {
+    private LineString getLinearizedArc(
+            Circle c, double startAngle, double midAngle, double endAngle) {
         CircularArc arc = c.getCircularArc(startAngle, midAngle, endAngle);
         double[] linearized = arc.linearize(Double.MAX_VALUE);
         Coordinate[] coords = new Coordinate[linearized.length / 2];

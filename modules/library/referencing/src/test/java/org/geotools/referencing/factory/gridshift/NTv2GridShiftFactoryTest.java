@@ -18,56 +18,56 @@ package org.geotools.referencing.factory.gridshift;
 
 import static org.junit.Assert.*;
 
+import au.com.objectix.jgridshift.GridShiftFile;
 import java.net.URL;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.referencing.FactoryException;
 
-import au.com.objectix.jgridshift.GridShiftFile;
-
-
 /**
  * Unit tests for {@link NTv2GridShiftFactory} public methods
- * 
+ *
  * @author Oscar Fonts
  */
 public class NTv2GridShiftFactoryTest {
 
     private static final URL TEST_GRID = NTv2GridShiftFactoryTest.class.getResource("BALR2009.gsb");
-    private static final URL INEXISTENT_GRID = NTv2GridShiftFactoryTest.class.getResource("this_NTv2_grid_does_not_exist");
-    private static final URL MALFORMED_GRID = NTv2GridShiftFactoryTest.class.getResource("malformedNTv2grid.gsb");
+    private static final URL INEXISTENT_GRID =
+            NTv2GridShiftFactoryTest.class.getResource("this_NTv2_grid_does_not_exist");
+    private static final URL MALFORMED_GRID =
+            NTv2GridShiftFactoryTest.class.getResource("malformedNTv2grid.gsb");
 
     private NTv2GridShiftFactory factory;
 
     /**
      * Instantiates the test {@link NTv2GridShiftFactory}
-     * 
+     *
      * @throws java.lang.Exception
      */
     @Before
     public void setUp() throws Exception {
         factory = new NTv2GridShiftFactory();
     }
-    
-    
+
     /**
-     * Test method for {@link org.geotools.referencing.factory.gridshift.NTv2GridShiftFactory#isNTv2Grid(java.lang.String)}.
+     * Test method for {@link
+     * org.geotools.referencing.factory.gridshift.NTv2GridShiftFactory#isNTv2Grid(java.lang.String)}.
      */
     @Test
     public void testIsNTv2GridAvailable() {
         assertFalse(factory.isNTv2Grid(null));
         assertFalse(factory.isNTv2Grid(INEXISTENT_GRID)); // Will log a FINEST message
-        assertFalse(factory.isNTv2Grid(MALFORMED_GRID));  // Will log a WARNING message
+        assertFalse(factory.isNTv2Grid(MALFORMED_GRID)); // Will log a WARNING message
         assertTrue(factory.isNTv2Grid(TEST_GRID));
     }
-    
+
     /**
-     * Test method for {@link org.geotools.referencing.factory.gridshift.NTv2GridShiftFactory#createNTv2Grid(java.lang.String)}.
+     * Test method for {@link
+     * org.geotools.referencing.factory.gridshift.NTv2GridShiftFactory#createNTv2Grid(java.lang.String)}.
      */
     @Test
     public void testCreateNTv2Grid() {
-        
+
         // Try to create a null grid
         boolean factoryExceptionThrown = false;
         try {
@@ -85,16 +85,16 @@ public class NTv2GridShiftFactoryTest {
             factoryExceptionThrown = true;
         }
         assertTrue(factoryExceptionThrown);
-        
+
         // Try to create a grid from a corrupt NTv2 grid file
         factoryExceptionThrown = false;
         try {
-            factory.createNTv2Grid(MALFORMED_GRID);  // Will log a SEVERE message
+            factory.createNTv2Grid(MALFORMED_GRID); // Will log a SEVERE message
         } catch (FactoryException e) {
             factoryExceptionThrown = true;
         }
         assertTrue(factoryExceptionThrown);
-    
+
         // Create a grid from the test file
         factoryExceptionThrown = false;
         GridShiftFile grid = null;
@@ -107,5 +107,4 @@ public class NTv2GridShiftFactoryTest {
         assertNotNull(grid);
         assertTrue(grid.isLoaded());
     }
-
 }

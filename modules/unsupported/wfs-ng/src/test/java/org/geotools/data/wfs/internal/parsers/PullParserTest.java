@@ -20,38 +20,36 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-
 import javax.xml.namespace.QName;
-
 import org.geotools.data.wfs.internal.GetFeatureParser;
 import org.geotools.wfs.v1_1.WFSConfiguration;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-/**
- * 
- * 
- * @source $URL$
- */
+/** @source $URL$ */
 public class PullParserTest extends AbstractGetFeatureParserTest {
-    
+
     public PullParserTest() {
         setSupportsCount(false);
     }
 
     @Override
-    protected GetFeatureParser getParser(final QName featureName, final URL schemaLocation,
-            final SimpleFeatureType featureType, final URL getFeaturesRequest) throws IOException {
+    protected GetFeatureParser getParser(
+            final QName featureName,
+            final URL schemaLocation,
+            final SimpleFeatureType featureType,
+            final URL getFeaturesRequest)
+            throws IOException {
 
         InputStream inputStream = new BufferedInputStream(getFeaturesRequest.openStream());
-        GetFeatureParser parser = new PullParserFeatureReader(new WFSConfiguration(), inputStream, featureType);
+        GetFeatureParser parser =
+                new PullParserFeatureReader(new WFSConfiguration(), inputStream, featureType);
         return parser;
     }
-    
+
     public void testParseGeoServer_States_100() {
-        //TODO: support custom number format parsing in coordinates, such as
+        // TODO: support custom number format parsing in coordinates, such as
         // <gml:coordinates xmlns:gml="http://www.opengis.net/gml" decimal="#" cs="$" ts="_">
         // 0#0$0#0_0#0$10#0_10#0$10#0_10#0$0#0_0#0$0#0
         // </gml:coordinates>
     }
-
 }

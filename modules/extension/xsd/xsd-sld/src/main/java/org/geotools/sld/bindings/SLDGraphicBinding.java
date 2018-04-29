@@ -17,9 +17,7 @@
 package org.geotools.sld.bindings;
 
 import java.util.List;
-
 import javax.xml.namespace.QName;
-
 import org.geotools.styling.Graphic;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.Symbol;
@@ -35,7 +33,8 @@ import org.picocontainer.MutablePicoContainer;
  * Binding object for the element http://www.opengis.net/sld:Graphic.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:element name="Graphic"&gt;
  *      &lt;xsd:annotation&gt;
@@ -60,12 +59,8 @@ import org.picocontainer.MutablePicoContainer;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class SLDGraphicBinding extends AbstractComplexBinding {
@@ -75,14 +70,13 @@ public class SLDGraphicBinding extends AbstractComplexBinding {
         this.styleFactory = styleFactory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return SLD.GRAPHIC;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -93,6 +87,7 @@ public class SLDGraphicBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -103,22 +98,22 @@ public class SLDGraphicBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {
-    }
+    public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         List<Symbol> symbols = node.getChildValues(Symbol.class);
 
@@ -126,8 +121,14 @@ public class SLDGraphicBinding extends AbstractComplexBinding {
         Expression size = (Expression) node.getChildValue("Size");
         Expression rotation = (Expression) node.getChildValue("Rotation");
 
-        Graphic graphic = styleFactory
-                .createGraphic(null, null, (Symbol[]) symbols.toArray(new Symbol[symbols.size()]), opacity, size, rotation);
+        Graphic graphic =
+                styleFactory.createGraphic(
+                        null,
+                        null,
+                        (Symbol[]) symbols.toArray(new Symbol[symbols.size()]),
+                        opacity,
+                        size,
+                        rotation);
 
         if (node.getChild("Displacement") != null) {
             graphic.setDisplacement((Displacement) node.getChildValue("Displacement"));

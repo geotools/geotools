@@ -19,34 +19,27 @@ package org.geotools.graph.structure;
 import java.util.Iterator;
 
 /**
- * Reperesents a component in a directed graph. 
- * 
+ * Reperesents a component in a directed graph.
+ *
  * @see DirectedGraph
- * 
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- *
- *
  * @source $URL$
  */
 public interface DirectedGraphable extends Graphable {
-  
-  /**
-   * Returns other components related through an <B>in</B> relationship. 
-   *   
-   * @return An iterator over the other directed components related through an 
-   * in relationship.
-   * 
-   * @see Graphable#getRelated()
-   */
-  public Iterator getInRelated();
-  
-  /**
-   * Returns other components related through an <B>out</B> relationship.
-   * 
-   * @return An iterator over the other directed components related through an 
-   * out relationship.
-   * 
-   * @see Graphable#getRelated()
-   */
-  public Iterator getOutRelated();	
+
+    /**
+     * Returns other components related through an <B>in</B> relationship.
+     *
+     * @return An iterator over the other directed components related through an in relationship.
+     * @see Graphable#getRelated()
+     */
+    public Iterator getInRelated();
+
+    /**
+     * Returns other components related through an <B>out</B> relationship.
+     *
+     * @return An iterator over the other directed components related through an out relationship.
+     * @see Graphable#getRelated()
+     */
+    public Iterator getOutRelated();
 }

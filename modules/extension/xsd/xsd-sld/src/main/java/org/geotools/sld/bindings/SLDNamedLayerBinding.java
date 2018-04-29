@@ -16,9 +16,6 @@
  */
 package org.geotools.sld.bindings;
 
-import org.picocontainer.MutablePicoContainer;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import java.util.Iterator;
 import javax.xml.namespace.QName;
 import org.geotools.styling.LayerFeatureConstraints;
@@ -26,13 +23,14 @@ import org.geotools.styling.NamedLayer;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xml.*;
-
+import org.picocontainer.MutablePicoContainer;
 
 /**
  * Binding object for the element http://www.opengis.net/sld:NamedLayer.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:element name="NamedLayer"&gt;
  *      &lt;xsd:annotation&gt;
@@ -53,12 +51,8 @@ import org.geotools.xml.*;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class SLDNamedLayerBinding extends AbstractComplexBinding {
@@ -68,14 +62,13 @@ public class SLDNamedLayerBinding extends AbstractComplexBinding {
         this.styleFactory = styleFactory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return SLD.NAMEDLAYER;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -86,6 +79,7 @@ public class SLDNamedLayerBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -96,39 +90,39 @@ public class SLDNamedLayerBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {
-    }
+    public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         NamedLayer namedLayer = styleFactory.createNamedLayer();
 
-        //&lt;xsd:element ref="sld:Name"/&gt;
+        // &lt;xsd:element ref="sld:Name"/&gt;
         namedLayer.setName((String) node.getChildValue("Name"));
 
-        //&lt;xsd:element ref="sld:LayerFeatureConstraints" minOccurs="0"/&gt;
+        // &lt;xsd:element ref="sld:LayerFeatureConstraints" minOccurs="0"/&gt;
         if (node.hasChild("LayerFeatureConstraints")) {
-            LayerFeatureConstraints constraints = (LayerFeatureConstraints) node.getChildValue(
-                    "LayerFeatureConstraints");
+            LayerFeatureConstraints constraints =
+                    (LayerFeatureConstraints) node.getChildValue("LayerFeatureConstraints");
             namedLayer.setLayerFeatureConstraints(constraints.getFeatureTypeConstraints());
         }
 
-        //&lt;xsd:choice minOccurs="0" maxOccurs="unbounded"&gt;
+        // &lt;xsd:choice minOccurs="0" maxOccurs="unbounded"&gt;
         //  &lt;xsd:element ref="sld:NamedStyle"/&gt;
         //  &lt;xsd:element ref="sld:UserStyle"/&gt;
-        //&lt;/xsd:choice&gt;
-        for (Iterator itr = node.getChildValues(Style.class).iterator(); itr.hasNext();) {
+        // &lt;/xsd:choice&gt;
+        for (Iterator itr = node.getChildValues(Style.class).iterator(); itr.hasNext(); ) {
             namedLayer.addStyle((Style) itr.next());
         }
 

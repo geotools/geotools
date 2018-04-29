@@ -16,18 +16,17 @@
  */
 package org.geotools.se.v1_1.bindings;
 
+import javax.xml.namespace.QName;
 import org.geotools.se.v1_1.SE;
 import org.geotools.sld.bindings.SLDOnlineResourceBinding;
 import org.geotools.styling.ResourceLocator;
 import org.geotools.xml.*;
 
-import javax.xml.namespace.QName;
-
 /**
  * Binding object for the element http://www.opengis.net/se:OnlineResource.
- * 
+ *
  * <p>
- * 
+ *
  * <pre>
  *  <code>
  *  &lt;xsd:element name="OnlineResource" type="se:OnlineResourceType"&gt;
@@ -36,16 +35,12 @@ import javax.xml.namespace.QName;
  *          An "OnlineResource" is typically used to refer to an HTTP URL.
  *        &lt;/xsd:documentation&gt;
  *      &lt;/xsd:annotation&gt;
- *  &lt;/xsd:element&gt; 
- * 	
+ *  &lt;/xsd:element&gt;
+ *
  *   </code>
  * </pre>
- * 
- * </p>
- * 
+ *
  * @generated
- *
- *
  * @source $URL$
  */
 public class OnlineResourceBinding extends SLDOnlineResourceBinding {
@@ -54,9 +49,7 @@ public class OnlineResourceBinding extends SLDOnlineResourceBinding {
         super(resourceLocator);
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return SE.OnlineResource;
     }

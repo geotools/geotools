@@ -16,20 +16,18 @@
  */
 package org.geotools.gml3.simple;
 
+import com.vividsolutions.jts.geom.Geometry;
 import org.geotools.geometry.jts.WKTReader2;
 import org.geotools.gml3.GML;
 import org.w3c.dom.Document;
 
-import com.vividsolutions.jts.geom.Geometry;
-
 public class Point3DTest extends GeometryEncoderTestSupport {
 
     public void testEncode3DPoint() throws Exception {
-        PointEncoder encoder = new PointEncoder(gtEncoder, "gml" , GML.NAMESPACE);
+        PointEncoder encoder = new PointEncoder(gtEncoder, "gml", GML.NAMESPACE);
         Geometry geometry = new WKTReader2().read("POINT(0 0 50)");
         Document doc = encode(encoder, geometry);
         // print(doc);
         assertEquals("0 0 50", xpath.evaluate("//gml:pos", doc));
     }
-
 }

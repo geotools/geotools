@@ -17,6 +17,8 @@
  */
 package org.geotools.image;
 
+import com.vividsolutions.jts.awt.ShapeWriter;
+import com.vividsolutions.jts.geom.Geometry;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
@@ -24,17 +26,11 @@ import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
 import java.util.BitSet;
 
-import com.vividsolutions.jts.awt.ShapeWriter;
-import com.vividsolutions.jts.geom.Geometry;
-
-
 /**
- * An analogous of {@link BitSet} which is explicitly 2 dimensional and allows
- * drawing a shape to quickly turn on a large area of the map.
- * This class is not thread safe.
- * 
- * @author Andrea Aime - GeoSolutions
+ * An analogous of {@link BitSet} which is explicitly 2 dimensional and allows drawing a shape to
+ * quickly turn on a large area of the map. This class is not thread safe.
  *
+ * @author Andrea Aime - GeoSolutions
  */
 public class DrawableBitSet {
 

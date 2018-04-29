@@ -20,9 +20,8 @@ import org.geotools.coverage.io.CoverageAccess.AccessType;
 
 /**
  * Describes the capabilities of this {@link CoverageSource}
- * 
- * @author Simone Giannecchini, GeoSolutions SAS
  *
+ * @author Simone Giannecchini, GeoSolutions SAS
  * @source $URL$
  */
 public enum CoverageCapabilities {
@@ -34,9 +33,7 @@ public enum CoverageCapabilities {
     WRITE_RANGE_SUBSETTING(AccessType.READ_WRITE),
     WRITE_SUBSAMPLING(AccessType.READ_WRITE);
 
-    /**
-     * Access requirement for this capability to be allowed.
-     */
+    /** Access requirement for this capability to be allowed. */
     final AccessType access;
 
     private CoverageCapabilities(AccessType accessType) {
@@ -45,11 +42,11 @@ public enum CoverageCapabilities {
 
     /**
      * Check if this capability is permissible for the provided access type.
-     * 
+     *
      * @param type
      * @return true if capability is permissible
      */
-    public boolean isSupported( AccessType type ){
+    public boolean isSupported(AccessType type) {
         return access.compareTo(type) <= 0;
     }
 }

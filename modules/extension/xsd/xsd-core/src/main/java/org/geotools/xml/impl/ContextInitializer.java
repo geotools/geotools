@@ -21,10 +21,9 @@ import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 import org.picocontainer.MutablePicoContainer;
 
-
 /**
- * Invokes the {@link ComplexBinding#initializeChildContext(ElementInstance, Node, MutablePicoContainer)} 
- * event/callback.
+ * Invokes the {@link ComplexBinding#initializeChildContext(ElementInstance, Node,
+ * MutablePicoContainer)} event/callback.
  *
  * @source $URL$
  */

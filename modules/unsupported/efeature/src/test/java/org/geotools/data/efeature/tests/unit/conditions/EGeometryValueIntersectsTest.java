@@ -22,24 +22,20 @@ import org.geotools.data.efeature.query.EGeometryValueIntersects;
 
 /**
  * @author kengu - 14. juni 2011
- *
- *
  * @source $URL$
  */
 public class EGeometryValueIntersectsTest extends AbstractEGeometryValueTest {
-    
-    // ----------------------------------------------------- 
+
+    // -----------------------------------------------------
     //  Constructors
     // -----------------------------------------------------
-    
-    /**
-     * @param name
-     */
+
+    /** @param name */
     public EGeometryValueIntersectsTest(String name) {
-        super(name,INTERSECTS);
+        super(name, INTERSECTS);
     }
 
-    // ----------------------------------------------------- 
+    // -----------------------------------------------------
     //  AbstractEAttributeValueTest implementation
     // -----------------------------------------------------
 
@@ -50,5 +46,4 @@ public class EGeometryValueIntersectsTest extends AbstractEGeometryValueTest {
         //
         return new EGeometryValueIntersects(eAttribute, filter, false);
     }
-
 }

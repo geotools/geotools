@@ -4,11 +4,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.query.conditions.eobjects.EObjectCondition;
 import org.eclipse.emf.query.statements.WHERE;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class EFeatureFilter {
 
     private WHERE where;
@@ -28,5 +24,4 @@ public class EFeatureFilter {
     public boolean shouldPrune(EObject eObject) {
         return where.shouldPrune(eObject);
     }
-
 }

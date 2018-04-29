@@ -1,20 +1,14 @@
 package org.geotools.renderer.chart;
 
 import javax.swing.Icon;
-
 import junit.framework.TestCase;
-
 import org.geotools.factory.CommonFactoryFinder;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PiePlot;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Literal;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class ChartFactoryTest extends TestCase {
 
     ChartGraphicFactory factory = new ChartGraphicFactory();
@@ -56,7 +50,7 @@ public class ChartFactoryTest extends TestCase {
             // ok
         }
     }
-    
+
     public void testMissingSize() throws Exception {
         Literal url = ff.literal("http://chart?cht=p&chd=t:10,20,70");
         try {
@@ -82,7 +76,7 @@ public class ChartFactoryTest extends TestCase {
         assertEquals(200, icon.getIconWidth());
         assertEquals(200, icon.getIconHeight());
     }
-    
+
     public void testSizeFromSLDAndChart() throws Exception {
         Literal url = ff.literal("http://chart?cht=p&chd=t:10,20,70&chs=200x100");
         Icon icon = (Icon) factory.getIcon(null, url, ChartGraphicFactory.FORMAT, 600);
@@ -90,7 +84,7 @@ public class ChartFactoryTest extends TestCase {
         assertEquals(600, icon.getIconWidth());
         assertEquals(300, icon.getIconHeight());
     }
-    
+
     public void testSizeFromSLDAndChartVertical() throws Exception {
         Literal url = ff.literal("http://chart?cht=p&chd=t:10,20,70&chs=100x300");
         Icon icon = (Icon) factory.getIcon(null, url, ChartGraphicFactory.FORMAT, 600);
@@ -98,5 +92,4 @@ public class ChartFactoryTest extends TestCase {
         assertEquals(200, icon.getIconWidth());
         assertEquals(600, icon.getIconHeight());
     }
-
 }

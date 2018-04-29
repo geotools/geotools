@@ -21,16 +21,11 @@ import org.geotools.jdbc.JDBCDataStoreOnlineTest;
 import org.geotools.jdbc.JDBCJNDITestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class H2DataStoreTest extends JDBCDataStoreOnlineTest {
 
     @Override
     protected JDBCTestSetup createTestSetup() {
         return new JDBCJNDITestSetup(new H2TestSetup());
     }
-
 }

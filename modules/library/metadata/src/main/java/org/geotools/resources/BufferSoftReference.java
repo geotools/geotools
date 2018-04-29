@@ -18,14 +18,12 @@ package org.geotools.resources;
 
 import java.lang.ref.SoftReference;
 import java.nio.ByteBuffer;
-
-import org.geotools.resources.NIOUtilities;
 import org.geotools.util.WeakCollectionCleaner;
 
 /**
- * A soft reference that will clear the contained byte buffer before getting garbage collected 
- * @author Andrea Aime - OpenGeo
+ * A soft reference that will clear the contained byte buffer before getting garbage collected
  *
+ * @author Andrea Aime - OpenGeo
  */
 class BufferSoftReference extends SoftReference<ByteBuffer> {
 
@@ -42,16 +40,16 @@ class BufferSoftReference extends SoftReference<ByteBuffer> {
 
     @Override
     public boolean equals(Object other) {
-        if(!(other instanceof BufferSoftReference)) {
+        if (!(other instanceof BufferSoftReference)) {
             return false;
         }
-        
+
         ByteBuffer buffer = get();
-        if(buffer == null) {
+        if (buffer == null) {
             return false;
         } else {
             ByteBuffer otherBuffer = ((BufferSoftReference) other).get();
-            if(otherBuffer == null) {
+            if (otherBuffer == null) {
                 return false;
             }
             return otherBuffer == buffer;

@@ -34,11 +34,11 @@ public class ReadResolutionCalculatorTest {
         // &BBOX=-10000000,10000000,0,20000000&WIDTH=256&HEIGHT=256
         final CoordinateReferenceSystem requestCRS = CRS.decode("EPSG:3857", true);
         final CoordinateReferenceSystem nativeCRS = CRS.decode("EPSG:4326", true);
-        final ReferencedEnvelope requestBounds = new ReferencedEnvelope(-10000000, -5000000, 10000000, 15000000, requestCRS);
-        GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(0, 0, 256, 256),
-                requestBounds);
-        ReadResolutionCalculator calculator = new ReadResolutionCalculator(gg, nativeCRS,
-                new double[] { NATIVE_RES, NATIVE_RES });
+        final ReferencedEnvelope requestBounds =
+                new ReferencedEnvelope(-10000000, -5000000, 10000000, 15000000, requestCRS);
+        GridGeometry2D gg = new GridGeometry2D(new GridEnvelope2D(0, 0, 256, 256), requestBounds);
+        ReadResolutionCalculator calculator =
+                new ReadResolutionCalculator(gg, nativeCRS, new double[] {NATIVE_RES, NATIVE_RES});
         ReferencedEnvelope readBounds = requestBounds.transform(nativeCRS, true);
         calculator.setAccurateResolution(true);
         double[] requestedResolution = calculator.computeRequestedResolution(readBounds);

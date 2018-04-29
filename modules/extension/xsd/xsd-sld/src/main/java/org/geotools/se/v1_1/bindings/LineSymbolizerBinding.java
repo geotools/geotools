@@ -16,6 +16,7 @@
  */
 package org.geotools.se.v1_1.bindings;
 
+import javax.xml.namespace.QName;
 import org.geotools.se.v1_1.SE;
 import org.geotools.sld.bindings.SLDLineSymbolizerBinding;
 import org.geotools.styling.LineSymbolizer;
@@ -23,30 +24,25 @@ import org.geotools.styling.StyleFactory;
 import org.geotools.xml.*;
 import org.opengis.filter.expression.Expression;
 
-
-import javax.xml.namespace.QName;
-
 /**
  * Binding object for the element http://www.opengis.net/se:LineSymbolizer.
  *
  * <p>
- *	<pre>
- *	 <code>
+ *
+ * <pre>
+ *  <code>
  *  &lt;xsd:element name="LineSymbolizer" substitutionGroup="se:Symbolizer" type="se:LineSymbolizerType"&gt;
  *      &lt;xsd:annotation&gt;
  *          &lt;xsd:documentation&gt;
  *          A LineSymbolizer is used to render a "stroke" along a linear geometry.
  *        &lt;/xsd:documentation&gt;
  *      &lt;/xsd:annotation&gt;
- *  &lt;/xsd:element&gt; 
- *		
- *	  </code>
- *	 </pre>
- * </p>
+ *  &lt;/xsd:element&gt;
+ *
+ *   </code>
+ *  </pre>
  *
  * @generated
- *
- *
  * @source $URL$
  */
 public class LineSymbolizerBinding extends SLDLineSymbolizerBinding {
@@ -55,9 +51,7 @@ public class LineSymbolizerBinding extends SLDLineSymbolizerBinding {
         super(styleFactory);
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return SE.LineSymbolizer;
     }
@@ -66,21 +60,22 @@ public class LineSymbolizerBinding extends SLDLineSymbolizerBinding {
     public int getExecutionMode() {
         return BEFORE;
     }
-    
+
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         LineSymbolizer sym = (LineSymbolizer) super.parse(instance, node, value);
-        
-        //&lt;xsd:element minOccurs="0" ref="se:PerpendicularOffset"/&gt;
+
+        // &lt;xsd:element minOccurs="0" ref="se:PerpendicularOffset"/&gt;
         if (node.hasChild("PerpendicularOffset")) {
             sym.setPerpendicularOffset((Expression) node.getChildValue("PerpendicularOffset"));
         }
-        
+
         return sym;
     }
-
 }

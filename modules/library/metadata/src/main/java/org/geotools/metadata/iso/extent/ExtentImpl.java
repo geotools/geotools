@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -20,38 +20,30 @@
 package org.geotools.metadata.iso.extent;
 
 import java.util.Collection;
-import org.opengis.metadata.extent.Extent;
+import org.geotools.metadata.iso.MetadataEntity;
 import org.opengis.metadata.extent.BoundingPolygon;
-import org.opengis.metadata.extent.GeographicExtent;
+import org.opengis.metadata.extent.Extent;
 import org.opengis.metadata.extent.GeographicBoundingBox;
+import org.opengis.metadata.extent.GeographicExtent;
 import org.opengis.metadata.extent.TemporalExtent;
 import org.opengis.metadata.extent.VerticalExtent;
 import org.opengis.util.InternationalString;
-import org.geotools.metadata.iso.MetadataEntity;
-
 
 /**
- * Information about spatial, vertical, and temporal extent.
- * This interface has four optional attributes
- * ({@linkplain #getGeographicElements geographic elements},
- *  {@linkplain #getTemporalElements temporal elements}, and
- *  {@linkplain #getVerticalElements vertical elements}) and an element called
- *  {@linkplain #getDescription description}.
- *  At least one of the four shall be used.
- *
- *
+ * Information about spatial, vertical, and temporal extent. This interface has four optional
+ * attributes ({@linkplain #getGeographicElements geographic elements}, {@linkplain
+ * #getTemporalElements temporal elements}, and {@linkplain #getVerticalElements vertical elements})
+ * and an element called {@linkplain #getDescription description}. At least one of the four shall be
+ * used.
  *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane
- *
  * @since 2.1
  */
 public class ExtentImpl extends MetadataEntity implements Extent {
-    /**
-     * Serial number for interoperability with different versions.
-     */
+    /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 7812213837337326257L;
 
     /**
@@ -60,6 +52,7 @@ public class ExtentImpl extends MetadataEntity implements Extent {
      * @since 2.2
      */
     public static final Extent WORLD;
+
     static {
         final ExtentImpl world = new ExtentImpl();
         world.getGeographicElements().add(GeographicBoundingBoxImpl.WORLD);
@@ -67,31 +60,20 @@ public class ExtentImpl extends MetadataEntity implements Extent {
         WORLD = world;
     }
 
-    /**
-     * Returns the spatial and temporal extent for the referring object.
-     */
+    /** Returns the spatial and temporal extent for the referring object. */
     private InternationalString description;
 
-    /**
-     * Provides geographic component of the extent of the referring object
-     */
+    /** Provides geographic component of the extent of the referring object */
     private Collection<GeographicExtent> geographicElements;
 
-    /**
-     * Provides temporal component of the extent of the referring object
-     */
+    /** Provides temporal component of the extent of the referring object */
     private Collection<TemporalExtent> temporalElements;
 
-    /**
-     * Provides vertical component of the extent of the referring object
-     */
+    /** Provides vertical component of the extent of the referring object */
     private Collection<VerticalExtent> verticalElements;
 
-    /**
-     * Constructs an initially empty extent.
-     */
-    public ExtentImpl() {
-    }
+    /** Constructs an initially empty extent. */
+    public ExtentImpl() {}
 
     /**
      * Constructs a metadata entity initialized with the values from the specified metadata.
@@ -102,73 +84,54 @@ public class ExtentImpl extends MetadataEntity implements Extent {
         super(source);
     }
 
-    /**
-     * Returns the spatial and temporal extent for the referring object.
-     */
+    /** Returns the spatial and temporal extent for the referring object. */
     public InternationalString getDescription() {
         return description;
     }
 
-    /**
-     * Set the spatial and temporal extent for the referring object.
-     */
+    /** Set the spatial and temporal extent for the referring object. */
     public synchronized void setDescription(final InternationalString newValue) {
         checkWritePermission();
         description = newValue;
     }
 
-    /**
-     * Provides geographic component of the extent of the referring object
-     */
+    /** Provides geographic component of the extent of the referring object */
     public synchronized Collection<GeographicExtent> getGeographicElements() {
         return (geographicElements = nonNullCollection(geographicElements, GeographicExtent.class));
     }
 
-    /**
-     * Set geographic component of the extent of the referring object
-     */
+    /** Set geographic component of the extent of the referring object */
     public synchronized void setGeographicElements(
-            final Collection<? extends GeographicExtent> newValues)
-    {
+            final Collection<? extends GeographicExtent> newValues) {
         geographicElements = copyCollection(newValues, geographicElements, GeographicExtent.class);
     }
 
-    /**
-     * Provides temporal component of the extent of the referring object
-     */
+    /** Provides temporal component of the extent of the referring object */
     public synchronized Collection<TemporalExtent> getTemporalElements() {
         return (temporalElements = nonNullCollection(temporalElements, TemporalExtent.class));
     }
 
-    /**
-     * Set temporal component of the extent of the referring object
-     */
+    /** Set temporal component of the extent of the referring object */
     public synchronized void setTemporalElements(
-            final Collection<? extends TemporalExtent> newValues)
-    {
+            final Collection<? extends TemporalExtent> newValues) {
         temporalElements = copyCollection(newValues, temporalElements, TemporalExtent.class);
     }
 
-    /**
-     * Provides vertical component of the extent of the referring object
-     */
+    /** Provides vertical component of the extent of the referring object */
     public synchronized Collection<VerticalExtent> getVerticalElements() {
         return (verticalElements = nonNullCollection(verticalElements, VerticalExtent.class));
     }
 
-    /**
-     * Set vertical component of the extent of the referring object
-     */
+    /** Set vertical component of the extent of the referring object */
     public synchronized void setVerticalElements(
-            final Collection<? extends VerticalExtent> newValues)
-    {
+            final Collection<? extends VerticalExtent> newValues) {
         verticalElements = copyCollection(newValues, verticalElements, VerticalExtent.class);
     }
 
     /**
-     * Convenience method returning a single geographic bounding box from the specified extent.
-     * If no bounding box was found, then this method returns {@code null}. If more than one box
-     * is found, then boxes are {@linkplain GeographicBoundingBoxImpl#add added} together.
+     * Convenience method returning a single geographic bounding box from the specified extent. If
+     * no bounding box was found, then this method returns {@code null}. If more than one box is
+     * found, then boxes are {@linkplain GeographicBoundingBoxImpl#add added} together.
      *
      * @since 2.2
      */

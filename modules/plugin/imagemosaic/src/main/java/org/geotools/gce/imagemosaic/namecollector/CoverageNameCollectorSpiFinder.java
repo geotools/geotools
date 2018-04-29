@@ -21,13 +21,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
 import org.geotools.factory.FactoryCreator;
 import org.geotools.factory.FactoryRegistry;
 
-/**
- * Access the {@link CoverageNameCollectorSPI}s
- */
+/** Access the {@link CoverageNameCollectorSPI}s */
 public class CoverageNameCollectorSpiFinder {
 
     private static FactoryCreator registry;
@@ -36,13 +33,13 @@ public class CoverageNameCollectorSpiFinder {
         // get all CoverageNameCollectorSPI implementations
         FactoryRegistry serviceRegistry = getServiceRegistry();
         serviceRegistry.scanForPlugins();
-        final Iterator<CoverageNameCollectorSPI> it = serviceRegistry.getServiceProviders(
-                CoverageNameCollectorSPI.class, true);
+        final Iterator<CoverageNameCollectorSPI> it =
+                serviceRegistry.getServiceProviders(CoverageNameCollectorSPI.class, true);
         Map<String, CoverageNameCollectorSPI> collectorSpiMap = new HashMap<>();
         while (it.hasNext()) {
             CoverageNameCollectorSPI coverageNameCollectorSpi = it.next();
-            collectorSpiMap.put(coverageNameCollectorSpi.getClass().getName(),
-                    coverageNameCollectorSpi);
+            collectorSpiMap.put(
+                    coverageNameCollectorSpi.getClass().getName(), coverageNameCollectorSpi);
         }
         return collectorSpiMap;
     }
@@ -53,8 +50,9 @@ public class CoverageNameCollectorSpiFinder {
      */
     private static FactoryRegistry getServiceRegistry() {
         if (registry == null) {
-            registry = new FactoryCreator(
-                    Arrays.asList(new Class<?>[] { CoverageNameCollectorSPI.class }));
+            registry =
+                    new FactoryCreator(
+                            Arrays.asList(new Class<?>[] {CoverageNameCollectorSPI.class}));
         }
         return registry;
     }

@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2016, Open Source Geospatial Foundation (OSGeo). 
+ *    (C) 2016, Open Source Geospatial Foundation (OSGeo).
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -24,16 +24,13 @@ import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
-
-import org.geotools.gml2.simple.GMLWriter;
-import org.geotools.gml2.simple.GeometryEncoder;
 import org.geotools.xml.Encoder;
 import org.xml.sax.helpers.AttributesImpl;
 
 /**
  * Helper class that encodes the geometries within GeometryCollection
- * 
- * @author 
+ *
+ * @author
  */
 public class GenericGeometryEncoder extends GeometryEncoder<Geometry> {
 
@@ -45,11 +42,10 @@ public class GenericGeometryEncoder extends GeometryEncoder<Geometry> {
         this.encoder = encoder;
     }
 
- /**
- *
- * @param encoder
- * @param gmlPrefix
- */
+    /**
+     * @param encoder
+     * @param gmlPrefix
+     */
     public GenericGeometryEncoder(Encoder encoder, String gmlPrefix) {
         super(encoder);
         this.encoder = encoder;
@@ -59,34 +55,29 @@ public class GenericGeometryEncoder extends GeometryEncoder<Geometry> {
     @Override
     public void encode(Geometry geometry, AttributesImpl atts, GMLWriter handler) throws Exception {
         if (geometry instanceof LineString) {
-            LineStringEncoder lineString = new LineStringEncoder(encoder,
-                LineStringEncoder.LINE_STRING);
+            LineStringEncoder lineString =
+                    new LineStringEncoder(encoder, LineStringEncoder.LINE_STRING);
             lineString.encode((LineString) geometry, atts, handler);
         } else if (geometry instanceof Point) {
-            PointEncoder pt = new PointEncoder(encoder, gmlPrefix == null? "gml": gmlPrefix);
+            PointEncoder pt = new PointEncoder(encoder, gmlPrefix == null ? "gml" : gmlPrefix);
             pt.encode((Point) geometry, atts, handler);
         } else if (geometry instanceof Polygon) {
             PolygonEncoder polygon = new PolygonEncoder(encoder, gmlPrefix);
             polygon.encode((Polygon) geometry, atts, handler);
         } else if (geometry instanceof MultiLineString) {
-            MultiLineStringEncoder multiLineString = new MultiLineStringEncoder(
-                                                        encoder, gmlPrefix);
+            MultiLineStringEncoder multiLineString = new MultiLineStringEncoder(encoder, gmlPrefix);
             multiLineString.encode((MultiLineString) geometry, atts, handler);
         } else if (geometry instanceof MultiPoint) {
-            MultiPointEncoder multiPoint = new MultiPointEncoder(encoder,
-                                            gmlPrefix);
+            MultiPointEncoder multiPoint = new MultiPointEncoder(encoder, gmlPrefix);
             multiPoint.encode((MultiPoint) geometry, atts, handler);
         } else if (geometry instanceof MultiPolygon) {
-            MultiPolygonEncoder multiPolygon = new MultiPolygonEncoder(encoder,
-                                                gmlPrefix);
+            MultiPolygonEncoder multiPolygon = new MultiPolygonEncoder(encoder, gmlPrefix);
             multiPolygon.encode((MultiPolygon) geometry, atts, handler);
         } else if (geometry instanceof LinearRing) {
-            LinearRingEncoder linearRing = new LinearRingEncoder(encoder,
-                                                gmlPrefix);
+            LinearRingEncoder linearRing = new LinearRingEncoder(encoder, gmlPrefix);
             linearRing.encode((LinearRing) geometry, atts, handler);
         } else {
             throw new Exception("Unsupported geometry " + geometry.toString());
         }
     }
 }
-

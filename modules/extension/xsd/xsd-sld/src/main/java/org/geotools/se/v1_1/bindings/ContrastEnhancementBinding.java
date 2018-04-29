@@ -16,19 +16,18 @@
  */
 package org.geotools.se.v1_1.bindings;
 
+import javax.xml.namespace.QName;
 import org.geotools.se.v1_1.SE;
 import org.geotools.sld.bindings.SLDContrastEnhancementBinding;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xml.*;
 import org.opengis.filter.FilterFactory;
 
-import javax.xml.namespace.QName;
-
 /**
  * Binding object for the element http://www.opengis.net/se:ContrastEnhancement.
- * 
+ *
  * <p>
- * 
+ *
  * <pre>
  *  <code>
  *  &lt;xsd:element name="ContrastEnhancement" type="se:ContrastEnhancementType"&gt;
@@ -40,16 +39,12 @@ import javax.xml.namespace.QName;
  *          more visible.
  *        &lt;/xsd:documentation&gt;
  *      &lt;/xsd:annotation&gt;
- *  &lt;/xsd:element&gt; 
- * 	
+ *  &lt;/xsd:element&gt;
+ *
  *   </code>
  * </pre>
- * 
- * </p>
- * 
+ *
  * @generated
- *
- *
  * @source $URL$
  */
 public class ContrastEnhancementBinding extends SLDContrastEnhancementBinding {
@@ -58,9 +53,7 @@ public class ContrastEnhancementBinding extends SLDContrastEnhancementBinding {
         super(styleFactory, filterFactory);
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return SE.ContrastEnhancement;
     }

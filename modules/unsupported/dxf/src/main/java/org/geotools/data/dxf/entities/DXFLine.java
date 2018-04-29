@@ -3,24 +3,19 @@ package org.geotools.data.dxf.entities;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import java.io.EOFException;
-import org.geotools.data.dxf.parser.DXFLineNumberReader;
 import java.io.IOException;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.geotools.data.GeometryType;
-import org.geotools.data.dxf.parser.DXFUnivers;
 import org.geotools.data.dxf.header.DXFLayer;
 import org.geotools.data.dxf.header.DXFLineType;
 import org.geotools.data.dxf.parser.DXFCodeValuePair;
 import org.geotools.data.dxf.parser.DXFGroupCode;
+import org.geotools.data.dxf.parser.DXFLineNumberReader;
 import org.geotools.data.dxf.parser.DXFParseException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.geotools.data.dxf.parser.DXFUnivers;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class DXFLine extends DXFEntity {
 
     private static final Log log = LogFactory.getLog(DXFLine.class);
@@ -28,27 +23,60 @@ public class DXFLine extends DXFEntity {
     public DXFPoint _b = new DXFPoint();
 
     public DXFLine(DXFLine newLine) {
-        this(new DXFPoint(newLine._a._point.x, newLine._a._point.y, newLine.getColor(), null, 0, newLine.getThickness()),
-                new DXFPoint(newLine._b._point.x, newLine._b._point.y, newLine.getColor(), null, 0, newLine.getThickness()),
-                newLine.getColor(), newLine.getRefLayer(), newLine.getLineType(), newLine.getThickness(), 0);
+        this(
+                new DXFPoint(
+                        newLine._a._point.x,
+                        newLine._a._point.y,
+                        newLine.getColor(),
+                        null,
+                        0,
+                        newLine.getThickness()),
+                new DXFPoint(
+                        newLine._b._point.x,
+                        newLine._b._point.y,
+                        newLine.getColor(),
+                        null,
+                        0,
+                        newLine.getThickness()),
+                newLine.getColor(),
+                newLine.getRefLayer(),
+                newLine.getLineType(),
+                newLine.getThickness(),
+                0);
 
         setType(newLine.getType());
         setStartingLineNumber(newLine.getStartingLineNumber());
         setUnivers(newLine.getUnivers());
     }
 
-    public DXFLine(DXFPoint a, DXFPoint b, int c, DXFLayer l, DXFLineType lineType, double thickness, int visibility) {
+    public DXFLine(
+            DXFPoint a,
+            DXFPoint b,
+            int c,
+            DXFLayer l,
+            DXFLineType lineType,
+            double thickness,
+            int visibility) {
         super(c, l, visibility, lineType, thickness);
         _a = a;
         _b = b;
         setName("DXFLine");
     }
-    public DXFLine(DXFPoint a, DXFPoint b, int c, DXFLayer l, DXFLineType lineType, double thickness, int visibility, DXFExtendedData extData) {
-    	super(c, l, visibility, lineType, thickness);
-    	_a = a;
-    	_b = b;
-    	setName("DXFLine");
-    	_extendedData = extData;
+
+    public DXFLine(
+            DXFPoint a,
+            DXFPoint b,
+            int c,
+            DXFLayer l,
+            DXFLineType lineType,
+            double thickness,
+            int visibility,
+            DXFExtendedData extData) {
+        super(c, l, visibility, lineType, thickness);
+        _a = a;
+        _b = b;
+        setName("DXFLine");
+        _extendedData = extData;
     }
 
     public static DXFLine read(DXFLineNumberReader br, DXFUnivers univers) throws IOException {
@@ -83,51 +111,52 @@ public class DXFLine extends DXFEntity {
                     br.reset();
                     doLoop = false;
                     break;
-                case X_1: //"10"
+                case X_1: // "10"
                     x1 = cvp.getDoubleValue();
                     break;
-                case Y_1: //"20"
+                case Y_1: // "20"
                     y1 = cvp.getDoubleValue();
                     break;
-                case X_2: //"11"
+                case X_2: // "11"
                     x2 = cvp.getDoubleValue();
                     break;
-                case Y_2: //"21"
+                case Y_2: // "21"
                     y2 = cvp.getDoubleValue();
                     break;
-                case LAYER_NAME: //"8"
+                case LAYER_NAME: // "8"
                     l = univers.findLayer(cvp.getStringValue());
                     break;
-                case COLOR: //"62"
+                case COLOR: // "62"
                     c = cvp.getShortValue();
                     break;
-                case LINETYPE_NAME: //"6"
+                case LINETYPE_NAME: // "6"
                     lineType = univers.findLType(cvp.getStringValue());
                     break;
-                case THICKNESS: //"39"
+                case THICKNESS: // "39"
                     thickness = cvp.getDoubleValue();
                     break;
-                case VISIBILITY: //"60"
+                case VISIBILITY: // "60"
                     visibility = cvp.getShortValue();
                     break;
-            	case XDATA_APPLICATION_NAME:
-                	String appName = cvp.getStringValue();
-            		_extData = DXFExtendedData.getExtendedData(br);
-            		_extData.setAppName(appName);
+                case XDATA_APPLICATION_NAME:
+                    String appName = cvp.getStringValue();
+                    _extData = DXFExtendedData.getExtendedData(br);
+                    _extData.setAppName(appName);
                     break;
                 default:
                     break;
             }
-
         }
-        DXFLine e = new DXFLine(new DXFPoint(x1, y1, c, l, visibility, 1),
-                new DXFPoint(x2, y2, c, l, visibility, 1),
-                c,
-                l,
-                lineType,
-                thickness,
-                visibility,
-                _extData);
+        DXFLine e =
+                new DXFLine(
+                        new DXFPoint(x1, y1, c, l, visibility, 1),
+                        new DXFPoint(x2, y2, c, l, visibility, 1),
+                        c,
+                        l,
+                        lineType,
+                        thickness,
+                        visibility,
+                        _extData);
         e.setType(GeometryType.LINE);
         e.setStartingLineNumber(sln);
         e.setUnivers(univers);
@@ -142,7 +171,7 @@ public class DXFLine extends DXFEntity {
             return null;
         }
 
-        return rotateAndPlace(new Coordinate[]{_a.toCoordinate(), _b.toCoordinate()});
+        return rotateAndPlace(new Coordinate[] {_a.toCoordinate(), _b.toCoordinate()});
     }
 
     @Override
@@ -163,7 +192,8 @@ public class DXFLine extends DXFEntity {
         }
     }
 
-    public String toString(double x1, double y1, double x2, double y2, int c, int visibility, double thickness) {
+    public String toString(
+            double x1, double y1, double x2, double y2, int c, int visibility, double thickness) {
         StringBuffer s = new StringBuffer();
         s.append("DXFLine [");
         s.append("x1: ");

@@ -17,6 +17,10 @@
 
 package org.geotools.data.complex;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collection;
@@ -24,15 +28,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
 import org.geotools.data.FeatureSource;
@@ -50,9 +49,9 @@ import org.geotools.feature.type.ComplexFeatureTypeImpl;
 import org.geotools.filter.FilterFactoryImplNamespaceAware;
 import org.geotools.test.AppSchemaTestSupport;
 import org.geotools.xlink.XLINK;
+import org.geotools.xml.SchemaIndex;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.geotools.xml.SchemaIndex;
 import org.opengis.feature.Attribute;
 import org.opengis.feature.ComplexAttribute;
 import org.opengis.feature.Feature;
@@ -71,18 +70,15 @@ import org.xml.sax.helpers.NamespaceSupport;
 
 /**
  * DOCUMENT ME!
- * 
+ *
  * @author Gabriel Roldan (Axios Engineering)
  * @version $Id$
- *
- *
- *
  * @source $URL$
  * @since 2.4
  */
 public class BoreholeTest extends AppSchemaTestSupport {
-    private static final Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger(BoreholeTest.class.getPackage().getName());
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(BoreholeTest.class.getPackage().getName());
 
     private static final String XMMLNS = "http://www.opengis.net/xmml";
 
@@ -105,7 +101,7 @@ public class BoreholeTest extends AppSchemaTestSupport {
     private FeatureSource source;
 
     private static DataAccess<FeatureType, Feature> mappingDataStore;
-    
+
     @BeforeClass
     public static void oneTimeSetUp() throws IOException {
         System.out.println("beforeclass");
@@ -119,12 +115,8 @@ public class BoreholeTest extends AppSchemaTestSupport {
 
         reader = EmfComplexFeatureReader.newInstance();
     }
-        
-    /**
-     * 
-     * @param location
-     *                schema location path discoverable through getClass().getResource()
-     */
+
+    /** @param location schema location path discoverable through getClass().getResource() */
     private SchemaIndex loadSchema(String location) throws IOException {
         // load needed GML types directly from the gml schemas
         URL schemaLocation = getClass().getResource(location);
@@ -135,7 +127,7 @@ public class BoreholeTest extends AppSchemaTestSupport {
     /**
      * Tests if the schema-to-FM parsing code developed for complex datastore configuration loading
      * can parse the GeoSciML types
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -156,61 +148,69 @@ public class BoreholeTest extends AppSchemaTestSupport {
         AppSchemaFeatureTypeRegistry typeRegistry = new AppSchemaFeatureTypeRegistry();
         try {
             typeRegistry.addSchemas(schemaIndex);
-    
+
             Name typeName = Types.typeName(XMMLNS, "BoreholeType");
-            ComplexFeatureTypeImpl borehole = (ComplexFeatureTypeImpl) typeRegistry.getAttributeType(typeName);
+            ComplexFeatureTypeImpl borehole =
+                    (ComplexFeatureTypeImpl) typeRegistry.getAttributeType(typeName);
             assertNotNull(borehole);
             assertTrue(borehole instanceof FeatureType);
-    
+
             AttributeType superType = borehole.getSuper();
             assertNotNull(superType);
             Name superTypeName = Types.typeName(SANS, "ProfileType");
             assertEquals(superTypeName, superType.getName());
             assertTrue(superType instanceof FeatureType);
-    
+
             // ensure all needed types were parsed and aren't just empty proxies
             Collection properties = borehole.getTypeDescriptors();
             assertEquals(16, properties.size());
             Map expectedNamesAndTypes = new HashMap();
             // from gml:AbstractFeatureType
-            expectedNamesAndTypes.put(name(GMLNS, "metaDataProperty"), typeName(GMLNS,
-                    "MetaDataPropertyType"));
-            expectedNamesAndTypes.put(name(GMLNS, "description"), typeName(GMLNS, "StringOrRefType"));
+            expectedNamesAndTypes.put(
+                    name(GMLNS, "metaDataProperty"), typeName(GMLNS, "MetaDataPropertyType"));
+            expectedNamesAndTypes.put(
+                    name(GMLNS, "description"), typeName(GMLNS, "StringOrRefType"));
             expectedNamesAndTypes.put(name(GMLNS, "name"), typeName(GMLNS, "CodeType"));
-            expectedNamesAndTypes.put(name(GMLNS, "boundedBy"), typeName(GMLNS, "BoundingShapeType"));
-            expectedNamesAndTypes.put(name(GMLNS, "location"), typeName(GMLNS, "LocationPropertyType"));
+            expectedNamesAndTypes.put(
+                    name(GMLNS, "boundedBy"), typeName(GMLNS, "BoundingShapeType"));
+            expectedNamesAndTypes.put(
+                    name(GMLNS, "location"), typeName(GMLNS, "LocationPropertyType"));
             // from sa:ProfileType
             expectedNamesAndTypes.put(name(SANS, "begin"), typeName(GMLNS, "PointPropertyType"));
             expectedNamesAndTypes.put(name(SANS, "end"), typeName(GMLNS, "PointPropertyType"));
             expectedNamesAndTypes.put(name(SANS, "length"), typeName(SWENS, "RelativeMeasureType"));
             expectedNamesAndTypes.put(name(SANS, "shape"), typeName(GEONS, "Shape1DPropertyType"));
             // sa:SamplingFeatureType
-            expectedNamesAndTypes.put(name(SANS, "member"), typeName(SANS,
-                    "SamplingFeaturePropertyType"));
-            expectedNamesAndTypes.put(name(SANS, "surveyDetails"), typeName(SANS,
-                    "SurveyProcedurePropertyType"));
-            expectedNamesAndTypes.put(name(SANS, "associatedSpecimen"), typeName(SANS,
-                    "SpecimenPropertyType"));
-            expectedNamesAndTypes.put(name(SANS, "relatedObservation"), typeName(OMNS,
-                    "AbstractObservationPropertyType"));
+            expectedNamesAndTypes.put(
+                    name(SANS, "member"), typeName(SANS, "SamplingFeaturePropertyType"));
+            expectedNamesAndTypes.put(
+                    name(SANS, "surveyDetails"), typeName(SANS, "SurveyProcedurePropertyType"));
+            expectedNamesAndTypes.put(
+                    name(SANS, "associatedSpecimen"), typeName(SANS, "SpecimenPropertyType"));
+            expectedNamesAndTypes.put(
+                    name(SANS, "relatedObservation"),
+                    typeName(OMNS, "AbstractObservationPropertyType"));
             // from xmml:BoreholeType
             expectedNamesAndTypes.put(name(XMMLNS, "drillMethod"), typeName(XMMLNS, "drillCode"));
-            expectedNamesAndTypes.put(name(XMMLNS, "collarDiameter"), typeName(GMLNS, "MeasureType"));
+            expectedNamesAndTypes.put(
+                    name(XMMLNS, "collarDiameter"), typeName(GMLNS, "MeasureType"));
             expectedNamesAndTypes.put(name(XMMLNS, "log"), typeName(XMMLNS, "LogPropertyType"));
-    
-            for (Iterator it = expectedNamesAndTypes.entrySet().iterator(); it.hasNext();) {
+
+            for (Iterator it = expectedNamesAndTypes.entrySet().iterator(); it.hasNext(); ) {
                 Map.Entry entry = (Entry) it.next();
                 Name dName = (Name) entry.getKey();
                 Name tName = (Name) entry.getValue();
-    
+
                 AttributeDescriptor d = (AttributeDescriptor) Types.descriptor(borehole, dName);
                 assertNotNull("Descriptor not found: " + dName, d);
                 AttributeType type;
                 try {
                     type = (AttributeType) d.getType();
                 } catch (Exception e) {
-                    LOGGER.log(Level.SEVERE, "type not parsed for "
-                            + ((AttributeDescriptor) d).getName(), e);
+                    LOGGER.log(
+                            Level.SEVERE,
+                            "type not parsed for " + ((AttributeDescriptor) d).getName(),
+                            e);
                     throw e;
                 }
                 assertNotNull(type);
@@ -220,13 +220,13 @@ public class BoreholeTest extends AppSchemaTestSupport {
                     assertEquals(tName, type.getName());
                 }
             }
-    
+
             Name tcl = Types.typeName(SWENS, "TypedCategoryListType");
-            AttributeType typedCategoryListType = (AttributeType) typeRegistry.getAttributeType(tcl);
+            AttributeType typedCategoryListType =
+                    (AttributeType) typeRegistry.getAttributeType(tcl);
             assertNotNull(typedCategoryListType);
             assertTrue(typedCategoryListType instanceof ComplexType);
-        }
-        finally {
+        } finally {
             typeRegistry.disposeSchemaIndexes();
         }
     }
@@ -292,8 +292,8 @@ public class BoreholeTest extends AppSchemaTestSupport {
 
     @Test
     public void testDataStore() throws Exception {
-        FeatureSource<FeatureType, Feature> fSource = (FeatureSource<FeatureType, Feature>) mappingDataStore
-                .getFeatureSource(typeName);
+        FeatureSource<FeatureType, Feature> fSource =
+                (FeatureSource<FeatureType, Feature>) mappingDataStore.getFeatureSource(typeName);
 
         // make a getFeatures request with a nested properties filter.
         // note that the expected result count is set to 65 since that's the
@@ -301,18 +301,19 @@ public class BoreholeTest extends AppSchemaTestSupport {
         // of results I get from a sql select on min_time_d = 'carnian'
         final int EXPECTED_RESULT_COUNT = 20;
 
-        FeatureCollection<FeatureType, Feature> features = (FeatureCollection<FeatureType, Feature>) fSource
-                .getFeatures();
+        FeatureCollection<FeatureType, Feature> features =
+                (FeatureCollection<FeatureType, Feature>) fSource.getFeatures();
 
         int resultCount = size(features);
-        String msg = "be sure difference in result count is not due to different dataset."
-                + " Query used should be min_time_d = 'carnian'";
+        String msg =
+                "be sure difference in result count is not due to different dataset."
+                        + " Query used should be min_time_d = 'carnian'";
         assertEquals(msg, EXPECTED_RESULT_COUNT, resultCount);
 
         Feature feature;
         int count = 0;
         FeatureIterator<Feature> it = features.features();
-        for (; it.hasNext();) {
+        for (; it.hasNext(); ) {
             feature = (Feature) it.next();
             count++;
         }
@@ -327,8 +328,7 @@ public class BoreholeTest extends AppSchemaTestSupport {
             for (; i.hasNext(); i.next()) {
                 size++;
             }
-        }
-        finally {
+        } finally {
             i.close();
         }
         return size;
@@ -336,8 +336,8 @@ public class BoreholeTest extends AppSchemaTestSupport {
 
     @Test
     public void testQueryXlinkProperty() throws Exception {
-        final FeatureSource<FeatureType, Feature> fSource = (FeatureSource<FeatureType, Feature>) mappingDataStore
-                .getFeatureSource(typeName);
+        final FeatureSource<FeatureType, Feature> fSource =
+                (FeatureSource<FeatureType, Feature>) mappingDataStore.getFeatureSource(typeName);
         final String queryProperty = "sa:shape/geo:LineByVector/geo:origin/@xlink:href";
         final String queryLiteral = "#bh.176909a.start";
 
@@ -352,8 +352,8 @@ public class BoreholeTest extends AppSchemaTestSupport {
 
         final Filter filter = ff.equals(propertyName, literal);
 
-        FeatureCollection<FeatureType, Feature> features = (FeatureCollection<FeatureType, Feature>) fSource
-                .getFeatures(filter);
+        FeatureCollection<FeatureType, Feature> features =
+                (FeatureCollection<FeatureType, Feature>) fSource.getFeatures(filter);
 
         // did the query work?
         int resultCount = size(features);
@@ -374,13 +374,13 @@ public class BoreholeTest extends AppSchemaTestSupport {
 
     /**
      * Grab a feature and traverse it in deep as an encoder might do
-     * 
+     *
      * @throws Exception
      */
     @Test
     public void testTraverseDeep() throws Exception {
-        final FeatureSource<FeatureType, Feature> fSource = (FeatureSource<FeatureType, Feature>) mappingDataStore
-                .getFeatureSource(typeName);
+        final FeatureSource<FeatureType, Feature> fSource =
+                (FeatureSource<FeatureType, Feature>) mappingDataStore.getFeatureSource(typeName);
         final String queryProperty = "sa:shape/geo:LineByVector/geo:origin/@xlink:href";
         final String queryLiteral = "#bh.176909a.start";
 
@@ -389,8 +389,8 @@ public class BoreholeTest extends AppSchemaTestSupport {
         namespaces.declarePrefix("geo", GEONS);
         namespaces.declarePrefix("xlink", XLINK.NAMESPACE);
 
-        FeatureCollection<FeatureType, Feature> features = (FeatureCollection) fSource
-                .getFeatures();
+        FeatureCollection<FeatureType, Feature> features =
+                (FeatureCollection) fSource.getFeatures();
         Feature f = (Feature) features.features().next();
         traverse(f);
     }
@@ -400,12 +400,11 @@ public class BoreholeTest extends AppSchemaTestSupport {
         value = f.getValue();
         if (f instanceof ComplexAttribute) {
             Collection values = (Collection) value;
-            for (Iterator it = values.iterator(); it.hasNext();) {
+            for (Iterator it = values.iterator(); it.hasNext(); ) {
                 Attribute att = (Attribute) it.next();
                 assertNotNull(att);
                 traverse(att);
             }
         }
     }
-
 }

@@ -21,21 +21,20 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 /**
- * Formats coordinates with a given number of decimals, using code more efficient than NumberFormat 
- * when possible.
- * The class is not thread safe, create a new instance for each thread using it.
+ * Formats coordinates with a given number of decimals, using code more efficient than NumberFormat
+ * when possible. The class is not thread safe, create a new instance for each thread using it.
  */
 public final class CoordinateFormatter {
 
     /**
-     * The min value at which the decimal notation is used 
-     * (below it, the computerized scientific one is used instead)
+     * The min value at which the decimal notation is used (below it, the computerized scientific
+     * one is used instead)
      */
     private static final double DECIMAL_MIN = Math.pow(10, -3);
 
     /**
-     * The max value at which the decimal notation is used 
-     * (above it, the computerized scientific one is used instead)
+     * The max value at which the decimal notation is used (above it, the computerized scientific
+     * one is used instead)
      */
     private static final double DECIMAL_MAX = Math.pow(10, 7);
 
@@ -49,11 +48,8 @@ public final class CoordinateFormatter {
      */
     private final double scale;
 
-    /**
-     * Whether we have to format in plain decimal numbers, or we can use scientific notation
-     */
+    /** Whether we have to format in plain decimal numbers, or we can use scientific notation */
     private boolean forcedDecimal;
-
 
     public CoordinateFormatter(int numDecimals) {
         coordFormatter.setMaximumFractionDigits(numDecimals);
@@ -62,8 +58,9 @@ public final class CoordinateFormatter {
     }
 
     /**
-     * Formats a number with the configured number of decimals. For better performance best use 
+     * Formats a number with the configured number of decimals. For better performance best use
      * {@link #format(double, StringBuffer)} against a re-used StringBuffer
+     *
      * @param x
      * @param sb
      */
@@ -75,6 +72,7 @@ public final class CoordinateFormatter {
 
     /**
      * Formats a number with the configured number of decimals
+     *
      * @param x
      * @param sb
      */
@@ -110,10 +108,8 @@ public final class CoordinateFormatter {
         return scaled / scale;
     }
 
-
     /**
-     * Returns the maximum number of digits allowed in the fraction portion of a
-     * number.
+     * Returns the maximum number of digits allowed in the fraction portion of a number.
      *
      * @return the maximum number of digits.
      */
@@ -123,6 +119,7 @@ public final class CoordinateFormatter {
 
     /**
      * Returns the force decimal flag, see {@link #setForcedDecimal(boolean)}
+     *
      * @return
      */
     public boolean isForcedDecimal() {
@@ -130,9 +127,9 @@ public final class CoordinateFormatter {
     }
 
     /**
-     * When set to true, forces decimal representation of numbers, otherwise allows 
-     * scientific notation too (for very large of very small numbers). False by default.
-     * 
+     * When set to true, forces decimal representation of numbers, otherwise allows scientific
+     * notation too (for very large of very small numbers). False by default.
+     *
      * @param forcedDecimal
      */
     public void setForcedDecimal(boolean forcedDecimal) {

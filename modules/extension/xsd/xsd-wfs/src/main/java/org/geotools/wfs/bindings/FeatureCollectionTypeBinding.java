@@ -17,22 +17,20 @@
 package org.geotools.wfs.bindings;
 
 import javax.xml.namespace.QName;
-
 import net.opengis.wfs.FeatureCollectionType;
 import net.opengis.wfs.WfsFactory;
-
 import org.eclipse.emf.ecore.EObject;
 import org.geotools.wfs.WFS;
 import org.geotools.xml.AbstractComplexEMFBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 
-
 /**
  * Binding object for the type http://www.opengis.net/wfs:FeatureCollectionType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:complexType name="FeatureCollectionType"&gt;
  *      &lt;xsd:annotation&gt;
@@ -83,12 +81,8 @@ import org.geotools.xml.Node;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public abstract class FeatureCollectionTypeBinding extends AbstractComplexEMFBinding {
@@ -97,9 +91,7 @@ public abstract class FeatureCollectionTypeBinding extends AbstractComplexEMFBin
         super(factory);
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return WFS.FeatureCollectionType;
     }
@@ -107,31 +99,27 @@ public abstract class FeatureCollectionTypeBinding extends AbstractComplexEMFBin
     @Override
     public Object getProperty(Object object, QName name) throws Exception {
         FeatureCollectionType fc = (FeatureCollectionType) object;
-        if ( !fc.getFeature().isEmpty() ) {
+        if (!fc.getFeature().isEmpty()) {
             Object val = WFSParsingUtils.FeatureCollectionType_getProperty(fc, name);
             if (val != null) {
                 return val;
             }
         }
-        
+
         return super.getProperty(object, name);
     }
-    
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         FeatureCollectionType fct = (FeatureCollectionType) super.parse(instance, node, value);
         return WFSParsingUtils.FeatureCollectionType_parse(fct, instance, node);
     }
-    
+
     @Override
     protected void setProperty(EObject eObject, String property, Object value, boolean lax) {
         if ("featureMembers".equalsIgnoreCase(property)) {
-            //ignore feature, handled in parse()
-        }
-        else {
+            // ignore feature, handled in parse()
+        } else {
             super.setProperty(eObject, property, value, lax);
         }
     }
-
-    
 }

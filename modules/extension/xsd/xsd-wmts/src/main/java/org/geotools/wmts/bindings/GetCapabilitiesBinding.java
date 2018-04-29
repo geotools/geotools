@@ -1,22 +1,20 @@
 package org.geotools.wmts.bindings;
 
-
+import javax.xml.namespace.QName;
+import net.opengis.ows11.AcceptFormatsType;
+import net.opengis.wmts.v_1.GetCapabilitiesType;
+import net.opengis.wmts.v_1.wmtsv_1Factory;
 import org.geotools.wmts.WMTS;
 import org.geotools.xml.*;
 import org.geotools.xml.AbstractComplexBinding;
-
-import net.opengis.ows11.AcceptFormatsType;
-import net.opengis.wmts.v_1.GetCapabilitiesType;
-import net.opengis.wmts.v_1.wmtsv_1Factory;		
-
-import javax.xml.namespace.QName;
 
 /**
  * Binding object for the element http://www.opengis.net/wmts/1.0:GetCapabilities.
  *
  * <p>
- *	<pre>
- *	 <code>
+ *
+ * <pre>
+ *  <code>
  *  &lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;element name="GetCapabilities" xmlns="http://www.w3.org/2001/XMLSchema"&gt;
  *  		&lt;annotation&gt;
  *  			&lt;documentation&gt;WMTS GetCapabilities operation request.&lt;/documentation&gt;
@@ -28,50 +26,48 @@ import javax.xml.namespace.QName;
  *  				&lt;/extension&gt;
  *  			&lt;/complexContent&gt;
  *  		&lt;/complexType&gt;
- *  	&lt;/element&gt; 
- *		
- *	  </code>
- *	 </pre>
- * </p>
+ *  	&lt;/element&gt;
+ *
+ *   </code>
+ *  </pre>
  *
  * @generated
  */
 public class GetCapabilitiesBinding extends AbstractComplexBinding {
 
-	wmtsv_1Factory factory;		
-	public GetCapabilitiesBinding( wmtsv_1Factory factory ) {
-		super();
-		this.factory = factory;
-	}
+    wmtsv_1Factory factory;
 
-	/**
-	 * @generated
-	 */
-	public QName getTarget() {
-		return WMTS.GetCapabilities;
-	}
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 *	
-	 * @generated modifiable
-	 */	
-	public Class getType() {
-		return GetCapabilitiesType.class;
-	}
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 *	
-	 * @generated modifiable
-	 */	
-	public Object parse(ElementInstance instance, Node node, Object value) 
-		throws Exception {
-		GetCapabilitiesType capabilities = factory.createGetCapabilitiesType();
-		capabilities.setAcceptFormats((AcceptFormatsType) node.getChildValue("AcceptFormats"));
-		return capabilities; 
-	}
+    public GetCapabilitiesBinding(wmtsv_1Factory factory) {
+        super();
+        this.factory = factory;
+    }
 
+    /** @generated */
+    public QName getTarget() {
+        return WMTS.GetCapabilities;
+    }
+
+    /**
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated modifiable
+     */
+    public Class getType() {
+        return GetCapabilitiesType.class;
+    }
+
+    /**
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated modifiable
+     */
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
+        GetCapabilitiesType capabilities = factory.createGetCapabilitiesType();
+        capabilities.setAcceptFormats((AcceptFormatsType) node.getChildValue("AcceptFormats"));
+        return capabilities;
+    }
 }

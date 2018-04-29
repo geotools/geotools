@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,17 +17,17 @@
  */
 package org.geotools.ysld.transform.sld;
 
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 
 /**
- * Handles xml parse events for CssParameter and SvgParameter.
- * These get converted to YSLD elements like stroke-width or stroke-color.
+ * Handles xml parse events for CssParameter and SvgParameter. These get converted to YSLD elements
+ * like stroke-width or stroke-color.
  */
 public class ParameterHandler extends SldTransformHandler {
 

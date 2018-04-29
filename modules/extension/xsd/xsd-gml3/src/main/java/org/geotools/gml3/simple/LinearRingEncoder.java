@@ -22,7 +22,7 @@ import org.geotools.xml.Encoder;
 
 /**
  * Encodes a GML3 linear ring
- * 
+ *
  * @author Justin Deoliveira, OpenGeo
  * @author Andrea Aime - GeoSolutions
  */

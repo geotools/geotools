@@ -9,5 +9,4 @@ public class H2ThreeValuedLogicTest extends JDBCThreeValuedLogicOnlineTest {
     protected JDBCThreeValuedLogicTestSetup createTestSetup() {
         return new H2ThreeValuedLogicTestSetup();
     }
-
 }

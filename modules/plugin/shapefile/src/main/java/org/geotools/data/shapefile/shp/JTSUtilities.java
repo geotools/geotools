@@ -16,10 +16,6 @@
  */
 package org.geotools.data.shapefile.shp;
 
-import org.geotools.factory.Hints;
-import org.geotools.geometry.jts.JTS;
-import org.opengis.feature.type.GeometryDescriptor;
-
 import com.vividsolutions.jts.algorithm.CGAlgorithms;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.CoordinateSequence;
@@ -34,47 +30,43 @@ import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
+import org.geotools.factory.Hints;
+import org.geotools.geometry.jts.JTS;
+import org.opengis.feature.type.GeometryDescriptor;
 
 /**
  * A collection of utility methods for use with JTS and the shapefile package.
- * 
+ *
  * @author aaime
  * @author Ian Schneider
- *
- *
  * @source $URL$
  */
 public class JTSUtilities {
 
     static final CGAlgorithms cga = new CGAlgorithms();
 
-    private JTSUtilities() {
-    }
+    private JTSUtilities() {}
 
     /**
      * Determine the min and max "z" values in an array of Coordinates.
-     * 
-     * @param cs
-     *            The array to search.
+     *
+     * @param cs The array to search.
      * @return An array of size 2, index 0 is min, index 1 is max.
      * @deprecated use zMinMax(CoordinateSequence)
      */
     public static final double[] zMinMax(final Coordinate[] cs) {
-        double []result = {Double.NaN, Double.NaN};
+        double[] result = {Double.NaN, Double.NaN};
         zMinMax(new CoordinateArraySequence(cs), result);
         return result;
     }
 
     /**
      * Determine the min and max "z" values in an array of Coordinates.
-     * 
-     * @param cs
-     *            The array to search.
-     * @param target
-     *            array with at least two elements where to hold the min and max
-     *            zvalues. target[0] will be filled with the minimum zvalue,
-     *            target[1] with the maximum. The array current values, if not
-     *            NaN, will be taken into acount in the computation.
+     *
+     * @param cs The array to search.
+     * @param target array with at least two elements where to hold the min and max zvalues.
+     *     target[0] will be filled with the minimum zvalue, target[1] with the maximum. The array
+     *     current values, if not NaN, will be taken into acount in the computation.
      */
     public static final void zMinMax(final CoordinateSequence cs, double[] target) {
         if (cs.getDimension() < 3) {
@@ -109,19 +101,18 @@ public class JTSUtilities {
             }
         }
 
-        if(!Double.isNaN(zmin)){
+        if (!Double.isNaN(zmin)) {
             target[0] = zmin;
         }
-        if(!Double.isNaN(zmax)){
+        if (!Double.isNaN(zmax)) {
             target[1] = (zmax);
         }
     }
 
     /**
      * Determine the best ShapeType for a given Geometry.
-     * 
-     * @param geom
-     *                The Geometry to analyze.
+     *
+     * @param geom The Geometry to analyze.
      * @return The best ShapeType for the Geometry.
      */
     public static final ShapeType findBestGeometryType(Geometry geom) {
@@ -156,20 +147,18 @@ public class JTSUtilities {
         } else if (type.isPolygonType()) {
             best = MultiPolygon.class;
         } else {
-            throw new RuntimeException("Unknown ShapeType->GeometryClass : "
-                    + type);
+            throw new RuntimeException("Unknown ShapeType->GeometryClass : " + type);
         }
         return best;
     }
 
     /**
      * Does what it says, reverses the order of the Coordinates in the ring.
-     * <p>
-     * This is different then lr.reverses() in that a copy is produced using a
-     * new coordinate sequence.
-     * </p>
-     * @param lr
-     *                The ring to reverse.
+     *
+     * <p>This is different then lr.reverses() in that a copy is produced using a new coordinate
+     * sequence.
+     *
+     * @param lr The ring to reverse.
      * @return A new ring with the reversed Coordinates.
      */
     public static final LinearRing reverseRing(LinearRing lr) {
@@ -190,16 +179,15 @@ public class JTSUtilities {
     }
 
     /**
-     * Create a nice Polygon from the given Polygon. Will ensure that shells are
-     * clockwise and holes are counter-clockwise. Capiche?
-     * 
-     * @param p
-     *                The Polygon to make "nice".
+     * Create a nice Polygon from the given Polygon. Will ensure that shells are clockwise and holes
+     * are counter-clockwise. Capiche?
+     *
+     * @param p The Polygon to make "nice".
      * @return The "nice" Polygon.
      */
     public static final Polygon makeGoodShapePolygon(Polygon p) {
         GeometryFactory factory = p.getFactory();
-    	LinearRing outer;
+        LinearRing outer;
         LinearRing[] holes = new LinearRing[p.getNumInteriorRing()];
         Coordinate[] coords;
 
@@ -226,9 +214,8 @@ public class JTSUtilities {
 
     /**
      * Like makeGoodShapePolygon, but applied towards a multi polygon.
-     * 
-     * @param mp
-     *                The MultiPolygon to "niceify".
+     *
+     * @param mp The MultiPolygon to "niceify".
      * @return The "nicified" MultiPolygon.
      */
     public static final MultiPolygon makeGoodShapeMultiPolygon(MultiPolygon mp) {
@@ -250,9 +237,8 @@ public class JTSUtilities {
      * 2 for 2d (default) <br>
      * 4 for 3d - one of the oordinates has a non-NaN z value <br>
      * (3 is for x,y,m but thats not supported yet) <br>
-     * 
-     * @param cs
-     *                The array of Coordinates to search.
+     *
+     * @param cs The array of Coordinates to search.
      * @return The dimension.
      */
     public static final int guessCoorinateDims(final Coordinate[] cs) {
@@ -270,11 +256,10 @@ public class JTSUtilities {
 
     public static Geometry convertToCollection(Geometry geom, ShapeType type) {
         Geometry retVal = null;
-        
-        if(geom == null)
-        	return null;
-        
-    	GeometryFactory factory = geom.getFactory();
+
+        if (geom == null) return null;
+
+        GeometryFactory factory = geom.getFactory();
 
         if (type.isPointType()) {
             if ((geom instanceof Point)) {
@@ -285,8 +270,7 @@ public class JTSUtilities {
             }
         } else if (type.isLineType()) {
             if ((geom instanceof LineString)) {
-                retVal = factory
-                        .createMultiLineString(new LineString[] { (LineString) geom });
+                retVal = factory.createMultiLineString(new LineString[] {(LineString) geom});
             } else if (geom instanceof MultiLineString) {
                 retVal = geom;
             } else {
@@ -295,131 +279,117 @@ public class JTSUtilities {
         } else if (type.isPolygonType()) {
             if (geom instanceof Polygon) {
                 Polygon p = makeGoodShapePolygon((Polygon) geom);
-                retVal = factory.createMultiPolygon(new Polygon[] { p });
+                retVal = factory.createMultiPolygon(new Polygon[] {p});
             } else if (geom instanceof MultiPolygon) {
-                retVal = JTSUtilities
-                        .makeGoodShapeMultiPolygon((MultiPolygon) geom);
+                retVal = JTSUtilities.makeGoodShapeMultiPolygon((MultiPolygon) geom);
             } else {
                 retVal = factory.createMultiPolygon(null);
             }
         } else if (type.isMultiPointType()) {
             if ((geom instanceof Point)) {
-                retVal = factory.createMultiPoint(new Point[] { (Point) geom });
+                retVal = factory.createMultiPoint(new Point[] {(Point) geom});
             } else if (geom instanceof MultiPoint) {
                 retVal = geom;
             } else {
                 Point[] pNull = null;
                 retVal = factory.createMultiPoint(pNull);
             }
-        } else
-            throw new RuntimeException("Could not convert " + geom.getClass()
-                    + " to " + type);
+        } else throw new RuntimeException("Could not convert " + geom.getClass() + " to " + type);
 
         return retVal;
     }
 
     /**
      * Determine the best ShapeType for a geometry with the given dimension.
-     * 
-     * @param geom
-     *                The Geometry to examine.
-     * @param shapeFileDimentions
-     *                The dimension 2,3 or 4.
-     * @throws ShapefileException
-     *                 If theres a problem, like a bogus Geometry.
+     *
+     * @param geom The Geometry to examine.
+     * @param shapeFileDimentions The dimension 2,3 or 4.
+     * @throws ShapefileException If theres a problem, like a bogus Geometry.
      * @return The best ShapeType.
      */
-    public static final ShapeType getShapeType(Geometry geom,
-            int shapeFileDimentions) throws ShapefileException {
+    public static final ShapeType getShapeType(Geometry geom, int shapeFileDimentions)
+            throws ShapefileException {
 
         ShapeType type = null;
 
         if (geom instanceof Point) {
             switch (shapeFileDimentions) {
-            case 2:
-                type = ShapeType.POINT;
-                break;
-            case 3:
-                type = ShapeType.POINTM;
-                break;
-            case 4:
-                type = ShapeType.POINTZ;
-                break;
-            default:
-                throw new ShapefileException(
-                        "Too many dimensions for shapefile : "
-                                + shapeFileDimentions);
+                case 2:
+                    type = ShapeType.POINT;
+                    break;
+                case 3:
+                    type = ShapeType.POINTM;
+                    break;
+                case 4:
+                    type = ShapeType.POINTZ;
+                    break;
+                default:
+                    throw new ShapefileException(
+                            "Too many dimensions for shapefile : " + shapeFileDimentions);
             }
         } else if (geom instanceof MultiPoint) {
             switch (shapeFileDimentions) {
-            case 2:
-                type = ShapeType.MULTIPOINT;
-                break;
-            case 3:
-                type = ShapeType.MULTIPOINTM;
-                break;
-            case 4:
-                type = ShapeType.MULTIPOINTZ;
-                break;
-            default:
-                throw new ShapefileException(
-                        "Too many dimensions for shapefile : "
-                                + shapeFileDimentions);
+                case 2:
+                    type = ShapeType.MULTIPOINT;
+                    break;
+                case 3:
+                    type = ShapeType.MULTIPOINTM;
+                    break;
+                case 4:
+                    type = ShapeType.MULTIPOINTZ;
+                    break;
+                default:
+                    throw new ShapefileException(
+                            "Too many dimensions for shapefile : " + shapeFileDimentions);
             }
         } else if ((geom instanceof Polygon) || (geom instanceof MultiPolygon)) {
             switch (shapeFileDimentions) {
-            case 2:
-                type = ShapeType.POLYGON;
-                break;
-            case 3:
-                type = ShapeType.POLYGONM;
-                break;
-            case 4:
-                type = ShapeType.POLYGONZ;
-                break;
-            default:
-                throw new ShapefileException(
-                        "Too many dimensions for shapefile : "
-                                + shapeFileDimentions);
+                case 2:
+                    type = ShapeType.POLYGON;
+                    break;
+                case 3:
+                    type = ShapeType.POLYGONM;
+                    break;
+                case 4:
+                    type = ShapeType.POLYGONZ;
+                    break;
+                default:
+                    throw new ShapefileException(
+                            "Too many dimensions for shapefile : " + shapeFileDimentions);
             }
-        } else if ((geom instanceof LineString)
-                || (geom instanceof MultiLineString)) {
+        } else if ((geom instanceof LineString) || (geom instanceof MultiLineString)) {
             switch (shapeFileDimentions) {
-            case 2:
-                type = ShapeType.ARC;
-                break;
-            case 3:
-                type = ShapeType.ARCM;
-                break;
-            case 4:
-                type = ShapeType.ARCZ;
-                break;
-            default:
-                throw new ShapefileException(
-                        "Too many dimensions for shapefile : "
-                                + shapeFileDimentions);
+                case 2:
+                    type = ShapeType.ARC;
+                    break;
+                case 3:
+                    type = ShapeType.ARCM;
+                    break;
+                case 4:
+                    type = ShapeType.ARCZ;
+                    break;
+                default:
+                    throw new ShapefileException(
+                            "Too many dimensions for shapefile : " + shapeFileDimentions);
             }
         }
 
         if (type == null) {
-            throw new ShapefileException("Cannot handle geometry type : "
-                    + (geom == null ? "null" : geom.getClass().getName()));
+            throw new ShapefileException(
+                    "Cannot handle geometry type : "
+                            + (geom == null ? "null" : geom.getClass().getName()));
         }
         return type;
     }
 
     /**
-     * Determine the default ShapeType for a featureClass. Shapetype will be the
-     * 2D shapetype.
-     * 
-     * @param featureClass
-     *                The Geometry to examine.
+     * Determine the default ShapeType for a featureClass. Shapetype will be the 2D shapetype.
+     *
+     * @param featureClass The Geometry to examine.
      * @return The best ShapeType.
-     * @throws ShapefileException
-     *                 If theres a problem, like a bogus feature class.
+     * @throws ShapefileException If theres a problem, like a bogus feature class.
      */
-    public static final ShapeType getShapeType(Class featureClass)
-            throws ShapefileException {
+    public static final ShapeType getShapeType(Class featureClass) throws ShapefileException {
 
         ShapeType type = null;
 
@@ -427,8 +397,7 @@ public class JTSUtilities {
             type = ShapeType.POINT;
         } else if (MultiPoint.class.equals(featureClass)) {
             type = ShapeType.MULTIPOINT;
-        } else if (Polygon.class.equals(featureClass)
-                || MultiPolygon.class.equals(featureClass)) {
+        } else if (Polygon.class.equals(featureClass) || MultiPolygon.class.equals(featureClass)) {
             type = ShapeType.POLYGON;
         } else if (LineString.class.equals(featureClass)
                 || MultiLineString.class.equals(featureClass)) {
@@ -436,16 +405,17 @@ public class JTSUtilities {
         }
 
         if (type == null) {
-            throw new ShapefileException("Cannot handle geometry class : "
-                    + (featureClass == null ? "null" : featureClass.getName()));
+            throw new ShapefileException(
+                    "Cannot handle geometry class : "
+                            + (featureClass == null ? "null" : featureClass.getName()));
         }
         return type;
     }
-    
+
     /**
-     * Determine the default ShapeType using the descriptor and eventually the
-     * geometry to guess the coordinate dimensions if not reported in the descriptor
-     * hints
+     * Determine the default ShapeType using the descriptor and eventually the geometry to guess the
+     * coordinate dimensions if not reported in the descriptor hints
+     *
      * @param gd
      * @param g
      * @return
@@ -453,38 +423,29 @@ public class JTSUtilities {
     public static final ShapeType getShapeType(GeometryDescriptor gd) throws ShapefileException {
         Class featureClass = gd.getType().getBinding();
         Integer dimension = (Integer) gd.getUserData().get(Hints.COORDINATE_DIMENSION);
-        
+
         ShapeType type = null;
         if (Point.class.equals(featureClass)) {
-            if(dimension != null && dimension == 3)
-                type = ShapeType.POINTZ;
-            else
-                type = ShapeType.POINT;
+            if (dimension != null && dimension == 3) type = ShapeType.POINTZ;
+            else type = ShapeType.POINT;
         } else if (MultiPoint.class.equals(featureClass)) {
-            if(dimension != null && dimension == 3)
-                type = ShapeType.MULTIPOINTZ;
-            else
-                type = ShapeType.MULTIPOINT;
-        } else if (Polygon.class.equals(featureClass)
-                || MultiPolygon.class.equals(featureClass)) {
-            if(dimension != null && dimension == 3)
-                type = ShapeType.POLYGON;
-            else
-                type = ShapeType.POLYGONZ;
+            if (dimension != null && dimension == 3) type = ShapeType.MULTIPOINTZ;
+            else type = ShapeType.MULTIPOINT;
+        } else if (Polygon.class.equals(featureClass) || MultiPolygon.class.equals(featureClass)) {
+            if (dimension != null && dimension == 3) type = ShapeType.POLYGON;
+            else type = ShapeType.POLYGONZ;
         } else if (LineString.class.equals(featureClass)
                 || MultiLineString.class.equals(featureClass)) {
-            if(dimension != null && dimension == 3)
-                type = ShapeType.ARC;
-            else
-                type = ShapeType.ARCZ;
+            if (dimension != null && dimension == 3) type = ShapeType.ARC;
+            else type = ShapeType.ARCZ;
         }
-        
+
         if (type == null) {
-            throw new ShapefileException("Cannot handle geometry class : "
-                    + (featureClass == null ? "null" : featureClass.getName()));
+            throw new ShapefileException(
+                    "Cannot handle geometry class : "
+                            + (featureClass == null ? "null" : featureClass.getName()));
         }
-        
+
         return type;
     }
-
 }

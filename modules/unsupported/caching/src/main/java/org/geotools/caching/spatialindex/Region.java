@@ -30,28 +30,21 @@ package org.geotools.caching.spatialindex;
 
 import java.io.Serializable;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class Region implements Shape, Serializable {
-    /**
-     *
-     */
+    /** */
     private static final long serialVersionUID = 2627615073834425697L;
+
     private double[] m_pLow = null;
     private double[] m_pHigh = null;
     private volatile int hashCode = 0;
 
-    public Region() {
-    }
+    public Region() {}
 
     public Region(final double[] pLow, final double[] pHigh) {
         if (pLow.length != pHigh.length) {
             throw new IllegalArgumentException(
-                "Region: arguments have different number of dimensions.");
+                    "Region: arguments have different number of dimensions.");
         }
 
         m_pLow = new double[pLow.length];
@@ -64,7 +57,7 @@ public class Region implements Shape, Serializable {
     public Region(final Point low, final Point high) {
         if (low.m_pCoords.length != high.m_pCoords.length) {
             throw new IllegalArgumentException(
-                "Region: arguments have different number of dimensions.");
+                    "Region: arguments have different number of dimensions.");
         }
 
         m_pLow = new double[low.m_pCoords.length];
@@ -91,7 +84,8 @@ public class Region implements Shape, Serializable {
                 return false;
             }
             for (int cIndex = 0; cIndex < m_pLow.length; cIndex++) {
-                if ((m_pLow[cIndex] != r.m_pLow[cIndex]) || (m_pHigh[cIndex] != r.m_pHigh[cIndex])) {
+                if ((m_pLow[cIndex] != r.m_pLow[cIndex])
+                        || (m_pHigh[cIndex] != r.m_pHigh[cIndex])) {
                     return false;
                 }
             }
@@ -189,7 +183,7 @@ public class Region implements Shape, Serializable {
     public boolean intersects(final Region r) {
         if (m_pLow.length != r.m_pLow.length) {
             throw new IllegalArgumentException(
-                "intersects: Shape has the wrong number of dimensions.");
+                    "intersects: Shape has the wrong number of dimensions.");
         }
 
         for (int cIndex = 0; cIndex < m_pLow.length; cIndex++) {
@@ -204,7 +198,7 @@ public class Region implements Shape, Serializable {
     public boolean contains(final Region r) {
         if (m_pLow.length != r.m_pLow.length) {
             throw new IllegalArgumentException(
-                "contains: Shape has the wrong number of dimensions.");
+                    "contains: Shape has the wrong number of dimensions.");
         }
 
         for (int cIndex = 0; cIndex < m_pLow.length; cIndex++) {
@@ -218,14 +212,15 @@ public class Region implements Shape, Serializable {
 
     public boolean touches(final Region r) {
         if (m_pLow.length != r.m_pLow.length) {
-            throw new IllegalArgumentException("touches: Shape has the wrong number of dimensions.");
+            throw new IllegalArgumentException(
+                    "touches: Shape has the wrong number of dimensions.");
         }
 
         for (int cIndex = 0; cIndex < m_pLow.length; cIndex++) {
             if (((m_pLow[cIndex] > (r.m_pLow[cIndex] - SpatialIndex.EPSILON))
-                    && (m_pLow[cIndex] < (r.m_pLow[cIndex] + SpatialIndex.EPSILON)))
+                            && (m_pLow[cIndex] < (r.m_pLow[cIndex] + SpatialIndex.EPSILON)))
                     || ((m_pHigh[cIndex] > (r.m_pHigh[cIndex] - SpatialIndex.EPSILON))
-                    && (m_pHigh[cIndex] < (r.m_pHigh[cIndex] + SpatialIndex.EPSILON)))) {
+                            && (m_pHigh[cIndex] < (r.m_pHigh[cIndex] + SpatialIndex.EPSILON)))) {
                 return true;
             }
         }
@@ -236,7 +231,7 @@ public class Region implements Shape, Serializable {
     public double getMinimumDistance(final Region r) {
         if (m_pLow.length != r.m_pLow.length) {
             throw new IllegalArgumentException(
-                "getMinimumDistance: Shape has the wrong number of dimensions.");
+                    "getMinimumDistance: Shape has the wrong number of dimensions.");
         }
 
         double ret = 0.0;
@@ -259,7 +254,7 @@ public class Region implements Shape, Serializable {
     public boolean contains(final Point p) {
         if (m_pLow.length != p.m_pCoords.length) {
             throw new IllegalArgumentException(
-                "contains: Shape has the wrong number of dimensions.");
+                    "contains: Shape has the wrong number of dimensions.");
         }
 
         for (int cIndex = 0; cIndex < m_pLow.length; cIndex++) {
@@ -273,14 +268,15 @@ public class Region implements Shape, Serializable {
 
     public boolean touches(final Point p) {
         if (m_pLow.length != p.m_pCoords.length) {
-            throw new IllegalArgumentException("touches: Shape has the wrong number of dimensions.");
+            throw new IllegalArgumentException(
+                    "touches: Shape has the wrong number of dimensions.");
         }
 
         for (int cIndex = 0; cIndex < m_pLow.length; cIndex++) {
             if (((m_pLow[cIndex] > (p.m_pCoords[cIndex] - SpatialIndex.EPSILON))
-                    && (m_pLow[cIndex] < (p.m_pCoords[cIndex] + SpatialIndex.EPSILON)))
+                            && (m_pLow[cIndex] < (p.m_pCoords[cIndex] + SpatialIndex.EPSILON)))
                     || ((m_pHigh[cIndex] > (p.m_pCoords[cIndex] - SpatialIndex.EPSILON))
-                    && (m_pHigh[cIndex] < (p.m_pCoords[cIndex] + SpatialIndex.EPSILON)))) {
+                            && (m_pHigh[cIndex] < (p.m_pCoords[cIndex] + SpatialIndex.EPSILON)))) {
                 return true;
             }
         }
@@ -291,7 +287,7 @@ public class Region implements Shape, Serializable {
     public double getMinimumDistance(final Point p) {
         if (m_pLow.length != p.m_pCoords.length) {
             throw new IllegalArgumentException(
-                "getMinimumDistance: Shape has the wrong number of dimensions.");
+                    "getMinimumDistance: Shape has the wrong number of dimensions.");
         }
 
         double ret = 0.0;
@@ -310,7 +306,7 @@ public class Region implements Shape, Serializable {
     public double getIntersectingArea(final Region r) {
         if (m_pLow.length != r.m_pLow.length) {
             throw new IllegalArgumentException(
-                "getIntersectingArea: Shape has the wrong number of dimensions.");
+                    "getIntersectingArea: Shape has the wrong number of dimensions.");
         }
 
         int cIndex;
@@ -339,7 +335,7 @@ public class Region implements Shape, Serializable {
     public Region combinedRegion(final Region r) {
         if (m_pLow.length != r.m_pLow.length) {
             throw new IllegalArgumentException(
-                "combinedRegion: Shape has the wrong number of dimensions.");
+                    "combinedRegion: Shape has the wrong number of dimensions.");
         }
 
         double[] mn = new double[m_pLow.length];
@@ -374,7 +370,7 @@ public class Region implements Shape, Serializable {
     public static void combinedRegion(Region pToModify, final Region pConst) {
         if (pToModify.m_pLow.length != pConst.m_pLow.length) {
             throw new IllegalArgumentException(
-                "combineRegion: Shape has the wrong number of dimensions.");
+                    "combineRegion: Shape has the wrong number of dimensions.");
         }
 
         for (int cIndex = 0; cIndex < pToModify.m_pLow.length; cIndex++) {
@@ -383,7 +379,8 @@ public class Region implements Shape, Serializable {
         }
     }
 
-    // Returns the margin of a region. It is calcuated as the sum of  2^(d-1) * width in each dimension.
+    // Returns the margin of a region. It is calcuated as the sum of  2^(d-1) * width in each
+    // dimension.
     public double getMargin() {
         double mul = Math.pow(2.0, ((double) m_pLow.length) - 1.0);
         double margin = 0.0;
@@ -414,13 +411,11 @@ public class Region implements Shape, Serializable {
     public String toString() {
         String s = "";
 
-        for (int cIndex = 0; cIndex < m_pLow.length; cIndex++)
-            s += (m_pLow[cIndex] + " ");
+        for (int cIndex = 0; cIndex < m_pLow.length; cIndex++) s += (m_pLow[cIndex] + " ");
 
         s += ": ";
 
-        for (int cIndex = 0; cIndex < m_pHigh.length; cIndex++)
-            s += (m_pHigh[cIndex] + " ");
+        for (int cIndex = 0; cIndex < m_pHigh.length; cIndex++) s += (m_pHigh[cIndex] + " ");
 
         return s;
     }

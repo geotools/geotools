@@ -18,28 +18,25 @@
 package org.geotools.swing.control;
 
 import javax.swing.JLabel;
-
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.swing.locale.LocaleUtils;
 import org.geotools.swing.MapPane;
 import org.geotools.swing.event.MapPaneAdapter;
 import org.geotools.swing.event.MapPaneEvent;
+import org.geotools.swing.locale.LocaleUtils;
 
 /**
  * A status bar item that displays the map pane's world bounds.
  *
  * @see JMapStatusBar
- *
  * @author Michael Bedward
  * @since 8.0
- *
  * @source $URL$
  * @version $Id$
  */
 public class JExtentStatusBarItem extends StatusBarItem {
     private static final String COMPONENT_NAME =
             LocaleUtils.getValue("StatusBar", "ExtentItemName");
-    
+
     private static final String TOOL_TIP = LocaleUtils.getValue("StatusBar", "ExtentTooltip");
     private static final ReferencedEnvelope EMPTY_ENV = new ReferencedEnvelope();
 
@@ -50,8 +47,7 @@ public class JExtentStatusBarItem extends StatusBarItem {
     private ReferencedEnvelope lastExtent;
 
     /**
-     * Creates a new item to display the extent of the associated
-     * map pane.
+     * Creates a new item to display the extent of the associated map pane.
      *
      * @param mapPane the map pane
      * @throws IllegalArgumentException if {@code mapPane} is {@code null}
@@ -62,28 +58,29 @@ public class JExtentStatusBarItem extends StatusBarItem {
         if (mapPane == null) {
             throw new IllegalArgumentException("mapPane must not be null");
         }
-        
+
         setToolTipText(TOOL_TIP);
 
         lastExtent = EMPTY_ENV;
         decLen = JMapStatusBar.DEFAULT_NUM_DECIMAL_DIGITS;
         setLabelFormat();
-        
+
         label = new JLabel();
         label.setFont(JMapStatusBar.DEFAULT_FONT);
         add(label);
 
-        mapPane.addMapPaneListener(new MapPaneAdapter() {
-            @Override
-            public void onDisplayAreaChanged(MapPaneEvent ev) {
-                displayExtent(ev.getSource().getDisplayArea(), true);
-            }
-        });
+        mapPane.addMapPaneListener(
+                new MapPaneAdapter() {
+                    @Override
+                    public void onDisplayAreaChanged(MapPaneEvent ev) {
+                        displayExtent(ev.getSource().getDisplayArea(), true);
+                    }
+                });
     }
 
     /**
      * Displays extent in world coordinates.
-     * 
+     *
      * @param extent the map pane extent
      * @param cache whether to cache a copy of {@code extent}
      */
@@ -93,9 +90,13 @@ public class JExtentStatusBarItem extends StatusBarItem {
             lastExtent = EMPTY_ENV;
 
         } else {
-            label.setText(String.format(numFormat,
-                    extent.getMinX(), extent.getMaxX(),
-                    extent.getMinY(), extent.getMaxY()));
+            label.setText(
+                    String.format(
+                            numFormat,
+                            extent.getMinX(),
+                            extent.getMaxX(),
+                            extent.getMinY(),
+                            extent.getMaxY()));
 
             if (cache) {
                 lastExtent = new ReferencedEnvelope(extent);
@@ -116,8 +117,8 @@ public class JExtentStatusBarItem extends StatusBarItem {
     }
 
     /**
-     * Private helper for {@linkplain #setPrecision(int)} that can be called
-     * safely from the constructor.
+     * Private helper for {@linkplain #setPrecision(int)} that can be called safely from the
+     * constructor.
      */
     private void setLabelFormat() {
         StringBuilder sb = new StringBuilder();
@@ -125,8 +126,7 @@ public class JExtentStatusBarItem extends StatusBarItem {
         sb.append("%.").append(decLen).append("f] ");
         sb.append("y=[%.").append(decLen).append("f, ");
         sb.append("%.").append(decLen).append("f]");
-        
+
         numFormat = sb.toString();
     }
-
 }

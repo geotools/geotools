@@ -16,6 +16,7 @@
  */
 package org.geotools.data.transform;
 
+import com.vividsolutions.jts.geom.Geometry;
 import org.geotools.referencing.CRS;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -32,11 +33,9 @@ import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.expression.Subtract;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import com.vividsolutions.jts.geom.Geometry;
-
 /**
  * Evaluates the CRS of an expression returning geometries by static analysis if possible
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 class CRSEvaluator implements ExpressionVisitor {
@@ -121,5 +120,4 @@ class CRSEvaluator implements ExpressionVisitor {
     public Object visit(Subtract expression, Object extraData) {
         return null;
     }
-
 }

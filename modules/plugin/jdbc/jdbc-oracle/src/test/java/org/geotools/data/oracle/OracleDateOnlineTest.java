@@ -3,7 +3,6 @@ package org.geotools.data.oracle;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.TimeZone;
-
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.Query;
@@ -17,28 +16,24 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class OracleDateOnlineTest extends JDBCDateOnlineTest {
 
     @Override
     protected JDBCDateTestSetup createTestSetup() {
         return new OracleDateTestSetup(new OracleTestSetup());
     }
-    
+
     /*
      * Oracle has no concept of just "Time". Sigh...
      * @see org.geotools.jdbc.JDBCDateTest#testMappings()
      */
     public void testMappings() throws Exception {
-        SimpleFeatureType ft = dataStore.getSchema( tname("dates") );
-        
-        assertEquals( Date.class, ft.getDescriptor( aname("d") ).getType().getBinding() );
-        assertEquals( Timestamp.class, ft.getDescriptor( aname("dt") ).getType().getBinding() );
-        assertEquals( Timestamp.class, ft.getDescriptor( aname("t") ).getType().getBinding() );
+        SimpleFeatureType ft = dataStore.getSchema(tname("dates"));
+
+        assertEquals(Date.class, ft.getDescriptor(aname("d")).getType().getBinding());
+        assertEquals(Timestamp.class, ft.getDescriptor(aname("dt")).getType().getBinding());
+        assertEquals(Timestamp.class, ft.getDescriptor(aname("t")).getType().getBinding());
     }
 
     @Override

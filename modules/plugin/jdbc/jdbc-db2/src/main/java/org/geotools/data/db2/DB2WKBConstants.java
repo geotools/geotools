@@ -19,19 +19,13 @@ package org.geotools.data.db2;
 import java.util.HashSet;
 import java.util.Set;
 
-
 /**
  * @author Christian Mueller
- * 
- * DB2 speficfic WKB Constants
- *
- *
- *
- *
+ *     <p>DB2 speficfic WKB Constants
  * @source $URL$
  */
 public class DB2WKBConstants {
-    
+
     // well-known binary geometry types
     // the original values used by DB2 didn't match the values
     // in the 2006 OGC spec for WKB when z and/or m is present
@@ -40,97 +34,96 @@ public class DB2WKBConstants {
     // releases of DB2 but it may change in DB2 post-V9.7
     //
 
-    protected final static int wkbPoint2D = 1;
-    protected final static int wkbOGCPointZM = 3001;
-    protected final static int wkbPointZM = 2000001;
-    protected final static int wkbOGCPointZ = 1001;
-    protected final static int wkbPointZ = 3000001;
-    protected final static int wkbOGCPointM = 2001;
-    protected final static int wkbPointM = 4000001;
+    protected static final int wkbPoint2D = 1;
+    protected static final int wkbOGCPointZM = 3001;
+    protected static final int wkbPointZM = 2000001;
+    protected static final int wkbOGCPointZ = 1001;
+    protected static final int wkbPointZ = 3000001;
+    protected static final int wkbOGCPointM = 2001;
+    protected static final int wkbPointM = 4000001;
 
-    protected final static int wkbLineString2D = 2;
-    protected final static int wkbOGCLineStringZM = 3002;
-    protected final static int wkbLineStringZM = 2000002;
-    protected final static int wkbOGCLineStringZ = 1002;
-    protected final static int wkbLineStringZ = 3000002;
-    protected final static int wkbOGCLineStringM = 2002;
-    protected final static int wkbLineStringM = 4000002;
+    protected static final int wkbLineString2D = 2;
+    protected static final int wkbOGCLineStringZM = 3002;
+    protected static final int wkbLineStringZM = 2000002;
+    protected static final int wkbOGCLineStringZ = 1002;
+    protected static final int wkbLineStringZ = 3000002;
+    protected static final int wkbOGCLineStringM = 2002;
+    protected static final int wkbLineStringM = 4000002;
 
-    protected final static int wkbPolygon2D = 3;
-    protected final static int wkbOGCPolygonZM = 3003;
-    protected final static int wkbPolygonZM = 2000005;
-    protected final static int wkbOGCPolygonZ = 1003;
-    protected final static int wkbPolygonZ = 3000005;
-    protected final static int wkbOGCPolygonM = 2003;
-    protected final static int wkbPolygonM = 4000005;
+    protected static final int wkbPolygon2D = 3;
+    protected static final int wkbOGCPolygonZM = 3003;
+    protected static final int wkbPolygonZM = 2000005;
+    protected static final int wkbOGCPolygonZ = 1003;
+    protected static final int wkbPolygonZ = 3000005;
+    protected static final int wkbOGCPolygonM = 2003;
+    protected static final int wkbPolygonM = 4000005;
 
-    protected final static int wkbMultiPoint2D = 4;
-    protected final static int wkbOGCMultiPointZM = 3004;
-    protected final static int wkbMultiPointZM = 2000007;
-    protected final static int wkbOGCMultiPointZ = 1004;
-    protected final static int wkbMultiPointZ = 3000007;
-    protected final static int wkbOGCMultiPointM = 2004;
-    protected final static int wkbMultiPointM = 4000007;
+    protected static final int wkbMultiPoint2D = 4;
+    protected static final int wkbOGCMultiPointZM = 3004;
+    protected static final int wkbMultiPointZM = 2000007;
+    protected static final int wkbOGCMultiPointZ = 1004;
+    protected static final int wkbMultiPointZ = 3000007;
+    protected static final int wkbOGCMultiPointM = 2004;
+    protected static final int wkbMultiPointM = 4000007;
 
-    protected final static int wkbMultiLineString2D = 5;
-    protected final static int wkbOGCMultiLineStringZM = 3005;
-    protected final static int wkbMultiLineStringZM = 2000009;
-    protected final static int wkbOGCMultiLineStringZ = 1005;
-    protected final static int wkbMultiLineStringZ = 3000009;
-    protected final static int wkbOGCMultiLineStringM = 2005;
-    protected final static int wkbMultiLineStringM = 4000009;
+    protected static final int wkbMultiLineString2D = 5;
+    protected static final int wkbOGCMultiLineStringZM = 3005;
+    protected static final int wkbMultiLineStringZM = 2000009;
+    protected static final int wkbOGCMultiLineStringZ = 1005;
+    protected static final int wkbMultiLineStringZ = 3000009;
+    protected static final int wkbOGCMultiLineStringM = 2005;
+    protected static final int wkbMultiLineStringM = 4000009;
 
-    protected final static int wkbMultiPolygon2D = 6;
-    protected final static int wkbOGCMultiPolygonZM = 3006;
-    protected final static int wkbMultiPolygonZM = 2000011;
-    protected final static int wkbOGCMultiPolygonZ = 1006;
-    protected final static int wkbMultiPolygonZ = 3000011;
-    protected final static int wkbOGCMultiPolygonM = 2006;
-    protected final static int wkbMultiPolygonM = 4000011;
+    protected static final int wkbMultiPolygon2D = 6;
+    protected static final int wkbOGCMultiPolygonZM = 3006;
+    protected static final int wkbMultiPolygonZM = 2000011;
+    protected static final int wkbOGCMultiPolygonZ = 1006;
+    protected static final int wkbMultiPolygonZ = 3000011;
+    protected static final int wkbOGCMultiPolygonM = 2006;
+    protected static final int wkbMultiPolygonM = 4000011;
 
-    protected final static int wkbGeomCollection2D = 7;
-    protected final static int wkbOGCGeomCollectionZM = 3007;
-    protected final static int wkbGeomCollectionZM = 2000012;
-    protected final static int wkbOGCGeomCollectionZ = 1007;
-    protected final static int wkbGeomCollectionZ = 3000012;
-    protected final static int wkbOGCGeomCollectionM = 2007;
-    protected final static int wkbGeomCollectionM = 4000012; 
-    
+    protected static final int wkbGeomCollection2D = 7;
+    protected static final int wkbOGCGeomCollectionZM = 3007;
+    protected static final int wkbGeomCollectionZM = 2000012;
+    protected static final int wkbOGCGeomCollectionZ = 1007;
+    protected static final int wkbGeomCollectionZ = 3000012;
+    protected static final int wkbOGCGeomCollectionM = 2007;
+    protected static final int wkbGeomCollectionM = 4000012;
+
     protected static Set<Integer> zTypes;
     protected static Set<Integer> zmTypes;
-    
+
     static {
-        zTypes=new HashSet<Integer>();
-        zTypes.add(wkbPointZ); 
+        zTypes = new HashSet<Integer>();
+        zTypes.add(wkbPointZ);
         zTypes.add(wkbOGCPointZ);
-        zTypes.add(wkbLineStringZ); 
+        zTypes.add(wkbLineStringZ);
         zTypes.add(wkbOGCLineStringZ);
-        zTypes.add(wkbPolygonZ); 
+        zTypes.add(wkbPolygonZ);
         zTypes.add(wkbOGCPolygonZ);
-        zTypes.add(wkbMultiPointZ); 
+        zTypes.add(wkbMultiPointZ);
         zTypes.add(wkbOGCMultiPointZ);
-        zTypes.add(wkbMultiLineStringZ); 
+        zTypes.add(wkbMultiLineStringZ);
         zTypes.add(wkbOGCMultiLineStringZ);
-        zTypes.add(wkbMultiPolygonZ); 
+        zTypes.add(wkbMultiPolygonZ);
         zTypes.add(wkbOGCMultiPolygonZ);
-        zTypes.add(wkbGeomCollectionZ); 
+        zTypes.add(wkbGeomCollectionZ);
         zTypes.add(wkbOGCGeomCollectionZ);
-        
-        zmTypes=new HashSet<Integer>();
-        zmTypes.add(wkbPointZM); 
+
+        zmTypes = new HashSet<Integer>();
+        zmTypes.add(wkbPointZM);
         zmTypes.add(wkbOGCPointZM);
-        zmTypes.add(wkbLineStringZM); 
+        zmTypes.add(wkbLineStringZM);
         zmTypes.add(wkbOGCLineStringZM);
-        zmTypes.add(wkbPolygonZM); 
+        zmTypes.add(wkbPolygonZM);
         zmTypes.add(wkbOGCPolygonZM);
-        zmTypes.add(wkbMultiPointZM); 
+        zmTypes.add(wkbMultiPointZM);
         zmTypes.add(wkbOGCMultiPointZM);
-        zmTypes.add(wkbMultiLineStringZM); 
+        zmTypes.add(wkbMultiLineStringZM);
         zmTypes.add(wkbOGCMultiLineStringZM);
-        zmTypes.add(wkbMultiPolygonZM); 
+        zmTypes.add(wkbMultiPolygonZM);
         zmTypes.add(wkbOGCMultiPolygonZM);
-        zmTypes.add(wkbGeomCollectionZM); 
+        zmTypes.add(wkbGeomCollectionZM);
         zmTypes.add(wkbOGCGeomCollectionZM);
     }
-
 }

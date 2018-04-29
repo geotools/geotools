@@ -17,12 +17,18 @@
  */
 package org.geotools.process.vector;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
@@ -42,52 +48,50 @@ import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 import org.opengis.util.ProgressListener;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
-
-import net.sf.geographiclib.GeodesicMask;
-
 /**
- * A Rendering Transformation process which aggregates features into a set of visually non-conflicting point features. The created points have
- * attributes which provide the total number of points aggregated, as well as the number of unique point locations.
- * <p>
- * This is sometimes called "point clustering". The term stacking is used instead, since clustering has multiple meanings in geospatial processing -
- * it is also used to mean identifying groups defined by point proximity.
- * <p>
- * The stacking is defined by specifying a grid to aggregate to. The grid cell size is specified in pixels relative to the requested output image
- * size. This makes it more intuitive to pick an appropriate grid size, and ensures that the aggregation works at all zoom levels.
- * <p>
- * The output is a FeatureCollection containing the following attributes:
+ * A Rendering Transformation process which aggregates features into a set of visually
+ * non-conflicting point features. The created points have attributes which provide the total number
+ * of points aggregated, as well as the number of unique point locations.
+ *
+ * <p>This is sometimes called "point clustering". The term stacking is used instead, since
+ * clustering has multiple meanings in geospatial processing - it is also used to mean identifying
+ * groups defined by point proximity.
+ *
+ * <p>The stacking is defined by specifying a grid to aggregate to. The grid cell size is specified
+ * in pixels relative to the requested output image size. This makes it more intuitive to pick an
+ * appropriate grid size, and ensures that the aggregation works at all zoom levels.
+ *
+ * <p>The output is a FeatureCollection containing the following attributes:
+ *
  * <ul>
- * <li><code>geom</code> - the point representing the cluster
- * <li><code>count</code> - the total number of points in the cluster
- * <li><code>countunique</code> - the number of unique point locations in the cluster
+ *   <li><code>geom</code> - the point representing the cluster
+ *   <li><code>count</code> - the total number of points in the cluster
+ *   <li><code>countunique</code> - the number of unique point locations in the cluster
  * </ul>
- * Note that as required by the Rendering Transformation API, the output has the CRS of the input data.
- * 
+ *
+ * Note that as required by the Rendering Transformation API, the output has the CRS of the input
+ * data.
+ *
  * @author mdavis
  * @author Cosmin Cioranu (CozC)
- *
  */
-@DescribeProcess(title = "Point Stacker", description = "Aggregates a collection of points over a grid into one point per grid cell.")
+@DescribeProcess(
+    title = "Point Stacker",
+    description = "Aggregates a collection of points over a grid into one point per grid cell."
+)
 public class PointStackerProcess implements VectorProcess {
 
     public enum PreserveLocation {
-        /**
-         * Preserves the original point location in case there is a single point in the cell
-         */
+        /** Preserves the original point location in case there is a single point in the cell */
         Single,
         /**
-         * Preserves the original point location in case there are multiple points, but all with the same coordinates in the cell
+         * Preserves the original point location in case there are multiple points, but all with the
+         * same coordinates in the cell
          */
         Superimposed,
         /**
-         * Default value, averages the point locations with the cell center to try and avoid conflicts among the symbolizers for the
+         * Default value, averages the point locations with the cell center to try and avoid
+         * conflicts among the symbolizers for the
          */
         Never
     };
@@ -97,15 +101,11 @@ public class PointStackerProcess implements VectorProcess {
     public static final String ATTR_COUNT = "count";
 
     public static final String ATTR_COUNT_UNIQUE = "countunique";
-    
-    /**
-     * bounding box of the clustered points as Poligon Geometry
-     */
+
+    /** bounding box of the clustered points as Poligon Geometry */
     public static final String ATTR_BOUNDING_BOX_GEOM = "geomBBOX";
-    
-    /**
-     * bounding box of the clustered points as String
-     */
+
+    /** bounding box of the clustered points as String */
     public static final String ATTR_BOUNDING_BOX = "envBBOX";
 
     public static final String ATTR_NORM_COUNT = "normCount";
@@ -128,20 +128,57 @@ public class PointStackerProcess implements VectorProcess {
     public SimpleFeatureCollection execute(
 
             // process data
-            @DescribeParameter(name = "data", description = "Input feature collection") SimpleFeatureCollection data,
+            @DescribeParameter(name = "data", description = "Input feature collection")
+                    SimpleFeatureCollection data,
 
             // process parameters
-            @DescribeParameter(name = "cellSize", description = "Grid cell size to aggregate to, in pixels") Integer cellSize,
-            @DescribeParameter(name = "weightClusterPosition", description = "Weight cluster position based on points added", defaultValue = "false") Boolean argWeightClusterPosition,
-            @DescribeParameter(name = "normalize", description = "Indicates whether to add fields normalized to the range 0-1.", defaultValue = "false") Boolean argNormalize,
-            @DescribeParameter(name = "preserveLocation", description = "Indicates wheter to preserve the original location of points for single/superimposed points", defaultValue = "Never", min = 0) PreserveLocation preserveLocation,
+            @DescribeParameter(
+                        name = "cellSize",
+                        description = "Grid cell size to aggregate to, in pixels"
+                    )
+                    Integer cellSize,
+            @DescribeParameter(
+                        name = "weightClusterPosition",
+                        description = "Weight cluster position based on points added",
+                        defaultValue = "false"
+                    )
+                    Boolean argWeightClusterPosition,
+            @DescribeParameter(
+                        name = "normalize",
+                        description =
+                                "Indicates whether to add fields normalized to the range 0-1.",
+                        defaultValue = "false"
+                    )
+                    Boolean argNormalize,
+            @DescribeParameter(
+                        name = "preserveLocation",
+                        description =
+                                "Indicates wheter to preserve the original location of points for single/superimposed points",
+                        defaultValue = "Never",
+                        min = 0
+                    )
+                    PreserveLocation preserveLocation,
 
             // output image parameters
-            @DescribeParameter(name = "outputBBOX", description = "Bounding box for target image extent") ReferencedEnvelope outputEnv,
-            @DescribeParameter(name = "outputWidth", description = "Target image width in pixels", minValue = 1) Integer outputWidth,
-            @DescribeParameter(name = "outputHeight", description = "Target image height in pixels", minValue = 1) Integer outputHeight,
-
-            ProgressListener monitor) throws ProcessException, TransformException {
+            @DescribeParameter(
+                        name = "outputBBOX",
+                        description = "Bounding box for target image extent"
+                    )
+                    ReferencedEnvelope outputEnv,
+            @DescribeParameter(
+                        name = "outputWidth",
+                        description = "Target image width in pixels",
+                        minValue = 1
+                    )
+                    Integer outputWidth,
+            @DescribeParameter(
+                        name = "outputHeight",
+                        description = "Target image height in pixels",
+                        minValue = 1
+                    )
+                    Integer outputHeight,
+            ProgressListener monitor)
+            throws ProcessException, TransformException {
 
         CoordinateReferenceSystem srcCRS = data.getSchema().getCoordinateReferenceSystem();
         CoordinateReferenceSystem dstCRS = outputEnv.getCoordinateReferenceSystem();
@@ -168,9 +205,15 @@ public class PointStackerProcess implements VectorProcess {
         // assume same CRS for now...
         double cellSizeSrc = cellSize * outputEnv.getWidth() / outputWidth;
 
-        //create cluster points, based on cellSize and width and height of the viewd area.
-        Collection<StackedPoint> stackedPts = stackPoints(data, crsTransform, cellSizeSrc,
-                weightClusterPosition, outputEnv.getMinX(), outputEnv.getMinY());
+        // create cluster points, based on cellSize and width and height of the viewd area.
+        Collection<StackedPoint> stackedPts =
+                stackPoints(
+                        data,
+                        crsTransform,
+                        cellSizeSrc,
+                        weightClusterPosition,
+                        outputEnv.getMinX(),
+                        outputEnv.getMinY());
 
         SimpleFeatureType schema = createType(srcCRS, normalize);
         ListFeatureCollection result = new ListFeatureCollection(schema);
@@ -188,10 +231,8 @@ public class PointStackerProcess implements VectorProcess {
         int maxCountUnique = 0;
         if (normalize) {
             for (StackedPoint sp : stackedPts) {
-                if (maxCount < sp.getCount())
-                    maxCount = sp.getCount();
-                if (maxCountUnique < sp.getCount())
-                    maxCountUnique = sp.getCountUnique();
+                if (maxCount < sp.getCount()) maxCount = sp.getCount();
+                if (maxCountUnique < sp.getCount()) maxCountUnique = sp.getCountUnique();
             }
         }
 
@@ -210,19 +251,20 @@ public class PointStackerProcess implements VectorProcess {
             fb.add(point);
             fb.add(sp.getCount());
             fb.add(sp.getCountUnique());
-            //adding bounding box of the points staked, as geometry
-            //envelope transformation
-            Envelope boundingBox=sp.getBoundingBox();
-            srcPt[0]=boundingBox.getMinX();
-            srcPt[1]=boundingBox.getMinY();
-            srcPt2[0]=boundingBox.getMaxX();
-            srcPt2[1]=boundingBox.getMaxY();
-            
+            // adding bounding box of the points staked, as geometry
+            // envelope transformation
+            Envelope boundingBox = sp.getBoundingBox();
+            srcPt[0] = boundingBox.getMinX();
+            srcPt[1] = boundingBox.getMinY();
+            srcPt2[0] = boundingBox.getMaxX();
+            srcPt2[1] = boundingBox.getMaxY();
+
             invTransform.transform(srcPt, 0, dstPt, 0, 1);
             invTransform.transform(srcPt2, 0, dstPt2, 0, 1);
-            Envelope boundingBoxTransformed=new Envelope(dstPt[0],dstPt[1],dstPt2[0],dstPt2[1]);
+            Envelope boundingBoxTransformed =
+                    new Envelope(dstPt[0], dstPt[1], dstPt2[0], dstPt2[1]);
             fb.add(boundingBoxTransformed);
-            //adding bounding box of the points staked, as string
+            // adding bounding box of the points staked, as string
             fb.add(boundingBoxTransformed.toString());
             if (normalize) {
                 fb.add(((double) sp.getCount()) / maxCount);
@@ -236,7 +278,7 @@ public class PointStackerProcess implements VectorProcess {
 
     /**
      * Extract the geometry depending on the location preservation flag
-     * 
+     *
      * @param preserveLocation
      * @param sp
      * @return
@@ -259,8 +301,9 @@ public class PointStackerProcess implements VectorProcess {
     }
 
     /**
-     * Computes the stacked points for the given data collection. All geometry types are handled - for non-point geometries, the centroid is used.
-     * 
+     * Computes the stacked points for the given data collection. All geometry types are handled -
+     * for non-point geometries, the centroid is used.
+     *
      * @param data
      * @param cellSize
      * @param minX
@@ -268,9 +311,14 @@ public class PointStackerProcess implements VectorProcess {
      * @return
      * @throws TransformException
      */
-    private Collection<StackedPoint> stackPoints(SimpleFeatureCollection data,
-            MathTransform crsTransform, double cellSize, boolean weightClusterPosition,
-            double minX, double minY) throws TransformException {
+    private Collection<StackedPoint> stackPoints(
+            SimpleFeatureCollection data,
+            MathTransform crsTransform,
+            double cellSize,
+            boolean weightClusterPosition,
+            double minX,
+            double minY)
+            throws TransformException {
         SimpleFeatureIterator featureIt = data.features();
 
         Map<Coordinate, StackedPoint> stackedPts = new HashMap<Coordinate, StackedPoint>();
@@ -299,9 +347,7 @@ public class PointStackerProcess implements VectorProcess {
                 StackedPoint stkPt = stackedPts.get(indexPt);
                 if (stkPt == null) {
 
-                    /**
-                     * Note that we compute the cluster position in the middle of the grid
-                     */
+                    /** Note that we compute the cluster position in the middle of the grid */
                     double centreX = indexPt.x * cellSize + cellSize / 2;
                     double centreY = indexPt.y * cellSize + cellSize / 2;
 
@@ -318,20 +364,20 @@ public class PointStackerProcess implements VectorProcess {
     }
 
     /**
-     * Gets a point to represent the Geometry. If the Geometry is a point, this is returned. Otherwise, the centroid is used.
-     * 
+     * Gets a point to represent the Geometry. If the Geometry is a point, this is returned.
+     * Otherwise, the centroid is used.
+     *
      * @param g the geometry to find a point for
      * @return a point representing the Geometry
      */
     private static Coordinate getRepresentativePoint(Geometry g) {
-        if (g.getNumPoints() == 1)
-            return g.getCoordinate();
+        if (g.getNumPoints() == 1) return g.getCoordinate();
         return g.getCentroid().getCoordinate();
     }
 
     /**
      * Computes the grid index for a point for the grid determined by the cellsize.
-     * 
+     *
      * @param griddedPt the point to grid, and also holds the output value
      * @param cellSize the grid cell size
      */
@@ -340,10 +386,13 @@ public class PointStackerProcess implements VectorProcess {
         // TODO: is there any situation where this could result in too much loss
         // of precision?
         /**
-         * The grid is based at the origin of the entire data space, not just the query window. This makes gridding stable during panning.
-         * 
-         * This should not lose too much precision for any reasonable coordinate system and map size. The worst case is a CRS with small ordinate
-         * values, and a large cell size. The worst case tested is a map in degrees, zoomed out to show about twice the globe - works fine.
+         * The grid is based at the origin of the entire data space, not just the query window. This
+         * makes gridding stable during panning.
+         *
+         * <p>This should not lose too much precision for any reasonable coordinate system and map
+         * size. The worst case is a CRS with small ordinate values, and a large cell size. The
+         * worst case tested is a map in degrees, zoomed out to show about twice the globe - works
+         * fine.
          */
         // Use longs to avoid possible overflow issues (e.g. for a very small
         // cell size)
@@ -380,12 +429,12 @@ public class PointStackerProcess implements VectorProcess {
         private int count = 0;
 
         private Set<Coordinate> uniquePts;
-        
-        private Envelope boundingBox=null;
+
+        private Envelope boundingBox = null;
         /**
-         * Creates a new stacked point grid cell. The center point of the cell is supplied so that it may be used as or influence the location of the
-         * final display point
-         * 
+         * Creates a new stacked point grid cell. The center point of the cell is supplied so that
+         * it may be used as or influence the location of the final display point
+         *
          * @param key a key for the grid cell (using integer ordinates to avoid precision issues)
          * @param centerPt the center point of the grid cell
          */
@@ -407,25 +456,26 @@ public class PointStackerProcess implements VectorProcess {
         }
 
         public int getCountUnique() {
-            if (uniquePts == null)
-                return 1;
+            if (uniquePts == null) return 1;
             return uniquePts.size();
         }
         /**
          * compute bounding box
+         *
          * @return
          */
-        public Envelope getBoundingBox(){
+        public Envelope getBoundingBox() {
             return this.boundingBox;
             /*
             Coordinate coords[]=uniquePts.toArray(new Coordinate[uniquePts.size()]);
-            
+
             Geometry result=factory.createPolygon(coords).getEnvelope();
             System.out.println(result);
             return result;
             */
-       
+
         }
+
         public void add(Coordinate pt) {
             this.add(pt, false);
         }
@@ -439,7 +489,8 @@ public class PointStackerProcess implements VectorProcess {
             GeometryFactory factory = new GeometryFactory(new PackedCoordinateSequenceFactory());
             count++;
             /**
-             * Only create set if this is the second point seen (and assum the first pt is in location)
+             * Only create set if this is the second point seen (and assum the first pt is in
+             * location)
              */
             if (uniquePts == null) {
                 uniquePts = new HashSet<Coordinate>();
@@ -451,17 +502,18 @@ public class PointStackerProcess implements VectorProcess {
             } else {
                 pickNearestLocation(pt);
             }
-            if (boundingBox==null){
-                boundingBox=new Envelope();
-            }else{
+            if (boundingBox == null) {
+                boundingBox = new Envelope();
+            } else {
                 boundingBox.expandToInclude(pt);
             }
             // pickCenterLocation(pt);
         }
 
         /**
-         * The original location of the points, in case they are all superimposed (or there is a single point), otherwise null
-         * 
+         * The original location of the points, in case they are all superimposed (or there is a
+         * single point), otherwise null
+         *
          * @return
          */
         public Coordinate getOriginalLocation() {
@@ -474,7 +526,7 @@ public class PointStackerProcess implements VectorProcess {
 
         /**
          * Calcultate the weighted position of the cluster based on points which it holds.
-         * 
+         *
          * @param pt
          */
         private void pickWeightedLocation(Coordinate pt) {
@@ -487,9 +539,10 @@ public class PointStackerProcess implements VectorProcess {
         }
 
         /**
-         * Picks the location as the point which is nearest to the center of the cell. In addition, the nearest location is averaged with the cell
-         * center. This gives the best chance of avoiding conflicts.
-         * 
+         * Picks the location as the point which is nearest to the center of the cell. In addition,
+         * the nearest location is averaged with the cell center. This gives the best chance of
+         * avoiding conflicts.
+         *
          * @param pt
          */
         private void pickNearestLocation(Coordinate pt) {
@@ -504,8 +557,9 @@ public class PointStackerProcess implements VectorProcess {
         }
 
         /**
-         * Picks the location as the centre point of the cell. This does not give a good visualization - the gridding is very obvious
-         * 
+         * Picks the location as the centre point of the cell. This does not give a good
+         * visualization - the gridding is very obvious
+         *
          * @param pt
          */
         private void pickCenterLocation(Coordinate pt) {
@@ -518,9 +572,10 @@ public class PointStackerProcess implements VectorProcess {
         }
 
         /**
-         * Picks the first location encountered as the cell location. This is sub-optimal, since if the first point is near the cell boundary it is
-         * likely to collide with neighbouring points.
-         * 
+         * Picks the first location encountered as the cell location. This is sub-optimal, since if
+         * the first point is near the cell boundary it is likely to collide with neighbouring
+         * points.
+         *
          * @param pt
          */
         private void pickFirstLocation(Coordinate pt) {

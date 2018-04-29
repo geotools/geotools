@@ -37,10 +37,8 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.imageio.spi.ImageReaderSpi;
 import javax.media.jai.ImageLayout;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
@@ -56,7 +54,6 @@ import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.coverage.grid.io.StructuredGridCoverage2DReader;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROIProvider;
 import org.geotools.data.DataSourceException;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultFileServiceInfo;
 import org.geotools.data.FileGroupProvider.FileGroup;
 import org.geotools.data.ResourceInfo;
@@ -90,25 +87,26 @@ import org.opengis.referencing.datum.PixelInCell;
 import org.opengis.referencing.operation.MathTransform;
 
 /**
- * Reader responsible for providing access to mosaic of georeferenced images. Citing JAI documentation:
- * 
- * The "Mosaic" operation creates a mosaic of two or more source images. This operation could be used for example to assemble a set of overlapping
- * geospatially rectified images into a contiguous image. It could also be used to create a montage of photographs such as a panorama.
- * 
- * All source images are assumed to have been geometrically mapped into a common coordinate space. The origin (minX, minY) of each image is therefore
- * taken to represent the location of the respective image in the common coordinate system of the source images. This coordinate space will also be
- * that of the destination image.
- * 
- * All source images must have the same data type and sample size for all bands and have the same number of bands as color components. The destination
- * will have the same data type, sample size, and number of bands and color components as the sources.
- * 
- * 
+ * Reader responsible for providing access to mosaic of georeferenced images. Citing JAI
+ * documentation:
+ *
+ * <p>The "Mosaic" operation creates a mosaic of two or more source images. This operation could be
+ * used for example to assemble a set of overlapping geospatially rectified images into a contiguous
+ * image. It could also be used to create a montage of photographs such as a panorama.
+ *
+ * <p>All source images are assumed to have been geometrically mapped into a common coordinate
+ * space. The origin (minX, minY) of each image is therefore taken to represent the location of the
+ * respective image in the common coordinate system of the source images. This coordinate space will
+ * also be that of the destination image.
+ *
+ * <p>All source images must have the same data type and sample size for all bands and have the same
+ * number of bands as color components. The destination will have the same data type, sample size,
+ * and number of bands and color components as the sources.
+ *
  * @author Simone Giannecchini, GeoSolutions S.A.S
- * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for jar:file:foo.jar/bar.properties URLs
+ * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for
+ *     jar:file:foo.jar/bar.properties URLs
  * @since 2.3
- * 
- *
- *
  * @source $URL$
  */
 @SuppressWarnings("rawtypes")
@@ -136,8 +134,8 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
     }
 
     /** Logger. */
-    private final static Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger(ImageMosaicReader.class);
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(ImageMosaicReader.class);
 
     /**
      * The source {@link URL} pointing to the index shapefile for this {@link ImageMosaicReader}.
@@ -172,21 +170,26 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
     String typeName;
 
     /**
-     * Enumeration object used for defining 3 different behaviours for the Harvesting, each of them associated to one of these 3 objects:
+     * Enumeration object used for defining 3 different behaviours for the Harvesting, each of them
+     * associated to one of these 3 objects:
+     *
      * <ul>
-     * <li>File</li>
-     * <li>Directory</li>
-     * <li>List of Files</li>
+     *   <li>File
+     *   <li>Directory
+     *   <li>List of Files
      * </ul>
      *
      * @author Nicola Lagomarsini, GeoSolutions S.A.S.
-     *
      */
     public enum HarvestedResource {
         FILE {
             @Override
-            public void harvest(String defaultCoverage, Object source, Hints hints,
-                    final List<HarvestedSource> result, ImageMosaicReader reader) {
+            public void harvest(
+                    String defaultCoverage,
+                    Object source,
+                    Hints hints,
+                    final List<HarvestedSource> result,
+                    ImageMosaicReader reader) {
                 File file;
                 if (source instanceof Collection<?>) {
                     file = (File) ((Collection<?>) source).iterator().next();
@@ -199,13 +202,16 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
                 IOFileFilter filter = FileFilterUtils.nameFileFilter(file.getName());
                 // Harvesting file
                 harvestCalculation(defaultCoverage, result, reader, directory, filter);
-
             }
         },
         DIRECTORY {
             @Override
-            public void harvest(String defaultCoverage, Object source, Hints hints,
-                    final List<HarvestedSource> result, ImageMosaicReader reader) {
+            public void harvest(
+                    String defaultCoverage,
+                    Object source,
+                    Hints hints,
+                    final List<HarvestedSource> result,
+                    ImageMosaicReader reader) {
                 File directory;
                 if (source instanceof Collection<?>) {
                     directory = (File) ((Collection<?>) source).iterator().next();
@@ -214,13 +220,16 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
                 }
                 // Harvesting directory
                 harvestCalculation(defaultCoverage, result, reader, directory, null);
-
             }
         },
         FILE_COLLECTION {
             @Override
-            public void harvest(String defaultCoverage, Object source, Hints hints,
-                    final List<HarvestedSource> result, final ImageMosaicReader reader) {
+            public void harvest(
+                    String defaultCoverage,
+                    Object source,
+                    Hints hints,
+                    final List<HarvestedSource> result,
+                    final ImageMosaicReader reader) {
                 // I have already checked that it is a Collection of File objects
                 Collection<File> files = (Collection<File>) source;
 
@@ -230,7 +239,8 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
                 CatalogBuilderConfiguration configuration = new CatalogBuilderConfiguration();
                 configuration.setParameter(Prop.ABSOLUTE_PATH, Boolean.toString(true));
 
-                // Setting of the HARVEST_DIRECTORY property for passing the checks even if it is not used
+                // Setting of the HARVEST_DIRECTORY property for passing the checks even if it is
+                // not used
                 // Selection of the first file
                 Iterator<File> it = files.iterator();
                 String indexingPath = it.next().getAbsolutePath();
@@ -238,8 +248,10 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
 
                 if (defaultCoverage == null) {
                     String[] coverageNames = reader.getGridCoverageNames();
-                    defaultCoverage = (coverageNames != null && coverageNames.length > 0)
-                            ? coverageNames[0] : Utils.DEFAULT_INDEX_NAME;
+                    defaultCoverage =
+                            (coverageNames != null && coverageNames.length > 0)
+                                    ? coverageNames[0]
+                                    : Utils.DEFAULT_INDEX_NAME;
                 }
 
                 configuration.setParameter(Prop.INDEX_NAME, defaultCoverage);
@@ -254,15 +266,15 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
 
                 // run the walker and collect information
                 ImageMosaicEventHandlers eventHandler = new ImageMosaicEventHandlers();
-                final ImageMosaicConfigHandler catalogHandler = new ImageMosaicConfigHandler(
-                        configuration, eventHandler) {
-                    protected GranuleCatalog buildCatalog() throws IOException {
-                        return reader.granuleCatalog;
-                    };
-                };
+                final ImageMosaicConfigHandler catalogHandler =
+                        new ImageMosaicConfigHandler(configuration, eventHandler) {
+                            protected GranuleCatalog buildCatalog() throws IOException {
+                                return reader.granuleCatalog;
+                            };
+                        };
                 // Creation of the Walker for the File List
-                ImageMosaicFileCollectionWalker walker = new ImageMosaicFileCollectionWalker(
-                        catalogHandler, eventHandler, files);
+                ImageMosaicFileCollectionWalker walker =
+                        new ImageMosaicFileCollectionWalker(catalogHandler, eventHandler, files);
                 eventHandler.addProcessingEventListener(
                         new ImageMosaicEventHandlers.ProcessingEventListener() {
 
@@ -270,8 +282,11 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
                             public void getNotification(ProcessingEvent event) {
                                 if (event instanceof FileProcessingEvent) {
                                     FileProcessingEvent fileEvent = (FileProcessingEvent) event;
-                                    result.add(new DefaultHarvestedSource(fileEvent.getFile(),
-                                            fileEvent.isIngested(), fileEvent.getMessage()));
+                                    result.add(
+                                            new DefaultHarvestedSource(
+                                                    fileEvent.getFile(),
+                                                    fileEvent.isIngested(),
+                                                    fileEvent.getMessage()));
                                 }
                             }
 
@@ -285,11 +300,11 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
             }
         };
 
-        HarvestedResource() {
-        }
+        HarvestedResource() {}
 
         /**
-         * Harvesting of the input resource. The result will be strored inside the {@link List} object.
+         * Harvesting of the input resource. The result will be strored inside the {@link List}
+         * object.
          *
          * @param defaultCoverage
          * @param source
@@ -297,8 +312,12 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
          * @param result
          * @param reader
          */
-        public abstract void harvest(String defaultCoverage, Object source, Hints hints,
-                final List<HarvestedSource> result, ImageMosaicReader reader);
+        public abstract void harvest(
+                String defaultCoverage,
+                Object source,
+                Hints hints,
+                final List<HarvestedSource> result,
+                ImageMosaicReader reader);
 
         /**
          * Returns the HarvestedResource associated to the input Object
@@ -335,19 +354,20 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
                     if (fileSize < 1) {
                         return null;
                     } else if (fileSize == 1) {
-                        // If the Collection size is 1 then the object can be only a file or a directory
+                        // If the Collection size is 1 then the object can be only a file or a
+                        // directory
                         return getResourceFromFile(files.iterator().next());
                     } else {
                         return FILE_COLLECTION;
                     }
-
                 }
             }
             return null;
         }
 
         /**
-         * Check if the File Object is a DIRECTORY or not and return the associated {@link HarvestedResource}
+         * Check if the File Object is a DIRECTORY or not and return the associated {@link
+         * HarvestedResource}
          *
          * @param file
          * @return
@@ -372,19 +392,24 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
          * @param directory
          * @param filter
          */
-        private static void harvestCalculation(String defaultCoverage,
-                final List<HarvestedSource> result, final ImageMosaicReader reader, File directory,
+        private static void harvestCalculation(
+                String defaultCoverage,
+                final List<HarvestedSource> result,
+                final ImageMosaicReader reader,
+                File directory,
                 IOFileFilter filter) {
             // prepare the walker configuration
             CatalogBuilderConfiguration configuration = new CatalogBuilderConfiguration();
-            configuration.setParameter(Prop.ABSOLUTE_PATH,
-                    Boolean.toString(Utils.DEFAULT_PATH_BEHAVIOR));
+            configuration.setParameter(
+                    Prop.ABSOLUTE_PATH, Boolean.toString(Utils.DEFAULT_PATH_BEHAVIOR));
             String indexingPath = directory.getAbsolutePath();
             configuration.setParameter(Prop.HARVEST_DIRECTORY, indexingPath);
             if (defaultCoverage == null) {
                 String[] coverageNames = reader.getGridCoverageNames();
-                defaultCoverage = (coverageNames != null && coverageNames.length > 0)
-                        ? coverageNames[0] : Utils.DEFAULT_INDEX_NAME;
+                defaultCoverage =
+                        (coverageNames != null && coverageNames.length > 0)
+                                ? coverageNames[0]
+                                : Utils.DEFAULT_INDEX_NAME;
             }
             configuration.setParameter(Prop.INDEX_NAME, defaultCoverage);
             configuration.setHints(new Hints(Utils.MOSAIC_READER, reader));
@@ -398,16 +423,16 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
 
             // run the walker and collect information
             ImageMosaicEventHandlers eventHandler = new ImageMosaicEventHandlers();
-            final ImageMosaicConfigHandler catalogHandler = new ImageMosaicConfigHandler(
-                    configuration, eventHandler) {
-                @Override
-                protected GranuleCatalog buildCatalog() throws IOException {
-                    return reader.granuleCatalog;
-                }
-            };
+            final ImageMosaicConfigHandler catalogHandler =
+                    new ImageMosaicConfigHandler(configuration, eventHandler) {
+                        @Override
+                        protected GranuleCatalog buildCatalog() throws IOException {
+                            return reader.granuleCatalog;
+                        }
+                    };
             // build the index
-            ImageMosaicDirectoryWalker walker = new ImageMosaicDirectoryWalker(catalogHandler,
-                    eventHandler, filter);
+            ImageMosaicDirectoryWalker walker =
+                    new ImageMosaicDirectoryWalker(catalogHandler, eventHandler, filter);
             eventHandler.addProcessingEventListener(
                     new ImageMosaicEventHandlers.ProcessingEventListener() {
 
@@ -415,8 +440,11 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
                         public void getNotification(ProcessingEvent event) {
                             if (event instanceof FileProcessingEvent) {
                                 FileProcessingEvent fileEvent = (FileProcessingEvent) event;
-                                result.add(new DefaultHarvestedSource(fileEvent.getFile(),
-                                        fileEvent.isIngested(), fileEvent.getMessage()));
+                                result.add(
+                                        new DefaultHarvestedSource(
+                                                fileEvent.getFile(),
+                                                fileEvent.isIngested(),
+                                                fileEvent.getMessage()));
                             }
                         }
 
@@ -432,11 +460,10 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
 
     /**
      * Constructor.
-     * 
+     *
      * @param source The source object.
      * @throws IOException
      * @throws UnsupportedEncodingException
-     * 
      */
     public ImageMosaicReader(Object source, Hints uHints) throws IOException {
         super(source, uHints);
@@ -451,10 +478,14 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
                 if (LOGGER.isLoggable(Level.FINE)) {
                     if (multiThreadedLoader instanceof ThreadPoolExecutor) {
                         final ThreadPoolExecutor tpe = (ThreadPoolExecutor) multiThreadedLoader;
-                        LOGGER.fine("Using ThreadPoolExecutor with the following settings: "
-                                + "core pool size = " + tpe.getCorePoolSize() + "\nmax pool size = "
-                                + tpe.getMaximumPoolSize() + "\nkeep alive time "
-                                + tpe.getKeepAliveTime(TimeUnit.MILLISECONDS));
+                        LOGGER.fine(
+                                "Using ThreadPoolExecutor with the following settings: "
+                                        + "core pool size = "
+                                        + tpe.getCorePoolSize()
+                                        + "\nmax pool size = "
+                                        + tpe.getMaximumPoolSize()
+                                        + "\nkeep alive time "
+                                        + tpe.getKeepAliveTime(TimeUnit.MILLISECONDS));
                     }
                 }
             }
@@ -485,8 +516,9 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
     }
 
     /**
-     * Init this {@link ImageMosaicReader} using the provided {@link ImageMosaicDescriptor} as source.
-     * 
+     * Init this {@link ImageMosaicReader} using the provided {@link ImageMosaicDescriptor} as
+     * source.
+     *
      * @param source
      * @param uHints
      * @throws DataSourceException
@@ -506,8 +538,8 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
                     "Unable to create reader for this mosaic since the inner catalog is null.");
         }
 
-        final SimpleFeatureType schema = catalog
-                .getType(configuration.getCatalogConfigurationBean().getTypeName());
+        final SimpleFeatureType schema =
+                catalog.getType(configuration.getCatalogConfigurationBean().getTypeName());
         if (schema == null) {
             throw new DataSourceException(
                     "Unable to create reader for this mosaic since the inner catalog schema is null.");
@@ -523,8 +555,9 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
     }
 
     /**
-     * Init this {@link ImageMosaicReader} using the provided object as a source referring to an {@link URL}.
-     * 
+     * Init this {@link ImageMosaicReader} using the provided object as a source referring to an
+     * {@link URL}.
+     *
      * @param source
      * @param uHints
      * @throws DataSourceException
@@ -562,15 +595,20 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
                 final File parent = URLs.urlToFile(sourceURL).getParentFile();
 
                 // this can be used to look for properties files that do NOT define a datastore
-                final File[] properties = parent
-                        .listFiles((FilenameFilter) FileFilterUtils.and(
-                                FileFilterUtils.notFileFilter(
-                                        FileFilterUtils.nameFileFilter("indexer.properties")),
-                                FileFilterUtils.and(
-                                        FileFilterUtils.notFileFilter(FileFilterUtils
-                                                .nameFileFilter("datastore.properties")),
-                                        FileFilterUtils.makeFileOnly(
-                                                FileFilterUtils.suffixFileFilter(".properties")))));
+                final File[] properties =
+                        parent.listFiles(
+                                (FilenameFilter)
+                                        FileFilterUtils.and(
+                                                FileFilterUtils.notFileFilter(
+                                                        FileFilterUtils.nameFileFilter(
+                                                                "indexer.properties")),
+                                                FileFilterUtils.and(
+                                                        FileFilterUtils.notFileFilter(
+                                                                FileFilterUtils.nameFileFilter(
+                                                                        "datastore.properties")),
+                                                        FileFilterUtils.makeFileOnly(
+                                                                FileFilterUtils.suffixFileFilter(
+                                                                        ".properties")))));
 
                 // do we have a valid datastore + mosaic properties pair?
                 final File datastoreProperties = new File(parent, "datastore.properties");
@@ -578,17 +616,17 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
                 // Scan for MosaicConfigurationBeans from properties files
                 List<MosaicConfigurationBean> beans = new ArrayList<>();
                 for (File propFile : properties) {
-                    if (Utils.checkFileReadable(propFile) && Utils
-                            .loadMosaicProperties(URLs.fileToUrl(propFile)) != null) {
-                        configuration = Utils
-                                .loadMosaicProperties(URLs.fileToUrl(propFile));
+                    if (Utils.checkFileReadable(propFile)
+                            && Utils.loadMosaicProperties(URLs.fileToUrl(propFile)) != null) {
+                        configuration = Utils.loadMosaicProperties(URLs.fileToUrl(propFile));
                         if (configuration != null) {
                             beans.add(configuration);
                         }
                     }
                 }
 
-                // In case we didn't find any configuration bean and datastore properties, we can't do anything
+                // In case we didn't find any configuration bean and datastore properties, we can't
+                // do anything
                 if (beans.isEmpty() && !datastoreProperties.exists()) {
                     throw new DataSourceException(
                             "No mosaic properties file or datastore properties file have been found");
@@ -596,10 +634,12 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
 
                 // Catalog initialization from datastore
                 GranuleCatalog catalog = null;
-                final Properties params = ImageMosaicConfigHandler
-                        .createGranuleCatalogProperties(datastoreProperties);
+                final Properties params =
+                        ImageMosaicConfigHandler.createGranuleCatalogProperties(
+                                datastoreProperties);
 
-                // Since we are dealing with a catalog from an existing store, make sure to scan for all the typeNames on initialization
+                // Since we are dealing with a catalog from an existing store, make sure to scan for
+                // all the typeNames on initialization
                 final Object typeNames = params.get(Utils.SCAN_FOR_TYPENAMES);
                 if (typeNames != null) {
                     params.put(Utils.SCAN_FOR_TYPENAMES, Boolean.valueOf(typeNames.toString()));
@@ -607,14 +647,19 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
                     params.put(Utils.SCAN_FOR_TYPENAMES, Boolean.TRUE);
                 }
                 if (beans.size() > 0) {
-                    catalog = GranuleCatalogFactory.createGranuleCatalog(sourceURL,
-                            beans.get(0).getCatalogConfigurationBean(), params, getHints());
+                    catalog =
+                            GranuleCatalogFactory.createGranuleCatalog(
+                                    sourceURL,
+                                    beans.get(0).getCatalogConfigurationBean(),
+                                    params,
+                                    getHints());
                 } else {
-                    catalog = ImageMosaicConfigHandler.createGranuleCatalogFromDatastore(parent,
-                            datastoreProperties, true, getHints());
+                    catalog =
+                            ImageMosaicConfigHandler.createGranuleCatalogFromDatastore(
+                                    parent, datastoreProperties, true, getHints());
                 }
-                MultiLevelROIProvider rois = MultiLevelROIProviderMosaicFactory
-                        .createFootprintProvider(parent);
+                MultiLevelROIProvider rois =
+                        MultiLevelROIProviderMosaicFactory.createFootprintProvider(parent);
                 catalog.setMultiScaleROIProvider(rois);
                 if (granuleCatalog != null) {
                     granuleCatalog.dispose();
@@ -628,17 +673,20 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
 
                 // Creating a RasterManager for each mosaic configuration found on disk
                 for (MosaicConfigurationBean bean : beans) {
-                    // Add a RasterManager on top of this Mosaic configuration bean and initialize it
+                    // Add a RasterManager on top of this Mosaic configuration bean and initialize
+                    // it
                     addRasterManager(bean, true);
                 }
             } else {
 
-                // Old style code: we have a single MosaicConfigurationBean. Use that to create the catalog
-                granuleCatalog = ImageMosaicConfigHandler.createCatalog(sourceURL, configuration,
-                        this.hints);
+                // Old style code: we have a single MosaicConfigurationBean. Use that to create the
+                // catalog
+                granuleCatalog =
+                        ImageMosaicConfigHandler.createCatalog(
+                                sourceURL, configuration, this.hints);
                 File parent = URLs.urlToFile(sourceURL).getParentFile();
-                MultiLevelROIProvider rois = MultiLevelROIProviderMosaicFactory
-                        .createFootprintProvider(parent);
+                MultiLevelROIProvider rois =
+                        MultiLevelROIProviderMosaicFactory.createFootprintProvider(parent);
                 granuleCatalog.setMultiScaleROIProvider(rois);
                 addRasterManager(configuration, true);
             }
@@ -674,8 +722,8 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
         }
     }
 
-    private void setGridGeometry(final ReferencedEnvelope envelope, final GranuleCatalog catalog,
-            String typeName) {
+    private void setGridGeometry(
+            final ReferencedEnvelope envelope, final GranuleCatalog catalog, String typeName) {
         Utilities.ensureNonNull("index", catalog);
         //
         // save the bbox and prepare other info
@@ -684,8 +732,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
 
         // we might have an imposed bbox
         this.crs = bounds.getCoordinateReferenceSystem();
-        if (envelope == null)
-            this.originalEnvelope = new GeneralEnvelope(bounds);
+        if (envelope == null) this.originalEnvelope = new GeneralEnvelope(bounds);
         else {
             this.originalEnvelope = new GeneralEnvelope(envelope);
             this.originalEnvelope.setCoordinateReferenceSystem(crs);
@@ -693,13 +740,19 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
 
         // original gridrange (estimated). I am using the floor here in order to make sure
         // we always stays inside the real area that we have for the granule
-        originalGridRange = new GridEnvelope2D(
-                new Rectangle((int) (originalEnvelope.getSpan(0) / highestRes[0]),
-                        (int) (originalEnvelope.getSpan(1) / highestRes[1])));
-        raster2Model = new AffineTransform2D(highestRes[0], 0, 0, -highestRes[1],
-                originalEnvelope.getLowerCorner().getOrdinate(0) + 0.5 * highestRes[0],
-                originalEnvelope.getUpperCorner().getOrdinate(1) - 0.5 * highestRes[1]);
-
+        originalGridRange =
+                new GridEnvelope2D(
+                        new Rectangle(
+                                (int) (originalEnvelope.getSpan(0) / highestRes[0]),
+                                (int) (originalEnvelope.getSpan(1) / highestRes[1])));
+        raster2Model =
+                new AffineTransform2D(
+                        highestRes[0],
+                        0,
+                        0,
+                        -highestRes[1],
+                        originalEnvelope.getLowerCorner().getOrdinate(0) + 0.5 * highestRes[0],
+                        originalEnvelope.getUpperCorner().getOrdinate(1) - 0.5 * highestRes[1]);
     }
 
     private void setGridGeometry(final String typeName) {
@@ -717,8 +770,12 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
         highestRes[1] = resolutions[0][1];
 
         if (LOGGER.isLoggable(Level.FINE))
-            LOGGER.fine(new StringBuilder("Highest res ").append(highestRes[0]).append(" ")
-                    .append(highestRes[1]).toString());
+            LOGGER.fine(
+                    new StringBuilder("Highest res ")
+                            .append(highestRes[0])
+                            .append(" ")
+                            .append(highestRes[1])
+                            .toString());
 
         if (numOverviews > 0) {
             for (int i = 0; i < numOverviews; i++) {
@@ -737,15 +794,15 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
 
         checkAuxiliaryMetadata = configuration.isCheckAuxiliaryMetadata();
 
-        CatalogConfigurationBean catalogConfigurationBean = configuration
-                .getCatalogConfigurationBean();
+        CatalogConfigurationBean catalogConfigurationBean =
+                configuration.getCatalogConfigurationBean();
 
         // do we have heterogenous granules
         heterogeneousGranules = catalogConfigurationBean.isHeterogeneous();
 
         // absolute or relative path
-        pathType = catalogConfigurationBean.isAbsolutePath() ? PathType.ABSOLUTE
-                : PathType.RELATIVE;
+        pathType =
+                catalogConfigurationBean.isAbsolutePath() ? PathType.ABSOLUTE : PathType.RELATIVE;
 
         //
         // location attribute
@@ -759,8 +816,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
                 final Class<?> clazz = Class.forName(suggestedSPIClass);
                 if (clazz.newInstance() instanceof ImageReaderSpi)
                     suggestedSPI = (ImageReaderSpi) clazz.newInstance();
-                else
-                    suggestedSPI = null;
+                else suggestedSPI = null;
             } catch (Exception e) {
                 if (LOGGER.isLoggable(Level.FINE))
                     LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
@@ -781,7 +837,6 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
 
         // typeName to be used for reading the mosaic
         this.typeName = catalogConfigurationBean.getTypeName();
-
     }
 
     /**
@@ -790,17 +845,12 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
      * @param source The source object.
      * @throws IOException
      * @throws UnsupportedEncodingException
-     *
      */
     public ImageMosaicReader(Object source) throws IOException {
         this(source, null);
-
     }
 
-    /**
-     *
-     * @see org.opengis.coverage.grid.GridCoverageReader#getFormat()
-     */
+    /** @see org.opengis.coverage.grid.GridCoverageReader#getFormat() */
     public Format getFormat() {
         return new ImageMosaicFormat();
     }
@@ -810,9 +860,8 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
     }
 
     /**
-     *
-     * @see org.opengis.coverage.grid.GridCoverageReader#read(org.opengis.parameter.GeneralParameterValue[])
-     * @Override
+     * @see
+     *     org.opengis.coverage.grid.GridCoverageReader#read(org.opengis.parameter.GeneralParameterValue[]) @Override
      */
     public GridCoverage2D read(String coverageName, GeneralParameterValue[] params)
             throws IOException {
@@ -833,17 +882,18 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
                 final double[] highRes = levels[0];
                 LOGGER.fine("Highest res " + highRes[0] + " " + highRes[1]);
             }
-
         }
         //
         // add max allowed tiles if missing
         //
         if (this.maxAllowedTiles != ImageMosaicFormat.MAX_ALLOWED_TILES.getDefaultValue()) {
             if (params != null) {
-                // first thing let's see if we have it already, in which case we do nothing since a read parameter override a Hint
+                // first thing let's see if we have it already, in which case we do nothing since a
+                // read parameter override a Hint
                 boolean found = false;
                 for (GeneralParameterValue pv : params) {
-                    if (pv.getDescriptor().getName()
+                    if (pv.getDescriptor()
+                            .getName()
                             .equals(ImageMosaicFormat.MAX_ALLOWED_TILES.getName())) {
                         found = true;
                         break;
@@ -852,11 +902,11 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
 
                 // ok, we did not find it, let's add it back
                 if (!found) {
-                    final GeneralParameterValue[] temp = new GeneralParameterValue[params.length
-                            + 1];
+                    final GeneralParameterValue[] temp =
+                            new GeneralParameterValue[params.length + 1];
                     System.arraycopy(params, 0, temp, 0, params.length);
-                    ParameterValue<Integer> tempVal = ImageMosaicFormat.MAX_ALLOWED_TILES
-                            .createValue();
+                    ParameterValue<Integer> tempVal =
+                            ImageMosaicFormat.MAX_ALLOWED_TILES.createValue();
                     tempVal.setValue(this.maxAllowedTiles);
                     temp[params.length] = tempVal;
                 }
@@ -864,9 +914,8 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
                 // we do not have nay read params, we have to create the array for them
                 ParameterValue<Integer> tempVal = ImageMosaicFormat.MAX_ALLOWED_TILES.createValue();
                 tempVal.setValue(this.maxAllowedTiles);
-                params = new GeneralParameterValue[] { tempVal };
+                params = new GeneralParameterValue[] {tempVal};
             }
-
         }
 
         //
@@ -885,8 +934,9 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
     }
 
     /**
-     * Look for the parameter containing the coverage name and check its validity. Then delegate the proper RasterManager to do the read operation.
-     * 
+     * Look for the parameter containing the coverage name and check its validity. Then delegate the
+     * proper RasterManager to do the read operation.
+     *
      * @param params
      * @return
      * @throws IOException
@@ -899,7 +949,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
 
     /**
      * Package private accessor for {@link Hints}.
-     * 
+     *
      * @return this {@link Hints} used by this reader.
      */
     Hints getHints() {
@@ -908,17 +958,14 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
 
     /**
      * Package private accessor for the highest resolution values.
-     * 
+     *
      * @return the highest resolution values.
      */
     double[] getHighestRes() {
         return super.highestRes;
     }
 
-    /**
-     * 
-     * @return
-     */
+    /** @return */
     double[][] getOverviewsResolution() {
         return super.overViewResolutions;
     }
@@ -934,7 +981,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
 
     /**
      * Let us retrieve the {@link GridCoverageFactory} that we want to use.
-     * 
+     *
      * @return retrieves the {@link GridCoverageFactory} that we want to use.
      */
     GridCoverageFactory getGridCoverageFactory() {
@@ -943,7 +990,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
 
     /**
      * Number of coverages for this reader is 1
-     * 
+     *
      * @return the number of coverages for this reader.
      */
     @Override
@@ -951,17 +998,13 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
         return names.size();
     }
 
-    /**
-     * Releases resources held by this reader.
-     * 
-     */
+    /** Releases resources held by this reader. */
     @Override
     public synchronized void dispose() {
         super.dispose();
         synchronized (this) {
             try {
-                if (granuleCatalog != null)
-                    this.granuleCatalog.dispose();
+                if (granuleCatalog != null) this.granuleCatalog.dispose();
                 disposeManagers();
             } catch (Exception e) {
                 if (LOGGER.isLoggable(Level.FINE))
@@ -970,9 +1013,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
         }
     }
 
-    /**
-     * Dispose raster managers
-     */
+    /** Dispose raster managers */
     private void disposeManagers() {
         if (rasterManagers != null) {
             Set<String> keys = rasterManagers.keySet();
@@ -1023,8 +1064,10 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
     public Set<ParameterDescriptor<List>> getDynamicParameters(String coverageName) {
         coverageName = checkUnspecifiedCoverage(coverageName);
         RasterManager manager = getRasterManager(coverageName);
-        return (Set<ParameterDescriptor<List>>) (manager.domainsManager != null
-                ? manager.domainsManager.getDynamicParameters() : Collections.emptySet());
+        return (Set<ParameterDescriptor<List>>)
+                (manager.domainsManager != null
+                        ? manager.domainsManager.getDynamicParameters()
+                        : Collections.emptySet());
     }
 
     public boolean isParameterSupported(Identifier name) {
@@ -1049,8 +1092,8 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
     }
 
     @Override
-    public double[] getReadingResolutions(String coverageName, OverviewPolicy policy,
-            double[] requestedResolution) {
+    public double[] getReadingResolutions(
+            String coverageName, OverviewPolicy policy, double[] requestedResolution) {
         coverageName = checkUnspecifiedCoverage(coverageName);
         RasterManager manager = getRasterManager(coverageName);
         final int numOverviews = getNumOverviews(coverageName);
@@ -1062,7 +1105,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
         } else {
             level = overviewsController.getLevel(0);
         }
-        return new double[] { level.resolutionX, level.resolutionY };
+        return new double[] {level.resolutionX, level.resolutionY};
     }
 
     /**
@@ -1076,14 +1119,16 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
         coverageName = checkUnspecifiedCoverage(coverageName);
         RasterManager manager = getRasterManager(coverageName);
         return manager.domainsManager != null
-                ? manager.domainsManager.isParameterSupported(parameterName) : false;
+                ? manager.domainsManager.isParameterSupported(parameterName)
+                : false;
     }
 
     /**
-     * Checker whether the specified coverageName is supported. In case the name is Unspecified and the manager only has 1 coverage, then it returns
-     * the only available coverage name (using default to speed up the response without need to access the set through an iterator). In case of
-     * multiple coverages, throws an Exceptions if the coverage name is unspecified.
-     * 
+     * Checker whether the specified coverageName is supported. In case the name is Unspecified and
+     * the manager only has 1 coverage, then it returns the only available coverage name (using
+     * default to speed up the response without need to access the set through an iterator). In case
+     * of multiple coverages, throws an Exceptions if the coverage name is unspecified.
+     *
      * @param coverageName
      */
     private String checkUnspecifiedCoverage(String coverageName) {
@@ -1106,13 +1151,14 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
     /**
      * Create a RasterManager on top of this {@link MosaicConfigurationBean}
      *
-     * @param configuration the {@link MosaicConfigurationBean} to be used to create the {@link RasterManager}
+     * @param configuration the {@link MosaicConfigurationBean} to be used to create the {@link
+     *     RasterManager}
      * @param init {@code true} if the Manager should be initialized.
      * @return
      * @throws IOException
      */
-    protected RasterManager addRasterManager(final MosaicConfigurationBean configuration,
-            final boolean init) throws IOException {
+    protected RasterManager addRasterManager(
+            final MosaicConfigurationBean configuration, final boolean init) throws IOException {
         Utilities.ensureNonNull("MosaicConfigurationBean", configuration);
         String name = configuration.getName();
         RasterManager rasterManager = new RasterManager(this, configuration);
@@ -1166,17 +1212,17 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
     }
 
     /**
-     * 
      * @param coverageName
      * @param forceDelete
-     * @param checkForReferences {@code true} true in case, when deleting, we need to check whether the file is being referred by some other coverage
-     *        or not. In the latter case, we can safely delete it
-     *
+     * @param checkForReferences {@code true} true in case, when deleting, we need to check whether
+     *     the file is being referred by some other coverage or not. In the latter case, we can
+     *     safely delete it
      * @return
      * @throws IOException
      */
-    private boolean removeCoverage(String coverageName, final boolean forceDelete,
-            final boolean checkForReferences) throws IOException {
+    private boolean removeCoverage(
+            String coverageName, final boolean forceDelete, final boolean checkForReferences)
+            throws IOException {
         RasterManager manager = getRasterManager(coverageName);
         if (manager != null) {
             manager.removeStore(coverageName, forceDelete, checkForReferences);
@@ -1277,7 +1323,8 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
     @Override
     public List<HarvestedSource> harvest(String defaultCoverage, Object source, Hints hints)
             throws IOException, UnsupportedOperationException {
-        // Get the HarvestedResource object associated to the source. This object defines the harvseting behaviour.
+        // Get the HarvestedResource object associated to the source. This object defines the
+        // harvseting behaviour.
         HarvestedResource resource = HarvestedResource.getResourceFromObject(source);
 
         // Check if the source object can be accepted
@@ -1286,8 +1333,9 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
             result.add(new DefaultHarvestedSource(source, false, "Unrecognized source type"));
             return result;
         } else if (source instanceof File && !((File) source).exists() || singleFileList(source)) {
-            result.add(new DefaultHarvestedSource(source, false,
-                    "Specified file path does not exist"));
+            result.add(
+                    new DefaultHarvestedSource(
+                            source, false, "Specified file path does not exist"));
             return result;
         }
         // Harvesting of the input source
@@ -1303,7 +1351,7 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
 
     /**
      * Simple method used for checking if the list contains a single object and it is a file
-     * 
+     *
      * @param source
      * @return
      */
@@ -1356,8 +1404,9 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
     }
 
     /**
-     * Finalize the clean up by removing any file returned by the cleanup filter. Note that some H2 .db files change their name during life cycle. So
-     * they won't be stored inside the fileset manager
+     * Finalize the clean up by removing any file returned by the cleanup filter. Note that some H2
+     * .db files change their name during life cycle. So they won't be stored inside the fileset
+     * manager
      */
     private void finalizeCleanup() {
         IOFileFilter filesFilter = Utils.getCleanupFilter();
@@ -1365,7 +1414,6 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
         for (File file : files) {
             FileUtils.deleteQuietly(file);
         }
-
     }
 
     @Override
@@ -1375,19 +1423,21 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
     }
 
     /**
-     * This subclass of the {@link ImageMosaicWalker} cycles around a List of files and for each one calls the superclass handleFile() method. For
-     * each file is done a check if it really exists, it can be read and it is not a directory.
-     * 
-     * @author Nicola Lagomarsini, GeoSolutions S.A.S.
+     * This subclass of the {@link ImageMosaicWalker} cycles around a List of files and for each one
+     * calls the superclass handleFile() method. For each file is done a check if it really exists,
+     * it can be read and it is not a directory.
      *
+     * @author Nicola Lagomarsini, GeoSolutions S.A.S.
      */
     private static class ImageMosaicFileCollectionWalker extends ImageMosaicWalker {
 
         /** Input File list to walk on */
         private Collection<File> files;
 
-        public ImageMosaicFileCollectionWalker(ImageMosaicConfigHandler configHandler,
-                ImageMosaicEventHandlers eventHandler, Collection<File> files) {
+        public ImageMosaicFileCollectionWalker(
+                ImageMosaicConfigHandler configHandler,
+                ImageMosaicEventHandlers eventHandler,
+                Collection<File> files) {
             super(configHandler, eventHandler);
 
             this.files = files;
@@ -1485,7 +1535,6 @@ public class ImageMosaicReader extends AbstractGridCoverage2DReader
             fileGroups.add(new FileGroup(file, null, null));
         }
         return new DefaultFileServiceInfo(fileGroups);
-
     }
 
     public ExecutorService getMultiThreadedLoader() {

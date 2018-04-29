@@ -16,6 +16,10 @@
  */
 package org.geotools.data.wps;
 
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.io.ParseException;
+import com.vividsolutions.jts.io.WKTReader;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -29,9 +33,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-
 import javax.xml.namespace.QName;
-
 import net.opengis.ows11.CodeType;
 import net.opengis.ows11.ExceptionReportType;
 import net.opengis.ows11.ExceptionType;
@@ -57,7 +59,6 @@ import net.opengis.wps10.ResponseDocumentType;
 import net.opengis.wps10.ResponseFormType;
 import net.opengis.wps10.WPSCapabilitiesType;
 import net.opengis.wps10.Wps10Factory;
-
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.geotools.data.wps.request.DescribeProcessRequest;
@@ -73,21 +74,13 @@ import org.geotools.xml.EncoderDelegate;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.ext.LexicalHandler;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.io.ParseException;
-import com.vividsolutions.jts.io.WKTReader;
-
 /**
  * Test making requests by manually building up requests using the utility methods.
- * 
+ *
  * @author GDavis
- * 
- * 
- * 
- * 
- * 
- * @source $URL$ http://svn.osgeo.org/geotools/trunk/modules/unsupported/wps/src/test/java/org/geotools /data/wps/OnlineWPSManualRequestTest.java $
+ * @source $URL$
+ *     http://svn.osgeo.org/geotools/trunk/modules/unsupported/wps/src/test/java/org/geotools
+ *     /data/wps/OnlineWPSManualRequestTest.java $
  */
 public class WPSManualRequestOnlineTest extends OnlineTestCase {
 
@@ -99,9 +92,7 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
 
     private ResponseFormType response;
 
-    /**
-     * The wps.geoserver fixture consisting of service and processId.
-     */
+    /** The wps.geoserver fixture consisting of service and processId. */
     @Override
     protected String getFixtureId() {
         return "wps";
@@ -142,7 +133,6 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
             // System.out.println(process.getTitle());
             assertNotNull("process [" + process + " shouldn't be null", process.getTitle());
         }
-
     }
 
     public void testDescribeProcess() throws ServiceException, IOException {
@@ -224,13 +214,13 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
 
     /**
      * run multiple buffer tests with various geometry types
-     * 
+     *
      * @throws ParseException
      * @throws IOException
      * @throws ServiceException
      */
-    public void testExecuteProcessBufferLocal() throws ParseException, ServiceException,
-            IOException {
+    public void testExecuteProcessBufferLocal()
+            throws ParseException, ServiceException, IOException {
 
         // don't run the test if the server is not up or we aren't doing local tests
         if (fixture == null) {
@@ -241,13 +231,14 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
         WKTReader reader = new WKTReader(new GeometryFactory());
         Geometry geom1 = reader.read("POLYGON((20 10, 30 0, 40 10, 30 20, 20 10))");
         Geometry geom2 = reader.read("POINT (160 200)");
-        Geometry geom3 = reader
-                .read("LINESTRING (100 240, 220 140, 380 240, 480 220)");
-        Geometry geom4 = reader
-                .read("MULTILINESTRING ((140 280, 180 180, 400 260), (340 120, 160 100, 80 200))");
+        Geometry geom3 = reader.read("LINESTRING (100 240, 220 140, 380 240, 480 220)");
+        Geometry geom4 =
+                reader.read(
+                        "MULTILINESTRING ((140 280, 180 180, 400 260), (340 120, 160 100, 80 200))");
         Geometry geom5 = reader.read("MULTIPOINT (180 180, 260 280, 340 200)");
-        Geometry geom6 = reader
-                .read("MULTIPOLYGON (((160 320, 120 140, 360 140, 320 340, 160 320), (440 260, 580 140, 580 240, 440 260)))");
+        Geometry geom6 =
+                reader.read(
+                        "MULTIPOLYGON (((160 320, 120 140, 360 140, 320 340, 160 320), (440 260, 580 140, 580 240, 440 260)))");
 
         // run the local buffer execute test for each geom input
         runExecuteProcessBufferLocal(geom1);
@@ -258,8 +249,8 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
         runExecuteProcessBufferLocal(geom6);
     }
 
-    private void runExecuteProcessBufferLocal(Geometry geom1) throws ServiceException, IOException,
-            ParseException {
+    private void runExecuteProcessBufferLocal(Geometry geom1)
+            throws ServiceException, IOException, ParseException {
 
         WPSCapabilitiesType capabilities = wps.getCapabilities();
 
@@ -323,12 +314,13 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
 
     }
 
-    private void setLocalInputDataBufferPoly(ExecuteProcessRequest exeRequest,
-            ProcessDescriptionsType processDesc, Geometry geom1) throws ParseException {
+    private void setLocalInputDataBufferPoly(
+            ExecuteProcessRequest exeRequest, ProcessDescriptionsType processDesc, Geometry geom1)
+            throws ParseException {
 
         // this process takes 2 input, a geometry and a buffer amount.
-        ProcessDescriptionType pdt = (ProcessDescriptionType) processDesc.getProcessDescription()
-                .get(0);
+        ProcessDescriptionType pdt =
+                (ProcessDescriptionType) processDesc.getProcessDescription().get(0);
         InputDescriptionType idt = (InputDescriptionType) pdt.getDataInputs().getInput().get(0);
 
         // create input buffer
@@ -419,15 +411,15 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
 
         ExceptionReportType exceptionResponse = response.getExceptionResponse();
         assertNull(exceptionResponse);
-
     }
 
-    private void set52NInputData(ExecuteProcessRequest exeRequest,
-            ProcessDescriptionsType processDesc) throws ParseException {
+    private void set52NInputData(
+            ExecuteProcessRequest exeRequest, ProcessDescriptionsType processDesc)
+            throws ParseException {
 
         // this process takes 1 input, a building polygon to collapse.
-        ProcessDescriptionType pdt = (ProcessDescriptionType) processDesc.getProcessDescription()
-                .get(0);
+        ProcessDescriptionType pdt =
+                (ProcessDescriptionType) processDesc.getProcessDescription().get(0);
         InputDescriptionType idt = (InputDescriptionType) pdt.getDataInputs().getInput().get(0);
 
         // create a polygon for the input
@@ -443,7 +435,7 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
 
     /**
      * Do some more local process tests, such as union
-     * 
+     *
      * @throws ServiceException
      * @throws IOException
      * @throws ParseException
@@ -507,15 +499,15 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
 
         ExceptionReportType exceptionResponse = response.getExceptionResponse();
         assertNull(exceptionResponse);
-
     }
 
-    private void setLocalInputDataUnion(ExecuteProcessRequest exeRequest,
-            ProcessDescriptionsType processDesc) throws ParseException {
+    private void setLocalInputDataUnion(
+            ExecuteProcessRequest exeRequest, ProcessDescriptionsType processDesc)
+            throws ParseException {
 
         // this process takes 2+ inputs, all geometries to union together.
-        ProcessDescriptionType pdt = (ProcessDescriptionType) processDesc.getProcessDescription()
-                .get(0);
+        ProcessDescriptionType pdt =
+                (ProcessDescriptionType) processDesc.getProcessDescription().get(0);
         InputDescriptionType idt = (InputDescriptionType) pdt.getDataInputs().getInput().get(0);
 
         // create polygons for the input
@@ -527,26 +519,34 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
         if (idt.getIdentifier().getValue().equalsIgnoreCase("geom")) {
             // set geom inputs
             List<EObject> list = new ArrayList<EObject>();
-            DataType input = WPSUtils.createInputDataType(new CDATAEncoder(geom1),
-                    WPSUtils.INPUTTYPE_COMPLEXDATA, null,
-                    "application/wkt");
-            DataType input2 = WPSUtils.createInputDataType(new CDATAEncoder(geom2),
-                    WPSUtils.INPUTTYPE_COMPLEXDATA, null,
-                    "application/wkt");
-            DataType input3 = WPSUtils.createInputDataType(new CDATAEncoder(geom3),
-                    WPSUtils.INPUTTYPE_COMPLEXDATA, null,
-                    "application/wkt");
+            DataType input =
+                    WPSUtils.createInputDataType(
+                            new CDATAEncoder(geom1),
+                            WPSUtils.INPUTTYPE_COMPLEXDATA,
+                            null,
+                            "application/wkt");
+            DataType input2 =
+                    WPSUtils.createInputDataType(
+                            new CDATAEncoder(geom2),
+                            WPSUtils.INPUTTYPE_COMPLEXDATA,
+                            null,
+                            "application/wkt");
+            DataType input3 =
+                    WPSUtils.createInputDataType(
+                            new CDATAEncoder(geom3),
+                            WPSUtils.INPUTTYPE_COMPLEXDATA,
+                            null,
+                            "application/wkt");
             list.add(input);
             list.add(input2);
             list.add(input3);
             exeRequest.addInput(idt.getIdentifier().getValue(), list);
         }
-
     }
 
     /**
      * Do some more local process tests, such as double addtion
-     * 
+     *
      * @throws ServiceException
      * @throws IOException
      * @throws ParseException
@@ -619,15 +619,15 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
         Double result = new Double(value);
         Double expected = 77.84 + 40039.229;
         assertEquals(result, expected);
-
     }
 
-    private void setLocalInputDataAdd(ExecuteProcessRequest exeRequest,
-            ProcessDescriptionsType processDesc) throws ParseException {
+    private void setLocalInputDataAdd(
+            ExecuteProcessRequest exeRequest, ProcessDescriptionsType processDesc)
+            throws ParseException {
 
         // this process takes 2 inputs, two double to add together.
-        ProcessDescriptionType pdt = (ProcessDescriptionType) processDesc.getProcessDescription()
-                .get(0);
+        ProcessDescriptionType pdt =
+                (ProcessDescriptionType) processDesc.getProcessDescription().get(0);
         InputDescriptionType idt = (InputDescriptionType) pdt.getDataInputs().getInput().get(0);
 
         // create doubles for the input
@@ -645,12 +645,11 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
         DataType input2 = WPSUtils.createInputDataType(d2, idt2);
         list2.add(input2);
         exeRequest.addInput(idt2.getIdentifier().getValue(), list2);
-
     }
 
     /**
      * Try to get an area grid in arcgrid format, raw
-     * 
+     *
      * @throws ServiceException
      * @throws IOException
      * @throws ParseException
@@ -701,8 +700,12 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
         exeRequest.setIdentifier(processIdenLocal);
         exeRequest.addInput(
                 "envelope",
-                Arrays.asList(wps.createBoundingBoxInputValue("EPSG:4326", 2,
-                        Arrays.asList(-180d, -90d), Arrays.asList(180d, 90d))));
+                Arrays.asList(
+                        wps.createBoundingBoxInputValue(
+                                "EPSG:4326",
+                                2,
+                                Arrays.asList(-180d, -90d),
+                                Arrays.asList(180d, 90d))));
         exeRequest.addInput("width", Arrays.asList(wps.createLiteralInputValue("2")));
         exeRequest.addInput("height", Arrays.asList(wps.createLiteralInputValue("1")));
         OutputDefinitionType rawOutput = wps.createOutputDefinitionType("result");
@@ -724,8 +727,8 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
 
         // check result correctness
         assertEquals("application/arcgrid", response.getRawContentType());
-        BufferedReader reader = new BufferedReader(new InputStreamReader(
-                response.getRawResponseStream()));
+        BufferedReader reader =
+                new BufferedReader(new InputStreamReader(response.getRawResponseStream()));
         StringBuilder sb = new StringBuilder();
         String line = null;
         while ((line = reader.readLine()) != null) {
@@ -733,20 +736,26 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
         }
         reader.close();
         String arcgrid = sb.toString();
-        String expectedHeader = "NCOLS 2\n" + "NROWS 1\n" + "XLLCORNER -180.0\n"
-                + "YLLCORNER -90.0\n" + "CELLSIZE 180.0\n" + "NODATA_VALUE -9999";
+        String expectedHeader =
+                "NCOLS 2\n"
+                        + "NROWS 1\n"
+                        + "XLLCORNER -180.0\n"
+                        + "YLLCORNER -90.0\n"
+                        + "CELLSIZE 180.0\n"
+                        + "NODATA_VALUE -9999";
         assertTrue(arcgrid.startsWith(expectedHeader));
     }
 
     /**
-     * Request for area grid with raw output but wrong parameters, check the response is an exception
-     * 
+     * Request for area grid with raw output but wrong parameters, check the response is an
+     * exception
+     *
      * @throws ServiceException
      * @throws IOException
      * @throws ParseException
      */
-    public void testExecuteLocalAreaGridException() throws ServiceException, IOException,
-            ParseException {
+    public void testExecuteLocalAreaGridException()
+            throws ServiceException, IOException, ParseException {
 
         // don't run the test if the server is not up
         if (fixture == null) {
@@ -785,8 +794,12 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
         exeRequest.setIdentifier(processIdenLocal);
         exeRequest.addInput(
                 "envelope",
-                Arrays.asList(wps.createBoundingBoxInputValue("EPSG:4326", 2,
-                        Arrays.asList(-180d, -90d), Arrays.asList(180d, 90d))));
+                Arrays.asList(
+                        wps.createBoundingBoxInputValue(
+                                "EPSG:4326",
+                                2,
+                                Arrays.asList(-180d, -90d),
+                                Arrays.asList(180d, 90d))));
         // don't set the width, height required params
         // exeRequest.addInput("width", Arrays.asList(wps.createLiteralInputValue("abc")));
         // exeRequest.addInput("height", Arrays.asList(wps.createLiteralInputValue("def")));
@@ -810,7 +823,7 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
 
     /**
      * Try to get an area grid with output in asynchronous mode
-     * 
+     *
      * @throws ServiceException
      * @throws IOException
      * @throws ParseException
@@ -854,8 +867,12 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
         exeRequest.setIdentifier(processIdenLocal);
         exeRequest.addInput(
                 "envelope",
-                Arrays.asList(wps.createBoundingBoxInputValue("EPSG:4326", 2,
-                        Arrays.asList(-180d, -90d), Arrays.asList(180d, 90d))));
+                Arrays.asList(
+                        wps.createBoundingBoxInputValue(
+                                "EPSG:4326",
+                                2,
+                                Arrays.asList(-180d, -90d),
+                                Arrays.asList(180d, 90d))));
         exeRequest.addInput("width", Arrays.asList(wps.createLiteralInputValue("100")));
         exeRequest.addInput("height", Arrays.asList(wps.createLiteralInputValue("50")));
         ResponseDocumentType doc = wps.createResponseDocumentType(false, true, true, "result");
@@ -889,8 +906,8 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
 
         // check result correctness
         assertEquals(1, executeResponse.getProcessOutputs().getOutput().size());
-        OutputDataType output = (OutputDataType) executeResponse.getProcessOutputs().getOutput()
-                .get(0);
+        OutputDataType output =
+                (OutputDataType) executeResponse.getProcessOutputs().getOutput().get(0);
 
         assertEquals("result", output.getIdentifier().getValue());
         assertEquals("application/arcgrid", output.getReference().getMimeType());
@@ -907,15 +924,20 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
         }
         reader.close();
         String arcgrid = sb.toString();
-        String expectedHeader = "NCOLS 100\n" + "NROWS 50\n" + "XLLCORNER -180.0\n"
-                + "YLLCORNER -90.0\n" + "CELLSIZE 3.6\n" + "NODATA_VALUE -9999";
+        String expectedHeader =
+                "NCOLS 100\n"
+                        + "NROWS 50\n"
+                        + "XLLCORNER -180.0\n"
+                        + "YLLCORNER -90.0\n"
+                        + "CELLSIZE 3.6\n"
+                        + "NODATA_VALUE -9999";
         System.out.println(arcgrid);
         assertTrue(arcgrid.startsWith(expectedHeader));
     }
 
     /**
      * Test exception parsing on invalid process request
-     * 
+     *
      * @throws ServiceException
      * @throws IOException
      * @throws ParseException
@@ -980,7 +1002,7 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
 
     /**
      * Make sure we get the proper exception report
-     * 
+     *
      * @throws ServiceException
      * @throws IOException
      * @throws ParseException
@@ -1047,7 +1069,7 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
             return;
         }
 
-        //----
+        // ----
 
         // reference to the Cascaded Process
         EObject processUnionCascadeReference = Wps10Factory.eINSTANCE.createInputReferenceType();
@@ -1061,7 +1083,7 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
 
         // based on the DescribeProcess, setup the execute
 
-        //----
+        // ----
         String processIden = "JTS:union";
 
         CodeType resultsCodeType = Ows11Factory.eINSTANCE.createCodeType();
@@ -1076,7 +1098,8 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
         processUnionExecType.setDataInputs(inputtypes);
 
         ResponseFormType processUnionResponseForm = Wps10Factory.eINSTANCE.createResponseFormType();
-        OutputDefinitionType processUnionRawDataOutput = Wps10Factory.eINSTANCE.createOutputDefinitionType();
+        OutputDefinitionType processUnionRawDataOutput =
+                Wps10Factory.eINSTANCE.createOutputDefinitionType();
         processUnionRawDataOutput.setIdentifier(resultsCodeType);
         processUnionResponseForm.setRawDataOutput(processUnionRawDataOutput);
 
@@ -1090,7 +1113,7 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
         cdt1.setMimeType("application/wkt");
         net.opengis.wps10.DataType data1 = Wps10Factory.eINSTANCE.createDataType();
         data1.setComplexData(cdt1);
-        
+
         InputType input1 = Wps10Factory.eINSTANCE.createInputType();
         CodeType inputIdent = Ows11Factory.eINSTANCE.createCodeType();
         inputIdent.setValue("geom");
@@ -1098,14 +1121,14 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
         input1.setData(data1);
 
         processUnionExecType.getDataInputs().getInput().add(input1);
-        
+
         // POLYGON((2 1, 3 0, 4 1, 3 2, 2 1))
         ComplexDataType cdt2 = Wps10Factory.eINSTANCE.createComplexDataType();
         cdt2.getData().add(0, new CDATAEncoder("POLYGON((2 1, 3 0, 4 1, 3 2, 2 1))"));
         cdt2.setMimeType("application/wkt");
         net.opengis.wps10.DataType data2 = Wps10Factory.eINSTANCE.createDataType();
         data2.setComplexData(cdt2);
-        
+
         InputType input2 = Wps10Factory.eINSTANCE.createInputType();
         CodeType inputIdent2 = Ows11Factory.eINSTANCE.createCodeType();
         inputIdent2.setValue("geom");
@@ -1113,26 +1136,23 @@ public class WPSManualRequestOnlineTest extends OnlineTestCase {
         input2.setData(data2);
 
         processUnionExecType.getDataInputs().getInput().add(input2);
-        
 
         // set the Cascade WPS process Body
-        ((InputReferenceType) processUnionCascadeReference).setBody(new WPSEncodeDelegate(
-                processUnionExecType, WPS.Execute));
+        ((InputReferenceType) processUnionCascadeReference)
+                .setBody(new WPSEncodeDelegate(processUnionExecType, WPS.Execute));
 
-        //----
+        // ----
         String areaProcessIdent = "JTS:area";
-        
+
         ExecuteProcessRequest exeRequest = wps.createExecuteProcessRequest();
         exeRequest.setIdentifier(areaProcessIdent);
         exeRequest.addInput("geom", Arrays.asList(processUnionCascadeReference));
 
-        
         // send the request
         ExecuteProcessResponse response = wps.issueRequest(exeRequest);
         Object result = response.getExecuteResponse().getProcessOutputs().getOutput().get(0);
         System.out.println(result);
     }
-    
 }
 
 class CDATAEncoder implements EncoderDelegate {
@@ -1173,5 +1193,4 @@ class WPSEncodeDelegate implements EncoderDelegate {
         Encoder encoder = new Encoder(config);
         encoder.encode(value, qname, output);
     }
-
 }

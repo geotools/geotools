@@ -19,75 +19,48 @@ package org.geotools.validation;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-
 /**
  * Defined a per Feature validation test.
- * 
- * <p>
- * Each ValidationPlugIn is very specific in nature: it performs one test
- * extermly well.  This simplifies design decisions, documenation
- * configuration and use.
- * </p>
- * 
- * <p>
- * Following the lead the excelent design work in the JUnit testing framework
- * validation results are collected by a ValidationResults object. This
- * interface for the ValidationResults object also allows it to collect
- * warning information.
- * </p>
- * 
- * <p>
- * The PlugIn is also required to supply some metadata to aid in its
- * deployment, scripting, logging and execution and error recovery:
- * 
+ *
+ * <p>Each ValidationPlugIn is very specific in nature: it performs one test extermly well. This
+ * simplifies design decisions, documenation configuration and use.
+ *
+ * <p>Following the lead the excelent design work in the JUnit testing framework validation results
+ * are collected by a ValidationResults object. This interface for the ValidationResults object also
+ * allows it to collect warning information.
+ *
+ * <p>The PlugIn is also required to supply some metadata to aid in its deployment, scripting,
+ * logging and execution and error recovery:
+ *
  * <ul>
- * <li>
- * name: user's name of validation test
- * </li>
- * <li>
- * description: user's description of validation test
- * </li>
- * <li>
- * priority: used to schedule validation test
- * </li>
- * <li>
- * typeNames: used to connect validaiton test to transaction opperation
- * </li>
+ *   <li>name: user's name of validation test
+ *   <li>description: user's description of validation test
+ *   <li>priority: used to schedule validation test
+ *   <li>typeNames: used to connect validaiton test to transaction opperation
  * </ul>
- * </p>
- * 
- * <p>
- * Capabilities:
- * 
+ *
+ * <p>Capabilities:
+ *
  * <ul>
- * <li>
- * Uses FeatureResults to allow environment to gather error/warning information
- * as required (transaction XML document, JTable, logging system, etc...)
- * </li>
- * <li>
- * Primiarly used as part of processing an Insert Element in the Transaction
- * opperation of a Web Feature Server. (Allows us to fail a Feature without
- * bothering the Database)
- * </li>
+ *   <li>Uses FeatureResults to allow environment to gather error/warning information as required
+ *       (transaction XML document, JTable, logging system, etc...)
+ *   <li>Primiarly used as part of processing an Insert Element in the Transaction opperation of a
+ *       Web Feature Server. (Allows us to fail a Feature without bothering the Database)
  * </ul>
- * </p>
- * 
- * <p>
- * Example Use (feature: id=1, name="foo", geom=linestring):
+ *
+ * <p>Example Use (feature: id=1, name="foo", geom=linestring):
+ *
  * <pre><code>
  * RangeFeatureValidation test = new RangeFeatureValidation();
- * 
+ *
  * results.setValidation( test );
  * test.setMin(0);
  * test.validate( feature, featureType, results ); // true
  * test.setMin(2);
  * test.validate( feature, featureType, results ); // false
  * </code></pre>
- * </p>
  *
  * @author Jody Garnett, Refractions Research, Inc.
- *
- *
  * @source $URL$
  * @version $Id$
  */
@@ -98,9 +71,9 @@ public interface FeatureValidation extends Validation {
      * @param feature Feature to be Validated
      * @param type FeatureTypeInfo schema of feature
      * @param results coallate results information
-     *
      * @return True if feature passes this test.
      */
-    public boolean validate(SimpleFeature feature, SimpleFeatureType type,
-        ValidationResults results) throws Exception;
+    public boolean validate(
+            SimpleFeature feature, SimpleFeatureType type, ValidationResults results)
+            throws Exception;
 }

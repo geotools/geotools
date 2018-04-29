@@ -17,25 +17,21 @@
 package org.geotools.coverageio.gdal.envihdr;
 
 import it.geosolutions.imageio.plugins.envihdr.ENVIHdrImageReaderSpi;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 import org.geotools.coverageio.BaseGridFormatFactorySPI;
 
 /**
  * @author Mathew Wyatt, CSIRO Australia
  * @author Daniele Romagnoli, GeoSolutions SAS
- *
- *
  * @source $URL$
  */
-public class EnviHdrFormatFactory extends BaseGridFormatFactorySPI implements GridFormatFactorySpi  {
+public class EnviHdrFormatFactory extends BaseGridFormatFactorySPI implements GridFormatFactorySpi {
 
     /** Logger. */
-    private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(
-            "org.geotools.coverageio.gdal.envihdr");
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.gdal.envihdr");
 
     public boolean isAvailable() {
         boolean available = true;
@@ -47,10 +43,8 @@ public class EnviHdrFormatFactory extends BaseGridFormatFactorySPI implements Gr
             available = new ENVIHdrImageReaderSpi().isAvailable();
 
             if (LOGGER.isLoggable(Level.FINE)) {
-                if (available)
-                    LOGGER.fine("EnviHdrFormatFactory is availaible.");
-                else
-                    LOGGER.fine("EnviHdrFormatFactory is not availaible.");
+                if (available) LOGGER.fine("EnviHdrFormatFactory is availaible.");
+                else LOGGER.fine("EnviHdrFormatFactory is not availaible.");
             }
         } catch (ClassNotFoundException cnf) {
             if (LOGGER.isLoggable(Level.FINE))
@@ -70,5 +64,4 @@ public class EnviHdrFormatFactory extends BaseGridFormatFactorySPI implements Gr
     public EnviHdrFormat createFormat() {
         return new EnviHdrFormat();
     }
-
 }

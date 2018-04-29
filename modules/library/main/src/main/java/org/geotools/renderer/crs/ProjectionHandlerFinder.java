@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -19,7 +19,6 @@ package org.geotools.renderer.crs;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.factory.FactoryCreator;
 import org.geotools.factory.FactoryRegistry;
 import org.geotools.factory.GeoTools;
@@ -31,11 +30,10 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
- * Looks up the {@link ProjectionHandler} for the specified rendering area.
- * WARNING: this API is not finalized and is meant to be used by StreamingRenderer only 
- * 
- * @author Andrea Aime - OpenGeo
+ * Looks up the {@link ProjectionHandler} for the specified rendering area. WARNING: this API is not
+ * finalized and is meant to be used by StreamingRenderer only
  *
+ * @author Andrea Aime - OpenGeo
  * @source $URL$
  */
 public class ProjectionHandlerFinder {
@@ -43,15 +41,16 @@ public class ProjectionHandlerFinder {
     private static FactoryRegistry registry;
 
     static final Logger LOGGER = Logging.getLogger(ProjectionHandlerFinder.class);
-    
+
     public static final String WRAP_LIMIT_KEY = "org.geotools.render.wrapLimit";
-    
+
     static int WRAP_LIMIT;
 
     static {
         if (registry == null) {
-            registry = new FactoryCreator(
-                    Arrays.asList(new Class<?>[] { ProjectionHandlerFactory.class }));
+            registry =
+                    new FactoryCreator(
+                            Arrays.asList(new Class<?>[] {ProjectionHandlerFactory.class}));
         }
 
         String wrapLimit = System.getProperty(WRAP_LIMIT_KEY);
@@ -61,24 +60,25 @@ public class ProjectionHandlerFinder {
                 limit = Integer.valueOf(wrapLimit);
             }
         } catch (NumberFormatException e) {
-            LOGGER.log(Level.SEVERE,
+            LOGGER.log(
+                    Level.SEVERE,
                     WRAP_LIMIT_KEY
                             + " has invalid value, it should be an integer number but it was: "
                             + wrapLimit);
         }
         WRAP_LIMIT = limit;
     }
-    
+
     /**
-     * Programmatically sets the number of wraps per direction the wrapping projection handlers
-     * will apply
-     * 
+     * Programmatically sets the number of wraps per direction the wrapping projection handlers will
+     * apply
+     *
      * @param wrapLimit
      */
     public void setWrapLimit(int wrapLimit) {
         ProjectionHandlerFinder.WRAP_LIMIT = wrapLimit;
     }
-    
+
     private static LazySet<ProjectionHandlerFactory> getProjectionHandlerFactories() {
         Hints hints = GeoTools.getDefaultHints();
         return new LazySet<ProjectionHandlerFactory>(
@@ -87,21 +87,23 @@ public class ProjectionHandlerFinder {
 
     /**
      * Returns a projection handler for the specified rendering area, or null if not found
-     * @param renderingArea The area to be painted (mind, the CRS must be property set for projection handling to work)
+     *
+     * @param renderingArea The area to be painted (mind, the CRS must be property set for
+     *     projection handling to work)
      * @param wrap Enable continuous map wrapping if it's possible for the current projection
-     * @throws FactoryException 
+     * @throws FactoryException
      */
-    public static ProjectionHandler getHandler(ReferencedEnvelope renderingArea, CoordinateReferenceSystem sourceCrs, boolean wrap) throws FactoryException {
-        if (renderingArea.getCoordinateReferenceSystem() == null)
-            return null;
-        
+    public static ProjectionHandler getHandler(
+            ReferencedEnvelope renderingArea, CoordinateReferenceSystem sourceCrs, boolean wrap)
+            throws FactoryException {
+        if (renderingArea.getCoordinateReferenceSystem() == null) return null;
+
         for (ProjectionHandlerFactory factory : getProjectionHandlerFactories()) {
-            ProjectionHandler handler = factory.getHandler(renderingArea, sourceCrs, wrap, WRAP_LIMIT);
-            if (handler != null)
-                return handler;
+            ProjectionHandler handler =
+                    factory.getHandler(renderingArea, sourceCrs, wrap, WRAP_LIMIT);
+            if (handler != null) return handler;
         }
 
         return null;
     }
-
 }

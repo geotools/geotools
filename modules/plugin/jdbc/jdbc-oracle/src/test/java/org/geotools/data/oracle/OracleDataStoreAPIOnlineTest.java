@@ -16,6 +16,8 @@
  */
 package org.geotools.data.oracle;
 
+import java.io.IOException;
+import java.util.List;
 import org.geotools.data.store.ContentFeatureSource;
 import org.geotools.jdbc.JDBCDataStoreAPIOnlineTest;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
@@ -23,14 +25,7 @@ import org.geotools.jdbc.JDBCFeatureStore;
 import org.geotools.jdbc.PrimaryKeyColumn;
 import org.geotools.jdbc.SequencedPrimaryKeyColumn;
 
-import java.io.IOException;
-import java.util.List;
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class OracleDataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest {
 
     @Override
@@ -38,7 +33,6 @@ public class OracleDataStoreAPIOnlineTest extends JDBCDataStoreAPIOnlineTest {
         return new OracleDataStoreAPITestSetup(new OracleTestSetup());
     }
 
-    
     @Override
     public void testGetFeatureWriterConcurrency() throws Exception {
         // skip, does not work with Oracle

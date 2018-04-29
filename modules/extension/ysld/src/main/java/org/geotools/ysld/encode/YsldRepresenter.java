@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -18,10 +18,8 @@
 package org.geotools.ysld.encode;
 
 import java.awt.Color;
-
 import javax.measure.quantity.Length;
 import javax.measure.unit.Unit;
-
 import org.geotools.ysld.Tuple;
 import org.geotools.ysld.UomMapper;
 import org.geotools.ysld.parse.Util;
@@ -31,8 +29,8 @@ import org.yaml.snakeyaml.representer.Represent;
 import org.yaml.snakeyaml.representer.Representer;
 
 /**
- * Represent YSLD JavaBeans
- * Extends the yaml {@link Representer} for YSLD-specific representations for Color, UOM (unit of measure) and Tuple.
+ * Represent YSLD JavaBeans Extends the yaml {@link Representer} for YSLD-specific representations
+ * for Color, UOM (unit of measure) and Tuple.
  */
 public class YsldRepresenter extends Representer {
     UomMapper uomMapper;
@@ -53,7 +51,6 @@ public class YsldRepresenter extends Representer {
             String value = Util.serializeColor(c);
             return representScalar(Tag.STR, value);
         }
-
     }
 
     class RepresentUom implements Represent {
@@ -65,7 +62,6 @@ public class YsldRepresenter extends Representer {
             String value = uomMapper.getIdentifier(unit);
             return representScalar(Tag.STR, value);
         }
-
     }
 
     class RepresentTuple implements Represent {
@@ -75,6 +71,5 @@ public class YsldRepresenter extends Representer {
             Tuple t = (Tuple) data;
             return representSequence(Tag.SEQ, t.toList(), true);
         }
-
     }
 }

@@ -16,8 +16,8 @@
  */
 package org.geotools.gml2.simple;
 
+import com.vividsolutions.jts.geom.CoordinateSequence;
 import java.text.FieldPosition;
-
 import org.geotools.geometry.jts.coordinatesequence.CoordinateSequences;
 import org.geotools.gml.producer.CoordinateFormatter;
 import org.geotools.gml2.GML;
@@ -29,14 +29,11 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 import org.xml.sax.helpers.NamespaceSupport;
 
-import com.vividsolutions.jts.geom.CoordinateSequence;
-
 /**
  * Helper class writing out GML elements and coordinates. Geared towards efficiency, write out
  * elements and ordinate lists with the minimim amount of garbage generation
- * 
- * @author Andrea Aime - GeoSolutions
  *
+ * @author Andrea Aime - GeoSolutions
  */
 public class GMLWriter {
 
@@ -56,25 +53,18 @@ public class GMLWriter {
      */
     private static final double DECIMAL_MAX = Math.pow(10, 7);
 
-    /**
-     * Used in coordinate formatting
-     */
+    /** Used in coordinate formatting */
     private static final FieldPosition ZERO = new FieldPosition(0);
+
     private final CoordinateFormatter coordFormatter;
 
-    /**
-     * The actual XML encoder
-     */
+    /** The actual XML encoder */
     ContentHandler handler;
 
-    /**
-     * All the namespaces known to the Encoder
-     */
+    /** All the namespaces known to the Encoder */
     NamespaceSupport namespaces;
 
-    /**
-     * We use a StringBuffer because the date formatters cannot take a StringBuilder
-     */
+    /** We use a StringBuffer because the date formatters cannot take a StringBuilder */
     StringBuffer sb = new StringBuffer();
 
     /**
@@ -83,27 +73,27 @@ public class GMLWriter {
      */
     char[] buffer;
 
-    /**
-     * Coordinates qualified name, with the right prefix
-     */
+    /** Coordinates qualified name, with the right prefix */
     private QualifiedName coordinates;
 
-    /**
-     * posList qualified name, with the right prefix
-     */
+    /** posList qualified name, with the right prefix */
     private QualifiedName posList;
 
     /**
      * Create a new content handler
-     * 
+     *
      * @param delegate The actual XML writer
      * @param namespaces The namespaces known to the Encoder
      * @param numDecimals How many decimals to preserve when writing ordinates
      * @param forceDecimal If xs:decimal compliant encoding should be used, or not
      * @param gmlPrefix The GML namespace prefix
      */
-    public GMLWriter(ContentHandler delegate, NamespaceSupport namespaces, int numDecimals,
-            boolean forceDecimal, String gmlPrefix) {
+    public GMLWriter(
+            ContentHandler delegate,
+            NamespaceSupport namespaces,
+            int numDecimals,
+            boolean forceDecimal,
+            String gmlPrefix) {
         this.handler = delegate;
         this.namespaces = namespaces;
 
@@ -169,7 +159,7 @@ public class GMLWriter {
      * @param atts
      * @throws SAXException
      * @see org.xml.sax.ContentHandler#startElement(java.lang.String, java.lang.String,
-     *      java.lang.String, org.xml.sax.Attributes)
+     *     java.lang.String, org.xml.sax.Attributes)
      */
     public void startElement(QualifiedName qn, Attributes atts) throws SAXException {
         String qualifiedName = qn.getQualifiedName();
@@ -177,7 +167,7 @@ public class GMLWriter {
             qualifiedName = qualify(qn.getNamespaceURI(), qn.getLocalPart(), null);
         }
         if (atts == null) {
-            atts =new AttributesImpl();
+            atts = new AttributesImpl();
         }
         if (qualifiedName != null) {
             String localName = null;
@@ -208,7 +198,7 @@ public class GMLWriter {
      * @param qName
      * @throws SAXException
      * @see org.xml.sax.ContentHandler#endElement(java.lang.String, java.lang.String,
-     *      java.lang.String)
+     *     java.lang.String)
      */
     public void endElement(QualifiedName qn) throws SAXException {
         String qualifiedName = qn.getQualifiedName();
@@ -254,7 +244,7 @@ public class GMLWriter {
 
     /**
      * Writes a GML2 coordinates element
-     * 
+     *
      * @param cs
      * @throws SAXException
      */
@@ -267,7 +257,7 @@ public class GMLWriter {
 
     /**
      * Writes a single x/y position, without wrapping it in any element
-     * 
+     *
      * @param x
      * @param y
      * @throws SAXException
@@ -301,7 +291,7 @@ public class GMLWriter {
         for (int i = 0; i < n; i++) {
             coordFormatter.format(coordinates.getX(i), sb).append(cs);
             coordFormatter.format(coordinates.getY(i), sb);
-            if(dim == 3) {
+            if (dim == 3) {
                 sb.append(cs);
                 coordFormatter.format(coordinates.getOrdinate(i, 2), sb);
             }
@@ -312,7 +302,7 @@ public class GMLWriter {
 
     /**
      * Writes a single ordinate, without wrapping it inside any element
-     * 
+     *
      * @param x
      * @throws SAXException
      */
@@ -324,7 +314,7 @@ public class GMLWriter {
 
     /**
      * Write a GML3 posList
-     * 
+     *
      * @param coordinateSequence
      * @throws SAXException
      */
@@ -334,5 +324,4 @@ public class GMLWriter {
         characters(sb);
         endElement(posList);
     }
-
 }

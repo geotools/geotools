@@ -19,18 +19,16 @@ package org.geotools.mbstyle.source;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.geotools.mbstyle.parse.MBFormatException;
 import org.geotools.mbstyle.parse.MBObjectParser;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 /**
- * 
  * Wrapper around a {@link JSONObject} containing a Mapbox media (image or video) source.
- * 
- * @see <a href="https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-image">https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-image</a>
  *
+ * @see <a
+ *     href="https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-image">https://www.mapbox.com/mapbox-gl-js/style-spec/#sources-image</a>
  */
 public abstract class MediaMBSource extends MBSource {
 
@@ -43,9 +41,8 @@ public abstract class MediaMBSource extends MBSource {
     }
 
     /**
-     * 
-     * (Required) Array of [longitude, latitude] pairs for the image corners listed in clockwise order: top left, top right, bottom right, bottom
-     * left. Example: <br/>
+     * (Required) Array of [longitude, latitude] pairs for the image corners listed in clockwise
+     * order: top left, top right, bottom right, bottom left. Example: <br>
      * <code>
      * "coordinates": [
      *   [-80.425, 46.437],
@@ -66,7 +63,8 @@ public abstract class MediaMBSource extends MBSource {
                 if (o instanceof JSONArray) {
                     coords.add(parsePoint((JSONArray) o));
                 } else {
-                    throw new MBFormatException("image/video/canvas source \"coordinates\" values must be JSONArrays");
+                    throw new MBFormatException(
+                            "image/video/canvas source \"coordinates\" values must be JSONArrays");
                 }
             }
             return coords;
@@ -79,18 +77,19 @@ public abstract class MediaMBSource extends MBSource {
         } else if (o instanceof String) {
             return Double.valueOf((String) o);
         } else {
-            throw new MBFormatException("image/video/canvas source \"coordinates\" tags must contain Numbers");
+            throw new MBFormatException(
+                    "image/video/canvas source \"coordinates\" tags must contain Numbers");
         }
     }
 
     private Point2D.Double parsePoint(JSONArray arr) {
         if (arr == null || arr.size() != 2) {
-            throw new MBFormatException("image/video/canvas source \"coordinates\" tags must each be JSONArray of size 2");
+            throw new MBFormatException(
+                    "image/video/canvas source \"coordinates\" tags must each be JSONArray of size 2");
         } else {
             Double x = parseDouble(arr.get(0));
             Double y = parseDouble(arr.get(1));
             return new Point2D.Double(x, y);
         }
     }
-
 }

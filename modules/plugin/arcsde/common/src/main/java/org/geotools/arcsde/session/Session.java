@@ -17,19 +17,6 @@
  */
 package org.geotools.arcsde.session;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.WeakHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import org.geotools.arcsde.ArcSdeException;
-import org.geotools.arcsde.logging.Loggers;
-import org.geotools.arcsde.versioning.ArcSdeVersionHandler;
-
 import com.esri.sde.sdk.client.SeColumnDefinition;
 import com.esri.sde.sdk.client.SeConnection;
 import com.esri.sde.sdk.client.SeCoordinateReference;
@@ -51,28 +38,37 @@ import com.esri.sde.sdk.client.SeStreamOp;
 import com.esri.sde.sdk.client.SeTable;
 import com.esri.sde.sdk.client.SeUpdate;
 import com.esri.sde.sdk.geom.GeometryFactory;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.WeakHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.geotools.arcsde.ArcSdeException;
+import org.geotools.arcsde.logging.Loggers;
+import org.geotools.arcsde.versioning.ArcSdeVersionHandler;
 
 /**
  * Default implementation of an {@link ISession}
- * <p>
- * As for the ESRI ArcSDE Java API v9.3.0, the {@link SeQuery#prepareQuery} and
- * {@link SeQuery#prepareQueryInfo} methods lead to a memory leak, with {@code SgCoordRef} and
- * {@link SeCoordinateReference} instances somehow tied to the {@link SeConnection}. To avoid Heap
- * Memory starvation, this {@link Session} will auto-close upon a fixed number of calls to those
- * {@code SeQuery} methods, so that the memory can be reclaimed by the garbage collector before it
- * becomes a real problem. When that happens, this Session will be marked closed and discarded from
- * the {@link SessionPool}, leaving room in the pool to create a new Session as needed.
- * </p>
- * <p>
- * Both the {@link #createAndExecuteQuery} and {@link #prepareQuery} methods will increment the
+ *
+ * <p>As for the ESRI ArcSDE Java API v9.3.0, the {@link SeQuery#prepareQuery} and {@link
+ * SeQuery#prepareQueryInfo} methods lead to a memory leak, with {@code SgCoordRef} and {@link
+ * SeCoordinateReference} instances somehow tied to the {@link SeConnection}. To avoid Heap Memory
+ * starvation, this {@link Session} will auto-close upon a fixed number of calls to those {@code
+ * SeQuery} methods, so that the memory can be reclaimed by the garbage collector before it becomes
+ * a real problem. When that happens, this Session will be marked closed and discarded from the
+ * {@link SessionPool}, leaving room in the pool to create a new Session as needed.
+ *
+ * <p>Both the {@link #createAndExecuteQuery} and {@link #prepareQuery} methods will increment the
  * auto-close counter.
- * <p>
- * The default value for the auto-close threshold is {@code 500}. A different value can be specified
- * through the {@code "org.geotools.arcsde.session.AutoCloseThreshold"} System property. For
- * example, by running your application like
- * {@code java -Dorg.geotools.arcsde.session.AutoCloseThreshold=100 -cp... MyApp}
- * </p>
- * 
+ *
+ * <p>The default value for the auto-close threshold is {@code 500}. A different value can be
+ * specified through the {@code "org.geotools.arcsde.session.AutoCloseThreshold"} System property.
+ * For example, by running your application like {@code java
+ * -Dorg.geotools.arcsde.session.AutoCloseThreshold=100 -cp... MyApp}
+ *
  * @author Gabriel Roldan
  * @author Jody Garnett
  * @version $Id$
@@ -87,18 +83,19 @@ class Session implements ISession {
      * Session and its {@link SeConnection}
      */
     private static final int AUTO_CLOSE_COUNTER_THRESHOLD;
+
     static {
-        Integer systemPropValue = Integer
-                .getInteger("org.geotools.arcsde.session.AutoCloseThreshold");
+        Integer systemPropValue =
+                Integer.getInteger("org.geotools.arcsde.session.AutoCloseThreshold");
         AUTO_CLOSE_COUNTER_THRESHOLD = systemPropValue == null ? 500 : systemPropValue.intValue();
         LOGGER.info("Session auto-close threshold set to " + AUTO_CLOSE_COUNTER_THRESHOLD);
     }
 
     /**
      * Counter incremented every time an operation that degrades the performance of the running
-     * application is executed, in order to close the {@link SeConnection} when it reaches
-     * {@link #AUTO_CLOSE_COUNTER_THRESHOLD}. See class' JavaDocs for more details
-     * 
+     * application is executed, in order to close the {@link SeConnection} when it reaches {@link
+     * #AUTO_CLOSE_COUNTER_THRESHOLD}. See class' JavaDocs for more details
+     *
      * @see <a href="http://jira.codehaus.org/browse/GEOT-3227">GEOT-3227</a>
      * @see #prepareQuery(SeQueryInfo, SeFilter[], ArcSdeVersionHandler)
      */
@@ -113,21 +110,15 @@ class Session implements ISession {
     /** Actual SeConnection being protected */
     private final SeConnection connection;
 
-    /**
-     * SessionPool used to manage open connections (shared).
-     */
+    /** SessionPool used to manage open connections (shared). */
     private final SessionPool pool;
 
     private final ArcSDEConnectionConfig config;
 
-    /**
-     * Used to assign unique ids to each new session
-     */
+    /** Used to assign unique ids to each new session */
     private static final AtomicInteger sessionCounter = new AtomicInteger();
 
-    /**
-     * Global unique id for this session
-     */
+    /** Global unique id for this session */
     private final int sessionId;
 
     private boolean transactionInProgress;
@@ -147,13 +138,10 @@ class Session implements ISession {
 
     /**
      * Provides safe access to an SeConnection.
-     * 
-     * @param pool
-     *            SessionPool used to manage SeConnection
-     * @param config
-     *            Used to set up a SeConnection
-     * @throws SeException
-     *             If we cannot connect
+     *
+     * @param pool SessionPool used to manage SeConnection
+     * @param config Used to set up a SeConnection
+     * @throws SeException If we cannot connect
      */
     Session(final SessionPool pool, final ArcSDEConnectionConfig config) throws IOException {
         this.sessionId = sessionCounter.incrementAndGet();
@@ -171,9 +159,7 @@ class Session implements ISession {
         }
     }
 
-    /**
-     * @see ISession#issue(org.geotools.arcsde.session.Command)
-     */
+    /** @see ISession#issue(org.geotools.arcsde.session.Command) */
     public synchronized <T> T issue(final Command<T> command) throws IOException {
         try {
             if (connection == null) {
@@ -186,9 +172,7 @@ class Session implements ISession {
         }
     }
 
-    /**
-     * @see ISession#testServer()
-     */
+    /** @see ISession#testServer() */
     public final void testServer() throws IOException {
         /*
          * This method is called often (every time a session is to be returned from the pool) to
@@ -204,19 +188,16 @@ class Session implements ISession {
         }
     }
 
-    /**
-     * @see ISession#isClosed()
-     */
+    /** @see ISession#isClosed() */
     public final boolean isClosed() {
         return this.connection.isClosed();
     }
 
     /**
      * Marks the connection as being active (i.e. its out of the pool and ready to be used).
-     * <p>
-     * Shall be called just before being returned from the connection pool
-     * </p>
-     * 
+     *
+     * <p>Shall be called just before being returned from the connection pool
+     *
      * @see #isPassivated
      * @see #checkActive()
      */
@@ -227,10 +208,9 @@ class Session implements ISession {
 
     /**
      * Marks the connection as being inactive (i.e. laying on the connection pool)
-     * <p>
-     * Shall be callled just before sending it back to the pool
-     * </p>
-     * 
+     *
+     * <p>Shall be callled just before sending it back to the pool
+     *
      * @see #markActive()
      * @see #isPassivated
      * @see #checkActive()
@@ -242,30 +222,25 @@ class Session implements ISession {
         this.isPassivated = true;
     }
 
-    /**
-     * @see ISession#isPassivated()
-     */
+    /** @see ISession#isPassivated() */
     public boolean isDisposed() {
         return isPassivated;
     }
 
     /**
      * Sanity check method called before every public operation delegates to the superclass.
-     * 
-     * @throws IllegalStateException
-     *             if {@link #isDisposed() isPassivated() == true} as this is a serious workflow
-     *             breackage.
+     *
+     * @throws IllegalStateException if {@link #isDisposed() isPassivated() == true} as this is a
+     *     serious workflow breackage.
      */
     private void checkActive() {
         if (isDisposed()) {
-            throw new IllegalStateException("Unrecoverable error: " + toString()
-                    + " is passivated, shall not be used!");
+            throw new IllegalStateException(
+                    "Unrecoverable error: " + toString() + " is passivated, shall not be used!");
         }
     }
 
-    /**
-     * @see ISession#getLayer(java.lang.String)
-     */
+    /** @see ISession#getLayer(java.lang.String) */
     public SeLayer getLayer(final String layerName) throws IOException {
         checkActive();
         if (!cachedLayers.containsKey(layerName)) {
@@ -285,28 +260,21 @@ class Session implements ISession {
             throw new NoSuchElementException("Layer '" + layerName + "' not found");
         }
         return seLayer;
-
     }
 
-    /**
-     * @see ISession#getRasterColumn(java.lang.String)
-     */
+    /** @see ISession#getRasterColumn(java.lang.String) */
     public synchronized SeRasterColumn getRasterColumn(final String rasterName) throws IOException {
         throw new UnsupportedOperationException("Waiting for a proper implementation");
     }
 
-    /**
-     * @see org.geotools.arcsde.session.ISession#getRasterColumns()
-     */
+    /** @see org.geotools.arcsde.session.ISession#getRasterColumns() */
     public List<String> getRasterColumns() throws IOException {
         checkActive();
         List<String> rasterNames = issue(Commands.GET_RASTER_COLUMN_NAMES);
         return rasterNames;
     }
 
-    /**
-     * @see ISession#getTable(java.lang.String)
-     */
+    /** @see ISession#getTable(java.lang.String) */
     public SeTable getTable(final String tableName) throws IOException {
         checkActive();
         if (!cachedTables.containsKey(tableName)) {
@@ -323,35 +291,27 @@ class Session implements ISession {
         return seTable;
     }
 
-    /**
-     * @see ISession#startTransaction()
-     */
+    /** @see ISession#startTransaction() */
     public void startTransaction() throws IOException {
         checkActive();
         issue(Commands.START_TRANSACTION);
         transactionInProgress = true;
     }
 
-    /**
-     * @see ISession#commitTransaction()
-     */
+    /** @see ISession#commitTransaction() */
     public void commitTransaction() throws IOException {
         checkActive();
         issue(Commands.COMMIT_TRANSACTION);
         transactionInProgress = false;
     }
 
-    /**
-     * @see ISession#isTransactionActive()
-     */
+    /** @see ISession#isTransactionActive() */
     public boolean isTransactionActive() {
         checkActive();
         return transactionInProgress;
     }
 
-    /**
-     * @see ISession#rollbackTransaction()
-     */
+    /** @see ISession#rollbackTransaction() */
     public void rollbackTransaction() throws IOException {
         checkActive();
         try {
@@ -361,9 +321,7 @@ class Session implements ISession {
         }
     }
 
-    /**
-     * @see ISession#dispose()
-     */
+    /** @see ISession#dispose() */
     public void dispose() throws IllegalStateException {
         checkActive();
         final int refCount = referenceCounter.decrementAndGet();
@@ -371,8 +329,11 @@ class Session implements ISession {
         if (refCount > 0) {
             // ignore
             if (LOGGER.isLoggable(Level.FINEST)) {
-                LOGGER.finest("---------> Ignoring disposal, ref count is still " + refCount
-                        + " for " + this);
+                LOGGER.finest(
+                        "---------> Ignoring disposal, ref count is still "
+                                + refCount
+                                + " for "
+                                + this);
             }
 
             // System.err.println("---------> Ignoring disposal, ref count is still " + refCount
@@ -388,8 +349,10 @@ class Session implements ISession {
                     "Transaction is in progress, should commit or rollback before closing");
         }
         if (autoCloseCounter >= AUTO_CLOSE_COUNTER_THRESHOLD) {
-            LOGGER.warning("Auto-closing " + this
-                    + " to avoid memory leak in ESRI Java API (see GEOT-3227)");
+            LOGGER.warning(
+                    "Auto-closing "
+                            + this
+                            + " to avoid memory leak in ESRI Java API (see GEOT-3227)");
             this.destroy();
         }
         try {
@@ -406,9 +369,7 @@ class Session implements ISession {
         return "Session[" + sessionId + "]";
     }
 
-    /**
-     * Actually closes the connection, called when the session is discarded from the pool
-     */
+    /** Actually closes the connection, called when the session is discarded from the pool */
     void destroy() {
         LOGGER.fine("Destroying connection " + toString());
         try {
@@ -420,110 +381,80 @@ class Session implements ISession {
         }
     }
 
-    /**
-     * @see ISession#equals(java.lang.Object)
-     */
+    /** @see ISession#equals(java.lang.Object) */
     @Override
     public boolean equals(Object other) {
         return other == this;
     }
 
-    /**
-     * @see ISession#hashCode()
-     */
+    /** @see ISession#hashCode() */
     @Override
     public int hashCode() {
         return 17 ^ this.config.hashCode();
     }
 
-    /**
-     * @see ISession#getLayers()
-     */
+    /** @see ISession#getLayers() */
     public List<SeLayer> getLayers() throws IOException {
         return issue(Commands.GET_LAYERS);
     }
 
-    /**
-     * @see ISession#getUser()
-     */
+    /** @see ISession#getUser() */
     public String getUser() throws IOException {
         return issue(Commands.GET_USER);
     }
 
-    /**
-     * @see ISession#getRelease()
-     */
+    /** @see ISession#getRelease() */
     public SeRelease getRelease() throws IOException {
         return issue(Commands.GET_RELEASE);
     }
 
-    /**
-     * @see ISession#getDatabaseName()
-     */
+    /** @see ISession#getDatabaseName() */
     public String getDatabaseName() throws IOException {
         return issue(Commands.GET_DATABASENAME);
     }
 
-    /**
-     * @see ISession#getDBMSInfo()
-     */
+    /** @see ISession#getDBMSInfo() */
     public SeDBMSInfo getDBMSInfo() throws IOException {
         return issue(Commands.GET_DBMS_INFO);
     }
 
-    /**
-     * @see ISession#createSeRegistration(java.lang.String)
-     */
+    /** @see ISession#createSeRegistration(java.lang.String) */
     public SeRegistration createSeRegistration(final String typeName) throws IOException {
         return issue(new Commands.CreateSeRegistrationCommand(typeName));
     }
 
-    /**
-     * @see ISession#createSeTable(java.lang.String)
-     */
+    /** @see ISession#createSeTable(java.lang.String) */
     public SeTable createSeTable(final String qualifiedName) throws IOException {
         return issue(new Commands.CreateSeTableCommand(qualifiedName));
     }
 
-    /**
-     * @see ISession#createSeInsert()
-     */
+    /** @see ISession#createSeInsert() */
     public SeInsert createSeInsert() throws IOException {
         return issue(Commands.CREATE_SEINSERT);
     }
 
-    /**
-     * @see ISession#createSeUpdate()
-     */
+    /** @see ISession#createSeUpdate() */
     public SeUpdate createSeUpdate() throws IOException {
         return issue(Commands.CREATE_SEUPDATE);
     }
 
-    /**
-     * @see ISession#createSeDelete()
-     */
+    /** @see ISession#createSeDelete() */
     public SeDelete createSeDelete() throws IOException {
         return issue(Commands.CREATE_SEDELETE);
     }
 
-    /**
-     * @see ISession#describe(java.lang.String)
-     */
+    /** @see ISession#describe(java.lang.String) */
     public SeColumnDefinition[] describe(final String tableName) throws IOException {
         final SeTable table = getTable(tableName);
         return describe(table);
     }
 
-    /**
-     * @see ISession#describe(com.esri.sde.sdk.client.SeTable)
-     */
+    /** @see ISession#describe(com.esri.sde.sdk.client.SeTable) */
     public SeColumnDefinition[] describe(final SeTable table) throws IOException {
         return issue(new Commands.DescribeTableCommand(table));
     }
 
-    /**
-     * @see ISession#fetch(com.esri.sde.sdk.client.SeQuery)
-     */
+    /** @see ISession#fetch(com.esri.sde.sdk.client.SeQuery) */
     public SdeRow fetch(final SeQuery query) throws IOException {
         return fetch(query, new SdeRow((GeometryFactory) null));
     }
@@ -532,30 +463,24 @@ class Session implements ISession {
         return issue(new Commands.FetchRowCommand(query, currentRow));
     }
 
-    /**
-     * @see ISession#close(com.esri.sde.sdk.client.SeState)
-     */
+    /** @see ISession#close(com.esri.sde.sdk.client.SeState) */
     public void close(final SeState state) throws IOException {
         issue(new Commands.CloseStateCommand(state));
     }
 
-    /**
-     * @see ISession#close(com.esri.sde.sdk.client.SeStreamOp)
-     */
+    /** @see ISession#close(com.esri.sde.sdk.client.SeStreamOp) */
     public void close(final SeStreamOp stream) throws IOException {
         issue(new Commands.CloseStreamCommand(stream));
     }
 
-    /**
-     * @see ISession#createState(com.esri.sde.sdk.client.SeObjectId)
-     */
+    /** @see ISession#createState(com.esri.sde.sdk.client.SeObjectId) */
     public SeState createState(final SeObjectId stateId) throws IOException {
         return issue(new Commands.CreateSeStateCommand(stateId));
     }
 
     /**
      * @see ISession#createAndExecuteQuery(java.lang.String[],
-     *      com.esri.sde.sdk.client.SeSqlConstruct)
+     *     com.esri.sde.sdk.client.SeSqlConstruct)
      */
     public SeQuery createAndExecuteQuery(final String[] propertyNames, final SeSqlConstruct sql)
             throws IOException {
@@ -578,13 +503,12 @@ class Session implements ISession {
         private final int sessionId;
 
         /**
-         * 
          * @param config
-         * @param sessionId
-         *            the session id the connection is to be created for. For exception reporting
-         *            purposes only
+         * @param sessionId the session id the connection is to be created for. For exception
+         *     reporting purposes only
          */
-        private CreateSeConnectionCommand(final ArcSDEConnectionConfig config, final int sessionId) {
+        private CreateSeConnectionCommand(
+                final ArcSDEConnectionConfig config, final int sessionId) {
             this.config = config;
             this.sessionId = sessionId;
         }
@@ -604,32 +528,55 @@ class Session implements ISession {
                 for (int i = 0; i < 3; i++) {
                     try {
                         if (LOGGER.isLoggable(Level.FINE)) {
-                            LOGGER.fine("Creating connection for session #" + sessionId + "(try "
-                                    + (i + 1) + " of 3)");
+                            LOGGER.fine(
+                                    "Creating connection for session #"
+                                            + sessionId
+                                            + "(try "
+                                            + (i + 1)
+                                            + " of 3)");
                         }
-                        conn = new SeConnection(serverName, portNumber, databaseName, userName,
-                                userPassword);
+                        conn =
+                                new SeConnection(
+                                        serverName,
+                                        portNumber,
+                                        databaseName,
+                                        userName,
+                                        userPassword);
                         break;
                     } catch (NegativeArraySizeException nase) {
-                        LOGGER.warning("Strange failed ArcSDE connection error.  "
-                                + "Trying again (try " + (i + 1) + " of 3). SessionId: "
-                                + sessionId);
+                        LOGGER.warning(
+                                "Strange failed ArcSDE connection error.  "
+                                        + "Trying again (try "
+                                        + (i + 1)
+                                        + " of 3). SessionId: "
+                                        + sessionId);
                         cause = nase;
                     }
                 }
             } catch (SeException e) {
-                throw new ArcSdeException("Can't create connection to " + serverName
-                        + " for Session #" + sessionId, e);
+                throw new ArcSdeException(
+                        "Can't create connection to " + serverName + " for Session #" + sessionId,
+                        e);
             } catch (RuntimeException e) {
-                throw (IOException) new IOException("Can't create connection to " + serverName
-                        + " for Session #" + sessionId).initCause(e);
+                throw (IOException)
+                        new IOException(
+                                        "Can't create connection to "
+                                                + serverName
+                                                + " for Session #"
+                                                + sessionId)
+                                .initCause(e);
             }
 
             if (cause != null) {
-                throw (IOException) new IOException("Couldn't create ArcSDE connection to "
-                        + serverName + " for Session #" + sessionId
-                        + " because of strange SDE internal exception. "
-                        + " Tried 3 times, giving up.").initCause(cause);
+                throw (IOException)
+                        new IOException(
+                                        "Couldn't create ArcSDE connection to "
+                                                + serverName
+                                                + " for Session #"
+                                                + sessionId
+                                                + " because of strange SDE internal exception. "
+                                                + " Tried 3 times, giving up.")
+                                .initCause(cause);
             }
             return conn;
         }
@@ -637,10 +584,13 @@ class Session implements ISession {
 
     /**
      * @see org.geotools.arcsde.session.ISession#prepareQuery(com.esri.sde.sdk.client.SeQueryInfo,
-     *      com.esri.sde.sdk.client.SeFilter[], org.geotools.arcsde.versioning.ArcSdeVersionHandler)
+     *     com.esri.sde.sdk.client.SeFilter[], org.geotools.arcsde.versioning.ArcSdeVersionHandler)
      */
-    public SeQuery prepareQuery(final SeQueryInfo qInfo, final SeFilter[] spatialConstraints,
-            final ArcSdeVersionHandler version) throws IOException {
+    public SeQuery prepareQuery(
+            final SeQueryInfo qInfo,
+            final SeFilter[] spatialConstraints,
+            final ArcSdeVersionHandler version)
+            throws IOException {
         this.autoCloseCounter++;
         return issue(new Commands.PrepareQueryCommand(qInfo, spatialConstraints, version));
     }

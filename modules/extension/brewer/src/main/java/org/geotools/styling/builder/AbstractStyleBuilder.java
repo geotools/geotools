@@ -24,7 +24,6 @@ import org.geotools.styling.Style;
 import org.opengis.filter.Filter;
 import org.opengis.filter.expression.Expression;
 
-
 abstract class AbstractStyleBuilder<T> extends AbstractSLDBuilder<T> {
 
     public AbstractStyleBuilder(AbstractSLDBuilder<?> parent) {

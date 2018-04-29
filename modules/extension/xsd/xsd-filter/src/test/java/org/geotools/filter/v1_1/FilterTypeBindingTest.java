@@ -24,12 +24,7 @@ import org.opengis.filter.spatial.Intersects;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class FilterTypeBindingTest extends FilterTestSupport {
     public void testType() {
         assertEquals(Filter.class, binding(OGC.FilterType).getType());
@@ -88,7 +83,7 @@ public class FilterTypeBindingTest extends FilterTestSupport {
         assertEquals("ogc:Filter", doc.getDocumentElement().getNodeName());
         assertEquals(1, doc.getElementsByTagNameNS(OGC.NAMESPACE, "Not").getLength());
     }
-    
+
     public void testEncodeDateTimeLiterals() throws Exception {
         Object literal;
         String expected;
@@ -96,7 +91,7 @@ public class FilterTypeBindingTest extends FilterTestSupport {
         literal = new java.util.Date(1000000);
         expected = "1970-01-01T00:16:40Z";
         testEncodeLiteral(literal, expected);
-        
+
         literal = new java.sql.Timestamp(1000000);
         expected = "1970-01-01T00:16:40Z";
         testEncodeLiteral(literal, expected);
@@ -110,11 +105,11 @@ public class FilterTypeBindingTest extends FilterTestSupport {
         testEncodeLiteral(literal, expected);
     }
 
-    private void testEncodeLiteral(final Object literal, final String expected) throws Exception{
+    private void testEncodeLiteral(final Object literal, final String expected) throws Exception {
         Document doc = encode(FilterMockData.literal(literal), OGC.Literal);
 
         assertEquals("ogc:Literal", doc.getDocumentElement().getNodeName());
-        
+
         String actual = doc.getDocumentElement().getTextContent();
         assertEquals(expected, actual);
     }

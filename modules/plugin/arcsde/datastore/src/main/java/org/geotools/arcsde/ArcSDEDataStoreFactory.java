@@ -30,6 +30,10 @@ import static org.geotools.arcsde.session.ArcSDEConnectionConfig.PORT_NUMBER_PAR
 import static org.geotools.arcsde.session.ArcSDEConnectionConfig.SERVER_NAME_PARAM_NAME;
 import static org.geotools.arcsde.session.ArcSDEConnectionConfig.USER_NAME_PARAM_NAME;
 
+import com.esri.sde.sdk.client.SeConnection;
+import com.esri.sde.sdk.client.SeRelease;
+import com.esri.sde.sdk.pe.PeCoordinateSystem;
+import com.esri.sde.sdk.pe.PeFactory;
 import java.awt.RenderingHints;
 import java.io.IOException;
 import java.io.Serializable;
@@ -38,7 +42,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-
 import org.geotools.arcsde.data.ArcSDEDataStore;
 import org.geotools.arcsde.data.ArcSDEDataStoreConfig;
 import org.geotools.arcsde.data.ViewRegisteringFactoryHelper;
@@ -55,26 +58,18 @@ import org.geotools.data.Parameter;
 import org.geotools.util.SimpleInternationalString;
 import org.geotools.util.logging.Logging;
 
-import com.esri.sde.sdk.client.SeConnection;
-import com.esri.sde.sdk.client.SeRelease;
-import com.esri.sde.sdk.pe.PeCoordinateSystem;
-import com.esri.sde.sdk.pe.PeFactory;
-
 /**
  * Factory to create DataStores over a live ArcSDE instance.
- * 
+ *
  * @author Gabriel Roldan, Axios Engineering
- *
- *
- * @source $URL$
- *         datastore/src/main/java /org/geotools/arcsde/ArcSDEDataStoreFactory.java $
+ * @source $URL$ datastore/src/main/java /org/geotools/arcsde/ArcSDEDataStoreFactory.java $
  * @version $Id$
  */
 @SuppressWarnings("unchecked")
 public final class ArcSDEDataStoreFactory implements DataStoreFactorySpi {
     /** package's logger */
-    protected static final Logger LOGGER = Logging
-            .getLogger(ArcSDEDataStoreFactory.class.getName());
+    protected static final Logger LOGGER =
+            Logging.getLogger(ArcSDEDataStoreFactory.class.getName());
 
     /** friendly factory description */
     public static final String FACTORY_DESCRIPTION = "ESRI(tm) ArcSDE 9.2+ vector data store";
@@ -93,52 +88,97 @@ public final class ArcSDEDataStoreFactory implements DataStoreFactorySpi {
 
     private static int JSDE_CLIENT_VERSION;
 
-    public static final Param NAMESPACE_PARAM = new Param(NAMESPACE_PARAM_NAME, String.class,
-            "namespace associated to this data store", false);
+    public static final Param NAMESPACE_PARAM =
+            new Param(
+                    NAMESPACE_PARAM_NAME,
+                    String.class,
+                    "namespace associated to this data store",
+                    false);
 
-    public static final Param DBTYPE_PARAM = new Param(DBTYPE_PARAM_NAME, String.class, "fixed value. Must be \"arcsde\"",
-            true, "arcsde", Collections.singletonMap(Parameter.LEVEL, "program"));
+    public static final Param DBTYPE_PARAM =
+            new Param(
+                    DBTYPE_PARAM_NAME,
+                    String.class,
+                    "fixed value. Must be \"arcsde\"",
+                    true,
+                    "arcsde",
+                    Collections.singletonMap(Parameter.LEVEL, "program"));
 
-    public static final Param SERVER_PARAM = new Param(SERVER_NAME_PARAM_NAME, String.class,
-            "sever name where the ArcSDE gateway is running", true);
+    public static final Param SERVER_PARAM =
+            new Param(
+                    SERVER_NAME_PARAM_NAME,
+                    String.class,
+                    "sever name where the ArcSDE gateway is running",
+                    true);
 
     /** In order to use Direct Connect, port parameter has to be of type String */
-    public static final Param PORT_PARAM = new Param(
-            PORT_NUMBER_PARAM_NAME,
-            String.class,
-            "port number in wich the ArcSDE server is listening for connections.Generally it's 5151",
-            true, Integer.valueOf(5151));
+    public static final Param PORT_PARAM =
+            new Param(
+                    PORT_NUMBER_PARAM_NAME,
+                    String.class,
+                    "port number in wich the ArcSDE server is listening for connections.Generally it's 5151",
+                    true,
+                    Integer.valueOf(5151));
 
-    public static final Param INSTANCE_PARAM = new Param(INSTANCE_NAME_PARAM_NAME, String.class,
-            "the specific database to connect to. Only applicable to "
-                    + "certain databases. Value ignored if not applicable.", false);
+    public static final Param INSTANCE_PARAM =
+            new Param(
+                    INSTANCE_NAME_PARAM_NAME,
+                    String.class,
+                    "the specific database to connect to. Only applicable to "
+                            + "certain databases. Value ignored if not applicable.",
+                    false);
 
-    public static final Param USER_PARAM = new Param(USER_NAME_PARAM_NAME, String.class,
-            "name of a valid database user account.", true);
+    public static final Param USER_PARAM =
+            new Param(
+                    USER_NAME_PARAM_NAME,
+                    String.class,
+                    "name of a valid database user account.",
+                    true);
 
-    public static final Param PASSWORD_PARAM = new Param(PASSWORD_PARAM_NAME, String.class,
-            new SimpleInternationalString("the database user's password."), false, null,
-            Collections.singletonMap(Parameter.IS_PASSWORD, Boolean.TRUE));
+    public static final Param PASSWORD_PARAM =
+            new Param(
+                    PASSWORD_PARAM_NAME,
+                    String.class,
+                    new SimpleInternationalString("the database user's password."),
+                    false,
+                    null,
+                    Collections.singletonMap(Parameter.IS_PASSWORD, Boolean.TRUE));
 
-    public static final Param MIN_CONNECTIONS_PARAM = new Param(MIN_CONNECTIONS_PARAM_NAME,
-            Integer.class, "Minimun number of open connections", false,
-            Integer.valueOf(ArcSDEDataStoreConfig.DEFAULT_CONNECTIONS));
+    public static final Param MIN_CONNECTIONS_PARAM =
+            new Param(
+                    MIN_CONNECTIONS_PARAM_NAME,
+                    Integer.class,
+                    "Minimun number of open connections",
+                    false,
+                    Integer.valueOf(ArcSDEDataStoreConfig.DEFAULT_CONNECTIONS));
 
-    public static final Param MAX_CONNECTIONS_PARAM = new Param(MAX_CONNECTIONS_PARAM_NAME,
-            Integer.class, "Maximun number of open connections (will not work if < 2)", false,
-            Integer.valueOf(ArcSDEDataStoreConfig.DEFAULT_MAX_CONNECTIONS));
+    public static final Param MAX_CONNECTIONS_PARAM =
+            new Param(
+                    MAX_CONNECTIONS_PARAM_NAME,
+                    Integer.class,
+                    "Maximun number of open connections (will not work if < 2)",
+                    false,
+                    Integer.valueOf(ArcSDEDataStoreConfig.DEFAULT_MAX_CONNECTIONS));
 
-    public static final Param TIMEOUT_PARAM = new Param(CONNECTION_TIMEOUT_PARAM_NAME,
-            Integer.class,
-            "Milliseconds to wait for an available connection before failing to connect", false,
-            Integer.valueOf(ArcSDEDataStoreConfig.DEFAULT_MAX_WAIT_TIME));
+    public static final Param TIMEOUT_PARAM =
+            new Param(
+                    CONNECTION_TIMEOUT_PARAM_NAME,
+                    Integer.class,
+                    "Milliseconds to wait for an available connection before failing to connect",
+                    false,
+                    Integer.valueOf(ArcSDEDataStoreConfig.DEFAULT_MAX_WAIT_TIME));
 
-    public static final Param VERSION_PARAM = new Param(VERSION_PARAM_NAME, String.class,
-            "The ArcSDE database version to use.", false);
+    public static final Param VERSION_PARAM =
+            new Param(
+                    VERSION_PARAM_NAME, String.class, "The ArcSDE database version to use.", false);
 
-    public static final Param ALLOW_NON_SPATIAL_PARAM = new Param(
-            ALLOW_NON_SPATIAL_TABLES_PARAM_NAME, Boolean.class,
-            "If enabled, registered non-spatial tables are also published.", false, Boolean.FALSE);
+    public static final Param ALLOW_NON_SPATIAL_PARAM =
+            new Param(
+                    ALLOW_NON_SPATIAL_TABLES_PARAM_NAME,
+                    Boolean.class,
+                    "If enabled, registered non-spatial tables are also published.",
+                    false,
+                    Boolean.FALSE);
 
     static {
         paramMetadata.add(NAMESPACE_PARAM);
@@ -195,20 +235,18 @@ public final class ArcSDEDataStoreFactory implements DataStoreFactorySpi {
     /** factory of connection pools to different SDE databases */
     private static final ISessionPoolFactory poolFactory = SessionPoolFactory.getInstance();
 
-    /**
-     * empty constructor
-     */
+    /** empty constructor */
     public ArcSDEDataStoreFactory() {
         if (!isAvailable()) {
-            LOGGER.finest("The ESRI ArcSDE Java API seems to not be on your classpath. Please"
-                    + " verify that all needed jars are. ArcSDE data stores"
-                    + " will not be available.");
+            LOGGER.finest(
+                    "The ESRI ArcSDE Java API seems to not be on your classpath. Please"
+                            + " verify that all needed jars are. ArcSDE data stores"
+                            + " will not be available.");
         }
     }
 
     /**
-     * @throws UnsupportedOperationException
-     *             always as the operation is not supported
+     * @throws UnsupportedOperationException always as the operation is not supported
      * @see DataStoreFactorySpi#createNewDataStore(Map)
      */
     public DataStore createNewDataStore(java.util.Map<String, Serializable> map) {
@@ -219,34 +257,32 @@ public final class ArcSDEDataStoreFactory implements DataStoreFactorySpi {
 
     /**
      * crates an SdeDataSource based on connection parameters held in <code>params</code>.
-     * <p>
-     * Expected parameters are:
+     *
+     * <p>Expected parameters are:
+     *
      * <ul>
-     * <li>{@code dbtype}: MUST be <code>"arcsde"</code></li>
-     * <li>{@code server}: machine name where ArcSDE is running</li>
-     * <li>{@code port}: port number where ArcSDE listens for connections on server</li>
-     * <li>{@code instance}: database instance name to connect to</li>
-     * <li>{@code user}: database user name with at least reading privileges over SDE instance</li>
-     * <li>{@code password}: database user password</li>
+     *   <li>{@code dbtype}: MUST be <code>"arcsde"</code>
+     *   <li>{@code server}: machine name where ArcSDE is running
+     *   <li>{@code port}: port number where ArcSDE listens for connections on server
+     *   <li>{@code instance}: database instance name to connect to
+     *   <li>{@code user}: database user name with at least reading privileges over SDE instance
+     *   <li>{@code password}: database user password
      * </ul>
-     * </p>
-     * <p>
-     * Optional parameters:
+     *
+     * <p>Optional parameters:
+     *
      * <ul>
-     * <li>{@code pool.minConnections}: how many connections to open when the datastore is created
-     * <li>{@code pool.maxConnections}: max limit of connections for the connection pool
-     * <li>{@code pool.timeOut}: how many milliseconds to wait for a free connection before failing
-     * to execute a request
-     * <li>{@code version}: name of the ArcSDE version for the data store to work upon
+     *   <li>{@code pool.minConnections}: how many connections to open when the datastore is created
+     *   <li>{@code pool.maxConnections}: max limit of connections for the connection pool
+     *   <li>{@code pool.timeOut}: how many milliseconds to wait for a free connection before
+     *       failing to execute a request
+     *   <li>{@code version}: name of the ArcSDE version for the data store to work upon
      * </ul>
-     * </p>
-     * 
-     * @param params
-     *            connection parameters
-     * @return a new <code>SdeDataStore</code> pointing to the database defined by
-     *         <code>params</code>
-     * @throws java.io.IOException
-     *             if something goes wrong creating the datastore.
+     *
+     * @param params connection parameters
+     * @return a new <code>SdeDataStore</code> pointing to the database defined by <code>params
+     *     </code>
+     * @throws java.io.IOException if something goes wrong creating the datastore.
      */
     public DataStore createDataStore(final Map<String, Serializable> params)
             throws java.io.IOException {
@@ -290,19 +326,20 @@ public final class ArcSDEDataStoreFactory implements DataStoreFactorySpi {
                 // just won't
                 // work when trying to draw maps. Oh well, at least we'll warn
                 // people.
-                LOGGER.severe("\n\n**************************\n"
-                        + "DANGER DANGER DANGER!!!  You're using the ArcSDE 9.0 (or earlier) jars with "
-                        + "ArcSDE "
-                        + majVer
-                        + "."
-                        + minVer
-                        + " on host '"
-                        + config.getServerName()
-                        + "' .  "
-                        + "This PROBABLY WON'T WORK.  If you have issues "
-                        + "or unexplained exceptions when rendering maps, upgrade your ArcSDE jars to version "
-                        + "9.2 or higher.  See http://docs.codehaus.org/display/GEOTOOLS/ArcSDE+Plugin\n"
-                        + "**************************\n\n");
+                LOGGER.severe(
+                        "\n\n**************************\n"
+                                + "DANGER DANGER DANGER!!!  You're using the ArcSDE 9.0 (or earlier) jars with "
+                                + "ArcSDE "
+                                + majVer
+                                + "."
+                                + minVer
+                                + " on host '"
+                                + config.getServerName()
+                                + "' .  "
+                                + "This PROBABLY WON'T WORK.  If you have issues "
+                                + "or unexplained exceptions when rendering maps, upgrade your ArcSDE jars to version "
+                                + "9.2 or higher.  See http://docs.codehaus.org/display/GEOTOOLS/ArcSDE+Plugin\n"
+                                + "**************************\n\n");
             }
 
             // if a version was specified, verify it exists
@@ -325,15 +362,15 @@ public final class ArcSDEDataStoreFactory implements DataStoreFactorySpi {
         boolean allowNonSpatialTables = config.isAllowNonSpatialTables();
         /**
          * Multiple GeoDB Patch
-         * 
-         * check if directconnect string has a schema Multiple GeoDB Syntax: Oracle 10g user's
+         *
+         * <p>check if directconnect string has a schema Multiple GeoDB Syntax: Oracle 10g user's
          * schema geodatabase <schema_name> is the name of the schema that owns the geodatabase.
          * sde:oracle10g:/:<schema_name>
-         * 
-         * Default single GeoDB Syntax: sde:oracle10g or in MultipleGeoDB Notation:
+         *
+         * <p>Default single GeoDB Syntax: sde:oracle10g or in MultipleGeoDB Notation:
          * sde:oracle10g:/:sde
-         * 
-         * for further infos look at
+         *
+         * <p>for further infos look at
          * http://webhelp.esri.com/arcgisserver/9.3/java/geodatabases/arcsde-2034353163.htm
          */
         final String port = config.getPortNumber();
@@ -347,7 +384,6 @@ public final class ArcSDEDataStoreFactory implements DataStoreFactorySpi {
             final String user_schema = port.substring(multiGeoDBIndex + 1);
 
             versionName = user_schema + ".DEFAULT";
-
         }
         sdeDStore = new ArcSDEDataStore(connPool, namespaceUri, versionName, allowNonSpatialTables);
         return sdeDStore;
@@ -355,7 +391,7 @@ public final class ArcSDEDataStoreFactory implements DataStoreFactorySpi {
 
     /**
      * Display name for this DataStore Factory
-     * 
+     *
      * @return <code>"ArcSDE"</code>
      */
     public String getDisplayName() {
@@ -364,7 +400,7 @@ public final class ArcSDEDataStoreFactory implements DataStoreFactorySpi {
 
     /**
      * A human friendly name for this data source factory
-     * 
+     *
      * @return this factory's description
      */
     public String getDescription() {
@@ -391,15 +427,16 @@ public final class ArcSDEDataStoreFactory implements DataStoreFactorySpi {
     /**
      * Test to see if this datastore is available, if it has all the appropriate libraries to
      * construct a datastore.
-     * 
+     *
      * @return <tt>true</tt> if and only if this factory is available to create DataStores.
      */
     public boolean isAvailable() {
         if (JSDE_CLIENT_VERSION == JSDE_VERSION_DUMMY) {
-            LOGGER.warning("You must download and install the *real* ArcSDE JSDE jar files. "
-                    + "Currently the GeoTools ArcSDE 'dummy jar' is on your classpath. "
-                    + "ArcSDE connectivity is DISABLED. "
-                    + "See http://docs.codehaus.org/display/GEOTOOLS/ArcSDE+Plugin");
+            LOGGER.warning(
+                    "You must download and install the *real* ArcSDE JSDE jar files. "
+                            + "Currently the GeoTools ArcSDE 'dummy jar' is on your classpath. "
+                            + "ArcSDE connectivity is DISABLED. "
+                            + "See http://docs.codehaus.org/display/GEOTOOLS/ArcSDE+Plugin");
             return false;
         }
         try {
@@ -412,16 +449,14 @@ public final class ArcSDEDataStoreFactory implements DataStoreFactorySpi {
         return true;
     }
 
-    /**
-     * @see DataStoreFactorySpi#getParametersInfo()
-     */
+    /** @see DataStoreFactorySpi#getParametersInfo() */
     public DataStoreFactorySpi.Param[] getParametersInfo() {
         return paramMetadata.toArray(new Param[paramMetadata.size()]);
     }
 
     /**
      * Returns the implementation hints. The default implementation returns en empty map.
-     * 
+     *
      * @see DataStoreFactorySpi#getImplementationHints()
      */
     public Map<RenderingHints.Key, ?> getImplementationHints() {

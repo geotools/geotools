@@ -15,9 +15,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.imageio.ImageIO;
-
 import org.apache.commons.io.IOUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
@@ -43,85 +41,60 @@ import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/**
- * A grid coverage readers backing onto a WMS server by issuing GetMap
- */
+/** A grid coverage readers backing onto a WMS server by issuing GetMap */
 class WMSCoverageReader extends AbstractGridCoverage2DReader {
-    
+
     /** The logger for the map module. */
-    static public final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.map");
-    
+    public static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.map");
+
     static GridCoverageFactory gcf = new GridCoverageFactory();
 
-    /**
-     * The WMS server
-     */
+    /** The WMS server */
     WebMapServer wms;
 
-    /**
-     * The layer
-     */
+    /** The layer */
     List<Layer> layers = new ArrayList<Layer>();
 
-    /**
-     * The chosen SRS name
-     */
+    /** The chosen SRS name */
     String srsName;
 
-    /**
-     * The format to use for requests
-     */
+    /** The format to use for requests */
     String format;
 
-    /**
-     * The last GetMap request
-     */
+    /** The last GetMap request */
     GetMapRequest mapRequest;
 
-    /**
-     * The last GetMap response
-     */
+    /** The last GetMap response */
     GridCoverage2D grid;
 
-    /**
-     * The set of SRS common to all layers
-     */
+    /** The set of SRS common to all layers */
     Set<String> validSRS;
 
-    /**
-     * The cached layer bounds
-     */
+    /** The cached layer bounds */
     ReferencedEnvelope bounds;
 
-    /**
-     * The last request envelope
-     */
+    /** The last request envelope */
     ReferencedEnvelope requestedEnvelope;
 
-    /**
-     * Last request width
-     */
+    /** Last request width */
     int width;
 
-    /**
-     * Last request height
-     */
+    /** Last request height */
     int height;
 
-    /**
-     * Last request CRS (used for reprojected GetFeatureInfo)
-     */
+    /** Last request CRS (used for reprojected GetFeatureInfo) */
     CoordinateReferenceSystem requestCRS;
-    
+
     /**
      * Builds a new WMS coverage reader
-     * 
+     *
      * @param wms
      * @param layer
      */
     public WMSCoverageReader(WebMapServer wms, Layer layer) {
         this.wms = wms;
-        
+
         // init the reader
         addLayer(layer);
 
@@ -129,8 +102,10 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
         List<String> formats = wms.getCapabilities().getRequest().getGetMap().getFormats();
         this.format = formats.iterator().next();
         for (String format : formats) {
-            if ("image/png".equals(format) || "image/png24".equals(format)
-                    || "png".equals(format) || "png24".equals(format)
+            if ("image/png".equals(format)
+                    || "image/png24".equals(format)
+                    || "png".equals(format)
+                    || "png24".equals(format)
                     || "image/png; mode=24bit".equals(format)) {
                 this.format = format;
                 break;
@@ -143,18 +118,18 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
 
         if (srsName == null) {
             // initialize from first layer
-            for(String srs : layer.getBoundingBoxes().keySet()) {
+            for (String srs : layer.getBoundingBoxes().keySet()) {
                 try {
                     // check it's valid, if not we crap out and move to the next
                     CRS.decode(srs);
                     srsName = srs;
                     break;
-                } catch(Exception e) {
+                } catch (Exception e) {
                     // it's fine, we could not decode that code
                 }
             }
-            
-            if(srsName == null) {
+
+            if (srsName == null) {
                 if (layer.getSrs().contains("EPSG:4326")) {
                     // otherwise we try 4326
                     srsName = "EPSG:4326";
@@ -171,9 +146,10 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
             // can we reuse what we have?
             if (!intersection.contains(srsName)) {
                 if (intersection.size() == 0) {
-                    throw new IllegalArgumentException("The layer being appended does "
-                            + "not have any SRS in common with the ones already "
-                            + "included in the WMS request, cannot be merged");
+                    throw new IllegalArgumentException(
+                            "The layer being appended does "
+                                    + "not have any SRS in common with the ones already "
+                                    + "included in the WMS request, cannot be merged");
                 } else if (intersection.contains("EPSG:4326")) {
                     srsName = "EPSG:4326";
                 } else {
@@ -198,12 +174,13 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
 
     /**
      * Issues GetFeatureInfo against a point using the params of the last GetMap request
-     * 
+     *
      * @param pos
      * @return
      * @throws IOException
      */
-    public InputStream getFeatureInfo(DirectPosition2D pos, String infoFormat, int featureCount, GetMapRequest getmap)
+    public InputStream getFeatureInfo(
+            DirectPosition2D pos, String infoFormat, int featureCount, GetMapRequest getmap)
             throws IOException {
         GetFeatureInfoRequest request = wms.createGetFeatureInfoRequest(getmap);
         request.setFeatureCount(1);
@@ -211,8 +188,9 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
         request.setInfoFormat(infoFormat);
         request.setFeatureCount(featureCount);
         try {
-            AffineTransform tx = RendererUtilities.worldToScreenTransform(requestedEnvelope,
-                    new Rectangle(width, height));
+            AffineTransform tx =
+                    RendererUtilities.worldToScreenTransform(
+                            requestedEnvelope, new Rectangle(width, height));
             Point2D dest = new Point2D.Double();
             Point2D src = new Point2D.Double(pos.x, pos.y);
             tx.transform(src, dest);
@@ -222,7 +200,7 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
         }
 
         try {
-            if(LOGGER.isLoggable(Level.FINE)) {
+            if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("Issuing request: " + request.getFinalURL());
             }
             GetFeatureInfoResponse response = wms.issueRequest(request);
@@ -246,15 +224,14 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
             for (GeneralParameterValue param : parameters) {
                 final ReferenceIdentifier name = param.getDescriptor().getName();
                 if (name.equals(AbstractGridFormat.READ_GRIDGEOMETRY2D.getName())) {
-                    final GridGeometry2D gg = (GridGeometry2D) ((ParameterValue) param)
-                            .getValue();
+                    final GridGeometry2D gg = (GridGeometry2D) ((ParameterValue) param).getValue();
                     requestedEnvelope = gg.getEnvelope();
                     // the range high value is the highest pixel included in the raster,
                     // the actual width and height is one more than that
                     width = gg.getGridRange().getHigh(0) + 1;
                     height = gg.getGridRange().getHigh(1) + 1;
-                } else if(name.equals(AbstractGridFormat.BACKGROUND_COLOR.getName())) {
-                    backgroundColor = (Color)  ((ParameterValue) param).getValue();
+                } else if (name.equals(AbstractGridFormat.BACKGROUND_COLOR.getName())) {
+                    backgroundColor = (Color) ((ParameterValue) param).getValue();
                 }
             }
         }
@@ -263,31 +240,35 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
         if (requestedEnvelope == null) {
             requestedEnvelope = getOriginalEnvelope();
             width = 640;
-            height = (int) Math.round(requestedEnvelope.getSpan(1)
-                    / requestedEnvelope.getSpan(0) * 640);
+            height =
+                    (int)
+                            Math.round(
+                                    requestedEnvelope.getSpan(1)
+                                            / requestedEnvelope.getSpan(0)
+                                            * 640);
         }
 
         // if the structure did not change reuse the same response
-        if (grid != null && grid.getGridGeometry().getGridRange2D().getWidth() == width
+        if (grid != null
+                && grid.getGridGeometry().getGridRange2D().getWidth() == width
                 && grid.getGridGeometry().getGridRange2D().getHeight() == height
-                && grid.getEnvelope().equals(requestedEnvelope))
-            return grid;
+                && grid.getEnvelope().equals(requestedEnvelope)) return grid;
 
         grid = getMap(reference(requestedEnvelope), width, height, backgroundColor);
         return grid;
     }
 
-    /**
-     * Execute the GetMap request
-     */
-    GridCoverage2D getMap(ReferencedEnvelope requestedEnvelope, int width, int height, Color backgroundColor)
+    /** Execute the GetMap request */
+    GridCoverage2D getMap(
+            ReferencedEnvelope requestedEnvelope, int width, int height, Color backgroundColor)
             throws IOException {
         // build the request
-        ReferencedEnvelope gridEnvelope = initMapRequest(requestedEnvelope, width, height, backgroundColor);
+        ReferencedEnvelope gridEnvelope =
+                initMapRequest(requestedEnvelope, width, height, backgroundColor);
 
         // issue the request and wrap response in a grid coverage
         try {
-            if(LOGGER.isLoggable(Level.FINE)) {
+            if (LOGGER.isLoggable(Level.FINE)) {
                 LOGGER.fine("Issuing request: " + mapRequest.getFinalURL());
             }
             InputStream is = null;
@@ -309,15 +290,17 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
     }
 
     /**
-     * Sets up a max request with the provided parameters, making sure it is compatible with
-     * the layers own native SRS list
+     * Sets up a max request with the provided parameters, making sure it is compatible with the
+     * layers own native SRS list
+     *
      * @param bbox
      * @param width
      * @param height
      * @return
      * @throws IOException
      */
-    ReferencedEnvelope initMapRequest(ReferencedEnvelope bbox, int width, int height, Color backgroundColor)
+    ReferencedEnvelope initMapRequest(
+            ReferencedEnvelope bbox, int width, int height, Color backgroundColor)
             throws IOException {
         ReferencedEnvelope gridEnvelope = bbox;
         String requestSrs = srsName;
@@ -326,13 +309,13 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
             // we first look for an official epsg code
             String code = null;
             Integer epsgCode = CRS.lookupEpsgCode(bbox.getCoordinateReferenceSystem(), false);
-            if(epsgCode != null) {
+            if (epsgCode != null) {
                 code = "EPSG:" + epsgCode;
             } else {
                 // otherwise let's make a fuller scan, but this method is more fragile...
                 code = CRS.lookupIdentifier(bbox.getCoordinateReferenceSystem(), false);
             }
-            
+
             if (code != null && validSRS.contains(code)) {
                 requestSrs = code;
             } else {
@@ -341,11 +324,19 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
 
                 // then adjust the form factor
                 if (gridEnvelope.getWidth() < gridEnvelope.getHeight()) {
-                    height = (int) Math.round(width * gridEnvelope.getHeight()
-                            / gridEnvelope.getWidth());
+                    height =
+                            (int)
+                                    Math.round(
+                                            width
+                                                    * gridEnvelope.getHeight()
+                                                    / gridEnvelope.getWidth());
                 } else {
-                    width = (int) Math.round(height * gridEnvelope.getWidth()
-                            / gridEnvelope.getHeight());
+                    width =
+                            (int)
+                                    Math.round(
+                                            height
+                                                    * gridEnvelope.getWidth()
+                                                    / gridEnvelope.getHeight());
                 }
             }
         } catch (Exception e) {
@@ -361,7 +352,7 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
         }
         mapRequest.setDimensions(width, height);
         mapRequest.setFormat(format);
-        if(backgroundColor == null) {
+        if (backgroundColor == null) {
             mapRequest.setTransparent(true);
         } else {
             String rgba = Integer.toHexString(backgroundColor.getRGB());
@@ -372,14 +363,14 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
 
         try {
             this.requestCRS = CRS.decode(requestSrs);
-        } catch(Exception e) {
+        } catch (Exception e) {
             throw new IOException("Could not decode request SRS " + requestSrs);
         }
-        
+
         ReferencedEnvelope requestEnvelope = gridEnvelope;
         mapRequest.setBBox(requestEnvelope);
         mapRequest.setSRS(requestSrs);
-        
+
         this.mapRequest = mapRequest;
         this.requestedEnvelope = gridEnvelope;
         this.width = width;
@@ -395,7 +386,7 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
 
     /**
      * Returns the layer bounds
-     * 
+     *
      * @return
      */
     public void updateBounds() {
@@ -408,10 +399,10 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
         this.bounds = result;
         this.originalEnvelope = new GeneralEnvelope(result);
     }
-    
+
     /**
      * Converts a {@link Envelope} into a {@link ReferencedEnvelope}
-     * 
+     *
      * @param envelope
      * @return
      */
@@ -424,26 +415,29 @@ class WMSCoverageReader extends AbstractGridCoverage2DReader {
 
     /**
      * Converts a {@link GeneralEnvelope} into a {@link ReferencedEnvelope}
-     * 
+     *
      * @param ge
      * @return
      */
     ReferencedEnvelope reference(GeneralEnvelope ge) {
-        return new ReferencedEnvelope(ge.getMinimum(0), ge.getMaximum(0), ge.getMinimum(1), ge
-                .getMaximum(1), ge.getCoordinateReferenceSystem());
+        return new ReferencedEnvelope(
+                ge.getMinimum(0),
+                ge.getMaximum(0),
+                ge.getMinimum(1),
+                ge.getMaximum(1),
+                ge.getCoordinateReferenceSystem());
     }
-    
+
     @Override
     public String[] getMetadataNames() {
-        return new String[] { REPROJECTING_READER };
+        return new String[] {REPROJECTING_READER};
     }
-    
+
     @Override
     public String getMetadataValue(String name) {
-        if(REPROJECTING_READER.equals(name)) {
+        if (REPROJECTING_READER.equals(name)) {
             return "true";
         }
         return super.getMetadataValue(name);
     }
-    
 }

@@ -18,7 +18,6 @@ package org.geotools.data.transform;
 
 import java.io.IOException;
 import java.util.logging.Logger;
-
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -30,9 +29,8 @@ import org.opengis.filter.expression.Expression;
 
 /**
  * A transforming iterator based on a user provided {@link SimpleFeatureIterator}
- * 
+ *
  * @author Andrea Aime - GeoSolutions
- * 
  */
 class TransformFeatureIteratorWrapper implements SimpleFeatureIterator {
 
@@ -46,8 +44,8 @@ class TransformFeatureIteratorWrapper implements SimpleFeatureIterator {
 
     private SimpleFeatureType target;
 
-    public TransformFeatureIteratorWrapper(FeatureIterator<SimpleFeature> wrapped, Transformer transformer)
-            throws IOException {
+    public TransformFeatureIteratorWrapper(
+            FeatureIterator<SimpleFeature> wrapped, Transformer transformer) throws IOException {
         this.transformer = transformer;
         this.target = transformer.getSchema();
         this.wrapped = wrapped;
@@ -67,7 +65,7 @@ class TransformFeatureIteratorWrapper implements SimpleFeatureIterator {
 
         for (AttributeDescriptor ad : target.getAttributeDescriptors()) {
             Expression ex = transformer.getExpression(ad.getLocalName());
-            if(ex != null) {
+            if (ex != null) {
                 Object value = ex.evaluate(f, ad.getType().getBinding());
                 fb.add(value);
             } else {
@@ -85,5 +83,4 @@ class TransformFeatureIteratorWrapper implements SimpleFeatureIterator {
         }
         wrapped = null;
     }
-
 }

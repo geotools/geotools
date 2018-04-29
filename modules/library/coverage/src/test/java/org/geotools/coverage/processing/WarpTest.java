@@ -19,22 +19,19 @@ package org.geotools.coverage.processing;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import it.geosolutions.jaiext.utilities.ImageLayout2;
 import java.awt.geom.AffineTransform;
 import java.awt.image.RenderedImage;
-
 import javax.media.jai.Interpolation;
 import javax.media.jai.JAI;
 import javax.media.jai.WarpAffine;
-
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.Viewer;
 import org.geotools.coverage.processing.operation.Warp;
 import org.geotools.factory.Hints;
-import it.geosolutions.jaiext.utilities.ImageLayout2;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.parameter.ParameterValueGroup;
-
 
 /**
  * Tests the {@link Warp} operation.
@@ -42,18 +39,13 @@ import org.opengis.parameter.ParameterValueGroup;
  * @source $URL$
  * @version $Id$
  * @author Simone Giannecchini (GeoSolutions)
- *
  * @since 9.0
  */
 public class WarpTest extends GridProcessingTestBase {
-    /**
-     * The processor to be used for all tests.
-     */
+    /** The processor to be used for all tests. */
     private CoverageProcessor processor;
 
-    /**
-     * Set up common objects used for all tests.
-     */
+    /** Set up common objects used for all tests. */
     @Before
     public void setUp() {
         processor = CoverageProcessor.getInstance(null);
@@ -66,10 +58,10 @@ public class WarpTest extends GridProcessingTestBase {
      */
     @Test
     public void testWarp() {
-        final GridCoverage2D originallyIndexedCoverage       = EXAMPLES.get(0);
-        final GridCoverage2D indexedCoverage                 = EXAMPLES.get(2);
+        final GridCoverage2D originallyIndexedCoverage = EXAMPLES.get(0);
+        final GridCoverage2D indexedCoverage = EXAMPLES.get(2);
         final GridCoverage2D indexedCoverageWithTransparency = EXAMPLES.get(3);
-        final GridCoverage2D floatCoverage                   = EXAMPLES.get(4);
+        final GridCoverage2D floatCoverage = EXAMPLES.get(4);
 
         ///////////////////////////////////////////////////////////////////////
         //
@@ -77,19 +69,18 @@ public class WarpTest extends GridProcessingTestBase {
         //
         ///////////////////////////////////////////////////////////////////////
         Interpolation interp = Interpolation.getInstance(Interpolation.INTERP_NEAREST);
-        warp(originallyIndexedCoverage      , interp);
-        warp(indexedCoverage                , interp);
+        warp(originallyIndexedCoverage, interp);
+        warp(indexedCoverage, interp);
         warp(indexedCoverageWithTransparency, interp);
-
 
         ///////////////////////////////////////////////////////////////////////
         //
-        // Bilinear interpolation 
+        // Bilinear interpolation
         //
         ///////////////////////////////////////////////////////////////////////
         interp = Interpolation.getInstance(Interpolation.INTERP_BILINEAR);
-        warp(originallyIndexedCoverage      , interp);
-        warp(indexedCoverage                , interp);
+        warp(originallyIndexedCoverage, interp);
+        warp(indexedCoverage, interp);
 
         ///////////////////////////////////////////////////////////////////////
         //
@@ -107,7 +98,7 @@ public class WarpTest extends GridProcessingTestBase {
         warp(floatCoverage, interp);
 
         // Play with a rotated coverage
-        warp(rotate(floatCoverage, Math.PI/4), null);
+        warp(rotate(floatCoverage, Math.PI / 4), null);
     }
 
     /**
@@ -129,11 +120,13 @@ public class WarpTest extends GridProcessingTestBase {
         param.parameter("Interpolation").setValue(interp);
 
         // Doing a first scale.
-        final ImageLayout2 layout= new ImageLayout2(0,0,(int)(w / 2.0),(int)(h / 2.0));
-        GridCoverage2D scaled = (GridCoverage2D) processor.doOperation(param, new Hints(JAI.KEY_IMAGE_LAYOUT,layout));
+        final ImageLayout2 layout = new ImageLayout2(0, 0, (int) (w / 2.0), (int) (h / 2.0));
+        GridCoverage2D scaled =
+                (GridCoverage2D)
+                        processor.doOperation(param, new Hints(JAI.KEY_IMAGE_LAYOUT, layout));
         assertEnvelopeEquals(coverage, scaled);
         RenderedImage scaledImage = scaled.getRenderedImage();
-        assertEquals(w / 2.0, scaledImage.getWidth(),  EPS);
+        assertEquals(w / 2.0, scaledImage.getWidth(), EPS);
         assertEquals(h / 2.0, scaledImage.getHeight(), EPS);
         if (SHOW) {
             Viewer.show(coverage);
@@ -144,17 +137,17 @@ public class WarpTest extends GridProcessingTestBase {
             assertNotNull(scaledImage.getData());
         }
 
-//        // Doing another scale using the default processor.
-//        scaled = (GridCoverage2D) Operations.DEFAULT.scale(scaled, 3, 3, 0, 0, interp);
-//        scaledImage = scaled.getRenderedImage();
-//        assertEnvelopeEquals(coverage, scaled);
-//        assertEquals(w * 1.5, scaledImage.getWidth(),  EPS);
-//        assertEquals(h * 1.5, scaledImage.getHeight(), EPS);
-//        if (SHOW) {
-//            Viewer.show(scaled);
-//        } else {
-//            // Force computation
-//            assertNotNull(scaledImage.getData());
-//        }
+        //        // Doing another scale using the default processor.
+        //        scaled = (GridCoverage2D) Operations.DEFAULT.scale(scaled, 3, 3, 0, 0, interp);
+        //        scaledImage = scaled.getRenderedImage();
+        //        assertEnvelopeEquals(coverage, scaled);
+        //        assertEquals(w * 1.5, scaledImage.getWidth(),  EPS);
+        //        assertEquals(h * 1.5, scaledImage.getHeight(), EPS);
+        //        if (SHOW) {
+        //            Viewer.show(scaled);
+        //        } else {
+        //            // Force computation
+        //            assertNotNull(scaledImage.getData());
+        //        }
     }
 }

@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2006-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -18,7 +18,6 @@ package org.geotools.filter.text.ecql;
 
 import java.io.StringReader;
 import java.util.List;
-
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.filter.text.commons.IToken;
 import org.geotools.filter.text.commons.Result;
@@ -40,170 +39,154 @@ import org.opengis.filter.temporal.After;
 import org.opengis.filter.temporal.Before;
 import org.opengis.filter.temporal.During;
 
-
 /**
  * ECQLCompiler
- * 
- * <p>
- * Builds the filter, expression or arguments related with the visited 
- * node of syntax tree 
- * </p>
- * 
+ *
+ * <p>Builds the filter, expression or arguments related with the visited node of syntax tree
+ *
  * @author Jody Garnett
  * @author Mauricio Pazos (Axios Engineering)
- * 
- *
- *
- *
  * @source $URL$
  * @version Revision: 1.9
  * @since 2.6
  */
-public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text.commons.ICompiler{
-    
+public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text.commons.ICompiler {
+
     private static final String ATTRIBUTE_PATH_SEPARATOR = "/";
 
     /** cql expression to compile */
-    private final String           source;
+    private final String source;
 
     private final ECQLFilterBuilder builder;
 
     /**
      * new instance of TXTCompiler
+     *
      * @param txtSource
      * @param filterFactory
      */
     public ECQLCompiler(final String txtSource, final FilterFactory filterFactory) {
-        
+
         super(new StringReader(txtSource));
 
-        assert txtSource != null: "txtSource cannot be null";
-        assert filterFactory != null: "filterFactory cannot be null";
-        
+        assert txtSource != null : "txtSource cannot be null";
+        assert filterFactory != null : "filterFactory cannot be null";
+
         this.source = txtSource;
-        this.builder =  new ECQLFilterBuilder(txtSource, filterFactory);
+        this.builder = new ECQLFilterBuilder(txtSource, filterFactory);
     }
 
-    /** 
-     * compile source to produce a Filter. The filter
-     * result must be retrieved with {@link #getFilter()}.
-     * 
+    /**
+     * compile source to produce a Filter. The filter result must be retrieved with {@link
+     * #getFilter()}.
+     *
      * @throws CQLException
      */
-    public void compileFilter() throws CQLException{
+    public void compileFilter() throws CQLException {
         try {
             super.FilterCompilationUnit();
-        } catch (TokenMgrError tokenError){
-            throw new CQLException(tokenError.getMessage(),getTokenInPosition(0), this.source);
-        } catch(CQLException e){
+        } catch (TokenMgrError tokenError) {
+            throw new CQLException(tokenError.getMessage(), getTokenInPosition(0), this.source);
+        } catch (CQLException e) {
             throw e;
-            
+
         } catch (ParseException e) {
-            throw new CQLException(e.getMessage(), getTokenInPosition(0), e.getCause(), this.source);
+            throw new CQLException(
+                    e.getMessage(), getTokenInPosition(0), e.getCause(), this.source);
         }
     }
-    
-    /** 
-     * compiles source to produce a Expression
-     */
-    public void compileExpression() throws CQLException{
+
+    /** compiles source to produce a Expression */
+    public void compileExpression() throws CQLException {
         try {
             super.ExpressionCompilationUnit();
-        } catch (TokenMgrError tokenError){
-            throw new CQLException(tokenError.getMessage(),getTokenInPosition(0), this.source);
-        } catch(CQLException e){
+        } catch (TokenMgrError tokenError) {
+            throw new CQLException(tokenError.getMessage(), getTokenInPosition(0), this.source);
+        } catch (CQLException e) {
             throw e;
         } catch (ParseException e) {
-            throw new CQLException(e.getMessage(), getTokenInPosition(0), e.getCause(), this.source);
+            throw new CQLException(
+                    e.getMessage(), getTokenInPosition(0), e.getCause(), this.source);
         }
     }
 
-    /**
-     * Compiles a list of filters
-     */
-    public void compileFilterList() throws CQLException{
+    /** Compiles a list of filters */
+    public void compileFilterList() throws CQLException {
         try {
             super.FilterListCompilationUnit();
-        } catch (TokenMgrError tokenError){
-            throw new CQLException(tokenError.getMessage(),getTokenInPosition(0), this.source);
-        } catch(CQLException e){
+        } catch (TokenMgrError tokenError) {
+            throw new CQLException(tokenError.getMessage(), getTokenInPosition(0), this.source);
+        } catch (CQLException e) {
             throw e;
         } catch (ParseException e) {
-            throw new CQLException(e.getMessage(), getTokenInPosition(0), e.getCause(), this.source);
+            throw new CQLException(
+                    e.getMessage(), getTokenInPosition(0), e.getCause(), this.source);
         }
     }
 
-    /**
-     * @return the ECQLsource
-     */
-    public final String getSource(){
+    /** @return the ECQLsource */
+    public final String getSource() {
         return this.source;
     }
 
     /**
      * Return the filter resultant of compiling process
+     *
      * @return Filter
-     * @throws CQLException 
+     * @throws CQLException
      */
     public final Filter getFilter() throws CQLException {
-        return this.builder.getFilter(); 
+        return this.builder.getFilter();
     }
     /**
      * Return the expression resultant of compiling process
+     *
      * @return Expression
-     * @throws CQLException 
+     * @throws CQLException
      */
     public final Expression getExpression() throws CQLException {
 
         return this.builder.getExpression();
     }
-    
-    public IToken getTokenInPosition(int index ){
-        return TokenAdapter.newAdapterFor( super.getToken(index));
+
+    public IToken getTokenInPosition(int index) {
+        return TokenAdapter.newAdapterFor(super.getToken(index));
     }
-    
 
     /**
-     * Returns the list of Filters built as the result of calling
-     * {@link #FilterListCompilationUnit()()}
-     * 
-     * @return List<Filter> 
-     * @throws CQLException
-     *             if a ClassCastException occurs while casting a built item to
-     *             a Filter.
+     * Returns the list of Filters built as the result of calling {@link
+     * #FilterListCompilationUnit()()}
+     *
+     * @return List<Filter>
+     * @throws CQLException if a ClassCastException occurs while casting a built item to a Filter.
      */
     public List<Filter> getFilterList() throws CQLException {
         return this.builder.getFilterList();
     }
-    
-    
 
-    public final void jjtreeOpenNodeScope(Node n) {
-    }
+    public final void jjtreeOpenNodeScope(Node n) {}
 
-    /**
-     * called by parser when the node is closed.
-     */
+    /** called by parser when the node is closed. */
     public final void jjtreeCloseNodeScope(Node n) throws ParseException {
-        
+
         try {
             Object built = build(n);
 
             IToken tokenAdapter = TokenAdapter.newAdapterFor(this.token);
             Result r = new Result(built, tokenAdapter, n.getType());
-            this.builder.pushResult(r );
-        
+            this.builder.pushResult(r);
+
         } catch (CQLException e) {
-                throw e;
-              
+            throw e;
+
         } finally {
             n.dispose();
         }
     }
     /**
-     * This method is called when the parser close a node. Here is built the
-     * filters an expressions recognized in the parsing process.
-     * 
+     * This method is called when the parser close a node. Here is built the filters an expressions
+     * recognized in the parsing process.
+     *
      * @param n a Node instance
      * @return Filter or Expression
      * @throws CQLException
@@ -212,22 +195,21 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
 
         switch (n.getType()) {
 
-            // ----------------------------------------
-            // (+|-) Integer and Float
-            // ----------------------------------------
+                // ----------------------------------------
+                // (+|-) Integer and Float
+                // ----------------------------------------
             case JJTINTEGERNODE:
                 return this.builder.buildLiteralInteger(getTokenInPosition(0).toString());
             case JJTFLOATINGNODE:
                 return this.builder.buildLiteralDouble(getTokenInPosition(0).toString());
             case JJTNEGATIVENUMBER_NODE:
                 return this.builder.bulidNegativeNumber();
-            
+
                 // ----------------------------------------
                 // String
                 // ----------------------------------------
             case JJTSTRINGNODE:
-                return this.builder.buildLiteralString(getTokenInPosition(0)
-                        .toString());
+                return this.builder.buildLiteralString(getTokenInPosition(0).toString());
 
                 // ----------------------------------------
                 // Identifier
@@ -297,7 +279,6 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
                 return buildBinaryComparasionOperator(n.getType());
 
             case JJTCOMPARISONPREDICATE_NOT_EQUAL_NODE:
-
                 Filter eq = buildBinaryComparasionOperator(JJTCOMPARISONPREDICATE_EQ_NODE);
                 Not notFilter = this.builder.buildNotFilter(eq);
 
@@ -310,7 +291,6 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
                 return this.builder.buildLikeFilter(true);
 
             case JJTNOT_LIKE_NODE:
-
                 return this.builder.buildNotLikeFilter(true);
 
                 // ----------------------------------------
@@ -320,7 +300,6 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
                 return this.builder.buildLikeFilter(false);
 
             case JJTNOT_ILIKE_NODE:
-
                 return this.builder.buildNotLikeFilter(false);
 
                 // ----------------------------------------
@@ -336,16 +315,13 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
                 // temporal predicate actions
                 // ----------------------------------------
             case JJTDATE_NODE:
-                return this.builder
-                        .buildDateExpression(getTokenInPosition(0));
+                return this.builder.buildDateExpression(getTokenInPosition(0));
 
             case JJTDATETIME_NODE:
-                return this.builder
-                        .buildDateTimeExpression(getTokenInPosition(0));
+                return this.builder.buildDateTimeExpression(getTokenInPosition(0));
 
             case JJTDURATION_DATE_NODE:
-                return this.builder
-                        .buildDurationExpression(getTokenInPosition(0));
+                return this.builder.buildDurationExpression(getTokenInPosition(0));
 
             case JJTPERIOD_BETWEEN_DATES_NODE:
                 return this.builder.buildPeriodBetweenDates();
@@ -381,7 +357,6 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
                 return this.builder.buildPropertyExists();
 
             case JJTEXISTENCE_PREDICATE_DOESNOTEXIST_NODE:
-
                 Filter filter = this.builder.buildPropertyExists();
                 Filter filterPropNotExist = this.builder.buildNotFilter(filter);
 
@@ -405,10 +380,10 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
                 return buildBBox(n.getType());
 
             case JJTROUTINEINVOCATION_GEOOP_RELATE_NODE:
-            	return this.builder.buildSpatialRelateFilter();
-            	
+                return this.builder.buildSpatialRelateFilter();
+
             case JJTDE9IM_NODE:
-            	return this.builder.buildDE9IM( getToken(0).image) ;	
+                return this.builder.buildDE9IM(getToken(0).image);
 
                 // ----------------------------------------
                 // routine invocation RelGeo Operation
@@ -428,38 +403,36 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
                 // ----------------------------------------
             case JJTPOINT_NODE:
                 return this.builder.buildCoordinate();
-                
+
             case JJTPOINTTEXT_NODE:
                 return this.builder.buildPointText();
-                
+
             case JJTLINESTRINGTEXT_NODE:
                 return this.builder.buildLineString(JJTPOINT_NODE);
-                
+
             case JJTPOLYGONTEXT_NODE:
                 return this.builder.buildPolygon(JJTLINESTRINGTEXT_NODE);
-                
+
             case JJTMULTIPOINTTEXT_NODE:
                 return this.builder.buildMultiPoint(JJTPOINTTEXT_NODE);
-                
+
             case JJTMULTILINESTRINGTEXT_NODE:
                 return this.builder.buildMultiLineString(JJTLINESTRINGTEXT_NODE);
-                
+
             case JJTMULTIPOLYGONTEXT_NODE:
                 return this.builder.buildMultiPolygon(JJTPOLYGONTEXT_NODE);
-                
+
             case JJTGEOMETRYLITERAL:
                 return this.builder.buildGeometryLiteral();
 
             case JJTGEOMETRYCOLLECTIONTEXT_NODE:
                 return this.builder.buildGeometryCollection(JJTGEOMETRYLITERAL);
-                
-                
+
             case JJTWKTNODE:
                 return this.builder.buildGeometry();
-                
+
             case JJTENVELOPETAGGEDTEXT_NODE:
-                return this.builder.buildEnvelop(TokenAdapter.newAdapterFor(n
-                        .getToken()));
+                return this.builder.buildEnvelop(TokenAdapter.newAdapterFor(n.getToken()));
 
             case JJTINCLUDE_NODE:
                 return Filter.INCLUDE;
@@ -486,90 +459,84 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
                 // ----------------------------------------
             case JJTIN_PREDICATE_NODE:
                 return this.builder.buildInPredicate(JJTEXPRESSION_IN_LIST_NODE);
-                
-            case JJTNOT_IN_PREDICATE_NODE: 
+
+            case JJTNOT_IN_PREDICATE_NODE:
                 Or orFilter = this.builder.buildInPredicate(JJTEXPRESSION_IN_LIST_NODE);
                 Not notOrFilter = this.builder.buildNotFilter(orFilter);
-                    
+
                 return notOrFilter;
         }
 
         return null;
     }
 
-    private org.opengis.filter.expression.BinaryExpression buildBinaryExpression(
-            int nodeType) throws CQLException {
-        
+    private org.opengis.filter.expression.BinaryExpression buildBinaryExpression(int nodeType)
+            throws CQLException {
+
         org.opengis.filter.expression.BinaryExpression expr = null;
 
         switch (nodeType) {
-        case JJTADDNODE:
-            expr =  this.builder.buildAddExpression();
+            case JJTADDNODE:
+                expr = this.builder.buildAddExpression();
 
-            break;
+                break;
 
-        case JJTSUBTRACTNODE:
-            expr = this.builder.buildSubtractExression();
+            case JJTSUBTRACTNODE:
+                expr = this.builder.buildSubtractExression();
 
-            break;
+                break;
 
-        case JJTMULNODE:
-            
-            expr = this.builder.buildMultiplyExpression();
-            break;
+            case JJTMULNODE:
+                expr = this.builder.buildMultiplyExpression();
+                break;
 
-        case JJTDIVNODE:
-            
-            expr = this.builder.buildDivideExpression();            
-            break;
+            case JJTDIVNODE:
+                expr = this.builder.buildDivideExpression();
+                break;
 
-        default:
-            break;
+            default:
+                break;
         }
 
         return expr;
     }
 
-    private Filter buildLogicFilter(int nodeType)
-            throws CQLException {
+    private Filter buildLogicFilter(int nodeType) throws CQLException {
         try {
             Filter logicFilter;
 
             switch (nodeType) {
-            case JJTBOOLEAN_AND_NODE:
-                logicFilter = this.builder.buildAndFilter();
-                break;
+                case JJTBOOLEAN_AND_NODE:
+                    logicFilter = this.builder.buildAndFilter();
+                    break;
 
-            case JJTBOOLEAN_OR_NODE:
-                logicFilter = this.builder.buildOrFilter();
-                break;
+                case JJTBOOLEAN_OR_NODE:
+                    logicFilter = this.builder.buildOrFilter();
+                    break;
 
-            case JJTBOOLEAN_NOT_NODE:
-                
-                logicFilter = this.builder.buildNotFilter();
-                break;
+                case JJTBOOLEAN_NOT_NODE:
+                    logicFilter = this.builder.buildNotFilter();
+                    break;
 
-            default:
-                throw new CQLException(
-                        "Expression not supported. And, Or, Not is required",
-                        getTokenInPosition(0), this.source);
+                default:
+                    throw new CQLException(
+                            "Expression not supported. And, Or, Not is required",
+                            getTokenInPosition(0),
+                            this.source);
             }
 
             return logicFilter;
         } catch (IllegalFilterException ife) {
-            throw new CQLException("Exception building LogicFilter",
-                    getTokenInPosition(0), ife, this.source);
+            throw new CQLException(
+                    "Exception building LogicFilter", getTokenInPosition(0), ife, this.source);
         }
     }
 
-
-
     /**
      * Creates Binary Spatial Operator
-     * 
+     *
      * @param tipeNode
-     * 
-     * @return BinarySpatialOperator 
+     * @return BinarySpatialOperator
      * @throws CQLException
      */
     private BinarySpatialOperator buildBinarySpatialOperator(final int nodeType)
@@ -578,158 +545,149 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
         BinarySpatialOperator filter = null;
 
         switch (nodeType) {
-        case JJTROUTINEINVOCATION_GEOOP_EQUAL_NODE:
-            
-            filter = this.builder.buildSpatialEqualFilter();
-            break;
-        case JJTROUTINEINVOCATION_GEOOP_DISJOINT_NODE:
-            filter = this.builder.buildSpatialDisjointFilter();
-            break;
-        case JJTROUTINEINVOCATION_GEOOP_INTERSECT_NODE:
-            filter = this.builder.buildSpatialIntersectsFilter();
-            break;
-        case JJTROUTINEINVOCATION_GEOOP_TOUCH_NODE:
-            filter = this.builder.buildSpatialTouchesFilter();
-            break;
+            case JJTROUTINEINVOCATION_GEOOP_EQUAL_NODE:
+                filter = this.builder.buildSpatialEqualFilter();
+                break;
+            case JJTROUTINEINVOCATION_GEOOP_DISJOINT_NODE:
+                filter = this.builder.buildSpatialDisjointFilter();
+                break;
+            case JJTROUTINEINVOCATION_GEOOP_INTERSECT_NODE:
+                filter = this.builder.buildSpatialIntersectsFilter();
+                break;
+            case JJTROUTINEINVOCATION_GEOOP_TOUCH_NODE:
+                filter = this.builder.buildSpatialTouchesFilter();
+                break;
 
-        case JJTROUTINEINVOCATION_GEOOP_CROSS_NODE:
-            filter = this.builder.buildSpatialCrossesFilter();
-            break;
-        case JJTROUTINEINVOCATION_GEOOP_WITHIN_NODE:
-            filter = this.builder.buildSpatialWithinFilter();
-            break;
-        case JJTROUTINEINVOCATION_GEOOP_CONTAIN_NODE:
-            filter = this.builder.buildSpatialContainsFilter();
-            break;
-        case JJTROUTINEINVOCATION_GEOOP_OVERLAP_NODE:
-            filter = this.builder.buildSpatialOverlapsFilter();
-            break;
-        default:
-            throw new CQLException("Binary spatial operator unexpected");
+            case JJTROUTINEINVOCATION_GEOOP_CROSS_NODE:
+                filter = this.builder.buildSpatialCrossesFilter();
+                break;
+            case JJTROUTINEINVOCATION_GEOOP_WITHIN_NODE:
+                filter = this.builder.buildSpatialWithinFilter();
+                break;
+            case JJTROUTINEINVOCATION_GEOOP_CONTAIN_NODE:
+                filter = this.builder.buildSpatialContainsFilter();
+                break;
+            case JJTROUTINEINVOCATION_GEOOP_OVERLAP_NODE:
+                filter = this.builder.buildSpatialOverlapsFilter();
+                break;
+            default:
+                throw new CQLException("Binary spatial operator unexpected");
         }
 
         return filter;
     }
 
-    private org.opengis.filter.spatial.BBOX buildBBox(int nodeType)
-            throws CQLException {
+    private org.opengis.filter.spatial.BBOX buildBBox(int nodeType) throws CQLException {
 
-            if (nodeType == JJTROUTINEINVOCATION_GEOOP_BBOX_SRS_NODE) {
-                return this.builder.buildBBoxWithCRS();
-            } else {
-                return this.builder.buildBBox();
-            }
+        if (nodeType == JJTROUTINEINVOCATION_GEOOP_BBOX_SRS_NODE) {
+            return this.builder.buildBBoxWithCRS();
+        } else {
+            return this.builder.buildBBox();
+        }
     }
 
     /**
      * Builds Distance Buffer Operator
-     * 
+     *
      * @param nodeType
      * @return DistanceBufferOperator dwithin and beyond filters
      * @throws CQLException
      */
-    private DistanceBufferOperator buildDistanceBufferOperator(
-            final int nodeType) throws CQLException {
+    private DistanceBufferOperator buildDistanceBufferOperator(final int nodeType)
+            throws CQLException {
 
         DistanceBufferOperator filter = null;
 
         switch (nodeType) {
-        case JJTROUTINEINVOCATION_RELOP_DWITHIN_NODE:
-            filter = this.builder.buildSpatialDWithinFilter();
-            break;
+            case JJTROUTINEINVOCATION_RELOP_DWITHIN_NODE:
+                filter = this.builder.buildSpatialDWithinFilter();
+                break;
 
-        case JJTROUTINEINVOCATION_RELOP_BEYOND_NODE:
+            case JJTROUTINEINVOCATION_RELOP_BEYOND_NODE:
+                filter = this.builder.buildSpatialBeyondFilter();
+                break;
 
-            filter = this.builder.buildSpatialBeyondFilter();
-            break;
-
-        default:
-            throw new CQLException("Binary spatial operator unexpected");
+            default:
+                throw new CQLException("Binary spatial operator unexpected");
         }
 
         return filter;
     }
 
-
-    private org.opengis.filter.Filter buildBeforeOrDuring()
-            throws CQLException {
+    private org.opengis.filter.Filter buildBeforeOrDuring() throws CQLException {
         org.opengis.filter.Filter filter = null;
 
         Result node = this.builder.peekResult();
 
         switch (node.getNodeType()) {
-        case JJTPERIOD_BETWEEN_DATES_NODE:
-        case JJTPERIOD_WITH_DATE_DURATION_NODE:
-        case JJTPERIOD_WITH_DURATION_DATE_NODE:
-            filter = this.builder.buildBeforeOrDuring();
-            break;
+            case JJTPERIOD_BETWEEN_DATES_NODE:
+            case JJTPERIOD_WITH_DATE_DURATION_NODE:
+            case JJTPERIOD_WITH_DURATION_DATE_NODE:
+                filter = this.builder.buildBeforeOrDuring();
+                break;
 
-        default:
-            throw new CQLException(
-                    "unexpeted date time expression in temporal predicate.",
-                    node.getToken(), this.source);
+            default:
+                throw new CQLException(
+                        "unexpeted date time expression in temporal predicate.",
+                        node.getToken(),
+                        this.source);
         }
 
         return filter;
     }
 
-    private Or buildDuringOrAfter()
-            throws CQLException {
+    private Or buildDuringOrAfter() throws CQLException {
         Or filter = null;
 
         Result node = this.builder.peekResult();
 
         switch (node.getNodeType()) {
-        case JJTPERIOD_BETWEEN_DATES_NODE:
-        case JJTPERIOD_WITH_DATE_DURATION_NODE:
-        case JJTPERIOD_WITH_DURATION_DATE_NODE:
-            filter = this.builder.buildDuringOrAfter();
+            case JJTPERIOD_BETWEEN_DATES_NODE:
+            case JJTPERIOD_WITH_DATE_DURATION_NODE:
+            case JJTPERIOD_WITH_DURATION_DATE_NODE:
+                filter = this.builder.buildDuringOrAfter();
 
-            break;
+                break;
 
-        default:
-            throw new CQLException(
-                    "unexpeted date time expression in temporal predicate.",
-                    node.getToken(), this.source);
+            default:
+                throw new CQLException(
+                        "unexpeted date time expression in temporal predicate.",
+                        node.getToken(),
+                        this.source);
         }
 
         return filter;
     }
 
-
-
-
-
     /**
      * Build the convenient filter for before date and before period filters
-     * 
+     *
      * @param nodeType
-     * 
      * @return Filter
      * @throws CQLException
      */
-    private Before buildBefore()
-            throws CQLException {
+    private Before buildBefore() throws CQLException {
         Before filter = null;
 
         // analyzes if the last build is period or date
         Result node = this.builder.peekResult();
 
         switch (node.getNodeType()) {
-        case JJTDATETIME_NODE:
-            filter = this.builder.buildBeforeDate();
-            break;
+            case JJTDATETIME_NODE:
+                filter = this.builder.buildBeforeDate();
+                break;
 
-        case JJTPERIOD_BETWEEN_DATES_NODE:
-        case JJTPERIOD_WITH_DATE_DURATION_NODE:
-        case JJTPERIOD_WITH_DURATION_DATE_NODE:
-            filter = this.builder.buildBeforePeriod();
-            break;
+            case JJTPERIOD_BETWEEN_DATES_NODE:
+            case JJTPERIOD_WITH_DATE_DURATION_NODE:
+            case JJTPERIOD_WITH_DURATION_DATE_NODE:
+                filter = this.builder.buildBeforePeriod();
+                break;
 
-        default:
-            throw new CQLException(
-                    "unexpeted date time expression in temporal predicate.",
-                    node.getToken(), this.source);
+            default:
+                throw new CQLException(
+                        "unexpeted date time expression in temporal predicate.",
+                        node.getToken(),
+                        this.source);
         }
 
         return filter;
@@ -737,7 +695,7 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
 
     /**
      * Build the convenient filter for during period filters
-     * 
+     *
      * @return Filter
      * @throws CQLException
      */
@@ -748,89 +706,83 @@ public class ECQLCompiler extends ECQLParser implements org.geotools.filter.text
         Result node = this.builder.peekResult();
 
         switch (node.getNodeType()) {
-        case JJTPERIOD_BETWEEN_DATES_NODE:
-        case JJTPERIOD_WITH_DATE_DURATION_NODE:
-        case JJTPERIOD_WITH_DURATION_DATE_NODE:
-            filter = this.builder.buildDuringPeriod();
-            break;
+            case JJTPERIOD_BETWEEN_DATES_NODE:
+            case JJTPERIOD_WITH_DATE_DURATION_NODE:
+            case JJTPERIOD_WITH_DURATION_DATE_NODE:
+                filter = this.builder.buildDuringPeriod();
+                break;
 
-        default:
-            throw new CQLException(
-                    "unexpeted period expression in temporal predicate.", node
-                            .getToken(), this.source);
+            default:
+                throw new CQLException(
+                        "unexpeted period expression in temporal predicate.",
+                        node.getToken(),
+                        this.source);
         }
 
         return filter;
     }
 
-
     /**
      * build filter for after date and after period
-     * 
+     *
      * @return a filter
      * @throws CQLException
      */
-    private After buildAfterPredicate()
-            throws CQLException {
+    private After buildAfterPredicate() throws CQLException {
         After filter = null;
 
         // determines if the node is period or date
         Result node = this.builder.peekResult();
 
         switch (node.getNodeType()) {
-        case JJTDATETIME_NODE:
-        	filter = this.builder.buildAfterDate();
-            break;
+            case JJTDATETIME_NODE:
+                filter = this.builder.buildAfterDate();
+                break;
 
-        case JJTPERIOD_BETWEEN_DATES_NODE:
-        case JJTPERIOD_WITH_DURATION_DATE_NODE:
-        case JJTPERIOD_WITH_DATE_DURATION_NODE:
-            filter = this.builder.buildAfterPeriod();
-            break;
+            case JJTPERIOD_BETWEEN_DATES_NODE:
+            case JJTPERIOD_WITH_DURATION_DATE_NODE:
+            case JJTPERIOD_WITH_DATE_DURATION_NODE:
+                filter = this.builder.buildAfterPeriod();
+                break;
 
-        default:
-            throw new CQLException(
-                    "unexpeted date time expression in temporal predicate.",
-                    node.getToken(), this.source);
+            default:
+                throw new CQLException(
+                        "unexpeted date time expression in temporal predicate.",
+                        node.getToken(),
+                        this.source);
         }
 
         return filter;
     }
 
-
-
     /**
      * Builds a compare filter
-     * 
+     *
      * @param filterTipa
-     * 
      * @return BinaryComparisonOperator
      * @throws CQLException
      */
-    private BinaryComparisonOperator buildBinaryComparasionOperator(
-            int filterType) throws CQLException {
+    private BinaryComparisonOperator buildBinaryComparasionOperator(int filterType)
+            throws CQLException {
 
         switch (filterType) {
-        case JJTCOMPARISONPREDICATE_EQ_NODE:
-            return this.builder.buildEquals();
+            case JJTCOMPARISONPREDICATE_EQ_NODE:
+                return this.builder.buildEquals();
 
-        case JJTCOMPARISONPREDICATE_GT_NODE:
-            return this.builder.buildGreater();
+            case JJTCOMPARISONPREDICATE_GT_NODE:
+                return this.builder.buildGreater();
 
-        case JJTCOMPARISONPREDICATE_LT_NODE:
-            return this.builder.buildLess();
+            case JJTCOMPARISONPREDICATE_LT_NODE:
+                return this.builder.buildLess();
 
-        case JJTCOMPARISONPREDICATE_GTE_NODE:
-            return this.builder.buildGreaterOrEqual();
+            case JJTCOMPARISONPREDICATE_GTE_NODE:
+                return this.builder.buildGreaterOrEqual();
 
-        case JJTCOMPARISONPREDICATE_LTE_NODE:
-            return this.builder.buildLessOrEqual();
+            case JJTCOMPARISONPREDICATE_LTE_NODE:
+                return this.builder.buildLessOrEqual();
 
-        default:
-            throw new CQLException("unexpeted filter type.");
+            default:
+                throw new CQLException("unexpeted filter type.");
         }
     }
-    
-
-    
 }

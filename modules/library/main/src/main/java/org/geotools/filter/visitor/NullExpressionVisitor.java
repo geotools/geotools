@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2006-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -28,45 +28,41 @@ import org.opengis.filter.expression.Subtract;
 
 /**
  * This class does *nothing* - useful to prevent null checks in AbstractFilterVisitor.
- * 
+ *
  * @author Jody
- *
- *
- *
  * @source $URL$
  */
-public class NullExpressionVisitor implements ExpressionVisitor{
+public class NullExpressionVisitor implements ExpressionVisitor {
 
-    public Object visit( NilExpression expression, Object extraData ) {
+    public Object visit(NilExpression expression, Object extraData) {
         return null;
     }
 
-    public Object visit( Add expression, Object extraData ) {
+    public Object visit(Add expression, Object extraData) {
         return null;
     }
 
-    public Object visit( Divide expression, Object extraData ) {
+    public Object visit(Divide expression, Object extraData) {
         return null;
     }
 
-    public Object visit( Function expression, Object extraData ) {
+    public Object visit(Function expression, Object extraData) {
         return null;
     }
 
-    public Object visit( Literal expression, Object extraData ) {
+    public Object visit(Literal expression, Object extraData) {
         return null;
     }
 
-    public Object visit( Multiply expression, Object extraData ) {
+    public Object visit(Multiply expression, Object extraData) {
         return null;
     }
 
-    public Object visit( PropertyName expression, Object extraData ) {
+    public Object visit(PropertyName expression, Object extraData) {
         return null;
     }
 
-    public Object visit( Subtract expression, Object extraData ) {
+    public Object visit(Subtract expression, Object extraData) {
         return null;
     }
-
 }

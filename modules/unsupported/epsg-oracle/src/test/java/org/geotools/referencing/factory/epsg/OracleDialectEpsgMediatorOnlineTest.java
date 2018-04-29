@@ -18,40 +18,34 @@ package org.geotools.referencing.factory.epsg;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import org.geotools.factory.Hints;
 import org.geotools.referencing.factory.epsg.oracle.OracleOnlineTestCase;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class OracleDialectEpsgMediatorOnlineTest extends OracleOnlineTestCase {
 
     private OracleDialectEpsgMediator mediator;
-    
+
     protected void connect() throws Exception {
         super.connect();
         Map config = new HashMap();
-        config.put( Hints.CACHE_POLICY,"none");
-        //config.put( Hints.EPSG_DATA_SOURCE, datasource );
-        config.put( Hints.EPSG_DATA_SOURCE, "jdbc/EPSG" );
-        Hints hints = new Hints( config );
-        mediator = new OracleDialectEpsgMediator( hints );
-        
-        //mediator = new OracleDialectEpsgMediator(80, hints, datasource);
+        config.put(Hints.CACHE_POLICY, "none");
+        // config.put( Hints.EPSG_DATA_SOURCE, datasource );
+        config.put(Hints.EPSG_DATA_SOURCE, "jdbc/EPSG");
+        Hints hints = new Hints(config);
+        mediator = new OracleDialectEpsgMediator(hints);
+
+        // mediator = new OracleDialectEpsgMediator(80, hints, datasource);
     }
-    
+
     public void testCreation() throws Exception {
         assertNotNull(mediator);
         CoordinateReferenceSystem epsg4326 = mediator.createCoordinateReferenceSystem("EPSG:4326");
         CoordinateReferenceSystem code4326 = mediator.createCoordinateReferenceSystem("4326");
-        
+
         assertNotNull(epsg4326);
         assertEquals("4326 equals EPSG:4326", code4326, epsg4326);
-        assertSame("4326 == EPSG:4326", code4326, epsg4326);       
+        assertSame("4326 == EPSG:4326", code4326, epsg4326);
     }
-
 }

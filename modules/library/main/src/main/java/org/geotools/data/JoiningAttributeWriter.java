@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,14 +17,12 @@
 package org.geotools.data;
 
 import java.io.IOException;
-
 import org.opengis.feature.type.AttributeDescriptor;
 
-/** Provides ...
- * 
- *  @author Sean Geoghegan, Defence Science and Technology Organisation.
+/**
+ * Provides ...
  *
- *
+ * @author Sean Geoghegan, Defence Science and Technology Organisation.
  * @source $URL$
  */
 public class JoiningAttributeWriter implements AttributeWriter {
@@ -32,9 +30,7 @@ public class JoiningAttributeWriter implements AttributeWriter {
     private int[] index;
     private AttributeDescriptor[] metaData;
 
-    /**
-     * 
-     */
+    /** */
     public JoiningAttributeWriter(AttributeWriter[] writers) {
         this.writers = writers;
         metaData = joinMetaData(writers);
@@ -70,9 +66,7 @@ public class JoiningAttributeWriter implements AttributeWriter {
                 dse = e;
             }
         }
-        if (dse != null)
-            throw dse;
-
+        if (dse != null) throw dse;
     }
 
     public boolean hasNext() throws IOException {
@@ -85,9 +79,9 @@ public class JoiningAttributeWriter implements AttributeWriter {
     }
 
     public void next() throws IOException {
-        for (int i = 0, ii = writers.length; i < ii; i++) {            
-            //if (writers[i].hasNext()) Dont want to check this, need to be able to insert
-                writers[i].next();
+        for (int i = 0, ii = writers.length; i < ii; i++) {
+            // if (writers[i].hasNext()) Dont want to check this, need to be able to insert
+            writers[i].next();
         }
     }
 
@@ -103,12 +97,11 @@ public class JoiningAttributeWriter implements AttributeWriter {
                 break;
             }
         }
-        if (writer == null)
-            throw new ArrayIndexOutOfBoundsException(position);
+        if (writer == null) throw new ArrayIndexOutOfBoundsException(position);
 
         writer.write(position, attribute);
     }
-    
+
     public int getAttributeCount() {
         return metaData.length;
     }

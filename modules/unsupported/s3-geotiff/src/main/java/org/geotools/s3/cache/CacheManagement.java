@@ -16,20 +16,16 @@
  */
 package org.geotools.s3.cache;
 
-import org.geotools.s3.S3Connector;
-
 import net.sf.ehcache.*;
 import net.sf.ehcache.config.CacheConfiguration;
 import net.sf.ehcache.config.Configuration;
 import net.sf.ehcache.config.DiskStoreConfiguration;
 import net.sf.ehcache.config.PersistenceConfiguration;
 import net.sf.ehcache.constructs.blocking.SelfPopulatingCache;
+import org.geotools.s3.S3Connector;
 
-/**
- * Very basic EhCache handling
- */
+/** Very basic EhCache handling */
 public enum CacheManagement {
-
     DEFAULT;
 
     public static final String DEFAULT_CACHE = "default_cache";
@@ -47,14 +43,17 @@ public enum CacheManagement {
         CacheManager manager;
         if (config.getConfigurationPath() != null) {
             manager = CacheManager.newInstance(config.getConfigurationPath());
-        }
-        else {
+        } else {
             Configuration cacheConfig = new Configuration();
             cacheConfig.setMaxBytesLocalDisk((long) config.getDiskCacheSize());
             cacheConfig.setMaxBytesLocalHeap((long) config.getHeapSize());
-            CacheConfiguration defaultCacheConfiguration = new CacheConfiguration()
-                .persistence(new PersistenceConfiguration().strategy(
-                    PersistenceConfiguration.Strategy.LOCALTEMPSWAP));
+            CacheConfiguration defaultCacheConfiguration =
+                    new CacheConfiguration()
+                            .persistence(
+                                    new PersistenceConfiguration()
+                                            .strategy(
+                                                    PersistenceConfiguration.Strategy
+                                                            .LOCALTEMPSWAP));
             cacheConfig.defaultCache(defaultCacheConfiguration);
 
             DiskStoreConfiguration diskConfig = new DiskStoreConfiguration();
@@ -64,7 +63,8 @@ public enum CacheManagement {
 
             manager.addCache(DEFAULT_CACHE);
             Cache cache = manager.getCache(DEFAULT_CACHE);
-            SelfPopulatingCache populatingCache = new SelfPopulatingCache(cache, new S3ChunkEntryFactory(config));
+            SelfPopulatingCache populatingCache =
+                    new SelfPopulatingCache(cache, new S3ChunkEntryFactory(config));
             manager.replaceCacheWithDecoratedCache(cache, populatingCache);
         }
 

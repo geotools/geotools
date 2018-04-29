@@ -1,22 +1,19 @@
 package org.geotools.wmts.bindings;
 
-import org.geotools.wmts.WMTS;
-import org.geotools.xml.*;
-import org.geotools.xml.AbstractSimpleBinding;
-
+import java.math.BigInteger;
+import javax.xml.namespace.QName;
 import net.opengis.wmts.v_1.LegendURLType;
 import net.opengis.wmts.v_1.wmtsv_1Factory;
-
-import java.math.BigInteger;
-
-import javax.xml.namespace.QName;
+import org.geotools.wmts.WMTS;
+import org.geotools.xml.*;
 
 /**
  * Binding object for the element http://www.opengis.net/wmts/1.0:LegendURL.
  *
  * <p>
- *    <pre>
- *	 <code>
+ *
+ * <pre>
+ *  <code>
  *  &lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;element name="LegendURL" xmlns="http://www.w3.org/2001/XMLSchema"&gt;
  *  		&lt;annotation&gt;
  *  			&lt;documentation&gt;
@@ -68,14 +65,12 @@ import javax.xml.namespace.QName;
  *  		&lt;/complexType&gt;
  *  	&lt;/element&gt;
  *
- *	  </code>
+ *   </code>
  *    </pre>
- * </p>
  *
  * @generated
  */
-public class LegendURLBinding extends AbstractComplexBinding
-{
+public class LegendURLBinding extends AbstractComplexBinding {
     wmtsv_1Factory factory;
 
     public LegendURLBinding(wmtsv_1Factory factory) {
@@ -83,14 +78,13 @@ public class LegendURLBinding extends AbstractComplexBinding
         this.factory = factory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return WMTS.LegendURL;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -101,13 +95,13 @@ public class LegendURLBinding extends AbstractComplexBinding
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-            throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         LegendURLType legendURL = factory.createLegendURLType();
 
@@ -126,5 +120,4 @@ public class LegendURLBinding extends AbstractComplexBinding
 
         return legendURL;
     }
-
 }

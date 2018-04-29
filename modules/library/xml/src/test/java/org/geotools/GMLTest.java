@@ -21,6 +21,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
+import com.vividsolutions.jts.geom.Point;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -34,9 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.xml.namespace.QName;
-
 import org.geotools.GML.Version;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -53,18 +52,13 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 
-import com.vividsolutions.jts.geom.Point;
-
 /**
  * Check GML abilities
- *
  *
  * @source $URL$
  */
 public class GMLTest {
-    /**
-     * Check if we can encode a SimpleFeatureType using GML2
-     */
+    /** Check if we can encode a SimpleFeatureType using GML2 */
     @Test
     public void testEncodeGML2XSD() throws Exception {
         SimpleFeatureType TYPE = DataUtilities.createType("Location", "geom:Point,name:String");
@@ -78,7 +72,6 @@ public class GMLTest {
 
         String xsd = out.toString();
         assertTrue(xsd.indexOf("gml/2.1.2/feature.xsd") != -1);
-
     }
 
     @Test
@@ -88,10 +81,12 @@ public class GMLTest {
         DefaultFeatureCollection collection = new DefaultFeatureCollection();
         WKTReader2 wkt = new WKTReader2();
 
-        collection.add(SimpleFeatureBuilder.build(TYPE, new Object[] { wkt.read("POINT (1 2)"),
-                "name1" }, null));
-        collection.add(SimpleFeatureBuilder.build(TYPE, new Object[] { wkt.read("POINT (4 4)"),
-                "name2" }, null));
+        collection.add(
+                SimpleFeatureBuilder.build(
+                        TYPE, new Object[] {wkt.read("POINT (1 2)"), "name1"}, null));
+        collection.add(
+                SimpleFeatureBuilder.build(
+                        TYPE, new Object[] {wkt.read("POINT (4 4)"), "name2"}, null));
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         GML encode = new GML(Version.GML2);
@@ -132,10 +127,12 @@ public class GMLTest {
         DefaultFeatureCollection collection = new DefaultFeatureCollection();
         WKTReader2 wkt = new WKTReader2();
 
-        collection.add(SimpleFeatureBuilder.build(TYPE, new Object[] { wkt.read("POINT (1 2)"),
-                "name1" }, null));
-        collection.add(SimpleFeatureBuilder.build(TYPE, new Object[] { wkt.read("POINT (4 4)"),
-                "name2" }, null));
+        collection.add(
+                SimpleFeatureBuilder.build(
+                        TYPE, new Object[] {wkt.read("POINT (1 2)"), "name1"}, null));
+        collection.add(
+                SimpleFeatureBuilder.build(
+                        TYPE, new Object[] {wkt.read("POINT (4 4)"), "name2"}, null));
 
         ByteArrayOutputStream out2 = new ByteArrayOutputStream();
         GML encode2 = new GML(Version.GML2);
@@ -162,10 +159,12 @@ public class GMLTest {
 
         DefaultFeatureCollection collection = new DefaultFeatureCollection();
         WKTReader2 wkt = new WKTReader2();
-        collection.add(SimpleFeatureBuilder.build(TYPE, new Object[] { wkt.read("POINT (1 2)"),
-                "name1" }, null));
-        collection.add(SimpleFeatureBuilder.build(TYPE, new Object[] { wkt.read("POINT (4 4)"),
-                "name2" }, null));
+        collection.add(
+                SimpleFeatureBuilder.build(
+                        TYPE, new Object[] {wkt.read("POINT (1 2)"), "name1"}, null));
+        collection.add(
+                SimpleFeatureBuilder.build(
+                        TYPE, new Object[] {wkt.read("POINT (4 4)"), "name2"}, null));
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
@@ -191,10 +190,12 @@ public class GMLTest {
 
         DefaultFeatureCollection collection = new DefaultFeatureCollection();
         WKTReader2 wkt = new WKTReader2();
-        collection.add(SimpleFeatureBuilder.build(TYPE, new Object[] { wkt.read("POINT (1 2)"),
-                "name1" }, null));
-        collection.add(SimpleFeatureBuilder.build(TYPE, new Object[] { wkt.read("POINT (4 4)"),
-                "name2" }, null));
+        collection.add(
+                SimpleFeatureBuilder.build(
+                        TYPE, new Object[] {wkt.read("POINT (1 2)"), "name1"}, null));
+        collection.add(
+                SimpleFeatureBuilder.build(
+                        TYPE, new Object[] {wkt.read("POINT (4 4)"), "name2"}, null));
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
@@ -236,8 +237,9 @@ public class GMLTest {
         GML gml = new GML(Version.WFS1_1);
         gml.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
 
-        SimpleFeatureType featureType = gml.decodeSimpleFeatureType(schemaLocation, new NameImpl(
-                "http://www.openplans.org/topp", "states"));
+        SimpleFeatureType featureType =
+                gml.decodeSimpleFeatureType(
+                        schemaLocation, new NameImpl("http://www.openplans.org/topp", "states"));
 
         assertNotNull(featureType);
         assertSame(DefaultGeographicCRS.WGS84, featureType.getCoordinateReferenceSystem());
@@ -257,8 +259,9 @@ public class GMLTest {
         GML gml = new GML(Version.WFS1_0);
         gml.setCoordinateReferenceSystem(DefaultGeographicCRS.WGS84);
 
-        SimpleFeatureType featureType = gml.decodeSimpleFeatureType(schemaLocation, new NameImpl(
-                "http://www.openplans.org/topp", "states"));
+        SimpleFeatureType featureType =
+                gml.decodeSimpleFeatureType(
+                        schemaLocation, new NameImpl("http://www.openplans.org/topp", "states"));
 
         assertNotNull(featureType);
         assertSame(DefaultGeographicCRS.WGS84, featureType.getCoordinateReferenceSystem());
@@ -288,11 +291,11 @@ public class GMLTest {
         Logger log = org.geotools.util.logging.Logging.getLogger("org.geotools.xml");
         Level level = log.getLevel();
         try {
-            log.setLevel( Level.ALL );
-            
+            log.setLevel(Level.ALL);
+
             URL url = TestData.getResource(this, "states.gml");
             InputStream in = url.openStream();
-            
+
             GML gml = new GML(Version.GML3);
             SimpleFeatureCollection featureCollection = gml.decodeFeatureCollection(in);
 
@@ -350,7 +353,7 @@ public class GMLTest {
         }
         assertEquals(2, count);
     }
-    
+
     @Test
     public void testGMLNoSchemaUnrelated() throws Exception {
         URL url = TestData.getResource(this, "states_noschema_unrelated_atts.xml");
@@ -364,12 +367,22 @@ public class GMLTest {
         assertEquals(9, schema.getAttributeDescriptors().size());
         Map<String, Integer> attributePositions = getAttributePositionsMap(schema);
         // System.out.println(attributePositions);
-        assertTrue(attributePositions.keySet().containsAll(Arrays.asList("the_geom", "P_MALE", "STATE_NAME", "P_FEMALE", "STATE_FIPS", "SAMP_POP")));
+        assertTrue(
+                attributePositions
+                        .keySet()
+                        .containsAll(
+                                Arrays.asList(
+                                        "the_geom",
+                                        "P_MALE",
+                                        "STATE_NAME",
+                                        "P_FEMALE",
+                                        "STATE_FIPS",
+                                        "SAMP_POP")));
         assertTrue(attributePositions.get("STATE_NAME") < attributePositions.get("STATE_FIPS"));
         assertTrue(attributePositions.get("P_MALE") < attributePositions.get("P_FEMALE"));
         assertTrue(attributePositions.get("P_FEMALE") < attributePositions.get("SAMP_POP"));
     }
-    
+
     @Test
     public void testGMLNoSchemaRelated() throws Exception {
         URL url = TestData.getResource(this, "states_noschema_linked_atts.xml");
@@ -382,13 +395,17 @@ public class GMLTest {
         assertNotNull(schema.getGeometryDescriptor());
         Map<String, Integer> attributePositions = getAttributePositionsMap(schema);
         // System.out.println(attributePositions);
-        assertTrue(attributePositions.keySet().containsAll(Arrays.asList("the_geom", "P_MALE", "STATE_NAME", "P_FEMALE")));
+        assertTrue(
+                attributePositions
+                        .keySet()
+                        .containsAll(
+                                Arrays.asList("the_geom", "P_MALE", "STATE_NAME", "P_FEMALE")));
         assertTrue(attributePositions.get("STATE_NAME") < attributePositions.get("STATE_FIPS"));
         assertTrue(attributePositions.get("STATE_FIPS") < attributePositions.get("SUB_REGION"));
         assertTrue(attributePositions.get("STATE_NAME") < attributePositions.get("P_MALE"));
         assertTrue(attributePositions.get("P_MALE") < attributePositions.get("P_FEMALE"));
     }
-    
+
     Map<String, Integer> getAttributePositionsMap(SimpleFeatureType schema) {
         Map<String, Integer> map = new LinkedHashMap<>();
         int idx = 0;
@@ -397,5 +414,4 @@ public class GMLTest {
         }
         return map;
     }
-
 }

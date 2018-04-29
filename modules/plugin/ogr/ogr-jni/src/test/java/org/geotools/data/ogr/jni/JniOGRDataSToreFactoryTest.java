@@ -7,5 +7,4 @@ public class JniOGRDataSToreFactoryTest extends OGRDataStoreFactoryTest {
     public JniOGRDataSToreFactoryTest() {
         super(JniOGRDataStoreFactory.class);
     }
-
 }

@@ -17,17 +17,17 @@
 package org.geotools.filter.v1_0.capabilities;
 
 import javax.xml.namespace.QName;
+import org.geotools.xml.*;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.capability.SpatialCapabilities;
 import org.opengis.filter.capability.SpatialOperators;
-import org.geotools.xml.*;
-
 
 /**
  * Binding object for the type http://www.opengis.net/ogc:Spatial_CapabilitiesType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:complexType name="Spatial_CapabilitiesType"&gt;
  *      &lt;xsd:sequence&gt;
@@ -36,12 +36,8 @@ import org.geotools.xml.*;
  *  &lt;/xsd:complexType&gt;
  *                </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class Spatial_CapabilitiesTypeBinding extends AbstractComplexBinding {
@@ -51,14 +47,13 @@ public class Spatial_CapabilitiesTypeBinding extends AbstractComplexBinding {
         this.factory = factory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return OGC.Spatial_CapabilitiesType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -69,19 +64,18 @@ public class Spatial_CapabilitiesTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
-        return factory.spatialCapabilities(null,
-            (SpatialOperators) node.getChildValue(SpatialOperators.class));
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
+        return factory.spatialCapabilities(
+                null, (SpatialOperators) node.getChildValue(SpatialOperators.class));
     }
 
-    public Object getProperty(Object object, QName name)
-        throws Exception {
+    public Object getProperty(Object object, QName name) throws Exception {
         SpatialCapabilities spatial = (SpatialCapabilities) object;
 
         if ("Spatial_Operators".equals(name.getLocalPart())) {

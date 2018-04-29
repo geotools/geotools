@@ -22,12 +22,12 @@ import org.geotools.xml.InstanceComponent;
 import org.geotools.xml.SimpleBinding;
 import org.geotools.xs.XS;
 
-
 /**
  * Binding object for the type http://www.w3.org/2001/XMLSchema:positiveInteger.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xs:simpleType name="positiveInteger" id="positiveInteger"&gt;
  *      &lt;xs:annotation&gt;
@@ -40,23 +40,18 @@ import org.geotools.xs.XS;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class XSPositiveIntegerBinding implements SimpleBinding {
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return XS.POSITIVEINTEGER;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -67,6 +62,7 @@ public class XSPositiveIntegerBinding implements SimpleBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * This binding returns objects of type {@link java.math.BigInteger}.
      * <!-- end-user-doc -->
@@ -78,30 +74,31 @@ public class XSPositiveIntegerBinding implements SimpleBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * Restriction of integer to positive values.
-     * <p>
-     * Please just treat this as a Number, actual value returned
-     * may be BigInteger or Long or Integer.
-     * </p>
+     *
+     * <p>Please just treat this as a Number, actual value returned may be BigInteger or Long or
+     * Integer.
+     *
      * @param instance with text to be parsed
      * @param value Number from parent XSNonNegativeIntegerStratagy
      * @return Number positive in range 1 to ...
-     * <!-- begin-user-doc -->
+     *     <!-- begin-user-doc -->
      */
-    public Object parse(InstanceComponent instance, Object value)
-        throws Exception {
+    public Object parse(InstanceComponent instance, Object value) throws Exception {
         Number number = (Number) value;
 
         if (number.longValue() < 1) {
-            throw new IllegalArgumentException("positiveInteger value '" + number
-                + "' must be positive.");
+            throw new IllegalArgumentException(
+                    "positiveInteger value '" + number + "' must be positive.");
         }
 
         return BigInteger.valueOf(number.longValue());
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -111,8 +108,8 @@ public class XSPositiveIntegerBinding implements SimpleBinding {
         Number number = (Number) object;
 
         if (number.longValue() == 0) {
-            throw new IllegalArgumentException("positiveInteger value '" + number
-                + "' must be positive.");
+            throw new IllegalArgumentException(
+                    "positiveInteger value '" + number + "' must be positive.");
         }
 
         return value;

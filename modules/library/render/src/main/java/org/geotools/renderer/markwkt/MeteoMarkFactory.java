@@ -25,7 +25,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.renderer.style.MarkFactory;
 import org.geotools.renderer.style.shape.ExplicitBoundsShape;
 import org.opengis.feature.Feature;
@@ -33,7 +32,7 @@ import org.opengis.filter.expression.Expression;
 
 /**
  * Adds to the well-known shapes some symbols the weathermen may find useful.
- * 
+ *
  * @author Luca Morandini lmorandini@ieee.org
  * @version $Id$
  */
@@ -42,8 +41,8 @@ public class MeteoMarkFactory implements MarkFactory {
     public static final String SHAPE_PREFIX = "extshape://";
 
     /** The logger for the rendering module. */
-    private static final Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger(MeteoMarkFactory.class);
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(MeteoMarkFactory.class);
 
     /**
      * Key for the extshape://arrow height ratio (between 0 and 1000). Default value is 2, twice as
@@ -63,7 +62,7 @@ public class MeteoMarkFactory implements MarkFactory {
      */
     public static final String ARROWHEAD_BASE_KEY = "ab";
 
-    protected final static Map<String, Shape> WELLKNOWN_SHAPES = new HashMap<String, Shape>();
+    protected static final Map<String, Shape> WELLKNOWN_SHAPES = new HashMap<String, Shape>();
 
     static {
         GeneralPath gp = new GeneralPath();
@@ -129,15 +128,14 @@ public class MeteoMarkFactory implements MarkFactory {
 
     /*
      * Return a shape with the given url.
-     * 
+     *
      * @see org.geotools.renderer.style.MarkFactory#getShape(java.awt.Graphics2D,
      * org.opengis.filter.expression.Expression, org.opengis.feature.Feature)
      */
     public Shape getShape(Graphics2D graphics, Expression symbolUrl, Feature feature)
             throws Exception {
         // cannot handle a null url
-        if (symbolUrl == null)
-            return null;
+        if (symbolUrl == null) return null;
 
         // see if it's a shape
         if (LOGGER.isLoggable(Level.FINE)) {
@@ -178,21 +176,25 @@ public class MeteoMarkFactory implements MarkFactory {
                 throw new IllegalArgumentException("Invalid numerical value " + svalue);
             }
             switch (key) {
-            case ARROW_HEIGHT_RATIO_KEY:
-                validateRange(key, value, 0, 1000);
-                height = value;
-                break;
-            case ARROW_THICKNESS_KEY:
-                validateRange(key, value, 0, 1);
-                thickness = value;
-                break;
-            case ARROWHEAD_BASE_KEY:
-                validateRange(key, value, 0, 1);
-                arrowBase = value;
-                break;
-            default:
-                LOGGER.warning("Unexpected key value pair " + key + "=" + svalue
-                        + " for extshape://arrow");
+                case ARROW_HEIGHT_RATIO_KEY:
+                    validateRange(key, value, 0, 1000);
+                    height = value;
+                    break;
+                case ARROW_THICKNESS_KEY:
+                    validateRange(key, value, 0, 1);
+                    thickness = value;
+                    break;
+                case ARROWHEAD_BASE_KEY:
+                    validateRange(key, value, 0, 1);
+                    arrowBase = value;
+                    break;
+                default:
+                    LOGGER.warning(
+                            "Unexpected key value pair "
+                                    + key
+                                    + "="
+                                    + svalue
+                                    + " for extshape://arrow");
             }
         }
         return buildDynamicArrow(height, thickness, arrowBase);
@@ -229,8 +231,16 @@ public class MeteoMarkFactory implements MarkFactory {
 
     private void validateRange(String key, double value, double min, double max) {
         if (value < min || value > max) {
-            throw new IllegalArgumentException("Invalid value " + value + " for key " + key
-                    + ", should have been between " + min + " and " + max + " (extreme excluded)");
+            throw new IllegalArgumentException(
+                    "Invalid value "
+                            + value
+                            + " for key "
+                            + key
+                            + ", should have been between "
+                            + min
+                            + " and "
+                            + max
+                            + " (extreme excluded)");
         }
     }
 
@@ -247,5 +257,4 @@ public class MeteoMarkFactory implements MarkFactory {
         }
         return params;
     }
-
 }

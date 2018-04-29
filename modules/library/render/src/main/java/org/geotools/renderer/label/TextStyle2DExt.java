@@ -1,18 +1,17 @@
 package org.geotools.renderer.label;
 
-import org.geotools.renderer.style.TextStyle2D;
-import org.geotools.styling.TextSymbolizer.PolygonAlignOptions;
-
 import com.vividsolutions.jts.algorithm.MinimumDiameter;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.prep.PreparedGeometry;
+import org.geotools.renderer.style.TextStyle2D;
+import org.geotools.styling.TextSymbolizer.PolygonAlignOptions;
 
 /**
  * Helper class that keeps the state of the alternate polygon labelling angle to avoid its (sometime
  * expensive) computation as the labeller tries different labelling positions
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 class TextStyle2DExt extends TextStyle2D {
@@ -27,9 +26,7 @@ class TextStyle2DExt extends TextStyle2D {
     }
 
     void setupPolygonAlign(PreparedGeometry pg) {
-        if (item.getPolygonAlign() == PolygonAlignOptions.NONE)
-            return;
-
+        if (item.getPolygonAlign() == PolygonAlignOptions.NONE) return;
     }
 
     boolean flipRotation(Geometry geometry) {
@@ -88,5 +85,4 @@ class TextStyle2DExt extends TextStyle2D {
         }
         return angle;
     }
-
 }

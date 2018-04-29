@@ -2,9 +2,7 @@ package org.geotools.gml4wcs.bindings;
 
 import java.util.LinkedList;
 import java.util.List;
-
 import javax.xml.namespace.QName;
-
 import org.geotools.geometry.GeneralDirectPosition;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.gml4wcs.GML;
@@ -24,12 +22,12 @@ import org.w3c.dom.Element;
 
 /**
  * Binding object for the type http://www.opengis.net/gml:EnvelopeType.
- * 
+ *
  * <p>
- * 
+ *
  * <pre>
- *	 <code>
- * 
+ *  <code>
+ *
  *  &lt;complexType name=&quot;EnvelopeType&quot;&gt;
  *      &lt;annotation&gt;
  *          &lt;documentation&gt;Envelope defines an extent using a pair of positions defining opposite corners in arbitrary dimensions.&lt;/documentation&gt;
@@ -41,30 +39,26 @@ import org.w3c.dom.Element;
  *              &lt;/sequence&gt;
  *          &lt;/extension&gt;
  *      &lt;/complexContent&gt;
- *  &lt;/complexType&gt; 
- * 	
+ *  &lt;/complexType&gt;
+ *
  * </code>
- *	 </pre>
- * 
- * </p>
- * 
+ *  </pre>
+ *
  * @generated
- *
- *
  * @source $URL$
  */
 public class EnvelopeTypeBinding extends AbstractComplexBinding {
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return GML.EnvelopeType;
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Class<GeneralEnvelope> getType() {
@@ -72,13 +66,14 @@ public class EnvelopeTypeBinding extends AbstractComplexBinding {
     }
 
     /**
-     * <!-- begin-user-doc --> ATTENTION: I'm assuming a LatLon envelope here.
+     *
+     * <!-- begin-user-doc -->
+     * ATTENTION: I'm assuming a LatLon envelope here.
      * <!-- end-user-doc -->
-     * 
+     *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-            throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         List positions = node.getChildren("pos");
 
         if (!positions.isEmpty() && (positions.size() == 2)) {
@@ -88,7 +83,7 @@ public class EnvelopeTypeBinding extends AbstractComplexBinding {
             GeneralDirectPosition p2 = (GeneralDirectPosition) n2.getValue();
 
             GeneralEnvelope envelope = new GeneralEnvelope(p1, p2);
-            
+
             for (AttributeInstance att : instance.getAttributes()) {
                 if (att.getName().equals("srsName"))
                     envelope.setCoordinateReferenceSystem(CRS.decode(att.getText()));
@@ -106,7 +101,7 @@ public class EnvelopeTypeBinding extends AbstractComplexBinding {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.geotools.xml.AbstractComplexBinding#getExecutionMode()
      */
     @Override
@@ -119,12 +114,13 @@ public class EnvelopeTypeBinding extends AbstractComplexBinding {
      * <!-- end-user-doc -->
      */
     @Override
-    public Element encode(Object object, Document document, Element value)
-            throws Exception {
+    public Element encode(Object object, Document document, Element value) throws Exception {
         GeneralEnvelope envelope = (GeneralEnvelope) object;
 
         if (envelope == null) {
-            value.appendChild(document.createElementNS(GML.NAMESPACE, org.geotools.gml3.GML.Null.getLocalPart()));
+            value.appendChild(
+                    document.createElementNS(
+                            GML.NAMESPACE, org.geotools.gml3.GML.Null.getLocalPart()));
         }
 
         return null;
@@ -144,7 +140,7 @@ public class EnvelopeTypeBinding extends AbstractComplexBinding {
                 return null;
             }
         }
-        
+
         if (name.getLocalPart().equals("pos")) {
             CoordinateReferenceSystem crs = envelope.getCoordinateReferenceSystem();
 
@@ -165,8 +161,10 @@ public class EnvelopeTypeBinding extends AbstractComplexBinding {
             if (spatialCRS != null) {
                 List<DirectPosition> envelopePositions = new LinkedList<DirectPosition>();
 
-                GeneralDirectPosition lowerCorner = new GeneralDirectPosition(envelope.getCoordinateReferenceSystem());
-                GeneralDirectPosition upperCorner = new GeneralDirectPosition(envelope.getCoordinateReferenceSystem());
+                GeneralDirectPosition lowerCorner =
+                        new GeneralDirectPosition(envelope.getCoordinateReferenceSystem());
+                GeneralDirectPosition upperCorner =
+                        new GeneralDirectPosition(envelope.getCoordinateReferenceSystem());
 
                 for (int i = 0; i < spatialCRS.getCoordinateSystem().getDimension(); i++) {
                     lowerCorner.setOrdinate(i, envelope.getLowerCorner().getOrdinate(i));

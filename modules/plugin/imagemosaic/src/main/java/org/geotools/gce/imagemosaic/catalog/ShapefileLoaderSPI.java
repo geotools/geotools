@@ -16,17 +16,15 @@
  */
 package org.geotools.gce.imagemosaic.catalog;
 
+import com.vividsolutions.jts.geom.Geometry;
 import java.io.File;
 import java.io.IOException;
-
 import org.geotools.coverage.grid.io.footprint.FootprintLoader;
 import org.geotools.coverage.grid.io.footprint.FootprintLoaderSpi;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.util.URLs;
 import org.opengis.feature.simple.SimpleFeature;
-
-import com.vividsolutions.jts.geom.Geometry;
 
 public class ShapefileLoaderSPI implements FootprintLoaderSpi {
 
@@ -36,7 +34,8 @@ public class ShapefileLoaderSPI implements FootprintLoaderSpi {
     }
 
     /**
-     * Loads footprints from a sidecar shepefile with a single record, will complain if more than one is found
+     * Loads footprints from a sidecar shepefile with a single record, will complain if more than
+     * one is found
      */
     public class ShapefileLoader implements FootprintLoader {
 
@@ -71,5 +70,4 @@ public class ShapefileLoaderSPI implements FootprintLoaderSpi {
             return null;
         }
     }
-
 }

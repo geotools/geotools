@@ -17,7 +17,6 @@
 package org.geotools.sld.bindings;
 
 import javax.xml.namespace.QName;
-
 import org.geotools.styling.ChannelSelection;
 import org.geotools.styling.ColorMap;
 import org.geotools.styling.ContrastEnhancement;
@@ -33,12 +32,12 @@ import org.opengis.filter.expression.PropertyName;
 import org.opengis.style.OverlapBehavior;
 import org.picocontainer.MutablePicoContainer;
 
-
 /**
  * Binding object for the element http://www.opengis.net/sld:RasterSymbolizer.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:element name="RasterSymbolizer" substitutionGroup="sld:Symbolizer"&gt;
  *      &lt;xsd:annotation&gt;
@@ -66,12 +65,8 @@ import org.picocontainer.MutablePicoContainer;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class SLDRasterSymbolizerBinding extends AbstractComplexBinding {
@@ -81,14 +76,13 @@ public class SLDRasterSymbolizerBinding extends AbstractComplexBinding {
         this.styleFactory = styleFactory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return SLD.RASTERSYMBOLIZER;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -99,6 +93,7 @@ public class SLDRasterSymbolizerBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -109,28 +104,28 @@ public class SLDRasterSymbolizerBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {
-    }
+    public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         RasterSymbolizer rs = styleFactory.createRasterSymbolizer();
 
-        //&lt;xsd:element ref="sld:Geometry" minOccurs="0"/&gt;
-        if(node.hasChild("Geometry")) {
+        // &lt;xsd:element ref="sld:Geometry" minOccurs="0"/&gt;
+        if (node.hasChild("Geometry")) {
             Expression geometry = (Expression) node.getChildValue("Geometry");
-            if(geometry instanceof PropertyName) {
+            if (geometry instanceof PropertyName) {
                 PropertyName propertyName = (PropertyName) geometry;
                 rs.setGeometryPropertyName(propertyName.getPropertyName());
             } else {
@@ -138,38 +133,38 @@ public class SLDRasterSymbolizerBinding extends AbstractComplexBinding {
             }
         }
 
-        //&lt;xsd:element ref="sld:Opacity" minOccurs="0"/&gt;
+        // &lt;xsd:element ref="sld:Opacity" minOccurs="0"/&gt;
         if (node.hasChild("Opacity")) {
             rs.setOpacity((Expression) node.getChildValue("Opacity"));
         }
 
-        //&lt;xsd:element ref="sld:ChannelSelection" minOccurs="0"/&gt;
+        // &lt;xsd:element ref="sld:ChannelSelection" minOccurs="0"/&gt;
         if (node.hasChild("ChannelSelection")) {
             rs.setChannelSelection((ChannelSelection) node.getChildValue("ChannelSelection"));
         }
 
-        //&lt;xsd:element ref="sld:OverlapBehavior" minOccurs="0"/&gt;
+        // &lt;xsd:element ref="sld:OverlapBehavior" minOccurs="0"/&gt;
         if (node.hasChild("OverlapBehavior")) {
             rs.setOverlapBehavior((OverlapBehavior) node.getChildValue("OverlapBehavior"));
         }
 
-        //&lt;xsd:element ref="sld:ColorMap" minOccurs="0"/&gt;
+        // &lt;xsd:element ref="sld:ColorMap" minOccurs="0"/&gt;
         if (node.hasChild("ColorMap")) {
             rs.setColorMap((ColorMap) node.getChildValue("ColorMap"));
         }
 
-        //&lt;xsd:element ref="sld:ContrastEnhancement" minOccurs="0"/&gt;
+        // &lt;xsd:element ref="sld:ContrastEnhancement" minOccurs="0"/&gt;
         if (node.hasChild("ContrastEnhancement")) {
-            rs.setContrastEnhancement((ContrastEnhancement) node.getChildValue(
-                    "ContrastEnhancement"));
+            rs.setContrastEnhancement(
+                    (ContrastEnhancement) node.getChildValue("ContrastEnhancement"));
         }
 
-        //&lt;xsd:element ref="sld:ShadedRelief" minOccurs="0"/&gt;
+        // &lt;xsd:element ref="sld:ShadedRelief" minOccurs="0"/&gt;
         if (node.hasChild("ShadedRelief")) {
             rs.setShadedRelief((ShadedRelief) node.getChildValue("ShadedRelief"));
         }
 
-        //&lt;xsd:element ref="sld:ImageOutline" minOccurs="0"/&gt;
+        // &lt;xsd:element ref="sld:ImageOutline" minOccurs="0"/&gt;
         if (node.hasChild("ImageOutline")) {
             ImageOutline imageOutput = (ImageOutline) node.getChildValue("ImageOutline");
             rs.setImageOutline(imageOutput.getSymbolizer());

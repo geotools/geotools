@@ -22,28 +22,28 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Map;
 import java.util.Set;
-
 import org.geotools.coverage.io.Driver;
 import org.geotools.coverage.io.FileCoverageAccess;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.Parameter;
 
-/**
- * @author Simone Giannecchini, GeoSolutions
- *
- */
-public class DefaultFileCoverageAccess extends DefaultCoverageAccess implements FileCoverageAccess{
+/** @author Simone Giannecchini, GeoSolutions */
+public class DefaultFileCoverageAccess extends DefaultCoverageAccess implements FileCoverageAccess {
 
     protected final URL source;
-    
+
     /**
      * @param driver
      * @param allowedAccessTypes
      * @param accessParams
      */
-    public DefaultFileCoverageAccess(Driver driver, EnumSet<AccessType> allowedAccessTypes,
-            Map<String, Parameter<?>> accessParams, URL source,
-            Map<String, Serializable> connectionParameters) throws DataSourceException {
+    public DefaultFileCoverageAccess(
+            Driver driver,
+            EnumSet<AccessType> allowedAccessTypes,
+            Map<String, Parameter<?>> accessParams,
+            URL source,
+            Map<String, Serializable> connectionParameters)
+            throws DataSourceException {
         super(driver, allowedAccessTypes, accessParams, connectionParameters);
         // checks
         if (source == null && connectionParameters == null) {
@@ -68,5 +68,4 @@ public class DefaultFileCoverageAccess extends DefaultCoverageAccess implements 
     public Set<URL> getFileSet() {
         return Collections.singleton(source);
     }
-
 }

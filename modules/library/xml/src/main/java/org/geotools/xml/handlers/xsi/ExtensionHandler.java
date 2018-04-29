@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -18,26 +18,21 @@ package org.geotools.xml.handlers.xsi;
 
 import java.util.LinkedList;
 import java.util.List;
-
 import org.geotools.xml.XSIElementHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotRecognizedException;
 
-
 /**
- * <p>
  * Represents an Extension element
- * </p>
  *
  * @author dzwiers www.refractions.net
- *
- *
  * @source $URL$
  */
 public class ExtensionHandler extends XSIElementHandler {
     /** 'extension' */
     public static final String LOCALNAME = "extension";
+
     private String base;
 
     //    private AnyAttributeHandler anyAttribute;
@@ -45,25 +40,19 @@ public class ExtensionHandler extends XSIElementHandler {
     private Object child;
     private List attributeDec;
 
-    /**
-     * @see java.lang.Object#hashCode()
-     */
+    /** @see java.lang.Object#hashCode() */
     public int hashCode() {
-        return LOCALNAME.hashCode() * ((base == null) ? 1 : base.hashCode()) * ((child == null)
-        ? 1 : child.hashCode());
+        return LOCALNAME.hashCode()
+                * ((base == null) ? 1 : base.hashCode())
+                * ((child == null) ? 1 : child.hashCode());
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String,
-     *      java.lang.String)
-     */
-    public XSIElementHandler getHandler(String namespaceURI, String localName)
-        throws SAXException {
+    /** @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String, java.lang.String) */
+    public XSIElementHandler getHandler(String namespaceURI, String localName) throws SAXException {
         if (SchemaHandler.namespaceURI.equalsIgnoreCase(namespaceURI)) {
             // child types
             //
-            logger.fine("Getting Handler for " + localName
-                + " inside Extension");
+            logger.fine("Getting Handler for " + localName + " inside Extension");
 
             // all
             if (AllHandler.LOCALNAME.equalsIgnoreCase(localName)) {
@@ -72,9 +61,11 @@ public class ExtensionHandler extends XSIElementHandler {
                 if (child == null) {
                     child = ah;
                 } else {
-                    throw new SAXNotRecognizedException(getLocalName()
-                        + " may only have one '" + AllHandler.LOCALNAME
-                        + "' declaration.");
+                    throw new SAXNotRecognizedException(
+                            getLocalName()
+                                    + " may only have one '"
+                                    + AllHandler.LOCALNAME
+                                    + "' declaration.");
                 }
 
                 return ah;
@@ -109,9 +100,11 @@ public class ExtensionHandler extends XSIElementHandler {
                 if (child == null) {
                     child = ah;
                 } else {
-                    throw new SAXNotRecognizedException(getLocalName()
-                        + " may only have one '" + ChoiceHandler.LOCALNAME
-                        + "' declaration.");
+                    throw new SAXNotRecognizedException(
+                            getLocalName()
+                                    + " may only have one '"
+                                    + ChoiceHandler.LOCALNAME
+                                    + "' declaration.");
                 }
 
                 return ah;
@@ -124,9 +117,11 @@ public class ExtensionHandler extends XSIElementHandler {
                 if (child == null) {
                     child = ah;
                 } else {
-                    throw new SAXNotRecognizedException(getLocalName()
-                        + " may only have one '" + GroupHandler.LOCALNAME
-                        + "' declaration.");
+                    throw new SAXNotRecognizedException(
+                            getLocalName()
+                                    + " may only have one '"
+                                    + GroupHandler.LOCALNAME
+                                    + "' declaration.");
                 }
                 return ah;
             }
@@ -138,9 +133,11 @@ public class ExtensionHandler extends XSIElementHandler {
                 if (child == null) {
                     child = ah;
                 } else {
-                    throw new SAXNotRecognizedException(getLocalName()
-                        + " may only have one '" + SequenceHandler.LOCALNAME
-                        + "' declaration.");
+                    throw new SAXNotRecognizedException(
+                            getLocalName()
+                                    + " may only have one '"
+                                    + SequenceHandler.LOCALNAME
+                                    + "' declaration.");
                 }
 
                 return ah;
@@ -152,19 +149,16 @@ public class ExtensionHandler extends XSIElementHandler {
         return null;
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#getLocalName()
-     */
+    /** @see org.geotools.xml.XSIElementHandler#getLocalName() */
     public String getLocalName() {
         return LOCALNAME;
     }
 
     /**
-     * @see org.geotools.xml.XSIElementHandler#startElement(java.lang.String,
-     *      java.lang.String, org.xml.sax.Attributes)
+     * @see org.geotools.xml.XSIElementHandler#startElement(java.lang.String, java.lang.String,
+     *     org.xml.sax.Attributes)
      */
-    public void startElement(String namespaceURI, String localName,
-        Attributes atts){
+    public void startElement(String namespaceURI, String localName, Attributes atts) {
         base = atts.getValue("", "base");
 
         if (base == null) {
@@ -172,32 +166,17 @@ public class ExtensionHandler extends XSIElementHandler {
         }
     }
 
-    /**
-     * <p>
-     * gets a list of AttributeHandlers
-     * </p>
-     *
-     */
+    /** gets a list of AttributeHandlers */
     public List getAttributeDeclarations() {
         return attributeDec;
     }
 
-    /**
-     * <p>
-     * Returns the 'base' attribute
-     * </p>
-     *
-     */
+    /** Returns the 'base' attribute */
     public String getBase() {
         return base;
     }
 
-    /**
-     * <p>
-     * Returns the child handler
-     * </p>
-     *
-     */
+    /** Returns the child handler */
     public Object getChild() {
         return child;
     }
@@ -209,11 +188,8 @@ public class ExtensionHandler extends XSIElementHandler {
         return DEFAULT;
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#endElement(java.lang.String,
-     *      java.lang.String)
-     */
-    public void endElement(String namespaceURI, String localName){
+    /** @see org.geotools.xml.XSIElementHandler#endElement(java.lang.String, java.lang.String) */
+    public void endElement(String namespaceURI, String localName) {
         // do nothing
     }
 }

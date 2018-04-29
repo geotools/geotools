@@ -16,18 +16,12 @@
  */
 package org.geotools.gml2.bindings;
 
+import com.vividsolutions.jts.geom.MultiPoint;
 import org.geotools.gml2.GML;
 import org.geotools.xml.Binding;
 import org.w3c.dom.Document;
 
-import com.vividsolutions.jts.geom.MultiPoint;
-
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class GMLMultiPointPropertyTypeBinding2Test extends GMLTestSupport {
     public void testType() {
         assertEquals(MultiPoint.class, binding(GML.MultiPointPropertyType).getType());
@@ -46,8 +40,11 @@ public class GMLMultiPointPropertyTypeBinding2Test extends GMLTestSupport {
 
     public void testEncode() throws Exception {
         Document doc = encode(GML2MockData.multiPoint(), GML.multiPointProperty);
-        assertEquals(1,
-            doc.getElementsByTagNameNS(GML.NAMESPACE, GML.MultiPoint.getLocalPart()).getLength());
-        assertEquals(2, doc.getElementsByTagNameNS(GML.NAMESPACE, GML.Point.getLocalPart()).getLength());
+        assertEquals(
+                1,
+                doc.getElementsByTagNameNS(GML.NAMESPACE, GML.MultiPoint.getLocalPart())
+                        .getLength());
+        assertEquals(
+                2, doc.getElementsByTagNameNS(GML.NAMESPACE, GML.Point.getLocalPart()).getLength());
     }
 }

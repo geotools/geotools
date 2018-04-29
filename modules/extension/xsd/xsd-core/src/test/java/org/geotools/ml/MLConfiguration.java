@@ -16,7 +16,6 @@
  */
 package org.geotools.ml;
 
-import org.picocontainer.MutablePicoContainer;
 import org.geotools.ml.bindings.ML;
 import org.geotools.ml.bindings.MLAttachmentTypeBinding;
 import org.geotools.ml.bindings.MLBodyTypeBinding;
@@ -25,13 +24,9 @@ import org.geotools.ml.bindings.MLMailTypeBinding;
 import org.geotools.ml.bindings.MLMailsTypeBinding;
 import org.geotools.ml.bindings.MLMimeTopLevelTypeBinding;
 import org.geotools.xml.Configuration;
+import org.picocontainer.MutablePicoContainer;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class MLConfiguration extends Configuration {
     public MLConfiguration() {
         super(ML.getInstance());
@@ -43,7 +38,7 @@ public class MLConfiguration extends Configuration {
         container.registerComponentImplementation(ML.ENVELOPETYPE, MLEnvelopeTypeBinding.class);
         container.registerComponentImplementation(ML.MAILSTYPE, MLMailsTypeBinding.class);
         container.registerComponentImplementation(ML.MAILTYPE, MLMailTypeBinding.class);
-        container.registerComponentImplementation(ML.MIMETOPLEVELTYPE,
-            MLMimeTopLevelTypeBinding.class);
+        container.registerComponentImplementation(
+                ML.MIMETOPLEVELTYPE, MLMimeTopLevelTypeBinding.class);
     }
 }

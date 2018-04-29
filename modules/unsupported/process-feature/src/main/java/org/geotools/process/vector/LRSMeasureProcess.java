@@ -17,15 +17,18 @@
  */
 package org.geotools.process.vector;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.linearref.LengthIndexedLine;
+import com.vividsolutions.jts.operation.distance.DistanceOp;
 import java.util.logging.Logger;
-
 import javax.measure.converter.UnitConverter;
 import javax.measure.unit.SI;
 import javax.measure.unit.Unit;
-
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
-import org.geotools.feature.FeatureCollections;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -47,18 +50,15 @@ import org.opengis.feature.type.PropertyDescriptor;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.linearref.LengthIndexedLine;
-import com.vividsolutions.jts.operation.distance.DistanceOp;
-
-@DescribeProcess(title = "Measure point in LRS", description = "Computes the measure of a point along a feature (as feature with attribute lrs_measure). The point is measured along the nearest feature.")
+@DescribeProcess(
+    title = "Measure point in LRS",
+    description =
+            "Computes the measure of a point along a feature (as feature with attribute lrs_measure). The point is measured along the nearest feature."
+)
 /**
- * 
- *
- * @source $URL: http://svn.osgeo.org/geotools/trunk/modules/unsupported/process-feature/src/main/java/org/geotools/process/feature/gs/NearestProcess.java $
+ * @source $URL:
+ *     http://svn.osgeo.org/geotools/trunk/modules/unsupported/process-feature/src/main/java/org/geotools/process/feature/gs/NearestProcess.java
+ *     $
  */
 public class LRSMeasureProcess implements VectorProcess {
     private static final Logger LOGGER = Logging.getLogger(LRSMeasureProcess.class);
@@ -67,7 +67,7 @@ public class LRSMeasureProcess implements VectorProcess {
 
     /**
      * Process the input data set.
-     * 
+     *
      * @param featureCollection the data set
      * @param crs the CRS
      * @param point the given point
@@ -76,11 +76,27 @@ public class LRSMeasureProcess implements VectorProcess {
      */
     @DescribeResult(name = "result", description = "Output feature collection")
     public FeatureCollection execute(
-            @DescribeParameter(name = "features", description = "Input feature collection") FeatureCollection featureCollection,
-            @DescribeParameter(name = "from_measure_attb", description = "Attribute providing start measure of feature") String fromMeasureAttb,
-            @DescribeParameter(name = "to_measure_attb", description = "Attribute providing end measure of feature") String toMeasureAttb,
-            @DescribeParameter(name = "point", description = "Point whose location to measure") Point point,
-            @DescribeParameter(name = "crs", min = 0, description = "Coordinate reference system to use for input (default is the input collection CRS)") CoordinateReferenceSystem crs)
+            @DescribeParameter(name = "features", description = "Input feature collection")
+                    FeatureCollection featureCollection,
+            @DescribeParameter(
+                        name = "from_measure_attb",
+                        description = "Attribute providing start measure of feature"
+                    )
+                    String fromMeasureAttb,
+            @DescribeParameter(
+                        name = "to_measure_attb",
+                        description = "Attribute providing end measure of feature"
+                    )
+                    String toMeasureAttb,
+            @DescribeParameter(name = "point", description = "Point whose location to measure")
+                    Point point,
+            @DescribeParameter(
+                        name = "crs",
+                        min = 0,
+                        description =
+                                "Coordinate reference system to use for input (default is the input collection CRS)"
+                    )
+                    CoordinateReferenceSystem crs)
             throws ProcessException {
         DefaultFeatureCollection results = new DefaultFeatureCollection();
         try {
@@ -131,13 +147,19 @@ public class LRSMeasureProcess implements VectorProcess {
                 featureIterator = featureCollection.features();
                 while (featureIterator.hasNext()) {
                     SimpleFeature f = (SimpleFeature) featureIterator.next();
-                    if (f.getDefaultGeometryProperty().getValue() == null)
-                        continue;
-                    DistanceOp op = new DistanceOp(point, (Geometry) f.getDefaultGeometryProperty()
-                            .getValue());
+                    if (f.getDefaultGeometryProperty().getValue() == null) continue;
+                    DistanceOp op =
+                            new DistanceOp(
+                                    point, (Geometry) f.getDefaultGeometryProperty().getValue());
                     Coordinate[] co = op.closestPoints();
-                    double[] co0 = new double[] { co[0].x, co[0].y, };
-                    double[] co1 = new double[] { co[1].x, co[1].y, };
+                    double[] co0 =
+                            new double[] {
+                                co[0].x, co[0].y,
+                            };
+                    double[] co1 =
+                            new double[] {
+                                co[1].x, co[1].y,
+                            };
                     double[] geo0 = new double[2];
                     double[] geo1 = new double[2];
                     crsTransform.transform(co0, 0, geo0, 0, 1);
@@ -145,33 +167,37 @@ public class LRSMeasureProcess implements VectorProcess {
 
                     // get distance
                     Measure m = DefaultGeographicCRS.WGS84.distance(geo0, geo1);
-                    if (m.doubleValue() > nearestDistance)
-                        continue;
+                    if (m.doubleValue() > nearestDistance) continue;
                     nearestFeature = f;
                     nearestDistance = m.doubleValue();
                     nearestCoords = co;
                 }
             } finally {
-                if (featureIterator != null)
-                    featureIterator.close();
+                if (featureIterator != null) featureIterator.close();
             }
             if (nearestFeature != null) {
-                LengthIndexedLine lengthIndexedLine = new LengthIndexedLine(
-                        (Geometry) nearestFeature.getDefaultGeometryProperty().getValue());
+                LengthIndexedLine lengthIndexedLine =
+                        new LengthIndexedLine(
+                                (Geometry) nearestFeature.getDefaultGeometryProperty().getValue());
                 double lineIndex = lengthIndexedLine.indexOf(nearestCoords[1]);
-                double lineLength = ((Geometry) nearestFeature.getDefaultGeometryProperty()
-                        .getValue()).getLength();
-                Double featureFromMeasure = (Double) nearestFeature.getProperty(fromMeasureAttb)
-                        .getValue();
-                Double featureToMeasure = (Double) nearestFeature.getProperty(toMeasureAttb)
-                        .getValue();
-                double lrsMeasure = featureFromMeasure + (featureToMeasure - featureFromMeasure)
-                        * lineIndex / lineLength;
-                nearestFeature.getDefaultGeometryProperty().setValue(
-                        geometryFactory.createPoint(new Coordinate(nearestCoords[1].x,
-                                nearestCoords[1].y)));
-                results.add(createTargetFeature(nearestFeature,
-                        (SimpleFeatureType) targetFeatureType, lrsMeasure));
+                double lineLength =
+                        ((Geometry) nearestFeature.getDefaultGeometryProperty().getValue())
+                                .getLength();
+                Double featureFromMeasure =
+                        (Double) nearestFeature.getProperty(fromMeasureAttb).getValue();
+                Double featureToMeasure =
+                        (Double) nearestFeature.getProperty(toMeasureAttb).getValue();
+                double lrsMeasure =
+                        featureFromMeasure
+                                + (featureToMeasure - featureFromMeasure) * lineIndex / lineLength;
+                nearestFeature
+                        .getDefaultGeometryProperty()
+                        .setValue(
+                                geometryFactory.createPoint(
+                                        new Coordinate(nearestCoords[1].x, nearestCoords[1].y)));
+                results.add(
+                        createTargetFeature(
+                                nearestFeature, (SimpleFeatureType) targetFeatureType, lrsMeasure));
                 return results;
             }
             return results;
@@ -185,7 +211,7 @@ public class LRSMeasureProcess implements VectorProcess {
 
     /**
      * Create the modified feature type.
-     * 
+     *
      * @param sourceFeatureType the source feature type
      * @return the modified feature type
      * @throws ProcessException errror
@@ -200,8 +226,8 @@ public class LRSMeasureProcess implements VectorProcess {
                 typeBuilder.add((AttributeDescriptor) attbType);
             }
             typeBuilder.minOccurs(1).maxOccurs(1).nillable(false).add("lrs_measure", Double.class);
-            typeBuilder
-                    .setDefaultGeometry(sourceFeatureType.getGeometryDescriptor().getLocalName());
+            typeBuilder.setDefaultGeometry(
+                    sourceFeatureType.getGeometryDescriptor().getLocalName());
             return typeBuilder.buildFeatureType();
         } catch (Exception e) {
             LOGGER.warning("Error creating type: " + e);
@@ -211,7 +237,7 @@ public class LRSMeasureProcess implements VectorProcess {
 
     /**
      * Create the modified feature.
-     * 
+     *
      * @param feature the source feature
      * @param targetFeatureType the modified feature type
      * @param nearestDistance the snap distance
@@ -219,8 +245,9 @@ public class LRSMeasureProcess implements VectorProcess {
      * @return the modified feature
      * @throws ProcessException error
      */
-    private SimpleFeature createTargetFeature(Feature feature, SimpleFeatureType targetFeatureType,
-            Double lrsMeasure) throws ProcessException {
+    private SimpleFeature createTargetFeature(
+            Feature feature, SimpleFeatureType targetFeatureType, Double lrsMeasure)
+            throws ProcessException {
         try {
             AttributeDescriptor lrsMeasureAttbType = targetFeatureType.getDescriptor("lrs_measure");
             Object[] attributes = new Object[targetFeatureType.getAttributeCount()];
@@ -232,8 +259,8 @@ public class LRSMeasureProcess implements VectorProcess {
                     attributes[i] = feature.getProperty(attbType.getName()).getValue();
                 }
             }
-            return SimpleFeatureBuilder.build(targetFeatureType, attributes, feature
-                    .getIdentifier().getID());
+            return SimpleFeatureBuilder.build(
+                    targetFeatureType, attributes, feature.getIdentifier().getID());
         } catch (Exception e) {
             LOGGER.warning("Error creating feature: " + e);
             throw new ProcessException("Error creating feature: " + e, e);
@@ -242,16 +269,18 @@ public class LRSMeasureProcess implements VectorProcess {
 
     /**
      * Calculate the bearing between two points.
-     * 
+     *
      * @param coords the points
      * @return the bearing
      */
     private double calcBearing(Coordinate[] coords) {
         double y = Math.sin(coords[1].x - coords[0].x) * Math.cos(coords[1].y);
-        double x = Math.cos(coords[0].y) * Math.sin(coords[1].y) - Math.sin(coords[0].y)
-                * Math.cos(coords[1].y) * Math.cos(coords[1].x - coords[0].x);
+        double x =
+                Math.cos(coords[0].y) * Math.sin(coords[1].y)
+                        - Math.sin(coords[0].y)
+                                * Math.cos(coords[1].y)
+                                * Math.cos(coords[1].x - coords[0].x);
         double brng = ((Math.atan2(y, x) * 180.0 / Math.PI) + 360) % 360;
         return brng;
     }
-
 }

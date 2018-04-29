@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.logging.Logger;
-
 import org.geotools.data.sort.SimpleFeatureIO;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
@@ -35,7 +34,7 @@ import org.opengis.util.ProgressListener;
 
 /**
  * A FeatureIterator that can have a position marked, and can be reset to it
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 abstract class MarkFeatureIterator implements FeatureIterator<Feature> {
@@ -46,14 +45,15 @@ abstract class MarkFeatureIterator implements FeatureIterator<Feature> {
      * Builds a new {@link MarkFeatureIterator} making sure no too many features are kept in memory.
      * The listener won't receive any notification, but will be used to check if the data loading
      * should be stopped using {@link ProgressListener#isCanceled()}
-     * 
+     *
      * @param fc
      * @param maxFeaturesInMemory
      * @return
      * @throws IOException
      */
-    public static MarkFeatureIterator create(FeatureCollection fc, int maxFeaturesInMemory,
-            ProgressListener listener) throws IOException {
+    public static MarkFeatureIterator create(
+            FeatureCollection fc, int maxFeaturesInMemory, ProgressListener listener)
+            throws IOException {
         List<Feature> features = new ArrayList<>();
         int count = 0;
         if (listener == null) {
@@ -69,15 +69,14 @@ abstract class MarkFeatureIterator implements FeatureIterator<Feature> {
                 count++;
                 if (count >= maxFeaturesInMemory) {
                     if (fc.getSchema() instanceof SimpleFeatureType) {
-                        return new DiskMarkFeatureIterator(features, fi,
-                                (SimpleFeatureType) fc.getSchema(), listener);
+                        return new DiskMarkFeatureIterator(
+                                features, fi, (SimpleFeatureType) fc.getSchema(), listener);
                     } else {
                         throw new IllegalArgumentException(
                                 "Cannot offload to disk complex features "
                                         + "and reached the max number of feature in memory: "
                                         + maxFeaturesInMemory);
                     }
-
                 }
             }
 
@@ -87,16 +86,14 @@ abstract class MarkFeatureIterator implements FeatureIterator<Feature> {
 
     /**
      * Marks the current position of the feature iterator
-     * 
+     *
      * @throws IOException
      */
     public abstract void mark() throws IOException;
 
     public abstract void reset() throws IOException;
 
-    /**
-     * Simple in memory implementation of the mark iterator
-     */
+    /** Simple in memory implementation of the mark iterator */
     static class MemoryMarkFeatureIterator extends MarkFeatureIterator {
 
         List<Feature> features;
@@ -128,7 +125,6 @@ abstract class MarkFeatureIterator implements FeatureIterator<Feature> {
         @Override
         public void mark() throws IOException {
             mark = curr;
-
         }
 
         @Override
@@ -138,19 +134,18 @@ abstract class MarkFeatureIterator implements FeatureIterator<Feature> {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see java.lang.Object#toString()
          */
         @Override
         public String toString() {
             return "MemoryMarkFeatureIterator [curr=" + curr + ", mark=" + mark + "]";
         }
-
     }
 
     /**
      * Implementation offloading on disk the features
-     * 
+     *
      * @author Andrea Aime - GeoSolutions
      */
     static class DiskMarkFeatureIterator extends MarkFeatureIterator {
@@ -165,8 +160,12 @@ abstract class MarkFeatureIterator implements FeatureIterator<Feature> {
 
         int featureCount;
 
-        public DiskMarkFeatureIterator(List<Feature> features, FeatureIterator fi,
-                SimpleFeatureType schema, ProgressListener listener) throws IOException {
+        public DiskMarkFeatureIterator(
+                List<Feature> features,
+                FeatureIterator fi,
+                SimpleFeatureType schema,
+                ProgressListener listener)
+                throws IOException {
             File file = File.createTempFile("z-ordered-", ".features");
             this.io = new SimpleFeatureIO(file, schema);
 
@@ -222,7 +221,6 @@ abstract class MarkFeatureIterator implements FeatureIterator<Feature> {
         public void mark() throws IOException {
             mark = curr;
             markOffset = io.getOffset();
-
         }
 
         @Override
@@ -233,23 +231,32 @@ abstract class MarkFeatureIterator implements FeatureIterator<Feature> {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see java.lang.Object#toString()
          */
         @Override
         public String toString() {
-            return "DiskMarkFeatureIterator [mark=" + mark + ", markOffset=" + markOffset + ", io="
-                    + io + ", curr=" + curr + ", featureCount=" + featureCount + "]";
+            return "DiskMarkFeatureIterator [mark="
+                    + mark
+                    + ", markOffset="
+                    + markOffset
+                    + ", io="
+                    + io
+                    + ", curr="
+                    + curr
+                    + ", featureCount="
+                    + featureCount
+                    + "]";
         }
 
         @Override
         protected void finalize() throws Throwable {
             if (io != null) {
-                LOGGER.warning("There is code leaving DiskMarkFeatureIterator open, "
-                        + "this is leaking temporary files!");
+                LOGGER.warning(
+                        "There is code leaving DiskMarkFeatureIterator open, "
+                                + "this is leaking temporary files!");
                 close();
             }
         }
     }
-
 }

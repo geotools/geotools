@@ -6,17 +6,15 @@ import org.geotools.data.efeature.EFeatureIterator;
 
 /**
  * EFeature Query class.
- * <p>
- * This class returns a EObject Tree iterator that:
- * <ol>
- * <li>support lazy loading (memory efficient)</li>
- * <li>support spatial filtering</li>
- * </ol>
- * </p>
- * 
- * @author kengu
- * 
  *
+ * <p>This class returns a EObject Tree iterator that:
+ *
+ * <ol>
+ *   <li>support lazy loading (memory efficient)
+ *   <li>support spatial filtering
+ * </ol>
+ *
+ * @author kengu
  * @source $URL$
  */
 public class EFeatureQuery {
@@ -44,5 +42,4 @@ public class EFeatureQuery {
         this.from = null;
         this.eWhere = null;
     }
-
 }

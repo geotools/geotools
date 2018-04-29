@@ -24,9 +24,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Set;
 import java.util.logging.Level;
-
 import javax.xml.namespace.QName;
-
 import org.geotools.data.ows.HTTPClient;
 import org.geotools.data.ows.SimpleHttpClient;
 import org.geotools.data.wfs.WFSServiceInfo;
@@ -52,16 +50,15 @@ public class WFSClientTest {
     }
 
     @After
-    public void tearDown() throws Exception {
-    }
+    public void tearDown() throws Exception {}
 
-    private WFSClient testInit(String resource, String expectedVersion) throws IOException,
-            ServiceException {
+    private WFSClient testInit(String resource, String expectedVersion)
+            throws IOException, ServiceException {
 
         WFSClient client = newClient(resource);
         WFSGetCapabilities capabilities = client.getCapabilities();
         // GEOT-5113 (should not throw NPE)
-        if(!client.getRemoteTypeNames().isEmpty()) {
+        if (!client.getRemoteTypeNames().isEmpty()) {
             client.supportsTransaction(client.getRemoteTypeNames().iterator().next());
         }
         Assert.assertEquals(expectedVersion, capabilities.getVersion());
@@ -76,8 +73,9 @@ public class WFSClientTest {
         return client;
     }
 
-    private WFSClient checkStrategy(String resource, String expectedVersion,
-            Class<? extends WFSStrategy> expectedStrategy) throws IOException, ServiceException {
+    private WFSClient checkStrategy(
+            String resource, String expectedVersion, Class<? extends WFSStrategy> expectedStrategy)
+            throws IOException, ServiceException {
 
         WFSClient client = testInit(resource, expectedVersion);
 
@@ -158,7 +156,7 @@ public class WFSClientTest {
         testGetRemoteTypeNames("MapServer_5.6.5/1.1.0/GetCapabilities.xml", 2);
         testGetRemoteTypeNames("CubeWerx_nsdi/1.1.0/GetCapabilities.xml", 14);
     }
-      
+
     @Test
     public void testGetInfo() throws Exception {
         WFSClient client = newClient("GeoServer_1.7.x/1.1.0/GetCapabilities.xml");
@@ -169,14 +167,18 @@ public class WFSClientTest {
         assertTrue(info.getKeywords().contains("GEOSERVER"));
         assertTrue(info.getKeywords().contains("WFS"));
         assertTrue(info.getKeywords().contains("WMS"));
-        assertEquals("http://schemas.opengis.net/wfs/1.0.0/WFS-transaction.xsd", info.getSchema().toString());
+        assertEquals(
+                "http://schemas.opengis.net/wfs/1.0.0/WFS-transaction.xsd",
+                info.getSchema().toString());
         assertEquals("http://localhost:8080/geoserver/wfs?", info.getSource().toString());
-        assertEquals("\n\t\t\tThis is a description of your Web Feature Server." +
-                "\n\n\t\t\tThe GeoServer is a full transactional Web Feature Server, you may wish to limit GeoServer to a Basic service" +
-        	"\n\t\t\tlevel to prevent modificaiton of your geographic data." +
-                "\n\t\t", info.getDescription());
+        assertEquals(
+                "\n\t\t\tThis is a description of your Web Feature Server."
+                        + "\n\n\t\t\tThe GeoServer is a full transactional Web Feature Server, you may wish to limit GeoServer to a Basic service"
+                        + "\n\t\t\tlevel to prevent modificaiton of your geographic data."
+                        + "\n\t\t",
+                info.getDescription());
     }
-    
+
     private void testGetRemoteTypeNames(String capabilitiesLocation, int typeCount)
             throws Exception {
 
@@ -184,6 +186,5 @@ public class WFSClientTest {
         Set<QName> remoteTypeNames = client.getRemoteTypeNames();
         assertNotNull(remoteTypeNames);
         assertEquals(capabilitiesLocation, typeCount, remoteTypeNames.size());
-
     }
 }

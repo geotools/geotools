@@ -26,5 +26,4 @@ public class DB2ThreeValuedLogicOnlineTest extends JDBCThreeValuedLogicOnlineTes
     protected JDBCThreeValuedLogicTestSetup createTestSetup() {
         return new DB2ThreeValuedLogicTestSetup(new DB2TestSetup());
     }
-
 }

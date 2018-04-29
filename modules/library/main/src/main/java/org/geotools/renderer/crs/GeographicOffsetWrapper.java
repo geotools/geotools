@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -24,9 +24,9 @@ import org.opengis.referencing.operation.NoninvertibleTransformException;
 import org.opengis.referencing.operation.TransformException;
 
 /**
- * Wraps a datum shift math transform and makes sure we are not introducing dateline jumps
- * when applying the datum shift
- * 
+ * Wraps a datum shift math transform and makes sure we are not introducing dateline jumps when
+ * applying the datum shift
+ *
  * @author Andrea Aime - GeoSolutions
  */
 class GeographicOffsetWrapper implements MathTransform {
@@ -52,37 +52,39 @@ class GeographicOffsetWrapper implements MathTransform {
 
     public void transform(double[] srcPts, int srcOff, double[] dstPts, int dstOff, int numPts)
             throws TransformException {
-        double[] source = srcPts; 
-        if(srcPts == dstPts) {
+        double[] source = srcPts;
+        if (srcPts == dstPts) {
             source = new double[srcPts.length];
             System.arraycopy(srcPts, 0, source, 0, srcPts.length);
         }
         delegate.transform(srcPts, srcOff, dstPts, dstOff, numPts);
-        
+
         final int srcDimension = delegate.getSourceDimensions();
-        final int dstDimension = delegate.getTargetDimensions(); 
+        final int dstDimension = delegate.getTargetDimensions();
         double lastSrcLon = source[srcOff];
         double lastDstLon = dstPts[dstOff];
         double offset = 0;
-        for(int i = srcOff + srcDimension, j = dstOff + dstDimension, ptCount = 1; ptCount < numPts; i+=srcDimension, j+=dstDimension, ptCount++) {
+        for (int i = srcOff + srcDimension, j = dstOff + dstDimension, ptCount = 1;
+                ptCount < numPts;
+                i += srcDimension, j += dstDimension, ptCount++) {
             double srcLon = source[i];
             double dstLon = dstPts[j];
-            
+
             double srcDelta = srcLon - lastSrcLon;
             double dstDelta = dstLon - lastDstLon;
             double difference = srcDelta - dstDelta;
             // did we jump over the dateline?
-            if(difference > 180) {
+            if (difference > 180) {
                 // from west to east
                 offset += 360;
-            } else if(difference < -180) {
+            } else if (difference < -180) {
                 offset -= 360;
             }
-            
-            if(offset != 0) {
+
+            if (offset != 0) {
                 dstPts[j] += offset;
             }
-            
+
             lastDstLon = dstLon;
             lastSrcLon = srcLon;
         }
@@ -91,30 +93,32 @@ class GeographicOffsetWrapper implements MathTransform {
     public void transform(float[] srcPts, int srcOff, float[] dstPts, int dstOff, int numPts)
             throws TransformException {
         delegate.transform(srcPts, srcOff, dstPts, dstOff, numPts);
-        
+
         int dimension = (srcPts.length - srcOff) / numPts;
         double lastSrcLon = srcPts[srcOff];
         double lastDstLon = dstPts[dstOff];
         float offset = 0;
-        for(int i = srcOff + dimension, j = dstOff + dimension, ptCount = 0; ptCount < numPts; i+=dimension, j+=dimension, ptCount++) {
+        for (int i = srcOff + dimension, j = dstOff + dimension, ptCount = 0;
+                ptCount < numPts;
+                i += dimension, j += dimension, ptCount++) {
             double srcLon = srcPts[i];
             double dstLon = dstPts[j];
-            
+
             double srcDelta = srcLon - lastSrcLon;
             double dstDelta = dstLon - lastDstLon;
             double difference = srcDelta - dstDelta;
             // did we jump over the dateline?
-            if(difference > 180) {
+            if (difference > 180) {
                 // from west to east
                 offset += 360;
-            } else if(difference < 180) {
+            } else if (difference < 180) {
                 offset -= 360;
             }
-            
-            if(offset != 0) {
+
+            if (offset != 0) {
                 dstPts[j] += offset;
             }
-            
+
             lastDstLon = dstLon;
             lastSrcLon = srcLon;
         }
@@ -123,30 +127,32 @@ class GeographicOffsetWrapper implements MathTransform {
     public void transform(float[] srcPts, int srcOff, double[] dstPts, int dstOff, int numPts)
             throws TransformException {
         delegate.transform(srcPts, srcOff, dstPts, dstOff, numPts);
-        
+
         int dimension = (srcPts.length - srcOff) / numPts;
         double lastSrcLon = srcPts[srcOff];
         double lastDstLon = dstPts[dstOff];
         double offset = 0;
-        for(int i = srcOff + dimension, j = dstOff + dimension, ptCount = 0; ptCount < numPts; i+=dimension, j+=dimension, ptCount++) {
+        for (int i = srcOff + dimension, j = dstOff + dimension, ptCount = 0;
+                ptCount < numPts;
+                i += dimension, j += dimension, ptCount++) {
             double srcLon = srcPts[i];
             double dstLon = dstPts[j];
-            
+
             double srcDelta = srcLon - lastSrcLon;
             double dstDelta = dstLon - lastDstLon;
             double difference = srcDelta - dstDelta;
             // did we jump over the dateline?
-            if(difference > 180) {
+            if (difference > 180) {
                 // from west to east
                 offset += 360;
-            } else if(difference < 180) {
+            } else if (difference < 180) {
                 offset -= 360;
             }
-            
-            if(offset != 0) {
+
+            if (offset != 0) {
                 dstPts[j] += offset;
             }
-            
+
             lastDstLon = dstLon;
             lastSrcLon = srcLon;
         }
@@ -155,37 +161,39 @@ class GeographicOffsetWrapper implements MathTransform {
     public void transform(double[] srcPts, int srcOff, float[] dstPts, int dstOff, int numPts)
             throws TransformException {
         delegate.transform(srcPts, srcOff, dstPts, dstOff, numPts);
-        
+
         int dimension = (srcPts.length - srcOff) / numPts;
         double lastSrcLon = srcPts[srcOff];
         double lastDstLon = dstPts[dstOff];
         float offset = 0;
-        for(int i = srcOff + dimension, j = dstOff + dimension, ptCount = 0; ptCount < numPts; i+=dimension, j+=dimension, ptCount++) {
+        for (int i = srcOff + dimension, j = dstOff + dimension, ptCount = 0;
+                ptCount < numPts;
+                i += dimension, j += dimension, ptCount++) {
             double srcLon = srcPts[i];
             double dstLon = dstPts[j];
-            
+
             double srcDelta = srcLon - lastSrcLon;
             double dstDelta = dstLon - lastDstLon;
             double difference = srcDelta - dstDelta;
             // did we jump over the dateline?
-            if(difference > 180) {
+            if (difference > 180) {
                 // from west to east
                 offset += 360;
-            } else if(difference < 180) {
+            } else if (difference < 180) {
                 offset -= 360;
             }
-            
-            if(offset != 0) {
+
+            if (offset != 0) {
                 dstPts[j] += offset;
             }
-            
+
             lastDstLon = dstLon;
             lastSrcLon = srcLon;
         }
     }
 
-    public Matrix derivative(DirectPosition point) throws MismatchedDimensionException,
-            TransformException {
+    public Matrix derivative(DirectPosition point)
+            throws MismatchedDimensionException, TransformException {
         return delegate.derivative(point);
     }
 

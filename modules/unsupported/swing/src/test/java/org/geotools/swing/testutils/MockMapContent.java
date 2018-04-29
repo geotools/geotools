@@ -17,8 +17,6 @@
 
 package org.geotools.swing.testutils;
 
-import java.io.IOException;
-
 import java.util.Collections;
 import java.util.List;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -27,7 +25,6 @@ import org.geotools.map.MapContent;
 import org.geotools.map.MapViewport;
 import org.geotools.map.event.MapBoundsListener;
 import org.geotools.map.event.MapLayerListListener;
-
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
@@ -39,16 +36,13 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @version $URL$
  */
 public class MockMapContent extends MapContent {
-    
+
     private Layer layer;
     private ReferencedEnvelope bounds;
 
-    public MockMapContent() {
-    }
-    
-    /**
-     *  Overridden to avoid spurious log messages about memory leaks.
-     */
+    public MockMapContent() {}
+
+    /** Overridden to avoid spurious log messages about memory leaks. */
     @Override
     protected void finalize() throws Throwable {
         // does nothing
@@ -58,7 +52,7 @@ public class MockMapContent extends MapContent {
     public boolean addLayer(Layer layer) {
         this.layer = layer;
         this.bounds = layer.getBounds();
-        
+
         return true;
     }
 
@@ -115,6 +109,4 @@ public class MockMapContent extends MapContent {
         }
         return new ReferencedEnvelope(bounds);
     }
-    
-    
 }

@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -19,15 +19,10 @@ package org.geotools.filter.capability;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
-
 import org.opengis.feature.type.Name;
 import org.opengis.filter.capability.TemporalOperator;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class TemporalOperatorImpl implements TemporalOperator {
 
     String name;
@@ -43,7 +38,7 @@ public class TemporalOperatorImpl implements TemporalOperator {
     }
 
     public Collection<Name> getTemporalOperands() {
-        return operands; 
+        return operands;
     }
 
     @Override
@@ -57,24 +52,16 @@ public class TemporalOperatorImpl implements TemporalOperator {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
         TemporalOperatorImpl other = (TemporalOperatorImpl) obj;
         if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!name.equals(other.name))
-            return false;
+            if (other.name != null) return false;
+        } else if (!name.equals(other.name)) return false;
         if (operands == null) {
-            if (other.operands != null)
-                return false;
-        } else if (!operands.equals(other.operands))
-            return false;
+            if (other.operands != null) return false;
+        } else if (!operands.equals(other.operands)) return false;
         return true;
     }
-
 }

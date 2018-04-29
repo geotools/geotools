@@ -27,19 +27,20 @@ import org.xml.sax.SAXException;
 
 /**
  * Encoder delegate for high speed GML 3.2 encoding of SimpleFeatureCollection
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 class WFS20FeatureCollectionEncoderDelegate extends FeatureCollectionEncoderDelegate {
 
-    public WFS20FeatureCollectionEncoderDelegate(SimpleFeatureCollection features, Encoder encoder) {
+    public WFS20FeatureCollectionEncoderDelegate(
+            SimpleFeatureCollection features, Encoder encoder) {
         super(features, encoder, new WFS20EncoderDelegate(encoder));
     }
 
     static class WFS20EncoderDelegate extends GML32FeatureCollectionEncoderDelegate.GML32Delegate {
 
-        static final QualifiedName MEMBER = new QualifiedName(WFS.NAMESPACE,
-                GML.member.getLocalPart(), "wfs");
+        static final QualifiedName MEMBER =
+                new QualifiedName(WFS.NAMESPACE, GML.member.getLocalPart(), "wfs");
 
         static final QualifiedName TUPLE = new QualifiedName(WFS.NAMESPACE, "Tuple", "wfs");
 
@@ -67,6 +68,5 @@ class WFS20FeatureCollectionEncoderDelegate extends FeatureCollectionEncoderDele
             handler.endElement(tuple);
             handler.endElement(member);
         }
-
     }
 }

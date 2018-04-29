@@ -15,34 +15,29 @@
  *    Lesser General Public License for more details.
  */
 package org.geotools.processing.jai;
+
+import com.sun.media.jai.opimage.RIFUtil;
 import java.awt.RenderingHints;
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.ParameterBlock;
 import java.awt.image.renderable.RenderedImageFactory;
-
 import javax.media.jai.BorderExtender;
 import javax.media.jai.ImageLayout;
-
 import org.geotools.processing.jai.TransparencyFillDescriptor.FillType;
 
-import com.sun.media.jai.opimage.RIFUtil;
-
-/**
- * @see TransparencyFillOpImage
- */
+/** @see TransparencyFillOpImage */
 public class TransparencyFillRIF implements RenderedImageFactory {
 
     /** Constructor. */
     public TransparencyFillRIF() {}
 
     /**
-     * Create a new instance of TransparencyFillOpImage in the rendered layer.
-     * This method satisfies the implementation of RIF.
+     * Create a new instance of TransparencyFillOpImage in the rendered layer. This method satisfies
+     * the implementation of RIF.
      *
-     * @param paramBlock  The source image and the dilation kernel.
+     * @param paramBlock The source image and the dilation kernel.
      */
-    public RenderedImage create(ParameterBlock paramBlock,
-                                RenderingHints renderHints) {
+    public RenderedImage create(ParameterBlock paramBlock, RenderingHints renderHints) {
         // Get ImageLayout from renderHints if any.
         ImageLayout layout = RIFUtil.getImageLayoutHint(renderHints);
 

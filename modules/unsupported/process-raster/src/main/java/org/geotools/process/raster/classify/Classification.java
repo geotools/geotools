@@ -18,9 +18,7 @@ package org.geotools.process.raster.classify;
 
 import org.geotools.process.classify.ClassificationMethod;
 
-/**
- * Helper class used for raster classification.
- */
+/** Helper class used for raster classification. */
 public class Classification {
 
     /** classification method */
@@ -28,7 +26,7 @@ public class Classification {
 
     /** the breaks */
     Double[][] breaks;
-    
+
     /** min/max */
     Double[] min, max;
 
@@ -48,7 +46,7 @@ public class Classification {
     }
 
     public void setBreaks(int b, Double[] breaks) {
-        this. breaks[b] = breaks;
+        this.breaks[b] = breaks;
     }
 
     public Double getMin(int b) {

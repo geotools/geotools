@@ -9,5 +9,4 @@ public class SQLServerFeatureSourceExposePkOnlineTest extends JDBCFeatureSourceE
     protected JDBCTestSetup createTestSetup() {
         return new SQLServerTestSetup();
     }
-
 }

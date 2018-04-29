@@ -16,6 +16,8 @@
  */
 package org.geotools.gml3.simple;
 
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.Polygon;
 import org.geotools.geometry.jts.CurvedGeometry;
 import org.geotools.gml2.simple.GMLWriter;
 import org.geotools.gml2.simple.GeometryEncoder;
@@ -24,12 +26,9 @@ import org.geotools.gml3.GML;
 import org.geotools.xml.Encoder;
 import org.xml.sax.helpers.AttributesImpl;
 
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.Polygon;
-
 /**
  * Encodes a GML3 polygon
- * 
+ *
  * @author Justin Deoliveira, OpenGeo
  * @author Andrea Aime - GeoSolutions
  */
@@ -58,22 +57,21 @@ class PolygonEncoder extends GeometryEncoder<Polygon> {
         lre = new LinearRingEncoder(encoder, gmlPrefix, gmlUri);
         re = new RingEncoder(encoder, gmlPrefix, gmlUri);
     }
-    
+
     @Override
-    public void encode(Polygon geometry, AttributesImpl atts, GMLWriter handler)
-            throws Exception {
+    public void encode(Polygon geometry, AttributesImpl atts, GMLWriter handler) throws Exception {
         handler.startElement(polygon, atts);
-        
+
         handler.startElement(exterior, null);
         encodeRing(geometry.getExteriorRing(), handler);
         handler.endElement(exterior);
-        
-        for ( int i = 0; i < geometry.getNumInteriorRing(); i++ ) {
+
+        for (int i = 0; i < geometry.getNumInteriorRing(); i++) {
             handler.startElement(interior, null);
             encodeRing(geometry.getInteriorRingN(i), handler);
             handler.endElement(interior);
         }
-        
+
         handler.endElement(polygon);
     }
 
@@ -84,5 +82,4 @@ class PolygonEncoder extends GeometryEncoder<Polygon> {
             lre.encode(ring, null, handler);
         }
     }
-    
 }

@@ -1,5 +1,7 @@
 package org.geotools.data.collection;
 
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,7 +9,6 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-
 import org.geotools.data.DataStore;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureListener;
@@ -44,21 +45,16 @@ import org.opengis.filter.spatial.Overlaps;
 import org.opengis.filter.spatial.Touches;
 import org.opengis.filter.spatial.Within;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-
 /**
  * A FeatureSource using a spatial index to hold on to features and serve them up for fast display.
- * <p>
- * This is a port of Andrea's CachingFeatureSource (which is slightly more compliced and rebuilds
+ *
+ * <p>This is a port of Andrea's CachingFeatureSource (which is slightly more compliced and rebuilds
  * the cache as an origional feature source changes). Our implementation here knows up front that
  * the features are in memory and does its best to take advantage of the fact. A caching feature
  * source for fast data access.
- * <p>
- * Please note that this FeatureSource is strictly "read-only" and thus does not support feature
- * events.
- * </p>
  *
+ * <p>Please note that this FeatureSource is strictly "read-only" and thus does not support feature
+ * events.
  *
  * @source $URL$
  */
@@ -67,19 +63,26 @@ public class SpatialIndexFeatureSource implements SimpleFeatureSource {
 
     private static FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
 
-    private static final Set<Class> supportedFilterTypes = new HashSet<Class>(Arrays.asList(
-            BBOX.class, Contains.class, Crosses.class, DWithin.class, Equals.class,
-            Intersects.class, Overlaps.class, Touches.class, Within.class));
+    private static final Set<Class> supportedFilterTypes =
+            new HashSet<Class>(
+                    Arrays.asList(
+                            BBOX.class,
+                            Contains.class,
+                            Crosses.class,
+                            DWithin.class,
+                            Equals.class,
+                            Intersects.class,
+                            Overlaps.class,
+                            Touches.class,
+                            Within.class));
 
     public SpatialIndexFeatureSource(SpatialIndexFeatureCollection original) {
         this.contents = original;
     }
 
-    public void addFeatureListener(FeatureListener listener) {
-    }
+    public void addFeatureListener(FeatureListener listener) {}
 
-    public void removeFeatureListener(FeatureListener listener) {
-    }
+    public void removeFeatureListener(FeatureListener listener) {}
 
     public DataStore getDataStore() {
         return null; // not applicable
@@ -121,11 +124,12 @@ public class SpatialIndexFeatureSource implements SimpleFeatureSource {
         final int offset = query.getStartIndex() != null ? query.getStartIndex() : 0;
         if (offset > 0 & query.getSortBy() == null) {
             if (!getQueryCapabilities().supportsSorting(query.getSortBy())) {
-                throw new IllegalStateException("Feature source does not support this sorting "
-                        + "so there is no way a stable paging (offset/limit) can be performed");
+                throw new IllegalStateException(
+                        "Feature source does not support this sorting "
+                                + "so there is no way a stable paging (offset/limit) can be performed");
             }
             Query copy = new Query(query);
-            copy.setSortBy(new SortBy[] { SortBy.NATURAL_ORDER });
+            copy.setSortBy(new SortBy[] {SortBy.NATURAL_ORDER});
             query = copy;
         }
         SimpleFeatureCollection collection;
@@ -143,8 +147,9 @@ public class SpatialIndexFeatureSource implements SimpleFeatureSource {
         }
         // step two: reproject
         if (query.getCoordinateSystemReproject() != null) {
-            collection = new ReprojectingFeatureCollection(collection, query
-                    .getCoordinateSystemReproject());
+            collection =
+                    new ReprojectingFeatureCollection(
+                            collection, query.getCoordinateSystemReproject());
         }
         // step two sort! (note this makes a sorted copy)
         if (query.getSortBy() != null && query.getSortBy().length != 0) {
@@ -172,8 +177,8 @@ public class SpatialIndexFeatureSource implements SimpleFeatureSource {
         if (query.getPropertyNames() != Query.ALL_NAMES) {
             // rebuild the type and wrap the reader
             SimpleFeatureType schema = collection.getSchema();
-            SimpleFeatureType target = SimpleFeatureTypeBuilder.retype(schema, query
-                    .getPropertyNames());
+            SimpleFeatureType target =
+                    SimpleFeatureTypeBuilder.retype(schema, query.getPropertyNames());
             if (!target.equals(schema)) {
                 collection = new ReTypingFeatureCollection(collection, target);
             }
@@ -185,7 +190,7 @@ public class SpatialIndexFeatureSource implements SimpleFeatureSource {
         Envelope result = new Envelope();
         if (filter instanceof And) {
             Envelope bounds = new Envelope();
-            for (Iterator iter = ((And) filter).getChildren().iterator(); iter.hasNext();) {
+            for (Iterator iter = ((And) filter).getChildren().iterator(); iter.hasNext(); ) {
                 Filter f = (Filter) iter.next();
                 Envelope e = getEnvelope(f);
                 if (e == null) {
@@ -217,8 +222,13 @@ public class SpatialIndexFeatureSource implements SimpleFeatureSource {
     }
 
     private BBOX bboxFilter(Envelope bbox) {
-        return ff.bbox(contents.getSchema().getGeometryDescriptor().getLocalName(), bbox.getMinX(),
-                bbox.getMinY(), bbox.getMaxX(), bbox.getMaxY(), null);
+        return ff.bbox(
+                contents.getSchema().getGeometryDescriptor().getLocalName(),
+                bbox.getMinX(),
+                bbox.getMinY(),
+                bbox.getMaxX(),
+                bbox.getMaxY(),
+                null);
     }
 
     public ResourceInfo getInfo() {
@@ -242,5 +252,4 @@ public class SpatialIndexFeatureSource implements SimpleFeatureSource {
         HashSet hints = new HashSet();
         return hints;
     }
-
 }

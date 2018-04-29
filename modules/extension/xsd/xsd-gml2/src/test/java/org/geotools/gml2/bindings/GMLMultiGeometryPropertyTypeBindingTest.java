@@ -16,22 +16,16 @@
  */
 package org.geotools.gml2.bindings;
 
-import org.geotools.gml2.GML;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
-
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
+import org.geotools.gml2.GML;
+import org.geotools.xml.ElementInstance;
+import org.geotools.xml.Node;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class GMLMultiGeometryPropertyTypeBindingTest extends AbstractGMLBindingTest {
     ElementInstance association;
     ElementInstance geometry;
@@ -39,26 +33,35 @@ public class GMLMultiGeometryPropertyTypeBindingTest extends AbstractGMLBindingT
     protected void setUp() throws Exception {
         super.setUp();
 
-        association = createElement(GML.NAMESPACE, "myMultiGeometryProperty",
-                GML.GEOMETRYPROPERTYTYPE, null);
-        geometry = createElement(GML.NAMESPACE, "myGeometryCollection", GML.GEOMETRYCOLLECTIONTYPE,
-                null);
+        association =
+                createElement(
+                        GML.NAMESPACE, "myMultiGeometryProperty", GML.GEOMETRYPROPERTYTYPE, null);
+        geometry =
+                createElement(
+                        GML.NAMESPACE, "myGeometryCollection", GML.GEOMETRYCOLLECTIONTYPE, null);
     }
 
     public void testWithGeometry() throws Exception {
         Point p1 = new GeometryFactory().createPoint(new Coordinate(0, 0));
         Point p2 = new GeometryFactory().createPoint(new Coordinate(1, 1));
 
-        Node node = createNode(association, new ElementInstance[] { geometry },
-                new Object[] {
-                    new GeometryFactory().createGeometryCollection(new Geometry[] { p1, p2 })
-                }, null, null);
+        Node node =
+                createNode(
+                        association,
+                        new ElementInstance[] {geometry},
+                        new Object[] {
+                            new GeometryFactory().createGeometryCollection(new Geometry[] {p1, p2})
+                        },
+                        null,
+                        null);
 
-        GMLGeometryAssociationTypeBinding s = (GMLGeometryAssociationTypeBinding) getBinding(GML.GEOMETRYASSOCIATIONTYPE);
-        GMLMultiGeometryPropertyTypeBinding s1 = (GMLMultiGeometryPropertyTypeBinding) getBinding(GML.MULTIGEOMETRYPROPERTYTYPE);
+        GMLGeometryAssociationTypeBinding s =
+                (GMLGeometryAssociationTypeBinding) getBinding(GML.GEOMETRYASSOCIATIONTYPE);
+        GMLMultiGeometryPropertyTypeBinding s1 =
+                (GMLMultiGeometryPropertyTypeBinding) getBinding(GML.MULTIGEOMETRYPROPERTYTYPE);
 
-        GeometryCollection p = (GeometryCollection) s1.parse(association, node,
-                s.parse(association, node, null));
+        GeometryCollection p =
+                (GeometryCollection) s1.parse(association, node, s.parse(association, node, null));
         assertNotNull(p);
     }
 }

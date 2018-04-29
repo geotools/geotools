@@ -27,12 +27,9 @@ import org.opengis.filter.expression.PropertyName;
 
 /**
  * Expression Test
- * 
+ *
  * @author Mauricio Pazos (Axios Engineering)
  * @since 2.6
- *
- *
- *
  * @source $URL$
  */
 public class CQLExpressionTest {
@@ -54,18 +51,15 @@ public class CQLExpressionTest {
     @Test
     public void attributeName() throws CQLException {
 
-        Expression expression = CompilerUtil.parseExpression(this.language,
-                "attName");
+        Expression expression = CompilerUtil.parseExpression(this.language, "attName");
         Assert.assertNotNull(expression);
         Assert.assertTrue(expression instanceof PropertyName);
-        Assert.assertEquals("attName", ((PropertyName) expression)
-                .getPropertyName());
-
+        Assert.assertEquals("attName", ((PropertyName) expression).getPropertyName());
     }
 
     /**
      * Bad identifier
-     * 
+     *
      * @throws CQLException
      */
     @Test(expected = CQLException.class)
@@ -77,8 +71,7 @@ public class CQLExpressionTest {
 
     @Test
     public void add() throws CQLException {
-        Expression expression = CompilerUtil.parseExpression(language,
-                "a + b + x.y.z");
+        Expression expression = CompilerUtil.parseExpression(language, "a + b + x.y.z");
         Assert.assertNotNull(expression);
         Assert.assertTrue(expression instanceof Add);
 
@@ -89,7 +82,6 @@ public class CQLExpressionTest {
         Assert.assertTrue(e1 instanceof Add);
         Assert.assertTrue(e2 instanceof PropertyName);
         Assert.assertEquals("x/y/z", ((PropertyName) e2).getPropertyName());
-
     }
 
     @Test(expected = CQLException.class)
@@ -97,5 +89,4 @@ public class CQLExpressionTest {
         final String malformedExp = "12 / ] + 4";
         CompilerUtil.parseExpression(language, malformedExp);
     }
-
 }

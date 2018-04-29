@@ -1,4 +1,3 @@
-
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
@@ -20,32 +19,20 @@ package org.geotools.coverage.grid.io.footprint;
 /**
  * Constructs a live FootprintLoader
  *
- * <p>
- * In addition to implementing this interface, this service file should be defined:
- * </p>
+ * <p>In addition to implementing this interface, this service file should be defined:
  *
- * <p>
- * <code>META-INF/services/org.geotools.coverage.grid.io.footprint.FootprintLoaderSpi</code>
- * </p>
+ * <p><code>META-INF/services/org.geotools.coverage.grid.io.footprint.FootprintLoaderSpi</code>
  *
- * <p>
- * The file should contain a single line which gives the full name of the
- * implementing class.
- * </p>
+ * <p>The file should contain a single line which gives the full name of the implementing class.
  *
- * <p>
- * example:<br/><code>e.g.
+ * <p>example:<br>
+ * <code>e.g.
  * org.geotools.coverage.grid.io.footprint.WKBLoaderSpi</code>
- * </p>
  *
- * <p>
- * The factories are never called directly by users, instead the
- * FootprintLoaderFinder class is used.
- * </p>
+ * <p>The factories are never called directly by users, instead the FootprintLoaderFinder class is
+ * used.
  *
  * @author Daniele Romagnoli, GeoSolutions SAS
- *
- *
  * @source $URL$
  */
 public interface FootprintLoaderSpi {

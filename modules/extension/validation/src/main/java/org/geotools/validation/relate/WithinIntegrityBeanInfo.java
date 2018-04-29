@@ -20,28 +20,19 @@ import java.beans.PropertyDescriptor;
 
 /**
  * @author Pati
- *
- * To change the template for this generated type comment go to
- * Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
- *
- *
+ *     <p>To change the template for this generated type comment go to
+ *     Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  * @source $URL$
  */
-public class WithinIntegrityBeanInfo extends RelationIntegrityBeanInfo 
-{
-	
-	
-	/**
-	 * 
-	 */
-	public WithinIntegrityBeanInfo(){
+public class WithinIntegrityBeanInfo extends RelationIntegrityBeanInfo {
+
+    /** */
+    public WithinIntegrityBeanInfo() {
         super();
     }
 
-	
     /**
      * Implementation of getPropertyDescriptors.
-     *
      *
      * @see java.beans.BeanInfo#getPropertyDescriptors()
      */

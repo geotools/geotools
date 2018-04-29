@@ -16,32 +16,21 @@
  */
 package org.geotools.gml3.bindings.ext;
 
-import javax.xml.namespace.QName;
-
-import org.geotools.gml3.GML;
-import org.geotools.gml3.bindings.PolygonTypeBinding;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
-
 import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Polygon;
+import javax.xml.namespace.QName;
+import org.geotools.gml3.bindings.PolygonTypeBinding;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class PolygonPatchTypeBinding extends org.geotools.gml3.bindings.PolygonPatchTypeBinding
-    implements Comparable {
+        implements Comparable {
 
     public PolygonPatchTypeBinding(GeometryFactory gf) {
         super(gf);
     }
-    
+
     @Override
     public Object getProperty(Object object, QName name) throws Exception {
-        return new PolygonTypeBinding( gf ).getProperty(object, name);
+        return new PolygonTypeBinding(gf).getProperty(object, name);
     }
 
     public int compareTo(Object o) {

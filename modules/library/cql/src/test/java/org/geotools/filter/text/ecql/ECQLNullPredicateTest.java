@@ -22,54 +22,44 @@ import org.geotools.filter.text.cql2.CQLNullPredicateTest;
 import org.junit.Test;
 import org.opengis.filter.Filter;
 
-
 /**
  * Test ECQL Null Predicate:
+ *
  * <p>
  *
  * <pre>
  * &lt;null predicate &gt; ::=  &lt;expression &gt; IS [ NOT ] NULL
  * </pre>
  *
- * </p>
- *
  * @author Mauricio Pazos (Axios Engineering)
  * @since 2.6
- *
- *
- *
  * @source $URL$
  */
 public class ECQLNullPredicateTest extends CQLNullPredicateTest {
-    
-    public ECQLNullPredicateTest(){
+
+    public ECQLNullPredicateTest() {
         super(Language.ECQL);
     }
-    
-    /**
-     * Sample: centroid( the_geom ) IS NOT NULL
-     */
+
+    /** Sample: centroid( the_geom ) IS NOT NULL */
     @Test
     public void functionIsNull() throws Exception {
 
         final String samplePredicate = FilterECQLSample.FUNCTION_IS_NULL;
 
         Filter expected = FilterECQLSample.getSample(samplePredicate);
-        
+
         testNullPredicate(samplePredicate, expected);
     }
-    
-    /**
-     * Sample: centroid( the_geom ) IS NOT NULL
-     */
+
+    /** Sample: centroid( the_geom ) IS NOT NULL */
     @Test
     public void functionIsNotNull() throws Exception {
 
         final String samplePredicate = FilterECQLSample.FUNCTION_IS_NOT_NULL;
 
         Filter expected = FilterECQLSample.getSample(samplePredicate);
-        
+
         testNullPredicate(samplePredicate, expected);
     }
-
 }

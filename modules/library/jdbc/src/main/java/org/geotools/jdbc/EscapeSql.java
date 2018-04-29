@@ -17,23 +17,21 @@
 package org.geotools.jdbc;
 
 /**
- * Perform basic SQL validation on input string.  This is to allow safe encoding
- * of parameters that must contain quotes, while still protecting users from SQL
- * injection.
- * 
- * We prevent SQL from breaking out of quotes by replacing any quotes in input 
- * stream with double quotes.  Backslashes are too risky to allow so are removed
- * completely 
+ * Perform basic SQL validation on input string. This is to allow safe encoding of parameters that
+ * must contain quotes, while still protecting users from SQL injection.
+ *
+ * <p>We prevent SQL from breaking out of quotes by replacing any quotes in input stream with double
+ * quotes. Backslashes are too risky to allow so are removed completely
  */
 public class EscapeSql {
     public static String escapeSql(String str) {
-        
+
         // ' --> ''
         str = str.replaceAll("'", "''");
-        
+
         // " --> ""
         str = str.replaceAll("\"", "\"\"");
-        
+
         // \ -->  (remove backslashes)
         str = str.replaceAll("\\\\", "");
         return str;

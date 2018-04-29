@@ -3,7 +3,6 @@ package org.geotools.kml.bindings;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
-
 import org.geotools.kml.v22.KML;
 import org.geotools.kml.v22.KMLTestSupport;
 import org.geotools.xml.Binding;
@@ -39,8 +38,10 @@ public class ExtendedDataTypeBindingTest extends KMLTestSupport {
     }
 
     public void testParseUntyped() throws Exception {
-        String xml = "<ExtendedData>" + "<Data name=\"foo\"><value>bar</value></Data>"
-                + "</ExtendedData>";
+        String xml =
+                "<ExtendedData>"
+                        + "<Data name=\"foo\"><value>bar</value></Data>"
+                        + "</ExtendedData>";
         buildDocument(xml);
         Map<String, Object> document = parseExtendedData();
         @SuppressWarnings("unchecked")
@@ -50,9 +51,12 @@ public class ExtendedDataTypeBindingTest extends KMLTestSupport {
 
     @SuppressWarnings("unchecked")
     public void testParseTyped() throws Exception {
-        String xml = "<ExtendedData>" + "<SchemaData schemaUrl=\"#foo\">"
-                + "<SimpleData name=\"quux\">morx</SimpleData>" + "</SchemaData>"
-                + "</ExtendedData>";
+        String xml =
+                "<ExtendedData>"
+                        + "<SchemaData schemaUrl=\"#foo\">"
+                        + "<SimpleData name=\"quux\">morx</SimpleData>"
+                        + "</SchemaData>"
+                        + "</ExtendedData>";
         buildDocument(xml);
         Map<String, Object> document = parseExtendedData();
         Map<String, Object> typed = (Map<String, Object>) document.get("typed");
@@ -64,11 +68,15 @@ public class ExtendedDataTypeBindingTest extends KMLTestSupport {
 
     @SuppressWarnings("unchecked")
     public void testParseMultipleTypes() throws Exception {
-        String xml = "<ExtendedData>" + "<SchemaData schemaUrl=\"#foo1\">"
-                + "<SimpleData name=\"quux\">morx</SimpleData>" + "</SchemaData>"
-                + "<SchemaData schemaUrl=\"#foo2\">"
-                + "<SimpleData name=\"fleem\">zul</SimpleData>" + "</SchemaData>"
-                + "</ExtendedData>";
+        String xml =
+                "<ExtendedData>"
+                        + "<SchemaData schemaUrl=\"#foo1\">"
+                        + "<SimpleData name=\"quux\">morx</SimpleData>"
+                        + "</SchemaData>"
+                        + "<SchemaData schemaUrl=\"#foo2\">"
+                        + "<SimpleData name=\"fleem\">zul</SimpleData>"
+                        + "</SchemaData>"
+                        + "</ExtendedData>";
         buildDocument(xml);
         Map<String, Object> document = parseExtendedData();
         Map<String, Object> typed = (Map<String, Object>) document.get("typed");
@@ -78,5 +86,4 @@ public class ExtendedDataTypeBindingTest extends KMLTestSupport {
         assertEquals("foo1", schemaURLS.get(0).getFragment());
         assertEquals("foo2", schemaURLS.get(1).getFragment());
     }
-
 }

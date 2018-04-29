@@ -17,12 +17,10 @@
 package org.geotools.wfs.bindings;
 
 import javax.xml.namespace.QName;
-
 import net.opengis.wfs.FeatureTypeListType;
 import net.opengis.wfs.GMLObjectTypeListType;
 import net.opengis.wfs.GMLObjectTypeType;
 import net.opengis.wfs.WFSCapabilitiesType;
-
 import org.geotools.filter.v1_1.OGC;
 import org.geotools.gml3.GML;
 import org.geotools.wfs.WFS;
@@ -45,13 +43,10 @@ import org.w3c.dom.Element;
 
 /**
  * Unit test suite for {@link WFS_CapabilitiesTypeBinding}
- * 
+ *
  * @author Justin Deoliveira
- * @version $Id: WFS_CapabilitiesTypeBindingTest.java 27749 2007-11-05 09:51:33Z
- *          groldan $
+ * @version $Id: WFS_CapabilitiesTypeBindingTest.java 27749 2007-11-05 09:51:33Z groldan $
  * @since 2.5.x
- *
- *
  * @source $URL$
  */
 public class WFS_CapabilitiesTypeBindingTest extends WFSTestSupport {
@@ -60,8 +55,10 @@ public class WFS_CapabilitiesTypeBindingTest extends WFSTestSupport {
     }
 
     public void testParse() throws Exception {
-        String xml = "<WFS_Capabilities version=\"1.1.0\">" + "<FeatureTypeList/>"
-                + "</WFS_Capabilities>";
+        String xml =
+                "<WFS_Capabilities version=\"1.1.0\">"
+                        + "<FeatureTypeList/>"
+                        + "</WFS_Capabilities>";
         buildDocument(xml);
 
         WFSCapabilitiesType caps = (WFSCapabilitiesType) parse();
@@ -116,8 +113,8 @@ public class WFS_CapabilitiesTypeBindingTest extends WFSTestSupport {
         Element servesGmlTypeList = getElementByQName(root, WFS.ServesGMLObjectTypeList);
         assertNotNull(servesGmlTypeList);
 
-        Element type = getElementByQName(servesGmlTypeList, new QName(WFS.NAMESPACE,
-                "GMLObjectType"));
+        Element type =
+                getElementByQName(servesGmlTypeList, new QName(WFS.NAMESPACE, "GMLObjectType"));
         assertNotNull(type);
         Element name = getElementByQName(type, new QName(WFS.NAMESPACE, "Name"));
         assertEquals("gml:_Feature", name.getFirstChild().getNodeValue());
@@ -127,8 +124,8 @@ public class WFS_CapabilitiesTypeBindingTest extends WFSTestSupport {
         Element supportsGmlTypeList = getElementByQName(root, WFS.SupportsGMLObjectTypeList);
         assertNotNull(supportsGmlTypeList);
 
-        Element type = getElementByQName(supportsGmlTypeList, new QName(WFS.NAMESPACE,
-                "GMLObjectType"));
+        Element type =
+                getElementByQName(supportsGmlTypeList, new QName(WFS.NAMESPACE, "GMLObjectType"));
         assertNotNull(type);
         Element name = getElementByQName(type, new QName(WFS.NAMESPACE, "Name"));
         assertEquals("gml:_Feature", name.getFirstChild().getNodeValue());
@@ -145,26 +142,28 @@ public class WFS_CapabilitiesTypeBindingTest extends WFSTestSupport {
         final SpatialCapabilities spatialCaps;
         final IdCapabilities idCaps;
         {
-            Operator[] operators = { filterFac.operator("LessThan"),
-                    filterFac.operator("GreaterThan") };
+            Operator[] operators = {
+                filterFac.operator("LessThan"), filterFac.operator("GreaterThan")
+            };
             ComparisonOperators comparisonOps = filterFac.comparisonOperators(operators);
 
             boolean simple = true;
-            FunctionName[] functionNames = { filterFac.functionName("MIN", 2),
-                    filterFac.functionName("ABS", 1) };
+            FunctionName[] functionNames = {
+                filterFac.functionName("MIN", 2), filterFac.functionName("ABS", 1)
+            };
 
             Functions functions = filterFac.functions(functionNames);
-            final ArithmeticOperators aritmeticOps = filterFac.arithmeticOperators(simple,
-                    functions);
+            final ArithmeticOperators aritmeticOps =
+                    filterFac.arithmeticOperators(simple, functions);
 
             final boolean logicalOps = true;
             scalarCaps = filterFac.scalarCapabilities(comparisonOps, aritmeticOps, logicalOps);
         }
         {
-            GeometryOperand[] geomOperands = { GeometryOperand.Envelope, GeometryOperand.Point };
+            GeometryOperand[] geomOperands = {GeometryOperand.Envelope, GeometryOperand.Point};
             String name = "Disjoint";
             GeometryOperand[] operands = {};
-            SpatialOperator[] spatialOps = { filterFac.spatialOperator(name, operands) };
+            SpatialOperator[] spatialOps = {filterFac.spatialOperator(name, operands)};
             SpatialOperators spatialOperators = filterFac.spatialOperators(spatialOps);
             spatialCaps = filterFac.spatialCapabilities(geomOperands, spatialOperators);
         }

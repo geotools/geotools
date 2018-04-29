@@ -4,24 +4,23 @@
  *
  *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2003-2005 Open Geospatial Consortium Inc.
- *    
+ *
  *    All Rights Reserved. http://www.opengis.org/legal/
  */
 package org.opengis.annotation;
 
-import java.lang.annotation.Target;
-import java.lang.annotation.Documented;
-import java.lang.annotation.Retention;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;
 
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 
 /**
  * An annotation mapping a package to the XML schema from which it was derived.
  *
- * @author  Martin Desruisseaux (IRD)
- * @since   GeoAPI 2.0
- *
+ * @author Martin Desruisseaux (IRD)
+ * @since GeoAPI 2.0
  * @source $URL$
  */
 @Documented

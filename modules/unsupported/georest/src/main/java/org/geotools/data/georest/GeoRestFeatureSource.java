@@ -16,13 +16,13 @@
  */
 package org.geotools.data.georest;
 
+import com.vividsolutions.jts.geom.Geometry;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.URL;
-
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -34,18 +34,11 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 
-import com.vividsolutions.jts.geom.Geometry;
-
 /**
- * <p>
  * FeatureSource implementation for the {@link GeoRestDataStore}. This means that this model is
  * read-only.
- * </p>
- * 
+ *
  * @author Pieter De Graef, Geosparc
- *
- *
- *
  * @source $URL$
  */
 public class GeoRestFeatureSource extends ContentFeatureSource implements SimpleFeatureSource {

@@ -16,18 +16,12 @@
  */
 package org.geotools.gml2.bindings;
 
+import com.vividsolutions.jts.geom.MultiPoint;
 import org.geotools.gml2.GML;
 import org.geotools.xml.Binding;
 import org.w3c.dom.Document;
 
-import com.vividsolutions.jts.geom.MultiPoint;
-
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class GMLMultiPointTypeBinding2Test extends GMLTestSupport {
     public void testType() {
         assertEquals(MultiPoint.class, binding(GML.MultiPointType).getType());
@@ -47,12 +41,16 @@ public class GMLMultiPointTypeBinding2Test extends GMLTestSupport {
     public void testEncode() throws Exception {
         Document doc = encode(GML2MockData.multiPoint(), GML.MultiPoint);
         print(doc);
-        
-        assertEquals(2,
-            doc.getElementsByTagNameNS(GML.NAMESPACE, GML.pointMember.getLocalPart()).getLength());
-        assertEquals(2,
-                doc.getElementsByTagNameNS(GML.NAMESPACE, GML.Point.getLocalPart()).getLength());
-        
-        assertEquals("http://www.opengis.net/gml/srs/epsg.xml#4326", doc.getDocumentElement().getAttribute("srsName"));
+
+        assertEquals(
+                2,
+                doc.getElementsByTagNameNS(GML.NAMESPACE, GML.pointMember.getLocalPart())
+                        .getLength());
+        assertEquals(
+                2, doc.getElementsByTagNameNS(GML.NAMESPACE, GML.Point.getLocalPart()).getLength());
+
+        assertEquals(
+                "http://www.opengis.net/gml/srs/epsg.xml#4326",
+                doc.getDocumentElement().getAttribute("srsName"));
     }
 }

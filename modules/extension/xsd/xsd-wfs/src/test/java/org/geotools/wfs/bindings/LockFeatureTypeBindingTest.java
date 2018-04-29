@@ -19,13 +19,10 @@ package org.geotools.wfs.bindings;
 import java.math.BigInteger;
 import java.net.URL;
 import java.util.Collections;
-
 import javax.xml.namespace.QName;
-
 import net.opengis.wfs.AllSomeType;
 import net.opengis.wfs.LockFeatureType;
 import net.opengis.wfs.LockType;
-
 import org.geotools.gml3.GML;
 import org.geotools.test.TestData;
 import org.geotools.wfs.WFS;
@@ -37,12 +34,10 @@ import org.w3c.dom.Element;
 
 /**
  * Unit test suite for {@link LockFeatureTypeBinding}
- * 
+ *
  * @author Gabriel Roldan (TOPP)
  * @version $Id$
  * @since 2.5.x
- *
- *
  * @source $URL$
  */
 public class LockFeatureTypeBindingTest extends WFSTestSupport {
@@ -94,5 +89,4 @@ public class LockFeatureTypeBindingTest extends WFSTestSupport {
         assertEquals(new QName(WFS.NAMESPACE, "TestTypeName"), lock.getTypeName());
         assertTrue(lock.getFilter() instanceof Id);
     }
-
 }

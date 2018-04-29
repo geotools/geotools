@@ -27,7 +27,6 @@ import java.io.Serializable;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.ows.HTTPClient;
@@ -38,11 +37,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * 
- * 
- * @source $URL$
- */
+/** @source $URL$ */
 public class WFSDataStoreFactoryTest {
 
     private WFSDataStoreFactory dsf;
@@ -66,7 +61,8 @@ public class WFSDataStoreFactoryTest {
         // URL not set
         assertFalse(dsf.canProcess(params));
 
-        params.put(WFSDataStoreFactory.URL.key,
+        params.put(
+                WFSDataStoreFactory.URL.key,
                 "http://someserver.example.org/wfs?request=GetCapabilities");
         assertTrue(dsf.canProcess(params));
 
@@ -106,18 +102,16 @@ public class WFSDataStoreFactoryTest {
     }
 
     /**
-     * @param capabilitiesFile
-     *            the name of the GetCapabilities document under
-     *            {@code /org/geotools/data/wfs/impl/test-data}
+     * @param capabilitiesFile the name of the GetCapabilities document under {@code
+     *     /org/geotools/data/wfs/impl/test-data}
      */
-    private WFSDataStore testCreateDataStore(final String capabilitiesFile,
-            final Version expectedVersion) throws IOException {
+    private WFSDataStore testCreateDataStore(
+            final String capabilitiesFile, final Version expectedVersion) throws IOException {
 
         Map<String, Serializable> params = new HashMap<String, Serializable>();
         params.put("TESTING", Boolean.TRUE);
 
-        final URL capabilitiesUrl = getClass().getResource(
-                "test-data/" + capabilitiesFile);
+        final URL capabilitiesUrl = getClass().getResource("test-data/" + capabilitiesFile);
         if (capabilitiesUrl == null) {
             throw new IllegalArgumentException(capabilitiesFile + " not found");
         }
@@ -144,10 +138,11 @@ public class WFSDataStoreFactoryTest {
             assertTrue(true);
         }
     }
-    
+
     /**
-     * Test for GZIP settings, backwards compatibility: If no gzip settings is present,
-     * client has to enable gzip
+     * Test for GZIP settings, backwards compatibility: If no gzip settings is present, client has
+     * to enable gzip
+     *
      * @throws IOException
      */
     @Test
@@ -159,6 +154,7 @@ public class WFSDataStoreFactoryTest {
 
     /**
      * Test for GZIP settings: Ensure "true" is passed to http client.
+     *
      * @throws IOException
      */
     @Test
@@ -170,6 +166,7 @@ public class WFSDataStoreFactoryTest {
 
     /**
      * Test for GZIP settings: Ensure "false" is passed to http client.
+     *
      * @throws IOException
      */
     @Test
@@ -184,8 +181,8 @@ public class WFSDataStoreFactoryTest {
         if (tryGzip != null) {
             params.put(WFSDataStoreFactory.TRY_GZIP.key, tryGzip);
         }
-        final URL capabilitiesUrl = getClass()
-                .getResource("test-data/CubeWerx_4.12.6/1.0.0/GetCapabilities.xml");
+        final URL capabilitiesUrl =
+                getClass().getResource("test-data/CubeWerx_4.12.6/1.0.0/GetCapabilities.xml");
         params.put(WFSDataStoreFactory.URL.key, capabilitiesUrl);
         WFSDataStore store = dsf.createDataStore(params);
         WFSClient wfsClient = store.getWfsClient();

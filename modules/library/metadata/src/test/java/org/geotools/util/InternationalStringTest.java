@@ -16,31 +16,26 @@
  */
 package org.geotools.util;
 
+import static org.junit.Assert.*;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Locale;
-import org.opengis.util.GenericName;
-
 import org.junit.*;
-import static org.junit.Assert.*;
-
+import org.opengis.util.GenericName;
 
 /**
  * Tests the various {@link InternationalString} implementations.
  *
  * @author Martin Desruisseaux (IRD)
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public final class InternationalStringTest {
-    /**
-     * Tests the {@link SimpleInternationalString} implementation.
-     */
+    /** Tests the {@link SimpleInternationalString} implementation. */
     @Test
     public void testSimple() throws IOException, ClassNotFoundException {
         final String message = "This is an unlocalized message";
@@ -49,14 +44,12 @@ public final class InternationalStringTest {
         basicTests(toTest);
     }
 
-    /**
-     * Tests the {@link SimpleInternationalString} implementation.
-     */
+    /** Tests the {@link SimpleInternationalString} implementation. */
     @Test
     public void testGrowable() throws IOException, ClassNotFoundException {
-        final String message     = "This is an unlocalized message";
-        final String messageEn   = "This is a localized message";
-        final String messageFr   = "Voici un message";
+        final String message = "This is an unlocalized message";
+        final String messageEn = "This is a localized message";
+        final String messageFr = "Voici un message";
         final String messageFrCa = "Caribou!";
         GrowableInternationalString toTest = new GrowableInternationalString();
         basicTests(toTest);
@@ -69,64 +62,61 @@ public final class InternationalStringTest {
         basicTests(toTest);
         toTest.add(Locale.ENGLISH, messageEn);
         basicTests(toTest);
-        toTest.add(Locale.FRENCH,  messageFr);
+        toTest.add(Locale.FRENCH, messageFr);
         basicTests(toTest);
-        assertEquals("Unlocalized message:", message,   toTest.toString(null));
-        assertEquals("English message:",     messageEn, toTest.toString(Locale.ENGLISH));
-        assertEquals("French message:",      messageFr, toTest.toString(Locale.FRENCH));
-        assertEquals("French message:",      messageFr, toTest.toString(Locale.CANADA_FRENCH));
-        assertEquals("Other language:",      message,   toTest.toString(Locale.CHINESE));
+        assertEquals("Unlocalized message:", message, toTest.toString(null));
+        assertEquals("English message:", messageEn, toTest.toString(Locale.ENGLISH));
+        assertEquals("French message:", messageFr, toTest.toString(Locale.FRENCH));
+        assertEquals("French message:", messageFr, toTest.toString(Locale.CANADA_FRENCH));
+        assertEquals("Other language:", message, toTest.toString(Locale.CHINESE));
         toTest.add(Locale.CANADA_FRENCH, messageFrCa);
         basicTests(toTest);
-        assertEquals("Unlocalized message:", message,     toTest.toString(null));
-        assertEquals("English message:",     messageEn,   toTest.toString(Locale.ENGLISH));
-        assertEquals("French message:",      messageFr,   toTest.toString(Locale.FRENCH));
-        assertEquals("French message:",      messageFrCa, toTest.toString(Locale.CANADA_FRENCH));
-        assertEquals("Other language:",      message,     toTest.toString(Locale.CHINESE));
+        assertEquals("Unlocalized message:", message, toTest.toString(null));
+        assertEquals("English message:", messageEn, toTest.toString(Locale.ENGLISH));
+        assertEquals("French message:", messageFr, toTest.toString(Locale.FRENCH));
+        assertEquals("French message:", messageFrCa, toTest.toString(Locale.CANADA_FRENCH));
+        assertEquals("Other language:", message, toTest.toString(Locale.CHINESE));
     }
 
-    /**
-     * Tests the {@link GenericName} implementation.
-     */
+    /** Tests the {@link GenericName} implementation. */
     @Test
     public void testName() throws IOException, ClassNotFoundException {
         final GenericName name = NameFactory.create("codespace:subspace:name");
         basicTests(name);
         assertEquals("toString:", "codespace:subspace:name", name.toString());
-        assertEquals("toString:", "codespace:subspace",      name.scope().name().toString());
-        assertEquals("toString:", "codespace",               name.scope().name().scope().name().toString());
+        assertEquals("toString:", "codespace:subspace", name.scope().name().toString());
+        assertEquals("toString:", "codespace", name.scope().name().scope().name().toString());
         assertSame("asScopedName", name, name.toFullyQualifiedName());
-        assertSame("asLocalName",  name, name.tip().toFullyQualifiedName());
+        assertSame("asLocalName", name, name.tip().toFullyQualifiedName());
     }
 
-    /**
-     * Performs basic test on the given object.
-     */
+    /** Performs basic test on the given object. */
     @SuppressWarnings("unchecked")
     private <T extends Comparable> void basicTests(final T toTest)
-            throws IOException, ClassNotFoundException
-    {
+            throws IOException, ClassNotFoundException {
         assertEquals("CompareTo: ", 0, toTest.compareTo(toTest));
         assertEquals("Equals:", toTest, toTest);
         if (toTest instanceof CharSequence) {
-            assertEquals("CharSequence:", toTest.toString(),
+            assertEquals(
+                    "CharSequence:",
+                    toTest.toString(),
                     new StringBuilder((CharSequence) toTest).toString());
         }
         /*
          * Tests serialization
          */
-        final ByteArrayOutputStream    out = new ByteArrayOutputStream();
+        final ByteArrayOutputStream out = new ByteArrayOutputStream();
         final ObjectOutputStream objectOut = new ObjectOutputStream(out);
         objectOut.writeObject(toTest);
         objectOut.close();
 
-        final ByteArrayInputStream    in = new ByteArrayInputStream(out.toByteArray());
+        final ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
         final ObjectInputStream objectIn = new ObjectInputStream(in);
-        final Object              object = objectIn.readObject();
+        final Object object = objectIn.readObject();
         objectIn.close();
 
         assertEquals("Serialization:", toTest.getClass(), object.getClass());
-        assertEquals("Serialization:", toTest,            object           );
-        assertEquals("Hash code:",     toTest.hashCode(), object.hashCode());
+        assertEquals("Serialization:", toTest, object);
+        assertEquals("Hash code:", toTest.hashCode(), object.hashCode());
     }
 }

@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -22,7 +22,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
 import org.geotools.xml.PrintHandler;
 import org.geotools.xml.schema.Attribute;
 import org.geotools.xml.schema.AttributeGroup;
@@ -40,25 +39,16 @@ import org.geotools.xml.xsi.XSISimpleTypes;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-
 /**
- * <p>
- * This class is a hard-coded version of the XLink Schema. The results of
- * parsing the schema in through the parser and calling the resulting Schema
- * objects methods should be the same as calling these methods, except that
- * these methods should be faster.
- * </p>
- * 
- * <p>
- * This class consists of a series of internal private classes and an
- * implementation of the Schema interface which is public.
- * </p>
+ * This class is a hard-coded version of the XLink Schema. The results of parsing the schema in
+ * through the parser and calling the resulting Schema objects methods should be the same as calling
+ * these methods, except that these methods should be faster.
+ *
+ * <p>This class consists of a series of internal private classes and an implementation of the
+ * Schema interface which is public.
  *
  * @author dzwiers www.refractions.net
- *
  * @see Schema
- *
- *
  * @source $URL$
  */
 public class XLinkSchema implements Schema {
@@ -73,9 +63,7 @@ public class XLinkSchema implements Schema {
     /** The full xLink namespace */
     public static final URI NAMESPACE = makeURI("http://www.w3.org/1999/xlink");
 
-    /**
-     * @see org.geotools.xml.schema.Schema#getInstance()
-     */
+    /** @see org.geotools.xml.schema.Schema#getInstance() */
     public static Schema getInstance() {
         return instance;
     }
@@ -114,16 +102,12 @@ public class XLinkSchema implements Schema {
         return r;
     }
 
-    /**
-     * @see schema.Schema#getAttributeGroups()
-     */
+    /** @see schema.Schema#getAttributeGroups() */
     public AttributeGroup[] getAttributeGroups() {
         return attributeGroups;
     }
 
-    /**
-     * @see schema.Schema#getAttributeDescriptors()
-     */
+    /** @see schema.Schema#getAttributeDescriptors() */
     public Attribute[] getAttributes() {
         return attributes;
     }
@@ -137,58 +121,42 @@ public class XLinkSchema implements Schema {
         return NONE;
     }
 
-    /**
-     * @see schema.Schema#getComplexTypes()
-     */
+    /** @see schema.Schema#getComplexTypes() */
     public ComplexType[] getComplexTypes() {
         return new ComplexType[0];
     }
 
-    /**
-     * @see schema.Schema#getElements()
-     */
+    /** @see schema.Schema#getElements() */
     public Element[] getElements() {
         return new Element[0];
     }
 
-    /**
-     * @see schema.Schema#getFinalDefault()
-     */
+    /** @see schema.Schema#getFinalDefault() */
     public int getFinalDefault() {
         return NONE;
     }
 
-    /**
-     * @see schema.Schema#getGroups()
-     */
+    /** @see schema.Schema#getGroups() */
     public Group[] getGroups() {
         return new Group[0];
     }
 
-    /**
-     * @see schema.Schema#getId()
-     */
+    /** @see schema.Schema#getId() */
     public String getId() {
         return null;
     }
 
-    /**
-     * @see schema.Schema#getImports()
-     */
+    /** @see schema.Schema#getImports() */
     public Schema[] getImports() {
         return new Schema[0];
     }
 
-    /**
-     * @see schema.Schema#getSimpleTypes()
-     */
+    /** @see schema.Schema#getSimpleTypes() */
     public SimpleType[] getSimpleTypes() {
         return new SimpleType[0];
     }
 
-    /**
-     * @see schema.Schema#getTargetNamespace()
-     */
+    /** @see schema.Schema#getTargetNamespace() */
     public URI getTargetNamespace() {
         return NAMESPACE;
     }
@@ -197,16 +165,12 @@ public class XLinkSchema implements Schema {
         return NAMESPACE;
     }
 
-    /**
-     * @see schema.Schema#getVersion()
-     */
+    /** @see schema.Schema#getVersion() */
     public String getVersion() {
         return "2.1.2";
     }
 
-    /**
-     * @see schema.Schema#includesURI(java.net.URI)
-     */
+    /** @see schema.Schema#includesURI(java.net.URI) */
     public boolean includesURI(URI uri) {
         //        if (uri.toString().toLowerCase().endsWith("xlinks.xsd")) {
         //            return true;
@@ -228,37 +192,27 @@ public class XLinkSchema implements Schema {
         }
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     */
+    /** DOCUMENT ME! */
     public String getPrefix() {
         return "xLink";
     }
 
-    /**
-     * @see schema.Schema#isAttributeFormDefault()
-     */
+    /** @see schema.Schema#isAttributeFormDefault() */
     public boolean isAttributeFormDefault() {
         return false;
     }
 
-    /**
-     * @see schema.Schema#isElementFormDefault()
-     */
+    /** @see schema.Schema#isElementFormDefault() */
     public boolean isElementFormDefault() {
         return false;
     }
 
     /**
      * ActuateSimpleType purpose.
-     * 
+     *
+     * <p>A static representation of an Actuate type as defined in the XLink Schema
+     *
      * <p>
-     * A static representation of an Actuate type as defined in the XLink
-     * Schema
-     * </p>
-     * 
-     * <p></p>
      *
      * @author dzwiers, Refractions Research, Inc. http://www.refractions.net
      * @author $Author:$ (last modification)
@@ -268,16 +222,14 @@ public class XLinkSchema implements Schema {
         // list of allowable enumeration values
         private static List lookUpTable = loadTable();
 
-        /**
-         * @see org.geotools.xml.schema.Type#findChildElement(java.lang.String)
-         */
+        /** @see org.geotools.xml.schema.Type#findChildElement(java.lang.String) */
         public Element findChildElement(String name) {
             return null; // will never happen
         }
 
         /**
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
-         *      java.lang.Object, java.util.Map)
+         *     java.lang.Object, java.util.Map)
          */
         public boolean canEncode(Element element, Object value, Map hints) {
             //            return (lookUpTable.contains(value));
@@ -286,11 +238,9 @@ public class XLinkSchema implements Schema {
 
         /**
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
-         *      java.lang.Object, org.geotools.xml.PrintHandler,
-         *      java.util.Map)
+         *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output,
-            Map hints){
+        public void encode(Element element, Object value, PrintHandler output, Map hints) {
             // it's an attribute ... do nothing
         }
 
@@ -302,30 +252,22 @@ public class XLinkSchema implements Schema {
             return null;
         }
 
-        /**
-         * @see schema.SimpleType#getNamespace()
-         */
+        /** @see schema.SimpleType#getNamespace() */
         public URI getNamespace() {
             return XLinkSchema.NAMESPACE;
         }
 
-        /**
-         * @see schema.SimpleType#getFinal()
-         */
+        /** @see schema.SimpleType#getFinal() */
         public int getFinal() {
             return NONE;
         }
 
-        /**
-         * @see schema.SimpleType#getId()
-         */
+        /** @see schema.SimpleType#getId() */
         public String getId() {
             return null;
         }
 
-        /**
-         * @see schema.SimpleType#getLocalName()
-         */
+        /** @see schema.SimpleType#getLocalName() */
         public String getName() {
             return null;
         }
@@ -340,11 +282,9 @@ public class XLinkSchema implements Schema {
             return lookUpTable;
         }
 
-        /**
-         * @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes)
-         */
-        public Object getValue(Element element, ElementValue[] value,
-            Attributes attrs, Map hints) throws SAXException {
+        /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
+        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+                throws SAXException {
             if ((value == null) || (value.length != 1) || (value[0] == null)) {
                 return null;
             }
@@ -354,8 +294,7 @@ public class XLinkSchema implements Schema {
                     return value[0].getValue();
                 }
 
-                throw new SAXException(
-                    "The value speficified was not one of the expected values.");
+                throw new SAXException("The value speficified was not one of the expected values.");
             }
 
             return null;
@@ -363,10 +302,9 @@ public class XLinkSchema implements Schema {
 
         /**
          * @see org.geotools.xml.schema.SimpleType#toAttributes(org.geotools.xml.schema.Attribute,
-         *      java.lang.Object, java.util.Map)
+         *     java.lang.Object, java.util.Map)
          */
-        public AttributeValue toAttribute(Attribute attribute, Object value,
-            Map hints) {
+        public AttributeValue toAttribute(Attribute attribute, Object value, Map hints) {
             if (canCreateAttributes(attribute, value, hints)) {
                 return new AttributeValueGT(attribute, (String) value);
             }
@@ -375,33 +313,27 @@ public class XLinkSchema implements Schema {
         }
 
         /**
-         * @see org.geotools.xml.schema.SimpleType#canCreateAttributes(org.geotools.xml.schema.Attribute,
-         *      java.lang.Object, java.util.Map)
+         * @see
+         *     org.geotools.xml.schema.SimpleType#canCreateAttributes(org.geotools.xml.schema.Attribute,
+         *     java.lang.Object, java.util.Map)
          */
-        public boolean canCreateAttributes(Attribute attribute, Object value,
-            Map hints) {
+        public boolean canCreateAttributes(Attribute attribute, Object value, Map hints) {
             return (attribute.getName() != null)
-            && attribute.getName().equals(Actuate.getInstance().getName())
-            && lookUpTable.contains(value);
+                    && attribute.getName().equals(Actuate.getInstance().getName())
+                    && lookUpTable.contains(value);
         }
 
-        /**
-         * @see org.geotools.xml.schema.SimpleType#getChildType()
-         */
+        /** @see org.geotools.xml.schema.SimpleType#getChildType() */
         public int getChildType() {
             return RESTRICTION;
         }
 
-        /**
-         * @see org.geotools.xml.schema.SimpleType#getParents()
-         */
+        /** @see org.geotools.xml.schema.SimpleType#getParents() */
         public SimpleType[] getParents() {
-            return new SimpleType[] { XSISimpleTypes.String.getInstance() };
+            return new SimpleType[] {XSISimpleTypes.String.getInstance()};
         }
 
-        /**
-         * @see org.geotools.xml.schema.SimpleType#getFacets()
-         */
+        /** @see org.geotools.xml.schema.SimpleType#getFacets() */
         public Facet[] getFacets() {
             return new Facet[] {
                 new FacetGT(Facet.ENUMERATION, "onLoad"),
@@ -414,12 +346,10 @@ public class XLinkSchema implements Schema {
 
     /**
      * ShowSimpleType purpose.
-     * 
+     *
+     * <p>Represents the Show type in the XLink Schema
+     *
      * <p>
-     * Represents the Show type in the XLink Schema
-     * </p>
-     * 
-     * <p></p>
      *
      * @author dzwiers, Refractions Research, Inc. http://www.refractions.net
      * @author $Author:$ (last modification)
@@ -431,10 +361,9 @@ public class XLinkSchema implements Schema {
 
         /**
          * @see org.geotools.xml.schema.SimpleType#toAttributes(org.geotools.xml.schema.Attribute,
-         *      java.lang.Object, java.util.Map)
+         *     java.lang.Object, java.util.Map)
          */
-        public AttributeValue toAttribute(Attribute attribute, Object value,
-            Map hints) {
+        public AttributeValue toAttribute(Attribute attribute, Object value, Map hints) {
             if (canCreateAttributes(attribute, value, hints)) {
                 return new AttributeValueGT(attribute, (String) value);
             }
@@ -442,22 +371,20 @@ public class XLinkSchema implements Schema {
             return null;
         }
 
-        /**
-         * @see org.geotools.xml.schema.Type#findChildElement(java.lang.String)
-         */
+        /** @see org.geotools.xml.schema.Type#findChildElement(java.lang.String) */
         public Element findChildElement(String name) {
             return null; // will never happen
         }
 
         /**
-         * @see org.geotools.xml.schema.SimpleType#canCreateAttributes(org.geotools.xml.schema.Attribute,
-         *      java.lang.Object, java.util.Map)
+         * @see
+         *     org.geotools.xml.schema.SimpleType#canCreateAttributes(org.geotools.xml.schema.Attribute,
+         *     java.lang.Object, java.util.Map)
          */
-        public boolean canCreateAttributes(Attribute attribute, Object value,
-            Map hints) {
+        public boolean canCreateAttributes(Attribute attribute, Object value, Map hints) {
             return (attribute.getName() != null)
-            && attribute.getName().equals(Actuate.getInstance().getName())
-            && lookUpTable.contains(value);
+                    && attribute.getName().equals(Actuate.getInstance().getName())
+                    && lookUpTable.contains(value);
         }
 
         public Class getInstanceType() {
@@ -468,30 +395,22 @@ public class XLinkSchema implements Schema {
             return null;
         }
 
-        /**
-         * @see schema.SimpleType#getNamespace()
-         */
+        /** @see schema.SimpleType#getNamespace() */
         public URI getNamespace() {
             return XLinkSchema.NAMESPACE;
         }
 
-        /**
-         * @see schema.SimpleType#getFinal()
-         */
+        /** @see schema.SimpleType#getFinal() */
         public int getFinal() {
             return NONE;
         }
 
-        /**
-         * @see schema.SimpleType#getId()
-         */
+        /** @see schema.SimpleType#getId() */
         public String getId() {
             return null;
         }
 
-        /**
-         * @see schema.SimpleType#getLocalName()
-         */
+        /** @see schema.SimpleType#getLocalName() */
         public String getName() {
             return null;
         }
@@ -507,11 +426,9 @@ public class XLinkSchema implements Schema {
             return lookUpTable;
         }
 
-        /**
-         * @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes)
-         */
-        public Object getValue(Element element, ElementValue[] value,
-            Attributes attrs, Map hints) throws SAXException {
+        /** @see schema.Type#getValue(java.lang.Object, org.xml.sax.Attributes) */
+        public Object getValue(Element element, ElementValue[] value, Attributes attrs, Map hints)
+                throws SAXException {
             if ((value == null) || (value.length != 1) || (value[0] == null)) {
                 return null;
             }
@@ -521,8 +438,7 @@ public class XLinkSchema implements Schema {
                     return value[0].getValue();
                 }
 
-                throw new SAXException(
-                    "The value speficified was not one of the expected values.");
+                throw new SAXException("The value speficified was not one of the expected values.");
             }
 
             return null;
@@ -530,7 +446,7 @@ public class XLinkSchema implements Schema {
 
         /**
          * @see org.geotools.xml.schema.Type#canEncode(org.geotools.xml.schema.Element,
-         *      java.lang.Object, java.util.Map)
+         *     java.lang.Object, java.util.Map)
          */
         public boolean canEncode(Element element, Object value, Map hints) {
             //            return (lookUpTable.contains(value));
@@ -539,31 +455,23 @@ public class XLinkSchema implements Schema {
 
         /**
          * @see org.geotools.xml.schema.Type#encode(org.geotools.xml.schema.Element,
-         *      java.lang.Object, org.geotools.xml.PrintHandler,
-         *      java.util.Map)
+         *     java.lang.Object, org.geotools.xml.PrintHandler, java.util.Map)
          */
-        public void encode(Element element, Object value, PrintHandler output,
-            Map hints){
+        public void encode(Element element, Object value, PrintHandler output, Map hints) {
             // it's an attribute ... do nothing
         }
 
-        /**
-         * @see org.geotools.xml.schema.SimpleType#getChildType()
-         */
+        /** @see org.geotools.xml.schema.SimpleType#getChildType() */
         public int getChildType() {
             return RESTRICTION;
         }
 
-        /**
-         * @see org.geotools.xml.schema.SimpleType#getParents()
-         */
+        /** @see org.geotools.xml.schema.SimpleType#getParents() */
         public SimpleType[] getParents() {
-            return new SimpleType[] { XSISimpleTypes.String.getInstance() };
+            return new SimpleType[] {XSISimpleTypes.String.getInstance()};
         }
 
-        /**
-         * @see org.geotools.xml.schema.SimpleType#getFacets()
-         */
+        /** @see org.geotools.xml.schema.SimpleType#getFacets() */
         public Facet[] getFacets() {
             return new Facet[] {
                 new FacetGT(Facet.ENUMERATION, "new"),
@@ -577,41 +485,30 @@ public class XLinkSchema implements Schema {
 
     /**
      * XLinkAttribute purpose.
-     * 
-     * <p>
-     * Used to define some constant values for XLink attributes, such as
-     * Namespace
-     * </p>
+     *
+     * <p>Used to define some constant values for XLink attributes, such as Namespace
      *
      * @author dzwiers, Refractions Research, Inc. http://www.refractions.net
      * @author $Author:$ (last modification)
      * @version $Id$
      */
     protected abstract static class XLinkAttribute implements Attribute {
-        /**
-         * @see schema.Attribute#getNameSpace()
-         */
+        /** @see schema.Attribute#getNameSpace() */
         public URI getNamespace() {
             return XLinkSchema.NAMESPACE;
         }
 
-        /**
-         * @see schema.Attribute#getDefault()
-         */
+        /** @see schema.Attribute#getDefault() */
         public String getDefault() {
             return null;
         }
 
-        /**
-         * @see schema.Attribute#isForm()
-         */
+        /** @see schema.Attribute#isForm() */
         public boolean isForm() {
             return false;
         }
 
-        /**
-         * @see schema.Attribute#getId()
-         */
+        /** @see schema.Attribute#getId() */
         public String getId() {
             return null;
         }
@@ -619,10 +516,8 @@ public class XLinkSchema implements Schema {
 
     /**
      * Href purpose.
-     * 
-     * <p>
-     * Represents an Href Attribute in the XLink Schema
-     * </p>
+     *
+     * <p>Represents an Href Attribute in the XLink Schema
      *
      * @author dzwiers, Refractions Research, Inc. http://www.refractions.net
      * @author $Author:$ (last modification)
@@ -637,13 +532,10 @@ public class XLinkSchema implements Schema {
 
         /**
          * Href constructor.
-         * 
-         * <p>
-         * Creates an instance of the Href Attribute of the XLink Schema
-         * </p>
+         *
+         * <p>Creates an instance of the Href Attribute of the XLink Schema
          *
          * @param use
-         *
          * @see Attribute#getUse()
          */
         public Href(int use) {
@@ -652,11 +544,9 @@ public class XLinkSchema implements Schema {
 
         /**
          * Href constructor
-         * 
-         * <p>
-         * Creates an instance of the Href Attribute of the XLink Schema. Sets
-         * the usage to Optional.
-         * </p>
+         *
+         * <p>Creates an instance of the Href Attribute of the XLink Schema. Sets the usage to
+         * Optional.
          */
         public Href() {
             use = Attribute.OPTIONAL;
@@ -684,23 +574,17 @@ public class XLinkSchema implements Schema {
             return null;
         }
 
-        /**
-         * @see schema.Attribute#getLocalName()
-         */
+        /** @see schema.Attribute#getLocalName() */
         public String getName() {
             return "href";
         }
 
-        /**
-         * @see schema.Attribute#getUse()
-         */
+        /** @see schema.Attribute#getUse() */
         public int getUse() {
             return use;
         }
 
-        /**
-         * @see schema.Attribute#getSimpleType()
-         */
+        /** @see schema.Attribute#getSimpleType() */
         public SimpleType getSimpleType() {
             return XSISimpleTypes.AnyURI.getInstance();
         }
@@ -713,30 +597,22 @@ public class XLinkSchema implements Schema {
             return instance1;
         }
 
-        /**
-         * @see schema.Attribute#getFixed()
-         */
+        /** @see schema.Attribute#getFixed() */
         public String getFixed() {
             return null;
         }
 
-        /**
-         * @see schema.Attribute#getLocalName()
-         */
+        /** @see schema.Attribute#getLocalName() */
         public String getName() {
             return "role";
         }
 
-        /**
-         * @see schema.Attribute#getUse()
-         */
+        /** @see schema.Attribute#getUse() */
         public int getUse() {
             return Attribute.OPTIONAL;
         }
 
-        /**
-         * @see schema.Attribute#getSimpleType()
-         */
+        /** @see schema.Attribute#getSimpleType() */
         public SimpleType getSimpleType() {
             return XSISimpleTypes.AnyURI.getInstance();
         }
@@ -760,30 +636,22 @@ public class XLinkSchema implements Schema {
             return instance1;
         }
 
-        /**
-         * @see schema.Attribute#getFixed()
-         */
+        /** @see schema.Attribute#getFixed() */
         public String getFixed() {
             return null;
         }
 
-        /**
-         * @see schema.Attribute#getLocalName()
-         */
+        /** @see schema.Attribute#getLocalName() */
         public String getName() {
             return "arcrole";
         }
 
-        /**
-         * @see schema.Attribute#getUse()
-         */
+        /** @see schema.Attribute#getUse() */
         public int getUse() {
             return Attribute.OPTIONAL;
         }
 
-        /**
-         * @see schema.Attribute#getSimpleType()
-         */
+        /** @see schema.Attribute#getSimpleType() */
         public SimpleType getSimpleType() {
             return XSISimpleTypes.AnyURI.getInstance();
         }
@@ -798,10 +666,7 @@ public class XLinkSchema implements Schema {
         // the default singleton instance
         static Attribute instance1;
 
-        /**
-         * Returns the default singleton instance
-         *
-         */
+        /** Returns the default singleton instance */
         public static Attribute getInstance() {
             if (instance1 == null) {
                 instance1 = new Title();
@@ -810,30 +675,22 @@ public class XLinkSchema implements Schema {
             return instance1;
         }
 
-        /**
-         * @see schema.Attribute#getFixed()
-         */
+        /** @see schema.Attribute#getFixed() */
         public String getFixed() {
             return null;
         }
 
-        /**
-         * @see schema.Attribute#getLocalName()
-         */
+        /** @see schema.Attribute#getLocalName() */
         public String getName() {
             return "title";
         }
 
-        /**
-         * @see schema.Attribute#getUse()
-         */
+        /** @see schema.Attribute#getUse() */
         public int getUse() {
             return Attribute.OPTIONAL;
         }
 
-        /**
-         * @see schema.Attribute#getSimpleType()
-         */
+        /** @see schema.Attribute#getSimpleType() */
         public SimpleType getSimpleType() {
             return XSISimpleTypes.String.getInstance();
         }
@@ -851,38 +708,27 @@ public class XLinkSchema implements Schema {
         // the asociated simpletype
         private static SimpleType simpleType = new ShowSimpleType();
 
-        /**
-         * Returns the singleton instance
-         *
-         */
+        /** Returns the singleton instance */
         public static Attribute getInstance() {
             return instance1;
         }
 
-        /**
-         * @see schema.Attribute#getFixed()
-         */
+        /** @see schema.Attribute#getFixed() */
         public String getFixed() {
             return null;
         }
 
-        /**
-         * @see schema.Attribute#getLocalName()
-         */
+        /** @see schema.Attribute#getLocalName() */
         public String getName() {
             return "show";
         }
 
-        /**
-         * @see schema.Attribute#getUse()
-         */
+        /** @see schema.Attribute#getUse() */
         public int getUse() {
             return Attribute.OPTIONAL;
         }
 
-        /**
-         * @see schema.Attribute#getSimpleType()
-         */
+        /** @see schema.Attribute#getSimpleType() */
         public SimpleType getSimpleType() {
             return simpleType;
         }
@@ -900,10 +746,7 @@ public class XLinkSchema implements Schema {
         // the simpletype for the attribute
         private static SimpleType simpleType = new ActuateSimpleType();
 
-        /**
-         * Return a singleton of an Actuate
-         *
-         */
+        /** Return a singleton of an Actuate */
         public static Attribute getInstance() {
             if (instance1 == null) {
                 instance1 = new Actuate();
@@ -912,30 +755,22 @@ public class XLinkSchema implements Schema {
             return instance1;
         }
 
-        /**
-         * @see schema.Attribute#getFixed()
-         */
+        /** @see schema.Attribute#getFixed() */
         public String getFixed() {
             return null;
         }
 
-        /**
-         * @see schema.Attribute#getLocalName()
-         */
+        /** @see schema.Attribute#getLocalName() */
         public String getName() {
             return "actuate";
         }
 
-        /**
-         * @see schema.Attribute#getUse()
-         */
+        /** @see schema.Attribute#getUse() */
         public int getUse() {
             return Attribute.OPTIONAL;
         }
 
-        /**
-         * @see schema.Attribute#getSimpleType()
-         */
+        /** @see schema.Attribute#getSimpleType() */
         public SimpleType getSimpleType() {
             return simpleType;
         }
@@ -950,38 +785,27 @@ public class XLinkSchema implements Schema {
         // the singleton instance
         static Attribute instance1;
 
-        /**
-         * Returns a singleton of Label
-         *
-         */
+        /** Returns a singleton of Label */
         public static Attribute getInstance() {
             return instance1;
         }
 
-        /**
-         * @see schema.Attribute#getFixed()
-         */
+        /** @see schema.Attribute#getFixed() */
         public String getFixed() {
             return null;
         }
 
-        /**
-         * @see schema.Attribute#getLocalName()
-         */
+        /** @see schema.Attribute#getLocalName() */
         public String getName() {
             return "label";
         }
 
-        /**
-         * @see schema.Attribute#getUse()
-         */
+        /** @see schema.Attribute#getUse() */
         public int getUse() {
             return Attribute.OPTIONAL;
         }
 
-        /**
-         * @see schema.Attribute#getSimpleType()
-         */
+        /** @see schema.Attribute#getSimpleType() */
         public SimpleType getSimpleType() {
             return XSISimpleTypes.String.getInstance();
         }
@@ -996,10 +820,7 @@ public class XLinkSchema implements Schema {
         // the singleton instance
         static Attribute instance1;
 
-        /**
-         * Returns the singleton From instance
-         *
-         */
+        /** Returns the singleton From instance */
         public static Attribute getInstance() {
             if (instance1 == null) {
                 instance1 = new From();
@@ -1008,30 +829,22 @@ public class XLinkSchema implements Schema {
             return instance1;
         }
 
-        /**
-         * @see schema.Attribute#getFixed()
-         */
+        /** @see schema.Attribute#getFixed() */
         public String getFixed() {
             return null;
         }
 
-        /**
-         * @see schema.Attribute#getLocalName()
-         */
+        /** @see schema.Attribute#getLocalName() */
         public String getName() {
             return "from";
         }
 
-        /**
-         * @see schema.Attribute#getUse()
-         */
+        /** @see schema.Attribute#getUse() */
         public int getUse() {
             return Attribute.OPTIONAL;
         }
 
-        /**
-         * @see schema.Attribute#getSimpleType()
-         */
+        /** @see schema.Attribute#getSimpleType() */
         public SimpleType getSimpleType() {
             return XSISimpleTypes.String.getInstance();
         }
@@ -1046,10 +859,7 @@ public class XLinkSchema implements Schema {
         // the static instance
         static Attribute instance1;
 
-        /**
-         * Returns the singleton To instance
-         *
-         */
+        /** Returns the singleton To instance */
         public static Attribute getInstance() {
             if (instance1 == null) {
                 instance1 = new To();
@@ -1058,30 +868,22 @@ public class XLinkSchema implements Schema {
             return instance1;
         }
 
-        /**
-         * @see schema.Attribute#getFixed()
-         */
+        /** @see schema.Attribute#getFixed() */
         public String getFixed() {
             return null;
         }
 
-        /**
-         * @see schema.Attribute#getLocalName()
-         */
+        /** @see schema.Attribute#getLocalName() */
         public String getName() {
             return "to";
         }
 
-        /**
-         * @see schema.Attribute#getUse()
-         */
+        /** @see schema.Attribute#getUse() */
         public int getUse() {
             return Attribute.OPTIONAL;
         }
 
-        /**
-         * @see schema.Attribute#getSimpleType()
-         */
+        /** @see schema.Attribute#getSimpleType() */
         public SimpleType getSimpleType() {
             return XSISimpleTypes.String.getInstance();
         }
@@ -1105,30 +907,22 @@ public class XLinkSchema implements Schema {
             this.fixed = fixed;
         }
 
-        /**
-         * @see schema.Attribute#getFixed()
-         */
+        /** @see schema.Attribute#getFixed() */
         public String getFixed() {
             return fixed;
         }
 
-        /**
-         * @see schema.Attribute#getLocalName()
-         */
+        /** @see schema.Attribute#getLocalName() */
         public String getName() {
             return "type";
         }
 
-        /**
-         * @see schema.Attribute#getUse()
-         */
+        /** @see schema.Attribute#getUse() */
         public int getUse() {
             return Attribute.REQUIRED;
         }
 
-        /**
-         * @see schema.Attribute#getSimpleType()
-         */
+        /** @see schema.Attribute#getSimpleType() */
         public SimpleType getSimpleType() {
             return XSISimpleTypes.String.getInstance();
         }
@@ -1136,35 +930,25 @@ public class XLinkSchema implements Schema {
 
     /**
      * XLinkAttributeGroup purpose.
-     * 
-     * <p>
-     * Used to define some constant values for XLink attributeGroups, such as
-     * Namespace
-     * </p>
+     *
+     * <p>Used to define some constant values for XLink attributeGroups, such as Namespace
      *
      * @author dzwiers, Refractions Research, Inc. http://www.refractions.net
      * @author $Author:$ (last modification)
      * @version $Id$
      */
-    protected abstract static class XLinkAttributeGroup
-        implements AttributeGroup {
-        /**
-         * @see schema.AttributeGroup#getNameSpace()
-         */
+    protected abstract static class XLinkAttributeGroup implements AttributeGroup {
+        /** @see schema.AttributeGroup#getNameSpace() */
         public URI getNamespace() {
             return XLinkSchema.NAMESPACE;
         }
 
-        /**
-         * @see schema.AttributeGroup#getAnyAttributeNameSpace()
-         */
+        /** @see schema.AttributeGroup#getAnyAttributeNameSpace() */
         public String getAnyAttributeNameSpace() {
             return null;
         }
 
-        /**
-         * @see schema.AttributeGroup#getId()
-         */
+        /** @see schema.AttributeGroup#getId() */
         public String getId() {
             return null;
         }
@@ -1181,28 +965,25 @@ public class XLinkSchema implements Schema {
 
         // the static attribute list
         private static final Attribute[] attributes1 = {
-                Href.instance1, Role.instance1, Arcrole.instance1, Title.instance1,
-                Show.instance1, Actuate.instance1,
-            };
+            Href.instance1,
+            Role.instance1,
+            Arcrole.instance1,
+            Title.instance1,
+            Show.instance1,
+            Actuate.instance1,
+        };
 
-        /**
-         * @see schema.AttributeGroup#getAttributeDescriptors()
-         */
+        /** @see schema.AttributeGroup#getAttributeDescriptors() */
         public Attribute[] getAttributes() {
             return attributes1;
         }
 
-        /**
-         * @see schema.AttributeGroup#getLocalName()
-         */
+        /** @see schema.AttributeGroup#getLocalName() */
         public String getName() {
             return "simpleLink";
         }
 
-        /**
-         * Returns the singleton SimpleLink instance
-         *
-         */
+        /** Returns the singleton SimpleLink instance */
         public static AttributeGroup getInstance() {
             if (instance1 == null) {
                 instance1 = new SimpleLink();
@@ -1213,8 +994,7 @@ public class XLinkSchema implements Schema {
     }
 
     /**
-     * ExtendedLink represents a ExtendedLink AttributeGroup in the XLink
-     * Schema
+     * ExtendedLink represents a ExtendedLink AttributeGroup in the XLink Schema
      *
      * @author dzwiers
      */
@@ -1224,27 +1004,20 @@ public class XLinkSchema implements Schema {
 
         // the list of static attributes
         private static final Attribute[] attributes1 = {
-                Role.instance1, Title.instance1,
-            };
+            Role.instance1, Title.instance1,
+        };
 
-        /**
-         * @see schema.AttributeGroup#getAttributeDescriptors()
-         */
+        /** @see schema.AttributeGroup#getAttributeDescriptors() */
         public Attribute[] getAttributes() {
             return attributes1;
         }
 
-        /**
-         * @see schema.AttributeGroup#getLocalName()
-         */
+        /** @see schema.AttributeGroup#getLocalName() */
         public String getName() {
             return "extendedLink";
         }
 
-        /**
-         * Returns the singleton ExtendedLink instance
-         *
-         */
+        /** Returns the singleton ExtendedLink instance */
         public static AttributeGroup getInstance() {
             if (instance1 == null) {
                 instance1 = new ExtendedLink();
@@ -1265,28 +1038,24 @@ public class XLinkSchema implements Schema {
 
         // the static attribute list
         private static final Attribute[] attributes1 = {
-                new Type("extended"), new Href(Attribute.REQUIRED),
-                Role.instance1, Title.instance1, Label.instance1
-            };
+            new Type("extended"),
+            new Href(Attribute.REQUIRED),
+            Role.instance1,
+            Title.instance1,
+            Label.instance1
+        };
 
-        /**
-         * @see schema.AttributeGroup#getAttributeDescriptors()
-         */
+        /** @see schema.AttributeGroup#getAttributeDescriptors() */
         public Attribute[] getAttributes() {
             return attributes1;
         }
 
-        /**
-         * @see schema.AttributeGroup#getLocalName()
-         */
+        /** @see schema.AttributeGroup#getLocalName() */
         public String getName() {
             return "locatorLink";
         }
 
-        /**
-         * Returns the singleton LocatorLink instance
-         *
-         */
+        /** Returns the singleton LocatorLink instance */
         public static AttributeGroup getInstance() {
             if (instance1 == null) {
                 instance1 = new LocatorLink();
@@ -1307,28 +1076,26 @@ public class XLinkSchema implements Schema {
 
         //	the static attribute list
         private static final Attribute[] attributes1 = {
-                new Type("arc"), Arcrole.instance1, Title.instance1, Show.instance1,
-                Actuate.instance1, From.instance1, To.instance1,
-            };
+            new Type("arc"),
+            Arcrole.instance1,
+            Title.instance1,
+            Show.instance1,
+            Actuate.instance1,
+            From.instance1,
+            To.instance1,
+        };
 
-        /**
-         * @see schema.AttributeGroup#getAttributeDescriptors()
-         */
+        /** @see schema.AttributeGroup#getAttributeDescriptors() */
         public Attribute[] getAttributes() {
             return attributes1;
         }
 
-        /**
-         * @see schema.AttributeGroup#getLocalName()
-         */
+        /** @see schema.AttributeGroup#getLocalName() */
         public String getName() {
             return "arcLink";
         }
 
-        /**
-         * Returns the singleton ArcLink instance
-         *
-         */
+        /** Returns the singleton ArcLink instance */
         public static AttributeGroup getInstance() {
             if (instance1 == null) {
                 instance1 = new ArcLink();
@@ -1339,8 +1106,7 @@ public class XLinkSchema implements Schema {
     }
 
     /**
-     * ResourceLink represents a ResourceLink AttributeGroup in the XLink
-     * Schema
+     * ResourceLink represents a ResourceLink AttributeGroup in the XLink Schema
      *
      * @author dzwiers
      */
@@ -1350,28 +1116,20 @@ public class XLinkSchema implements Schema {
 
         // the static attribute list
         private static final Attribute[] attributes1 = {
-                new Type("resource"), Role.instance1, Title.instance1,
-                Label.instance1,
-            };
+            new Type("resource"), Role.instance1, Title.instance1, Label.instance1,
+        };
 
-        /**
-         * @see schema.AttributeGroup#getAttributeDescriptors()
-         */
+        /** @see schema.AttributeGroup#getAttributeDescriptors() */
         public Attribute[] getAttributes() {
             return attributes1;
         }
 
-        /**
-         * @see schema.AttributeGroup#getLocalName()
-         */
+        /** @see schema.AttributeGroup#getLocalName() */
         public String getName() {
             return "resourceLink";
         }
 
-        /**
-         * Returns the singleton ResourceLink instance
-         *
-         */
+        /** Returns the singleton ResourceLink instance */
         public static AttributeGroup getInstance() {
             if (instance1 == null) {
                 instance1 = new ResourceLink();
@@ -1391,26 +1149,21 @@ public class XLinkSchema implements Schema {
         private static AttributeGroup instance1;
 
         // the static attribute list
-        static final Attribute[] attributes1 = { new Type("title"), };
+        static final Attribute[] attributes1 = {
+            new Type("title"),
+        };
 
-        /**
-         * @see schema.AttributeGroup#getAttributeDescriptors()
-         */
+        /** @see schema.AttributeGroup#getAttributeDescriptors() */
         public Attribute[] getAttributes() {
             return attributes1;
         }
 
-        /**
-         * @see schema.AttributeGroup#getLocalName()
-         */
+        /** @see schema.AttributeGroup#getLocalName() */
         public String getName() {
             return "titleLink";
         }
 
-        /**
-         * Returns the singleton TitleLink instance
-         *
-         */
+        /** Returns the singleton TitleLink instance */
         public static AttributeGroup getInstance() {
             if (instance1 == null) {
                 instance1 = new TitleLink();
@@ -1430,26 +1183,21 @@ public class XLinkSchema implements Schema {
         private static AttributeGroup instance1;
 
         // the static attribute list
-        static final Attribute[] attributes1 = { new Type("empty"), };
+        static final Attribute[] attributes1 = {
+            new Type("empty"),
+        };
 
-        /**
-         * @see schema.AttributeGroup#getAttributeDescriptors()
-         */
+        /** @see schema.AttributeGroup#getAttributeDescriptors() */
         public Attribute[] getAttributes() {
             return attributes1;
         }
 
-        /**
-         * @see schema.AttributeGroup#getLocalName()
-         */
+        /** @see schema.AttributeGroup#getLocalName() */
         public String getName() {
             return "emptyLink";
         }
 
-        /**
-         * Returns the singleton EmptyLink instance
-         *
-         */
+        /** Returns the singleton EmptyLink instance */
         public static AttributeGroup getInstance() {
             if (instance1 == null) {
                 instance1 = new EmptyLink();
@@ -1459,9 +1207,7 @@ public class XLinkSchema implements Schema {
         }
     }
 
-    /**
-     * Returns the implementation hints. The default implementation returns en empty map.
-     */
+    /** Returns the implementation hints. The default implementation returns en empty map. */
     public Map getImplementationHints() {
         return Collections.EMPTY_MAP;
     }

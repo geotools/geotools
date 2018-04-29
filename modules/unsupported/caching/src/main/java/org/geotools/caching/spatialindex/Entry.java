@@ -28,14 +28,8 @@
 //    marioh@cs.ucr.edu
 package org.geotools.caching.spatialindex;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public interface Entry {
-    
-    public Shape getShape();
 
+    public Shape getShape();
 } // IEntry

@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -17,35 +17,28 @@
 package org.geotools.referencing.factory.epsg;
 
 import java.net.URL;
-import org.opengis.referencing.FactoryException;
 import org.geotools.factory.Hints;
-
+import org.opengis.referencing.FactoryException;
 
 /**
- * Provides common {@linkplain CoordinateReferenceSystem Coordinate Reference Systems}
- * not found in the standard EPSG database. Those CRS will be registered in
- * {@code "EPSG"} name space.
+ * Provides common {@linkplain CoordinateReferenceSystem Coordinate Reference Systems} not found in
+ * the standard EPSG database. Those CRS will be registered in {@code "EPSG"} name space.
  *
  * @since 2.4
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Andrea Aime
  */
 public class UnnamedExtension extends FactoryUsingWKT {
     /**
-     * The default filename to read. This file will be searched in the
-     * {@code org/geotools/referencing/factory/espg} directory in the
-     * classpath or in a JAR file.
+     * The default filename to read. This file will be searched in the {@code
+     * org/geotools/referencing/factory/espg} directory in the classpath or in a JAR file.
      *
      * @see #getDefinitionsURL
      */
     public static final String FILENAME = "unnamed.properties";
 
-    /**
-     * Constructs an authority factory using the default set of factories.
-     */
+    /** Constructs an authority factory using the default set of factories. */
     public UnnamedExtension() {
         this(null);
     }
@@ -61,8 +54,8 @@ public class UnnamedExtension extends FactoryUsingWKT {
     }
 
     /**
-     * Returns the URL to the property file that contains CRS definitions.
-     * The default implementation returns the URL to the {@value #FILENAME} file.
+     * Returns the URL to the property file that contains CRS definitions. The default
+     * implementation returns the URL to the {@value #FILENAME} file.
      *
      * @return The URL, or {@code null} if none.
      */
@@ -72,12 +65,14 @@ public class UnnamedExtension extends FactoryUsingWKT {
     }
 
     /**
-     * Prints a list of codes that duplicate the ones provided in the {@link DefaultFactory}.
-     * The factory tested is the one registered in {@link ReferencingFactoryFinder}.  By default, this
-     * is this {@code UnnamedExtension} class backed by the {@value #FILENAME} property file.
-     * This method can be invoked from the command line in order to check the content of the
-     * property file. Valid arguments are:
+     * Prints a list of codes that duplicate the ones provided in the {@link DefaultFactory}. The
+     * factory tested is the one registered in {@link ReferencingFactoryFinder}. By default, this is
+     * this {@code UnnamedExtension} class backed by the {@value #FILENAME} property file. This
+     * method can be invoked from the command line in order to check the content of the property
+     * file. Valid arguments are:
+     *
      * <p>
+     *
      * <table>
      *   <tr><td>{@code -test}</td><td>Try to instantiate all CRS and reports any failure
      *       to do so.</td></tr>
@@ -85,7 +80,7 @@ public class UnnamedExtension extends FactoryUsingWKT {
      *       duplicating a code from the SQL factory.</td></tr>
      * </table>
      *
-     * @param  args Command line arguments.
+     * @param args Command line arguments.
      * @throws FactoryException if an error occured.
      */
     public static void main(final String[] args) throws FactoryException {

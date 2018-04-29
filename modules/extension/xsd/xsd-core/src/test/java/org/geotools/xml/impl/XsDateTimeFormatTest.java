@@ -20,12 +20,11 @@ import static org.junit.Assert.*;
 
 import java.text.ParseException;
 import java.util.Calendar;
-
 import org.junit.Test;
 
 /**
  * This class is used for testing the parsing capabilities of the {@link XsDateTimeFormat} class.
- * 
+ *
  * @author Nicola Lagomarsini GeoSolutions
  */
 public class XsDateTimeFormatTest {
@@ -163,7 +162,7 @@ public class XsDateTimeFormatTest {
         assertEquals(sec, 0);
         assertEquals(millis, 0);
     }
-    
+
     @Test
     public void testWrongDateLenientIncompleteMins() throws ParseException {
         // Create the parser
@@ -194,7 +193,7 @@ public class XsDateTimeFormatTest {
         assertEquals(sec, 0);
         assertEquals(millis, 0);
     }
-    
+
     @Test
     public void testExtendedFractionalSeconds() throws ParseException {
         XsDateTimeFormat format = new XsDateTimeFormat();
@@ -223,5 +222,4 @@ public class XsDateTimeFormatTest {
         assertEquals(sec, 02);
         assertEquals(millis, 111);
     }
-   
 }

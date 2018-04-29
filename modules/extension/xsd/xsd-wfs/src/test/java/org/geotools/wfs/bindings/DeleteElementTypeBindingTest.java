@@ -18,11 +18,8 @@ package org.geotools.wfs.bindings;
 
 import java.net.URL;
 import java.util.Collections;
-
 import javax.xml.namespace.QName;
-
 import net.opengis.wfs.DeleteElementType;
-
 import org.geotools.test.TestData;
 import org.geotools.wfs.WFS;
 import org.geotools.wfs.WFSTestSupport;
@@ -34,12 +31,10 @@ import org.w3c.dom.Element;
 
 /**
  * Unit test suite for {@link DeleteElementTypeBinding}
- * 
+ *
  * @author Gabriel Roldan (TOPP)
  * @version $Id$
  * @since 2.5.x
- *
- *
  * @source $URL$
  */
 public class DeleteElementTypeBindingTest extends WFSTestSupport {
@@ -51,14 +46,14 @@ public class DeleteElementTypeBindingTest extends WFSTestSupport {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        
-        //additional namespace
+
+        // additional namespace
         registerNamespaceMapping("topp", "http://www.openplans.org/topp");
     }
-    
+
     @Override
     public void testEncode() throws Exception {
-        
+
         final DeleteElementType delete = factory.createDeleteElementType();
         final QName typeName = new QName("http://www.openplans.org/topp", "TestType", "topp");
         {
@@ -70,8 +65,10 @@ public class DeleteElementTypeBindingTest extends WFSTestSupport {
         final Document dom = encode(delete, WFS.Delete);
         final Element root = dom.getDocumentElement();
         assertName(WFS.Delete, root);
-        
-        assertEquals(typeName.getPrefix() + ":" + typeName.getLocalPart(), root.getAttribute("typeName"));
+
+        assertEquals(
+                typeName.getPrefix() + ":" + typeName.getLocalPart(),
+                root.getAttribute("typeName"));
     }
 
     @Override
@@ -88,5 +85,4 @@ public class DeleteElementTypeBindingTest extends WFSTestSupport {
         assertTrue(filter instanceof Id);
         // done, checking the filter is not this module's responsibility
     }
-
 }

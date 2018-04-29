@@ -19,29 +19,27 @@ package org.geotools.gce;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.util.Utilities;
 
 /**
- * A class to handle levels resolution levels. It stores levels resolution levels information
- * and suggests the level to be used depending on the current request and the {@link OverviewPolicy}.
- * 
+ * A class to handle levels resolution levels. It stores levels resolution levels information and
+ * suggests the level to be used depending on the current request and the {@link OverviewPolicy}.
+ *
  * @author Simone Giannecchini, GeoSolutions SAS
  * @author Daniele Romagnoli, GeoSolutions SAS
  */
-final  class OverviewsController {
+final class OverviewsController {
 
     final List<OverviewLevel> resolutionsLevels = new ArrayList<OverviewLevel>();
 
     /**
      * Constructor.
-     * 
-
-     * @param overviewsResolution resolutions for the various levels. <b>Implicitly, the index of the resolution is the index of the corresponding level.</b> 
+     *
+     * @param overviewsResolution resolutions for the various levels. <b>Implicitly, the index of
+     *     the resolution is the index of the corresponding level.</b>
      */
-    public OverviewsController(
-            final double[][] overviewsResolution) {
+    public OverviewsController(final double[][] overviewsResolution) {
 
         // notice that we assume what follows:
         // -highest resolution image is at level 0.
@@ -50,15 +48,20 @@ final  class OverviewsController {
         // -the provided resolutions are taken directly from the grid
         double[] highestRes = overviewsResolution[0];
         for (int i = 0; i < overviewsResolution.length; i++) {
-            resolutionsLevels.add(new OverviewLevel(i==0?1:overviewsResolution[i][0] / highestRes[0],
-                    overviewsResolution[i][0], overviewsResolution[i][1], i));
+            resolutionsLevels.add(
+                    new OverviewLevel(
+                            i == 0 ? 1 : overviewsResolution[i][0] / highestRes[0],
+                            overviewsResolution[i][0],
+                            overviewsResolution[i][1],
+                            i));
         }
         Collections.sort(resolutionsLevels);
     }
-    
+
     /**
      * Given a specified {@link OverviewPolicy} and a {@link RasterLayerRequest}, suggest the proper
      * overview level index.
+     *
      * @param policy
      * @param request
      * @return the OverviewLevel index
@@ -72,8 +75,7 @@ final  class OverviewsController {
         // Future versions should use both.
         //
         // //
-        if (resolutionsLevels == null || resolutionsLevels.size() <= 0)
-            return 0;
+        if (resolutionsLevels == null || resolutionsLevels.size() <= 0) return 0;
 
         // Now search for the best matching resolution.
         // Check also for the "perfect match"... unlikely in practice unless someone
@@ -95,14 +97,16 @@ final  class OverviewsController {
             return 0;
         }
         final int leastReduceAxis = requestedScaleFactorX <= requestedScaleFactorY ? 0 : 1;
-        final double requestedScaleFactor = leastReduceAxis == 0 ? requestedScaleFactorX : requestedScaleFactorY;
+        final double requestedScaleFactor =
+                leastReduceAxis == 0 ? requestedScaleFactorX : requestedScaleFactorY;
 
         // are we looking for a resolution even higher than the native one?
         if (requestedScaleFactor <= 1) {
             return max.imageChoice;
         }
         // are we looking for a resolution even lower than the smallest overview?
-        final OverviewLevel min = (OverviewLevel) resolutionsLevels.get(resolutionsLevels.size() - 1);
+        final OverviewLevel min =
+                (OverviewLevel) resolutionsLevels.get(resolutionsLevels.size() - 1);
         if (requestedScaleFactor >= min.scaleFactor) {
             return min.imageChoice;
         }
@@ -121,14 +125,15 @@ final  class OverviewsController {
             // middle check. The first part of the condition should be sufficient, but
             // there are cases where the x resolution is satisfied by the lowest resolution,
             // the y by the one before the lowest (so the aspect ratio of the request is
-            // different than the one of the levels), and we would end up going out of the 
+            // different than the one of the levels), and we would end up going out of the
             // loop since not even the lowest can "top" the request for one axis
             if (curr.scaleFactor > requestedScaleFactor || i == size - 1) {
                 if (policy == OverviewPolicy.QUALITY) {
                     return prev.imageChoice;
                 } else if (policy == OverviewPolicy.SPEED) {
                     return curr.imageChoice;
-                } else if (requestedScaleFactor - prev.scaleFactor < curr.scaleFactor - requestedScaleFactor) {
+                } else if (requestedScaleFactor - prev.scaleFactor
+                        < curr.scaleFactor - requestedScaleFactor) {
                     return prev.imageChoice;
                 } else {
                     return curr.imageChoice;
@@ -142,7 +147,7 @@ final  class OverviewsController {
 
     /**
      * Simple support class for sorting overview resolutions
-     * 
+     *
      * @author Andrea Aime
      * @author Simone Giannecchini, GeoSolutions.
      * @since 2.5
@@ -158,16 +163,15 @@ final  class OverviewsController {
         int imageChoice;
 
         /**
-         * 
          * @param scaleFactor
          * @param resolutionX
          * @param resolutionY
          * @param imageChoice
          */
         public OverviewLevel(
-                final double scaleFactor, 
-                final double resolutionX, 
-                final double resolutionY, 
+                final double scaleFactor,
+                final double resolutionX,
+                final double resolutionY,
                 final int imageChoice) {
             this.scaleFactor = scaleFactor;
             this.resolutionX = resolutionX;
@@ -187,9 +191,15 @@ final  class OverviewsController {
 
         @Override
         public String toString() {
-            return "OverviewLevel[Choice=" + imageChoice + ",scaleFactor="
-                    + scaleFactor + ",resX:" + resolutionX + ",resY:"
-                    + resolutionY + "]";
+            return "OverviewLevel[Choice="
+                    + imageChoice
+                    + ",scaleFactor="
+                    + scaleFactor
+                    + ",resX:"
+                    + resolutionX
+                    + ",resY:"
+                    + resolutionY
+                    + "]";
         }
 
         @Override

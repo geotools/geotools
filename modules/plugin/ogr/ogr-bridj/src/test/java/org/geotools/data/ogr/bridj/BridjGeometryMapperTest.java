@@ -1,6 +1,7 @@
 package org.geotools.data.ogr.bridj;
 
 import org.geotools.data.ogr.GeometryMapperTest;
+
 public class BridjGeometryMapperTest extends GeometryMapperTest {
 
     public BridjGeometryMapperTest() {
@@ -12,5 +13,4 @@ public class BridjGeometryMapperTest extends GeometryMapperTest {
         GdalInit.init();
         super.setUp();
     }
-
 }

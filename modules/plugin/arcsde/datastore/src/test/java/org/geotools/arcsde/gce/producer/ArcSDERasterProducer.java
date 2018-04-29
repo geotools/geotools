@@ -16,18 +16,13 @@
  */
 package org.geotools.arcsde.gce.producer;
 
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-
 import com.esri.sde.sdk.client.SeRasterAttr;
 import com.esri.sde.sdk.client.SeRasterConsumer;
 import com.esri.sde.sdk.client.SeRasterProducer;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public abstract class ArcSDERasterProducer implements SeRasterProducer {
 
     ArrayList<SeRasterConsumer> consumers = new ArrayList<SeRasterConsumer>();
@@ -40,8 +35,7 @@ public abstract class ArcSDERasterProducer implements SeRasterProducer {
 
     protected ArcSDERasterProducer(SeRasterAttr attr, BufferedImage sourceImage, int maskType) {
         this.attr = attr;
-        if (sourceImage != null)
-            setSourceImage(sourceImage);
+        if (sourceImage != null) setSourceImage(sourceImage);
         this.maskType = maskType;
     }
 
@@ -56,7 +50,7 @@ public abstract class ArcSDERasterProducer implements SeRasterProducer {
     /**
      * This method should check that the supplied image is compatible with this class's
      * startProduction() implementation
-     * 
+     *
      * @param sourceImage
      */
     public abstract void setSourceImage(BufferedImage sourceImage);
@@ -73,5 +67,4 @@ public abstract class ArcSDERasterProducer implements SeRasterProducer {
     public void removeConsumer(SeRasterConsumer arg0) {
         consumers.remove(arg0);
     }
-
 }

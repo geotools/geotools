@@ -16,18 +16,17 @@
  */
 package org.geotools.filter.v2_0.bindings;
 
+import javax.xml.namespace.QName;
 import org.geotools.filter.v1_0.OGCFunctionTypeBinding;
 import org.geotools.filter.v2_0.FES;
 import org.geotools.xml.*;
 import org.opengis.filter.FilterFactory;
 
-import javax.xml.namespace.QName;
-
 /**
  * Binding object for the type http://www.opengis.net/fes/2.0:FunctionType.
- * 
+ *
  * <p>
- * 
+ *
  * <pre>
  *  <code>
  *  &lt;xsd:complexType name="FunctionType"&gt;
@@ -35,13 +34,11 @@ import javax.xml.namespace.QName;
  *          &lt;xsd:element maxOccurs="unbounded" minOccurs="0" ref="fes:expression"/&gt;
  *      &lt;/xsd:sequence&gt;
  *      &lt;xsd:attribute name="name" type="xsd:string" use="required"/&gt;
- *  &lt;/xsd:complexType&gt; 
- * 	
+ *  &lt;/xsd:complexType&gt;
+ *
  *   </code>
  * </pre>
- * 
- * </p>
- * 
+ *
  * @generated
  */
 public class FunctionTypeBinding extends OGCFunctionTypeBinding {
@@ -50,9 +47,7 @@ public class FunctionTypeBinding extends OGCFunctionTypeBinding {
         super(factory);
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return FES.FunctionType;
     }

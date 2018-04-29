@@ -16,12 +16,12 @@
  */
 package org.geotools.data.property;
 
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.io.WKTReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-
 import junit.framework.TestCase;
-
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
@@ -41,25 +41,20 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.WKTReader;
-
 /**
  * Test functioning of PropertyDataStore (used as conformance testing).
- * 
+ *
  * @author Jody Garnett (LISAsoft)
- * 
  * @source $URL$
  */
 public class PropertyDataStoreCurveTest extends TestCase {
     PropertyDataStore store;
 
-    static FilterFactory2 ff = (FilterFactory2) CommonFactoryFinder
-            .getFilterFactory(null);
+    static FilterFactory2 ff = (FilterFactory2) CommonFactoryFinder.getFilterFactory(null);
 
     /**
      * Constructor for SimpleDataStoreTest.
-     * 
+     *
      * @param arg0
      */
     public PropertyDataStoreCurveTest(String arg0) {
@@ -77,7 +72,8 @@ public class PropertyDataStoreCurveTest extends TestCase {
         BufferedWriter writer = new BufferedWriter(new FileWriter(file));
         writer.write("_=geom:LineString:4326,name:String");
         writer.newLine();
-        writer.write("cp.1=COMPOUNDCURVE(CIRCULARSTRING(0 0, 2 0, 2 1, 2 3, 4 3),(4 3, 4 5, 1 4, 0 0))|Compound");
+        writer.write(
+                "cp.1=COMPOUNDCURVE(CIRCULARSTRING(0 0, 2 0, 2 1, 2 3, 4 3),(4 3, 4 5, 1 4, 0 0))|Compound");
         writer.newLine();
         writer.write("cp.2=CIRCULARSTRING(-10 0, -8 2, -6 0, -8 -2, -10 0)|Circle ");
         writer.newLine();
@@ -104,8 +100,8 @@ public class PropertyDataStoreCurveTest extends TestCase {
         assertEquals(1, names.length);
         assertEquals("curvelines", names[0]);
         Query query = new Query("curvelines");
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = store
-                .getFeatureReader(query, Transaction.AUTO_COMMIT);
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                store.getFeatureReader(query, Transaction.AUTO_COMMIT);
         try {
             assertTrue(reader.hasNext());
             Object geom = reader.next().getDefaultGeometry();
@@ -137,16 +133,18 @@ public class PropertyDataStoreCurveTest extends TestCase {
         // build the features from code
         SimpleFeatureType schema = fs.getSchema();
         WKTReader reader = new WKTReader2();
-        Geometry compoundGeometry = reader
-                .read("COMPOUNDCURVE(CIRCULARSTRING(0 0, 2 0, 2 1, 2 3, 4 3),(4 3, 4 5, 1 4, 0 0))");
-        SimpleFeature cp1 = SimpleFeatureBuilder.build(schema, new Object[] { compoundGeometry,
-                "Compound" }, "cp.1");
+        Geometry compoundGeometry =
+                reader.read(
+                        "COMPOUNDCURVE(CIRCULARSTRING(0 0, 2 0, 2 1, 2 3, 4 3),(4 3, 4 5, 1 4, 0 0))");
+        SimpleFeature cp1 =
+                SimpleFeatureBuilder.build(
+                        schema, new Object[] {compoundGeometry, "Compound"}, "cp.1");
         Geometry circleGeometry = reader.read("CIRCULARSTRING(-10 0, -8 2, -6 0, -8 -2, -10 0)");
-        SimpleFeature cp2 = SimpleFeatureBuilder.build(schema, new Object[] { circleGeometry,
-                "Circle" }, "cp.2");
+        SimpleFeature cp2 =
+                SimpleFeatureBuilder.build(schema, new Object[] {circleGeometry, "Circle"}, "cp.2");
         Geometry waveGeometry = reader.read("CIRCULARSTRING(-7 -8, -5 -6, -3 -8, -1 -10, 1 -8))");
-        SimpleFeature cp3 = SimpleFeatureBuilder.build(schema,
-                new Object[] { waveGeometry, "Wave" }, "cp.3");
+        SimpleFeature cp3 =
+                SimpleFeatureBuilder.build(schema, new Object[] {waveGeometry, "Wave"}, "cp.3");
 
         // write them out
         ListFeatureCollection fc = new ListFeatureCollection(schema);
@@ -165,8 +163,8 @@ public class PropertyDataStoreCurveTest extends TestCase {
         assertEquals("curvelines", names[0]);
         Query query = new Query("curvelines");
         query.getHints().put(Hints.LINEARIZATION_TOLERANCE, 0.1);
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = store
-                .getFeatureReader(query, Transaction.AUTO_COMMIT);
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                store.getFeatureReader(query, Transaction.AUTO_COMMIT);
         try {
             int count = 0;
             while (reader.hasNext()) {

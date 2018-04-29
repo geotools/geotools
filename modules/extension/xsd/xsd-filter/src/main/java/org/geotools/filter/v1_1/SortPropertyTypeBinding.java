@@ -17,20 +17,20 @@
 package org.geotools.filter.v1_1;
 
 import javax.xml.namespace.QName;
+import org.geotools.xml.AbstractComplexBinding;
+import org.geotools.xml.ElementInstance;
+import org.geotools.xml.Node;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.sort.SortBy;
 import org.opengis.filter.sort.SortOrder;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
-
 
 /**
  * Binding object for the type http://www.opengis.net/ogc:SortPropertyType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:complexType name="SortPropertyType"&gt;
  *      &lt;xsd:sequence&gt;
@@ -41,12 +41,8 @@ import org.geotools.xml.Node;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class SortPropertyTypeBinding extends AbstractComplexBinding {
@@ -56,14 +52,13 @@ public class SortPropertyTypeBinding extends AbstractComplexBinding {
         this.filterfactory = filterfactory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return OGC.SortPropertyType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -74,13 +69,13 @@ public class SortPropertyTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         PropertyName name = (PropertyName) node.getChildValue(PropertyName.class);
         SortOrder order = (SortOrder) node.getChildValue(SortOrder.class);
 
@@ -91,8 +86,7 @@ public class SortPropertyTypeBinding extends AbstractComplexBinding {
         return filterfactory.sort(name.getPropertyName(), order);
     }
 
-    public Object getProperty(Object object, QName name)
-        throws Exception {
+    public Object getProperty(Object object, QName name) throws Exception {
         SortBy sortBy = (SortBy) object;
 
         if (OGC.PropertyName.equals(name)) {

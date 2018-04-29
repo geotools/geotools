@@ -20,13 +20,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.measure.Measure;
 import javax.measure.quantity.Dimensionless;
 import javax.measure.unit.SI;
 import javax.measure.unit.Unit;
-
-import org.geotools.coverage.io.range.impl.EnumMeasureTest.Band;
 import org.geotools.feature.NameImpl;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.geotools.referencing.cs.DefaultCoordinateSystemAxis;
@@ -43,7 +40,6 @@ import org.opengis.util.CodeList;
 
 /**
  * @author Simone Giannecchini, GeoSolutions
- * 
  * @source $URL$
  */
 public class CodeMeasureTest extends Assert {
@@ -73,14 +69,15 @@ public class CodeMeasureTest extends Assert {
         new Code("SWR2");
     }
 
-    /**
-     * This test uses use the default implementations to express 7 bands of a landsat image.
-     */
+    /** This test uses use the default implementations to express 7 bands of a landsat image. */
     @Test
     public void testLandsatAxis() {
-        CoordinateSystemAxis csAxis = new DefaultCoordinateSystemAxis(
-                new SimpleInternationalString("light"), "light", AxisDirection.OTHER,
-                SI.MICRO(SI.METER));
+        CoordinateSystemAxis csAxis =
+                new DefaultCoordinateSystemAxis(
+                        new SimpleInternationalString("light"),
+                        "light",
+                        AxisDirection.OTHER,
+                        SI.MICRO(SI.METER));
 
         DefaultLinearCS lightCS = new DefaultLinearCS("light", csAxis);
         Map<String, Object> datumProperties = new HashMap<String, Object>();
@@ -91,29 +88,32 @@ public class CodeMeasureTest extends Assert {
 
         List<Measure<Code, Dimensionless>> keys = CodeMeasure.valueOf(codes);
 
-        DefaultAxis<Code, Dimensionless> axis = new DefaultAxis<Code, Dimensionless>(new NameImpl(
-                "Bands"), new SimpleInternationalString("Expressed in wavelengths"), keys,
-                Unit.ONE, lightCRS);
+        DefaultAxis<Code, Dimensionless> axis =
+                new DefaultAxis<Code, Dimensionless>(
+                        new NameImpl("Bands"),
+                        new SimpleInternationalString("Expressed in wavelengths"),
+                        keys,
+                        Unit.ONE,
+                        lightCRS);
 
         assertEquals(lightCRS, axis.getCoordinateReferenceSystem());
         assertEquals(7, axis.getKeys().size());
-        
+
         // Ensure that the equals method is correct
         CodeMeasure<Code> code = (CodeMeasure<Code>) CodeMeasure.valueOf(codes.get(0));
         CodeMeasure<Code> code2 = (CodeMeasure<Code>) CodeMeasure.valueOf(codes.get(1));
         assertFalse(code.equals(code2));
-        
+
         // Check if the ordinal value is correct
         assertNotEquals(code.doubleValue(null), code2.doubleValue(null), 0.01d);
-        
+
         // Ensure the Unit is one
         assertEquals(Unit.ONE, code.getUnit());
-        
+
         // Check if the value is correct
         assertSame(codes.get(0), code.getValue());
-        
+
         // Check if the TO method is correct
         assertSame(code.to(null), code);
     }
-
 }

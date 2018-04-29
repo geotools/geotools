@@ -54,15 +54,12 @@ THE SOFTWARE.
 package org.geotools.coverage.grid.io.imageio.geotiff;
 
 import it.geosolutions.imageio.plugins.tiff.GeoTIFFTagSet;
-
 import java.awt.geom.AffineTransform;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.metadata.IIOMetadataNode;
-
 import org.geotools.coverage.grid.io.imageio.geotiff.codes.GeoTiffGCSCodes;
 import org.geotools.resources.i18n.ErrorKeys;
 import org.geotools.resources.i18n.Errors;
@@ -70,37 +67,28 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
- * This class provides an abstraction from the details of TIFF data access for the purpose of retrieving GeoTIFFWritingUtilities metadata from an
- * image.
- * 
- * <p>
- * All of the GeoKey values are included here as constants, and the portions of the GeoTIFFWritingUtilities specification pertaining to each have been
- * copied for easy access.
- * </p>
- * 
- * <p>
- * The majority of the possible GeoKey values and their meanings are NOT reproduced here. Only the most important GeoKey code values have been copied,
- * for others see the specification.
- * </p>
- * 
- * <p>
- * Convenience methods have been included to retrieve the various TIFFFields that are not part of the GeoKey directory, such as the Model
- * Transformation and Model TiePoints. Retrieving a GeoKey from the GeoKey directory is a bit more specialized and requires knowledge of the correct
- * key code.
- * </p>
- * 
- * <p>
- * Making use of the geographic metadata still requires some basic understanding of the GeoKey values that is not provided here.
- * </p>
- * 
- * <p>
- * For more information see the GeoTIFFWritingUtilities specification at http://www.remotesensing.org/geotiff/spec/geotiffhome.html
- * </p>
- * 
+ * This class provides an abstraction from the details of TIFF data access for the purpose of
+ * retrieving GeoTIFFWritingUtilities metadata from an image.
+ *
+ * <p>All of the GeoKey values are included here as constants, and the portions of the
+ * GeoTIFFWritingUtilities specification pertaining to each have been copied for easy access.
+ *
+ * <p>The majority of the possible GeoKey values and their meanings are NOT reproduced here. Only
+ * the most important GeoKey code values have been copied, for others see the specification.
+ *
+ * <p>Convenience methods have been included to retrieve the various TIFFFields that are not part of
+ * the GeoKey directory, such as the Model Transformation and Model TiePoints. Retrieving a GeoKey
+ * from the GeoKey directory is a bit more specialized and requires knowledge of the correct key
+ * code.
+ *
+ * <p>Making use of the geographic metadata still requires some basic understanding of the GeoKey
+ * values that is not provided here.
+ *
+ * <p>For more information see the GeoTIFFWritingUtilities specification at
+ * http://www.remotesensing.org/geotiff/spec/geotiffhome.html
+ *
  * @author Mike Nidel
  * @author Simone Giannecchini, GeoSolutions
- * 
- * 
  * @source $URL$
  */
 public final class GeoTiffIIOMetadataDecoder {
@@ -127,13 +115,13 @@ public final class GeoTiffIIOMetadataDecoder {
 
     /**
      * The constructor builds a metadata adapter for the image metadata root IIOMetadataNode.
-     * 
+     *
      * @param imageMetadata The image metadata
      */
     public GeoTiffIIOMetadataDecoder(final IIOMetadata imageMetadata) {
         if (imageMetadata == null) {
-            throw new IllegalArgumentException(Errors.format(ErrorKeys.NULL_ARGUMENT_$1,
-                    "imageMetadata"));
+            throw new IllegalArgumentException(
+                    Errors.format(ErrorKeys.NULL_ARGUMENT_$1, "imageMetadata"));
         }
         iioMetadata = imageMetadata;
         // getting the image metadata root node.
@@ -150,17 +138,20 @@ public final class GeoTiffIIOMetadataDecoder {
             int length = geoKeyDirEntries.getLength();
             for (int i = 4; i < length; i += 4) {
                 int keyID = getIntValueAttribute(geoKeyDirEntries.item(i));
-                GeoKeyEntry key = new GeoKeyEntry(keyID,// key
-                        getIntValueAttribute(geoKeyDirEntries.item(i + 1)),// location
-                        getIntValueAttribute(geoKeyDirEntries.item(i + 2)),// count
-                        getIntValueAttribute(geoKeyDirEntries.item(i + 3)));// offset
+                GeoKeyEntry key =
+                        new GeoKeyEntry(
+                                keyID, // key
+                                getIntValueAttribute(geoKeyDirEntries.item(i + 1)), // location
+                                getIntValueAttribute(geoKeyDirEntries.item(i + 2)), // count
+                                getIntValueAttribute(geoKeyDirEntries.item(i + 3))); // offset
 
                 if (!geoKeys.containsKey(keyID)) {
                     geoKeys.put(keyID, key);
                 }
             }
             // GeoKeyDirVersion and the other parameters
-            geoKeyDirVersion = getTiffShort(geoKeyDir,GeoTiffGCSCodes.GEO_KEY_DIRECTORY_VERSION_INDEX);
+            geoKeyDirVersion =
+                    getTiffShort(geoKeyDir, GeoTiffGCSCodes.GEO_KEY_DIRECTORY_VERSION_INDEX);
             geoKeyRevision = getTiffShort(geoKeyDir, GeoTiffGCSCodes.GEO_KEY_REVISION_INDEX);
             if (geoKeyRevision != 1) {
                 geoKeyRevision = 1;
@@ -168,7 +159,8 @@ public final class GeoTiffIIOMetadataDecoder {
                 // revision numbers blocking us.
                 // throw new UnsupportedOperationException("Unsupported revision");
             }
-            geoKeyMinorRevision = getTiffShort(geoKeyDir,GeoTiffGCSCodes.GEO_KEY_MINOR_REVISION_INDEX);
+            geoKeyMinorRevision =
+                    getTiffShort(geoKeyDir, GeoTiffGCSCodes.GEO_KEY_MINOR_REVISION_INDEX);
             // loading the number of geokeys inside the geokeydirectory
             geoKeyDirTagsNum = getTiffShort(geoKeyDir, GeoTiffGCSCodes.GEO_KEY_NUM_KEYS_INDEX);
         }
@@ -177,14 +169,13 @@ public final class GeoTiffIIOMetadataDecoder {
         tiePoints = calculateTiePoints(rootNode);
         noData = calculateNoData(rootNode);
         modelTransformation = calculateModelTransformation(rootNode);
-
     }
 
     /**
-     * Gets the version of the GeoKey directory. This is typically a value of 1 and can be used to check that the data is of a valid format.
-     * 
+     * Gets the version of the GeoKey directory. This is typically a value of 1 and can be used to
+     * check that the data is of a valid format.
+     *
      * @return DOCUMENT ME!
-     * 
      * @throws UnsupportedOperationException DOCUMENT ME!
      */
     public int getGeoKeyDirectoryVersion() {
@@ -194,9 +185,8 @@ public final class GeoTiffIIOMetadataDecoder {
 
     /**
      * Gets the revision number of the GeoKeys in this metadata.
-     * 
+     *
      * @return DOCUMENT ME!
-     * 
      * @throws UnsupportedOperationException DOCUMENT ME!
      */
     public int getGeoKeyRevision() {
@@ -206,9 +196,8 @@ public final class GeoTiffIIOMetadataDecoder {
 
     /**
      * Gets the minor revision number of the GeoKeys in this metadata.
-     * 
+     *
      * @return DOCUMENT ME!
-     * 
      * @throws UnsupportedOperationException DOCUMENT ME!
      */
     public int getGeoKeyMinorRevision() {
@@ -218,9 +207,8 @@ public final class GeoTiffIIOMetadataDecoder {
 
     /**
      * Gets the number of GeoKeys in the geokeys directory.
-     * 
+     *
      * @return DOCUMENT ME!
-     * 
      * @throws UnsupportedOperationException DOCUMENT ME!
      */
     public int getNumGeoKeys() {
@@ -228,11 +216,11 @@ public final class GeoTiffIIOMetadataDecoder {
     }
 
     /**
-     * Gets a GeoKey value as a String. This implementation should be &quotquiet&quot in the sense that it should not throw any exceptions but only
-     * return null in the event that the data organization is not as expected.
-     * 
+     * Gets a GeoKey value as a String. This implementation should be &quotquiet&quot in the sense
+     * that it should not throw any exceptions but only return null in the event that the data
+     * organization is not as expected.
+     *
      * @param keyID The numeric ID of the GeoKey
-     * 
      * @return A string representing the value, or null if the key was not found.
      */
     public String getGeoKey(final int keyID) {
@@ -258,18 +246,17 @@ public final class GeoTiffIIOMetadataDecoder {
             return null;
         }
 
-        return sequence.getNodeName().equals(GeoTiffConstants.GEOTIFF_ASCIIS_TAG) ? 
-                getTiffAscii((IIOMetadataNode) sequence, rec.getValueOffset(), rec.getCount()): 
-                    getValueAttribute(sequence.getChildNodes().item(rec.getValueOffset()));
+        return sequence.getNodeName().equals(GeoTiffConstants.GEOTIFF_ASCIIS_TAG)
+                ? getTiffAscii((IIOMetadataNode) sequence, rec.getValueOffset(), rec.getCount())
+                : getValueAttribute(sequence.getChildNodes().item(rec.getValueOffset()));
     }
 
     /**
-     * Gets a record containing the four TIFFShort values for a geokey entry. For more information see the GeoTIFFWritingUtilities specification.
-     * 
+     * Gets a record containing the four TIFFShort values for a geokey entry. For more information
+     * see the GeoTIFFWritingUtilities specification.
+     *
      * @param keyID DOCUMENT ME!
-     * 
      * @return the record with the given keyID, or null if none is found
-     * 
      * @throws UnsupportedOperationException DOCUMENT ME!
      */
     public GeoKeyEntry getGeoKeyRecord(int keyID) {
@@ -278,16 +265,16 @@ public final class GeoTiffIIOMetadataDecoder {
 
     /**
      * Return the GeoKeys.
-     * 
+     *
      * @return
-     **/
+     */
     public Collection<GeoKeyEntry> getGeoKeys() {
         return geoKeys.values();
     }
 
     private PixelScale calculateModelPixelScales(Node rootNode) {
-        final double[] pixScales = getTiffDoubles(getTiffField(rootNode,
-                GeoTIFFTagSet.TAG_MODEL_PIXEL_SCALE));
+        final double[] pixScales =
+                getTiffDoubles(getTiffField(rootNode, GeoTIFFTagSet.TAG_MODEL_PIXEL_SCALE));
         if (pixScales == null) {
             return null;
         }
@@ -295,30 +282,27 @@ public final class GeoTiffIIOMetadataDecoder {
         PixelScale retVal = new PixelScale();
         for (int i = 0; i < pixScales.length; i++)
             switch (i) {
-            case 0:
-                retVal.setScaleX(pixScales[i]);
-                break;
-            case 1:
-                retVal.setScaleY(pixScales[i]);
-                break;
-            case 2:
-                retVal.setScaleZ(pixScales[i]);
-                break;
+                case 0:
+                    retVal.setScaleX(pixScales[i]);
+                    break;
+                case 1:
+                    retVal.setScaleY(pixScales[i]);
+                    break;
+                case 2:
+                    retVal.setScaleZ(pixScales[i]);
+                    break;
             }
         return retVal;
-
     }
 
-    /**
-     * Gets the model pixel scales from the correct TIFFField
-     */
+    /** Gets the model pixel scales from the correct TIFFField */
     public PixelScale getModelPixelScales() {
         return pixelScale;
     }
 
     /**
      * Gets the model tie points from the appropriate TIFFField
-     * 
+     *
      * @return the tie points, or null if not found
      */
     public TiePoint[] getModelTiePoints() {
@@ -339,19 +323,23 @@ public final class GeoTiffIIOMetadataDecoder {
         int initialIndex = 0;
         for (int i = 0; i < numTiePoints; i++) {
             initialIndex = i * 6;
-            retVal[i] = new TiePoint(tiePoints[initialIndex], tiePoints[initialIndex + 1],
-                    tiePoints[initialIndex + 2], tiePoints[initialIndex + 3],
-                    tiePoints[initialIndex + 4], tiePoints[initialIndex + 5]);
+            retVal[i] =
+                    new TiePoint(
+                            tiePoints[initialIndex],
+                            tiePoints[initialIndex + 1],
+                            tiePoints[initialIndex + 2],
+                            tiePoints[initialIndex + 3],
+                            tiePoints[initialIndex + 4],
+                            tiePoints[initialIndex + 5]);
         }
         return retVal;
-
     }
 
     /**
-     * Gets the noData from the related TIFFField. Check metadata has noData using {@link #hasNoData()} method before calling this method.
-     * 
+     * Gets the noData from the related TIFFField. Check metadata has noData using {@link
+     * #hasNoData()} method before calling this method.
+     *
      * @return the noData value or {@link Double#NaN} in case of unable to get noData.
-     * 
      */
     public double getNoData() {
         return noData;
@@ -372,12 +360,12 @@ public final class GeoTiffIIOMetadataDecoder {
             // TODO: Log a message.
             return Double.NaN;
         }
-
     }
 
     /**
-     * Tells me if the underlying {@link IIOMetadata} contains ModelTiepointTag tag for {@link TiePoint}.
-     * 
+     * Tells me if the underlying {@link IIOMetadata} contains ModelTiepointTag tag for {@link
+     * TiePoint}.
+     *
      * @return true if ModelTiepointTag is present, false otherwise.
      */
     public boolean hasTiePoints() {
@@ -385,8 +373,9 @@ public final class GeoTiffIIOMetadataDecoder {
     }
 
     /**
-     * Tells me if the underlying {@link IIOMetadata} contains ModelTiepointTag tag for {@link TiePoint}.
-     * 
+     * Tells me if the underlying {@link IIOMetadata} contains ModelTiepointTag tag for {@link
+     * TiePoint}.
+     *
      * @return true if ModelTiepointTag is present, false otherwise.
      */
     public boolean hasPixelScales() {
@@ -401,12 +390,11 @@ public final class GeoTiffIIOMetadataDecoder {
             }
             return true;
         }
-
     }
 
     /**
      * Tells me if the underlying {@link IIOMetadata} contains NoData Tag.
-     * 
+     *
      * @return true if NoData Tag is present, false otherwise.
      * @see GeoTiffConstants#TIFFTAG_NODATA
      */
@@ -416,10 +404,9 @@ public final class GeoTiffIIOMetadataDecoder {
 
     /**
      * Gets the model tie points from the appropriate TIFFField
-     * 
-     * <p>
-     * Attention, for the moment we support only 2D baseline transformations.
-     * 
+     *
+     * <p>Attention, for the moment we support only 2D baseline transformations.
+     *
      * @return the transformation, or null if not found
      */
     public AffineTransform getModelTransformation() {
@@ -437,25 +424,33 @@ public final class GeoTiffIIOMetadataDecoder {
         }
         AffineTransform transform = null;
         if (modelTransformation.length == 9) {
-            transform = new AffineTransform(modelTransformation[0], modelTransformation[4],
-                    modelTransformation[1], modelTransformation[5], modelTransformation[6],
-                    modelTransformation[7]);
+            transform =
+                    new AffineTransform(
+                            modelTransformation[0],
+                            modelTransformation[4],
+                            modelTransformation[1],
+                            modelTransformation[5],
+                            modelTransformation[6],
+                            modelTransformation[7]);
         } else if (modelTransformation.length == 16) {
-            transform = new AffineTransform(modelTransformation[0], modelTransformation[4],
-                    modelTransformation[1], modelTransformation[5], modelTransformation[3],
-                    modelTransformation[7]);
+            transform =
+                    new AffineTransform(
+                            modelTransformation[0],
+                            modelTransformation[4],
+                            modelTransformation[1],
+                            modelTransformation[5],
+                            modelTransformation[3],
+                            modelTransformation[7]);
         }
 
         return transform;
-
     }
 
     /**
-     * Tells me if the underlying {@link IIOMetadata} contains ModelTransformationTag tag for {@link AffineTransform} that map from Raster Space to
-     * World Space.
-     * 
+     * Tells me if the underlying {@link IIOMetadata} contains ModelTransformationTag tag for {@link
+     * AffineTransform} that map from Raster Space to World Space.
+     *
      * @return true if ModelTransformationTag is present, false otherwise.
-     * 
      */
     public boolean hasModelTrasformation() {
         return modelTransformation != null;
@@ -465,10 +460,11 @@ public final class GeoTiffIIOMetadataDecoder {
 
     /**
      * Gets the value attribute of the given Node.
-     * 
-     * @param node A Node containing a value attribute, for example the node &ltTIFFShort value=&quot123&quot&gt
-     * 
-     * @return A String containing the text from the value attribute. In the above example, the string would be 123
+     *
+     * @param node A Node containing a value attribute, for example the node &ltTIFFShort
+     *     value=&quot123&quot&gt
+     * @return A String containing the text from the value attribute. In the above example, the
+     *     string would be 123
      */
     private String getValueAttribute(Node node) {
         return node.getAttributes().getNamedItem(GeoTiffConstants.VALUE_ATTRIBUTE).getNodeValue();
@@ -476,9 +472,8 @@ public final class GeoTiffIIOMetadataDecoder {
 
     /**
      * Gets the value attribute's contents and parses it as an int
-     * 
+     *
      * @param node DOCUMENT ME!
-     * 
      * @return DOCUMENT ME!
      */
     private int getIntValueAttribute(Node node) {
@@ -486,11 +481,10 @@ public final class GeoTiffIIOMetadataDecoder {
     }
 
     /**
-     * Gets a TIFFField node with the given tag number. This is done by searching for a TIFFField with attribute number whose value is the specified
-     * tag value.
-     * 
+     * Gets a TIFFField node with the given tag number. This is done by searching for a TIFFField
+     * with attribute number whose value is the specified tag value.
+     *
      * @param tag DOCUMENT ME!
-     * 
      * @return DOCUMENT ME!
      */
     private IIOMetadataNode getTiffField(Node rootNode, final int tag) {
@@ -509,24 +503,25 @@ public final class GeoTiffIIOMetadataDecoder {
 
     /**
      * Gets a single TIFFShort value at the given index.
-     * 
-     * @param tiffField An IIOMetadataNode pointing to a TIFFField element that contains a TIFFShorts element.
+     *
+     * @param tiffField An IIOMetadataNode pointing to a TIFFField element that contains a
+     *     TIFFShorts element.
      * @param index The 0-based index of the desired short value
-     * 
      * @return DOCUMENT ME!
      */
     private int getTiffShort(final IIOMetadataNode tiffField, final int index) {
 
-        return getIntValueAttribute(((IIOMetadataNode) tiffField.getFirstChild())
-                .getElementsByTagName(GeoTiffConstants.GEOTIFF_SHORT_TAG).item(index));
-
+        return getIntValueAttribute(
+                ((IIOMetadataNode) tiffField.getFirstChild())
+                        .getElementsByTagName(GeoTiffConstants.GEOTIFF_SHORT_TAG)
+                        .item(index));
     }
 
     /**
      * Gets an array of double values from a TIFFDoubles TIFFField.
-     * 
-     * @param tiffField An IIOMetadataNode pointing to a TIFFField element that contains a TIFFDoubles element.
-     * 
+     *
+     * @param tiffField An IIOMetadataNode pointing to a TIFFField element that contains a
+     *     TIFFDoubles element.
      * @return DOCUMENT ME!
      */
     private double[] getTiffDoubles(final IIOMetadataNode tiffField) {
@@ -534,8 +529,9 @@ public final class GeoTiffIIOMetadataDecoder {
         if (tiffField == null) {
             return null;
         }
-        final NodeList doubles = ((IIOMetadataNode) tiffField.getFirstChild())
-                .getElementsByTagName(GeoTiffConstants.GEOTIFF_DOUBLE_TAG);
+        final NodeList doubles =
+                ((IIOMetadataNode) tiffField.getFirstChild())
+                        .getElementsByTagName(GeoTiffConstants.GEOTIFF_DOUBLE_TAG);
         final int length = doubles.getLength();
         final double[] result = new double[length];
         for (int i = 0; i < length; i++) {
@@ -547,13 +543,13 @@ public final class GeoTiffIIOMetadataDecoder {
 
     /**
      * Gets a portion of a TIFFAscii string with the specified start character and length;
-     * 
-     * @param tiffField An IIOMetadataNode pointing to a TIFFField element that contains a TIFFAsciis element. This element should contain a single
-     *        TiffAscii element.
+     *
+     * @param tiffField An IIOMetadataNode pointing to a TIFFField element that contains a
+     *     TIFFAsciis element. This element should contain a single TiffAscii element.
      * @param start DOCUMENT ME!
      * @param length DOCUMENT ME!
-     * 
-     * @return A substring of the value contained in the TIFFAscii node, with the final '|' character removed.
+     * @return A substring of the value contained in the TIFFAscii node, with the final '|'
+     *     character removed.
      */
     private String getTiffAscii(final IIOMetadataNode tiffField, int start, int length) {
 
@@ -561,23 +557,25 @@ public final class GeoTiffIIOMetadataDecoder {
         // GeoTIFFWritingUtilities specification places a vertical bar '|' in
         // place of \0
         // null delimiters so drop off the vertical bar for Java Strings
-        final String valueAttribute = getValueAttribute(((IIOMetadataNode) tiffField .getFirstChild()).getElementsByTagName(GeoTiffConstants.GEOTIFF_ASCII_TAG).item(0));
-        if (start == -1){
+        final String valueAttribute =
+                getValueAttribute(
+                        ((IIOMetadataNode) tiffField.getFirstChild())
+                                .getElementsByTagName(GeoTiffConstants.GEOTIFF_ASCII_TAG)
+                                .item(0));
+        if (start == -1) {
             start = 0;
         }
-        if (length == -1){
+        if (length == -1) {
             length = valueAttribute.length() + 1;
         }
         return valueAttribute.substring(start, start + length - 1);
-
     }
 
     /**
      * Gets the TIFFAscii string
-     * 
-     * @param tiffField An IIOMetadataNode pointing to a TIFFField element that contains a TIFFAsciis element. This element should contain a single
-     *        TIFFAscii element.
-     * 
+     *
+     * @param tiffField An IIOMetadataNode pointing to a TIFFField element that contains a
+     *     TIFFAsciis element. This element should contain a single TIFFAscii element.
      * @return The value contained in the TIFFAscii node, with the final '|' character removed.
      */
     private String getTiffAscii(final IIOMetadataNode tiffField) {
@@ -589,12 +587,11 @@ public final class GeoTiffIIOMetadataDecoder {
     }
 
     /**
-     * Return <code>true</code> if the geokey directory is present, <code>false</code> otherwise. In case no geokey dir is present no CRS can be
-     * constructed from this set of metadata.
-     * 
-     * <p>
-     * A prj can be used otherwise.
-     * 
+     * Return <code>true</code> if the geokey directory is present, <code>false</code> otherwise. In
+     * case no geokey dir is present no CRS can be constructed from this set of metadata.
+     *
+     * <p>A prj can be used otherwise.
+     *
      * @return <code>true</code> if the geokey directory is present, <code>false</code> otherwise.
      */
     public boolean hasGeoKey() {
@@ -603,18 +600,17 @@ public final class GeoTiffIIOMetadataDecoder {
 
     /**
      * Returns the value of an ASCII TIFFTag referred by tagID.
-     * 
+     *
      * @return the tag value as a String, null if not available.
-     * 
      */
     public String getAsciiTIFFTag(final String tagID) {
         if (GeoTiffConstants.isNumeric(tagID)) {
-            final IIOMetadataNode metadataNode = getTiffField(getRootNode(), Integer.valueOf(tagID));
+            final IIOMetadataNode metadataNode =
+                    getTiffField(getRootNode(), Integer.valueOf(tagID));
             if (metadataNode != null) {
                 return getTiffAscii(metadataNode);
             }
         }
         return null;
     }
-
 } // end of class GeoTiffIIOMetadataDecoder

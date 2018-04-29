@@ -8,9 +8,7 @@ import java.awt.RenderingHints;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-
 import junit.framework.TestCase;
-
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -21,11 +19,7 @@ import org.geotools.renderer.style.FontCache;
 import org.geotools.styling.Style;
 import org.geotools.test.TestData;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class PointPlacementTest extends TestCase {
     private static final long TIME = 5000;
 
@@ -45,11 +39,13 @@ public class PointPlacementTest extends TestCase {
         bounds = new ReferencedEnvelope(0, 10, 0, 10, DefaultGeographicCRS.WGS84);
 
         // load font
-        Font f = Font.createFont(Font.TRUETYPE_FONT, TestData.getResource(this, "recreate.ttf")
-                .openStream());
+        Font f =
+                Font.createFont(
+                        Font.TRUETYPE_FONT,
+                        TestData.getResource(this, "recreate.ttf").openStream());
         FontCache.getDefaultInstance().registerFont(f);
 
-//        System.setProperty("org.geotools.test.interactive", "true");
+        //        System.setProperty("org.geotools.test.interactive", "true");
     }
 
     public void testDefaultLabelCache() throws Exception {
@@ -85,5 +81,4 @@ public class PointPlacementTest extends TestCase {
 
         RendererBaseTest.showRender("New labeller", renderer, TIME, bounds);
     }
-
 }

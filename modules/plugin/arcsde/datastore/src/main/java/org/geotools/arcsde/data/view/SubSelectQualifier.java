@@ -20,17 +20,16 @@ package org.geotools.arcsde.data.view;
 import net.sf.jsqlparser.statement.select.PlainSelect;
 import net.sf.jsqlparser.statement.select.SelectBody;
 import net.sf.jsqlparser.statement.select.SubSelect;
-
 import org.geotools.arcsde.session.ISession;
 
 /**
  * Qualifies a column reference in a subselect clause.
- * 
+ *
  * @author Gabriel Roldan, Axios Engineering
  * @version $Id$
  * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *         /org/geotools/arcsde/data/view/SubSelectQualifier.java $
+ *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
+ *     /org/geotools/arcsde/data/view/SubSelectQualifier.java $
  * @since 2.3.x
  */
 class SubSelectQualifier {

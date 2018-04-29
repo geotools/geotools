@@ -34,10 +34,8 @@ import org.geotools.filter.text.cql2.CQLAttributeNameTest;
  *
  * @source $URL$
  */
-public class ECQLAttributeNameTest extends CQLAttributeNameTest{
-	public ECQLAttributeNameTest(){
+public class ECQLAttributeNameTest extends CQLAttributeNameTest {
+    public ECQLAttributeNameTest() {
         super(Language.ECQL);
     }
-	
-	
 }

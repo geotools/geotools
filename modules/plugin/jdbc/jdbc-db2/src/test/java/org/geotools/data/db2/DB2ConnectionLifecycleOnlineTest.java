@@ -25,5 +25,4 @@ public class DB2ConnectionLifecycleOnlineTest extends JDBCConnectionLifecycleOnl
     protected JDBCTestSetup createTestSetup() {
         return new DB2TestSetup();
     }
-
 }

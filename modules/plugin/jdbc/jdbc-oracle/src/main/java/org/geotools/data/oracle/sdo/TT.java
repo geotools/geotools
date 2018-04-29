@@ -3,7 +3,7 @@
  *    http://geotools.org
  *
  *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -21,10 +21,6 @@
  */
 package org.geotools.data.oracle.sdo;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.LineString;
@@ -33,61 +29,59 @@ import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author bowens
- *
- * To change the template for this generated type comment go to
- * Window>Preferences>Java>Code Generation>Code and Comments
- *
- *
+ *     <p>To change the template for this generated type comment go to Window>Preferences>Java>Code
+ *     Generation>Code and Comments
  * @source $URL$
  */
-public interface TT 
-{
-	/** <code>TT</code> code representing unknown geometies (like splines) */
-	public static final int UNKNOWN       = 00;
+public interface TT {
+    /** <code>TT</code> code representing unknown geometies (like splines) */
+    public static final int UNKNOWN = 00;
 
-	/** <code>TT</code> code representing Point */
-	public static final int POINT         = 01;
+    /** <code>TT</code> code representing Point */
+    public static final int POINT = 01;
 
-	/** <code>TT</code> code representing Line (or Curve) */
-	public static final int LINE          = 02;
+    /** <code>TT</code> code representing Line (or Curve) */
+    public static final int LINE = 02;
 
-	/** <code>TT</code> code representing Curve (or Line) */
-	public static final int CURVE         = 02;    
-    
-	/** <code>TT</code> code representing Polygon */
-	public static final int POLYGON       = 03;
+    /** <code>TT</code> code representing Curve (or Line) */
+    public static final int CURVE = 02;
 
-	/** <code>TT</code> code representing Collection */
-	public static final int COLLECTION    = 04;   
+    /** <code>TT</code> code representing Polygon */
+    public static final int POLYGON = 03;
 
-	/** <code>TT</code> code representing Multpoint */
-	public static final int MULTIPOINT    = 05;       
+    /** <code>TT</code> code representing Collection */
+    public static final int COLLECTION = 04;
 
-	/** <code>TT</code> code representing Multiline (or Multicurve) */
-	public static final int MULTILINE     = 06;
+    /** <code>TT</code> code representing Multpoint */
+    public static final int MULTIPOINT = 05;
 
-	/** <code>TT</code> code representing Multicurve (or Multiline) */    
-	public static final int MULTICURVE    = 06;
+    /** <code>TT</code> code representing Multiline (or Multicurve) */
+    public static final int MULTILINE = 06;
 
-	/** <code>TT</code> code representing MULTIPOLYGON */
-	public static final int MULTIPOLYGON  = 07;
-	
-	/** <code>TT</code> code representing SOLID */
-    public static final int SOLID  = 8;
-    
+    /** <code>TT</code> code representing Multicurve (or Multiline) */
+    public static final int MULTICURVE = 06;
+
+    /** <code>TT</code> code representing MULTIPOLYGON */
+    public static final int MULTIPOLYGON = 07;
+
     /** <code>TT</code> code representing SOLID */
-    public static final int MULTISOLID  = 9;
-    
+    public static final int SOLID = 8;
+
+    /** <code>TT</code> code representing SOLID */
+    public static final int MULTISOLID = 9;
+
     /**
      * A map from geomery type, as a string, to JTS Geometry. See Oracle Spatial documentation,
      * Table 2-1, Valid SDO_GTYPE values.
      */
     public static final Map GEOM_CLASSES = Collections.unmodifiableMap(new GeomClasses());
-        
-        
+
     static final class GeomClasses extends HashMap {
         private static final long serialVersionUID = -3359664692996608331L;
 
@@ -105,5 +99,4 @@ public interface TT
             put("MULTIPOLYGON", MultiPolygon.class);
         }
     }
-
 }

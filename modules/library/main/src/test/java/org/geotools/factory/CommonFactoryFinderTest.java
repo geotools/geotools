@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -17,41 +17,35 @@
 package org.geotools.factory;
 
 import junit.framework.TestCase;
-
 import org.geotools.feature.AbstractFeatureFactoryImpl;
 import org.geotools.feature.ValidatingFeatureFactoryImpl;
 import org.opengis.feature.FeatureFactory;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class CommonFactoryFinderTest extends TestCase {
 
     public void testGetFeatureFactory() {
-        assertNotNull( CommonFactoryFinder.getFeatureFactory(null));
+        assertNotNull(CommonFactoryFinder.getFeatureFactory(null));
     }
-    
+
     public void testGetStyleFactory() {
-        assertNotNull( CommonFactoryFinder.getStyleFactories( GeoTools.getDefaultHints() ));
+        assertNotNull(CommonFactoryFinder.getStyleFactories(GeoTools.getDefaultHints()));
     }
 
     public void testGetFilterFactory() {
-        assertNotNull( CommonFactoryFinder.getFilterFactory( null ));
+        assertNotNull(CommonFactoryFinder.getFilterFactory(null));
     }
-    
+
     public void testGetDefaultFeatureFactory() {
-        FeatureFactory featureFactory = CommonFactoryFinder.getFeatureFactory( null );
+        FeatureFactory featureFactory = CommonFactoryFinder.getFeatureFactory(null);
         assertNotNull(featureFactory);
         assertTrue(featureFactory instanceof AbstractFeatureFactoryImpl);
     }
-    
+
     public void testGetValidatingFeatureFactory() {
         Hints hints = new Hints(Hints.FEATURE_FACTORY, ValidatingFeatureFactoryImpl.class);
-        FeatureFactory featureFactory = CommonFactoryFinder.getFeatureFactory( hints );
+        FeatureFactory featureFactory = CommonFactoryFinder.getFeatureFactory(hints);
         assertNotNull(featureFactory);
         assertTrue(featureFactory instanceof ValidatingFeatureFactoryImpl);
     }
-
 }

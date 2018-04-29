@@ -20,16 +20,14 @@ import java.io.File;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
 import org.geotools.gce.imagemosaic.properties.PropertiesCollector;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
 import org.opengis.feature.simple.SimpleFeature;
 
 /**
  * {@link PropertiesCollector} that is able to collect properties from a file name.
- * 
+ *
  * @author Daniele Romagnoli, GeoSolutions SAS
- * 
  */
 class RuntimeExtractor extends PropertiesCollector {
     Date date;
@@ -51,10 +49,9 @@ class RuntimeExtractor extends PropertiesCollector {
         for (String propertyName : getPropertyNames()) {
             // set the property
             feature.setAttribute(propertyName, date);
-
         }
     }
-    
+
     @Override
     public void setProperties(Map<String, Object> map) {
         throw new UnsupportedOperationException();
@@ -74,5 +71,4 @@ class RuntimeExtractor extends PropertiesCollector {
 
         return this;
     }
-
 }

@@ -18,12 +18,7 @@ package org.geotools.sld.bindings;
 
 import org.geotools.styling.RasterSymbolizer;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class SLDRasterSymbolizerBindingTest extends SLDTestSupport {
     public void testType() throws Exception {
         assertEquals(RasterSymbolizer.class, new SLDRasterSymbolizerBinding(null).getType());

@@ -3,19 +3,14 @@ package org.geotools.filter.v2_0.bindings;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
-
 import javax.xml.namespace.QName;
-
 import org.geotools.filter.v2_0.FES;
 import org.geotools.xml.InstanceComponent;
 import org.geotools.xml.SimpleBinding;
 import org.geotools.xml.impl.DatatypeConverterImpl;
 import org.opengis.filter.identity.Version;
 
-/**
- * Binding for FES 2.0 {@code VersionType} mapping to {@link Version}
- * 
- */
+/** Binding for FES 2.0 {@code VersionType} mapping to {@link Version} */
 public class VersionTypeBinding implements SimpleBinding {
 
     @Override
@@ -36,7 +31,7 @@ public class VersionTypeBinding implements SimpleBinding {
     @Override
     public Object parse(InstanceComponent instance, Object value) throws Exception {
         final String content = (String) value;
-        if(null == content || content.length() == 0){
+        if (null == content || content.length() == 0) {
             return new Version();
         }
         try {
@@ -56,19 +51,19 @@ public class VersionTypeBinding implements SimpleBinding {
     @Override
     public String encode(Object object, String value) throws Exception {
         Version version = (Version) object;
-        if(version.isEmpty()){
+        if (version.isEmpty()) {
             return null;
         }
-        if(version.isDateTime()){
+        if (version.isDateTime()) {
             Calendar cal = GregorianCalendar.getInstance(TimeZone.getTimeZone("GMT"));
             cal.setTimeInMillis(version.getDateTime().getTime());
             String dateTime = DatatypeConverterImpl.getInstance().printDateTime(cal);
             return dateTime;
         }
-        if(version.isIndex()){
+        if (version.isIndex()) {
             return String.valueOf(version.getIndex());
         }
-        if(version.isVersionAction()){
+        if (version.isVersionAction()) {
             return String.valueOf(version.getVersionAction());
         }
         throw new IllegalArgumentException("Empty version union");

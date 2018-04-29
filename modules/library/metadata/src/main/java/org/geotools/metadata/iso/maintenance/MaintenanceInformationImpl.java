@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -20,81 +20,61 @@
 package org.geotools.metadata.iso.maintenance;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
-
+import org.geotools.metadata.iso.MetadataEntity;
 import org.opengis.metadata.citation.ResponsibleParty;
-import org.opengis.metadata.maintenance.MaintenanceInformation;
 import org.opengis.metadata.maintenance.MaintenanceFrequency;
+import org.opengis.metadata.maintenance.MaintenanceInformation;
 import org.opengis.metadata.maintenance.ScopeCode;
 import org.opengis.metadata.maintenance.ScopeDescription;
 import org.opengis.temporal.PeriodDuration;
 import org.opengis.util.InternationalString;
-import org.geotools.metadata.iso.MetadataEntity;
-
 
 /**
  * Information about the scope and frequency of updating.
- *
- *
  *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane
- *
  * @since 2.1
  */
 public class MaintenanceInformationImpl extends MetadataEntity implements MaintenanceInformation {
-    /**
-     * Serial number for interoperability with different versions.
-     */
+    /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 8523463344581266776L;
 
     /**
-     * Frequency with which changes and additions are made to the resource after the
-     * initial resource is completed.
+     * Frequency with which changes and additions are made to the resource after the initial
+     * resource is completed.
      */
     private MaintenanceFrequency maintenanceAndUpdateFrequency;
 
     /**
-     * Scheduled revision date for resource, in milliseconds ellapsed
-     * since January 1st, 1970. If there is no such date, then this field
-     * is set to the special value {@link Long#MIN_VALUE}.
+     * Scheduled revision date for resource, in milliseconds ellapsed since January 1st, 1970. If
+     * there is no such date, then this field is set to the special value {@link Long#MIN_VALUE}.
      */
     private long dateOfNextUpdate = Long.MIN_VALUE;
 
-    /**
-     * Maintenance period other than those defined, in milliseconds.
-     */
+    /** Maintenance period other than those defined, in milliseconds. */
     private PeriodDuration userDefinedMaintenanceFrequency;
 
-    /**
-     * Scope of data to which maintenance is applied.
-     */
+    /** Scope of data to which maintenance is applied. */
     private Collection<ScopeCode> updateScopes;
 
-    /**
-     * Additional information about the range or extent of the resource.
-     */
+    /** Additional information about the range or extent of the resource. */
     private Collection<ScopeDescription> updateScopeDescriptions;
 
-    /**
-     * Information regarding specific requirements for maintaining the resource.
-     */
+    /** Information regarding specific requirements for maintaining the resource. */
     private Collection<InternationalString> maintenanceNotes;
 
     /**
-     * Identification of, and means of communicating with,
-     * person(s) and organization(s) with responsibility for maintaining the metadata
+     * Identification of, and means of communicating with, person(s) and organization(s) with
+     * responsibility for maintaining the metadata
      */
     private Collection<ResponsibleParty> contacts;
 
-    /**
-     * Creates a an initially empty maintenance information.
-     */
-    public MaintenanceInformationImpl() {
-    }
+    /** Creates a an initially empty maintenance information. */
+    public MaintenanceInformationImpl() {}
 
     /**
      * Constructs a metadata entity initialized with the values from the specified metadata.
@@ -105,60 +85,50 @@ public class MaintenanceInformationImpl extends MetadataEntity implements Mainte
         super(source);
     }
 
-    /**
-     * Creates a maintenance information.
-     */
+    /** Creates a maintenance information. */
     public MaintenanceInformationImpl(final MaintenanceFrequency maintenanceAndUpdateFrequency) {
         setMaintenanceAndUpdateFrequency(maintenanceAndUpdateFrequency);
     }
 
     /**
-     * Returns the frequency with which changes and additions are made to the resource
-     * after the initial resource is completed.
+     * Returns the frequency with which changes and additions are made to the resource after the
+     * initial resource is completed.
      */
     public MaintenanceFrequency getMaintenanceAndUpdateFrequency() {
         return maintenanceAndUpdateFrequency;
     }
 
     /**
-     * Set the frequency with which changes and additions are made to the resource
-     * after the initial resource is completed.
+     * Set the frequency with which changes and additions are made to the resource after the initial
+     * resource is completed.
      */
     public synchronized void setMaintenanceAndUpdateFrequency(final MaintenanceFrequency newValue) {
         checkWritePermission();
         maintenanceAndUpdateFrequency = newValue;
     }
 
-    /**
-     * Returns the scheduled revision date for resource.
-     */
+    /** Returns the scheduled revision date for resource. */
     public synchronized Date getDateOfNextUpdate() {
-        return (dateOfNextUpdate!=Long.MIN_VALUE) ? new Date(dateOfNextUpdate) : null;
+        return (dateOfNextUpdate != Long.MIN_VALUE) ? new Date(dateOfNextUpdate) : null;
     }
 
-    /**
-     * Set the scheduled revision date for resource.
-     */
+    /** Set the scheduled revision date for resource. */
     public synchronized void setDateOfNextUpdate(final Date newValue) {
         checkWritePermission();
-        dateOfNextUpdate = (newValue!=null) ? newValue.getTime() : Long.MIN_VALUE;
+        dateOfNextUpdate = (newValue != null) ? newValue.getTime() : Long.MIN_VALUE;
     }
 
     /**
      * Returns the maintenance period other than those defined.
      *
-     * @return The period, in milliseconds.
-     * 
-     * @TODO: needs an implementation of org.opengis.temporal modules to anntote
-     *        this parameter.
+     * @return The period, in milliseconds. @TODO: needs an implementation of org.opengis.temporal
+     *     modules to anntote this parameter.
      */
     public PeriodDuration getUserDefinedMaintenanceFrequency() {
         return userDefinedMaintenanceFrequency;
     }
 
-    /**
-     * Set the maintenance period other than those defined.
-     */
+    /** Set the maintenance period other than those defined. */
     public synchronized void setUserDefinedMaintenanceFrequency(final PeriodDuration newValue) {
         checkWritePermission();
         userDefinedMaintenanceFrequency = newValue;
@@ -188,7 +158,8 @@ public class MaintenanceInformationImpl extends MetadataEntity implements Mainte
      * @since 2.4
      */
     public synchronized Collection<ScopeDescription> getUpdateScopeDescriptions() {
-        return (updateScopeDescriptions = nonNullCollection(updateScopeDescriptions, ScopeDescription.class));
+        return (updateScopeDescriptions =
+                nonNullCollection(updateScopeDescriptions, ScopeDescription.class));
     }
 
     /**
@@ -197,9 +168,9 @@ public class MaintenanceInformationImpl extends MetadataEntity implements Mainte
      * @since 2.4
      */
     public synchronized void setUpdateScopeDescriptions(
-            final Collection<? extends ScopeDescription> newValues)
-    {
-        updateScopeDescriptions = copyCollection(newValues, updateScopeDescriptions, ScopeDescription.class);
+            final Collection<? extends ScopeDescription> newValues) {
+        updateScopeDescriptions =
+                copyCollection(newValues, updateScopeDescriptions, ScopeDescription.class);
     }
 
     /**
@@ -217,14 +188,13 @@ public class MaintenanceInformationImpl extends MetadataEntity implements Mainte
      * @since 2.4
      */
     public synchronized void setMaintenanceNotes(
-            final Collection<? extends InternationalString> newValues)
-    {
+            final Collection<? extends InternationalString> newValues) {
         maintenanceNotes = copyCollection(newValues, maintenanceNotes, InternationalString.class);
     }
 
     /**
-     * Returns identification of, and means of communicating with,
-     * person(s) and organization(s) with responsibility for maintaining the metadata.
+     * Returns identification of, and means of communicating with, person(s) and organization(s)
+     * with responsibility for maintaining the metadata.
      *
      * @since 2.4
      */
@@ -233,8 +203,8 @@ public class MaintenanceInformationImpl extends MetadataEntity implements Mainte
     }
 
     /**
-     * Set identification of, and means of communicating with,
-     * person(s) and organization(s) with responsibility for maintaining the metadata.
+     * Set identification of, and means of communicating with, person(s) and organization(s) with
+     * responsibility for maintaining the metadata.
      *
      * @since 2.4
      */

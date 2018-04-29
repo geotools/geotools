@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,24 +16,20 @@
  */
 package org.geotools.temporal.object;
 
+import static org.junit.Assert.*;
+
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.temporal.reference.DefaultTemporalReferenceSystem;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.opengis.temporal.IndeterminateValue;
 import org.opengis.temporal.TemporalPosition;
 import org.opengis.temporal.TemporalReferenceSystem;
 
-
 /**
- *
  * @author Mehdi Sidhoum (Geomatys)
- *
- *
- *
  * @source $URL$
  */
 public class DefaultTemporalPositionTest {
@@ -57,48 +53,40 @@ public class DefaultTemporalPositionTest {
         temporalPosition2 = null;
     }
 
-    /**
-     * Test of getIndeterminatePosition method, of class DefaultTemporalPosition.
-     */
+    /** Test of getIndeterminatePosition method, of class DefaultTemporalPosition. */
     @Test
     public void testGetIndeterminatePosition() {
         IndeterminateValue result = temporalPosition1.getIndeterminatePosition();
         assertFalse(temporalPosition2.getIndeterminatePosition().equals(result));
     }
 
-    /**
-     * Test of getFrame method, of class DefaultTemporalPosition.
-     */
+    /** Test of getFrame method, of class DefaultTemporalPosition. */
     @Test
     public void testGetFrame() {
         TemporalReferenceSystem result = ((DefaultTemporalPosition) temporalPosition1).getFrame();
         assertFalse(((DefaultTemporalPosition) temporalPosition2).getFrame().equals(result));
     }
 
-    /**
-     * Test of setFrame method, of class DefaultTemporalPosition.
-     */
+    /** Test of setFrame method, of class DefaultTemporalPosition. */
     @Test
     public void testSetFrame() {
         TemporalReferenceSystem result = ((DefaultTemporalPosition) temporalPosition1).getFrame();
         NamedIdentifier name = new NamedIdentifier(Citations.CRS, "Babylonian calendar");
-        ((DefaultTemporalPosition) temporalPosition1).setFrame(new DefaultTemporalReferenceSystem(name, null));
+        ((DefaultTemporalPosition) temporalPosition1)
+                .setFrame(new DefaultTemporalReferenceSystem(name, null));
         assertFalse(((DefaultTemporalPosition) temporalPosition1).getFrame().equals(result));
     }
 
-    /**
-     * Test of setIndeterminatePosition method, of class DefaultTemporalPosition.
-     */
+    /** Test of setIndeterminatePosition method, of class DefaultTemporalPosition. */
     @Test
     public void testSetIndeterminatePosition() {
         IndeterminateValue result = temporalPosition1.getIndeterminatePosition();
-        ((DefaultTemporalPosition) temporalPosition1).setIndeterminatePosition(IndeterminateValue.BEFORE);
+        ((DefaultTemporalPosition) temporalPosition1)
+                .setIndeterminatePosition(IndeterminateValue.BEFORE);
         assertFalse(temporalPosition1.getIndeterminatePosition().equals(result));
     }
 
-    /**
-     * Test of equals method, of class DefaultTemporalPosition.
-     */
+    /** Test of equals method, of class DefaultTemporalPosition. */
     @Test
     public void testEquals() {
         assertFalse(temporalPosition1.equals(null));
@@ -106,18 +94,14 @@ public class DefaultTemporalPositionTest {
         assertFalse(temporalPosition1.equals(temporalPosition2));
     }
 
-    /**
-     * Test of hashCode method, of class DefaultTemporalPosition.
-     */
+    /** Test of hashCode method, of class DefaultTemporalPosition. */
     @Test
     public void testHashCode() {
         int result = temporalPosition1.hashCode();
         assertFalse(temporalPosition2.hashCode() == result);
     }
 
-    /**
-     * Test of toString method, of class DefaultTemporalPosition.
-     */
+    /** Test of toString method, of class DefaultTemporalPosition. */
     @Test
     public void testToString() {
         String result = temporalPosition1.toString();

@@ -22,7 +22,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureStore;
@@ -38,7 +37,7 @@ import org.opengis.filter.identity.FeatureId;
 /**
  * A transforming feature store, will transform on the fly all attempts to write so that the
  * underlying features are getting modified while exposing a different feature type to its callers.
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 public class TransformFeatureStore extends TransformFeatureSource implements SimpleFeatureStore {
@@ -63,8 +62,9 @@ public class TransformFeatureStore extends TransformFeatureSource implements Sim
 
         // check it was possible to invert at least one definition
         if (inverted.size() == 0) {
-            throw new IllegalArgumentException("None of the expressions could be inverted, cannot "
-                    + "create a writable transformer");
+            throw new IllegalArgumentException(
+                    "None of the expressions could be inverted, cannot "
+                            + "create a writable transformer");
         }
 
         // check we have enough to compute all required fields
@@ -114,7 +114,8 @@ public class TransformFeatureStore extends TransformFeatureSource implements Sim
     public List<FeatureId> addFeatures(
             FeatureCollection<SimpleFeatureType, SimpleFeature> collection) throws IOException {
         // re-shape back the collection provided, and then just call the wrapper store
-        TransformFeatureCollectionWrapper transformed = new TransformFeatureCollectionWrapper(collection, invertedTransformer);
+        TransformFeatureCollectionWrapper transformed =
+                new TransformFeatureCollectionWrapper(collection, invertedTransformer);
         return store.addFeatures(transformed);
 
         // TODO: re-shape feature ids...
@@ -124,7 +125,8 @@ public class TransformFeatureStore extends TransformFeatureSource implements Sim
     public void setFeatures(FeatureReader<SimpleFeatureType, SimpleFeature> reader)
             throws IOException {
         // transform back the reader and call back the wrapped store
-        TransformFeatureReaderWrapper rr = new TransformFeatureReaderWrapper(reader, invertedTransformer);
+        TransformFeatureReaderWrapper rr =
+                new TransformFeatureReaderWrapper(reader, invertedTransformer);
         store.setFeatures(rr);
     }
 
@@ -153,19 +155,19 @@ public class TransformFeatureStore extends TransformFeatureSource implements Sim
     @Override
     public void modifyFeatures(Name attributeName, Object attributeValue, Filter filter)
             throws IOException {
-        modifyFeatures(new Name[] { attributeName }, new Object[] { attributeValue }, filter);
+        modifyFeatures(new Name[] {attributeName}, new Object[] {attributeValue}, filter);
     }
 
     @Override
     public void modifyFeatures(AttributeDescriptor type, Object value, Filter filter)
             throws IOException {
-        modifyFeatures(new AttributeDescriptor[] { type }, new Object[] { value }, filter);
+        modifyFeatures(new AttributeDescriptor[] {type}, new Object[] {value}, filter);
     }
 
     @Override
     public void modifyFeatures(String name, Object attributeValue, Filter filter)
             throws IOException {
-        modifyFeatures(new String[] { name }, new Object[] { attributeValue }, filter);
+        modifyFeatures(new String[] {name}, new Object[] {attributeValue}, filter);
     }
 
     @Override
@@ -182,9 +184,9 @@ public class TransformFeatureStore extends TransformFeatureSource implements Sim
         List<String> names = Arrays.asList(nameArray);
         Map<String, Object> invertedValueMap = new HashMap<String, Object>();
         for (Definition definition : transformer.getDefinitions()) {
-            if(names.contains(definition.getName())) { 
+            if (names.contains(definition.getName())) {
                 List<Definition> ids = definition.inverse();
-                if(ids != null) {
+                if (ids != null) {
                     for (Definition id : ids) {
                         Object value = id.getExpression().evaluate(sample);
                         invertedValueMap.put(id.getName(), value);
@@ -192,9 +194,9 @@ public class TransformFeatureStore extends TransformFeatureSource implements Sim
                 }
             }
         }
-        
+
         // if we have any inverted value, call through
-        if(!invertedValueMap.isEmpty()) {
+        if (!invertedValueMap.isEmpty()) {
             String[] invertedNames = new String[invertedValueMap.size()];
             Object[] invertedValues = new Object[invertedValueMap.size()];
             int i = 0;
@@ -207,5 +209,4 @@ public class TransformFeatureStore extends TransformFeatureSource implements Sim
             store.modifyFeatures(invertedNames, invertedValues, txFilter);
         }
     }
-
 }

@@ -22,24 +22,20 @@ import org.geotools.data.efeature.query.EGeometryValueOverlaps;
 
 /**
  * @author kengu - 14. juni 2011
- *
- *
  * @source $URL$
  */
 public class EGeometryValueOverlapsTest extends AbstractEGeometryValueTest {
-    
-    // ----------------------------------------------------- 
+
+    // -----------------------------------------------------
     //  Constructors
     // -----------------------------------------------------
-    
-    /**
-     * @param name
-     */
+
+    /** @param name */
     public EGeometryValueOverlapsTest(String name) {
-        super(name,OVERLAPS);
+        super(name, OVERLAPS);
     }
 
-    // ----------------------------------------------------- 
+    // -----------------------------------------------------
     //  AbstractEAttributeValueTest implementation
     // -----------------------------------------------------
 
@@ -50,5 +46,4 @@ public class EGeometryValueOverlapsTest extends AbstractEGeometryValueTest {
         //
         return new EGeometryValueOverlaps(eAttribute, filter, false);
     }
-
 }

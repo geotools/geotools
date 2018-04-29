@@ -28,9 +28,6 @@ import org.geotools.wfs.bindings.TransactionResultsTypeBinding;
  * Parser configuration for the wfs 1.1 schema.
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class WFSConfiguration extends org.geotools.wfs.WFSConfiguration {
@@ -41,27 +38,26 @@ public class WFSConfiguration extends org.geotools.wfs.WFSConfiguration {
      */
     public WFSConfiguration() {
         super(WFS.getInstance());
-        
+
         addDependency(new OWSConfiguration());
         addDependency(new OGCConfiguration());
     }
-    
+
     protected void configureBindings(org.picocontainer.MutablePicoContainer container) {
         super.configureBindings(container);
-        
-        container.registerComponentImplementation(WFS.TransactionResponseType,
-                TransactionResponseTypeBinding.class);
-        container.registerComponentImplementation(WFS.InsertResultsType,
-                InsertResultsTypeBinding.class);
-        container.registerComponentImplementation(WFS.TransactionResultsType,
-                TransactionResultsTypeBinding.class);
-        container.registerComponentImplementation(WFS.LockFeatureResponseType,
-                LockFeatureResponseTypeBinding.class);
+
+        container.registerComponentImplementation(
+                WFS.TransactionResponseType, TransactionResponseTypeBinding.class);
+        container.registerComponentImplementation(
+                WFS.InsertResultsType, InsertResultsTypeBinding.class);
+        container.registerComponentImplementation(
+                WFS.TransactionResultsType, TransactionResultsTypeBinding.class);
+        container.registerComponentImplementation(
+                WFS.LockFeatureResponseType, LockFeatureResponseTypeBinding.class);
         container.registerComponentImplementation(WFS.OperationsType, OperationsTypeBinding.class);
 
         // override feature collection binding
-        container.registerComponentImplementation(WFS.FeatureCollectionType,
-                FeatureCollectionTypeBinding.class);
+        container.registerComponentImplementation(
+                WFS.FeatureCollectionType, FeatureCollectionTypeBinding.class);
     }
-    
 }

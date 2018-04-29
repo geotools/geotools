@@ -19,6 +19,7 @@ package org.geotools.arcsde.data;
 
 import static org.geotools.filter.text.ecql.ECQL.toFilter;
 
+import com.esri.sde.sdk.client.SeVersion;
 import org.geotools.arcsde.session.ISession;
 import org.geotools.arcsde.versioning.AutoCommitVersionHandler;
 import org.geotools.data.Query;
@@ -32,26 +33,20 @@ import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 
-import com.esri.sde.sdk.client.SeVersion;
-
 /**
  * Test suite for the {@link ArcSDEQuery} query wrapper
- * 
+ *
  * @author Gabriel Roldan
- * 
- * 
  * @source $URL$
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/test/java
- *         /org/geotools/arcsde/data/ArcSDEQueryTest.java $
+ *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/test/java
+ *     /org/geotools/arcsde/data/ArcSDEQueryTest.java $
  * @version $Revision: 1.9 $
  */
 public class ArcSDEQueryEmptyTableTest {
 
     private static TestData testData;
 
-    /**
-     * do not access it directly, use {@link #createFilteringQuery()}
-     */
+    /** do not access it directly, use {@link #createFilteringQuery()} */
     private ArcSDEQuery queryFiltered;
 
     private ArcSDEDataStore dstore;
@@ -108,9 +103,13 @@ public class ArcSDEQueryEmptyTableTest {
 
         Filter filter = toFilter("BBOX(SHAPE, 49, -4, 60, 1)");
         filteringQuery = new Query(typeName, filter);
-        ArcSDEQuery q = ArcSDEQuery.createQuery(session, ftype, filteringQuery, fti
-                .getFidStrategy(), new AutoCommitVersionHandler(
-                SeVersion.SE_QUALIFIED_DEFAULT_VERSION_NAME));
+        ArcSDEQuery q =
+                ArcSDEQuery.createQuery(
+                        session,
+                        ftype,
+                        filteringQuery,
+                        fti.getFidStrategy(),
+                        new AutoCommitVersionHandler(SeVersion.SE_QUALIFIED_DEFAULT_VERSION_NAME));
         int calculated;
         try {
             calculated = q.calculateResultCount();

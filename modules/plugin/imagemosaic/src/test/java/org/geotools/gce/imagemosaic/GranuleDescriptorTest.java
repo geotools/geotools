@@ -18,8 +18,10 @@ package org.geotools.gce.imagemosaic;
 
 import static org.junit.Assert.assertEquals;
 
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.io.ParseException;
+import com.vividsolutions.jts.io.WKTReader;
 import java.net.URL;
-
 import org.geotools.data.DataUtilities;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -28,17 +30,14 @@ import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.ParseException;
-import com.vividsolutions.jts.io.WKTReader;
-
 public class GranuleDescriptorTest {
 
     @Test
     public void testBounds() throws SchemaException, ParseException {
 
-        SimpleFeatureType schema = DataUtilities.createType("index",
-                "geom:Polygon:4326,location:String,geom2:Polygon:4326");
+        SimpleFeatureType schema =
+                DataUtilities.createType(
+                        "index", "geom:Polygon:4326,location:String,geom2:Polygon:4326");
         SimpleFeatureBuilder fb = new SimpleFeatureBuilder(schema);
         Geometry geometry = new WKTReader().read("POLYGON((0 0, 0 10, 10 10, 10 0, 0 0))");
         fb.add(geometry);
@@ -48,10 +47,13 @@ public class GranuleDescriptorTest {
         SimpleFeature feature = fb.buildFeature("xyz");
 
         new GranuleDescriptor(feature, null, PathType.ABSOLUTE, "location", "/tmp") {
-            protected void init(org.opengis.geometry.BoundingBox granuleBBOX,
-                    java.net.URL granuleUrl, javax.imageio.spi.ImageReaderSpi suggestedSPI,
+            protected void init(
+                    org.opengis.geometry.BoundingBox granuleBBOX,
+                    java.net.URL granuleUrl,
+                    javax.imageio.spi.ImageReaderSpi suggestedSPI,
                     org.geotools.coverage.grid.io.footprint.MultiLevelROI roiProvider,
-                    boolean heterogeneousGranules, boolean handleArtifactsFiltering,
+                    boolean heterogeneousGranules,
+                    boolean handleArtifactsFiltering,
                     org.geotools.factory.Hints hints) {
                 // check the bbox is the one of the first geometry, not the entire feature
                 assertEquals(0, granuleBBOX.getMinimum(0), 0d);
@@ -61,5 +63,4 @@ public class GranuleDescriptorTest {
             };
         };
     }
-
 }

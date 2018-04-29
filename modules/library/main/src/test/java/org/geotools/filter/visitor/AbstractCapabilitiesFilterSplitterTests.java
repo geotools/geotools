@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -18,10 +18,10 @@ package org.geotools.filter.visitor;
 
 import static org.junit.Assert.assertEquals;
 
+import com.vividsolutions.jts.geom.Envelope;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.SchemaException;
@@ -46,14 +46,9 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 
-import com.vividsolutions.jts.geom.Envelope;
-
 /**
- * 
  * @author Jesse
  * @author ported from PostPreProcessFilterSplittingVisitor at 2.5.2 by Gabriel Roldan
- *
- *
  * @source $URL$
  */
 @SuppressWarnings("nls")
@@ -69,17 +64,14 @@ public class AbstractCapabilitiesFilterSplitterTests {
         }
 
         public Filter getUpdateFilter(String attributePath) {
-            if (attributePath.equals(attribute))
-                return updateFilter;
-            else
-                return null;
+            if (attributePath.equals(attribute)) return updateFilter;
+            else return null;
         }
 
         public void setUpdate(String attribute, Filter updateFilter) {
             this.attribute = attribute;
             this.updateFilter = updateFilter;
         }
-
     }
 
     protected FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
@@ -98,8 +90,11 @@ public class AbstractCapabilitiesFilterSplitterTests {
 
     protected CapabilitiesFilterSplitter newVisitor(Capabilities supportedCaps)
             throws SchemaException {
-        return new CapabilitiesFilterSplitter(supportedCaps, DataUtilities.createType(typeName,
-                geomAtt + ":Point," + nameAtt + ":String," + numAtt + ":int"), accessor);
+        return new CapabilitiesFilterSplitter(
+                supportedCaps,
+                DataUtilities.createType(
+                        typeName, geomAtt + ":Point," + nameAtt + ":String," + numAtt + ":int"),
+                accessor);
     }
 
     protected PropertyIsEqualTo createPropertyIsEqualToFilter(String attr, String value)
@@ -114,21 +109,17 @@ public class AbstractCapabilitiesFilterSplitterTests {
     /**
      * Runs 3 tests. 1 with out filtercapabilities containing filter type. 1 with filter caps
      * containing filter type 1 with an edit to the attribute being queried by filter.
-     * 
-     * @param filter
-     *            filter to process
-     * @param filterTypeMask
-     *            the constant in {@link FilterCapabilities} that is equivalent to the FilterType
-     *            used in filter
-     * @param attToEdit
-     *            the attribute in filter that is queried. If null then edit test is not ran.
+     *
+     * @param filter filter to process
+     * @param filterTypeMask the constant in {@link FilterCapabilities} that is equivalent to the
+     *     FilterType used in filter
+     * @param attToEdit the attribute in filter that is queried. If null then edit test is not ran.
      */
     protected void runTest(Filter filter, Capabilities supportedCaps, String attToEdit)
             throws SchemaException {
         // initialize fields that might be previously modified in current test
         CapabilitiesFilterSplitter visitor = newVisitor(new Capabilities());
-        if (accessor != null)
-            accessor.setUpdate("", null);
+        if (accessor != null) accessor.setUpdate("", null);
 
         // Testing when FilterCapabilites indicate that filter type is not supported
         filter.accept(visitor, null);
@@ -165,7 +156,7 @@ public class AbstractCapabilitiesFilterSplitterTests {
     protected PropertyIsEqualTo createFunctionFilter() throws Exception {
 
         FilterFunction_geometryType geomTypeExpr = new FilterFunction_geometryType();
-        geomTypeExpr.setParameters(Arrays.asList(new Expression[] { ff.property("geom") }));
+        geomTypeExpr.setParameters(Arrays.asList(new Expression[] {ff.property("geom")}));
 
         PropertyIsEqualTo filter = ff.equals(geomTypeExpr, ff.literal("Polygon"));
         return filter;
@@ -332,5 +323,4 @@ public class AbstractCapabilitiesFilterSplitterTests {
             return "MOCKGEOM";
         }
     }
-
 }

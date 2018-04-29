@@ -17,9 +17,7 @@
 package org.geotools.map;
 
 import java.util.logging.Logger;
-
 import org.geotools.data.ows.Layer;
-import org.geotools.data.wms.WebMapServer;
 import org.geotools.data.wmts.WebMapTileServer;
 import org.geotools.data.wmts.request.GetTileRequest;
 import org.geotools.factory.CommonFactoryFinder;
@@ -34,18 +32,18 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Wraps a WMTS layer into a {@link MapLayer} for interactive rendering usage.
- * 
- * TODO: expose a GetFeatureInfo that returns a feature collection
  *
- * TODO: expose the list of named styles and allow choosing which style to use
+ * <p>TODO: expose a GetFeatureInfo that returns a feature collection
+ *
+ * <p>TODO: expose the list of named styles and allow choosing which style to use
  *
  * @author Ian Turton
  * @author Emanuele Tajariol (etj at geo-solutions dot it)
  */
 public class WMTSMapLayer extends GridReaderLayer {
 
-    static public final Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger("org.geotools.map");
+    public static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.map");
 
     private static Style createStyle() {
         StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
@@ -115,12 +113,10 @@ public class WMTSMapLayer extends GridReaderLayer {
     }
 
     /**
-     * Returns true if the specified CRS can be used directly to perform WMTS
-     * requests.
+     * Returns true if the specified CRS can be used directly to perform WMTS requests.
      *
-     * Natively supported crs will provide the best rendering quality as no
-     * client side reprojection is necessary, the tiles coming from the WMTS
-     * server will be used as-is
+     * <p>Natively supported crs will provide the best rendering quality as no client side
+     * reprojection is necessary, the tiles coming from the WMTS server will be used as-is
      *
      * @param crs
      * @return

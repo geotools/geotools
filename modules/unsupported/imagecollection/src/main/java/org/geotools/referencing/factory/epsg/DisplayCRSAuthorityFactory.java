@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
- *   
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
-
 import org.geotools.factory.Hints;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
@@ -43,34 +42,32 @@ import org.opengis.util.InternationalString;
 
 /**
  * A factory providing a EPSG code for an image Display engineering systems
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  * @author Daniele Romagnoli - GeoSolutions
- *
- *
- *
- *
  * @source $URL$
  */
-public class DisplayCRSAuthorityFactory extends DirectAuthorityFactory implements
-        CRSAuthorityFactory {
-    
+public class DisplayCRSAuthorityFactory extends DirectAuthorityFactory
+        implements CRSAuthorityFactory {
+
     static final String DISPLAY_CODE = "404001";
 
-    /**
-     * A special {@link DefaultEngineeringCRS#GENERIC_2D} for Image management.
-     */
-    public static final DefaultEngineeringCRS DISPLAY = new DefaultEngineeringCRS(
-            buildProperties("Image 2D cartesian plane in pixel unit", Citations.EPSG,  DISPLAY_CODE), 
-            DefaultEngineeringDatum.UNKNOWN, DefaultCartesianCS.DISPLAY, true);
-    
+    /** A special {@link DefaultEngineeringCRS#GENERIC_2D} for Image management. */
+    public static final DefaultEngineeringCRS DISPLAY =
+            new DefaultEngineeringCRS(
+                    buildProperties(
+                            "Image 2D cartesian plane in pixel unit", Citations.EPSG, DISPLAY_CODE),
+                    DefaultEngineeringDatum.UNKNOWN,
+                    DefaultCartesianCS.DISPLAY,
+                    true);
+
     static Map<String, ?> buildProperties(String name, Citation authority, String code) {
         Map<String, Object> props = new HashMap<String, Object>();
         props.put(IdentifiedObject.NAME_KEY, name);
         props.put(IdentifiedObject.IDENTIFIERS_KEY, new NamedIdentifier(authority, code));
         return props;
     }
-    
+
     public DisplayCRSAuthorityFactory() {
         this(null);
     }
@@ -95,20 +92,19 @@ public class DisplayCRSAuthorityFactory extends DirectAuthorityFactory implement
         }
     }
 
-    public InternationalString getDescriptionText(String code) throws NoSuchAuthorityCodeException,
-            FactoryException {
-        if(code.equals("EPSG:" + DISPLAY_CODE)) {
+    public InternationalString getDescriptionText(String code)
+            throws NoSuchAuthorityCodeException, FactoryException {
+        if (code.equals("EPSG:" + DISPLAY_CODE)) {
             return new SimpleInternationalString(
-            "A two-dimensional wildcard coordinate system with X,Y axis where Y displays dows");
+                    "A two-dimensional wildcard coordinate system with X,Y axis where Y displays dows");
         } else {
             throw noSuchAuthorityException(code);
         }
     }
 
     /**
-     * Creates an object from the specified code. The default implementation delegates to
-     * <code>{@linkplain #createCoordinateReferenceSystem createCoordinateReferenceSystem}(code)</code>
-     * .
+     * Creates an object from the specified code. The default implementation delegates to <code>
+     * {@linkplain #createCoordinateReferenceSystem createCoordinateReferenceSystem}(code)</code> .
      */
     public IdentifiedObject createObject(final String code) throws FactoryException {
         return createCoordinateReferenceSystem(code);
@@ -124,18 +120,22 @@ public class DisplayCRSAuthorityFactory extends DirectAuthorityFactory implement
     }
 
     @Override
-    public EngineeringCRS createEngineeringCRS(String code) throws NoSuchAuthorityCodeException,
-            FactoryException {
+    public EngineeringCRS createEngineeringCRS(String code)
+            throws NoSuchAuthorityCodeException, FactoryException {
         if (DISPLAY_CODE.equals(code) || ("EPSG:" + DISPLAY_CODE).equals(code)) {
-                return DISPLAY;
+            return DISPLAY;
         } else {
             throw noSuchAuthorityException(code);
         }
     }
 
-    private NoSuchAuthorityCodeException noSuchAuthorityException(String code) throws NoSuchAuthorityCodeException {
+    private NoSuchAuthorityCodeException noSuchAuthorityException(String code)
+            throws NoSuchAuthorityCodeException {
         String authority = "EPSG";
-        return new NoSuchAuthorityCodeException(Errors.format(ErrorKeys.NO_SUCH_AUTHORITY_CODE_$3,
-                   code, authority, EngineeringCRS.class), authority, code);
+        return new NoSuchAuthorityCodeException(
+                Errors.format(
+                        ErrorKeys.NO_SUCH_AUTHORITY_CODE_$3, code, authority, EngineeringCRS.class),
+                authority,
+                code);
     }
 }

@@ -19,15 +19,13 @@ package org.geotools.filter.v2_0;
 import org.geotools.xml.XSDParserDelegate;
 
 /**
- * Parser delegate for the FES schema. 
- * 
- * @author Andrea Aime - GeoSolutions
+ * Parser delegate for the FES schema.
  *
+ * @author Andrea Aime - GeoSolutions
  */
 public class FESParserDelegate extends XSDParserDelegate {
 
     public FESParserDelegate() {
         super(new FESConfiguration());
     }
-
 }

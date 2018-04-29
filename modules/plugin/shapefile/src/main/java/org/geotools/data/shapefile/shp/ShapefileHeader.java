@@ -16,22 +16,16 @@
  */
 package org.geotools.data.shapefile.shp;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.nio.channels.FileChannel;
 
 /**
- * 
  * @author jamesm
  * @author Ian Schneider
- *
- *
  * @source $URL$
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/shapefile/src/main/java/org
- *         /geotools/data/shapefile/shp/ShapefileHeader.java $
+ *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/shapefile/src/main/java/org
+ *     /geotools/data/shapefile/shp/ShapefileHeader.java $
  */
 public class ShapefileHeader {
 
@@ -99,14 +93,21 @@ public class ShapefileHeader {
         maxY = file.getDouble();
 
         // skip remaining unused bytes
-        file.order(ByteOrder.BIG_ENDIAN);// well they may not be unused
+        file.order(ByteOrder.BIG_ENDIAN); // well they may not be unused
         // forever...
         file.position(file.position() + 32);
-
     }
 
-    public void write(ByteBuffer file, ShapeType type, int numGeoms, int length, double minX,
-            double minY, double maxX, double maxY) throws IOException {
+    public void write(
+            ByteBuffer file,
+            ShapeType type,
+            int numGeoms,
+            int length,
+            double minX,
+            double minY,
+            double maxX,
+            double maxY)
+            throws IOException {
         file.order(ByteOrder.BIG_ENDIAN);
 
         file.putInt(MAGIC);
@@ -164,10 +165,23 @@ public class ShapefileHeader {
     }
 
     public String toString() {
-        String res = new String("ShapeFileHeader[ size " + fileLength + " version " + version
-                + " shapeType " + shapeType + " bounds " + minX + "," + minY + "," + maxX + ","
-                + maxY + " ]");
+        String res =
+                new String(
+                        "ShapeFileHeader[ size "
+                                + fileLength
+                                + " version "
+                                + version
+                                + " shapeType "
+                                + shapeType
+                                + " bounds "
+                                + minX
+                                + ","
+                                + minY
+                                + ","
+                                + maxX
+                                + ","
+                                + maxY
+                                + " ]");
         return res;
     }
-
 }

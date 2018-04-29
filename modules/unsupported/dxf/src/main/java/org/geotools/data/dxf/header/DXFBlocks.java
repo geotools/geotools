@@ -3,21 +3,16 @@ package org.geotools.data.dxf.header;
 import java.io.EOFException;
 import java.io.IOException;
 import java.util.Vector;
-
-import org.geotools.data.dxf.parser.DXFLineNumberReader;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.geotools.data.dxf.parser.DXFCodeValuePair;
 import org.geotools.data.dxf.parser.DXFConstants;
 import org.geotools.data.dxf.parser.DXFGroupCode;
+import org.geotools.data.dxf.parser.DXFLineNumberReader;
 import org.geotools.data.dxf.parser.DXFParseException;
 import org.geotools.data.dxf.parser.DXFUnivers;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class DXFBlocks implements DXFConstants {
 
     private static final Log log = LogFactory.getLog(DXFBlocks.class);
@@ -34,7 +29,8 @@ public class DXFBlocks implements DXFConstants {
         theBlocks = blocks;
     }
 
-    public static DXFBlocks readBlocks(DXFLineNumberReader br, DXFUnivers univers) throws IOException {
+    public static DXFBlocks readBlocks(DXFLineNumberReader br, DXFUnivers univers)
+            throws IOException {
 
         Vector<DXFBlock> sBlocks = new Vector<DXFBlock>();
 
@@ -73,7 +69,6 @@ public class DXFBlocks implements DXFConstants {
                 default:
                     break;
             }
-
         }
         DXFBlocks e = new DXFBlocks(sBlocks);
         log.debug(e.toString(sBlocks.size()));

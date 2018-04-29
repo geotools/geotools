@@ -22,7 +22,6 @@ import static org.junit.Assert.assertNull;
 
 import java.util.Iterator;
 import java.util.Set;
-
 import org.geotools.styling.css.selector.PseudoClass;
 import org.junit.Test;
 
@@ -83,7 +82,6 @@ public class CssRuleTest extends CssBaseTest {
         assertEquals(2, subRule3.getProperties().get(PseudoClass.ROOT).size());
         assertProperty(subRule3, 0, "fill", new Value.Literal("#ff0000"));
         assertProperty(subRule3, 1, "z-index", new Value.Literal("3"));
-
     }
 
     @Test

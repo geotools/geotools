@@ -16,15 +16,12 @@
  */
 package org.geotools.process.raster.classify;
 
-import org.geotools.process.classify.ClassificationMethod;
-
 import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import org.geotools.process.classify.ClassificationMethod;
 
-/**
- * Helper class used for raster quantile classification.
- */
+/** Helper class used for raster quantile classification. */
 public class QuantileClassification extends Classification {
 
     int[] counts;

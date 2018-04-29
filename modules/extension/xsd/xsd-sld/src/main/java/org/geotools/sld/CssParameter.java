@@ -16,24 +16,15 @@
  */
 package org.geotools.sld;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
-
 
 /**
  * A Cascading Style Sheet parameter.
- * <p>
- * This class is internal to the sld binding project. It should be replaced
- * with a geotools styling model object if one becomes available.
- * </p>
+ *
+ * <p>This class is internal to the sld binding project. It should be replaced with a geotools
+ * styling model object if one becomes available.
+ *
  * @author Justin Deoliveira, The Open Planning Project
- *
- *
- *
- *
  * @source $URL$
  */
 public class CssParameter {
@@ -47,13 +38,12 @@ public class CssParameter {
     public String getName() {
         return name;
     }
-    
+
     public Expression getExpression() {
         return expression;
     }
-    
+
     public void setExpression(Expression expression) {
         this.expression = expression;
     }
-
 }

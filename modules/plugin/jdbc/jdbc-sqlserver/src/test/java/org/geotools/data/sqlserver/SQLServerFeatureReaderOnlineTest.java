@@ -9,5 +9,4 @@ public class SQLServerFeatureReaderOnlineTest extends JDBCFeatureReaderOnlineTes
     protected JDBCTestSetup createTestSetup() {
         return new SQLServerTestSetup();
     }
-
 }

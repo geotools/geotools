@@ -30,33 +30,23 @@ import org.opengis.feature.type.PropertyType;
 
 /**
  * Special node pointer for an XML-attribute inside an attribute.
- * 
+ *
  * @author Niels Charlier (Curtin University of Technology)
- * 
- *
- *
- *
- *
  * @source $URL$
  */
 public class DescriptorXmlAttributeNodePointer extends NodePointer {
 
-    /**
-     * 
-     */
+    /** */
     private static final long serialVersionUID = 8096170689141331692L;
 
-    /**
-     * The name of the node.
-     */
+    /** The name of the node. */
     Name name;
 
-    /**
-     * The underlying descriptor
-     */
+    /** The underlying descriptor */
     PropertyDescriptor descriptor;
 
-    protected DescriptorXmlAttributeNodePointer(NodePointer parent, PropertyDescriptor descriptor, Name name) {
+    protected DescriptorXmlAttributeNodePointer(
+            NodePointer parent, PropertyDescriptor descriptor, Name name) {
         super(parent);
         this.name = name;
         this.descriptor = descriptor;
@@ -69,13 +59,13 @@ public class DescriptorXmlAttributeNodePointer extends NodePointer {
     public boolean isCollection() {
         return false;
     }
-    
+
     public boolean isAttribute() {
         return true;
     }
 
     public QName getName() {
-        return new QName( name.getURI(), name.getLocalPart() );
+        return new QName(name.getURI(), name.getLocalPart());
     }
 
     public Object getBaseValue() {
@@ -84,7 +74,7 @@ public class DescriptorXmlAttributeNodePointer extends NodePointer {
 
     public Object getImmediateNode() {
 
-        //first try regular way
+        // first try regular way
         PropertyType pt = descriptor.getType();
         if (pt instanceof ComplexType) {
             ComplexType ct = (ComplexType) pt;
@@ -94,15 +84,17 @@ public class DescriptorXmlAttributeNodePointer extends NodePointer {
             }
         }
 
-        XSDElementDeclaration decl = (XSDElementDeclaration) descriptor.getUserData().get(
-                XSDElementDeclaration.class);
+        XSDElementDeclaration decl =
+                (XSDElementDeclaration) descriptor.getUserData().get(XSDElementDeclaration.class);
 
         Iterator it = Schemas.getAttributeDeclarations(decl).iterator();
         while (it.hasNext()) {
             XSDAttributeDeclaration attDecl = ((XSDAttributeDeclaration) it.next());
-            if (attDecl.getURI().equals(
-                    (name.getNamespaceURI() == null ? "" : name.getNamespaceURI()) + "#"
-                            + name.getLocalPart())) {
+            if (attDecl.getURI()
+                    .equals(
+                            (name.getNamespaceURI() == null ? "" : name.getNamespaceURI())
+                                    + "#"
+                                    + name.getLocalPart())) {
                 return name;
             }
         }
@@ -122,6 +114,4 @@ public class DescriptorXmlAttributeNodePointer extends NodePointer {
     public int getLength() {
         return 0;
     }
-
-
 }

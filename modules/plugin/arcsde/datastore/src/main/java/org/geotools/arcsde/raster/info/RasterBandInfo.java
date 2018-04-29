@@ -21,15 +21,12 @@ import java.awt.Point;
 import java.awt.image.IndexColorModel;
 
 /**
- * 
  * @author Gabriel Roldan (OpenGeo)
  * @since 2.5.4
  * @version $Id$
- *
- *
  * @source $URL$
- *         http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/main/java/org
- *         /geotools/arcsde/raster/info/RasterBandInfo.java $
+ *     http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/main/java/org
+ *     /geotools/arcsde/raster/info/RasterBandInfo.java $
  */
 public class RasterBandInfo {
 
@@ -55,9 +52,7 @@ public class RasterBandInfo {
      */
     IndexColorModel colorMap;
 
-    /**
-     * The band's no-data value.
-     */
+    /** The band's no-data value. */
     Number noDataValue;
 
     CompressionType compressionType;
@@ -84,8 +79,12 @@ public class RasterBandInfo {
         // do nothing
     }
 
-    public RasterBandInfo(long bandId, RasterCellType nativeType, Number noDataValue,
-            double statsMin, double statsMax) {
+    public RasterBandInfo(
+            long bandId,
+            RasterCellType nativeType,
+            Number noDataValue,
+            double statsMin,
+            double statsMax) {
         this.bandId = bandId;
         this.cellType = nativeType;
         this.noDataValue = noDataValue;
@@ -93,9 +92,7 @@ public class RasterBandInfo {
         this.statsMax = statsMax;
     }
 
-    /**
-     * @return the ArcSDE identifier for the band
-     */
+    /** @return the ArcSDE identifier for the band */
     public long getBandId() {
         return bandId;
     }
@@ -171,9 +168,16 @@ public class RasterBandInfo {
         sb.append(getBandName());
         sb.append("[ id:").append(getBandId());
         sb.append(", type:").append(getCellType());
-        sb.append(", samples: nodata=").append(getNoDataValue()).append(" min=").append(
-                getStatsMin()).append(" max=").append(getStatsMax()).append(" mean=").append(
-                getStatsMean()).append(" stddev=").append(getStatsStdDev());
+        sb.append(", samples: nodata=")
+                .append(getNoDataValue())
+                .append(" min=")
+                .append(getStatsMin())
+                .append(" max=")
+                .append(getStatsMax())
+                .append(" mean=")
+                .append(getStatsMean())
+                .append(" stddev=")
+                .append(getStatsStdDev());
         /*
          * sb.append(", tile origin: ").append((int) getTileOrigin().x).append(",").append( (int)
          * getTileOrigin().y);
@@ -183,5 +187,4 @@ public class RasterBandInfo {
         sb.append(", Color Map: ").append(isColorMapped() ? "YES" : "NO");
         return sb.toString();
     }
-
 }

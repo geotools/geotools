@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,33 +16,27 @@
  */
 package org.geotools.referencing.factory;
 
-import org.geotools.factory.Hints;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
-import org.opengis.referencing.crs.GeographicCRS;
-import org.opengis.referencing.crs.CRSAuthorityFactory;
+import static org.junit.Assert.*;
 
+import org.geotools.factory.Hints;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
-
 import org.junit.*;
-import static org.junit.Assert.*;
-
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.NoSuchAuthorityCodeException;
+import org.opengis.referencing.crs.CRSAuthorityFactory;
+import org.opengis.referencing.crs.GeographicCRS;
 
 /**
  * Tests the {@link HTTP_AuthorityFactory} class backed by WMS or AUTO factories.
- *
- *
  *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */
 public final class HTTP_AuthorityFactoryTest {
-    /**
-     * Tests the {@link HTTP_AuthorityFactory#defaultAxisOrderHints} method.
-     */
+    /** Tests the {@link HTTP_AuthorityFactory#defaultAxisOrderHints} method. */
     @Test
     public void testAxisOrderHints() {
         // The following are required for proper execution of the remaining of this test.
@@ -78,12 +72,11 @@ public final class HTTP_AuthorityFactoryTest {
         }
     }
 
-    /**
-     * Tests the CRS factory.
-     */
+    /** Tests the CRS factory. */
     @Test
     public void testCRS() throws FactoryException {
-        CRSAuthorityFactory factory = ReferencingFactoryFinder.getCRSAuthorityFactory("http://www.opengis.net/gml", null);
+        CRSAuthorityFactory factory =
+                ReferencingFactoryFinder.getCRSAuthorityFactory("http://www.opengis.net/gml", null);
         GeographicCRS crs;
         try {
             crs = factory.createGeographicCRS("CRS:84");

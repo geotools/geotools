@@ -18,15 +18,13 @@
 package org.geotools.data.wmts.response;
 
 import java.io.IOException;
-
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.Response;
 import org.geotools.ows.ServiceException;
 
 /**
- * 
  * (Based on existing work by rgould for WMS service)
- * 
+ *
  * @author ian
  * @author Emanuele Tajariol (etj at geo-solutions dot it)
  */
@@ -45,5 +43,4 @@ public class GetLegendGraphicResponse extends Response {
             }
         }
     }
-
 }

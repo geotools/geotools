@@ -16,19 +16,13 @@
  */
 package org.geotools.gml3.bindings;
 
-import org.geotools.gml3.GML3TestSupport;
-
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.LinearRing;
+import org.geotools.gml3.GML3TestSupport;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class LinearRingTypeBindingTest extends GML3TestSupport {
-    
+
     public void testPos() throws Exception {
         document.appendChild(GML3MockData.linearRingWithPos(document, null));
 
@@ -52,7 +46,7 @@ public class LinearRingTypeBindingTest extends GML3TestSupport {
         assertEquals(new Coordinate(5d, 6d), line.getPointN(2).getCoordinate());
         assertEquals(new Coordinate(1d, 2d), line.getPointN(3).getCoordinate());
     }
-    
+
     public void testPos3D() throws Exception {
         document.appendChild(GML3MockData.linearRingWithPos3D(document, null, true));
 
@@ -76,6 +70,4 @@ public class LinearRingTypeBindingTest extends GML3TestSupport {
         assertTrue(new Coordinate(5d, 6d, 30d).equals3D(line.getPointN(2).getCoordinate()));
         assertTrue(new Coordinate(1d, 2d, 10d).equals3D(line.getPointN(3).getCoordinate()));
     }
-    
-    
 }

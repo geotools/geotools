@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -25,7 +25,6 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
-
 import org.junit.Test;
 
 public class DrawableBitSetTest {
@@ -122,5 +121,4 @@ public class DrawableBitSetTest {
         }
         assertEquals(SET_PIXELS, setPixel);
     }
-
 }

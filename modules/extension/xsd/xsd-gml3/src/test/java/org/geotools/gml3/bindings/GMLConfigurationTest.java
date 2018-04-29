@@ -19,16 +19,13 @@ package org.geotools.gml3.bindings;
 
 import java.lang.reflect.Constructor;
 import java.util.Map;
-
 import junit.framework.TestCase;
-
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GMLConfiguration;
 import org.geotools.xml.Binding;
 
 /**
  * Test {@link GMLConfiguration}.
- *
  *
  * @source $URL$
  */
@@ -58,5 +55,4 @@ public class GMLConfigurationTest extends TestCase {
             }
         }
     }
-    
 }

@@ -18,7 +18,6 @@ package org.geotools.styling.css.util;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
-
 import org.geotools.styling.css.selector.AbstractSelectorVisitor;
 import org.geotools.styling.css.selector.Accept;
 import org.geotools.styling.css.selector.And;
@@ -33,7 +32,7 @@ import org.opengis.filter.Filter;
 
 /**
  * Takes a {@link Selector} and collects all available pseudo classes in it
- * 
+ *
  * @author Andrea Aime
  */
 public class PseudoClassExtractor extends AbstractSelectorVisitor {
@@ -80,7 +79,6 @@ public class PseudoClassExtractor extends AbstractSelectorVisitor {
     public Object visit(PseudoClass pseudoClass) {
         getPseudoClasses().add(pseudoClass);
         return null;
-
     }
 
     @Override

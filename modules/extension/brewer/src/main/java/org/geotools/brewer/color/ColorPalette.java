@@ -18,30 +18,26 @@ package org.geotools.brewer.color;
 
 import java.awt.Color;
 
-
 /**
  * A generic palette containing colours.
+ *
  * @author Cory Horner, Refractions Research Inc.
- *
- *
  * @source $URL$
  */
 public class ColorPalette {
-    private Color[] colors = new Color[0]; //15
+    private Color[] colors = new Color[0]; // 15
 
-    /**
-     * Longer description of the palette
-     */
+    /** Longer description of the palette */
     private String description;
 
-    /**
-     * Very short name describing the palette
-     */
+    /** Very short name describing the palette */
     private String name;
+
     private int numColors = 0;
 
     /**
      * Returns the number of colours contained in the palette.
+     *
      * @return int
      */
     public int getCount() {
@@ -99,10 +95,10 @@ public class ColorPalette {
 
     public Color[] getColors(int length) {
         if (length < 2) {
-            length = 2; //if they ask for 1 colour, give them 2 instead of crashing
+            length = 2; // if they ask for 1 colour, give them 2 instead of crashing
         }
 
-        //int[] lookup = sampler.getSampleScheme(length);
+        // int[] lookup = sampler.getSampleScheme(length);
         Color[] result = new Color[length];
 
         for (int i = 0; i < length; i++) {

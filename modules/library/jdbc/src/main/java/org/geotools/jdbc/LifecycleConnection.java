@@ -38,7 +38,6 @@ import java.util.Properties;
 import java.util.concurrent.Executor;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.util.logging.Logging;
 
 /**
@@ -46,20 +45,21 @@ import org.geotools.util.logging.Logging;
  * makes sure the {@link ConnectionLifecycleListener#onRelease(Connection)} is called when this
  * connection is closed (the assumption is that the wrapped connection is pooled, as such on "close"
  * it will actually be returned to the pool)
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 class LifecycleConnection implements Connection {
-    
+
     static final Logger LOGGER = Logging.getLogger(LifecycleConnection.class);
 
     Connection delegate;
-    
+
     JDBCDataStore store;
 
     List<ConnectionLifecycleListener> listeners;
 
-    public LifecycleConnection(JDBCDataStore store, Connection delegate, List<ConnectionLifecycleListener> listeners)
+    public LifecycleConnection(
+            JDBCDataStore store, Connection delegate, List<ConnectionLifecycleListener> listeners)
             throws SQLException {
         this.delegate = delegate;
         this.listeners = listeners;
@@ -69,7 +69,7 @@ class LifecycleConnection implements Connection {
             listener.onBorrow(store, delegate);
         }
     }
-    
+
     public void commit() throws SQLException {
         for (ConnectionLifecycleListener listener : listeners) {
             listener.onCommit(store, delegate);
@@ -93,7 +93,7 @@ class LifecycleConnection implements Connection {
             delegate.close();
         }
     }
-    
+
     public Statement createStatement() throws SQLException {
         return delegate.createStatement();
     }
@@ -163,8 +163,8 @@ class LifecycleConnection implements Connection {
         return delegate.createStatement(resultSetType, resultSetConcurrency);
     }
 
-    public PreparedStatement prepareStatement(String sql, int resultSetType,
-            int resultSetConcurrency) throws SQLException {
+    public PreparedStatement prepareStatement(
+            String sql, int resultSetType, int resultSetConcurrency) throws SQLException {
         return delegate.prepareStatement(sql, resultSetType, resultSetConcurrency);
     }
 
@@ -205,19 +205,22 @@ class LifecycleConnection implements Connection {
         delegate.releaseSavepoint(savepoint);
     }
 
-    public Statement createStatement(int resultSetType, int resultSetConcurrency,
-            int resultSetHoldability) throws SQLException {
+    public Statement createStatement(
+            int resultSetType, int resultSetConcurrency, int resultSetHoldability)
+            throws SQLException {
         return delegate.createStatement(resultSetType, resultSetConcurrency, resultSetHoldability);
     }
 
-    public PreparedStatement prepareStatement(String sql, int resultSetType,
-            int resultSetConcurrency, int resultSetHoldability) throws SQLException {
-        return delegate.prepareStatement(sql, resultSetType, resultSetConcurrency,
-                resultSetHoldability);
+    public PreparedStatement prepareStatement(
+            String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability)
+            throws SQLException {
+        return delegate.prepareStatement(
+                sql, resultSetType, resultSetConcurrency, resultSetHoldability);
     }
 
-    public CallableStatement prepareCall(String sql, int resultSetType, int resultSetConcurrency,
-            int resultSetHoldability) throws SQLException {
+    public CallableStatement prepareCall(
+            String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability)
+            throws SQLException {
         return delegate.prepareCall(sql, resultSetType, resultSetConcurrency, resultSetHoldability);
     }
 
@@ -230,7 +233,8 @@ class LifecycleConnection implements Connection {
         return delegate.prepareStatement(sql, columnIndexes);
     }
 
-    public PreparedStatement prepareStatement(String sql, String[] columnNames) throws SQLException {
+    public PreparedStatement prepareStatement(String sql, String[] columnNames)
+            throws SQLException {
         return delegate.prepareStatement(sql, columnNames);
     }
 
@@ -299,16 +303,21 @@ class LifecycleConnection implements Connection {
     }
 
     public void setNetworkTimeout(Executor executor, int milliseconds) throws SQLException {
-        invokeMethodQuietly("setNetworkTimeout", new Class[] {Executor.class, int.class}, new Object[] {executor, milliseconds}, null);
+        invokeMethodQuietly(
+                "setNetworkTimeout",
+                new Class[] {Executor.class, int.class},
+                new Object[] {executor, milliseconds},
+                null);
     }
 
     public int getNetworkTimeout() throws SQLException {
         return (Integer) invokeMethodQuietly("getNetworkTimeout", null, null, 0);
     }
 
-    private Object invokeMethodQuietly(String methodName, Class[] paramTypes, Object[] params, Object defaultValue) {
+    private Object invokeMethodQuietly(
+            String methodName, Class[] paramTypes, Object[] params, Object defaultValue) {
         try {
-            if(paramTypes == null) {
+            if (paramTypes == null) {
                 Method method = delegate.getClass().getDeclaredMethod(methodName);
                 return method.invoke(delegate);
             } else {
@@ -320,5 +329,4 @@ class LifecycleConnection implements Connection {
             return defaultValue;
         }
     }
-
 }

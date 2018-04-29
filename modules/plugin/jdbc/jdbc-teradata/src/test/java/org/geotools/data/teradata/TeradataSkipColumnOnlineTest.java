@@ -19,16 +19,10 @@ package org.geotools.data.teradata;
 import org.geotools.jdbc.JDBCSkipColumnOnlineTest;
 import org.geotools.jdbc.JDBCSkipColumnTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class TeradataSkipColumnOnlineTest extends JDBCSkipColumnOnlineTest {
-
 
     protected JDBCSkipColumnTestSetup createTestSetup() {
         return new TeradataSkipColumnTestSetup(new TeradataTestSetup());
     }
-
 }

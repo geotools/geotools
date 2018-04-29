@@ -16,17 +16,12 @@
  */
 package org.geotools.filter.v1_0;
 
+import org.geotools.xml.Binding;
+import org.opengis.filter.PropertyIsLike;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.opengis.filter.PropertyIsLike;
-import org.geotools.xml.Binding;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class OGCPropertyIsLikeTypeBindingTest extends FilterTestSupport {
     public void testType() {
         assertEquals(PropertyIsLike.class, binding(OGC.PropertyIsLikeType).getType());
@@ -51,31 +46,35 @@ public class OGCPropertyIsLikeTypeBindingTest extends FilterTestSupport {
 
     public void testEncode() throws Exception {
         Document doc = encode(FilterMockData.propertyIsLike(), OGC.PropertyIsLike);
-        
-        Element pn = getElementByQName( doc, OGC.PropertyName );
+
+        Element pn = getElementByQName(doc, OGC.PropertyName);
         assertNotNull(pn);
-        assertEquals( "foo", pn.getFirstChild().getNodeValue() );
-        
-        Element l = getElementByQName( doc, OGC.Literal );
-        assertEquals( "foo", l.getFirstChild().getNodeValue() );
-        
+        assertEquals("foo", pn.getFirstChild().getNodeValue());
+
+        Element l = getElementByQName(doc, OGC.Literal);
+        assertEquals("foo", l.getFirstChild().getNodeValue());
+
         assertEquals("x", doc.getDocumentElement().getAttribute("wildCard"));
         assertEquals("y", doc.getDocumentElement().getAttribute("singleChar"));
         assertEquals("z", doc.getDocumentElement().getAttribute("escape"));
     }
-    
+
     public void testEncodeAsFilter() throws Exception {
         Document doc = encode(FilterMockData.propertyIsLike(), OGC.Filter);
         print(doc);
-        
-        assertEquals(1,
-            doc.getDocumentElement()
-               .getElementsByTagNameNS(OGC.NAMESPACE, OGC.PropertyName.getLocalPart()).getLength());
-        assertEquals(1,
-            doc.getDocumentElement()
-               .getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart()).getLength());
 
-        Element e = getElementByQName( doc, OGC.PropertyIsLike);
+        assertEquals(
+                1,
+                doc.getDocumentElement()
+                        .getElementsByTagNameNS(OGC.NAMESPACE, OGC.PropertyName.getLocalPart())
+                        .getLength());
+        assertEquals(
+                1,
+                doc.getDocumentElement()
+                        .getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart())
+                        .getLength());
+
+        Element e = getElementByQName(doc, OGC.PropertyIsLike);
         assertEquals("x", e.getAttribute("wildCard"));
         assertEquals("y", e.getAttribute("singleChar"));
         assertEquals("z", e.getAttribute("escape"));

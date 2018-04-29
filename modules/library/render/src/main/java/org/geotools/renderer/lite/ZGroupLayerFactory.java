@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-
 import org.geotools.data.Query;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.map.DirectLayer;
@@ -35,11 +34,10 @@ import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.sort.SortBy;
 
 /**
- * Builds {@link ZGroupLayer} instances from a MapContent using
- * {@link FeatureTypeStyle#SORT_BY_GROUP} options
- * 
- * @author Andrea Aime - GeoSolutions
+ * Builds {@link ZGroupLayer} instances from a MapContent using {@link
+ * FeatureTypeStyle#SORT_BY_GROUP} options
  *
+ * @author Andrea Aime - GeoSolutions
  */
 class ZGroupLayerFactory {
 
@@ -48,7 +46,7 @@ class ZGroupLayerFactory {
     /**
      * Filters a MapContent and returns a new one where adjacent {@link FeatureTypeStyle} using the
      * same {@link FeatureTypeStyle#SORT_BY_GROUP} key are turned into {@link ZGroupLayer}
-     * 
+     *
      * @param mapContent
      * @return
      */
@@ -64,8 +62,9 @@ class ZGroupLayerFactory {
 
         // build a new map content where the z-groups are munched toghether into ZGroupLayer
         MapContent result = new MapContent();
-        result.getViewport().setCoordinateReferenceSystem(
-                mapContent.getViewport().getCoordinateReferenceSystem());
+        result.getViewport()
+                .setCoordinateReferenceSystem(
+                        mapContent.getViewport().getCoordinateReferenceSystem());
         result.getViewport().setBounds(mapContent.getViewport().getBounds());
         ZGroupLayer currentGroup = null;
         for (Layer layer : mapContent.layers()) {
@@ -104,7 +103,6 @@ class ZGroupLayerFactory {
         }
 
         return result;
-
     }
 
     private static List<Layer> arrangeOnZGroups(Layer layer, ZGroupLayer previousGroup) {
@@ -117,11 +115,11 @@ class ZGroupLayerFactory {
         for (FeatureTypeStyle fts : layer.getStyle().featureTypeStyles()) {
             String groupName = fts.getOptions().get(FeatureTypeStyle.SORT_BY_GROUP);
             if (!(groupName == currentGroupId
-                    || (groupName != null && groupName.equals(currentGroupId)))
+                            || (groupName != null && groupName.equals(currentGroupId)))
                     && !featureTypeStyles.isEmpty()) {
                 // the group name changed, dump the current feature type styles
-                addToSplitLayers(layer, previousGroup, splitLayers, currentGroupId,
-                        featureTypeStyles);
+                addToSplitLayers(
+                        layer, previousGroup, splitLayers, currentGroupId, featureTypeStyles);
             }
             featureTypeStyles.add(fts);
             currentGroupId = groupName;
@@ -134,8 +132,12 @@ class ZGroupLayerFactory {
         return splitLayers;
     }
 
-    private static void addToSplitLayers(Layer layer, ZGroupLayer previousGroup,
-            List<Layer> splitLayers, String groupId, List<FeatureTypeStyle> featureTypeStyles) {
+    private static void addToSplitLayers(
+            Layer layer,
+            ZGroupLayer previousGroup,
+            List<Layer> splitLayers,
+            String groupId,
+            List<FeatureTypeStyle> featureTypeStyles) {
         Style style = STYLE_FACTORY.createStyle();
         style.featureTypeStyles().addAll(featureTypeStyles);
         featureTypeStyles.clear();
@@ -163,7 +165,7 @@ class ZGroupLayerFactory {
     /**
      * Makes sure the properties needed for in-memory sorting are available by adding them into the
      * query
-     * 
+     *
      * @param nativeQuery
      * @param sortBy
      * @return
@@ -214,14 +216,18 @@ class ZGroupLayerFactory {
                     if (checkValid) {
                         if (fts.getTransformation() != null) {
                             throw new IllegalArgumentException(
-                                    "Invalid " + FeatureTypeStyle.SORT_BY_GROUP + " usage in layer "
+                                    "Invalid "
+                                            + FeatureTypeStyle.SORT_BY_GROUP
+                                            + " usage in layer "
                                             + layer.getTitle()
                                             + ": cannot be mixed with rendering transformations");
                         } else if (options.get(FeatureTypeStyle.SORT_BY) == null) {
-                            throw new IllegalArgumentException("Invalid "
-                                    + FeatureTypeStyle.SORT_BY_GROUP + " usage in layer "
-                                    + layer.getTitle()
-                                    + ": the corresponding sortBy vendor option is missing");
+                            throw new IllegalArgumentException(
+                                    "Invalid "
+                                            + FeatureTypeStyle.SORT_BY_GROUP
+                                            + " usage in layer "
+                                            + layer.getTitle()
+                                            + ": the corresponding sortBy vendor option is missing");
                         }
                     }
                 }
@@ -229,10 +235,12 @@ class ZGroupLayerFactory {
         }
         if (hasGroup && !(layer instanceof FeatureLayer)) {
             throw new IllegalArgumentException(
-                    "Invalid " + FeatureTypeStyle.SORT_BY_GROUP + " usage in layer "
-                            + layer.getTitle() + ": can only be applied to vector layers");
+                    "Invalid "
+                            + FeatureTypeStyle.SORT_BY_GROUP
+                            + " usage in layer "
+                            + layer.getTitle()
+                            + ": can only be applied to vector layers");
         }
         return hasGroup;
     }
-
 }

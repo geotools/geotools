@@ -1,10 +1,4 @@
 package com.esri.sde.sdk.client;
 
-/**
- * 
- *
- * @source $URL$
- */
-public class SeServerObj {
-
-}
+/** @source $URL$ */
+public class SeServerObj {}

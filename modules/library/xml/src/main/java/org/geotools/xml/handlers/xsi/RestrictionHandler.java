@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -18,31 +18,26 @@ package org.geotools.xml.handlers.xsi;
 
 import java.util.LinkedList;
 import java.util.List;
-
 import org.geotools.xml.XSIElementHandler;
 import org.geotools.xml.schema.Facet;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotRecognizedException;
 
-
 /**
  * RestrictionHandler purpose.
- * 
- * <p>
- * Represents a restriction element
- * </p>
+ *
+ * <p>Represents a restriction element
  *
  * @author dzwiers, Refractions Research, Inc. http://www.refractions.net
  * @author $Author:$ (last modification)
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public class RestrictionHandler extends XSIElementHandler {
     /** 'restriction' */
-    public final static String LOCALNAME = "restriction";
+    public static final String LOCALNAME = "restriction";
+
     private String id;
     private String base;
     private Object child;
@@ -50,20 +45,15 @@ public class RestrictionHandler extends XSIElementHandler {
     private List attrDecs;
     private AnyAttributeHandler anyAttribute;
 
-    /**
-     * @see java.lang.Object#hashCode()
-     */
+    /** @see java.lang.Object#hashCode() */
     public int hashCode() {
-        return LOCALNAME.hashCode() * ((id == null) ? 1 : id.hashCode()) * ((base == null)
-        ? 1 : base.hashCode());
+        return LOCALNAME.hashCode()
+                * ((id == null) ? 1 : id.hashCode())
+                * ((base == null) ? 1 : base.hashCode());
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String,
-     *      java.lang.String)
-     */
-    public XSIElementHandler getHandler(String namespaceURI, String localName)
-        throws SAXException {
+    /** @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String, java.lang.String) */
+    public XSIElementHandler getHandler(String namespaceURI, String localName) throws SAXException {
         if (SchemaHandler.namespaceURI.equalsIgnoreCase(namespaceURI)) {
             // child types
             //
@@ -74,9 +64,11 @@ public class RestrictionHandler extends XSIElementHandler {
                 if (child == null) {
                     child = sch;
                 } else {
-                    throw new SAXNotRecognizedException(getLocalName()
-                        + " may only have one '" + SimpleTypeHandler.LOCALNAME
-                        + "' declaration.");
+                    throw new SAXNotRecognizedException(
+                            getLocalName()
+                                    + " may only have one '"
+                                    + SimpleTypeHandler.LOCALNAME
+                                    + "' declaration.");
                 }
 
                 return sch;
@@ -221,9 +213,11 @@ public class RestrictionHandler extends XSIElementHandler {
                 if (child == null) {
                     child = sch;
                 } else {
-                    throw new SAXNotRecognizedException(getLocalName()
-                        + " may only have one '" + AllHandler.LOCALNAME
-                        + "' declaration.");
+                    throw new SAXNotRecognizedException(
+                            getLocalName()
+                                    + " may only have one '"
+                                    + AllHandler.LOCALNAME
+                                    + "' declaration.");
                 }
 
                 return sch;
@@ -236,9 +230,11 @@ public class RestrictionHandler extends XSIElementHandler {
                 if (child == null) {
                     child = sch;
                 } else {
-                    throw new SAXNotRecognizedException(getLocalName()
-                        + " may only have one '" + ChoiceHandler.LOCALNAME
-                        + "' declaration.");
+                    throw new SAXNotRecognizedException(
+                            getLocalName()
+                                    + " may only have one '"
+                                    + ChoiceHandler.LOCALNAME
+                                    + "' declaration.");
                 }
 
                 return sch;
@@ -251,9 +247,11 @@ public class RestrictionHandler extends XSIElementHandler {
                 if (child == null) {
                     child = sch;
                 } else {
-                    throw new SAXNotRecognizedException(getLocalName()
-                        + " may only have one '" + GroupHandler.LOCALNAME
-                        + "' declaration.");
+                    throw new SAXNotRecognizedException(
+                            getLocalName()
+                                    + " may only have one '"
+                                    + GroupHandler.LOCALNAME
+                                    + "' declaration.");
                 }
 
                 return sch;
@@ -266,9 +264,11 @@ public class RestrictionHandler extends XSIElementHandler {
                 if (child == null) {
                     child = sch;
                 } else {
-                    throw new SAXNotRecognizedException(getLocalName()
-                        + " may only have one '" + SequenceHandler.LOCALNAME
-                        + "' declaration.");
+                    throw new SAXNotRecognizedException(
+                            getLocalName()
+                                    + " may only have one '"
+                                    + SequenceHandler.LOCALNAME
+                                    + "' declaration.");
                 }
 
                 return sch;
@@ -305,9 +305,11 @@ public class RestrictionHandler extends XSIElementHandler {
                 if (anyAttribute == null) {
                     anyAttribute = sch;
                 } else {
-                    throw new SAXNotRecognizedException(getLocalName()
-                        + " may only have one '"
-                        + AnyAttributeHandler.LOCALNAME + "' declaration.");
+                    throw new SAXNotRecognizedException(
+                            getLocalName()
+                                    + " may only have one '"
+                                    + AnyAttributeHandler.LOCALNAME
+                                    + "' declaration.");
                 }
 
                 return sch;
@@ -318,11 +320,10 @@ public class RestrictionHandler extends XSIElementHandler {
     }
 
     /**
-     * @see org.geotools.xml.XSIElementHandler#startElement(java.lang.String,
-     *      java.lang.String, org.xml.sax.Attributes)
+     * @see org.geotools.xml.XSIElementHandler#startElement(java.lang.String, java.lang.String,
+     *     org.xml.sax.Attributes)
      */
-    public void startElement(String namespaceURI, String localName,
-        Attributes atts) {
+    public void startElement(String namespaceURI, String localName, Attributes atts) {
         id = atts.getValue("", "id");
 
         if (id == null) {
@@ -336,68 +337,38 @@ public class RestrictionHandler extends XSIElementHandler {
         }
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#getLocalName()
-     */
+    /** @see org.geotools.xml.XSIElementHandler#getLocalName() */
     public String getLocalName() {
         return LOCALNAME;
     }
 
-    /**
-     * <p>
-     * returns the AnyAttribute child element
-     * </p>
-     * TODO use this !
-     *
-     */
+    /** returns the AnyAttribute child element TODO use this ! */
     public AnyAttributeHandler getAnyAttribute() {
         return anyAttribute;
     }
 
-    /**
-     * <p>
-     * returns the list of attribute declarations
-     * </p>
-     *
-     */
+    /** returns the list of attribute declarations */
     public List getAttributeDeclarations() {
         return attrDecs;
     }
 
-    /**
-     * <p>
-     * Retusn the 'base' attribute
-     * </p>
-     *
-     */
+    /** Retusn the 'base' attribute */
     public String getBase() {
         return base;
     }
 
-    /**
-     * <p>
-     * Returns a list of Facets
-     * </p>
-     *
-     */
+    /** Returns a list of Facets */
     public List getConstraints() {
         return constraints;
     }
 
-    /**
-     * <p>
-     * Returns the id attribute
-     * </p>
-     *
-     */
+    /** Returns the id attribute */
     public String getId() {
         return id;
     }
 
     /**
-     * <p>
      * Returns a nested child element declaration.
-     * </p>
      *
      * @return (ElementGroupingHandler or SimpleTypeHandler)
      */
@@ -405,22 +376,16 @@ public class RestrictionHandler extends XSIElementHandler {
         return child;
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#getHandlerType()
-     */
+    /** @see org.geotools.xml.XSIElementHandler#getHandlerType() */
     public int getHandlerType() {
         return RESTRICTION;
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#endElement(java.lang.String,
-     *      java.lang.String)
-     */
-    public void endElement(String namespaceURI, String localName){
+    /** @see org.geotools.xml.XSIElementHandler#endElement(java.lang.String, java.lang.String) */
+    public void endElement(String namespaceURI, String localName) {
         // do nothing
     }
 }
-
 
 /**
  * Represents an Enumeration element
@@ -430,23 +395,18 @@ public class RestrictionHandler extends XSIElementHandler {
  */
 class EnumerationHandler extends FacetHandler {
     /** 'enumeration' */
-    public final static String LOCALNAME = "enumeration";
+    public static final String LOCALNAME = "enumeration";
 
-    /**
-     * @see org.geotools.xml.XSIHandlers.FacetHandler#getBinding()
-     */
+    /** @see org.geotools.xml.XSIHandlers.FacetHandler#getBinding() */
     public int getType() {
         return Facet.ENUMERATION;
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#getLocalName()
-     */
+    /** @see org.geotools.xml.XSIElementHandler#getLocalName() */
     public String getLocalName() {
         return LOCALNAME;
     }
 }
-
 
 /**
  * Represents a FractionDigits element
@@ -456,23 +416,18 @@ class EnumerationHandler extends FacetHandler {
  */
 class FractionDigitsHandler extends FacetHandler {
     /** 'fractionDigits' */
-    public final static String LOCALNAME = "fractionDigits";
+    public static final String LOCALNAME = "fractionDigits";
 
-    /**
-     * @see org.geotools.xml.XSIHandlers.FacetHandler#getBinding()
-     */
+    /** @see org.geotools.xml.XSIHandlers.FacetHandler#getBinding() */
     public int getType() {
         return Facet.FRACTIONDIGITS;
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#getLocalName()
-     */
+    /** @see org.geotools.xml.XSIElementHandler#getLocalName() */
     public String getLocalName() {
         return LOCALNAME;
     }
 }
-
 
 /**
  * Represents a Length element
@@ -482,23 +437,18 @@ class FractionDigitsHandler extends FacetHandler {
  */
 class LengthHandler extends FacetHandler {
     /** 'length' */
-    public final static String LOCALNAME = "length";
+    public static final String LOCALNAME = "length";
 
-    /**
-     * @see org.geotools.xml.XSIHandlers.FacetHandler#getBinding()
-     */
+    /** @see org.geotools.xml.XSIHandlers.FacetHandler#getBinding() */
     public int getType() {
         return Facet.LENGTH;
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#getLocalName()
-     */
+    /** @see org.geotools.xml.XSIElementHandler#getLocalName() */
     public String getLocalName() {
         return LOCALNAME;
     }
 }
-
 
 /**
  * Represents a MinInclusive element
@@ -508,23 +458,18 @@ class LengthHandler extends FacetHandler {
  */
 class MinInclusiveHandler extends FacetHandler {
     /** 'minInclusive' */
-    public final static String LOCALNAME = "minInclusive";
+    public static final String LOCALNAME = "minInclusive";
 
-    /**
-     * @see org.geotools.xml.XSIHandlers.FacetHandler#getBinding()
-     */
+    /** @see org.geotools.xml.XSIHandlers.FacetHandler#getBinding() */
     public int getType() {
         return Facet.MININCLUSIVE;
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#getLocalName()
-     */
+    /** @see org.geotools.xml.XSIElementHandler#getLocalName() */
     public String getLocalName() {
         return LOCALNAME;
     }
 }
-
 
 /**
  * Represents a MaxInclusive element
@@ -534,23 +479,18 @@ class MinInclusiveHandler extends FacetHandler {
  */
 class MaxInclusiveHandler extends FacetHandler {
     /** 'maxInclusive' */
-    public final static String LOCALNAME = "maxInclusive";
+    public static final String LOCALNAME = "maxInclusive";
 
-    /**
-     * @see org.geotools.xml.XSIHandlers.FacetHandler#getBinding()
-     */
+    /** @see org.geotools.xml.XSIHandlers.FacetHandler#getBinding() */
     public int getType() {
         return Facet.MAXINCLUSIVE;
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#getLocalName()
-     */
+    /** @see org.geotools.xml.XSIElementHandler#getLocalName() */
     public String getLocalName() {
         return LOCALNAME;
     }
 }
-
 
 /**
  * represents a MinExclusive element
@@ -560,23 +500,18 @@ class MaxInclusiveHandler extends FacetHandler {
  */
 class MinExclusiveHandler extends FacetHandler {
     /** 'minExclusive' */
-    public final static String LOCALNAME = "minExclusive";
+    public static final String LOCALNAME = "minExclusive";
 
-    /**
-     * @see org.geotools.xml.XSIHandlers.FacetHandler#getBinding()
-     */
+    /** @see org.geotools.xml.XSIHandlers.FacetHandler#getBinding() */
     public int getType() {
         return Facet.MINEXCLUSIVE;
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#getLocalName()
-     */
+    /** @see org.geotools.xml.XSIElementHandler#getLocalName() */
     public String getLocalName() {
         return LOCALNAME;
     }
 }
-
 
 /**
  * represents the MaxExclusive element
@@ -586,23 +521,18 @@ class MinExclusiveHandler extends FacetHandler {
  */
 class MaxExclusiveHandler extends FacetHandler {
     /** 'maxExclusive' */
-    public final static String LOCALNAME = "maxExclusive";
+    public static final String LOCALNAME = "maxExclusive";
 
-    /**
-     * @see org.geotools.xml.XSIHandlers.FacetHandler#getBinding()
-     */
+    /** @see org.geotools.xml.XSIHandlers.FacetHandler#getBinding() */
     public int getType() {
         return Facet.MAXEXCLUSIVE;
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#getLocalName()
-     */
+    /** @see org.geotools.xml.XSIElementHandler#getLocalName() */
     public String getLocalName() {
         return LOCALNAME;
     }
 }
-
 
 /**
  * represents a minLength element
@@ -612,23 +542,18 @@ class MaxExclusiveHandler extends FacetHandler {
  */
 class MinLengthHandler extends FacetHandler {
     /** 'minLength' */
-    public final static String LOCALNAME = "minLength";
+    public static final String LOCALNAME = "minLength";
 
-    /**
-     * @see org.geotools.xml.XSIHandlers.FacetHandler#getBinding()
-     */
+    /** @see org.geotools.xml.XSIHandlers.FacetHandler#getBinding() */
     public int getType() {
         return Facet.MINLENGTH;
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#getLocalName()
-     */
+    /** @see org.geotools.xml.XSIElementHandler#getLocalName() */
     public String getLocalName() {
         return LOCALNAME;
     }
 }
-
 
 /**
  * represents a maxLength element
@@ -638,23 +563,18 @@ class MinLengthHandler extends FacetHandler {
  */
 class MaxLengthHandler extends FacetHandler {
     /** 'maxLength' */
-    public final static String LOCALNAME = "maxLength";
+    public static final String LOCALNAME = "maxLength";
 
-    /**
-     * @see org.geotools.xml.XSIHandlers.FacetHandler#getBinding()
-     */
+    /** @see org.geotools.xml.XSIHandlers.FacetHandler#getBinding() */
     public int getType() {
         return Facet.MAXLENGTH;
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#getLocalName()
-     */
+    /** @see org.geotools.xml.XSIElementHandler#getLocalName() */
     public String getLocalName() {
         return LOCALNAME;
     }
 }
-
 
 /**
  * represents a pattern element
@@ -664,23 +584,18 @@ class MaxLengthHandler extends FacetHandler {
  */
 class PatternHandler extends FacetHandler {
     /** 'pattern' */
-    public final static String LOCALNAME = "pattern";
+    public static final String LOCALNAME = "pattern";
 
-    /**
-     * @see org.geotools.xml.XSIHandlers.FacetHandler#getBinding()
-     */
+    /** @see org.geotools.xml.XSIHandlers.FacetHandler#getBinding() */
     public int getType() {
         return Facet.PATTERN;
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#getLocalName()
-     */
+    /** @see org.geotools.xml.XSIElementHandler#getLocalName() */
     public String getLocalName() {
         return LOCALNAME;
     }
 }
-
 
 /**
  * Represents a totaldigits element
@@ -690,18 +605,14 @@ class PatternHandler extends FacetHandler {
  */
 class TotalDigitsHandler extends FacetHandler {
     /** 'totalDigits' */
-    public final static String LOCALNAME = "totalDigits";
+    public static final String LOCALNAME = "totalDigits";
 
-    /**
-     * @see org.geotools.xml.XSIHandlers.FacetHandler#getBinding()
-     */
+    /** @see org.geotools.xml.XSIHandlers.FacetHandler#getBinding() */
     public int getType() {
         return Facet.TOTALDIGITS;
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#getLocalName()
-     */
+    /** @see org.geotools.xml.XSIElementHandler#getLocalName() */
     public String getLocalName() {
         return LOCALNAME;
     }

@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -24,28 +24,30 @@ import org.opengis.temporal.TemporalReferenceSystem;
 /**
  * A data type that shall be used for identifying temporal position within a temporal coordinate
  * system.
- * 
+ *
  * @author Mehdi Sidhoum (Geomatys)
- *
- *
- *
  * @source $URL$
  */
-public class DefaultTemporalCoordinate extends DefaultTemporalPosition implements TemporalCoordinate {
+public class DefaultTemporalCoordinate extends DefaultTemporalPosition
+        implements TemporalCoordinate {
 
     /**
-     * This is the distance from the scale origin expressed as a multiple of the standard interval associated with the temporal coordinate system.
+     * This is the distance from the scale origin expressed as a multiple of the standard interval
+     * associated with the temporal coordinate system.
      */
     private Number coordinateValue;
 
-    public DefaultTemporalCoordinate(TemporalReferenceSystem frame, IndeterminateValue indeterminatePosition, Number coordinateValue) {
+    public DefaultTemporalCoordinate(
+            TemporalReferenceSystem frame,
+            IndeterminateValue indeterminatePosition,
+            Number coordinateValue) {
         super(frame, indeterminatePosition);
         this.coordinateValue = coordinateValue;
     }
 
     /**
-     * Returns the distance from the scale origin expressed as a multiple of the standard
-     * interval associated with the temporal coordinate system.
+     * Returns the distance from the scale origin expressed as a multiple of the standard interval
+     * associated with the temporal coordinate system.
      *
      * @todo Should we return a primitive type?
      */
@@ -80,10 +82,10 @@ public class DefaultTemporalCoordinate extends DefaultTemporalPosition implement
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder("TemporalCoordinate:").append('\n');
-        if (getFrame() != null){
+        if (getFrame() != null) {
             s.append("TemporalReferenceSystem:").append(getFrame()).append('\n');
         }
-        if(getIndeterminatePosition() != null) {
+        if (getIndeterminatePosition() != null) {
             s.append("IndeterminateValue:").append(getIndeterminatePosition()).append('\n');
         }
         if (coordinateValue != null) {

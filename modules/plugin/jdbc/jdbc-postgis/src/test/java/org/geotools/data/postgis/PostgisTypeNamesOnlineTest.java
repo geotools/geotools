@@ -21,9 +21,8 @@ import org.geotools.jdbc.JDBCTypeNamesTestSetup;
 
 public class PostgisTypeNamesOnlineTest extends JDBCTypeNamesOnlineTest {
 
-	@Override
-	protected JDBCTypeNamesTestSetup createTestSetup() {
-		return new PostgisTypeNamesTestSetup();
-	}
-
+    @Override
+    protected JDBCTypeNamesTestSetup createTestSetup() {
+        return new PostgisTypeNamesTestSetup();
+    }
 }

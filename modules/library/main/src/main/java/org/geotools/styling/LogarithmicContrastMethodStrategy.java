@@ -20,14 +20,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.ContrastMethod;
 
-/**
- * @author ian
- *
- */
+/** @author ian */
 public class LogarithmicContrastMethodStrategy extends AbstractContrastMethodStrategy {
 
     /** CORRECTION_FACTOR */
@@ -36,22 +32,22 @@ public class LogarithmicContrastMethodStrategy extends AbstractContrastMethodStr
     /** NORMALIZATION_FACTOR */
     private static final String NORMALIZATION_FACTOR = "normalizationFactor";
 
-    final static List<String> PARAM_NAMES = Arrays.asList(NORMALIZATION_FACTOR, CORRECTION_FACTOR);
+    static final List<String> PARAM_NAMES = Arrays.asList(NORMALIZATION_FACTOR, CORRECTION_FACTOR);
 
-    private static final Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger("org.geotools.core");
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.core");
 
-    /**
-    * 
-    */
+    /** */
     public LogarithmicContrastMethodStrategy() {
         method = ContrastMethod.LOGARITHMIC;
     }
 
     public void addParameter(String key, Expression value) {
         if (!PARAM_NAMES.contains(key)) {
-            LOGGER.log(Level.WARNING, "Adding unexpected parameter {0} to {1} Contrast Enhancer",
-                    new Object[] { key, method.name() });
+            LOGGER.log(
+                    Level.WARNING,
+                    "Adding unexpected parameter {0} to {1} Contrast Enhancer",
+                    new Object[] {key, method.name()});
         }
         super.addParameter(key, value);
     }

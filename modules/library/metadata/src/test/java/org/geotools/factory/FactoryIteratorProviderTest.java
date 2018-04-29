@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2006-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,35 +16,26 @@
  */
 package org.geotools.factory;
 
-import java.util.Arrays;
-
-import org.junit.*;
 import static org.junit.Assert.*;
 
+import java.util.Arrays;
+import org.junit.*;
 
 /**
  * Tests {@link FactoryIteratorProvider} addition in {@link FactoryIteratorProviders}.
- *
- *
  *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */
 public final class FactoryIteratorProviderTest {
-    /**
-     * The registry to use for testing purpose.
-     */
+    /** The registry to use for testing purpose. */
     private FactoryRegistry registry;
 
-    /**
-     * Creates a new, initially empty, factory registry.
-     */
+    /** Creates a new, initially empty, factory registry. */
     @Before
     public void createRegistry() {
-        registry = new FactoryRegistry(Arrays.asList(new Class<?>[] {
-            DummyFactory.class
-        }));
+        registry = new FactoryRegistry(Arrays.asList(new Class<?>[] {DummyFactory.class}));
     }
 
     /**
@@ -53,21 +44,20 @@ public final class FactoryIteratorProviderTest {
      * @throws FactoryNotFoundException if no factory was found.
      * @throws FactoryRegistryException if a factory can't be returned for some other reason.
      */
-    private static DummyFactory getFactory(final FactoryRegistry registry,
-                                           final Class<? extends DummyFactory> type)
-            throws FactoryRegistryException
-    {
+    private static DummyFactory getFactory(
+            final FactoryRegistry registry, final Class<? extends DummyFactory> type)
+            throws FactoryRegistryException {
         Hints hints = null;
         if (type != null) {
             hints = new Hints(DummyFactory.DUMMY_FACTORY, type);
         }
-        return registry.getServiceProvider(DummyFactory.class,
-                null, hints, DummyFactory.DUMMY_FACTORY);
+        return registry.getServiceProvider(
+                DummyFactory.class, null, hints, DummyFactory.DUMMY_FACTORY);
     }
 
     /**
-     * Tests the registration of {@link DummyFactory} instances from
-     * {@link DummyFactoryIteratorProvider}.
+     * Tests the registration of {@link DummyFactory} instances from {@link
+     * DummyFactoryIteratorProvider}.
      */
     @Test
     public void testRegistration() {

@@ -16,15 +16,14 @@
  */
 package org.geotools.referencing.operation.transform;
 
+import org.opengis.geometry.DirectPosition;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
-import org.opengis.geometry.DirectPosition;
-
 
 /**
  * Concatenated transform where the transfert dimension is the same than source and target
- * dimension. This fact allows some optimizations, the most important one being the possibility
- * to avoid the use of an intermediate buffer in some case.
+ * dimension. This fact allows some optimizations, the most important one being the possibility to
+ * avoid the use of an intermediate buffer in some case.
  *
  * @since 2.0
  * @source $URL$
@@ -32,50 +31,41 @@ import org.opengis.geometry.DirectPosition;
  * @author Martin Desruisseaux (IRD)
  */
 class ConcatenatedTransformDirect extends ConcatenatedTransform {
-    /**
-     * Serial number for interoperability with different versions.
-     */
+    /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -3568975979013908920L;
 
-    /**
-     * Constructs a concatenated transform.
-     */
-    public ConcatenatedTransformDirect(final MathTransform transform1,
-                                       final MathTransform transform2)
-    {
+    /** Constructs a concatenated transform. */
+    public ConcatenatedTransformDirect(
+            final MathTransform transform1, final MathTransform transform2) {
         super(transform1, transform2);
     }
 
-    /**
-     * Checks if transforms are compatibles with this implementation.
-     */
+    /** Checks if transforms are compatibles with this implementation. */
     @Override
     boolean isValid() {
-        return super.isValid() &&
-               transform1.getSourceDimensions() == transform1.getTargetDimensions() &&
-               transform2.getSourceDimensions() == transform2.getTargetDimensions();
+        return super.isValid()
+                && transform1.getSourceDimensions() == transform1.getTargetDimensions()
+                && transform2.getSourceDimensions() == transform2.getTargetDimensions();
     }
 
-    /**
-     * Transforms the specified {@code ptSrc} and stores the result in {@code ptDst}.
-     */
+    /** Transforms the specified {@code ptSrc} and stores the result in {@code ptDst}. */
     @Override
     public DirectPosition transform(final DirectPosition ptSrc, DirectPosition ptDst)
-            throws TransformException
-    {
+            throws TransformException {
         assert isValid();
         ptDst = transform1.transform(ptSrc, ptDst);
-        return  transform2.transform(ptDst, ptDst);
+        return transform2.transform(ptDst, ptDst);
     }
 
-    /**
-     * Transforms a list of coordinate point ordinal values.
-     */
+    /** Transforms a list of coordinate point ordinal values. */
     @Override
-    public void transform(final double[] srcPts, final int srcOff,
-                          final double[] dstPts, final int dstOff, final int numPts)
-            throws TransformException
-    {
+    public void transform(
+            final double[] srcPts,
+            final int srcOff,
+            final double[] dstPts,
+            final int dstOff,
+            final int numPts)
+            throws TransformException {
         assert isValid();
         transform1.transform(srcPts, srcOff, dstPts, dstOff, numPts);
         transform2.transform(dstPts, dstOff, dstPts, dstOff, numPts);

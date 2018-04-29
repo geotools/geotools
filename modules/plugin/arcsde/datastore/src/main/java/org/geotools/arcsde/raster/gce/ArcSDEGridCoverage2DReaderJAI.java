@@ -37,14 +37,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.imageio.ImageIO;
 import javax.imageio.ImageTypeSpecifier;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.Interpolation;
 import javax.media.jai.JAI;
 import javax.media.jai.operator.MosaicDescriptor;
-
 import org.geotools.arcsde.raster.info.RasterDatasetInfo;
 import org.geotools.arcsde.raster.info.RasterQueryInfo;
 import org.geotools.arcsde.raster.info.RasterUtils;
@@ -83,26 +81,22 @@ import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 
 /**
- * 
  * @author Gabriel Roldan (OpenGeo)
  * @since 2.5.4
  * @version $Id$
- * 
- *
  * @source $URL$
- *         http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/main/java/org
- *         /geotools/arcsde/gce/ArcSDEGridCoverage2DReaderJAI.java $
+ *     http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/main/java/org
+ *     /geotools/arcsde/gce/ArcSDEGridCoverage2DReaderJAI.java $
  */
 @SuppressWarnings("nls")
-public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DReader implements GridCoverage2DReader{
+public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DReader
+        implements GridCoverage2DReader {
 
     private static final Logger LOGGER = Logging.getLogger("org.geotools.arcsde.gce");
 
-    /**
-     * @see LoggingHelper#log(RenderedImage, Long, String)
-     */
-    private static final boolean DEBUG_TO_DISK = Boolean
-            .getBoolean("org.geotools.arcsde.gce.debug");
+    /** @see LoggingHelper#log(RenderedImage, Long, String) */
+    private static final boolean DEBUG_TO_DISK =
+            Boolean.getBoolean("org.geotools.arcsde.gce.debug");
 
     private final ArcSDERasterFormat parent;
 
@@ -112,15 +106,18 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
 
     private RasterReaderFactory rasterReaderFactory;
 
-    public ArcSDEGridCoverage2DReaderJAI(final ArcSDERasterFormat parent,
-            final RasterReaderFactory rasterReaderFactory, final RasterDatasetInfo rasterInfo,
-            final Hints hints) throws IOException {
+    public ArcSDEGridCoverage2DReaderJAI(
+            final ArcSDERasterFormat parent,
+            final RasterReaderFactory rasterReaderFactory,
+            final RasterDatasetInfo rasterInfo,
+            final Hints hints)
+            throws IOException {
         // check it's a supported format
         {
             final int bitsPerSample = rasterInfo.getBand(0, 0).getCellType().getBitsPerSample();
             if (rasterInfo.getNumBands() > 1 && (bitsPerSample == 1 || bitsPerSample == 4)) {
-                throw new IllegalArgumentException(bitsPerSample
-                        + "-bit rasters with more than one band are not supported");
+                throw new IllegalArgumentException(
+                        bitsPerSample + "-bit rasters with more than one band are not supported");
             }
         }
         this.parent = parent;
@@ -147,9 +144,15 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
         // setting the higher resolution avalaible for this coverage
         //
         // ///
-        highestRes = super.getResolution(originalEnvelope,
-                new Rectangle(originalGridRange.getLow(0), originalGridRange.getLow(1),
-                        originalGridRange.getSpan(0), originalGridRange.getSpan(1)), crs);
+        highestRes =
+                super.getResolution(
+                        originalEnvelope,
+                        new Rectangle(
+                                originalGridRange.getLow(0),
+                                originalGridRange.getLow(1),
+                                originalGridRange.getSpan(0),
+                                originalGridRange.getSpan(1)),
+                        crs);
         // //
         //
         // get information for the successive images
@@ -163,20 +166,21 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
                 GridEnvelope levelGridRange = rasterInfo.getGridRange(0, pyramidLevel);
                 GeneralEnvelope levelEnvelope = rasterInfo.getGridEnvelope(0, pyramidLevel);
 
-                Rectangle2D levelGridRangeRect = new Rectangle2D.Double(levelGridRange.getLow(0),
-                        levelGridRange.getLow(1), levelGridRange.getSpan(0),
-                        levelGridRange.getSpan(1));
-                overViewResolutions[pyramidLevel - 1] = super.getResolution(levelEnvelope,
-                        levelGridRangeRect, crs);
+                Rectangle2D levelGridRangeRect =
+                        new Rectangle2D.Double(
+                                levelGridRange.getLow(0),
+                                levelGridRange.getLow(1),
+                                levelGridRange.getSpan(0),
+                                levelGridRange.getSpan(1));
+                overViewResolutions[pyramidLevel - 1] =
+                        super.getResolution(levelEnvelope, levelGridRangeRect, crs);
             }
         } else {
             overViewResolutions = null;
         }
     }
 
-    /**
-     * @see GridCoverageReader#getFormat()
-     */
+    /** @see GridCoverageReader#getFormat() */
     public Format getFormat() {
         return parent;
     }
@@ -197,7 +201,7 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
     /**
      * @see GridCoverageReader#read(GeneralParameterValue[])
      * @return A new {@linkplain GridCoverage grid coverage} from the input source, or {@code null}
-     *         if the requested envelope is outside the data bounds
+     *     if the requested envelope is outside the data bounds
      */
     public GridCoverage2D read(GeneralParameterValue[] params) throws IOException {
         final GeneralEnvelope requestedEnvelope;
@@ -248,8 +252,10 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
         mosaicGeometry = RasterUtils.setMosaicLocations(rasterInfo, queries);
 
         if (mosaicGeometry.getSpan(0) == 0 || mosaicGeometry.getSpan(1) == 0) {
-            LOGGER.finer("Mosaic geometry width or height is zero,"
-                    + " returning fake coverage for pixels " + mosaicGeometry);
+            LOGGER.finer(
+                    "Mosaic geometry width or height is zero,"
+                            + " returning fake coverage for pixels "
+                            + mosaicGeometry);
             return null;
         }
         /*
@@ -281,8 +287,9 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
         log.appendLoggingGeometries(LoggingHelper.REQ_ENV, requestedEnvelope);
         log.appendLoggingGeometries(LoggingHelper.RES_ENV, resultEnvelope);
 
-        GridCoverage2D resultCoverage = coverageFactory.create(coverageName, coverageRaster,
-                resultEnvelope, bands, null, null);
+        GridCoverage2D resultCoverage =
+                coverageFactory.create(
+                        coverageName, coverageRaster, resultEnvelope, bands, null, null);
 
         return resultCoverage;
     }
@@ -291,9 +298,11 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
         double deltaX = resolution[0] / 2;
         double deltaY = resolution[1] / 2;
         GeneralEnvelope env = new GeneralEnvelope(pixelCornerEnv.getCoordinateReferenceSystem());
-        env.setEnvelope(pixelCornerEnv.getMinimum(0) + deltaX, pixelCornerEnv.getMinimum(1)
-                + deltaY, pixelCornerEnv.getMaximum(0) - deltaX, pixelCornerEnv.getMaximum(1)
-                - deltaY);
+        env.setEnvelope(
+                pixelCornerEnv.getMinimum(0) + deltaX,
+                pixelCornerEnv.getMinimum(1) + deltaY,
+                pixelCornerEnv.getMaximum(0) - deltaX,
+                pixelCornerEnv.getMaximum(1) - deltaY);
         return env;
     }
 
@@ -305,9 +314,11 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
         // may the image have been promoted? build the correct band info then
         final int imageBands = coverageRaster.getSampleModel().getNumBands();
         if (bands.length == 1 && imageBands > 1) {
-            LOGGER.fine(coverageName + " was promoted from 1 to "
-                    + coverageRaster.getSampleModel().getNumBands()
-                    + " bands, returning an appropriate set of GridSampleDimension");
+            LOGGER.fine(
+                    coverageName
+                            + " was promoted from 1 to "
+                            + coverageRaster.getSampleModel().getNumBands()
+                            + " bands, returning an appropriate set of GridSampleDimension");
             // stolen from super.createCoverage:
             final ColorModel cm = coverageRaster.getColorModel();
             bands = new GridSampleDimension[imageBands];
@@ -326,8 +337,11 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
         return bands;
     }
 
-    private void readAllTiledRasters(final List<RasterQueryInfo> queries,
-            final TiledRasterReader rasterReader, final LoggingHelper log) throws IOException {
+    private void readAllTiledRasters(
+            final List<RasterQueryInfo> queries,
+            final TiledRasterReader rasterReader,
+            final LoggingHelper log)
+            throws IOException {
 
         for (RasterQueryInfo queryInfo : queries) {
 
@@ -349,19 +363,23 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
 
             {
                 LOGGER.finer(queryInfo.toString());
-                log.appendLoggingGeometries(LoggingHelper.MOSAIC_EXPECTED,
-                        queryInfo.getMosaicLocation());
-                log.appendLoggingGeometries(LoggingHelper.MOSAIC_ENV, queryInfo.getResultEnvelope());
+                log.appendLoggingGeometries(
+                        LoggingHelper.MOSAIC_EXPECTED, queryInfo.getMosaicLocation());
+                log.appendLoggingGeometries(
+                        LoggingHelper.MOSAIC_ENV, queryInfo.getResultEnvelope());
             }
         }
     }
 
-    private List<RasterQueryInfo> findMatchingRasters(final GeneralEnvelope requestedEnvelope,
-            final GridEnvelope requestedDim, final OverviewPolicy overviewPolicy) {
+    private List<RasterQueryInfo> findMatchingRasters(
+            final GeneralEnvelope requestedEnvelope,
+            final GridEnvelope requestedDim,
+            final OverviewPolicy overviewPolicy) {
 
         final List<RasterQueryInfo> matchingQueries;
-        matchingQueries = RasterUtils.findMatchingRasters(rasterInfo, requestedEnvelope,
-                requestedDim, overviewPolicy);
+        matchingQueries =
+                RasterUtils.findMatchingRasters(
+                        rasterInfo, requestedEnvelope, requestedDim, overviewPolicy);
 
         if (matchingQueries.isEmpty()) {
             return matchingQueries;
@@ -373,8 +391,8 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
         return matchingQueries;
     }
 
-    private GeneralEnvelope getResultEnvelope(final List<RasterQueryInfo> queryInfos,
-            final GridEnvelope mosaicGeometry) {
+    private GeneralEnvelope getResultEnvelope(
+            final List<RasterQueryInfo> queryInfos, final GridEnvelope mosaicGeometry) {
 
         // use the same queryInfo used by setMosaicLocations
         final RasterQueryInfo baseQueryInfo = RasterUtils.findLowestResolution(queryInfos);
@@ -386,8 +404,11 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
         MathTransform rasterToModel = rasterInfo.getRasterToModel(rasterIndex, pyramidLevel);
         CoordinateReferenceSystem coverageCrs = rasterInfo.getCoverageCrs();
         GeneralEnvelope mosaicGeometryEnv = new GeneralEnvelope(coverageCrs);
-        mosaicGeometryEnv.setEnvelope(mosaicGeometry.getLow(0), mosaicGeometry.getLow(1),
-                1 + mosaicGeometry.getHigh(0), 1 + mosaicGeometry.getHigh(1));
+        mosaicGeometryEnv.setEnvelope(
+                mosaicGeometry.getLow(0),
+                mosaicGeometry.getLow(1),
+                1 + mosaicGeometry.getHigh(0),
+                1 + mosaicGeometry.getHigh(1));
         try {
             finalEnvelope = CRS.transform(rasterToModel, mosaicGeometryEnv);
             finalEnvelope.setCoordinateReferenceSystem(coverageCrs);
@@ -400,14 +421,17 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
 
     /**
      * For each raster: crop->scale->translate->add to mosaic
-     * 
+     *
      * @param queries
      * @param mosaicGeometry
      * @return
      * @throws IOException
      */
-    private RenderedImage createMosaic(final List<RasterQueryInfo> queries,
-            final GridEnvelope mosaicGeometry, final LoggingHelper log) throws IOException {
+    private RenderedImage createMosaic(
+            final List<RasterQueryInfo> queries,
+            final GridEnvelope mosaicGeometry,
+            final LoggingHelper log)
+            throws IOException {
 
         List<RenderedImage> transformed = new ArrayList<RenderedImage>(queries.size());
 
@@ -417,9 +441,11 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
          */
         boolean expandCM = queries.size() > 1 && rasterInfo.isColorMapped();
         if (expandCM) {
-            LOGGER.fine("Creating mosaic out of " + queries.size()
-                    + " colormapped rasters. The mosaic tiles will be expanded to "
-                    + "\nRGB space and the resulting mosaic reduced to a new IndexColorModel");
+            LOGGER.fine(
+                    "Creating mosaic out of "
+                            + queries.size()
+                            + " colormapped rasters. The mosaic tiles will be expanded to "
+                            + "\nRGB space and the resulting mosaic reduced to a new IndexColorModel");
         }
 
         for (RasterQueryInfo query : queries) {
@@ -428,8 +454,9 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
             log.log(image, query.getRasterId(), "01_original");
             if (expandCM) {
                 if (LOGGER.isLoggable(Level.FINER)) {
-                    LOGGER.finer("Creating color expanded version of tile for raster #"
-                            + query.getRasterId());
+                    LOGGER.finer(
+                            "Creating color expanded version of tile for raster #"
+                                    + query.getRasterId());
                 }
 
                 /*
@@ -454,8 +481,12 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
             Float translateY = Float.valueOf(0);
 
             if (!(Float.valueOf(1.0F).equals(scaleX) && Float.valueOf(1.0F).equals(scaleY))) {
-                
-                worker.scale(scaleX, scaleY, translateX, translateY,
+
+                worker.scale(
+                        scaleX,
+                        scaleY,
+                        translateX,
+                        translateY,
                         Interpolation.getInstance(Interpolation.INTERP_NEAREST));
 
                 image = worker.getRenderedImage();
@@ -470,19 +501,21 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
 
             if (image.getMinX() != mosaicLocation.getLow(0)
                     || image.getMinY() != mosaicLocation.getLow(1)) {
-                worker.translate(Float.valueOf(mosaicLocation.getLow(0) - image.getMinX()),
-                        Float.valueOf(mosaicLocation.getLow(1) - image.getMinY()), null);
+                worker.translate(
+                        Float.valueOf(mosaicLocation.getLow(0) - image.getMinX()),
+                        Float.valueOf(mosaicLocation.getLow(1) - image.getMinY()),
+                        null);
                 image = worker.getRenderedImage();
                 log.log(image, query.getRasterId(), "04_translate");
 
-                assert image.getMinX() == mosaicLocation.getLow(0) : image.getMinX() + " != "
-                        + mosaicLocation.getLow(0);
-                assert image.getMinY() == mosaicLocation.getLow(1) : image.getMinY() + " != "
-                        + mosaicLocation.getLow(1);
-                assert image.getWidth() == mosaicLocation.getSpan(0) : image.getWidth() + " != "
-                        + mosaicLocation.getSpan(0);
-                assert image.getHeight() == mosaicLocation.getSpan(1) : image.getHeight() + " != "
-                        + mosaicLocation.getSpan(1);
+                assert image.getMinX() == mosaicLocation.getLow(0)
+                        : image.getMinX() + " != " + mosaicLocation.getLow(0);
+                assert image.getMinY() == mosaicLocation.getLow(1)
+                        : image.getMinY() + " != " + mosaicLocation.getLow(1);
+                assert image.getWidth() == mosaicLocation.getSpan(0)
+                        : image.getWidth() + " != " + mosaicLocation.getSpan(0);
+                assert image.getHeight() == mosaicLocation.getSpan(1)
+                        : image.getHeight() + " != " + mosaicLocation.getSpan(1);
             }
 
             transformed.add(image);
@@ -506,7 +539,7 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
             // set background values to raster's no-data
             double[] backgroundValues;
             if (expandCM) {
-                backgroundValues = new double[] { 0, 0, 0, 0 };
+                backgroundValues = new double[] {0, 0, 0, 0};
             } else {
                 final int numBands = rasterInfo.getNumBands();
                 backgroundValues = new double[numBands];
@@ -518,8 +551,12 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
                 }
             }
 
-            final ImageLayout layout = new ImageLayout(mosaicGeometry.getLow(0),
-                    mosaicGeometry.getLow(1), mosaicGeometry.getSpan(0), mosaicGeometry.getSpan(1));
+            final ImageLayout layout =
+                    new ImageLayout(
+                            mosaicGeometry.getLow(0),
+                            mosaicGeometry.getLow(1),
+                            mosaicGeometry.getSpan(0),
+                            mosaicGeometry.getSpan(1));
             final int tileWidth = rasterInfo.getTileDimension(0).width;
             final int tileHeight = rasterInfo.getTileDimension(0).height;
             layout.setTileWidth(tileWidth);
@@ -539,8 +576,9 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
             LOGGER.fine("Creating mosaic out of " + queries.size() + " raster tiles");
             w.setRenderingHints(hints);
             w.setBackground(backgroundValues);
-            mosaic = w.mosaic(images, MosaicDescriptor.MOSAIC_TYPE_OVERLAY, null, null, null, null)
-                    .getRenderedImage();
+            mosaic =
+                    w.mosaic(images, MosaicDescriptor.MOSAIC_TYPE_OVERLAY, null, null, null, null)
+                            .getRenderedImage();
             log.log(mosaic, 0L, "05_mosaic_result");
         }
         return mosaic;
@@ -549,37 +587,51 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
     /**
      * Crops the image representing a full tile set to the required dimension and returns it, but
      * keeps minx and miny being zero.
-     * 
+     *
      * @param fullTilesRaster
      * @param tiledImageGridRange
      * @param cropTo
      * @return
      */
-    private void cropToRequiredDimension(
-            final ImageWorker worker,
-            final GridEnvelope cropTo) {
-        GridEnvelope2D crop = new GridEnvelope2D(cropTo.getLow(0), cropTo.getLow(1),
-                cropTo.getSpan(0), cropTo.getSpan(1));
+    private void cropToRequiredDimension(final ImageWorker worker, final GridEnvelope cropTo) {
+        GridEnvelope2D crop =
+                new GridEnvelope2D(
+                        cropTo.getLow(0), cropTo.getLow(1), cropTo.getSpan(0), cropTo.getSpan(1));
         RenderedImage fullTilesRaster = worker.getRenderedImage();
-        GridEnvelope2D origDim = new GridEnvelope2D(fullTilesRaster.getMinX(),
-                fullTilesRaster.getMinY(), fullTilesRaster.getWidth(), fullTilesRaster.getHeight());
+        GridEnvelope2D origDim =
+                new GridEnvelope2D(
+                        fullTilesRaster.getMinX(),
+                        fullTilesRaster.getMinY(),
+                        fullTilesRaster.getWidth(),
+                        fullTilesRaster.getHeight());
         if (!origDim.contains(crop)) {
-            throw new IllegalArgumentException("Original image (" + origDim
-                    + ") does not contain desired dimension (" + crop + ")");
+            throw new IllegalArgumentException(
+                    "Original image ("
+                            + origDim
+                            + ") does not contain desired dimension ("
+                            + crop
+                            + ")");
         } else if (origDim.equals(crop)) {
             if (LOGGER.isLoggable(Level.FINER)) {
-                LOGGER.finer("No need to crop image, full tiled dimension and target one "
-                        + "do match: original: " + fullTilesRaster.getWidth() + "x"
-                        + fullTilesRaster.getHeight() + ", target: " + crop.getSpan(0) + "x"
-                        + crop.getSpan(1));
+                LOGGER.finer(
+                        "No need to crop image, full tiled dimension and target one "
+                                + "do match: original: "
+                                + fullTilesRaster.getWidth()
+                                + "x"
+                                + fullTilesRaster.getHeight()
+                                + ", target: "
+                                + crop.getSpan(0)
+                                + "x"
+                                + crop.getSpan(1));
             }
             return;
         }
 
-        worker.crop(Float.valueOf(crop.getLow(0)), // x origin for each band
-                Float.valueOf(crop.getLow(1)),     // y origin for each band
-                Float.valueOf(crop.getSpan(0)),    // width for each band
-                Float.valueOf(crop.getSpan(1)));   // height for each band
+        worker.crop(
+                Float.valueOf(crop.getLow(0)), // x origin for each band
+                Float.valueOf(crop.getLow(1)), // y origin for each band
+                Float.valueOf(crop.getSpan(0)), // width for each band
+                Float.valueOf(crop.getSpan(1))); // height for each band
 
         RenderedImage image = worker.getRenderedImage();
 
@@ -620,12 +672,13 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
                 reqEnvelope = new GeneralEnvelope((Envelope) gg.getEnvelope2D());
 
                 final GeneralEnvelope coverageEnvelope = getOriginalEnvelope();
-                CoordinateReferenceSystem nativeCrs = coverageEnvelope
-                        .getCoordinateReferenceSystem();
+                CoordinateReferenceSystem nativeCrs =
+                        coverageEnvelope.getCoordinateReferenceSystem();
                 CoordinateReferenceSystem requestCrs = reqEnvelope.getCoordinateReferenceSystem();
                 if (!CRS.equalsIgnoreMetadata(nativeCrs, requestCrs)) {
-                    LOGGER.fine("Request CRS and native CRS differ, "
-                            + "reprojecting request envelope to native CRS");
+                    LOGGER.fine(
+                            "Request CRS and native CRS differ, "
+                                    + "reprojecting request envelope to native CRS");
                     ReferencedEnvelope nativeCrsEnv;
                     nativeCrsEnv = toNativeCrs(reqEnvelope, nativeCrs);
                     reqEnvelope = new GeneralEnvelope(nativeCrsEnv);
@@ -671,8 +724,8 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
         }
 
         if (dim.getSpan(0) <= 0 || dim.getSpan(1) <= 0) {
-            throw new IllegalArgumentException("The requested coverage dimension can't be null: "
-                    + dim);
+            throw new IllegalArgumentException(
+                    "The requested coverage dimension can't be null: " + dim);
         }
 
         if (overviewPolicy == null) {
@@ -681,15 +734,17 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
         }
         LOGGER.fine("Overview policy is " + overviewPolicy);
 
-        ArcSDEGridCoverage2DReaderJAI.ReadParameters parsedParams = new ArcSDEGridCoverage2DReaderJAI.ReadParameters();
+        ArcSDEGridCoverage2DReaderJAI.ReadParameters parsedParams =
+                new ArcSDEGridCoverage2DReaderJAI.ReadParameters();
         parsedParams.requestedEnvelope = reqEnvelope;
         parsedParams.dim = dim;
         parsedParams.overviewPolicy = overviewPolicy;
         return parsedParams;
     }
 
-    private static ReferencedEnvelope toNativeCrs(final GeneralEnvelope requestedEnvelope,
-            final CoordinateReferenceSystem nativeCRS) throws IllegalArgumentException {
+    private static ReferencedEnvelope toNativeCrs(
+            final GeneralEnvelope requestedEnvelope, final CoordinateReferenceSystem nativeCRS)
+            throws IllegalArgumentException {
 
         ReferencedEnvelope reqEnv = toReferencedEnvelope(requestedEnvelope);
 
@@ -701,11 +756,15 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
                 reqEnv = reqEnv.transform(nativeCRS, true);
             } catch (FactoryException fe) {
                 // unable to reproject?
-                throw new IllegalArgumentException("Unable to find a reprojection from requested "
-                        + "coordsys to native coordsys for this request", fe);
+                throw new IllegalArgumentException(
+                        "Unable to find a reprojection from requested "
+                                + "coordsys to native coordsys for this request",
+                        fe);
             } catch (TransformException te) {
-                throw new IllegalArgumentException("Unable to perform reprojection from requested "
-                        + "coordsys to native coordsys for this request", te);
+                throw new IllegalArgumentException(
+                        "Unable to perform reprojection from requested "
+                                + "coordsys to native coordsys for this request",
+                        te);
             }
         }
         return reqEnv;
@@ -728,8 +787,8 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
      */
     private static class LoggingHelper {
 
-        private static final File debugDir = new File(System.getProperty("user.home")
-                + File.separator + "arcsde_test");
+        private static final File debugDir =
+                new File(System.getProperty("user.home") + File.separator + "arcsde_test");
 
         static {
             if (DEBUG_TO_DISK) {
@@ -769,27 +828,51 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
 
         public void appendLoggingGeometries(String geomName, RenderedImage img) {
             if (LOGGER.isLoggable(GEOM_LEVEL)) {
-                appendLoggingGeometries(geomName, new GridEnvelope2D(img.getMinX(), img.getMinY(),
-                        img.getWidth(), img.getHeight()));
+                appendLoggingGeometries(
+                        geomName,
+                        new GridEnvelope2D(
+                                img.getMinX(), img.getMinY(), img.getWidth(), img.getHeight()));
             }
         }
 
         public void appendLoggingGeometries(String geomName, GridEnvelope env) {
             if (LOGGER.isLoggable(GEOM_LEVEL)) {
-                appendLoggingGeometries(geomName,
-                        new GeneralEnvelope(new Rectangle2D.Double(env.getLow(0), env.getLow(1),
-                                env.getSpan(0), env.getSpan(1))));
+                appendLoggingGeometries(
+                        geomName,
+                        new GeneralEnvelope(
+                                new Rectangle2D.Double(
+                                        env.getLow(0),
+                                        env.getLow(1),
+                                        env.getSpan(0),
+                                        env.getSpan(1))));
             }
         }
 
         public void appendLoggingGeometries(String geomName, GeneralEnvelope env) {
             if (LOGGER.isLoggable(GEOM_LEVEL)) {
                 StringBuilder sb = getGeom(geomName);
-                sb.append("  ((" + env.getMinimum(0) + " " + env.getMinimum(1) + ", "
-                        + env.getMaximum(0) + " " + env.getMinimum(1) + ", " + env.getMaximum(0)
-                        + " " + env.getMaximum(1) + ", " + env.getMinimum(0) + " "
-                        + env.getMaximum(1) + ", " + env.getMinimum(0) + " " + env.getMinimum(1)
-                        + ")),");
+                sb.append(
+                        "  (("
+                                + env.getMinimum(0)
+                                + " "
+                                + env.getMinimum(1)
+                                + ", "
+                                + env.getMaximum(0)
+                                + " "
+                                + env.getMinimum(1)
+                                + ", "
+                                + env.getMaximum(0)
+                                + " "
+                                + env.getMaximum(1)
+                                + ", "
+                                + env.getMinimum(0)
+                                + " "
+                                + env.getMaximum(1)
+                                + ", "
+                                + env.getMinimum(0)
+                                + " "
+                                + env.getMinimum(1)
+                                + ")),");
             }
         }
 
@@ -804,17 +887,19 @@ public final class ArcSDEGridCoverage2DReaderJAI extends AbstractGridCoverage2DR
 
         public void log(RenderedImage image, Long rasterId, String fileName) {
             if (DEBUG_TO_DISK) {
-                LOGGER.warning("BEWARE THE DEBUG FLAG IS TURNED ON! "
-                        + "IF IN PRODUCTION THIS IS A SEVERE MISTAKE!!!");
+                LOGGER.warning(
+                        "BEWARE THE DEBUG FLAG IS TURNED ON! "
+                                + "IF IN PRODUCTION THIS IS A SEVERE MISTAKE!!!");
 
                 try {
-                    ImageIO.write(image, "TIFF", new File(debugDir, rasterId.longValue() + fileName
-                            + ".tiff"));
+                    ImageIO.write(
+                            image,
+                            "TIFF",
+                            new File(debugDir, rasterId.longValue() + fileName + ".tiff"));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-
         }
     }
 }

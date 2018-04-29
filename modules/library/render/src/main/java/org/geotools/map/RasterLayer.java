@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -24,10 +24,10 @@ import org.geotools.styling.Style;
 
 /**
  * Layer responsible for raster content.
+ *
  * @since 8.0
  * @version 8.0
  * @author Jody Garnett
- *
  * @source $URL$
  */
 public abstract class RasterLayer extends StyleLayer {
@@ -56,12 +56,12 @@ public abstract class RasterLayer extends StyleLayer {
     @Override
     public synchronized SimpleFeatureSource getFeatureSource() {
         if (this.source == null) {
-            if( getUserData().containsKey("source") ){
+            if (getUserData().containsKey("source")) {
                 // we tried already and got null - toFeatureCollection is not available!
                 return null;
             }
             SimpleFeatureCollection featureCollection = toFeatureCollection();
-            if( featureCollection != null ){
+            if (featureCollection != null) {
                 this.source = DataUtilities.source(featureCollection);
             }
             // Note we store source in the user data map to communicate with MapLayer
@@ -72,38 +72,34 @@ public abstract class RasterLayer extends StyleLayer {
 
     @Override
     public void dispose() {
-        // We assume that preDispose() has been called by the 
+        // We assume that preDispose() has been called by the
         // by the sub-class
-        
-        if( source != null ){
+
+        if (source != null) {
             getUserData().remove("source");
             source = null;
         }
         super.dispose();
     }
-    
+
     /**
      * Supply a FeatureCollection indicating where the raster is located, we ask that the features
      * use the same coordinate reference system as your raster data and form an outline or foot
      * print of the information you have available.
-     * <p>
-     * This is an interesting method for a RasterLayer to have; some of the rendering systems are
+     *
+     * <p>This is an interesting method for a RasterLayer to have; some of the rendering systems are
      * willing to render your raster content as an outline; for this to work they need this method
      * to supply a feature collection indicating where the content is located. The information may
      * also be used to determine if any of your raster content is on screen (and thus needs to be
      * rendered).
-     * </p>
-     * <p>
-     * Note this is a feature collection to allow for raster content that contains more than one
+     *
+     * <p>Note this is a feature collection to allow for raster content that contains more than one
      * image; and is not based bounding boxes (as sometimes rasters are rotated or stretched into
      * position).
-     * </p>
-     * <p>
-     * You may find the {@link FeatureUtilities} useful in wrapping up your raster content.
-     * </p>
-     * 
+     *
+     * <p>You may find the {@link FeatureUtilities} useful in wrapping up your raster content.
+     *
      * @return SimpleFeatureCollection indicating the location of raster content
      */
     public abstract SimpleFeatureCollection toFeatureCollection();
-
 }

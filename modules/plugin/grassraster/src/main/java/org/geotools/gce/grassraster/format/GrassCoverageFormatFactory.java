@@ -21,28 +21,24 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 
 /**
- * The GrassCoverageFormatFactory will be discovered by the GridFormatFinder. Use the
- * standard Geotools method of discovering a factory in order to create a
- * format.
- * 
+ * The GrassCoverageFormatFactory will be discovered by the GridFormatFinder. Use the standard
+ * Geotools method of discovering a factory in order to create a format.
+ *
  * @author Andrea Antonello (www.hydrologis.com)
- *
- *
  * @source $URL$
  */
 public class GrassCoverageFormatFactory implements GridFormatFactorySpi {
 
     /** Logger. */
-    private final static Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger("org.geotools.gce.grassraster.format");
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.gce.grassraster.format");
 
     /**
      * Creates a new instance of GrassCoverageFormat
-     * 
+     *
      * @return an instance of GrassCoverageFormat
      */
     public GrassCoverageFormat createFormat() {
@@ -51,7 +47,7 @@ public class GrassCoverageFormatFactory implements GridFormatFactorySpi {
 
     /**
      * Checks for the JAI library which is needed by the GrassCoverage datasource
-     * 
+     *
      * @return true if all libraries are available
      */
     public boolean isAvailable() {
@@ -64,8 +60,7 @@ public class GrassCoverageFormatFactory implements GridFormatFactorySpi {
             Class.forName("javax.media.jai.JAI");
             Class.forName("com.sun.media.jai.operator.ImageReadDescriptor");
         } catch (ClassNotFoundException e) {
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
+            if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
             available = false;
         }
 
@@ -74,7 +69,7 @@ public class GrassCoverageFormatFactory implements GridFormatFactorySpi {
 
     /**
      * Returns the implementation hints
-     * 
+     *
      * @return the implementation hints (an empty map, actually)
      */
     public Map getImplementationHints() {

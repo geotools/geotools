@@ -16,10 +16,9 @@
  */
 package org.geotools.coverage.grid.io;
 
-
 /**
  * Default implementation of the {@link DimensionDescriptor} interface
- * 
+ *
  * @author Daniele Romagnoli - GeoSolutions SAS
  */
 public class DefaultDimensionDescriptor implements DimensionDescriptor {
@@ -34,8 +33,12 @@ public class DefaultDimensionDescriptor implements DimensionDescriptor {
 
     private String endAttribute;
 
-    public DefaultDimensionDescriptor(String name, String units, String unitSymbol, 
-            String startAttribute, String endAttribute) {
+    public DefaultDimensionDescriptor(
+            String name,
+            String units,
+            String unitSymbol,
+            String startAttribute,
+            String endAttribute) {
         super();
         this.name = name;
         this.unitSymbol = unitSymbol;
@@ -69,19 +72,18 @@ public class DefaultDimensionDescriptor implements DimensionDescriptor {
     }
 
     public void setUnitSymbol(String unitSymbol) {
-            this.unitSymbol = unitSymbol;
+        this.unitSymbol = unitSymbol;
     }
 
     public void setUnits(String units) {
-            this.units = units;
+        this.units = units;
     }
 
     public void setStartAttribute(String startAttribute) {
-            this.startAttribute = startAttribute;
+        this.startAttribute = startAttribute;
     }
 
     public void setEndAttribute(String endAttribute) {
-            this.endAttribute = endAttribute;
+        this.endAttribute = endAttribute;
     }
-
 }

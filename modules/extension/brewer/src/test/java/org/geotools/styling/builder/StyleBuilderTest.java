@@ -8,7 +8,6 @@ import static org.junit.Assert.assertThat;
 
 import java.awt.Color;
 import java.util.Arrays;
-
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.expression.ExpressionBuilder;
 import org.geotools.styling.AnchorPoint;
@@ -33,13 +32,9 @@ import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 import org.opengis.style.Halo;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class StyleBuilderTest {
-    
+
     FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2();
 
     public void example() {
@@ -51,8 +46,8 @@ public class StyleBuilderTest {
         UserLayer layer = sf.createUserLayer();
         layer.setName("layer");
 
-        FeatureTypeConstraint constraint = sf.createFeatureTypeConstraint("Feature",
-                Filter.INCLUDE, null);
+        FeatureTypeConstraint constraint =
+                sf.createFeatureTypeConstraint("Feature", Filter.INCLUDE, null);
 
         layer.layerFeatureConstraints().add(constraint);
 
@@ -74,7 +69,10 @@ public class StyleBuilderTest {
         StyleBuilder builder = new StyleBuilder();
 
         RuleBuilder rule = builder.featureTypeStyle().featureTypeName("Feature").rule();
-        rule.point().graphic().externalGraphic("file:///C:/images/house.gif", "image/gid").mark()
+        rule.point()
+                .graphic()
+                .externalGraphic("file:///C:/images/house.gif", "image/gid")
+                .mark()
                 .name("circle");
 
         Style style = builder.build();
@@ -86,30 +84,33 @@ public class StyleBuilderTest {
     public void ftsOptions() {
         StyleBuilder builder = new StyleBuilder();
 
-        RuleBuilder rule = builder
-                .featureTypeStyle()
-                .featureTypeName("Feature")
-                .option(FeatureTypeStyle.KEY_EVALUATION_MODE,
-                        FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST).rule();
+        RuleBuilder rule =
+                builder.featureTypeStyle()
+                        .featureTypeName("Feature")
+                        .option(
+                                FeatureTypeStyle.KEY_EVALUATION_MODE,
+                                FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST)
+                        .rule();
         rule.point().graphic().mark().name("circle");
 
         Style style = builder.build();
-        
 
         assertNotNull(style);
         FeatureTypeStyle fts = style.featureTypeStyles().get(0);
         assertEquals(1, fts.getOptions().size());
-        assertEquals(FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST, fts.getOptions().get(FeatureTypeStyle.KEY_EVALUATION_MODE));
+        assertEquals(
+                FeatureTypeStyle.VALUE_EVALUATION_MODE_FIRST,
+                fts.getOptions().get(FeatureTypeStyle.KEY_EVALUATION_MODE));
     }
-    
+
     @Test
     public void ftsTransformation() {
         StyleBuilder builder = new StyleBuilder();
 
         // don't have a RT handy, we'll just use a random function instead
         builder.featureTypeStyle()
-               .featureTypeName("Feature")
-               .transformation(FF.function("abs", FF.literal("123")));
+                .featureTypeName("Feature")
+                .transformation(FF.function("abs", FF.literal("123")));
 
         Style style = builder.build();
 
@@ -134,7 +135,6 @@ public class StyleBuilderTest {
         anchor = b.x(0.5).y(0.9).build();
         assertEquals(0.5, anchor.getAnchorPointX().evaluate(null, Double.class), 0.0);
         assertEquals(0.9, anchor.getAnchorPointY().evaluate(null, Double.class), 0.0);
-        
     }
 
     @Test
@@ -345,14 +345,13 @@ public class StyleBuilderTest {
         assertNull(b.unset().build());
         assertNotNull(b.reset().build());
     }
-    
+
     @Test
     public void testStrokeBuilderDashArrayExpression() {
         StrokeBuilder b = new StrokeBuilder();
         assertNull(b.unset().build());
         assertNotNull(b.reset().build());
     }
-
 
     @Test
     public void testStyleBuilder() {
@@ -447,8 +446,8 @@ public class StyleBuilderTest {
     public void testPolygonStyle() {
         StyleBuilder sb = new StyleBuilder();
 
-        PolygonSymbolizerBuilder symb = sb.featureTypeStyle().name("Simple polygon style").rule()
-                .polygon();
+        PolygonSymbolizerBuilder symb =
+                sb.featureTypeStyle().name("Simple polygon style").rule().polygon();
         symb.stroke().color(Color.BLUE).width(1).opacity(0.5);
         symb.fill().color(Color.CYAN).opacity(0.5);
 
@@ -456,7 +455,7 @@ public class StyleBuilderTest {
 
         // now what do we test :-)
     }
-    
+
     @Test
     public void testStrokeBuilderDashArray() {
         ExpressionBuilder eb = new ExpressionBuilder();
@@ -465,31 +464,30 @@ public class StyleBuilderTest {
         Literal literal = (Literal) eb.literal(10).build();
         sb.dashArray(Arrays.asList(expression, literal));
         Stroke stroke = sb.build();
-        
+
         assertEquals(2, stroke.dashArray().size());
         assertEquals(expression, stroke.dashArray().get(0));
         assertEquals(literal, stroke.dashArray().get(1));
     }
 
-
     /*
      * public void test(){ FeatureTypeFactory factory =
      * CommonFactoryFinder.getFeatureTypeFactory(null);
-     * 
+     *
      * AttributeTypeBuilder b = new AttributeTypeBuilder(factory); AttributeType ANY_URI =
      * b.name("anyURI").binding(URI.class).buildType(); AttributeType DOUBLE =
      * b.name("Double").binding(Double.class).buildType();
-     * 
+     *
      * AttributeDescriptor uom = b.buildDescriptor("uom", ANY_URI ); AttributeDescriptor value =
      * b.inline(true).buildDescriptor("value", DOUBLE );
-     * 
+     *
      * Set<PropertyDescriptor> properties = new HashSet<PropertyDescriptor>(); properties.add( value
      * ); properties.add( uom );
-     * 
+     *
      * ComplexType MEASURE_TYPE = factory.createComplexType( new NameImpl("MeasureType"),
      * properties, true, false, Collections.EMPTY_LIST, null, null );
-     * 
-     * 
+     *
+     *
      * }
      */
 }

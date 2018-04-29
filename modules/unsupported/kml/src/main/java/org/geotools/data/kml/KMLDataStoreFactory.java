@@ -20,46 +20,41 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Map;
-
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFactorySpi;
-
 
 /**
  * DataStore factory that creates {@linkplain org.geotools.data.kml.KMLDataStore}s
  *
  * @author NielsCharlier, Scitus Development
- *
- *
  * @source $URL$
  */
 public class KMLDataStoreFactory implements DataStoreFactorySpi {
-    	
-    public static final Param FILE = new Param("file", File.class,
-            "Property file", true);
 
-    public static final Param NAMESPACE = new Param("namespace", String.class,
-            "namespace of datastore", false);
-    
+    public static final Param FILE = new Param("file", File.class, "Property file", true);
+
+    public static final Param NAMESPACE =
+            new Param("namespace", String.class, "namespace of datastore", false);
+
     public DataStore createDataStore(Map params) throws IOException {
-    	File file = fileLookup(params);
-        String namespaceURI = (String) NAMESPACE.lookUp( params );
+        File file = fileLookup(params);
+        String namespaceURI = (String) NAMESPACE.lookUp(params);
         if (file.exists() && !file.isDirectory()) {
-            return new KMLDataStore(file,namespaceURI);
+            return new KMLDataStore(file, namespaceURI);
         } else {
             throw new IOException("Existing file is required");
         }
     }
 
     public DataStore createNewDataStore(Map params) throws IOException {
-    	File file = (File)FILE.lookUp(params);
+        File file = (File) FILE.lookUp(params);
 
         if (file.exists()) {
             throw new IOException(file + " already exists");
         }
 
         String namespaceURI = (String) NAMESPACE.lookUp(params);
-        return new KMLDataStore(file,namespaceURI);
+        return new KMLDataStore(file, namespaceURI);
     }
 
     public String getDisplayName() {
@@ -75,18 +70,15 @@ public class KMLDataStoreFactory implements DataStoreFactorySpi {
      * @see KMLDataStoreFactory#NAMESPACE
      */
     public Param[] getParametersInfo() {
-        return new Param[] { FILE, NAMESPACE };
+        return new Param[] {FILE, NAMESPACE};
     }
 
     /**
-     * Test to see if this datastore is available, if it has all the
-     * appropriate libraries to construct a datastore.  This datastore just
-     * returns true for now.  This method is used for gui apps, so as to not
-     * advertise data store capabilities they don't actually have.
+     * Test to see if this datastore is available, if it has all the appropriate libraries to
+     * construct a datastore. This datastore just returns true for now. This method is used for gui
+     * apps, so as to not advertise data store capabilities they don't actually have.
      *
-     * @return <tt>true</tt> if and only if this factory is available to create
-     *         DataStores.
-     *
+     * @return <tt>true</tt> if and only if this factory is available to create DataStores.
      * @task <code>true</code> property datastore is always available
      */
     public boolean isAvailable() {
@@ -97,7 +89,6 @@ public class KMLDataStoreFactory implements DataStoreFactorySpi {
      * Works for a file directory or property file
      *
      * @param params Connection parameters
-     *
      * @return true for connection parameters indicating a directory or property file
      */
     public boolean canProcess(Map params) {
@@ -105,47 +96,45 @@ public class KMLDataStoreFactory implements DataStoreFactorySpi {
             fileLookup(params);
             return true;
         } catch (Exception erp) {
-            //can't process, just return false
+            // can't process, just return false
             return false;
         }
     }
-    
-    /**
-     * No implementation hints are provided at this time.
-     */
-    public Map getImplementationHints(){
+
+    /** No implementation hints are provided at this time. */
+    public Map getImplementationHints() {
         return java.util.Collections.EMPTY_MAP;
     }
-    
+
     /**
-     * Lookups the property file in the params argument, and
-     * returns the corresponding <code>java.io.File</code>.
-     * <p>
-     * The file is first checked for existence as an absolute path in the filesystem. If
-     * such a directory is not found, then it is treated as a relative path, taking Java
-     * system property <code>"user.dir"</code> as the base.
-     * </p>
+     * Lookups the property file in the params argument, and returns the corresponding <code>
+     * java.io.File</code>.
+     *
+     * <p>The file is first checked for existence as an absolute path in the filesystem. If such a
+     * directory is not found, then it is treated as a relative path, taking Java system property
+     * <code>"user.dir"</code> as the base.
+     *
      * @param params
      * @throws IllegalArgumentException if file is a directory.
      * @throws FileNotFoundException if directory does not exists
      * @throws IOException if {@linkplain #DIRECTORY} doesn't find parameter in <code>params</code>
-     * file does not exists.
+     *     file does not exists.
      */
-    private File fileLookup(Map params) throws IOException, FileNotFoundException,
-            IllegalArgumentException {
+    private File fileLookup(Map params)
+            throws IOException, FileNotFoundException, IllegalArgumentException {
         File file = (File) FILE.lookUp(params);
-        if( file.exists() ){
-            if( file.isDirectory() ){
-                throw new IllegalArgumentException("Property file is required (not a directory) "+file.getAbsolutePath());
+        if (file.exists()) {
+            if (file.isDirectory()) {
+                throw new IllegalArgumentException(
+                        "Property file is required (not a directory) " + file.getAbsolutePath());
             }
             return file;
-        }
-        else {
+        } else {
             File dir = file.getParentFile();
-            if( dir == null || !dir.exists() ){
+            if (dir == null || !dir.exists()) {
                 // quickly check if it exists relative to the user directory
                 File currentDir = new File(System.getProperty("user.dir"));
-                
+
                 File file2 = new File(currentDir, file.getPath());
                 if (file2.exists()) {
                     return file2;

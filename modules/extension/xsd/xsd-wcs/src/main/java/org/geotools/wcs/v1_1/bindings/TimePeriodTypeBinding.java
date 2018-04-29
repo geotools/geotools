@@ -1,11 +1,11 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- *    
+ *
  *    (c) 2014 - 2015 Open Source Geospatial Foundation - all rights reserved
  *    (c) 2001 - 2013 OpenPlans
  *           (c) 2009 Open Source Geospatial Foundation (LGPL)
- *           
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -19,16 +19,14 @@
 package org.geotools.wcs.v1_1.bindings;
 
 import java.net.URI;
-
 import javax.xml.namespace.QName;
-
-import org.geotools.wcs.v1_1.WCS;
 import org.geotools.gml3.GML;
 import org.geotools.metadata.iso.citation.Citations;
 import org.geotools.referencing.NamedIdentifier;
 import org.geotools.temporal.object.DefaultInstant;
 import org.geotools.temporal.object.DefaultPeriod;
 import org.geotools.temporal.reference.DefaultTemporalReferenceSystem;
+import org.geotools.wcs.v1_1.WCS;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
@@ -41,9 +39,9 @@ import org.w3c.dom.Element;
 
 /**
  * Binding object for the type http://www.opengis.net/wcs:TimePeriodType.
- * 
+ *
  * <p>
- * 
+ *
  * <pre>
  *       <code>
  *  &lt;complexType name=&quot;TimePeriodType&quot;&gt;
@@ -56,27 +54,25 @@ import org.w3c.dom.Element;
  *          &lt;element minOccurs=&quot;0&quot; name=&quot;timeResolution&quot; type=&quot;gml:TimeDurationType&quot;/&gt;
  *      &lt;/sequence&gt;
  *      &lt;attribute default=&quot;#ISO-8601&quot; name=&quot;frame&quot; type=&quot;anyURI&quot; use=&quot;optional&quot;/&gt;
- *  &lt;/complexType&gt; 
- *      
+ *  &lt;/complexType&gt;
+ *
  * </code>
  *       </pre>
- * 
- * </p>
- * 
+ *
  * @generated
  */
 public class TimePeriodTypeBinding extends AbstractComplexBinding {
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return WCS.TimePeriodType;
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Class getType() {
@@ -84,12 +80,13 @@ public class TimePeriodTypeBinding extends AbstractComplexBinding {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-            throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
         String frameName = ((URI) node.getAttributeValue("frame", "#ISO-8601")).toString();
         NamedIdentifier frameID = new NamedIdentifier(Citations.CRS, frameName);
@@ -105,13 +102,12 @@ public class TimePeriodTypeBinding extends AbstractComplexBinding {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.geotools.xml.AbstractComplexBinding#encode(java.lang.Object,
      *      org.w3c.dom.Document, org.w3c.dom.Element)
      */
     @Override
-    public Element encode(Object object, Document document, Element value)
-            throws Exception {
+    public Element encode(Object object, Document document, Element value) throws Exception {
         Period timePeriod = (Period) object;
 
         if (timePeriod == null) {

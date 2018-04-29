@@ -18,15 +18,11 @@ package org.geotools.sld.bindings;
 
 import org.geotools.styling.ChannelSelection;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class SLDChannelSectionBindingTest extends SLDTestSupport {
     public void testType() throws Exception {
-        assertEquals(ChannelSelection.class, new SLDChannelSelectionBinding(styleFactory).getType());
+        assertEquals(
+                ChannelSelection.class, new SLDChannelSelectionBinding(styleFactory).getType());
     }
 
     public void testRGB() throws Exception {
@@ -39,7 +35,7 @@ public class SLDChannelSectionBindingTest extends SLDTestSupport {
         assertEquals(cs.getRGBChannels()[1].getChannelName(), "Green");
         assertEquals(cs.getRGBChannels()[2].getChannelName(), "Blue");
     }
-    
+
     public void testGray() throws Exception {
         SLDMockData.channelSelectionGray(document, document);
 

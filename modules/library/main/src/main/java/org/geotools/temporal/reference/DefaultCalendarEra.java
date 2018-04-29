@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -26,42 +26,40 @@ import org.opengis.temporal.Period;
 import org.opengis.util.InternationalString;
 
 /**
- *
  * @author Mehdi Sidhoum (Geomatys)
- *
- *
- *
  * @source $URL$
  */
 public class DefaultCalendarEra implements CalendarEra {
 
-    /**
-     * identify the calendar era within this calendar.
-     */
+    /** identify the calendar era within this calendar. */
     private InternationalString name;
     /**
-     * provide the name or description of a mythical or historic event which fixes the position of the base scale of the calendar era.
+     * provide the name or description of a mythical or historic event which fixes the position of
+     * the base scale of the calendar era.
      */
     private InternationalString referenceEvent;
     /**
      * provide the date of the reference referenceEvent expressed as a date in the given calendar.
-     * In most calendars, this date is the origin (i.e the first day) of the scale, but this is not always true.
+     * In most calendars, this date is the origin (i.e the first day) of the scale, but this is not
+     * always true.
      */
     private CalendarDate referenceDate;
-    /**
-     * provide the Julian date that corresponds to the reference date.
-     */
+    /** provide the Julian date that corresponds to the reference date. */
     private JulianDate julianReference;
     /**
-     * identify the TM_Period for which the calendar era was used as a basis for dating, the datatype for TM_Period.begin and Tm_Period.end shall be JulianDate.
+     * identify the TM_Period for which the calendar era was used as a basis for dating, the
+     * datatype for TM_Period.begin and Tm_Period.end shall be JulianDate.
      */
     private Period epochOfUse;
-    /**
-     * Collection of TM_Calendars that use this TM_CalendarEra as a reference for dating.
-     */
+    /** Collection of TM_Calendars that use this TM_CalendarEra as a reference for dating. */
     private Collection<Calendar> datingSystem;
 
-    public DefaultCalendarEra(InternationalString name, InternationalString referenceEvent, CalendarDate referenceDate, JulianDate julianReference, Period epochOfUse) {
+    public DefaultCalendarEra(
+            InternationalString name,
+            InternationalString referenceEvent,
+            CalendarDate referenceDate,
+            JulianDate julianReference,
+            Period epochOfUse) {
         this.name = name;
         this.referenceDate = referenceDate;
         this.referenceEvent = referenceEvent;
@@ -118,12 +116,12 @@ public class DefaultCalendarEra implements CalendarEra {
         if (object instanceof CalendarEra) {
             final DefaultCalendarEra that = (DefaultCalendarEra) object;
 
-            return Utilities.equals(this.datingSystem, that.datingSystem) &&
-                    Utilities.equals(this.epochOfUse, that.epochOfUse) &&
-                    Utilities.equals(this.julianReference, that.julianReference) &&
-                    Utilities.equals(this.name, that.name) &&
-                    Utilities.equals(this.referenceDate, that.referenceDate) &&
-                    Utilities.equals(this.referenceEvent, that.referenceEvent);
+            return Utilities.equals(this.datingSystem, that.datingSystem)
+                    && Utilities.equals(this.epochOfUse, that.epochOfUse)
+                    && Utilities.equals(this.julianReference, that.julianReference)
+                    && Utilities.equals(this.name, that.name)
+                    && Utilities.equals(this.referenceDate, that.referenceDate)
+                    && Utilities.equals(this.referenceEvent, that.referenceEvent);
         }
         return false;
     }

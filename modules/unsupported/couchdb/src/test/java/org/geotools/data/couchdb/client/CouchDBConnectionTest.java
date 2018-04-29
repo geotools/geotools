@@ -3,7 +3,7 @@
  *    http://geotools.org
  *
  *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -16,14 +16,13 @@
  */
 package org.geotools.data.couchdb.client;
 
-import org.geotools.data.couchdb.CouchDBTestSupport;
-import org.junit.Test;
 import static org.junit.Assert.*;
 
+import org.geotools.data.couchdb.CouchDBTestSupport;
+import org.junit.Test;
+
 /**
- *
  * @author Ian Schneider (OpenGeo)
- *
  * @source $URL$
  */
 public class CouchDBConnectionTest extends CouchDBTestSupport {
@@ -54,7 +53,6 @@ public class CouchDBConnectionTest extends CouchDBTestSupport {
 
         db.delete();
     }
-    
 
     public CouchDBConnection setupDB() throws Exception {
         deleteIfExists(getTestDB());

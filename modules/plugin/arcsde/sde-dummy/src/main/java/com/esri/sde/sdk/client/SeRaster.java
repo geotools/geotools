@@ -1,12 +1,8 @@
-package com.esri.sde.sdk.client; 
+package com.esri.sde.sdk.client;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class SeRaster {
-    
+
     public static int SE_RASTER_INTERLEAVE_NONE = 0;
     public static int SE_RASTER_INTERLEAVE_BSQ_91 = 0;
     public static int SE_RASTER_INTERLEAVE_BIP_91 = 0;
@@ -32,7 +28,7 @@ public class SeRaster {
     public static int SE_PIXEL_TYPE_8BIT_S = 2;
     public static int SE_PIXEL_TYPE_1BIT = 3;
     public static int SE_PIXEL_TYPE_32BIT_REAL = 5;
-    
+
     public static int SE_COMPRESSION_NONE = 100;
     public static int SE_COMPRESSION_LZ77 = 101;
     public static int SE_COMPRESSION_JPEG = 102;
@@ -46,8 +42,5 @@ public class SeRaster {
         return null;
     }
 
-    public void getInfoById(SeObjectId rasterId) throws SeException{    
-    }
-    
-    
+    public void getInfoById(SeObjectId rasterId) throws SeException {}
 }

@@ -17,18 +17,17 @@
 
 package org.geotools.swing.tool;
 
-import java.awt.Cursor;
-
-import org.geotools.swing.testutils.GraphicsTestBase;
-
-import org.junit.Before;
-import org.junit.Test;
 import static org.junit.Assert.*;
 
+import java.awt.Cursor;
+import org.geotools.swing.testutils.GraphicsTestBase;
+import org.junit.Before;
+import org.junit.Test;
+
 /**
- * Test for the {@linkplain CursorTool} base class. These tests can be run
- * in a headless environment.
- * 
+ * Test for the {@linkplain CursorTool} base class. These tests can be run in a headless
+ * environment.
+ *
  * @author Michael Bedward
  * @since 8.0
  * @source $URL$

@@ -20,36 +20,29 @@ import java.awt.image.ColorModel;
 import java.awt.image.IndexColorModel;
 import java.awt.image.SampleModel;
 import java.util.Arrays;
-
 import org.geotools.gce.imagemosaic.MosaicConfigurationBean;
 import org.geotools.gce.imagemosaic.catalog.CatalogConfigurationBean;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Simple builder which builds the configuration bean of a mosaic configuration.
- * 
+ *
  * @author Daniele Romagnoli, GeoSolutions SAS
- * 
  */
 public class MosaicBeanBuilder {
 
     private MosaicConfigurationBean bean;
 
-    /**
-     * Default constructor
-     */
-    public MosaicBeanBuilder() {
-
-    }
+    /** Default constructor */
+    public MosaicBeanBuilder() {}
 
     /**
-     * <code>true</code> if we need to expand to RGB(A) the single tiles in case they use a different {@link IndexColorModel}.
+     * <code>true</code> if we need to expand to RGB(A) the single tiles in case they use a
+     * different {@link IndexColorModel}.
      */
     private boolean expandToRGB;
 
-    /**
-     * <code>true</code> if we need to look for PAM auxiliary metadata xml files.
-     */
+    /** <code>true</code> if we need to look for PAM auxiliary metadata xml files. */
     private boolean checkAuxiliaryMetadata;
 
     /** OverviewLevel levels */
@@ -66,7 +59,7 @@ public class MosaicBeanBuilder {
 
     /** elevation attribute name. <code>null</code> if absent. */
     private String elevationAttribute;
-    
+
     /** crs attribute name. <code>null</code> if absent. */
     private String crsAttribute;
 
@@ -78,8 +71,9 @@ public class MosaicBeanBuilder {
     private String auxiliaryDatastorePath;
 
     /**
-     * mosaic's dummy sample model useful to store dataType and number of bands. All the other fields shouldn't be queried since they are meaningless
-     * for the whole mosaic (width, height, ...)
+     * mosaic's dummy sample model useful to store dataType and number of bands. All the other
+     * fields shouldn't be queried since they are meaningless for the whole mosaic (width, height,
+     * ...)
      */
     private SampleModel sampleModel;
 
@@ -146,7 +140,7 @@ public class MosaicBeanBuilder {
         this.timeAttribute = timeAttribute;
         bean = null;
     }
-    
+
     public String getCrsAttribute() {
         return timeAttribute;
     }
@@ -246,10 +240,23 @@ public class MosaicBeanBuilder {
 
     @Override
     public String toString() {
-        return "MosaicConfigurationBean [expandToRGB=" + expandToRGB + ", levels="
-                + Arrays.toString(levels) + ", name=" + name + ", levelsNum=" + levelsNum
-                + ", timeAttribute=" + timeAttribute + ", elevationAttribute=" + elevationAttribute
-                + ", crsAttribute=" + crsAttribute + ",sampleModel=" + sampleModel + "]";
+        return "MosaicConfigurationBean [expandToRGB="
+                + expandToRGB
+                + ", levels="
+                + Arrays.toString(levels)
+                + ", name="
+                + name
+                + ", levelsNum="
+                + levelsNum
+                + ", timeAttribute="
+                + timeAttribute
+                + ", elevationAttribute="
+                + elevationAttribute
+                + ", crsAttribute="
+                + crsAttribute
+                + ",sampleModel="
+                + sampleModel
+                + "]";
     }
 
     public MosaicConfigurationBean getMosaicConfigurationBean() {

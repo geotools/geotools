@@ -25,11 +25,9 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Set;
-
 import org.geotools.data.DataStore;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
-import org.geotools.process.vector.AggregateProcess;
 import org.geotools.process.vector.AggregateProcess.AggregationFunction;
 import org.geotools.process.vector.AggregateProcess.Results;
 import org.geotools.test.TestData;
@@ -37,67 +35,82 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class AggregateProcessTest {
     DataStore bugs;
-    
+
     @Before
     public void setup() throws IOException {
-        File file = TestData.file(this, null );
-        bugs = new PropertyDataStore( file );
+        File file = TestData.file(this, null);
+        bugs = new PropertyDataStore(file);
     }
+
     @After
-    public void tearDown(){
+    public void tearDown() {
         bugs.dispose();
     }
-    
+
     @Test
     public void testSum() throws Exception {
         SimpleFeatureSource source = bugs.getFeatureSource("bugsites");
 
         Set<AggregationFunction> functions = EnumSet.of(AggregationFunction.Sum);
-        
-        Results result = AggregateProcess.process( source.getFeatures(), "cat",  functions, true, null );
-        assertTrue( result.sum > 0 );
+
+        Results result =
+                AggregateProcess.process(source.getFeatures(), "cat", functions, true, null);
+        assertTrue(result.sum > 0);
     }
-    
+
     @Test
     public void testSumArea() throws Exception {
         SimpleFeatureSource source = bugs.getFeatureSource("zones");
 
         Set<AggregationFunction> functions = EnumSet.of(AggregationFunction.SumArea);
-        
-        Results result = AggregateProcess.process( source.getFeatures(), "the_geom",  functions, true, null );
-        assertTrue( result.area > 0 );
+
+        Results result =
+                AggregateProcess.process(source.getFeatures(), "the_geom", functions, true, null);
+        assertTrue(result.area > 0);
     }
 
     @Test
     public void testSumWithGroupBy() throws Exception {
         SimpleFeatureSource source = bugs.getFeatureSource("bugsites");
         Set<AggregationFunction> functions = EnumSet.of(AggregationFunction.Sum);
-        Results result = AggregateProcess.process( source.getFeatures(), "cat", functions, Collections.singletonList("str1"), true, null);
+        Results result =
+                AggregateProcess.process(
+                        source.getFeatures(),
+                        "cat",
+                        functions,
+                        Collections.singletonList("str1"),
+                        true,
+                        null);
         // we expect a group by result
         assertNotNull(result.getGroupByResult());
         // the group by result should not be empty
         assertTrue(result.getGroupByResult().size() > 0);
-        // the size of each line result should be 2 (one group by attribute and one aggregation function)
+        // the size of each line result should be 2 (one group by attribute and one aggregation
+        // function)
         assertTrue(result.getGroupByResult().get(0).length == 2);
     }
-    
+
     @Test
     public void testSumAreaWithGroupBy() throws Exception {
         SimpleFeatureSource source = bugs.getFeatureSource("groupedzones");
         Set<AggregationFunction> functions = EnumSet.of(AggregationFunction.SumArea);
-        Results result = AggregateProcess.process( source.getFeatures(), "the_geom", functions, Collections.singletonList("str1"), true, null);
+        Results result =
+                AggregateProcess.process(
+                        source.getFeatures(),
+                        "the_geom",
+                        functions,
+                        Collections.singletonList("str1"),
+                        true,
+                        null);
         // we expect a group by result
         assertNotNull(result.getGroupByResult());
         // the group by result should not be empty
         assertTrue(result.getGroupByResult().size() == 3);
-        // the size of each line result should be 2 (one group by attribute and one aggregation function)
+        // the size of each line result should be 2 (one group by attribute and one aggregation
+        // function)
         assertTrue(result.getGroupByResult().get(0).length == 2);
     }
 }

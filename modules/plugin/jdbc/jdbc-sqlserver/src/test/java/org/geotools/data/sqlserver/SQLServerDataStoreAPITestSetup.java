@@ -18,11 +18,7 @@ package org.geotools.data.sqlserver;
 
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class SQLServerDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
 
     public SQLServerDataStoreAPITestSetup() {
@@ -31,41 +27,59 @@ public class SQLServerDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
 
     @Override
     protected void createRoadTable() throws Exception {
-        run("CREATE TABLE road(fid int IDENTITY(0,1) PRIMARY KEY, id int, "
-            + "geom geometry, name nvarchar(255) )"); //use nvarchar to test nvarchar mappings (GEOT-3609)
-        run("INSERT INTO road (id,geom,name) VALUES (0,"
-            + "geometry::STGeomFromText('LINESTRING(1 1, 2 2, 4 2, 5 1)',4326)," + "'r1')");
-        run("INSERT INTO road (id,geom,name) VALUES ( 1,"
-            + "geometry::STGeomFromText('LINESTRING(3 0, 3 2, 3 3, 3 4)',4326)," + "'r2')");
-        run("INSERT INTO road (id,geom,name) VALUES ( 2,"
-            + "geometry::STGeomFromText('LINESTRING(3 2, 4 2, 5 3)',4326)," + "'r3')");
-        
-        run("CREATE SPATIAL INDEX _road_geometry_index on road(geom) WITH (BOUNDING_BOX = (-10, -10, 10, 10))");
+        run(
+                "CREATE TABLE road(fid int IDENTITY(0,1) PRIMARY KEY, id int, "
+                        + "geom geometry, name nvarchar(255) )"); // use nvarchar to test nvarchar
+        // mappings (GEOT-3609)
+        run(
+                "INSERT INTO road (id,geom,name) VALUES (0,"
+                        + "geometry::STGeomFromText('LINESTRING(1 1, 2 2, 4 2, 5 1)',4326),"
+                        + "'r1')");
+        run(
+                "INSERT INTO road (id,geom,name) VALUES ( 1,"
+                        + "geometry::STGeomFromText('LINESTRING(3 0, 3 2, 3 3, 3 4)',4326),"
+                        + "'r2')");
+        run(
+                "INSERT INTO road (id,geom,name) VALUES ( 2,"
+                        + "geometry::STGeomFromText('LINESTRING(3 2, 4 2, 5 3)',4326),"
+                        + "'r3')");
+
+        run(
+                "CREATE SPATIAL INDEX _road_geometry_index on road(geom) WITH (BOUNDING_BOX = (-10, -10, 10, 10))");
     }
 
     @Override
     protected void createRiverTable() throws Exception {
-        run("CREATE TABLE river(fid int IDENTITY(0,1) PRIMARY KEY, id int, "
-            + "geom geometry, river nvarchar(255) , flow float )");
+        run(
+                "CREATE TABLE river(fid int IDENTITY(0,1) PRIMARY KEY, id int, "
+                        + "geom geometry, river nvarchar(255) , flow float )");
 
-        run("INSERT INTO river (id,geom,river, flow)  VALUES ( 0,"
-            + "geometry::STGeomFromText('MULTILINESTRING((5 5, 7 4),(7 5, 9 7, 13 7),(7 5, 9 3, 11 3))',4326),"
-            + "'rv1', 4.5)");
-        run("INSERT INTO river (id,geom,river, flow) VALUES ( 1,"
-            + "geometry::STGeomFromText('MULTILINESTRING((4 6, 4 8, 6 10))',4326)," + "'rv2', 3.0)");
-        
-        run("CREATE SPATIAL INDEX _river_geometry_index on river(geom) WITH (BOUNDING_BOX = (-10, -10, 10, 10))");
+        run(
+                "INSERT INTO river (id,geom,river, flow)  VALUES ( 0,"
+                        + "geometry::STGeomFromText('MULTILINESTRING((5 5, 7 4),(7 5, 9 7, 13 7),(7 5, 9 3, 11 3))',4326),"
+                        + "'rv1', 4.5)");
+        run(
+                "INSERT INTO river (id,geom,river, flow) VALUES ( 1,"
+                        + "geometry::STGeomFromText('MULTILINESTRING((4 6, 4 8, 6 10))',4326),"
+                        + "'rv2', 3.0)");
+
+        run(
+                "CREATE SPATIAL INDEX _river_geometry_index on river(geom) WITH (BOUNDING_BOX = (-10, -10, 10, 10))");
     }
 
     @Override
     protected void createLakeTable() throws Exception {
-        run("CREATE TABLE lake(fid int IDENTITY(0,1) PRIMARY KEY, id int, "
-            + "geom geometry, name varchar(255) )");
+        run(
+                "CREATE TABLE lake(fid int IDENTITY(0,1) PRIMARY KEY, id int, "
+                        + "geom geometry, name varchar(255) )");
 
-        run("INSERT INTO lake (id,geom,name) VALUES ( 0,"
-            + "geometry::STGeomFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',4326)," + "'muddy')");
-        
-        run("CREATE SPATIAL INDEX _lake_geometry_index on lake(geom) WITH (BOUNDING_BOX = (-100, -100, 100, 100))");
+        run(
+                "INSERT INTO lake (id,geom,name) VALUES ( 0,"
+                        + "geometry::STGeomFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',4326),"
+                        + "'muddy')");
+
+        run(
+                "CREATE SPATIAL INDEX _lake_geometry_index on lake(geom) WITH (BOUNDING_BOX = (-100, -100, 100, 100))");
     }
 
     @Override

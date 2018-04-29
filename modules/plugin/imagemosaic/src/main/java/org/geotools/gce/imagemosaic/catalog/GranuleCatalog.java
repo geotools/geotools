@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map.Entry;
-
 import org.geotools.coverage.grid.io.footprint.MultiLevelROI;
 import org.geotools.coverage.grid.io.footprint.MultiLevelROIProvider;
 import org.geotools.data.Query;
@@ -30,37 +29,31 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.Hints;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.visitor.FeatureCalc;
-import org.geotools.gce.imagemosaic.granulecollector.DefaultSubmosaicProducerFactory;
-import org.geotools.gce.imagemosaic.granulecollector.SubmosaicProducerFactory;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.geometry.BoundingBox;
 
-/**
- * 
- * 
- * @source $URL$
- */
+/** @source $URL$ */
 public abstract class GranuleCatalog {
 
     protected final Hints hints;
 
     protected MultiLevelROIProvider multiScaleROIProvider;
 
-    /**
-     * @param hints
-     */
+    /** @param hints */
     public GranuleCatalog(Hints hints) {
         this.hints = hints;
     }
 
-    public void addGranule(final String typeName, final SimpleFeature granule,
-            final Transaction transaction) throws IOException {
+    public void addGranule(
+            final String typeName, final SimpleFeature granule, final Transaction transaction)
+            throws IOException {
         addGranules(typeName, Collections.singleton(granule), transaction);
     }
 
-    public abstract void addGranules(final String typeName, Collection<SimpleFeature> granules,
-            Transaction transaction) throws IOException;
+    public abstract void addGranules(
+            final String typeName, Collection<SimpleFeature> granules, Transaction transaction)
+            throws IOException;
 
     public abstract void computeAggregateFunction(Query q, FeatureCalc function) throws IOException;
 
@@ -95,7 +88,7 @@ public abstract class GranuleCatalog {
 
     /**
      * Merges the wrapper hints with the query ones, making sure not to overwrite the query ones
-     * 
+     *
      * @param q
      * @return
      */
@@ -123,9 +116,10 @@ public abstract class GranuleCatalog {
     }
 
     /**
-     * Returns the footprint for the given granule. Mind, when applying insets we might have the case of the geometry being empty (negative buffer
-     * eroded it fully), in that case the granule must not be loaded
-     * 
+     * Returns the footprint for the given granule. Mind, when applying insets we might have the
+     * case of the geometry being empty (negative buffer eroded it fully), in that case the granule
+     * must not be loaded
+     *
      * @param sf
      * @return
      */
@@ -143,9 +137,9 @@ public abstract class GranuleCatalog {
 
     /**
      * Drop the underlying catalog, all the individual granule indexes.
-     * 
-     * This is usuallu done when deleting an ImageMosaic storre.
-     * 
+     *
+     * <p>This is usuallu done when deleting an ImageMosaic storre.
+     *
      * @throws IOException in case something bad happens
      */
     public abstract void drop() throws IOException;

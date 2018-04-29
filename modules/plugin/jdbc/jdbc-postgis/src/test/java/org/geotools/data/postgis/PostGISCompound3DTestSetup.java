@@ -21,18 +21,13 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 import org.geotools.jdbc.JDBCCompound3DTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.util.Version;
 
-/**
- * 
- * 
- * @source $URL$
- */
+/** @source $URL$ */
 public class PostGISCompound3DTestSetup extends JDBCCompound3DTestSetup {
-    
+
     static final Version V_2_0_0 = new Version("2.0.0");
 
     private Version version;
@@ -40,9 +35,9 @@ public class PostGISCompound3DTestSetup extends JDBCCompound3DTestSetup {
     public PostGISCompound3DTestSetup(JDBCTestSetup setup) {
         super(setup);
     }
-    
+
     public Version getVersion() throws SQLException, IOException {
-        if(version == null) {
+        if (version == null) {
             Connection conn = null;
             Statement st = null;
             ResultSet rs = null;
@@ -50,16 +45,16 @@ public class PostGISCompound3DTestSetup extends JDBCCompound3DTestSetup {
                 conn = getDataSource().getConnection();
                 st = conn.createStatement();
                 rs = st.executeQuery("select PostGIS_Lib_Version()");
-                if(rs.next()) {
+                if (rs.next()) {
                     version = new Version(rs.getString(1));
-                } 
+                }
             } finally {
                 conn.close();
                 st.close();
                 rs.close();
             }
         }
-        
+
         return version;
     }
 
@@ -68,22 +63,28 @@ public class PostGISCompound3DTestSetup extends JDBCCompound3DTestSetup {
         Version version = getVersion();
         boolean atLeastV2 = version.compareTo(V_2_0_0) >= 0;
         String geometryType = atLeastV2 ? "geometry(LINESTRINGZ, 7415)" : "geometry";
-        
+
         // setup table
-        run("CREATE TABLE \"lineCompound3d\"(\"fid\" serial PRIMARY KEY, \"id\" int, "
-                + "\"geom\" " + geometryType + ", \"name\" varchar )");
-        if(!atLeastV2) {
-            run("INSERT INTO GEOMETRY_COLUMNS VALUES('', 'public', 'lineCompound3d', 'geom', 3, '7415', 'LINESTRING')");
+        run(
+                "CREATE TABLE \"lineCompound3d\"(\"fid\" serial PRIMARY KEY, \"id\" int, "
+                        + "\"geom\" "
+                        + geometryType
+                        + ", \"name\" varchar )");
+        if (!atLeastV2) {
+            run(
+                    "INSERT INTO GEOMETRY_COLUMNS VALUES('', 'public', 'lineCompound3d', 'geom', 3, '7415', 'LINESTRING')");
         }
         run("CREATE INDEX lineCompound3d_GEOM_IDX ON \"lineCompound3d\" USING GIST (\"geom\") ");
-    
+
         // insert data
-        run("INSERT INTO \"lineCompound3d\" (\"id\",\"geom\",\"name\") VALUES (0,"
-                + "ST_GeomFromText('LINESTRING(1 1 0, 2 2 0, 4 2 1, 5 1 1)', 7415),"
-                + "'l1')");
-        run("INSERT INTO \"lineCompound3d\" (\"id\",\"geom\",\"name\") VALUES (1,"
-                + "ST_GeomFromText('LINESTRING(3 0 1, 3 2 2, 3 3 3, 3 4 5)', 7415),"
-                + "'l2')");
+        run(
+                "INSERT INTO \"lineCompound3d\" (\"id\",\"geom\",\"name\") VALUES (0,"
+                        + "ST_GeomFromText('LINESTRING(1 1 0, 2 2 0, 4 2 1, 5 1 1)', 7415),"
+                        + "'l1')");
+        run(
+                "INSERT INTO \"lineCompound3d\" (\"id\",\"geom\",\"name\") VALUES (1,"
+                        + "ST_GeomFromText('LINESTRING(3 0 1, 3 2 2, 3 3 3, 3 4 5)', 7415),"
+                        + "'l2')");
     }
 
     @Override
@@ -91,20 +92,28 @@ public class PostGISCompound3DTestSetup extends JDBCCompound3DTestSetup {
         Version version = getVersion();
         boolean atLeastV2 = version.compareTo(V_2_0_0) >= 0;
         String geometryType = atLeastV2 ? "geometry(POINTZ, 7415)" : "geometry";
-        
+
         // setup table
-        run("CREATE TABLE \"pointCompound3d\"(\"fid\" serial PRIMARY KEY, \"id\" int, "
-                + "\"geom\" " + geometryType + ", \"name\" varchar )");
-        if(atLeastV2) {
-            run("INSERT INTO GEOMETRY_COLUMNS VALUES('', 'public', 'pointCompound3d', 'geom', 3, '7415', 'POINT')");
+        run(
+                "CREATE TABLE \"pointCompound3d\"(\"fid\" serial PRIMARY KEY, \"id\" int, "
+                        + "\"geom\" "
+                        + geometryType
+                        + ", \"name\" varchar )");
+        if (atLeastV2) {
+            run(
+                    "INSERT INTO GEOMETRY_COLUMNS VALUES('', 'public', 'pointCompound3d', 'geom', 3, '7415', 'POINT')");
         }
         run("CREATE INDEX POINTCompound3d_GEOM_IDX ON \"pointCompound3d\" USING GIST (\"geom\") ");
-    
+
         // insert data
-        run("INSERT INTO \"pointCompound3d\" (\"id\",\"geom\",\"name\") VALUES (0,"
-                + "ST_GeomFromText('POINT(1 1 1)', 7415)," + "'p1')");
-        run("INSERT INTO \"pointCompound3d\" (\"id\",\"geom\",\"name\") VALUES (1,"
-                + "ST_GeomFromText('POINT(3 0 1)', 7415)," + "'p2')");
+        run(
+                "INSERT INTO \"pointCompound3d\" (\"id\",\"geom\",\"name\") VALUES (0,"
+                        + "ST_GeomFromText('POINT(1 1 1)', 7415),"
+                        + "'p1')");
+        run(
+                "INSERT INTO \"pointCompound3d\" (\"id\",\"geom\",\"name\") VALUES (1,"
+                        + "ST_GeomFromText('POINT(3 0 1)', 7415),"
+                        + "'p2')");
     }
 
     @Override
@@ -124,5 +133,4 @@ public class PostGISCompound3DTestSetup extends JDBCCompound3DTestSetup {
         run("DELETE FROM  GEOMETRY_COLUMNS WHERE F_TABLE_NAME = 'pointCompound3d'");
         run("DROP TABLE \"pointCompound3d\"");
     }
-
 }

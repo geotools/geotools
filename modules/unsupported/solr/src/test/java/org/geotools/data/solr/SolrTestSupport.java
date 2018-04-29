@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -17,6 +17,7 @@
 
 package org.geotools.data.solr;
 
+import com.vividsolutions.jts.geom.Geometry;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
@@ -33,7 +34,6 @@ import java.util.Properties;
 import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.temporal.object.DefaultInstant;
 import org.geotools.temporal.object.DefaultPeriod;
 import org.geotools.temporal.object.DefaultPosition;
@@ -41,12 +41,10 @@ import org.geotools.test.OnlineTestCase;
 import org.opengis.temporal.Instant;
 import org.opengis.temporal.Period;
 
-import com.vividsolutions.jts.geom.Geometry;
-
 public abstract class SolrTestSupport extends OnlineTestCase {
 
-    protected static final Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger(SolrTestSupport.class);
+    protected static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(SolrTestSupport.class);
 
     static {
         // uncomment to turn up logging
@@ -54,8 +52,8 @@ public abstract class SolrTestSupport extends OnlineTestCase {
         java.util.logging.ConsoleHandler handler = new java.util.logging.ConsoleHandler();
         handler.setLevel(java.util.logging.Level.FINE);
 
-        org.geotools.util.logging.Logging.getLogger("org.geotools.data.solr").setLevel(
-                java.util.logging.Level.FINE);
+        org.geotools.util.logging.Logging.getLogger("org.geotools.data.solr")
+                .setLevel(java.util.logging.Level.FINE);
         org.geotools.util.logging.Logging.getLogger("org.geotools.data.solr").addHandler(handler);
     }
 
@@ -82,10 +80,11 @@ public abstract class SolrTestSupport extends OnlineTestCase {
             return;
         }
         // do the setup
-        File testDir = (Paths.get(getClass().getResource("/" + testFile).toURI()).getParent())
-                .toFile();
-        ProcessBuilder pb = new ProcessBuilder("java", "-Durl=" + url + "/update", "-jar",
-                "post.jar", testFile);
+        File testDir =
+                (Paths.get(getClass().getResource("/" + testFile).toURI()).getParent()).toFile();
+        ProcessBuilder pb =
+                new ProcessBuilder(
+                        "java", "-Durl=" + url + "/update", "-jar", "post.jar", testFile);
         pb.directory(testDir);
         LOGGER.log(Level.FINE, "Starting SOLR import");
         final Process command = pb.start();
@@ -127,7 +126,6 @@ public abstract class SolrTestSupport extends OnlineTestCase {
             }
             at.setUse(true);
         }
-
     }
 
     protected Map createConnectionParams(String url, Properties fixture) {
@@ -152,8 +150,8 @@ public abstract class SolrTestSupport extends OnlineTestCase {
 
     protected void init(String layerName, String geometryField) throws Exception {
         this.layerName = layerName;
-        SolrLayerConfiguration solrLayerConfiguration = new SolrLayerConfiguration(
-                new ArrayList<SolrAttribute>());
+        SolrLayerConfiguration solrLayerConfiguration =
+                new SolrLayerConfiguration(new ArrayList<SolrAttribute>());
         solrLayerConfiguration.setLayerName(this.layerName);
         List<SolrAttribute> layerAttributes = new ArrayList<>();
         for (SolrAttribute solrAttribute : attributes) {

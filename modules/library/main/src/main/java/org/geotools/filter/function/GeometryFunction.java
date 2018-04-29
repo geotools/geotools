@@ -16,6 +16,7 @@
  */
 package org.geotools.filter.function;
 
+import com.vividsolutions.jts.geom.Geometry;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.feature.Feature;
@@ -24,19 +25,23 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.VolatileFunction;
 
-import com.vividsolutions.jts.geom.Geometry;
-
 /**
  * Function the returns the default geometry of a feature, or null if there is none, or it's not a
  * JTS geometry
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
-public class GeometryFunction  extends FunctionExpressionImpl implements VolatileFunction {
+public class GeometryFunction extends FunctionExpressionImpl implements VolatileFunction {
 
-    public static FunctionName NAME = new FunctionNameImpl("geometry",
-            FunctionNameImpl.parameter("geometry", Boolean.class,"Default Geometry","Default geometry, or null if there is none."));
-    
+    public static FunctionName NAME =
+            new FunctionNameImpl(
+                    "geometry",
+                    FunctionNameImpl.parameter(
+                            "geometry",
+                            Boolean.class,
+                            "Default Geometry",
+                            "Default geometry, or null if there is none."));
+
     public GeometryFunction() {
         super(NAME);
     }
@@ -56,7 +61,7 @@ public class GeometryFunction  extends FunctionExpressionImpl implements Volatil
             }
         }
     }
-    
+
     private Object geometry(Object value) {
         if (value instanceof Geometry) {
             return value;

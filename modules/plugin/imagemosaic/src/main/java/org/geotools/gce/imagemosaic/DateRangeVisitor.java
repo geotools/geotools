@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -18,7 +18,6 @@ package org.geotools.gce.imagemosaic;
 
 import java.util.Date;
 import java.util.Iterator;
-
 import org.geotools.util.DateRange;
 import org.geotools.util.Range;
 import org.geotools.util.Utilities;
@@ -26,9 +25,8 @@ import org.opengis.feature.Feature;
 
 /**
  * Generates a list of compact DateRanges from a collection
- * 
+ *
  * @author Daniele Romagnoli, GeoSolutions SAS
- * 
  */
 class DateRangeVisitor extends RangeVisitor {
 
@@ -47,8 +45,9 @@ class DateRangeVisitor extends RangeVisitor {
     }
 
     /**
-     * Setup the minimal set of dataRanges (intersecting ranges are merged together) as a Set of ISO8601 String intervals with period.
-     * 
+     * Setup the minimal set of dataRanges (intersecting ranges are merged together) as a Set of
+     * ISO8601 String intervals with period.
+     *
      * @return
      */
     @Override
@@ -81,7 +80,7 @@ class DateRangeVisitor extends RangeVisitor {
 
     /**
      * Format a DateRange into ISO8601 interval strings
-     * 
+     *
      * @param range
      * @return
      */
@@ -94,9 +93,10 @@ class DateRangeVisitor extends RangeVisitor {
     }
 
     /**
-     * Merge 2 ranges together. In order to speed up the computations, this method does the assumption that the 2 date ranges are already sorted
-     * (first < second) and they intersect together.
-     * 
+     * Merge 2 ranges together. In order to speed up the computations, this method does the
+     * assumption that the 2 date ranges are already sorted (first < second) and they intersect
+     * together.
+     *
      * @param firstDateRange
      * @param secondDateRange
      * @return

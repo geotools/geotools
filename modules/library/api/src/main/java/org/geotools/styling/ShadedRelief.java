@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -18,11 +18,10 @@ package org.geotools.styling;
 
 import org.opengis.filter.expression.Expression;
 
-
 /**
- * The ShadedRelief element selects the application of relief shading (or ?hill
- * shading?) to an image for a three-dimensional visual effect.  It is defined
- * as:
+ * The ShadedRelief element selects the application of relief shading (or ?hill shading?) to an
+ * image for a three-dimensional visual effect. It is defined as:
+ *
  * <pre>
  * &lt;xs:element name="ShadedRelief"&gt;
  *   &lt;xs:complexType&gt;
@@ -35,23 +34,20 @@ import org.opengis.filter.expression.Expression;
  * &lt;xs:element name="BrightnessOnly" type="xs:boolean"/&gt;
  * &lt;xs:element name="ReliefFactor" type="xs:double"/&gt;
  * </pre>
- * Exact parameters of the shading are system-dependent (for now).  If the
- * BrightnessOnly flag is ?0? (false, default), the shading is applied to the
- * layer being rendered as the current RasterSymbol. If BrightnessOnly is ?1?
- * (true), the shading is applied to the brightness of the colors in the
- * rendering canvas generated so far by other layers, with the effect of
- * relief-shading these other layers. The default for BrightnessOnly is ?0?
- * (false).  The ReliefFactor gives the amount of exaggeration to use for the
- * height of the ?hills.?  A value of around 55 (times) gives reasonable
+ *
+ * Exact parameters of the shading are system-dependent (for now). If the BrightnessOnly flag is ?0?
+ * (false, default), the shading is applied to the layer being rendered as the current RasterSymbol.
+ * If BrightnessOnly is ?1? (true), the shading is applied to the brightness of the colors in the
+ * rendering canvas generated so far by other layers, with the effect of relief-shading these other
+ * layers. The default for BrightnessOnly is ?0? (false). The ReliefFactor gives the amount of
+ * exaggeration to use for the height of the ?hills.? A value of around 55 (times) gives reasonable
  * results for Earth-based DEMs. The default value is system-dependent.
  *
  * @author iant
- *
- *
  * @source $URL$
  */
-public interface ShadedRelief extends org.opengis.style.ShadedRelief{
-    
+public interface ShadedRelief extends org.opengis.style.ShadedRelief {
+
     /**
      * turns brightnessOnly on or off depending on value of flag.
      *
@@ -60,9 +56,9 @@ public interface ShadedRelief extends org.opengis.style.ShadedRelief{
     public void setBrightnessOnly(boolean flag);
 
     /**
-     * The ReliefFactor gives the amount of exaggeration to use for the height
-     * of the ?hills.?  A value of around 55 (times) gives reasonable results
-     * for Earth-based DEMs. The default value is system-dependent.
+     * The ReliefFactor gives the amount of exaggeration to use for the height of the ?hills.? A
+     * value of around 55 (times) gives reasonable results for Earth-based DEMs. The default value
+     * is system-dependent.
      *
      * @param reliefFactor an expression which evaluates to a double.
      */

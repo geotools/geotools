@@ -21,20 +21,17 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.logging.Logger;
-
 import org.geotools.imageio.netcdf.utilities.NetCDFCRSUtilities;
 import org.geotools.imageio.netcdf.utilities.NetCDFTimeUtilities;
 import org.geotools.imageio.netcdf.utilities.NetCDFUtilities;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-
 import ucar.nc2.Attribute;
 import ucar.nc2.constants.AxisType;
 import ucar.nc2.dataset.CoordinateAxis;
 
 /**
  * @author Simone Giannecchini, GeoSolutions SAS
- * @author Niels Charlier
- * TODO caching
+ * @author Niels Charlier TODO caching
  */
 class TimeCoordinateVariable extends CoordinateVariable<Date> {
     /** The LOGGER for this class. */
@@ -45,7 +42,7 @@ class TimeCoordinateVariable extends CoordinateVariable<Date> {
     private int baseTimeUnits;
 
     private Date epoch;
-    
+
     /**
      * @param binding
      * @param coordinateAxis
@@ -80,10 +77,13 @@ class TimeCoordinateVariable extends CoordinateVariable<Date> {
             origin = NetCDFTimeUtilities.checkDateDigits(origin);
 
             try {
-                epoch = (Date) NetCDFUtilities.getAxisFormat(AxisType.Time, origin)
-                        .parseObject(origin);
+                epoch =
+                        (Date)
+                                NetCDFUtilities.getAxisFormat(AxisType.Time, origin)
+                                        .parseObject(origin);
             } catch (ParseException e) {
-                LOGGER.warning("Error while parsing time Axis. Skip setting the TemporalExtent from coordinateAxis");
+                LOGGER.warning(
+                        "Error while parsing time Axis. Skip setting the TemporalExtent from coordinateAxis");
             }
         }
         init();
@@ -108,16 +108,16 @@ class TimeCoordinateVariable extends CoordinateVariable<Date> {
             cal.setTimeInMillis(0);
         }
         cal.setTimeZone(NetCDFTimeUtilities.UTC_TIMEZONE);
-        final double coordValue = ((Number) o).doubleValue();        
+        final double coordValue = ((Number) o).doubleValue();
         long vi = (long) Math.floor(coordValue);
         double vd = coordValue - vi;
         NetCDFTimeUtilities.addTimeUnit(cal, baseTimeUnits, vi);
         if (vd != 0.0) {
-            NetCDFTimeUtilities.addTimeUnit(cal, 
+            NetCDFTimeUtilities.addTimeUnit(
+                    cal,
                     NetCDFTimeUtilities.getTimeUnits(units, vd),
                     NetCDFTimeUtilities.getTimeSubUnitsValue(units, vd));
         }
         return cal.getTime();
     }
-
 }

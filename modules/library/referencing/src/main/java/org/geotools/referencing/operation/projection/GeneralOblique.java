@@ -20,32 +20,32 @@
  */
 package org.geotools.referencing.operation.projection;
 
+import static java.lang.Math.*;
+
 import java.awt.geom.Point2D;
 import java.util.logging.Level;
-import org.opengis.parameter.ParameterValueGroup;
+import org.geotools.metadata.iso.citation.Citations;
+import org.geotools.referencing.NamedIdentifier;
 import org.opengis.parameter.ParameterDescriptor;
 import org.opengis.parameter.ParameterDescriptorGroup;
 import org.opengis.parameter.ParameterNotFoundException;
+import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.operation.MathTransform;
-import org.geotools.referencing.NamedIdentifier;
-import org.geotools.metadata.iso.citation.Citations;
-
-import static java.lang.Math.*;
 
 /**
- * General Oblique Transformation projection useful for rotated spherical coordinates ("Rotated Pole"), 
- * commonly used in numerical weather forecasting models.
- * 
- * Based on the code provided by Jürgen Seib (Deutscher Wetterdienst), adopted to follow "+proj=ob_tran" behaviour.
- * 
- * For examples see "GeneralOblique.txt" file in tests directory
- * 
- * @see <a href="http://www.cosmo-model.org/content/model/documentation/core/default.htm#p1"> COSMO User Manual, Part 1</a>
+ * General Oblique Transformation projection useful for rotated spherical coordinates ("Rotated
+ * Pole"), commonly used in numerical weather forecasting models.
+ *
+ * <p>Based on the code provided by Jürgen Seib (Deutscher Wetterdienst), adopted to follow
+ * "+proj=ob_tran" behaviour.
+ *
+ * <p>For examples see "GeneralOblique.txt" file in tests directory
+ *
+ * @see <a href="http://www.cosmo-model.org/content/model/documentation/core/default.htm#p1">COSMO
+ *     User Manual, Part 1</a>
  * @see <a href="https://github.com/OSGeo/proj.4/blob/master/src/PJ_ob_tran.c">proj.4</a>
- *  
  * @since 13.1
- * 
  * @source $URL$
  * @version $Id$
  * @author Maciej Filocha (ICM)
@@ -57,7 +57,7 @@ public class GeneralOblique extends MapProjection {
 
     /**
      * Constructs a rotated latitude/longitude projection.
-     * 
+     *
      * @param parameters The group of parameter values.
      * @throws ParameterNotFoundException if a required parameter was not found.
      */
@@ -67,9 +67,9 @@ public class GeneralOblique extends MapProjection {
     }
 
     /**
-     * Transforms the specified (<var>&lambda;</var>,<var>&phi;</var>) coordinates (units in radians) and stores the result in {@code ptDst} (linear
-     * distance on a unit sphere).
-     * 
+     * Transforms the specified (<var>&lambda;</var>,<var>&phi;</var>) coordinates (units in
+     * radians) and stores the result in {@code ptDst} (linear distance on a unit sphere).
+     *
      * @param x The longitude of the coordinate, in <strong>radians</strong>.
      * @param y The latitude of the coordinate, in <strong>radians</strong>.
      */
@@ -82,8 +82,12 @@ public class GeneralOblique extends MapProjection {
         final double sinlon1 = sin(x);
         final double coslon1 = cos(x);
 
-        x = toDegrees(atan((coslat * sinlon1) / (coslat * sinlatP * coslon1 + sinlat * coslatP)))
-                / globalScale;
+        x =
+                toDegrees(
+                                atan(
+                                        (coslat * sinlon1)
+                                                / (coslat * sinlatP * coslon1 + sinlat * coslatP)))
+                        / globalScale;
         y = toDegrees(asin(sinlat * sinlatP - coslat * coslatP * coslon1)) / globalScale;
 
         if (ptDst != null) {
@@ -94,8 +98,8 @@ public class GeneralOblique extends MapProjection {
     }
 
     /**
-     * Transforms the specified (<var>x</var>,<var>y</var>) coordinates (units in radians) and stores the result in {@code ptDst} (linear distance on
-     * a unit sphere).
+     * Transforms the specified (<var>x</var>,<var>y</var>) coordinates (units in radians) and
+     * stores the result in {@code ptDst} (linear distance on a unit sphere).
      */
     protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst)
             throws ProjectionException {
@@ -117,9 +121,7 @@ public class GeneralOblique extends MapProjection {
         return new Point2D.Double(x, y);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ParameterDescriptorGroup getParameterDescriptors() {
         return Provider.PARAMETERS;
@@ -134,13 +136,13 @@ public class GeneralOblique extends MapProjection {
     // ////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * The {@linkplain org.geotools.referencing.operation.MathTransformProvider math transform provider} for an
-     * {@linkplain org.geotools.referencing.operation.projection.GeneralOblique General Oblique Transformation} projection.
-     * 
+     * The {@linkplain org.geotools.referencing.operation.MathTransformProvider math transform
+     * provider} for an {@linkplain org.geotools.referencing.operation.projection.GeneralOblique
+     * General Oblique Transformation} projection.
+     *
      * @since 2.8
      * @version $Id$
      * @author Maciej Filocha (ICM)
-     * 
      * @see org.geotools.referencing.operation.DefaultMathTransformFactory
      */
     public static class Provider extends AbstractProvider {
@@ -148,24 +150,30 @@ public class GeneralOblique extends MapProjection {
         /** serialVersionUID */
         private static final long serialVersionUID = 8452425384927757022L;
 
-        /**
-         * The parameters group.
-         */
-        static final ParameterDescriptorGroup PARAMETERS = createDescriptorGroup(
-                new NamedIdentifier[] { new NamedIdentifier(Citations.AUTO, "General_Oblique"), },
-                new ParameterDescriptor[] { SEMI_MAJOR, SEMI_MINOR, CENTRAL_MERIDIAN,
-                        LATITUDE_OF_ORIGIN, SCALE_FACTOR, FALSE_EASTING, FALSE_NORTHING });
+        /** The parameters group. */
+        static final ParameterDescriptorGroup PARAMETERS =
+                createDescriptorGroup(
+                        new NamedIdentifier[] {
+                            new NamedIdentifier(Citations.AUTO, "General_Oblique"),
+                        },
+                        new ParameterDescriptor[] {
+                            SEMI_MAJOR,
+                            SEMI_MINOR,
+                            CENTRAL_MERIDIAN,
+                            LATITUDE_OF_ORIGIN,
+                            SCALE_FACTOR,
+                            FALSE_EASTING,
+                            FALSE_NORTHING
+                        });
 
-        /**
-         * Constructs a new provider.
-         */
+        /** Constructs a new provider. */
         public Provider() {
             super(PARAMETERS);
         }
 
         /**
          * Creates a transform from the specified group of parameter values.
-         * 
+         *
          * @param parameters The group of parameter values.
          * @return The created math transform.
          * @throws ParameterNotFoundException if a required parameter was not found.
@@ -183,8 +191,10 @@ public class GeneralOblique extends MapProjection {
                  * However, enabling this dirty hack below allows to convert to and from WGS84 coordinates with much better accuracy. One possible
                  * reason is that Geotools omits additional transformation between spherical and ellipsoidal coordinates which is not really needed here.
                  */
-            	LOGGER.log(Level.FINE, "GeoTools GeneralOblique transformation is defined only on the sphere, " +
-                        "we're going to use spherical equations even if the projection is using an ellipsoid");
+                LOGGER.log(
+                        Level.FINE,
+                        "GeoTools GeneralOblique transformation is defined only on the sphere, "
+                                + "we're going to use spherical equations even if the projection is using an ellipsoid");
                 return new GeneralOblique(parameters);
             }
         }

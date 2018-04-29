@@ -17,22 +17,16 @@
 package org.geotools.data.db2;
 
 import java.io.IOException;
-
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTransactionOnlineTest;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class DB2TransactionOnlineTest extends JDBCTransactionOnlineTest {
     protected JDBCTestSetup createTestSetup() {
         return new DB2TestSetup();
     }
-    
+
     public void testConcurrentTransactions() throws IOException {
-    	// TODO does not work 
+        // TODO does not work
     }
 }

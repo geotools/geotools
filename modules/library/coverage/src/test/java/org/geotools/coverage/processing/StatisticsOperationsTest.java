@@ -16,15 +16,17 @@
  */
 package org.geotools.coverage.processing;
 
+import static org.junit.Assert.*;
+
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LinearRing;
+import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.PrecisionModel;
 import java.awt.geom.AffineTransform;
 import java.awt.image.DataBuffer;
 import java.awt.image.WritableRaster;
 import javax.media.jai.RasterFactory;
-
-import org.opengis.geometry.Envelope;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
@@ -33,39 +35,31 @@ import org.geotools.coverage.processing.operation.Histogram;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.operation.matrix.XAffineTransform;
-
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.geom.PrecisionModel;
-
 import org.junit.*;
-import static org.junit.Assert.*;
-
+import org.opengis.geometry.Envelope;
+import org.opengis.parameter.ParameterValueGroup;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Testing Extrema and {@link Histogram} operations.
  *
  * @author Simone Giannecchini (GeoSolutions)
  * @author Martin Desruisseaux (Geomatys)
- *
- *
- *
  * @source $URL$
  */
 public final class StatisticsOperationsTest extends GridProcessingTestBase {
     /**
-     * Creates a raster of the given type. Because we use only one tile with one band, the
-     * code below is pretty similar to the code we would have if we were just setting the
-     * values in a matrix.
+     * Creates a raster of the given type. Because we use only one tile with one band, the code
+     * below is pretty similar to the code we would have if we were just setting the values in a
+     * matrix.
      */
     private static GridCoverage2D createRaster(final int type) {
-        final int width  = 500;
+        final int width = 500;
         final int height = 500;
-        final WritableRaster raster = RasterFactory.createBandedRaster(type, width, height, 1, null);
-        for (int y=0; y<height; y++) {
-            for (int x=0; x<width; x++) {
+        final WritableRaster raster =
+                RasterFactory.createBandedRaster(type, width, height, 1, null);
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
                 // We exploit the clamping capabilities of the sample model.
                 raster.setSample(x, y, 0, x + y);
             }
@@ -77,33 +71,35 @@ public final class StatisticsOperationsTest extends GridProcessingTestBase {
     }
 
     /**
-     * Tests the "Extrema" operation with a raster of floating point values.
-     * This test compare the operation results with the expected ones using
-     * different subsampling values.
+     * Tests the "Extrema" operation with a raster of floating point values. This test compare the
+     * operation results with the expected ones using different subsampling values.
      */
     @Test
     public void testExtrema() {
         final GridCoverage2D sampleFloatCoverage = createRaster(DataBuffer.TYPE_FLOAT);
-        assertEquals(DataBuffer.TYPE_FLOAT, sampleFloatCoverage.getRenderedImage().getSampleModel().getDataType());
+        assertEquals(
+                DataBuffer.TYPE_FLOAT,
+                sampleFloatCoverage.getRenderedImage().getSampleModel().getDataType());
         final AffineTransform gridToCRS = getAffineTransform(sampleFloatCoverage);
         assertNotNull(gridToCRS);
         /*
          * Create the ROI as a JTS polygon.
          */
-        final PrecisionModel   pm = new PrecisionModel();
-        final GeometryFactory  gf = new GeometryFactory(pm, 0);
+        final PrecisionModel pm = new PrecisionModel();
+        final GeometryFactory gf = new GeometryFactory(pm, 0);
         final Envelope2D envelope = sampleFloatCoverage.getEnvelope2D();
         final double minX = envelope.getMinX();
         final double minY = envelope.getMinY();
         final double maxX = envelope.getCenterX();
         final double maxY = envelope.getCenterY();
-        final Coordinate[] corners = new Coordinate[] {
-                new Coordinate(minX, minY),
-                new Coordinate(maxX, minY),
-                new Coordinate(maxX, maxY),
-                new Coordinate(minX, maxY),
-                new Coordinate(minX, minY)
-        };
+        final Coordinate[] corners =
+                new Coordinate[] {
+                    new Coordinate(minX, minY),
+                    new Coordinate(maxX, minY),
+                    new Coordinate(maxX, maxY),
+                    new Coordinate(minX, maxY),
+                    new Coordinate(minX, minY)
+                };
         final LinearRing ring = gf.createLinearRing(corners);
         final Polygon roi = new Polygon(ring, null, gf);
         /*
@@ -114,7 +110,7 @@ public final class StatisticsOperationsTest extends GridProcessingTestBase {
         final AbstractOperation op = (AbstractOperation) processor.getOperation("Extrema");
         assertTrue(op instanceof Extrema);
         final ParameterValueGroup params = op.getParameters();
-        params.parameter("Source") .setValue(sampleFloatCoverage);
+        params.parameter("Source").setValue(sampleFloatCoverage);
         params.parameter("xPeriod").setValue(1 * XAffineTransform.getScaleX0(gridToCRS));
         params.parameter("yPeriod").setValue(1 * XAffineTransform.getScaleY0(gridToCRS));
         params.parameter("roi").setValue(roi);
@@ -142,33 +138,35 @@ public final class StatisticsOperationsTest extends GridProcessingTestBase {
     }
 
     /**
-     * Tests the "Histogram" operation with a raster of byte values.
-     * This test compare the operation results with the expected ones
-     * using different subsampling values.
+     * Tests the "Histogram" operation with a raster of byte values. This test compare the operation
+     * results with the expected ones using different subsampling values.
      */
     @Test
     public void testHistogram() {
-        final GridCoverage2D sampleByteCoverage  = createRaster(DataBuffer.TYPE_BYTE );
-        assertEquals(DataBuffer.TYPE_BYTE,  sampleByteCoverage .getRenderedImage().getSampleModel().getDataType());
+        final GridCoverage2D sampleByteCoverage = createRaster(DataBuffer.TYPE_BYTE);
+        assertEquals(
+                DataBuffer.TYPE_BYTE,
+                sampleByteCoverage.getRenderedImage().getSampleModel().getDataType());
         final AffineTransform gridToCRS = getAffineTransform(sampleByteCoverage);
         assertNotNull(gridToCRS);
         /*
          * Create the ROI as a JTS polygon.
          */
-        final PrecisionModel   pm = new PrecisionModel();
-        final GeometryFactory  gf = new GeometryFactory(pm, 0);
+        final PrecisionModel pm = new PrecisionModel();
+        final GeometryFactory gf = new GeometryFactory(pm, 0);
         final Envelope2D envelope = sampleByteCoverage.getEnvelope2D();
         final double minX = envelope.getMinX();
         final double maxY = envelope.getMaxY();
         final double minY = maxY - envelope.getHeight() / 16;
-        final double maxX = minX + envelope.getWidth()  / 16;
-        final Coordinate[] coord = new Coordinate[] {
-                new Coordinate(minX, maxY),
-                new Coordinate(maxX, maxY),
-                new Coordinate(maxX, minY),
-                new Coordinate(minX, minY),
-                new Coordinate(minX, maxY)
-        };
+        final double maxX = minX + envelope.getWidth() / 16;
+        final Coordinate[] coord =
+                new Coordinate[] {
+                    new Coordinate(minX, maxY),
+                    new Coordinate(maxX, maxY),
+                    new Coordinate(maxX, minY),
+                    new Coordinate(minX, minY),
+                    new Coordinate(minX, maxY)
+                };
         final LinearRing ring = gf.createLinearRing(coord);
         final Polygon roi = new Polygon(ring, null, gf);
         /*
@@ -186,8 +184,9 @@ public final class StatisticsOperationsTest extends GridProcessingTestBase {
         params.parameter("roi").setValue(roi);
 
         GridCoverage2D coverage = (GridCoverage2D) op.doOperation(params, null);
-        javax.media.jai.Histogram histogram = (javax.media.jai.Histogram) coverage
-                .getProperty(Histogram.GT_SYNTHETIC_PROPERTY_HISTOGRAM);
+        javax.media.jai.Histogram histogram =
+                (javax.media.jai.Histogram)
+                        coverage.getProperty(Histogram.GT_SYNTHETIC_PROPERTY_HISTOGRAM);
         assertEquals(0, histogram.getBinSize(0, 255));
         assertEquals(1, histogram.getBinSize(0, 60));
         /*
@@ -198,8 +197,9 @@ public final class StatisticsOperationsTest extends GridProcessingTestBase {
         params.parameter("xPeriod").setValue(7 * XAffineTransform.getScaleX0(gridToCRS));
         params.parameter("yPeriod").setValue(7 * XAffineTransform.getScaleY0(gridToCRS));
         coverage = (GridCoverage2D) op.doOperation(params, null);
-        histogram = (javax.media.jai.Histogram) coverage
-                .getProperty(Histogram.GT_SYNTHETIC_PROPERTY_HISTOGRAM);
+        histogram =
+                (javax.media.jai.Histogram)
+                        coverage.getProperty(Histogram.GT_SYNTHETIC_PROPERTY_HISTOGRAM);
         assertEquals(0, histogram.getBinSize(0, 255));
         assertEquals(0, histogram.getBinSize(0, 60));
         assertEquals(1, histogram.getBinSize(0, 56));

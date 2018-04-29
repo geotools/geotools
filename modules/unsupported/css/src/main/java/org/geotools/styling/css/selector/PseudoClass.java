@@ -28,11 +28,12 @@ public class PseudoClass extends Selector {
         return new And(new ArrayList<>(new LinkedHashSet<Selector>(selectors)));
     }
 
-    public static final PseudoClass ROOT = new PseudoClass(null, -1) {
-        public String toString() {
-            return "ROOT";
-        };
-    };
+    public static final PseudoClass ROOT =
+            new PseudoClass(null, -1) {
+                public String toString() {
+                    return "ROOT";
+                };
+            };
 
     String className;
 
@@ -75,20 +76,14 @@ public class PseudoClass extends Selector {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
         PseudoClass other = (PseudoClass) obj;
         if (className == null) {
-            if (other.className != null)
-                return false;
-        } else if (!className.equals(other.className))
-            return false;
-        if (number != other.number)
-            return false;
+            if (other.className != null) return false;
+        } else if (!className.equals(other.className)) return false;
+        if (number != other.number) return false;
         return true;
     }
 
@@ -107,7 +102,7 @@ public class PseudoClass extends Selector {
 
     /**
      * Returns true if this pseudo class is equals, or contains, the other
-     * 
+     *
      * @param pc
      * @return
      */
@@ -127,8 +122,9 @@ public class PseudoClass extends Selector {
     }
 
     /**
-     * Returns the most specific pseudo class in the set, or null if the set contains inconsistent pseudo classes (e.g., "mark" and "fill")
-     * 
+     * Returns the most specific pseudo class in the set, or null if the set contains inconsistent
+     * pseudo classes (e.g., "mark" and "fill")
+     *
      * @param pseudoClasses
      * @return
      */
@@ -145,5 +141,4 @@ public class PseudoClass extends Selector {
 
         return mostSpecific;
     }
-
 }

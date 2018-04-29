@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -21,7 +21,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-
 import org.geotools.data.DataStore;
 import org.geotools.test.OnlineTestCase;
 
@@ -46,5 +45,4 @@ public class SolrDataStoreTest extends OnlineTestCase {
     protected String getFixtureId() {
         return SolrDataStoreFactory.NAMESPACE.sample.toString();
     }
-
 }

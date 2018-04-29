@@ -7,11 +7,7 @@ import java.io.Reader;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class DXFLineNumberReader extends LineNumberReader {
     private static final Log log = LogFactory.getLog(DXFLineNumberReader.class);
 
@@ -37,4 +33,3 @@ public class DXFLineNumberReader extends LineNumberReader {
         this.mark(MARK_SIZE);
     }
 }
-

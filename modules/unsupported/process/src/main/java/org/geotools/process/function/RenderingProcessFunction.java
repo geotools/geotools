@@ -16,10 +16,8 @@
  */
 package org.geotools.process.function;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.geotools.data.Parameter;
 import org.geotools.data.Query;
 import org.geotools.filter.function.RenderingTransformation;
@@ -35,14 +33,18 @@ import org.opengis.filter.expression.Literal;
  * A function wrapping a {@link Process} with a single output. All inputs to the function are
  * supposed to evaluate to Map<String, Object> where the key is the name of an argument and the
  * value is the argument value
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  * @author Daniele Romagnoli - GeoSolutions
  */
 class RenderingProcessFunction extends ProcessFunction implements RenderingTransformation {
 
-    public RenderingProcessFunction(Name processName, List<Expression> inputExpressions,
-            Map<String, Parameter<?>> parameters, RenderingProcess process, Literal fallbackValue) {
+    public RenderingProcessFunction(
+            Name processName,
+            List<Expression> inputExpressions,
+            Map<String, Parameter<?>> parameters,
+            RenderingProcess process,
+            Literal fallbackValue) {
         super(processName, inputExpressions, parameters, process, fallbackValue);
     }
 
@@ -54,8 +56,8 @@ class RenderingProcessFunction extends ProcessFunction implements RenderingTrans
         try {
             return process.invertQuery(inputs, targetQuery, gridGeometry);
         } catch (ProcessException e) {
-            throw new RuntimeException("Failed to invert the query, error is: "
-                    + e.getMessage(), e);
+            throw new RuntimeException(
+                    "Failed to invert the query, error is: " + e.getMessage(), e);
         }
     }
 
@@ -67,9 +69,8 @@ class RenderingProcessFunction extends ProcessFunction implements RenderingTrans
         try {
             return process.invertGridGeometry(inputs, targetQuery, targetGridGeometry);
         } catch (ProcessException e) {
-            throw new RuntimeException("Failed to invert the grid geometry, error is: "
-                    + e.getMessage(), e);
+            throw new RuntimeException(
+                    "Failed to invert the grid geometry, error is: " + e.getMessage(), e);
         }
     }
-
 }

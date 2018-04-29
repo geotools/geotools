@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -20,30 +20,27 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.util.HashMap;
 import java.util.Iterator;
+import org.geotools.geometry.DirectPosition2D;
+import org.geotools.referencing.operation.transform.AbstractMathTransform;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.NoninvertibleTransformException;
 import org.opengis.referencing.operation.TransformException;
-import org.geotools.geometry.DirectPosition2D;
-import org.geotools.referencing.operation.transform.AbstractMathTransform;
-
 
 /**
- * This provides the transformation method based on RubberSheeting (also
- * known as Billinear interpolated transformation) The class is accessed
- * {@linkplain org.geotools.referencing.operation.builder.RubberSheetBuilder
- * RubberSheetBuilder}. More about Rubber Sheet transformation can be seen <a
- * href =
+ * This provides the transformation method based on RubberSheeting (also known as Billinear
+ * interpolated transformation) The class is accessed {@linkplain
+ * org.geotools.referencing.operation.builder.RubberSheetBuilder RubberSheetBuilder}. More about
+ * Rubber Sheet transformation can be seen <a href =
  * "http://planner.t.u-tokyo.ac.jp/member/fuse/rubber_sheeting.pdf">here</a>.
  *
  * @since 2.4
  * @source $URL$
  * @version $Id$
  * @author Jan Jezek
- *
- * @todo Consider moving this class to the {@linkplain
- *       org.geotools.referencing.operation.transform} package.
+ * @todo Consider moving this class to the {@linkplain org.geotools.referencing.operation.transform}
+ *     package.
  */
 class RubberSheetTransform extends AbstractMathTransform implements MathTransform2D {
     /**
@@ -53,8 +50,7 @@ class RubberSheetTransform extends AbstractMathTransform implements MathTransfor
     private TINTriangle previousTriangle = null;
 
     /**
-     * The HashMap where the keys are the original {@link
-     * Polygon} and values are {@link
+     * The HashMap where the keys are the original {@link Polygon} and values are {@link
      * #org.opengis.referencing.operation.MathTransform}.
      */
     private HashMap trianglesToKeysMap;
@@ -62,9 +58,9 @@ class RubberSheetTransform extends AbstractMathTransform implements MathTransfor
     /**
      * Constructs the RubberSheetTransform.
      *
-     * @param trianglesToAffineTransform The HashMap where the keys are the original
-     *        {@linkplain org.geotools.referencing.operation.builder.algorithm.TINTriangle}
-     *        and values are {@linkplain org.opengis.referencing.operation.MathTransform}.
+     * @param trianglesToAffineTransform The HashMap where the keys are the original {@linkplain
+     *     org.geotools.referencing.operation.builder.algorithm.TINTriangle} and values are
+     *     {@linkplain org.opengis.referencing.operation.MathTransform}.
      */
     public RubberSheetTransform(HashMap trianglesToAffineTransform) {
         this.trianglesToKeysMap = trianglesToAffineTransform;
@@ -91,19 +87,16 @@ class RubberSheetTransform extends AbstractMathTransform implements MathTransfor
     /**
      * String representation.
      *
-     * @return String expression of the triangle and its affine transform
-     *         parameters
-     *
-     * @todo This method doesn't meet the {@link MathTransform#toString}
-     *       constract, which should uses Well Known Text (WKT) format as much
-     *       as possible.
+     * @return String expression of the triangle and its affine transform parameters
+     * @todo This method doesn't meet the {@link MathTransform#toString} constract, which should
+     *     uses Well Known Text (WKT) format as much as possible.
      */
     @Override
     public String toString() {
         final String lineSeparator = System.getProperty("line.separator", "\n");
         final StringBuilder buffer = new StringBuilder();
 
-        for (final Iterator i = trianglesToKeysMap.keySet().iterator(); i.hasNext();) {
+        for (final Iterator i = trianglesToKeysMap.keySet().iterator(); i.hasNext(); ) {
             TINTriangle trian = (TINTriangle) i.next();
             MathTransform mt = (MathTransform) trianglesToKeysMap.get(trian);
             buffer.append(trian.toString());
@@ -119,7 +112,7 @@ class RubberSheetTransform extends AbstractMathTransform implements MathTransfor
      * @see org.opengis.referencing.operation.MathTransform#transform(double[], int, double[], int, int)
      */
     public void transform(double[] srcPts, int srcOff, final double[] dstPt, int dstOff, int numPts)
-        throws TransformException {
+            throws TransformException {
         for (int i = srcOff; i < numPts; i++) {
             Point2D pos = (Point2D) (new DirectPosition2D(srcPts[2 * i], srcPts[(2 * i) + 1]));
 
@@ -136,26 +129,25 @@ class RubberSheetTransform extends AbstractMathTransform implements MathTransfor
 
     /**
      * Search the TIN for the triangle that contains p
+     *
      * @param p Point of interest
      * @return Triangle containing p
      * @throws TransformException if points are outside the area of TIN.
      */
-    private TINTriangle searchTriangle(DirectPosition p)
-        throws TransformException {
+    private TINTriangle searchTriangle(DirectPosition p) throws TransformException {
         /* Optimization for finding triangles.
          * Assuming the point are close to each other -
          * so why not to check if next point is in the same triangle as previous one.
          */
 
-		// Take a reference to the previous triangle to avoid reentrancy
-		// problems.
-		TINTriangle potentialTriangle = previousTriangle;
-		if (potentialTriangle != null
-				&& potentialTriangle.containsOrIsVertex(p)) {
-			return potentialTriangle;
-		}
+        // Take a reference to the previous triangle to avoid reentrancy
+        // problems.
+        TINTriangle potentialTriangle = previousTriangle;
+        if (potentialTriangle != null && potentialTriangle.containsOrIsVertex(p)) {
+            return potentialTriangle;
+        }
 
-        for (Iterator i = trianglesToKeysMap.keySet().iterator(); i.hasNext();) {
+        for (Iterator i = trianglesToKeysMap.keySet().iterator(); i.hasNext(); ) {
             TINTriangle triangle = (TINTriangle) i.next();
 
             if (triangle.containsOrIsVertex(p)) {
@@ -169,6 +161,7 @@ class RubberSheetTransform extends AbstractMathTransform implements MathTransfor
 
     /**
      * Returns the inverse transform.
+     *
      * @return
      */
     @Override

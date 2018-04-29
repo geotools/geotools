@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.geotools.ows.ServiceException;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -29,42 +28,40 @@ import org.jdom.input.SAXBuilder;
 
 /**
  * Utility class that will parse ServiceExceptions out of an inputStream.
- * 
+ *
  * @author rgould
- *
- *
- *
- *
  * @source $URL$
  */
 public class ServiceExceptionParser {
 
     /**
-     * Tries to read a ServiceExceptionReport from the input stream, and 
-     * construct a chain of ServiceExceptions.
-     * 
-     * ServiceExceptions beyond the first can be accessed using 
-     * ServiceException.next();
-     * 
+     * Tries to read a ServiceExceptionReport from the input stream, and construct a chain of
+     * ServiceExceptions.
+     *
+     * <p>ServiceExceptions beyond the first can be accessed using ServiceException.next();
+     *
      * @param inputStream
      * @throws JDOMException
      * @throws IOException
      */
-    public static ServiceException parse(InputStream inputStream) throws JDOMException, IOException {
+    public static ServiceException parse(InputStream inputStream)
+            throws JDOMException, IOException {
         SAXBuilder builder = new SAXBuilder();
         builder.setExpandEntities(false);
         Document document = builder.build(inputStream);
-        
+
         Element root = document.getRootElement();
         List<Element> serviceExceptions = root.getChildren("ServiceException");
-                
+
         /*
          * ServiceExceptions with codes get bumped to the top of the list.
          */
-        List<ServiceException> parsedExceptions = serviceExceptions.stream()
-            .map(ServiceExceptionParser::parseSE)
-            .sorted(ServiceExceptionParser::compare)
-            .collect(Collectors.toList());
+        List<ServiceException> parsedExceptions =
+                serviceExceptions
+                        .stream()
+                        .map(ServiceExceptionParser::parseSE)
+                        .sorted(ServiceExceptionParser::compare)
+                        .collect(Collectors.toList());
         /*
          * Now chain them.
          */
@@ -79,22 +76,22 @@ public class ServiceExceptionParser {
                 recentException = exception;
             }
         }
-        
+
         return firstException;
     }
 
     private static ServiceException parseSE(Element element) {
         String errorMessage = element.getText();
         String code = element.getAttributeValue("code");
-        
+
         return new ServiceException(errorMessage, code);
     }
-    
+
     private static int sortValue(ServiceException exception) {
-        return exception.getCode() != null && !exception.getCode().isEmpty() ?0:1;
+        return exception.getCode() != null && !exception.getCode().isEmpty() ? 0 : 1;
     }
-    
+
     private static int compare(ServiceException exception1, ServiceException exception2) {
-        return sortValue(exception1)-sortValue(exception2);
+        return sortValue(exception1) - sortValue(exception2);
     }
 }

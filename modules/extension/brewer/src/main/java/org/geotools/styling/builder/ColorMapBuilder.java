@@ -19,15 +19,10 @@ package org.geotools.styling.builder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import org.geotools.styling.ColorMap;
 import org.geotools.styling.ColorMapEntry;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class ColorMapBuilder extends AbstractStyleBuilder<ColorMap> {
 
     int type = ColorMap.TYPE_RAMP;
@@ -114,5 +109,4 @@ public class ColorMapBuilder extends AbstractStyleBuilder<ColorMap> {
     protected void buildStyleInternal(StyleBuilder sb) {
         sb.featureTypeStyle().rule().raster().colorMap().init(this);
     }
-
 }

@@ -20,20 +20,24 @@ import java.awt.image.RenderedImage;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeSet;
-
 import javax.media.jai.ROI;
-
 import org.geotools.process.raster.classify.Classification;
 import org.geotools.process.raster.classify.QuantileClassification;
 
-/**
- * Classification op for the quantile method.
- */
+/** Classification op for the quantile method. */
 public class QuantileBreaksOpImage extends ClassBreaksOpImage {
 
-    public QuantileBreaksOpImage(RenderedImage image, Integer numClasses, Double[][] extrema,
-            ROI roi, Integer[] bands, Integer xStart, Integer yStart, Integer xPeriod,
-            Integer yPeriod, Double noData) {
+    public QuantileBreaksOpImage(
+            RenderedImage image,
+            Integer numClasses,
+            Double[][] extrema,
+            ROI roi,
+            Integer[] bands,
+            Integer xStart,
+            Integer yStart,
+            Integer xPeriod,
+            Integer yPeriod,
+            Double noData) {
         super(image, numClasses, extrema, roi, bands, xStart, yStart, xPeriod, yPeriod, noData);
     }
 
@@ -53,7 +57,7 @@ public class QuantileBreaksOpImage extends ClassBreaksOpImage {
                 return;
             }
         }
-        
+
         qc.count(d, band);
     }
 
@@ -61,30 +65,30 @@ public class QuantileBreaksOpImage extends ClassBreaksOpImage {
     protected void postCalculate(Classification c, int band) {
         QuantileClassification qc = (QuantileClassification) c;
 
-        //get the total number of values
+        // get the total number of values
         int nvalues = qc.getCount(band);
 
-        //calculate the number of values per class
+        // calculate the number of values per class
         int size = (int) Math.ceil(nvalues / (double) numClasses);
 
-        //grab the key iterator
+        // grab the key iterator
         Iterator<Map.Entry<Double, Integer>> it = qc.getTable(band).entrySet().iterator();
 
         TreeSet<Double> set = new TreeSet<Double>();
         Map.Entry<Double, Integer> e = it.next();
-        
-        while(nvalues > 0) {
-            //add the next break
+
+        while (nvalues > 0) {
+            // add the next break
             set.add(e.getKey());
 
             for (int i = 0; i < size && nvalues > 0; i++) {
-                //consume the next value
+                // consume the next value
                 int count = e.getValue();
                 e.setValue(--count);
                 nvalues--;
-                
+
                 if (count == 0) {
-                    //number of occurences of this entry exhausted, move to next
+                    // number of occurences of this entry exhausted, move to next
                     if (!it.hasNext()) {
                         break;
                     }
@@ -93,13 +97,10 @@ public class QuantileBreaksOpImage extends ClassBreaksOpImage {
             }
 
             if (nvalues == 0) {
-                //add the last value
+                // add the last value
                 set.add(e.getKey());
             }
         }
         qc.setBreaks(band, set.toArray(new Double[set.size()]));
-        
-
     }
-
 }

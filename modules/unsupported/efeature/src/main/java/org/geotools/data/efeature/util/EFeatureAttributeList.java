@@ -9,10 +9,8 @@ import org.geotools.data.efeature.EFeatureProperty;
 
 /**
  * Unmodifiable list of {@link EFeatureAttribute} instances.
- * 
- * @author kengu, 22. apr. 2011
- * 
  *
+ * @author kengu, 22. apr. 2011
  * @source $URL$
  */
 public class EFeatureAttributeList<V> extends AbstractList<EFeatureAttribute<V>> {
@@ -22,7 +20,7 @@ public class EFeatureAttributeList<V> extends AbstractList<EFeatureAttribute<V>>
 
     private final Class<V> type;
 
-    // ----------------------------------------------------- 
+    // -----------------------------------------------------
     //  Constructors
     // -----------------------------------------------------
 
@@ -46,7 +44,7 @@ public class EFeatureAttributeList<V> extends AbstractList<EFeatureAttribute<V>>
         this.eItems = Collections.unmodifiableList(eList.eItems);
     }
 
-    // ----------------------------------------------------- 
+    // -----------------------------------------------------
     //  EFeatureGeometryList implementation
     // -----------------------------------------------------
 
@@ -54,10 +52,9 @@ public class EFeatureAttributeList<V> extends AbstractList<EFeatureAttribute<V>>
         return type;
     }
 
-    // ----------------------------------------------------- 
+    // -----------------------------------------------------
     //  List implementation
     // -----------------------------------------------------
-
 
     @Override
     public EFeatureAttribute<V> get(int index) {
@@ -69,38 +66,40 @@ public class EFeatureAttributeList<V> extends AbstractList<EFeatureAttribute<V>>
         return eItems.size();
     }
 
-    // ----------------------------------------------------- 
+    // -----------------------------------------------------
     //  Helper methods
     // -----------------------------------------------------
 
-
-//    public static List<EFeatureAttribute<Object>> toList(EFeatureInfo eFeatureInfo,
-//            EObject eObject, Collection<EAttribute> eAttributes, Transaction eTx) {
-//        return toList(eFeatureInfo, eObject, Object.class, eTx);
-//    }
-//
-//    public static <V> List<EFeatureAttribute<V>> toList(EFeatureInfo eFeatureInfo, EObject eObject,
-//            Class<V> type, Transaction eTx) {
-//        EClass eClass = eFeatureInfo.eClass();
-//        if (eClass.isSuperTypeOf(eObject.eClass())) {
-//            Map<String, EAttribute> eAttrMap = EFeatureUtils.eGetAttributeMap(eClass);
-//            return toList(eFeatureInfo, eObject, eAttrMap.values(), type, eTx);
-//        }
-//        return null;
-//    }
-//
-//    public static <V> List<EFeatureAttribute<V>> toList(EFeatureInfo eFeatureInfo, EObject eObject,
-//            Collection<EAttribute> eAttributes, Class<V> type, Transaction eTx) {
-//        List<EFeatureAttribute<V>> list = new ArrayList<EFeatureAttribute<V>>(eAttributes.size());
-//        for (EAttribute it : eAttributes) {
-//            EFeatureAttribute<V> d = EFeatureAttributeDelegate.create(eFeatureInfo, 
-//                    eObject, it.getName(), type, eTx);
-//            if (d != null) {
-//                list.add(d);
-//            }
-//        }
-//        return list;
-//
-//    }
+    //    public static List<EFeatureAttribute<Object>> toList(EFeatureInfo eFeatureInfo,
+    //            EObject eObject, Collection<EAttribute> eAttributes, Transaction eTx) {
+    //        return toList(eFeatureInfo, eObject, Object.class, eTx);
+    //    }
+    //
+    //    public static <V> List<EFeatureAttribute<V>> toList(EFeatureInfo eFeatureInfo, EObject
+    // eObject,
+    //            Class<V> type, Transaction eTx) {
+    //        EClass eClass = eFeatureInfo.eClass();
+    //        if (eClass.isSuperTypeOf(eObject.eClass())) {
+    //            Map<String, EAttribute> eAttrMap = EFeatureUtils.eGetAttributeMap(eClass);
+    //            return toList(eFeatureInfo, eObject, eAttrMap.values(), type, eTx);
+    //        }
+    //        return null;
+    //    }
+    //
+    //    public static <V> List<EFeatureAttribute<V>> toList(EFeatureInfo eFeatureInfo, EObject
+    // eObject,
+    //            Collection<EAttribute> eAttributes, Class<V> type, Transaction eTx) {
+    //        List<EFeatureAttribute<V>> list = new
+    // ArrayList<EFeatureAttribute<V>>(eAttributes.size());
+    //        for (EAttribute it : eAttributes) {
+    //            EFeatureAttribute<V> d = EFeatureAttributeDelegate.create(eFeatureInfo,
+    //                    eObject, it.getName(), type, eTx);
+    //            if (d != null) {
+    //                list.add(d);
+    //            }
+    //        }
+    //        return list;
+    //
+    //    }
 
 }

@@ -20,17 +20,12 @@ package org.geotools.data.sqlserver.jtds;
 import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.logging.Logger;
-
 import org.geotools.factory.Hints;
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.logging.Logging;
 
-/**
- *
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class JTDSDateConverterFactory implements ConverterFactory {
     private static final Logger LOGGER = Logging.getLogger(JTDSDateConverterFactory.class);
     JTDSDateConverter converter = new JTDSDateConverter();
@@ -64,17 +59,16 @@ public class JTDSDateConverterFactory implements ConverterFactory {
                 JTDS_TIMESTAMP = Class.forName("net.sourceforge.jtds.jdbc.DateTime");
                 JTDS_TS_DVALUE = JTDS_TIMESTAMP.getMethod("toDate");
                 JTDS_TS_TSVALUE = JTDS_TIMESTAMP.getMethod("toTimestamp");
-            } catch(Exception e) {
+            } catch (Exception e) {
                 throw new RuntimeException("Could not initialize the jtds date converter", e);
             }
         }
     }
 
     @Override
-    public Converter createConverter(Class<?> source, Class<?> target,
-            Hints hints) {
+    public Converter createConverter(Class<?> source, Class<?> target, Hints hints) {
         // if the jdbc driver is not in the classpath don't bother trying to convert
-        if(JTDS_DATE == null) {
+        if (JTDS_DATE == null) {
             LOGGER.finest("No JTDS jar on classpath");
             return null;
         }
@@ -101,24 +95,21 @@ public class JTDSDateConverterFactory implements ConverterFactory {
         public <T> T convert(Object source, Class<T> target) throws Exception {
             if (JTDS_TIMESTAMP.isInstance(source)) {
                 if (java.sql.Date.class.isAssignableFrom(target)) {
-                    LOGGER.finest("converting to Date from "+source.toString());
+                    LOGGER.finest("converting to Date from " + source.toString());
                     return (T) JTDS_TS_DVALUE.invoke(source);
                 } else {
-                    LOGGER.finest("converting to timestamp from "+source.toString());
+                    LOGGER.finest("converting to timestamp from " + source.toString());
                     return (T) JTDS_TS_TSVALUE.invoke(source);
                 }
             } else {
                 if (java.sql.Date.class.isAssignableFrom(target)) {
-                    LOGGER.finest("converting to Date from "+source.toString());
+                    LOGGER.finest("converting to Date from " + source.toString());
                     return (T) JTDS_DATE_DVALUE.invoke(source);
                 } else {
-                    LOGGER.finest("converting to timestamp from "+source.toString());
+                    LOGGER.finest("converting to timestamp from " + source.toString());
                     return (T) JTDS_DATE_TSVALUE.invoke(source);
                 }
             }
         }
-
     }
-
-
 }

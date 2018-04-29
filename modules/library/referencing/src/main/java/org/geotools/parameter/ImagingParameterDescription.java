@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,50 +16,40 @@
  */
 package org.geotools.parameter;
 
-import java.util.Locale;
-import java.util.ResourceBundle;
-import java.util.MissingResourceException;
 import java.io.Serializable;
-
+import java.util.Locale;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 import javax.media.jai.OperationDescriptor;
-
-import org.geotools.util.Utilities;
 import org.geotools.util.AbstractInternationalString;
-
+import org.geotools.util.Utilities;
 
 /**
- * A localized string for a JAI's operation parameter.
- * This is used by {@link ImagingParameterDescriptors}.
+ * A localized string for a JAI's operation parameter. This is used by {@link
+ * ImagingParameterDescriptors}.
  *
  * @since 2.2
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
-final class ImagingParameterDescription extends AbstractInternationalString implements Serializable {
-    /**
-     * Serial number for interoperability with different versions.
-     */
+final class ImagingParameterDescription extends AbstractInternationalString
+        implements Serializable {
+    /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -325584046563057577L;
 
-    /**
-     * Shared keys for arguments. Will be completed only as needed.
-     */
+    /** Shared keys for arguments. Will be completed only as needed. */
     private static final String[] argumentKeys = new String[12];
 
-    /**
-     * The operation to fetch localized resource from.
-     */
+    /** The operation to fetch localized resource from. */
     private final OperationDescriptor operation;
 
-    /**
-     * The key for the resource to fetch.
-     */
+    /** The key for the resource to fetch. */
     private final String key;
 
     /**
-     * Prefix to removes from the value associated to the {@code key}, or {@code null} if none.
-     * This is usually the vendor key.
+     * Prefix to removes from the value associated to the {@code key}, or {@code null} if none. This
+     * is usually the vendor key.
      */
     private final String prefixKey;
 
@@ -91,18 +81,14 @@ final class ImagingParameterDescription extends AbstractInternationalString impl
      * @param operation The operation to fetch localized resource from.
      * @param key The key for the resource to fetch.
      */
-    public ImagingParameterDescription(final OperationDescriptor operation,
-                                       final String              key,
-                                       final String              prefixKey)
-    {
+    public ImagingParameterDescription(
+            final OperationDescriptor operation, final String key, final String prefixKey) {
         this.operation = operation;
-        this.key       = key;
+        this.key = key;
         this.prefixKey = prefixKey;
     }
 
-    /**
-     * Tests if the resource exists.
-     */
+    /** Tests if the resource exists. */
     public boolean exists() {
         try {
             // AbstractInternationalString.toString() never returns null.
@@ -115,7 +101,7 @@ final class ImagingParameterDescription extends AbstractInternationalString impl
     /**
      * Returns a string in the specified locale.
      *
-     * @param  locale The locale to look for, or {@code null} for the default locale.
+     * @param locale The locale to look for, or {@code null} for the default locale.
      * @return The string in the specified locale, or in a default locale.
      * @throws MissingResourceException is the key given to the constructor is invalid.
      */
@@ -132,9 +118,9 @@ final class ImagingParameterDescription extends AbstractInternationalString impl
     }
 
     /**
-     * If the specified name starts with the specified prefix, removes the prefix from
-     * the name. This is used for removing the "org.geotools" part in operation name
-     * like "org.geotools.NodataFilter" for example.
+     * If the specified name starts with the specified prefix, removes the prefix from the name.
+     * This is used for removing the "org.geotools" part in operation name like
+     * "org.geotools.NodataFilter" for example.
      */
     static String trimPrefix(String name, String prefix) {
         name = name.trim();
@@ -144,7 +130,7 @@ final class ImagingParameterDescription extends AbstractInternationalString impl
             if (offset != 0) {
                 if (name.startsWith(prefix)) {
                     final int length = name.length();
-                    if (offset<length && name.charAt(offset)=='.') {
+                    if (offset < length && name.charAt(offset) == '.') {
                         name = name.substring(offset + 1);
                     }
                 }
@@ -153,25 +139,21 @@ final class ImagingParameterDescription extends AbstractInternationalString impl
         return name;
     }
 
-    /**
-     * Compares this international string with the specified object for equality.
-     */
+    /** Compares this international string with the specified object for equality. */
     @Override
     public boolean equals(final Object object) {
-        if (object!=null && object.getClass().equals(getClass())) {
+        if (object != null && object.getClass().equals(getClass())) {
             final ImagingParameterDescription that = (ImagingParameterDescription) object;
-            return Utilities.equals(this.key,       that.key)       &&
-                   Utilities.equals(this.prefixKey, that.prefixKey) &&
-                   Utilities.equals(this.operation, that.operation);
+            return Utilities.equals(this.key, that.key)
+                    && Utilities.equals(this.prefixKey, that.prefixKey)
+                    && Utilities.equals(this.operation, that.operation);
         }
         return false;
     }
 
-    /**
-     * Returns a hash code value for this international text.
-     */
+    /** Returns a hash code value for this international text. */
     @Override
     public int hashCode() {
-        return (int)serialVersionUID ^ key.hashCode() ^ operation.hashCode();
+        return (int) serialVersionUID ^ key.hashCode() ^ operation.hashCode();
     }
 }

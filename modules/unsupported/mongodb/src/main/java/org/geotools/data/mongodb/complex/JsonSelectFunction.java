@@ -16,21 +16,19 @@
  */
 package org.geotools.data.mongodb.complex;
 
+import static org.geotools.filter.capability.FunctionNameImpl.parameter;
+
 import org.geotools.feature.NameImpl;
 import org.geotools.filter.AttributeExpressionImpl;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
 
-import static org.geotools.filter.capability.FunctionNameImpl.parameter;
-
-/**
- * Function that selects a JSON object using a JSON path.
- */
+/** Function that selects a JSON object using a JSON path. */
 public final class JsonSelectFunction extends FunctionExpressionImpl {
 
-    private static final FunctionName DEFINITION = new FunctionNameImpl(
-            "jsonSelect", parameter("path", String.class));
+    private static final FunctionName DEFINITION =
+            new FunctionNameImpl("jsonSelect", parameter("path", String.class));
 
     public JsonSelectFunction() {
         super(DEFINITION);
@@ -50,9 +48,7 @@ public final class JsonSelectFunction extends FunctionExpressionImpl {
         return MongoComplexUtilities.getValue(object, path);
     }
 
-    /**
-     * Return the JSON path to be selected.
-     */
+    /** Return the JSON path to be selected. */
     public String getJsonPath() {
         return (String) this.params.get(0).evaluate(null);
     }

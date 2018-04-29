@@ -17,46 +17,44 @@
  */
 package org.geotools.arcsde.session;
 
+import com.esri.sde.sdk.client.SeException;
+import com.esri.sde.sdk.client.SeRelease;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Queue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.apache.commons.pool.BasePoolableObjectFactory;
 import org.apache.commons.pool.impl.GenericObjectPool;
 import org.apache.commons.pool.impl.GenericObjectPool.Config;
 import org.geotools.arcsde.ArcSdeException;
 import org.geotools.arcsde.logging.Loggers;
 
-import com.esri.sde.sdk.client.SeException;
-import com.esri.sde.sdk.client.SeRelease;
-
 /**
  * Maintains <code>SeConnection</code>'s for a single set of connection properties (for instance: by
  * server, port, user and password) in a pool to recycle used connections.
- * <p>
- * We are making use of an Apache Commons ObjectPool to maintain connections. This connection pool
- * is configurable in the sense that some parameters can be passed to establish the pooling policy.
- * To pass parameters to the connection pool, you should set properties in the parameters Map passed
- * to SdeDataStoreFactory.createDataStore, which will invoke SdeConnectionPoolFactory to get the SDE
- * instance's pool singleton. That instance singleton will be created with the preferences passed
- * the first time createDataStore is called for a given SDE instance/user, if subsequent calls
- * change that preferences, they will be ignored.
- * </p>
- * <p>
- * The expected optional parameters that you can set up in the argument Map for createDataStore are:
+ *
+ * <p>We are making use of an Apache Commons ObjectPool to maintain connections. This connection
+ * pool is configurable in the sense that some parameters can be passed to establish the pooling
+ * policy. To pass parameters to the connection pool, you should set properties in the parameters
+ * Map passed to SdeDataStoreFactory.createDataStore, which will invoke SdeConnectionPoolFactory to
+ * get the SDE instance's pool singleton. That instance singleton will be created with the
+ * preferences passed the first time createDataStore is called for a given SDE instance/user, if
+ * subsequent calls change that preferences, they will be ignored.
+ *
+ * <p>The expected optional parameters that you can set up in the argument Map for createDataStore
+ * are:
+ *
  * <ul>
- * <li>pool.minConnections Integer, tells the minimum number of open connections the pool will
- * maintain opened</li>
- * <li>pool.maxConnections Integer, tells the maximum number of open connections the pool will
- * create and maintain opened</li>
- * <li>pool.timeOut Integer, tells how many milliseconds a calling thread is guaranteed to wait
- * before getConnection() throws an UnavailableArcSDEConnectionException</li>
+ *   <li>pool.minConnections Integer, tells the minimum number of open connections the pool will
+ *       maintain opened
+ *   <li>pool.maxConnections Integer, tells the maximum number of open connections the pool will
+ *       create and maintain opened
+ *   <li>pool.timeOut Integer, tells how many milliseconds a calling thread is guaranteed to wait
+ *       before getConnection() throws an UnavailableArcSDEConnectionException
  * </ul>
- * </p>
- * 
+ *
  * @author Gabriel Roldan
  * @version $Id$
  */
@@ -74,20 +72,17 @@ class SessionPool implements ISessionPool {
     /** Apache commons-pool used to pool arcsde connections */
     private GenericObjectPool pool;
 
-    private final Queue<Session> openSessionsNonTransactional = new LinkedList<Session>();// new
+    private final Queue<Session> openSessionsNonTransactional = new LinkedList<Session>(); // new
 
     // ConcurrentLinkedQueue<Session>();
 
     /**
      * Creates a new SessionPool object for the given config.
-     * 
-     * @param config
-     *            holds connection options such as server, user and password, as well as tuning
-     *            options as maximum number of connections allowed
-     * @throws IOException
-     *             If connection could not be established
-     * @throws NullPointerException
-     *             If config is null
+     *
+     * @param config holds connection options such as server, user and password, as well as tuning
+     *     options as maximum number of connections allowed
+     * @throws IOException If connection could not be established
+     * @throws NullPointerException If config is null
      */
     protected SessionPool(ArcSDEConnectionConfig config) throws IOException {
         if (config == null) {
@@ -104,8 +99,7 @@ class SessionPool implements ISessionPool {
         if (minConnections > maxConnections) {
             throw new IllegalArgumentException("pool.minConnections > pool.maxConnections");
         }
-        {// configure connection pool
-
+        { // configure connection pool
             Config poolCfg = new Config();
             // pool upper limit
             poolCfg.maxActive = config.getMaxConnections().intValue();
@@ -178,10 +172,9 @@ class SessionPool implements ISessionPool {
 
     /**
      * SeConnectionFactory used to create {@link ISession} instances for the pool.
-     * <p>
-     * Subclass may overide to customize this behaviour.
-     * </p>
-     * 
+     *
+     * <p>Subclass may overide to customize this behaviour.
+     *
      * @return SeConnectionFactory.
      */
     protected SeConnectionFactory createConnectionFactory() {
@@ -190,7 +183,7 @@ class SessionPool implements ISessionPool {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.geotools.arcsde.session.ISessionPool#getPoolSize()
      */
     public int getPoolSize() {
@@ -200,7 +193,7 @@ class SessionPool implements ISessionPool {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.geotools.arcsde.session.ISessionPool#close()
      */
     public void close() {
@@ -217,7 +210,7 @@ class SessionPool implements ISessionPool {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.geotools.arcsde.session.ISessionPool#isClosed()
      */
     public boolean isClosed() {
@@ -230,44 +223,33 @@ class SessionPool implements ISessionPool {
         }
     }
 
-    /**
-     * Ensures proper closure of connection pool at this object's finalization stage.
-     */
+    /** Ensures proper closure of connection pool at this object's finalization stage. */
     @Override
     protected void finalize() {
         close();
     }
 
-    /**
-     * @see org.geotools.arcsde.session.ISessionPool#getAvailableCount()
-     */
+    /** @see org.geotools.arcsde.session.ISessionPool#getAvailableCount() */
     public synchronized int getAvailableCount() {
         checkOpen();
         return pool.getMaxActive() - pool.getNumActive();
     }
 
-    /**
-     * @see org.geotools.arcsde.session.ISessionPool#getInUseCount()
-     */
+    /** @see org.geotools.arcsde.session.ISessionPool#getInUseCount() */
     public int getInUseCount() {
         checkOpen();
         return pool.getNumActive();
     }
 
-    /**
-     * @see org.geotools.arcsde.session.ISessionPool#getSession()
-     */
+    /** @see org.geotools.arcsde.session.ISessionPool#getSession() */
     public ISession getSession() throws IOException, UnavailableConnectionException {
         return getSession(true);
     }
 
-
-
     /**
-     * Return the session Object to the ConnectionPool.
-     * Method must be synchronized, in order to prevent SessionPool
-     * from opening more connections than in max.Connection defined under
-     * heavy load
+     * Return the session Object to the ConnectionPool. Method must be synchronized, in order to
+     * prevent SessionPool from opening more connections than in max.Connection defined under heavy
+     * load
      *
      * @param session
      * @throws Exception
@@ -278,11 +260,9 @@ class SessionPool implements ISessionPool {
         pool.returnObject(session);
     }
 
-    /**
-     * @see org.geotools.arcsde.session.ISessionPool#getSession(boolean)
-     */
-    public ISession getSession(final boolean transactional) throws IOException,
-            UnavailableConnectionException {
+    /** @see org.geotools.arcsde.session.ISessionPool#getSession(boolean) */
+    public ISession getSession(final boolean transactional)
+            throws IOException, UnavailableConnectionException {
         checkOpen();
         try {
             Session connection = null;
@@ -293,17 +273,20 @@ class SessionPool implements ISessionPool {
                 synchronized (openSessionsNonTransactional) {
                     try {
                         if (LOGGER.isLoggable(Level.FINER)) {
-                            LOGGER.finer("Grabbing session from pool on "
-                                    + Thread.currentThread().getName());
+                            LOGGER.finer(
+                                    "Grabbing session from pool on "
+                                            + Thread.currentThread().getName());
                         }
                         connection = (Session) pool.borrowObject();
                         if (LOGGER.isLoggable(Level.FINER)) {
-                            LOGGER.finer("Got session from the pool on "
-                                    + Thread.currentThread().getName());
+                            LOGGER.finer(
+                                    "Got session from the pool on "
+                                            + Thread.currentThread().getName());
                         }
                     } catch (NoSuchElementException e) {
                         if (LOGGER.isLoggable(Level.FINER)) {
-                            LOGGER.finer("No available sessions in the pool, falling back to queued session");
+                            LOGGER.finer(
+                                    "No available sessions in the pool, falling back to queued session");
                         }
                         connection = openSessionsNonTransactional.remove();
                     }
@@ -311,8 +294,9 @@ class SessionPool implements ISessionPool {
                     openSessionsNonTransactional.add(connection);
 
                     if (LOGGER.isLoggable(Level.FINER)) {
-                        LOGGER.finer("Got session from the in use queue on "
-                                + Thread.currentThread().getName());
+                        LOGGER.finer(
+                                "Got session from the in use queue on "
+                                        + Thread.currentThread().getName());
                     }
                 }
             }
@@ -321,8 +305,9 @@ class SessionPool implements ISessionPool {
             return connection;
 
         } catch (NoSuchElementException e) {
-            LOGGER.log(Level.WARNING, "Out of connections: " + e.getMessage() + ". Config: "
-                    + this.config);
+            LOGGER.log(
+                    Level.WARNING,
+                    "Out of connections: " + e.getMessage() + ". Config: " + this.config);
             throw new UnavailableConnectionException(config.getMaxConnections(), this.config);
         } catch (SeException se) {
             ArcSdeException sdee = new ArcSdeException(se);
@@ -330,14 +315,15 @@ class SessionPool implements ISessionPool {
             throw sdee;
         } catch (Exception e) {
             LOGGER.log(Level.WARNING, "Unknown problem getting connection: " + e.getMessage(), e);
-            throw (IOException) new IOException(
-                    "Unknown problem fetching connection from connection pool").initCause(e);
+            throw (IOException)
+                    new IOException("Unknown problem fetching connection from connection pool")
+                            .initCause(e);
         }
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.geotools.arcsde.session.ISessionPool#getConfig()
      */
     public ArcSDEConnectionConfig getConfig() {
@@ -347,7 +333,7 @@ class SessionPool implements ISessionPool {
     /**
      * PoolableObjectFactory intended to be used by a Jakarta's commons-pool objects pool, that
      * provides ArcSDE's SeConnections.
-     * 
+     *
      * @author Gabriel Roldan, Axios Engineering
      * @version $Id$
      */
@@ -357,7 +343,7 @@ class SessionPool implements ISessionPool {
 
         /**
          * Creates a new SeConnectionFactory object.
-         * 
+         *
          * @param config
          */
         public SeConnectionFactory(ArcSDEConnectionConfig config) {
@@ -367,16 +353,14 @@ class SessionPool implements ISessionPool {
 
         /**
          * Called whenever a new instance is needed.
-         * <p>
-         * The implementation for this method needs to be synchronized in order to make sure no two
-         * {@code SeConnection} instances are created at the same time. Otherwise, when that happens
-         * under load, SeConnection's constructor uses to throw a nasty
-         * {@code NegativeArraySizeException}.
-         * </p>
-         * 
+         *
+         * <p>The implementation for this method needs to be synchronized in order to make sure no
+         * two {@code SeConnection} instances are created at the same time. Otherwise, when that
+         * happens under load, SeConnection's constructor uses to throw a nasty {@code
+         * NegativeArraySizeException}.
+         *
          * @return a newly created <code>SeConnection</code>
-         * @throws SeException
-         *             if the connection can't be created
+         * @throws SeException if the connection can't be created
          */
         @Override
         public synchronized Object makeObject() throws IOException {
@@ -395,11 +379,10 @@ class SessionPool implements ISessionPool {
         /**
          * is invoked in an implementation-specific fashion to determine if an instance is still
          * valid to be returned by the pool. It will only be invoked on an "activated" instance.
-         * 
-         * @param an
-         *            instance of {@link Session} maintained by this pool.
+         *
+         * @param an instance of {@link Session} maintained by this pool.
          * @return <code>true</code> if the connection is still alive and operative (checked by
-         *         asking its user name), <code>false</code> otherwise.
+         *     asking its user name), <code>false</code> otherwise.
          */
         @Override
         public boolean validateObject(Object obj) {
@@ -418,8 +401,11 @@ class SessionPool implements ISessionPool {
                      */
                     session.testServer();
                 } catch (IOException e) {
-                    LOGGER.info("Can't validate SeConnection, discarding it: " + session
-                            + ". Reason: " + e.getMessage());
+                    LOGGER.info(
+                            "Can't validate SeConnection, discarding it: "
+                                    + session
+                                    + ". Reason: "
+                                    + e.getMessage());
                     valid = false;
                 }
             }
@@ -429,9 +415,8 @@ class SessionPool implements ISessionPool {
         /**
          * is invoked on every instance when it is being "dropped" from the pool (whether due to the
          * response from validateObject, or for reasons specific to the pool implementation.)
-         * 
-         * @param obj
-         *            an instance of {@link Session} maintained by this pool.
+         *
+         * @param obj an instance of {@link Session} maintained by this pool.
          */
         @Override
         public void destroyObject(Object obj) {

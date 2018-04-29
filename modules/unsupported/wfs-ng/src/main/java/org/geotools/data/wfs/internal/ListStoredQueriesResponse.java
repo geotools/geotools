@@ -25,15 +25,10 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collections;
-import java.util.List;
 import java.util.logging.Level;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-
 import net.opengis.wfs20.ListStoredQueriesResponseType;
-
 import org.apache.commons.io.IOUtils;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.ows.HTTPResponse;
@@ -67,25 +62,19 @@ public class ListStoredQueriesResponse extends WFSResponse {
                 RESPONSES.fine("Full ListStoredQueries response: " + new String(rawResponse));
             }
             try {
-                DocumentBuilderFactory builderFactory = DocumentBuilderFactory
-                        .newInstance();
+                DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
                 builderFactory.setNamespaceAware(true);
                 builderFactory.setValidating(false);
-                DocumentBuilder documentBuilder = builderFactory
-                        .newDocumentBuilder();
-                rawDocument = documentBuilder.parse(new ByteArrayInputStream(
-                        rawResponse));
+                DocumentBuilder documentBuilder = builderFactory.newDocumentBuilder();
+                rawDocument = documentBuilder.parse(new ByteArrayInputStream(rawResponse));
             } catch (Exception e) {
-                throw new IOException("Error parsing capabilities document: "
-                        + e.getMessage(), e);
+                throw new IOException("Error parsing capabilities document: " + e.getMessage(), e);
             }
-
 
             listStoredQueriesResponse = parseStoredQueries(rawDocument, WFS_2_0_CONFIGURATION);
 
             if (null == listStoredQueriesResponse) {
-                throw new IllegalStateException(
-                        "Unable to parse ListStoredQueries document");
+                throw new IllegalStateException("Unable to parse ListStoredQueries document");
             }
 
         } finally {
@@ -93,8 +82,8 @@ public class ListStoredQueriesResponse extends WFSResponse {
         }
     }
 
-    private ListStoredQueriesResponseType parseStoredQueries(Document document,
-            Configuration wfsConfig) throws DataSourceException {
+    private ListStoredQueriesResponseType parseStoredQueries(
+            Document document, Configuration wfsConfig) throws DataSourceException {
         DOMParser parser = new DOMParser(wfsConfig, document);
         final Object parsed;
         try {
@@ -103,7 +92,7 @@ public class ListStoredQueriesResponse extends WFSResponse {
             throw new DataSourceException("Exception parsing ListStoredQueriesResponse", e);
         }
 
-        return (ListStoredQueriesResponseType)parsed;
+        return (ListStoredQueriesResponseType) parsed;
     }
 
     public ListStoredQueriesResponseType getListStoredQueriesResponse() {

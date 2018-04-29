@@ -16,6 +16,7 @@
  */
 package org.geotools.wfs;
 
+import com.vividsolutions.jts.geom.Point;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -28,7 +29,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -36,7 +36,20 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
+import junit.framework.TestCase;
+import net.opengis.fes20.FilterCapabilitiesType;
+import net.opengis.ows11.DCPType;
+import net.opengis.ows11.KeywordsType;
+import net.opengis.ows11.LanguageStringType;
+import net.opengis.ows11.OperationType;
+import net.opengis.ows11.OperationsMetadataType;
+import net.opengis.ows11.RequestMethodType;
+import net.opengis.ows11.ServiceIdentificationType;
+import net.opengis.ows11.WGS84BoundingBoxType;
+import net.opengis.wfs20.FeatureCollectionType;
+import net.opengis.wfs20.FeatureTypeListType;
+import net.opengis.wfs20.FeatureTypeType;
+import net.opengis.wfs20.WFSCapabilitiesType;
 import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDSchema;
@@ -52,46 +65,25 @@ import org.opengis.filter.capability.FilterCapabilities;
 import org.opengis.filter.capability.Operator;
 import org.w3c.dom.Document;
 
-import com.vividsolutions.jts.geom.Point;
-
-import junit.framework.TestCase;
-import net.opengis.fes20.FilterCapabilitiesType;
-import net.opengis.ows11.DCPType;
-import net.opengis.ows11.KeywordsType;
-import net.opengis.ows11.LanguageStringType;
-import net.opengis.ows11.OperationType;
-import net.opengis.ows11.OperationsMetadataType;
-import net.opengis.ows11.RequestMethodType;
-import net.opengis.ows11.ServiceIdentificationType;
-import net.opengis.ows11.WGS84BoundingBoxType;
-import net.opengis.wfs20.FeatureCollectionType;
-import net.opengis.wfs20.FeatureTypeListType;
-import net.opengis.wfs20.FeatureTypeType;
-import net.opengis.wfs20.WFSCapabilitiesType;
-
-/**
- * 
- * 
- * @source $URL$
- */
+/** @source $URL$ */
 public class WFS_2_0_0_ParsingTest extends TestCase {
 
     Configuration configuration;
 
     protected void setUp() throws Exception {
         super.setUp();
-
     }
 
     public void testParseEmptyGetCapabilities() throws Exception {
-        String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-                + "<WFS_Capabilities "
-                + "  version=\"2.0.0\" "
-                + "  xmlns=\"http://www.opengis.net/wfs/2.0\""
-                + "  xmlns:fes=\"http://www.opengis.net/fes/2.0\""
-                + "  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""
-                + "  xsi:schemaLocation=\"http://www.opengis.net/wfs/2.0 http://schemas.opengis.net/wfs/2.0/wfs.xsd\">"
-                + "</WFS_Capabilities>";
+        String xml =
+                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+                        + "<WFS_Capabilities "
+                        + "  version=\"2.0.0\" "
+                        + "  xmlns=\"http://www.opengis.net/wfs/2.0\""
+                        + "  xmlns:fes=\"http://www.opengis.net/fes/2.0\""
+                        + "  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""
+                        + "  xsi:schemaLocation=\"http://www.opengis.net/wfs/2.0 http://schemas.opengis.net/wfs/2.0/wfs.xsd\">"
+                        + "</WFS_Capabilities>";
 
         configuration = new org.geotools.wfs.v2_0.WFSCapabilitiesConfiguration();
 
@@ -104,13 +96,13 @@ public class WFS_2_0_0_ParsingTest extends TestCase {
         assertNotNull(caps);
         assertEquals("2.0.0", caps.getVersion());
     }
-    
+
     public void testParseGetCapabilities() throws Exception {
         configuration = new org.geotools.wfs.v2_0.WFSCapabilitiesConfiguration();
 
         Parser parser = new Parser(configuration);
-        Object parsed = parser.parse(getClass().getResourceAsStream(
-                "geoserver-GetCapabilities_2_0_0.xml"));
+        Object parsed =
+                parser.parse(getClass().getResourceAsStream("geoserver-GetCapabilities_2_0_0.xml"));
 
         assertNotNull(parsed);
         assertTrue(parsed.getClass().getName(), parsed instanceof WFSCapabilitiesType);
@@ -118,21 +110,20 @@ public class WFS_2_0_0_ParsingTest extends TestCase {
 
         assertNotNull(caps);
         assertEquals("2.0.0", caps.getVersion());
-/*
-        assertServiceIdentification(caps);
-        assertOperationsMetadata(caps);
-        assertFeatureTypeList(caps);
-        assertFilterCapabilities(caps);
-*/
+        /*
+                assertServiceIdentification(caps);
+                assertOperationsMetadata(caps);
+                assertFeatureTypeList(caps);
+                assertFilterCapabilities(caps);
+        */
     }
-    
 
     public void testParseGetCapabilitiesFMI() throws Exception {
         configuration = new org.geotools.wfs.v2_0.WFSCapabilitiesConfiguration();
 
         Parser parser = new Parser(configuration);
-        Object parsed = parser.parse(getClass().getResourceAsStream(
-                "fmi-GetCapabilities_2_0_0.xml"));
+        Object parsed =
+                parser.parse(getClass().getResourceAsStream("fmi-GetCapabilities_2_0_0.xml"));
 
         assertNotNull(parsed);
         assertTrue(parsed.getClass().getName(), parsed instanceof WFSCapabilitiesType);
@@ -144,13 +135,13 @@ public class WFS_2_0_0_ParsingTest extends TestCase {
         // test stored query parsing
         // TODO:
     }
-    
+
     public void testParseGetCapabilitiesCuzk() throws Exception {
         configuration = new org.geotools.wfs.v2_0.WFSCapabilitiesConfiguration();
 
         Parser parser = new Parser(configuration);
-        Object parsed = parser.parse(getClass().getResourceAsStream(
-                "cuzk-GetCapabilities_2_0_0.xml"));
+        Object parsed =
+                parser.parse(getClass().getResourceAsStream("cuzk-GetCapabilities_2_0_0.xml"));
 
         assertNotNull(parsed);
         assertTrue(parsed.getClass().getName(), parsed instanceof WFSCapabilitiesType);
@@ -158,11 +149,10 @@ public class WFS_2_0_0_ParsingTest extends TestCase {
 
         assertNotNull(caps);
         assertEquals("2.0.0", caps.getVersion());
-        
+
         FilterCapabilitiesType fct = caps.getFilterCapabilities();
         assertNotNull(fct);
     }
-
 
     void assertServiceIdentification(WFSCapabilitiesType caps) {
         ServiceIdentificationType sa = caps.getServiceIdentification();
@@ -173,9 +163,8 @@ public class WFS_2_0_0_ParsingTest extends TestCase {
         KeywordsType keywords = (KeywordsType) sa.getKeywords().get(0);
         List<String> simpleKeywords = new ArrayList<String>();
         for (Object o : keywords.getKeyword()) {
-            LanguageStringType lst = (LanguageStringType)o;
+            LanguageStringType lst = (LanguageStringType) o;
             simpleKeywords.add(lst.getValue());
-            
         }
         assertTrue(simpleKeywords.contains("WFS"));
         assertTrue(simpleKeywords.contains("WMS"));
@@ -199,17 +188,20 @@ public class WFS_2_0_0_ParsingTest extends TestCase {
         assertEquals(1, dcp1.getHTTP().getGet().size());
         assertEquals(1, dcp1.getHTTP().getPost().size());
 
-        assertEquals("http://localhost:8080/geoserver/wfs?get",
+        assertEquals(
+                "http://localhost:8080/geoserver/wfs?get",
                 ((RequestMethodType) dcp1.getHTTP().getGet().get(0)).getHref());
-        assertEquals("http://localhost:8080/geoserver/wfs?post", ((RequestMethodType) dcp1.getHTTP()
-                .getPost().get(0)).getHref());
+        assertEquals(
+                "http://localhost:8080/geoserver/wfs?post",
+                ((RequestMethodType) dcp1.getHTTP().getPost().get(0)).getHref());
 
         int i = 1;
         assertEquals("DescribeFeatureType", ((OperationType) om.getOperation().get(i++)).getName());
         assertEquals("GetFeature", ((OperationType) om.getOperation().get(i++)).getName());
         assertEquals("GetPropertyValue", ((OperationType) om.getOperation().get(i++)).getName());
         assertEquals("ListStoredQueries", ((OperationType) om.getOperation().get(i++)).getName());
-        assertEquals("DescribeStoredQueries", ((OperationType) om.getOperation().get(i++)).getName());
+        assertEquals(
+                "DescribeStoredQueries", ((OperationType) om.getOperation().get(i++)).getName());
         assertEquals("CreateStoredQuery", ((OperationType) om.getOperation().get(i++)).getName());
         assertEquals("DropStoredQuery", ((OperationType) om.getOperation().get(i++)).getName());
         assertEquals("LockFeature", ((OperationType) om.getOperation().get(i++)).getName());
@@ -241,7 +233,6 @@ public class WFS_2_0_0_ParsingTest extends TestCase {
         assertEquals(40.679648D, (Double) bbox.getLowerCorner().get(1), 1E-6);
         assertEquals(-73.90782D, (Double) bbox.getUpperCorner().get(0), 1E-6);
         assertEquals(40.882078D, (Double) bbox.getUpperCorner().get(1), 1E-6);
-
     }
 
     void assertFilterCapabilities(WFSCapabilitiesType caps) {
@@ -271,13 +262,18 @@ public class WFS_2_0_0_ParsingTest extends TestCase {
 
         assertTrue(fc.getScalarCapabilities().getArithmeticOperators().hasSimpleArithmetic());
         assertNotNull(fc.getScalarCapabilities().getArithmeticOperators().getFunctions());
-        assertEquals(7, fc.getScalarCapabilities().getArithmeticOperators().getFunctions()
-                .getFunctionNames().size());
+        assertEquals(
+                7,
+                fc.getScalarCapabilities()
+                        .getArithmeticOperators()
+                        .getFunctions()
+                        .getFunctionNames()
+                        .size());
 
-        Collection<Operator> operators = fc.getScalarCapabilities().getComparisonOperators()
-                .getOperators();
+        Collection<Operator> operators =
+                fc.getScalarCapabilities().getComparisonOperators().getOperators();
 
-        assertEquals(3, operators.size());// "Simple_Comparisons" is commented out on purpose
+        assertEquals(3, operators.size()); // "Simple_Comparisons" is commented out on purpose
 
         assertNotNull(fc.getScalarCapabilities().getComparisonOperators().getOperator("Between"));
         assertNotNull(fc.getScalarCapabilities().getComparisonOperators().getOperator("Like"));
@@ -319,14 +315,21 @@ public class WFS_2_0_0_ParsingTest extends TestCase {
 
         // http://cite.opengeospatial.org/gmlsf
         // http://localhost:8080/geoserver/wfs?service=WFS&amp;version=1.1.0&amp;request=DescribeFeatureType&amp;typeName=sf:PrimitiveGeoFeature
-        String schemaLocation = doc.getDocumentElement().getAttributeNS(
-                "http://www.w3.org/2001/XMLSchema-instance", "schemaLocation");
+        String schemaLocation =
+                doc.getDocumentElement()
+                        .getAttributeNS(
+                                "http://www.w3.org/2001/XMLSchema-instance", "schemaLocation");
         String absolutePath = URLs.fileToUrl(tmp).toExternalForm();
 
-        schemaLocation = schemaLocation.replaceAll("http://cite.opengeospatial.org/gmlsf .*",
-                "http://cite.opengeospatial.org/gmlsf " + absolutePath);
-        doc.getDocumentElement().setAttributeNS("http://www.w3.org/2001/XMLSchema-instance",
-                "schemaLocation", schemaLocation);
+        schemaLocation =
+                schemaLocation.replaceAll(
+                        "http://cite.opengeospatial.org/gmlsf .*",
+                        "http://cite.opengeospatial.org/gmlsf " + absolutePath);
+        doc.getDocumentElement()
+                .setAttributeNS(
+                        "http://www.w3.org/2001/XMLSchema-instance",
+                        "schemaLocation",
+                        schemaLocation);
 
         tmp = File.createTempFile("geoserver-GetFeature", "xml");
         tmp.deleteOnExit();
@@ -383,8 +386,7 @@ public class WFS_2_0_0_ParsingTest extends TestCase {
 
         int n = 0;
 
-        while (parser.parse() != null)
-            n++;
+        while (parser.parse() != null) n++;
 
         assertEquals(5, n);
     }

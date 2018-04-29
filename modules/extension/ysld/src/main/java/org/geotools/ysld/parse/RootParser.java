@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -20,15 +20,14 @@ package org.geotools.ysld.parse;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import org.geotools.styling.*;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 
 /**
- * {@link YsldParseHandler} for the root of a {@link YamlObject}. This is the "entrypoint" {@link YsldParseHandler} for parsing Ysld into
- * GeoTools-style objects. The resulting sld is accessible via the {{@link #sld()} method.
- * 
+ * {@link YsldParseHandler} for the root of a {@link YamlObject}. This is the "entrypoint" {@link
+ * YsldParseHandler} for parsing Ysld into GeoTools-style objects. The resulting sld is accessible
+ * via the {{@link #sld()} method.
  */
 public class RootParser extends YsldParseHandler {
 
@@ -37,7 +36,7 @@ public class RootParser extends YsldParseHandler {
     Style style;
 
     public RootParser() {
-        this(Collections.<ZoomContextFinder> emptyList());
+        this(Collections.<ZoomContextFinder>emptyList());
     }
 
     public RootParser(List<ZoomContextFinder> zCtxtFinders) {
@@ -78,7 +77,10 @@ public class RootParser extends YsldParseHandler {
             context.push("rules", new RuleParser(newFeatureTypeStyle(), factory));
         } else if (root.has("symbolizers")) {
             context.push("symbolizers", new SymbolizersParser(newRule(), factory));
-        } else if (root.has("point") || root.has("line") || root.has("polygon") || root.has("text")
+        } else if (root.has("point")
+                || root.has("line")
+                || root.has("polygon")
+                || root.has("text")
                 || root.has("raster")) {
             context.push(new SymbolizersParser(newRule(), factory));
         }

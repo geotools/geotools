@@ -17,28 +17,33 @@
 
 package org.geotools.gml3.simple;
 
+import com.vividsolutions.jts.geom.Geometry;
 import org.geotools.geometry.jts.WKTReader2;
 import org.geotools.gml3.GML;
 import org.w3c.dom.Document;
 
-import com.vividsolutions.jts.geom.Geometry;
-
 public class MultiCurveEncoderTest extends GeometryEncoderTestSupport {
 
     public void testEncodeMultiCompound() throws Exception {
-        MultiLineStringEncoder encoder = new MultiLineStringEncoder(gtEncoder, "gml", GML.NAMESPACE, true);
-        Geometry geometry = new WKTReader2()
-                .read("MULTICURVE((100 100, 120 120), COMPOUNDCURVE(CIRCULARSTRING(0 0, 2 0, 2 1, 2 3, 4 3),(4 3, 4 5, 1 4, 0 0)))");
+        MultiLineStringEncoder encoder =
+                new MultiLineStringEncoder(gtEncoder, "gml", GML.NAMESPACE, true);
+        Geometry geometry =
+                new WKTReader2()
+                        .read(
+                                "MULTICURVE((100 100, 120 120), COMPOUNDCURVE(CIRCULARSTRING(0 0, 2 0, 2 1, 2 3, 4 3),(4 3, 4 5, 1 4, 0 0)))");
         Document doc = encode(encoder, geometry);
         // XMLTestSupport.print(doc);
         assertEquals(1, xpath.getMatchingNodes("//gml:MultiCurve", doc).getLength());
-        assertEquals(2, xpath.getMatchingNodes("//gml:MultiCurve/gml:curveMember", doc).getLength());
-        assertEquals("100 100 120 120", xpath.evaluate(
-                "//gml:MultiCurve/gml:curveMember[1]/gml:LineString/gml:posList", doc));
+        assertEquals(
+                2, xpath.getMatchingNodes("//gml:MultiCurve/gml:curveMember", doc).getLength());
+        assertEquals(
+                "100 100 120 120",
+                xpath.evaluate(
+                        "//gml:MultiCurve/gml:curveMember[1]/gml:LineString/gml:posList", doc));
         assertEquals(
                 2,
                 xpath.getMatchingNodes(
-                        "//gml:MultiCurve/gml:curveMember[2]/gml:Curve/gml:segments/*", doc)
+                                "//gml:MultiCurve/gml:curveMember[2]/gml:Curve/gml:segments/*", doc)
                         .getLength());
 
         assertEquals(
@@ -65,19 +70,25 @@ public class MultiCurveEncoderTest extends GeometryEncoderTestSupport {
     }
 
     public void testEncodeMultiCurve() throws Exception {
-        MultiLineStringEncoder encoder = new MultiLineStringEncoder(gtEncoder, "gml", GML.NAMESPACE, true);
-        Geometry geometry = new WKTReader2()
-                .read("MULTICURVE((105 105, 125 125), CIRCULARSTRING(-10 0, -8 2, -6 0, -8 -2, -10 0))");
+        MultiLineStringEncoder encoder =
+                new MultiLineStringEncoder(gtEncoder, "gml", GML.NAMESPACE, true);
+        Geometry geometry =
+                new WKTReader2()
+                        .read(
+                                "MULTICURVE((105 105, 125 125), CIRCULARSTRING(-10 0, -8 2, -6 0, -8 -2, -10 0))");
         Document doc = encode(encoder, geometry);
         // XMLTestSupport.print(doc);
         assertEquals(1, xpath.getMatchingNodes("//gml:MultiCurve", doc).getLength());
-        assertEquals(2, xpath.getMatchingNodes("//gml:MultiCurve/gml:curveMember", doc).getLength());
-        assertEquals("105 105 125 125", xpath.evaluate(
-                "//gml:MultiCurve/gml:curveMember[1]/gml:LineString/gml:posList", doc));
+        assertEquals(
+                2, xpath.getMatchingNodes("//gml:MultiCurve/gml:curveMember", doc).getLength());
+        assertEquals(
+                "105 105 125 125",
+                xpath.evaluate(
+                        "//gml:MultiCurve/gml:curveMember[1]/gml:LineString/gml:posList", doc));
         assertEquals(
                 1,
                 xpath.getMatchingNodes(
-                        "//gml:MultiCurve/gml:curveMember[2]/gml:Curve/gml:segments/*", doc)
+                                "//gml:MultiCurve/gml:curveMember[2]/gml:Curve/gml:segments/*", doc)
                         .getLength());
 
         assertEquals(
@@ -91,17 +102,22 @@ public class MultiCurveEncoderTest extends GeometryEncoderTestSupport {
                         "/gml:MultiCurve/gml:curveMember[2]/gml:Curve/gml:segments/gml:ArcString/gml:posList",
                         doc));
     }
-    
+
     public void testEncodeMultiLineString() throws Exception {
-        MultiLineStringEncoder encoder = new MultiLineStringEncoder(gtEncoder, "gml", GML.NAMESPACE, false);
-        Geometry geometry = new WKTReader2()
-                .read("MULTILINESTRING((105 105, 125 125))");
+        MultiLineStringEncoder encoder =
+                new MultiLineStringEncoder(gtEncoder, "gml", GML.NAMESPACE, false);
+        Geometry geometry = new WKTReader2().read("MULTILINESTRING((105 105, 125 125))");
         Document doc = encode(encoder, geometry);
         // XMLTestSupport.print(doc);
         assertEquals(1, xpath.getMatchingNodes("//gml:MultiLineString", doc).getLength());
-        assertEquals(1, xpath.getMatchingNodes("//gml:MultiLineString/gml:lineStringMember", doc).getLength());
-        assertEquals("105 105 125 125", xpath.evaluate(
-                "//gml:MultiLineString/gml:lineStringMember[1]/gml:LineString/gml:posList", doc));
+        assertEquals(
+                1,
+                xpath.getMatchingNodes("//gml:MultiLineString/gml:lineStringMember", doc)
+                        .getLength());
+        assertEquals(
+                "105 105 125 125",
+                xpath.evaluate(
+                        "//gml:MultiLineString/gml:lineStringMember[1]/gml:LineString/gml:posList",
+                        doc));
     }
-
 }

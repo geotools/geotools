@@ -19,15 +19,14 @@ package org.geotools.image.palette;
 /**
  * Helpers to extract components from a color represented as an integer, and back, as well as
  * methods to "pack" and unpack colors via bit shifts
- * 
+ *
  * @author Andrea Aime - GeoSolutions
- * 
  */
 final class ColorUtils {
 
     /**
      * Returns the alpha component of the specified color
-     * 
+     *
      * @param color
      */
     public static int alpha(int color) {
@@ -36,7 +35,7 @@ final class ColorUtils {
 
     /**
      * Returns the red component of the specified color
-     * 
+     *
      * @param color
      */
     public static int red(int color) {
@@ -45,7 +44,7 @@ final class ColorUtils {
 
     /**
      * Returns the green component of the specified color
-     * 
+     *
      * @param color
      */
     public static int green(int color) {
@@ -54,24 +53,24 @@ final class ColorUtils {
 
     /**
      * Returns the blue component of the specified color
-     * 
+     *
      * @param color
      */
     public static int blue(int color) {
         return color & 0xFF;
     }
 
-    /**
-     * Puts back the four color components into a integer representation
-     */
+    /** Puts back the four color components into a integer representation */
     public static int color(int red, int green, int blue, int alpha) {
-        return ((alpha & 0xFF) << 24) | ((red & 0xFF) << 16) | ((green & 0xFF) << 8)
+        return ((alpha & 0xFF) << 24)
+                | ((red & 0xFF) << 16)
+                | ((green & 0xFF) << 8)
                 | ((blue & 0xFF) << 0);
     }
 
     /**
      * Bit shifts a color component, loosing the less significant bits
-     * 
+     *
      * @param component
      * @param shift
      * @return
@@ -83,7 +82,7 @@ final class ColorUtils {
     /**
      * Undoes what shift did, with some heuristics to preserve full "black", full "white" and
      * lighter colors
-     * 
+     *
      * @param component
      * @param shift
      * @return
@@ -103,7 +102,7 @@ final class ColorUtils {
 
     /**
      * Compares two longs, to be used in comparators
-     * 
+     *
      * @param l1
      * @param l2
      * @return
@@ -118,5 +117,4 @@ final class ColorUtils {
             return -1;
         }
     }
-
 }

@@ -15,7 +15,5 @@
  *    Lesser General Public License for more details.
  */
 
-/**
- * Simple Swing widgets for map display.
- */
+/** Simple Swing widgets for map display. */
 package org.geotools.swing;

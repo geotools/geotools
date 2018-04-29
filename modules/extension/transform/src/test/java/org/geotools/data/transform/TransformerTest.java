@@ -29,9 +29,9 @@ public class TransformerTest extends AbstractTransformTest {
     @Test
     public void testTransformedSortBy() throws Exception {
         TransformFeatureSource transformedSource = (TransformFeatureSource) transformWithRename();
-        
+
         Query query = new Query(Query.ALL);
-        query.setSortBy(new SortBy[] { FF.sort("name", SortOrder.DESCENDING) });
+        query.setSortBy(new SortBy[] {FF.sort("name", SortOrder.DESCENDING)});
 
         Query transformedQuery = transformedSource.transformer.transformQuery(query);
         assertNotNull(transformedQuery);
@@ -39,5 +39,4 @@ public class TransformerTest extends AbstractTransformTest {
         assertEquals(1, transformedQuery.getSortBy().length);
         assertEquals("state_name", transformedQuery.getSortBy()[0].getPropertyName().toString());
     }
-
 }

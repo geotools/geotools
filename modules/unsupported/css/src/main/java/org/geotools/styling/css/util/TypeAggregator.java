@@ -16,36 +16,40 @@
  */
 package org.geotools.styling.css.util;
 
+import com.vividsolutions.jts.geom.Geometry;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.crs.DefaultEngineeringCRS;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-import com.vividsolutions.jts.geom.Geometry;
-
 /**
- * Collects type of properties, by name. When a property is given multiple types, a common ancestor is found
- * 
+ * Collects type of properties, by name. When a property is given multiple types, a common ancestor
+ * is found
+ *
  * @author Andrea Aime - GeoSolutions
  */
 class TypeAggregator {
     Map<String, Class> types = new LinkedHashMap<>();
 
-    static final List<Class<?>> INTEGRAL_NUMBER_TYPES = Arrays.asList((Class<?>) Byte.class,
-            Short.class, Integer.class, Long.class, BigInteger.class);
+    static final List<Class<?>> INTEGRAL_NUMBER_TYPES =
+            Arrays.asList(
+                    (Class<?>) Byte.class,
+                    Short.class,
+                    Integer.class,
+                    Long.class,
+                    BigInteger.class);
 
-    static final List<Class<?>> FLOAT_NUMBER_TYPES = Arrays.asList((Class<?>) Float.class,
-            Double.class, BigDecimal.class);
+    static final List<Class<?>> FLOAT_NUMBER_TYPES =
+            Arrays.asList((Class<?>) Float.class, Double.class, BigDecimal.class);
 
     /**
      * Adds/merges a property and its type
-     * 
+     *
      * @param name
      * @param binding
      */
@@ -65,8 +69,8 @@ class TypeAggregator {
                 // subclass)
                 if (INTEGRAL_NUMBER_TYPES.contains(existingBinding)) {
                     if (INTEGRAL_NUMBER_TYPES.contains(binding)) {
-                        if (INTEGRAL_NUMBER_TYPES.indexOf(binding) > INTEGRAL_NUMBER_TYPES
-                                .indexOf(existingBinding)) {
+                        if (INTEGRAL_NUMBER_TYPES.indexOf(binding)
+                                > INTEGRAL_NUMBER_TYPES.indexOf(existingBinding)) {
                             types.put(name, binding);
                         }
                     } else if (FLOAT_NUMBER_TYPES.contains(binding)) {
@@ -76,8 +80,8 @@ class TypeAggregator {
                     }
                 } else if (FLOAT_NUMBER_TYPES.contains(existingBinding)) {
                     if (FLOAT_NUMBER_TYPES.contains(binding)) {
-                        if (FLOAT_NUMBER_TYPES.indexOf(binding) > FLOAT_NUMBER_TYPES
-                                .indexOf(existingBinding)) {
+                        if (FLOAT_NUMBER_TYPES.indexOf(binding)
+                                > FLOAT_NUMBER_TYPES.indexOf(existingBinding)) {
                             types.put(name, binding);
                         } else if (!INTEGRAL_NUMBER_TYPES.contains(binding)) {
                             types.put(name, Number.class);
@@ -91,12 +95,11 @@ class TypeAggregator {
                 types.put(name, Object.class);
             }
         }
-
     }
 
     /**
      * Builds a feature type containing all of the attributes found so far
-     * 
+     *
      * @return
      */
     public SimpleFeatureType getFeatureType() {
@@ -109,11 +112,9 @@ class TypeAggregator {
             } else {
                 builder.add(name, type);
             }
-
         }
         builder.setName("GuessedFeatureType");
 
         return builder.buildFeatureType();
     }
-
 }

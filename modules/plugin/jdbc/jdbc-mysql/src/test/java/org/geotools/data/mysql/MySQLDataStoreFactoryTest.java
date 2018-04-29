@@ -17,17 +17,10 @@
 package org.geotools.data.mysql;
 
 import java.util.HashMap;
-
 import junit.framework.TestCase;
-
 import org.geotools.jdbc.JDBCDataStoreFactory;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class MySQLDataStoreFactoryTest extends TestCase {
     MySQLDataStoreFactory factory;
 

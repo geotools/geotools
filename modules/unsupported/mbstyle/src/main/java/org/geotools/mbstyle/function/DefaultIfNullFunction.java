@@ -18,7 +18,6 @@ package org.geotools.mbstyle.function;
 
 import java.util.List;
 import java.util.logging.Logger;
-
 import org.geotools.data.Parameter;
 import org.geotools.filter.FunctionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
@@ -27,9 +26,9 @@ import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Expression;
 
 /**
- * Function that takes an input value, and a default value. If the input value is null (or evaluating it raises an
- * exception), returns the default value; otherwise, returns the input value.
- * 
+ * Function that takes an input value, and a default value. If the input value is null (or
+ * evaluating it raises an exception), returns the default value; otherwise, returns the input
+ * value.
  */
 public class DefaultIfNullFunction extends FunctionImpl {
 
@@ -40,9 +39,17 @@ public class DefaultIfNullFunction extends FunctionImpl {
     static {
         Parameter<Object> result = new Parameter<Object>("result", Object.class, 1, 1);
         Parameter<Object> input = new Parameter<Object>("input", Object.class, 1, 1);
-        Parameter<Object> fallback = new Parameter<Object>("DefaultIfNull", Object.class,
-                Text.text("DefaultIfNull"), Text.text("The value to return if the input is null"),
-                true, 0, 1, 1.0, null);
+        Parameter<Object> fallback =
+                new Parameter<Object>(
+                        "DefaultIfNull",
+                        Object.class,
+                        Text.text("DefaultIfNull"),
+                        Text.text("The value to return if the input is null"),
+                        true,
+                        0,
+                        1,
+                        1.0,
+                        null);
         NAME = new FunctionNameImpl("DefaultIfNull", result, input, fallback);
     }
 
@@ -65,7 +72,10 @@ public class DefaultIfNullFunction extends FunctionImpl {
             inputEvaluated = null;
             LOGGER.warning(
                     "Exception evaluating expression, falling back to default value. Exception was: "
-                            + e.getClass().getSimpleName() + " (message: " + e.getMessage() + ")");
+                            + e.getClass().getSimpleName()
+                            + " (message: "
+                            + e.getMessage()
+                            + ")");
         }
 
         if (inputEvaluated != null) {
@@ -74,5 +84,4 @@ public class DefaultIfNullFunction extends FunctionImpl {
             return fallbackEvaluated;
         }
     }
-
 }

@@ -1,5 +1,6 @@
 package org.geotools.process.vector;
 
+import com.vividsolutions.jts.geom.Geometry;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -12,21 +13,29 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import com.vividsolutions.jts.geom.Geometry;
-
-@DescribeProcess(title = "Feature from Geometry", description = "Converts a geometry into a feature collection.")
-/**
- * 
- *
- * @source $URL$
- */
+@DescribeProcess(
+    title = "Feature from Geometry",
+    description = "Converts a geometry into a feature collection."
+)
+/** @source $URL$ */
 public class FeatureProcess implements VectorProcess {
 
     @DescribeResult(name = "result", description = "Output feature collection")
     public SimpleFeatureCollection execute(
-            @DescribeParameter(name = "geometry", description = "Input geometry", min = 1) Geometry geometry,
-            @DescribeParameter(name = "crs", description = "Coordinate reference system of the input geometry (if not provided in the geometry)") CoordinateReferenceSystem crs,
-            @DescribeParameter(name = "typeName", description = "Feauturetype name for the feature collection", min = 1) String name) {
+            @DescribeParameter(name = "geometry", description = "Input geometry", min = 1)
+                    Geometry geometry,
+            @DescribeParameter(
+                        name = "crs",
+                        description =
+                                "Coordinate reference system of the input geometry (if not provided in the geometry)"
+                    )
+                    CoordinateReferenceSystem crs,
+            @DescribeParameter(
+                        name = "typeName",
+                        description = "Feauturetype name for the feature collection",
+                        min = 1
+                    )
+                    String name) {
         // get the crs
         if (crs == null) {
             try {
@@ -50,10 +59,9 @@ public class FeatureProcess implements VectorProcess {
         SimpleFeatureType schema = tb.buildFeatureType();
 
         // build the feature
-        SimpleFeature sf = SimpleFeatureBuilder.build(schema, new Object[] { geometry }, null);
+        SimpleFeature sf = SimpleFeatureBuilder.build(schema, new Object[] {geometry}, null);
         ListFeatureCollection result = new ListFeatureCollection(schema);
         result.add(sf);
         return result;
     }
-
 }

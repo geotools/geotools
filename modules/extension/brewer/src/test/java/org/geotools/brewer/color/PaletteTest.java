@@ -18,12 +18,7 @@ package org.geotools.brewer.color;
 
 import junit.framework.TestCase;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class PaletteTest extends TestCase {
     ColorBrewer brewer;
 
@@ -33,11 +28,11 @@ public class PaletteTest extends TestCase {
 
         String[] names = brewer.getPaletteNames();
         assertEquals(18, names.length);
-        assertNotNull(brewer.getDescription()); //we have a description!
+        assertNotNull(brewer.getDescription()); // we have a description!
 
         BrewerPalette palette = brewer.getPalette("YlGnBu");
-        assertNotNull(palette); //we have a palette!
-        assertNotNull(palette.getDescription()); //we have another description!
+        assertNotNull(palette); // we have a palette!
+        assertNotNull(palette.getDescription()); // we have another description!
     }
 
     public void testDiverging() throws Exception {
@@ -46,11 +41,11 @@ public class PaletteTest extends TestCase {
 
         String[] names = brewer.getPaletteNames();
         assertEquals(9, names.length);
-        assertNotNull(brewer.getDescription()); //we have a description!
+        assertNotNull(brewer.getDescription()); // we have a description!
 
         BrewerPalette palette = brewer.getPalette("PuOr");
-        assertNotNull(palette); //we have a palette!
-        assertNotNull(palette.getDescription()); //we have another description!
+        assertNotNull(palette); // we have a palette!
+        assertNotNull(palette.getDescription()); // we have another description!
     }
 
     public void testQualitative() throws Exception {
@@ -59,15 +54,15 @@ public class PaletteTest extends TestCase {
 
         String[] names = brewer.getPaletteNames();
         assertEquals(8, names.length);
-        assertNotNull(brewer.getDescription()); //we have a description!
+        assertNotNull(brewer.getDescription()); // we have a description!
 
         BrewerPalette palette = brewer.getPalette("Set3");
-        assertNotNull(palette); //we have a palette!
-        assertNotNull(palette.getDescription()); //we have another description!
+        assertNotNull(palette); // we have a palette!
+        assertNotNull(palette.getDescription()); // we have another description!
     }
 
     public void testAll() throws Exception {
-        //load all palettes (defaults)
+        // load all palettes (defaults)
         brewer = new ColorBrewer();
         brewer.loadPalettes();
 
@@ -76,7 +71,7 @@ public class PaletteTest extends TestCase {
 
         BrewerPalette[] palettes;
 
-        //test palette filtering abilities
+        // test palette filtering abilities
         palettes = brewer.getPalettes(ColorBrewer.SUITABLE_RANGED);
         assertEquals(27, palettes.length);
         palettes = brewer.getPalettes(ColorBrewer.SUITABLE_UNIQUE);

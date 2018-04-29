@@ -25,9 +25,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-
 import javax.xml.namespace.QName;
-
 import org.geotools.data.DataAccess;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.ServiceInfo;
@@ -37,8 +35,8 @@ import org.geotools.data.wfs.internal.DescribeFeatureTypeRequest;
 import org.geotools.data.wfs.internal.WFSClient;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.type.ComplexFeatureTypeFactoryImpl;
-import org.geotools.xml.SchemaIndex;
 import org.geotools.gml3.complex.GmlFeatureTypeRegistryConfiguration;
+import org.geotools.xml.SchemaIndex;
 import org.geotools.xml.resolver.SchemaCache;
 import org.geotools.xml.resolver.SchemaResolver;
 import org.opengis.feature.Feature;
@@ -47,44 +45,31 @@ import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
 
 /**
- * @author Adam Brown (Curtin University of Technology)
- * Inspired by code from WFSContentDataStore & ContentDataStore.
+ * @author Adam Brown (Curtin University of Technology) Inspired by code from WFSContentDataStore &
+ *     ContentDataStore.
  */
 public class WFSContentDataAccess implements DataAccess<FeatureType, Feature> {
-    /**
-     * The Web feature service client object.
-     */
+    /** The Web feature service client object. */
     private final WFSClient client;
 
-    /**
-	 * The schema reader used to take describe feature URL and turn it into a
-	 * schema index.
-     */
+    /** The schema reader used to take describe feature URL and turn it into a schema index. */
     private EmfComplexFeatureReader schemaParser;
 
-    /**
-     * Collection of feature type descriptors.
-     */
+    /** Collection of feature type descriptors. */
     private FeatureTypeRegistry typeRegistry;
 
-    /**
-     * Backing field for the cache location file.
-     */
+    /** Backing field for the cache location file. */
     private File cacheLocation;
 
-    /**
-     * A map of names and their QName equivalent.
-     */
+    /** A map of names and their QName equivalent. */
     private final Map<Name, QName> names;
 
-    /**
-     * namespace URL of the datastore itself, or default namespace
-     */
+    /** namespace URL of the datastore itself, or default namespace */
     protected String namespaceURI;
 
     /**
      * The namespace URL of the datastore.
-     * 
+     *
      * @return The namespace URL, may be <code>null</code>.
      */
     public String getNamespaceURI() {
@@ -93,12 +78,10 @@ public class WFSContentDataAccess implements DataAccess<FeatureType, Feature> {
 
     /**
      * Sets the namespace URI of the datastore.
-     * <p>
-     * This will be used to qualify the entries or types of the datastore.
-     * </p>
-     * 
-	 * @param namespaceURI
-	 *            The namespace URI, may be <code>null</code>.
+     *
+     * <p>This will be used to qualify the entries or types of the datastore.
+     *
+     * @param namespaceURI The namespace URI, may be <code>null</code>.
      */
     public void setNamespaceURI(String namespaceURI) {
         this.namespaceURI = namespaceURI;
@@ -106,7 +89,7 @@ public class WFSContentDataAccess implements DataAccess<FeatureType, Feature> {
 
     /**
      * The WFS capabilities document.
-     * 
+     *
      * @param capabilities
      */
     public WFSContentDataAccess(final WFSClient client) {
@@ -126,15 +109,12 @@ public class WFSContentDataAccess implements DataAccess<FeatureType, Feature> {
     }
 
     @Override
-	public void updateSchema(Name typeName, FeatureType featureType)
-			throws IOException {
+    public void updateSchema(Name typeName, FeatureType featureType) throws IOException {
         throw new UnsupportedOperationException(
                 "WFSContentDataAccess does not support update schema.");
     }
 
-    /**
-     * Populates the names map and returns a list of names.
-     */
+    /** Populates the names map and returns a list of names. */
     @Override
     public List<Name> getNames() throws IOException {
         // the WFSContentDataStore version inherits an implementation of this
@@ -156,26 +136,25 @@ public class WFSContentDataAccess implements DataAccess<FeatureType, Feature> {
 
     /**
      * Look up a QName based on a given Name.
-	 * @param localTypeName
-	 * 		The local type name whose QName equivalent you'd like.
-	 * @return
-	 * 		The QName that corresponds to the Name you passed in.
+     *
+     * @param localTypeName The local type name whose QName equivalent you'd like.
+     * @return The QName that corresponds to the Name you passed in.
      * @throws IOException
      */
     public QName getRemoteTypeName(Name localTypeName) throws IOException {
         if (names.isEmpty()) {
             getNames();
         }
-		
+
         QName qName = names.get(localTypeName);
         if (null == qName) {
             throw new NoSuchElementException(localTypeName.toString());
         }
-		
+
         return qName;
     }
-	
-	@Override	
+
+    @Override
     public FeatureType getSchema(Name name) throws IOException {
         // If there are no values in this.names it probably means that getNames
         // hasn't been called yet.
@@ -185,8 +164,8 @@ public class WFSContentDataAccess implements DataAccess<FeatureType, Feature> {
 
         // Generate the URL for the feature request:
         // -----------------------------------------
-        DescribeFeatureTypeRequest describeFeatureTypeRequest = client
-                .createDescribeFeatureTypeRequest();
+        DescribeFeatureTypeRequest describeFeatureTypeRequest =
+                client.createDescribeFeatureTypeRequest();
         QName qname = this.names.get(name);
         describeFeatureTypeRequest.setTypeName(qname);
         URL describeRequestURL = describeFeatureTypeRequest.getFinalURL();
@@ -194,35 +173,30 @@ public class WFSContentDataAccess implements DataAccess<FeatureType, Feature> {
         // Create type registry and add the schema to it:
         // ----------------------------------------------
         FeatureTypeRegistry typeRegistry = this.getFeatureTypeRegistry();
-		SchemaIndex schemaIndex = this.getSchemaParser().parse(
-				describeRequestURL);
-		typeRegistry.addSchemas(schemaIndex);
+        SchemaIndex schemaIndex = this.getSchemaParser().parse(describeRequestURL);
+        typeRegistry.addSchemas(schemaIndex);
 
         // Create the attribute type and cast it as a FeatureType:
         // -------------------------------------------------------
-		AttributeDescriptor attributeDescriptor = typeRegistry.getDescriptor(
-				name, null);
-		return (FeatureType) attributeDescriptor.getType();
+        AttributeDescriptor attributeDescriptor = typeRegistry.getDescriptor(name, null);
+        return (FeatureType) attributeDescriptor.getType();
     }
 
     /**
      * Sets the location of the cache folder to be used by app-schema-resolver.
-     * 
-	 * @param cacheLocation
-	 *            the folder to use as the cache.
+     *
+     * @param cacheLocation the folder to use as the cache.
      */
     public void setCacheLocation(File cacheLocation) {
         this.cacheLocation = cacheLocation;
     }
 
-	
-	@Override
-	public FeatureSource<FeatureType, Feature> getFeatureSource(Name typeName)
-			throws IOException {
+    @Override
+    public FeatureSource<FeatureType, Feature> getFeatureSource(Name typeName) throws IOException {
         // There is an implementation of this in ContentDataStore which gets
         // inherited by WFSContentDataStore.
-        FeatureSource<FeatureType, Feature> contentComplexFeatureSource = new WFSContentComplexFeatureSource(
-                typeName, this.client, this);
+        FeatureSource<FeatureType, Feature> contentComplexFeatureSource =
+                new WFSContentComplexFeatureSource(typeName, this.client, this);
 
         return contentComplexFeatureSource;
     }
@@ -235,7 +209,7 @@ public class WFSContentDataAccess implements DataAccess<FeatureType, Feature> {
 
     /**
      * Get the schema parser, creating it first if necessary.
-     * 
+     *
      * @return the schema parser. Guaranteed non-null.
      */
     private EmfComplexFeatureReader getSchemaParser() {
@@ -246,9 +220,12 @@ public class WFSContentDataAccess implements DataAccess<FeatureType, Feature> {
             if (this.cacheLocation == null) {
                 appSchemaResolver = new SchemaResolver();
             } else {
-                appSchemaResolver = new SchemaResolver(new SchemaCache(this.cacheLocation,
-                /* download: */true,
-                /* keepQuery: */true));
+                appSchemaResolver =
+                        new SchemaResolver(
+                                new SchemaCache(
+                                        this.cacheLocation,
+                                        /* download: */ true,
+                                        /* keepQuery: */ true));
             }
 
             this.schemaParser.setResolver(appSchemaResolver);
@@ -259,13 +236,15 @@ public class WFSContentDataAccess implements DataAccess<FeatureType, Feature> {
 
     /**
      * Get the type registry, creating it first if necessary.
-     * 
+     *
      * @return the type registry. Guaranteed non-null.
      */
     private FeatureTypeRegistry getFeatureTypeRegistry() {
         if (this.typeRegistry == null) {
-            this.typeRegistry = new FeatureTypeRegistry(new ComplexFeatureTypeFactoryImpl(),
-                    new GmlFeatureTypeRegistryConfiguration(null));
+            this.typeRegistry =
+                    new FeatureTypeRegistry(
+                            new ComplexFeatureTypeFactoryImpl(),
+                            new GmlFeatureTypeRegistryConfiguration(null));
         }
 
         return this.typeRegistry;

@@ -46,77 +46,85 @@ public class ECQLExamples {
                 System.out.println(" 7 - Comparison: (under18YearsOld * 19541453 / 100 ) < (over65YearsOld * 19541453 / 100 )");
                 System.out.println(" 8 - Between: population Between 10000 and 20000");
                 System.out.println(" 9 - area( shape ) BETWEEN 10000 AND 30000");
-                System.out.println("10 - Spatial Operation using the contains DE-9IM: RELATE(geometry, LINESTRING (-134.921387 58.687767, -135.303391 59.092838), T*****FF*)"); 
-                System.out.println("11 - Spatial Operation using geometry expressions: INTERSECTS(POLYGON((1 2, 2 2, 2 3, 1 2)), POINT(1 2))"); // TODO 
-                System.out.println("12 - Temporal After: 2006-11-30T01:00:00Z AFTER 2006-11-30T01:30:00Z");
-                System.out.println("13 - Temporal Before: 2006-11-30T01:00:00Z BEFORE 2006-11-30T01:30:00Z");
-                System.out.println("14 - Temporal During: 2006-11-30T01:00:00Z DURING 2006-11-30T00:30:00Z/2006-11-30T01:30:00Z ");
-                System.out.println("15 - Temporal During: lastEarthQuake DURING 1700-01-01T00:00:00Z/2011-01-01T00:00:00Z");
-                System.out.println("16 - In predicate: principalMineralResource IN ('silver','oil', 'gold' )");
-                System.out.println("17 - Temporal During using UTC Zone +3: 2006-11-30T01:00:00+03:00 DURING 2006-11-30T00:30:00+03:00/2006-11-30T01:30:00+03:00");
-                
+                System.out.println(
+                        "10 - Spatial Operation using the contains DE-9IM: RELATE(geometry, LINESTRING (-134.921387 58.687767, -135.303391 59.092838), T*****FF*)");
+                System.out.println(
+                        "11 - Spatial Operation using geometry expressions: INTERSECTS(POLYGON((1 2, 2 2, 2 3, 1 2)), POINT(1 2))"); // TODO
+                System.out.println(
+                        "12 - Temporal After: 2006-11-30T01:00:00Z AFTER 2006-11-30T01:30:00Z");
+                System.out.println(
+                        "13 - Temporal Before: 2006-11-30T01:00:00Z BEFORE 2006-11-30T01:30:00Z");
+                System.out.println(
+                        "14 - Temporal During: 2006-11-30T01:00:00Z DURING 2006-11-30T00:30:00Z/2006-11-30T01:30:00Z ");
+                System.out.println(
+                        "15 - Temporal During: lastEarthQuake DURING 1700-01-01T00:00:00Z/2011-01-01T00:00:00Z");
+                System.out.println(
+                        "16 - In predicate: principalMineralResource IN ('silver','oil', 'gold' )");
+                System.out.println(
+                        "17 - Temporal During using UTC Zone +3: 2006-11-30T01:00:00+03:00 DURING 2006-11-30T00:30:00+03:00/2006-11-30T01:30:00+03:00");
+
                 System.out.println("0 - quite");
                 System.out.print(">");
 
                 String line = reader.readLine();
                 int option = Integer.parseInt(line);
                 switch (option) {
-                case 0: 
-                    System.out.println("bye!");
-                    return;
-                case 1:
-                    comparisonPredicateCQLCompatibility();
-                    break;
-                case 2:
-                    expressionLessThanOrEqualToProperty();
-                    break;
-                case 3: // TODO
-                    break;
-                case 4:
-                    likePredicateInString();
-                    break;
-                case 5:
-                    likePredicate();
-                    break;
-                case 6:
-                    ilikePredicate();
-                    break;
-                case 7:
-                    comparisonUsingExpressions();
-                    break;
-                case 8:
-                    betweenPredicate();
-                    break;
-                case 9:
-                	betweenUsingExpression();
-                	break;
-                case 10:
-                    //TODO
-                    break;
-                case 11:
-                    relatePattern();
-                    break;
-                case 12:
-                    afterPredicateWithLefHandtExpression();
-                    break;
-                case 13:
-                    beforePredicateWithLefHandtExpression();
-                    break;
-                case 14:
-                    duringPredicateWithLefHandtExpression();
-                    break;
-                case 15:
-                	duringPredicateWithLefHandtAttribute();
-                	break;
-                	
-                case 16:
-                	inPredicate();
-                	break;
-                case 17: 
-                	utcTimeZone();
-                	break;
-                default:
-                    System.out.println("invalid option");
+                    case 0:
+                        System.out.println("bye!");
+                        return;
+                    case 1:
+                        comparisonPredicateCQLCompatibility();
+                        break;
+                    case 2:
+                        expressionLessThanOrEqualToProperty();
+                        break;
+                    case 3: // TODO
+                        break;
+                    case 4:
+                        likePredicateInString();
+                        break;
+                    case 5:
+                        likePredicate();
+                        break;
+                    case 6:
+                        ilikePredicate();
+                        break;
+                    case 7:
+                        comparisonUsingExpressions();
+                        break;
+                    case 8:
+                        betweenPredicate();
+                        break;
+                    case 9:
+                        betweenUsingExpression();
+                        break;
+                    case 10:
+                        // TODO
+                        break;
+                    case 11:
+                        relatePattern();
+                        break;
+                    case 12:
+                        afterPredicateWithLefHandtExpression();
+                        break;
+                    case 13:
+                        beforePredicateWithLefHandtExpression();
+                        break;
+                    case 14:
+                        duringPredicateWithLefHandtExpression();
+                        break;
+                    case 15:
+                        duringPredicateWithLefHandtAttribute();
+                        break;
+
+                    case 16:
+                        inPredicate();
+                        break;
+                    case 17:
+                        utcTimeZone();
+                        break;
+                    default:
+                        System.out.println("invalid option");
                 }
                 System.out.println("Press a key to continue.");
             }
@@ -145,6 +153,7 @@ public class ECQLExamples {
 		
 	}
 
+    private static void afterPredicateWithLefHandtExpression() throws Exception {
 
 	private static void afterPredicateWithLefHandtExpression() throws Exception{
     	

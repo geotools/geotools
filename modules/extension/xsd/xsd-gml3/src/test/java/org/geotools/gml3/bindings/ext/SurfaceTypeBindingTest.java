@@ -21,22 +21,20 @@ import org.geotools.gml3.GML3TestSupport;
 import org.geotools.gml3.bindings.GML3MockData;
 import org.w3c.dom.Document;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class SurfaceTypeBindingTest extends GML3TestSupport {
 
     @Override
     protected boolean enableExtendedArcSurfaceSupport() {
         return true;
     }
-    
+
     public void testEncode() throws Exception {
         Document dom = encode(GML3MockData.multiPolygon(), GML.Surface);
 
-        assertEquals(2,
-            dom.getElementsByTagNameNS(GML.NAMESPACE, GML.PolygonPatch.getLocalPart()).getLength());
+        assertEquals(
+                2,
+                dom.getElementsByTagNameNS(GML.NAMESPACE, GML.PolygonPatch.getLocalPart())
+                        .getLength());
     }
 }

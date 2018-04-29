@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2006-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -18,7 +18,6 @@ package org.geotools.filter.function;
 
 import java.util.Collections;
 import java.util.List;
-
 import org.geotools.data.DataUtilities;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -35,14 +34,10 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 import org.opengis.metadata.citation.Citation;
 
-
 /**
- *
  * @since 2.4
  * @author Gabriel Roldan, Axios Engineering
- * @version $Id: PropertyExistsFunctionTest.java 24966 2007-03-30 11:33:47Z
- *          vmpazos $
- *
+ * @version $Id: PropertyExistsFunctionTest.java 24966 2007-03-30 11:33:47Z vmpazos $
  * @source $URL$
  */
 public class PropertyExistsFunctionTest {
@@ -71,14 +66,14 @@ public class PropertyExistsFunctionTest {
     }
 
     @Test
-    public void testEvaluateFeature() throws Exception{
+    public void testEvaluateFeature() throws Exception {
         SimpleFeatureType type = DataUtilities.createType("ns", "name:string,geom:Geometry");
         SimpleFeatureBuilder build = new SimpleFeatureBuilder(type);
         build.add("testName");
         build.add(null);
         SimpleFeature feature = build.buildFeature(null);
 
-        f.setParameters( list(ff.property("nonExistant")));
+        f.setParameters(list(ff.property("nonExistant")));
         Assert.assertEquals(Boolean.FALSE, f.evaluate(feature));
 
         f.setParameters(list(ff.property("name")));
@@ -87,14 +82,16 @@ public class PropertyExistsFunctionTest {
         f.setParameters(list(ff.property("geom")));
         Assert.assertEquals(Boolean.TRUE, f.evaluate(feature));
     }
-    private List<Expression> list( Expression expr ){
+
+    private List<Expression> list(Expression expr) {
         return Collections.singletonList(expr);
     }
+
     @Test
     public void testEvaluatePojo() {
         Citation pojo = new CitationImpl();
 
-        f.setParameters( list(ff.property("edition")));
+        f.setParameters(list(ff.property("edition")));
         Assert.assertEquals(Boolean.TRUE, f.evaluate(pojo));
 
         f.setParameters(list(ff.property("alternateTitles")));
@@ -113,8 +110,7 @@ public class PropertyExistsFunctionTest {
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         PropertyExistsFunction actual = new PropertyExistsFunction();
         f.setParameters(list(ff.property("testPropName")));
-        actual.setParameters(list(ff
-                .property("testPropName")));
+        actual.setParameters(list(ff.property("testPropName")));
         Assert.assertEquals(f, actual);
     }
 }

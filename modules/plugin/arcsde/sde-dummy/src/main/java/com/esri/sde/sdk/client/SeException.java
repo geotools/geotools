@@ -1,13 +1,9 @@
 package com.esri.sde.sdk.client;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class SeException extends Exception {
-	
-	public SeError getSeError() { return null; }
 
-
+    public SeError getSeError() {
+        return null;
+    }
 }

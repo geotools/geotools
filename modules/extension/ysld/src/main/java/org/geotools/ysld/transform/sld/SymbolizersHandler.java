@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,14 +17,14 @@
  */
 package org.geotools.ysld.transform.sld;
 
+import java.io.IOException;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import java.io.IOException;
 
 /**
- * Handles xml parse events for symbolizers, delegating to {@link PointSymblolizerHandler},
- * {@link PolygonSymbolizerHandler}, {@link LineSymbolizerHandler}, {@link TextSymbolizerHandler},
- * or {@link RasterSymbolizerHandler} as appropriate.
+ * Handles xml parse events for symbolizers, delegating to {@link PointSymblolizerHandler}, {@link
+ * PolygonSymbolizerHandler}, {@link LineSymbolizerHandler}, {@link TextSymbolizerHandler}, or
+ * {@link RasterSymbolizerHandler} as appropriate.
  */
 public class SymbolizersHandler extends SldTransformHandler {
     @Override
@@ -52,5 +52,4 @@ public class SymbolizersHandler extends SldTransformHandler {
             context.pop();
         }
     }
-
 }

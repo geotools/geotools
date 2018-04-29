@@ -24,27 +24,23 @@ import org.opengis.referencing.AuthorityFactory;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 
 /**
- * {@link AuthorityFactory} for OGC HTTP URI resources. For example, the WGS84 coordinate reference system can be expressed as
- * {@code "http://www.opengis.net/def/crs/EPSG/0/4326"}.
- * 
- * <p>
- * 
- * Use {@link org.opengis.referencing.ReferencingFactoryFinder} instead of instantiating this class directly.
- * 
+ * {@link AuthorityFactory} for OGC HTTP URI resources. For example, the WGS84 coordinate reference
+ * system can be expressed as {@code "http://www.opengis.net/def/crs/EPSG/0/4326"}.
+ *
+ * <p>Use {@link org.opengis.referencing.ReferencingFactoryFinder} instead of instantiating this
+ * class directly.
+ *
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
- * 
  * @source $URL$
  */
 public class HTTP_URI_AuthorityFactory extends Abstract_URI_AuthorityFactory {
 
-    /**
-     * The name used in {@link Hints#FORCE_AXIS_ORDER_HONORING} for this factory.
-     */
+    /** The name used in {@link Hints#FORCE_AXIS_ORDER_HONORING} for this factory. */
     public static final String HINTS_AUTHORITY = "http-uri";
 
     /**
      * Constructor.
-     * 
+     *
      * @see Abstract_URI_AuthorityFactory#Abstract_URI_AuthorityFactory(String)
      */
     public HTTP_URI_AuthorityFactory() {
@@ -53,7 +49,7 @@ public class HTTP_URI_AuthorityFactory extends Abstract_URI_AuthorityFactory {
 
     /**
      * Constructor.
-     * 
+     *
      * @see Abstract_URI_AuthorityFactory#Abstract_URI_AuthorityFactory(Hints, String)
      */
     public HTTP_URI_AuthorityFactory(Hints userHints) {
@@ -62,27 +58,25 @@ public class HTTP_URI_AuthorityFactory extends Abstract_URI_AuthorityFactory {
 
     /**
      * Constructor.
-     * 
+     *
      * @see Abstract_URI_AuthorityFactory#Abstract_URI_AuthorityFactory(AllAuthoritiesFactory)
      */
     public HTTP_URI_AuthorityFactory(AllAuthoritiesFactory factory) {
         super(factory);
     }
 
-    /**
-     * @see org.geotools.referencing.factory.AuthorityFactoryAdapter#getAuthority()
-     */
+    /** @see org.geotools.referencing.factory.AuthorityFactoryAdapter#getAuthority() */
     @Override
     public Citation getAuthority() {
         return Citations.HTTP_URI_OGC;
     }
 
     /**
-     * @see org.geotools.referencing.factory.Abstract_URI_AuthorityFactory#buildParser(java.lang.String)
+     * @see
+     *     org.geotools.referencing.factory.Abstract_URI_AuthorityFactory#buildParser(java.lang.String)
      */
     @Override
     protected URI_Parser buildParser(String code) throws NoSuchAuthorityCodeException {
         return HTTP_URI_Parser.buildParser(code);
     }
-
 }

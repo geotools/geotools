@@ -18,17 +18,12 @@ package org.geotools.coverage.io.range.impl;
 
 import java.util.Collections;
 import java.util.Set;
-
 import org.geotools.coverage.io.range.FieldType;
 import org.opengis.coverage.SampleDimension;
 import org.opengis.feature.type.Name;
 import org.opengis.util.InternationalString;
 
-/**
- * 
- * 
- * @source $URL$
- */
+/** @source $URL$ */
 public class DefaultFieldType implements FieldType {
     // private List<Axis<?, ?>> axes;
     private Name name;
@@ -39,16 +34,17 @@ public class DefaultFieldType implements FieldType {
     private Set<SampleDimension> sampleDimensions;
 
     /**
-     * 
      * @param name
      * @param description
      * @param unit
      * @param axes
      * @param samples
      */
-    public DefaultFieldType(Name name, InternationalString description,
-    // Unit<?> unit,
-    // List<Axis<?,?>> axes,
+    public DefaultFieldType(
+            Name name,
+            InternationalString description,
+            // Unit<?> unit,
+            // List<Axis<?,?>> axes,
             Set<SampleDimension> samples) {
         this.name = name;
         this.description = description;

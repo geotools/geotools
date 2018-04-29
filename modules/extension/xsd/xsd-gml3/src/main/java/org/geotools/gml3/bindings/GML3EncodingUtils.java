@@ -16,6 +16,9 @@
  */
 package org.geotools.gml3.bindings;
 
+import com.vividsolutions.jts.geom.CoordinateSequence;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.LineString;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
@@ -23,9 +26,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-
 import javax.xml.namespace.QName;
-
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.geotools.feature.NameImpl;
 import org.geotools.geometry.jts.LiteCoordinateSequence;
@@ -53,21 +54,14 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 import org.xml.sax.Attributes;
 
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.LineString;
-
 /**
  * Utility class for gml3 encoding.
- * 
+ *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
  * @author Ben Caradoc-Davies, CSIRO Exploration and Mining
- * 
- *
- *
  * @source $URL$
- *         http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-gml3/src/main/java/org
- *         /geotools/gml3/bindings/GML3EncodingUtils.java $
+ *     http://svn.osgeo.org/geotools/trunk/modules/extension/xsd/xsd-gml3/src/main/java/org
+ *     /geotools/gml3/bindings/GML3EncodingUtils.java $
  */
 public class GML3EncodingUtils {
 
@@ -95,7 +89,6 @@ public class GML3EncodingUtils {
         }
     }
 
-
     public static URI toURI(CoordinateReferenceSystem crs, SrsSyntax srsSyntax) {
         if (crs == null) {
             return null;
@@ -117,10 +110,8 @@ public class GML3EncodingUtils {
     static CoordinateReferenceSystem getCRS(Geometry g) {
         return GML2EncodingUtils.getCRS(g);
     }
-    
-    /**
-     * Get uomLabels for the geometry if set in app-schema mapping configuration.
-     */
+
+    /** Get uomLabels for the geometry if set in app-schema mapping configuration. */
     public static String getUomLabels(Geometry g) {
         Object userData = g.getUserData();
         if (userData != null && userData instanceof Map) {
@@ -136,9 +127,7 @@ public class GML3EncodingUtils {
         return null;
     }
 
-    /**
-     * Get axisLabels for the geometry if set in app-schema mapping configuration.
-     */
+    /** Get axisLabels for the geometry if set in app-schema mapping configuration. */
     public static String getAxisLabels(Geometry g) {
         Object userData = g.getUserData();
         if (userData != null && userData instanceof Map) {
@@ -177,22 +166,21 @@ public class GML3EncodingUtils {
     static void setDescription(Geometry g, String description) {
         GML2EncodingUtils.setDescription(g, description);
     }
-    
+
     /**
      * Set a synthetic gml:id on each child of a multigeometry. If the multigeometry has no gml:id,
      * this method has no effect. The synthetic gml:id of each child is constructed from that of the
      * parent by appending "." and then an integer starting from one for the first child.
-     * 
-     * @param multiGeometry
-     *            parent multigeometry containing the children to be modified
+     *
+     * @param multiGeometry parent multigeometry containing the children to be modified
      */
     static void setChildIDs(Geometry multiGeometry) {
         String id = getID(multiGeometry);
         if (id != null) {
             for (int i = 0; i < multiGeometry.getNumGeometries(); i++) {
                 StringBuilder builder = new StringBuilder(id);
-                builder.append(".");  // separator
-                builder.append(i + 1);  // synthetic gml:id suffix one-based
+                builder.append("."); // separator
+                builder.append(i + 1); // synthetic gml:id suffix one-based
                 GML2EncodingUtils.setID(multiGeometry.getGeometryN(i), builder.toString());
             }
         }
@@ -201,11 +189,12 @@ public class GML3EncodingUtils {
     /**
      * Helper method used to implement {@link ComplexBinding#getProperty(Object, QName)} for
      * bindings of geometry reference types:
+     *
      * <ul>
-     * <li>GeometryPropertyType
-     * <li>PointPropertyType
-     * <li>LineStringPropertyType
-     * <li>PolygonPropertyType
+     *   <li>GeometryPropertyType
+     *   <li>PointPropertyType
+     *   <li>LineStringPropertyType
+     *   <li>PolygonPropertyType
      * </ul>
      */
     public Object GeometryPropertyType_GetProperty(Geometry geometry, QName name) {
@@ -215,20 +204,20 @@ public class GML3EncodingUtils {
     /**
      * Helper method used to implement {@link ComplexBinding#getProperty(Object, QName)} for
      * bindings of geometry reference types:
+     *
      * <ul>
-     * <li>GeometryPropertyType
-     * <li>PointPropertyType
-     * <li>LineStringPropertyType
-     * <li>PolygonPropertyType
+     *   <li>GeometryPropertyType
+     *   <li>PointPropertyType
+     *   <li>LineStringPropertyType
+     *   <li>PolygonPropertyType
      * </ul>
      */
-    public Object GeometryPropertyType_GetProperty(Geometry geometry, QName name, boolean makeEmpty) {
+    public Object GeometryPropertyType_GetProperty(
+            Geometry geometry, QName name, boolean makeEmpty) {
         return e.GeometryPropertyType_getProperty(geometry, name, true, makeEmpty);
     }
 
-    /**
-     * @deprecated use {@link #GeometryPropertyType_GetProperty(Geometry, QName)}
-     */
+    /** @deprecated use {@link #GeometryPropertyType_GetProperty(Geometry, QName)} */
     public static Object getProperty(Geometry geometry, QName name) {
         return INSTANCE.GeometryPropertyType_GetProperty(geometry, name);
     }
@@ -236,34 +225,32 @@ public class GML3EncodingUtils {
     /**
      * Helper method used to implement {@link ComplexBinding#getProperties(Object)} for bindings of
      * geometry reference types:
+     *
      * <ul>
-     * <li>GeometryPropertyType
-     * <li>PointPropertyType
-     * <li>LineStringPropertyType
-     * <li>PolygonPropertyType
+     *   <li>GeometryPropertyType
+     *   <li>PointPropertyType
+     *   <li>LineStringPropertyType
+     *   <li>PolygonPropertyType
      * </ul>
      */
-
     public List GeometryPropertyType_GetProperties(Geometry geometry) {
         return e.GeometryPropertyType_getProperties(geometry);
     }
 
-    /**
-     * @deprecated use {@link #GeometryPropertyType_GetProperties(Geometry)}
-     */
+    /** @deprecated use {@link #GeometryPropertyType_GetProperties(Geometry)} */
     public static List getProperties(Geometry geometry) {
         return INSTANCE.GeometryPropertyType_GetProperties(geometry);
     }
 
-    public Element AbstractFeatureTypeEncode(Object object, Document document, Element value,
-            XSDIdRegistry idSet) {
+    public Element AbstractFeatureTypeEncode(
+            Object object, Document document, Element value, XSDIdRegistry idSet) {
         Feature feature = (Feature) object;
         String id = null;
         FeatureId identifier = feature.getIdentifier();
         if (identifier != null) {
             id = identifier.getRid();
         }
-        
+
         Name typeName;
         if (feature.getDescriptor() == null) {
             // no descriptor, assume WFS feature type name is the same as the name of the content
@@ -273,8 +260,8 @@ public class GML3EncodingUtils {
             // honour the name set in the descriptor
             typeName = feature.getDescriptor().getName();
         }
-        Element encoding = document.createElementNS(typeName.getNamespaceURI(),
-                typeName.getLocalPart());
+        Element encoding =
+                document.createElementNS(typeName.getNamespaceURI(), typeName.getLocalPart());
         if (id != null) {
             if (!(feature instanceof SimpleFeature) && idSet != null) {
                 if (idSet.idExists(id)) {
@@ -283,8 +270,8 @@ public class GML3EncodingUtils {
                     // not schema valid. Attributes of the same ids should be encoded as xlink:href
                     // to
                     // the existing attribute.
-                    encoding.setAttributeNS(XLINK.NAMESPACE, XLINK.HREF.getLocalPart(), "#"
-                            + id.toString());
+                    encoding.setAttributeNS(
+                            XLINK.NAMESPACE, XLINK.HREF.getLocalPart(), "#" + id.toString());
                     // make sure the attributes aren't encoded
                     feature.setValue(Collections.emptyList());
                     return encoding;
@@ -302,49 +289,61 @@ public class GML3EncodingUtils {
     /**
      * @deprecated use {@link #AbstractFeatureTypeEncode(Object, Document, Element, XSDIdRegistry)}
      */
-    public static Element AbstractFeatureType_encode(Object object, Document document,
-            Element value, XSDIdRegistry idSet) {
+    public static Element AbstractFeatureType_encode(
+            Object object, Document document, Element value, XSDIdRegistry idSet) {
         return INSTANCE.AbstractFeatureTypeEncode(object, document, value, idSet);
     }
 
-    public List AbstractFeatureTypeGetProperties(Object object, XSDElementDeclaration element,
-            SchemaIndex schemaIndex, Configuration configuration) {
+    public List AbstractFeatureTypeGetProperties(
+            Object object,
+            XSDElementDeclaration element,
+            SchemaIndex schemaIndex,
+            Configuration configuration) {
         return e.AbstractFeatureType_getProperties(
                 object,
                 element,
                 schemaIndex,
-                new HashSet<String>(Arrays.asList("name", "description", "boundedBy", "location",
-                        "metaDataProperty")), configuration);
+                new HashSet<String>(
+                        Arrays.asList(
+                                "name",
+                                "description",
+                                "boundedBy",
+                                "location",
+                                "metaDataProperty")),
+                configuration);
     }
 
     /**
      * @deprecated use
      *             {@link #AbstractFeatureTypeGetProperties(Object, XSDElementDeclaration, SchemaIndex, Configuration)
-
+     *
      */
-    public static List AbstractFeatureType_getProperties(Object object,
-            XSDElementDeclaration element, SchemaIndex schemaIndex, Configuration configuration) {
-        return INSTANCE.AbstractFeatureTypeGetProperties(object, element, schemaIndex,
-                configuration);
+    public static List AbstractFeatureType_getProperties(
+            Object object,
+            XSDElementDeclaration element,
+            SchemaIndex schemaIndex,
+            Configuration configuration) {
+        return INSTANCE.AbstractFeatureTypeGetProperties(
+                object, element, schemaIndex, configuration);
     }
 
     /**
      * Encode any client properties (XML attributes) found in the UserData map of a ComplexAttribute
      * as XML attributes of the element.
-     * 
-     * @param complex
-     *            the ComplexAttribute to search for client properties
-     * @param element
-     *            the element to which XML attributes should be added
+     *
+     * @param complex the ComplexAttribute to search for client properties
+     * @param element the element to which XML attributes should be added
      */
     @SuppressWarnings("unchecked")
     public static void encodeClientProperties(Property complex, Element element) {
-        Map<Name, Object> clientProperties = (Map<Name, Object>) complex.getUserData().get(
-                Attributes.class);
+        Map<Name, Object> clientProperties =
+                (Map<Name, Object>) complex.getUserData().get(Attributes.class);
         if (clientProperties != null) {
             for (Name name : clientProperties.keySet()) {
                 if (clientProperties.get(name) != null) {
-                    element.setAttributeNS(name.getNamespaceURI(), name.getLocalPart(),
+                    element.setAttributeNS(
+                            name.getNamespaceURI(),
+                            name.getLocalPart(),
                             clientProperties.get(name).toString());
                 }
             }
@@ -353,21 +352,16 @@ public class GML3EncodingUtils {
 
     /**
      * Encode the simpleContent property of a ComplexAttribute (if any) as an XML text node.
-     * 
-     * <p>
-     * 
-     * A property named simpleContent is a convention for representing XSD complexType with
+     *
+     * <p>A property named simpleContent is a convention for representing XSD complexType with
      * simpleContent in GeoAPI.
-     * 
-     * @param complex
-     *            the ComplexAttribute to be searched for simpleContent
-     * @param document
-     *            the containing document
-     * @param element
-     *            the element to which text node should be added
+     *
+     * @param complex the ComplexAttribute to be searched for simpleContent
+     * @param document the containing document
+     * @param element the element to which text node should be added
      */
-    public static void encodeSimpleContent(ComplexAttribute complex, Document document,
-            Element element) {
+    public static void encodeSimpleContent(
+            ComplexAttribute complex, Document document, Element element) {
         Object value = getSimpleContent(complex);
         encodeAsText(document, element, value);
     }
@@ -382,7 +376,7 @@ public class GML3EncodingUtils {
     /**
      * Return the simple content of a {@link ComplexAttribute} if it represents a complexType with
      * simpleContent, otherwise null.
-     * 
+     *
      * @param complex
      * @return
      */
@@ -394,5 +388,4 @@ public class GML3EncodingUtils {
             return simpleContent.getValue();
         }
     }
-
 }

@@ -16,38 +16,33 @@
  */
 package org.geotools.se.v1_1.bindings;
 
+import javax.xml.namespace.QName;
 import org.geotools.se.v1_1.SE;
 import org.geotools.sld.bindings.SLDNormalizeBinding;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xml.*;
 import org.opengis.filter.FilterFactory;
 
-import javax.xml.namespace.QName;
-
 /**
  * Binding object for the element http://www.opengis.net/se:Normalize.
- * 
+ *
  * <p>
- * 
+ *
  * <pre>
  *  <code>
- *  &lt;xsd:element name="Normalize" type="se:NormalizeType"/&gt; 
- * 	
+ *  &lt;xsd:element name="Normalize" type="se:NormalizeType"/&gt;
+ *
  *   </code>
  * </pre>
- * 
+ *
  * <pre>
  *       <code>
- *  &lt;xsd:complexType name="NormalizeType"/&gt; 
- *              
+ *  &lt;xsd:complexType name="NormalizeType"/&gt;
+ *
  *        </code>
  * </pre>
- * 
- * </p>
- * 
+ *
  * @generated
- *
- *
  * @source $URL$
  */
 public class NormalizeBinding extends SLDNormalizeBinding {
@@ -61,16 +56,16 @@ public class NormalizeBinding extends SLDNormalizeBinding {
         // TODO Auto-generated constructor stub
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return SE.Normalize;
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Class getType() {
@@ -78,8 +73,10 @@ public class NormalizeBinding extends SLDNormalizeBinding {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
@@ -87,5 +84,4 @@ public class NormalizeBinding extends SLDNormalizeBinding {
         // TODO: implement and remove call to super
         return super.parse(instance, node, value);
     }
-
 }

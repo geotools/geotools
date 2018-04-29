@@ -21,12 +21,12 @@ import org.geotools.xml.InstanceComponent;
 import org.geotools.xml.SimpleBinding;
 import org.geotools.xs.XS;
 
-
 /**
  * Binding object for the type http://www.w3.org/2001/XMLSchema:int.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xs:simpleType name="int" id="int"&gt;
  *      &lt;xs:annotation&gt;
@@ -40,23 +40,18 @@ import org.geotools.xs.XS;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class XSIntBinding implements SimpleBinding {
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return XS.INT;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -67,6 +62,7 @@ public class XSIntBinding implements SimpleBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * This binding returns objects of type {@link Integer}.
      * <!-- end-user-doc -->
@@ -80,12 +76,11 @@ public class XSIntBinding implements SimpleBinding {
     /**
      *
      * <!-- begin-user-doc -->
-     * This binding returns objects of type {@link Integer}. This binding is an
-     * override of the parent.
+     * This binding returns objects of type {@link Integer}. This binding is an override of the
+     * parent.
      * <!-- end-user-doc -->
      */
-    public Object parse(InstanceComponent instance, Object value)
-        throws Exception {
+    public Object parse(InstanceComponent instance, Object value) throws Exception {
         String text = (String) value;
 
         if (text.charAt(0) == '+') {
@@ -96,6 +91,7 @@ public class XSIntBinding implements SimpleBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *

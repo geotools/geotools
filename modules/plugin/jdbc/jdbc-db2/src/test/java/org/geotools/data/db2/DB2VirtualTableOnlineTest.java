@@ -3,21 +3,17 @@ package org.geotools.data.db2;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 import org.geotools.jdbc.JDBCVirtualTableOnlineTest;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class DB2VirtualTableOnlineTest extends JDBCVirtualTableOnlineTest {
 
     @Override
     protected JDBCDataStoreAPITestSetup createTestSetup() {
         return new DB2DataStoreAPITestSetup();
     }
-   
+
     @Override
     protected void connect() throws Exception {
-        dbSchemaName=DB2TestUtil.SCHEMA;
+        dbSchemaName = DB2TestUtil.SCHEMA;
         super.connect();
     }
 }

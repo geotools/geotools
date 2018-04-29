@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -26,19 +26,14 @@ import org.opengis.util.GenericName;
 import org.opengis.util.InternationalString;
 
 /**
- *
  * @author Mehdi Sidhoum (Geomatys)
- *
- *
- *
  * @source $URL$
  */
 public class DefaultTemporalReferenceSystem implements TemporalReferenceSystem {
 
-    /**
-     * This is a name that uniquely identifies the temporal reference system.
-     */
+    /** This is a name that uniquely identifies the temporal reference system. */
     private ReferenceIdentifier name;
+
     private Extent domainOfValidity;
     private Extent validArea;
     private InternationalString scope;
@@ -47,7 +42,9 @@ public class DefaultTemporalReferenceSystem implements TemporalReferenceSystem {
     private InternationalString remarks;
 
     /**
-     * Creates a new instance of TemporalReferenceSystem by passing a ReferenceIdentifier name and a domain of validity.
+     * Creates a new instance of TemporalReferenceSystem by passing a ReferenceIdentifier name and a
+     * domain of validity.
+     *
      * @param name
      * @param domainOfValidity
      */
@@ -66,6 +63,7 @@ public class DefaultTemporalReferenceSystem implements TemporalReferenceSystem {
 
     /**
      * This method is deprecated, please use getDomainOfValidity() method.
+     *
      * @return
      */
     @Deprecated
@@ -93,9 +91,7 @@ public class DefaultTemporalReferenceSystem implements TemporalReferenceSystem {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    /**
-     * This is a name that uniquely identifies the temporal reference system.
-     */
+    /** This is a name that uniquely identifies the temporal reference system. */
     public void setName(ReferenceIdentifier name) {
         this.name = name;
     }
@@ -117,13 +113,13 @@ public class DefaultTemporalReferenceSystem implements TemporalReferenceSystem {
         if (object instanceof DefaultTemporalReferenceSystem) {
             final DefaultTemporalReferenceSystem that = (DefaultTemporalReferenceSystem) object;
 
-            return Utilities.equals(this.alias, that.alias) &&
-                    Utilities.equals(this.domainOfValidity, that.domainOfValidity) &&
-                    Utilities.equals(this.identifiers, that.identifiers) &&
-                    Utilities.equals(this.name, that.name) &&
-                    Utilities.equals(this.scope, that.scope) &&
-                    Utilities.equals(this.validArea, that.validArea) &&
-                    Utilities.equals(this.remarks, that.remarks);
+            return Utilities.equals(this.alias, that.alias)
+                    && Utilities.equals(this.domainOfValidity, that.domainOfValidity)
+                    && Utilities.equals(this.identifiers, that.identifiers)
+                    && Utilities.equals(this.name, that.name)
+                    && Utilities.equals(this.scope, that.scope)
+                    && Utilities.equals(this.validArea, that.validArea)
+                    && Utilities.equals(this.remarks, that.remarks);
         }
         return false;
     }

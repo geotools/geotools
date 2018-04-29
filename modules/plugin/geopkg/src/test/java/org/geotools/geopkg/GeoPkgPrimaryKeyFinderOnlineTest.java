@@ -19,11 +19,7 @@ package org.geotools.geopkg;
 import org.geotools.jdbc.JDBCPrimaryKeyFinderOnlineTest;
 import org.geotools.jdbc.JDBCPrimaryKeyFinderTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class GeoPkgPrimaryKeyFinderOnlineTest extends JDBCPrimaryKeyFinderOnlineTest {
 
     @Override
@@ -33,6 +29,6 @@ public class GeoPkgPrimaryKeyFinderOnlineTest extends JDBCPrimaryKeyFinderOnline
 
     @Override
     public void testSequencedPrimaryKey() throws Exception {
-        //GeoPkg does not do sequences
+        // GeoPkg does not do sequences
     }
 }

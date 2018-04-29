@@ -20,19 +20,12 @@ import org.picocontainer.ComponentAdapter;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.defaults.BasicComponentParameter;
 
-
 /**
- * A pico container "parameter" which allows one to make setter injection
- * optional.
- * <p>
- * This class is a hack of pico container... it should be used with care.
- * </p>
+ * A pico container "parameter" which allows one to make setter injection optional.
+ *
+ * <p>This class is a hack of pico container... it should be used with care.
  *
  * @author Justin Deoliveira, The Open Planning Project
- *
- *
- *
- *
  * @source $URL$
  */
 public class OptionalComponentParameter extends BasicComponentParameter {
@@ -45,11 +38,11 @@ public class OptionalComponentParameter extends BasicComponentParameter {
     }
 
     /**
-     * Always return true, because since the setter is optional even its not
-     * in teh container we can always resolve to <code>null</code>.
+     * Always return true, because since the setter is optional even its not in teh container we can
+     * always resolve to <code>null</code>.
      */
-    public boolean isResolvable(PicoContainer container, ComponentAdapter adapter,
-        Class expectedType) {
+    public boolean isResolvable(
+            PicoContainer container, ComponentAdapter adapter, Class expectedType) {
         return true;
     }
 }

@@ -23,11 +23,8 @@ import org.geotools.swt.utils.Messages;
 
 /**
  * Action that triggers view reset for the current {@link SwtMapPane map pane}.
- * 
+ *
  * @author Andrea Antonello (www.hydrologis.com)
- *
- *
- *
  * @source $URL$
  */
 public class ResetAction extends MapAction {
@@ -37,11 +34,13 @@ public class ResetAction extends MapAction {
     public static final String TOOL_TIP = Messages.getString("tool_tip_reset");
 
     public ResetAction() {
-        super(TOOL_NAME + "@A", TOOL_TIP, ImageCache.getInstance().getImage(ImageCache.IMAGE_FULLEXTENT));
+        super(
+                TOOL_NAME + "@A",
+                TOOL_TIP,
+                ImageCache.getInstance().getImage(ImageCache.IMAGE_FULLEXTENT));
     }
 
     public void run() {
         getMapPane().reset();
     }
-
 }

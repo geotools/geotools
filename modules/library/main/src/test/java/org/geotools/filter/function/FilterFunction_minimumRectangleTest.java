@@ -4,6 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import com.vividsolutions.jts.algorithm.MinimumDiameter;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.Polygon;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
@@ -13,37 +16,28 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Function;
 
-import com.vividsolutions.jts.algorithm.MinimumDiameter;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Polygon;
-
 /**
  * The FilterFunction_minimumRectangle UnitTest
+ *
  * @author Jared Erickson
  */
 public class FilterFunction_minimumRectangleTest {
 
-    /**
-     * Test of getArgCount method, of class FilterFunction_minimumRectangle.
-     */
+    /** Test of getArgCount method, of class FilterFunction_minimumRectangle. */
     @Test
     public void testGetArgCount() {
         FilterFunction_minimumRectangle f = new FilterFunction_minimumRectangle();
         assertEquals(1, f.getFunctionName().getArgumentCount());
     }
 
-    /**
-     * Test of getName method, of class FilterFunction_minimumRectangle.
-     */
+    /** Test of getName method, of class FilterFunction_minimumRectangle. */
     @Test
     public void getName() {
         FilterFunction_minimumRectangle f = new FilterFunction_minimumRectangle();
         assertEquals("minrectangle", f.getName());
     }
 
-    /**
-     * Test of evaluate method, of class FilterFunction_minimumCircle.
-     */
+    /** Test of evaluate method, of class FilterFunction_minimumCircle. */
     @Test
     public void testEvaluate() throws Exception {
         SimpleFeatureCollection featureCollection = FunctionTestFixture.polygons();

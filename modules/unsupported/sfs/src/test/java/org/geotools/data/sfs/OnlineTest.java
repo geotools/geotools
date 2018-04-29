@@ -4,16 +4,11 @@ import java.io.Serializable;
 import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.geotools.data.sfs.SFSDataStoreFactory;
+import junit.framework.TestCase;
 import org.geotools.data.sfs.mock.MockSimpleFeatureService;
 
-import junit.framework.TestCase;
-
 /**
- * To have the online tests run start the {@link MockSimpleFeatureService} class 
- *
- *
+ * To have the online tests run start the {@link MockSimpleFeatureService} class
  *
  * @source $URL$
  */

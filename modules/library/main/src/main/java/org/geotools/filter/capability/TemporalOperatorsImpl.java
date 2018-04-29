@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -20,15 +20,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
-
 import org.opengis.filter.capability.TemporalOperator;
 import org.opengis.filter.capability.TemporalOperators;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class TemporalOperatorsImpl implements TemporalOperators {
 
     Set<TemporalOperator> operators;
@@ -65,19 +60,13 @@ public class TemporalOperatorsImpl implements TemporalOperators {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
         TemporalOperatorsImpl other = (TemporalOperatorsImpl) obj;
         if (operators == null) {
-            if (other.operators != null)
-                return false;
-        } else if (!operators.equals(other.operators))
-            return false;
+            if (other.operators != null) return false;
+        } else if (!operators.equals(other.operators)) return false;
         return true;
     }
-
 }

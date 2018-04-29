@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -22,10 +22,7 @@ import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 import org.opengis.filter.FilterFactory;
 
-/**
- * Handles parsing a Ysld "text" symbolizer property into a {@link Symbolizer} object.
- *
- */
+/** Handles parsing a Ysld "text" symbolizer property into a {@link Symbolizer} object. */
 public class TextParser extends SymbolizerParser<TextSymbolizer> {
 
     public TextParser(Rule rule, Factory factory) {
@@ -47,20 +44,23 @@ public class TextParser extends SymbolizerParser<TextSymbolizer> {
         context.push(new FontHandler());
         context.push("halo", new HaloParser());
         context.push(new PlacementParser());
-        context.push(new FillParser(factory) {
-            @Override
-            protected void fill(Fill fill) {
-                sym.setFill(fill);
-            }
-        });
-        context.push("graphic", new GraphicParser(factory) {
-            @Override
-            protected void graphic(Graphic g) {
-                if (sym instanceof TextSymbolizer2) {
-                    ((TextSymbolizer2) sym).setGraphic(g);
-                }
-            }
-        });
+        context.push(
+                new FillParser(factory) {
+                    @Override
+                    protected void fill(Fill fill) {
+                        sym.setFill(fill);
+                    }
+                });
+        context.push(
+                "graphic",
+                new GraphicParser(factory) {
+                    @Override
+                    protected void graphic(Graphic g) {
+                        if (sym instanceof TextSymbolizer2) {
+                            ((TextSymbolizer2) sym).setGraphic(g);
+                        }
+                    }
+                });
     }
 
     class FontHandler extends YsldParseHandler {
@@ -71,8 +71,12 @@ public class TextParser extends SymbolizerParser<TextSymbolizer> {
             super(TextParser.this.factory);
 
             FilterFactory ff = factory.filter;
-            font = factory.style.createFont(ff.literal("serif"), ff.literal("normal"),
-                    ff.literal("normal"), ff.literal(10));
+            font =
+                    factory.style.createFont(
+                            ff.literal("serif"),
+                            ff.literal("normal"),
+                            ff.literal("normal"),
+                            ff.literal(10));
         }
 
         @Override
@@ -111,12 +115,13 @@ public class TextParser extends SymbolizerParser<TextSymbolizer> {
 
             YamlMap map = obj.map();
 
-            context.push(new FillParser(factory) {
-                @Override
-                protected void fill(Fill fill) {
-                    halo.setFill(fill);
-                }
-            });
+            context.push(
+                    new FillParser(factory) {
+                        @Override
+                        protected void fill(Fill fill) {
+                            halo.setFill(fill);
+                        }
+                    });
 
             if (map.has("radius")) {
                 halo.setRadius(Util.expression(map.str("radius"), factory));
@@ -161,8 +166,8 @@ public class TextParser extends SymbolizerParser<TextSymbolizer> {
             }
             // anchor point is manditory for SLD encoding
             if (point.getAnchorPoint() == null) {
-                AnchorPoint defaultAnchor = factory.style.getDefaultPointPlacement()
-                        .getAnchorPoint();
+                AnchorPoint defaultAnchor =
+                        factory.style.getDefaultPointPlacement().getAnchorPoint();
                 point.setAnchorPoint(defaultAnchor);
             }
         }

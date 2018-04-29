@@ -17,32 +17,28 @@
  */
 package org.geotools.arcsde.session;
 
+import com.esri.sde.sdk.client.SeColumnDefinition;
+import com.esri.sde.sdk.client.SeException;
+import com.esri.sde.sdk.client.SeRow;
+import com.esri.sde.sdk.client.SeShape;
+import com.esri.sde.sdk.geom.GeometryFactory;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.arcsde.ArcSdeException;
 import org.geotools.arcsde.logging.Loggers;
 
-import com.esri.sde.sdk.client.SeColumnDefinition;
-import com.esri.sde.sdk.client.SeException;
-import com.esri.sde.sdk.client.SeRow;
-import com.esri.sde.sdk.client.SeShape;
-import com.esri.sde.sdk.geom.GeometryFactory;
-
 /**
  * Wrapper for an SeRow so it allows asking multiple times for the same property.
- * 
+ *
  * @author Gabriel Roldan, Axios Engineering
  * @version $Id$
- *
- *
  * @source $URL$
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *         /org/geotools/arcsde/data/SdeRow.java $
+ *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
+ *     /org/geotools/arcsde/data/SdeRow.java $
  * @since 2.4.0
  */
 public class SdeRow {
@@ -124,29 +120,32 @@ public class SdeRow {
                                 clobIn = row.getClob(i);
                             }
                             if (clobIn != null) {
-                                reader = new BufferedReader(new InputStreamReader(clobIn, "UTF-16"));
+                                reader =
+                                        new BufferedReader(new InputStreamReader(clobIn, "UTF-16"));
                                 StringBuffer buf = new StringBuffer();
                                 String snip = reader.readLine();
                                 while (snip != null) {
-                                    if (buf.length() != 0)
-                                        buf.append('\n');
+                                    if (buf.length() != 0) buf.append('\n');
                                     buf.append(snip);
                                     snip = reader.readLine();
                                 }
-                                if (buf.length() > 0)
-                                    values[i] = buf.toString();
+                                if (buf.length() > 0) values[i] = buf.toString();
                             }
                         } catch (IOException e) {
-                            LOGGER.log(Level.FINEST,
-                                    "Issue decoding CLOB/NCLOB into a String:" + e, e);
+                            LOGGER.log(
+                                    Level.FINEST,
+                                    "Issue decoding CLOB/NCLOB into a String:" + e,
+                                    e);
                             // value will remain null
                         } finally {
                             if (reader != null) {
                                 try {
                                     reader.close();
                                 } catch (IOException ignore) {
-                                    LOGGER.log(Level.FINEST, "Issue cleaning up after CLOB/NCLOB:"
-                                            + ignore, ignore);
+                                    LOGGER.log(
+                                            Level.FINEST,
+                                            "Issue cleaning up after CLOB/NCLOB:" + ignore,
+                                            ignore);
                                 }
                             }
                         }
@@ -172,12 +171,10 @@ public class SdeRow {
 
     /**
      * DOCUMENT ME!
-     * 
-     * @param index
-     *            DOCUMENT ME!
+     *
+     * @param index DOCUMENT ME!
      * @return DOCUMENT ME!
-     * @throws IOException
-     *             DOCUMENT ME!
+     * @throws IOException DOCUMENT ME!
      */
     public Object getObject(int index) throws IOException {
         return values[index];
@@ -185,7 +182,7 @@ public class SdeRow {
 
     /**
      * DOCUMENT ME!
-     * 
+     *
      * @return DOCUMENT ME!
      */
     public Object[] getAll() {
@@ -194,12 +191,10 @@ public class SdeRow {
 
     /**
      * DOCUMENT ME!
-     * 
-     * @param index
-     *            DOCUMENT ME!
+     *
+     * @param index DOCUMENT ME!
      * @return DOCUMENT ME!
-     * @throws IOException
-     *             DOCUMENT ME!
+     * @throws IOException DOCUMENT ME!
      */
     public Long getLong(int index) throws IOException {
         return (Long) getObject(index);
@@ -207,12 +202,10 @@ public class SdeRow {
 
     /**
      * DOCUMENT ME!
-     * 
-     * @param index
-     *            DOCUMENT ME!
+     *
+     * @param index DOCUMENT ME!
      * @return DOCUMENT ME!
-     * @throws IOException
-     *             DOCUMENT ME!
+     * @throws IOException DOCUMENT ME!
      */
     public SeShape getShape(int index) throws IOException {
         return (SeShape) getObject(index);
@@ -221,7 +214,7 @@ public class SdeRow {
     /**
      * @param columnIndex
      * @return one of {@link SeRow#SE_IS_ALREADY_FETCHED}, {@link SeRow#SE_IS_NOT_NULL_VALUE},
-     *         {@link SeRow#SE_IS_NULL_VALUE}, {@link SeRow#SE_IS_REPEATED_FEATURE}
+     *     {@link SeRow#SE_IS_NULL_VALUE}, {@link SeRow#SE_IS_REPEATED_FEATURE}
      */
     public int getIndicator(int columnIndex) {
         return colStatusIndicator[columnIndex];
@@ -232,12 +225,10 @@ public class SdeRow {
     }
 
     /**
-     * @param geometryIndex
-     *            a value >= 0 indicates which index in the row contains the geometry attribute. If
-     *            not set, geometryFactory will be ignored
+     * @param geometryIndex a value >= 0 indicates which index in the row contains the geometry
+     *     attribute. If not set, geometryFactory will be ignored
      */
     public void setGeometryIndex(int geometryIndex) {
         this.geometryIndex = geometryIndex;
     }
-
 }

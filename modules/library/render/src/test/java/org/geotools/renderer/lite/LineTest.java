@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2012 - 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -25,7 +25,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.store.ContentFeatureSource;
@@ -45,11 +44,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class LineTest {
 
     private static final long TIME = 4000;
@@ -82,16 +77,16 @@ public class LineTest {
     }
 
     File file(String name) {
-        return new File("src/test/resources/org/geotools/renderer/lite/test-data/line/" + name
-                + ".png");
+        return new File(
+                "src/test/resources/org/geotools/renderer/lite/test-data/line/" + name + ".png");
     }
 
     @Test
     public void testLineCircle() throws Exception {
         StreamingRenderer renderer = setupLineMap("lineCircle.sld");
 
-        BufferedImage image = RendererBaseTest.showRender("Lines with circle stroke", renderer,
-                TIME, bounds);
+        BufferedImage image =
+                RendererBaseTest.showRender("Lines with circle stroke", renderer, TIME, bounds);
         ImageAssert.assertEquals(file("circle"), image, 10);
     }
 
@@ -100,20 +95,27 @@ public class LineTest {
         StreamingRenderer renderer = setupLineMap("lineDoubleDash.sld");
         MapViewport viewport = renderer.getMapContent().getViewport();
         ReferencedEnvelope re = viewport.getBounds();
-        ReferencedEnvelope shifted = new ReferencedEnvelope(re.getMinX() + 2, re.getMaxX() - 3,
-                re.getMinY() + 2, re.getMaxY() - 3, re.getCoordinateReferenceSystem());
+        ReferencedEnvelope shifted =
+                new ReferencedEnvelope(
+                        re.getMinX() + 2,
+                        re.getMaxX() - 3,
+                        re.getMinY() + 2,
+                        re.getMaxY() - 3,
+                        re.getCoordinateReferenceSystem());
         viewport.setBounds(shifted);
 
-        BufferedImage image = RendererBaseTest.showRender("Lines with double dash array (2 fts)",
-                renderer, TIME, shifted);
+        BufferedImage image =
+                RendererBaseTest.showRender(
+                        "Lines with double dash array (2 fts)", renderer, TIME, shifted);
         ImageAssert.assertEquals(file("doubleDash"), image, 10);
     }
 
     private StreamingRenderer setupLineMap(String styleFile) throws IOException {
         return setupMap(fs, styleFile);
     }
-    
-    private StreamingRenderer setupMap(SimpleFeatureSource fs, String styleFile) throws IOException {
+
+    private StreamingRenderer setupMap(SimpleFeatureSource fs, String styleFile)
+            throws IOException {
         Style style = RendererBaseTest.loadStyle(this, styleFile);
 
         return setupMap(fs, style);
@@ -134,8 +136,8 @@ public class LineTest {
     public void testPerPropertyUOM10() throws Exception {
         StreamingRenderer renderer = setupLineMap("linePerPropertyUom.sld");
 
-        BufferedImage image = RendererBaseTest.showRender("linePerPropertyUom", renderer, TIME,
-                bounds);
+        BufferedImage image =
+                RendererBaseTest.showRender("linePerPropertyUom", renderer, TIME, bounds);
         ImageAssert.assertEquals(file("linePerPropertyUom10"), image, 10);
     }
 
@@ -159,8 +161,8 @@ public class LineTest {
     public void testLineDisplacedSymbol() throws Exception {
         StreamingRenderer renderer = setupLineMap("lineDisplacedSymbol.sld");
 
-        BufferedImage image = RendererBaseTest
-                .showRender("Dispaced symbol", renderer, TIME, bounds);
+        BufferedImage image =
+                RendererBaseTest.showRender("Dispaced symbol", renderer, TIME, bounds);
         ImageAssert.assertEquals(file("lineDispacedSymbol"), image, 10);
     }
 
@@ -168,8 +170,8 @@ public class LineTest {
     public void testLineAnchorSymbol() throws Exception {
         StreamingRenderer renderer = setupLineMap("lineAnchorSymbol.sld");
 
-        BufferedImage image = RendererBaseTest.showRender("Anchor point at 1:1", renderer, TIME,
-                bounds);
+        BufferedImage image =
+                RendererBaseTest.showRender("Anchor point at 1:1", renderer, TIME, bounds);
         ImageAssert.assertEquals(file("lineAnchorSymbol"), image, 10);
     }
 
@@ -177,8 +179,8 @@ public class LineTest {
     public void testLineDisplacedGraphic() throws Exception {
         StreamingRenderer renderer = setupLineMap("lineDisplacedGraphic.sld");
 
-        BufferedImage image = RendererBaseTest.showRender("Dispaced graphic", renderer, TIME,
-                bounds);
+        BufferedImage image =
+                RendererBaseTest.showRender("Dispaced graphic", renderer, TIME, bounds);
         ImageAssert.assertEquals(file("lineDispacedGraphic"), image, 10);
     }
 
@@ -194,49 +196,62 @@ public class LineTest {
     public void testRenderingTransform() throws Exception {
         StreamingRenderer renderer = setupLineMap("line_rendering_transform.sld");
 
-        BufferedImage image = RendererBaseTest.showRender("Lines with buffer rendering transform",
-                renderer, TIME, bounds);
+        BufferedImage image =
+                RendererBaseTest.showRender(
+                        "Lines with buffer rendering transform", renderer, TIME, bounds);
         ImageAssert.assertEquals(file("renderingTransform"), image, 10);
     }
-    
+
     @Test
     public void testPerpendicularOffsetLeftRight() throws Exception {
-        StreamingRenderer renderer = setupMap(fs, RendererBaseTest.loadSEStyle(this, "linePerpendicularOffset-se.sld"));
+        StreamingRenderer renderer =
+                setupMap(fs, RendererBaseTest.loadSEStyle(this, "linePerpendicularOffset-se.sld"));
 
-        BufferedImage image = RendererBaseTest.showRender("Perpendicular offset",
-                renderer, TIME, bounds);
+        BufferedImage image =
+                RendererBaseTest.showRender("Perpendicular offset", renderer, TIME, bounds);
         ImageAssert.assertEquals(file("linePerpendincularOffset"), image, 10);
     }
-    
+
     @Test
     public void testPerpendicularOffsetLeftRightSquares() throws Exception {
-        StreamingRenderer renderer = setupMap(squares, RendererBaseTest.loadSEStyle(this, "linePerpendicularOffset-se.sld"));
+        StreamingRenderer renderer =
+                setupMap(
+                        squares,
+                        RendererBaseTest.loadSEStyle(this, "linePerpendicularOffset-se.sld"));
 
-        BufferedImage image = RendererBaseTest.showRender("Perpendicular offset",
-                renderer, TIME, bounds);
+        BufferedImage image =
+                RendererBaseTest.showRender("Perpendicular offset", renderer, TIME, bounds);
         ImageAssert.assertEquals(file("squaresPerpendincularOffset"), image, 10);
     }
 
     @Test
     public void testPerpendicularOffsetNPE() throws Exception {
-        StreamingRenderer renderer = setupMap(fsAround, RendererBaseTest.loadStyle(this, "linePerpendicularOffsetSmall.sld"));
+        StreamingRenderer renderer =
+                setupMap(
+                        fsAround,
+                        RendererBaseTest.loadStyle(this, "linePerpendicularOffsetSmall.sld"));
 
         final AtomicInteger errors = new AtomicInteger(0);
-        BufferedImage image = RendererBaseTest.showRender("Perpendicular offset",
-                renderer, TIME, new ReferencedEnvelope[] {new ReferencedEnvelope(1, 4, 1, 4, DefaultGeographicCRS.WGS84)}, new RenderListener() {
-                    
-                    @Override
-                    public void featureRenderer(SimpleFeature feature) {
-                        // nothing to do
-                    }
-                    
-                    @Override
-                    public void errorOccurred(Exception e) {
-                        errors.incrementAndGet();
-                        
-                    }
-                } );
+        BufferedImage image =
+                RendererBaseTest.showRender(
+                        "Perpendicular offset",
+                        renderer,
+                        TIME,
+                        new ReferencedEnvelope[] {
+                            new ReferencedEnvelope(1, 4, 1, 4, DefaultGeographicCRS.WGS84)
+                        },
+                        new RenderListener() {
+
+                            @Override
+                            public void featureRenderer(SimpleFeature feature) {
+                                // nothing to do
+                            }
+
+                            @Override
+                            public void errorOccurred(Exception e) {
+                                errors.incrementAndGet();
+                            }
+                        });
         assertEquals(0, errors.get());
     }
-
 }

@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2015, Boundless
  *
@@ -17,12 +17,23 @@
  */
 package org.geotools.data.mongodb;
 
+import static org.geotools.util.Converters.convert;
+
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBObject;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import org.bson.types.ObjectId;
 import org.geotools.data.mongodb.complex.JsonSelectAllFunction;
 import org.geotools.data.mongodb.complex.JsonSelectFunction;
@@ -87,21 +98,9 @@ import org.opengis.filter.temporal.TContains;
 import org.opengis.filter.temporal.TEquals;
 import org.opengis.filter.temporal.TOverlaps;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.regex.Pattern;
-
-import static org.geotools.util.Converters.convert;
-
 /**
  * Visitor responsible for generating a BasicDBObject to use as a MongoDB query.
- * 
+ *
  * @author Gerald Gay, Data Tactics Corp.
  * @author Alan Mangan, Data Tactics Corp.
  * @author Tom Kunicki, Boundless Spatial Inc.
@@ -112,8 +111,8 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
 
     private static final Logger LOGGER = Logging.getLogger(FilterToMongo.class);
 
-    static final SimpleDateFormat ISO8601_SDF = new SimpleDateFormat(
-            "yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+    static final SimpleDateFormat ISO8601_SDF =
+            new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
 
     final CollectionMapper mapper;
 
@@ -140,10 +139,10 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
 
     /**
      * Sets the feature type the encoder is encoding a filter for.
-     * <p>
-     * The type of the attributes may drive how the filter is translated to a mongodb query document.
-     * </p>
-     * 
+     *
+     * <p>The type of the attributes may drive how the filter is translated to a mongodb query
+     * document.
+     *
      * @param featureType
      */
     public void setFeatureType(SimpleFeatureType featureType) {
@@ -252,8 +251,8 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
         return encodeBinaryComparisonOp(filter, null, extraData);
     }
 
-    BasicDBObject encodeBinaryComparisonOp(BinaryComparisonOperator filter, String op,
-            Object extraData) {
+    BasicDBObject encodeBinaryComparisonOp(
+            BinaryComparisonOperator filter, String op, Object extraData) {
         BasicDBObject output = asDBObject(extraData);
 
         Expression left = filter.getExpression1();
@@ -275,11 +274,13 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
 
     private Class getJsonSelectType(Expression expression) {
         if (expression instanceof JsonSelectFunction) {
-            PropertyDescriptor descriptor = featureType.getDescriptor(((JsonSelectFunction) expression).getJsonPath());
+            PropertyDescriptor descriptor =
+                    featureType.getDescriptor(((JsonSelectFunction) expression).getJsonPath());
             return descriptor == null ? null : descriptor.getType().getBinding();
         }
         if (expression instanceof JsonSelectAllFunction) {
-            PropertyDescriptor descriptor = featureType.getDescriptor(((JsonSelectAllFunction) expression).getJsonPath());
+            PropertyDescriptor descriptor =
+                    featureType.getDescriptor(((JsonSelectAllFunction) expression).getJsonPath());
             return descriptor == null ? null : descriptor.getType().getBinding();
         }
         return null;
@@ -348,11 +349,12 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
 
     /**
      * Encode LIKE using MongoDB Regex.
-     * 
+     *
      * <ul>
-     * <li>filter.getWildCard() returns SQL-like '%'</li>
-     * <li>filter.getSingleChar() returns SQL-like '_'</li>
+     *   <li>filter.getWildCard() returns SQL-like '%'
+     *   <li>filter.getSingleChar() returns SQL-like '_'
      * </ul>
+     *
      * As an example "foo_bar%" converts to foo.bar.*
      */
     @Override
@@ -401,8 +403,8 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
             objectIds.add(new ObjectId(id.toString()));
         }
 
-        Object objectIdDBO = (objectIds.size() > 1) ? new BasicDBObject("$in", objectIds)
-                : objectIds.get(0);
+        Object objectIdDBO =
+                (objectIds.size() > 1) ? new BasicDBObject("$in", objectIds) : objectIds.get(0);
 
         output.put("_id", objectIdDBO);
         return output;
@@ -422,8 +424,11 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
 
         DBObject geometryDBObject = geometryBuilder.toObject(envelope);
         addCrsToGeometryDBObject(geometryDBObject);
-        DBObject dbo = BasicDBObjectBuilder.start().push("$geoIntersects")
-                .add("$geometry", geometryDBObject).get();
+        DBObject dbo =
+                BasicDBObjectBuilder.start()
+                        .push("$geoIntersects")
+                        .add("$geometry", geometryDBObject)
+                        .get();
 
         output.put((String) e1, dbo);
         return output;
@@ -441,8 +446,11 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
 
         DBObject geometryDBObject = geometryBuilder.toObject(geometry);
         addCrsToGeometryDBObject(geometryDBObject);
-        DBObject dbo = BasicDBObjectBuilder.start().push("$geoIntersects")
-                .add("$geometry", geometryDBObject).get();
+        DBObject dbo =
+                BasicDBObjectBuilder.start()
+                        .push("$geoIntersects")
+                        .add("$geometry", geometryDBObject)
+                        .get();
 
         output.put((String) e1, dbo);
         return output;
@@ -459,8 +467,11 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
 
         DBObject geometryDBObject = geometryBuilder.toObject(geometry);
         addCrsToGeometryDBObject(geometryDBObject);
-        DBObject dbo = BasicDBObjectBuilder.start().push("$geoWithin")
-                .add("$geometry", geometryDBObject).get();
+        DBObject dbo =
+                BasicDBObjectBuilder.start()
+                        .push("$geoWithin")
+                        .add("$geometry", geometryDBObject)
+                        .get();
 
         output.put((String) e1, dbo);
         return output;
@@ -655,15 +666,15 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
         }
     }
 
-    /**
-     * Java primitives types supported by MongoDB.
-     */
-    private static final Class[] SUPPORTED_PRIMITIVES_TYPES = new Class[] { Boolean.class,
-            Double.class, Integer.class, Long.class, String.class, };
+    /** Java primitives types supported by MongoDB. */
+    private static final Class[] SUPPORTED_PRIMITIVES_TYPES =
+            new Class[] {
+                Boolean.class, Double.class, Integer.class, Long.class, String.class,
+            };
 
     /**
-     * Helper method that tries to convert a literal to the expected type. If the target
-     * type is not supported by MongoDB the string representation of the literal is returned.
+     * Helper method that tries to convert a literal to the expected type. If the target type is not
+     * supported by MongoDB the string representation of the literal is returned.
      */
     private Object convertLiteral(Object literal, Class<?> targetType) {
         if (literal == null) {
@@ -690,22 +701,19 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
     }
 
     /**
-     * Helper method that tries to convert a literal to a Java
-     * primitive type supported by MongoDB.
+     * Helper method that tries to convert a literal to a Java primitive type supported by MongoDB.
      */
     private Object covertToPrimitive(Object literal) {
         for (Class<?> supportedType : SUPPORTED_PRIMITIVES_TYPES) {
             if (supportedType.isAssignableFrom(literal.getClass())) {
-                //literal is already a Java primitive type supported by MongoDB
+                // literal is already a Java primitive type supported by MongoDB
                 return literal;
             }
         }
         return literal.toString();
     }
 
-    /**
-     * Returns TRUE if the Java primitive type is supported by MongoDB.
-     */
+    /** Returns TRUE if the Java primitive type is supported by MongoDB. */
     private boolean isPrimitiveTypeSupported(Class<?> type) {
         for (Class<?> supportedType : SUPPORTED_PRIMITIVES_TYPES) {
             if (supportedType.isAssignableFrom(type)) {
@@ -718,7 +726,12 @@ public class FilterToMongo implements FilterVisitor, ExpressionVisitor {
     }
 
     void addCrsToGeometryDBObject(DBObject geometryDBObject) {
-        geometryDBObject.put("crs", BasicDBObjectBuilder.start().add("type", "name")
-                .push("properties").add("name", "urn:x-mongodb:crs:strictwinding:EPSG:4326").get());
+        geometryDBObject.put(
+                "crs",
+                BasicDBObjectBuilder.start()
+                        .add("type", "name")
+                        .push("properties")
+                        .add("name", "urn:x-mongodb:crs:strictwinding:EPSG:4326")
+                        .get());
     }
 }

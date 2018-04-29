@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
- *        
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -19,7 +19,6 @@ package org.geotools.data.ogr;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Iterator;
-
 import org.geotools.factory.Hints;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.Converters;
@@ -83,7 +82,7 @@ import org.opengis.filter.temporal.TOverlaps;
 
 /**
  * Encodes a compliant filter to the "restricted where" syntax supported by OGR:
- * 
+ *
  * <pre>
  * @condition@ = @field_name@ @binary_operator@ @value@ | "(" @condition@ ")" @binary_logical_operator@
  *             "(" @condition@ ")"
@@ -93,9 +92,9 @@ import org.opengis.filter.temporal.TOverlaps;
  * @value@ = @string_token@ | @numeric_value@ | @string_value@
  * @string_value@ = "'" @characters@ "'"
  * </pre>
- * 
+ *
  * Implementation wise this is a widely cut down version of JDBC's module FilterToSQL
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 class FilterToRestrictedWhere implements FilterVisitor, ExpressionVisitor {
@@ -117,9 +116,8 @@ class FilterToRestrictedWhere implements FilterVisitor, ExpressionVisitor {
 
     /**
      * Writes the SQL for the PropertyIsBetween Filter.
-     * 
+     *
      * @param filter the Filter to be visited.
-     * 
      * @throws RuntimeException for io exception with writer
      */
     public Object visit(PropertyIsBetween filter, Object extraData) throws RuntimeException {
@@ -150,10 +148,9 @@ class FilterToRestrictedWhere implements FilterVisitor, ExpressionVisitor {
 
     /**
      * Write the SQL for an And filter
-     * 
+     *
      * @param filter the filter to visit
      * @param extraData extra data (unused by this method)
-     * 
      */
     public Object visit(And filter, Object extraData) {
         return visit((BinaryLogicOperator) filter, "AND");
@@ -161,10 +158,9 @@ class FilterToRestrictedWhere implements FilterVisitor, ExpressionVisitor {
 
     /**
      * Write the SQL for an Or filter
-     * 
+     *
      * @param filter the filter to visit
      * @param extraData extra data (unused by this method)
-     * 
      */
     public Object visit(Or filter, Object extraData) {
         return visit((BinaryLogicOperator) filter, "OR");
@@ -173,7 +169,7 @@ class FilterToRestrictedWhere implements FilterVisitor, ExpressionVisitor {
     /**
      * Common implementation for BinaryLogicOperator filters. This way they're all handled
      * centrally.
-     * 
+     *
      * @param filter the logic statement to be turned into SQL.
      * @param extraData extra filter data. Not modified directly by this method.
      */
@@ -270,9 +266,8 @@ class FilterToRestrictedWhere implements FilterVisitor, ExpressionVisitor {
 
     /**
      * Export the contents of a Literal Expresion
-     * 
+     *
      * @param expression the Literal to export
-     * 
      * @throws RuntimeException for io exception with writer
      */
     public Object visit(Literal expression, Object context) throws RuntimeException {
@@ -298,8 +293,11 @@ class FilterToRestrictedWhere implements FilterVisitor, ExpressionVisitor {
         if (target != null) {
             // use the target type
             if (Number.class.isAssignableFrom(target)) {
-                literal = Converters.convert(expression.evaluate(null), target, new Hints(
-                        ConverterFactory.SAFE_CONVERSION, true));
+                literal =
+                        Converters.convert(
+                                expression.evaluate(null),
+                                target,
+                                new Hints(ConverterFactory.SAFE_CONVERSION, true));
             } else {
                 literal = expression.evaluate(null, target);
             }
@@ -307,12 +305,10 @@ class FilterToRestrictedWhere implements FilterVisitor, ExpressionVisitor {
         // if the target was not known, of the conversion failed, try the
         // type guessing dance literal expression does only for the following
         // method call
-        if (literal == null)
-            literal = expression.evaluate(null);
+        if (literal == null) literal = expression.evaluate(null);
 
         // if that failed as well, grab the value as is
-        if (literal == null)
-            literal = expression.getValue();
+        if (literal == null) literal = expression.getValue();
 
         return literal;
     }
@@ -321,7 +317,7 @@ class FilterToRestrictedWhere implements FilterVisitor, ExpressionVisitor {
      * Writes out a non null, non geometry literal. The base class properly handles null, numeric
      * and booleans (true|false), and turns everything else into a string. Subclasses are expected
      * to override this shall they need a different treatment (e.g. for dates)
-     * 
+     *
      * @param literal
      * @throws IOException
      */
@@ -392,7 +388,6 @@ class FilterToRestrictedWhere implements FilterVisitor, ExpressionVisitor {
     @Override
     public Object visit(Id filter, Object extraData) {
         throw new UnsupportedOperationException("Can't encode this expression");
-
     }
 
     @Override
@@ -428,7 +423,6 @@ class FilterToRestrictedWhere implements FilterVisitor, ExpressionVisitor {
     @Override
     public Object visit(Crosses filter, Object extraData) {
         throw new UnsupportedOperationException("Can't encode this expression");
-
     }
 
     @Override

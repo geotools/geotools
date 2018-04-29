@@ -18,21 +18,21 @@ package org.geotools.data.efeature.adapters;
 
 /**
  * @author kengu - 15. juni 2011
- *
- *
  * @source $URL$
  */
-public class DoubleAdapter extends org.eclipse.emf.query.conditions.numbers.NumberAdapter.DoubleAdapter {
+public class DoubleAdapter
+        extends org.eclipse.emf.query.conditions.numbers.NumberAdapter.DoubleAdapter {
 
-    public static final org.geotools.data.efeature.adapters.DoubleAdapter 
-        DEFAULT = new org.geotools.data.efeature.adapters.DoubleAdapter();
+    public static final org.geotools.data.efeature.adapters.DoubleAdapter DEFAULT =
+            new org.geotools.data.efeature.adapters.DoubleAdapter();
 
     /** Hide constructor */
-    private DoubleAdapter() { /*NOP*/};
-    
+    private DoubleAdapter() {
+        /*NOP*/
+    };
+
     @Override
     public double doubleValue(Object value) {
-        return value instanceof Double ? ((Double)value).doubleValue() : (Double)value;
+        return value instanceof Double ? ((Double) value).doubleValue() : (Double) value;
     }
-
 }

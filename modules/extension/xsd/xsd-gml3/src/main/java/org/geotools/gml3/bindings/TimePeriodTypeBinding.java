@@ -16,19 +16,18 @@
  */
 package org.geotools.gml3.bindings;
 
+import javax.xml.namespace.QName;
 import org.geotools.gml3.GML;
 import org.geotools.temporal.object.DefaultPeriod;
 import org.geotools.xml.*;
 import org.opengis.temporal.Instant;
 import org.opengis.temporal.Period;
 
-import javax.xml.namespace.QName;
-
 /**
  * Binding object for the type http://www.opengis.net/gml:TimePeriodType.
- * 
+ *
  * <p>
- * 
+ *
  * <pre>
  *  <code>
  *  &lt;complexType name="TimePeriodType"&gt;
@@ -47,27 +46,25 @@ import javax.xml.namespace.QName;
  *              &lt;/sequence&gt;
  *          &lt;/extension&gt;
  *      &lt;/complexContent&gt;
- *  &lt;/complexType&gt; 
- * 	
+ *  &lt;/complexType&gt;
+ *
  *   </code>
  * </pre>
- * 
- * </p>
- * 
+ *
  * @generated
  */
 public class TimePeriodTypeBinding extends AbstractComplexBinding {
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return GML.TimePeriodType;
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Class getType() {
@@ -75,8 +72,10 @@ public class TimePeriodTypeBinding extends AbstractComplexBinding {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
@@ -84,23 +83,20 @@ public class TimePeriodTypeBinding extends AbstractComplexBinding {
         Instant begin = null, end = null;
         if (node.hasChild("begin")) {
             begin = (Instant) node.getChildValue("begin");
-        }
-        else {
+        } else {
             begin = (Instant) node.getChildValue("beginPosition");
         }
-        
+
         if (node.hasChild("end")) {
             end = (Instant) node.getChildValue("end");
-        }
-        else {
+        } else {
             end = (Instant) node.getChildValue("endPosition");
         }
-        
+
         if (begin == null || end == null) {
             throw new IllegalArgumentException("Time period begin/end not specified");
         }
-        
+
         return new DefaultPeriod(begin, end);
     }
-
 }

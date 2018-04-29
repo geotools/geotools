@@ -18,23 +18,21 @@ package org.geotools.data.wmts.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.geotools.data.ows.Service;
-
 import net.opengis.ows11.LanguageStringType;
 import net.opengis.ows11.ServiceIdentificationType;
 import net.opengis.ows11.impl.KeywordsTypeImpl;
 import net.opengis.ows11.impl.LanguageStringTypeImpl;
+import org.geotools.data.ows.Service;
 
-/**
- * @author ian
- *
- */
+/** @author ian */
 public class WMTSService extends Service {
 
     public WMTSService(ServiceIdentificationType serviceType) {
 
-        String title = serviceType.getTitle().isEmpty() ? "N/A"
-                : ((LanguageStringType) serviceType.getTitle().get(0)).getValue();
+        String title =
+                serviceType.getTitle().isEmpty()
+                        ? "N/A"
+                        : ((LanguageStringType) serviceType.getTitle().get(0)).getValue();
         setTitle(title);
         setName(serviceType.getServiceType().getValue());
 

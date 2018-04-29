@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *    (C) 2016, Open Source Geospatial Foundation (OSGeo). 
+ *    (C) 2016, Open Source Geospatial Foundation (OSGeo).
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -17,7 +17,6 @@
 package org.geotools.gml3.simple;
 
 import com.vividsolutions.jts.geom.GeometryCollection;
-
 import org.geotools.gml2.simple.GMLWriter;
 import org.geotools.gml2.simple.GeometryEncoder;
 import org.geotools.gml2.simple.QualifiedName;
@@ -27,16 +26,16 @@ import org.xml.sax.helpers.AttributesImpl;
 
 /**
  * Encodes a GML3 generic geometry collection
- * 
- * @author 
+ *
+ * @author
  */
 class GeometryCollectionEncoder extends GeometryEncoder<GeometryCollection> {
 
-    static final QualifiedName MULTI_GEOMETRY = new QualifiedName(
-        GML.NAMESPACE, "MultiGeometry", "gml");
+    static final QualifiedName MULTI_GEOMETRY =
+            new QualifiedName(GML.NAMESPACE, "MultiGeometry", "gml");
 
-    static final QualifiedName GEOMETRY_MEMBER = new QualifiedName(
-        GML.NAMESPACE, "geometryMember", "gml");
+    static final QualifiedName GEOMETRY_MEMBER =
+            new QualifiedName(GML.NAMESPACE, "geometryMember", "gml");
 
     QualifiedName multiGeometry;
 
@@ -62,5 +61,4 @@ class GeometryCollectionEncoder extends GeometryEncoder<GeometryCollection> {
         }
         handler.endElement(multiGeometry);
     }
-
 }

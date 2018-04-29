@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -22,7 +22,7 @@ import org.opengis.feature.type.Name;
 
 /**
  * ConverterFactory for handling Name conversions.
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 public class NameConverterFactory implements ConverterFactory {
@@ -35,7 +35,6 @@ public class NameConverterFactory implements ConverterFactory {
                     Name name = (Name) source;
                     return name.getURI();
                 }
-
             };
 
         } else if (target.equals(Name.class) && source.equals(String.class)) {
@@ -53,11 +52,9 @@ public class NameConverterFactory implements ConverterFactory {
 
                     return null;
                 }
-
             };
         }
 
         return null;
     }
-
 }

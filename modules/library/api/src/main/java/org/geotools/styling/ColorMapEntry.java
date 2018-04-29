@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -18,9 +18,9 @@ package org.geotools.styling;
 
 import org.opengis.filter.expression.Expression;
 
-
 /**
  * A basic interface for objects which can hold color map entries.
+ *
  * <pre>
  *  &lt;xs:element name="ColorMapEntry"&gt;
  *  &lt;xs:complexType&gt;
@@ -32,49 +32,38 @@ import org.opengis.filter.expression.Expression;
  *  &lt;/xs:element&gt;
  *  </pre>
  *
- *
  * @source $URL$
  */
 public interface ColorMapEntry {
     /** Label for this Color Map Entry */
     String getLabel();
-    
-    /**
-     * @param label
-     */
+
+    /** @param label */
     void setLabel(String label);
 
     /**
      * Expression resulting in a color
+     *
      * @param color
      */
     void setColor(Expression color);
 
-    /**
-     * @return Expression evaualted into a color
-     */
+    /** @return Expression evaualted into a color */
     Expression getColor();
 
-    /**
-     * @param opacity Expressed as a value between 0 and 1
-     */
+    /** @param opacity Expressed as a value between 0 and 1 */
     void setOpacity(Expression opacity);
-    /**
-     * 
-     * @return Opacity expressed as a value between 0 and 1
-     */
+    /** @return Opacity expressed as a value between 0 and 1 */
     Expression getOpacity();
 
     /**
      * Quantity marking the start of this color map entry.
-     * 
+     *
      * @param quantity
      */
     void setQuantity(Expression quantity);
-    
-    /**
-     * @return Quanity marking the start of this color map entry
-     */
+
+    /** @return Quanity marking the start of this color map entry */
     Expression getQuantity();
 
     void accept(org.geotools.styling.StyleVisitor visitor);

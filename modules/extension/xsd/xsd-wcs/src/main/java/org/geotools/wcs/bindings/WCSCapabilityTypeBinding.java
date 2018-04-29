@@ -1,18 +1,16 @@
 package org.geotools.wcs.bindings;
 
-
+import javax.xml.namespace.QName;
 import org.geotools.wcs.WCS;
 import org.geotools.xml.*;
-
-
-import javax.xml.namespace.QName;
 
 /**
  * Binding object for the type http://www.opengis.net/wcs:WCSCapabilityType.
  *
  * <p>
- *	<pre>
- *	 <code>
+ *
+ * <pre>
+ *  <code>
  *  &lt;complexType name="WCSCapabilityType"&gt;
  *      &lt;annotation&gt;
  *          &lt;documentation&gt;XML encoded WCS GetCapabilities operation response. The Capabilities document provides clients with service metadata about a specific service instance, including metadata about the coverages served. &lt;/documentation&gt;
@@ -69,47 +67,42 @@ import javax.xml.namespace.QName;
  *              &lt;documentation&gt;Service metadata document version, having values that are "increased" whenever any change is made in service metadata document. Values are selected by each server, and are always opaque to clients. When not supported by server, server shall not return this attribute. &lt;/documentation&gt;
  *          &lt;/annotation&gt;
  *      &lt;/attribute&gt;
- *  &lt;/complexType&gt; 
- *		
- *	  </code>
- *	 </pre>
- * </p>
+ *  &lt;/complexType&gt;
+ *
+ *   </code>
+ *  </pre>
  *
  * @generated
- *
- *
  * @source $URL$
  */
 public class WCSCapabilityTypeBinding extends AbstractComplexBinding {
 
-	/**
-	 * @generated
-	 */
-	public QName getTarget() {
-		return WCS.WCSCapabilityType;
-	}
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 *	
-	 * @generated modifiable
-	 */	
-	public Class getType() {
-		return null;
-	}
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 *	
-	 * @generated modifiable
-	 */	
-	public Object parse(ElementInstance instance, Node node, Object value) 
-		throws Exception {
-		
-		//TODO: implement and remove call to super
-		return super.parse(instance,node,value);
-	}
+    /** @generated */
+    public QName getTarget() {
+        return WCS.WCSCapabilityType;
+    }
 
+    /**
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated modifiable
+     */
+    public Class getType() {
+        return null;
+    }
+
+    /**
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated modifiable
+     */
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
+
+        // TODO: implement and remove call to super
+        return super.parse(instance, node, value);
+    }
 }

@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -18,7 +18,6 @@
 package org.geotools.data.solr;
 
 import java.util.Date;
-
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.opengis.filter.Filter;
@@ -151,5 +150,4 @@ public class SolrTemporalTest extends SolrTestSupport {
         SimpleFeatureCollection features = featureSource.getFeatures(f);
         assertEquals(1, features.size());
     }
-
 }

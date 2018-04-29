@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2015, Boundless
  *
@@ -24,5 +24,4 @@ public class GeoJSONMongoDataStoreTest extends MongoDataStoreTest {
     public GeoJSONMongoDataStoreTest() {
         super(new GeoJSONMongoTestSetup());
     }
-
 }

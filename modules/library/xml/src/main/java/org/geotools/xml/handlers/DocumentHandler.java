@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -18,7 +18,6 @@ package org.geotools.xml.handlers;
 
 import java.net.URI;
 import java.util.Map;
-
 import org.geotools.xml.XMLElementHandler;
 import org.geotools.xml.schema.Element;
 import org.geotools.xml.schema.Schema;
@@ -26,21 +25,18 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotRecognizedException;
 
-
 /**
- * <p>
- * Represents the start of an XML document ... serves up elements wrapped in
- * handlers for a specified schema.
- * </p>
+ * Represents the start of an XML document ... serves up elements wrapped in handlers for a
+ * specified schema.
  *
  * @author dzwiers www.refractions.net
- *
- *
  * @source $URL$
  */
 public class DocumentHandler extends XMLElementHandler {
     /** Supplied {@link Schema} for parsing and validation */
-    public final static String DEFAULT_NAMESPACE_HINT_KEY = "org.geotools.xml.handlers.DocumentHandler.DEFAULT_NAMESPACE_HINT_KEY";
+    public static final String DEFAULT_NAMESPACE_HINT_KEY =
+            "org.geotools.xml.handlers.DocumentHandler.DEFAULT_NAMESPACE_HINT_KEY";
+
     private XMLElementHandler xeh = null;
     private ElementHandlerFactory ehf;
 
@@ -53,37 +49,27 @@ public class DocumentHandler extends XMLElementHandler {
         this.ehf = ehf;
     }
 
-    /**
-     * @see org.geotools.xml.XMLElementHandler#getElement()
-     */
+    /** @see org.geotools.xml.XMLElementHandler#getElement() */
     public Element getElement() {
         return null;
     }
 
-    /**
-     * @see org.geotools.xml.XMLElementHandler#endElement(java.lang.String,
-     *      java.lang.String)
-     */
-    public void endElement(URI namespaceURI, String localName, Map hints){
+    /** @see org.geotools.xml.XMLElementHandler#endElement(java.lang.String, java.lang.String) */
+    public void endElement(URI namespaceURI, String localName, Map hints) {
         // do nothing
     }
 
-    /**
-     * @see org.geotools.xml.XMLElementHandler#getHandler(java.lang.String,
-     *      java.lang.String)
-     */
-    public XMLElementHandler getHandler(URI namespaceURI, String localName,
-        Map hints) throws SAXException {
+    /** @see org.geotools.xml.XMLElementHandler#getHandler(java.lang.String, java.lang.String) */
+    public XMLElementHandler getHandler(URI namespaceURI, String localName, Map hints)
+            throws SAXException {
         if (xeh != null) {
             throw new SAXNotRecognizedException(
-                "XML Documents may only have one top-level element");
+                    "XML Documents may only have one top-level element");
         }
-        if(hints!=null && hints.containsKey(DEFAULT_NAMESPACE_HINT_KEY)){
+        if (hints != null && hints.containsKey(DEFAULT_NAMESPACE_HINT_KEY)) {
             Object t = hints.get(DEFAULT_NAMESPACE_HINT_KEY);
-            if(t instanceof Schema)
-                ehf.startPrefixMapping("",(Schema)t);
-            else
-                ehf.startPrefixMapping("",t.toString());
+            if (t instanceof Schema) ehf.startPrefixMapping("", (Schema) t);
+            else ehf.startPrefixMapping("", t.toString());
         }
         xeh = ehf.createElementHandler(namespaceURI, localName);
 
@@ -91,23 +77,19 @@ public class DocumentHandler extends XMLElementHandler {
     }
 
     /**
-     * @see org.geotools.xml.XMLElementHandler#startElement(java.lang.String,
-     *      java.lang.String, org.xml.sax.Attributes)
+     * @see org.geotools.xml.XMLElementHandler#startElement(java.lang.String, java.lang.String,
+     *     org.xml.sax.Attributes)
      */
-    public void startElement(URI namespaceURI, String localName, Attributes attr){
+    public void startElement(URI namespaceURI, String localName, Attributes attr) {
         // do nothing
     }
 
-    /**
-     * @see org.geotools.xml.XMLElementHandler#getValue()
-     */
+    /** @see org.geotools.xml.XMLElementHandler#getValue() */
     public Object getValue() throws SAXException {
         return (xeh == null) ? null : xeh.getValue();
     }
 
-    /**
-     * @see org.geotools.xml.XMLElementHandler#getName()
-     */
+    /** @see org.geotools.xml.XMLElementHandler#getName() */
     public String getName() {
         return "";
     }

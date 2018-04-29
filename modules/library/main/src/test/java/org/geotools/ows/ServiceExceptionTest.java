@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2016, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -21,27 +21,25 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
-/**
- * Tests service exception handling of Java 5 initCause.
- */
+/** Tests service exception handling of Java 5 initCause. */
 public class ServiceExceptionTest {
     @Test
     public void testCause() {
         Exception throwable = new Exception("Placeholder");
-        
+
         // Problem with SAX - cause and exception can only be provided via constructor
         SAXException sax1 = (SAXException) new SAXException().initCause(throwable);
-        assertNull( sax1.getCause());
-        assertNull( sax1.getException());
-        
-        SAXException sax2 = new SAXException(throwable);
-        assertSame( throwable, sax2.getCause());
-        assertSame( throwable, sax2.getException());
-        
-        // Workaround with ServiceException
-        ServiceException serviceException1 = (ServiceException) new ServiceException("example").initCause(throwable);
-        assertSame( throwable, serviceException1.getCause());
-        assertSame( throwable, serviceException1.getException());
-    }
+        assertNull(sax1.getCause());
+        assertNull(sax1.getException());
 
+        SAXException sax2 = new SAXException(throwable);
+        assertSame(throwable, sax2.getCause());
+        assertSame(throwable, sax2.getException());
+
+        // Workaround with ServiceException
+        ServiceException serviceException1 =
+                (ServiceException) new ServiceException("example").initCause(throwable);
+        assertSame(throwable, serviceException1.getCause());
+        assertSame(throwable, serviceException1.getException());
+    }
 }

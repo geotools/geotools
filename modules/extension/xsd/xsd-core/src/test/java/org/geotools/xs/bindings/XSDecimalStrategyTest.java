@@ -16,6 +16,7 @@
  */
 package org.geotools.xs.bindings;
 
+import java.math.BigDecimal;
 import junit.framework.TestCase;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDMaxExclusiveFacet;
@@ -31,23 +32,17 @@ import org.eclipse.xsd.impl.XSDMinExclusiveFacetImpl;
 import org.eclipse.xsd.impl.XSDMinInclusiveFacetImpl;
 import org.eclipse.xsd.impl.XSDSimpleTypeDefinitionImpl;
 import org.eclipse.xsd.impl.XSDTotalDigitsFacetImpl;
-import java.math.BigDecimal;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 import org.geotools.xml.impl.ElementImpl;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class XSDecimalStrategyTest extends TestCase {
     /*
      * Test method for 'org.geotools.xml.strategies.xs.XSDecimalStrategy.parse(Element, Node[], Object)'
      */
     public void testParse() throws Exception {
-        //Valid values
+        // Valid values
         validateValues("50", 5, 0, 0, 100, 100);
         validateValues("50", 3, 49, 50, 50, 51);
 
@@ -55,55 +50,66 @@ public class XSDecimalStrategyTest extends TestCase {
         validateValues("50.8", 4, 49, 50, 51, 52);
         validateValues("51.0", 4, 49, 50, 51, 52);
 
-        //Invalid values
-        //TODO: enable these test when facets have been properly implemented
+        // Invalid values
+        // TODO: enable these test when facets have been properly implemented
         //		try {
         //			validateValues("50", 1, 49, 50, 51, 52);
         //			assertTrue("Exception should have been thrown.", false);
         //		} catch (ValidationException e) {
-        //			
+        //
         //		}
-        //		
+        //
         //		try {
         //			validateValues("48", 2, 49, 50, 51, 52);
         //			assertTrue("Exception should have been thrown.", false);
         //		} catch (ValidationException e) {
-        //			
+        //
         //		}
-        //		
+        //
         //		try {
         //			validateValues("49", 2, 49, 50, 51, 52);
         //			assertTrue("Exception should have been thrown.", false);
         //		} catch (ValidationException e) {
-        //			
+        //
         //		}
-        //		
+        //
         //		try {
         //			validateValues("52", 2, 49, 50, 51, 52);
         //			assertTrue("Exception should have been thrown.", false);
         //		} catch (ValidationException e) {
-        //			
+        //
         //		}
-        //		
+        //
         //		try {
         //			validateValues("53", 2, 49, 50, 51, 52);
         //			assertTrue("Exception should have been thrown.", false);
         //		} catch (ValidationException e) {
-        //			
+        //
         //		}
     }
 
-    public void validateValues(String elementText, int totalDigits, double minExc, double minInc,
-        double maxInc, double maxExc) throws Exception {
+    public void validateValues(
+            String elementText,
+            int totalDigits,
+            double minExc,
+            double minInc,
+            double maxInc,
+            double maxExc)
+            throws Exception {
         XSDecimalBinding strat = new XSDecimalBinding();
 
-        XSDElementDeclaration declaration = makeDeclaration(totalDigits, new BigDecimal(minExc),
-                new BigDecimal(minInc), new BigDecimal(maxInc), new BigDecimal(maxExc));
+        XSDElementDeclaration declaration =
+                makeDeclaration(
+                        totalDigits,
+                        new BigDecimal(minExc),
+                        new BigDecimal(minInc),
+                        new BigDecimal(maxInc),
+                        new BigDecimal(maxExc));
 
         ElementInstance element = new ElementImpl(declaration);
         element.setText(elementText);
 
-        Node[] children = new Node[] {  };
+        Node[] children = new Node[] {};
         Object value = null;
 
         BigDecimal decimal = (BigDecimal) strat.parse(element, element.getText().trim());
@@ -111,52 +117,56 @@ public class XSDecimalStrategyTest extends TestCase {
         assertNotNull(decimal);
     }
 
-    private XSDElementDeclaration makeDeclaration(final int digits, final BigDecimal minExc,
-        final BigDecimal minInc, final BigDecimal maxInc, final BigDecimal maxExc) {
+    private XSDElementDeclaration makeDeclaration(
+            final int digits,
+            final BigDecimal minExc,
+            final BigDecimal minInc,
+            final BigDecimal maxInc,
+            final BigDecimal maxExc) {
         return new XSDElementDeclarationImpl() {
-                public XSDTypeDefinition getTypeDefinition() {
-                    return new XSDSimpleTypeDefinitionImpl() {
-                            public XSDTotalDigitsFacet getTotalDigitsFacet() {
-                                return new XSDTotalDigitsFacetImpl() {
-                                        public int getValue() {
-                                            return digits;
-                                        }
-                                    };
-                            }
-
-                            public XSDMinInclusiveFacet getMinInclusiveFacet() {
-                                return new XSDMinInclusiveFacetImpl() {
-                                        public Object getValue() {
-                                            return minInc;
-                                        }
-                                    };
-                            }
-
-                            public XSDMinExclusiveFacet getMinExclusiveFacet() {
-                                return new XSDMinExclusiveFacetImpl() {
-                                        public Object getValue() {
-                                            return minExc;
-                                        }
-                                    };
-                            }
-
-                            public XSDMaxInclusiveFacet getMaxInclusiveFacet() {
-                                return new XSDMaxInclusiveFacetImpl() {
-                                        public Object getValue() {
-                                            return maxInc;
-                                        }
-                                    };
-                            }
-
-                            public XSDMaxExclusiveFacet getMaxExclusiveFacet() {
-                                return new XSDMaxExclusiveFacetImpl() {
-                                        public Object getValue() {
-                                            return maxExc;
-                                        }
-                                    };
+            public XSDTypeDefinition getTypeDefinition() {
+                return new XSDSimpleTypeDefinitionImpl() {
+                    public XSDTotalDigitsFacet getTotalDigitsFacet() {
+                        return new XSDTotalDigitsFacetImpl() {
+                            public int getValue() {
+                                return digits;
                             }
                         };
-                }
-            };
+                    }
+
+                    public XSDMinInclusiveFacet getMinInclusiveFacet() {
+                        return new XSDMinInclusiveFacetImpl() {
+                            public Object getValue() {
+                                return minInc;
+                            }
+                        };
+                    }
+
+                    public XSDMinExclusiveFacet getMinExclusiveFacet() {
+                        return new XSDMinExclusiveFacetImpl() {
+                            public Object getValue() {
+                                return minExc;
+                            }
+                        };
+                    }
+
+                    public XSDMaxInclusiveFacet getMaxInclusiveFacet() {
+                        return new XSDMaxInclusiveFacetImpl() {
+                            public Object getValue() {
+                                return maxInc;
+                            }
+                        };
+                    }
+
+                    public XSDMaxExclusiveFacet getMaxExclusiveFacet() {
+                        return new XSDMaxExclusiveFacetImpl() {
+                            public Object getValue() {
+                                return maxExc;
+                            }
+                        };
+                    }
+                };
+            }
+        };
     }
 }

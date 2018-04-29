@@ -21,21 +21,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
-import org.geotools.gce.imagemosaic.properties.PropertiesCollector;
-import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeature;
 
-/**
- * 
- * @author Niels Charlier
- * 
- */
+/** @author Niels Charlier */
 class ResolutionExtractor extends PropertiesCollector {
 
-    private final static Logger LOGGER = Logging.getLogger(ResolutionExtractor.class);
+    private static final Logger LOGGER = Logging.getLogger(ResolutionExtractor.class);
 
     public ResolutionExtractor(PropertiesCollectorSPI spi, List<String> propertyNames) {
         super(spi, propertyNames);
@@ -99,5 +92,4 @@ class ResolutionExtractor extends PropertiesCollector {
             map.put(propertyName, res);
         }
     }
-
 }

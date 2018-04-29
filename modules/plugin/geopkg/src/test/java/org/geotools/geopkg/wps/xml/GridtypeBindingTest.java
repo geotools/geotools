@@ -16,16 +16,15 @@
  */
 package org.geotools.geopkg.wps.xml;
 
-
 import org.geotools.geopkg.TileMatrix;
-import org.geotools.geopkg.wps.xml.GPKG;
 import org.geotools.xml.Binding;
 
 /**
  * Binding test case for http://www.opengis.net/gpkg:gridtype.
  *
  * <p>
- *  <pre>
+ *
+ * <pre>
  *   <code>
  *  &lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;xs:complexType name="gridtype" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
  *      &lt;xs:sequence&gt;
@@ -37,34 +36,34 @@ import org.geotools.xml.Binding;
  *        &lt;xs:element name="pixelxsize" type="xs:decimal"/&gt;
  *        &lt;xs:element name="pixelysize" type="xs:decimal"/&gt;
  *      &lt;/xs:sequence&gt;
- *    &lt;/xs:complexType&gt; 
- *      
+ *    &lt;/xs:complexType&gt;
+ *
  *    </code>
  *   </pre>
- * </p>
  *
  * @generated
  */
 public class GridtypeBindingTest extends GPKGTestSupport {
 
     public void testType() {
-        assertEquals(  TileMatrix.class, binding( GPKG.gridtype ).getType() );
+        assertEquals(TileMatrix.class, binding(GPKG.gridtype).getType());
     }
-    
+
     public void testExecutionMode() {
-        assertEquals( Binding.OVERRIDE, binding( GPKG.gridtype ).getExecutionMode() );
+        assertEquals(Binding.OVERRIDE, binding(GPKG.gridtype).getExecutionMode());
     }
-    
+
     public void testParse() throws Exception {
-        buildDocument ("<grid>" +
-                "<zoomlevel>3</zoomlevel>" +
-                "<tilewidth>512</tilewidth>" +
-                "<tileheight>256</tileheight>" + 
-                "<matrixwidth>32</matrixwidth>" +
-                "<matrixheight>16</matrixheight>" +
-                "<pixelxsize>0.05</pixelxsize>" +
-                "<pixelysize>0.06</pixelysize>" +
-                " </grid>");
+        buildDocument(
+                "<grid>"
+                        + "<zoomlevel>3</zoomlevel>"
+                        + "<tilewidth>512</tilewidth>"
+                        + "<tileheight>256</tileheight>"
+                        + "<matrixwidth>32</matrixwidth>"
+                        + "<matrixheight>16</matrixheight>"
+                        + "<pixelxsize>0.05</pixelxsize>"
+                        + "<pixelysize>0.06</pixelysize>"
+                        + " </grid>");
         Object result = parse(GPKG.gridtype);
         assertTrue(result instanceof TileMatrix);
         TileMatrix matrix = (TileMatrix) result;
@@ -76,5 +75,4 @@ public class GridtypeBindingTest extends GPKGTestSupport {
         assertEquals(0.05, matrix.getXPixelSize(), 0.0);
         assertEquals(0.06, matrix.getYPixelSize(), 0.0);
     }
-    
 }

@@ -20,6 +20,7 @@ import javax.imageio.ImageReadParam;
 
 /**
  * Utility class that should be used to pass extra parameters to the NetCdf image reader machinery.
+ *
  * @deprecated use {@link it.geosolutions.imageio.imageioimpl.EnhancedImageReadParam}
  */
 @Deprecated

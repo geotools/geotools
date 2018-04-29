@@ -16,26 +16,23 @@
  */
 package org.geotools.gml3.bindings;
 
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.LinearRing;
+import com.vividsolutions.jts.geom.Polygon;
 import java.util.List;
-
 import javax.xml.namespace.QName;
-
 import org.geotools.gml3.GML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.Polygon;
-
-
 /**
  * Binding object for the type http://www.opengis.net/gml:PolygonType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;complexType name="PolygonType"&gt;
  *      &lt;annotation&gt;
@@ -53,12 +50,8 @@ import com.vividsolutions.jts.geom.Polygon;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class PolygonTypeBinding extends AbstractComplexBinding {
@@ -68,9 +61,7 @@ public class PolygonTypeBinding extends AbstractComplexBinding {
         this.gFactory = gFactory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return GML.PolygonType;
     }
@@ -80,6 +71,7 @@ public class PolygonTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -90,14 +82,14 @@ public class PolygonTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
-        //TODO: schema allows no exterior ring, but what the heck is that all about ?
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
+        // TODO: schema allows no exterior ring, but what the heck is that all about ?
         LinearRing exterior = (LinearRing) node.getChildValue("exterior");
         LinearRing[] interior = null;
 
@@ -109,8 +101,7 @@ public class PolygonTypeBinding extends AbstractComplexBinding {
         return gFactory.createPolygon(exterior, interior);
     }
 
-    public Object getProperty(Object object, QName name)
-        throws Exception {
+    public Object getProperty(Object object, QName name) throws Exception {
         Polygon polygon = (Polygon) object;
 
         if ("exterior".equals(name.getLocalPart())) {

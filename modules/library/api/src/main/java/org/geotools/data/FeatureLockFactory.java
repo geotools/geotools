@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -19,28 +19,23 @@ package org.geotools.data;
 import java.awt.RenderingHints;
 import java.util.Collections;
 import java.util.Map;
-
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.Factory;
 import org.geotools.factory.FactoryRegistryException;
 
 /**
  * This specifies the interface to create FeatureLocks.
- * <p>
- * Sample use:
- * <code><pre>
+ *
+ * <p>Sample use: <code><pre>
  * FeatureLock lock = FeatureLockFactory.generate( "MyLock", 3600 );
  * </pre></code>
- *
  *
  * @source $URL$
  * @version $Id$
  * @task REVISIT: Combine this with a factory to also make Query objects?
  * @author Chris Holmes, TOPP
- * 
  * @deprecated Please use {@link FeatureLock} directly
  */
-
 public abstract class FeatureLockFactory implements Factory {
     /** A cached factory to create FeatureLocks. */
     private static FeatureLockFactory factory = null;
@@ -49,12 +44,11 @@ public abstract class FeatureLockFactory implements Factory {
      * Gets an instance of the FeatureLockFactory.
      *
      * @return A FeatureLockFactory instance.
-     *
      * @throws FactoryRegistryException If there exists a configuration error.
      */
     public static FeatureLockFactory getInstance() throws FactoryRegistryException {
         if (factory == null) {
-            factory = CommonFactoryFinder.getFeatureLockFactory( null );
+            factory = CommonFactoryFinder.getFeatureLockFactory(null);
         }
         return factory;
     }
@@ -78,7 +72,7 @@ public abstract class FeatureLockFactory implements Factory {
      * @param duration FeatureLock duration in milliseconds
      */
     public static FeatureLock generate(long duration) {
-	   return generate("LockID", duration);
+        return generate("LockID", duration);
     }
 
     /**
@@ -97,16 +91,14 @@ public abstract class FeatureLockFactory implements Factory {
      * @param name     User supplied name used in lock generation.
      * @param duration Date lock expires on.
      */
-    public static FeatureLock generate(String name, long duration){
+    public static FeatureLock generate(String name, long duration) {
         return getInstance().createLock(name, duration);
     }
 
     protected abstract FeatureLock createLock(String name, long duration);
 
-    /**
-     * Returns the implementation hints. The default implementation returns en empty map.
-     */
-    public Map<RenderingHints.Key,Object> getImplementationHints() {
+    /** Returns the implementation hints. The default implementation returns en empty map. */
+    public Map<RenderingHints.Key, Object> getImplementationHints() {
         return Collections.emptyMap();
     }
 }

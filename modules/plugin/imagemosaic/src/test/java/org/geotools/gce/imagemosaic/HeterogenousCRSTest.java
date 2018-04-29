@@ -17,7 +17,22 @@
 
 package org.geotools.gce.imagemosaic;
 
+import static org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import com.vividsolutions.jts.geom.Geometry;
+import java.awt.*;
+import java.awt.image.RenderedImage;
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import javax.media.jai.Interpolation;
 import org.apache.commons.io.FileUtils;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
@@ -50,41 +65,21 @@ import org.opengis.parameter.ParameterValue;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.operation.TransformException;
 
-import javax.media.jai.Interpolation;
-import java.awt.*;
-import java.awt.image.RenderedImage;
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-
-import static org.geotools.referencing.crs.DefaultGeographicCRS.WGS84;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-
-/**
- * Testing whether a simple mosaic correctly has its elements reprojected
- */
+/** Testing whether a simple mosaic correctly has its elements reprojected */
 public class HeterogenousCRSTest {
 
-    @Rule
-    public TemporaryFolder crsMosaicFolder = new TemporaryFolder();
-    
+    @Rule public TemporaryFolder crsMosaicFolder = new TemporaryFolder();
+
     @BeforeClass
     public static void ignoreReciprocals() throws Exception {
         MapProjection.SKIP_SANITY_CHECKS = true;
     }
-    
+
     @BeforeClass
     public static void resetReciprocals() throws Exception {
         MapProjection.SKIP_SANITY_CHECKS = false;
     }
-    
+
     @AfterClass
     public static void cleanupCRS() {
         System.clearProperty("org.geotools.referencing.forceXY");
@@ -99,22 +94,35 @@ public class HeterogenousCRSTest {
     }
 
     @Test
-    public void testHeterogeneousCRS() throws IOException, URISyntaxException, TransformException,
-            FactoryException {
-        testMosaic("heterogeneous_crs", "location D, crs A", "red_blue_results/red_blue_heterogeneous_results.tiff", "EPSG:3587");
+    public void testHeterogeneousCRS()
+            throws IOException, URISyntaxException, TransformException, FactoryException {
+        testMosaic(
+                "heterogeneous_crs",
+                "location D, crs A",
+                "red_blue_results/red_blue_heterogeneous_results.tiff",
+                "EPSG:3587");
     }
 
     @Test
     public void testDiffCRSSorting() throws IOException, URISyntaxException {
-        testMosaic("diff_crs_sorting_test", "resolution D, crs A", "diff_crs_sorting_test_results/results.tiff", "EPSG:32610");
+        testMosaic(
+                "diff_crs_sorting_test",
+                "resolution D, crs A",
+                "diff_crs_sorting_test_results/results.tiff",
+                "EPSG:32610");
     }
 
     @Test
     public void testWithInterpolation() throws IOException, URISyntaxException {
         ParameterValue<Interpolation> interpolationParam =
-            AbstractGridFormat.INTERPOLATION.createValue();
+                AbstractGridFormat.INTERPOLATION.createValue();
         interpolationParam.setValue(Interpolation.getInstance(Interpolation.INTERP_BILINEAR));
-        testMosaic("diff_crs_sorting_test", "resolution D, crs A", null, "EPSG:32610", interpolationParam);
+        testMosaic(
+                "diff_crs_sorting_test",
+                "resolution D, crs A",
+                null,
+                "EPSG:32610",
+                interpolationParam);
     }
 
     @Test
@@ -141,9 +149,13 @@ public class HeterogenousCRSTest {
         ImageAssert.assertEquals(resultsImage, renderImage, 1000);
     }
 
-    private void testMosaic(String testLocation, String sortOrder, String resultLocation,
-        String expectedCRS, GeneralParameterValue... params)
-        throws URISyntaxException, IOException {
+    private void testMosaic(
+            String testLocation,
+            String sortOrder,
+            String resultLocation,
+            String expectedCRS,
+            GeneralParameterValue... params)
+            throws URISyntaxException, IOException {
 
         URL storeUrl = TestData.url(this, testLocation);
 
@@ -153,37 +165,39 @@ public class HeterogenousCRSTest {
         Hints creationHints = new Hints();
         ImageMosaicReader imReader = new ImageMosaicReader(testDirectory, creationHints);
         Assert.assertNotNull(imReader);
-        
-        // check it advertises the mixed crs 
+
+        // check it advertises the mixed crs
         assertEquals("true", imReader.getMetadataValue(GridCoverage2DReader.MULTICRS_READER));
 
-        //hack workaround for the store not being created with a consistent CRS in certain
-        //environments.
+        // hack workaround for the store not being created with a consistent CRS in certain
+        // environments.
         assertEquals(CRS.toSRS(imReader.getCoordinateReferenceSystem()), expectedCRS);
         Collection<GeneralParameterValue> finalParamsCollection =
-            new ArrayList<>(Arrays.asList(params));
+                new ArrayList<>(Arrays.asList(params));
 
-        //Let's do a sort order to get the correct results
+        // Let's do a sort order to get the correct results
         ParameterValue<String> sortByParam = ImageMosaicFormat.SORT_BY.createValue();
         sortByParam.setValue(sortOrder);
 
         finalParamsCollection.add(sortByParam);
 
-        GridCoverage2D gc2d = imReader
-            .read(finalParamsCollection.toArray(new GeneralParameterValue[]{}));
+        GridCoverage2D gc2d =
+                imReader.read(finalParamsCollection.toArray(new GeneralParameterValue[] {}));
         assertEquals(CRS.toSRS(gc2d.getCoordinateReferenceSystem()), expectedCRS);
 
         if (resultLocation != null) {
             RenderedImage renderImage = gc2d.getRenderedImage();
             File resultsFile = testFile(resultLocation);
 
-            //number 1000 was a bit arbitrary for differences, should account for small differences in
-            //interpolation and such, but not the reprojection of the blue tiff. Correct and incorrect
-            //images will be pretty similar anyway
+            // number 1000 was a bit arbitrary for differences, should account for small differences
+            // in
+            // interpolation and such, but not the reprojection of the blue tiff. Correct and
+            // incorrect
+            // images will be pretty similar anyway
             ImageAssert.assertEquals(resultsFile, renderImage, 1000);
         }
     }
-    
+
     @Test
     public void testHarvestHeteroUTM() throws Exception {
         File indexer = TestData.file(this, "hetero_utm/indexer.properties");
@@ -191,7 +205,7 @@ public class HeterogenousCRSTest {
         File utm33n = TestData.file(this, "hetero_utm/utm33n.tiff");
         File utm32s = TestData.file(this, "hetero_utm/utm32s.tiff");
         File utm33s = TestData.file(this, "hetero_utm/utm33s.tiff");
-        
+
         File testStoreDirectory = crsMosaicFolder.newFolder("harvestHeteroUtm");
         FileUtils.copyFile(utm32n, new File(testStoreDirectory, utm32n.getName()));
         FileUtils.copyFile(indexer, new File(testStoreDirectory, indexer.getName()));
@@ -201,25 +215,25 @@ public class HeterogenousCRSTest {
         Assert.assertNotNull(reader);
         assertExpectedBounds(new ReferencedEnvelope(11, 12, 0, 1, WGS84), reader);
         assertExpectedMosaic(reader, "hetero_utm_results/topleft.png");
-        
+
         // update and check
         assertEquals(1, reader.harvest(null, utm33n, null).size());
         assertExpectedBounds(new ReferencedEnvelope(11, 13, 0, 1, WGS84), reader);
         assertExpectedMosaic(reader, "hetero_utm_results/top.png");
-        
+
         // update and check
         assertEquals(1, reader.harvest(null, utm32s, null).size());
         assertExpectedBounds(new ReferencedEnvelope(11, 13, -1, 1, WGS84), reader);
         assertExpectedMosaic(reader, "hetero_utm_results/top_bottoleft.png");
-        
+
         // update and check
         assertEquals(1, reader.harvest(null, utm33s, null).size());
         assertExpectedBounds(new ReferencedEnvelope(11, 13, -1, 1, WGS84), reader);
         assertExpectedMosaic(reader, "hetero_utm_results/full.png");
-        
+
         reader.dispose();
     }
-    
+
     @Test
     public void testHeteroUTM() throws Exception {
         String testLocation = "hetero_utm";
@@ -228,19 +242,19 @@ public class HeterogenousCRSTest {
         File testDataFolder = new File(storeUrl.toURI());
         File testDirectory = crsMosaicFolder.newFolder(testLocation);
         FileUtils.copyDirectory(testDataFolder, testDirectory);
-        
+
         ImageMosaicReader imReader = new ImageMosaicReader(testDirectory, null);
         Assert.assertNotNull(imReader);
-        
+
         // check we have the expected bounds and CRS
         assertExpectedBounds(new ReferencedEnvelope(11, 13, -1, 1, WGS84), imReader);
-        
+
         // read a coverage and compare with expected image
         final String expectedResultLocation = "hetero_utm_results/full.png";
         assertExpectedMosaic(imReader, expectedResultLocation);
         imReader.dispose();
     }
-    
+
     @Test
     public void testHeteroSentinel2() throws Exception {
         String testLocation = "hetero_s2";
@@ -249,22 +263,24 @@ public class HeterogenousCRSTest {
         File testDataFolder = new File(storeUrl.toURI());
         File testDirectory = crsMosaicFolder.newFolder(testLocation);
         FileUtils.copyDirectory(testDataFolder, testDirectory);
-        
+
         ImageMosaicReader imReader = new ImageMosaicReader(testDirectory, null);
         Assert.assertNotNull(imReader);
-        
+
         // read a coverage and compare with expected image
         final String expectedResultLocation = "hetero_s2_results/overlap.png";
-        ParameterValue<Color> inputTransparentColor = AbstractGridFormat.INPUT_TRANSPARENT_COLOR.createValue();
+        ParameterValue<Color> inputTransparentColor =
+                AbstractGridFormat.INPUT_TRANSPARENT_COLOR.createValue();
         inputTransparentColor.setValue(Color.BLACK);
-        ParameterValue<Color> outputTransparentColor = ImageMosaicFormat.OUTPUT_TRANSPARENT_COLOR.createValue();
+        ParameterValue<Color> outputTransparentColor =
+                ImageMosaicFormat.OUTPUT_TRANSPARENT_COLOR.createValue();
         outputTransparentColor.setValue(Color.BLACK);
 
-        
-        assertExpectedMosaic(imReader, expectedResultLocation, inputTransparentColor, outputTransparentColor);
+        assertExpectedMosaic(
+                imReader, expectedResultLocation, inputTransparentColor, outputTransparentColor);
         imReader.dispose();
     }
-    
+
     @Test
     public void testHeteroSentinel2Filtered() throws Exception {
         String testLocation = "hetero_s2";
@@ -273,24 +289,40 @@ public class HeterogenousCRSTest {
         File testDataFolder = new File(storeUrl.toURI());
         File testDirectory = crsMosaicFolder.newFolder(testLocation);
         FileUtils.copyDirectory(testDataFolder, testDirectory);
-        
+
         ImageMosaicReader imReader = new ImageMosaicReader(testDirectory, null);
         Assert.assertNotNull(imReader);
-        
+
         // read a coverage and compare with expected image
-        ParameterValue<Color> inputTransparentColor = AbstractGridFormat.INPUT_TRANSPARENT_COLOR.createValue();
+        ParameterValue<Color> inputTransparentColor =
+                AbstractGridFormat.INPUT_TRANSPARENT_COLOR.createValue();
         inputTransparentColor.setValue(Color.BLACK);
-        ParameterValue<Color> outputTransparentColor = ImageMosaicFormat.OUTPUT_TRANSPARENT_COLOR.createValue();
+        ParameterValue<Color> outputTransparentColor =
+                ImageMosaicFormat.OUTPUT_TRANSPARENT_COLOR.createValue();
         outputTransparentColor.setValue(Color.BLACK);
         ParameterValue<GridGeometry2D> ggp = AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
         GridEnvelope2D range = new GridEnvelope2D(0, 0, 158, 103);
-        GridGeometry2D gg = new GridGeometry2D(range, new ReferencedEnvelope(11.6834779, 11.8616874, 47.6380806, 47.7542552, CRS.decode("EPSG:4236", true)));
+        GridGeometry2D gg =
+                new GridGeometry2D(
+                        range,
+                        new ReferencedEnvelope(
+                                11.6834779,
+                                11.8616874,
+                                47.6380806,
+                                47.7542552,
+                                CRS.decode("EPSG:4236", true)));
         ggp.setValue(gg);
         ParameterValue<Filter> filter = ImageMosaicFormat.FILTER.createValue();
         filter.setValue(CQL.toFilter("location = 'g1.tif'"));
 
         final String expectedResultLocation = "hetero_s2_results/filtered.png";
-        assertExpectedMosaic(imReader, expectedResultLocation, inputTransparentColor, outputTransparentColor, filter, ggp);
+        assertExpectedMosaic(
+                imReader,
+                expectedResultLocation,
+                inputTransparentColor,
+                outputTransparentColor,
+                filter,
+                ggp);
         imReader.dispose();
     }
 
@@ -302,19 +334,20 @@ public class HeterogenousCRSTest {
         File testDataFolder = new File(storeUrl.toURI());
         File testDirectory = crsMosaicFolder.newFolder(testLocation);
         FileUtils.copyDirectory(testDataFolder, testDirectory);
-        
+
         ImageMosaicReader imReader = new ImageMosaicReader(testDirectory, null);
         Assert.assertNotNull(imReader);
-        
+
         // read a coverage and compare with expected image
         final String expectedResultLocation = "hetero_s2_results/footprints.png";
-        ParameterValue<String> footprintBehavior = AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
+        ParameterValue<String> footprintBehavior =
+                AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
         footprintBehavior.setValue("Transparent");
-        
+
         assertExpectedMosaic(imReader, expectedResultLocation, footprintBehavior);
         imReader.dispose();
     }
-    
+
     @Test
     public void testHeteroUtmFootprintTransparency() throws Exception {
         String testLocation = "hetero_utm_footprint";
@@ -323,25 +356,26 @@ public class HeterogenousCRSTest {
         File testDataFolder = new File(storeUrl.toURI());
         File testDirectory = crsMosaicFolder.newFolder(testLocation);
         FileUtils.copyDirectory(testDataFolder, testDirectory);
-        
+
         ImageMosaicReader imReader = new ImageMosaicReader(testDirectory, null);
         Assert.assertNotNull(imReader);
-        
+
         // read a coverage and compare with expected image
         final String expectedResultLocation = "hetero_utm_footprint_results/footprints.png";
-        ParameterValue<String> footprintBehavior = AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
+        ParameterValue<String> footprintBehavior =
+                AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
         footprintBehavior.setValue("Transparent");
         // use sort to get a stable result
         ParameterValue<String> sortBy = ImageMosaicFormat.SORT_BY.createValue();
         sortBy.setValue("location A");
-        
+
         assertExpectedMosaic(imReader, expectedResultLocation, footprintBehavior, sortBy);
         imReader.dispose();
     }
-    
+
     @Test
-    public void testHeteroCRSDateline() throws IOException, URISyntaxException, TransformException,
-            FactoryException {
+    public void testHeteroCRSDateline()
+            throws IOException, URISyntaxException, TransformException, FactoryException {
         URL storeUrl = TestData.url(this, "hetero_crs_dateline");
 
         File testDataFolder = new File(storeUrl.toURI());
@@ -353,13 +387,22 @@ public class HeterogenousCRSTest {
         assertEquals(CRS.toSRS(imReader.getCoordinateReferenceSystem()), "EPSG:4326");
 
         // read before dateline
-        GeneralParameterValue gg1 = buildGridGeometryParameter(new ReferencedEnvelope(179, 180, 60, 62, DefaultGeographicCRS.WGS84), 128, 256);
+        GeneralParameterValue gg1 =
+                buildGridGeometryParameter(
+                        new ReferencedEnvelope(179, 180, 60, 62, DefaultGeographicCRS.WGS84),
+                        128,
+                        256);
         GridCoverage2D gcBefore = imReader.read(new GeneralParameterValue[] {gg1});
         RenderedImage riBefore = gcBefore.getRenderedImage();
-        ImageAssert.assertEquals(testFile("hetero_crs_dateline_results/before.png"), riBefore, 1000);
-        
+        ImageAssert.assertEquals(
+                testFile("hetero_crs_dateline_results/before.png"), riBefore, 1000);
+
         // read after the dateline
-        GeneralParameterValue ggAfter = buildGridGeometryParameter(new ReferencedEnvelope(180, 181, 60, 62, DefaultGeographicCRS.WGS84), 128, 256);
+        GeneralParameterValue ggAfter =
+                buildGridGeometryParameter(
+                        new ReferencedEnvelope(180, 181, 60, 62, DefaultGeographicCRS.WGS84),
+                        128,
+                        256);
         GridCoverage2D gcAfter = imReader.read(new GeneralParameterValue[] {ggAfter});
         RenderedImage riAfter = gcAfter.getRenderedImage();
         ImageAssert.assertEquals(testFile("hetero_crs_dateline_results/after.png"), riAfter, 1000);
@@ -375,10 +418,10 @@ public class HeterogenousCRSTest {
             }
         }
     }
-    
+
     @Test
-    public void testHeteroCRSRasterMask() throws IOException, URISyntaxException, TransformException,
-            FactoryException {
+    public void testHeteroCRSRasterMask()
+            throws IOException, URISyntaxException, TransformException, FactoryException {
         URL storeUrl = TestData.url(this, "rastermask2");
 
         File testDataFolder = new File(storeUrl.toURI());
@@ -386,66 +429,76 @@ public class HeterogenousCRSTest {
         FileUtils.copyDirectory(testDataFolder, testDirectory);
 
         // force hetero setup, different CRS for the mosaic
-        String indexer = "GranuleAcceptors=org.geotools.gce.imagemosaic.acceptors.HeterogeneousCRSAcceptorFactory\n" +
-                "GranuleHandler=org.geotools.gce.imagemosaic.granulehandler.ReprojectingGranuleHandlerFactory\n" +
-                "HeterogeneousCRS=true\n" + //
-                "MosaicCRS=EPSG\\:3857\n" + // the reprojection bit
-                "Schema=*the_geom:Polygon,location:String,crs:String";
+        String indexer =
+                "GranuleAcceptors=org.geotools.gce.imagemosaic.acceptors.HeterogeneousCRSAcceptorFactory\n"
+                        + "GranuleHandler=org.geotools.gce.imagemosaic.granulehandler.ReprojectingGranuleHandlerFactory\n"
+                        + "HeterogeneousCRS=true\n"
+                        + //
+                        "MosaicCRS=EPSG\\:3857\n"
+                        + // the reprojection bit
+                        "Schema=*the_geom:Polygon,location:String,crs:String";
         FileUtils.writeStringToFile(new File(testDirectory, "indexer.properties"), indexer);
-        
+
         // footprint management
         String footprints = "footprint_source=raster";
         FileUtils.writeStringToFile(new File(testDirectory, "footprints.properties"), footprints);
-        
+
         ImageMosaicReader imReader = new ImageMosaicReader(testDirectory, new Hints());
         Assert.assertNotNull(imReader);
         assertEquals(CRS.toSRS(imReader.getCoordinateReferenceSystem()), "EPSG:3857");
 
         // check it's not empty (used to be)
-        final ParameterValue<String> footprintParam =  AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
+        final ParameterValue<String> footprintParam =
+                AbstractGridFormat.FOOTPRINT_BEHAVIOR.createValue();
         footprintParam.setValue("Transparent");
         GridCoverage2D coverage = imReader.read(new GeneralParameterValue[] {footprintParam});
         assertNotNull(coverage);
-        ImageAssert.assertEquals(testFile("hetero_crs_rastermask.png"), coverage.getRenderedImage(), 1000);
+        ImageAssert.assertEquals(
+                testFile("hetero_crs_rastermask.png"), coverage.getRenderedImage(), 1000);
     }
-    
-    GeneralParameterValue buildGridGeometryParameter(ReferencedEnvelope envelope, int width, int height) {
-        final ParameterValue<GridGeometry2D> gg =  AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
-        final GridEnvelope2D range= new GridEnvelope2D(0, 0, width, height);
-        final GridGeometry2D value = new GridGeometry2D(range,envelope);
+
+    GeneralParameterValue buildGridGeometryParameter(
+            ReferencedEnvelope envelope, int width, int height) {
+        final ParameterValue<GridGeometry2D> gg =
+                AbstractGridFormat.READ_GRIDGEOMETRY2D.createValue();
+        final GridEnvelope2D range = new GridEnvelope2D(0, 0, width, height);
+        final GridGeometry2D value = new GridGeometry2D(range, envelope);
         gg.setValue(value);
         return gg;
     }
 
-    
     private void assertExpectedBounds(ReferencedEnvelope expected, ImageMosaicReader imReader) {
         // the specified CRS has been honored
-        assertTrue(CRS.equalsIgnoreMetadata(imReader.getCoordinateReferenceSystem(), expected.getCoordinateReferenceSystem()));
-        
+        assertTrue(
+                CRS.equalsIgnoreMetadata(
+                        imReader.getCoordinateReferenceSystem(),
+                        expected.getCoordinateReferenceSystem()));
+
         // getting the expected bounds (more or less)
         double EPS = 0.5d / 110; // pixel size is 1km, use half a pixel tolerance
         GeneralEnvelope envelope = imReader.getOriginalEnvelope();
-        
+
         assertEquals(expected.getMinX(), envelope.getMinimum(0), EPS);
         assertEquals(expected.getMaxX(), envelope.getMaximum(0), EPS);
         assertEquals(expected.getMinY(), envelope.getMinimum(1), EPS);
         assertEquals(expected.getMaxY(), envelope.getMaximum(1), EPS);
     }
 
-    private void assertExpectedMosaic(ImageMosaicReader imReader,
-            final String expectedResultLocation, GeneralParameterValue... params) throws IOException {
+    private void assertExpectedMosaic(
+            ImageMosaicReader imReader,
+            final String expectedResultLocation,
+            GeneralParameterValue... params)
+            throws IOException {
         GridCoverage2D coverage = imReader.read(params);
         File resultsFile = testFile(expectedResultLocation);
         RenderedImage image = coverage.getRenderedImage();
         ImageAssert.assertEquals(resultsFile, image, 1000);
-        
+
         // cleanup
         coverage.dispose(true);
     }
-    
+
     File testFile(String name) {
         return new File("src/test/resources/org/geotools/gce/imagemosaic/test-data/" + name);
     }
-    
-
 }

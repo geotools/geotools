@@ -16,17 +16,14 @@
  */
 package org.geotools.renderer.label;
 
+import com.vividsolutions.jts.geom.Coordinate;
 import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.vividsolutions.jts.geom.Coordinate;
-
-/**
- * Process all the glyphs of label.
- */
+/** Process all the glyphs of label. */
 abstract class GlyphVectorProcessor {
 
     List<AffineTransform> transforms;
@@ -58,17 +55,14 @@ abstract class GlyphVectorProcessor {
         return ret;
     }
 
-
-    /**
-     * Return the character corresponding to this glyphVector index
-     */
+    /** Return the character corresponding to this glyphVector index */
     public char getChar(LineInfo.LineComponent component, GlyphVector glyphVector, int g) {
         return component.getText().charAt(glyphVector.getGlyphCharIndex(g));
     }
 
     /**
-     * Create a Straight GlyphVectorProcessor, pre-compute the affine transforms
-     * for each glyph along a straight line.
+     * Create a Straight GlyphVectorProcessor, pre-compute the affine transforms for each glyph
+     * along a straight line.
      */
     public static class Straight extends GlyphVectorProcessor {
 
@@ -87,10 +81,9 @@ abstract class GlyphVectorProcessor {
     }
 
     /**
-     * Create a Curved GlyphVectorProcessor, pre-compute the affine transforms
-     * for each glyph along a curved line.
-     * Does not consider letter orientation (only letter position).
-     * (taken from LabelPainter#paintCurvedLabel).
+     * Create a Curved GlyphVectorProcessor, pre-compute the affine transforms for each glyph along
+     * a curved line. Does not consider letter orientation (only letter position). (taken from
+     * LabelPainter#paintCurvedLabel).
      */
     public static class Curved extends GlyphVectorProcessor {
 
@@ -103,8 +96,7 @@ abstract class GlyphVectorProcessor {
 
             // first off, check if we are walking the line so that the label is
             // looking up, if not, reverse the line
-            if (!painter.isLabelUpwards(cursor) &&
-                    painter.getLabel().isForceLeftToRightEnabled()) {
+            if (!painter.isLabelUpwards(cursor) && painter.getLabel().isForceLeftToRightEnabled()) {
                 LineStringCursor reverse = cursor.reverse();
                 reverse.moveTo(cursor.getLineStringLength() - cursor.getCurrentOrdinate());
                 cursor = reverse;
@@ -119,8 +111,7 @@ abstract class GlyphVectorProcessor {
             c = cursor.getCurrentPosition(c);
 
             double startOrdinate = mid - painter.getStraightLabelWidth() / 2;
-            if (startOrdinate < 0)
-                startOrdinate = 0;
+            if (startOrdinate < 0) startOrdinate = 0;
             cursor.moveTo(startOrdinate);
 
             final double lineHeight = painter.getLineHeight();
@@ -133,9 +124,10 @@ abstract class GlyphVectorProcessor {
                     for (int i = 0; i < numGlyphs; i++) {
                         Point2D p = gv.getGlyphPosition(i);
                         float advance = nextAdvance;
-                        nextAdvance = i < numGlyphs - 1
-                                ? gv.getGlyphMetrics(i + 1).getAdvance() * 0.5f
-                                : 0;
+                        nextAdvance =
+                                i < numGlyphs - 1
+                                        ? gv.getGlyphMetrics(i + 1).getAdvance() * 0.5f
+                                        : 0;
                         c = cursor.getCurrentPosition(c);
                         AffineTransform t = new AffineTransform();
                         t.setToTranslation(c.x, c.y);
@@ -153,5 +145,4 @@ abstract class GlyphVectorProcessor {
             }
         }
     }
-
 }

@@ -1,7 +1,7 @@
 /*
  * GeoTools - The Open Source Java GIS Toolkit http://geotools.org
  * (C) 2004-2011, Open Source Geospatial Foundation (OSGeo)
- * 
+ *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
  * Software Foundation; version 2.1 of the License.
@@ -20,7 +20,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
-
 import org.geotools.factory.Hints;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
@@ -30,29 +29,29 @@ import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
 
 /**
- * {@link Function} to format a time given as a {@link Date} using a {@link SimpleDateFormat} pattern in a time zone supported by {@link TimeZone}.
- * 
- * <p>
- * 
- * Parameters:
+ * {@link Function} to format a time given as a {@link Date} using a {@link SimpleDateFormat}
+ * pattern in a time zone supported by {@link TimeZone}.
+ *
+ * <p>Parameters:
+ *
  * <ol>
- * <li>pattern: formatting pattern supported by {@link SimpleDateFormat}, for example "yyyy-MM-dd".
- * <li>date: the {@link Date} for the time to be formatted or its string representation, for example "1948-01-01T00:00:00Z". A
- * {@link RuntimeException} with be thrown if the date is malformed (and not null).
- * <li>timezone: the name of a time zone supported by {@link TimeZone}, for example "UTC" or "Canada/Mountain". Note that unrecognised timezones will
- * silently be converted to UTC.
+ *   <li>pattern: formatting pattern supported by {@link SimpleDateFormat}, for example
+ *       "yyyy-MM-dd".
+ *   <li>date: the {@link Date} for the time to be formatted or its string representation, for
+ *       example "1948-01-01T00:00:00Z". A {@link RuntimeException} with be thrown if the date is
+ *       malformed (and not null).
+ *   <li>timezone: the name of a time zone supported by {@link TimeZone}, for example "UTC" or
+ *       "Canada/Mountain". Note that unrecognised timezones will silently be converted to UTC.
  * </ol>
- * 
- * <p>
- * 
- * This function returns null if any parameter is null.
- * 
+ *
+ * <p>This function returns null if any parameter is null.
+ *
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
  */
 public class FormatDateTimezoneFunction implements Function {
 
-    public static final FunctionName NAME = new FunctionNameImpl("FormatDateTimezone", "pattern",
-            "date", "timezone");
+    public static final FunctionName NAME =
+            new FunctionNameImpl("FormatDateTimezone", "pattern", "date", "timezone");
 
     private final Literal fallback;
 
@@ -78,8 +77,8 @@ public class FormatDateTimezoneFunction implements Function {
     @SuppressWarnings("unchecked")
     public <T> T evaluate(Object object, Class<T> context) {
         if (parameters.size() != 3) {
-            throw new RuntimeException(getName() + ": wrong number of parameters ("
-                    + parameters.size() + " not 3)");
+            throw new RuntimeException(
+                    getName() + ": wrong number of parameters (" + parameters.size() + " not 3)");
         }
         // return null if any parameter is null
         for (Expression p : parameters) {
@@ -91,8 +90,10 @@ public class FormatDateTimezoneFunction implements Function {
         Date date = parameters.get(1).evaluate(object, Date.class);
         if (date == null) {
             // malformed date that was not null
-            throw new RuntimeException(getName() + ": could not parse date: "
-                    + (String) parameters.get(1).evaluate(object, String.class));
+            throw new RuntimeException(
+                    getName()
+                            + ": could not parse date: "
+                            + (String) parameters.get(1).evaluate(object, String.class));
         }
         // if timezone is not understood it is silently set to UTC
         TimeZone timezone = TimeZone.getTimeZone(parameters.get(2).evaluate(object, String.class));
@@ -117,5 +118,4 @@ public class FormatDateTimezoneFunction implements Function {
     public List<Expression> getParameters() {
         return Collections.unmodifiableList(parameters);
     }
-
 }

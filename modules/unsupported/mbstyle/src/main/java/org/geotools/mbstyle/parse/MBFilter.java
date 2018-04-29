@@ -22,7 +22,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import org.json.simple.JSONArray;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
@@ -40,7 +39,7 @@ import org.opengis.style.SemanticType;
  * <p>
  * This wrapper and {@link MBFunction} are a matched set handling dynamic data.
  * </p>
- * 
+ *
  * <h2>About MapBox Filter</h2>
  * <p>
  * A filter selects specific features from a layer. A filter is an array of one of the following
@@ -83,7 +82,7 @@ import org.opengis.style.SemanticType;
  * <li>"$type": the feature type. This key may be used with the "==",  "!=", "in", and "!in" operators. Possible values are  "Point", "LineString", and "Polygon".</li>
  * <li>"$id": the feature identifier. This key may be used with the "==",  "!=", "has", "!has", "in", and "!in" operators.</li>
  * </ul>
- * 
+ *
  * @see Filter
  * @see MBFunction
  */
@@ -92,51 +91,55 @@ public class MBFilter {
     public static final String TYPE_POINT = "Point";
     public static final String TYPE_LINE = "LineString";
     public static final String TYPE_POLYGON = "Polygon";
-    
+
     /** Default semanticType (or null for "geometry"). */
-    final protected SemanticType semanticType;
-    
+    protected final SemanticType semanticType;
+
     /** Parser context. */
-    final protected MBObjectParser parse;
+    protected final MBObjectParser parse;
 
     /** Wrapped json */
-    final protected JSONArray json;
+    protected final JSONArray json;
 
     public MBFilter(JSONArray json) {
         this(json, new MBObjectParser(MBFilter.class));
     }
+
     public MBFilter(JSONArray json, MBObjectParser parse) {
-        this( json, parse, null );
+        this(json, parse, null);
     }
+
     public MBFilter(JSONArray json, MBObjectParser parse, SemanticType semanticType) {
-        this.parse = parse == null ? new MBObjectParser(MBFilter.class)
-                : new MBObjectParser(MBFilter.class, parse);
+        this.parse =
+                parse == null
+                        ? new MBObjectParser(MBFilter.class)
+                        : new MBObjectParser(MBFilter.class, parse);
         this.json = json;
         this.semanticType = semanticType;
     }
 
     /**
-     * Translate "$type": the feature type we need This key may be used with the "==",  "!=", "in", and "!in" operators.
-     * Possible values are  "Point", "LineString", and "Polygon".</li>
-     * 
+     * Translate "$type": the feature type we need This key may be used with the "==", "!=", "in",
+     * and "!in" operators. Possible values are "Point", "LineString", and "Polygon".
+     *
      * @return
      */
-    public Set<SemanticType> semanticTypeIdentifiers(){
+    public Set<SemanticType> semanticTypeIdentifiers() {
         if (json == null || json.isEmpty()) {
             return semanticTypeIdentifiersDefaults();
         }
         Set<SemanticType> semanticTypes = semanticTypeIdentifiers(json);
         return semanticTypes.isEmpty() ? semanticTypeIdentifiersDefaults() : semanticTypes;
     }
-    
-    /** 
+
+    /**
      * Generate default set of semantic types based on {@link #semanticType} default.
-     * 
+     *
      * @return default to use, if nothing is provided explicitly by json "$type" field.
      */
-    private Set<SemanticType> semanticTypeIdentifiersDefaults(){
+    private Set<SemanticType> semanticTypeIdentifiersDefaults() {
         Set<SemanticType> defaults = new HashSet<>();
-        if( semanticType != null ){
+        if (semanticType != null) {
             defaults.add(semanticType); // default as provided
         }
         return defaults;
@@ -144,20 +147,22 @@ public class MBFilter {
 
     /**
      * Utility method to convert json to set of {@link SemanticType}.
-     * <p>
-     * This method recursively calls itself to handle all and any operators.</p>
-     * 
+     *
+     * <p>This method recursively calls itself to handle all and any operators.
+     *
      * @param array JSON array defining filter
      * @return SemanticTypes from provided json, may be nested
      */
-    Set<SemanticType> semanticTypeIdentifiers(JSONArray array){
+    Set<SemanticType> semanticTypeIdentifiers(JSONArray array) {
         if (array == null || array.isEmpty()) {
             throw new MBFormatException("MBFilter expected");
         }
         String operator = parse.get(array, 0);
-        if (("==".equals(operator) || "!=".equals(operator) ||
-                "in".equals(operator) || "!in".equals(operator)) &&
-                "$type".equals(parse.get(array, 1))) {
+        if (("==".equals(operator)
+                        || "!=".equals(operator)
+                        || "in".equals(operator)
+                        || "!in".equals(operator))
+                && "$type".equals(parse.get(array, 1))) {
 
             if ("in".equals(operator) || "==".equals(operator)) {
                 Set<SemanticType> semanticTypes = new HashSet<>();
@@ -168,35 +173,42 @@ public class MBFilter {
                         SemanticType semanticType = translateSemanticType(jsonText);
                         semanticTypes.add(semanticType);
                     } else {
-                        throw new MBFormatException("[\"in\",\"$type\", ...] limited to Point, LineString, Polygon: "+type);
+                        throw new MBFormatException(
+                                "[\"in\",\"$type\", ...] limited to Point, LineString, Polygon: "
+                                        + type);
                     }
                 }
                 if ("==".equals(operator) && types.size() != 1) {
-                    throw new MBFormatException("[\"==\",\"$type\", ...] limited one geometry type, to test more than one use \"in\" operator.");
+                    throw new MBFormatException(
+                            "[\"==\",\"$type\", ...] limited one geometry type, to test more than one use \"in\" operator.");
                 }
                 return semanticTypes;
             } else if ("!in".equals(operator) || "!=".equals(operator)) {
-                Set<SemanticType> semanticTypes = new HashSet<>( Arrays.asList(SemanticType.values()) );
+                Set<SemanticType> semanticTypes =
+                        new HashSet<>(Arrays.asList(SemanticType.values()));
                 List<?> types = array.subList(2, array.size());
-                for (Object type : types ) {
+                for (Object type : types) {
                     if (type instanceof String) {
                         String jsonText = (String) type;
                         SemanticType semanticType = translateSemanticType(jsonText);
                         semanticTypes.remove(semanticType);
                     } else {
-                        throw new MBFormatException("[\"!in\",\"$type\", ...] limited to Point, LineString, Polygon: "+type);
+                        throw new MBFormatException(
+                                "[\"!in\",\"$type\", ...] limited to Point, LineString, Polygon: "
+                                        + type);
                     }
                 }
                 if ("!=".equals(operator) && types.size() != 1) {
-                    throw new MBFormatException("[\"!=\",\"$type\", ...] limited one geometry type, to test more than one use \"!in\" operator.");
+                    throw new MBFormatException(
+                            "[\"!=\",\"$type\", ...] limited one geometry type, to test more than one use \"!in\" operator.");
                 }
                 return semanticTypes;
             }
         }
-        
+
         if ("all".equals(operator)) {
             Set<SemanticType> semanticTypes = new HashSet<>();
-            for( int i = 1; i < json.size();i++){
+            for (int i = 1; i < json.size(); i++) {
                 JSONArray alternative = (JSONArray) json.get(i);
                 Set<SemanticType> types = semanticTypeIdentifiers(alternative);
                 if (types.isEmpty()) {
@@ -206,21 +218,22 @@ public class MBFilter {
                         // exactly one alternative is okay
                         semanticTypes.addAll(types);
                     } else {
-                        throw new MBFormatException("Only one \"all\" alternative may be a $type filter");
+                        throw new MBFormatException(
+                                "Only one \"all\" alternative may be a $type filter");
                     }
-                } 
+                }
             }
             return semanticTypes;
         } else if ("any".equals(operator)) {
             Set<SemanticType> semanticTypes = new HashSet<>();
-            for (int i = 1; i < json.size();i++) {
+            for (int i = 1; i < json.size(); i++) {
                 Set<SemanticType> types = semanticTypeIdentifiers((JSONArray) json.get(i));
                 semanticTypes.addAll(types);
             }
             return semanticTypes;
-        } else if( "none".equals(operator)) {
+        } else if ("none".equals(operator)) {
             Set<SemanticType> semanticTypes = new HashSet<>(Arrays.asList(SemanticType.values()));
-            for (int i = 1; i < json.size();i++) {
+            for (int i = 1; i < json.size(); i++) {
                 Set<SemanticType> types = semanticTypeIdentifiers((JSONArray) json.get(i));
                 semanticTypes.removeAll(types);
             }
@@ -231,7 +244,7 @@ public class MBFilter {
 
     private Filter translateType(String jsonText) {
         final FilterFactory2 ff = parse.getFilterFactory();
-        //TODO: How to wildcard geometry
+        // TODO: How to wildcard geometry
         Expression dimension = ff.function("dimension", ff.function("geometry"));
 
         switch (jsonText) {
@@ -250,29 +263,29 @@ public class MBFilter {
 
     /**
      * Translate from json "Point", "LineString", and "Polygon".
+     *
      * @param jsonText
      * @return translate from jsonText
      */
     private SemanticType translateSemanticType(String jsonText) {
         switch (jsonText) {
-        case TYPE_POINT:
-            return SemanticType.POINT;
-        case TYPE_LINE:
-            return SemanticType.LINE;
-        case TYPE_POLYGON:
-            return SemanticType.POLYGON;
-        default:
-            return null;
+            case TYPE_POINT:
+                return SemanticType.POINT;
+            case TYPE_LINE:
+                return SemanticType.LINE;
+            case TYPE_POLYGON:
+                return SemanticType.POLYGON;
+            default:
+                return null;
         }
     }
-    
+
     /**
      * Generate GeoTools {@link Filter} from json definition.
-     * <p>
-     * This filter specifying conditions on source features. Only features that match the filter are
-     * displayed.
-     * </p>
-     * 
+     *
+     * <p>This filter specifying conditions on source features. Only features that match the filter
+     * are displayed.
+     *
      * @return GeoTools {@link Filter} specifying conditions on source features.
      */
     public Filter filter() {
@@ -285,31 +298,36 @@ public class MBFilter {
         //
         // TYPE
         //
-        if (("==".equals(operator) || "!=".equals(operator) ||
-                "in".equals(operator) || "!in".equals(operator)) &&
-                "$type".equals(parse.get(json, 1))) {
+        if (("==".equals(operator)
+                        || "!=".equals(operator)
+                        || "in".equals(operator)
+                        || "!in".equals(operator))
+                && "$type".equals(parse.get(json, 1))) {
 
             List<Filter> typeFilters = new ArrayList<>();
             List<?> types = json.subList(2, json.size());
-            for (Object type : types ) {
+            for (Object type : types) {
                 Filter typeFilter = null;
                 if (type instanceof String) {
                     typeFilter = translateType((String) type);
                 }
                 if (typeFilter == null) {
-                    throw new MBFormatException("\"$type\" limited to Point, LineString, Polygon: "+type);
+                    throw new MBFormatException(
+                            "\"$type\" limited to Point, LineString, Polygon: " + type);
                 }
                 typeFilters.add(typeFilter);
             }
             if ("==".equals(operator)) {
                 if (typeFilters.size() != 1) {
-                    throw new MBFormatException("[\"==\",\"$type\", ...] limited one geometry type, to test more than one use \"in\" operator.");
+                    throw new MBFormatException(
+                            "[\"==\",\"$type\", ...] limited one geometry type, to test more than one use \"in\" operator.");
                 }
                 return typeFilters.get(0);
             }
             if ("!=".equals(operator)) {
                 if (typeFilters.size() != 1) {
-                    throw new MBFormatException("[\"!=\",\"$type\", ...] limited one geometry type, to test more than one use \"!in\" operator.");
+                    throw new MBFormatException(
+                            "[\"!=\",\"$type\", ...] limited one geometry type, to test more than one use \"!in\" operator.");
                 }
                 return ff.not(typeFilters.get(0));
             }
@@ -323,10 +341,13 @@ public class MBFilter {
         //
         // ID
         //
-        if (("==".equals(operator) || "!=".equals(operator) ||
-                "has".equals(operator) || "!has".equals(operator) ||
-                "in".equals(operator) || "!in".equals(operator)) &&
-                "$id".equals(parse.get(json, 1))) {
+        if (("==".equals(operator)
+                        || "!=".equals(operator)
+                        || "has".equals(operator)
+                        || "!has".equals(operator)
+                        || "in".equals(operator)
+                        || "!in".equals(operator))
+                && "$id".equals(parse.get(json, 1))) {
 
             Set<FeatureId> fids = new HashSet<>();
             for (Object value : json.subList(2, json.size())) {
@@ -355,42 +376,42 @@ public class MBFilter {
         } else if ("!has".equals(operator)) {
             String key = parse.get(json, 1);
             return ff.not(ff.isNull(ff.property(key)));
-        // Comparison Filters
+            // Comparison Filters
         } else if ("==".equals(operator)) {
             String key = parse.get(json, 1);
-            Object value = parse.value(json,2);
-            return ff.equal(ff.property(key),ff.literal(value), false);
+            Object value = parse.value(json, 2);
+            return ff.equal(ff.property(key), ff.literal(value), false);
         } else if ("!=".equals(operator)) {
             String key = parse.get(json, 1);
-            Object value = parse.value(json,2);
-            return ff.notEqual(ff.property(key),ff.literal(value), false);
+            Object value = parse.value(json, 2);
+            return ff.notEqual(ff.property(key), ff.literal(value), false);
         } else if (">".equals(operator)) {
             String key = parse.get(json, 1);
-            Object value = parse.value(json,2);
-            return ff.greater(ff.property(key),ff.literal(value), false);
+            Object value = parse.value(json, 2);
+            return ff.greater(ff.property(key), ff.literal(value), false);
         } else if (">=".equals(operator)) {
             String key = parse.get(json, 1);
-            Object value = parse.value(json,2);
-            return ff.greaterOrEqual(ff.property(key),ff.literal(value), false);
+            Object value = parse.value(json, 2);
+            return ff.greaterOrEqual(ff.property(key), ff.literal(value), false);
         } else if ("<".equals(operator)) {
             String key = parse.get(json, 1);
-            Object value = parse.value(json,2);
-            return ff.less(ff.property(key),ff.literal(value), false);
+            Object value = parse.value(json, 2);
+            return ff.less(ff.property(key), ff.literal(value), false);
         } else if ("<=".equals(operator)) {
             String key = parse.get(json, 1);
             Object value = parse.value(json, 2);
             return ff.lessOrEqual(ff.property(key), ff.literal(value), false);
-        // Set Membership Filters
+            // Set Membership Filters
         } else if ("in".equals(operator)) {
             String key = parse.get(json, 1);
-            Expression[] args = new Expression[json.size()-1];
+            Expression[] args = new Expression[json.size() - 1];
             args[0] = ff.property(key);
-            for (int i=1; i<args.length;i++) {
-                Object value = parse.value( json,i+1);
-                args[i] = ff.literal( value );
+            for (int i = 1; i < args.length; i++) {
+                Object value = parse.value(json, i + 1);
+                args[i] = ff.literal(value);
             }
-            Function in = ff.function("in", args );
-            return ff.equals( in, ff.literal(true));
+            Function in = ff.function("in", args);
+            return ff.equals(in, ff.literal(true));
         } else if ("!in".equals(operator)) {
             String key = parse.get(json, 1);
             Expression[] args = new Expression[json.size() - 1];
@@ -401,10 +422,10 @@ public class MBFilter {
             }
             Function in = ff.function("in", args);
             return ff.equals(in, ff.literal(false));
-        // Combining Filters
+            // Combining Filters
         } else if ("all".equals(operator)) {
             List<Filter> all = new ArrayList<>();
-            for (int i = 1; i < json.size();i++) {
+            for (int i = 1; i < json.size(); i++) {
                 MBFilter mbFilter = new MBFilter((JSONArray) json.get(i));
                 Filter filter = mbFilter.filter();
                 if (filter != Filter.INCLUDE) {
@@ -434,7 +455,7 @@ public class MBFilter {
             }
             return ff.and(none);
         } else {
-            throw new MBFormatException("Unsupported filter "+json);
+            throw new MBFormatException("Unsupported filter " + json);
         }
     }
 }

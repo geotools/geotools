@@ -17,7 +17,6 @@
 package org.geotools.swt.event;
 
 import java.awt.geom.AffineTransform;
-
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Point;
 import org.geotools.geometry.DirectPosition2D;
@@ -26,13 +25,10 @@ import org.geotools.swt.SwtMapPane;
 /**
  * A MouseEvent which contains methods to obtain coordinates in real world CoordinateSystem as well
  * as Screen Coordinates.
- * 
+ *
  * @author Michael Bedward (adapted from code by Cameron Shorter)
  * @author Andrea Antonello (www.hydrologis.com)
  * @since 2.6
- *
- *
- *
  * @source $URL$
  */
 public final class MapMouseEvent {
@@ -46,12 +42,12 @@ public final class MapMouseEvent {
 
     /**
      * Constructor. Calculates the map position of the mouse event.
-     * 
+     *
      * @param pane the map pane sending this event.
      * @param event the mouse event.
      * @param isWheel if <code>true</code> then the event comes from the mouse wheel.
      */
-    public MapMouseEvent( SwtMapPane pane, MouseEvent event, boolean isWheel ) {
+    public MapMouseEvent(SwtMapPane pane, MouseEvent event, boolean isWheel) {
         this.event = event;
         isWheelEvent = isWheel;
         if (!isWheel) {
@@ -67,7 +63,7 @@ public final class MapMouseEvent {
 
     /**
      * Indicates a mouse wheel event.
-     * 
+     *
      * @return <code>true</code> if this a mouse wheel event
      */
     public boolean isWheelEvent() {
@@ -76,7 +72,7 @@ public final class MapMouseEvent {
 
     /**
      * When isWheelEvent is true this indicate the amount of travel.
-     * 
+     *
      * @return Amount of travel when isWheelEvent is true
      */
     public int getWheelAmount() {
@@ -85,7 +81,7 @@ public final class MapMouseEvent {
 
     /**
      * Getter for the mouse location?
-     * 
+     *
      * @return the mouse location.
      */
     public Point getPoint() {
@@ -93,10 +89,8 @@ public final class MapMouseEvent {
     }
 
     /**
-     * The button that was pressed or released; 1 for the
-     * first button, 2 for the second button, and 3 for the
-     * third button, etc. On mouse dragging this function may
-     * return 0.
+     * The button that was pressed or released; 1 for the first button, 2 for the second button, and
+     * 3 for the third button, etc. On mouse dragging this function may return 0.
      *
      * @return the button that was pressed or released
      * @see MouseEvent#button
@@ -107,19 +101,21 @@ public final class MapMouseEvent {
 
     /**
      * Returns the state mask of the mouse event.
+     *
      * @return the state mask
      * @see MouseEvent#stateMask
      */
     public int getStateMask() {
-    	return event.stateMask;
+        return event.stateMask;
     }
 
     /**
      * Get the position, in map (world) coordinates of this mouse event
-     * 
+     *
      * @return a new DirectPosition2D object for the world coordinates
      */
     public DirectPosition2D getMapPosition() {
-        return new DirectPosition2D(geoCoords.getCoordinateReferenceSystem(), geoCoords.x, geoCoords.y);
+        return new DirectPosition2D(
+                geoCoords.getCoordinateReferenceSystem(), geoCoords.x, geoCoords.y);
     }
 }

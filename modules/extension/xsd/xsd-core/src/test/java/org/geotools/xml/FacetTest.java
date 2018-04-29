@@ -16,19 +16,14 @@
  */
 package org.geotools.xml;
 
-import junit.framework.TestCase;
-import org.w3c.dom.Document;
 import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import junit.framework.TestCase;
 import org.geotools.xs.XSConfiguration;
+import org.w3c.dom.Document;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class FacetTest extends TestCase {
     public void testList() throws Exception {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -37,12 +32,14 @@ public class FacetTest extends TestCase {
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document doc = db.parse(getClass().getResourceAsStream("list.xml"));
 
-        String schemaLocation = "http://geotools.org/test "
-            + getClass().getResource("facets.xsd").getFile();
+        String schemaLocation =
+                "http://geotools.org/test " + getClass().getResource("facets.xsd").getFile();
 
         doc.getDocumentElement()
-           .setAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "schemaLocation",
-            schemaLocation);
+                .setAttributeNS(
+                        "http://www.w3.org/2001/XMLSchema-instance",
+                        "schemaLocation",
+                        schemaLocation);
 
         DOMParser parser = new DOMParser(new XSConfiguration(), doc);
         Object o = parser.parse();
@@ -63,12 +60,14 @@ public class FacetTest extends TestCase {
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document doc = db.parse(getClass().getResourceAsStream("whitespace.xml"));
 
-        String schemaLocation = "http://geotools.org/test "
-            + getClass().getResource("facets.xsd").getFile();
+        String schemaLocation =
+                "http://geotools.org/test " + getClass().getResource("facets.xsd").getFile();
 
         doc.getDocumentElement()
-           .setAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "schemaLocation",
-            schemaLocation);
+                .setAttributeNS(
+                        "http://www.w3.org/2001/XMLSchema-instance",
+                        "schemaLocation",
+                        schemaLocation);
 
         DOMParser parser = new DOMParser(new XSConfiguration(), doc);
         String s = (String) parser.parse();

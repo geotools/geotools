@@ -20,9 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
-
 import javax.sql.DataSource;
-
 import org.apache.commons.dbcp.BasicDataSource;
 import org.geotools.data.Parameter;
 import org.geotools.data.jdbc.datasource.DBCPDataSource;
@@ -30,47 +28,62 @@ import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.SQLDialect;
 
-
 /**
  * DataStoreFacotry for H2 database.
  *
  * @author Justin Deoliveira, The Open Planning Project
- *
- *
- *
- *
  * @source $URL$
  */
 public class H2DataStoreFactory extends JDBCDataStoreFactory {
     /** parameter for database type */
-    public static final Param DBTYPE = new Param("dbtype", String.class, "Type", true, "h2",
-            Collections.singletonMap(Parameter.LEVEL, "program"));
-    
+    public static final Param DBTYPE =
+            new Param(
+                    "dbtype",
+                    String.class,
+                    "Type",
+                    true,
+                    "h2",
+                    Collections.singletonMap(Parameter.LEVEL, "program"));
+
     /** parameter for how to handle associations */
-    public static final Param ASSOCIATIONS = new Param("Associations", Boolean.class,
-            "Associations", false, Boolean.FALSE);
+    public static final Param ASSOCIATIONS =
+            new Param("Associations", Boolean.class, "Associations", false, Boolean.FALSE);
 
     /** optional user parameter */
-    public static final Param USER = new Param(JDBCDataStoreFactory.USER.key, JDBCDataStoreFactory.USER.type, 
-            JDBCDataStoreFactory.USER.description, false, JDBCDataStoreFactory.USER.sample);
+    public static final Param USER =
+            new Param(
+                    JDBCDataStoreFactory.USER.key,
+                    JDBCDataStoreFactory.USER.type,
+                    JDBCDataStoreFactory.USER.description,
+                    false,
+                    JDBCDataStoreFactory.USER.sample);
 
     /** optional host parameter */
-    public static final Param HOST = new Param(JDBCDataStoreFactory.HOST.key, JDBCDataStoreFactory.HOST.type, 
-            JDBCDataStoreFactory.HOST.description, false, JDBCDataStoreFactory.HOST.sample);
+    public static final Param HOST =
+            new Param(
+                    JDBCDataStoreFactory.HOST.key,
+                    JDBCDataStoreFactory.HOST.type,
+                    JDBCDataStoreFactory.HOST.description,
+                    false,
+                    JDBCDataStoreFactory.HOST.sample);
 
     /** optional port parameter */
-    public static final Param PORT = new Param(JDBCDataStoreFactory.PORT.key, JDBCDataStoreFactory.PORT.type, 
-            JDBCDataStoreFactory.PORT.description, false, 9902);
+    public static final Param PORT =
+            new Param(
+                    JDBCDataStoreFactory.PORT.key,
+                    JDBCDataStoreFactory.PORT.type,
+                    JDBCDataStoreFactory.PORT.description,
+                    false,
+                    9902);
 
     /**
      * optional parameter to handle MVCC.
+     *
      * @link http://www.h2database.com/html/advanced.html#mvcc
      */
     public static final Param MVCC = new Param("MVCC", Boolean.class, "MVCC", false, Boolean.FALSE);
 
-    /**
-     * base location to store h2 database files
-     */
+    /** base location to store h2 database files */
     File baseDirectory = null;
 
     /**
@@ -82,32 +95,30 @@ public class H2DataStoreFactory extends JDBCDataStoreFactory {
         this.baseDirectory = baseDirectory;
     }
 
-    /**
-     * The base location to store h2 database files.
-     */
+    /** The base location to store h2 database files. */
     public File getBaseDirectory() {
         return baseDirectory;
     }
-    
+
     protected void setupParameters(Map parameters) {
         super.setupParameters(parameters);
 
-        //remove host and port temporarily in order to make username optional
+        // remove host and port temporarily in order to make username optional
         parameters.remove(JDBCDataStoreFactory.HOST.key);
         parameters.remove(JDBCDataStoreFactory.PORT.key);
-        
+
         parameters.put(HOST.key, HOST);
         parameters.put(PORT.key, PORT);
 
-        //remove user and password temporarily in order to make username optional
+        // remove user and password temporarily in order to make username optional
         parameters.remove(JDBCDataStoreFactory.USER.key);
         parameters.remove(PASSWD.key);
-        
+
         parameters.put(USER.key, USER);
         parameters.put(PASSWD.key, PASSWD);
-        
-        //add user 
-        //add additional parameters
+
+        // add user
+        // add additional parameters
         parameters.put(ASSOCIATIONS.key, ASSOCIATIONS);
         parameters.put(DBTYPE.key, DBTYPE);
     }
@@ -130,13 +141,13 @@ public class H2DataStoreFactory extends JDBCDataStoreFactory {
 
     protected SQLDialect createSQLDialect(JDBCDataStore dataStore) {
         return new H2DialectBasic(dataStore);
-        //return new H2DialectPrepared(dataStore);
+        // return new H2DialectPrepared(dataStore);
     }
 
     protected DataSource createDataSource(Map params, SQLDialect dialect) throws IOException {
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setUrl(getJDBCUrl(params));
-        
+
         String username = (String) USER.lookUp(params);
         if (username != null) {
             dataSource.setUsername(username);
@@ -145,49 +156,51 @@ public class H2DataStoreFactory extends JDBCDataStoreFactory {
         if (password != null) {
             dataSource.setPassword(password);
         }
-        
+
         dataSource.setDriverClassName("org.h2.Driver");
         dataSource.setPoolPreparedStatements(false);
 
         return new DBCPDataSource(dataSource);
     }
-    
+
     @Override
     protected String getJDBCUrl(Map params) throws IOException {
         String database = (String) DATABASE.lookUp(params);
         String host = (String) HOST.lookUp(params);
         Boolean mvcc = (Boolean) MVCC.lookUp(params);
-        
+
         if (host != null && !host.equals("")) {
             Integer port = (Integer) PORT.lookUp(params);
             if (port != null && !port.equals("")) {
                 return "jdbc:h2:tcp://" + host + ":" + port + "/" + database;
-            }
-            else {
+            } else {
                 return "jdbc:h2:tcp://" + host + "/" + database;
             }
         } else if (baseDirectory == null) {
-            //use current working directory
-            return "jdbc:h2:" + database + ";AUTO_SERVER=TRUE"
+            // use current working directory
+            return "jdbc:h2:"
+                    + database
+                    + ";AUTO_SERVER=TRUE"
                     + (mvcc != null ? (";MVCC=" + mvcc) : "");
         } else {
-            //use directory specified if the patch is relative
+            // use directory specified if the patch is relative
             String location;
             if (!new File(database).isAbsolute()) {
-                location = new File(baseDirectory, database).getAbsolutePath();    
-            }
-            else {
+                location = new File(baseDirectory, database).getAbsolutePath();
+            } else {
                 location = database;
             }
 
-            return "jdbc:h2:file:" + location + ";AUTO_SERVER=TRUE"
+            return "jdbc:h2:file:"
+                    + location
+                    + ";AUTO_SERVER=TRUE"
                     + (mvcc != null ? (";MVCC=" + mvcc) : "");
         }
     }
 
     protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map params)
-        throws IOException {
-        //check the foreign keys parameter
+            throws IOException {
+        // check the foreign keys parameter
         Boolean foreignKeys = (Boolean) ASSOCIATIONS.lookUp(params);
 
         if (foreignKeys != null) {
@@ -203,5 +216,4 @@ public class H2DataStoreFactory extends JDBCDataStoreFactory {
         // network connection that can fail
         return null;
     }
-   
 }

@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -20,7 +20,6 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.logging.Logger;
-
 import org.geotools.util.logging.Logging;
 
 /**
@@ -70,9 +69,7 @@ public class DefaultCloseableIterator<T> implements CloseableIterator<T> {
         wrapped.remove();
     }
 
-    /**
-     * Closes the underlying iterator in case it implements {@code CloseableIterator}. 
-     */
+    /** Closes the underlying iterator in case it implements {@code CloseableIterator}. */
     @Override
     public void close() {
         try {
@@ -92,9 +89,10 @@ public class DefaultCloseableIterator<T> implements CloseableIterator<T> {
             try {
                 close();
             } finally {
-                LOGGER.warning("CloseableIterator need to be closed by the client. "
-                        + "There is code not closing it."
-                        + "\nAuto closing at finalize().");
+                LOGGER.warning(
+                        "CloseableIterator need to be closed by the client. "
+                                + "There is code not closing it."
+                                + "\nAuto closing at finalize().");
             }
         }
     }

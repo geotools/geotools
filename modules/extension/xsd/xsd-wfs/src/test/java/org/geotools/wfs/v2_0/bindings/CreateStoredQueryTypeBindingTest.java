@@ -17,23 +17,22 @@
 package org.geotools.wfs.v2_0.bindings;
 
 import net.opengis.wfs20.DropStoredQueryType;
-
 import org.geotools.wfs.v2_0.WFSTestSupport;
 
 public class CreateStoredQueryTypeBindingTest extends WFSTestSupport {
 
     public void testParse() throws Exception {
-        String xml = 
-            "<wfs:DropStoredQuery " + 
-            "   xmlns:wfs='http://www.opengis.net/wfs/2.0' " + 
-            "   service='WFS' " + 
-            "   version='2.0.0' id='foobar'/> ";
-            
+        String xml =
+                "<wfs:DropStoredQuery "
+                        + "   xmlns:wfs='http://www.opengis.net/wfs/2.0' "
+                        + "   service='WFS' "
+                        + "   version='2.0.0' id='foobar'/> ";
+
         buildDocument(xml);
-        
+
         DropStoredQueryType dsq = (DropStoredQueryType) parse();
         assertNotNull(dsq);
-        
+
         assertEquals("foobar", dsq.getId());
     }
 }

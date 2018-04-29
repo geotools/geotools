@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.store.DataFeatureCollection;
@@ -38,18 +37,15 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 /**
  * FeatureCollection implementation that works over an {@link ArcSDEFeatureReader} or one of the
  * decorators over it returned by {@link ArcSDEDataStore#getFeatureReader(Query, Session, boolean)}.
- * <p>
- * Note this class and the iterators it returns are thread safe.
- * </p>
- * 
+ *
+ * <p>Note this class and the iterators it returns are thread safe.
+ *
  * @author Gabriel Roldan (TOPP)
  * @version $Id$
  * @since 2.5
- *
- *
  * @source $URL$
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *         /org/geotools/arcsde/data/ArcSdeFeatureCollection.java $
+ *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
+ *     /org/geotools/arcsde/data/ArcSdeFeatureCollection.java $
  * @see FeatureCollection
  */
 public class ArcSdeFeatureCollection extends DataFeatureCollection {
@@ -64,24 +60,23 @@ public class ArcSdeFeatureCollection extends DataFeatureCollection {
 
     // private Session session;
 
-    public ArcSdeFeatureCollection(final ArcSdeFeatureSource featureSource,
-            SimpleFeatureType queryType, final Query namedQuery) throws IOException {
+    public ArcSdeFeatureCollection(
+            final ArcSdeFeatureSource featureSource,
+            SimpleFeatureType queryType,
+            final Query namedQuery)
+            throws IOException {
         this.featureSource = featureSource;
         this.query = namedQuery;
         this.childrenSchema = queryType;
     }
 
-    /**
-     * @see FeatureCollection#getSchema()
-     */
+    /** @see FeatureCollection#getSchema() */
     @Override
     public final synchronized SimpleFeatureType getSchema() {
         return childrenSchema;
     }
 
-    /**
-     * @see FeatureCollection#getBounds()
-     */
+    /** @see FeatureCollection#getBounds() */
     @Override
     public final ReferencedEnvelope getBounds() {
         ReferencedEnvelope bounds;
@@ -120,9 +115,9 @@ public class ArcSdeFeatureCollection extends DataFeatureCollection {
     }
 
     /**
-     * Overrides to avoid the superclass' call to {@link #writer()} and it's
-     * {@code UnsupportedOperationException}
-     * 
+     * Overrides to avoid the superclass' call to {@link #writer()} and it's {@code
+     * UnsupportedOperationException}
+     *
      * @return Iterator, should be closed closeIterator
      */
     @Override
@@ -135,18 +130,18 @@ public class ArcSdeFeatureCollection extends DataFeatureCollection {
     }
 
     /**
-     * Overrides to deal with closing the {@link FeatureReaderIterator}s created at
-     * {@link #openIterator()}, as superclass uses another class that does the same but its package
-     * visible (actually I don't see the point on two versions of FeatureReaderIterator?)
+     * Overrides to deal with closing the {@link FeatureReaderIterator}s created at {@link
+     * #openIterator()}, as superclass uses another class that does the same but its package visible
+     * (actually I don't see the point on two versions of FeatureReaderIterator?)
      */
     @Override
     protected void closeIterator(Iterator<SimpleFeature> close) throws IOException {
         if (close == null) {
             // iterator probably failed during consturction !
         } else if (close instanceof FeatureReaderIterator) {
-            FeatureReaderIterator<SimpleFeature> iterator = (FeatureReaderIterator<SimpleFeature>) close;
+            FeatureReaderIterator<SimpleFeature> iterator =
+                    (FeatureReaderIterator<SimpleFeature>) close;
             iterator.close(); // only needs package visability
         }
     }
-
 }

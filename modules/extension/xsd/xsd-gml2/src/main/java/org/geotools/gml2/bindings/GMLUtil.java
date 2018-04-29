@@ -18,19 +18,13 @@ package org.geotools.gml2.bindings;
 
 import com.vividsolutions.jts.geom.CoordinateSequence;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class GMLUtil {
     /**
-     * Determines the dimension of a coordinate sequence. This is based off of
-     * the first coordinate in the sequence.
+     * Determines the dimension of a coordinate sequence. This is based off of the first coordinate
+     * in the sequence.
      *
      * @param seq The coordinate sequence in question.
-     *
      * @return The best guess at a dimension, -1 if it can not be determined.
      */
     public static int getDimension(CoordinateSequence seq) {
@@ -52,7 +46,7 @@ public class GMLUtil {
             }
         }
 
-        //whoever has a coordinate with more then 100 dimensions is not sane
+        // whoever has a coordinate with more then 100 dimensions is not sane
         return -1;
     }
 }

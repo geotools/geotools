@@ -20,23 +20,20 @@
  */
 package org.geotools.referencing.operation.projection;
 
-import java.awt.geom.Point2D;
-import org.opengis.parameter.ParameterValueGroup;
-import org.opengis.parameter.ParameterDescriptorGroup;
-import org.opengis.parameter.ParameterNotFoundException;
-import org.geotools.resources.i18n.ErrorKeys;
-
 import static java.lang.Math.*;
 
+import java.awt.geom.Point2D;
+import org.geotools.resources.i18n.ErrorKeys;
+import org.opengis.parameter.ParameterDescriptorGroup;
+import org.opengis.parameter.ParameterNotFoundException;
+import org.opengis.parameter.ParameterValueGroup;
 
 /**
- * The USGS equatorial case of the {@linkplain Stereographic stereographic} projection.
- * This is a special case of oblique stereographic projection for
- * {@linkplain #latitudeOfOrigin latitude of origin} == 0.0.
+ * The USGS equatorial case of the {@linkplain Stereographic stereographic} projection. This is a
+ * special case of oblique stereographic projection for {@linkplain #latitudeOfOrigin latitude of
+ * origin} == 0.0.
  *
  * @since 2.4
- *
- *
  * @source $URL$
  * @version $Id$
  * @author André Gosselin
@@ -44,114 +41,100 @@ import static java.lang.Math.*;
  * @author Rueben Schulz
  */
 public class EquatorialStereographic extends StereographicUSGS {
-    /**
-     * For cross-version compatibility.
-     */
+    /** For cross-version compatibility. */
     private static final long serialVersionUID = -5098015759558831875L;
 
-    /**
-     * Maximum difference allowed when comparing real numbers.
-     */
+    /** Maximum difference allowed when comparing real numbers. */
     private static final double EPSILON = 1E-6;
 
     /**
-     * A constant used in the transformations.
-     * This is <strong>not</strong> equal to the {@link #scaleFactor}.
+     * A constant used in the transformations. This is <strong>not</strong> equal to the {@link
+     * #scaleFactor}.
      */
     static final double k0 = 2;
 
     /**
      * Constructs an equatorial stereographic projection (EPSG equations).
      *
-     * @param  parameters The group of parameter values.
+     * @param parameters The group of parameter values.
      * @throws ParameterNotFoundException if a required parameter was not found.
      */
     protected EquatorialStereographic(final ParameterValueGroup parameters)
-            throws ParameterNotFoundException
-    {
+            throws ParameterNotFoundException {
         this(parameters, Stereographic.Provider.PARAMETERS);
     }
 
     /**
      * Constructs an equatorial stereographic projection (USGS equations).
      *
-     * @param  parameters The group of parameter values.
-     * @param  descriptor The expected parameter descriptor.
+     * @param parameters The group of parameter values.
+     * @param descriptor The expected parameter descriptor.
      * @throws ParameterNotFoundException if a required parameter was not found.
      */
-    EquatorialStereographic(final ParameterValueGroup parameters,
-                            final ParameterDescriptorGroup descriptor)
-            throws ParameterNotFoundException
-    {
+    EquatorialStereographic(
+            final ParameterValueGroup parameters, final ParameterDescriptorGroup descriptor)
+            throws ParameterNotFoundException {
         super(parameters, descriptor);
         assert super.k0 == k0 : super.k0;
         latitudeOfOrigin = 0.0;
     }
 
     /**
-     * Transforms the specified (<var>&lambda;</var>,<var>&phi;</var>) coordinates
-     * (units in radians) and stores the result in {@code ptDst} (linear distance
-     * on a unit sphere).
+     * Transforms the specified (<var>&lambda;</var>,<var>&phi;</var>) coordinates (units in
+     * radians) and stores the result in {@code ptDst} (linear distance on a unit sphere).
      */
     @Override
     protected Point2D transformNormalized(double x, double y, Point2D ptDst)
-            throws ProjectionException
-    {
+            throws ProjectionException {
         // Compute using oblique formulas, for comparaison later.
         assert (ptDst = super.transformNormalized(x, y, ptDst)) != null;
 
-        final double chi = 2.0 * atan(ssfn(y, sin(y))) - PI/2;
+        final double chi = 2.0 * atan(ssfn(y, sin(y))) - PI / 2;
         final double cosChi = cos(chi);
-        final double A = k0 / (1.0 + cosChi * cos(x));    // typo in (12-29)
+        final double A = k0 / (1.0 + cosChi * cos(x)); // typo in (12-29)
         x = A * cosChi * sin(x);
         y = A * sin(chi);
 
         assert checkTransform(x, y, ptDst);
         if (ptDst != null) {
-            ptDst.setLocation(x,y);
+            ptDst.setLocation(x, y);
             return ptDst;
         }
-        return new Point2D.Double(x,y);
+        return new Point2D.Double(x, y);
     }
 
-
     /**
-     * Provides the transform equations for the spherical case of the
-     * equatorial stereographic projection.
+     * Provides the transform equations for the spherical case of the equatorial stereographic
+     * projection.
      *
      * @version $Id$
      * @author Martin Desruisseaux (PMO, IRD)
      * @author Rueben Schulz
      */
     static final class Spherical extends EquatorialStereographic {
-        /**
-         * For cross-version compatibility.
-         */
+        /** For cross-version compatibility. */
         private static final long serialVersionUID = -4790138052004333003L;
 
         /**
          * Constructs a spherical equatorial stereographic projection (USGS equations).
          *
-         * @param  parameters The group of parameter values.
-         * @param  descriptor The expected parameter descriptor.
+         * @param parameters The group of parameter values.
+         * @param descriptor The expected parameter descriptor.
          * @throws ParameterNotFoundException if a required parameter was not found.
          */
         Spherical(final ParameterValueGroup parameters, final ParameterDescriptorGroup descriptor)
-                throws ParameterNotFoundException
-        {
+                throws ParameterNotFoundException {
             super(parameters, descriptor);
             ensureSpherical();
         }
 
         /**
-         * Transforms the specified (<var>&lambda;</var>,<var>&phi;</var>) coordinates
-         * (units in radians) and stores the result in {@code ptDst} (linear distance
-         * on a unit sphere).
+         * Transforms the specified (<var>&lambda;</var>,<var>&phi;</var>) coordinates (units in
+         * radians) and stores the result in {@code ptDst} (linear distance on a unit sphere).
          */
         @Override
         protected Point2D transformNormalized(double x, double y, Point2D ptDst)
-                throws ProjectionException
-        {
+                throws ProjectionException {
             // Compute using ellipsoidal formulas, for comparaison later.
             assert (ptDst = super.transformNormalized(x, y, ptDst)) != null;
 
@@ -160,26 +143,25 @@ public class EquatorialStereographic extends StereographicUSGS {
             if (f < EPSILON) {
                 throw new ProjectionException(ErrorKeys.VALUE_TEND_TOWARD_INFINITY);
             }
-            f = k0 / f;              // (21-14)
+            f = k0 / f; // (21-14)
             x = f * coslat * sin(x); // (21-2)
-            y = f * sin(y);          // (21-13)
+            y = f * sin(y); // (21-13)
 
             assert checkTransform(x, y, ptDst);
             if (ptDst != null) {
-                ptDst.setLocation(x,y);
+                ptDst.setLocation(x, y);
                 return ptDst;
             }
-            return new Point2D.Double(x,y);
+            return new Point2D.Double(x, y);
         }
 
         /**
-         * Transforms the specified (<var>x</var>,<var>y</var>) coordinate
-         * and stores the result in {@code ptDst}.
+         * Transforms the specified (<var>x</var>,<var>y</var>) coordinate and stores the result in
+         * {@code ptDst}.
          */
         @Override
-        protected Point2D inverseTransformNormalized(double x, double y,Point2D ptDst)
-                throws ProjectionException
-        {
+        protected Point2D inverseTransformNormalized(double x, double y, Point2D ptDst)
+                throws ProjectionException {
             // Compute using ellipsoidal formulas, for comparaison later.
             assert (ptDst = super.inverseTransformNormalized(x, y, ptDst)) != null;
 
@@ -191,17 +173,17 @@ public class EquatorialStereographic extends StereographicUSGS {
                 final double c = 2.0 * atan(rho / k0);
                 final double cosc = cos(c);
                 final double sinc = sin(c);
-                y = asin(y * sinc/rho); // (20-14)  with phi1=0
-                final double t  = x*sinc;
-                final double ct = rho*cosc;
+                y = asin(y * sinc / rho); // (20-14)  with phi1=0
+                final double t = x * sinc;
+                final double ct = rho * cosc;
                 x = (abs(t) < EPSILON && abs(ct) < EPSILON) ? 0.0 : atan2(t, ct);
             }
             assert checkInverseTransform(x, y, ptDst);
             if (ptDst != null) {
-                ptDst.setLocation(x,y);
+                ptDst.setLocation(x, y);
                 return ptDst;
             }
-            return new Point2D.Double(x,y);
+            return new Point2D.Double(x, y);
         }
     }
 }

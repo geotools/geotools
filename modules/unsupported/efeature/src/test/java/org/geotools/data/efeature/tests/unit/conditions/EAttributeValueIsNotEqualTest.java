@@ -22,24 +22,20 @@ import org.geotools.data.efeature.query.EFeatureEncoderException;
 
 /**
  * @author kengu - 14. juni 2011
- *
- *
  * @source $URL$
  */
 public class EAttributeValueIsNotEqualTest extends AbstractEAttributeValueTest {
-    
-    // ----------------------------------------------------- 
+
+    // -----------------------------------------------------
     //  Constructors
     // -----------------------------------------------------
-    
-    /**
-     * @param name
-     */
+
+    /** @param name */
     public EAttributeValueIsNotEqualTest(String name) {
         super(name, NOT_EQUAL_TO);
     }
 
-    // ----------------------------------------------------- 
+    // -----------------------------------------------------
     //  AbstractEAttributeValueTest implementation
     // -----------------------------------------------------
 
@@ -50,5 +46,4 @@ public class EAttributeValueIsNotEqualTest extends AbstractEAttributeValueTest {
         //
         return new EAttributeValueIsNotEqual(eAttribute, filter);
     }
-
 }

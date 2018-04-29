@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2017, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -21,14 +21,11 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLStreamHandler;
 
-/**
- * Responsible for instantiating the DataUrlConnection.
- */
+/** Responsible for instantiating the DataUrlConnection. */
 public class DataUrlHandler extends URLStreamHandler {
 
     @Override
     protected URLConnection openConnection(final URL url) throws IOException {
         return new DataUrlConnection(url);
     }
-
 }

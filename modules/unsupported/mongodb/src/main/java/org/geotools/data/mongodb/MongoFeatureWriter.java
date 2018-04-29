@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2015, Boundless
  *
@@ -32,8 +32,10 @@ public class MongoFeatureWriter implements SimpleFeatureWriter {
     private final CollectionMapper mapper;
     private MongoDBObjectFeature current;
 
-    public MongoFeatureWriter(DBCollection collection, SimpleFeatureType featureType, 
-        MongoFeatureStore featureStore) {
+    public MongoFeatureWriter(
+            DBCollection collection,
+            SimpleFeatureType featureType,
+            MongoFeatureStore featureStore) {
         this.collection = collection;
         this.featureType = featureType;
         mapper = featureStore.getMapper();
@@ -43,7 +45,7 @@ public class MongoFeatureWriter implements SimpleFeatureWriter {
     public SimpleFeatureType getFeatureType() {
         return featureType;
     }
-    
+
     @Override
     public boolean hasNext() throws IOException {
         return false;
@@ -53,7 +55,7 @@ public class MongoFeatureWriter implements SimpleFeatureWriter {
     public SimpleFeature next() throws IOException {
         return current = new MongoDBObjectFeature(new BasicDBObject(), featureType, mapper);
     }
-    
+
     @Override
     public void write() throws IOException {
         if (current == null) {
@@ -66,10 +68,9 @@ public class MongoFeatureWriter implements SimpleFeatureWriter {
     public void remove() throws IOException {
         throw new UnsupportedOperationException();
     }
-    
+
     @Override
     public void close() throws IOException {
         collection.createIndex(new BasicDBObject(mapper.getGeometryPath(), "2dsphere"));
     }
-
 }

@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -21,17 +21,19 @@ import java.io.Serializable;
 
 /**
  * Describes a SOLR field, that is, a field stored in remote SOLR document </br> This class carries
- * information about: <li>The name of field <li>The mapped field type <li>If the field can be used
- * as the PK in the feature <li>If the field can be used as attribute in the feature <li>If the
- * field is multiValued as defined in SOLR schema <li>If the field has no data in SOLR store <li>The
- * native srid if the filed if a geometry type the geometry type and native srid (as in most
- * databases those informations are not available on.
- * 
+ * information about:
+ * <li>The name of field
+ * <li>The mapped field type
+ * <li>If the field can be used as the PK in the feature
+ * <li>If the field can be used as attribute in the feature
+ * <li>If the field is multiValued as defined in SOLR schema
+ * <li>If the field has no data in SOLR store
+ * <li>The native srid if the filed if a geometry type the geometry type and native srid (as in most
+ *     databases those informations are not available on.
+ *
  * @see {@link SolrUtils#decodeSolrFieldType}
  * @see {@link SolrDataStore#getSolrAttributes}
- * 
  */
-
 public class SolrAttribute implements Serializable {
 
     private static final long serialVersionUID = 8839579461838862328L;
@@ -62,7 +64,6 @@ public class SolrAttribute implements Serializable {
         this.multivalued = false;
     }
 
-
     public SolrAttribute(SolrAttribute other) {
         this.name = other.name;
         this.type = other.type;
@@ -73,7 +74,6 @@ public class SolrAttribute implements Serializable {
         this.srid = other.srid;
         this.defaultGeometry = other.defaultGeometry;
     }
-
 
     public String getName() {
         return name;
@@ -141,9 +141,23 @@ public class SolrAttribute implements Serializable {
 
     @Override
     public String toString() {
-        return "SolrAttribute [name=" + name + ", type=" + type + ", pk=" + pk + ", use=" + use
-                + ", multivalued=" + multivalued + ", empty=" + empty + ", srid=" + srid
-                + ", defaultGeometry=" + defaultGeometry + "]";
+        return "SolrAttribute [name="
+                + name
+                + ", type="
+                + type
+                + ", pk="
+                + pk
+                + ", use="
+                + use
+                + ", multivalued="
+                + multivalued
+                + ", empty="
+                + empty
+                + ", srid="
+                + srid
+                + ", defaultGeometry="
+                + defaultGeometry
+                + "]";
     }
 
     @Override
@@ -164,58 +178,37 @@ public class SolrAttribute implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
         SolrAttribute other = (SolrAttribute) obj;
         if (defaultGeometry == null) {
-            if (other.defaultGeometry != null)
-                return false;
-        } else if (!defaultGeometry.equals(other.defaultGeometry))
-            return false;
+            if (other.defaultGeometry != null) return false;
+        } else if (!defaultGeometry.equals(other.defaultGeometry)) return false;
         if (empty == null) {
-            if (other.empty != null)
-                return false;
-        } else if (!empty.equals(other.empty))
-            return false;
+            if (other.empty != null) return false;
+        } else if (!empty.equals(other.empty)) return false;
         if (multivalued == null) {
-            if (other.multivalued != null)
-                return false;
-        } else if (!multivalued.equals(other.multivalued))
-            return false;
+            if (other.multivalued != null) return false;
+        } else if (!multivalued.equals(other.multivalued)) return false;
         if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!name.equals(other.name))
-            return false;
+            if (other.name != null) return false;
+        } else if (!name.equals(other.name)) return false;
         if (pk == null) {
-            if (other.pk != null)
-                return false;
-        } else if (!pk.equals(other.pk))
-            return false;
+            if (other.pk != null) return false;
+        } else if (!pk.equals(other.pk)) return false;
         if (srid == null) {
-            if (other.srid != null)
-                return false;
-        } else if (!srid.equals(other.srid))
-            return false;
+            if (other.srid != null) return false;
+        } else if (!srid.equals(other.srid)) return false;
         if (type == null) {
-            if (other.type != null)
-                return false;
-        } else if (!type.equals(other.type))
-            return false;
+            if (other.type != null) return false;
+        } else if (!type.equals(other.type)) return false;
         if (use == null) {
-            if (other.use != null)
-                return false;
-        } else if (!use.equals(other.use))
-            return false;
+            if (other.use != null) return false;
+        } else if (!use.equals(other.use)) return false;
         if (solrType == null) {
-            if (other.solrType != null)
-                return false;
-        } else if (!solrType.equals(other.solrType))
-            return false;
+            if (other.solrType != null) return false;
+        } else if (!solrType.equals(other.solrType)) return false;
         return true;
     }
 
@@ -226,6 +219,4 @@ public class SolrAttribute implements Serializable {
     public void setDefaultGeometry(Boolean defaultGeometry) {
         this.defaultGeometry = defaultGeometry;
     }
-
-
 }

@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -26,9 +26,7 @@ import java.util.Set;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import junit.framework.TestCase;
-
 import org.geotools.data.jdbc.fidmapper.FIDMapper;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -42,22 +40,18 @@ import org.opengis.filter.expression.Add;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.identity.FeatureId;
 
-
-
 /**
  * Unit test for sql encoding of filters into where statements.
  *
  * @author Chris Holmes, TOPP
  * @author Saul Farber, MassGIS
- *
- *
- *
  * @source $URL$
  */
 public class FilterToSQLTest extends TestCase {
     private FilterFactory filterFac = CommonFactoryFinder.getFilterFactory(null);
-    private static Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.data.jdbc");
-    
+    private static Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.data.jdbc");
+
     private SimpleFeatureType integerFType;
     private SimpleFeatureType stringFType;
     private SimpleFeatureType sqlDateFType;
@@ -76,13 +70,13 @@ public class FilterToSQLTest extends TestCase {
                 h.setLevel(debugLevel);
             }
             log = log.getParent();
-        }        
-        
+        }
+
         SimpleFeatureTypeBuilder ftb = new SimpleFeatureTypeBuilder();
-		ftb.setName("testFeatureType");
-		ftb.add("testAttr", Integer.class);
+        ftb.setName("testFeatureType");
+        ftb.add("testAttr", Integer.class);
         integerFType = ftb.buildFeatureType();
-        
+
         ftb = new SimpleFeatureTypeBuilder();
         ftb.setName("testFeatureType");
         ftb.add("testAttr", java.sql.Date.class);
@@ -98,106 +92,107 @@ public class FilterToSQLTest extends TestCase {
         ftb.add("testAttr", Date.class);
         dateFType = ftb.buildFeatureType();
 
-        
         ftb.setName("testFeatureType");
         ftb.add("testAttr", String.class);
         stringFType = ftb.buildFeatureType();
-        
+
         output = new StringWriter();
         encoder = new FilterToSQL(output);
-        
-        FIDMapper mapper = new FIDMapper() {
 
-            @Override
-            public boolean returnFIDColumnsAsAttributes() {
-                // TODO Auto-generated method stub
-                return false;
-            }
+        FIDMapper mapper =
+                new FIDMapper() {
 
-            @Override
-            public boolean isVolatile() {
-                // TODO Auto-generated method stub
-                return false;
-            }
+                    @Override
+                    public boolean returnFIDColumnsAsAttributes() {
+                        // TODO Auto-generated method stub
+                        return false;
+                    }
 
-            @Override
-            public boolean isValid(String fid) {
-                // TODO Auto-generated method stub
-                return false;
-            }
+                    @Override
+                    public boolean isVolatile() {
+                        // TODO Auto-generated method stub
+                        return false;
+                    }
 
-            @Override
-            public boolean isAutoIncrement(int colIndex) {
-                // TODO Auto-generated method stub
-                return false;
-            }
+                    @Override
+                    public boolean isValid(String fid) {
+                        // TODO Auto-generated method stub
+                        return false;
+                    }
 
-            @Override
-            public void initSupportStructures() {
-                // TODO Auto-generated method stub
+                    @Override
+                    public boolean isAutoIncrement(int colIndex) {
+                        // TODO Auto-generated method stub
+                        return false;
+                    }
 
-            }
+                    @Override
+                    public void initSupportStructures() {
+                        // TODO Auto-generated method stub
 
-            @Override
-            public boolean hasAutoIncrementColumns() {
-                // TODO Auto-generated method stub
-                return false;
-            }
+                    }
 
-            @Override
-            public Object[] getPKAttributes(String FID) throws IOException {
-                return new Object[] { FID };
-            }
+                    @Override
+                    public boolean hasAutoIncrementColumns() {
+                        // TODO Auto-generated method stub
+                        return false;
+                    }
 
-            @Override
-            public String getID(Object[] attributes) {
-                // TODO Auto-generated method stub
-                return null;
-            }
+                    @Override
+                    public Object[] getPKAttributes(String FID) throws IOException {
+                        return new Object[] {FID};
+                    }
 
-            @Override
-            public int getColumnType(int colIndex) {
-                // TODO Auto-generated method stub
-                return 0;
-            }
+                    @Override
+                    public String getID(Object[] attributes) {
+                        // TODO Auto-generated method stub
+                        return null;
+                    }
 
-            @Override
-            public int getColumnSize(int colIndex) {
-                // TODO Auto-generated method stub
-                return 0;
-            }
+                    @Override
+                    public int getColumnType(int colIndex) {
+                        // TODO Auto-generated method stub
+                        return 0;
+                    }
 
-            @Override
-            public String getColumnName(int colIndex) {
-                return "id";
-            }
+                    @Override
+                    public int getColumnSize(int colIndex) {
+                        // TODO Auto-generated method stub
+                        return 0;
+                    }
 
-            @Override
-            public int getColumnDecimalDigits(int colIndex) {
-                // TODO Auto-generated method stub
-                return 0;
-            }
+                    @Override
+                    public String getColumnName(int colIndex) {
+                        return "id";
+                    }
 
-            @Override
-            public int getColumnCount() {
-                return 1;
-            }
+                    @Override
+                    public int getColumnDecimalDigits(int colIndex) {
+                        // TODO Auto-generated method stub
+                        return 0;
+                    }
 
-            @Override
-            public String createID(Connection conn, SimpleFeature feature, Statement statement)
-                    throws IOException {
-                // TODO Auto-generated method stub
-                return null;
-            }
-        };
+                    @Override
+                    public int getColumnCount() {
+                        return 1;
+                    }
+
+                    @Override
+                    public String createID(
+                            Connection conn, SimpleFeature feature, Statement statement)
+                            throws IOException {
+                        // TODO Auto-generated method stub
+                        return null;
+                    }
+                };
         encoder.setFIDMapper(mapper);
     }
 
     public void testIntegerContext() throws Exception {
 
         Expression literal = filterFac.literal(5);
-        Expression prop = filterFac.property(integerFType.getAttributeDescriptors().get(0)
-                .getLocalName());
+        Expression prop =
+                filterFac.property(integerFType.getAttributeDescriptors().get(0).getLocalName());
         PropertyIsEqualTo filter = filterFac.equals(prop, literal);
 
         encoder.setFeatureType(integerFType);
@@ -206,24 +201,25 @@ public class FilterToSQLTest extends TestCase {
         LOGGER.fine("testAttr is an Integer " + filter + " -> " + output.getBuffer().toString());
         assertEquals(output.getBuffer().toString(), "WHERE testAttr = 5");
     }
-    
+
     public void testSqlDateContext() throws Exception {
         Expression literal = filterFac.literal("2002-12-03");
-        Expression prop = filterFac.property(sqlDateFType.getAttributeDescriptors().get(0)
-                .getLocalName());
+        Expression prop =
+                filterFac.property(sqlDateFType.getAttributeDescriptors().get(0).getLocalName());
         PropertyIsEqualTo filter = filterFac.equals(prop, literal);
 
         encoder.setFeatureType(sqlDateFType);
         encoder.encode(filter);
 
-        LOGGER.fine("testAttr is a java.sql.Date " + filter + " -> " + output.getBuffer().toString());
+        LOGGER.fine(
+                "testAttr is a java.sql.Date " + filter + " -> " + output.getBuffer().toString());
         assertEquals(output.getBuffer().toString(), "WHERE testAttr = '2002-12-03'");
     }
-    
+
     public void testTimestampContext() throws Exception {
         Expression literal = filterFac.literal("2002-12-03 10:00");
-        Expression prop = filterFac.property(timestampFType.getAttributeDescriptors().get(0)
-                .getLocalName());
+        Expression prop =
+                filterFac.property(timestampFType.getAttributeDescriptors().get(0).getLocalName());
         PropertyIsEqualTo filter = filterFac.equals(prop, literal);
 
         encoder.setFeatureType(timestampFType);
@@ -235,23 +231,22 @@ public class FilterToSQLTest extends TestCase {
 
     public void testDateContext() throws Exception {
         Expression literal = filterFac.literal("2002-12-03 10:00");
-        Expression prop = filterFac.property(dateFType.getAttributeDescriptors().get(0)
-                .getLocalName());
+        Expression prop =
+                filterFac.property(dateFType.getAttributeDescriptors().get(0).getLocalName());
         PropertyIsEqualTo filter = filterFac.equals(prop, literal);
 
         encoder.setFeatureType(dateFType);
         encoder.encode(filter);
 
-        LOGGER.fine("testAttr is a java.util.Date " + filter + " -> " + output.getBuffer().toString());
+        LOGGER.fine(
+                "testAttr is a java.util.Date " + filter + " -> " + output.getBuffer().toString());
         assertEquals(output.getBuffer().toString(), "WHERE testAttr = '2002-12-03 10:00'");
     }
 
-
-
     public void testStringContext() throws Exception {
         Expression literal = filterFac.literal(5);
-        Expression prop = filterFac.property(stringFType.getAttributeDescriptors().get(0)
-                .getLocalName());
+        Expression prop =
+                filterFac.property(stringFType.getAttributeDescriptors().get(0).getLocalName());
         PropertyIsEqualTo filter = filterFac.equals(prop, literal);
 
         encoder.setFeatureType(stringFType);
@@ -264,8 +259,8 @@ public class FilterToSQLTest extends TestCase {
     public void testIntegerToNumberContext() throws Exception {
 
         Expression literal = filterFac.literal(5.0);
-        Expression prop = filterFac.property(integerFType.getAttributeDescriptors().get(0)
-                .getLocalName());
+        Expression prop =
+                filterFac.property(integerFType.getAttributeDescriptors().get(0).getLocalName());
         PropertyIsEqualTo filter = filterFac.equals(prop, literal);
 
         encoder.setFeatureType(integerFType);
@@ -303,35 +298,36 @@ public class FilterToSQLTest extends TestCase {
         encoder.encode(id);
         assertEquals("WHERE (id = 'fid1')", output.toString());
     }
-    
+
     public void testEscapeQuote() throws FilterToSQLException {
-        PropertyIsEqualTo equals = filterFac.equals(filterFac.property("attribute"), filterFac.literal("A'A"));
+        PropertyIsEqualTo equals =
+                filterFac.equals(filterFac.property("attribute"), filterFac.literal("A'A"));
         encoder.encode(equals);
         assertEquals("WHERE attribute = 'A''A'", output.toString());
     }
-    
+
     public void testExpression() throws Exception {
         Add a = filterFac.add(filterFac.property("testAttr"), filterFac.literal(5));
         encoder.encode(a);
         assertEquals("testAttr + 5", output.toString());
     }
-    
-    public void testEscapeQuoteFancy() throws FilterToSQLException  {
+
+    public void testEscapeQuoteFancy() throws FilterToSQLException {
         org.opengis.filter.FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
-        Object fancyLiteral = new Object() {
-        
-            public String toString() {
-                return "A'A";
-            }
-        
-        };
+        Object fancyLiteral =
+                new Object() {
+
+                    public String toString() {
+                        return "A'A";
+                    }
+                };
         PropertyIsEqualTo equals = ff.equals(ff.property("attribute"), ff.literal(fancyLiteral));
         StringWriter output = new StringWriter();
         FilterToSQL encoder = new FilterToSQL(output);
         encoder.encode(equals);
         assertEquals("WHERE attribute = 'A''A'", output.toString());
     }
-    
+
     public void testNumberEscapes() throws Exception {
         Add a = filterFac.add(filterFac.property("testAttr"), filterFac.literal(5));
         PropertyIsEqualTo equal = filterFac.equal(filterFac.property("testAttr"), a, false);
@@ -344,11 +340,12 @@ public class FilterToSQLTest extends TestCase {
     }
 
     public void testInline() throws Exception {
-        PropertyIsEqualTo equal = filterFac.equal(filterFac.property("testAttr"), filterFac.literal(5), false);
+        PropertyIsEqualTo equal =
+                filterFac.equal(filterFac.property("testAttr"), filterFac.literal(5), false);
         StringWriter output = new StringWriter();
         FilterToSQL encoder = new FilterToSQL(output);
         encoder.setInline(true);
-        
+
         encoder.encode(equal);
         assertEquals("testAttr = 5", output.toString());
     }

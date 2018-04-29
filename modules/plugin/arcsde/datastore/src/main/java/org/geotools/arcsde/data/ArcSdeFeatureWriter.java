@@ -16,6 +16,25 @@
  */
 package org.geotools.arcsde.data;
 
+import com.esri.sde.sdk.client.SeColumnDefinition;
+import com.esri.sde.sdk.client.SeConnection;
+import com.esri.sde.sdk.client.SeCoordinateReference;
+import com.esri.sde.sdk.client.SeDelete;
+import com.esri.sde.sdk.client.SeException;
+import com.esri.sde.sdk.client.SeInsert;
+import com.esri.sde.sdk.client.SeLayer;
+import com.esri.sde.sdk.client.SeObjectId;
+import com.esri.sde.sdk.client.SeRegistration;
+import com.esri.sde.sdk.client.SeRow;
+import com.esri.sde.sdk.client.SeShape;
+import com.esri.sde.sdk.client.SeStreamOp;
+import com.esri.sde.sdk.client.SeTable;
+import com.esri.sde.sdk.client.SeTable.SeTableIdRange;
+import com.esri.sde.sdk.client.SeUpdate;
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.operation.valid.IsValidOp;
+import com.vividsolutions.jts.operation.valid.TopologyValidationError;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -28,7 +47,6 @@ import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.arcsde.ArcSdeException;
 import org.geotools.arcsde.session.Command;
 import org.geotools.arcsde.session.ISession;
@@ -53,53 +71,23 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.geometry.BoundingBox;
 
-import com.esri.sde.sdk.client.SeColumnDefinition;
-import com.esri.sde.sdk.client.SeConnection;
-import com.esri.sde.sdk.client.SeCoordinateReference;
-import com.esri.sde.sdk.client.SeDelete;
-import com.esri.sde.sdk.client.SeException;
-import com.esri.sde.sdk.client.SeInsert;
-import com.esri.sde.sdk.client.SeLayer;
-import com.esri.sde.sdk.client.SeObjectId;
-import com.esri.sde.sdk.client.SeRegistration;
-import com.esri.sde.sdk.client.SeRow;
-import com.esri.sde.sdk.client.SeShape;
-import com.esri.sde.sdk.client.SeStreamOp;
-import com.esri.sde.sdk.client.SeTable;
-import com.esri.sde.sdk.client.SeTable.SeTableIdRange;
-import com.esri.sde.sdk.client.SeUpdate;
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.operation.valid.IsValidOp;
-import com.vividsolutions.jts.operation.valid.TopologyValidationError;
-
 abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleFeature> {
 
     protected static final Logger LOGGER = Logging.getLogger(ArcSdeFeatureWriter.class.getName());
 
-    /**
-     * Fid prefix used for just created and not yet committed features
-     */
+    /** Fid prefix used for just created and not yet committed features */
     private static final String NEW_FID_PREFIX = "@NEW_";
 
-    /**
-     * Complete feature type this writer acts upon
-     */
+    /** Complete feature type this writer acts upon */
     protected final SimpleFeatureType featureType;
 
-    /**
-     * Connection to hold while this feature writer is alive.
-     */
+    /** Connection to hold while this feature writer is alive. */
     protected ISession session;
 
-    /**
-     * Reader for streamed access to filtered content this writer acts upon.
-     */
+    /** Reader for streamed access to filtered content this writer acts upon. */
     protected FeatureReader<SimpleFeatureType, SimpleFeature> filteredContent;
 
-    /**
-     * Builder for new Features this writer creates when next() is called and hasNext() == false
-     */
+    /** Builder for new Features this writer creates when next() is called and hasNext() == false */
     protected final SimpleFeatureBuilder featureBuilder;
 
     /**
@@ -110,14 +98,10 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
 
     private LinkedHashMap<Integer, String> insertableColumnNames;
 
-    /**
-     * Not to be accessed directly, but through {@link #getLayer()}
-     */
+    /** Not to be accessed directly, but through {@link #getLayer()} */
     private SeLayer cachedLayer;
 
-    /**
-     * Not to be accessed directly, but through {@link #getTable()}
-     */
+    /** Not to be accessed directly, but through {@link #getTable()} */
     private SeTable cachedTable;
 
     /**
@@ -126,22 +110,22 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
      */
     protected SimpleFeature feature;
 
-    /**
-     * Provides row_id column index
-     */
+    /** Provides row_id column index */
     protected final FIDReader fidReader;
 
     protected final FeatureListenerManager listenerManager;
 
-    /**
-     * version handler to delegate setting up and handling database version states
-     */
+    /** version handler to delegate setting up and handling database version states */
     private final ArcSdeVersionHandler versionHandler;
 
-    public ArcSdeFeatureWriter(final FIDReader fidReader, final SimpleFeatureType featureType,
+    public ArcSdeFeatureWriter(
+            final FIDReader fidReader,
+            final SimpleFeatureType featureType,
             final FeatureReader<SimpleFeatureType, SimpleFeature> filteredContent,
-            final ISession session, final FeatureListenerManager listenerManager,
-            final ArcSdeVersionHandler versionHandler) throws IOException {
+            final ISession session,
+            final FeatureListenerManager listenerManager,
+            final ArcSdeVersionHandler versionHandler)
+            throws IOException {
 
         assert fidReader != null;
         assert featureType != null;
@@ -150,7 +134,8 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
         assert listenerManager != null;
         assert versionHandler != null;
 
-        if (!(fidReader instanceof FIDReader.SdeManagedFidReader || fidReader instanceof FIDReader.UserManagedFidReader)) {
+        if (!(fidReader instanceof FIDReader.SdeManagedFidReader
+                || fidReader instanceof FIDReader.UserManagedFidReader)) {
             throw new DataSourceException("fid reader is not user nor sde managed: " + fidReader);
         }
 
@@ -167,7 +152,7 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
      * Creates the type of arcsde stream operation specified by the {@code streamType} class and,if
      * the working layer is of a versioned table, sets up the stream to being editing the default
      * database version.
-     * 
+     *
      * @param streamType
      * @return
      * @throws IOException
@@ -190,9 +175,7 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
         return streamOp;
     }
 
-    /**
-     * @see FeatureWriter#close()
-     */
+    /** @see FeatureWriter#close() */
     public void close() throws IOException {
 
         if (filteredContent != null) {
@@ -207,16 +190,12 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
         session = null;
     }
 
-    /**
-     * @see FeatureWriter#getFeatureType()
-     */
+    /** @see FeatureWriter#getFeatureType() */
     public final SimpleFeatureType getFeatureType() {
         return featureType;
     }
 
-    /**
-     * @see FeatureWriter#hasNext()
-     */
+    /** @see FeatureWriter#hasNext() */
     public final boolean hasNext() throws IOException {
         // filteredContent may be null because we
         // took the precaution of closing it in a previous call
@@ -230,9 +209,7 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
         return hasNext;
     }
 
-    /**
-     * @see FeatureWriter#next()
-     */
+    /** @see FeatureWriter#next() */
     public final SimpleFeature next() throws IOException {
         if (hasNext()) {
             feature = filteredContent.next();
@@ -245,9 +222,7 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
         return feature;
     }
 
-    /**
-     * @see FeatureWriter#remove()
-     */
+    /** @see FeatureWriter#remove() */
     public void remove() throws IOException {
         if (isNewlyCreated(feature)) {
             // we're in auto commit, no need to remove anything
@@ -268,50 +243,57 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
 
         final SeDelete seDelete = (SeDelete) createStream(SeDelete.class);
 
-        final Command<Void> deleteCmd = new Command<Void>() {
-            @Override
-            public Void execute(ISession session, SeConnection connection) throws SeException,
-                    IOException {
-                try {
-                    // A call to SeDelete.byId immediately deletes the row from the
-                    // database. The application does not need to call execute()
-                    // try{
-                    seDelete.byId(qualifiedName, objectID);
-                    // }catch(SeException e){
-                    // final int FID_DOESNT_EXIST = -22;
-                    // if(e.getSeError().getSdeError() == FID_DOESNT_EXIST){
-                    // //ignore
-                    // }else{
-                    // throw e;
-                    // }
-                    // }
-                    versionHandler.editOperationWritten(seDelete);
-                    if (handleTransaction) {
-                        session.commitTransaction();
-                    }
-                } catch (IOException e) {
-                    if (handleTransaction) {
+        final Command<Void> deleteCmd =
+                new Command<Void>() {
+                    @Override
+                    public Void execute(ISession session, SeConnection connection)
+                            throws SeException, IOException {
                         try {
-                            session.rollbackTransaction();
-                        } catch (IOException e1) {
-                            LOGGER.log(Level.SEVERE, "Unrecoverable error rolling "
-                                    + "back delete transaction", e);
+                            // A call to SeDelete.byId immediately deletes the row from the
+                            // database. The application does not need to call execute()
+                            // try{
+                            seDelete.byId(qualifiedName, objectID);
+                            // }catch(SeException e){
+                            // final int FID_DOESNT_EXIST = -22;
+                            // if(e.getSeError().getSdeError() == FID_DOESNT_EXIST){
+                            // //ignore
+                            // }else{
+                            // throw e;
+                            // }
+                            // }
+                            versionHandler.editOperationWritten(seDelete);
+                            if (handleTransaction) {
+                                session.commitTransaction();
+                            }
+                        } catch (IOException e) {
+                            if (handleTransaction) {
+                                try {
+                                    session.rollbackTransaction();
+                                } catch (IOException e1) {
+                                    LOGGER.log(
+                                            Level.SEVERE,
+                                            "Unrecoverable error rolling "
+                                                    + "back delete transaction",
+                                            e);
+                                }
+                            }
+                            throw new DataSourceException(
+                                    "Error deleting feature with id:" + featureId, e);
+                        } finally {
+                            if (seDelete != null) {
+                                try {
+                                    seDelete.close();
+                                } catch (SeException e) {
+                                    LOGGER.log(
+                                            Level.SEVERE,
+                                            "Unrecoverable error rolling back delete transaction",
+                                            e);
+                                }
+                            }
                         }
+                        return null;
                     }
-                    throw new DataSourceException("Error deleting feature with id:" + featureId, e);
-                } finally {
-                    if (seDelete != null) {
-                        try {
-                            seDelete.close();
-                        } catch (SeException e) {
-                            LOGGER.log(Level.SEVERE,
-                                    "Unrecoverable error rolling back delete transaction", e);
-                        }
-                    }
-                }
-                return null;
-            }
-        };
+                };
 
         try {
             session.issue(deleteCmd);
@@ -320,7 +302,6 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
             versionHandler.editOperationFailed(seDelete);
             throw e;
         }
-
     }
 
     private void fireAdded(final SimpleFeature addedFeature) {
@@ -354,18 +335,16 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
         doFireFeaturesRemoved(typeName, referencedEnvelope, filter);
     }
 
-    protected abstract void doFireFeaturesAdded(String typeName, ReferencedEnvelope bounds,
-            Filter filter);
+    protected abstract void doFireFeaturesAdded(
+            String typeName, ReferencedEnvelope bounds, Filter filter);
 
-    protected abstract void doFireFeaturesChanged(String typeName, ReferencedEnvelope bounds,
-            Filter filter);
+    protected abstract void doFireFeaturesChanged(
+            String typeName, ReferencedEnvelope bounds, Filter filter);
 
-    protected abstract void doFireFeaturesRemoved(String typeName, ReferencedEnvelope bounds,
-            Filter filter);
+    protected abstract void doFireFeaturesRemoved(
+            String typeName, ReferencedEnvelope bounds, Filter filter);
 
-    /**
-     * @see FeatureWriter#write()
-     */
+    /** @see FeatureWriter#write() */
     public void write() throws IOException {
 
         // make the feature validate against its schema before inserting/updating
@@ -396,18 +375,14 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
 
     /**
      * Updates the contents of a Feature in the database.
-     * <p>
-     * The db row to modify is obtained from the feature id.
-     * </p>
-     * 
-     * @param modifiedFeature
-     *            the newly create Feature to insert.
-     * @param session
-     *            the connection to use for the insert operation. Its auto commit mode determines
-     *            whether the operation takes effect immediately or not.
+     *
+     * <p>The db row to modify is obtained from the feature id.
+     *
+     * @param modifiedFeature the newly create Feature to insert.
+     * @param session the connection to use for the insert operation. Its auto commit mode
+     *     determines whether the operation takes effect immediately or not.
      * @throws IOException
-     * @throws SeException
-     *             if thrown by any sde stream method
+     * @throws SeException if thrown by any sde stream method
      * @throws IOException
      */
     private void updateRow(final SimpleFeature modifiedFeature) throws IOException {
@@ -419,29 +394,31 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
         // updateStream.setWriteMode(true);
 
         final LinkedHashMap<Integer, String> mutableColumns = getUpdatableColumnNames();
-        final String[] rowColumnNames = new ArrayList<String>(mutableColumns.values())
-                .toArray(new String[0]);
+        final String[] rowColumnNames =
+                new ArrayList<String>(mutableColumns.values()).toArray(new String[0]);
         final String typeName = featureType.getTypeName();
         final String fid = modifiedFeature.getID();
         final long numericFid = ArcSDEAdapter.getNumericFid(fid);
         final SeObjectId seObjectId = new SeObjectId(numericFid);
 
-        final Command<Void> updateCmd = new Command<Void>() {
-            @Override
-            public Void execute(ISession session, SeConnection connection) throws SeException,
-                    IOException {
-                try {
-                    final SeRow row = updateStream.singleRow(seObjectId, typeName, rowColumnNames);
+        final Command<Void> updateCmd =
+                new Command<Void>() {
+                    @Override
+                    public Void execute(ISession session, SeConnection connection)
+                            throws SeException, IOException {
+                        try {
+                            final SeRow row =
+                                    updateStream.singleRow(seObjectId, typeName, rowColumnNames);
 
-                    setRowProperties(modifiedFeature, seCoordRef, mutableColumns, row);
-                    updateStream.execute();
-                    // updateStream.flushBufferedWrites();
-                } finally {
-                    updateStream.close();
-                }
-                return null;
-            }
-        };
+                            setRowProperties(modifiedFeature, seCoordRef, mutableColumns, row);
+                            updateStream.execute();
+                            // updateStream.flushBufferedWrites();
+                        } finally {
+                            updateStream.close();
+                        }
+                        return null;
+                    }
+                };
 
         try {
             session.issue(updateCmd);
@@ -457,12 +434,10 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
 
     /**
      * Inserts a feature into an SeLayer.
-     * 
-     * @param newFeature
-     *            the newly create Feature to insert.
-     * @param session
-     *            the connection to use for the insert operation. Its auto commit mode determines
-     *            whether the operation takes effect immediately or not.
+     *
+     * @param newFeature the newly create Feature to insert.
+     * @param session the connection to use for the insert operation. Its auto commit mode
+     *     determines whether the operation takes effect immediately or not.
      * @throws IOException
      */
     private Number insertSeRow(final SimpleFeature newFeature) throws IOException {
@@ -474,62 +449,69 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
         // this returns only the mutable attributes
         final LinkedHashMap<Integer, String> insertColumns = getInsertableColumnNames();
 
-        final Command<Number> insertCmd = new Command<Number>() {
+        final Command<Number> insertCmd =
+                new Command<Number>() {
 
-            @Override
-            public Number execute(ISession session, SeConnection connection) throws SeException,
-                    IOException {
+                    @Override
+                    public Number execute(ISession session, SeConnection connection)
+                            throws SeException, IOException {
 
-                final SeInsert insertStream = (SeInsert) createStream(SeInsert.class);
-                Number newId = null;
+                        final SeInsert insertStream = (SeInsert) createStream(SeInsert.class);
+                        Number newId = null;
 
-                try {
-                    final SeRow row;
+                        try {
+                            final SeRow row;
 
-                    // ensure we get the next sequence id when the fid is user managed
-                    // and include it in the attributes to set
-                    if (fidReader instanceof FIDReader.UserManagedFidReader) {
-                        newId = getNextAvailableUserManagedId();
-                        if (newId == null) {
-                            LOGGER.finest("There seems not to be a sequence"
-                                    + " for the table, not setting a generated id, "
-                                    + "user ought to be taking care of it");
-                            newId = (Number) newFeature.getAttribute(fidReader.getColumnIndex());
-                        } else {
-                            final int rowIdIndex = fidReader.getColumnIndex();
-                            newFeature.setAttribute(rowIdIndex, newId);
+                            // ensure we get the next sequence id when the fid is user managed
+                            // and include it in the attributes to set
+                            if (fidReader instanceof FIDReader.UserManagedFidReader) {
+                                newId = getNextAvailableUserManagedId();
+                                if (newId == null) {
+                                    LOGGER.finest(
+                                            "There seems not to be a sequence"
+                                                    + " for the table, not setting a generated id, "
+                                                    + "user ought to be taking care of it");
+                                    newId =
+                                            (Number)
+                                                    newFeature.getAttribute(
+                                                            fidReader.getColumnIndex());
+                                } else {
+                                    final int rowIdIndex = fidReader.getColumnIndex();
+                                    newFeature.setAttribute(rowIdIndex, newId);
+                                }
+                            }
+                            String[] rowColumnNames =
+                                    new ArrayList<String>(insertColumns.values())
+                                            .toArray(new String[0]);
+                            String typeName = featureType.getTypeName();
+                            insertStream.intoTable(typeName, rowColumnNames);
+                            insertStream.setWriteMode(true);
+                            row = insertStream.getRowToSet();
+
+                            setRowProperties(newFeature, seCoordRef, insertColumns, row);
+                            insertStream.execute();
+
+                            if (fidReader instanceof FIDReader.SdeManagedFidReader) {
+                                SeObjectId newRowId = insertStream.lastInsertedRowId();
+                                newId = Long.valueOf(newRowId.longValue());
+                            }
+
+                            insertStream.flushBufferedWrites(); // jg: my customer wanted this
+                            // uncommented
+                            versionHandler.editOperationWritten(insertStream);
+                        } catch (Exception e) {
+                            versionHandler.editOperationFailed(insertStream);
+                            if (e instanceof SeException) {
+                                throw (SeException) e;
+                            } else if (e instanceof IOException) {
+                                throw (IOException) e;
+                            }
+                            throw new DataSourceException(e);
                         }
+                        insertStream.close();
+                        return newId;
                     }
-                    String[] rowColumnNames = new ArrayList<String>(insertColumns.values())
-                            .toArray(new String[0]);
-                    String typeName = featureType.getTypeName();
-                    insertStream.intoTable(typeName, rowColumnNames);
-                    insertStream.setWriteMode(true);
-                    row = insertStream.getRowToSet();
-
-                    setRowProperties(newFeature, seCoordRef, insertColumns, row);
-                    insertStream.execute();
-
-                    if (fidReader instanceof FIDReader.SdeManagedFidReader) {
-                        SeObjectId newRowId = insertStream.lastInsertedRowId();
-                        newId = Long.valueOf(newRowId.longValue());
-                    }
-
-                    insertStream.flushBufferedWrites(); // jg: my customer wanted this uncommented
-                    versionHandler.editOperationWritten(insertStream);
-                } catch (Exception e) {
-                    versionHandler.editOperationFailed(insertStream);
-                    if (e instanceof SeException) {
-                        throw (SeException) e;
-                    } else if (e instanceof IOException) {
-                        throw (IOException) e;
-                    }
-                    throw new DataSourceException(e);
-                }
-                insertStream.close();
-                return newId;
-            }
-        };
+                };
 
         final Number newId;
 
@@ -548,22 +530,23 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
      * Sets the SeRow property values by index, taking the index from the mutableColumns keys and
      * the values from <code>feature</code>, using the mutableColumns values to get the feature
      * properties by name.
-     * <p>
-     * This method is intended to be called from inside a
-     * {@link Command#execute(Session, SeConnection)} method
-     * </p>
-     * 
-     * @param feature
-     *            the Feature where to get the property values from
+     *
+     * <p>This method is intended to be called from inside a {@link Command#execute(Session,
+     * SeConnection)} method
+     *
+     * @param feature the Feature where to get the property values from
      * @param seCoordRef
      * @param mutableColumns
      * @param row
      * @throws SeException
      * @throws IOException
      */
-    private static void setRowProperties(final SimpleFeature feature,
-            final SeCoordinateReference seCoordRef, Map<Integer, String> mutableColumns,
-            final SeRow row) throws SeException, IOException {
+    private static void setRowProperties(
+            final SimpleFeature feature,
+            final SeCoordinateReference seCoordRef,
+            Map<Integer, String> mutableColumns,
+            final SeRow row)
+            throws SeException, IOException {
 
         // Now set the values for the new row here...
         int seRowIndex;
@@ -579,12 +562,12 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
 
     /**
      * Called when the layer row id is user managed to ask ArcSDE for the next available ID.
-     * 
+     *
      * @return
      * @throws IOException
      * @throws SeException
      * @return a new available id if possible, {@code null} if thre seems not to be a sequence for
-     *         the table
+     *     the table
      */
     private Number getNextAvailableUserManagedId() throws IOException, SeException {
 
@@ -620,8 +603,8 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
         } else if (Float.class == binding) {
             userFidValue = new Float(newId.floatValue());
         } else {
-            throw new IllegalArgumentException("Can't handle a user managed row id of type "
-                    + binding);
+            throw new IllegalArgumentException(
+                    "Can't handle a user managed row id of type " + binding);
         }
 
         return userFidValue;
@@ -630,22 +613,24 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
     /**
      * Used to set a value on an SeRow object. The values is converted to the appropriate type based
      * on an inspection of the SeColumnDefintion object.
-     * <p>
-     * This method is intended to be called from inside a
-     * {@link Command#execute(Session, SeConnection)} method
-     * </p>
-     * 
+     *
+     * <p>This method is intended to be called from inside a {@link Command#execute(Session,
+     * SeConnection)} method
+     *
      * @param row
      * @param index
      * @param convertedValue
      * @param coordRef
-     * @param attName
-     *            for feedback purposes only in case of failure
-     * @throws IOException
-     *             if failed to set the row value
+     * @param attName for feedback purposes only in case of failure
+     * @throws IOException if failed to set the row value
      */
-    private static void setRowValue(final SeRow row, final int index, final Object value,
-            final SeCoordinateReference coordRef, final String attName) throws IOException {
+    private static void setRowValue(
+            final SeRow row,
+            final int index,
+            final Object value,
+            final SeCoordinateReference coordRef,
+            final String attName)
+            throws IOException {
 
         try {
             final SeColumnDefinition seColumnDefinition = row.getColumnDef(index);
@@ -695,10 +680,18 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
                         TopologyValidationError validationError = validator.getValidationError();
                         String validationErrorMessage = validationError.getMessage();
                         Coordinate coordinate = validationError.getCoordinate();
-                        String errorMessage = "Topology validation error at or near point "
-                                + coordinate + ": " + validationErrorMessage;
-                        throw new DataSourceException("Invalid geometry passed for " + attName
-                                + "\n Geomerty: " + geom + "\n" + errorMessage);
+                        String errorMessage =
+                                "Topology validation error at or near point "
+                                        + coordinate
+                                        + ": "
+                                        + validationErrorMessage;
+                        throw new DataSourceException(
+                                "Invalid geometry passed for "
+                                        + attName
+                                        + "\n Geomerty: "
+                                        + geom
+                                        + "\n"
+                                        + errorMessage);
                     }
                     ArcSDEGeometryBuilder geometryBuilder;
                     geometryBuilder = ArcSDEGeometryBuilder.builderFor(geom.getClass());
@@ -715,17 +708,17 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
 
     /**
      * Returns the row index and column names for all the mutable properties in the sde layer. That
-     * is, those properties whose type is not
-     * {@link SeRegistration#SE_REGISTRATION_ROW_ID_COLUMN_TYPE_SDE}, which are used as row id
-     * columns managed by arcsde.
-     * 
+     * is, those properties whose type is not {@link
+     * SeRegistration#SE_REGISTRATION_ROW_ID_COLUMN_TYPE_SDE}, which are used as row id columns
+     * managed by arcsde.
+     *
      * @return a map keyed by mutable column name and valued by the index of the mutable column name
-     *         in the SeTable structure
+     *     in the SeTable structure
      * @throws IOException
      * @throws NoSuchElementException
      */
-    private LinkedHashMap<Integer, String> getUpdatableColumnNames() throws NoSuchElementException,
-            IOException {
+    private LinkedHashMap<Integer, String> getUpdatableColumnNames()
+            throws NoSuchElementException, IOException {
         if (mutableColumnNames == null) {
             // We are going to inspect the column defintions in order to
             // determine which attributes are actually mutable...
@@ -736,14 +729,17 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
                 // no geometry column, it's a non sptial registered table
                 shapeAttributeName = null;
             } else {
-                shapeAttributeName = session.issue(new Command<String>() {
-                    @Override
-                    public String execute(ISession session, SeConnection connection)
-                            throws SeException, IOException {
-                        SeLayer layer = session.getLayer(typeName);
-                        return layer.getShapeAttributeName(SeLayer.SE_SHAPE_ATTRIBUTE_FID);
-                    }
-                });
+                shapeAttributeName =
+                        session.issue(
+                                new Command<String>() {
+                                    @Override
+                                    public String execute(ISession session, SeConnection connection)
+                                            throws SeException, IOException {
+                                        SeLayer layer = session.getLayer(typeName);
+                                        return layer.getShapeAttributeName(
+                                                SeLayer.SE_SHAPE_ATTRIBUTE_FID);
+                                    }
+                                });
             }
 
             // use LinkedHashMap to respect column order
@@ -807,8 +803,7 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
                 columnName = columnDefinition.getName();
 
                 if (fidReader instanceof FIDReader.SdeManagedFidReader) {
-                    if (columnName.equals(fidReader.getFidColumn()))
-                        continue;
+                    if (columnName.equals(fidReader.getFidColumn())) continue;
                 }
 
                 // ignore SeColumns for which we don't have a known mapping
@@ -845,9 +840,9 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
     }
 
     /**
-     * Creates a feature id for a new feature; the feature id is compound of the
-     * {@value #NEW_FID_PREFIX} plus a UUID.
-     * 
+     * Creates a feature id for a new feature; the feature id is compound of the {@value
+     * #NEW_FID_PREFIX} plus a UUID.
+     *
      * @return
      */
     private String newFid() {
@@ -856,10 +851,9 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
 
     /**
      * Checks if <code>feature</code> has been created by this writer
-     * <p>
-     * A Feature is created but not yet inserted if its id starts with {@link #NEW_FID_PREFIX}
-     * </p>
-     * 
+     *
+     * <p>A Feature is created but not yet inserted if its id starts with {@link #NEW_FID_PREFIX}
+     *
      * @param aFeature
      * @return
      */
@@ -888,12 +882,11 @@ abstract class ArcSdeFeatureWriter implements FeatureWriter<SimpleFeatureType, S
 
         /**
          * Sets the FID, used by datastores only.
-         * 
-         * I would love to protect this for safety reason, i.e. so client classes can't use it by
+         *
+         * <p>I would love to protect this for safety reason, i.e. so client classes can't use it by
          * casting to it.
-         * 
-         * @param id
-         *            The fid to set.
+         *
+         * @param id The fid to set.
          */
         public void setID(String fid) {
             ((FeatureIdImpl) id).setID(fid);

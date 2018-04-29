@@ -19,13 +19,10 @@ package org.geotools.wfs.v1_0;
 import org.geotools.filter.v1_0.OGCConfiguration;
 
 /**
- * Parser configuration for the wfs 1.0 {@link WFS schema}, for capabilities documents use
- * {@link WFSCapabilitiesConfiguration} instead.
- * 
+ * Parser configuration for the wfs 1.0 {@link WFS schema}, for capabilities documents use {@link
+ * WFSCapabilitiesConfiguration} instead.
+ *
  * @generated
- * 
- * 
- * 
  * @source $URL$
  */
 public class WFSConfiguration extends org.geotools.wfs.WFSConfiguration {
@@ -36,28 +33,27 @@ public class WFSConfiguration extends org.geotools.wfs.WFSConfiguration {
      */
     public WFSConfiguration() {
         super(WFS.getInstance());
-        
+
         addDependency(new OGCConfiguration());
     }
-    
+
     protected void configureBindings(org.picocontainer.MutablePicoContainer container) {
         super.configureBindings(container);
         container.registerComponentImplementation(WFS.QueryType, QueryTypeBinding.class);
-        
-        container.registerComponentImplementation(WFS.WFS_TransactionResponseType,
-                WFS_TransactionResponseTypeBinding.class);
-        container.registerComponentImplementation(WFS.WFS_LockFeatureResponseType,
-                WFS_LockFeatureResponseTypeBinding.class);
-        container.registerComponentImplementation(WFS.InsertResultType,
-                InsertResultTypeBinding.class);
-        container.registerComponentImplementation(WFS.TransactionResultType,
-                TransactionResultTypeBinding.class);
+
+        container.registerComponentImplementation(
+                WFS.WFS_TransactionResponseType, WFS_TransactionResponseTypeBinding.class);
+        container.registerComponentImplementation(
+                WFS.WFS_LockFeatureResponseType, WFS_LockFeatureResponseTypeBinding.class);
+        container.registerComponentImplementation(
+                WFS.InsertResultType, InsertResultTypeBinding.class);
+        container.registerComponentImplementation(
+                WFS.TransactionResultType, TransactionResultTypeBinding.class);
         container.registerComponentImplementation(WFS.OperationsType, OperationsTypeBinding.class);
 
         // override feature collection binding
         container.unregisterComponent(org.geotools.wfs.bindings.FeatureCollectionTypeBinding.class);
-        container.registerComponentImplementation(WFS.FeatureCollection,
-                FeatureCollectionTypeBinding.class);
-
+        container.registerComponentImplementation(
+                WFS.FeatureCollection, FeatureCollectionTypeBinding.class);
     }
 }

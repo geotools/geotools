@@ -19,21 +19,16 @@ package org.geotools.data.mysql;
 import org.geotools.jdbc.JDBCPrimaryKeyOnlineTest;
 import org.geotools.jdbc.JDBCPrimaryKeyTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class MySQLPrimaryKeyOnlineTest extends JDBCPrimaryKeyOnlineTest {
 
     @Override
     protected JDBCPrimaryKeyTestSetup createTestSetup() {
         return new MySQLPrimaryKeyTestSetup();
     }
-    
+
     @Override
     public void testSequencedPrimaryKey() throws Exception {
-        //seems mysql does not really do explicit sequences...
+        // seems mysql does not really do explicit sequences...
     }
-
 }

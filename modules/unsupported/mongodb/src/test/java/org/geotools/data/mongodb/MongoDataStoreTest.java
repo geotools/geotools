@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2015, Boundless
  *
@@ -17,10 +17,11 @@
  */
 package org.geotools.data.mongodb;
 
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.Point;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
 import org.geotools.data.Transaction;
@@ -32,9 +33,6 @@ import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Point;
 
 public abstract class MongoDataStoreTest extends MongoTestSupport {
 
@@ -53,22 +51,24 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
         assertNotNull(schema);
 
         assertNotNull(schema.getDescriptor("geometry"));
-        assertTrue(Geometry.class.isAssignableFrom(schema.getDescriptor("geometry").getType().getBinding()));
+        assertTrue(
+                Geometry.class.isAssignableFrom(
+                        schema.getDescriptor("geometry").getType().getBinding()));
     }
 
     public void testGetFeatureReader() throws Exception {
-        SimpleFeatureReader reader = (SimpleFeatureReader) 
-            dataStore.getFeatureReader(new Query("ft1"), Transaction.AUTO_COMMIT);
+        SimpleFeatureReader reader =
+                (SimpleFeatureReader)
+                        dataStore.getFeatureReader(new Query("ft1"), Transaction.AUTO_COMMIT);
         try {
             for (int i = 0; i < 3; i++) {
                 assertTrue(reader.hasNext());
                 SimpleFeature f = reader.next();
 
                 assertFeature(f);
-            } 
+            }
             assertFalse(reader.hasNext());
-        }
-        finally {
+        } finally {
             reader.close();
         }
     }
@@ -93,7 +93,9 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
         f.setAttribute("properties.intProperty", 3);
         f.setAttribute("properties.doubleProperty", 3.3);
         f.setAttribute("properties.stringProperty", "three");
-        f.setAttribute("properties.dateProperty", MongoTestSetup.parseDate("2015-01-24T14:28:16.000+01:00"));
+        f.setAttribute(
+                "properties.dateProperty",
+                MongoTestSetup.parseDate("2015-01-24T14:28:16.000+01:00"));
         w.write();
         w.close();
     }
@@ -112,16 +114,16 @@ public abstract class MongoDataStoreTest extends MongoTestSupport {
         assertFalse(typeNames.contains("ft2"));
 
         dataStore.createSchema(tb.buildFeatureType());
-        assertEquals(typeNames.size()+1, dataStore.getTypeNames().length);
+        assertEquals(typeNames.size() + 1, dataStore.getTypeNames().length);
         typeNames = Arrays.asList(dataStore.getTypeNames());
         assertTrue(typeNames.contains("ft2"));
 
         SimpleFeatureSource source = dataStore.getFeatureSource("ft2");
         assertEquals(0, source.getCount(new Query("ft2")));
-        
+
         FeatureWriter w = dataStore.getFeatureWriterAppend("ft2", Transaction.AUTO_COMMIT);
         SimpleFeature f = (SimpleFeature) w.next();
-        f.setDefaultGeometry(new GeometryBuilder().point(1,1));
+        f.setDefaultGeometry(new GeometryBuilder().point(1, 1));
         f.setAttribute("intProperty", 1);
         w.write();
 

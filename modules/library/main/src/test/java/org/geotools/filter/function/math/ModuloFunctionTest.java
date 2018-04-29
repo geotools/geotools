@@ -17,7 +17,6 @@
 package org.geotools.filter.function.math;
 
 import junit.framework.TestCase;
-
 import org.geotools.factory.CommonFactoryFinder;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Function;
@@ -109,5 +108,4 @@ public class ModuloFunctionTest extends TestCase {
 
         fail("IllegalArgumentException not thrown");
     }
-
 }

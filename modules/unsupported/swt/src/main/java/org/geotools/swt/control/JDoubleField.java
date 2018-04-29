@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -25,20 +25,16 @@ import org.geotools.data.Parameter;
 
 /**
  * Widget for double values
- * 
+ *
  * @author Andrea Antonello (www.hydrologis.com)
  * @author gdavis
- *
- *
- *
- *
  * @source $URL$
  */
 public class JDoubleField extends ParamField {
 
     private Text text;
 
-    public JDoubleField( Composite parent, Parameter< ? > parameter ) {
+    public JDoubleField(Composite parent, Parameter<?> parameter) {
         super(parent, parameter);
     }
 
@@ -60,7 +56,7 @@ public class JDoubleField extends ParamField {
         }
     }
 
-    public void setValue( Object value ) {
+    public void setValue(Object value) {
         text.setText(((Double) value).toString());
     }
 
@@ -73,5 +69,4 @@ public class JDoubleField extends ParamField {
             return false;
         }
     }
-
 }

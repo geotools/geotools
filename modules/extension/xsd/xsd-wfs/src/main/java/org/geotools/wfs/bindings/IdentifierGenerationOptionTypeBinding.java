@@ -17,19 +17,17 @@
 package org.geotools.wfs.bindings;
 
 import javax.xml.namespace.QName;
-
 import net.opengis.wfs.WfsFactory;
-
 import org.geotools.wfs.WFS;
 import org.geotools.xml.AbstractSimpleBinding;
 import org.geotools.xml.InstanceComponent;
-
 
 /**
  * Binding object for the type http://www.opengis.net/wfs:IdentifierGenerationOptionType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:simpleType name="IdentifierGenerationOptionType"&gt;
  *      &lt;xsd:restriction base="xsd:string"&gt;
@@ -72,26 +70,20 @@ import org.geotools.xml.InstanceComponent;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class IdentifierGenerationOptionTypeBinding extends AbstractSimpleBinding {
-    public IdentifierGenerationOptionTypeBinding(WfsFactory factory) {
-    }
+    public IdentifierGenerationOptionTypeBinding(WfsFactory factory) {}
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return WFS.IdentifierGenerationOptionType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -102,14 +94,14 @@ public class IdentifierGenerationOptionTypeBinding extends AbstractSimpleBinding
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(InstanceComponent instance, Object value)
-        throws Exception {
-        //TODO: implement and remove call to super
+    public Object parse(InstanceComponent instance, Object value) throws Exception {
+        // TODO: implement and remove call to super
         return super.parse(instance, value);
     }
 }

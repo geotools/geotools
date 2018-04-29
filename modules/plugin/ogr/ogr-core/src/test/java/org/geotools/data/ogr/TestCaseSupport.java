@@ -16,7 +16,9 @@
  */
 package org.geotools.data.ogr;
 
-
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.io.ParseException;
+import com.vividsolutions.jts.io.WKTReader;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -24,7 +26,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestResult;
+import junit.framework.TestSuite;
 import org.geotools.TestData;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
@@ -32,63 +37,42 @@ import org.geotools.util.URLs;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.io.ParseException;
-import com.vividsolutions.jts.io.WKTReader;
-
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
-import junit.framework.TestSuite;
-
-
 /**
- * Base class for test suite. This class is not abstract for the purpose of
- * {@link TestCaseSupportTest}, but should not be instantiated otherwise.
- * It should be extented (which is why the constructor is protected).
- * <p>
- * Note: a nearly identical copy of this file exists in the {@code ext/shape} module.
+ * Base class for test suite. This class is not abstract for the purpose of {@link
+ * TestCaseSupportTest}, but should not be instantiated otherwise. It should be extented (which is
+ * why the constructor is protected).
+ *
+ * <p>Note: a nearly identical copy of this file exists in the {@code ext/shape} module.
  *
  * @source $URL$
  * @version $Id$
- * @author  Ian Schneider
- * @author  Martin Desruisseaux
+ * @author Ian Schneider
+ * @author Martin Desruisseaux
  */
 public abstract class TestCaseSupport extends TestCase {
-    final static String STATE_POP = "shapes/statepop.shp";
+    static final String STATE_POP = "shapes/statepop.shp";
 
-    final static String MIXED = "mif/mixed.MIF";
+    static final String MIXED = "mif/mixed.MIF";
 
-    
     /**
-     * Set to {@code true} if {@code println} are wanted during normal execution.
-     * It doesn't apply to message displayed in case of errors.
+     * Set to {@code true} if {@code println} are wanted during normal execution. It doesn't apply
+     * to message displayed in case of errors.
      */
     protected static boolean verbose = false;
 
-    /**
-     * data store factory class
-     */
+    /** data store factory class */
     private Class<? extends OGRDataStoreFactory> dataStoreFactoryClass;
 
-    /**
-     * the data store factory, created during setup
-     */
+    /** the data store factory, created during setup */
     protected OGRDataStoreFactory dataStoreFactory;
 
-    /**
-     * the ogr interface
-     */
+    /** the ogr interface */
     protected OGR ogr;
 
-    /**
-     * Stores all temporary files here - delete on tear down.
-     */
+    /** Stores all temporary files here - delete on tear down. */
     private final List tmpFiles = new ArrayList();
 
-    /**
-     * availability flag that tracks if ogr library is available
-     */
+    /** availability flag that tracks if ogr library is available */
     private static Boolean AVAILABLE;
 
     protected TestCaseSupport(Class<? extends OGRDataStoreFactory> dataStoreFactoryClass) {
@@ -103,16 +87,18 @@ public abstract class TestCaseSupport extends TestCase {
         }
     }
 
-    /**
-     * Override which checks if the fixture is available. If not the test is not
-     * executed.
-     */
+    /** Override which checks if the fixture is available. If not the test is not executed. */
     @Override
     public void run(TestResult result) {
         if (gdalAvailable()) {
             super.run(result);
         } else {
-            System.out.println("Skipping test " + getClass().getSimpleName()+ " "+ getName() + " since GDAL is not available");
+            System.out.println(
+                    "Skipping test "
+                            + getClass().getSimpleName()
+                            + " "
+                            + getName()
+                            + " since GDAL is not available");
         }
     }
 
@@ -136,8 +122,8 @@ public abstract class TestCaseSupport extends TestCase {
     }
 
     /**
-     * Deletes all temporary files created by {@link #getTempFile}.
-     * This method is automatically run after each test.
+     * Deletes all temporary files created by {@link #getTempFile}. This method is automatically run
+     * after each test.
      */
     protected void tearDown() throws Exception {
         // it seems that not all files marked as temp will get erased, perhaps
@@ -146,42 +132,37 @@ public abstract class TestCaseSupport extends TestCase {
         final Iterator f = tmpFiles.iterator();
         while (f.hasNext()) {
             File targetFile = (File) f.next();
-            
+
             targetFile.deleteOnExit();
-            dieDieDIE( sibling(targetFile, "dbf") );
-            dieDieDIE( sibling(targetFile, "shx") );
-            dieDieDIE( sibling(targetFile, "qix") );
-            dieDieDIE( sibling(targetFile, "fix") );
+            dieDieDIE(sibling(targetFile, "dbf"));
+            dieDieDIE(sibling(targetFile, "shx"));
+            dieDieDIE(sibling(targetFile, "qix"));
+            dieDieDIE(sibling(targetFile, "fix"));
             // TODDO: r i tree must die
-            dieDieDIE( sibling(targetFile, "prj") );
-            dieDieDIE( sibling(targetFile, "shp.xml") );
-                        
+            dieDieDIE(sibling(targetFile, "prj"));
+            dieDieDIE(sibling(targetFile, "shp.xml"));
+
             f.remove();
         }
         super.tearDown();
     }
-    
-    private void dieDieDIE( File file ){
-        if( file.exists() ){
-            if( file.delete() ){
+
+    private void dieDieDIE(File file) {
+        if (file.exists()) {
+            if (file.delete()) {
                 // dead
-            }
-            else {
+            } else {
                 file.deleteOnExit(); // dead later
             }
         }
     }
-    
-    /**
-     * Helper method for {@link #tearDown}.
-     */
+
+    /** Helper method for {@link #tearDown}. */
     private static File sibling(final File f, final String ext) {
         return new File(f.getParent(), sibling(f.getName(), ext));
     }
 
-    /**
-     * Helper method for {@link #copyShapefiles}.
-     */
+    /** Helper method for {@link #copyShapefiles}. */
     private static String sibling(String name, final String ext) {
         final int s = name.lastIndexOf('.');
         if (s >= 0) {
@@ -193,7 +174,7 @@ public abstract class TestCaseSupport extends TestCase {
     /**
      * Read a geometry of the given name.
      *
-     * @param  wktResource The resource name to load, without its {@code .wkt} extension.
+     * @param wktResource The resource name to load, without its {@code .wkt} extension.
      * @return The geometry.
      * @throws IOException if reading failed.
      */
@@ -212,9 +193,7 @@ public abstract class TestCaseSupport extends TestCase {
         return geom;
     }
 
-    /**
-     * Returns the first feature in the given feature collection.
-     */
+    /** Returns the first feature in the given feature collection. */
     protected SimpleFeature firstFeature(FeatureCollection<SimpleFeatureType, SimpleFeature> fc) {
         FeatureIterator<SimpleFeature> features = fc.features();
         try {
@@ -226,28 +205,30 @@ public abstract class TestCaseSupport extends TestCase {
 
     /**
      * Creates a temporary file, to be automatically deleted at the end of the test suite.
+     *
      * @param filePrefix TODO
      * @param extension TODO
      */
     protected File getTempFile(String filePrefix, String extension) throws IOException {
         File tmpFile = File.createTempFile(filePrefix, extension, new File("./target"));
         assertTrue(tmpFile.isFile());
-        
+
         // keep track of all temp files so we can delete them
         markTempFile(tmpFile);
-        
+
         return tmpFile;
     }
 
-    private void markTempFile( File tmpFile ) {
-        tmpFiles.add(tmpFile);        
+    private void markTempFile(File tmpFile) {
+        tmpFiles.add(tmpFile);
     }
 
     /**
      * Copies the specified shape file into the {@code test-data} directory, together with its
      * sibling ({@code .dbf}, {@code .shp}, {@code .shx} and {@code .prj} files).
      */
-    protected void copy(final String name, String[] requiredExtensions, String[] optionalExtensions) throws IOException {
+    protected void copy(final String name, String[] requiredExtensions, String[] optionalExtensions)
+            throws IOException {
         for (int i = 0; i < requiredExtensions.length; i++) {
             assertTrue(TestData.copy(this, sibling(name, requiredExtensions[i])).canRead());
         }
@@ -259,37 +240,35 @@ public abstract class TestCaseSupport extends TestCase {
             }
         }
     }
-    
+
     /**
      * Returns the absolute path of a test file, given its location in the test data set
-     * 
+     *
      * @param testData
      * @return
      * @throws IOException
      */
     protected String getAbsolutePath(String testData) throws IOException {
         if (testData.endsWith(".shp"))
-            copy(testData, new String[] { "shp", "dbf", "shx" }, new String[] { "prj" });
+            copy(testData, new String[] {"shp", "dbf", "shx"}, new String[] {"prj"});
         else if (testData.endsWith(".MIF"))
-            copy(testData, new String[] { "MIF", "MID" }, new String[0]);
+            copy(testData, new String[] {"MIF", "MID"}, new String[0]);
         File f = URLs.urlToFile(TestData.url(this, testData));
         return f.getAbsolutePath();
     }
 
-    /**
-     * Returns the test suite for the given class.
-     */
+    /** Returns the test suite for the given class. */
     public static Test suite(Class c) {
         return new TestSuite(c);
     }
-    
+
     /**
      * True if OGR supports the specified format
+     *
      * @param format
      * @return
      */
     protected boolean ogrSupports(String format) {
         return dataStoreFactory.getAvailableDrivers().contains(format);
     }
-
 }

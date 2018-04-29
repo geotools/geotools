@@ -16,6 +16,8 @@
  */
 package org.geotools.gml3.simple;
 
+import com.vividsolutions.jts.geom.MultiPoint;
+import com.vividsolutions.jts.geom.Point;
 import org.geotools.gml2.simple.GMLWriter;
 import org.geotools.gml2.simple.GeometryEncoder;
 import org.geotools.gml2.simple.QualifiedName;
@@ -23,19 +25,17 @@ import org.geotools.gml3.GML;
 import org.geotools.xml.Encoder;
 import org.xml.sax.helpers.AttributesImpl;
 
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.Point;
-
 /**
  * Encodes a GML3 multi point
- * 
+ *
  * @author Justin Deoliveira, OpenGeo
  * @author Andrea Aime - GeoSolutions
  */
 class MultiPointEncoder extends GeometryEncoder<MultiPoint> {
     static final QualifiedName MULTI_POINT = new QualifiedName(GML.NAMESPACE, "MultiPoint", "gml");
 
-    static final QualifiedName POINT_MEMBER = new QualifiedName(GML.NAMESPACE, "pointMember", "gml");
+    static final QualifiedName POINT_MEMBER =
+            new QualifiedName(GML.NAMESPACE, "pointMember", "gml");
 
     PointEncoder pe;
 
@@ -63,5 +63,4 @@ class MultiPointEncoder extends GeometryEncoder<MultiPoint> {
 
         handler.endElement(multiPoint);
     }
-
 }

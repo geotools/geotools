@@ -3,7 +3,6 @@ package org.geotools.data.efeature;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -12,35 +11,34 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.opengis.feature.simple.SimpleFeature;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class EFeatureDialect {
 
-    // ----------------------------------------------------- 
+    // -----------------------------------------------------
     //  Public property names
     // -----------------------------------------------------
-    
+
     /**
      * {@link EFeatureContext} instance ID.
+     *
      * <p>
      */
     public static final String EFEATURE_CONTEXT_ID = "eContextID";
 
     /**
      * Extension point id to an {@link EditingDomain} instance.
-     * <p>
-     * All readers and writers are forces to use given {@link EditingDomain} instance for read/write
-     * EMF model access.
+     *
+     * <p>All readers and writers are forces to use given {@link EditingDomain} instance for
+     * read/write EMF model access.
+     *
      * <p>
      */
     public static final String EDITING_DOMAIN_ID = "eDomainID";
 
     /**
-     * The name space URI of the {@link EPackage} which the {@link EClass} with name
-     * {@link #EFOLDERS_QUERY} belongs.
+     * The name space URI of the {@link EPackage} which the {@link EClass} with name {@link
+     * #EFOLDERS_QUERY} belongs.
+     *
      * <p>
      */
     public static final String EPACKAGE_NS_URI = "eNsURI";
@@ -48,45 +46,46 @@ public class EFeatureDialect {
     /**
      * {@link URI} to the {@link Resource} which the {@link EFeatureDataStore} instance fetches
      * {@link SimpleFeature}s from.
-     * <p>
-     * The {@link URI} points to a {@link Resource} managed by the {@link EditingDomain} specified
-     * by {@link #EDITING_DOMAIN_ID}.
-     * <p>
-     * All readers and writers are forces to use given {@link EditingDomain} instance for read/write
-     * access to the {@link Resource}.
+     *
+     * <p>The {@link URI} points to a {@link Resource} managed by the {@link EditingDomain}
+     * specified by {@link #EDITING_DOMAIN_ID}.
+     *
+     * <p>All readers and writers are forces to use given {@link EditingDomain} instance for
+     * read/write access to the {@link Resource}.
+     *
      * <p>
      */
     public static final String ERESOURCE_URI = "eURI";
-    
+
     /**
-     * A query that defines which {@link EFeature} folders to include in a {@link EFeatureDataStore}.
-     * <p>
-     * This parameter has the following syntax:
-     * 
+     * A query that defines which {@link EFeature} folders to include in a {@link
+     * EFeatureDataStore}.
+     *
+     * <p>This parameter has the following syntax:
+     *
      * <pre>
      * eFolders=&lt;eFolder1&gt;+...+&lt;eFolderN&gt;
-     * 
+     *
      * where
-     * 
+     *
      * eFolder = &lt;eName&gt;[:&lt;eQuery&gt;|$&lt;eFragment&gt;]
      * </pre>
      */
     public static final String EFOLDERS_QUERY = "eFolders";
-    
+
     /**
-     * A boolean flag indication if {@link EFeature}s can be 
-     * written ({@link EFeatureWriter#UPDATE} | 
-     * {@link EFeatureWriter#APPEND}).  
+     * A boolean flag indication if {@link EFeature}s can be written ({@link EFeatureWriter#UPDATE}
+     * | {@link EFeatureWriter#APPEND}).
      */
     public static final String EFEATURE_WRITABLE = "eWritable";
 
-    // ----------------------------------------------------- 
+    // -----------------------------------------------------
     //  EFeatureDialog methods
     // -----------------------------------------------------
-    
+
     /**
      * Create connection parameter {@link Map} from required parameter values
-     * 
+     *
      * @param eContextID - id of {@link EFeatureContext} instance
      * @param eDomainID - id of {@link EditingDomain} instance
      * @param eNsURI TODO
@@ -94,53 +93,42 @@ public class EFeatureDialect {
      * @param eFolders - {@link EFeature} folders query
      * @return a {@link Map} of connection parameters
      */
-    public Map<String, Serializable> toParams(String eContextID, String eDomainID, 
-            String eNsURI, String eURI, String eFolders) {
+    public Map<String, Serializable> toParams(
+            String eContextID, String eDomainID, String eNsURI, String eURI, String eFolders) {
         Map<String, Serializable> params = new HashMap<String, Serializable>(1);
         params.put(EFEATURE_CONTEXT_ID, eContextID);
         params.put(EDITING_DOMAIN_ID, eDomainID);
-        params.put(EPACKAGE_NS_URI, eNsURI);        
+        params.put(EPACKAGE_NS_URI, eNsURI);
         params.put(ERESOURCE_URI, eURI);
         params.put(EFOLDERS_QUERY, eFolders);
         return params;
     }
 
-    /**
-     * Parse {@link #EFOLDERS_QUERY} parameter into folders
-     */
+    /** Parse {@link #EFOLDERS_QUERY} parameter into folders */
     public String[] toFolderQueries(String eFolders) {
         return (isSane(eFolders) ? eFolders.split("+") : null);
     }
 
-    /**
-     * Get folder eName element in {@link #EFOLDERS_QUERY} specification
-     */
+    /** Get folder eName element in {@link #EFOLDERS_QUERY} specification */
     public String getFolderName(String eFolder) {
         int i = eFolder.indexOf(':');
-        if (i == -1)
-            i = eFolder.indexOf('$');
+        if (i == -1) i = eFolder.indexOf('$');
         return i == -1 ? eFolder : eFolder.substring(0, i);
     }
 
-    /**
-     * Get folder eQuery element in {@link #EFOLDERS_QUERY} specification
-     */
+    /** Get folder eQuery element in {@link #EFOLDERS_QUERY} specification */
     public String getFolderQuery(String eFolder) {
         int i = eFolder.indexOf(':');
         return i == -1 ? null : eFolder.substring(i + 1);
     }
 
-    /**
-     * Get folder eFragment element in {@link #EFOLDERS_QUERY} specification
-     */
+    /** Get folder eFragment element in {@link #EFOLDERS_QUERY} specification */
     public String getFolderFragment(String eFolder) {
         int i = eFolder.indexOf('$');
         return i == -1 ? null : eFolder.substring(i + 1);
     }
 
-    /**
-     * Concatenate folders into a {@link #EFOLDERS_QUERY} syntax
-     */
+    /** Concatenate folders into a {@link #EFOLDERS_QUERY} syntax */
     public String toFoldersQuery(String[] eFolders) {
         StringBuilder builder = new StringBuilder();
         for (String it : eFolders) {
@@ -154,7 +142,7 @@ public class EFeatureDialect {
 
     /**
      * Get folder query specification
-     * 
+     *
      * @param eName - name of {@link EFeature} folder
      * @param eQuery - {@link EFeature} query
      * @param eFragment - {@link EFeature} {@link EObject parent} fragment
@@ -173,5 +161,4 @@ public class EFeatureDialect {
     public boolean isSane(String spec) {
         return !(spec == null || spec.length() == 0);
     }
-
 }

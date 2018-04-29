@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -21,54 +21,70 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Map;
-
 import javax.sql.DataSource;
-
 import org.apache.commons.dbcp.BasicDataSource;
-import org.geotools.data.DataSourceException;
 import org.geotools.data.DataAccessFactory.Param;
+import org.geotools.data.DataSourceException;
 import org.geotools.data.Parameter;
 
 /**
  * A datasource factory using DBCP connection pool
- * 
+ *
  * @author Andrea Aime - TOPP
- * 
- *
- *
- *
  * @source $URL$
  */
 public class DBCPDataSourceFactory extends AbstractDataSourceFactorySpi {
 
-    public static final Param DSTYPE = new Param("dstype", String.class, "Must be DBCP", false,
-            null, Collections.singletonMap(Parameter.LEVEL, "program"));
-    
-    public static final Param USERNAME = new Param("username", String.class,
-            "User name to login as", false);
+    public static final Param DSTYPE =
+            new Param(
+                    "dstype",
+                    String.class,
+                    "Must be DBCP",
+                    false,
+                    null,
+                    Collections.singletonMap(Parameter.LEVEL, "program"));
 
-    public static final Param PASSWORD = new Param("password", String.class,
-            "Password used to login", false);
+    public static final Param USERNAME =
+            new Param("username", String.class, "User name to login as", false);
 
-    public static final Param JDBC_URL = new Param("jdbcUrl", String.class,
-            "The JDBC url (check the JDBC driver docs to find out its format)", true);
+    public static final Param PASSWORD =
+            new Param("password", String.class, "Password used to login", false);
 
-    public static final Param DRIVERCLASS = new Param("driverClassName", String.class,
-            "The JDBC driver class name (check the JDBC driver docs to find out its name)", true);
+    public static final Param JDBC_URL =
+            new Param(
+                    "jdbcUrl",
+                    String.class,
+                    "The JDBC url (check the JDBC driver docs to find out its format)",
+                    true);
 
-    public static final Param MAXACTIVE = new Param("maxActive", Integer.class,
-            "The maximum number of active connections in the pool", true);
+    public static final Param DRIVERCLASS =
+            new Param(
+                    "driverClassName",
+                    String.class,
+                    "The JDBC driver class name (check the JDBC driver docs to find out its name)",
+                    true);
 
-    public static final Param MAXIDLE = new Param("maxIdle", Integer.class,
-            "The maximum number of idle connections in the pool", true);
+    public static final Param MAXACTIVE =
+            new Param(
+                    "maxActive",
+                    Integer.class,
+                    "The maximum number of active connections in the pool",
+                    true);
 
-    private static final Param[] PARAMS = new Param[] { DSTYPE, DRIVERCLASS, JDBC_URL, USERNAME, PASSWORD,
-            MAXACTIVE, MAXIDLE };
+    public static final Param MAXIDLE =
+            new Param(
+                    "maxIdle",
+                    Integer.class,
+                    "The maximum number of idle connections in the pool",
+                    true);
+
+    private static final Param[] PARAMS =
+            new Param[] {DSTYPE, DRIVERCLASS, JDBC_URL, USERNAME, PASSWORD, MAXACTIVE, MAXIDLE};
 
     public DataSource createDataSource(Map params) throws IOException {
         return createNewDataSource(params);
     }
-    
+
     public boolean canProcess(Map params) {
         return super.canProcess(params) && "DBCP".equals(params.get("dstype"));
     }
@@ -88,7 +104,8 @@ public class DBCPDataSourceFactory extends AbstractDataSourceFactorySpi {
         try {
             conn = dataSource.getConnection();
         } catch (SQLException e) {
-            throw new DataSourceException("Connection pool improperly set up: " + e.getMessage(), e);
+            throw new DataSourceException(
+                    "Connection pool improperly set up: " + e.getMessage(), e);
         } finally {
             // close the connection at once
             if (conn != null)
@@ -117,5 +134,4 @@ public class DBCPDataSourceFactory extends AbstractDataSourceFactorySpi {
         }
         return true;
     }
-
 }

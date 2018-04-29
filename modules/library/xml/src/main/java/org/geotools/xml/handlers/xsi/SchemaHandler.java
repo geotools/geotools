@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -28,7 +28,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
-
 import org.geotools.xml.SchemaFactory;
 import org.geotools.xml.XSIElementHandler;
 import org.geotools.xml.schema.All;
@@ -50,14 +49,11 @@ import org.xml.sax.SAXException;
 
 /**
  * SchemaHandler purpose.
- * <p>
- * represents a Schema element
- * </p>
- * 
+ *
+ * <p>represents a Schema element
+ *
  * @author dzwiers, Refractions Research, Inc. http://www.refractions.net
  * @author $Author:$ (last modification)
- *
- *
  * @source $URL$
  * @version $Id$
  */
@@ -66,7 +62,8 @@ public class SchemaHandler extends XSIElementHandler {
     public static final String namespaceURI = "http://www.w3.org/2001/XMLSchema";
 
     /** 'schema' */
-    public final static String LOCALNAME = "schema";
+    public static final String LOCALNAME = "schema";
+
     private String id;
     private String prefix;
     private URI targetNamespace;
@@ -88,26 +85,24 @@ public class SchemaHandler extends XSIElementHandler {
     private Schema schema = null;
     private HashMap prefixCache;
 
-    /**
-     * @see java.lang.Object#hashCode()
-     */
+    /** @see java.lang.Object#hashCode() */
     public int hashCode() {
-        return LOCALNAME.hashCode() * ((id == null) ? 1 : id.hashCode()) * ((version == null) ? 1 : version.hashCode())
+        return LOCALNAME.hashCode()
+                * ((id == null) ? 1 : id.hashCode())
+                * ((version == null) ? 1 : version.hashCode())
                 * ((targetNamespace == null) ? 1 : targetNamespace.hashCode());
     }
 
-    /**
-     * @see org.xml.sax.ContentHandler#startPrefixMapping(java.lang.String, java.lang.String)
-     */
-    public void startPrefixMapping( String pref, String uri1 ) {
+    /** @see org.xml.sax.ContentHandler#startPrefixMapping(java.lang.String, java.lang.String) */
+    public void startPrefixMapping(String pref, String uri1) {
         if (targetNamespace == null) {
             if (prefixCache == null) {
                 prefixCache = new HashMap();
             }
-            
-            if( !pref.trim().equals("") || !prefixCache.containsKey(uri1) )
+
+            if (!pref.trim().equals("") || !prefixCache.containsKey(uri1))
                 prefixCache.put(uri1, pref);
-                
+
             if (this.uri == null && (pref == null || "".equals(pref)))
                 try {
                     this.uri = new URI(uri1);
@@ -123,9 +118,11 @@ public class SchemaHandler extends XSIElementHandler {
     }
 
     /**
-     * @see org.geotools.xml.XSIElementHandler#startElement(java.lang.String, java.lang.String, org.xml.sax.Attributes)
+     * @see org.geotools.xml.XSIElementHandler#startElement(java.lang.String, java.lang.String,
+     *     org.xml.sax.Attributes)
      */
-    public void startElement( String namespaceURI1, String localName, Attributes atts ) throws SAXException {
+    public void startElement(String namespaceURI1, String localName, Attributes atts)
+            throws SAXException {
         // targetNamespace
         String targetNamespace1 = atts.getValue("", "targetNamespace");
 
@@ -143,7 +140,7 @@ public class SchemaHandler extends XSIElementHandler {
         if ((prefixCache != null) && (targetNamespace1 != null) && (!targetNamespace1.equals(""))) {
             Iterator i = prefixCache.keySet().iterator();
 
-            while( (i != null) && i.hasNext() ) {
+            while ((i != null) && i.hasNext()) {
                 String uriT = (String) i.next();
 
                 if (targetNamespace1.equals(uriT)) {
@@ -206,10 +203,8 @@ public class SchemaHandler extends XSIElementHandler {
         }
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String, java.lang.String)
-     */
-    public XSIElementHandler getHandler( String namespaceURI1, String localName ) {
+    /** @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String, java.lang.String) */
+    public XSIElementHandler getHandler(String namespaceURI1, String localName) {
         // check that we are working with a known namespace
         if (SchemaHandler.namespaceURI.equalsIgnoreCase(namespaceURI1)) {
             // child elements:
@@ -329,22 +324,18 @@ public class SchemaHandler extends XSIElementHandler {
         return null;
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#getLocalName()
-     */
+    /** @see org.geotools.xml.XSIElementHandler#getLocalName() */
     public String getLocalName() {
         return LOCALNAME;
     }
 
     /**
-     * <p>
      * creates a smaller, more compact version of the schema
-     * </p>
-     * 
+     *
      * @param thisURI
      * @throws SAXException
      */
-    protected Schema compress( URI thisURI ) throws SAXException {
+    protected Schema compress(URI thisURI) throws SAXException {
         if (schema != null) {
             return schema; // already compressed.
         }
@@ -367,7 +358,7 @@ public class SchemaHandler extends XSIElementHandler {
             // do these first
             it = includes.iterator();
 
-            while( it.hasNext() ) {
+            while (it.hasNext()) {
                 IncludeHandler inc = (IncludeHandler) it.next();
                 logger.finest("compressing include " + inc.getSchemaLocation());
 
@@ -405,7 +396,7 @@ public class SchemaHandler extends XSIElementHandler {
             LinkedList imports1 = new LinkedList();
             it = this.imports.iterator();
 
-            while( it.hasNext() ) {
+            while (it.hasNext()) {
                 Object obj = it.next();
 
                 if (obj instanceof ImportHandler) {
@@ -428,7 +419,9 @@ public class SchemaHandler extends XSIElementHandler {
                         }
                     }
 
-                    Schema cs = SchemaFactory.getInstance(imp.getNamespace(), incURI, logger.getLevel());
+                    Schema cs =
+                            SchemaFactory.getInstance(
+                                    imp.getNamespace(), incURI, logger.getLevel());
 
                     imports1.add(cs);
                 } else {
@@ -464,7 +457,7 @@ public class SchemaHandler extends XSIElementHandler {
         if (simpleTypes != null) {
             it = simpleTypes.iterator();
             HashSet cache = new HashSet();
-            while( it.hasNext() ) {
+            while (it.hasNext()) {
                 Object t = it.next();
                 if (t instanceof SimpleTypeHandler) {
                     SimpleTypeHandler tt = (SimpleTypeHandler) t;
@@ -473,8 +466,7 @@ public class SchemaHandler extends XSIElementHandler {
                 }
             }
             it = cache.iterator();
-            while( it.hasNext() )
-                simpleTypes.add(it.next());
+            while (it.hasNext()) simpleTypes.add(it.next());
 
             TreeSet tmp = new TreeSet(SchemaComparator.getInstance());
             tmp.addAll(simpleTypes);
@@ -484,7 +476,7 @@ public class SchemaHandler extends XSIElementHandler {
         if (attributeGroups != null) {
             it = attributeGroups.iterator();
             HashSet cache = new HashSet();
-            while( it.hasNext() ) {
+            while (it.hasNext()) {
                 Object t = it.next();
                 if (t instanceof AttributeGroupHandler) {
                     AttributeGroupHandler tt = (AttributeGroupHandler) t;
@@ -493,19 +485,18 @@ public class SchemaHandler extends XSIElementHandler {
                 }
             }
             it = cache.iterator();
-            while( it.hasNext() )
-                attributeGroups.add(it.next());
+            while (it.hasNext()) attributeGroups.add(it.next());
 
             TreeSet tmp = new TreeSet(SchemaComparator.getInstance());
             tmp.addAll(attributeGroups);
-            schema1.attributeGroups = (AttributeGroup[]) tmp.toArray(new AttributeGroup[tmp
-                    .size()]);
+            schema1.attributeGroups =
+                    (AttributeGroup[]) tmp.toArray(new AttributeGroup[tmp.size()]);
         }
 
         if (attributes != null) {
             it = attributes.iterator();
             HashSet cache = new HashSet();
-            while( it.hasNext() ) {
+            while (it.hasNext()) {
                 Object t = it.next();
                 if (t instanceof AttributeHandler) {
                     AttributeHandler tt = (AttributeHandler) t;
@@ -514,8 +505,7 @@ public class SchemaHandler extends XSIElementHandler {
                 }
             }
             it = cache.iterator();
-            while( it.hasNext() )
-                attributes.add(it.next());
+            while (it.hasNext()) attributes.add(it.next());
 
             TreeSet tmp = new TreeSet(SchemaComparator.getInstance());
             tmp.addAll(attributes);
@@ -525,7 +515,7 @@ public class SchemaHandler extends XSIElementHandler {
         if (complexTypes != null) {
             it = complexTypes.iterator();
             HashSet cache = new HashSet();
-            while( it.hasNext() ) {
+            while (it.hasNext()) {
                 Object t = it.next();
                 if (t instanceof ComplexTypeHandler) {
                     ComplexTypeHandler tt = (ComplexTypeHandler) t;
@@ -534,8 +524,7 @@ public class SchemaHandler extends XSIElementHandler {
             }
             complexTypes.clear();
             it = cache.iterator();
-            while( it.hasNext() )
-                complexTypes.add(it.next());
+            while (it.hasNext()) complexTypes.add(it.next());
 
             TreeSet tmp = new TreeSet(SchemaComparator.getInstance());
             tmp.addAll(complexTypes);
@@ -545,7 +534,7 @@ public class SchemaHandler extends XSIElementHandler {
         if (elements != null) {
             it = elements.iterator();
             HashSet cache = new HashSet();
-            while( it.hasNext() ) {
+            while (it.hasNext()) {
                 Object t = it.next();
                 if (t instanceof ElementTypeHandler) {
                     ElementTypeHandler tt = (ElementTypeHandler) t;
@@ -554,8 +543,7 @@ public class SchemaHandler extends XSIElementHandler {
                 }
             }
             it = cache.iterator();
-            while( it.hasNext() )
-                elements.add(it.next());
+            while (it.hasNext()) elements.add(it.next());
 
             TreeSet tmp = new TreeSet(SchemaComparator.getInstance());
             tmp.addAll(elements);
@@ -565,7 +553,7 @@ public class SchemaHandler extends XSIElementHandler {
         if (groups != null) {
             it = groups.iterator();
             HashSet cache = new HashSet();
-            while( it.hasNext() ) {
+            while (it.hasNext()) {
                 Object t = it.next();
                 if (t instanceof GroupHandler) {
                     GroupHandler tt = (GroupHandler) t;
@@ -574,15 +562,18 @@ public class SchemaHandler extends XSIElementHandler {
                 }
             }
             it = cache.iterator();
-            while( it.hasNext() )
-                groups.add(it.next());
+            while (it.hasNext()) groups.add(it.next());
 
             TreeSet tmp = new TreeSet(SchemaComparator.getInstance());
             tmp.addAll(groups);
             schema1.groups = (Group[]) tmp.toArray(new Group[tmp.size()]);
         }
 
-        attributeGroups = attributes = complexTypes = simpleTypes = elements = groups = imports = includes = redefines = null;
+        attributeGroups =
+                attributes =
+                        complexTypes =
+                                simpleTypes =
+                                        elements = groups = imports = includes = redefines = null;
 
         return schema1;
     }
@@ -590,7 +581,7 @@ public class SchemaHandler extends XSIElementHandler {
     /*
      * Helper method for lookUpSimpleType(String)
      */
-    private SimpleType lookUpSimpleType( String localName, Schema s, TreeSet targets ) {
+    private SimpleType lookUpSimpleType(String localName, Schema s, TreeSet targets) {
         if (s == null) {
             return null;
         }
@@ -600,7 +591,7 @@ public class SchemaHandler extends XSIElementHandler {
         if (s.getSimpleTypes() != null) {
             SimpleType[] sts = s.getSimpleTypes();
 
-            for( int i = 0; (sts != null) && (i < sts.length); i++ ) {
+            for (int i = 0; (sts != null) && (i < sts.length); i++) {
                 if (localName.equalsIgnoreCase(sts[i].getName())) {
                     return sts[i];
                 }
@@ -610,7 +601,7 @@ public class SchemaHandler extends XSIElementHandler {
         if (s.getImports() != null) {
             Schema[] ss = s.getImports();
 
-            for( int i = 0; (ss != null) && (i < ss.length); i++ ) {
+            for (int i = 0; (ss != null) && (i < ss.length); i++) {
                 if (!targets.contains(ss[i].getTargetNamespace())) {
                     SimpleType st = lookUpSimpleType(localName, ss[i], targets);
 
@@ -625,13 +616,11 @@ public class SchemaHandler extends XSIElementHandler {
     }
 
     /**
-     * <p>
      * convinience method for package classes
-     * </p>
-     * 
+     *
      * @param qname
      */
-    protected SimpleType lookUpSimpleType( String qname ) {
+    protected SimpleType lookUpSimpleType(String qname) {
         int index = qname.indexOf(":");
         String localName, prefix1;
         localName = prefix1 = null;
@@ -645,13 +634,13 @@ public class SchemaHandler extends XSIElementHandler {
         logger.finest("prefix is " + prefix1);
         logger.finest("localName is " + localName);
         Iterator it;
-        if ((this.prefix == null && prefix1 == null) || (this.prefix != null && this.prefix.equals(prefix1))) {
-            if (schema != null)
-                return lookUpSimpleType(localName, schema, new TreeSet());
+        if ((this.prefix == null && prefix1 == null)
+                || (this.prefix != null && this.prefix.equals(prefix1))) {
+            if (schema != null) return lookUpSimpleType(localName, schema, new TreeSet());
         } else {
             if (imports != null) {
                 it = imports.iterator();
-                while( it.hasNext() ) {
+                while (it.hasNext()) {
                     Schema s = (Schema) it.next();
                     String ns = s.getTargetNamespace().toString();
 
@@ -669,7 +658,7 @@ public class SchemaHandler extends XSIElementHandler {
         if (simpleTypes != null) {
             it = simpleTypes.iterator();
 
-            while( it.hasNext() ) {
+            while (it.hasNext()) {
                 Object o = it.next();
 
                 if (o instanceof SimpleTypeHandler) {
@@ -700,7 +689,7 @@ public class SchemaHandler extends XSIElementHandler {
     /*
      * helper for lookUpComplexType(String)
      */
-    private ComplexType lookUpComplexType( String localName, Schema s, TreeSet targets ) {
+    private ComplexType lookUpComplexType(String localName, Schema s, TreeSet targets) {
         if (s == null) {
             return null;
         }
@@ -710,9 +699,9 @@ public class SchemaHandler extends XSIElementHandler {
         if (s.getComplexTypes() != null) {
             ComplexType[] sts = s.getComplexTypes();
 
-            for( int i = 0; (sts != null) && (i < sts.length); i++ ) {
+            for (int i = 0; (sts != null) && (i < sts.length); i++) {
                 String name = sts[i].getName();
-				if (localName.equalsIgnoreCase(name)) {
+                if (localName.equalsIgnoreCase(name)) {
                     return sts[i];
                 }
             }
@@ -721,7 +710,7 @@ public class SchemaHandler extends XSIElementHandler {
         if (s.getImports() != null) {
             Schema[] ss = s.getImports();
 
-            for( int i = 0; (ss != null) && (i < ss.length); i++ ) {
+            for (int i = 0; (ss != null) && (i < ss.length); i++) {
                 if (!targets.contains(ss[i].getTargetNamespace())) {
                     ComplexType st = lookUpComplexType(localName, ss[i], targets);
 
@@ -736,14 +725,12 @@ public class SchemaHandler extends XSIElementHandler {
     }
 
     /**
-     * <p>
      * convinience method for package
-     * </p>
-     * 
+     *
      * @param qname
      * @throws SAXException
      */
-    protected ComplexType lookUpComplexType( String qname ) throws SAXException {
+    protected ComplexType lookUpComplexType(String qname) throws SAXException {
         int index = qname.indexOf(":");
         String localName, prefix1;
         localName = prefix1 = null;
@@ -758,13 +745,13 @@ public class SchemaHandler extends XSIElementHandler {
         logger.finest("localName is " + localName);
 
         Iterator it;
-        if ((this.prefix == null && prefix1 == null) || (this.prefix != null && this.prefix.equals(prefix1))) {
-            if (schema != null)
-                return lookUpComplexType(localName, schema, new TreeSet());
+        if ((this.prefix == null && prefix1 == null)
+                || (this.prefix != null && this.prefix.equals(prefix1))) {
+            if (schema != null) return lookUpComplexType(localName, schema, new TreeSet());
         } else {
             if (imports != null) {
                 it = imports.iterator();
-                while( it.hasNext() ) {
+                while (it.hasNext()) {
                     Schema s = (Schema) it.next();
                     String ns = s.getTargetNamespace().toString();
                     String prefixLookup = prefixCache != null ? (String) prefixCache.get(ns) : null;
@@ -781,7 +768,7 @@ public class SchemaHandler extends XSIElementHandler {
         if (complexTypes != null) {
             it = complexTypes.iterator();
 
-            while( it.hasNext() ) {
+            while (it.hasNext()) {
                 Object o = it.next();
 
                 if (o instanceof ComplexTypeHandler) {
@@ -806,7 +793,7 @@ public class SchemaHandler extends XSIElementHandler {
     /*
      * helper method for lookupElement(String)
      */
-    private Element lookupElement( String localName, Schema s, TreeSet targets ) {
+    private Element lookupElement(String localName, Schema s, TreeSet targets) {
         if (s == null) {
             return null;
         }
@@ -817,9 +804,9 @@ public class SchemaHandler extends XSIElementHandler {
         if (s.getElements() != null) {
             Element[] sts = s.getElements();
 
-            for( int i = 0; (sts != null) && (i < sts.length); i++ ) {
+            for (int i = 0; (sts != null) && (i < sts.length); i++) {
                 String name = sts[i].getName();
-				logger.finest("checking element " + name);
+                logger.finest("checking element " + name);
 
                 if (localName.equalsIgnoreCase(name)) {
                     return sts[i];
@@ -830,7 +817,7 @@ public class SchemaHandler extends XSIElementHandler {
         if (s.getImports() != null) {
             Schema[] ss = s.getImports();
 
-            for( int i = 0; (ss != null) && (i < ss.length); i++ ) {
+            for (int i = 0; (ss != null) && (i < ss.length); i++) {
                 if (!targets.contains(ss[i].getTargetNamespace())) {
                     Element st = lookupElement(localName, ss[i], targets);
 
@@ -845,14 +832,12 @@ public class SchemaHandler extends XSIElementHandler {
     }
 
     /**
-     * <p>
      * convinience method for package
-     * </p>
-     * 
+     *
      * @param qname
      * @throws SAXException
      */
-    protected Element lookUpElement( String qname ) throws SAXException {
+    protected Element lookUpElement(String qname) throws SAXException {
         int index = qname.indexOf(":");
         String localName, prefix1;
         localName = prefix1 = null;
@@ -867,13 +852,13 @@ public class SchemaHandler extends XSIElementHandler {
         logger.finest("localName is " + localName);
 
         Iterator it;
-        if ((this.prefix == null && prefix1 == null) || (this.prefix != null && this.prefix.equals(prefix1))) {
-            if (schema != null)
-                return lookupElement(localName, schema, new TreeSet());
+        if ((this.prefix == null && prefix1 == null)
+                || (this.prefix != null && this.prefix.equals(prefix1))) {
+            if (schema != null) return lookupElement(localName, schema, new TreeSet());
         } else {
             if (imports != null) {
                 it = imports.iterator();
-                while( it.hasNext() ) {
+                while (it.hasNext()) {
                     Schema s = (Schema) it.next();
                     String ns = s.getTargetNamespace().toString();
                     String prefixLookup = prefixCache != null ? (String) prefixCache.get(ns) : null;
@@ -887,7 +872,7 @@ public class SchemaHandler extends XSIElementHandler {
             }
             if (includes != null) {
                 it = includes.iterator();
-                while( it.hasNext() ) {
+                while (it.hasNext()) {
                     Schema s = (Schema) it.next();
                     String ns = s.getTargetNamespace().toString();
                     String prefixLookup = prefixCache != null ? (String) prefixCache.get(ns) : null;
@@ -903,7 +888,7 @@ public class SchemaHandler extends XSIElementHandler {
 
         it = elements.iterator();
 
-        while( it.hasNext() ) {
+        while (it.hasNext()) {
             Object o = it.next();
 
             if (o instanceof ElementTypeHandler) {
@@ -926,7 +911,7 @@ public class SchemaHandler extends XSIElementHandler {
     /*
      * helper for lookUpGroup
      */
-    private Group lookUpGroup( String localName, Schema s, TreeSet targets ) {
+    private Group lookUpGroup(String localName, Schema s, TreeSet targets) {
         if (s == null) {
             return null;
         }
@@ -936,7 +921,7 @@ public class SchemaHandler extends XSIElementHandler {
         if (s.getGroups() != null) {
             Group[] sts = s.getGroups();
 
-            for( int i = 0; (sts != null) && (i < sts.length); i++ ) {
+            for (int i = 0; (sts != null) && (i < sts.length); i++) {
                 if (localName.equalsIgnoreCase(sts[i].getName())) {
                     return sts[i];
                 }
@@ -946,7 +931,7 @@ public class SchemaHandler extends XSIElementHandler {
         if (s.getImports() != null) {
             Schema[] ss = s.getImports();
 
-            for( int i = 0; (ss != null) && (i < ss.length); i++ ) {
+            for (int i = 0; (ss != null) && (i < ss.length); i++) {
                 if (!targets.contains(ss[i].getTargetNamespace())) {
                     Group st = lookUpGroup(localName, ss[i], targets);
 
@@ -961,14 +946,12 @@ public class SchemaHandler extends XSIElementHandler {
     }
 
     /**
-     * <p>
      * convinience method for package
-     * </p>
-     * 
+     *
      * @param qname
      * @throws SAXException
      */
-    protected Group lookUpGroup( String qname ) throws SAXException {
+    protected Group lookUpGroup(String qname) throws SAXException {
         int index = qname.indexOf(":");
         String localName, prefix1;
         localName = prefix1 = null;
@@ -983,13 +966,13 @@ public class SchemaHandler extends XSIElementHandler {
         logger.finest("localName is " + localName);
 
         Iterator it;
-        if ((this.prefix == null && prefix1 == null) || (this.prefix != null && this.prefix.equals(prefix1))) {
-            if (schema != null)
-                return lookUpGroup(localName, schema, new TreeSet());
+        if ((this.prefix == null && prefix1 == null)
+                || (this.prefix != null && this.prefix.equals(prefix1))) {
+            if (schema != null) return lookUpGroup(localName, schema, new TreeSet());
         } else {
             if (imports != null) {
                 it = imports.iterator();
-                while( it.hasNext() ) {
+                while (it.hasNext()) {
                     Schema s = (Schema) it.next();
                     String ns = s.getTargetNamespace().toString();
                     String prefixLookup = prefixCache != null ? (String) prefixCache.get(ns) : null;
@@ -1006,7 +989,7 @@ public class SchemaHandler extends XSIElementHandler {
         if (groups != null) {
             it = groups.iterator();
 
-            while( it.hasNext() ) {
+            while (it.hasNext()) {
                 Object o = it.next();
 
                 if (o instanceof GroupHandler) {
@@ -1031,7 +1014,7 @@ public class SchemaHandler extends XSIElementHandler {
     /*
      * helper method for lookUpAttributeGroup
      */
-    private AttributeGroup lookUpAttributeGroup( String localName, Schema s, TreeSet targets ) {
+    private AttributeGroup lookUpAttributeGroup(String localName, Schema s, TreeSet targets) {
         if (s == null) {
             return null;
         }
@@ -1041,7 +1024,7 @@ public class SchemaHandler extends XSIElementHandler {
         if (s.getAttributeGroups() != null) {
             AttributeGroup[] sts = s.getAttributeGroups();
 
-            for( int i = 0; (sts != null) && (i < sts.length); i++ ) {
+            for (int i = 0; (sts != null) && (i < sts.length); i++) {
                 if (localName.equalsIgnoreCase(sts[i].getName())) {
                     return sts[i];
                 }
@@ -1051,7 +1034,7 @@ public class SchemaHandler extends XSIElementHandler {
         if (s.getImports() != null) {
             Schema[] ss = s.getImports();
 
-            for( int i = 0; (ss != null) && (i < ss.length); i++ ) {
+            for (int i = 0; (ss != null) && (i < ss.length); i++) {
                 if (!targets.contains(ss[i].getTargetNamespace())) {
                     AttributeGroup st = lookUpAttributeGroup(localName, ss[i], targets);
 
@@ -1066,14 +1049,12 @@ public class SchemaHandler extends XSIElementHandler {
     }
 
     /**
-     * <p>
      * convinience method for the package
-     * </p>
-     * 
+     *
      * @param qname
      * @throws SAXException
      */
-    protected AttributeGroup lookUpAttributeGroup( String qname ) throws SAXException {
+    protected AttributeGroup lookUpAttributeGroup(String qname) throws SAXException {
         int index = qname.indexOf(":");
         String localName, prefix1;
         localName = prefix1 = null;
@@ -1088,13 +1069,13 @@ public class SchemaHandler extends XSIElementHandler {
         logger.finest("localName is " + localName);
 
         Iterator it;
-        if ((this.prefix == null && prefix1 == null) || (this.prefix != null && this.prefix.equals(prefix1))) {
-            if (schema != null)
-                return lookUpAttributeGroup(localName, schema, new TreeSet());
+        if ((this.prefix == null && prefix1 == null)
+                || (this.prefix != null && this.prefix.equals(prefix1))) {
+            if (schema != null) return lookUpAttributeGroup(localName, schema, new TreeSet());
         } else {
             if (imports != null) {
                 it = imports.iterator();
-                while( it.hasNext() ) {
+                while (it.hasNext()) {
                     Schema s = (Schema) it.next();
                     String ns = s.getTargetNamespace().toString();
                     String prefixLookup = prefixCache != null ? (String) prefixCache.get(ns) : null;
@@ -1111,7 +1092,7 @@ public class SchemaHandler extends XSIElementHandler {
         if (attributeGroups != null) {
             it = attributeGroups.iterator();
 
-            while( it.hasNext() ) {
+            while (it.hasNext()) {
                 Object o = it.next();
 
                 if (o instanceof AttributeGroupHandler) {
@@ -1136,7 +1117,7 @@ public class SchemaHandler extends XSIElementHandler {
     /*
      * helper method for lookUpAttribute
      */
-    private Attribute lookUpAttribute( String localName, Schema s, TreeSet targets ) {
+    private Attribute lookUpAttribute(String localName, Schema s, TreeSet targets) {
         if (s == null) {
             return null;
         }
@@ -1146,7 +1127,7 @@ public class SchemaHandler extends XSIElementHandler {
         if (s.getAttributes() != null) {
             Attribute[] sts = s.getAttributes();
 
-            for( int i = 0; (sts != null) && (i < sts.length); i++ ) {
+            for (int i = 0; (sts != null) && (i < sts.length); i++) {
                 if (sts[i] != null && sts[i].getName() != null) {
                     if (localName.equalsIgnoreCase(sts[i].getName())) {
                         return sts[i];
@@ -1158,7 +1139,7 @@ public class SchemaHandler extends XSIElementHandler {
         if (s.getImports() != null) {
             Schema[] ss = s.getImports();
 
-            for( int i = 0; (ss != null) && (i < ss.length); i++ ) {
+            for (int i = 0; (ss != null) && (i < ss.length); i++) {
                 if (!targets.contains(ss[i].getTargetNamespace())) {
                     Attribute st = lookUpAttribute(localName, ss[i], targets);
 
@@ -1173,14 +1154,12 @@ public class SchemaHandler extends XSIElementHandler {
     }
 
     /**
-     * <p>
      * convinience method for package
-     * </p>
-     * 
+     *
      * @param qname
      * @throws SAXException
      */
-    protected Attribute lookUpAttribute( String qname ) throws SAXException {
+    protected Attribute lookUpAttribute(String qname) throws SAXException {
         int index = qname.indexOf(":");
         String localName, prefix1;
         localName = prefix1 = null;
@@ -1195,13 +1174,13 @@ public class SchemaHandler extends XSIElementHandler {
         logger.finest("localName is " + localName);
 
         Iterator it;
-        if ((this.prefix == null && prefix1 == null) || (this.prefix != null && this.prefix.equals(prefix1))) {
-            if (schema != null)
-                return lookUpAttribute(localName, schema, new TreeSet());
+        if ((this.prefix == null && prefix1 == null)
+                || (this.prefix != null && this.prefix.equals(prefix1))) {
+            if (schema != null) return lookUpAttribute(localName, schema, new TreeSet());
         } else {
             if (imports != null) {
                 it = imports.iterator();
-                while( it.hasNext() ) {
+                while (it.hasNext()) {
                     Schema s = (Schema) it.next();
                     String ns = s.getTargetNamespace().toString();
                     String prefixLookup = prefixCache != null ? (String) prefixCache.get(ns) : null;
@@ -1218,7 +1197,7 @@ public class SchemaHandler extends XSIElementHandler {
         if (attributes != null) {
             it = attributes.iterator();
 
-            while( it.hasNext() ) {
+            while (it.hasNext()) {
                 Object o = it.next();
 
                 if (o instanceof AttributeHandler) {
@@ -1241,16 +1220,13 @@ public class SchemaHandler extends XSIElementHandler {
     }
 
     /**
-     * <p>
      * convinience method for package
-     * </p>
-     * 
+     *
      * @param qname
      * @throws SAXException
      */
-    protected Type lookUpType( String qname ) throws SAXException {
-        if (qname == null)
-            return null;
+    protected Type lookUpType(String qname) throws SAXException {
+        if (qname == null) return null;
         Type t = null;
         t = lookUpComplexType(qname);
         t = t == null ? lookUpSimpleType(qname) : t;
@@ -1260,7 +1236,7 @@ public class SchemaHandler extends XSIElementHandler {
     /*
      * helper method that merges the provided Schema into this Schema
      */
-    private void addSchema( Schema s ) {
+    private void addSchema(Schema s) {
         Object[] objs = null;
 
         objs = s.getAttributes();
@@ -1270,8 +1246,7 @@ public class SchemaHandler extends XSIElementHandler {
                 attributes = new LinkedList();
             }
 
-            for( int i = 0; i < objs.length; i++ )
-                attributes.add(objs[i]);
+            for (int i = 0; i < objs.length; i++) attributes.add(objs[i]);
         }
 
         objs = s.getAttributeGroups();
@@ -1281,8 +1256,7 @@ public class SchemaHandler extends XSIElementHandler {
                 attributeGroups = new LinkedList();
             }
 
-            for( int i = 0; i < objs.length; i++ )
-                attributeGroups.add(objs[i]);
+            for (int i = 0; i < objs.length; i++) attributeGroups.add(objs[i]);
         }
 
         objs = s.getComplexTypes();
@@ -1292,8 +1266,7 @@ public class SchemaHandler extends XSIElementHandler {
                 complexTypes = new LinkedList();
             }
 
-            for( int i = 0; i < objs.length; i++ )
-                complexTypes.add(objs[i]);
+            for (int i = 0; i < objs.length; i++) complexTypes.add(objs[i]);
         }
 
         objs = s.getElements();
@@ -1303,8 +1276,7 @@ public class SchemaHandler extends XSIElementHandler {
                 elements = new LinkedList();
             }
 
-            for( int i = 0; i < objs.length; i++ )
-                elements.add(objs[i]);
+            for (int i = 0; i < objs.length; i++) elements.add(objs[i]);
         }
 
         objs = s.getGroups();
@@ -1314,8 +1286,7 @@ public class SchemaHandler extends XSIElementHandler {
                 groups = new LinkedList();
             }
 
-            for( int i = 0; i < objs.length; i++ )
-                groups.add(objs[i]);
+            for (int i = 0; i < objs.length; i++) groups.add(objs[i]);
         }
 
         objs = s.getImports();
@@ -1325,8 +1296,7 @@ public class SchemaHandler extends XSIElementHandler {
                 imports = new LinkedList();
             }
 
-            for( int i = 0; i < objs.length; i++ )
-                imports.add(objs[i]);
+            for (int i = 0; i < objs.length; i++) imports.add(objs[i]);
         }
 
         objs = s.getSimpleTypes();
@@ -1336,8 +1306,7 @@ public class SchemaHandler extends XSIElementHandler {
                 simpleTypes = new LinkedList();
             }
 
-            for( int i = 0; i < objs.length; i++ )
-                simpleTypes.add(objs[i]);
+            for (int i = 0; i < objs.length; i++) simpleTypes.add(objs[i]);
         }
 
         URI tempuri = s.getURI();
@@ -1360,28 +1329,20 @@ public class SchemaHandler extends XSIElementHandler {
         return targetNamespace;
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#getHandlerType()
-     */
+    /** @see org.geotools.xml.XSIElementHandler#getHandlerType() */
     public int getHandlerType() {
         return DEFAULT;
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#endElement(java.lang.String,
-     * java.lang.String)
-     */
-    public void endElement( String namespaceURI1, String localName ) {
+    /** @see org.geotools.xml.XSIElementHandler#endElement(java.lang.String, java.lang.String) */
+    public void endElement(String namespaceURI1, String localName) {
         // do nothing
     }
 
     /**
-     * <p>
      * Default implementation of a Schema for a parsed schema.
-     * </p>
      *
      * @author dzwiers
-     *
      * @see Schema
      */
     private static class DefaultSchema implements Schema {
@@ -1403,158 +1364,119 @@ public class SchemaHandler extends XSIElementHandler {
         Group[] groups;
         String prefix;
 
-        /**
-         * @see org.geotools.xml.xsi.Schema#isAttributeFormDefault()
-         */
+        /** @see org.geotools.xml.xsi.Schema#isAttributeFormDefault() */
         public boolean isAttributeFormDefault() {
             return attributeFormDefault;
         }
 
-        /**
-         * @see org.geotools.xml.xsi.Schema#getAttributeGroups()
-         */
+        /** @see org.geotools.xml.xsi.Schema#getAttributeGroups() */
         public AttributeGroup[] getAttributeGroups() {
             return attributeGroups;
         }
 
-        /**
-         * @see org.geotools.xml.xsi.Schema#getAttributeDescriptors()
-         */
+        /** @see org.geotools.xml.xsi.Schema#getAttributeDescriptors() */
         public Attribute[] getAttributes() {
             return attributes;
         }
 
-        /**
-         * @see org.geotools.xml.xsi.Schema#getBlockDefault()
-         */
+        /** @see org.geotools.xml.xsi.Schema#getBlockDefault() */
         public int getBlockDefault() {
             return blockDefault;
         }
 
-        /**
-         * @see org.geotools.xml.xsi.Schema#getComplexTypes()
-         */
+        /** @see org.geotools.xml.xsi.Schema#getComplexTypes() */
         public ComplexType[] getComplexTypes() {
             return complexTypes;
         }
 
-        /**
-         * @see org.geotools.xml.xsi.Schema#isElementFormDefault()
-         */
+        /** @see org.geotools.xml.xsi.Schema#isElementFormDefault() */
         public boolean isElementFormDefault() {
             return elementFormDefault;
         }
 
-        /**
-         * @see org.geotools.xml.xsi.Schema#getElements()
-         */
+        /** @see org.geotools.xml.xsi.Schema#getElements() */
         public Element[] getElements() {
             return elements;
         }
 
-        /**
-         * @see org.geotools.xml.xsi.Schema#getFinalDefault()
-         */
+        /** @see org.geotools.xml.xsi.Schema#getFinalDefault() */
         public int getFinalDefault() {
             return finalDefault;
         }
 
-        /**
-         * @see org.geotools.xml.xsi.Schema#getId()
-         */
+        /** @see org.geotools.xml.xsi.Schema#getId() */
         public String getId() {
             return id;
         }
 
-        /**
-         * @see org.geotools.xml.xsi.Schema#getImports()
-         */
+        /** @see org.geotools.xml.xsi.Schema#getImports() */
         public Schema[] getImports() {
             return imports;
         }
 
-        /**
-         * @see org.geotools.xml.xsi.Schema#getSimpleTypes()
-         */
+        /** @see org.geotools.xml.xsi.Schema#getSimpleTypes() */
         public SimpleType[] getSimpleTypes() {
             return simpleTypes;
         }
 
-        /**
-         * @see org.geotools.xml.xsi.Schema#getTargetNamespace()
-         */
+        /** @see org.geotools.xml.xsi.Schema#getTargetNamespace() */
         public URI getTargetNamespace() {
             return targetNamespace;
         }
 
-        /**
-         * @see org.geotools.xml.xsi.Schema#getURI()
-         */
+        /** @see org.geotools.xml.xsi.Schema#getURI() */
         public URI getURI() {
             return uri;
         }
 
-        /**
-         * @see org.geotools.xml.xsi.Schema#getVersion()
-         */
+        /** @see org.geotools.xml.xsi.Schema#getVersion() */
         public String getVersion() {
             return version;
         }
 
-        /**
-         * @see org.geotools.xml.xsi.Schema#getGroups()
-         */
+        /** @see org.geotools.xml.xsi.Schema#getGroups() */
         public Group[] getGroups() {
             return groups;
         }
 
-        /**
-         * @see org.geotools.xml.xsi.Schema#includesURI(java.net.URI)
-         */
-        public boolean includesURI( URI uri1 ) {
+        /** @see org.geotools.xml.xsi.Schema#includesURI(java.net.URI) */
+        public boolean includesURI(URI uri1) {
             if (this.uri == null) {
                 return false;
             }
             return this.uri.equals(uri1);
         }
 
-        /**
-         * @see org.geotools.xml.schema.Schema#getPrefix()
-         */
+        /** @see org.geotools.xml.schema.Schema#getPrefix() */
         public String getPrefix() {
             return prefix;
         }
 
-        /**
-         * Returns the implementation hints. The default implementation returns en empty map.
-         */
+        /** Returns the implementation hints. The default implementation returns en empty map. */
         public Map getImplementationHints() {
             return Collections.EMPTY_MAP;
         }
     }
 
     /**
-     *
-     * This class breaks both the collections api and the comparable api.
-     * When an object is a temp ... thus we don't care ... it's always less
-     than.
-     * Please do not use this unless you fully understand it. It is intended to
-     * be used for compressing two schemas and to remove duplicates resulting
-     values (not placeholders).
-     * Making this evaluate place holders would cause the parser to fail !!!
+     * This class breaks both the collections api and the comparable api. When an object is a temp
+     * ... thus we don't care ... it's always less than. Please do not use this unless you fully
+     * understand it. It is intended to be used for compressing two schemas and to remove duplicates
+     * resulting values (not placeholders). Making this evaluate place holders would cause the
+     * parser to fail !!!
      *
      * @author dzwiers
-     *
      */
     private static class SchemaComparator implements Comparator {
         private static SchemaComparator instance = new SchemaComparator();
+
         public static SchemaComparator getInstance() {
             return instance;
         }
         /* (non-Javadoc)
          * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
          */
-        public int compare( Object arg0, Object arg1 ) {
+        public int compare(Object arg0, Object arg1) {
             // attribute
             if (arg0 instanceof Attribute && arg1 instanceof Attribute)
                 return compareAttribute((Attribute) arg0, (Attribute) arg1);
@@ -1581,386 +1503,331 @@ public class SchemaHandler extends XSIElementHandler {
             // throw new ClassCastException("Unknown type "+arg0.getClass().getName());
         }
 
-        private int compareAttribute( Attribute arg0, Attribute arg1 ) {
-            if (arg0 == arg1)
-                return 0;
-            if (arg0 == null)
-                return 1;
-            if (arg1 == null)
-                return -1;
-            int i = arg0.getName() == null ? arg1.getName() == null ? 0 : 1 : arg0.getName().compareTo(arg1.getName());
-            if (i != 0)
-                return i;
-            i = arg0.getNamespace() == null ? arg1.getNamespace() == null ? 0 : 1 : arg0.getNamespace().compareTo(
-                    arg1.getNamespace());
-            if (i != 0)
-                return i;
+        private int compareAttribute(Attribute arg0, Attribute arg1) {
+            if (arg0 == arg1) return 0;
+            if (arg0 == null) return 1;
+            if (arg1 == null) return -1;
+            int i =
+                    arg0.getName() == null
+                            ? arg1.getName() == null ? 0 : 1
+                            : arg0.getName().compareTo(arg1.getName());
+            if (i != 0) return i;
+            i =
+                    arg0.getNamespace() == null
+                            ? arg1.getNamespace() == null ? 0 : 1
+                            : arg0.getNamespace().compareTo(arg1.getNamespace());
+            if (i != 0) return i;
             i = arg0.getUse() - arg1.getUse();
-            if (i != 0)
-                return i;
+            if (i != 0) return i;
             return compareSimpleType(arg0.getSimpleType(), arg1.getSimpleType());
         }
 
-        private int compareAttributeGroup( AttributeGroup arg0, AttributeGroup arg1 ) {
-            if (arg0 == arg1)
-                return 0;
-            if (arg0 == null)
-                return 1;
-            if (arg1 == null)
-                return -1;
-            int i = arg0.getName() == null ? arg1.getName() == null ? 0 : 1 : arg0.getName().compareTo(arg1.getName());
-            if (i != 0)
-                return i;
-            i = arg0.getNamespace() == null ? arg1.getNamespace() == null ? 0 : 1 : arg0.getNamespace().compareTo(
-                    arg1.getNamespace());
-            if (i != 0)
-                return i;
-            i = arg0.getAnyAttributeNameSpace() == null ? arg1.getAnyAttributeNameSpace() == null ? 0 : 1 : arg0
-                    .getAnyAttributeNameSpace().compareTo(arg1.getAnyAttributeNameSpace());
-            if (i != 0)
-                return i;
+        private int compareAttributeGroup(AttributeGroup arg0, AttributeGroup arg1) {
+            if (arg0 == arg1) return 0;
+            if (arg0 == null) return 1;
+            if (arg1 == null) return -1;
+            int i =
+                    arg0.getName() == null
+                            ? arg1.getName() == null ? 0 : 1
+                            : arg0.getName().compareTo(arg1.getName());
+            if (i != 0) return i;
+            i =
+                    arg0.getNamespace() == null
+                            ? arg1.getNamespace() == null ? 0 : 1
+                            : arg0.getNamespace().compareTo(arg1.getNamespace());
+            if (i != 0) return i;
+            i =
+                    arg0.getAnyAttributeNameSpace() == null
+                            ? arg1.getAnyAttributeNameSpace() == null ? 0 : 1
+                            : arg0.getAnyAttributeNameSpace()
+                                    .compareTo(arg1.getAnyAttributeNameSpace());
+            if (i != 0) return i;
 
             Attribute[] a0 = arg0.getAttributes();
             Arrays.sort(a0, this);
             Attribute[] a1 = arg1.getAttributes();
             Arrays.sort(a1, this);
 
-            if (a0 == a1)
-                return 0;
-            if (a0 == null)
-                return 1;
-            if (a1 == null)
-                return -1;
+            if (a0 == a1) return 0;
+            if (a0 == null) return 1;
+            if (a1 == null) return -1;
 
-            if (a0.length < a1.length)
-                return -1;
-            if (a0.length > a1.length)
-                return 1;
+            if (a0.length < a1.length) return -1;
+            if (a0.length > a1.length) return 1;
 
-            for( int j = 0; j < a0.length && i == 0; j++ )
-                i = compareAttribute(a0[j], a1[j]);
+            for (int j = 0; j < a0.length && i == 0; j++) i = compareAttribute(a0[j], a1[j]);
 
             return i;
         }
 
-        private int compareGroup( Group arg0, Group arg1 ) {
-            if (arg0 == arg1)
-                return 0;
-            if (arg0 == null)
-                return 1;
-            if (arg1 == null)
-                return -1;
-            int i = arg0.getName() == null ? arg1.getName() == null ? 0 : 1 : arg0.getName().compareTo(arg1.getName());
-            if (i != 0)
-                return i;
-            i = arg0.getNamespace() == null ? arg1.getNamespace() == null ? 0 : 1 : arg0.getNamespace().compareTo(
-                    arg1.getNamespace());
-            if (i != 0)
-                return i;
+        private int compareGroup(Group arg0, Group arg1) {
+            if (arg0 == arg1) return 0;
+            if (arg0 == null) return 1;
+            if (arg1 == null) return -1;
+            int i =
+                    arg0.getName() == null
+                            ? arg1.getName() == null ? 0 : 1
+                            : arg0.getName().compareTo(arg1.getName());
+            if (i != 0) return i;
+            i =
+                    arg0.getNamespace() == null
+                            ? arg1.getNamespace() == null ? 0 : 1
+                            : arg0.getNamespace().compareTo(arg1.getNamespace());
+            if (i != 0) return i;
 
             i = arg0.getMaxOccurs() - arg1.getMaxOccurs();
-            if (i != 0)
-                return i;
+            if (i != 0) return i;
 
             i = arg0.getMinOccurs() - arg1.getMinOccurs();
-            if (i != 0)
-                return i;
+            if (i != 0) return i;
 
             ElementGrouping a0 = arg0.getChild();
             ElementGrouping a1 = arg1.getChild();
 
-            if (a0 == a1)
-                return 0;
-            if (a0 == null)
-                return 1;
-            if (a1 == null)
-                return -1;
+            if (a0 == a1) return 0;
+            if (a0 == null) return 1;
+            if (a1 == null) return -1;
 
             return compareElementGrouping(a0, a1);
         }
 
-        private int compareElement( Element arg0, Element arg1 ) {
-            if (arg0 == arg1)
-                return 0;
-            if (arg0 == null)
-                return 1;
-            if (arg1 == null)
-                return -1;
-            int i = arg0.getName() == null ? arg1.getName() == null ? 0 : 1 : arg0.getName().compareTo(arg1.getName());
-            if (i != 0)
-                return i;
-            i = arg0.getNamespace() == null ? arg1.getNamespace() == null ? 0 : 1 : arg0.getNamespace().compareTo(
-                    arg1.getNamespace());
-            if (i != 0)
-                return i;
+        private int compareElement(Element arg0, Element arg1) {
+            if (arg0 == arg1) return 0;
+            if (arg0 == null) return 1;
+            if (arg1 == null) return -1;
+            int i =
+                    arg0.getName() == null
+                            ? arg1.getName() == null ? 0 : 1
+                            : arg0.getName().compareTo(arg1.getName());
+            if (i != 0) return i;
+            i =
+                    arg0.getNamespace() == null
+                            ? arg1.getNamespace() == null ? 0 : 1
+                            : arg0.getNamespace().compareTo(arg1.getNamespace());
+            if (i != 0) return i;
 
             i = arg0.getMaxOccurs() - arg1.getMaxOccurs();
-            if (i != 0)
-                return i;
+            if (i != 0) return i;
 
             i = arg0.getMinOccurs() - arg1.getMinOccurs();
-            if (i != 0)
-                return i;
+            if (i != 0) return i;
 
             i = compareElement(arg0.getSubstitutionGroup(), arg1.getSubstitutionGroup());
-            if (i != 0)
-                return i;
+            if (i != 0) return i;
 
             // ignore a few things here ... might need them back
 
             return compare(arg0.getType(), arg1.getType());
         }
 
-        private int compareElementGrouping( ElementGrouping arg0, ElementGrouping arg1 ) {
-            if (arg0 == arg1)
-                return 0;
-            if (arg0 == null)
-                return 1;
-            if (arg1 == null)
-                return -1;
+        private int compareElementGrouping(ElementGrouping arg0, ElementGrouping arg1) {
+            if (arg0 == arg1) return 0;
+            if (arg0 == null) return 1;
+            if (arg1 == null) return -1;
 
             int i = 0;
             i = arg0.getGrouping() - arg1.getGrouping();
-            if (i != 0)
-                return i;
+            if (i != 0) return i;
 
             i = arg0.getMaxOccurs() - arg1.getMaxOccurs();
-            if (i != 0)
-                return i;
+            if (i != 0) return i;
 
             i = arg0.getMinOccurs() - arg1.getMinOccurs();
-            if (i != 0)
-                return i;
+            if (i != 0) return i;
 
             ElementGrouping[] eg0 = null;
             ElementGrouping[] eg1 = null;
 
-            switch( arg0.getGrouping() ) {
-            case ElementGrouping.ELEMENT:
-                return compareElement((Element) arg0, (Element) arg1);
-            case ElementGrouping.GROUP:
-                return compareGroup((Group) arg0, (Group) arg1);
-            case ElementGrouping.CHOICE:
-                Choice c0 = (Choice) arg0;
-                Choice c1 = (Choice) arg1;
-                eg0 = c0.getChildren();
-                eg1 = c1.getChildren();
-            case ElementGrouping.SEQUENCE:
-                Sequence s0 = (Sequence) arg0;
-                Sequence s1 = (Sequence) arg1;
-                eg0 = s0.getChildren();
-                eg1 = s1.getChildren();
-            case ElementGrouping.ALL:
-                All a0 = (All) arg0;
-                All a1 = (All) arg1;
-                eg0 = a0.getElements();
-                eg1 = a1.getElements();
+            switch (arg0.getGrouping()) {
+                case ElementGrouping.ELEMENT:
+                    return compareElement((Element) arg0, (Element) arg1);
+                case ElementGrouping.GROUP:
+                    return compareGroup((Group) arg0, (Group) arg1);
+                case ElementGrouping.CHOICE:
+                    Choice c0 = (Choice) arg0;
+                    Choice c1 = (Choice) arg1;
+                    eg0 = c0.getChildren();
+                    eg1 = c1.getChildren();
+                case ElementGrouping.SEQUENCE:
+                    Sequence s0 = (Sequence) arg0;
+                    Sequence s1 = (Sequence) arg1;
+                    eg0 = s0.getChildren();
+                    eg1 = s1.getChildren();
+                case ElementGrouping.ALL:
+                    All a0 = (All) arg0;
+                    All a1 = (All) arg1;
+                    eg0 = a0.getElements();
+                    eg1 = a1.getElements();
             }
 
-            if (eg0.length < eg1.length)
-                return -1;
-            if (eg0.length > eg1.length)
-                return 1;
+            if (eg0.length < eg1.length) return -1;
+            if (eg0.length > eg1.length) return 1;
 
-            for( int j = 0; j < eg0.length && i != 0; j++ )
+            for (int j = 0; j < eg0.length && i != 0; j++)
                 i = compareElementGrouping(eg0[j], eg1[j]);
             return 0;
         }
 
-        private int compareImport( Schema arg0, Schema arg1 ) {
-            if (arg0 == arg1)
-                return 0;
-            if (arg0 == null)
-                return 1;
-            if (arg1 == null)
-                return -1;
-            int i = arg0.getTargetNamespace() == null ? arg1.getTargetNamespace() == null ? 0 : 1 : arg0
-                    .getTargetNamespace().compareTo(arg1.getTargetNamespace());
-            if (i != 0)
-                return i;
-            i = arg0.getURI() == null ? arg1.getURI() == null ? 0 : 1 : arg0.getURI().compareTo(arg1.getURI());
-            if (i != 0)
-                return i;
+        private int compareImport(Schema arg0, Schema arg1) {
+            if (arg0 == arg1) return 0;
+            if (arg0 == null) return 1;
+            if (arg1 == null) return -1;
+            int i =
+                    arg0.getTargetNamespace() == null
+                            ? arg1.getTargetNamespace() == null ? 0 : 1
+                            : arg0.getTargetNamespace().compareTo(arg1.getTargetNamespace());
+            if (i != 0) return i;
+            i =
+                    arg0.getURI() == null
+                            ? arg1.getURI() == null ? 0 : 1
+                            : arg0.getURI().compareTo(arg1.getURI());
+            if (i != 0) return i;
 
             i = arg0.getElements().length - arg1.getElements().length;
-            if (i != 0)
-                return i;
+            if (i != 0) return i;
 
             i = arg0.getComplexTypes().length - arg1.getComplexTypes().length;
-            if (i != 0)
-                return i;
+            if (i != 0) return i;
 
             i = arg0.getSimpleTypes().length - arg1.getSimpleTypes().length;
-            if (i != 0)
-                return i;
+            if (i != 0) return i;
 
             i = arg0.getAttributes().length - arg1.getAttributes().length;
-            if (i != 0)
-                return i;
+            if (i != 0) return i;
 
             i = arg0.getAttributeGroups().length - arg1.getAttributeGroups().length;
-            if (i != 0)
-                return i;
+            if (i != 0) return i;
 
             i = arg0.getGroups().length - arg1.getGroups().length;
-            if (i != 0)
-                return i;
+            if (i != 0) return i;
 
             // Yes we are making a huge assumption here.
 
             return 0;
         }
 
-        private int compareSimpleType( SimpleType arg0, SimpleType arg1 ) {
-            if (arg0 == arg1)
-                return 0;
-            if (arg0 == null)
-                return 1;
-            if (arg1 == null)
-                return -1;
-            int i = arg0.getName() == null ? arg1.getName() == null ? 0 : 1 : arg0.getName().compareTo(arg1.getName());
-            if (i != 0)
-                return i;
-            i = arg0.getNamespace() == null ? arg1.getNamespace() == null ? 0 : 1 : arg0.getNamespace().compareTo(
-                    arg1.getNamespace());
-            if (i != 0)
-                return i;
+        private int compareSimpleType(SimpleType arg0, SimpleType arg1) {
+            if (arg0 == arg1) return 0;
+            if (arg0 == null) return 1;
+            if (arg1 == null) return -1;
+            int i =
+                    arg0.getName() == null
+                            ? arg1.getName() == null ? 0 : 1
+                            : arg0.getName().compareTo(arg1.getName());
+            if (i != 0) return i;
+            i =
+                    arg0.getNamespace() == null
+                            ? arg1.getNamespace() == null ? 0 : 1
+                            : arg0.getNamespace().compareTo(arg1.getNamespace());
+            if (i != 0) return i;
 
             SimpleType[] a0 = arg0.getParents();
             Arrays.sort(a0, this);
             SimpleType[] a1 = arg1.getParents();
             Arrays.sort(a1, this);
 
-            if (a0 == a1)
-                return 0;
-            if (a0 == null)
-                return 1;
-            if (a1 == null)
-                return -1;
+            if (a0 == a1) return 0;
+            if (a0 == null) return 1;
+            if (a1 == null) return -1;
 
-            if (a0.length < a1.length)
-                return -1;
-            if (a0.length > a1.length)
-                return 1;
+            if (a0.length < a1.length) return -1;
+            if (a0.length > a1.length) return 1;
 
-            for( int j = 0; j < a0.length && i == 0; j++ )
-                i = compareSimpleType(a0[j], a1[j]);
+            for (int j = 0; j < a0.length && i == 0; j++) i = compareSimpleType(a0[j], a1[j]);
 
             Facet[] a01 = arg0.getFacets();
             Arrays.sort(a0, this);
             Facet[] a11 = arg1.getFacets();
             Arrays.sort(a1, this);
 
-            if (a01 == a11)
-                return 0;
-            if (a01 == null)
-                return 1;
-            if (a11 == null)
-                return -1;
+            if (a01 == a11) return 0;
+            if (a01 == null) return 1;
+            if (a11 == null) return -1;
 
-            if (a01.length < a11.length)
-                return -1;
-            if (a01.length > a11.length)
-                return 1;
+            if (a01.length < a11.length) return -1;
+            if (a01.length > a11.length) return 1;
 
-            for( int j = 0; j < a01.length && i == 0; j++ )
-                i = compareFacet(a01[j], a11[j]);
+            for (int j = 0; j < a01.length && i == 0; j++) i = compareFacet(a01[j], a11[j]);
 
             return i;
         }
 
-        private int compareFacet( Facet arg0, Facet arg1 ) {
-            if (arg0 == arg1)
-                return 0;
-            if (arg0 == null)
-                return 1;
-            if (arg1 == null)
-                return -1;
+        private int compareFacet(Facet arg0, Facet arg1) {
+            if (arg0 == arg1) return 0;
+            if (arg0 == null) return 1;
+            if (arg1 == null) return -1;
 
             int i = 0;
             i = arg0.getFacetType() - arg1.getFacetType();
-            if (i != 0)
-                return i;
+            if (i != 0) return i;
 
-            i = arg0.getValue() == null ? arg1.getValue() == null ? 0 : 1 : arg0.getValue().compareTo(arg1.getValue());
+            i =
+                    arg0.getValue() == null
+                            ? arg1.getValue() == null ? 0 : 1
+                            : arg0.getValue().compareTo(arg1.getValue());
             return i;
         }
 
-        private int compareComplexType( ComplexType arg0, ComplexType arg1 ) {
-            if (arg0 == arg1)
-                return 0;
-            if (arg0 == null)
-                return 1;
-            if (arg1 == null)
-                return -1;
-            int i = arg0.getName() == null ? arg1.getName() == null ? 0 : 1 : arg0.getName().compareTo(arg1.getName());
-            if (i != 0)
-                return i;
-            i = arg0.getNamespace() == null ? arg1.getNamespace() == null ? 0 : 1 : arg0.getNamespace().compareTo(
-                    arg1.getNamespace());
-            if (i != 0)
-                return i;
+        private int compareComplexType(ComplexType arg0, ComplexType arg1) {
+            if (arg0 == arg1) return 0;
+            if (arg0 == null) return 1;
+            if (arg1 == null) return -1;
+            int i =
+                    arg0.getName() == null
+                            ? arg1.getName() == null ? 0 : 1
+                            : arg0.getName().compareTo(arg1.getName());
+            if (i != 0) return i;
+            i =
+                    arg0.getNamespace() == null
+                            ? arg1.getNamespace() == null ? 0 : 1
+                            : arg0.getNamespace().compareTo(arg1.getNamespace());
+            if (i != 0) return i;
 
             Type a00 = arg0.getParent();
             Type a01 = arg1.getParent();
 
-            if (a00 == a01)
-                return 0;
-            if (a00 == null)
-                return 1;
-            if (a01 == null)
-                return -1;
+            if (a00 == a01) return 0;
+            if (a00 == null) return 1;
+            if (a01 == null) return -1;
 
             i = compare(a00, a01);
-            if (i != 0)
-                return i;
+            if (i != 0) return i;
 
-            i = arg0.getAnyAttributeNameSpace() == null ? arg1.getAnyAttributeNameSpace() == null ? 0 : 1 : arg0
-                    .getAnyAttributeNameSpace().compareTo(arg1.getAnyAttributeNameSpace());
-            if (i != 0)
-                return i;
+            i =
+                    arg0.getAnyAttributeNameSpace() == null
+                            ? arg1.getAnyAttributeNameSpace() == null ? 0 : 1
+                            : arg0.getAnyAttributeNameSpace()
+                                    .compareTo(arg1.getAnyAttributeNameSpace());
+            if (i != 0) return i;
 
             Attribute[] a10 = arg0.getAttributes();
             Arrays.sort(a10, this);
             Attribute[] a11 = arg1.getAttributes();
             Arrays.sort(a11, this);
 
-            if (a10 == a11)
-                return 0;
-            if (a10 == null)
-                return 1;
-            if (a11 == null)
-                return -1;
+            if (a10 == a11) return 0;
+            if (a10 == null) return 1;
+            if (a11 == null) return -1;
 
-            if (a10.length < a11.length)
-                return -1;
-            if (a10.length > a11.length)
-                return 1;
+            if (a10.length < a11.length) return -1;
+            if (a10.length > a11.length) return 1;
 
-            for( int j = 0; j < a10.length && i == 0; j++ )
-                i = compareAttribute(a10[j], a11[j]);
-            if (i != 0)
-                return i;
+            for (int j = 0; j < a10.length && i == 0; j++) i = compareAttribute(a10[j], a11[j]);
+            if (i != 0) return i;
 
             Element[] a0 = arg0.getChildElements();
             Arrays.sort(a0, this);
             Element[] a1 = arg1.getChildElements();
             Arrays.sort(a1, this);
 
-            if (a0 == a1)
-                return 0;
-            if (a0 == null)
-                return 1;
-            if (a1 == null)
-                return -1;
+            if (a0 == a1) return 0;
+            if (a0 == null) return 1;
+            if (a1 == null) return -1;
 
-            if (a0.length < a1.length)
-                return -1;
-            if (a0.length > a1.length)
-                return 1;
+            if (a0.length < a1.length) return -1;
+            if (a0.length > a1.length) return 1;
 
-            for( int j = 0; j < a0.length && i == 0; j++ )
-                i = compareElement(a0[j], a1[j]);
+            for (int j = 0; j < a0.length && i == 0; j++) i = compareElement(a0[j], a1[j]);
 
             return i;
         }

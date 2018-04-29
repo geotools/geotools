@@ -17,25 +17,29 @@
  */
 package org.geotools.arcsde.raster.info;
 
-import java.util.NoSuchElementException;
-
 import com.esri.sde.sdk.client.SeRaster;
+import java.util.NoSuchElementException;
 
 /**
  * An enumeration that mirrors the different possible band interleave types in Arcsde (ie, {@code
  * SeRaster#SE_RASTER_INTERLEAVE_*})
- * 
+ *
  * @author Gabriel Roldan (OpenGeo)
  * @since 2.5.4
  * @version $Id$
- *
- *
  * @source $URL$
- *         http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/main/java/org
- *         /geotools/arcsde/raster/info/InterleaveType.java $
+ *     http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/main/java/org
+ *     /geotools/arcsde/raster/info/InterleaveType.java $
  */
 public enum InterleaveType {
-    INTERLEAVE_BIL, INTERLEAVE_BIL_91, INTERLEAVE_BIP, INTERLEAVE_BIP_91, INTERLEAVE_BSQ, INTERLEAVE_BSQ_91, INTERLEAVE_NONE;
+    INTERLEAVE_BIL,
+    INTERLEAVE_BIL_91,
+    INTERLEAVE_BIP,
+    INTERLEAVE_BIP_91,
+    INTERLEAVE_BSQ,
+    INTERLEAVE_BSQ_91,
+    INTERLEAVE_NONE;
+
     static {
         INTERLEAVE_BIL.setSdeTypeId(SeRaster.SE_RASTER_INTERLEAVE_BIL);
         INTERLEAVE_BIL_91.setSdeTypeId(SeRaster.SE_RASTER_INTERLEAVE_BIL_91);
@@ -62,7 +66,7 @@ public enum InterleaveType {
                 return type;
             }
         }
-        throw new NoSuchElementException("Raster interleave type " + seRasterInterleaveType
-                + " does not exist");
+        throw new NoSuchElementException(
+                "Raster interleave type " + seRasterInterleaveType + " does not exist");
     }
 }

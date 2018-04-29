@@ -26,12 +26,10 @@ import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.util.Hashtable;
-
 import javax.naming.Context;
 import javax.naming.Name;
 import javax.naming.Reference;
 import javax.naming.StringRefAddr;
-
 import org.geotools.arcsde.session.ArcSDEConnectionConfig;
 import org.geotools.arcsde.session.ISession;
 import org.geotools.arcsde.session.ISessionPool;
@@ -42,11 +40,8 @@ import org.junit.Test;
 
 /**
  * Unit test suite for {@link ArcSDEConnectionFactory}
- * 
+ *
  * @author Gabriel Roldan (OpenGeo)
- * 
- *
- *
  * @source $URL$
  * @version $Id$
  * @since 2.5.7
@@ -104,8 +99,9 @@ public class ArcSDEConnectionFactoryTest {
         assertNotNull("We're done with mandatory params, should have worked!", object);
     }
 
-    private void assertMandatory(Reference ref, Name name, Context nameCtx,
-            Hashtable<?, ?> environment) throws Exception {
+    private void assertMandatory(
+            Reference ref, Name name, Context nameCtx, Hashtable<?, ?> environment)
+            throws Exception {
         try {
             factory.getObjectInstance(ref, name, nameCtx, environment);
             fail("Expected IAE");
@@ -166,8 +162,7 @@ public class ArcSDEConnectionFactoryTest {
             return config;
         }
 
-        public void close() {
-        }
+        public void close() {}
 
         public int getAvailableCount() {
             return 0;
@@ -185,8 +180,8 @@ public class ArcSDEConnectionFactoryTest {
             return null;
         }
 
-        public ISession getSession(boolean transactional) throws IOException,
-                UnavailableConnectionException {
+        public ISession getSession(boolean transactional)
+                throws IOException, UnavailableConnectionException {
             return null;
         }
 

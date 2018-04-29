@@ -20,64 +20,56 @@ import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.util.ResourceBundle;
 
-
 /**
  * LineAbstractValidationBeanInfopurpose.
- * 
- * <p>
- * Description of LineAbstractValidationBeanInfo...
- * </p>
+ *
+ * <p>Description of LineAbstractValidationBeanInfo...
  *
  * @author dzwiers, Refractions Research, Inc.
  * @author $Author: dmzwiers $ (last modification)
- *
- *
  * @source $URL$
  * @version $Id$
  */
-public class LineNoPseudoNodeValidationBeanInfo extends LineAbstractValidationBeanInfo{
+public class LineNoPseudoNodeValidationBeanInfo extends LineAbstractValidationBeanInfo {
     /**
      * LineAbstractValidationBeanInfoconstructor.
-     * 
-     * <p>
-     * Description
-     * </p>
+     *
+     * <p>Description
      */
-    public LineNoPseudoNodeValidationBeanInfo(){
+    public LineNoPseudoNodeValidationBeanInfo() {
         super();
     }
 
     /**
      * Implementation of getPropertyDescriptors.
      *
-     *
      * @see java.beans.BeanInfo#getPropertyDescriptors()
      */
     public PropertyDescriptor[] getPropertyDescriptors() {
-    	PropertyDescriptor[] pd2 = super.getPropertyDescriptors();
-    	ResourceBundle resourceBundle = getResourceBundle(LineNoPseudoNodeValidation.class);
+        PropertyDescriptor[] pd2 = super.getPropertyDescriptors();
+        ResourceBundle resourceBundle = getResourceBundle(LineNoPseudoNodeValidation.class);
 
-    	if (pd2 == null) {
-    		pd2 = new PropertyDescriptor[0];
-    	}
+        if (pd2 == null) {
+            pd2 = new PropertyDescriptor[0];
+        }
 
-    	PropertyDescriptor[] pd = new PropertyDescriptor[pd2.length + 1];
-    	int i = 0;
+        PropertyDescriptor[] pd = new PropertyDescriptor[pd2.length + 1];
+        int i = 0;
 
-    	for (; i < pd2.length; i++)
-    		pd[i] = pd2[i];
+        for (; i < pd2.length; i++) pd[i] = pd2[i];
 
-    	try {
-    		pd[i] = createPropertyDescriptor("degreesAllowable",
-    				LineNoPseudoNodeValidation.class, resourceBundle);
-    		pd[i].setExpert(false);
-    	} catch (IntrospectionException e) {
-    		pd = pd2;
+        try {
+            pd[i] =
+                    createPropertyDescriptor(
+                            "degreesAllowable", LineNoPseudoNodeValidation.class, resourceBundle);
+            pd[i].setExpert(false);
+        } catch (IntrospectionException e) {
+            pd = pd2;
 
-    		// TODO error, log here
-    		e.printStackTrace();
-    	}
+            // TODO error, log here
+            e.printStackTrace();
+        }
 
-    	return pd;
+        return pd;
     }
 }

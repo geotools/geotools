@@ -22,24 +22,20 @@ import org.geotools.data.efeature.query.EFeatureEncoderException;
 
 /**
  * @author kengu - 14. juni 2011
- *
- *
  * @source $URL$
  */
 public class EAttributeValueIsGreaterEqualTest extends AbstractEAttributeValueTest {
-    
-    // ----------------------------------------------------- 
+
+    // -----------------------------------------------------
     //  Constructors
     // -----------------------------------------------------
-    
-    /**
-     * @param name
-     */
+
+    /** @param name */
     public EAttributeValueIsGreaterEqualTest(String name) {
-        super(name,GREATER_THAN_OR_EQUAL_TO);
+        super(name, GREATER_THAN_OR_EQUAL_TO);
     }
 
-    // ----------------------------------------------------- 
+    // -----------------------------------------------------
     //  AbstractEAttributeValueTest implementation
     // -----------------------------------------------------
 
@@ -50,5 +46,4 @@ public class EAttributeValueIsGreaterEqualTest extends AbstractEAttributeValueTe
         //
         return new EAttributeValueIsGreaterEqual(eAttribute, filter);
     }
-
 }

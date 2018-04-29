@@ -16,11 +16,11 @@
  */
 package org.geotools.gce.imagemosaic.catalog;
 
+import com.vividsolutions.jts.geom.Geometry;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.coverage.grid.io.footprint.MultiLevelROI;
 import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
@@ -28,47 +28,42 @@ import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.feature.SchemaException;
-import org.geotools.feature.collection.AbstractFeatureVisitor;
 import org.geotools.feature.visitor.FeatureCalc;
 import org.geotools.gce.imagemosaic.GranuleDescriptor;
 import org.geotools.gce.imagemosaic.ImageMosaicReader;
 import org.geotools.gce.imagemosaic.Utils;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.util.DefaultProgressListener;
 import org.geotools.util.SoftValueHashMap;
-import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.geometry.BoundingBox;
 
-import com.vividsolutions.jts.geom.Geometry;
-
 /**
  * This class simply builds an SRTREE spatial index in memory for fast indexed geometric queries.
- * 
- * <p>
- * Since the {@link ImageMosaicReader} heavily uses spatial queries to find out which are the involved tiles during mosaic creation, it is better to
- * do some caching and keep the index in memory as much as possible, hence we came up with this index.
- * 
- * @author Simone Giannecchini, S.A.S.
- * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for jar:file:foo.jar/bar.properties URLs
- * @since 2.5
  *
+ * <p>Since the {@link ImageMosaicReader} heavily uses spatial queries to find out which are the
+ * involved tiles during mosaic creation, it is better to do some caching and keep the index in
+ * memory as much as possible, hence we came up with this index.
+ *
+ * @author Simone Giannecchini, S.A.S.
+ * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for
+ *     jar:file:foo.jar/bar.properties URLs
+ * @since 2.5
  * @source $URL$
  */
 class CachingDataStoreGranuleCatalog extends GranuleCatalog {
 
     /** Logger. */
-    private final static Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger(CachingDataStoreGranuleCatalog.class);
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(CachingDataStoreGranuleCatalog.class);
 
     private final AbstractGTDataStoreGranuleCatalog adaptee;
 
-    private final SoftValueHashMap<String, GranuleDescriptor> descriptorsCache = new SoftValueHashMap<String, GranuleDescriptor>();
+    private final SoftValueHashMap<String, GranuleDescriptor> descriptorsCache =
+            new SoftValueHashMap<String, GranuleDescriptor>();
 
     /**
-     * 
      * @param adaptee
      * @param hints
      */
@@ -78,35 +73,32 @@ class CachingDataStoreGranuleCatalog extends GranuleCatalog {
     }
 
     @Override
-    public void addGranules(String typeName, Collection<SimpleFeature> granules,
-            Transaction transaction) throws IOException {
+    public void addGranules(
+            String typeName, Collection<SimpleFeature> granules, Transaction transaction)
+            throws IOException {
         adaptee.addGranules(typeName, granules, transaction);
     }
 
     @Override
     public void computeAggregateFunction(Query q, FeatureCalc function) throws IOException {
         adaptee.computeAggregateFunction(q, function);
-
     }
 
     @Override
     public void createType(String namespace, String typeName, String typeSpec)
             throws IOException, SchemaException {
         adaptee.createType(namespace, typeName, typeSpec);
-
     }
 
     @Override
     public void createType(SimpleFeatureType featureType) throws IOException {
         adaptee.createType(featureType);
-
     }
 
     @Override
     public void createType(String identification, String typeSpec)
             throws SchemaException, IOException {
         adaptee.createType(identification, typeSpec);
-
     }
 
     @Override
@@ -150,14 +142,14 @@ class CachingDataStoreGranuleCatalog extends GranuleCatalog {
         final Utils.BBOXFilterExtractor bboxExtractor = new Utils.BBOXFilterExtractor();
         q.getFilter().accept(bboxExtractor, null);
         ReferencedEnvelope requestedBBox = bboxExtractor.getBBox();
-        final Geometry intersectionGeometry = requestedBBox != null ? JTS.toGeometry(requestedBBox)
-                : null;
+        final Geometry intersectionGeometry =
+                requestedBBox != null ? JTS.toGeometry(requestedBBox) : null;
 
         // visiting the features from the underlying store
-        try(SimpleFeatureIterator fi = features.features()) {
-            while(fi.hasNext() && !visitor.isVisitComplete()) {
+        try (SimpleFeatureIterator fi = features.features()) {
+            while (fi.hasNext() && !visitor.isVisitComplete()) {
                 final SimpleFeature sf = fi.next();
-                
+
                 GranuleDescriptor granule = null;
 
                 // caching by granule's location
@@ -170,36 +162,46 @@ class CachingDataStoreGranuleCatalog extends GranuleCatalog {
                         // create the granule descriptor
                         MultiLevelROI footprint = getGranuleFootprint(sf);
                         if (footprint == null || !footprint.isEmpty()) {
-                            // caching only if the footprint is either absent or present and NON-empty
-                            granule = new GranuleDescriptor(sf, adaptee.suggestedRasterSPI,
-                                    adaptee.pathType, adaptee.locationAttribute,
-                                    adaptee.parentLocation, footprint, adaptee.heterogeneous,
-                                    adaptee.hints); // retain hints since this may contain a reader or anything
+                            // caching only if the footprint is either absent or present and
+                            // NON-empty
+                            granule =
+                                    new GranuleDescriptor(
+                                            sf,
+                                            adaptee.suggestedRasterSPI,
+                                            adaptee.pathType,
+                                            adaptee.locationAttribute,
+                                            adaptee.parentLocation,
+                                            footprint,
+                                            adaptee.heterogeneous,
+                                            adaptee.hints); // retain hints since this may contain a
+                            // reader or anything
                             descriptorsCache.put(featureId, granule);
                         }
                     } catch (Exception e) {
                         LOGGER.log(Level.FINE, "Skipping invalid granule", e);
                     }
-
                 }
 
                 if (granule != null) {
                     // check ROI inclusion
                     final Geometry footprint = granule.getFootprint();
-                    if (intersectionGeometry == null || footprint == null
+                    if (intersectionGeometry == null
+                            || footprint == null
                             || polygonOverlap(footprint, intersectionGeometry)) {
                         visitor.visit(granule, sf);
                     } else {
                         if (LOGGER.isLoggable(Level.FINE)) {
-                            LOGGER.fine("Skipping granule " + granule
-                                    + "\n since its ROI does not intersect the requested area");
+                            LOGGER.fine(
+                                    "Skipping granule "
+                                            + granule
+                                            + "\n since its ROI does not intersect the requested area");
                         }
                     }
                 }
             }
         }
     }
-    
+
     private boolean polygonOverlap(Geometry g1, Geometry g2) {
         // TODO: try to use relate instead
         Geometry intersection = g1.intersection(g2);
@@ -233,9 +235,7 @@ class CachingDataStoreGranuleCatalog extends GranuleCatalog {
         return adaptee.getTypeNames();
     }
 
-    /**
-     * @return the adaptee
-     */
+    /** @return the adaptee */
     public GranuleCatalog getAdaptee() {
         return adaptee;
     }
@@ -248,6 +248,5 @@ class CachingDataStoreGranuleCatalog extends GranuleCatalog {
     @Override
     public void drop() throws IOException {
         adaptee.drop();
-
     }
 }

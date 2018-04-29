@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-
 import org.geotools.data.ows.HTTPResponse;
 
 public class TestHttpResponse implements HTTPResponse {
@@ -65,12 +64,11 @@ public class TestHttpResponse implements HTTPResponse {
     }
 
     public TestHttpResponse(URL response, String contentType) {
-         this(contentType, "UTF-8", response);
+        this(contentType, "UTF-8", response);
     }
 
     @Override
-    public void dispose() {
-    }
+    public void dispose() {}
 
     @Override
     public String getContentType() {

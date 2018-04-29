@@ -16,10 +16,10 @@
  */
 package org.geotools.tile;
 
+import com.vividsolutions.jts.geom.Envelope;
 import java.awt.image.BufferedImage;
 import java.net.MalformedURLException;
 import java.net.URL;
-
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.tile.impl.WebMercatorZoomLevel;
@@ -28,8 +28,6 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import com.vividsolutions.jts.geom.Envelope;
 
 public class TileTest {
 
@@ -72,8 +70,8 @@ public class TileTest {
 
     @Test
     public void testGetExtent() {
-        ReferencedEnvelope env = new ReferencedEnvelope(new Envelope(6, 15, 47, 55),
-                DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope env =
+                new ReferencedEnvelope(new Envelope(6, 15, 47, 55), DefaultGeographicCRS.WGS84);
         Assert.assertEquals(env, this.tile.getExtent());
     }
 
@@ -84,13 +82,14 @@ public class TileTest {
 
     protected Tile createTestTile() {
 
-        ReferencedEnvelope env = new ReferencedEnvelope(new Envelope(6, 15, 47, 55),
-                DefaultGeographicCRS.WGS84);
+        ReferencedEnvelope env =
+                new ReferencedEnvelope(new Envelope(6, 15, 47, 55), DefaultGeographicCRS.WGS84);
         ZoomLevel zoomLevel = new WebMercatorZoomLevel(5);
 
         return new Tile(
                 TileIdentifierTest.createTileIdentifierPrototype(zoomLevel, 10, 12, "SomeService"),
-                env, 256) {
+                env,
+                256) {
 
             @Override
             public URL getUrl() {
@@ -100,7 +99,6 @@ public class TileTest {
                     throw new RuntimeException(e);
                 }
             }
-
         };
     }
 }

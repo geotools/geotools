@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -21,10 +21,11 @@ import java.util.List;
 /**
  * Indicates how geographical content should be displayed (we call this a style for simplicity; in
  * the spec it is called a UserStyle (user-defined style)).
- * <p>
- * The details of this object are taken from the
- * <a href="https://portal.opengeospatial.org/files/?artifact_id=1188">
- * OGC Styled-Layer Descriptor Report (OGC 02-070) version 1.0.0.</a>:
+ *
+ * <p>The details of this object are taken from the <a
+ * href="https://portal.opengeospatial.org/files/?artifact_id=1188">OGC Styled-Layer Descriptor
+ * Report (OGC 02-070) version 1.0.0.</a>:
+ *
  * <pre><code>
  * &lt;xsd:element name="UserStyle"&gt;
  *   &lt;xsd:annotation&gt;
@@ -45,8 +46,6 @@ import java.util.List;
  * &lt;/xsd:element&gt;
  * </code></pre>
  *
- *
- *
  * @source $URL$
  * @version $Id$
  * @author James Macgill
@@ -57,14 +56,15 @@ public interface Style extends org.opengis.style.Style {
 
     /**
      * Description for this style.
+     *
      * @return Human readable description for use in user interfaces
      * @since 2.5.x
      */
     Description getDescription();
-    
+
     /**
-     * Style Title (human readable name for user interfaces) 
-     * 
+     * Style Title (human readable name for user interfaces)
+     *
      * @deprecated use getDescription().getTitle().toString()
      */
     String getTitle();
@@ -75,72 +75,59 @@ public interface Style extends org.opengis.style.Style {
      */
     void setTitle(String title);
 
-    /** 
-     * Description of this style 
-     * 
+    /**
+     * Description of this style
+     *
      * @deprecated use getDesciption().getAbstract().toString()
      */
     String getAbstract();
 
-    /**
-     * @deprecated use getDescription().setAbstract( new SimpleInternationalString( text ) );
-     */
+    /** @deprecated use getDescription().setAbstract( new SimpleInternationalString( text ) ); */
     void setAbstract(String abstractStr);
 
     /**
      * Indicates that this is the default style.
-     * <p>
-     * Assume this is kept for GeoServer enabling a WMS to track
-     * which style is considered the default. May consider providing a
-     * clientProperties mechanism similar to Swing JComponent allowing
-     * applications to mark up the Style content for custom uses.
-     * </p>
+     *
+     * <p>Assume this is kept for GeoServer enabling a WMS to track which style is considered the
+     * default. May consider providing a clientProperties mechanism similar to Swing JComponent
+     * allowing applications to mark up the Style content for custom uses.
+     *
      * @param isDefault
      */
     void setDefault(boolean isDefault);
 
-    /**
-     * FeatureTypeStyles rendered in order of appearance in this list.
-     */
+    /** FeatureTypeStyles rendered in order of appearance in this list. */
     public List<FeatureTypeStyle> featureTypeStyles();
 
     /**
-     * This functionality is from an ISO specificaiton; and conflicts with the idea of an
-     * else rule presented by SLD.
-     * <p>
-     * Implementations may choose to look up the first symbolizer of an elseFilter or allow
-     * this to be provided?
-     * 
+     * This functionality is from an ISO specificaiton; and conflicts with the idea of an else rule
+     * presented by SLD.
+     *
+     * <p>Implementations may choose to look up the first symbolizer of an elseFilter or allow this
+     * to be provided?
+     *
      * @return Symbolizer to use if no rules work out.
      */
     public Symbolizer getDefaultSpecification();
-    
-    /**
-     * @param defaultSymbolizer To be used if a feature is not rendered by any of the rules
-     */
-    public void setDefaultSpecification( Symbolizer defaultSymbolizer );
-    
+
+    /** @param defaultSymbolizer To be used if a feature is not rendered by any of the rules */
+    public void setDefaultSpecification(Symbolizer defaultSymbolizer);
+
     /**
      * Array of FeatureTypeStyles in portrayal order.
-     * <p>
-     * FeatureTypeStyle entries are rendered in order of appearance in this list.
-     * </p>
-     * <p>
-     * <i>Note: We are using a Array here to continue with Java 1.4 deployment.</i>
-     * </p>
+     *
+     * <p>FeatureTypeStyle entries are rendered in order of appearance in this list.
+     *
+     * <p><i>Note: We are using a Array here to continue with Java 1.4 deployment.</i>
+     *
      * @deprecated use featureTypeStyles().toArray( new FeatureTypeStyle[0] )
      */
     FeatureTypeStyle[] getFeatureTypeStyles();
 
-    
-    /**
-     * @deprecated Use featureTypeStyles().clear(); featureTypeStyles.addAll( ... )
-     */
+    /** @deprecated Use featureTypeStyles().clear(); featureTypeStyles.addAll( ... ) */
     void setFeatureTypeStyles(FeatureTypeStyle[] types);
 
-    /**
-     * @deprecated Use featureTypeStyles().add( type )
-     */
+    /** @deprecated Use featureTypeStyles().add( type ) */
     void addFeatureTypeStyle(FeatureTypeStyle type);
 
     /**

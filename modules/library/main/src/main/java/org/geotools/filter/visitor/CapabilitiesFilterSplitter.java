@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2012, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -23,11 +23,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 import java.util.logging.Logger;
-
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.Capabilities;
 import org.geotools.filter.IllegalFilterException;
-import org.geotools.filter.visitor.ClientTransactionAccessor;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.And;
 import org.opengis.filter.BinaryComparisonOperator;
@@ -91,64 +89,57 @@ import org.opengis.filter.temporal.TOverlaps;
 
 /**
  * Determines what queries can be processed server side and which can be processed client side.
- * <p>
- * IMPLEMENTATION NOTE: This class is implemented as a stack processor. If you're curious how it
+ *
+ * <p>IMPLEMENTATION NOTE: This class is implemented as a stack processor. If you're curious how it
  * works, compare it with the old SQLUnpacker class, which did the same thing using recursion in a
  * more straightforward way.
- * </p>
- * <p>
- * Here's a non-implementors best-guess at the algorithm: Starting at the top of the filter, split
- * each filter into its constituent parts. If the given FilterCapabilities support the given
+ *
+ * <p>Here's a non-implementors best-guess at the algorithm: Starting at the top of the filter,
+ * split each filter into its constituent parts. If the given FilterCapabilities support the given
  * operator, then keep checking downwards.
- * </p>
- * <p>
- * The key is in knowing whether or not something "down the tree" from you wound up being supported
- * or not. This is where the stacks come in. Right before handing off to accept() the sub- filters,
- * we count how many things are currently on the "can be proccessed by the underlying datastore"
- * stack (the preStack) and we count how many things are currently on the "need to be post-
- * processed" stack.
- * </p>
- * <p>
- * After the accept() call returns, we look again at the preStack.size() and postStack.size(). If
+ *
+ * <p>The key is in knowing whether or not something "down the tree" from you wound up being
+ * supported or not. This is where the stacks come in. Right before handing off to accept() the sub-
+ * filters, we count how many things are currently on the "can be proccessed by the underlying
+ * datastore" stack (the preStack) and we count how many things are currently on the "need to be
+ * post- processed" stack.
+ *
+ * <p>After the accept() call returns, we look again at the preStack.size() and postStack.size(). If
  * the postStack has grown, that means that there was stuff down in the accept()-ed filter that
  * wasn't supportable. Usually this means that our filter isn't supportable, but not always.
- * 
- * In some cases a sub-filter being unsupported isn't necessarily bad, as we can 'unpack' OR
+ *
+ * <p>In some cases a sub-filter being unsupported isn't necessarily bad, as we can 'unpack' OR
  * statements into AND statements (DeMorgans rule/modus poens) and still see if we can handle the
  * other side of the OR. Same with NOT and certain kinds of AND statements.
- * </p>
- * <p>
- * In addition this class supports the case where we're doing an split in the middle of a
+ *
+ * <p>In addition this class supports the case where we're doing an split in the middle of a
  * client-side transaction. I.e. imagine doing a <Transaction> against a WFS-T where you have to
  * filter against actions that happened previously in the transaction. That's what the
  * ClientTransactionAccessor interface does, and this class splits filters while respecting the
  * information about deletes and updates that have happened previously in the Transaction. I can't
  * say with certainty exactly how the logic for that part of this works, but the test suite does
  * seem to test it and the tests do pass.
- * </p>
- * <p>
- * Since GeoTools 8.0, the {@link ClientTransactionAccessor} interface can also be used to instruct
- * the splitter that a filter referencing a given {@link PropertyName} can't be encoded by the
- * back-end, by returning {@link Filter#EXCLUDE} in
- * {@link ClientTransactionAccessor#getUpdateFilter(String) getUpdateFilter(String)}. This is so
- * because there may be the case where some attribute names are encodable to the back-end's query
- * language, while others may not be, or may not be part of the stored data model. In such case,
- * returning {@code Filter.EXCLUDE} makes the filter referencing the property name part of the
- * post-processing filter instead of the pre-processing filter.
- * 
+ *
+ * <p>Since GeoTools 8.0, the {@link org.geotools.filter.visitor.ClientTransactionAccessor}
+ * interface can also be used to instruct the splitter that a filter referencing a given {@link
+ * PropertyName} can't be encoded by the back-end, by returning {@link Filter#EXCLUDE} in {@link
+ * org.geotools.filter.visitor.ClientTransactionAccessor#getUpdateFilter(String)
+ * getUpdateFilter(String)}. This is so because there may be the case where some attribute names are
+ * encodable to the back-end's query language, while others may not be, or may not be part of the
+ * stored data model. In such case, returning {@code Filter.EXCLUDE} makes the filter referencing
+ * the property name part of the post-processing filter instead of the pre-processing filter.
+ *
  * @author dzwiers
  * @author commented and ported from gt to ogc filters by saul.farber
  * @author ported to work upon {@code org.geotools.filter.Capabilities} by Gabriel Roldan
- * 
- * 
  * @source $URL$
  * @since 2.5.3
  */
-@SuppressWarnings( { "nls", "unchecked" })
+@SuppressWarnings({"nls", "unchecked"})
 public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisitor {
 
-    private static final Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger("org.geotools.filter");
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.filter");
 
     /**
      * The stack holding the bits of the filter that are not processable by something with the given
@@ -169,9 +160,7 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
      */
     private Set changedStack = new HashSet();
 
-    /**
-     * The given filterCapabilities that we're splitting on.
-     */
+    /** The given filterCapabilities that we're splitting on. */
     private Capabilities fcs = null;
 
     private FeatureType parent = null;
@@ -188,19 +177,16 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
 
     /**
      * Create a new instance.
-     * 
-     * @param fcs
-     *            The FilterCapabilties that describes what Filters/Expressions the server can
-     *            process.
-     * @param parent
-     *            The FeatureType that this filter involves. Why is this needed?
-     * @param transactionAccessor
-     *            If the transaction is handled on the client and not the server then different
-     *            filters must be sent to the server. This class provides a generic way of obtaining
-     *            the information from the transaction.
+     *
+     * @param fcs The FilterCapabilties that describes what Filters/Expressions the server can
+     *     process.
+     * @param parent The FeatureType that this filter involves. Why is this needed?
+     * @param transactionAccessor If the transaction is handled on the client and not the server
+     *     then different filters must be sent to the server. This class provides a generic way of
+     *     obtaining the information from the transaction.
      */
-    public CapabilitiesFilterSplitter(Capabilities fcs, FeatureType parent,
-            ClientTransactionAccessor transactionAccessor) {
+    public CapabilitiesFilterSplitter(
+            Capabilities fcs, FeatureType parent, ClientTransactionAccessor transactionAccessor) {
         this.ff = CommonFactoryFinder.getFilterFactory(null);
         this.fcs = fcs;
         this.parent = parent;
@@ -210,9 +196,9 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
     /**
      * Gets the filter that cannot be sent to the server and must be post-processed on the client by
      * geotools.
-     * 
+     *
      * @return the filter that cannot be sent to the server and must be post-processed on the client
-     *         by geotools.
+     *     by geotools.
      */
     public Filter getFilterPost() {
         if (!changedStack.isEmpty())
@@ -232,7 +218,7 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
 
     /**
      * Gets the filter that can be sent to the server for pre-processing.
-     * 
+     *
      * @return the filter that can be sent to the server for pre-processing.
      */
     public Filter getFilterPre() {
@@ -259,8 +245,7 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
             }
         }
 
-        if (changedStack.isEmpty())
-            return f;
+        if (changedStack.isEmpty()) return f;
 
         Iterator iter = changedStack.iterator();
         Filter updateFilter = (Filter) iter.next();
@@ -273,16 +258,13 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
                 updateFilter = (Filter) ff.or(updateFilter, next);
             }
         }
-        if (updateFilter == Filter.INCLUDE || f == Filter.INCLUDE)
-            return Filter.INCLUDE;
+        if (updateFilter == Filter.INCLUDE || f == Filter.INCLUDE) return Filter.INCLUDE;
         return ff.or(f, updateFilter);
     }
 
     /**
      * @see FilterVisitor#visit(IncludeFilter, Object)
-     * 
-     * @param filter
-     *            the {@link Filter} to visit
+     * @param filter the {@link Filter} to visit
      */
     public void visit(IncludeFilter filter) {
         return;
@@ -290,9 +272,7 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
 
     /**
      * @see FilterVisitor#visit(ExcludeFilter, Object)
-     * 
-     * @param filter
-     *            the {@link Filter} to visit
+     * @param filter the {@link Filter} to visit
      */
     public void visit(ExcludeFilter filter) {
         if (fcs.supports(Filter.EXCLUDE)) {
@@ -304,15 +284,12 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
 
     /**
      * @see FilterVisitor#visit(PropertyIsBetween, Object) NOTE: This method is extra documented as
-     *      an example of how all the other methods are implemented. If you want to know how this
-     *      class works read this method first!
-     * 
-     * @param filter
-     *            the {@link Filter} to visit
+     *     an example of how all the other methods are implemented. If you want to know how this
+     *     class works read this method first!
+     * @param filter the {@link Filter} to visit
      */
     public Object visit(PropertyIsBetween filter, Object extradata) {
-        if (original == null)
-            original = filter;
+        if (original == null) original = filter;
 
         // Do we support this filter type at all?
         if (fcs.supports(filter)) {
@@ -439,8 +416,7 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
     }
 
     private void visitBinaryOperator(Filter filter, Expression leftValue, Expression rightValue) {
-        if (original == null)
-            original = filter;
+        if (original == null) original = filter;
 
         // supports it as a group -- no need to check the type
         if (!fcs.supports(filter)) {
@@ -477,7 +453,7 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
         preStack.pop(); // right side
         preStack.push(filter);
     }
-    
+
     private void visitBinaryComparisonOperator(BinaryComparisonOperator filter) {
         visitBinaryOperator(filter, filter.getExpression1(), filter.getExpression2());
     }
@@ -542,12 +518,21 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
     }
 
     private void visitBinarySpatialOperator(BinarySpatialOperator filter) {
-        if (original == null)
-            original = filter;
+        if (original == null) original = filter;
 
-        Class[] spatialOps = new Class[] { Beyond.class, Contains.class, Crosses.class,
-                Disjoint.class, DWithin.class, Equals.class, Intersects.class, Overlaps.class,
-                Touches.class, Within.class };
+        Class[] spatialOps =
+                new Class[] {
+                    Beyond.class,
+                    Contains.class,
+                    Crosses.class,
+                    Disjoint.class,
+                    DWithin.class,
+                    Equals.class,
+                    Intersects.class,
+                    Overlaps.class,
+                    Touches.class,
+                    Within.class
+                };
 
         for (int i = 0; i < spatialOps.length; i++) {
             if (spatialOps[i].isAssignableFrom(filter.getClass())) {
@@ -599,8 +584,7 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
     }
 
     public Object visit(PropertyIsLike filter, Object notUsed) {
-        if (original == null)
-            original = filter;
+        if (original == null) original = filter;
 
         // if (!fcs.supports(PropertyIsLike.class)) {
         if (!fcs.supports(filter)) {
@@ -640,13 +624,12 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
     }
 
     private void visitLogicOperator(Filter filter) {
-        if (original == null)
-            original = filter;
+        if (original == null) original = filter;
 
         if (!fcs.supports(filter)) {
             // logical operators aren't supported
-            
-            // if the logical operator is AND            
+
+            // if the logical operator is AND
             if (filter instanceof And) {
                 // test if one of its children is supported
                 Iterator<Filter> it = ((And) filter).getChildren().iterator();
@@ -660,17 +643,17 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
                         otherChildren.add(child);
                     }
                 }
-                
+
                 if (supportedChild == null) {
                     // no child supported
                     postStack.push(filter);
-                    return;                                    
+                    return;
                 } else {
                     // found at least one child supported
-                    
+
                     // push the first supported child on preStack
                     preStack.push(supportedChild);
-                    
+
                     // push other children on postStack
                     if (otherChildren.size() == 1) {
                         postStack.push(otherChildren.get(0));
@@ -681,7 +664,7 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
                 }
             } else {
                 postStack.push(filter);
-                return;                
+                return;
             }
         }
 
@@ -742,16 +725,14 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
                     if (filter instanceof And) {
                         Filter f = (Filter) postStack.pop();
 
-                        while (postStack.size() > i)
-                            f = ff.and(f, (Filter) postStack.pop());
+                        while (postStack.size() > i) f = ff.and(f, (Filter) postStack.pop());
 
                         postStack.push(f);
 
                         if (j < preStack.size()) {
                             f = (Filter) preStack.pop();
 
-                            while (preStack.size() > j)
-                                f = ff.and(f, (Filter) preStack.pop());
+                            while (preStack.size() > j) f = ff.and(f, (Filter) preStack.pop());
                             preStack.push(f);
                         }
                     } else {
@@ -802,8 +783,7 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
     }
 
     Object visitNullNil(Filter filter, Expression e) {
-        if (original == null)
-            original = filter;
+        if (original == null) original = filter;
 
         if (!fcs.supports(filter)) {
             postStack.push(filter);
@@ -824,14 +804,14 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
 
         return null;
     }
+
     public Object visit(Id filter, Object notUsed) {
-        if (original == null)
-            original = filter;
-        
+        if (original == null) original = filter;
+
         if (!fcs.supports(filter)) {
             postStack.push(filter);
         } else {
-            preStack.push(filter);            
+            preStack.push(filter);
         }
 
         return null;
@@ -840,22 +820,24 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
     public Object visit(PropertyName expression, Object notUsed) {
         // JD: use an expression to get at the attribute type intead of accessing directly
         if (parent != null && expression.evaluate(parent) == null) {
-            throw new IllegalArgumentException("Property '" + expression.getPropertyName()
-                    + "' could not be found in " + parent.getName());
+            throw new IllegalArgumentException(
+                    "Property '"
+                            + expression.getPropertyName()
+                            + "' could not be found in "
+                            + parent.getName());
         }
         if (transactionAccessor != null) {
-            Filter updateFilter = (Filter) transactionAccessor.getUpdateFilter(expression
-                    .getPropertyName());
+            Filter updateFilter =
+                    (Filter) transactionAccessor.getUpdateFilter(expression.getPropertyName());
             if (updateFilter != null) {
-                if(updateFilter == Filter.EXCLUDE){
+                if (updateFilter == Filter.EXCLUDE) {
                     // property name not encodable to backend
                     postStack.push(expression);
-                }else{
+                } else {
                     changedStack.add(updateFilter);
                     preStack.push(updateFilter);
                 }
-            } else
-                preStack.push(expression);
+            } else preStack.push(expression);
         } else {
             preStack.push(expression);
         }
@@ -926,10 +908,7 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
         preStack.push(expression);
     }
 
-    /**
-     * 
-     * @see org.geotools.filter.FilterVisitor#visit(org.geotools.filter.FunctionExpression)
-     */
+    /** @see org.geotools.filter.FilterVisitor#visit(org.geotools.filter.FunctionExpression) */
     public Object visit(Function expression, Object notUsed) {
         if (!fcs.fullySupports(expression)) {
             postStack.push(expression);
@@ -948,16 +927,14 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
             ((Expression) expression.getParameters().get(i)).accept(this, null);
 
             if (i < postStack.size()) {
-                while (j < preStack.size())
-                    preStack.pop();
+                while (j < preStack.size()) preStack.pop();
                 postStack.pop();
                 postStack.push(expression);
 
                 return null;
             }
         }
-        while (j < preStack.size())
-            preStack.pop();
+        while (j < preStack.size()) preStack.pop();
         preStack.push(expression);
         return null;
     }
@@ -995,63 +972,63 @@ public class CapabilitiesFilterSplitter implements FilterVisitor, ExpressionVisi
         Filter and = ff.and(translated);
         return ff.not(and);
     }
-    
+
     public Object visit(After after, Object extraData) {
-        return visit((BinaryTemporalOperator)after, extraData);
+        return visit((BinaryTemporalOperator) after, extraData);
     }
 
     public Object visit(AnyInteracts anyInteracts, Object extraData) {
-        return visit((BinaryTemporalOperator)anyInteracts, extraData);
+        return visit((BinaryTemporalOperator) anyInteracts, extraData);
     }
 
     public Object visit(Before before, Object extraData) {
-        return visit((BinaryTemporalOperator)before, extraData);
+        return visit((BinaryTemporalOperator) before, extraData);
     }
 
     public Object visit(Begins begins, Object extraData) {
-        return visit((BinaryTemporalOperator)begins, extraData);
+        return visit((BinaryTemporalOperator) begins, extraData);
     }
 
     public Object visit(BegunBy begunBy, Object extraData) {
-        return visit((BinaryTemporalOperator)begunBy, extraData);
+        return visit((BinaryTemporalOperator) begunBy, extraData);
     }
 
     public Object visit(During during, Object extraData) {
-        return visit((BinaryTemporalOperator)during, extraData);
+        return visit((BinaryTemporalOperator) during, extraData);
     }
 
     public Object visit(EndedBy endedBy, Object extraData) {
-        return visit((BinaryTemporalOperator)endedBy, extraData);
+        return visit((BinaryTemporalOperator) endedBy, extraData);
     }
 
     public Object visit(Ends ends, Object extraData) {
-        return visit((BinaryTemporalOperator)ends, extraData);
+        return visit((BinaryTemporalOperator) ends, extraData);
     }
 
     public Object visit(Meets meets, Object extraData) {
-        return visit((BinaryTemporalOperator)meets, extraData);
+        return visit((BinaryTemporalOperator) meets, extraData);
     }
 
     public Object visit(MetBy metBy, Object extraData) {
-        return visit((BinaryTemporalOperator)metBy, extraData);
+        return visit((BinaryTemporalOperator) metBy, extraData);
     }
 
     public Object visit(OverlappedBy overlappedBy, Object extraData) {
-        return visit((BinaryTemporalOperator)overlappedBy, extraData);
+        return visit((BinaryTemporalOperator) overlappedBy, extraData);
     }
 
     public Object visit(TContains contains, Object extraData) {
-        return visit((BinaryTemporalOperator)contains, extraData);
+        return visit((BinaryTemporalOperator) contains, extraData);
     }
 
     public Object visit(TEquals equals, Object extraData) {
-        return visit((BinaryTemporalOperator)equals, extraData);
+        return visit((BinaryTemporalOperator) equals, extraData);
     }
 
     public Object visit(TOverlaps contains, Object extraData) {
-        return visit((BinaryTemporalOperator)contains, extraData);
+        return visit((BinaryTemporalOperator) contains, extraData);
     }
-    
+
     protected Object visit(BinaryTemporalOperator filter, Object data) {
         visitBinaryOperator(filter, filter.getExpression1(), filter.getExpression2());
         return null;

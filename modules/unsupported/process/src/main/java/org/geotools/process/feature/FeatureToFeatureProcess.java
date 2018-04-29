@@ -18,7 +18,6 @@ package org.geotools.process.feature;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
@@ -30,93 +29,85 @@ import org.opengis.util.ProgressListener;
 
 /**
  * Abstract implementation of Process for feature collections.
- * <p>
- * Subclasses need to implement {@link #processFeature(SimpleFeature, Map)}. This method
- * should perform the operation on the feature, changing any attributes on the feature 
- * as necessary.
- * </p>
- * 
+ *
+ * <p>Subclasses need to implement {@link #processFeature(SimpleFeature, Map)}. This method should
+ * perform the operation on the feature, changing any attributes on the feature as necessary.
+ *
  * @see FeatureToFeatureProcessFactory
  * @author Justin Deoliveira, OpenGEO
- * 
  * @since 2.6
- *
- *
- *
- *
  * @source $URL$
  */
 public abstract class FeatureToFeatureProcess extends AbstractFeatureCollectionProcess {
 
     /**
      * Constructor
-     * 
+     *
      * @param factory
      */
     public FeatureToFeatureProcess(FeatureToFeatureProcessFactory factory) {
         super(factory);
     }
 
-    public final Map<String, Object> execute(Map<String, Object> input,
-            ProgressListener monitor) {
-        if ( monitor == null ) {
+    public final Map<String, Object> execute(Map<String, Object> input, ProgressListener monitor) {
+        if (monitor == null) {
             monitor = new NullProgressListener();
         }
-        
-        //read the parameters, features and buffer amount
-        FeatureCollection features = 
-            (FeatureCollection) input.get( FeatureToFeatureProcessFactory.FEATURES.key );
 
-        //start progress
+        // read the parameters, features and buffer amount
+        FeatureCollection features =
+                (FeatureCollection) input.get(FeatureToFeatureProcessFactory.FEATURES.key);
+
+        // start progress
         float scale = 100f / features.size();
         monitor.started();
-        
-        //create the result feature collection
-        SimpleFeatureType targetSchema = getTargetSchema((SimpleFeatureType) features.getSchema(), input);
+
+        // create the result feature collection
+        SimpleFeatureType targetSchema =
+                getTargetSchema((SimpleFeatureType) features.getSchema(), input);
         DefaultFeatureCollection result = new DefaultFeatureCollection(null, targetSchema);
 
         SimpleFeatureBuilder fb = new SimpleFeatureBuilder((SimpleFeatureType) result.getSchema());
         FeatureIterator fi = features.features();
         try {
             int counter = 0;
-            while( fi.hasNext() ) {
-                //copy the feature
+            while (fi.hasNext()) {
+                // copy the feature
                 fb.init((SimpleFeature) fi.next());
                 SimpleFeature feature = fb.buildFeature(null);
-                
-                //buffer the geometry
+
+                // buffer the geometry
                 try {
-                    processFeature( feature, input );
+                    processFeature(feature, input);
+                } catch (Exception e) {
+                    monitor.exceptionOccurred(e);
                 }
-                catch( Exception e ) {
-                    monitor.exceptionOccurred( e );
-                }
-                
-                monitor.progress( scale * counter++);
-                result.add( feature );    
+
+                monitor.progress(scale * counter++);
+                result.add(feature);
             }
-        }
-        finally {
+        } finally {
             fi.close();
         }
         monitor.complete();
-        
-        //return the result
-        Map<String,Object> output = new HashMap<String, Object>();
-        output.put( FeatureToFeatureProcessFactory.RESULT.key, result );
+
+        // return the result
+        Map<String, Object> output = new HashMap<String, Object>();
+        output.put(FeatureToFeatureProcessFactory.RESULT.key, result);
         return output;
     }
-    
+
     /**
-     * Subclasses should override if the target schema is different that then original schema
-     * (mind, if the number of attributes changes it's better to roll your own class instead
-     * of using this one)
+     * Subclasses should override if the target schema is different that then original schema (mind,
+     * if the number of attributes changes it's better to roll your own class instead of using this
+     * one)
+     *
      * @param sourceSchema
      * @param input
      * @return
      */
-    protected SimpleFeatureType getTargetSchema(SimpleFeatureType sourceSchema, Map<String, Object> input) {
+    protected SimpleFeatureType getTargetSchema(
+            SimpleFeatureType sourceSchema, Map<String, Object> input) {
         return sourceSchema;
     }
-    
 }

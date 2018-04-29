@@ -22,14 +22,11 @@ package org.geotools.swing.event;
  *
  * @author Michael Bedward
  * @since 2.6
- *
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public interface MapMouseListener {
-    
+
     /**
      * Respond to a mouse click event received from the map pane
      *
@@ -85,5 +82,4 @@ public interface MapMouseListener {
      * @param ev the mouse event
      */
     public void onMouseWheelMoved(MapMouseEvent ev);
-
 }

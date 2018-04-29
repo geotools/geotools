@@ -16,50 +16,38 @@
  */
 package org.geotools.xml.impl;
 
-import org.eclipse.xsd.XSDTypeDefinition;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import org.eclipse.xsd.XSDTypeDefinition;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class TypeWalker {
-    /**
-     * Cached type hieracty
-     */
+    /** Cached type hieracty */
     HashMap /*<XSDTypeDefinition,List>*/ cache = new HashMap();
 
-    /**
-     * Walks from the bottom of the type hierachy to the top.
-     */
+    /** Walks from the bottom of the type hierachy to the top. */
     public void walk(XSDTypeDefinition base, Visitor visitor) {
         List types = types(base);
 
         for (int i = 0; i < types.size(); i++) {
             XSDTypeDefinition type = (XSDTypeDefinition) types.get(i);
 
-            //do the visit, if visitor returns false, break out
+            // do the visit, if visitor returns false, break out
             if (!visitor.visit(type)) {
                 break;
             }
         }
     }
 
-    /**
-     * Walks from the top of the type hierachy to the bottom.
-     *
-     */
+    /** Walks from the top of the type hierachy to the bottom. */
     public void rwalk(XSDTypeDefinition base, Visitor visitor) {
         List types = types(base);
 
         for (int i = types.size() - 1; i > -1; i--) {
             XSDTypeDefinition type = (XSDTypeDefinition) types.get(i);
 
-            //do the visit, if visitor returns false, break out
+            // do the visit, if visitor returns false, break out
             if (!visitor.visit(type)) {
                 break;
             }
@@ -77,7 +65,7 @@ public class TypeWalker {
             while (type != null) {
                 types.add(type);
 
-                //get the next type
+                // get the next type
                 if (type.equals(type.getBaseType())) {
                     break;
                 }
@@ -96,9 +84,8 @@ public class TypeWalker {
          * Supplies the current type to the visitor.
          *
          * @param type The current type.
-         *
-         * @return True to signal that the walk should continue, false to
-         * signal the walk should stop.
+         * @return True to signal that the walk should continue, false to signal the walk should
+         *     stop.
          */
         boolean visit(XSDTypeDefinition type);
     }

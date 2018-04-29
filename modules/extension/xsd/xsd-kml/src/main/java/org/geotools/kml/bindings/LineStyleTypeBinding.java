@@ -26,12 +26,12 @@ import org.geotools.xml.Binding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 
-
 /**
  * Binding object for the type http://earth.google.com/kml/2.1:LineStyleType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;complexType final="#all" name="LineStyleType"&gt;
  *      &lt;complexContent&gt;
@@ -45,12 +45,8 @@ import org.geotools.xml.Node;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class LineStyleTypeBinding extends AbstractComplexBinding {
@@ -60,14 +56,13 @@ public class LineStyleTypeBinding extends AbstractComplexBinding {
         this.sb = sb;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return KML.LineStyleType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -82,13 +77,13 @@ public class LineStyleTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Color color = (Color) value;
         Float width = (Float) node.getChildValue("width", Float.valueOf(1f));
 

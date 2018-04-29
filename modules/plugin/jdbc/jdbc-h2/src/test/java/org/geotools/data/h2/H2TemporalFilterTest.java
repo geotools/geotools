@@ -9,5 +9,4 @@ public class H2TemporalFilterTest extends JDBCTemporalFilterOnlineTest {
     protected JDBCDateTestSetup createTestSetup() {
         return new H2DateTestSetup();
     }
-
 }

@@ -10,7 +10,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
  * Concurrency test from GEOT-2515.
- * 
+ *
  * @author Frank Gasdorf
  */
 public class MemoryDataStoreConcurrencyTest extends DataTestCase {
@@ -24,21 +24,25 @@ public class MemoryDataStoreConcurrencyTest extends DataTestCase {
         dataStore.createSchema(roadType);
 
         // start thread to write each second a feature
-        Runnable writeSomeFeatures = new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 0; i < 10000; i++) {
-                    if (Thread.interrupted())
-                        break;
-                    SimpleFeature feature = SimpleFeatureBuilder
-                            .build(roadType,
-                                    new Object[] { new Integer(i),
-                                            line(new int[] { 10, 10, 20, 10 }), "r" + i },
-                                    "road.rd" + i);
-                    dataStore.addFeature(feature);
-                }
-            }
-        };
+        Runnable writeSomeFeatures =
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        for (int i = 0; i < 10000; i++) {
+                            if (Thread.interrupted()) break;
+                            SimpleFeature feature =
+                                    SimpleFeatureBuilder.build(
+                                            roadType,
+                                            new Object[] {
+                                                new Integer(i),
+                                                line(new int[] {10, 10, 20, 10}),
+                                                "r" + i
+                                            },
+                                            "road.rd" + i);
+                            dataStore.addFeature(feature);
+                        }
+                    }
+                };
         Thread writeThread = new Thread(writeSomeFeatures);
         writeThread.start();
         try {
@@ -47,8 +51,8 @@ public class MemoryDataStoreConcurrencyTest extends DataTestCase {
                 // just run through the features
                 assertTrue(dataStore != null);
                 Query query = new Query(roadType.getTypeName());
-                FeatureReader<SimpleFeatureType, SimpleFeature> featureReader = dataStore
-                        .getFeatureReader(query,Transaction.AUTO_COMMIT);
+                FeatureReader<SimpleFeatureType, SimpleFeature> featureReader =
+                        dataStore.getFeatureReader(query, Transaction.AUTO_COMMIT);
                 assertTrue(featureReader != null);
                 while (featureReader.hasNext()) {
                     featureReader.next();

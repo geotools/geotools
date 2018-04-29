@@ -25,7 +25,6 @@ import static org.junit.Assert.assertNotNull;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.geotools.data.DataAccessFinder;
 import org.geotools.feature.NameImpl;
 import org.junit.After;
@@ -49,9 +48,7 @@ public class HiddenDataAccessDisposalTest extends AbstractHiddenDataAccessDispos
      */
     @Before
     public void loadDataAccesses() throws Exception {
-        /**
-         * Load mapped feature data access
-         */
+        /** Load mapped feature data access */
         Map dsParams = new HashMap();
         URL url = getClass().getResource(schemaBase + "MappedFeaturePropertyfile.xml");
         assertNotNull(url);
@@ -63,9 +60,7 @@ public class HiddenDataAccessDisposalTest extends AbstractHiddenDataAccessDispos
         assertNotNull(mfDataAccess.getSchema(MAPPED_FEATURE));
         assertFalse(mfDataAccess.hidden);
 
-        /**
-         * Load geologic unit data access
-         */
+        /** Load geologic unit data access */
         loadGeologicUnit();
 
         // 2 accessible data accesses + 3 hidden data accesses = 5

@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2007-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -17,10 +17,9 @@
 package org.geotools.factory;
 
 import java.util.Iterator;
-import java.util.Set;
 import java.util.LinkedHashSet;
+import java.util.Set;
 import org.geotools.resources.XArray;
-
 
 /**
  * The list of registered {@linkplain FactoryIteratorProvider factory iterator providers}.
@@ -28,19 +27,16 @@ import org.geotools.resources.XArray;
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
- *
  * @todo Consider removing {@link FactoryRegistry#globalConfiguration} and use listeners instead.
  */
 final class FactoryIteratorProviders {
     /**
-     * The system-wide configuration. This is the instance configured by
-     * the public static methods provided in this class.
+     * The system-wide configuration. This is the instance configured by the public static methods
+     * provided in this class.
      */
     private static final FactoryIteratorProviders GLOBAL = new FactoryIteratorProviders();
 
-    /**
-     * Incremented every time a modification is performed.
-     */
+    /** Incremented every time a modification is performed. */
     private int modifications = 0;
 
     /**
@@ -49,20 +45,17 @@ final class FactoryIteratorProviders {
      */
     private Set<FactoryIteratorProvider> iteratorProviders;
 
-    /**
-     * Creates an initially empty set of factories.
-     */
-    FactoryIteratorProviders() {
-    }
+    /** Creates an initially empty set of factories. */
+    FactoryIteratorProviders() {}
 
     /**
      * Synchronizes the content of the {@link #iteratorProviders} map with the {@linkplain #GLOBAL
      * global} one. New providers are returned for later {@linkplain FactoryRegistry#register
-     * registration}. Note that this method is typically invoked in a different thread than
-     * {@link FactoryIteratorProviders} public static method calls.
+     * registration}. Note that this method is typically invoked in a different thread than {@link
+     * FactoryIteratorProviders} public static method calls.
      *
-     * @return The new iterators providers {@linkplain #addFactoryIteratorProvider added} since
-     *         the last time this method was invoked, or {@code null} if none.
+     * @return The new iterators providers {@linkplain #addFactoryIteratorProvider added} since the
+     *     last time this method was invoked, or {@code null} if none.
      */
     final FactoryIteratorProvider[] synchronizeIteratorProviders() {
         FactoryIteratorProvider[] newProviders = null;
@@ -96,7 +89,7 @@ final class FactoryIteratorProviders {
              * for a immediate scanning.
              */
             int remaining = GLOBAL.iteratorProviders.size();
-            for (final Iterator it=GLOBAL.iteratorProviders.iterator(); it.hasNext();) {
+            for (final Iterator it = GLOBAL.iteratorProviders.iterator(); it.hasNext(); ) {
                 final FactoryIteratorProvider candidate = (FactoryIteratorProvider) it.next();
                 if (iteratorProviders.add(candidate)) {
                     if (newProviders == null) {
@@ -112,12 +105,12 @@ final class FactoryIteratorProviders {
     }
 
     /**
-     * Adds an alternative way to search for factory implementations. {@link FactoryRegistry} has
-     * a default mechanism bundled in it, which uses the content of all {@code META-INF/services}
-     * directories found on the classpath. This {@code addFactoryIteratorProvider} method allows
-     * to specify additional discovery algorithms. It may be useful in the context of some
-     * frameworks that use the <cite>constructor injection</cite> pattern, like the
-     * <a href="http://www.springframework.org/">Spring framework</a>.
+     * Adds an alternative way to search for factory implementations. {@link FactoryRegistry} has a
+     * default mechanism bundled in it, which uses the content of all {@code META-INF/services}
+     * directories found on the classpath. This {@code addFactoryIteratorProvider} method allows to
+     * specify additional discovery algorithms. It may be useful in the context of some frameworks
+     * that use the <cite>constructor injection</cite> pattern, like the <a
+     * href="http://www.springframework.org/">Spring framework</a>.
      */
     public static void addFactoryIteratorProvider(FactoryIteratorProvider provider) {
         synchronized (GLOBAL) {
@@ -131,9 +124,9 @@ final class FactoryIteratorProviders {
     }
 
     /**
-     * Removes a provider that was previously {@linkplain #addFactoryIteratorProvider added}.
-     * Note that factories already obtained from the specified provider will not be
-     * {@linkplain FactoryRegistry#deregisterFactory deregistered} by this method.
+     * Removes a provider that was previously {@linkplain #addFactoryIteratorProvider added}. Note
+     * that factories already obtained from the specified provider will not be {@linkplain
+     * FactoryRegistry#deregisterFactory deregistered} by this method.
      */
     public static void removeFactoryIteratorProvider(FactoryIteratorProvider provider) {
         synchronized (GLOBAL) {
@@ -146,8 +139,8 @@ final class FactoryIteratorProviders {
     }
 
     /**
-     * Returns all iterator providers. This method do not returns any live collection
-     * since the array will be used outside the synchronized block.
+     * Returns all iterator providers. This method do not returns any live collection since the
+     * array will be used outside the synchronized block.
      */
     static FactoryIteratorProvider[] getIteratorProviders() {
         synchronized (GLOBAL) {

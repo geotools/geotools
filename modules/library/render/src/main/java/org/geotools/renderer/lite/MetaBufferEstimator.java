@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -19,9 +19,7 @@ package org.geotools.renderer.lite;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.swing.Icon;
-
 import org.geotools.filter.ConstantExpression;
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.renderer.style.DynamicSymbolFactoryFinder;
@@ -72,43 +70,38 @@ import org.opengis.filter.expression.PropertyName;
 import org.opengis.style.GraphicalSymbol;
 
 /**
- * Parses a style or part of it and returns the size of the largest stroke and the biggest point symbolizer whose width is specified with a literal expression.<br> Also provides an indication whether the stroke width is accurate, or if a non literal width has been found.
- *
- *
+ * Parses a style or part of it and returns the size of the largest stroke and the biggest point
+ * symbolizer whose width is specified with a literal expression.<br>
+ * Also provides an indication whether the stroke width is accurate, or if a non literal width has
+ * been found.
  *
  * @source $URL$
  */
-
 public class MetaBufferEstimator extends FilterAttributeExtractor implements StyleVisitor {
     /** The logger for the rendering module. */
-    protected static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.rendering");
-    
+    protected static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.rendering");
+
     protected FilterAttributeExtractor attributeExtractor = new FilterAttributeExtractor();
 
-    /**
-     * @uml.property  name="estimateAccurate"
-     */
+    /** @uml.property name="estimateAccurate" */
     protected boolean estimateAccurate = true;
 
-    /**
-     * @uml.property  name="buffer"
-     */
+    /** @uml.property name="buffer" */
     protected int buffer = 0;
 
     /**
-     * Feature used to evaluate sizes (optional, without it expressions based on attributes won't work)
+     * Feature used to evaluate sizes (optional, without it expressions based on attributes won't
+     * work)
      */
     Feature sample;
 
+    /** Builds an estimator suitable for styles without expressions */
+    public MetaBufferEstimator() {}
 
     /**
-     * Builds an estimator suitable for styles without expressions
-     */
-    public MetaBufferEstimator() {
-    }
-
-    /**
-     * Builds an estimator suitable for styles with expression, will evaluate against the provided feature
+     * Builds an estimator suitable for styles with expression, will evaluate against the provided
+     * feature
      */
     public MetaBufferEstimator(Feature sample) {
         this.sample = sample;
@@ -117,7 +110,6 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
     /**
      * Should you reuse this extractor multiple time, calling this method will reset the buffer and
      * flags
-     * 
      */
     public void reset() {
         estimateAccurate = true;
@@ -126,7 +118,7 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
 
     /**
      * @return
-     * @uml.property  name="buffer"
+     * @uml.property name="buffer"
      */
     public int getBuffer() {
         return buffer;
@@ -134,7 +126,7 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
 
     /**
      * @return
-     * @uml.property  name="estimateAccurate"
+     * @uml.property name="estimateAccurate"
      */
     public boolean isEstimateAccurate() {
         return estimateAccurate;
@@ -166,8 +158,7 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
 
         Graphic[] legendGraphics = rule.getLegendGraphic();
 
-        if (legendGraphics != null) {
-        }
+        if (legendGraphics != null) {}
     }
 
     public void visit(FeatureTypeStyle fts) {
@@ -183,33 +174,30 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
         // nothing to do here
     }
 
-    /**
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Stroke)
-     */
+    /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Stroke) */
     public void visit(Stroke stroke) {
         try {
             Expression width = stroke.getWidth();
             if (!isNull(width)) {
                 evaluateWidth(width);
             }
-            if(stroke.getGraphicStroke() != null) {
+            if (stroke.getGraphicStroke() != null) {
                 stroke.getGraphicStroke().accept(this);
             }
         } catch (ClassCastException e) {
             estimateAccurate = false;
-            LOGGER.info("Could not parse stroke width, "
-                    + "it's a literal but not a Number...");
+            LOGGER.info("Could not parse stroke width, " + "it's a literal but not a Number...");
         }
     }
-    
+
     protected boolean isNull(Expression exp) {
-        return exp == null || exp instanceof NilExpression 
-                || (exp instanceof ConstantExpression && ((ConstantExpression) exp).getValue() == null); 
+        return exp == null
+                || exp instanceof NilExpression
+                || (exp instanceof ConstantExpression
+                        && ((ConstantExpression) exp).getValue() == null);
     }
 
-    /**
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Symbolizer)
-     */
+    /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Symbolizer) */
     public void visit(Symbolizer sym) {
         if (sym instanceof PointSymbolizer) {
             visit((PointSymbolizer) sym);
@@ -248,40 +236,32 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
         }
 
         if (rs.getOpacity() != null) {
-            rs.getOpacity().accept(this,null);
+            rs.getOpacity().accept(this, null);
         }
     }
 
-    /**
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.PointSymbolizer)
-     */
+    /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.PointSymbolizer) */
     public void visit(PointSymbolizer ps) {
         if (ps.getGraphic() != null) {
             ps.getGraphic().accept(this);
         }
     }
 
-    /**
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.LineSymbolizer)
-     */
+    /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.LineSymbolizer) */
     public void visit(LineSymbolizer line) {
         if (line.getStroke() != null) {
             line.getStroke().accept(this);
         }
     }
 
-    /**
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.PolygonSymbolizer)
-     */
+    /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.PolygonSymbolizer) */
     public void visit(PolygonSymbolizer poly) {
         if (poly.getStroke() != null) {
             poly.getStroke().accept(this);
         }
     }
 
-    /**
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.TextSymbolizer)
-     */
+    /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.TextSymbolizer) */
     public void visit(TextSymbolizer text) {
         // while we cannot account for the label size, we should at least
         // account for its height, anchor point, and eventual offsets
@@ -323,19 +303,17 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
                 buffer = Math.max(buffer, total);
             }
         }
-        
+
         // take into account label shields if any
-        if(text instanceof TextSymbolizer2) {
+        if (text instanceof TextSymbolizer2) {
             Graphic graphic = ((TextSymbolizer2) text).getGraphic();
-            if(graphic != null) {
+            if (graphic != null) {
                 graphic.accept(this);
             }
         }
     }
 
-    /**
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Graphic)
-     */
+    /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Graphic) */
     public void visit(Graphic gr) {
         try {
             Expression grSize = gr.getSize();
@@ -343,71 +321,74 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
             boolean isSizeNull = isNull(grSize);
             boolean isSizeConstant = false;
 
-            if(!isSizeNull) {
+            if (!isSizeNull) {
                 isSizeConstant = isConstant(grSize);
                 if (isSizeConstant) {
                     imageSize = (int) Math.ceil(grSize.evaluate(null, Double.class));
                 } else {
                     estimateAccurate = false;
                     return;
-                }    
+                }
             }
-            
 
             for (GraphicalSymbol gs : gr.graphicalSymbols()) {
-                if(gs instanceof ExternalGraphic) {
+                if (gs instanceof ExternalGraphic) {
                     ExternalGraphic eg = (ExternalGraphic) gs;
                     Icon icon = null;
-                    if(eg.getInlineContent() != null) {
+                    if (eg.getInlineContent() != null) {
                         icon = eg.getInlineContent();
                     } else {
                         String location = eg.getLocation().toExternalForm();
                         // expand embedded cql expression
                         Expression expanded = ExpressionExtractor.extractCqlExpressions(location);
                         // if not a literal there is an attribute dependency
-                        if(!(expanded instanceof Literal)) {
+                        if (!(expanded instanceof Literal)) {
                             estimateAccurate = false;
                             return;
                         }
-                        
-                        Iterator<ExternalGraphicFactory> it  = DynamicSymbolFactoryFinder.getExternalGraphicFactories();
-                        while(it.hasNext() && icon == null) {
+
+                        Iterator<ExternalGraphicFactory> it =
+                                DynamicSymbolFactoryFinder.getExternalGraphicFactories();
+                        while (it.hasNext() && icon == null) {
                             try {
                                 ExternalGraphicFactory factory = it.next();
                                 icon = factory.getIcon(null, expanded, eg.getFormat(), imageSize);
-                            } catch(Exception e) {
-                                LOGGER.log(Level.FINE, "Error occurred evaluating external graphic", e);
+                            } catch (Exception e) {
+                                LOGGER.log(
+                                        Level.FINE,
+                                        "Error occurred evaluating external graphic",
+                                        e);
                             }
                         }
                     }
                     // evaluate the icon if found, if not SLD asks us to go to the next one
-                    if(icon != null) {
-                        if(icon != null) {
+                    if (icon != null) {
+                        if (icon != null) {
                             int size = Math.max(icon.getIconHeight(), icon.getIconWidth());
-                            if(size > buffer) {
+                            if (size > buffer) {
                                 buffer = size;
                             }
                             return;
                         }
                     }
-                } else if(gs instanceof Mark) {
+                } else if (gs instanceof Mark) {
                     Mark mark = (Mark) gs;
                     int markSize;
-                    if(isSizeConstant) {
+                    if (isSizeConstant) {
                         markSize = imageSize;
                     } else {
                         markSize = SLDStyleFactory.DEFAULT_MARK_SIZE;
                     }
-                    if(mark.getStroke() != null) {
+                    if (mark.getStroke() != null) {
                         int strokeWidth = getPositiveValue(mark.getStroke().getWidth());
-                        if(strokeWidth < 0) {
+                        if (strokeWidth < 0) {
                             estimateAccurate = false;
                         } else {
                             markSize += strokeWidth;
                         }
                     }
-                    
-                    if(markSize > buffer) {
+
+                    if (markSize > buffer) {
                         this.buffer = markSize;
                     }
 
@@ -422,20 +403,23 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
             LOGGER.info("Could not parse graphic size, " + "it's a literal but not a Number...");
         } catch (Exception e) {
             estimateAccurate = false;
-            LOGGER.log(Level.INFO, "Error occured during the graphic size estimation, " +
-                    "meta buffer estimate cannot be performed", e);
+            LOGGER.log(
+                    Level.INFO,
+                    "Error occured during the graphic size estimation, "
+                            + "meta buffer estimate cannot be performed",
+                    e);
         }
     }
 
     protected void evaluateWidth(Expression width) {
         int value = getPositiveValue(width);
-        if(value < 0) {
+        if (value < 0) {
             estimateAccurate = false;
-        } else if(value > buffer) {
+        } else if (value > buffer) {
             buffer = value;
         }
     }
-    
+
     protected int getPositiveValue(Expression ex) {
         double value = getDouble(ex);
         if (value == -1) {
@@ -460,62 +444,48 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
 
     protected boolean isConstant(Expression ex) {
         // quick common cases first
-        if(ex instanceof Literal) {
+        if (ex instanceof Literal) {
             return true;
-        } else if(ex instanceof PropertyName) {
+        } else if (ex instanceof PropertyName) {
             return false;
-        } 
+        }
         // ok, check for attribute dependencies and volatile functions then
         attributeExtractor.clear();
         ex.accept(attributeExtractor, null);
         return attributeExtractor.isConstantExpression();
     }
 
-    /**
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Mark)
-     */
+    /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Mark) */
     public void visit(Mark mark) {
         // nothing to do here
     }
 
-    /**
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.ExternalGraphic)
-     */
+    /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.ExternalGraphic) */
     public void visit(ExternalGraphic exgr) {
         // nothing to do
     }
 
-    /**
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.PointPlacement)
-     */
+    /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.PointPlacement) */
     public void visit(PointPlacement pp) {
         // nothing to do here
     }
 
-    /**
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.AnchorPoint)
-     */
+    /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.AnchorPoint) */
     public void visit(AnchorPoint ap) {
         // nothing to do here
     }
 
-    /**
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Displacement)
-     */
+    /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Displacement) */
     public void visit(Displacement dis) {
         // nothing to do here
     }
 
-    /**
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.LinePlacement)
-     */
+    /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.LinePlacement) */
     public void visit(LinePlacement lp) {
         // nothing to do here
     }
 
-    /**
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Halo)
-     */
+    /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Halo) */
     public void visit(Halo halo) {
         // nothing to do here
     }
@@ -549,7 +519,7 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
     }
 
     public void visit(FeatureTypeConstraint ftc) {
-       ftc.accept(this);
+        ftc.accept(this);
     }
 
     public void visit(ColorMap map) {
@@ -566,7 +536,6 @@ public class MetaBufferEstimator extends FilterAttributeExtractor implements Sty
 
     public void visit(ImageOutline outline) {
         outline.accept(this);
-
     }
 
     public void visit(ChannelSelection cs) {

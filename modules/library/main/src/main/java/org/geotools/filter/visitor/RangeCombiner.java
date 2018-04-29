@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2014-2015, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.util.Range;
 import org.opengis.feature.type.FeatureType;
@@ -43,17 +42,15 @@ import org.opengis.filter.expression.PropertyName;
  * Utility class used by {@link SimplifyingFilterVisitor} to combine range based filters. This class
  * works correctly only if all the range based filters have the same MatchAction, but does not check
  * it internally, so it is suitable for usage only in a simple feature context
- * 
+ *
  * @author Andrea Aime - GeoSolutions
- * 
  */
 abstract class RangeCombiner {
 
     /**
      * Combines ranges by unioning them when possible
-     * 
+     *
      * @author Andrea Aime - GeoSolutions
-     * 
      */
     static class Or extends RangeCombiner {
 
@@ -62,7 +59,7 @@ abstract class RangeCombiner {
         }
 
         @Override
-        protected  MultiRange combineRanges(MultiRange r1, MultiRange r2) {
+        protected MultiRange combineRanges(MultiRange r1, MultiRange r2) {
             return r1.merge(r2);
         }
 
@@ -74,14 +71,12 @@ abstract class RangeCombiner {
                 results.add(filter);
             }
         }
-
     }
 
     /**
      * Combines ranges by intersecting them
-     * 
+     *
      * @author Andrea Aime - GeoSolutions
-     * 
      */
     static class And extends RangeCombiner {
 
@@ -102,12 +97,11 @@ abstract class RangeCombiner {
                 results.add(filter);
             }
         }
-
     }
 
     /**
      * A tuple made of a filter and its associated range
-     * 
+     *
      * @author Andrea Aime - GeoSolutions
      */
     static class FilterRange {
@@ -119,12 +113,11 @@ abstract class RangeCombiner {
             this.filter = filter;
             this.range = range;
         }
-
     }
 
     /**
      * A tuple made of an expression and its associated range
-     * 
+     *
      * @author Andrea Aime - GeoSolutions
      */
     static class ExpressionRange {
@@ -136,7 +129,6 @@ abstract class RangeCombiner {
             this.expression = expression;
             this.range = range;
         }
-
     }
 
     static class CombinationResult {
@@ -144,12 +136,11 @@ abstract class RangeCombiner {
 
         boolean combinationHappened;
 
-        public CombinationResult(Map<Expression, List<FilterRange>> rangeMap,
-                boolean combinationHappened) {
+        public CombinationResult(
+                Map<Expression, List<FilterRange>> rangeMap, boolean combinationHappened) {
             this.rangeMap = rangeMap;
             this.combinationHappened = combinationHappened;
         }
-
     }
 
     ExpressionTypeVisitor expressionTypeVisitor;
@@ -234,8 +225,8 @@ abstract class RangeCombiner {
 
                 // see if the sub-filter can be assimilated to a single range
                 if (!subCombiner.otherFilters.isEmpty()
-                        || (subCombiner.rangeMap.size() > 1 && !subCombiner.getClass().equals(
-                                this.getClass()))) {
+                        || (subCombiner.rangeMap.size() > 1
+                                && !subCombiner.getClass().equals(this.getClass()))) {
                     otherFilters.add(f);
                 } else {
                     Map<Expression, MultiRange> combined = subCombiner.rangeMap;
@@ -246,12 +237,12 @@ abstract class RangeCombiner {
                     }
                 }
             } else {
-                // negation of ranges is not handled by choice, as the simplifying filter visitor has already
+                // negation of ranges is not handled by choice, as the simplifying filter visitor
+                // has already
                 // switched negations out for us
                 otherFilters.add(f);
             }
         }
-
     }
 
     private ExpressionRange getRange(BinaryComparisonOperator op) {
@@ -277,26 +268,24 @@ abstract class RangeCombiner {
                 }
             }
         } else if (!isStatic(op.getExpression2())) {
-                expression = op.getExpression2();
+            expression = op.getExpression2();
             Class binding = getTypeIfComparable(expression);
-                if (binding != null) {
-                    Object value = evaluate(op.getExpression1(), binding);
-                    if (value != null) {
-                        if (op instanceof PropertyIsLessThan) {
-                            range = new Range(binding, (Comparable) value, true, null, false);
-                        } else if (op instanceof PropertyIsLessThanOrEqualTo) {
-                            range = new Range(binding, (Comparable) value, false, null, false);
-                        } else if (op instanceof PropertyIsEqualTo) {
-                            range = new Range(binding, (Comparable) value, (Comparable) value);
-                        } else if (op instanceof PropertyIsGreaterThanOrEqualTo) {
-                            range = new Range(binding, null, false, (Comparable) value, false);
-                        } else if (op instanceof PropertyIsGreaterThan) {
-                            range = new Range(binding, null, false, (Comparable) value, true);
-                        }
-
+            if (binding != null) {
+                Object value = evaluate(op.getExpression1(), binding);
+                if (value != null) {
+                    if (op instanceof PropertyIsLessThan) {
+                        range = new Range(binding, (Comparable) value, true, null, false);
+                    } else if (op instanceof PropertyIsLessThanOrEqualTo) {
+                        range = new Range(binding, (Comparable) value, false, null, false);
+                    } else if (op instanceof PropertyIsEqualTo) {
+                        range = new Range(binding, (Comparable) value, (Comparable) value);
+                    } else if (op instanceof PropertyIsGreaterThanOrEqualTo) {
+                        range = new Range(binding, null, false, (Comparable) value, false);
+                    } else if (op instanceof PropertyIsGreaterThan) {
+                        range = new Range(binding, null, false, (Comparable) value, true);
                     }
                 }
-
+            }
         }
 
         return new ExpressionRange(expression, range);
@@ -342,24 +331,21 @@ abstract class RangeCombiner {
 
     protected abstract void addFiltersToResults(List<Filter> result, Filter filter);
 
-    /**
-     * Combines two multiranges
-     */
+    /** Combines two multiranges */
     protected abstract MultiRange combineRanges(MultiRange r1, MultiRange r2);
 
-    private void addRange(Map<Expression, MultiRange> rangeMap, Expression expression,
-            MultiRange other) {
+    private void addRange(
+            Map<Expression, MultiRange> rangeMap, Expression expression, MultiRange other) {
         MultiRange ranges = rangeMap.get(expression);
         if (ranges == null) {
             rangeMap.put(expression, other);
         } else {
             MultiRange combined = combineRanges(ranges, other);
-            rangeMap.put(expression,  combined);
+            rangeMap.put(expression, combined);
         }
     }
 
     private <T> T evaluate(Expression ex, Class<T> target) {
         return ex instanceof Literal ? ex.evaluate(null, target) : null;
     }
-
 }

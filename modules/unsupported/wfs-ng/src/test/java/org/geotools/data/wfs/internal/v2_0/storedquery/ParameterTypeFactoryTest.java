@@ -22,13 +22,11 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import net.opengis.wfs20.FeatureTypeType;
 import net.opengis.wfs20.ParameterExpressionType;
 import net.opengis.wfs20.ParameterType;
 import net.opengis.wfs20.StoredQueryDescriptionType;
 import net.opengis.wfs20.Wfs20Factory;
-
 import org.geotools.data.wfs.internal.WFSConfig;
 import org.geotools.data.wfs.internal.v2_0.FeatureTypeInfoImpl;
 import org.geotools.filter.FilterFactoryImpl;
@@ -55,7 +53,6 @@ public class ParameterTypeFactoryTest {
         featureType = new FeatureTypeInfoImpl(ftt, new WFSConfig());
 
         desc = wfs20Factory.createStoredQueryDescriptionType();
-
     }
 
     // One parameter, no view params, no mappings => no parameters
@@ -68,7 +65,8 @@ public class ParameterTypeFactoryTest {
 
         ParameterTypeFactory factory = new ParameterTypeFactory(config, desc, featureType);
 
-        List<ParameterType> params = factory.buildStoredQueryParameters(new HashMap<String, String>(), null);
+        List<ParameterType> params =
+                factory.buildStoredQueryParameters(new HashMap<String, String>(), null);
 
         assertEquals(0, params.size());
     }
@@ -154,7 +152,6 @@ public class ParameterTypeFactoryTest {
 
         config.getStoredQueryParameterMappings().add(paramMapping);
 
-
         ParameterTypeFactory factory = new ParameterTypeFactory(config, desc, featureType);
 
         Map<String, String> viewParams = new HashMap<String, String>();
@@ -184,7 +181,6 @@ public class ParameterTypeFactoryTest {
 
         config.getStoredQueryParameterMappings().add(paramMapping);
 
-
         ParameterTypeFactory factory = new ParameterTypeFactory(config, desc, featureType);
 
         Map<String, String> viewParams = new HashMap<String, String>();
@@ -201,17 +197,21 @@ public class ParameterTypeFactoryTest {
     // Test that bbox parameters from the context are mapped appropriately
     @Test
     public void testCQLExpressionParameterContextBboxMappings() {
-        desc.getParameter().addAll(Arrays.asList(
-                createParam("param1"),
-                createParam("param2"),
-                createParam("param3"),
-                createParam("param4")));
+        desc.getParameter()
+                .addAll(
+                        Arrays.asList(
+                                createParam("param1"),
+                                createParam("param2"),
+                                createParam("param3"),
+                                createParam("param4")));
 
-        config.getStoredQueryParameterMappings().addAll(Arrays.asList(
-                createBboxExpressionParam("param1", "bboxMinX"),
-                createBboxExpressionParam("param2", "bboxMinY"),
-                createBboxExpressionParam("param3", "bboxMaxX"),
-                createBboxExpressionParam("param4", "bboxMaxY")));
+        config.getStoredQueryParameterMappings()
+                .addAll(
+                        Arrays.asList(
+                                createBboxExpressionParam("param1", "bboxMinX"),
+                                createBboxExpressionParam("param2", "bboxMinY"),
+                                createBboxExpressionParam("param3", "bboxMaxX"),
+                                createBboxExpressionParam("param4", "bboxMaxY")));
 
         ParameterTypeFactory factory = new ParameterTypeFactory(config, desc, featureType);
 
@@ -251,7 +251,7 @@ public class ParameterTypeFactoryTest {
         ParameterMappingExpressionValue ret = new ParameterMappingExpressionValue();
         ret.setParameterName(name);
         ret.setExpressionLanguage("CQL");
-        ret.setExpression("numberFormat('0.0', "+ctx+")");
+        ret.setExpression("numberFormat('0.0', " + ctx + ")");
         return ret;
     }
 
@@ -283,7 +283,8 @@ public class ParameterTypeFactoryTest {
         assertEquals("EPSG:1234", tmp.getValue());
     }
 
-    // One parameter, no declared view params, expression mappings (viewparam) => test expression value
+    // One parameter, no declared view params, expression mappings (viewparam) => test expression
+    // value
     @Test
     public void testCQLExpressionViewParamMapping() {
 
@@ -313,7 +314,6 @@ public class ParameterTypeFactoryTest {
         assertEquals("stuff", tmp.getValue());
     }
 
-
     @Test
     public void testCQLExpressionStringConcatenation() {
 
@@ -328,7 +328,6 @@ public class ParameterTypeFactoryTest {
 
         config.getStoredQueryParameterMappings().add(paramMapping);
 
-
         ParameterTypeFactory factory = new ParameterTypeFactory(config, desc, featureType);
 
         Map<String, String> viewParams = new HashMap<String, String>();
@@ -341,5 +340,4 @@ public class ParameterTypeFactoryTest {
         assertEquals("foo", tmp.getName());
         assertEquals("3.0,10", tmp.getValue());
     }
-
 }

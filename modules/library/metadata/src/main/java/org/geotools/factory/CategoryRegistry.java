@@ -16,8 +16,10 @@
  */
 package org.geotools.factory;
 
-import org.geotools.util.PartiallyOrderedSet;
-import org.geotools.util.logging.Logging;
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toMap;
+import static org.geotools.util.Utilities.ensureArgumentNonNull;
+import static org.geotools.util.Utilities.stream;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -26,26 +28,23 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.collectingAndThen;
-import static java.util.stream.Collectors.toMap;
-import static org.geotools.util.Utilities.ensureArgumentNonNull;
-import static org.geotools.util.Utilities.stream;
+import org.geotools.util.PartiallyOrderedSet;
+import org.geotools.util.logging.Logging;
 
 /**
  * The category registry holds multiple instances per category. Categories are {@link Class classes}
  * and instances are also accessible by the class they implement. Note that instances have to
  * implement/extend the category they are filed under.
  *
- * This class is not thread-safe and {@code null}-intolerant (throws an
- * {@link IllegalArgumentException} if an argument is {@code null}).
+ * <p>This class is not thread-safe and {@code null}-intolerant (throws an {@link
+ * IllegalArgumentException} if an argument is {@code null}).
  */
 class CategoryRegistry {
 
     /**
      * Heterogeneous map, where `Class<T>` is mapped to `InstanceRegistry<T>` for any `T`.
      *
-     * Code depends on this map never being mutated to avoid concurrent modification exceptions.
+     * <p>Code depends on this map never being mutated to avoid concurrent modification exceptions.
      */
     private final Map<Class<?>, InstanceRegistry<?>> categories;
 
@@ -55,21 +54,25 @@ class CategoryRegistry {
      * are lost.
      *
      * @param factoryRegistry The {@link FactoryRegistry} this registry belongs to.
-     * @param categories The categories to register; must not be {@code null} but can contain
-     *        {@code null}.
+     * @param categories The categories to register; must not be {@code null} but can contain {@code
+     *     null}.
      */
-    public CategoryRegistry(final FactoryRegistry factoryRegistry,
-            final Iterable<Class<?>> categories) {
+    public CategoryRegistry(
+            final FactoryRegistry factoryRegistry, final Iterable<Class<?>> categories) {
         ensureArgumentNonNull("factoryRegistry", factoryRegistry);
         ensureArgumentNonNull("categories", categories);
         // use an unmodifiable map to guarantee immutability
-        this.categories = stream(categories)
-                .collect(
-                        collectingAndThen(
-                                toMap(category -> category,
-                                      category -> new InstanceRegistry<>(factoryRegistry,category),
-                                      (firstRegistry, secondRegistry) -> secondRegistry),
-                                      Collections::unmodifiableMap));
+        this.categories =
+                stream(categories)
+                        .collect(
+                                collectingAndThen(
+                                        toMap(
+                                                category -> category,
+                                                category ->
+                                                        new InstanceRegistry<>(
+                                                                factoryRegistry, category),
+                                                (firstRegistry, secondRegistry) -> secondRegistry),
+                                        Collections::unmodifiableMap));
     }
 
     /**
@@ -80,7 +83,8 @@ class CategoryRegistry {
     @SuppressWarnings("unchecked")
     public <T> void registerInstance(final T instance) {
         ensureArgumentNonNull("instance", instance);
-        streamCategories().filter(category -> category.isAssignableFrom(instance.getClass()))
+        streamCategories()
+                .filter(category -> category.isAssignableFrom(instance.getClass()))
                 // the cast is correct because the filter above only leaves categories that are
                 // supertypes of `instance`
                 .map(category -> (InstanceRegistry<? super T>) instanceRegistry(category))
@@ -107,7 +111,8 @@ class CategoryRegistry {
     @SuppressWarnings("unchecked")
     public <T> void deregisterInstance(final T instance) {
         ensureArgumentNonNull("instance", instance);
-        streamCategories().filter(category -> category.isAssignableFrom(instance.getClass()))
+        streamCategories()
+                .filter(category -> category.isAssignableFrom(instance.getClass()))
                 // the cast is correct because the filter above only leaves categories that are
                 // supertypes of `instance`
                 .map(category -> (InstanceRegistry<? super T>) instanceRegistry(category))
@@ -137,9 +142,7 @@ class CategoryRegistry {
         instanceRegistry(category).clear();
     }
 
-    /**
-     * Deregisters all instances. The categories themselves remain registered.
-     */
+    /** Deregisters all instances. The categories themselves remain registered. */
     public void deregisterInstances() {
         categories.values().forEach(InstanceRegistry::clear);
     }
@@ -160,9 +163,7 @@ class CategoryRegistry {
         return registry;
     }
 
-    /**
-     * @return all registered categories
-     */
+    /** @return all registered categories */
     public Stream<Class<?>> streamCategories() {
         return categories.keySet().stream();
     }
@@ -171,8 +172,8 @@ class CategoryRegistry {
      * Returns all instances that were registered with the specified category
      *
      * @param category The category for which instances are.
-     * @param useOrder whether to return instances in topological order as specified by
-     *        {@link #setOrder}
+     * @param useOrder whether to return instances in topological order as specified by {@link
+     *     #setOrder}
      * @return The instances registered for the specified category.
      */
     public <T> Stream<T> streamInstances(final Class<T> category, final boolean useOrder) {
@@ -188,15 +189,16 @@ class CategoryRegistry {
      */
     public <S> Optional<S> getInstanceOfType(Class<S> type) {
         ensureArgumentNonNull("type", type);
-        return streamCategories().filter(category -> category.isAssignableFrom(type))
+        return streamCategories()
+                .filter(category -> category.isAssignableFrom(type))
                 .map(this::instanceRegistry)
-                .flatMap(registry -> stream(registry.getInstanceOfType(type))).findFirst();
+                .flatMap(registry -> stream(registry.getInstanceOfType(type)))
+                .findFirst();
     }
 
     /**
-     * Orders the specified instances, so that the first appears before the second when
-     * {@link #streamInstances(Class, boolean) iterateInstances} is called with
-     * {@code useOrder = true}.
+     * Orders the specified instances, so that the first appears before the second when {@link
+     * #streamInstances(Class, boolean) iterateInstances} is called with {@code useOrder = true}.
      *
      * @param category The category to order instances for.
      * @return {@code true} if this establishes a new order
@@ -228,23 +230,22 @@ class CategoryRegistry {
 
     /**
      * Registry tracking instances of a single category.
-     * 
+     *
      * @param <T> category
      */
     private static class InstanceRegistry<T> {
-        /**
-         * The logger for all events related to factory registry.
-         */
+        /** The logger for all events related to factory registry. */
         protected static final Logger LOGGER = Logging.getLogger("org.geotools.factory");
-        
+
         private static Class<?> REGISTERABLE_SERVICE = null;
+
         static {
             try {
                 REGISTERABLE_SERVICE = Class.forName("javax.imageio.spi.RegisterableService");
-            }
-            catch (ClassNotFoundException ignore) {
+            } catch (ClassNotFoundException ignore) {
             }
         }
+
         private final FactoryRegistry factoryRegistry;
 
         private final Class<?> category;
@@ -271,8 +272,10 @@ class CategoryRegistry {
             if (instance instanceof RegistrableFactory) {
                 ((RegistrableFactory) instance).onRegistration(factoryRegistry, category);
             }
-            if( REGISTERABLE_SERVICE !=  null && REGISTERABLE_SERVICE.isInstance(instance)) {
-                LOGGER.warning("Migrate instances from RegisterableService to RegistrableFactory: "+instance);
+            if (REGISTERABLE_SERVICE != null && REGISTERABLE_SERVICE.isInstance(instance)) {
+                LOGGER.warning(
+                        "Migrate instances from RegisterableService to RegistrableFactory: "
+                                + instance);
             }
         }
 
@@ -358,7 +361,5 @@ class CategoryRegistry {
         public String toString() {
             return "InstanceRegistry [category=" + category.getSimpleName() + "]";
         }
-
     }
-
 }

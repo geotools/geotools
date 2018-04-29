@@ -19,16 +19,10 @@ package org.geotools.data.teradata;
 import org.geotools.jdbc.JDBCFeatureReaderOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class TeradataFeatureReaderOnlineTest extends JDBCFeatureReaderOnlineTest {
-
 
     protected JDBCTestSetup createTestSetup() {
         return new TeradataTestSetup();
     }
-
 }

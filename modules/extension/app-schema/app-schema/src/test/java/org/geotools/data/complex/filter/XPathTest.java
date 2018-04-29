@@ -22,7 +22,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import javax.xml.namespace.QName;
-
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.util.XSDResourceFactoryImpl;
@@ -38,18 +37,15 @@ import org.opengis.feature.type.ComplexType;
 import org.opengis.feature.type.Name;
 
 /**
- * 
  * @author Gabriel Roldan (Axios Engineering)
  * @version $Id$
- *
- *
- *
  * @source $URL$
  * @since 2.4
  */
 public class XPathTest extends AppSchemaTestSupport {
 
-    private static final String COMPLEX_WITH_TEXT_CONTENT_SCHEMA_LOCATION = "/test-data/complexWithTextContent.xsd";
+    private static final String COMPLEX_WITH_TEXT_CONTENT_SCHEMA_LOCATION =
+            "/test-data/complexWithTextContent.xsd";
     private static final String URI = "http://www.geotools.org/appschema/test";
 
     private static EmfComplexFeatureReader reader;
@@ -58,14 +54,13 @@ public class XPathTest extends AppSchemaTestSupport {
     public static void oneTimeSetUp() {
         reader = EmfComplexFeatureReader.newInstance();
 
-        //need to register custom factory to load schema resources
-        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap()
-                                          .put("xsd", new XSDResourceFactoryImpl());
+        // need to register custom factory to load schema resources
+        Resource.Factory.Registry.INSTANCE
+                .getExtensionToFactoryMap()
+                .put("xsd", new XSDResourceFactoryImpl());
     }
 
-    /**
-     * Test that some simple-content and non-simple-content types are correctly detected.
-     */
+    /** Test that some simple-content and non-simple-content types are correctly detected. */
     @Test
     public void testIsSimpleContentType() {
         assertTrue(Types.isSimpleContentType(GMLSchema.CODETYPE_TYPE));
@@ -78,32 +73,33 @@ public class XPathTest extends AppSchemaTestSupport {
 
     /**
      * Test that complex elements that can hold text content are correctly detected.
+     *
      * @throws Exception
      */
     @Test
     public void testCanHaveTextContent() throws Exception {
-        SchemaIndex schemaIndex = reader.parse(getClass().getResource(
-                COMPLEX_WITH_TEXT_CONTENT_SCHEMA_LOCATION));
+        SchemaIndex schemaIndex =
+                reader.parse(getClass().getResource(COMPLEX_WITH_TEXT_CONTENT_SCHEMA_LOCATION));
 
-        XSDElementDeclaration unrestrictedElDecl = schemaIndex.getElementDeclaration(new QName(URI,
-                "unrestrictedEl"));
+        XSDElementDeclaration unrestrictedElDecl =
+                schemaIndex.getElementDeclaration(new QName(URI, "unrestrictedEl"));
         assertNotNull(unrestrictedElDecl);
-        XSDElementDeclaration restrictedElDecl = schemaIndex.getElementDeclaration(new QName(URI,
-                "restrictedEl"));
+        XSDElementDeclaration restrictedElDecl =
+                schemaIndex.getElementDeclaration(new QName(URI, "restrictedEl"));
         assertNotNull(restrictedElDecl);
 
         AppSchemaFeatureTypeRegistry typeRegistry = new AppSchemaFeatureTypeRegistry();
         typeRegistry.addSchemas(schemaIndex);
 
         Name unrestrictedTypeName = Types.typeName(URI, "UnrestrictedType");
-        ComplexType unrestrictedType = (ComplexType) typeRegistry
-                .getAttributeType(unrestrictedTypeName);
+        ComplexType unrestrictedType =
+                (ComplexType) typeRegistry.getAttributeType(unrestrictedTypeName);
         assertNotNull(unrestrictedType);
         assertTrue(Types.canHaveTextContent(unrestrictedType));
 
         Name restrictedTypeName = Types.typeName(URI, "RestrictedType");
-        ComplexType restrictedType = (ComplexType) typeRegistry
-                .getAttributeType(restrictedTypeName);
+        ComplexType restrictedType =
+                (ComplexType) typeRegistry.getAttributeType(restrictedTypeName);
         assertNotNull(restrictedType);
         assertFalse(Types.canHaveTextContent(restrictedType));
     }

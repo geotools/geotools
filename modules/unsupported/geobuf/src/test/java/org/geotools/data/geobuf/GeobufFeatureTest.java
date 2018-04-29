@@ -16,7 +16,10 @@
  */
 package org.geotools.data.geobuf;
 
+import static org.junit.Assert.assertEquals;
+
 import com.vividsolutions.jts.io.WKTReader;
+import java.io.*;
 import org.geotools.data.DataUtilities;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.junit.Rule;
@@ -25,21 +28,17 @@ import org.junit.rules.TemporaryFolder;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-import java.io.*;
-
-import static org.junit.Assert.assertEquals;
-
 public class GeobufFeatureTest {
 
-    @Rule
-    public TemporaryFolder temporaryFolder = new TemporaryFolder();
+    @Rule public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
     @Test
     public void encodeDecode() throws Exception {
 
         File file = temporaryFolder.newFile("feature.pbf");
 
-        SimpleFeatureType featureType = DataUtilities.createType("test2","geom:Point,name:String,id:int");
+        SimpleFeatureType featureType =
+                DataUtilities.createType("test2", "geom:Point,name:String,id:int");
         SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder(featureType);
         WKTReader wkt = new WKTReader();
         featureBuilder.set("geom", wkt.read("POINT (1 2)"));
@@ -54,9 +53,10 @@ public class GeobufFeatureTest {
         InputStream inputStream = new FileInputStream(file);
         SimpleFeature decodedFeature = geobufFeature.decode(inputStream);
         inputStream.close();
-        assertEquals(feature.getDefaultGeometry().toString(), decodedFeature.getDefaultGeometry().toString());
+        assertEquals(
+                feature.getDefaultGeometry().toString(),
+                decodedFeature.getDefaultGeometry().toString());
         assertEquals(feature.getAttribute("name"), decodedFeature.getAttribute("name"));
         assertEquals(feature.getAttribute("id"), decodedFeature.getAttribute("id"));
     }
-
 }

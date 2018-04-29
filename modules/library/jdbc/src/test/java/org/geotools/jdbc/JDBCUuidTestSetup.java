@@ -29,32 +29,25 @@ public abstract class JDBCUuidTestSetup extends JDBCDelegatingTestSetup {
     }
 
     protected final void setUpData() throws Exception {
-        //kill all the data
+        // kill all the data
         try {
             dropUuidTable();
         } catch (SQLException e) {
         }
 
-        //create all the data
+        // create all the data
         createUuidTable();
     }
 
     /**
      * Creates a table with the following schema:
-     * <p>
-     * b( id:Integer; boolProperty: Boolean)
-     * </p>
-     * <p>
-     * The table should contain the following data.
-     *  0 | false
-     *  1 | true
-     * </p>
+     *
+     * <p>b( id:Integer; boolProperty: Boolean)
+     *
+     * <p>The table should contain the following data. 0 | false 1 | true
      */
     protected abstract void createUuidTable() throws Exception;
 
-    /**
-     * Drops the "b" table previously created
-     */
+    /** Drops the "b" table previously created */
     protected abstract void dropUuidTable() throws Exception;
-
 }

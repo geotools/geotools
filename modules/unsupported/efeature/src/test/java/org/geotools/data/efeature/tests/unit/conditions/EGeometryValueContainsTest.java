@@ -22,24 +22,20 @@ import org.geotools.data.efeature.query.EGeometryValueContains;
 
 /**
  * @author kengu - 14. juni 2011
- *
- *
  * @source $URL$
  */
 public class EGeometryValueContainsTest extends AbstractEGeometryValueTest {
-    
-    // ----------------------------------------------------- 
+
+    // -----------------------------------------------------
     //  Constructors
     // -----------------------------------------------------
-    
-    /**
-     * @param name
-     */
+
+    /** @param name */
     public EGeometryValueContainsTest(String name) {
-        super(name,CONTAINS);
+        super(name, CONTAINS);
     }
 
-    // ----------------------------------------------------- 
+    // -----------------------------------------------------
     //  AbstractEAttributeValueTest implementation
     // -----------------------------------------------------
 
@@ -50,5 +46,4 @@ public class EGeometryValueContainsTest extends AbstractEGeometryValueTest {
         //
         return new EGeometryValueContains(eAttribute, filter, false);
     }
-
 }

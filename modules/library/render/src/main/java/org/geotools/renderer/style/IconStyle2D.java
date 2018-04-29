@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -17,15 +17,12 @@
 package org.geotools.renderer.style;
 
 import java.awt.Composite;
-
 import javax.swing.Icon;
 
 /**
  * Represents a {@link Style2D} backed by an {@link Icon}
- * 
+ *
  * @author milton
- *
- *
  * @source $URL$
  */
 public class IconStyle2D extends Style2D implements PointStyle2D {
@@ -43,8 +40,8 @@ public class IconStyle2D extends Style2D implements PointStyle2D {
 
     private float anchorPointY = 0.5f;
 
-    public IconStyle2D(Icon icon, Object feature, float displacementX, float displacementY,
-            float rotation) {
+    public IconStyle2D(
+            Icon icon, Object feature, float displacementX, float displacementY, float rotation) {
         this.icon = icon;
         this.rotation = rotation;
         this.displacementX = displacementX;
@@ -58,7 +55,7 @@ public class IconStyle2D extends Style2D implements PointStyle2D {
 
     /**
      * The Icon rotation, in radians.
-     * 
+     *
      * @return icon rotation, in radians.
      */
     public float getRotation() {
@@ -67,6 +64,7 @@ public class IconStyle2D extends Style2D implements PointStyle2D {
 
     /**
      * The icon composite
+     *
      * @return
      */
     public Composite getComposite() {
@@ -75,6 +73,7 @@ public class IconStyle2D extends Style2D implements PointStyle2D {
 
     /**
      * The icon x displacement
+     *
      * @return
      */
     public float getDisplacementX() {
@@ -83,6 +82,7 @@ public class IconStyle2D extends Style2D implements PointStyle2D {
 
     /**
      * The icon y displacement
+     *
      * @return
      */
     public float getDisplacementY() {
@@ -91,7 +91,7 @@ public class IconStyle2D extends Style2D implements PointStyle2D {
 
     /**
      * Returns the icon backing this style
-     * 
+     *
      * @return
      */
     public Icon getIcon() {

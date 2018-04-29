@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -19,15 +19,14 @@ package org.geotools.styling;
 
 import org.opengis.filter.expression.Expression;
 
-
 /**
- * A Halo fills an extended area outside the glyphs of a rendered textlabel to
- * make it easier to read over a background.
+ * A Halo fills an extended area outside the glyphs of a rendered textlabel to make it easier to
+ * read over a background.
  *
- * <p>
- * The details of this object are taken from the <a
- * href="https://portal.opengeospatial.org/files/?artifact_id=1188"> OGC
- * Styled-Layer Descriptor Report (OGC 02-070) version 1.0.0.</a>:
+ * <p>The details of this object are taken from the <a
+ * href="https://portal.opengeospatial.org/files/?artifact_id=1188">OGC Styled-Layer Descriptor
+ * Report (OGC 02-070) version 1.0.0.</a>:
+ *
  * <pre><code>
  * &lt;xsd:element name="Halo"&gt;
  *   &lt;xsd:annotation&gt;
@@ -44,37 +43,28 @@ import org.opengis.filter.expression.Expression;
  *   &lt;/xsd:complexType&gt;
  * &lt;/xsd:element&gt;
  * </code></pre>
- * </p>
  *
- * <p>
- * Renderers can use this information when displaying styled features, though
- * it must be remembered that not all renderers will be able to fully
- * represent strokes as set out by this interface.  For example, opacity may
- * not be supported.
- * </p>
+ * <p>Renderers can use this information when displaying styled features, though it must be
+ * remembered that not all renderers will be able to fully represent strokes as set out by this
+ * interface. For example, opacity may not be supported.
  *
- * <p>
- * Notes:
+ * <p>Notes:
  *
  * <ul>
- * <li>
- * The graphical parameters and their values are derived from SVG/CSS2
- * standards with names and semantics which are as close as possible.
- * </li>
+ *   <li>The graphical parameters and their values are derived from SVG/CSS2 standards with names
+ *       and semantics which are as close as possible.
  * </ul>
- * </p>
+ *
  * $Id$
  *
  * @author Ian Turton, CCG
- *
- *
  * @source $URL$
  */
-public interface Halo extends org.opengis.style.Halo{
+public interface Halo extends org.opengis.style.Halo {
 
     /**
-     * Expression that represents the the distance the halo extends from the
-     * text
+     * Expression that represents the the distance the halo extends from the text
+     *
      * @param radius
      */
     void setRadius(Expression radius);

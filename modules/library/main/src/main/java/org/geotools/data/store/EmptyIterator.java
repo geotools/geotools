@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -20,25 +20,19 @@ import java.util.Iterator;
 
 /**
  * An iterator that returns no content.
- * 
+ *
  * @author Justin Deoliveira, The Open Planning Project
- *
- *
- *
- *
  * @source $URL$
  */
 public class EmptyIterator implements Iterator {
 
-	public void remove() {
-	}
+    public void remove() {}
 
-	public boolean hasNext() {
-		return false;
-	}
+    public boolean hasNext() {
+        return false;
+    }
 
-	public Object next() {
-		return null;
-	}
-
+    public Object next() {
+        return null;
+    }
 }

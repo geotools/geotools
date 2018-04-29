@@ -17,16 +17,11 @@
 package org.geotools.data.mysql;
 
 import java.util.HashMap;
-
 import org.geotools.jdbc.JDBCDataStoreFactory;
 import org.geotools.jdbc.JDBCPrimaryKeyFinderOnlineTest;
 import org.geotools.jdbc.JDBCPrimaryKeyFinderTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class MySQLPrimaryKeyFinderOnlineTest extends JDBCPrimaryKeyFinderOnlineTest {
 
     @Override
@@ -36,7 +31,7 @@ public class MySQLPrimaryKeyFinderOnlineTest extends JDBCPrimaryKeyFinderOnlineT
 
     @Override
     public void testSequencedPrimaryKey() throws Exception {
-        //MySQL does not do sequences
+        // MySQL does not do sequences
     }
 
     @Override

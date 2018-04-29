@@ -16,11 +16,11 @@
  */
 package org.geotools.gml3.bindings;
 
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
 import java.util.Arrays;
 import java.util.List;
-
 import javax.xml.namespace.QName;
-
 import org.geotools.geometry.jts.CompoundCurvedGeometry;
 import org.geotools.geometry.jts.CurvedGeometry;
 import org.geotools.geometry.jts.CurvedGeometryFactory;
@@ -30,15 +30,12 @@ import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-
-
 /**
  * Binding object for the type http://www.opengis.net/gml:CurveType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;complexType name="CurveType"&gt;
  *      &lt;annotation&gt;
@@ -61,12 +58,8 @@ import com.vividsolutions.jts.geom.LineString;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class CurveTypeBinding extends AbstractComplexBinding implements Comparable {
@@ -82,14 +75,13 @@ public class CurveTypeBinding extends AbstractComplexBinding implements Comparab
         this.arcParameters = arcParameters;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return GML.CurveType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -104,16 +96,16 @@ public class CurveTypeBinding extends AbstractComplexBinding implements Comparab
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         LineString[] segments = (LineString[]) node.getChildValue("segments");
 
-        if(segments.length == 0) {
+        if (segments.length == 0) {
             return null;
         } else if (segments.length == 1) {
             return segments[0];
@@ -124,15 +116,16 @@ public class CurveTypeBinding extends AbstractComplexBinding implements Comparab
                     curved = ls;
                 }
             }
-            CurvedGeometryFactory factory = GML3ParsingUtils.getCurvedGeometryFactory(
-                    arcParameters, gf, curved != null ? curved.getCoordinateSequence() : null);
+            CurvedGeometryFactory factory =
+                    GML3ParsingUtils.getCurvedGeometryFactory(
+                            arcParameters,
+                            gf,
+                            curved != null ? curved.getCoordinateSequence() : null);
             return factory.createCurvedGeometry(Arrays.asList(segments));
-
         }
     }
 
-    public Object getProperty(Object object, QName name)
-        throws Exception {
+    public Object getProperty(Object object, QName name) throws Exception {
         if ("segments".equals(name.getLocalPart())) {
             if (object instanceof CompoundCurvedGeometry<?>) {
                 CompoundCurvedGeometry<?> curve = (CompoundCurvedGeometry<?>) object;
@@ -147,7 +140,7 @@ public class CurveTypeBinding extends AbstractComplexBinding implements Comparab
 
         return null;
     }
-    
+
     public int compareTo(Object o) {
         if (o instanceof LineStringTypeBinding) {
             return -1;
@@ -155,5 +148,4 @@ public class CurveTypeBinding extends AbstractComplexBinding implements Comparab
             return 0;
         }
     }
-
 }

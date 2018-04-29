@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -19,9 +19,7 @@ package org.geotools.ysld.encode;
 
 import org.geotools.styling.PolygonSymbolizer;
 
-/**
- * Encodes a {@link PolygonSymbolizer} as YSLD.
- */
+/** Encodes a {@link PolygonSymbolizer} as YSLD. */
 public class PolygonSymbolizerEncoder extends SymbolizerEncoder<PolygonSymbolizer> {
     public PolygonSymbolizerEncoder(PolygonSymbolizer sym) {
         super(sym);

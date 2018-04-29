@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -23,23 +23,21 @@ import org.opengis.temporal.OrdinalPosition;
 import org.opengis.temporal.TemporalReferenceSystem;
 
 /**
- * A data type that shall be used for identifying temporal position within an ordinal
- * temporal reference system.
+ * A data type that shall be used for identifying temporal position within an ordinal temporal
+ * reference system.
  *
  * @author Mehdi Sidhoum (Geomatys)
- *
- *
- *
  * @source $URL$
  */
 public class DefaultOrdinalPosition extends DefaultTemporalPosition implements OrdinalPosition {
 
-    /**
-     * This is a reference to the ordinal era in which the instant occurs.
-     */
+    /** This is a reference to the ordinal era in which the instant occurs. */
     private OrdinalEra ordinalPosition;
 
-    public DefaultOrdinalPosition(TemporalReferenceSystem frame, IndeterminateValue indeterminatePosition, OrdinalEra ordinalPosition) {
+    public DefaultOrdinalPosition(
+            TemporalReferenceSystem frame,
+            IndeterminateValue indeterminatePosition,
+            OrdinalEra ordinalPosition) {
         super(frame, indeterminatePosition);
         this.ordinalPosition = ordinalPosition;
     }

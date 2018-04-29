@@ -16,16 +16,12 @@
  */
 package org.geotools.resources.i18n;
 
-
 /**
  * English language resource.
  *
  * @since 2.2
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
-public class Descriptions_en extends Descriptions {
-}
+public class Descriptions_en extends Descriptions {}

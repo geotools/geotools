@@ -20,28 +20,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Base class to build a power set from a set of object, filtering it during construction to avoid trying sub-trees that lead to no results
- * 
+ * Base class to build a power set from a set of object, filtering it during construction to avoid
+ * trying sub-trees that lead to no results
+ *
  * @author Andrea Aime - GeoSolutions
- * 
  * @param <T> The type of the domain elements
  * @param <R> The type of the power set elements (combinations might generate a new type of object)
  */
 public abstract class FilteredPowerSetBuilder<T, R> {
 
-    /**
-     * The original list of values from which we'll build the power set
-     */
+    /** The original list of values from which we'll build the power set */
     private List<T> domain;
 
     /**
-     * Signatures that have been rejected, that we already know won't generate an entry in the result
+     * Signatures that have been rejected, that we already know won't generate an entry in the
+     * result
      */
     private List<List<Signature>> rejects = new ArrayList();
 
     /**
      * Initializes the power set builds with the initial domain values
-     * 
+     *
      * @param domain
      */
     public FilteredPowerSetBuilder(List<T> domain) {
@@ -50,7 +49,7 @@ public abstract class FilteredPowerSetBuilder<T, R> {
 
     /**
      * See if a certain signature matches an already rejected signature
-     * 
+     *
      * @param s
      * @param k
      * @return
@@ -80,7 +79,7 @@ public abstract class FilteredPowerSetBuilder<T, R> {
 
     /**
      * Builds the power set
-     * 
+     *
      * @return
      */
     public List<R> buildPowerSet() {
@@ -93,7 +92,7 @@ public abstract class FilteredPowerSetBuilder<T, R> {
 
     /**
      * Allows subclasses to filter the results after they have been built
-     * 
+     *
      * @param result
      * @return
      */
@@ -102,9 +101,9 @@ public abstract class FilteredPowerSetBuilder<T, R> {
     }
 
     /**
-     * Recursively builds all possible signatures in the domain (will stop immediately if a signature is not accepted, or builds on top of a already
-     * rejected signature)
-     * 
+     * Recursively builds all possible signatures in the domain (will stop immediately if a
+     * signature is not accepted, or builds on top of a already rejected signature)
+     *
      * @param s
      * @param k
      * @param n
@@ -150,7 +149,6 @@ public abstract class FilteredPowerSetBuilder<T, R> {
                     fill(s, k + 1, n, result);
                 }
             }
-
         }
     }
 
@@ -165,19 +163,20 @@ public abstract class FilteredPowerSetBuilder<T, R> {
     }
 
     /**
-     * Builds a result from a combination of input objects. The method can return null to identify a combination that does not generate anything
-     * useful, but whose set of object could still generate a valid combination when grown with more objects (thus, not a candidate for returning
-     * false in {@link #accept(List)})
-     * 
+     * Builds a result from a combination of input objects. The method can return null to identify a
+     * combination that does not generate anything useful, but whose set of object could still
+     * generate a valid combination when grown with more objects (thus, not a candidate for
+     * returning false in {@link #accept(List)})
+     *
      * @param objects
      * @return
      */
     protected abstract List<R> buildResult(List<T> objects);
 
     /**
-     * Checks if a certain list of objects should be accepted, or not. If rejected, a signature will be built from this set, and any superset of these
-     * objects will also be rejected
-     * 
+     * Checks if a certain list of objects should be accepted, or not. If rejected, a signature will
+     * be built from this set, and any superset of these objects will also be rejected
+     *
      * @param set
      * @return
      */
@@ -185,7 +184,7 @@ public abstract class FilteredPowerSetBuilder<T, R> {
 
     /**
      * Returns the list of values associated to this signature
-     * 
+     *
      * @param signature
      * @return
      */
@@ -194,5 +193,4 @@ public abstract class FilteredPowerSetBuilder<T, R> {
         signature.foreach(i -> test.add(domain.get(i)));
         return test;
     }
-
 }

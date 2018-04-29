@@ -17,24 +17,22 @@
 package org.geotools.jdbc;
 
 import com.vividsolutions.jts.geom.Geometry;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 import org.geotools.factory.Hints;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
-
 /**
- * PreparedStatement inserts must be split in function of those criteria:
- * - useExisting
- * - type of the geometries
- * <p/>
- * This class allows to do the splitting.
+ * PreparedStatement inserts must be split in function of those criteria: - useExisting - type of
+ * the geometries
+ *
+ * <p>This class allows to do the splitting.
  */
 class InsertionClassifier {
     public final boolean useExisting;
@@ -83,7 +81,6 @@ class InsertionClassifier {
             return false;
         }
         return geometryTypes.equals(that.geometryTypes);
-
     }
 
     @Override

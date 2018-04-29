@@ -16,20 +16,15 @@
  */
 package org.geotools.filter.v1_0;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+import org.geotools.xml.Binding;
 import org.opengis.filter.And;
 import org.opengis.filter.Filter;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.spatial.Intersects;
-import org.geotools.xml.Binding;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class OGCFilterTypeBindingTest extends FilterTestSupport {
     public void testType() {
         assertEquals(Filter.class, binding(OGC.FilterType).getType());

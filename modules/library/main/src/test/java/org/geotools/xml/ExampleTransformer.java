@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -41,13 +41,11 @@ public class ExampleTransformer extends TransformerBase {
         }
 
         public void encode(Object o) {
-            Integer i = (Integer)o;
+            Integer i = (Integer) o;
             start("integers");
             for (int j = 1; j <= i; j++) {
-                boolean buffer =
-                    ((bufferEveryNth != 0) && (j % bufferEveryNth == 0));
-                boolean exception = 
-                    ((exceptionEveryNth != 0) && (j % exceptionEveryNth == 0));
+                boolean buffer = ((bufferEveryNth != 0) && (j % bufferEveryNth == 0));
+                boolean exception = ((exceptionEveryNth != 0) && (j % exceptionEveryNth == 0));
 
                 try {
                     if (buffer) mark();

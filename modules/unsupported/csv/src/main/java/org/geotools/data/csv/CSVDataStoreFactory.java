@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- *    
+ *
  * 	  (c) 2014 - 2015 Open Source Geospatial Foundation - all rights reserved
  * 	  (c) 2012 - 2014 OpenPlans
  *
@@ -17,6 +17,7 @@
  */
 package org.geotools.data.csv;
 
+import com.vividsolutions.jts.geom.GeometryFactory;
 import java.awt.RenderingHints.Key;
 import java.io.File;
 import java.io.IOException;
@@ -25,7 +26,6 @@ import java.net.URI;
 import java.net.URL;
 import java.util.Collections;
 import java.util.Map;
-
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.data.DataStore;
 import org.geotools.data.FileDataStore;
@@ -38,8 +38,6 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.type.FeatureTypeFactoryImpl;
 import org.geotools.util.KVP;
 import org.geotools.util.URLs;
-
-import com.vividsolutions.jts.geom.GeometryFactory;
 
 public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
 
@@ -57,28 +55,47 @@ public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
 
     private static final String FILE_TYPE = "csv";
 
-    public static final String[] EXTENSIONS = new String[] { "." + FILE_TYPE };
+    public static final String[] EXTENSIONS = new String[] {"." + FILE_TYPE};
 
-    public static final Param FILE_PARAM = new Param("file", File.class, FILE_TYPE + " file", false);
+    public static final Param FILE_PARAM =
+            new Param("file", File.class, FILE_TYPE + " file", false);
 
     public static final Param URL_PARAM = new Param("url", URL.class, FILE_TYPE + " file", false);
 
-    public static final Param NAMESPACEP = new Param("namespace", URI.class,
-            "uri to the namespace", false, null, new KVP(Param.LEVEL, "advanced"));
+    public static final Param NAMESPACEP =
+            new Param(
+                    "namespace",
+                    URI.class,
+                    "uri to the namespace",
+                    false,
+                    null,
+                    new KVP(Param.LEVEL, "advanced"));
 
     public static final Param STRATEGYP = new Param("strategy", String.class, "strategy", false);
 
-    public static final Param LATFIELDP = new Param("latField", String.class,
-            "Latitude field. Assumes a CSVSpecifiedLatLngStrategy", false);
+    public static final Param LATFIELDP =
+            new Param(
+                    "latField",
+                    String.class,
+                    "Latitude field. Assumes a CSVSpecifiedLatLngStrategy",
+                    false);
 
-    public static final Param LnGFIELDP = new Param("lngField", String.class,
-            "Longitude field. Assumes a CSVSpecifiedLatLngStrategy", false);
+    public static final Param LnGFIELDP =
+            new Param(
+                    "lngField",
+                    String.class,
+                    "Longitude field. Assumes a CSVSpecifiedLatLngStrategy",
+                    false);
 
-    public static final Param WKTP = new Param("wktField", String.class,
-            "WKT field. Assumes a CSVSpecifiedWKTStrategy", false);
+    public static final Param WKTP =
+            new Param(
+                    "wktField",
+                    String.class,
+                    "WKT field. Assumes a CSVSpecifiedWKTStrategy",
+                    false);
 
-    public static final Param[] parametersInfo = new Param[] { FILE_PARAM, NAMESPACEP, STRATEGYP,
-            LATFIELDP, LnGFIELDP, WKTP };
+    public static final Param[] parametersInfo =
+            new Param[] {FILE_PARAM, NAMESPACEP, STRATEGYP, LATFIELDP, LnGFIELDP, WKTP};
 
     @Override
     public String getDisplayName() {
@@ -164,8 +181,8 @@ public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
         return createDataStoreFromFile(file, namespace, params);
     }
 
-    private FileDataStore createDataStoreFromFile(File file, URI namespace,
-            Map<String, Serializable> params) throws IOException {
+    private FileDataStore createDataStoreFromFile(
+            File file, URI namespace, Map<String, Serializable> params) throws IOException {
         CSVFileState csvFileState = new CSVFileState(file, namespace);
         Object strategyParam = STRATEGYP.lookUp(params);
         CSVStrategy csvStrategy = null;
@@ -182,8 +199,9 @@ public class CSVDataStoreFactory implements FileDataStoreFactorySpi {
                     throw new IllegalArgumentException(
                             "'specify' csv strategy selected, but lat/lng params both not specified");
                 }
-                csvStrategy = new CSVLatLonStrategy(csvFileState, latParam.toString(),
-                        lngParam.toString());
+                csvStrategy =
+                        new CSVLatLonStrategy(
+                                csvFileState, latParam.toString(), lngParam.toString());
             } else if (strategyString.equalsIgnoreCase(WKT_STRATEGY)) {
                 Object wktParam = WKTP.lookUp(params);
                 if (wktParam == null) {

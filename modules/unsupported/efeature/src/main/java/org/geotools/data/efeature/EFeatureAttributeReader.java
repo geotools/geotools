@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.WeakHashMap;
-
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
@@ -18,10 +17,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 
 /**
- * 
  * @author kengu
- *
- *
  * @source $URL$
  */
 public class EFeatureAttributeReader implements AttributeReader {
@@ -38,23 +34,21 @@ public class EFeatureAttributeReader implements AttributeReader {
 
     private EFeatureIterator eIterator;
 
-    private Map<String, EAttribute> eAttributes = Collections
-            .synchronizedMap(new WeakHashMap<String, EAttribute>());
-    
-    // ----------------------------------------------------- 
+    private Map<String, EAttribute> eAttributes =
+            Collections.synchronizedMap(new WeakHashMap<String, EAttribute>());
+
+    // -----------------------------------------------------
     //  Constructors
     // -----------------------------------------------------
 
-
     /**
      * The {@link EFeatureAttributeReader} constructor
-     * 
+     *
      * @param eDataStore - {@link EFeatureDataStore} instance
      * @param query - GeoTools {@link Query} instance
      * @throws IOException
      */
-    public EFeatureAttributeReader(EFeatureDataStore eDataStore, 
-            Query query) throws IOException {
+    public EFeatureAttributeReader(EFeatureDataStore eDataStore, Query query) throws IOException {
         //
         // Initialize reader
         //
@@ -67,7 +61,7 @@ public class EFeatureAttributeReader implements AttributeReader {
         //
         // Get attribute names from query
         //
-        String[] eNames = (query == null ? new String[0] : query.getPropertyNames()); 
+        String[] eNames = (query == null ? new String[0] : query.getPropertyNames());
         //
         // Get all attributes as defined by EFeatureInfo?
         //
@@ -80,10 +74,10 @@ public class EFeatureAttributeReader implements AttributeReader {
             //
             // Get subset of attributes as defined by EFeatureInfo AND GeoTools Query
             //
-            this.eAttributes.putAll(eFeatureInfo.eGetAttributeMap(eNames,true));
+            this.eAttributes.putAll(eFeatureInfo.eGetAttributeMap(eNames, true));
         }
         //
-        // Get objects as tree iterator (enables lazy loading)  
+        // Get objects as tree iterator (enables lazy loading)
         //
         TreeIterator<EObject> eObjects = eDataStore.eResource().getAllContents();
         //
@@ -95,14 +89,14 @@ public class EFeatureAttributeReader implements AttributeReader {
             throw (IOException) new IOException("Failed to create EFeatureQuery").initCause(ex);
         }
     }
-    
-    // ----------------------------------------------------- 
+
+    // -----------------------------------------------------
     //  EFeatureAttributeReader methods
     // -----------------------------------------------------
-    
+
     /**
      * Get {@link SimpleFeatureType} instance.
-     * 
+     *
      * @return a {@link SimpleFeatureType} instance.
      */
     public SimpleFeatureType getFeatureType() {
@@ -123,7 +117,7 @@ public class EFeatureAttributeReader implements AttributeReader {
         this.eNext = null;
         this.eIterator = null;
     }
-    
+
     @Override
     public void close() throws IOException {
         this.eNext = null;
@@ -143,7 +137,7 @@ public class EFeatureAttributeReader implements AttributeReader {
             //
             eIterator = eQuery.iterator();
         }
-        if(eIterator.hasNext()) {
+        if (eIterator.hasNext()) {
             eNext = eIterator.next();
         }
         return eNext != null;
@@ -157,7 +151,7 @@ public class EFeatureAttributeReader implements AttributeReader {
             throw new NoSuchElementException();
         }
     }
-    
+
     public EObject get() {
         return eNext;
     }
@@ -176,7 +170,7 @@ public class EFeatureAttributeReader implements AttributeReader {
 
     /**
      * Get {@link EFeature} attribute name at given index
-     * 
+     *
      * @param index - given index
      * @return a {@link EFeature} attribute name if found.
      * @see {@link AttributeDescriptor#getLocalName()}
@@ -184,15 +178,14 @@ public class EFeatureAttributeReader implements AttributeReader {
     public String getAttributeName(int index) {
         return getAttributeType(index).getLocalName();
     }
-    
-    // ----------------------------------------------------- 
+
+    // -----------------------------------------------------
     //  Helper methods
     // -----------------------------------------------------
 
-
     /**
      * Get current {@link EFeature} id
-     * 
+     *
      * @return a {@link EFeature} id.
      * @see {@link EcoreUtil#getID(EObject)}
      */
@@ -202,5 +195,4 @@ public class EFeatureAttributeReader implements AttributeReader {
         }
         return EcoreUtil.getID(eNext);
     }
-
 }

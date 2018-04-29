@@ -41,14 +41,9 @@ import java.awt.image.DataBufferUShort;
 import java.awt.image.IndexColorModel;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.Test;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class RasterUtilsTest {
 
     @Test
@@ -74,8 +69,8 @@ public class RasterUtilsTest {
         testSdeColormapToJavaColorModel(16, 530, 3, DataBuffer.TYPE_BYTE);
     }
 
-    private void testSdeColormapToJavaColorModel(final int bitsPerSample, final int size,
-            final int numBanks, final int transferType) {
+    private void testSdeColormapToJavaColorModel(
+            final int bitsPerSample, final int size, final int numBanks, final int transferType) {
 
         DataBuffer colorMapData;
         IndexColorModel colorModel;
@@ -92,8 +87,9 @@ public class RasterUtilsTest {
         // final int dataType = expected.getDataType();
 
         assertEquals(bitsPerSample, actual.getPixelSize());
-        assertEquals(bitsPerSample == 8 ? DataBuffer.TYPE_BYTE : DataBuffer.TYPE_USHORT, actual
-                .getTransferType());
+        assertEquals(
+                bitsPerSample == 8 ? DataBuffer.TYPE_BYTE : DataBuffer.TYPE_USHORT,
+                actual.getTransferType());
 
         assertEquals(numBanks, actual.getNumComponents());
 
@@ -113,20 +109,22 @@ public class RasterUtilsTest {
             for (int bank = 0; bank < numBanks; bank++) {
                 int actualValue = 0;
                 switch (bank) {
-                case 0:
-                    actualValue = actual.getRed(elem);
-                    break;
-                case 1:
-                    actualValue = actual.getGreen(elem);
-                    break;
-                case 2:
-                    actualValue = actual.getBlue(elem);
-                    break;
-                case 3:
-                    actualValue = actual.getAlpha(elem);
-                    break;
+                    case 0:
+                        actualValue = actual.getRed(elem);
+                        break;
+                    case 1:
+                        actualValue = actual.getGreen(elem);
+                        break;
+                    case 2:
+                        actualValue = actual.getBlue(elem);
+                        break;
+                    case 3:
+                        actualValue = actual.getAlpha(elem);
+                        break;
                 }
-                assertEquals("at index " + elem + ", bank " + bank, expected.getElem(bank, elem),
+                assertEquals(
+                        "at index " + elem + ", bank " + bank,
+                        expected.getElem(bank, elem),
                         actualValue);
             }
         }
@@ -135,14 +133,14 @@ public class RasterUtilsTest {
     private DataBuffer newColorMap(int size, int numBanks, int transferType) {
         DataBuffer colorMapData;
         switch (transferType) {
-        case DataBuffer.TYPE_BYTE:
-            colorMapData = new DataBufferByte(size, numBanks);
-            break;
-        case DataBuffer.TYPE_USHORT:
-            colorMapData = new DataBufferUShort(size, numBanks);
-            break;
-        default:
-            throw new IllegalArgumentException();
+            case DataBuffer.TYPE_BYTE:
+                colorMapData = new DataBufferByte(size, numBanks);
+                break;
+            case DataBuffer.TYPE_USHORT:
+                colorMapData = new DataBufferUShort(size, numBanks);
+                break;
+            default:
+                throw new IllegalArgumentException();
         }
         for (int elem = 0; elem < size; elem++) {
             for (int bank = 0; bank < numBanks; bank++) {
@@ -172,14 +170,14 @@ public class RasterUtilsTest {
         assertDetermineTargetCellType(TYPE_8BIT_S, TYPE_8BIT_S, Byte.MIN_VALUE);
         assertDetermineTargetCellType(TYPE_8BIT_S, TYPE_8BIT_S, Byte.MAX_VALUE);
         assertDetermineTargetCellType(TYPE_8BIT_S, TYPE_16BIT_S, Byte.MAX_VALUE + 1);
-        assertDetermineTargetCellType(TYPE_8BIT_S, TYPE_16BIT_S, 0, Byte.MIN_VALUE - 1,
-                Byte.MAX_VALUE);
+        assertDetermineTargetCellType(
+                TYPE_8BIT_S, TYPE_16BIT_S, 0, Byte.MIN_VALUE - 1, Byte.MAX_VALUE);
 
         assertDetermineTargetCellType(TYPE_16BIT_S, TYPE_16BIT_S, Short.MIN_VALUE);
         assertDetermineTargetCellType(TYPE_16BIT_S, TYPE_16BIT_S, Short.MAX_VALUE);
         assertDetermineTargetCellType(TYPE_16BIT_S, TYPE_32BIT_S, Short.MAX_VALUE + 1);
-        assertDetermineTargetCellType(TYPE_16BIT_S, TYPE_32BIT_S, 0, Short.MIN_VALUE - 1,
-                Short.MAX_VALUE);
+        assertDetermineTargetCellType(
+                TYPE_16BIT_S, TYPE_32BIT_S, 0, Short.MIN_VALUE - 1, Short.MAX_VALUE);
 
         assertDetermineTargetCellType(TYPE_16BIT_U, TYPE_16BIT_U, 0);
         assertDetermineTargetCellType(TYPE_16BIT_U, TYPE_16BIT_U, 65535);
@@ -195,8 +193,12 @@ public class RasterUtilsTest {
         assertDetermineTargetCellType(TYPE_32BIT_S, TYPE_32BIT_S, Integer.MIN_VALUE);
         assertDetermineTargetCellType(TYPE_32BIT_S, TYPE_32BIT_S, Integer.MAX_VALUE);
         assertDetermineTargetCellType(TYPE_32BIT_S, TYPE_64BIT_REAL, (long) Integer.MIN_VALUE - 1L);
-        assertDetermineTargetCellType(TYPE_32BIT_S, TYPE_64BIT_REAL, Integer.MIN_VALUE,
-                (long) Integer.MAX_VALUE + 1L, (long) Integer.MIN_VALUE - 1L);
+        assertDetermineTargetCellType(
+                TYPE_32BIT_S,
+                TYPE_64BIT_REAL,
+                Integer.MIN_VALUE,
+                (long) Integer.MAX_VALUE + 1L,
+                (long) Integer.MIN_VALUE - 1L);
         {
             try {
                 assertDetermineTargetCellType(TYPE_32BIT_REAL, TYPE_32BIT_REAL, Float.MIN_VALUE);
@@ -230,16 +232,14 @@ public class RasterUtilsTest {
     }
 
     /**
-     * 
-     * @param nativeCellType
-     *            the native cell type
-     * @param expectedTargetCellType
-     *            the expected cell type
-     * @param noData
-     *            list of no-data values, one per band in the raster
+     * @param nativeCellType the native cell type
+     * @param expectedTargetCellType the expected cell type
+     * @param noData list of no-data values, one per band in the raster
      */
-    private void assertDetermineTargetCellType(RasterCellType nativeCellType,
-            RasterCellType expectedTargetCellType, Number... noData) {
+    private void assertDetermineTargetCellType(
+            RasterCellType nativeCellType,
+            RasterCellType expectedTargetCellType,
+            Number... noData) {
 
         List<Number> noDataValues = new ArrayList<Number>();
         for (Number bandNNoData : noData) {
@@ -254,12 +254,22 @@ public class RasterUtilsTest {
 
         assertDetermineNoDataValue(1, Double.NaN, Double.NaN, TYPE_1BIT, 2, null);
         assertDetermineNoDataValue(1, 0, 1, TYPE_1BIT, 2, null);
-        assertDetermineNoDataValue(1, 0, 0, TYPE_1BIT, 2,
+        assertDetermineNoDataValue(
+                1,
+                0,
+                0,
+                TYPE_1BIT,
+                2,
                 "1BIT no-data should have been set to 2, "
                         + "regardless of the dataset not containing set pixels");
 
         assertDetermineNoDataValue(1, 0, 15, TYPE_4BIT, 16, null);
-        assertDetermineNoDataValue(1, 0, 3, TYPE_4BIT, 16,
+        assertDetermineNoDataValue(
+                1,
+                0,
+                3,
+                TYPE_4BIT,
+                16,
                 "4BIT no-data should have been set to 16, "
                         + "regardless of the dataset used values");
         assertDetermineNoDataValue(1, Double.NaN, Double.NaN, TYPE_4BIT, 16, null);
@@ -290,14 +300,14 @@ public class RasterUtilsTest {
         assertDetermineNoDataValue(1, 1, 65535, TYPE_16BIT_U, 0, null);
         assertDetermineNoDataValue(1, 0, 65534, TYPE_16BIT_U, 65535, null);
 
-        assertDetermineNoDataValue(1, Double.NaN, Double.NaN, TYPE_16BIT_S, Short.MIN_VALUE - 1,
-                null);
-        assertDetermineNoDataValue(1, Short.MIN_VALUE, Short.MAX_VALUE, TYPE_16BIT_S,
-                Short.MIN_VALUE - 1, null);
-        assertDetermineNoDataValue(1, Short.MIN_VALUE, Short.MAX_VALUE - 1, TYPE_16BIT_S,
-                Short.MAX_VALUE, null);
-        assertDetermineNoDataValue(1, Short.MIN_VALUE + 1, Short.MAX_VALUE, TYPE_16BIT_S,
-                Short.MIN_VALUE, null);
+        assertDetermineNoDataValue(
+                1, Double.NaN, Double.NaN, TYPE_16BIT_S, Short.MIN_VALUE - 1, null);
+        assertDetermineNoDataValue(
+                1, Short.MIN_VALUE, Short.MAX_VALUE, TYPE_16BIT_S, Short.MIN_VALUE - 1, null);
+        assertDetermineNoDataValue(
+                1, Short.MIN_VALUE, Short.MAX_VALUE - 1, TYPE_16BIT_S, Short.MAX_VALUE, null);
+        assertDetermineNoDataValue(
+                1, Short.MIN_VALUE + 1, Short.MAX_VALUE, TYPE_16BIT_S, Short.MIN_VALUE, null);
 
         double max32bitU = TYPE_32BIT_U.getSampleValueRange().getMaximum();
         assertDetermineNoDataValue(1, Double.NaN, Double.NaN, TYPE_32BIT_U, max32bitU + 1, null);
@@ -305,41 +315,55 @@ public class RasterUtilsTest {
         assertDetermineNoDataValue(1, 1, max32bitU, TYPE_32BIT_U, 0, null);
         assertDetermineNoDataValue(1, 0, max32bitU - 1, TYPE_32BIT_U, max32bitU, null);
 
-        assertDetermineNoDataValue(1, Double.NaN, Double.NaN, TYPE_32BIT_S, Integer.MIN_VALUE - 1L,
+        assertDetermineNoDataValue(
+                1, Double.NaN, Double.NaN, TYPE_32BIT_S, Integer.MIN_VALUE - 1L, null);
+        assertDetermineNoDataValue(
+                1,
+                Integer.MIN_VALUE,
+                Integer.MAX_VALUE,
+                TYPE_32BIT_S,
+                (long) Integer.MIN_VALUE - 1,
                 null);
-        assertDetermineNoDataValue(1, Integer.MIN_VALUE, Integer.MAX_VALUE, TYPE_32BIT_S,
-                (long) Integer.MIN_VALUE - 1, null);
         assertDetermineNoDataValue(1, 1, Integer.MAX_VALUE, TYPE_32BIT_S, 0, null);
-        assertDetermineNoDataValue(1, Integer.MIN_VALUE, Integer.MAX_VALUE - 1L, TYPE_32BIT_S,
-                Integer.MAX_VALUE, null);
+        assertDetermineNoDataValue(
+                1,
+                Integer.MIN_VALUE,
+                Integer.MAX_VALUE - 1L,
+                TYPE_32BIT_S,
+                Integer.MAX_VALUE,
+                null);
 
         assertDetermineNoDataValue(1, Double.NaN, Double.NaN, TYPE_32BIT_REAL, Float.NaN, null);
-        assertDetermineNoDataValue(1, Float.MIN_VALUE, Float.MAX_VALUE, TYPE_32BIT_REAL, Float.NaN,
-                null);
-        assertDetermineNoDataValue(1, Float.MIN_VALUE + 1, Float.MAX_VALUE, TYPE_32BIT_REAL,
-                Float.NaN, null);
-        assertDetermineNoDataValue(1, Float.MIN_VALUE, Float.MAX_VALUE - 1L, TYPE_32BIT_REAL,
-                Float.NaN, null);
+        assertDetermineNoDataValue(
+                1, Float.MIN_VALUE, Float.MAX_VALUE, TYPE_32BIT_REAL, Float.NaN, null);
+        assertDetermineNoDataValue(
+                1, Float.MIN_VALUE + 1, Float.MAX_VALUE, TYPE_32BIT_REAL, Float.NaN, null);
+        assertDetermineNoDataValue(
+                1, Float.MIN_VALUE, Float.MAX_VALUE - 1L, TYPE_32BIT_REAL, Float.NaN, null);
 
         assertDetermineNoDataValue(1, Double.NaN, Double.NaN, TYPE_64BIT_REAL, Double.NaN, null);
-        assertDetermineNoDataValue(1, Double.MIN_VALUE, Double.MAX_VALUE, TYPE_64BIT_REAL,
-                Double.NaN, null);
-        assertDetermineNoDataValue(1, Double.MIN_VALUE + 1, Double.MAX_VALUE, TYPE_64BIT_REAL,
-                Double.NaN, null);
-        assertDetermineNoDataValue(1, Double.MIN_VALUE, Double.MAX_VALUE - 1L, TYPE_64BIT_REAL,
-                Double.NaN, null);
+        assertDetermineNoDataValue(
+                1, Double.MIN_VALUE, Double.MAX_VALUE, TYPE_64BIT_REAL, Double.NaN, null);
+        assertDetermineNoDataValue(
+                1, Double.MIN_VALUE + 1, Double.MAX_VALUE, TYPE_64BIT_REAL, Double.NaN, null);
+        assertDetermineNoDataValue(
+                1, Double.MIN_VALUE, Double.MAX_VALUE - 1L, TYPE_64BIT_REAL, Double.NaN, null);
     }
 
-    private void assertDetermineNoDataValue(final int numBands, final double statsMin,
-            final double statsMax, final RasterCellType nativeCellType,
-            final Number expectedNoDataValue, final String failureMsg) {
+    private void assertDetermineNoDataValue(
+            final int numBands,
+            final double statsMin,
+            final double statsMax,
+            final RasterCellType nativeCellType,
+            final Number expectedNoDataValue,
+            final String failureMsg) {
 
         Number noDataValue = determineNoDataValue(numBands, statsMin, statsMax, nativeCellType);
         if (failureMsg == null) {
             assertEquals(expectedNoDataValue.doubleValue(), noDataValue.doubleValue(), 0);
         } else {
-            assertEquals(failureMsg, expectedNoDataValue.doubleValue(), noDataValue.doubleValue(),
-                    0);
+            assertEquals(
+                    failureMsg, expectedNoDataValue.doubleValue(), noDataValue.doubleValue(), 0);
         }
     }
 }

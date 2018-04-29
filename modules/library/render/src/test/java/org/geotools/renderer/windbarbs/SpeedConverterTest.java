@@ -17,14 +17,10 @@
 package org.geotools.renderer.windbarbs;
 
 import javax.measure.unit.NonSI;
-
 import org.junit.Assert;
 import org.junit.Test;
 
-/**
- * @author Simone Giannecchini, GeoSolutions
- * 
- */
+/** @author Simone Giannecchini, GeoSolutions */
 public class SpeedConverterTest extends Assert {
 
     @Test

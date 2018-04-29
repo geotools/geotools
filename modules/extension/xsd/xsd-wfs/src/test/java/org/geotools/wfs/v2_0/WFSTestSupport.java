@@ -25,5 +25,4 @@ public abstract class WFSTestSupport extends XMLTestSupport {
     protected Configuration createConfiguration() {
         return new WFSConfiguration();
     }
-
 }

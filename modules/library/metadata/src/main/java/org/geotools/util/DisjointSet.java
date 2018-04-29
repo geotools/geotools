@@ -16,6 +16,7 @@
  */
 package org.geotools.util;
 
+import java.io.Serializable;
 import java.util.AbstractSet;
 import java.util.Collection;
 import java.util.Iterator;
@@ -23,136 +24,124 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
-import java.io.Serializable;
-
 
 /**
- * A set which is disjoint from others {@code DisjointSet}s. Two sets are
- * disjoint (or <em>mutually exclusive</em>) if their intersection is the empty
- * set. Adding an element to a {@code DisjointSet} remove it from any other
- * mutually exclusive {@code DisjointSet}. Optionnaly, {@code DisjointSet}s
- * may also have a trash set receiving removed elements. The example below
- * creates 3 mutually exclusive sets with a trash:
+ * A set which is disjoint from others {@code DisjointSet}s. Two sets are disjoint (or <em>mutually
+ * exclusive</em>) if their intersection is the empty set. Adding an element to a {@code
+ * DisjointSet} remove it from any other mutually exclusive {@code DisjointSet}. Optionnaly, {@code
+ * DisjointSet}s may also have a trash set receiving removed elements. The example below creates 3
+ * mutually exclusive sets with a trash:
  *
- * <blockquote><pre>
+ * <blockquote>
+ *
+ * <pre>
  * DisjointSet set0 = new DisjointSet(true); // Used as the trash set.
  * DisjointSet set1 = new DisjointSet(set0);
  * DisjointSet set2 = new DisjointSet(set0);
- * </pre></blockquote>
+ * </pre>
+ *
+ * </blockquote>
  *
  * Disjoint sets are thread-safe.
  *
  * @param <E> The type of elements in this set.
- *
  * @since 2.0
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
 public class DisjointSet<E> extends AbstractSet<E> implements Serializable {
-    /**
-     * Serial number for interoperability with different versions.
-     */
+    /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -7933552571588598563L;
 
     /**
-     * The underlying map. {@code add} and {@code remove} operations
-     * on this set are translated into {@link Map} operations as below:
-     * <p>
-     * <strong>Adding a new element to this {@link Set}:</strong>
+     * The underlying map. {@code add} and {@code remove} operations on this set are translated into
+     * {@link Map} operations as below:
+     *
+     * <p><strong>Adding a new element to this {@link Set}:</strong>
+     *
      * <ul>
      *   <li>Puts the corresponding key-value pair in the underlying {@link Map}, where:
-     *     <ul>
-     *       <li>the key is the element to add;</li>
-     *       <li>the value is this {@code DisjointSet}.</li>
-     *     </ul>
-     *     If an other value was mapped to the key, the old value is discarted.
-     *     This is equivalents to removing the element from an other {@code DisjointSet}
-     *     prior to add it to this set (in other words, moving the element).</li>
+     *       <ul>
+     *         <li>the key is the element to add;
+     *         <li>the value is this {@code DisjointSet}.
+     *       </ul>
+     *       If an other value was mapped to the key, the old value is discarted. This is
+     *       equivalents to removing the element from an other {@code DisjointSet} prior to add it
+     *       to this set (in other words, moving the element).
      * </ul>
-     * <p>
-     * <strong>Removing an element from this {@link Set}:</strong>
+     *
+     * <p><strong>Removing an element from this {@link Set}:</strong>
+     *
      * <ul>
-     *   <li>If the element is not an existing key in the underlying map, nothing is done.</li>
-     *   <li>Otherwise, if the element is a key mapping a different value than this
-     *       {@code DisjointSet}, then the element is assumed to belongs to an
-     *       other {@code DisjointSet} and nothing is done.</li>
-     *   <li>Otherwise, puts the key-value pair with the {@code trash} value
-     *       in the underlying {@link Map}. This is equivalent to moving the
-     *       element from this set to the "trash" set. Note that if the operation
-     *       is applied on the "trash" set itself or if this set doesn't have a
-     *       trash ({@code trash==null}), then the element is effectively
-     *       removed from the underlying map.</li>
+     *   <li>If the element is not an existing key in the underlying map, nothing is done.
+     *   <li>Otherwise, if the element is a key mapping a different value than this {@code
+     *       DisjointSet}, then the element is assumed to belongs to an other {@code DisjointSet}
+     *       and nothing is done.
+     *   <li>Otherwise, puts the key-value pair with the {@code trash} value in the underlying
+     *       {@link Map}. This is equivalent to moving the element from this set to the "trash" set.
+     *       Note that if the operation is applied on the "trash" set itself or if this set doesn't
+     *       have a trash ({@code trash==null}), then the element is effectively removed from the
+     *       underlying map.
      * </ul>
      */
     private final Map<E, DisjointSet<E>> map;
 
-    /**
-     * The set where to move removed elements, or {@code null} if there is none.
-     */
+    /** The set where to move removed elements, or {@code null} if there is none. */
     private final DisjointSet<E> trash;
 
     /**
-     * Construct a initially empty set. There is initially no other set mutually
-     * exclusive with this one. Mutually exclusive sets must be created using the
-     * {@code DisjointSet(DisjointSet)} constructor with this newly created
-     * set as argument.
-     * <p>
-     * {@code DisjointSet}s constructed using this constructor has no trash.
-     * All remove operations on this set really remove all references to the
-     * removed element, like a usual {@link Set}. This is opposed to moving the
-     * element to a "trash" set, which is allowed by the {@code DisjointSet(true)}
-     * constructor.
+     * Construct a initially empty set. There is initially no other set mutually exclusive with this
+     * one. Mutually exclusive sets must be created using the {@code DisjointSet(DisjointSet)}
+     * constructor with this newly created set as argument.
+     *
+     * <p>{@code DisjointSet}s constructed using this constructor has no trash. All remove
+     * operations on this set really remove all references to the removed element, like a usual
+     * {@link Set}. This is opposed to moving the element to a "trash" set, which is allowed by the
+     * {@code DisjointSet(true)} constructor.
      */
     public DisjointSet() {
         this(false);
     }
 
     /**
-     * Construct a initially empty set with an optional trash set. There is initially
-     * no other set mutually exclusive with this one. Mutually exclusive sets must be
-     * created using the {@code DisjointSet(DisjointSet)} constructor with this
-     * newly created set as argument.
+     * Construct a initially empty set with an optional trash set. There is initially no other set
+     * mutually exclusive with this one. Mutually exclusive sets must be created using the {@code
+     * DisjointSet(DisjointSet)} constructor with this newly created set as argument.
      *
-     * @param hasTrash If {@code true}, all {@linkplain #remove remove} operations
-     *        will add removed elements to a trash set (thus, really just moving the
-     *        element to the trash). If {@code false}, there is no trash and this
-     *        constructor behave like the no-argument constructor.
+     * @param hasTrash If {@code true}, all {@linkplain #remove remove} operations will add removed
+     *     elements to a trash set (thus, really just moving the element to the trash). If {@code
+     *     false}, there is no trash and this constructor behave like the no-argument constructor.
      * @see #getTrash
      */
     public DisjointSet(final boolean hasTrash) {
-        map   = new LinkedHashMap<E, DisjointSet<E>>();
+        map = new LinkedHashMap<E, DisjointSet<E>>();
         trash = (hasTrash) ? new DisjointSet<E>(map) : null;
     }
 
     /**
-     * Construct a new set mutually exclusive with the specified set. All sets mutually
-     * exclusive with {@code disjointSet} will also be mutually exclusive with the
-     * newly created set. If {@code disjointSet} has a trash set, the newly created
-     * set will use the same trash (i.e. all {@code remove} operations will really
-     * move the element to the trash set). Otherwise, the new {@code DisjointSet}
-     * have no trash.
+     * Construct a new set mutually exclusive with the specified set. All sets mutually exclusive
+     * with {@code disjointSet} will also be mutually exclusive with the newly created set. If
+     * {@code disjointSet} has a trash set, the newly created set will use the same trash (i.e. all
+     * {@code remove} operations will really move the element to the trash set). Otherwise, the new
+     * {@code DisjointSet} have no trash.
      *
      * @param disjointSet The set to be disjoint from.
      */
     public DisjointSet(final DisjointSet<E> disjointSet) {
-        map   = disjointSet.map;
+        map = disjointSet.map;
         trash = disjointSet.trash;
     }
 
-    /**
-     * Construct a trash set.
-     */
+    /** Construct a trash set. */
     private DisjointSet(final Map<E, DisjointSet<E>> map) {
         this.map = map;
         trash = null;
     }
 
     /**
-     * Returns the trash set, or {@code null} if there is none.
-     * The trash set receive all elements removed from this set.
+     * Returns the trash set, or {@code null} if there is none. The trash set receive all elements
+     * removed from this set.
      *
      * @return The trash set, or {@code null} if none.
      */
@@ -161,14 +150,14 @@ public class DisjointSet<E> extends AbstractSet<E> implements Serializable {
     }
 
     /**
-     * Returns the number of elements in this set. The size of this set may
-     * change as a result of adding elements to a mutually exclusive set.
+     * Returns the number of elements in this set. The size of this set may change as a result of
+     * adding elements to a mutually exclusive set.
      */
     public int size() {
         synchronized (map) {
-            int count=0;
-            for (final Iterator it=map.values().iterator(); it.hasNext();) {
-                if (it.next()==this) {
+            int count = 0;
+            for (final Iterator it = map.values().iterator(); it.hasNext(); ) {
+                if (it.next() == this) {
                     count++;
                 }
             }
@@ -179,7 +168,7 @@ public class DisjointSet<E> extends AbstractSet<E> implements Serializable {
     /**
      * Returns {@code true} if this set contains the specified element.
      *
-     * @param  element Object to be checked for containment in this set.
+     * @param element Object to be checked for containment in this set.
      * @return {@code true} if this set contains the specified element.
      */
     @Override
@@ -190,11 +179,10 @@ public class DisjointSet<E> extends AbstractSet<E> implements Serializable {
     }
 
     /**
-     * Ensures that this collection contains the specified element.
-     * Adding an element to this set will remove it from any mutually
-     * exclusive set.
+     * Ensures that this collection contains the specified element. Adding an element to this set
+     * will remove it from any mutually exclusive set.
      *
-     * @param  element Element whose presence in this set is to be ensured.
+     * @param element Element whose presence in this set is to be ensured.
      * @return {@code true} if the set changed as a result of the call.
      */
     @Override
@@ -205,11 +193,10 @@ public class DisjointSet<E> extends AbstractSet<E> implements Serializable {
     }
 
     /**
-     * Removes a single instance of the specified element from this set,
-     * if it is present. If this {@code DisjointSet} has a trash set,
-     * the removed element will be added to the trash set.
+     * Removes a single instance of the specified element from this set, if it is present. If this
+     * {@code DisjointSet} has a trash set, the removed element will be added to the trash set.
      *
-     * @param  element Element to be removed from this set.
+     * @param element Element to be removed from this set.
      * @return {@code true} if the set changed as a result of the call.
      */
     @Override
@@ -230,12 +217,10 @@ public class DisjointSet<E> extends AbstractSet<E> implements Serializable {
     }
 
     /**
-     * Returns {@code true} if this set contains
-     * all of the elements in the specified collection.
+     * Returns {@code true} if this set contains all of the elements in the specified collection.
      *
      * @param c collection to be checked for containment in this collection.
-     * @return {@code true} if this set contains all of the elements in
-     *         the specified collection.
+     * @return {@code true} if this set contains all of the elements in the specified collection.
      */
     @Override
     public boolean containsAll(final Collection<?> c) {
@@ -245,8 +230,8 @@ public class DisjointSet<E> extends AbstractSet<E> implements Serializable {
     }
 
     /**
-     * Adds all of the elements in the specified collection to this set.
-     * All of the elements will be removed from mutually exclusive sets.
+     * Adds all of the elements in the specified collection to this set. All of the elements will be
+     * removed from mutually exclusive sets.
      *
      * @param c collection whose elements are to be added to this set.
      * @return {@code true} if this set changed as a result of the call.
@@ -259,11 +244,11 @@ public class DisjointSet<E> extends AbstractSet<E> implements Serializable {
     }
 
     /**
-     * Removes from this set all of its elements that are contained in
-     * the specified collection.  If this {@code DisjointSet} has
-     * a trash set, all removed elements will be added to the trash set.
+     * Removes from this set all of its elements that are contained in the specified collection. If
+     * this {@code DisjointSet} has a trash set, all removed elements will be added to the trash
+     * set.
      *
-     * @param  c elements to be removed from this set.
+     * @param c elements to be removed from this set.
      * @return {@code true} if this set changed as a result of the call.
      */
     @Override
@@ -274,11 +259,10 @@ public class DisjointSet<E> extends AbstractSet<E> implements Serializable {
     }
 
     /**
-     * Retains only the elements in this set that are contained in the specified
-     * collection. If this {@code DisjointSet} has a trash set, all removed
-     * elements will be added to the trash set.
+     * Retains only the elements in this set that are contained in the specified collection. If this
+     * {@code DisjointSet} has a trash set, all removed elements will be added to the trash set.
      *
-     * @param  c elements to be retained in this collection.
+     * @param c elements to be retained in this collection.
      * @return {@code true} if this collection changed as a result of the call.
      */
     @Override
@@ -289,8 +273,8 @@ public class DisjointSet<E> extends AbstractSet<E> implements Serializable {
     }
 
     /**
-     * Removes all of the elements from this set. If this {@code DisjointSet}
-     * has a trash set, all removed elements will be added to the trash set.
+     * Removes all of the elements from this set. If this {@code DisjointSet} has a trash set, all
+     * removed elements will be added to the trash set.
      */
     @Override
     public void clear() {
@@ -299,9 +283,7 @@ public class DisjointSet<E> extends AbstractSet<E> implements Serializable {
         }
     }
 
-    /**
-     * Returns an iterator over the elements in this collection.
-     */
+    /** Returns an iterator over the elements in this collection. */
     public Iterator<E> iterator() {
         synchronized (map) {
             return new Iter();
@@ -324,9 +306,8 @@ public class DisjointSet<E> extends AbstractSet<E> implements Serializable {
      * Returns an array containing all of the elements in this collection.
      *
      * @param <T> The type of elements in the array.
-     * @param  a The array into which the elements of the set are to be
-     *           stored, if it is big enough; otherwise, a new array of
-     *           the same runtime type is allocated for this purpose.
+     * @param a The array into which the elements of the set are to be stored, if it is big enough;
+     *     otherwise, a new array of the same runtime type is allocated for this purpose.
      * @return an array containing the elements of the set.
      */
     @Override
@@ -336,9 +317,7 @@ public class DisjointSet<E> extends AbstractSet<E> implements Serializable {
         }
     }
 
-    /**
-     * Returns a string representation of this set.
-     */
+    /** Returns a string representation of this set. */
     @Override
     public String toString() {
         synchronized (map) {
@@ -346,9 +325,7 @@ public class DisjointSet<E> extends AbstractSet<E> implements Serializable {
         }
     }
 
-    /**
-     * Returns an hash value for this set.
-     */
+    /** Returns an hash value for this set. */
     @Override
     public int hashCode() {
         synchronized (map) {
@@ -375,38 +352,28 @@ public class DisjointSet<E> extends AbstractSet<E> implements Serializable {
      * @author Martin Desruisseaux (IRD)
      */
     private final class Iter implements Iterator<E> {
-        /**
-         * The iterator over the entries of the underlying {@link Map} object.
-         */
+        /** The iterator over the entries of the underlying {@link Map} object. */
         private final Iterator<Map.Entry<E, DisjointSet<E>>> iterator;
 
-        /**
-         * Entry for the next element to return, or
-         * {@code null} if there is no more element.
-         */
+        /** Entry for the next element to return, or {@code null} if there is no more element. */
         private Map.Entry<E, DisjointSet<E>> prefetch;
 
         /**
-         * Entry to remove if the {@link #remove} operation is invoked,
-         * or {@code null} if this iterator is not in a legal state
-         * for element removing. An element can be removed only after a
-         * {@link #next} call and only if this call still synchronized
-         * with the {@link Iterator#next} call on the underlying map's
-         * iterator.
+         * Entry to remove if the {@link #remove} operation is invoked, or {@code null} if this
+         * iterator is not in a legal state for element removing. An element can be removed only
+         * after a {@link #next} call and only if this call still synchronized with the {@link
+         * Iterator#next} call on the underlying map's iterator.
          */
         private Map.Entry<E, DisjointSet<E>> toRemove;
 
-        /**
-         * Construct a new iterator.
-         */
+        /** Construct a new iterator. */
         private Iter() {
             iterator = map.entrySet().iterator();
         }
 
         /**
-         * Returns the {@link #prefetch} entry.  If this entry was
-         * {@code null}, fetch the next entry. If there is no
-         * more entries, returns {@code null}.
+         * Returns the {@link #prefetch} entry. If this entry was {@code null}, fetch the next
+         * entry. If there is no more entries, returns {@code null}.
          */
         private Map.Entry<E, DisjointSet<E>> prefetch() {
             toRemove = null;
@@ -422,16 +389,12 @@ public class DisjointSet<E> extends AbstractSet<E> implements Serializable {
             return prefetch;
         }
 
-        /**
-         * Returns {@code true} if the iteration has more elements.
-         */
+        /** Returns {@code true} if the iteration has more elements. */
         public boolean hasNext() {
             return prefetch() != null;
         }
 
-        /**
-         * Returns the next element in the iteration.
-         */
+        /** Returns the next element in the iteration. */
         public E next() {
             toRemove = prefetch();
             prefetch = null;
@@ -442,9 +405,7 @@ public class DisjointSet<E> extends AbstractSet<E> implements Serializable {
             }
         }
 
-        /**
-         * Removes from the underlying set the last element returned by the iterator.
-         */
+        /** Removes from the underlying set the last element returned by the iterator. */
         public void remove() {
             if (toRemove != null) {
                 if (trash != null) {

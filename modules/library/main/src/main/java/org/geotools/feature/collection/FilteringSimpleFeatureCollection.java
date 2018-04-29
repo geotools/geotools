@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2016, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -21,13 +21,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.collection.DelegateFeatureReader;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
-import org.geotools.data.store.FilteringFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -41,121 +39,116 @@ import org.opengis.util.ProgressListener;
 
 /**
  * Decorates a feature collection with one that filters content.
- * 
+ *
  * @author Justin Deoliveira, The Open Planning Project
  * @source $URL$
  */
-public class FilteringSimpleFeatureCollection extends DecoratingSimpleFeatureCollection  {
+public class FilteringSimpleFeatureCollection extends DecoratingSimpleFeatureCollection {
 
-	/**
-	 * The original feature collection.
-	 */
-	SimpleFeatureCollection delegate;
-	/**
-	 * the filter
-	 */
-	Filter filter;
-	
-	public FilteringSimpleFeatureCollection( FeatureCollection<SimpleFeatureType,SimpleFeature> delegate, Filter filter ) {
-	    this( DataUtilities.simple( delegate), filter );
-	}
-	
-	public FilteringSimpleFeatureCollection( SimpleFeatureCollection delegate, Filter filter ) {
-		super(delegate);
-		this.delegate = delegate;
-		this.filter = filter;
-	}
-	
-	public SimpleFeatureIterator features() {
-	    return new FilteringSimpleFeatureIterator( delegate.features(), filter );
-	}
+    /** The original feature collection. */
+    SimpleFeatureCollection delegate;
+    /** the filter */
+    Filter filter;
 
-	public void close(SimpleFeatureIterator close) {
-		close.close();
-	}
+    public FilteringSimpleFeatureCollection(
+            FeatureCollection<SimpleFeatureType, SimpleFeature> delegate, Filter filter) {
+        this(DataUtilities.simple(delegate), filter);
+    }
 
-	public SimpleFeatureCollection subCollection(Filter filter) {
-	    FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-	    Filter subFilter = ff.and( this.filter, filter );
-	    
-	    return new FilteringSimpleFeatureCollection( delegate, subFilter );
-	}
-	
-	@Override
-	public void accepts(FeatureVisitor visitor, ProgressListener progress) throws IOException {
-	    // the delegate might have an optimized way to handle filters and still apply a 
-	    // visitor (e.g., ContentFeatureCollection), but avoid self-looping
-	    final SimpleFeatureCollection sc = delegate.subCollection(filter);
-	    if(sc instanceof FilteringSimpleFeatureCollection) {
-	        super.accepts(visitor, progress);
-	    } else {
-	        sc.accepts(visitor, progress);
-	    }
-	}
+    public FilteringSimpleFeatureCollection(SimpleFeatureCollection delegate, Filter filter) {
+        super(delegate);
+        this.delegate = delegate;
+        this.filter = filter;
+    }
 
-	public SimpleFeatureCollection sort(SortBy order) {
-		throw new UnsupportedOperationException();
-	}
+    public SimpleFeatureIterator features() {
+        return new FilteringSimpleFeatureIterator(delegate.features(), filter);
+    }
 
-	public int size() {
-		int count = 0;
-		SimpleFeatureIterator i = features();
-		try {
-			while( i.hasNext() ) {
-				count++; i.next();
-			}
-			
-			return count;
-		}
-		finally {
-		    i.close();
-		}
-	}
+    public void close(SimpleFeatureIterator close) {
+        close.close();
+    }
 
-	public boolean isEmpty() {
-		return size() == 0;
-	}
+    public SimpleFeatureCollection subCollection(Filter filter) {
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
+        Filter subFilter = ff.and(this.filter, filter);
 
-	public Object[] toArray() {
-		return toArray( new Object[ size() ] );
-	}
+        return new FilteringSimpleFeatureCollection(delegate, subFilter);
+    }
 
-	public <T> T[] toArray(T[] a) {
-		List<SimpleFeature> list = new ArrayList<SimpleFeature>();
-		SimpleFeatureIterator i = features();
-		try {
-			while( i.hasNext() ) {
-				list.add( i.next() );
-			}
-			
-			return list.toArray( a );
-		}
-		finally {
-			i.close();
-		}
-	}
+    @Override
+    public void accepts(FeatureVisitor visitor, ProgressListener progress) throws IOException {
+        // the delegate might have an optimized way to handle filters and still apply a
+        // visitor (e.g., ContentFeatureCollection), but avoid self-looping
+        final SimpleFeatureCollection sc = delegate.subCollection(filter);
+        if (sc instanceof FilteringSimpleFeatureCollection) {
+            super.accepts(visitor, progress);
+        } else {
+            sc.accepts(visitor, progress);
+        }
+    }
 
-	public boolean contains(Object o) {
-		return delegate.contains( o ) && filter.evaluate( o );
-	}
+    public SimpleFeatureCollection sort(SortBy order) {
+        throw new UnsupportedOperationException();
+    }
 
-	public boolean containsAll(Collection<?> c) {
-		for ( Iterator<?> i = c.iterator(); i.hasNext(); ) {
-			if ( !contains( i.next() ) ) {
-				return false;
-			}
-		}
-		
-		return true;
-	}
+    public int size() {
+        int count = 0;
+        SimpleFeatureIterator i = features();
+        try {
+            while (i.hasNext()) {
+                count++;
+                i.next();
+            }
 
-	public  FeatureReader<SimpleFeatureType,SimpleFeature> reader() throws IOException {
-		return new DelegateFeatureReader<SimpleFeatureType,SimpleFeature>( getSchema(), features() );
-	}
+            return count;
+        } finally {
+            i.close();
+        }
+    }
 
-	public ReferencedEnvelope getBounds() {
-		//calculate manually
-		return DataUtilities.bounds( this );
-	}
+    public boolean isEmpty() {
+        return size() == 0;
+    }
 
+    public Object[] toArray() {
+        return toArray(new Object[size()]);
+    }
+
+    public <T> T[] toArray(T[] a) {
+        List<SimpleFeature> list = new ArrayList<SimpleFeature>();
+        SimpleFeatureIterator i = features();
+        try {
+            while (i.hasNext()) {
+                list.add(i.next());
+            }
+
+            return list.toArray(a);
+        } finally {
+            i.close();
+        }
+    }
+
+    public boolean contains(Object o) {
+        return delegate.contains(o) && filter.evaluate(o);
+    }
+
+    public boolean containsAll(Collection<?> c) {
+        for (Iterator<?> i = c.iterator(); i.hasNext(); ) {
+            if (!contains(i.next())) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public FeatureReader<SimpleFeatureType, SimpleFeature> reader() throws IOException {
+        return new DelegateFeatureReader<SimpleFeatureType, SimpleFeature>(getSchema(), features());
+    }
+
+    public ReferencedEnvelope getBounds() {
+        // calculate manually
+        return DataUtilities.bounds(this);
+    }
 }

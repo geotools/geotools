@@ -18,13 +18,12 @@ package org.geotools.data.oracle;
 
 import static org.junit.Assert.*;
 
-import org.junit.Before;
 import org.junit.Test;
 
 /**
  * Test for GEOT-5231 Oracle Dialect doesn't encode column names correctly.
- * @author Ian Turton
  *
+ * @author Ian Turton
  */
 public class ColumnEncodingTest {
 
@@ -32,19 +31,16 @@ public class ColumnEncodingTest {
     public void test() {
         StringBuffer buffer = new StringBuffer();
         OracleDialect dialect = new OracleDialect(null);
-        dialect.encodeColumnName("name",buffer);
+        dialect.encodeColumnName("name", buffer);
         assertEquals("NAME", buffer.toString());
     }
-    
-    /**
-     * test for GEOT-5176 Oracle can't handle spaces in column names
-     */
+
+    /** test for GEOT-5176 Oracle can't handle spaces in column names */
     @Test
     public void testspaces() {
         StringBuffer buffer = new StringBuffer();
         OracleDialect dialect = new OracleDialect(null);
-        dialect.encodeColumnName("name with space",buffer);
+        dialect.encodeColumnName("name with space", buffer);
         assertEquals("\"NAME WITH SPACE\"", buffer.toString());
     }
-
 }

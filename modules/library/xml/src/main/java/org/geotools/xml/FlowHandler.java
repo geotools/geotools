@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2006-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -19,15 +19,11 @@ package org.geotools.xml;
 import java.util.Map;
 
 /**
- * Provides a mechanism to indicate that the XMLSAXHandler should stop 
- * parsing. It will periodically call shouldStop(), passing in its hints 
- * object. If shouldStop() returns true, if will abort parsing.
- * 
+ * Provides a mechanism to indicate that the XMLSAXHandler should stop parsing. It will periodically
+ * call shouldStop(), passing in its hints object. If shouldStop() returns true, if will abort
+ * parsing.
+ *
  * @author Richard Gould
- *
- *
- *
- *
  * @source $URL$
  */
 public interface FlowHandler {

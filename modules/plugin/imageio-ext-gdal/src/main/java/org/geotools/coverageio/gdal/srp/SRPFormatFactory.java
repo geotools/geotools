@@ -17,31 +17,28 @@
 package org.geotools.coverageio.gdal.srp;
 
 import it.geosolutions.imageio.plugins.rpftoc.RPFTOCImageReaderSpi;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 import org.geotools.coverageio.BaseGridFormatFactorySPI;
 import org.opengis.coverage.grid.Format;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Implementation of the {@link Format} service provider interface for SRP (ASRP/USPR) files.
  *
  * @author Andrea Aime, GeoSolutions
  */
-public final class SRPFormatFactory extends BaseGridFormatFactorySPI implements GridFormatFactorySpi {
-    /**
-     * Logger.
-     */
-    private final static Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger(SRPFormatFactory.class.getPackage().getName());
+public final class SRPFormatFactory extends BaseGridFormatFactorySPI
+        implements GridFormatFactorySpi {
+    /** Logger. */
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(
+                    SRPFormatFactory.class.getPackage().getName());
 
     /**
-     * Tells me if the coverage plugin to access Erdas imagine is available or
-     * not.
+     * Tells me if the coverage plugin to access Erdas imagine is available or not.
      *
-     * @return <code>true</code> if the plugin is available,
-     * <code>false</code> otherwise.
+     * @return <code>true</code> if the plugin is available, <code>false</code> otherwise.
      */
     public boolean isAvailable() {
         boolean available = true;
@@ -49,8 +46,7 @@ public final class SRPFormatFactory extends BaseGridFormatFactorySPI implements 
         // if these classes are here, then the runtime environment has
         // access to JAI and the JAI ImageI/O toolbox.
         try {
-            Class
-                    .forName("it.geosolutions.imageio.plugins.srp.SRPImageReaderSpi");
+            Class.forName("it.geosolutions.imageio.plugins.srp.SRPImageReaderSpi");
             available = new RPFTOCImageReaderSpi().isAvailable();
 
             if (LOGGER.isLoggable(Level.FINE)) {

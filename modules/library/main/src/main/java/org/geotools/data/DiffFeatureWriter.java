@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -19,7 +19,6 @@ package org.geotools.data;
 import java.io.IOException;
 import java.util.Map;
 import java.util.NoSuchElementException;
-
 import org.geotools.factory.Hints;
 import org.geotools.feature.IllegalAttributeException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -29,28 +28,20 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-
 /**
  * A FeatureWriter that captures modifications against a FeatureReader.
- * 
- * <p>
- * You will eventually need to write out the differences, later.
- * </p>
- * 
- * <p>
- * The api has been implemented in terms of  FeatureReader<SimpleFeatureType, SimpleFeature> to make explicit that
- * no Features are writen out by this Class.
- * </p>
+ *
+ * <p>You will eventually need to write out the differences, later.
+ *
+ * <p>The api has been implemented in terms of FeatureReader<SimpleFeatureType, SimpleFeature> to
+ * make explicit that no Features are writen out by this Class.
  *
  * @author Jody Garnett, Refractions Research
- *
  * @see TransactionStateDiff
- *
- *
  * @source $URL$
  */
 public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureType, SimpleFeature> {
-    protected  FeatureReader<SimpleFeatureType, SimpleFeature> reader;
+    protected FeatureReader<SimpleFeatureType, SimpleFeature> reader;
     protected Diff diff;
     SimpleFeature next; // next value aquired by hasNext()
     SimpleFeature live; // live value supplied by FeatureReader
@@ -62,7 +53,7 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
      * @param reader
      * @param diff
      */
-    public DiffFeatureWriter(FeatureReader <SimpleFeatureType, SimpleFeature> reader, Diff diff) {
+    public DiffFeatureWriter(FeatureReader<SimpleFeatureType, SimpleFeature> reader, Diff diff) {
         this(reader, diff, Filter.INCLUDE);
     }
 
@@ -73,7 +64,8 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
      * @param diff
      * @param filter
      */
-    public DiffFeatureWriter(FeatureReader <SimpleFeatureType, SimpleFeature> reader, Diff diff, Filter filter) {
+    public DiffFeatureWriter(
+            FeatureReader<SimpleFeatureType, SimpleFeature> reader, Diff diff, Filter filter) {
         this.reader = new DiffFeatureReader<SimpleFeatureType, SimpleFeature>(reader, diff, filter);
         this.diff = diff;
     }
@@ -99,12 +91,12 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
             // any modifications to current
             try {
                 live = next; // update live value
-                next = null; // hasNext will need to search again            
+                next = null; // hasNext will need to search again
                 current = SimpleFeatureBuilder.copy(live);
 
                 return current;
             } catch (IllegalAttributeException e) {
-                throw (IOException) new IOException("Could not modify content").initCause( e );
+                throw (IOException) new IOException("Could not modify content").initCause(e);
             }
         } else {
             if (diff == null) {
@@ -112,12 +104,13 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
             }
             // Create new content
             // created with an empty ID
-            // (The real writer will supply a FID later) 
+            // (The real writer will supply a FID later)
             try {
                 live = null;
                 next = null;
-                current = SimpleFeatureBuilder.build(type,new Object[type.getAttributeCount()],
-                        "new"+diff.nextFID);
+                current =
+                        SimpleFeatureBuilder.build(
+                                type, new Object[type.getAttributeCount()], "new" + diff.nextFID);
                 diff.nextFID++;
                 return current;
             } catch (IllegalAttributeException e) {
@@ -126,16 +119,15 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
         }
     }
 
-    /**
-     * @see org.geotools.data.FeatureWriter#remove()
-     */
+    /** @see org.geotools.data.FeatureWriter#remove() */
     public void remove() throws IOException {
         if (live != null) {
             // mark live as removed
-        	diff.remove(live.getID());
-        	fireNotification(FeatureEvent.FEATURES_REMOVED, ReferencedEnvelope.reference(live.getBounds()));
-        	live = null;
-        	current = null;
+            diff.remove(live.getID());
+            fireNotification(
+                    FeatureEvent.FEATURES_REMOVED, ReferencedEnvelope.reference(live.getBounds()));
+            live = null;
+            current = null;
         } else if (current != null) {
             // cancel additional content
             current = null;
@@ -146,22 +138,17 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
      * Writes out the current feature.
      *
      * @throws IOException
-     *
      * @see org.geotools.data.FeatureWriter#write()
-     */ 
-    public void write() throws IOException 
-	{
-    	//DJB: I modified this so it doesnt throw an error if you
-    	//     do an update and you didnt actually change anything.
-    	//     (We do the work)
-        if ((live != null) ) 
-        {
+     */
+    public void write() throws IOException {
+        // DJB: I modified this so it doesnt throw an error if you
+        //     do an update and you didnt actually change anything.
+        //     (We do the work)
+        if ((live != null)) {
             // We have a modification to record!
             diff.modify(live.getID(), current);
 
-
-
-            ReferencedEnvelope bounds = new ReferencedEnvelope((CoordinateReferenceSystem)null);
+            ReferencedEnvelope bounds = new ReferencedEnvelope((CoordinateReferenceSystem) null);
             bounds.include(live.getBounds());
             bounds.include(current.getBounds());
             fireNotification(FeatureEvent.FEATURES_CHANGED, bounds);
@@ -171,16 +158,19 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
             // We have new content to record
             //
             String fid = current.getID();
-            if( Boolean.TRUE.equals(current.getUserData().get(Hints.USE_PROVIDED_FID) ) ){
-                if( current.getUserData().containsKey(Hints.PROVIDED_FID)){
+            if (Boolean.TRUE.equals(current.getUserData().get(Hints.USE_PROVIDED_FID))) {
+                if (current.getUserData().containsKey(Hints.PROVIDED_FID)) {
                     fid = (String) current.getUserData().get(Hints.PROVIDED_FID);
                     Map<Object, Object> userData = current.getUserData();
-                    current = SimpleFeatureBuilder.build(current.getFeatureType(), current.getAttributes(), fid );
-                    current.getUserData().putAll( userData );
+                    current =
+                            SimpleFeatureBuilder.build(
+                                    current.getFeatureType(), current.getAttributes(), fid);
+                    current.getUserData().putAll(userData);
                 }
             }
-            diff.add( fid, current);
-            fireNotification(FeatureEvent.FEATURES_ADDED, ReferencedEnvelope.reference(current.getBounds()));
+            diff.add(fid, current);
+            fireNotification(
+                    FeatureEvent.FEATURES_ADDED, ReferencedEnvelope.reference(current.getBounds()));
             current = null;
         } else {
             throw new IOException("No feature available to write");
@@ -188,45 +178,43 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
     }
 
     /**
-	 * Query for more content.
-	 *
-	 * @see org.geotools.data.FeatureWriter#hasNext()
-	 */
-	public boolean hasNext() throws IOException {
-	    if (next != null) {
-	        // we found next already
-	        return true;
-	    }
-	
-	    live = null;
-	    current = null;
-	    
-	    if (reader == null) {
-	            throw new IOException("FeatureWriter has been closed");
-	    }
-	
-	    if (reader.hasNext()) {
-	        try {
-	            next = reader.next();
-	        } catch (NoSuchElementException e) {
-	            throw new DataSourceException("No more content", e);
-	        } catch (IllegalAttributeException e) {
-	            throw new DataSourceException("No more content", e);
-	        }
-	
-	        return true;
-	    }
-	
-	    return false;
-	}
+     * Query for more content.
+     *
+     * @see org.geotools.data.FeatureWriter#hasNext()
+     */
+    public boolean hasNext() throws IOException {
+        if (next != null) {
+            // we found next already
+            return true;
+        }
+
+        live = null;
+        current = null;
+
+        if (reader == null) {
+            throw new IOException("FeatureWriter has been closed");
+        }
+
+        if (reader.hasNext()) {
+            try {
+                next = reader.next();
+            } catch (NoSuchElementException e) {
+                throw new DataSourceException("No more content", e);
+            } catch (IllegalAttributeException e) {
+                throw new DataSourceException("No more content", e);
+            }
+
+            return true;
+        }
+
+        return false;
+    }
 
     /**
      * Clean up resources associated with this writer.
-     * 
-     * <p>
-     * Diff is not clear()ed as it is assumed that it belongs to a
-     * Transaction.State object and may yet be written out.
-     * </p>
+     *
+     * <p>Diff is not clear()ed as it is assumed that it belongs to a Transaction.State object and
+     * may yet be written out.
      *
      * @see org.geotools.data.FeatureWriter#close()
      */
@@ -244,20 +232,15 @@ public abstract class DiffFeatureWriter implements FeatureWriter<SimpleFeatureTy
 
     /**
      * Subclass must provide the notification.
-     * 
-     * <p>
-     * Notification requirements for modifications against a Transaction should
-     * only be issued to SimpleFeatureSource instances that opperate against the
-     * same typeName and Transaction.
-     * </p>
-     * 
-     * <p>
-     * Other SimpleFeatureSource instances with the same typeName will be notified
-     * when the Transaction is committed.
-     * </p>
+     *
+     * <p>Notification requirements for modifications against a Transaction should only be issued to
+     * SimpleFeatureSource instances that opperate against the same typeName and Transaction.
+     *
+     * <p>Other SimpleFeatureSource instances with the same typeName will be notified when the
+     * Transaction is committed.
      *
      * @param eventType One of FeatureType.FEATURES_ADDED, FeatureType.CHANGED,
-     *        FeatureType.FEATURES_REMOVED
+     *     FeatureType.FEATURES_REMOVED
      * @param bounds
      */
     protected abstract void fireNotification(int eventType, ReferencedEnvelope bounds);

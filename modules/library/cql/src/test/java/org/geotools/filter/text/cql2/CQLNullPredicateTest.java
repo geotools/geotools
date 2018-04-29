@@ -25,53 +25,49 @@ import org.opengis.filter.Filter;
 
 /**
  * Test CQL Null Predicate:
+ *
  * <p>
  *
  * <pre>
  * &lt;null predicate &gt; ::=  &lt;attribute name &gt; IS [ NOT ] NULL
  * </pre>
  *
- * </p>
- *
  * @author Mauricio Pazos (Axios Engineering)
- * @since 2.5 
- *
- *
- *
+ * @since 2.5
  * @source $URL$
  */
-public class CQLNullPredicateTest  {
+public class CQLNullPredicateTest {
     protected final Language language;
-    
-    public CQLNullPredicateTest(){
+
+    public CQLNullPredicateTest() {
         this(Language.CQL);
     }
 
     protected CQLNullPredicateTest(final Language language) {
-        
-        assert language != null: "language cannot be null";
-        
+
+        assert language != null : "language cannot be null";
+
         this.language = language;
     }
 
     /**
-     * test the 
+     * test the
+     *
      * @param samplePredicate
      * @param expected
      * @throws Exception
      */
-    protected void testNullPredicate(final String samplePredicate, Filter expected) throws Exception{
-        
+    protected void testNullPredicate(final String samplePredicate, Filter expected)
+            throws Exception {
+
         Filter actual = CompilerUtil.parseFilter(this.language, samplePredicate);
 
         Assert.assertNotNull("expects a not null filter", actual);
 
         Assert.assertEquals("Filter error", expected, actual);
     }
-    
-    /**
-     * Sample: ATTR1 IS NULL
-     */
+
+    /** Sample: ATTR1 IS NULL */
     @Test
     public void propertyIsNull() throws Exception {
 
@@ -79,17 +75,17 @@ public class CQLNullPredicateTest  {
         Filter expected = FilterCQLSample.getSample(samplePredicate);
         testNullPredicate(samplePredicate, expected);
     }
-    
+
     /**
      * Sample: ATTR1 IS NOT NULL
-     * @throws Exception 
+     *
+     * @throws Exception
      */
     @Test
-    public void propertyIsNotNull() throws Exception{
-        
+    public void propertyIsNotNull() throws Exception {
+
         final String samplePredicate = FilterCQLSample.PROPERTY_IS_NOT_NULL;
         Filter expected = FilterCQLSample.getSample(samplePredicate);
         testNullPredicate(samplePredicate, expected);
     }
-    
 }

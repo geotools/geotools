@@ -1,4 +1,3 @@
-
 package org.geotools.data.arcgisrest.schema.services.feature;
 
 import com.google.gson.annotations.Expose;
@@ -9,92 +8,68 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 
 public class XssPreventionInfo {
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     @SerializedName("xssPreventionEnabled")
     @Expose
     private Boolean xssPreventionEnabled;
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     @SerializedName("xssPreventionRule")
     @Expose
     private String xssPreventionRule;
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     @SerializedName("xssInputRule")
     @Expose
     private String xssInputRule;
 
     /**
-     * 
      * (Required)
-     * 
-     * @return
-     *     The xssPreventionEnabled
+     *
+     * @return The xssPreventionEnabled
      */
     public Boolean getXssPreventionEnabled() {
         return xssPreventionEnabled;
     }
 
     /**
-     * 
      * (Required)
-     * 
-     * @param xssPreventionEnabled
-     *     The xssPreventionEnabled
+     *
+     * @param xssPreventionEnabled The xssPreventionEnabled
      */
     public void setXssPreventionEnabled(Boolean xssPreventionEnabled) {
         this.xssPreventionEnabled = xssPreventionEnabled;
     }
 
     /**
-     * 
      * (Required)
-     * 
-     * @return
-     *     The xssPreventionRule
+     *
+     * @return The xssPreventionRule
      */
     public String getXssPreventionRule() {
         return xssPreventionRule;
     }
 
     /**
-     * 
      * (Required)
-     * 
-     * @param xssPreventionRule
-     *     The xssPreventionRule
+     *
+     * @param xssPreventionRule The xssPreventionRule
      */
     public void setXssPreventionRule(String xssPreventionRule) {
         this.xssPreventionRule = xssPreventionRule;
     }
 
     /**
-     * 
      * (Required)
-     * 
-     * @return
-     *     The xssInputRule
+     *
+     * @return The xssInputRule
      */
     public String getXssInputRule() {
         return xssInputRule;
     }
 
     /**
-     * 
      * (Required)
-     * 
-     * @param xssInputRule
-     *     The xssInputRule
+     *
+     * @param xssInputRule The xssInputRule
      */
     public void setXssInputRule(String xssInputRule) {
         this.xssInputRule = xssInputRule;
@@ -107,7 +82,11 @@ public class XssPreventionInfo {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(xssPreventionEnabled).append(xssPreventionRule).append(xssInputRule).toHashCode();
+        return new HashCodeBuilder()
+                .append(xssPreventionEnabled)
+                .append(xssPreventionRule)
+                .append(xssInputRule)
+                .toHashCode();
     }
 
     @Override
@@ -119,7 +98,10 @@ public class XssPreventionInfo {
             return false;
         }
         XssPreventionInfo rhs = ((XssPreventionInfo) other);
-        return new EqualsBuilder().append(xssPreventionEnabled, rhs.xssPreventionEnabled).append(xssPreventionRule, rhs.xssPreventionRule).append(xssInputRule, rhs.xssInputRule).isEquals();
+        return new EqualsBuilder()
+                .append(xssPreventionEnabled, rhs.xssPreventionEnabled)
+                .append(xssPreventionRule, rhs.xssPreventionRule)
+                .append(xssInputRule, rhs.xssInputRule)
+                .isEquals();
     }
-
 }

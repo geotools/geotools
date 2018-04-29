@@ -17,19 +17,16 @@
 package org.geotools.sld.v1_1.bindings;
 
 import org.geotools.sld.bindings.SLDUserStyleBinding;
-import org.geotools.sld.v1_1.SLD;
 import org.geotools.styling.Description;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.xml.*;
 
-import javax.xml.namespace.QName;
-
 /**
  * Binding object for the element http://www.opengis.net/sld:UserStyle.
- * 
+ *
  * <p>
- * 
+ *
  * <pre>
  *  <code>
  *  &lt;xsd:element name="UserStyle"&gt;
@@ -52,16 +49,12 @@ import javax.xml.namespace.QName;
  *              &lt;/xsd:choice&gt;
  *          &lt;/xsd:sequence&gt;
  *      &lt;/xsd:complexType&gt;
- *  &lt;/xsd:element&gt; 
- * 	
+ *  &lt;/xsd:element&gt;
+ *
  *   </code>
  * </pre>
- * 
- * </p>
- * 
+ *
  * @generated
- *
- *
  * @source $URL$
  */
 public class UserStyleBinding extends SLDUserStyleBinding {
@@ -71,21 +64,22 @@ public class UserStyleBinding extends SLDUserStyleBinding {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
-        Style style = (Style) super.parse(instance, node, value); 
-        
+        Style style = (Style) super.parse(instance, node, value);
+
         if (node.hasChild("Description")) {
             Description desc = (Description) node.getChildValue("Description");
             style.getDescription().setAbstract(desc.getAbstract());
             style.getDescription().setTitle(desc.getTitle());
         }
-        
-        //TODO: OnlineResource
+
+        // TODO: OnlineResource
         return style;
     }
-
 }

@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2014, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -18,6 +18,7 @@ package org.geotools.filter.spatial;
 
 import static org.junit.Assert.*;
 
+import com.vividsolutions.jts.geom.Geometry;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope3D;
 import org.geotools.referencing.CRS;
@@ -26,8 +27,6 @@ import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-
-import com.vividsolutions.jts.geom.Geometry;
 
 public class DefaultCRSFilterVisitorTest {
 
@@ -49,8 +48,10 @@ public class DefaultCRSFilterVisitorTest {
     public void force3DCRS3DEnvelope() throws Exception {
         CoordinateReferenceSystem crs = CRS.decode("EPSG:4939", true);
         CoordinateReferenceSystem hcrs = CRS.getHorizontalCRS(crs);
-        BBOX bbox = ff.bbox(ff.property("the_geom"), new ReferencedEnvelope3D(-180, 180, -90, 90,
-                0, 100, null));
+        BBOX bbox =
+                ff.bbox(
+                        ff.property("the_geom"),
+                        new ReferencedEnvelope3D(-180, 180, -90, 90, 0, 100, null));
         DefaultCRSFilterVisitor visitor = new DefaultCRSFilterVisitor(ff, crs);
         BBOX filtered = (BBOX) bbox.accept(visitor, null);
         Literal box = (Literal) filtered.getExpression2();

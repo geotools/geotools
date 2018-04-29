@@ -20,10 +20,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Calendar;
 import java.util.TimeZone;
-
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.geotools.xml.Configuration;
 import org.geotools.xml.Encoder;
 import org.geotools.xml.SimpleBinding;
@@ -40,8 +38,12 @@ public class XSDateTimeStrategyTest extends TestSchema {
         return null;
     }
 
-    public <E extends java.util.Date> void testParseEncode(final QName qname, final String toParse,
-            final E toEncode, final String expectedEncoding) throws Exception {
+    public <E extends java.util.Date> void testParseEncode(
+            final QName qname,
+            final String toParse,
+            final E toEncode,
+            final String expectedEncoding)
+            throws Exception {
 
         SimpleBinding strategy = (SimpleBinding) stratagy(qname);
         E parsed = (E) strategy.parse(element(toParse, qname), toParse);
@@ -58,8 +60,15 @@ public class XSDateTimeStrategyTest extends TestSchema {
     }
 
     private Calendar calendar(TimeZone timeZone, Integer... values) {
-        int[] fields = { Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH,
-                Calendar.HOUR_OF_DAY, Calendar.MINUTE, Calendar.SECOND, Calendar.MILLISECOND };
+        int[] fields = {
+            Calendar.YEAR,
+            Calendar.MONTH,
+            Calendar.DAY_OF_MONTH,
+            Calendar.HOUR_OF_DAY,
+            Calendar.MINUTE,
+            Calendar.SECOND,
+            Calendar.MILLISECOND
+        };
 
         Calendar cal = Calendar.getInstance(timeZone);
         cal.clear();
@@ -94,12 +103,15 @@ public class XSDateTimeStrategyTest extends TestSchema {
         expected = new java.sql.Time(timestamp(nil, nil, nil, 10, 53, 24));
         testParseEncode(XS.TIME, "10:53:24Z", expected, "10:53:24Z");
 
-        expected = new java.sql.Time(timestamp(TimeZone.getTimeZone("GMT-3:00"), nil, nil, nil, 10,
-                53, 24));
+        expected =
+                new java.sql.Time(
+                        timestamp(TimeZone.getTimeZone("GMT-3:00"), nil, nil, nil, 10, 53, 24));
         testParseEncode(XS.TIME, "10:53:24-03:00", expected, "13:53:24Z");
 
-        expected = new java.sql.Time(timestamp(TimeZone.getTimeZone("GMT+3:00"), nil, nil, nil, 10,
-                53, 24, 255));
+        expected =
+                new java.sql.Time(
+                        timestamp(
+                                TimeZone.getTimeZone("GMT+3:00"), nil, nil, nil, 10, 53, 24, 255));
         testParseEncode(XS.TIME, "10:53:24.255+03:00", expected, "07:53:24.255Z");
     }
 
@@ -110,23 +122,23 @@ public class XSDateTimeStrategyTest extends TestSchema {
         testParseEncode(XS.DATETIME, "2011-10-24T10:53:24Z", expected, "2011-10-24T10:53:24Z");
 
         expected = new java.sql.Timestamp(timestamp(2011, 9, 24, 10, 53, 24, 200));
-        testParseEncode(XS.DATETIME, "2011-10-24T10:53:24.200Z", expected,
-                "2011-10-24T10:53:24.200Z");
+        testParseEncode(
+                XS.DATETIME, "2011-10-24T10:53:24.200Z", expected, "2011-10-24T10:53:24.200Z");
 
-        expected = new java.sql.Timestamp(timestamp(TimeZone.getTimeZone("GMT+3:00"), 2011, 9, 24,
-                0, 00, 00, 200));
-        testParseEncode(XS.DATETIME, "2011-10-24T00:00:00.200+03:00", expected,
-                "2011-10-23T21:00:00.200Z");
+        expected =
+                new java.sql.Timestamp(
+                        timestamp(TimeZone.getTimeZone("GMT+3:00"), 2011, 9, 24, 0, 00, 00, 200));
+        testParseEncode(
+                XS.DATETIME, "2011-10-24T00:00:00.200+03:00", expected, "2011-10-23T21:00:00.200Z");
 
-        expected = new java.sql.Timestamp(timestamp(TimeZone.getTimeZone("GMT-3:00"), 2011, 9, 24,
-                0, 00, 00, 200));
-        testParseEncode(XS.DATETIME, "2011-10-24T00:00:00.200-03:00", expected,
-                "2011-10-24T03:00:00.200Z");
+        expected =
+                new java.sql.Timestamp(
+                        timestamp(TimeZone.getTimeZone("GMT-3:00"), 2011, 9, 24, 0, 00, 00, 200));
+        testParseEncode(
+                XS.DATETIME, "2011-10-24T00:00:00.200-03:00", expected, "2011-10-24T03:00:00.200Z");
 
         expected = new java.sql.Timestamp(timestamp(2011, 9, 24, 10, 53, 00));
         testParseEncode(XS.DATETIME, "2011-10-24T10:53Z", expected, "2011-10-24T10:53:00Z");
-
-
     }
 
     public void testEncodeCalendarDate() throws Exception {
@@ -162,12 +174,12 @@ public class XSDateTimeStrategyTest extends TestSchema {
         cal = calendar(2011, 9, 24, 10, 53, 31, 999);
         testEncodeCalendar(cal, TEST.DATETIME, "2011-10-24T10:53:31.999Z");
     }
-    
+
     public void testDirectlyEncodeCalendarDateTime() throws Exception {
         Calendar cal = calendar(2011, 9, 24, 10, 53, 31);
         String encoded = new XSDateTimeBinding().encode(cal, null);
         assertEquals("2011-10-24T10:53:31Z", encoded);
-        
+
         cal = calendar(2011, 9, 24, 10, 53, 31, 999);
         encoded = new XSDateTimeBinding().encode(cal, null);
         assertEquals("2011-10-24T10:53:31.999Z", encoded);
@@ -178,10 +190,12 @@ public class XSDateTimeStrategyTest extends TestSchema {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
         encoder.encode(cal, qname, out);
-        
-        Document dom = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-                .parse(new ByteArrayInputStream(out.toByteArray()));
-        
+
+        Document dom =
+                DocumentBuilderFactory.newInstance()
+                        .newDocumentBuilder()
+                        .parse(new ByteArrayInputStream(out.toByteArray()));
+
         String encodedValue = dom.getDocumentElement().getTextContent();
 
         assertEquals(expected, encodedValue);

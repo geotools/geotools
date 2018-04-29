@@ -4,9 +4,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
 import javax.xml.namespace.QName;
-
 import org.geotools.geometry.GeneralDirectPosition;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.gml4wcs.GML;
@@ -25,13 +23,12 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- * Binding object for the type
- * http://www.opengis.net/gml:EnvelopeWithTimePeriodType.
- * 
+ * Binding object for the type http://www.opengis.net/gml:EnvelopeWithTimePeriodType.
+ *
  * <p>
- * 
+ *
  * <pre>
- *	 <code>
+ *  <code>
  *  &lt;complexType name=&quot;EnvelopeWithTimePeriodType&quot;&gt;
  *      &lt;annotation&gt;
  *          &lt;documentation&gt;Envelope that includes also a temporal extent.&lt;/documentation&gt;
@@ -44,31 +41,26 @@ import org.w3c.dom.Element;
  *              &lt;attribute default=&quot;#ISO-8601&quot; name=&quot;frame&quot; type=&quot;anyURI&quot; use=&quot;optional&quot;/&gt;
  *          &lt;/extension&gt;
  *      &lt;/complexContent&gt;
- *  &lt;/complexType&gt; 
- * 	
+ *  &lt;/complexType&gt;
+ *
  * </code>
- *	 </pre>
- * 
- * </p>
- * 
+ *  </pre>
+ *
  * @generated
- *
- *
  * @source $URL$
  */
 public class EnvelopeWithTimePeriodTypeBinding extends AbstractComplexBinding {
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return GML.EnvelopeWithTimePeriodType;
     }
 
     /**
-     * <!-- begin-user-doc --> 
+     *
+     * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
+     *
      * @generated modifiable
      */
     public Class getType() {
@@ -76,13 +68,13 @@ public class EnvelopeWithTimePeriodTypeBinding extends AbstractComplexBinding {
     }
 
     /**
-     * <!-- begin-user-doc --> 
+     *
+     * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
+     *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-            throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         GeneralEnvelope envelope = (GeneralEnvelope) value;
 
         List<Node> timePositions = (List<Node>) node.getChildren("timePosition");
@@ -92,10 +84,13 @@ public class EnvelopeWithTimePeriodTypeBinding extends AbstractComplexBinding {
             properties.put(CoordinateReferenceSystem.NAME_KEY, "Compound");
             properties.put(CoordinateReferenceSystem.DOMAIN_OF_VALIDITY_KEY, ExtentImpl.WORLD);
 
-            CoordinateReferenceSystem crs = new DefaultCompoundCRS(properties,
-                    new CoordinateReferenceSystem[] {
-                            envelope.getCoordinateReferenceSystem(),
-                            DefaultTemporalCRS.TRUNCATED_JULIAN });
+            CoordinateReferenceSystem crs =
+                    new DefaultCompoundCRS(
+                            properties,
+                            new CoordinateReferenceSystem[] {
+                                envelope.getCoordinateReferenceSystem(),
+                                DefaultTemporalCRS.TRUNCATED_JULIAN
+                            });
 
             double[] minCP = new double[envelope.getDimension() + 1];
             double[] maxCP = new double[envelope.getDimension() + 1];
@@ -105,17 +100,20 @@ public class EnvelopeWithTimePeriodTypeBinding extends AbstractComplexBinding {
                 maxCP[i] = envelope.getUpperCorner().getOrdinate(i);
             }
 
-            DefaultTemporalCRS TCRS = (DefaultTemporalCRS) ((CompoundCRS) crs).getCoordinateReferenceSystems().get(1);
+            DefaultTemporalCRS TCRS =
+                    (DefaultTemporalCRS) ((CompoundCRS) crs).getCoordinateReferenceSystems().get(1);
 
             Node timePositionNodeBegin = timePositions.get(0);
             Node timePositionNodeEnd = timePositions.get(1);
-            minCP[minCP.length - 1] = TCRS.toValue(((DefaultPosition)timePositionNodeBegin.getValue()).getDate());
-            maxCP[maxCP.length - 1] = TCRS.toValue(((DefaultPosition)timePositionNodeEnd.getValue()).getDate());
+            minCP[minCP.length - 1] =
+                    TCRS.toValue(((DefaultPosition) timePositionNodeBegin.getValue()).getDate());
+            maxCP[maxCP.length - 1] =
+                    TCRS.toValue(((DefaultPosition) timePositionNodeEnd.getValue()).getDate());
 
             GeneralDirectPosition minDP = new GeneralDirectPosition(minCP);
-                                  minDP.setCoordinateReferenceSystem(crs);
+            minDP.setCoordinateReferenceSystem(crs);
             GeneralDirectPosition maxDP = new GeneralDirectPosition(maxCP);
-                                  maxDP.setCoordinateReferenceSystem(crs);
+            maxDP.setCoordinateReferenceSystem(crs);
 
             GeneralEnvelope envelopeWithTime = new GeneralEnvelope(minDP, maxDP);
 
@@ -127,7 +125,7 @@ public class EnvelopeWithTimePeriodTypeBinding extends AbstractComplexBinding {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.geotools.xml.AbstractComplexBinding#getExecutionMode()
      */
     @Override
@@ -140,12 +138,13 @@ public class EnvelopeWithTimePeriodTypeBinding extends AbstractComplexBinding {
      * <!-- end-user-doc -->
      */
     @Override
-    public Element encode(Object object, Document document, Element value)
-            throws Exception {
+    public Element encode(Object object, Document document, Element value) throws Exception {
         GeneralEnvelope envelope = (GeneralEnvelope) object;
 
         if (envelope == null) {
-            value.appendChild(document.createElementNS(GML.NAMESPACE, org.geotools.gml3.GML.Null.getLocalPart()));
+            value.appendChild(
+                    document.createElementNS(
+                            GML.NAMESPACE, org.geotools.gml3.GML.Null.getLocalPart()));
         }
 
         return null;
@@ -176,10 +175,18 @@ public class EnvelopeWithTimePeriodTypeBinding extends AbstractComplexBinding {
             if (temporalCRS != null) {
                 List<Position> envelopePositions = new LinkedList<Position>();
 
-                Position beginning = new DefaultPosition(
-                        ((DefaultTemporalCRS) temporalCRS).toDate(envelope.getLowerCorner().getOrdinate(envelope.getDimension() - 1)));
-                Position ending = new DefaultPosition(
-                        ((DefaultTemporalCRS) temporalCRS).toDate(envelope.getUpperCorner().getOrdinate(envelope.getDimension() - 1)));
+                Position beginning =
+                        new DefaultPosition(
+                                ((DefaultTemporalCRS) temporalCRS)
+                                        .toDate(
+                                                envelope.getLowerCorner()
+                                                        .getOrdinate(envelope.getDimension() - 1)));
+                Position ending =
+                        new DefaultPosition(
+                                ((DefaultTemporalCRS) temporalCRS)
+                                        .toDate(
+                                                envelope.getUpperCorner()
+                                                        .getOrdinate(envelope.getDimension() - 1)));
 
                 envelopePositions.add(beginning);
                 envelopePositions.add(ending);

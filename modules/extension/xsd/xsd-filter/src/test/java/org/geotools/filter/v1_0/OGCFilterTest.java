@@ -16,23 +16,18 @@
  */
 package org.geotools.filter.v1_0;
 
-import junit.framework.TestCase;
 import java.io.ByteArrayInputStream;
+import junit.framework.TestCase;
+import org.geotools.xml.Configuration;
+import org.geotools.xml.Parser;
+import org.geotools.xml.Parser.Properties;
 import org.opengis.filter.Filter;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.DWithin;
-import org.geotools.xml.Configuration;
-import org.geotools.xml.Parser;
-import org.geotools.xml.Parser.Properties;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class OGCFilterTest extends TestCase {
     Parser parser;
 
@@ -60,18 +55,28 @@ public class OGCFilterTest extends TestCase {
     }
 
     public void testLax() throws Exception {
-        String xml = "<Filter>" + "  <PropertyIsEqualTo>" + "    <PropertyName>foo</PropertyName>"
-            + "    <Literal>bar</Literal>" + "  </PropertyIsEqualTo>" + "</Filter>";
+        String xml =
+                "<Filter>"
+                        + "  <PropertyIsEqualTo>"
+                        + "    <PropertyName>foo</PropertyName>"
+                        + "    <Literal>bar</Literal>"
+                        + "  </PropertyIsEqualTo>"
+                        + "</Filter>";
 
         Parser parser = new Parser(new OGCConfiguration());
         parser.setStrict(false);
         Filter filter = (Filter) parser.parse(new ByteArrayInputStream(xml.getBytes()));
         assertNotNull(filter);
     }
-    
+
     public void testLiteralWithEntity() throws Exception {
-        String xml = "<Filter>" + "  <PropertyIsEqualTo>" + "    <PropertyName>foo</PropertyName>"
-            + "    <Literal>bar &gt; 10 and &lt; 20</Literal>" + "  </PropertyIsEqualTo>" + "</Filter>";
+        String xml =
+                "<Filter>"
+                        + "  <PropertyIsEqualTo>"
+                        + "    <PropertyName>foo</PropertyName>"
+                        + "    <Literal>bar &gt; 10 and &lt; 20</Literal>"
+                        + "  </PropertyIsEqualTo>"
+                        + "</Filter>";
 
         Parser parser = new Parser(new OGCConfiguration());
         parser.setStrict(false);
@@ -83,46 +88,46 @@ public class OGCFilterTest extends TestCase {
         Literal literal = (Literal) equal.getExpression2();
         assertEquals("bar > 10 and < 20", literal.getValue());
     }
-    
 
     public void testDWithinParse() throws Exception {
 
-       String xml = "<Filter>" +
-           "<DWithin>" +
-             "<PropertyName>the_geom</PropertyName>" + 
-             "<Point>" +  
-                 "<coordinates>-74.817265,40.5296504</coordinates>" + 
-              "</Point>" +
-              "<Distance units=\"km\">200</Distance>" +
-            "</DWithin>" +
-          "</Filter>";
-       
-       OGCConfiguration configuration = new OGCConfiguration();
-       configuration.getProperties().add(Properties.IGNORE_SCHEMA_LOCATION);
+        String xml =
+                "<Filter>"
+                        + "<DWithin>"
+                        + "<PropertyName>the_geom</PropertyName>"
+                        + "<Point>"
+                        + "<coordinates>-74.817265,40.5296504</coordinates>"
+                        + "</Point>"
+                        + "<Distance units=\"km\">200</Distance>"
+                        + "</DWithin>"
+                        + "</Filter>";
 
-       Parser parser = new Parser(configuration);
-       DWithin filter = (DWithin) parser.parse(new ByteArrayInputStream(xml.getBytes()));
-       assertNotNull(filter);
-       
-       //Asserting the Property Name
-       assertNotNull(filter.getExpression1());
-       PropertyName propName = (PropertyName) filter.getExpression1();
-       String name = propName.getPropertyName();
-       assertEquals("the_geom", name);
-       
-       //Asserting the Geometry
-       assertNotNull(filter.getExpression2());
-       Literal geom = (Literal) filter.getExpression2();
-       assertEquals("POINT (-74.817265 40.5296504)", geom.toString());
-       
-       //Asserting the Distance
-       assertTrue(filter.getDistance() > 0 );
-       Double dist = filter.getDistance();
-       assertEquals(200.0, dist);
-       
-       //Asserting the Distance Units
-       assertNotNull(filter.getDistanceUnits());
-       String unit = filter.getDistanceUnits();
-       assertEquals("km", unit);
+        OGCConfiguration configuration = new OGCConfiguration();
+        configuration.getProperties().add(Properties.IGNORE_SCHEMA_LOCATION);
+
+        Parser parser = new Parser(configuration);
+        DWithin filter = (DWithin) parser.parse(new ByteArrayInputStream(xml.getBytes()));
+        assertNotNull(filter);
+
+        // Asserting the Property Name
+        assertNotNull(filter.getExpression1());
+        PropertyName propName = (PropertyName) filter.getExpression1();
+        String name = propName.getPropertyName();
+        assertEquals("the_geom", name);
+
+        // Asserting the Geometry
+        assertNotNull(filter.getExpression2());
+        Literal geom = (Literal) filter.getExpression2();
+        assertEquals("POINT (-74.817265 40.5296504)", geom.toString());
+
+        // Asserting the Distance
+        assertTrue(filter.getDistance() > 0);
+        Double dist = filter.getDistance();
+        assertEquals(200.0, dist);
+
+        // Asserting the Distance Units
+        assertNotNull(filter.getDistanceUnits());
+        String unit = filter.getDistanceUnits();
+        assertEquals("km", unit);
     }
 }

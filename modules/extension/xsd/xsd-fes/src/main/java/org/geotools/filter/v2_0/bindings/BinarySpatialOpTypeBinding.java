@@ -16,8 +16,8 @@
  */
 package org.geotools.filter.v2_0.bindings;
 
+import com.vividsolutions.jts.geom.Geometry;
 import javax.xml.namespace.QName;
-
 import org.geotools.filter.v2_0.FES;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.Encoder;
@@ -26,8 +26,6 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.spatial.BinarySpatialOperator;
 import org.xml.sax.ContentHandler;
-
-import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * <pre>
@@ -59,17 +57,20 @@ public class BinarySpatialOpTypeBinding extends AbstractComplexBinding {
     public Class getType() {
         return BinarySpatialOperator.class;
     }
-    
+
     @Override
     public Object getProperty(Object object, QName name) throws Exception {
         Expression e = FESParseEncodeUtil.getProperty((BinarySpatialOperator) object, name);
         if (e instanceof Literal && ((Literal) e).getValue() instanceof Geometry) {
             return new EncoderDelegate() {
                 @Override
-                public void encode(ContentHandler output) throws Exception {                    
+                public void encode(ContentHandler output) throws Exception {
                     Encoder encoder = new Encoder(new org.geotools.gml3.v3_2.GMLConfiguration());
                     encoder.setInline(true);
-                    encoder.encode(((Literal) e).getValue(), org.geotools.gml3.v3_2.GML.AbstractGeometry, output);
+                    encoder.encode(
+                            ((Literal) e).getValue(),
+                            org.geotools.gml3.v3_2.GML.AbstractGeometry,
+                            output);
                 }
             };
         } else {

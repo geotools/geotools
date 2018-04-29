@@ -16,7 +16,8 @@ public class ZoomInterpolationTest {
     @Test
     public void testZoomInterpolationExponential() throws ParseException {
         // Define an exponential zoom function
-        String functionJson = "{'type':'exponential', 'base': 1, 'stops':[[0,0],[6,256],[12,1024]]}";
+        String functionJson =
+                "{'type':'exponential', 'base': 1, 'stops':[[0,0],[6,256],[12,1024]]}";
         JSONObject json = MapboxTestUtils.object(functionJson);
         MBFunction function = new MBFunction(json);
         Expression fn = function.numeric();
@@ -85,61 +86,62 @@ public class ZoomInterpolationTest {
         assertEquals("Interval function", expectedVal, d, .000001);
     }
 
-    
     // @Test
     public void testZoomPropertyInterpolationExponential() throws ParseException {
         // Define an exponential zoom-and-property function
 
-        String functionJson = "{'type':'exponential', "  
-                    + "'property':'someNumericProperty', " 
-                    + "'base': 1, 'stops': [ " 
-                        + "[{'zoom': 5, 'value': 5}, 128], " 
+        String functionJson =
+                "{'type':'exponential', "
+                        + "'property':'someNumericProperty', "
+                        + "'base': 1, 'stops': [ "
+                        + "[{'zoom': 5, 'value': 5}, 128], "
                         + "[{'zoom': 5, 'value': 10}, 1024], "
                         + "[{'zoom': 15, 'value': 5}, 2048], "
                         + "[{'zoom': 15,' value': 10}, 4096]]"
-                    + "}";
-        
+                        + "}";
+
         // TODO - Reduce it, then test it.
-        
+
         JSONObject json = MapboxTestUtils.object(functionJson);
         MBFunction function = new MBFunction(json);
         Expression fn = function.numeric();
 
         // Test at zoom level z < 5
         //    With someNumericProperty in each interval
-        
+
         // Test at zoom level 5 =< z < 15
         //    With someNumericProperty in each interval
-       
+
         // Test at zoom level 15 <= z
         //    With someNumericProperty in each interval
     }
-    
+
     //  @Test
     public void testZoomPropertyInterpolationInterval() throws ParseException {
         // Define an interval zoom-and-property function
 
-        String functionJson = "{'type':'interval', "  
-                    + "'property':'someNumericProperty', " 
-                    + "'stops': [ " 
-                        + "[{'zoom': 5, 'value': 5}, 'red'], " 
+        String functionJson =
+                "{'type':'interval', "
+                        + "'property':'someNumericProperty', "
+                        + "'stops': [ "
+                        + "[{'zoom': 5, 'value': 5}, 'red'], "
                         + "[{'zoom': 5, 'value': 10}, 'green'], "
                         + "[{'zoom': 15, 'value': 5}, 'blue'], "
                         + "[{'zoom': 15,' value': 10}, 'black']]"
-                    + "}";
-        
+                        + "}";
+
         // TODO - Reduce it, then test it.
-        
+
         JSONObject json = MapboxTestUtils.object(functionJson);
         MBFunction function = new MBFunction(json);
         Expression fn = function.numeric();
 
         // Test at zoom level z < 5
         //    With someNumericProperty in each interval
-        
+
         // Test at zoom level 5 =< z < 15
         //    With someNumericProperty in each interval
-       
+
         // Test at zoom level 15 <= z
         //    With someNumericProperty in each interval
     }

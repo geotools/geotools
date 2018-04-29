@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -19,17 +19,20 @@ package org.geotools.styling;
 import java.net.URL;
 
 /**
- * Provides a hook to locate online resources in {@link ExternalGraphic} instances. To be used by parser implementors.
+ * Provides a hook to locate online resources in {@link ExternalGraphic} instances. To be used by
+ * parser implementors.
  *
- * @source $URL: http://svn.osgeo.org/geotools/tags/2.7.4/modules/library/api/src/main/java/org/geotools/styling/ResourceLocator.java $
+ * @source $URL:
+ *     http://svn.osgeo.org/geotools/tags/2.7.4/modules/library/api/src/main/java/org/geotools/styling/ResourceLocator.java
+ *     $
  */
 public interface ResourceLocator {
-	
-	/**
-	 * Locate the specified resource.
-	 * 
-	 * @param uri uri of the resource
-	 * @return the fully resolved URL of the resource or null, if the resource cannot be located.
-	 */
-	URL locateResource(String uri);
+
+    /**
+     * Locate the specified resource.
+     *
+     * @param uri uri of the resource
+     * @return the fully resolved URL of the resource or null, if the resource cannot be located.
+     */
+    URL locateResource(String uri);
 }

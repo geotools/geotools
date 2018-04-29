@@ -20,42 +20,34 @@ import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
-
 import org.geotools.caching.spatialindex.Data;
 import org.geotools.caching.spatialindex.Shape;
 import org.geotools.caching.util.SimpleFeatureMarshaller;
 import org.opengis.feature.IllegalAttributeException;
 import org.opengis.feature.simple.SimpleFeature;
 
-
-/** 
+/**
  * Associates data with its shape to be stored in the index.
  *
  * @author Christophe Rousson, SoC 2007, CRG-ULAVAL
- *
- *
- *
- *
- *
  * @source $URL$
  */
 public class GridData implements Data<Object>, Externalizable {
     private static final long serialVersionUID = 2435341100521921266L;
     private static SimpleFeatureMarshaller marshaller = new SimpleFeatureMarshaller();
-    
-    private Shape shape;
-    private Object data;		//generally a feature
-    private volatile int hashCode = 0;       //cached hashcode for performance 
 
-    public GridData() {
-    }
+    private Shape shape;
+    private Object data; // generally a feature
+    private volatile int hashCode = 0; // cached hashcode for performance
+
+    public GridData() {}
 
     public GridData(Shape shape, Object data) {
         this.shape = shape;
         this.data = data;
         this.hashCode = 0;
     }
-    
+
     public Object getData() {
         return data;
     }
@@ -63,12 +55,12 @@ public class GridData implements Data<Object>, Externalizable {
     public Shape getShape() {
         return shape;
     }
-    
+
     public int hashCode() {
-        if (hashCode == 0){
-            //int hash = 17;
+        if (hashCode == 0) {
+            // int hash = 17;
             //  hash = (37 * hash) + shape.hashCode();
-            int hash = 629 + shape.hashCode();	//629 = 17 * 37
+            int hash = 629 + shape.hashCode(); // 629 = 17 * 37
             hash = (37 * hash) + data.hashCode();
             this.hashCode = hash;
         }
@@ -92,28 +84,28 @@ public class GridData implements Data<Object>, Externalizable {
     }
 
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-    	try {
-    		this.shape = (Shape) in.readObject();
-    	} catch (IOException e) {
-    		throw e;
-    	}
+        try {
+            this.shape = (Shape) in.readObject();
+        } catch (IOException e) {
+            throw e;
+        }
 
         if (in.readBoolean()) {
             try {
                 this.data = getFeatureMarshaller().unmarshall(in);
-            } catch ( IllegalAttributeException e) {
+            } catch (IllegalAttributeException e) {
                 throw (IOException) new IOException().initCause(e);
             } catch (IOException e) {
-            	throw e;
-            }catch (Exception e){
+                throw e;
+            } catch (Exception e) {
                 throw (IOException) new IOException().initCause(e);
             }
         } else {
-        	try {
-        		this.data = in.readObject();
-        	} catch (IOException e) {
-        		throw e;
-        	}
+            try {
+                this.data = in.readObject();
+            } catch (IOException e) {
+                throw e;
+            }
         }
     }
 
@@ -122,18 +114,18 @@ public class GridData implements Data<Object>, Externalizable {
 
         if (data instanceof SimpleFeature) {
             out.writeBoolean(true);
-            try{
+            try {
                 getFeatureMarshaller().marshall((SimpleFeature) data, out);
-            }catch (Exception ex){
-                throw (IOException)new IOException().initCause(ex);
+            } catch (Exception ex) {
+                throw (IOException) new IOException().initCause(ex);
             }
         } else {
             out.writeBoolean(false);
             out.writeObject(data);
         }
     }
-    
-    public static SimpleFeatureMarshaller getFeatureMarshaller(){
+
+    public static SimpleFeatureMarshaller getFeatureMarshaller() {
         return GridData.marshaller;
     }
 }

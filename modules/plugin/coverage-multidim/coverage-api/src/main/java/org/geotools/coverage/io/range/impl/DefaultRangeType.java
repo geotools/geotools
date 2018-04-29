@@ -19,7 +19,6 @@ package org.geotools.coverage.io.range.impl;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
-
 import org.geotools.coverage.io.range.FieldType;
 import org.geotools.coverage.io.range.RangeType;
 import org.geotools.feature.NameImpl;
@@ -29,9 +28,8 @@ import org.opengis.util.InternationalString;
 
 /**
  * Default implementation of {@link RangeType}
- * 
- * @author Simone Giannecchini, GeoSolutions.
  *
+ * @author Simone Giannecchini, GeoSolutions.
  * @source $URL$
  */
 public class DefaultRangeType implements RangeType {
@@ -43,15 +41,23 @@ public class DefaultRangeType implements RangeType {
 
     private Set<Name> fieldTypesNames;
 
-    public DefaultRangeType(final String name, final String description, final FieldType fieldType) {
-        this(new NameImpl(name), new SimpleInternationalString(description), Collections.singleton(fieldType));
+    public DefaultRangeType(
+            final String name, final String description, final FieldType fieldType) {
+        this(
+                new NameImpl(name),
+                new SimpleInternationalString(description),
+                Collections.singleton(fieldType));
     }
 
-    public DefaultRangeType(final String name, final String description, final Set<FieldType> fieldTypes) {
+    public DefaultRangeType(
+            final String name, final String description, final Set<FieldType> fieldTypes) {
         this(new NameImpl(name), new SimpleInternationalString(description), fieldTypes);
     }
 
-    public DefaultRangeType(final Name name, final InternationalString description, final Set<FieldType> fieldTypes) {
+    public DefaultRangeType(
+            final Name name,
+            final InternationalString description,
+            final Set<FieldType> fieldTypes) {
         this.name = name;
         this.description = description;
         this.fieldTypes = new LinkedHashSet<FieldType>(fieldTypes);
@@ -79,12 +85,10 @@ public class DefaultRangeType implements RangeType {
             final String ftNameSpace = ftName.getNamespaceURI();
             if (ftLocalPart.equals(localPart)) {
                 if (ftNameSpace != null) {
-                    if (ftNameSpace.equals(nameSpace))
-                        return fieldType;
+                    if (ftNameSpace.equals(nameSpace)) return fieldType;
                 }
                 return fieldType;
             }
-
         }
         return null;
     }
@@ -105,9 +109,7 @@ public class DefaultRangeType implements RangeType {
         return fieldTypes.size();
     }
 
-    /**
-     * Simple Implementation of toString method for debugging purpose.
-     */
+    /** Simple Implementation of toString method for debugging purpose. */
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         final String lineSeparator = System.getProperty("line.separator", "\n");

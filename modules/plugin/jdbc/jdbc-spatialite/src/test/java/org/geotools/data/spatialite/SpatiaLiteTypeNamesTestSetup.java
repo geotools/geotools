@@ -20,21 +20,19 @@ import org.geotools.jdbc.JDBCTypeNamesTestSetup;
 
 public class SpatiaLiteTypeNamesTestSetup extends JDBCTypeNamesTestSetup {
 
-	protected SpatiaLiteTypeNamesTestSetup() {
-		super(new SpatiaLiteTestSetup());
-	}
+    protected SpatiaLiteTypeNamesTestSetup() {
+        super(new SpatiaLiteTestSetup());
+    }
 
-	@Override
-	protected void createTypes() throws Exception {
-		run("CREATE TABLE ftntable ("
-				+ "id INT, name VARCHAR, geom GEOMETRY)");
-		run("CREATE VIEW ftnview AS SELECT id, geom FROM ftntable");
-	}
+    @Override
+    protected void createTypes() throws Exception {
+        run("CREATE TABLE ftntable (" + "id INT, name VARCHAR, geom GEOMETRY)");
+        run("CREATE VIEW ftnview AS SELECT id, geom FROM ftntable");
+    }
 
-	@Override
-	protected void dropTypes() throws Exception {
-		runSafe("DROP VIEW ftnview");
-		runSafe("DROP TABLE ftntable");
-	}
-
+    @Override
+    protected void dropTypes() throws Exception {
+        runSafe("DROP VIEW ftnview");
+        runSafe("DROP TABLE ftntable");
+    }
 }

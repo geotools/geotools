@@ -16,7 +16,6 @@ package org.geotools.swt.styling.simple;
 
 import java.awt.Color;
 import java.text.MessageFormat;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.ModifyEvent;
@@ -37,34 +36,33 @@ import org.opengis.style.GraphicalSymbol;
 
 /**
  * Allows editing/viewing of a Style Layer Descriptor "Graphic".
- * <p>
- * Here is the pretty picture: <pre><code>
+ *
+ * <p>Here is the pretty picture:
+ *
+ * <pre><code>
  *          +-+ +-------+ +------+
  *   Point: |x| | star\/| |size\/|
  *          +-+ +-------+ +------+
  * </code></pre>
- * </p>
- * <p>
- * Workflow:
+ *
+ * <p>Workflow:
+ *
  * <ol>
- * <li>createControl( parent ) - set up controls
- * <li>setGraphic( graphic, mode ) - provide content from SimpleStyleConfigurator
- *    <ol>
- *    <li> Symbolizer values copied into fields based on mode
- *    <li> fields copied into controls
- *    <li> controls enabled based on mode & fields
- *    </ol>
- * <li>Listener.widgetSelected/modifyText - User performs an "edit"
- * <li>Listener.sync( SelectionEvent ) - update fields with values of controls
- * <li>fire( SelectionSevent ) - notify SimpleStyleConfigurator of change
- * <li>getGraphic( Fill, Stroke, StyleBuilder ) - construct a Graphic based on fields
+ *   <li>createControl( parent ) - set up controls
+ *   <li>setGraphic( graphic, mode ) - provide content from SimpleStyleConfigurator
+ *       <ol>
+ *         <li>Symbolizer values copied into fields based on mode
+ *         <li>fields copied into controls
+ *         <li>controls enabled based on mode & fields
+ *       </ol>
+ *   <li>Listener.widgetSelected/modifyText - User performs an "edit"
+ *   <li>Listener.sync( SelectionEvent ) - update fields with values of controls
+ *   <li>fire( SelectionSevent ) - notify SimpleStyleConfigurator of change
+ *   <li>getGraphic( Fill, Stroke, StyleBuilder ) - construct a Graphic based on fields
  * </ul>
- * </p>  
+ *
  * @author Jody Garnett
  * @since 1.0.0
- *
- *
- *
  * @source $URL$
  */
 public class GraphicViewer {
@@ -77,16 +75,19 @@ public class GraphicViewer {
     Combo size;
 
     private class Listener implements SelectionListener, ModifyListener {
-        public void widgetSelected( SelectionEvent e ) {
+        public void widgetSelected(SelectionEvent e) {
             sync(e);
         };
-        public void widgetDefaultSelected( SelectionEvent e ) {
+
+        public void widgetDefaultSelected(SelectionEvent e) {
             sync(e);
         };
-        public void modifyText( final ModifyEvent e ) {
+
+        public void modifyText(final ModifyEvent e) {
             sync(AbstractSimpleConfigurator.selectionEvent(e));
         };
-        private void sync( SelectionEvent selectionEvent ) {
+
+        private void sync(SelectionEvent selectionEvent) {
             try {
                 GraphicViewer.this.enabled = GraphicViewer.this.on.getSelection();
                 GraphicViewer.this.type = GraphicViewer.this.name.getText();
@@ -103,55 +104,61 @@ public class GraphicViewer {
                 GraphicViewer.this.size.setEnabled(GraphicViewer.this.enabled);
             }
         }
-
     };
+
     Listener sync = new Listener();
     private SelectionListener listener;
 
     /**
      * Accepts a listener that will be notified when content changes.
-     * @param listener1 
+     *
+     * @param listener1
      */
-    public void addListener( SelectionListener listener1 ) {
+    public void addListener(SelectionListener listener1) {
         this.listener = listener1;
     }
 
     /**
      * Remove listener.
-     * @param listener1 
+     *
+     * @param listener1
      */
-    public void removeListener( SelectionListener listener1 ) {
-        if (this.listener == listener1)
-            this.listener = null;
+    public void removeListener(SelectionListener listener1) {
+        if (this.listener == listener1) this.listener = null;
     }
 
     /**
      * TODO summary sentence for fire ...
-     * 
+     *
      * @param event
      */
-    protected void fire( SelectionEvent event ) {
-        if (this.listener == null)
-            return;
+    protected void fire(SelectionEvent event) {
+        if (this.listener == null) return;
         this.listener.widgetSelected(event);
     }
 
     /**
      * TODO summary sentence for createControl ...
-     * 
+     *
      * @param parent
-     * @param klisten 
-     * @param build 
+     * @param klisten
+     * @param build
      * @return Generated composite
      */
-    public Composite createControl( Composite parent, KeyListener klisten, StyleBuilder build ) {
-        Composite part = AbstractSimpleConfigurator.subpart(parent, Messages.getString("SimpleStyleConfigurator_point_label"));
+    public Composite createControl(Composite parent, KeyListener klisten, StyleBuilder build) {
+        Composite part =
+                AbstractSimpleConfigurator.subpart(
+                        parent, Messages.getString("SimpleStyleConfigurator_point_label"));
 
         this.on = new Button(part, SWT.CHECK);
         // this.on.addSelectionListener( this.sync );
 
         this.size = new Combo(part, SWT.DROP_DOWN);
-        this.size.setItems(new String[]{"1", "2", "3", "5", "10", "15"}); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+        this.size.setItems(
+                new String[] {
+                    "1", "2", "3", "5", "10", "15"
+                }); // $NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+        // //$NON-NLS-6$
         this.size.setTextLimit(2);
         this.size.addKeyListener(klisten);
         this.size.setToolTipText(Messages.getString("GraphicViewer_size_tooltip"));
@@ -166,17 +173,17 @@ public class GraphicViewer {
 
     /**
      * TODO summary sentence for getGraphic ...
-     * 
+     *
      * @param filll
      * @param stroke
-     * @param build 
+     * @param build
      * @return Graphic defined by this model
      */
-    public Graphic getGraphic( Fill filll, Stroke stroke, StyleBuilder build ) {
+    public Graphic getGraphic(Fill filll, Stroke stroke, StyleBuilder build) {
         if (!this.enabled) {
             Mark mark = null;
             if (this.type == null) {
-                build.createMark("square", null, null); //$NON-NLS-1$
+                build.createMark("square", null, null); // $NON-NLS-1$
             } else {
                 mark = build.createMark(this.type, (Fill) null, (Stroke) null);
             }
@@ -190,29 +197,33 @@ public class GraphicViewer {
 
     /**
      * TODO summary sentence for setGraphic ...
-     * 
+     *
      * @param graphic
-     * @param mode 
-     * @param enabled 
+     * @param mode
+     * @param enabled
      */
-    public void setGraphic( Graphic graphic, Mode mode, Color defaultColor ) {
+    public void setGraphic(Graphic graphic, Mode mode, Color defaultColor) {
         boolean enabled = true;
         if (graphic == null) {
             StyleBuilder builder = new StyleBuilder();
-            graphic = builder.createGraphic(null, builder.createMark(StyleBuilder.MARK_SQUARE, defaultColor), null);
+            graphic =
+                    builder.createGraphic(
+                            null, builder.createMark(StyleBuilder.MARK_SQUARE, defaultColor), null);
             enabled = true;
         }
         this.width = SLDs.size(graphic);
-        String text = MessageFormat.format("{0,number,#0}", this.width); //$NON-NLS-1$
+        String text = MessageFormat.format("{0,number,#0}", this.width); // $NON-NLS-1$
         if (text != null) {
             this.size.setText(text);
             this.size.select(this.size.indexOf(text));
         }
 
         boolean marked = false;
-        if (graphic != null && graphic.graphicalSymbols() != null && !graphic.graphicalSymbols().isEmpty()) {
+        if (graphic != null
+                && graphic.graphicalSymbols() != null
+                && !graphic.graphicalSymbols().isEmpty()) {
 
-            for( GraphicalSymbol symbol : graphic.graphicalSymbols() ) {
+            for (GraphicalSymbol symbol : graphic.graphicalSymbols()) {
                 if (symbol instanceof Mark) {
                     Mark mark = (Mark) symbol;
                     setMark(mark, mode);
@@ -227,7 +238,7 @@ public class GraphicViewer {
         this.enabled = this.enabled && enabled;
     }
 
-    private void setMark( Mark mark, Mode mode ) {
+    private void setMark(Mark mark, Mode mode) {
         listen(false);
         try {
             this.enabled = (mode == Mode.POINT && mark != null);
@@ -249,7 +260,7 @@ public class GraphicViewer {
         }
     }
 
-    void listen( boolean listen ) {
+    void listen(boolean listen) {
         if (listen) {
             this.on.addSelectionListener(this.sync);
             this.size.addSelectionListener(this.sync);

@@ -110,16 +110,15 @@ public class TileIdentifierTest {
         TileIdentifier otherTile = createTestTileIdentifier(5, 10, 12, "SomeService");
         Assert.assertTrue(this.tileId.equals(otherTile));
         Assert.assertTrue(otherTile.equals(this.tileId));
-
     }
 
-    protected TileIdentifier createTestTileIdentifier(ZoomLevel zoomLevel, int x, int y,
-            String name) {
+    protected TileIdentifier createTestTileIdentifier(
+            ZoomLevel zoomLevel, int x, int y, String name) {
         return createTileIdentifierPrototype(zoomLevel, x, y, name);
     }
 
-    public static final TileIdentifier createTileIdentifierPrototype(ZoomLevel zoomLevel, int x,
-            int y, String name) {
+    public static final TileIdentifier createTileIdentifierPrototype(
+            ZoomLevel zoomLevel, int x, int y, String name) {
         return new TileIdentifier(x, y, zoomLevel, name) {
 
             @Override
@@ -141,8 +140,6 @@ public class TileIdentifierTest {
             public TileIdentifier getLowerNeighbour() {
                 return null;
             }
-
         };
     }
-
 }

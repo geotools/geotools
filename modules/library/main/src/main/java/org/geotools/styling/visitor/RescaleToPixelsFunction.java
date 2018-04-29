@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2013, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -21,7 +21,6 @@ import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 import javax.measure.quantity.Length;
 import javax.measure.unit.Unit;
-
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
@@ -29,29 +28,26 @@ import org.opengis.filter.capability.FunctionName;
 /**
  * Applies unit to pixel rescaling around expressions whose native unit cannot be determined in a
  * static fashion
- * 
+ *
  * @source $URL$
  */
 public class RescaleToPixelsFunction extends FunctionExpressionImpl {
 
-    public static FunctionName NAME = new FunctionNameImpl("rescaleToPixels", String.class,
-    /**
-     * The value to be rescaled, could be a number, e.g., 3.75, or a number plus unit, e.g. 5m,
-     * 7.8ft
-     */
-    parameter("value", String.class),
-    /**
-     * The default unit, could be null, in this case pixel is assumed
-     */
-    parameter("defaultUnit", Unit.class),
-    /**
-     * The unit-less rescaling factor
-     */
-    parameter("scaleFactor", Double.class),
-    /**
-     * Whether real world units should be rescaled, or left as they are
-     */
-    parameter("rescalingMode", RescalingMode.class, 0, 1));
+    public static FunctionName NAME =
+            new FunctionNameImpl(
+                    "rescaleToPixels",
+                    String.class,
+                    /**
+                     * The value to be rescaled, could be a number, e.g., 3.75, or a number plus
+                     * unit, e.g. 5m, 7.8ft
+                     */
+                    parameter("value", String.class),
+                    /** The default unit, could be null, in this case pixel is assumed */
+                    parameter("defaultUnit", Unit.class),
+                    /** The unit-less rescaling factor */
+                    parameter("scaleFactor", Double.class),
+                    /** Whether real world units should be rescaled, or left as they are */
+                    parameter("rescalingMode", RescalingMode.class, 0, 1));
 
     public RescaleToPixelsFunction() {
         super(NAME);
@@ -71,11 +67,10 @@ public class RescaleToPixelsFunction extends FunctionExpressionImpl {
             throw new IllegalArgumentException("Invalid scale factor, it should be non null");
         }
 
-        
         RescalingMode mode = RescalingMode.KeepUnits;
-        if(getParameters().size() >= 3) {
+        if (getParameters().size() >= 3) {
             RescalingMode theMode = getExpression(3).evaluate(feature, RescalingMode.class);
-            if(theMode != null) {
+            if (theMode != null) {
                 mode = theMode;
             }
         }

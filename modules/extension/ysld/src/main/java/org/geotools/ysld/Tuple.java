@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -25,19 +25,17 @@ import java.util.Map;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.geotools.util.logging.Logging;
 import org.geotools.ysld.parse.Util;
 
-/**
- * Ysld Tuple implementation.
- */
+/** Ysld Tuple implementation. */
 public class Tuple {
     static Logger LOG = Logging.getLogger(Tuple.class);
     static final Map<Integer, Pattern> PATTERNS = new HashMap<Integer, Pattern>();
 
     /**
      * Return a tuple comprised of the passed values
+     *
      * @param values
      */
     public static Tuple of(Object... values) {
@@ -48,6 +46,7 @@ public class Tuple {
 
     /**
      * Returns an empty tuple of length n.
+     *
      * @param n
      */
     public static Tuple of(int n) {
@@ -79,8 +78,10 @@ public class Tuple {
 
     @Deprecated
     public Tuple parse(String str) throws IllegalArgumentException {
-        LOG.warning("The tuple syntax "+str+
-                " is deprecated. Please update your style to use '[' and ']' instead of '(' and ')' for tuples");
+        LOG.warning(
+                "The tuple syntax "
+                        + str
+                        + " is deprecated. Please update your style to use '[' and ']' instead of '(' and ')' for tuples");
         Matcher m = pattern.matcher(str);
         if (!m.matches()) {
             throw new IllegalArgumentException();
@@ -97,6 +98,7 @@ public class Tuple {
 
     /**
      * Parse the values of seq and write them to this Tuple
+     *
      * @param seq
      * @throws IllegalArgumentException if seq and this differ in length
      */
@@ -117,6 +119,7 @@ public class Tuple {
 
     /**
      * Parse an object to this Tuple
+     *
      * @param obj
      * @throws IllegalArgumentException if obj cannot be parsed to a Tuple
      */
@@ -148,9 +151,7 @@ public class Tuple {
         return obj != null ? obj.toString() : null;
     }
 
-    /**
-     * @return A String representation of the tuple, of the form "(a, b)".
-     */
+    /** @return A String representation of the tuple, of the form "(a, b)". */
     public String toString() {
         StringBuilder sb = new StringBuilder("(");
         for (int i = 0; i < values.length; i++) {
@@ -170,16 +171,12 @@ public class Tuple {
         return sb.append(")").toString();
     }
 
-    /**
-     * Return this tuple as a List.
-     */
+    /** Return this tuple as a List. */
     public List<?> toList() {
         return Arrays.asList(values);
     }
 
-    /**
-     * @return true if all values of the tuple are null, false otherwise.
-     */
+    /** @return true if all values of the tuple are null, false otherwise. */
     public boolean isNull() {
         for (int i = 0; i < values.length; i++) {
             if (values[i] != null) {
@@ -188,5 +185,4 @@ public class Tuple {
         }
         return true;
     }
-
 }

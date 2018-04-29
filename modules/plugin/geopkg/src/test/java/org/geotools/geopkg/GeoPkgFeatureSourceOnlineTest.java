@@ -25,15 +25,12 @@ import org.opengis.filter.PropertyIsLike;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class GeoPkgFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest {
 
     /**
      * Allows subclasses to use a axis order specific version of it
+     *
      * @return
      * @throws FactoryException
      */
@@ -45,27 +42,28 @@ public class GeoPkgFeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest {
     protected JDBCTestSetup createTestSetup() {
         return new GeoPkgTestSetup();
     }
-    
+
     public void testGetFeaturesWithArithmeticOpFilter() throws Exception {
-        //seems there are rounding issues here - consider new test
+        // seems there are rounding issues here - consider new test
     }
+
     public void testConversionFilter() throws Exception {
-        //seems there are rounding issues here - consider new test
+        // seems there are rounding issues here - consider new test
     }
     /**
-     * SQLite's LIKE is usually case insensitive - there are many possible "fixes" out there 
-     * but all are hard to implement or seem not to work for all CharacterSets.
+     * SQLite's LIKE is usually case insensitive - there are many possible "fixes" out there but all
+     * are hard to implement or seem not to work for all CharacterSets.
      */
     public void testLikeFilter() throws Exception {
         FilterFactory2 ff = (FilterFactory2) dataStore.getFilterFactory();
-        PropertyIsLike caseSensitiveLike = ff.like(ff.property(aname("stringProperty")), 
-                "Z*", "*", "?", "\\", true);
-        PropertyIsLike caseInsensitiveLike = ff.like(ff.property(aname("stringProperty")), 
-                "Z*", "*", "?", "\\", false);
-        PropertyIsLike caseInsensitiveLike2 = ff.like(ff.property(aname("stringProperty")), 
-                "z*", "*", "?", "\\", false);
-        //SQLLITE LIKE is always case insensitive 
-        //assertEquals(0, featureSource.getCount(new Query(null, caseSensitiveLike)));
+        PropertyIsLike caseSensitiveLike =
+                ff.like(ff.property(aname("stringProperty")), "Z*", "*", "?", "\\", true);
+        PropertyIsLike caseInsensitiveLike =
+                ff.like(ff.property(aname("stringProperty")), "Z*", "*", "?", "\\", false);
+        PropertyIsLike caseInsensitiveLike2 =
+                ff.like(ff.property(aname("stringProperty")), "z*", "*", "?", "\\", false);
+        // SQLLITE LIKE is always case insensitive
+        // assertEquals(0, featureSource.getCount(new Query(null, caseSensitiveLike)));
         assertEquals(1, featureSource.getCount(new Query(null, caseInsensitiveLike)));
         assertEquals(1, featureSource.getCount(new Query(null, caseInsensitiveLike2)));
     }

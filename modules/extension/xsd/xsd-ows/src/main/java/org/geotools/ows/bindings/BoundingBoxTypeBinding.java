@@ -17,11 +17,8 @@
 package org.geotools.ows.bindings;
 
 import java.util.List;
-
 import javax.xml.namespace.QName;
-
 import net.opengis.ows10.Ows10Factory;
-
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.geotools.ows.OWS;
@@ -30,12 +27,12 @@ import org.geotools.xml.EMFUtils;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 
-
 /**
  * Binding object for the type http://www.opengis.net/ows:BoundingBoxType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;complexType name="BoundingBoxType"&gt;
  *      &lt;annotation&gt;
@@ -70,12 +67,8 @@ import org.geotools.xml.Node;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class BoundingBoxTypeBinding extends ComplexEMFBinding {
@@ -88,48 +81,46 @@ public class BoundingBoxTypeBinding extends ComplexEMFBinding {
         super(owsFactory, target);
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return OWS.BoundingBoxType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
-        //BoundingBoxType bbox = Ows11Factory.eINSTANCE.createBoundingBoxType();
+        // BoundingBoxType bbox = Ows11Factory.eINSTANCE.createBoundingBoxType();
         EObject bbox = createEObject(value);
         EMFUtils.set(bbox, "lowerCorner", node.getChildValue("LowerCorner"));
         EMFUtils.set(bbox, "upperCorner", node.getChildValue("UpperCorner"));
-        if(node.getAttributeValue("crs") != null) {
+        if (node.getAttributeValue("crs") != null) {
             EMFUtils.set(bbox, "crs", node.getAttributeValue("crs").toString());
         }
-        if(node.getAttributeValue("dimensions") != null) {
+        if (node.getAttributeValue("dimensions") != null) {
             EMFUtils.set(bbox, "dimensions", node.getAttributeValue("dimensions"));
         }
-        
+
         return bbox;
     }
-    
+
     @Override
     public Object getProperty(Object object, QName name) throws Exception {
-        if ("LowerCorner".equals(name.getLocalPart()) || "UpperCorner".equals(name.getLocalPart())) {
-            //JD: this is a hack to get around the fact that the encoder won't match up simple list
+        if ("LowerCorner".equals(name.getLocalPart())
+                || "UpperCorner".equals(name.getLocalPart())) {
+            // JD: this is a hack to get around the fact that the encoder won't match up simple list
             // types with a binding
             Object value = super.getProperty(object, name);
             if (value instanceof List) {
                 return new PositionTypeBinding().encode(value, value.toString());
             }
         }
-        
-        return super.getProperty(object, name);    
-        
+
+        return super.getProperty(object, name);
     }
 }

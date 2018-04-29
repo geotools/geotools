@@ -27,5 +27,4 @@ public class DescribeFeatureTypeRequest extends WFSRequest {
     public DescribeFeatureTypeRequest(WFSConfig config, WFSStrategy strategy) {
         super(DESCRIBE_FEATURETYPE, config, strategy);
     }
-
 }

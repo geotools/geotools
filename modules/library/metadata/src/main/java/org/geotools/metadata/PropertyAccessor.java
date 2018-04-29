@@ -18,135 +18,122 @@ package org.geotools.metadata;
 
 import java.io.File;
 import java.lang.reflect.Array;
-import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.UndeclaredThrowableException;
-import java.net.URI;
-import java.net.URL;
-import java.net.URISyntaxException;
 import java.net.MalformedURLException;
-import java.util.LinkedHashSet;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-
+import org.geotools.resources.Classes;
+import org.geotools.resources.XArray;
+import org.geotools.resources.i18n.ErrorKeys;
+import org.geotools.resources.i18n.Errors;
+import org.geotools.util.CheckedCollection;
+import org.geotools.util.SimpleInternationalString;
+import org.geotools.util.Utilities;
 import org.opengis.annotation.UML;
 import org.opengis.util.InternationalString;
 
-import org.geotools.util.Utilities;
-import org.geotools.resources.XArray;
-import org.geotools.resources.Classes;
-import org.geotools.resources.i18n.Errors;
-import org.geotools.resources.i18n.ErrorKeys;
-import org.geotools.util.CheckedCollection;
-import org.geotools.util.SimpleInternationalString;
-
-
 /**
- * The getters declared in a GeoAPI interface, together with setters (if any)
- * declared in the Geotools implementation.
+ * The getters declared in a GeoAPI interface, together with setters (if any) declared in the
+ * Geotools implementation.
  *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */
 final class PropertyAccessor {
-    /**
-     * The locale to use for changing character case.
-     */
+    /** The locale to use for changing character case. */
     private static final Locale LOCALE = Locale.US;
 
-    /**
-     * The prefix for getters on boolean values.
-     */
+    /** The prefix for getters on boolean values. */
     private static final String IS = "is";
 
-    /**
-     * The prefix for getters (general case).
-     */
+    /** The prefix for getters (general case). */
     private static final String GET = "get";
 
-    /**
-     * The prefix for setters.
-     */
+    /** The prefix for setters. */
     private static final String SET = "set";
 
     /**
-     * Methods to exclude from {@link #getGetters}. They are method inherited from
-     * {@link java.lang.Object}. Some of them, especially {@link Object#hashCode()}
-     * {@link Object#toString()} and {@link Object#clone()}, may be declared explicitly
-     * in some interface with a formal contract. Note: only no-argument methods need to
-     * be declared in this list.
+     * Methods to exclude from {@link #getGetters}. They are method inherited from {@link
+     * java.lang.Object}. Some of them, especially {@link Object#hashCode()} {@link
+     * Object#toString()} and {@link Object#clone()}, may be declared explicitly in some interface
+     * with a formal contract. Note: only no-argument methods need to be declared in this list.
      */
     private static final String[] EXCLUDES = {
         "clone", "finalize", "getClass", "hashCode", "notify", "notifyAll", "toString", "wait"
     };
 
     /**
-     * Getters shared between many instances of this class. Two different implementations
-     * may share the same getters but different setters.
+     * Getters shared between many instances of this class. Two different implementations may share
+     * the same getters but different setters.
      */
     private static final Map<Class<?>, Method[]> SHARED_GETTERS = new HashMap<Class<?>, Method[]>();
 
-    /**
-     * The implemented metadata interface.
-     */
+    /** The implemented metadata interface. */
     final Class<?> type;
 
     /**
      * The implementation class. The following condition must hold:
      *
-     * <blockquote><pre>
+     * <blockquote>
+     *
+     * <pre>
      * type.{@linkplain Class#isAssignableFrom isAssignableFrom}(implementation);
-     * </pre></blockquote>
+     * </pre>
+     *
+     * </blockquote>
      */
     final Class<?> implementation;
 
-    /**
-     * The getter methods. This array should not contain any null element.
-     */
+    /** The getter methods. This array should not contain any null element. */
     private final Method[] getters;
 
     /**
-     * The corresponding setter methods, or {@code null} if none. This array must have
-     * the same length than {@link #getters}. For every {@code getters[i]} element,
-     * {@code setters[i]} is the corresponding setter or {@code null} if there is none.
+     * The corresponding setter methods, or {@code null} if none. This array must have the same
+     * length than {@link #getters}. For every {@code getters[i]} element, {@code setters[i]} is the
+     * corresponding setter or {@code null} if there is none.
      */
     private final Method[] setters;
 
     /**
-     * Index of getter or setter for a given name. The name must be all lower cases with
-     * conversion done using {@link #LOCALE}. This map must be considered as immutable
-     * after construction.
+     * Index of getter or setter for a given name. The name must be all lower cases with conversion
+     * done using {@link #LOCALE}. This map must be considered as immutable after construction.
      */
-    private final Map<String,Integer> mapping;
+    private final Map<String, Integer> mapping;
 
     /**
      * Creates a new property reader for the specified metadata implementation.
      *
-     * @param  metadata The metadata implementation to wrap.
-     * @param  type The interface implemented by the metadata.
-     *         Should be the value returned by {@link #getType}.
+     * @param metadata The metadata implementation to wrap.
+     * @param type The interface implemented by the metadata. Should be the value returned by {@link
+     *     #getType}.
      */
     PropertyAccessor(final Class<?> implementation, final Class<?> type) {
         this.implementation = implementation;
         this.type = type;
         assert type.isAssignableFrom(implementation) : implementation;
         getters = getGetters(type);
-        mapping = new HashMap<String,Integer>(getters.length + (getters.length + 3) / 4);
+        mapping = new HashMap<String, Integer>(getters.length + (getters.length + 3) / 4);
         Method[] setters = null;
         final Class<?>[] arguments = new Class[1];
-        for (int i=0; i<getters.length; i++) {
+        for (int i = 0; i < getters.length; i++) {
             /*
              * Fetch the getter and remind its name. We do the same for
              * the UML tag attached to the getter, if any.
              */
             final Integer index = i;
-            Method getter  = getters[i];
-            String name    = getter.getName();
+            Method getter = getters[i];
+            String name = getter.getName();
             final int base = prefix(name).length();
             addMapping(name.substring(base), index);
             final UML annotation = getter.getAnnotation(UML.class);
@@ -204,8 +191,8 @@ final class PropertyAccessor {
     }
 
     /**
-     * Adds the given (name, index) pair to {@link #mapping}, making sure we don't
-     * overwrite an existing entry with different value.
+     * Adds the given (name, index) pair to {@link #mapping}, making sure we don't overwrite an
+     * existing entry with different value.
      */
     private void addMapping(String name, final Integer index) throws IllegalArgumentException {
         name = name.trim();
@@ -213,18 +200,18 @@ final class PropertyAccessor {
             final String lower = name.toLowerCase(LOCALE);
             final Integer old = mapping.put(lower, index);
             if (old != null && !old.equals(index)) {
-                throw new IllegalArgumentException(Errors.format(
-                        ErrorKeys.PARAMETER_NAME_CLASH_$4, name, index, lower, old));
+                throw new IllegalArgumentException(
+                        Errors.format(ErrorKeys.PARAMETER_NAME_CLASH_$4, name, index, lower, old));
             }
         }
     }
 
     /**
-     * Returns the metadata interface implemented by the specified implementation.
-     * Only one metadata interface can be implemented.
+     * Returns the metadata interface implemented by the specified implementation. Only one metadata
+     * interface can be implemented.
      *
-     * @param  metadata The metadata implementation to wraps.
-     * @param  interfacePackage The root package for metadata interfaces.
+     * @param metadata The metadata implementation to wraps.
+     * @param interfacePackage The root package for metadata interfaces.
      * @return The single interface, or {@code null} if none where found.
      */
     static Class<?> getType(Class<?> implementation, final String interfacePackage) {
@@ -242,7 +229,7 @@ final class PropertyAccessor {
              * If we found more than one interface, removes the
              * ones that are sub-interfaces of the other.
              */
-            for (final Iterator<Class<?>> it=interfaces.iterator(); it.hasNext();) {
+            for (final Iterator<Class<?>> it = interfaces.iterator(); it.hasNext(); ) {
                 final Class<?> candidate = it.next();
                 for (final Class<?> child : interfaces) {
                     if (candidate != child && candidate.isAssignableFrom(child)) {
@@ -251,7 +238,7 @@ final class PropertyAccessor {
                     }
                 }
             }
-            final Iterator<Class<?>> it=interfaces.iterator();
+            final Iterator<Class<?>> it = interfaces.iterator();
             if (it.hasNext()) {
                 final Class<?> candidate = it.next();
                 if (!it.hasNext()) {
@@ -265,12 +252,13 @@ final class PropertyAccessor {
     }
 
     /**
-     * Puts every interfaces for the given type in the specified collection.
-     * This method invokes itself recursively for scanning parent interfaces.
+     * Puts every interfaces for the given type in the specified collection. This method invokes
+     * itself recursively for scanning parent interfaces.
      */
-    private static void getInterfaces(final Class<?> type, final String interfacePackage,
-            final Collection<Class<?>> interfaces)
-    {
+    private static void getInterfaces(
+            final Class<?> type,
+            final String interfacePackage,
+            final Collection<Class<?>> interfaces) {
         for (final Class<?> candidate : type.getInterfaces()) {
             if (candidate.getName().startsWith(interfacePackage)) {
                 interfaces.add(candidate);
@@ -280,10 +268,10 @@ final class PropertyAccessor {
     }
 
     /**
-     * Returns the getters. The returned array should never be modified,
-     * since it may be shared among many instances of {@code PropertyAccessor}.
+     * Returns the getters. The returned array should never be modified, since it may be shared
+     * among many instances of {@code PropertyAccessor}.
      *
-     * @param  type The metadata interface.
+     * @param type The metadata interface.
      * @return The getters declared in the given interface (never {@code null}).
      */
     private static Method[] getGetters(final Class<?> type) {
@@ -292,15 +280,14 @@ final class PropertyAccessor {
             if (getters == null) {
                 getters = type.getMethods();
                 int count = 0;
-                for (int i=0; i<getters.length; i++) {
+                for (int i = 0; i < getters.length; i++) {
                     final Method candidate = getters[i];
                     if (candidate.getAnnotation(Deprecated.class) != null) {
                         // Ignores deprecated methods.
                         continue;
                     }
-                    if (!candidate.getReturnType().equals(Void.TYPE) &&
-                         candidate.getParameterTypes().length == 0)
-                    {
+                    if (!candidate.getReturnType().equals(Void.TYPE)
+                            && candidate.getParameterTypes().length == 0) {
                         /*
                          * We do not require a name starting with "get" or "is" prefix because some
                          * methods do not begin with such prefix, as in "ConformanceResult.pass()".
@@ -324,11 +311,9 @@ final class PropertyAccessor {
         }
     }
 
-    /**
-     * Returns {@code true} if the specified method is on the exclusion list.
-     */
+    /** Returns {@code true} if the specified method is on the exclusion list. */
     private static boolean isExcluded(final String name) {
-        for (int i=0; i<EXCLUDES.length; i++) {
+        for (int i = 0; i < EXCLUDES.length; i++) {
             if (name.equals(EXCLUDES[i])) {
                 return true;
             }
@@ -337,9 +322,9 @@ final class PropertyAccessor {
     }
 
     /**
-     * Returns the prefix of the specified method name. If the method name don't starts with
-     * a prefix (for example {@link org.opengis.metadata.quality.ConformanceResult#pass()}),
-     * then this method returns an empty string.
+     * Returns the prefix of the specified method name. If the method name don't starts with a
+     * prefix (for example {@link org.opengis.metadata.quality.ConformanceResult#pass()}), then this
+     * method returns an empty string.
      */
     private static String prefix(final String name) {
         if (name.startsWith(GET)) {
@@ -354,18 +339,15 @@ final class PropertyAccessor {
         return "";
     }
 
-    /**
-     * Returns the number of properties that can be read.
-     */
+    /** Returns the number of properties that can be read. */
     final int count() {
         return getters.length;
     }
 
     /**
-     * Returns the index of the specified property, or -1 if none.
-     * The search is case-insensitive.
+     * Returns the index of the specified property, or -1 if none. The search is case-insensitive.
      *
-     * @param  key The property to search.
+     * @param key The property to search.
      * @return The index of the given key, or -1 if none.
      */
     final int indexOf(String key) {
@@ -375,10 +357,10 @@ final class PropertyAccessor {
     }
 
     /**
-     * Always returns the index of the specified property (never -1).
-     * The search is case-insensitive.
+     * Always returns the index of the specified property (never -1). The search is
+     * case-insensitive.
      *
-     * @param  key The property to search.
+     * @param key The property to search.
      * @return The index of the given key.
      * @throws IllegalArgumentException if the given key is not found.
      */
@@ -392,8 +374,8 @@ final class PropertyAccessor {
     }
 
     /**
-     * Returns {@code true} if the specified string starting at the specified index contains
-     * no lower case characters. The characters don't have to be in upper case however (e.g.
+     * Returns {@code true} if the specified string starting at the specified index contains no
+     * lower case characters. The characters don't have to be in upper case however (e.g.
      * non-alphabetic characters)
      */
     private static boolean isAcronym(final String name, int offset) {
@@ -406,9 +388,7 @@ final class PropertyAccessor {
         return true;
     }
 
-    /**
-     * Returns the name of the property at the given index, or {@code null} if none.
-     */
+    /** Returns the name of the property at the given index, or {@code null} if none. */
     final String name(final int index) {
         if (index >= 0 && index < getters.length) {
             String name = getters[index].getName();
@@ -437,9 +417,7 @@ final class PropertyAccessor {
         return null;
     }
 
-    /**
-     * Returns the type of the property at the given index.
-     */
+    /** Returns the type of the property at the given index. */
     final Class<?> type(final int index) {
         if (index >= 0 && index < getters.length) {
             return getters[index].getReturnType();
@@ -447,23 +425,22 @@ final class PropertyAccessor {
         return null;
     }
 
-    /**
-     * Returns {@code true} if the property at the given index is writable.
-     */
+    /** Returns {@code true} if the property at the given index is writable. */
     final boolean isWritable(final int index) {
-        return (index >= 0) && (index < getters.length) && (setters != null) && (setters[index] != null);
+        return (index >= 0)
+                && (index < getters.length)
+                && (setters != null)
+                && (setters[index] != null);
     }
 
-    /**
-     * Returns the value for the specified metadata, or {@code null} if none.
-     */
+    /** Returns the value for the specified metadata, or {@code null} if none. */
     final Object get(final int index, final Object metadata) {
         return (index >= 0 && index < getters.length) ? get(getters[index], metadata) : null;
     }
 
     /**
-     * Gets a value from the specified metadata. We do not expect any checked exception to
-     * be thrown, since {@code org.opengis.metadata} do not declare any.
+     * Gets a value from the specified metadata. We do not expect any checked exception to be
+     * thrown, since {@code org.opengis.metadata} do not declare any.
      *
      * @param method The method to use for the query.
      * @param metadata The metadata object to query.
@@ -490,16 +467,15 @@ final class PropertyAccessor {
     /**
      * Sets a value for the specified metadata.
      *
-     * @param  index The index of the property to set.
-     * @param  metadata The metadata object on which to set the value.
-     * @param  value The new value.
+     * @param index The index of the property to set.
+     * @param metadata The metadata object on which to set the value.
+     * @param value The new value.
      * @return The old value.
      * @throws IllegalArgumentException if the specified property can't be set.
      * @throws ClassCastException if the given value is not of the expected type.
      */
     final Object set(final int index, final Object metadata, final Object value)
-            throws IllegalArgumentException, ClassCastException
-    {
+            throws IllegalArgumentException, ClassCastException {
         String key;
         if (index >= 0 && index < getters.length && setters != null) {
             final Method getter = getters[index];
@@ -519,22 +495,23 @@ final class PropertyAccessor {
     }
 
     /**
-     * Sets a value for the specified metadata. We do not expect any checked exception to
-     * be thrown.
+     * Sets a value for the specified metadata. We do not expect any checked exception to be thrown.
      *
      * @param getter The method to use for fetching the previous value.
      * @param setter The method to use for setting the new value.
      * @param metadata The metadata object to query.
      * @param arguments The argument to give to the method to be invoked.
-     * @throws ClassCastException if at least one element of the {@code arguments} array
-     *         is not of the expected type.
+     * @throws ClassCastException if at least one element of the {@code arguments} array is not of
+     *     the expected type.
      */
-    private static void set(final Method getter, final Method setter,
-                            final Object metadata, final Object[] arguments)
-            throws ClassCastException
-    {
+    private static void set(
+            final Method getter,
+            final Method setter,
+            final Object metadata,
+            final Object[] arguments)
+            throws ClassCastException {
         final Class<?>[] paramTypes = setter.getParameterTypes();
-        for (int i=0; i<paramTypes.length; i++) {
+        for (int i = 0; i < paramTypes.length; i++) {
             final Object argument = arguments[i];
             if (argument == null) {
                 continue; // Null argument (which is valid): nothing to do.
@@ -597,20 +574,25 @@ final class PropertyAccessor {
                     parsed = new SimpleInternationalString(text);
                 } else if (File.class.isAssignableFrom(elementType)) {
                     parsed = new File(text);
-                } else if (URL.class.isAssignableFrom(elementType)) try {
-                    parsed = new URL(text);
-                } catch (MalformedURLException e) {
-                    failure = e;
-                } else if (URI.class.isAssignableFrom(elementType)) try {
-                    parsed = new URI(text);
-                } catch (URISyntaxException e) {
-                    failure = e;
-                } else try {
-                    parsed = Classes.valueOf(elementType, text);
-                } catch (RuntimeException e) {
-                    // Include IllegalArgumentException and NumberFormatException
-                    failure = e;
-                }
+                } else if (URL.class.isAssignableFrom(elementType))
+                    try {
+                        parsed = new URL(text);
+                    } catch (MalformedURLException e) {
+                        failure = e;
+                    }
+                else if (URI.class.isAssignableFrom(elementType))
+                    try {
+                        parsed = new URI(text);
+                    } catch (URISyntaxException e) {
+                        failure = e;
+                    }
+                else
+                    try {
+                        parsed = Classes.valueOf(elementType, text);
+                    } catch (RuntimeException e) {
+                        // Include IllegalArgumentException and NumberFormatException
+                        failure = e;
+                    }
             }
             /*
              * Checks if there is no known conversion, or if the conversion failed. In the later
@@ -618,8 +600,12 @@ final class PropertyAccessor {
              * since we get here because the argument was not of the expected type.
              */
             if (parsed == null) {
-                final ClassCastException e = new ClassCastException(Errors.format(
-                        ErrorKeys.ILLEGAL_CLASS_$2, argument.getClass(), elementType));
+                final ClassCastException e =
+                        new ClassCastException(
+                                Errors.format(
+                                        ErrorKeys.ILLEGAL_CLASS_$2,
+                                        argument.getClass(),
+                                        elementType));
                 e.initCause(failure);
                 throw e;
             }
@@ -655,9 +641,9 @@ final class PropertyAccessor {
     }
 
     /**
-     * Unsafe addition into a collection. In GeoTools implementation, the collection is actually
-     * an instance of {@link CheckedCollection}, so the check will be performed at runtime.
-     * However other implementations could use unchecked collection. There is not much we can do.
+     * Unsafe addition into a collection. In GeoTools implementation, the collection is actually an
+     * instance of {@link CheckedCollection}, so the check will be performed at runtime. However
+     * other implementations could use unchecked collection. There is not much we can do.
      */
     @SuppressWarnings("unchecked")
     private static void addUnsafe(final Collection<?> addTo, final Object element) {
@@ -665,25 +651,26 @@ final class PropertyAccessor {
     }
 
     /**
-     * Compares the two specified metadata objects. The comparaison is <cite>shallow</cite>,
-     * i.e. all metadata attributes are compared using the {@link Object#equals} method without
-     * recursive call to this {@code shallowEquals} method for other metadata.
-     * <p>
-     * This method can optionaly excludes null values from the comparaison. In metadata,
-     * null value often means "don't know", so in some occasion we want to consider two
-     * metadata as different only if an attribute value is know for sure to be different.
+     * Compares the two specified metadata objects. The comparaison is <cite>shallow</cite>, i.e.
+     * all metadata attributes are compared using the {@link Object#equals} method without recursive
+     * call to this {@code shallowEquals} method for other metadata.
+     *
+     * <p>This method can optionaly excludes null values from the comparaison. In metadata, null
+     * value often means "don't know", so in some occasion we want to consider two metadata as
+     * different only if an attribute value is know for sure to be different.
      *
      * @param metadata1 The first metadata object to compare.
      * @param metadata2 The second metadata object to compare.
      * @param skipNulls If {@code true}, only non-null values will be compared.
      */
-    public boolean shallowEquals(final Object metadata1, final Object metadata2, final boolean skipNulls) {
+    public boolean shallowEquals(
+            final Object metadata1, final Object metadata2, final boolean skipNulls) {
         assert type.isInstance(metadata1) : metadata1;
         assert type.isInstance(metadata2) : metadata2;
-        for (int i=0; i<getters.length; i++) {
-            final Method  method = getters[i];
-            final Object  value1 = get(method, metadata1);
-            final Object  value2 = get(method, metadata2);
+        for (int i = 0; i < getters.length; i++) {
+            final Method method = getters[i];
+            final Object value1 = get(method, metadata1);
+            final Object value2 = get(method, metadata2);
             final boolean empty1 = isEmpty(value1);
             final boolean empty2 = isEmpty(value2);
             if (empty1 && empty2) {
@@ -699,25 +686,23 @@ final class PropertyAccessor {
     }
 
     /**
-     * Copies all metadata from source to target. The source can be any implementation of
-     * the metadata interface, but the target must be the implementation expected by this
-     * class.
+     * Copies all metadata from source to target. The source can be any implementation of the
+     * metadata interface, but the target must be the implementation expected by this class.
      *
-     * @param  source The metadata to copy.
-     * @param  target The target metadata.
-     * @param  skipNulls If {@code true}, only non-null values will be copied.
-     * @return {@code true} in case of success, or {@code false} if at least
-     *         one setter method was not found.
+     * @param source The metadata to copy.
+     * @param target The target metadata.
+     * @param skipNulls If {@code true}, only non-null values will be copied.
+     * @return {@code true} in case of success, or {@code false} if at least one setter method was
+     *     not found.
      * @throws UnmodifiableMetadataException if the target metadata is unmodifiable.
      */
     public boolean shallowCopy(final Object source, final Object target, final boolean skipNulls)
-            throws UnmodifiableMetadataException
-    {
+            throws UnmodifiableMetadataException {
         boolean success = true;
-        assert type          .isInstance(source) : source;
+        assert type.isInstance(source) : source;
         assert implementation.isInstance(target) : target;
         final Object[] arguments = new Object[1];
-        for (int i=0; i<getters.length; i++) {
+        for (int i = 0; i < getters.length; i++) {
             final Method getter = getters[i];
             arguments[0] = get(getter, source);
             if (!skipNulls || !isEmpty(arguments[0])) {
@@ -743,7 +728,7 @@ final class PropertyAccessor {
         assert implementation.isInstance(metadata) : metadata;
         if (setters != null) {
             final Object[] arguments = new Object[1];
-            for (int i=0; i<getters.length; i++) {
+            for (int i = 0; i < getters.length; i++) {
                 final Method setter = setters[i];
                 if (setter != null) {
                     final Method getter = getters[i];
@@ -759,14 +744,14 @@ final class PropertyAccessor {
     }
 
     /**
-     * Returns {@code true} if the metadata is modifiable. This method is not public because it
-     * uses heuristic rules. In case of doubt, this method conservatively returns {@code true}.
+     * Returns {@code true} if the metadata is modifiable. This method is not public because it uses
+     * heuristic rules. In case of doubt, this method conservatively returns {@code true}.
      */
     final boolean isModifiable() {
         if (setters != null) {
             return true;
         }
-        for (int i=0; i<getters.length; i++) {
+        for (int i = 0; i < getters.length; i++) {
             // Immutable objects usually don't need to be cloned. So if
             // an object is cloneable, it is probably not immutable.
             if (Cloneable.class.isAssignableFrom(getters[i].getReturnType())) {
@@ -777,15 +762,15 @@ final class PropertyAccessor {
     }
 
     /**
-     * Returns a hash code for the specified metadata. The hash code is defined as the
-     * sum of hash code values of all non-null properties. This is the same contract than
-     * {@link java.util.Set#hashCode} and ensure that the hash code value is insensitive
-     * to the ordering of properties.
+     * Returns a hash code for the specified metadata. The hash code is defined as the sum of hash
+     * code values of all non-null properties. This is the same contract than {@link
+     * java.util.Set#hashCode} and ensure that the hash code value is insensitive to the ordering of
+     * properties.
      */
     public int hashCode(final Object metadata) {
         assert type.isInstance(metadata) : metadata;
         int code = 0;
-        for (int i=0; i<getters.length; i++) {
+        for (int i = 0; i < getters.length; i++) {
             final Object value = get(getters[i], metadata);
             if (!isEmpty(value)) {
                 code += value.hashCode();
@@ -794,13 +779,11 @@ final class PropertyAccessor {
         return code;
     }
 
-    /**
-     * Counts the number of non-null properties.
-     */
+    /** Counts the number of non-null properties. */
     public int count(final Object metadata, final int max) {
         assert type.isInstance(metadata) : metadata;
         int count = 0;
-        for (int i=0; i<getters.length; i++) {
+        for (int i = 0; i < getters.length; i++) {
             if (!isEmpty(get(getters[i], metadata))) {
                 if (++count >= max) {
                     break;
@@ -811,13 +794,12 @@ final class PropertyAccessor {
     }
 
     /**
-     * Returns {@code true} if the specified object is null or an empty collection,
-     * array or string.
+     * Returns {@code true} if the specified object is null or an empty collection, array or string.
      */
     static boolean isEmpty(final Object value) {
-        return value == null ||
-                ((value instanceof Collection) && ((Collection) value).isEmpty()) ||
-                ((value instanceof CharSequence) && value.toString().trim().length() == 0) ||
-                (value.getClass().isArray() && Array.getLength(value) == 0);
+        return value == null
+                || ((value instanceof Collection) && ((Collection) value).isEmpty())
+                || ((value instanceof CharSequence) && value.toString().trim().length() == 0)
+                || (value.getClass().isArray() && Array.getLength(value) == 0);
     }
 }

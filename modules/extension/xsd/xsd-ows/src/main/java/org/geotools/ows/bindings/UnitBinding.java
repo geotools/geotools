@@ -17,58 +17,45 @@
 package org.geotools.ows.bindings;
 
 import java.lang.reflect.Field;
-
 import javax.measure.unit.BaseUnit;
 import javax.measure.unit.DerivedUnit;
 import javax.measure.unit.NonSI;
 import javax.measure.unit.SI;
 import javax.measure.unit.Unit;
-import javax.measure.unit.UnitFormat;
 import javax.xml.namespace.QName;
-
 import org.geotools.ows.v1_1.OWS;
 import org.geotools.xml.AbstractSimpleBinding;
 import org.geotools.xml.InstanceComponent;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class UnitBinding extends AbstractSimpleBinding {
 
-	public QName getTarget() {
-		return OWS.UOM;
-	}
+    public QName getTarget() {
+        return OWS.UOM;
+    }
 
-	public Class getType() {
-		return Unit.class;
-	}
-	
-    
+    public Class getType() {
+        return Unit.class;
+    }
+
     public int getExecutionMode() {
         return OVERRIDE;
     }
-    
-    /**
-     * @override
-     */
-    public Object parse(InstanceComponent instance, Object value)
-        throws Exception {
-    	//Object parseObject = UnitFormat.getInstance().parseObject((String) value);
-        //Object parseObject = UnitFormat.getAsciiInstance().parseObject((String) value);
-    	Unit valueOf = lookup( (String) value );
+
+    /** @override */
+    public Object parse(InstanceComponent instance, Object value) throws Exception {
+        // Object parseObject = UnitFormat.getInstance().parseObject((String) value);
+        // Object parseObject = UnitFormat.getAsciiInstance().parseObject((String) value);
+        Unit valueOf = lookup((String) value);
         return valueOf;
     }
-    
+
     private Unit lookup(String name) {
         Unit unit = lookup(SI.class, name);
-        if (unit != null)
-            return unit;
+        if (unit != null) return unit;
 
         unit = lookup(NonSI.class, name);
-        if (unit != null)
-            return unit;
+        if (unit != null) return unit;
 
         if (name.endsWith("s") || name.endsWith("S")) {
             return lookup(name.substring(0, name.length() - 1));
@@ -87,41 +74,37 @@ public class UnitBinding extends AbstractSimpleBinding {
         return null;
     }
 
-	private Unit lookup(Class class1, String name) {
-		Unit unit = null;
-		Field[] fields = class1.getDeclaredFields();
-		for (int i=0; i<fields.length; i++) {
-			Field field = fields[i];
-			String name2 = field.getName();
-			if ( (field.getType().isAssignableFrom(BaseUnit.class) ||
-					field.getType().isAssignableFrom(DerivedUnit.class)) &&
-					name2.equalsIgnoreCase(name) ) {
+    private Unit lookup(Class class1, String name) {
+        Unit unit = null;
+        Field[] fields = class1.getDeclaredFields();
+        for (int i = 0; i < fields.length; i++) {
+            Field field = fields[i];
+            String name2 = field.getName();
+            if ((field.getType().isAssignableFrom(BaseUnit.class)
+                            || field.getType().isAssignableFrom(DerivedUnit.class))
+                    && name2.equalsIgnoreCase(name)) {
 
-				try {
-					unit = (Unit) field.get(unit);
-					return unit;
-				} catch (Exception e) {
-					// continue searching
-				}
-				
-			}
-		}
-		return unit;
-	}
+                try {
+                    unit = (Unit) field.get(unit);
+                    return unit;
+                } catch (Exception e) {
+                    // continue searching
+                }
+            }
+        }
+        return unit;
+    }
 
-
-	/**
+    /**
      * Performs the encoding of the object as a String.
      *
      * @param object The object being encoded, never null.
-     * @param value The string returned from another binding in the type
-     * hierachy, which could be null.
-     *
+     * @param value The string returned from another binding in the type hierachy, which could be
+     *     null.
      * @return A String representing the object.
      * @override
      */
     public String encode(Object object, String value) throws Exception {
         return object.toString();
     }
-
 }

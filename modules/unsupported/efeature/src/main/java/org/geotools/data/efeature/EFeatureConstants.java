@@ -3,13 +3,9 @@ package org.geotools.data.efeature;
 import org.geotools.data.efeature.impl.EFeatureImpl;
 import org.opengis.feature.Feature;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class EFeatureConstants {
-    
+
     public static final String DEFAULT_SRID = EFeatureImpl.DEFAULT_SRID;
 
     public static final String DEFAULT_GEOMETRY_NAME = EFeatureImpl.DEFAULT_GEOMETRY_NAME;
@@ -18,7 +14,8 @@ public class EFeatureConstants {
 
     public static final Feature DEFAULT_FEATURE = EFeatureImpl.DEFAULT_DATA;
 
-    public static final EFeatureInfo DEFAULT_FEATURE_STRUCTURE = EFeatureImpl.DEFAULT_FEATURE_STRUCTURE;
+    public static final EFeatureInfo DEFAULT_FEATURE_STRUCTURE =
+            EFeatureImpl.DEFAULT_FEATURE_STRUCTURE;
 
     public static final String ELEM_REGISTRY = "registry";
 
@@ -53,5 +50,4 @@ public class EFeatureConstants {
     public static final String ATTR_REGISTRY_ID = "registryID";
 
     public static final String ATTR_DOMAIN_ID = "domainID";
-
 }

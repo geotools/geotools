@@ -16,9 +16,9 @@
  */
 package org.geotools.process.vector;
 
+import com.vividsolutions.jts.geom.Point;
 import java.io.File;
 import java.io.IOException;
-
 import org.geotools.data.DataStore;
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -26,7 +26,6 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureCollections;
 import org.geotools.process.ProcessException;
-import org.geotools.process.vector.LRSGeocodeProcess;
 import org.geotools.test.TestData;
 import org.junit.After;
 import org.junit.Assert;
@@ -34,13 +33,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.opengis.feature.Feature;
 
-import com.vividsolutions.jts.geom.Point;
-
-/**
- * 
- * 
- * @source $URL$
- */
+/** @source $URL$ */
 public class LRSGeocodeProcessTest {
     private DataStore featureSource;
 
@@ -147,5 +140,4 @@ public class LRSGeocodeProcessTest {
         Assert.assertEquals(1.0, point.getX(), 0.0);
         Assert.assertEquals(0.0, point.getY(), 0.0);
     }
-
 }

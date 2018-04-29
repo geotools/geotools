@@ -20,14 +20,12 @@ package org.geotools.data.complex.config;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-
 import org.opengis.feature.type.AttributeType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.util.InternationalString;
 
 /**
- * 
  * @author Gabriel Roldan (Axios Engineering)
  * @version $Id$
  * @source $URL$

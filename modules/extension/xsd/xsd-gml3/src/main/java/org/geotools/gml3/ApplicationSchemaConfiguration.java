@@ -20,21 +20,16 @@ import org.geotools.xml.Configuration;
 import org.geotools.xs.XSConfiguration;
 import org.picocontainer.MutablePicoContainer;
 
-
 /**
  * An xml configuration for application schemas.
- * <p>
- * This Configuration expects the namespace and schema location URI of the main
- * xsd file for a given application schema and is able to resolve the schema
- * location for the includes and imports as well as they're defined as relative
- * paths and the provided <code>schemaLocation</code> is a file URI.
- * </p>
+ *
+ * <p>This Configuration expects the namespace and schema location URI of the main xsd file for a
+ * given application schema and is able to resolve the schema location for the includes and imports
+ * as well as they're defined as relative paths and the provided <code>schemaLocation</code> is a
+ * file URI.
  *
  * @author Justin Deoliveira, The Open Planning Project
  * @author Gabriel Roldan, Axios Engineering
- *
- *
- *
  * @source $URL$
  * @version $Id$
  * @since 2.4
@@ -47,6 +42,6 @@ public class ApplicationSchemaConfiguration extends Configuration {
     }
 
     protected void registerBindings(MutablePicoContainer container) {
-        //no bindings
+        // no bindings
     }
 }

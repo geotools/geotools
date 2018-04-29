@@ -2,10 +2,9 @@ package org.geotools.renderer.label;
 
 import static org.junit.Assert.*;
 
-import org.junit.Test;
-
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.io.WKTReader;
+import org.junit.Test;
 
 public class LineStringCursorTest {
 

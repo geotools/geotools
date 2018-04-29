@@ -20,7 +20,6 @@ package org.geotools.swing.styling;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
-
 import javax.swing.Icon;
 
 /**
@@ -28,14 +27,11 @@ import javax.swing.Icon;
  *
  * @author Michael Bedward
  * @since 2.6
- *
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public class JColorIcon implements Icon {
-    
+
     private int width;
     private int height;
     private Color color;
@@ -54,8 +50,7 @@ public class JColorIcon implements Icon {
     }
 
     /**
-     * Paint the icon using the current color. This method is
-     * invoked by the System.
+     * Paint the icon using the current color. This method is invoked by the System.
      *
      * @param c arg presently ignored
      * @param g graphics object
@@ -90,10 +85,10 @@ public class JColorIcon implements Icon {
 
     /**
      * Set the color
+     *
      * @param color new color
      */
     public void setColor(Color color) {
         this.color = color;
     }
-
 }

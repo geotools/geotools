@@ -18,7 +18,6 @@ package org.geotools.coverage.io;
 
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -27,21 +26,21 @@ public class RasterLayoutTest extends Assert {
     /** The reference Test RasterLayout */
     public static RasterLayout testRasterLayout;
 
-    private final static int H = 100;
+    private static final int H = 100;
 
-    private final static int W = 200;
+    private static final int W = 200;
 
-    private final static int MIN_X = 100;
+    private static final int MIN_X = 100;
 
-    private final static int MIN_Y = 50;
+    private static final int MIN_Y = 50;
 
-    private final static int TILE_H = 20;
+    private static final int TILE_H = 20;
 
-    private final static int TILE_W = 40;
+    private static final int TILE_W = 40;
 
-    private final static int TILE_X = 0;
+    private static final int TILE_X = 0;
 
-    private final static int TILE_Y = 0;
+    private static final int TILE_Y = 0;
 
     static {
         testRasterLayout = new RasterLayout();
@@ -84,7 +83,5 @@ public class RasterLayoutTest extends Assert {
         BufferedImage bi = new BufferedImage(W, H, BufferedImage.TYPE_BYTE_GRAY);
         RasterLayout layout5 = new RasterLayout(bi);
         assertNotEquals(testRasterLayout, layout5);
-
     }
-
 }

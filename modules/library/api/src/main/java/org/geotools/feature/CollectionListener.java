@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -18,20 +18,18 @@ package org.geotools.feature;
 
 import org.geotools.data.FeatureListener;
 
-
 /**
  * Interface to be implemented by all listeners of CollectionEvents.
  *
  * @author Ray Gallagher
- *
  * @source $URL$
  * @version $Id$
  * @deprecated Use {@link FeatureListener}
  */
 public interface CollectionListener {
     /**
-     * Gets called when a CollectionEvent is fired. Typically fired to signify
-     * that a change has occurred in the collection.
+     * Gets called when a CollectionEvent is fired. Typically fired to signify that a change has
+     * occurred in the collection.
      *
      * @param tce The CollectionEvent
      */

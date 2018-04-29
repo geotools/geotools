@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,6 +16,9 @@
  */
 package org.geotools.renderer.crs;
 
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Polygon;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
@@ -28,49 +31,53 @@ import org.opengis.parameter.ParameterValueGroup;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Polygon;
-
 /**
- * Returns a {@link ProjectionHandler} for the {@link LambertConformal} projection
- * that will cut geometries too close to pole on the open ended side of the cone.   
- * 
- * @author Andrea Aime - GeoSolutions
+ * Returns a {@link ProjectionHandler} for the {@link LambertConformal} projection that will cut
+ * geometries too close to pole on the open ended side of the cone.
  *
+ * @author Andrea Aime - GeoSolutions
  * @source $URL$
  */
 public class ConicHandlerFactory implements ProjectionHandlerFactory {
-    
+
     static final double EPS = 0.1;
     static final double MAX_DISTANCE = 44;
 
-    public ProjectionHandler getHandler(ReferencedEnvelope renderingEnvelope, CoordinateReferenceSystem sourceCrs, boolean wrap, int maxWraps) throws FactoryException {
-        if(renderingEnvelope == null) {
+    public ProjectionHandler getHandler(
+            ReferencedEnvelope renderingEnvelope,
+            CoordinateReferenceSystem sourceCrs,
+            boolean wrap,
+            int maxWraps)
+            throws FactoryException {
+        if (renderingEnvelope == null) {
             return null;
         }
-            
-        MapProjection mapProjection = CRS.getMapProjection(renderingEnvelope
-                .getCoordinateReferenceSystem());
-        if(mapProjection instanceof LambertConformal || mapProjection instanceof EquidistantConic) {
+
+        MapProjection mapProjection =
+                CRS.getMapProjection(renderingEnvelope.getCoordinateReferenceSystem());
+        if (mapProjection instanceof LambertConformal
+                || mapProjection instanceof EquidistantConic) {
             ParameterValueGroup params = mapProjection.getParameterValues();
-            double centralMeridian = params.parameter(
-                    AbstractProvider.CENTRAL_MERIDIAN.getName().getCode()).doubleValue();
-            double minLat , maxLat;
+            double centralMeridian =
+                    params.parameter(AbstractProvider.CENTRAL_MERIDIAN.getName().getCode())
+                            .doubleValue();
+            double minLat, maxLat;
 
             double latitudeOrigin;
             if (mapProjection instanceof LambertConformal1SP) {
-                latitudeOrigin = params.parameter(
-                        AbstractProvider.LATITUDE_OF_ORIGIN.getName().getCode()).doubleValue();
+                latitudeOrigin =
+                        params.parameter(AbstractProvider.LATITUDE_OF_ORIGIN.getName().getCode())
+                                .doubleValue();
             } else {
-                double stdParallel1 = params.parameter(
-                        AbstractProvider.STANDARD_PARALLEL_1.getName().getCode()).doubleValue();
-                double stdParallel2 = params.parameter(
-                        AbstractProvider.STANDARD_PARALLEL_2.getName().getCode()).doubleValue();
+                double stdParallel1 =
+                        params.parameter(AbstractProvider.STANDARD_PARALLEL_1.getName().getCode())
+                                .doubleValue();
+                double stdParallel2 =
+                        params.parameter(AbstractProvider.STANDARD_PARALLEL_2.getName().getCode())
+                                .doubleValue();
                 latitudeOrigin = (stdParallel1 + stdParallel2) / 2;
-               
             }
-            if(latitudeOrigin > 0) {
+            if (latitudeOrigin > 0) {
                 minLat = Math.max(-89, latitudeOrigin - MAX_DISTANCE);
                 maxLat = 90;
             } else {
@@ -78,13 +85,19 @@ public class ConicHandlerFactory implements ProjectionHandlerFactory {
                 maxLat = Math.min(89, latitudeOrigin + MAX_DISTANCE);
             }
 
-            
-            if(centralMeridian != 0) {
+            if (centralMeridian != 0) {
                 // we need to divide geometries crossing the central antimeridian in two
-                double antiMeridian = centralMeridian > 0 ? centralMeridian - 180 : centralMeridian + 180;
-                Polygon beforeAntiMeridian = JTS.toGeometry(new Envelope(-180, antiMeridian - EPS, minLat, maxLat));
-                Polygon afterAntiMeridian = JTS.toGeometry(new Envelope(antiMeridian + EPS, 180, minLat, maxLat));
-                MultiPolygon mask = beforeAntiMeridian.getFactory().createMultiPolygon(new Polygon[] {beforeAntiMeridian, afterAntiMeridian});
+                double antiMeridian =
+                        centralMeridian > 0 ? centralMeridian - 180 : centralMeridian + 180;
+                Polygon beforeAntiMeridian =
+                        JTS.toGeometry(new Envelope(-180, antiMeridian - EPS, minLat, maxLat));
+                Polygon afterAntiMeridian =
+                        JTS.toGeometry(new Envelope(antiMeridian + EPS, 180, minLat, maxLat));
+                MultiPolygon mask =
+                        beforeAntiMeridian
+                                .getFactory()
+                                .createMultiPolygon(
+                                        new Polygon[] {beforeAntiMeridian, afterAntiMeridian});
 
                 return new ProjectionHandler(sourceCrs, mask, renderingEnvelope);
             } else {
@@ -93,13 +106,8 @@ public class ConicHandlerFactory implements ProjectionHandlerFactory {
                 Envelope validArea = new Envelope(-180 + EPS, 180 - EPS, minLat, maxLat);
                 return new ProjectionHandler(sourceCrs, validArea, renderingEnvelope);
             }
-            
-            
         }
 
         return null;
     }
-    
-    
-
 }

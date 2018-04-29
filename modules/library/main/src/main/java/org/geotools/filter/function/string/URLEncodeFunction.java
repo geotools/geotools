@@ -21,7 +21,6 @@ import static org.geotools.filter.capability.FunctionNameImpl.parameter;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
@@ -29,27 +28,27 @@ import org.opengis.filter.capability.FunctionName;
 /**
  * URL encodes a string.
  *
- * This function expects:
+ * <p>This function expects:
+ *
  * <ol>
- * <li>Literal: String to be URL encoded
- * <li>Literal: (Optional) Boolean indicating if string should be form URL encoded (defaults to false)
+ *   <li>Literal: String to be URL encoded
+ *   <li>Literal: (Optional) Boolean indicating if string should be form URL encoded (defaults to
+ *       false)
  *
  * @see URLEncoder#encode(String)
- *
  * @author Billy Newman (BIT Systems)
  */
 public class URLEncodeFunction extends FunctionExpressionImpl {
 
-    /**
-     * The FunctionName
-     */
-    public static FunctionName NAME = new FunctionNameImpl("strURLEncode", String.class,
-            parameter("encodeable", String.class),
-            parameter("formUrlEncode", Boolean.class, 0, 1));
+    /** The FunctionName */
+    public static FunctionName NAME =
+            new FunctionNameImpl(
+                    "strURLEncode",
+                    String.class,
+                    parameter("encodeable", String.class),
+                    parameter("formUrlEncode", Boolean.class, 0, 1));
 
-    /**
-     * Create a new FilterFunction_strURLEncode instance
-     */
+    /** Create a new FilterFunction_strURLEncode instance */
     public URLEncodeFunction() {
         super(NAME);
     }
@@ -87,14 +86,16 @@ public class URLEncodeFunction extends FunctionExpressionImpl {
         try {
             String encoded = URLEncoder.encode(stringToBeEncoded, "utf-8");
             if (!formUrlEncode.booleanValue()) {
-                // Using URLEncoder, spaces are converted to plus signs, convert to %20 for non form url encoding
+                // Using URLEncoder, spaces are converted to plus signs, convert to %20 for non form
+                // url encoding
                 encoded = encoded.replaceAll("\\+", "%20");
             }
 
             return encoded;
         } catch (UnsupportedEncodingException e) {
             throw new IllegalArgumentException(
-                    "Filter Function problem for function strURLEncode argument #0 - " + e.getMessage());
+                    "Filter Function problem for function strURLEncode argument #0 - "
+                            + e.getMessage());
         }
     }
 }

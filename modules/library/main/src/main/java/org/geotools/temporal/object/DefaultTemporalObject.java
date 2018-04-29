@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -20,12 +20,8 @@ import org.opengis.temporal.TemporalObject;
 
 /**
  * Base abstract class for temporal object.
- * 
+ *
  * @author Mehdi Sidhoum (Geomatys)
- *
- *
- *
  * @source $URL$
  */
-public abstract class DefaultTemporalObject implements TemporalObject {
-}
+public abstract class DefaultTemporalObject implements TemporalObject {}

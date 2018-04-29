@@ -19,20 +19,14 @@ package org.geotools.data.teradata;
 import org.geotools.jdbc.JDBCLobOnlineTest;
 import org.geotools.jdbc.JDBCLobTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class TeradataLobOnlineTest extends JDBCLobOnlineTest {
-
 
     protected JDBCLobTestSetup createTestSetup() {
         return new TeradataLobTestSetup(new TeradataTestSetup());
     }
 
     @Override
-    // write lob without prepared statements not supported on Teradata 
-    public void testWrite() throws Exception {
-    }
+    // write lob without prepared statements not supported on Teradata
+    public void testWrite() throws Exception {}
 }

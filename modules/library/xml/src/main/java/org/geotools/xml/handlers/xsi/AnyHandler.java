@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -18,7 +18,6 @@ package org.geotools.xml.handlers.xsi;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import org.geotools.xml.XSIElementHandler;
 import org.geotools.xml.schema.Any;
 import org.geotools.xml.schema.Element;
@@ -26,24 +25,19 @@ import org.geotools.xml.schema.ElementGrouping;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-
 /**
  * AnyHandler purpose.
- * 
- * <p>
- * Represents an 'any' element.
- * </p>
+ *
+ * <p>Represents an 'any' element.
  *
  * @author dzwiers, Refractions Research, Inc. http://www.refractions.net
  * @author $Author:$ (last modification)
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public class AnyHandler extends ElementGroupingHandler {
     /** 'any' */
-    public final static String LOCALNAME = "any";
+    public static final String LOCALNAME = "any";
 
     /** strict */
     public static final int STRICT = 0;
@@ -53,6 +47,7 @@ public class AnyHandler extends ElementGroupingHandler {
 
     /** skip */
     public static final int SKIP = 2;
+
     private String id;
     private URI namespace;
     private int minOccurs;
@@ -61,28 +56,23 @@ public class AnyHandler extends ElementGroupingHandler {
     //    private int processContents;
     private DefaultAny cache = null;
 
-    /**
-     * @see java.lang.Object#hashCode()
-     */
+    /** @see java.lang.Object#hashCode() */
     public int hashCode() {
         return (LOCALNAME.hashCode() * ((id == null) ? 1 : id.hashCode()))
-        + (minOccurs * maxOccurs);
+                + (minOccurs * maxOccurs);
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String,
-     *      java.lang.String)
-     */
-    public XSIElementHandler getHandler(String namespaceURI, String localName){
+    /** @see org.geotools.xml.XSIElementHandler#getHandler(java.lang.String, java.lang.String) */
+    public XSIElementHandler getHandler(String namespaceURI, String localName) {
         return null;
     }
 
     /**
-     * @see org.geotools.xml.XSIElementHandler#startElement(java.lang.String,
-     *      java.lang.String, org.xml.sax.Attributes)
+     * @see org.geotools.xml.XSIElementHandler#startElement(java.lang.String, java.lang.String,
+     *     org.xml.sax.Attributes)
      */
-    public void startElement(String namespaceURI, String localName,
-        Attributes atts) throws SAXException {
+    public void startElement(String namespaceURI, String localName, Attributes atts)
+            throws SAXException {
         id = atts.getValue("", "id");
 
         if (id == null) {
@@ -109,23 +99,25 @@ public class AnyHandler extends ElementGroupingHandler {
 
         try {
             if (namespace1 != null) {
-                if(namespace1.toLowerCase().equals("##any")){
+                if (namespace1.toLowerCase().equals("##any")) {
                     this.namespace = Any.ALL;
-                }else{
-                if(namespace1.toLowerCase().equals("##other")){
-                    // TODO improve this
-                    this.namespace = Any.ALL;
-                }else{
-                if(namespace1.toLowerCase().equals("##targetNamespace")){
-                    try{
-                        this.namespace = new URI(namespaceURI);
-                    } catch (URISyntaxException e) {
-                        logger.warning(e.toString());
-                        this.namespace = new URI(namespace1);
+                } else {
+                    if (namespace1.toLowerCase().equals("##other")) {
+                        // TODO improve this
+                        this.namespace = Any.ALL;
+                    } else {
+                        if (namespace1.toLowerCase().equals("##targetNamespace")) {
+                            try {
+                                this.namespace = new URI(namespaceURI);
+                            } catch (URISyntaxException e) {
+                                logger.warning(e.toString());
+                                this.namespace = new URI(namespace1);
+                            }
+                        } else {
+                            this.namespace = new URI(namespace1);
+                        }
                     }
-                }else{
-                    this.namespace = new URI(namespace1);
-                }}}
+                }
             }
         } catch (URISyntaxException e) {
             logger.warning(e.toString());
@@ -149,21 +141,15 @@ public class AnyHandler extends ElementGroupingHandler {
         }
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#getLocalName()
-     */
+    /** @see org.geotools.xml.XSIElementHandler#getLocalName() */
     public String getLocalName() {
         return LOCALNAME;
     }
 
     /**
-     * <p>
      * maps strings -> int constants for the 'process' attribute
-     * </p>
      *
      * @param process
-     *
-     *
      * @throws SAXException
      */
     public static int findProcess(String process) throws SAXException {
@@ -187,34 +173,32 @@ public class AnyHandler extends ElementGroupingHandler {
     }
 
     /**
-     * <p>
-     * reverses the findProcess method, converting from integers to String for
-     * the process attribute.
-     * </p>
+     * reverses the findProcess method, converting from integers to String for the process
+     * attribute.
      *
      * @param process
-     *
      */
     public static String writeProcess(int process) {
         switch (process) {
-        case LAX:
-            return "lax";
+            case LAX:
+                return "lax";
 
-        case SKIP:
-            return "skip";
+            case SKIP:
+                return "skip";
 
-        case STRICT:default:
-            return "strict";
+            case STRICT:
+            default:
+                return "strict";
         }
     }
 
     /**
-     * @see org.geotools.xml.XSIHandlers.ElementGroupingHandler#compress(org.geotools.xml.XSIHandlers.SchemaHandler)
+     * @see
+     *     org.geotools.xml.XSIHandlers.ElementGroupingHandler#compress(org.geotools.xml.XSIHandlers.SchemaHandler)
      */
-    protected ElementGrouping compress(SchemaHandler parent){
-        synchronized(this){
-            if (cache != null)
-            	return cache;
+    protected ElementGrouping compress(SchemaHandler parent) {
+        synchronized (this) {
+            if (cache != null) return cache;
             cache = new DefaultAny();
         }
         cache.id = id;
@@ -228,28 +212,20 @@ public class AnyHandler extends ElementGroupingHandler {
         return cache;
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#getHandlerType()
-     */
+    /** @see org.geotools.xml.XSIElementHandler#getHandlerType() */
     public int getHandlerType() {
         return DEFAULT;
     }
 
-    /**
-     * @see org.geotools.xml.XSIElementHandler#endElement(java.lang.String,
-     *      java.lang.String)
-     */
-    public void endElement(String namespaceURI, String localName){
+    /** @see org.geotools.xml.XSIElementHandler#endElement(java.lang.String, java.lang.String) */
+    public void endElement(String namespaceURI, String localName) {
         // do nothing
     }
 
     /**
-     * <p>
      * Any instance implementation
-     * </p>
      *
      * @author dzwiers
-     *
      * @see Any
      */
     private static class DefaultAny implements Any {
@@ -259,48 +235,38 @@ public class AnyHandler extends ElementGroupingHandler {
         int minOccurs;
 
         public Element findChildElement(String name) {
-            //TODO look up namespace Schema and do this correctly
+            // TODO look up namespace Schema and do this correctly
             return null;
         }
 
-        /**
-         * @see org.geotools.xml.xsi.Any#getId()
-         */
+        /** @see org.geotools.xml.xsi.Any#getId() */
         public String getId() {
             return id;
         }
 
-        /**
-         * @see org.geotools.xml.xsi.ElementGrouping#getMaxOccurs()
-         */
+        /** @see org.geotools.xml.xsi.ElementGrouping#getMaxOccurs() */
         public int getMaxOccurs() {
             return maxOccurs;
         }
 
-        /**
-         * @see org.geotools.xml.xsi.ElementGrouping#getMinOccurs()
-         */
+        /** @see org.geotools.xml.xsi.ElementGrouping#getMinOccurs() */
         public int getMinOccurs() {
             return minOccurs;
         }
 
-        /**
-         * @see org.geotools.xml.xsi.Any#getNamespace()
-         */
+        /** @see org.geotools.xml.xsi.Any#getNamespace() */
         public URI getNamespace() {
             return namespace;
         }
 
-        /**
-         * @see org.geotools.xml.xsi.ElementGrouping#getGrouping()
-         */
+        /** @see org.geotools.xml.xsi.ElementGrouping#getGrouping() */
         public int getGrouping() {
             return ANY;
         }
 
-		public Element findChildElement(String localName, URI namespaceURI) {
-            //TODO look up namespace Schema and do this correctly
-			return null;
-		}
+        public Element findChildElement(String localName, URI namespaceURI) {
+            // TODO look up namespace Schema and do this correctly
+            return null;
+        }
     }
 }

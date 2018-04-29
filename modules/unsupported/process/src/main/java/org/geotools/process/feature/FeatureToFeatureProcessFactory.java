@@ -19,62 +19,60 @@ package org.geotools.process.feature;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.geotools.data.Parameter;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.process.ProcessFactory;
 import org.geotools.text.Text;
 
 /**
- * Base class for process factories which perform an operation on each feature in a feature 
- * collection with the result being a feature collection (the original collection modified
- * or a new collection).
- * <p>
- * <b>Note</b>: This base class is intended to be used for processes which operate on each feature in a feature 
- * collection, resulting in a new feature collection which has the same schema as the original.
- * </p>
- * <p>
- * Subclasses must implement:
+ * Base class for process factories which perform an operation on each feature in a feature
+ * collection with the result being a feature collection (the original collection modified or a new
+ * collection).
+ *
+ * <p><b>Note</b>: This base class is intended to be used for processes which operate on each
+ * feature in a feature collection, resulting in a new feature collection which has the same schema
+ * as the original.
+ *
+ * <p>Subclasses must implement:
+ *
  * <ul>
  *   <li>{@link ProcessFactory#getTitle()}
  *   <li>{@link ProcessFactory#getDescription()}
  *   <li>{@link #addParameters(Map)}
  *   <li>
  * </ul>
- * </p>
- * 
+ *
  * @author Justin Deoliveira, OpenGEO
  * @since 2.6
- *
- *
- *
- *
  * @source $URL$
  */
-public abstract class FeatureToFeatureProcessFactory extends AbstractFeatureCollectionProcessFactory {
+public abstract class FeatureToFeatureProcessFactory
+        extends AbstractFeatureCollectionProcessFactory {
 
     private static final String VERSION = "1.0.0";
 
-    /** 
-     * Result of the operation is a FeatureCollection.
-     * This can be the input FeatureCollection, modified by the process
-     * or a new FeatureCollection.
+    /**
+     * Result of the operation is a FeatureCollection. This can be the input FeatureCollection,
+     * modified by the process or a new FeatureCollection.
      */
-    public static final Parameter<FeatureCollection> RESULT = new Parameter<FeatureCollection>(
-            "result", FeatureCollection.class, Text.text("Result"), Text
-                    .text("Buffered features"));
-    
-    static final Map<String,Parameter<?>> resultInfo = new HashMap<String, Parameter<?>>();
+    public static final Parameter<FeatureCollection> RESULT =
+            new Parameter<FeatureCollection>(
+                    "result",
+                    FeatureCollection.class,
+                    Text.text("Result"),
+                    Text.text("Buffered features"));
+
+    static final Map<String, Parameter<?>> resultInfo = new HashMap<String, Parameter<?>>();
 
     static {
-        resultInfo.put( RESULT.key, RESULT );
+        resultInfo.put(RESULT.key, RESULT);
     }
-    
-    public final Map<String, Parameter<?>> getResultInfo(
-            Map<String, Object> parameters) throws IllegalArgumentException {
-        return Collections.unmodifiableMap( resultInfo );
+
+    public final Map<String, Parameter<?>> getResultInfo(Map<String, Object> parameters)
+            throws IllegalArgumentException {
+        return Collections.unmodifiableMap(resultInfo);
     }
-    
+
     public final boolean supportsProgress() {
         return true;
     }

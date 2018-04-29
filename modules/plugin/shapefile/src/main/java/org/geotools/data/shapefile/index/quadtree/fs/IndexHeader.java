@@ -3,7 +3,7 @@
  *    http://geotools.org
  *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- * 
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -21,15 +21,12 @@ import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.charset.Charset;
 import java.util.logging.Logger;
-
 import org.geotools.data.shapefile.index.quadtree.StoreException;
 
 /**
  * DOCUMENT ME!
- * 
+ *
  * @author Tommaso Nolli
- *
- *
  * @source $URL$
  */
 public class IndexHeader {
@@ -40,9 +37,9 @@ public class IndexHeader {
     public static final byte NEW_MSB_ORDER = 2;
     private static final String SIGNATURE = "SQT";
     private static final byte VERSION = 1;
-    private static final byte[] RESERVED = { 0, 0, 0 };
-    private static final Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger("org.geotools.index.quadtree");
+    private static final byte[] RESERVED = {0, 0, 0};
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.index.quadtree");
     private byte byteOrder;
 
     public IndexHeader(byte byteOrder) {
@@ -51,14 +48,12 @@ public class IndexHeader {
 
     /**
      * DOCUMENT ME!
-     * 
+     *
      * @param channel
-     * 
      * @throws IOException
      * @throws StoreException
      */
-    public IndexHeader(ReadableByteChannel channel) throws IOException,
-            StoreException {
+    public IndexHeader(ReadableByteChannel channel) throws IOException, StoreException {
         ByteBuffer buf = ByteBuffer.allocate(8);
 
         channel.read(buf);
@@ -71,17 +66,17 @@ public class IndexHeader {
 
         if (!s.equals(SIGNATURE)) {
             // Old file format
-            LOGGER.warning("Old qix file format; this file format "
-                    + "is deprecated; It is strongly recommended "
-                    + "to regenerate it in new format.");
+            LOGGER.warning(
+                    "Old qix file format; this file format "
+                            + "is deprecated; It is strongly recommended "
+                            + "to regenerate it in new format.");
 
             buf.position(0);
             tmp = buf.array();
 
             boolean lsb;
 
-            if ((tmp[4] == 0) && (tmp[5] == 0) && (tmp[6] == 0)
-                    && (tmp[7] == 0)) {
+            if ((tmp[4] == 0) && (tmp[5] == 0) && (tmp[6] == 0) && (tmp[7] == 0)) {
                 lsb = !((tmp[0] == 0) && (tmp[1] == 0));
             } else {
                 lsb = !((tmp[4] == 0) && (tmp[5] == 0));
@@ -106,7 +101,7 @@ public class IndexHeader {
 
     /**
      * DOCUMENT ME!
-     * 
+     *
      * @return Returns the byteOrder.
      */
     public byte getByteOrder() {

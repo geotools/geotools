@@ -16,6 +16,9 @@
  */
 package org.geotools.gce.imagemosaic.catalog;
 
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.index.ItemVisitor;
+import com.vividsolutions.jts.index.strtree.STRtree;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,8 +34,6 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-
-import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.Query;
 import org.geotools.data.QueryCapabilities;
 import org.geotools.data.Transaction;
@@ -54,31 +55,26 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.geometry.BoundingBox;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.index.ItemVisitor;
-import com.vividsolutions.jts.index.strtree.STRtree;
-
 /**
  * This class simply builds an SRTREE spatial index in memory for fast indexed geometric queries.
- * 
- * <p>
- * Since the {@link ImageMosaicReader} heavily uses spatial queries to find out which are the involved tiles during mosaic creation, it is better to
- * do some caching and keep the index in memory as much as possible, hence we came up with this index.
- * 
+ *
+ * <p>Since the {@link ImageMosaicReader} heavily uses spatial queries to find out which are the
+ * involved tiles during mosaic creation, it is better to do some caching and keep the index in
+ * memory as much as possible, hence we came up with this index.
+ *
  * @author Simone Giannecchini, S.A.S.
- * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for jar:file:foo.jar/bar.properties URLs
+ * @author Stefan Alfons Krueger (alfonx), Wikisquare.de : Support for
+ *     jar:file:foo.jar/bar.properties URLs
  * @since 2.5
  * @version 10.0
- *
  * @source $URL$
  */
 @SuppressWarnings("unused")
 class STRTreeGranuleCatalog extends GranuleCatalog {
 
     /** Logger. */
-    final static Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger(STRTreeGranuleCatalog.class);
+    static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(STRTreeGranuleCatalog.class);
 
     private static class JTSIndexVisitorAdapter implements ItemVisitor {
 
@@ -90,9 +86,7 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
 
         private int granuleIndex = 0;
 
-        /**
-         * @param indexLocation
-         */
+        /** @param indexLocation */
         public JTSIndexVisitorAdapter(final GranuleCatalogVisitor adaptee) {
             this(adaptee, (Query) null);
         }
@@ -103,9 +97,7 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
             this.maxGranules = q.getMaxFeatures();
         }
 
-        /**
-         * @param indexLocation
-         */
+        /** @param indexLocation */
         public JTSIndexVisitorAdapter(final GranuleCatalogVisitor adaptee, Filter filter) {
             this.adaptee = adaptee;
             this.filter = filter == null ? Query.ALL.getFilter() : filter;
@@ -120,7 +112,7 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
             if (maxGranules > 0 && granuleIndex > maxGranules) {
                 return; // Skip
             }
-            if(adaptee.isVisitComplete()) {
+            if (adaptee.isVisitComplete()) {
                 return; // Skipt
             }
             if (o instanceof GranuleDescriptor) {
@@ -133,16 +125,16 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
                 return;
             }
             throw new IllegalArgumentException("Unable to visit provided item" + o);
-
         }
-
     }
 
     private GranuleCatalog wrappedCatalogue;
 
     private String typeName;
 
-    public STRTreeGranuleCatalog(final Properties params, AbstractGTDataStoreGranuleCatalog wrappedCatalogue,
+    public STRTreeGranuleCatalog(
+            final Properties params,
+            AbstractGTDataStoreGranuleCatalog wrappedCatalogue,
             final Hints hints) {
         super(hints);
         Utilities.ensureNonNull("params", params);
@@ -162,7 +154,6 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
      * Constructs a {@link STRTreeGranuleCatalog} out of a {@link FeatureCollection}.
      *
      * @param readLock
-     *
      * @param features
      * @throws IOException
      */
@@ -186,13 +177,12 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
             readLock.lock();
             // leave write lock
             writeLock.unlock();
-
         }
-
     }
 
     /**
-     * This method shall only be called when the <code>indexLocation</code> is of protocol <code>file:</code>
+     * This method shall only be called when the <code>indexLocation</code> is of protocol <code>
+     * file:</code>
      */
     private void createIndex() {
 
@@ -204,21 +194,20 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
         //
         try {
 
-            wrappedCatalogue.getGranuleDescriptors(new Query(typeName),
+            wrappedCatalogue.getGranuleDescriptors(
+                    new Query(typeName),
                     new GranuleCatalogVisitor() {
 
                         @Override
                         public void visit(GranuleDescriptor granule, SimpleFeature o) {
                             features.add(granule);
-
                         }
                     });
             if (features == null)
                 throw new NullPointerException(
                         "The provided SimpleFeatureCollection is null, it's impossible to create an index!");
 
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.fine("Index Loaded");
+            if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("Index Loaded");
 
             // load the feature from the shapefile and create JTS index
             it = features.iterator();
@@ -229,10 +218,16 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
             long size = 0;
             while (it.hasNext()) {
                 final GranuleDescriptor granule = it.next();
-                final ReferencedEnvelope env = ReferencedEnvelope
-                        .reference(granule.getGranuleBBOX());
-                final Geometry g = FeatureUtilities.getPolygon(new Rectangle2D.Double(env.getMinX(),
-                        env.getMinY(), env.getWidth(), env.getHeight()), 0);
+                final ReferencedEnvelope env =
+                        ReferencedEnvelope.reference(granule.getGranuleBBOX());
+                final Geometry g =
+                        FeatureUtilities.getPolygon(
+                                new Rectangle2D.Double(
+                                        env.getMinX(),
+                                        env.getMinY(),
+                                        env.getWidth(),
+                                        env.getHeight()),
+                                0);
                 tree.insert(g.getEnvelopeInternal(), granule);
             }
 
@@ -245,7 +240,6 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
         } catch (Throwable e) {
             throw new IllegalArgumentException(e);
         }
-
     }
 
     /*
@@ -283,12 +277,11 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
 
             checkIndex(lock);
 
-            index.query(ReferencedEnvelope.reference(envelope),
-                    new JTSIndexVisitorAdapter(visitor));
+            index.query(
+                    ReferencedEnvelope.reference(envelope), new JTSIndexVisitorAdapter(visitor));
         } finally {
             lock.unlock();
         }
-
     }
 
     public void dispose() {
@@ -312,7 +305,6 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
             index = null;
             multiScaleROIProvider = null;
             l.unlock();
-
         }
     }
 
@@ -338,15 +330,13 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
             int numGranules = 0;
             for (GranuleDescriptor g : features) {
                 // check how many tiles we are returning
-                if (q.getSortBy() == null && maxGranules > 0 && numGranules >= maxGranules)
-                    break;
+                if (q.getSortBy() == null && maxGranules > 0 && numGranules >= maxGranules) break;
                 final SimpleFeature originator = g.getOriginator();
-                if (originator != null && filter.evaluate(originator))
-                    filtered.add(originator);
+                if (originator != null && filter.evaluate(originator)) filtered.add(originator);
             }
             if (q.getSortBy() != null) {
-                Comparator<SimpleFeature> comparator = SortedFeatureReader
-                        .getComparator(q.getSortBy());
+                Comparator<SimpleFeature> comparator =
+                        SortedFeatureReader.getComparator(q.getSortBy());
                 if (comparator != null) {
                     Collections.sort(filtered, comparator);
                 }
@@ -384,20 +374,24 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
 
             // get filter and check bbox
             checkIndex(lock);
-            Comparator<SimpleFeature> comparator = q.getSortBy() == null ? null
-                    : SortedFeatureReader.getComparator(q.getSortBy());
+            Comparator<SimpleFeature> comparator =
+                    q.getSortBy() == null ? null : SortedFeatureReader.getComparator(q.getSortBy());
             if (comparator == null) {
                 index.query(requestedBBox, new JTSIndexVisitorAdapter(visitor, q));
             } else {
                 final List<GranuleDescriptor> unfilteredGranules = index.query(requestedBBox);
-                List<GranuleDescriptor> granules = unfilteredGranules.stream().
-                        filter(gd -> filter.evaluate(gd.getOriginator())).collect(Collectors.toList());
-                
-                Comparator<GranuleDescriptor> granuleComparator = (gd1, gd2) -> {
-                    SimpleFeature sf1 = gd1.getOriginator();
-                    SimpleFeature sf2 = gd2.getOriginator();
-                    return comparator.compare(sf1, sf2);
-                };
+                List<GranuleDescriptor> granules =
+                        unfilteredGranules
+                                .stream()
+                                .filter(gd -> filter.evaluate(gd.getOriginator()))
+                                .collect(Collectors.toList());
+
+                Comparator<GranuleDescriptor> granuleComparator =
+                        (gd1, gd2) -> {
+                            SimpleFeature sf1 = gd1.getOriginator();
+                            SimpleFeature sf2 = gd2.getOriginator();
+                            return comparator.compare(sf1, sf2);
+                        };
                 Collections.sort(granules, granuleComparator);
                 int maxGranules = q.getMaxFeatures();
                 if (maxGranules > 0 && granules.size() > maxGranules) {
@@ -428,9 +422,7 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
         }
     }
 
-    /**
-     * @throws IllegalStateException
-     */
+    /** @throws IllegalStateException */
     private void checkStore() throws IllegalStateException {
         if (wrappedCatalogue == null)
             throw new IllegalStateException("The underlying store has already been disposed!");
@@ -450,7 +442,7 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
 
     @Override
     public String[] getTypeNames() {
-        return typeName != null ? new String[] { typeName } : null;
+        return typeName != null ? new String[] {typeName} : null;
     }
 
     public void computeAggregateFunction(Query query, FeatureCalc function) throws IOException {
@@ -463,7 +455,6 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
         } finally {
             lock.unlock();
         }
-
     }
 
     public QueryCapabilities getQueryCapabilities() {
@@ -488,21 +479,19 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
     public void addGranule(String typeName, SimpleFeature granule, Transaction transaction)
             throws IOException {
         throw new UnsupportedOperationException("Unsupported operation");
-
     }
 
     @Override
-    public void addGranules(String typeName, Collection<SimpleFeature> granules,
-            Transaction transaction) throws IOException {
+    public void addGranules(
+            String typeName, Collection<SimpleFeature> granules, Transaction transaction)
+            throws IOException {
         throw new UnsupportedOperationException("Unsupported operation");
-
     }
 
     @Override
     public void createType(String namespace, String typeName, String typeSpec)
             throws IOException, SchemaException {
         throw new UnsupportedOperationException("Unsupported operation");
-
     }
 
     @Override
@@ -514,12 +503,11 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
     public void createType(String identification, String typeSpec)
             throws SchemaException, IOException {
         throw new UnsupportedOperationException("Unsupported operation");
-
     }
 
     @Override
     public QueryCapabilities getQueryCapabilities(String typeName) {
-        if(this.typeName.equals(typeName)) {
+        if (this.typeName.equals(typeName)) {
             return getQueryCapabilities();
         }
         throw new UnsupportedOperationException("Unsupported operation");
@@ -554,6 +542,5 @@ class STRTreeGranuleCatalog extends GranuleCatalog {
         } finally {
             lock.unlock();
         }
-
     }
 }

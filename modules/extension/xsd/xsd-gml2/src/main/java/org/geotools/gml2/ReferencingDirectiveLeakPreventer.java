@@ -17,8 +17,6 @@
 package org.geotools.gml2;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
@@ -29,23 +27,20 @@ import org.geotools.util.Utilities;
 
 /**
  * Adapter to prevent memory leaks that occur when importing a gml schema.
- * <p>
- * When an application schema imports the gml schema a link from the gml schema to the app schema
+ *
+ * <p>When an application schema imports the gml schema a link from the gml schema to the app schema
  * is created. Since the gml schema is a singleton we store permenantly this causes a memory leak.
- * This adapter watches the {@link XSDSchema#getReferencingDirectives()} list and ensures that it 
- * does not continue to grow by only allowing unique schema references (in terms of target namespace)
- * to reference it.
- * </p>
+ * This adapter watches the {@link XSDSchema#getReferencingDirectives()} list and ensures that it
+ * does not continue to grow by only allowing unique schema references (in terms of target
+ * namespace) to reference it.
+ *
  * @author Justin Deoliveira, OpenGeo
- *
- *
- *
  * @source $URL$
  */
 public class ReferencingDirectiveLeakPreventer implements Adapter {
 
     XSDSchema target;
-    
+
     public Notifier getTarget() {
         return target;
     }
@@ -53,7 +48,7 @@ public class ReferencingDirectiveLeakPreventer implements Adapter {
     public void setTarget(Notifier newTarget) {
         target = (XSDSchema) newTarget;
     }
-    
+
     public boolean isAdapterForType(Object type) {
         return type instanceof XSDSchema;
     }
@@ -63,42 +58,39 @@ public class ReferencingDirectiveLeakPreventer implements Adapter {
         if (featureId != XSDPackage.XSD_SCHEMA__REFERENCING_DIRECTIVES) {
             return;
         }
-           
+
         if (notification.getEventType() != Notification.ADD) {
             return;
         }
         if (!(notification.getNewValue() instanceof XSDSchemaDirective)) {
             return;
         }
-        
+
         XSDSchemaDirective newDirective = (XSDSchemaDirective) notification.getNewValue();
         XSDSchema schema = newDirective.getSchema();
         synchronized (target) {
             ArrayList<Integer> toremove = new ArrayList();
             for (int i = 0; i < target.getReferencingDirectives().size(); i++) {
-                XSDSchemaDirective directive = 
-                    (XSDSchemaDirective) target.getReferencingDirectives().get(i);
+                XSDSchemaDirective directive =
+                        (XSDSchemaDirective) target.getReferencingDirectives().get(i);
                 XSDSchema schema2 = directive.getSchema();
                 if (schema2 == null) {
                     toremove.add(i);
                     continue;
                 }
-                
+
                 String ns1 = schema != null ? schema.getTargetNamespace() : null;
                 String ns2 = schema2.getTargetNamespace();
-                
+
                 if (Utilities.equals(ns1, ns2)) {
                     toremove.add(i);
                 }
             }
-            
-            //iterate in reverse order and skip last to keep last version
-            for (int i = toremove.size()-2; i > -1; i--) {
+
+            // iterate in reverse order and skip last to keep last version
+            for (int i = toremove.size() - 2; i > -1; i--) {
                 target.getReferencingDirectives().remove(toremove.get(i).intValue());
             }
         }
     }
-
-    
-
 }

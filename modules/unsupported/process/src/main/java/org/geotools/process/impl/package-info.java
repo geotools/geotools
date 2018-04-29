@@ -16,9 +16,9 @@
  */
 /**
  * Class to help developers implement additional Processes.
- * 
- * This portion of the program was contributed by Sejong University and funded 
- * by Seoul R&BD 10540. Any official publishing of the produced result is 
- * requested to retain the aforementioned acknowledgment.
+ *
+ * <p>This portion of the program was contributed by Sejong University and funded by Seoul R&BD
+ * 10540. Any official publishing of the produced result is requested to retain the aforementioned
+ * acknowledgment.
  */
 package org.geotools.process.impl;

@@ -19,20 +19,24 @@ package org.geotools.processing.jai;
 import java.awt.image.RenderedImage;
 import java.util.Collections;
 import java.util.List;
-
 import javax.media.jai.ROI;
-
 import org.geotools.process.raster.classify.Classification;
 import org.geotools.process.raster.classify.NaturalClassification;
 
-/**
- * Classification op for the natural breaks method.
- */
+/** Classification op for the natural breaks method. */
 public class NaturalBreaksOpImage extends ClassBreaksOpImage {
 
-    public NaturalBreaksOpImage(RenderedImage image, Integer numClasses, Double[][] extrema,
-            ROI roi, Integer[] bands, Integer xStart, Integer yStart, Integer xPeriod,
-            Integer yPeriod, Double noData) {
+    public NaturalBreaksOpImage(
+            RenderedImage image,
+            Integer numClasses,
+            Double[][] extrema,
+            ROI roi,
+            Integer[] bands,
+            Integer xStart,
+            Integer yStart,
+            Integer xPeriod,
+            Integer yPeriod,
+            Double noData) {
         super(image, numClasses, extrema, roi, bands, xStart, yStart, xPeriod, yPeriod, noData);
     }
 
@@ -51,7 +55,7 @@ public class NaturalBreaksOpImage extends ClassBreaksOpImage {
                 return;
             }
         }
-        ((NaturalClassification)c).count(d, band);
+        ((NaturalClassification) c).count(d, band);
     }
 
     @Override
@@ -60,12 +64,12 @@ public class NaturalBreaksOpImage extends ClassBreaksOpImage {
 
         List<Double> data = nc.getValues(band);
         Collections.sort(data);
-        
+
         final int k = numClasses;
         final int m = data.size();
-        
+
         if (k >= m) {
-            //just return all the values
+            // just return all the values
             c.setBreaks(band, data.toArray(new Double[data.size()]));
             return;
         }
@@ -127,19 +131,18 @@ public class NaturalBreaksOpImage extends ClassBreaksOpImage {
             work[i][1] = var;
         }
 
-        Double[] breaks = new Double[k+1];
+        Double[] breaks = new Double[k + 1];
 
         // go through matrix and extract class breaks
         int ik = m - 1;
         breaks[k] = data.get(ik);
         for (int j = k; j >= 2; j--) {
             int id = (int) iwork[ik][j] - 1; // subtract one as we want inclusive breaks on the
-                                             // left?
-            breaks[j-1] = data.get(id);
+            // left?
+            breaks[j - 1] = data.get(id);
             ik = (int) iwork[ik][j] - 1;
         }
         breaks[0] = data.get(0);
         nc.setBreaks(band, breaks);
     }
-
 }

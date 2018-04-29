@@ -19,18 +19,13 @@ package org.geotools.data.h2;
 import org.geotools.jdbc.JDBCDataStoreAPIOnlineTest;
 import org.geotools.jdbc.JDBCDataStoreAPITestSetup;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class H2DataStoreAPITest extends JDBCDataStoreAPIOnlineTest {
     protected JDBCDataStoreAPITestSetup createTestSetup() {
         return new H2DataStoreAPITestSetup();
     }
 
     public void testTransactionIsolation() throws Exception {
-        //JD: h2 does table level locking so this test fails. 
+        // JD: h2 does table level locking so this test fails.
     }
 }

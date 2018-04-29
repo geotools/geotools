@@ -17,7 +17,6 @@
 package org.geotools.data.efeature.tests.unit.conditions;
 
 import java.util.Collection;
-
 import org.eclipse.emf.query.conditions.Condition;
 import org.geotools.data.efeature.EFeatureUtils;
 import org.geotools.data.efeature.query.EAttributeValueIsID;
@@ -25,24 +24,20 @@ import org.geotools.data.efeature.query.EFeatureEncoderException;
 
 /**
  * @author kengu - 14. juni 2011
- *
- *
  * @source $URL$
  */
 public class EAttributeValueIsIDTest extends AbstractEAttributeValueTest {
-    
-    // ----------------------------------------------------- 
+
+    // -----------------------------------------------------
     //  Constructors
     // -----------------------------------------------------
-    
-    /**
-     * @param name
-     */
+
+    /** @param name */
     public EAttributeValueIsIDTest(String name) {
-        super(name,IS_ID);
+        super(name, IS_ID);
     }
 
-    // ----------------------------------------------------- 
+    // -----------------------------------------------------
     //  AbstractEAttributeValueTest implementation
     // -----------------------------------------------------
 
@@ -51,11 +46,10 @@ public class EAttributeValueIsIDTest extends AbstractEAttributeValueTest {
         //
         // Create Set
         //
-        filter = EFeatureUtils.toEIDs(((Collection<?>)filter).toArray());
+        filter = EFeatureUtils.toEIDs(((Collection<?>) filter).toArray());
         //
         // Create condition
         //
-        return new EAttributeValueIsID(eAttribute,filter);
+        return new EAttributeValueIsID(eAttribute, filter);
     }
-
 }

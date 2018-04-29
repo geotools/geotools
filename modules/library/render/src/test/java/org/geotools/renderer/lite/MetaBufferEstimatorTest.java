@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2011 - 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -20,6 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.awt.*;
 import org.geotools.data.DataTestCase;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.styling.Graphic;
@@ -32,8 +33,6 @@ import org.geotools.styling.StyleBuilder;
 import org.junit.Test;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.NilExpression;
-
-import java.awt.*;
 
 public class MetaBufferEstimatorTest extends DataTestCase {
 
@@ -49,7 +48,7 @@ public class MetaBufferEstimatorTest extends DataTestCase {
         assertTrue(estimator.isEstimateAccurate());
         assertEquals(48, estimator.getBuffer());
     }
-    
+
     @Test
     public void testExternalGraphicRectangleResized() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "externalGraphicRectImage.sld");
@@ -59,7 +58,7 @@ public class MetaBufferEstimatorTest extends DataTestCase {
         // 32x64 image to size 16x32 should give the max. of width/height
         assertEquals(32, estimator.getBuffer());
     }
-    
+
     @Test
     public void testExternalGraphicNoSize() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "externalGraphicNoSize.sld");
@@ -68,7 +67,7 @@ public class MetaBufferEstimatorTest extends DataTestCase {
         assertTrue(estimator.isEstimateAccurate());
         assertEquals(64, estimator.getBuffer());
     }
-    
+
     @Test
     public void testMark() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "markCircle.sld");
@@ -77,7 +76,7 @@ public class MetaBufferEstimatorTest extends DataTestCase {
         assertTrue(estimator.isEstimateAccurate());
         assertEquals(32, estimator.getBuffer());
     }
-    
+
     @Test
     public void testThinLine() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "lineGray.sld");
@@ -86,7 +85,7 @@ public class MetaBufferEstimatorTest extends DataTestCase {
         assertTrue(estimator.isEstimateAccurate());
         assertEquals(1, estimator.getBuffer());
     }
-    
+
     @Test
     public void testThickLine() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "lineThick.sld");
@@ -104,7 +103,7 @@ public class MetaBufferEstimatorTest extends DataTestCase {
         assertTrue(estimator.isEstimateAccurate());
         assertEquals(10, estimator.getBuffer());
     }
-    
+
     @Test
     public void testPolygon() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "polygon.sld");
@@ -113,7 +112,7 @@ public class MetaBufferEstimatorTest extends DataTestCase {
         assertTrue(estimator.isEstimateAccurate());
         assertEquals(1, estimator.getBuffer());
     }
-    
+
     @Test
     public void testLabelShields() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "textLabelShield.sld");
@@ -122,7 +121,7 @@ public class MetaBufferEstimatorTest extends DataTestCase {
         assertTrue(estimator.isEstimateAccurate());
         assertEquals(32, estimator.getBuffer());
     }
-    
+
     @Test
     public void testDynamicSize() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "externalGraphicDynamicSize.sld");
@@ -130,7 +129,7 @@ public class MetaBufferEstimatorTest extends DataTestCase {
         style.accept(estimator);
         assertFalse(estimator.isEstimateAccurate());
     }
-    
+
     @Test
     public void testInlineContent() throws Exception {
         Style style = RendererBaseTest.loadStyle(this, "base64.sld");
@@ -139,7 +138,7 @@ public class MetaBufferEstimatorTest extends DataTestCase {
         assertTrue(estimator.isEstimateAccurate());
         assertEquals(16, estimator.getBuffer());
     }
-    
+
     @Test
     public void testMarkNoSizeNoStroke() throws Exception {
         StyleBuilder sb = new StyleBuilder();
@@ -149,13 +148,13 @@ public class MetaBufferEstimatorTest extends DataTestCase {
         graphic.setSize(NilExpression.NIL);
         PointSymbolizer ps = sb.createPointSymbolizer(graphic);
         Style style = sb.createStyle(ps);
-        
+
         MetaBufferEstimator estimator = new MetaBufferEstimator();
         style.accept(estimator);
         assertTrue(estimator.isEstimateAccurate());
         assertEquals(16, estimator.getBuffer());
     }
-    
+
     @Test
     public void testMarkStroke() throws Exception {
         StyleBuilder sb = new StyleBuilder();
@@ -165,25 +164,25 @@ public class MetaBufferEstimatorTest extends DataTestCase {
         graphic.setSize(NilExpression.NIL);
         PointSymbolizer ps = sb.createPointSymbolizer(graphic);
         Style style = sb.createStyle(ps);
-        
+
         MetaBufferEstimator estimator = new MetaBufferEstimator();
         style.accept(estimator);
         assertTrue(estimator.isEstimateAccurate());
         assertEquals(26, estimator.getBuffer());
     }
-    
+
     @Test
     public void testNullStroke() throws Exception {
         StyleBuilder sb = new StyleBuilder();
         LineSymbolizer ls = sb.createLineSymbolizer(Stroke.NULL);
         Style style = sb.createStyle(ls);
-        
+
         MetaBufferEstimator estimator = new MetaBufferEstimator();
         style.accept(estimator);
         assertTrue(estimator.isEstimateAccurate());
         assertEquals(0, estimator.getBuffer());
     }
-    
+
     @Test
     public void testGraphicSizeFunction() throws Exception {
         StyleBuilder sb = new StyleBuilder();

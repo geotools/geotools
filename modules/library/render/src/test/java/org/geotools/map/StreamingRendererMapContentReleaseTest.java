@@ -1,17 +1,23 @@
 package org.geotools.map;
 
+import static org.geotools.map.MapContent.UNDISPOSED_MAPCONTENT_ERROR;
+import static org.junit.Assert.assertThat;
+
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.PrimitiveIterator;
+import java.util.Random;
+import java.util.logging.Level;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
-import org.geotools.map.FeatureLayer;
-import org.geotools.map.LoggerTest;
-import org.geotools.map.MapContent;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.renderer.RenderListener;
 import org.geotools.renderer.lite.StreamingRenderer;
@@ -24,20 +30,10 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory2;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.PrimitiveIterator;
-import java.util.Random;
-import java.util.logging.Level;
-
-import static org.geotools.map.MapContent.UNDISPOSED_MAPCONTENT_ERROR;
-import static org.junit.Assert.assertThat;
-
 /**
- * This test checks that we are not leaving undisposed map contents created inside the streaming renderer.
- * Done my best to isolate from other tests being run, but specific JVMs might ignore that... if we
- * see it is breaking the build on some platform we'll have to remove it
+ * This test checks that we are not leaving undisposed map contents created inside the streaming
+ * renderer. Done my best to isolate from other tests being run, but specific JVMs might ignore
+ * that... if we see it is breaking the build on some platform we'll have to remove it
  */
 @Ignore // sigh, as expected it's not working all the time
 public class StreamingRendererMapContentReleaseTest extends LoggerTest {
@@ -73,8 +69,10 @@ public class StreamingRendererMapContentReleaseTest extends LoggerTest {
 
         // populate with random features
         int featureNumber = 50;
-        ReferencedEnvelope bounds = new ReferencedEnvelope(-20, 20, -30, 30, DefaultGeographicCRS.WGS84);
-        PrimitiveIterator.OfDouble rand = new Random().doubles(bounds.getMinX(), bounds.getMaxX()).iterator();
+        ReferencedEnvelope bounds =
+                new ReferencedEnvelope(-20, 20, -30, 30, DefaultGeographicCRS.WGS84);
+        PrimitiveIterator.OfDouble rand =
+                new Random().doubles(bounds.getMinX(), bounds.getMaxX()).iterator();
         SimpleFeatureBuilder fb = new SimpleFeatureBuilder(type);
         for (int i = 0; i < featureNumber; i++) {
 
@@ -94,7 +92,9 @@ public class StreamingRendererMapContentReleaseTest extends LoggerTest {
             renderAndStop(content, bounds);
             Runtime.getRuntime().runFinalization();
             String messages = getLogOutput();
-            assertThat(messages, CoreMatchers.not(CoreMatchers.containsString(UNDISPOSED_MAPCONTENT_ERROR)));
+            assertThat(
+                    messages,
+                    CoreMatchers.not(CoreMatchers.containsString(UNDISPOSED_MAPCONTENT_ERROR)));
             releaseLogger();
         }
     }
@@ -104,21 +104,21 @@ public class StreamingRendererMapContentReleaseTest extends LoggerTest {
         renderer.setMapContent(content);
 
         // stop rendering after 10 features
-        renderer.addRenderListener(new RenderListener() {
-            int count = 0;
+        renderer.addRenderListener(
+                new RenderListener() {
+                    int count = 0;
 
-            @Override
-            public void featureRenderer(SimpleFeature feature) {
-                count++;
-                if (count > 10) {
-                    renderer.stopRendering();
-                }
-            }
+                    @Override
+                    public void featureRenderer(SimpleFeature feature) {
+                        count++;
+                        if (count > 10) {
+                            renderer.stopRendering();
+                        }
+                    }
 
-            @Override
-            public void errorOccurred(Exception e) {
-            }
-        });
+                    @Override
+                    public void errorOccurred(Exception e) {}
+                });
 
         Rectangle area = new Rectangle(0, 0, 2000, 2000);
         BufferedImage img = new BufferedImage(area.width, area.height, BufferedImage.TYPE_INT_ARGB);
@@ -131,8 +131,8 @@ public class StreamingRendererMapContentReleaseTest extends LoggerTest {
         int thick = 3;
 
         // create stroke
-        org.geotools.styling.Stroke stroke = sf.stroke(ff.literal(foreground), null, ff.literal(thick), null, null,
-                null, null);
+        org.geotools.styling.Stroke stroke =
+                sf.stroke(ff.literal(foreground), null, ff.literal(thick), null, null, null, null);
 
         // create line symbolizer
         LineSymbolizer lineSym = sf.createLineSymbolizer(stroke, null);
@@ -149,6 +149,4 @@ public class StreamingRendererMapContentReleaseTest extends LoggerTest {
 
         return style;
     }
-
-
 }

@@ -16,6 +16,10 @@
  */
 package org.geotools.data.solr;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.response.FacetField.Count;
@@ -24,14 +28,7 @@ import org.apache.solr.common.params.FacetParams;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-/**
- * Uses a field of the index to classify documents into feature types.
- */
+/** Uses a field of the index to classify documents into feature types. */
 public class FieldLayerMapper implements SolrLayerMapper {
 
     static Logger LOGGER = Logging.getLogger(FieldLayerMapper.class);

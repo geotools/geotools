@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,13 +16,10 @@
  */
 package org.geotools.coverage.grid.io;
 
-
 /**
  * Overview policies.
  *
  * @since 2.5
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Andrea Aime
@@ -30,28 +27,24 @@ package org.geotools.coverage.grid.io;
  */
 public enum OverviewPolicy {
     /**
-     * Choose the overview with the lower resolution among the ones
-     * with higher resolution than one used for rendering.
+     * Choose the overview with the lower resolution among the ones with higher resolution than one
+     * used for rendering.
      */
     QUALITY,
 
-    /**
-     * Ignore the overviews.
-     */
+    /** Ignore the overviews. */
     IGNORE,
 
-    /**
-     * Choose the overview with with the resolution closest to the one used for rendering.
-     */
+    /** Choose the overview with with the resolution closest to the one used for rendering. */
     NEAREST,
 
     /**
-     * Choose the overview with the higher resolution among the ones
-     * with lower resolution than one used for rendering.
+     * Choose the overview with the higher resolution among the ones with lower resolution than one
+     * used for rendering.
      */
     SPEED;
-    
-    public static OverviewPolicy getDefaultPolicy(){
-    	return NEAREST;
+
+    public static OverviewPolicy getDefaultPolicy() {
+        return NEAREST;
     }
 }

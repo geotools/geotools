@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *   
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,14 +17,13 @@
 package org.geotools.referencing.factory.wms;
 
 // OpenGIS dependencies
+
 import org.opengis.parameter.ParameterValueGroup;
 
-
 /**
- * Auto Orthographic ({@code AUTO:42003}).
- * In the notation below, "<code>${var}</code>" denotes a reference to the value of a variable
- * "{@code var}". The variables "{@code lat0}" and "{@code lon0}" are the central point of the
- * projection appearing in the CRS parameter of the map request.
+ * Auto Orthographic ({@code AUTO:42003}). In the notation below, "<code>${var}</code>" denotes a
+ * reference to the value of a variable "{@code var}". The variables "{@code lat0}" and "{@code
+ * lon0}" are the central point of the projection appearing in the CRS parameter of the map request.
  *
  * <pre>
  * PROJCS["WGS 84 / Auto Orthographic",
@@ -51,51 +50,37 @@ import org.opengis.parameter.ParameterValueGroup;
  * @author Jody Garnett
  * @author Rueben Schulz
  * @author Martin Desruisseaux
- *
- * @todo The coordinate operation method should uses ellipsoidal formulas,
- *       but this is not yet implemented in Geotools (as of version 2.2).
+ * @todo The coordinate operation method should uses ellipsoidal formulas, but this is not yet
+ *     implemented in Geotools (as of version 2.2).
  */
 final class Auto42003 extends Factlet {
-    /**
-     * A shared (thread-safe) instance.
-     */
+    /** A shared (thread-safe) instance. */
     public static final Auto42003 DEFAULT = new Auto42003();
 
-    /**
-     * Do not allows instantiation except the {@link #DEFAULT} constant.
-     */
-    private Auto42003() {
-    }
+    /** Do not allows instantiation except the {@link #DEFAULT} constant. */
+    private Auto42003() {}
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public int code() {
         return 42003;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public String getName() {
         return "WGS 84 / Auto Orthographic";
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public String getClassification() {
         return "Orthographic";
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     protected void setProjectionParameters(final ParameterValueGroup parameters, final Code code) {
-        final double   latitudeOfOrigin = code.latitude;
-        final double   centralMeridian  = code.longitude;
+        final double latitudeOfOrigin = code.latitude;
+        final double centralMeridian = code.longitude;
 
         parameters.parameter("latitude_of_origin").setValue(latitudeOfOrigin);
-        parameters.parameter("central_meridian")  .setValue(centralMeridian);
+        parameters.parameter("central_meridian").setValue(centralMeridian);
     }
 }

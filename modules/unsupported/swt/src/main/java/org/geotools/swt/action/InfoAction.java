@@ -22,27 +22,26 @@ import org.geotools.swt.utils.ImageCache;
 
 /**
  * Action that activates the Info tool for the current {@link SwtMapPane map pane}.
- * 
+ *
  * @author Andrea Antonello (www.hydrologis.com)
- *
- *
- *
  * @source $URL$
  */
 public class InfoAction extends MapAction {
 
     public InfoAction() {
-        super(InfoTool.TOOL_NAME + "@I", InfoTool.TOOL_TIP, ImageCache.getInstance().getImage(ImageCache.IMAGE_INFO));
+        super(
+                InfoTool.TOOL_NAME + "@I",
+                InfoTool.TOOL_TIP,
+                ImageCache.getInstance().getImage(ImageCache.IMAGE_INFO));
     }
 
     /**
-     * Called when the associated control is activated. Leads to the
-     * map pane's cursor tool being set to a PanTool object
-     * 
+     * Called when the associated control is activated. Leads to the map pane's cursor tool being
+     * set to a PanTool object
+     *
      * @param ev the event (not used)
      */
     public void run() {
         getMapPane().setCursorTool(new InfoTool());
     }
-
 }

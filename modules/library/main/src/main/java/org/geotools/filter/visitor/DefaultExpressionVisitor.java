@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -29,13 +29,12 @@ import org.opengis.filter.expression.Subtract;
 
 /**
  * Abstract implementation of ExpressionVisitor that simply walks the data structure.
- * <p>
- * This class implements the full ExpressionVisitor interface and will visit every Filter member
+ *
+ * <p>This class implements the full ExpressionVisitor interface and will visit every Filter member
  * of an Expression object. This class performs no actions and is not intended to be used directly,
- * instead
- * extend it and overide the methods for the Expression type you are interested in. Remember to call the
- * super method if you want to ensure that the entire expression tree is still visited.
- * 
+ * instead extend it and overide the methods for the Expression type you are interested in. Remember
+ * to call the super method if you want to ensure that the entire expression tree is still visited.
+ *
  * <pre><code>
  * FilterVisitor allProperties = new DefaultExpressionVisitor(){
  *     public Object visit( PropertyName expr, Object data ) {
@@ -46,61 +45,56 @@ import org.opengis.filter.expression.Subtract;
  * };
  * Set set = (Set) allProperties.accept(allFids, new HashSet());
  * </code></pre>
- * 
+ *
  * @author Jody
- *
- *
- *
  * @source $URL$
  */
 public abstract class DefaultExpressionVisitor implements ExpressionVisitor {
 
-    public DefaultExpressionVisitor() {
-    }
+    public DefaultExpressionVisitor() {}
 
-    public Object visit( NilExpression expression, Object data ) {        
+    public Object visit(NilExpression expression, Object data) {
         return data;
     }
 
-    public Object visit( Add expression, Object data ) {
-        data = expression.getExpression1().accept( this, data);
-        data = expression.getExpression2().accept( this, data);
+    public Object visit(Add expression, Object data) {
+        data = expression.getExpression1().accept(this, data);
+        data = expression.getExpression2().accept(this, data);
         return data;
     }
 
-    public Object visit( Divide expression, Object data ) {
-        data = expression.getExpression1().accept( this, data);
-        data = expression.getExpression2().accept( this, data);        
+    public Object visit(Divide expression, Object data) {
+        data = expression.getExpression1().accept(this, data);
+        data = expression.getExpression2().accept(this, data);
         return data;
     }
 
-    public Object visit( Function expression, Object data ) {
-        if( expression.getParameters() != null ){
-            for( Expression parameter : expression.getParameters() ){
-                data =  parameter.accept( this, data);
+    public Object visit(Function expression, Object data) {
+        if (expression.getParameters() != null) {
+            for (Expression parameter : expression.getParameters()) {
+                data = parameter.accept(this, data);
             }
         }
         return data;
     }
 
-    public Object visit( Literal expression, Object data ) {        
+    public Object visit(Literal expression, Object data) {
         return data;
     }
 
-    public Object visit( Multiply expression, Object data ) {
-        data = expression.getExpression1().accept( this, data);
-        data = expression.getExpression2().accept( this, data);                
+    public Object visit(Multiply expression, Object data) {
+        data = expression.getExpression1().accept(this, data);
+        data = expression.getExpression2().accept(this, data);
         return data;
     }
 
-    public Object visit( PropertyName expression, Object data ) {
+    public Object visit(PropertyName expression, Object data) {
         return data;
     }
 
-    public Object visit( Subtract expression, Object data ) {
-        data = expression.getExpression1().accept( this, data);
-        data = expression.getExpression2().accept( this, data);                
+    public Object visit(Subtract expression, Object data) {
+        data = expression.getExpression1().accept(this, data);
+        data = expression.getExpression2().accept(this, data);
         return data;
     }
-
 }

@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,13 +17,13 @@
  */
 package org.geotools.ysld.transform.sld;
 
+import java.io.IOException;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import java.io.IOException;
 
 /**
- * Handles xml parse events for top-level elements such as Name, and UserStyle.
- * Delegates to {@link FeatureStylesHandler} where applicable.
+ * Handles xml parse events for top-level elements such as Name, and UserStyle. Delegates to {@link
+ * FeatureStylesHandler} where applicable.
  */
 public class RootHandler extends SldTransformHandler {
     @Override

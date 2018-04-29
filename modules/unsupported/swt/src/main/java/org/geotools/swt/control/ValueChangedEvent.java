@@ -20,18 +20,13 @@ package org.geotools.swt.control;
 import org.eclipse.swt.widgets.Control;
 
 /**
- * An event published when the value of a control derived from {@code JValueField}
- * changes.
+ * An event published when the value of a control derived from {@code JValueField} changes.
  *
  * @see JValueField
  * @see ValueChangedListener
- *
  * @author Michael Bedward
  * @author Andrea Antonello (www.hydrologis.com)
  * @since 2.7
- *
- *
- *
  * @source $URL$
  */
 public class ValueChangedEvent<T> {
@@ -41,11 +36,11 @@ public class ValueChangedEvent<T> {
 
     /**
      * Create a value changed event.
-     * 
+     *
      * @param source the control holding the value.
      * @param newValue the updated value.
      */
-    public ValueChangedEvent( Control source, T newValue ) {
+    public ValueChangedEvent(Control source, T newValue) {
         this.newValue = newValue;
         this.source = source;
     }

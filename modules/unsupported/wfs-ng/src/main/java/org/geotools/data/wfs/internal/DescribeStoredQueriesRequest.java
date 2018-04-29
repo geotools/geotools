@@ -36,5 +36,4 @@ public class DescribeStoredQueriesRequest extends WFSRequest {
     public List<URI> getStoredQueryIds() {
         return storedQueryIds;
     }
-
 }

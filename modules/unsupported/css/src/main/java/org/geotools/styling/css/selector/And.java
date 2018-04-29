@@ -46,5 +46,4 @@ public class And extends Composite {
     public Object accept(SelectorVisitor visitor) {
         return visitor.visit(this);
     }
-
 }

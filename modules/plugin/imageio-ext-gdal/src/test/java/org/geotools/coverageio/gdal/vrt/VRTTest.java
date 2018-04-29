@@ -22,10 +22,8 @@ import java.awt.RenderingHints;
 import java.awt.image.DataBuffer;
 import java.io.File;
 import java.util.Iterator;
-
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
-
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.GridGeometry2D;
@@ -48,17 +46,13 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
  * @author Ugo Moschini, GeoSolutions
- *
- *         Testing {@link VRTReader}
- *
+ *     <p>Testing {@link VRTReader}
  * @source $URL$
  */
 public final class VRTTest extends GDALTestCase {
 
-    /**
-     * file name of a valid VRT file to be used for tests.
-     */
-    private final static String fileName = "n43.dt0.vrt";
+    /** file name of a valid VRT file to be used for tests. */
+    private static final String fileName = "n43.dt0.vrt";
 
     public VRTTest() {
         super("VRT", new VRTFormatFactory());
@@ -128,27 +122,39 @@ public final class VRTTest extends GDALTestCase {
         Assert.assertEquals(121, oldW);
         Assert.assertEquals(121, oldH);
         // check for expected data type
-        Assert.assertEquals(DataBuffer.TYPE_SHORT,
-                gc.getRenderedImage().getSampleModel().getDataType());
+        Assert.assertEquals(
+                DataBuffer.TYPE_SHORT, gc.getRenderedImage().getSampleModel().getDataType());
 
         final Rectangle range = ((GridEnvelope2D) reader.getOriginalGridRange());
         final GeneralEnvelope oldEnvelope = reader.getOriginalEnvelope();
 
-        final GeneralEnvelope cropEnvelope = new GeneralEnvelope(new double[] {
-                oldEnvelope.getLowerCorner().getOrdinate(0) + (oldEnvelope.getSpan(0) / cropFactor),
-
-                oldEnvelope.getLowerCorner().getOrdinate(1)
-                        + (oldEnvelope.getSpan(1) / cropFactor) },
-                new double[] { oldEnvelope.getUpperCorner().getOrdinate(0),
-                        oldEnvelope.getUpperCorner().getOrdinate(1) });
+        final GeneralEnvelope cropEnvelope =
+                new GeneralEnvelope(
+                        new double[] {
+                            oldEnvelope.getLowerCorner().getOrdinate(0)
+                                    + (oldEnvelope.getSpan(0) / cropFactor),
+                            oldEnvelope.getLowerCorner().getOrdinate(1)
+                                    + (oldEnvelope.getSpan(1) / cropFactor)
+                        },
+                        new double[] {
+                            oldEnvelope.getUpperCorner().getOrdinate(0),
+                            oldEnvelope.getUpperCorner().getOrdinate(1)
+                        });
         cropEnvelope.setCoordinateReferenceSystem(reader.getCrs());
 
-        final ParameterValue gg = (ParameterValue) ((AbstractGridFormat) reader
-                .getFormat()).READ_GRIDGEOMETRY2D.createValue();
-        gg.setValue(new GridGeometry2D(new GridEnvelope2D(new Rectangle(0, 0,
-                (int) (range.width / 2.0 / cropFactor), (int) (range.height / 2.0 / cropFactor))),
-                cropEnvelope));
-        gc = (GridCoverage2D) reader.read(new GeneralParameterValue[] { gg });
+        final ParameterValue gg =
+                (ParameterValue)
+                        ((AbstractGridFormat) reader.getFormat()).READ_GRIDGEOMETRY2D.createValue();
+        gg.setValue(
+                new GridGeometry2D(
+                        new GridEnvelope2D(
+                                new Rectangle(
+                                        0,
+                                        0,
+                                        (int) (range.width / 2.0 / cropFactor),
+                                        (int) (range.height / 2.0 / cropFactor))),
+                        cropEnvelope));
+        gc = (GridCoverage2D) reader.read(new GeneralParameterValue[] {gg});
         forceDataLoading(gc);
     }
 }

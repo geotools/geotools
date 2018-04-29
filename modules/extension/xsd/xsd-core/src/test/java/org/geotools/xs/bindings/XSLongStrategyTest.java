@@ -20,22 +20,15 @@ import javax.xml.namespace.QName;
 import org.geotools.xs.TestSchema;
 import org.geotools.xs.XS;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class XSLongStrategyTest extends TestSchema {
     /**
-     * long has a lexical representation consisting of an
-     * optional sign followed by a finite-length sequence
-     * of decimal digits (#x30-#x39). If the sign is omitted,
-     * "+" is assumed.
+     * long has a lexical representation consisting of an optional sign followed by a finite-length
+     * sequence of decimal digits (#x30-#x39). If the sign is omitted, "+" is assumed.
      *
-     * For example: -1, 0, 12678967543233, +100000.
+     * <p>For example: -1, 0, 12678967543233, +100000.
+     *
      * @throws Exception
-     *
      */
 
     /*

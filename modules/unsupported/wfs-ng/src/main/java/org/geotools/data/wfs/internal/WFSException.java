@@ -19,9 +19,8 @@ package org.geotools.data.wfs.internal;
 import java.io.IOException;
 
 /**
- * A Java Exception that mirrors a WFS {@code ExceptionReport} and is meant to be produced by
- * {@link ExceptionReportParser}.
- * 
+ * A Java Exception that mirrors a WFS {@code ExceptionReport} and is meant to be produced by {@link
+ * ExceptionReportParser}.
  */
 public class WFSException extends IOException {
     private static final long serialVersionUID = -2828901359361793862L;

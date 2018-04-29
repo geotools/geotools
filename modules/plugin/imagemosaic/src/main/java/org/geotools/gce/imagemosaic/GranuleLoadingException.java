@@ -17,12 +17,10 @@
 
 package org.geotools.gce.imagemosaic;
 
-/**
- * Class signifying issues loading a granule
- */
+/** Class signifying issues loading a granule */
 @SuppressWarnings("serial")
 public class GranuleLoadingException extends Exception {
-    
+
     public GranuleLoadingException(String s, Exception cause) {
         super(s, cause);
     }

@@ -22,7 +22,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.Collection;
 import java.util.concurrent.CountDownLatch;
-
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.tile.Tile;
 import org.geotools.tile.TileService;
@@ -30,9 +29,9 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.operation.TransformException;
 
 /**
- * This Layer is an attempt to speed rendering by using a CountDownLatch and
- * threads to render each tile. The performance improvement is minimal, though.
- * 
+ * This Layer is an attempt to speed rendering by using a CountDownLatch and threads to render each
+ * tile. The performance improvement is minimal, though.
+ *
  * @author Ugo Taddei
  * @since 12
  */
@@ -45,8 +44,11 @@ public class AsyncTileLayer extends TileLayer {
     }
 
     @Override
-    protected void renderTiles(Collection<Tile> tiles, Graphics2D g2d,
-            ReferencedEnvelope viewportExtent, AffineTransform worldToImageTransform) {
+    protected void renderTiles(
+            Collection<Tile> tiles,
+            Graphics2D g2d,
+            ReferencedEnvelope viewportExtent,
+            AffineTransform worldToImageTransform) {
 
         long t = System.currentTimeMillis();
 
@@ -63,36 +65,44 @@ public class AsyncTileLayer extends TileLayer {
 
     protected void renderTile(final Tile tile, final Graphics2D g2d, final double[] points) {
 
-        Runnable r = new Runnable() {
+        Runnable r =
+                new Runnable() {
 
-            @Override
-            public void run() {
-                BufferedImage img = getTileImage(tile);
+                    @Override
+                    public void run() {
+                        BufferedImage img = getTileImage(tile);
 
-                g2d.drawImage(img, (int) points[0], (int) points[1],
-                        (int) Math.ceil(points[2] - points[0]),
-                        (int) Math.ceil(points[3] - points[1]), null);
+                        g2d.drawImage(
+                                img,
+                                (int) points[0],
+                                (int) points[1],
+                                (int) Math.ceil(points[2] - points[0]),
+                                (int) Math.ceil(points[3] - points[1]),
+                                null);
 
-                AsyncTileLayer.this.countDownLatch.countDown();
-            }
-        };
+                        AsyncTileLayer.this.countDownLatch.countDown();
+                    }
+                };
         new Thread(r).start();
-
     }
 
-    protected void localRenderTiles(Collection<Tile> tiles, Graphics2D g2d,
-            ReferencedEnvelope viewportExtent, AffineTransform worldToImageTransform) {
+    protected void localRenderTiles(
+            Collection<Tile> tiles,
+            Graphics2D g2d,
+            ReferencedEnvelope viewportExtent,
+            AffineTransform worldToImageTransform) {
 
-        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2d.setRenderingHint(
+                RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
         for (Tile tile : tiles) {
             ReferencedEnvelope nativeTileEnvelope = tile.getExtent();
 
             ReferencedEnvelope tileEnvViewport;
             try {
-                tileEnvViewport = nativeTileEnvelope
-                        .transform(viewportExtent.getCoordinateReferenceSystem(), true);
+                tileEnvViewport =
+                        nativeTileEnvelope.transform(
+                                viewportExtent.getCoordinateReferenceSystem(), true);
             } catch (TransformException | FactoryException e) {
                 throw new RuntimeException(e);
             }
@@ -106,6 +116,5 @@ public class AsyncTileLayer extends TileLayer {
 
             renderTile(tile, g2d, points);
         }
-
     }
 }

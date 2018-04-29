@@ -35,38 +35,34 @@ final class RelatePatternBuilder extends FunctionBuilder {
      * @param resultStack
      * @param filterFactory
      */
-    public RelatePatternBuilder(BuildResultStack resultStack,
-            FilterFactory filterFactory) {
+    public RelatePatternBuilder(BuildResultStack resultStack, FilterFactory filterFactory) {
         super(resultStack, filterFactory);
-
     }
 
     @Override
     public Function build() throws CQLException {
-        
+
         Expression[] args = buildParameters();
-        
-        Function relate = getFilterFactory().function("relatePattern", args);         
+
+        Function relate = getFilterFactory().function("relatePattern", args);
 
         return relate;
     }
 
     /**
-     * 
      * @return
      * @throws CQLException
      */
     private Expression[] buildParameters() throws CQLException {
 
-        Expression[] args =new Expression[3];
+        Expression[] args = new Expression[3];
 
-        args[2] = getResultStack().popExpression(); 
+        args[2] = getResultStack().popExpression();
 
         args[1] = getResultStack().popExpression();
-        
+
         args[0] = getResultStack().popExpression();
 
         return args;
     }
-
 }

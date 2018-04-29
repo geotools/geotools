@@ -16,8 +16,10 @@
  */
 package org.geotools.kml.bindings;
 
+import com.vividsolutions.jts.geom.Geometry;
+import java.util.Arrays;
+import java.util.List;
 import javax.xml.namespace.QName;
-
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.kml.KML;
@@ -28,16 +30,12 @@ import org.geotools.xml.Node;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-import com.vividsolutions.jts.geom.Geometry;
-import java.util.Arrays;
-import java.util.List;
-
-
 /**
  * Binding object for the type http://earth.google.com/kml/2.1:PlacemarkType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;complexType final="#all" name="PlacemarkType"&gt;
  *      &lt;complexContent&gt;
@@ -51,12 +49,8 @@ import java.util.List;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class PlacemarkTypeBinding extends AbstractComplexBinding {
@@ -67,14 +61,13 @@ public class PlacemarkTypeBinding extends AbstractComplexBinding {
         SUPPORTED_GEOMETRY_TYPES = Arrays.asList("Point", "LineString", "Polygon", "MultiGeometry");
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return KML.PlacemarkType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -90,13 +83,13 @@ public class PlacemarkTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         // retype from the abstract feature type, since extended data could have altered the schema
         // placemarks add an additional geometry field
         SimpleFeature feature = (SimpleFeature) value;
@@ -112,9 +105,9 @@ public class PlacemarkTypeBinding extends AbstractComplexBinding {
 
         b.init(feature);
 
-        //&lt;element minOccurs="0" ref="kml:Geometry"/&gt;
-        for(Object childObj : node.getChildren(Geometry.class)) {
-            Node childNode = (Node)childObj;
+        // &lt;element minOccurs="0" ref="kml:Geometry"/&gt;
+        for (Object childObj : node.getChildren(Geometry.class)) {
+            Node childNode = (Node) childObj;
             String componentName = childNode.getComponent().getName();
             if (SUPPORTED_GEOMETRY_TYPES.contains(componentName)) {
                 b.set("Geometry", childNode.getValue());
@@ -123,15 +116,15 @@ public class PlacemarkTypeBinding extends AbstractComplexBinding {
 
         return b.buildFeature(feature.getID());
     }
-    
+
     public Object getProperty(Object object, QName name) throws Exception {
         SimpleFeature feature = (SimpleFeature) object;
         if (KML.Geometry.getLocalPart().equals(name.getLocalPart())
-                || org.geotools.kml.v22.KML.AbstractGeometryGroup.getLocalPart().equals(
-                        name.getLocalPart())) {
+                || org.geotools.kml.v22.KML.AbstractGeometryGroup.getLocalPart()
+                        .equals(name.getLocalPart())) {
             return feature.getDefaultGeometry();
         }
-        
+
         return null;
     }
 }

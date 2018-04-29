@@ -16,59 +16,40 @@
  */
 package org.geotools.imageio;
 
-
 import java.io.Serializable;
-
 import org.geotools.util.Utilities;
 
 /**
  * @author Martin Desruisseaux
  * @author Daniele Romagnoli, GeoSolutions
- *
- *
- *
  * @source $URL$
  */
 public class Identification implements CharSequence, Serializable {
-    /**
-     * For cross-version compatibility.
-     */
+    /** For cross-version compatibility. */
     private static final long serialVersionUID = 7439545624472885445L;
 
-    /**
-     * The object name, or {@code null} if none.
-     */
+    /** The object name, or {@code null} if none. */
     private final String name;
 
-    /**
-     * The object remarks, or {@code null} if none.
-     */
+    /** The object remarks, or {@code null} if none. */
     private final String remarks;
 
-    /**
-     * The object alias, or {@code null} if none.
-     */
+    /** The object alias, or {@code null} if none. */
     private final String alias;
 
-    /**
-     * The object identifier, or {@code null} if none.
-     */
+    /** The object identifier, or {@code null} if none. */
     private final String identifier;
 
-    /**
-     * Creates an identification from the specified object name.
-     */
-    public Identification(final String name, final String remarks,
-            final String alias, final String identifier) {
+    /** Creates an identification from the specified object name. */
+    public Identification(
+            final String name, final String remarks, final String alias, final String identifier) {
         this.name = name;
         this.remarks = remarks;
         this.alias = alias;
         this.identifier = identifier;
     }
 
-    /**
-     * Creates an identification from the specified object name.
-     */
+    /** Creates an identification from the specified object name. */
     public Identification(final String name) {
         this.name = name;
         this.remarks = null;
@@ -76,24 +57,19 @@ public class Identification implements CharSequence, Serializable {
         this.identifier = null;
     }
 
-    /**
-     * Returns the {@linkplain #name} length.
-     */
+    /** Returns the {@linkplain #name} length. */
     public int length() {
         return (name != null) ? name.length() : 0;
     }
 
-    /**
-     * Returns the {@linkplain #name} character at the specified index.
-     */
+    /** Returns the {@linkplain #name} character at the specified index. */
     public char charAt(final int index) {
         return name.charAt(index);
     }
 
     /**
-     * Returns a subsequence of this identification. The new identification will
-     * contains a substring of the {@linkplain #name}, but the
-     * {@linkplain #type} will be unchanged.
+     * Returns a subsequence of this identification. The new identification will contains a
+     * substring of the {@linkplain #name}, but the {@linkplain #type} will be unchanged.
      */
     public CharSequence subSequence(final int start, final int end) {
         if (start == 0 && end == length()) {
@@ -102,19 +78,14 @@ public class Identification implements CharSequence, Serializable {
         return new Identification(name.substring(start, end), remarks, alias, identifier);
     }
 
-    /**
-     * Returns a hash value for this identification.
-     */
+    /** Returns a hash value for this identification. */
     public int hashCode() {
         int code = (int) serialVersionUID;
-        if (name != null)
-            code ^= name.hashCode();
+        if (name != null) code ^= name.hashCode();
         return code;
     }
 
-    /**
-     * Compares the specified object with this identification for equality.
-     */
+    /** Compares the specified object with this identification for equality. */
     public boolean equals(final Object object) {
         if (object != null && object.getClass().equals(getClass())) {
             final Identification that = (Identification) object;
@@ -141,16 +112,13 @@ public class Identification implements CharSequence, Serializable {
     public String getIdentifier() {
         return identifier;
     }
-    
-    public String toString(){
+
+    public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("Name: ").append(name);
-        if (alias != null)
-            sb.append("\n Alias: ").append(alias);
-        if (identifier != null)
-            sb.append("\n Identifier: ").append(identifier);
-        if (remarks != null)
-            sb.append("\n Remarks: ").append(remarks);
+        if (alias != null) sb.append("\n Alias: ").append(alias);
+        if (identifier != null) sb.append("\n Identifier: ").append(identifier);
+        if (remarks != null) sb.append("\n Remarks: ").append(remarks);
         return sb.toString();
     }
 }

@@ -17,20 +17,13 @@
 package org.geotools.caching.spatialindex.store;
 
 import java.util.Properties;
-
 import junit.framework.Test;
 import junit.framework.TestSuite;
-
 import org.geotools.caching.grid.spatialindex.store.DiskStorage;
 import org.geotools.caching.spatialindex.Node;
 import org.geotools.caching.spatialindex.Storage;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class DiskStorageTest extends AbstractStorageTest {
     public static Test suite() {
         return new TestSuite(DiskStorageTest.class);

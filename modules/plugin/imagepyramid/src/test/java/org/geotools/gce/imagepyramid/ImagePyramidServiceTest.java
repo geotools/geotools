@@ -17,9 +17,7 @@
 package org.geotools.gce.imagepyramid;
 
 import java.util.Iterator;
-
 import junit.framework.Assert;
-
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 import org.geotools.coverage.grid.io.GridFormatFinder;
 import org.junit.Test;
@@ -27,15 +25,14 @@ import org.junit.Test;
 /**
  * @author Simone Giannecchini
  * @since 2.3
- * 
  * @source $URL$
  */
 public class ImagePyramidServiceTest extends Assert {
 
     @Test
     public void testIsAvailable() {
-        final Iterator<GridFormatFactorySpi> list = GridFormatFinder.getAvailableFormats()
-                .iterator();
+        final Iterator<GridFormatFactorySpi> list =
+                GridFormatFinder.getAvailableFormats().iterator();
         boolean found = false;
 
         while (list.hasNext()) {

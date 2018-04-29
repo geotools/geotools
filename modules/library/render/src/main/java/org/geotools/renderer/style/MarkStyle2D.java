@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -17,27 +17,24 @@
 package org.geotools.renderer.style;
 
 // J2SE dependencies
+
 import java.awt.Composite;
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
-
 import org.geotools.geometry.jts.TransformedShape;
 import org.geotools.resources.Classes;
-
 
 /**
  * Style to represent points as small filled and stroked shapes
  *
  * @author Andrea Aime
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public class MarkStyle2D extends PolygonStyle2D implements PointStyle2D {
-    
+
     static boolean maxMarkSizeEnabled = Boolean.getBoolean("org.geotools.maxMarkSizeEnabled");
-    
+
     Shape shape;
 
     double size;
@@ -63,27 +60,23 @@ public class MarkStyle2D extends PolygonStyle2D implements PointStyle2D {
         return rotation;
     }
 
-    /**
-     * Returns the shape to be used to render the mark
-     *
-     */
+    /** Returns the shape to be used to render the mark */
     public Shape getShape() {
         return shape;
     }
 
     /**
-     * Returns a shape that can be used to draw the mark at the x, y coordinates
-     * with appropriated rotation and size (according to the current style)
+     * Returns a shape that can be used to draw the mark at the x, y coordinates with appropriated
+     * rotation and size (according to the current style)
      *
      * @param x the x coordinate where the mark will be drawn
      * @param y the y coordinate where the mark will be drawn
-     *
-     * @return a shape that can be used to draw the mark 
+     * @return a shape that can be used to draw the mark
      */
     public Shape getTransformedShape(float x, float y) {
         return getTransformedShape(x, y, 0, rotation);
     }
-    
+
     /**
      * Returns a shape that can be used to draw the mark at the x, y coordinates with appropriated
      * rotation and size (according to the current style)
@@ -92,17 +85,20 @@ public class MarkStyle2D extends PolygonStyle2D implements PointStyle2D {
      * @param y the y coordinate where the mark will be drawn
      * @param baseRotation a custom rotation that will be applied before offsets
      * @param rotation the mark rotation
-     *
      * @return a shape that can be used to draw the mark
      */
     public Shape getTransformedShape(float x, float y, float baseRotation, float rotation) {
         if (shape != null) {
             Rectangle2D bounds = shape.getBounds2D();
-            double shapeSize = (maxMarkSizeEnabled ? Math.max(bounds.getWidth(), bounds.getHeight()) : bounds.getHeight());
+            double shapeSize =
+                    (maxMarkSizeEnabled
+                            ? Math.max(bounds.getWidth(), bounds.getHeight())
+                            : bounds.getHeight());
             double scale = size / shapeSize;
             TransformedShape ts = new TransformedShape();
             ts.shape = shape;
-            // shapes are already centered, we need to displace them only if the anchor is not 0.5 0.5
+            // shapes are already centered, we need to displace them only if the anchor is not 0.5
+            // 0.5
             float dx = displacementX;
             float dy = displacementY;
             if (baseRotation != 0) {
@@ -127,11 +123,7 @@ public class MarkStyle2D extends PolygonStyle2D implements PointStyle2D {
         }
     }
 
-
-    /**
-     * Returns the size of the shape, in pixels
-     *
-     */
+    /** Returns the size of the shape, in pixels */
     public double getSize() {
         return size;
     }
@@ -163,9 +155,7 @@ public class MarkStyle2D extends PolygonStyle2D implements PointStyle2D {
         size = i;
     }
 
-    /**
-     * Returns a string representation of this style.
-     */
+    /** Returns a string representation of this style. */
     public String toString() {
         return Classes.getShortClassName(this) + '[' + shape + ']';
     }
@@ -175,12 +165,11 @@ public class MarkStyle2D extends PolygonStyle2D implements PointStyle2D {
     }
 
     /**
-     * When true makes the mark scale itself to size using the max between the original
-     * width and height, otherwise it defaults to the mark height (which has been the
-     * original behavior of this class) 
-     *  
+     * When true makes the mark scale itself to size using the max between the original width and
+     * height, otherwise it defaults to the mark height (which has been the original behavior of
+     * this class)
+     *
      * @since 2.7.3
-     *  
      * @param useMaxMarkSize
      */
     public static void setMaxMarkSizeEnabled(boolean useMaxMarkSize) {
@@ -226,5 +215,4 @@ public class MarkStyle2D extends PolygonStyle2D implements PointStyle2D {
     public void setComposite(Composite composite) {
         this.composite = composite;
     }
-
 }

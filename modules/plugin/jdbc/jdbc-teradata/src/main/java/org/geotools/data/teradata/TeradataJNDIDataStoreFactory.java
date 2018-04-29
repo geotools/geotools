@@ -16,18 +16,15 @@
  */
 package org.geotools.data.teradata;
 
-import org.geotools.jdbc.JDBCJNDIDataStoreFactory;
+import static org.geotools.data.teradata.TeradataDataStoreFactory.LOOSEBBOX;
 
 import java.util.Map;
-
-import static org.geotools.data.teradata.TeradataDataStoreFactory.LOOSEBBOX;
+import org.geotools.jdbc.JDBCJNDIDataStoreFactory;
 
 /**
  * JNDI DataStoreFactory for Teradata database.
- * 
+ *
  * @author Jesse Eichar
- *
- *
  * @source $URL$
  */
 public class TeradataJNDIDataStoreFactory extends JDBCJNDIDataStoreFactory {

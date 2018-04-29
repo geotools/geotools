@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FilteringFeatureReader;
 import org.geotools.data.Query;
@@ -51,7 +50,8 @@ import org.opengis.filter.Filter;
 
 class SFSFeatureSource extends ContentFeatureSource implements SimpleFeatureSource {
 
-    static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger("org.geotools.data.simplefeatureservice");
+    static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.data.simplefeatureservice");
     Map<String, String> hint = Collections.emptyMap();
     ContentEntry contentEntry;
     SFSDataStore ods;
@@ -59,6 +59,7 @@ class SFSFeatureSource extends ContentFeatureSource implements SimpleFeatureSour
 
     /**
      * Constructor for OpenDataStoreFeatureSource
+     *
      * @param fnEntry
      * @param fnQuery
      * @throws IOException
@@ -74,9 +75,10 @@ class SFSFeatureSource extends ContentFeatureSource implements SimpleFeatureSour
     }
 
     /**
-     * This method get the Bound of the Layer -- using /mode=bounds
-     * portions of code has been borrowed from
+     * This method get the Bound of the Layer -- using /mode=bounds portions of code has been
+     * borrowed from
      * https://svn.osgeo.org/geotools/trunk/modules/library/jdbc/src/main/java/org/geotools/jdbc/JDBCFeatureSource.java
+     *
      * @param fnQuery
      * @return bounds in terms of reference Envelope
      * @throws IOException
@@ -99,39 +101,46 @@ class SFSFeatureSource extends ContentFeatureSource implements SimpleFeatureSour
             String strQuery = SFSDataStoreUtil.encodeQuery(tmpPreQ, getSchema());
 
             /* Create the URL */
-            String bboxString = ods.resourceToString("data/" + layer.getTypeName().getLocalPart(), "mode=bounds&" + strQuery);
+            String bboxString =
+                    ods.resourceToString(
+                            "data/" + layer.getTypeName().getLocalPart(),
+                            "mode=bounds&" + strQuery);
             JSONArray bbox;
             try {
                 bbox = (JSONArray) new JSONParser().parse(bboxString);
-            } catch(org.json.simple.parser.ParseException e) {
-                throw (IOException) new IOException("Failed to parse the bbox JSON array:" + bboxString).initCause(e);
+            } catch (org.json.simple.parser.ParseException e) {
+                throw (IOException)
+                        new IOException("Failed to parse the bbox JSON array:" + bboxString)
+                                .initCause(e);
             }
 
             if (bbox.size() == 4) {
                 if (layer.isXYOrder()) {
-                    env.init(((Number) bbox.get(0)).doubleValue(),
+                    env.init(
+                            ((Number) bbox.get(0)).doubleValue(),
                             ((Number) bbox.get(2)).doubleValue(),
                             ((Number) bbox.get(1)).doubleValue(),
                             ((Number) bbox.get(3)).doubleValue());
                 } else {
-                    env.init(((Number) bbox.get(1)).doubleValue(),
+                    env.init(
+                            ((Number) bbox.get(1)).doubleValue(),
                             ((Number) bbox.get(3)).doubleValue(),
                             ((Number) bbox.get(0)).doubleValue(),
                             ((Number) bbox.get(2)).doubleValue());
                 }
             } else {
-                throw new IOException("The returned bound was not of size 4 but of size: " + bbox.size());
+                throw new IOException(
+                        "The returned bound was not of size 4 but of size: " + bbox.size());
             }
-
-
         }
         return env;
     }
 
     /**
-     * This method get the counts of the feature-set which satisfy the fnQuery
-     * portions of this code has been borrowed from
+     * This method get the counts of the feature-set which satisfy the fnQuery portions of this code
+     * has been borrowed from
      * https://svn.osgeo.org/geotools/trunk/modules/library/jdbc/src/main/java/org/geotools/jdbc/JDBCFeatureSource.java
+     *
      * @param fnQuery
      * @return count
      * @throws IOException
@@ -158,13 +167,19 @@ class SFSFeatureSource extends ContentFeatureSource implements SimpleFeatureSour
             String strQuery = SFSDataStoreUtil.encodeQuery(tmpPreQ, getSchema());
 
             /* Create the URL */
-            String strCount = ods.resourceToString("data/" + layer.getTypeName().getLocalPart(), "mode=count&" + strQuery);
+            String strCount =
+                    ods.resourceToString(
+                            "data/" + layer.getTypeName().getLocalPart(), "mode=count&" + strQuery);
 
             try {
                 count = Integer.parseInt(strCount);
             } catch (NumberFormatException nfe) {
 
-                LOGGER.log(Level.SEVERE, "Number format Exception in getCountInternal : FeatureSource -- getCount --" + nfe.getMessage(), nfe);
+                LOGGER.log(
+                        Level.SEVERE,
+                        "Number format Exception in getCountInternal : FeatureSource -- getCount --"
+                                + nfe.getMessage(),
+                        nfe);
                 return 0;
             }
         }
@@ -180,22 +195,23 @@ class SFSFeatureSource extends ContentFeatureSource implements SimpleFeatureSour
     }
 
     /**
-     * This method invokes the OpenDataStoreFeatureReader class
-     * This method has been borrowed from
+     * This method invokes the OpenDataStoreFeatureReader class This method has been borrowed from
      * https://svn.osgeo.org/geotools/trunk/modules/library/jdbc/src/main/java/org/geotools/jdbc/JDBCFeatureSource.java
+     *
      * @param fnQuery
      * @return FeatureReader
      * @throws IOException
      */
     @Override
-    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query fnQuery) throws IOException {
+    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query fnQuery)
+            throws IOException {
         // simplify the filter
         Filter filter = fnQuery.getFilter();
         SimplifyingFilterVisitor simplifier = new SimplifyingFilterVisitor();
         simplifier.setFeatureType(getSchema());
         filter = (Filter) filter.accept(simplifier, null);
-        
-        // Split the filter into two parts, pre and post 
+
+        // Split the filter into two parts, pre and post
         Filter[] split = splitFilter(filter);
 
         Filter preFilter = split[0];
@@ -212,7 +228,8 @@ class SFSFeatureSource extends ContentFeatureSource implements SimpleFeatureSour
         if (fnQuery.getPropertyNames() == Query.ALL_NAMES) {
             returnedSchema = querySchema = getSchema();
         } else {
-            returnedSchema = SimpleFeatureTypeBuilder.retype(getSchema(), fnQuery.getPropertyNames());
+            returnedSchema =
+                    SimpleFeatureTypeBuilder.retype(getSchema(), fnQuery.getPropertyNames());
             FilterAttributeExtractor extractor = new FilterAttributeExtractor(getSchema());
             // we need to let all attribute pass as we're going to make a full filter evaluation
             // in memory
@@ -222,13 +239,15 @@ class SFSFeatureSource extends ContentFeatureSource implements SimpleFeatureSour
                 // nothing to do
                 querySchema = returnedSchema;
             } else {
-                List<String> allAttributes = new ArrayList<String>(Arrays.asList(fnQuery.getPropertyNames()));
+                List<String> allAttributes =
+                        new ArrayList<String>(Arrays.asList(fnQuery.getPropertyNames()));
                 for (String extraAttribute : extraAttributes) {
                     if (!allAttributes.contains(extraAttribute)) {
                         allAttributes.add(extraAttribute);
                     }
                 }
-                String[] allAttributeArray = allAttributes.toArray(new String[allAttributes.size()]);
+                String[] allAttributeArray =
+                        allAttributes.toArray(new String[allAttributes.size()]);
                 preQuery.setPropertyNames(allAttributeArray);
                 querySchema = SimpleFeatureTypeBuilder.retype(getSchema(), allAttributeArray);
             }
@@ -237,28 +256,28 @@ class SFSFeatureSource extends ContentFeatureSource implements SimpleFeatureSour
         /* Get the reader*/
         FeatureReader<SimpleFeatureType, SimpleFeature> reader;
 
-
         /* Do the pre part first */
         reader = new SFSFeatureReader(getState(), layer, preQuery, querySchema);
 
-        /* 
+        /*
          * Normally we should finish off with post filtering, but reality proves that the
          * remote service sometimes does not implement the protocol filtering spec fully.
          * Don't trust the records sent back and apply the whole filter again on top of them
          */
-        if(filter != null && !Filter.INCLUDE.equals(filter)) {
+        if (filter != null && !Filter.INCLUDE.equals(filter)) {
             reader = new FilteringFeatureReader<SimpleFeatureType, SimpleFeature>(reader, filter);
         }
-        
-        if(querySchema.getAttributeCount() > returnedSchema.getAttributeCount()) {
+
+        if (querySchema.getAttributeCount() > returnedSchema.getAttributeCount()) {
             reader = new ReTypeFeatureReader(reader, returnedSchema);
         }
-        
+
         return reader;
     }
 
     /**
      * This method returns the schema of the layer
+     *
      * @return SimpleFeatureType
      * @throws IOException, MalformedURLException
      */
@@ -266,7 +285,8 @@ class SFSFeatureSource extends ContentFeatureSource implements SimpleFeatureSour
     protected SimpleFeatureType buildFeatureType() throws IOException, MalformedURLException {
 
         /* Get the layer describing URL*/
-        String jsonString = ods.resourceToString("describe/" + contentEntry.getName().getLocalPart(), null);
+        String jsonString =
+                ods.resourceToString("describe/" + contentEntry.getName().getLocalPart(), null);
 
         JSONParser parser = new JSONParser();
 
@@ -275,7 +295,10 @@ class SFSFeatureSource extends ContentFeatureSource implements SimpleFeatureSour
             jsonArray = (JSONArray) parser.parse(jsonString);
 
         } catch (org.json.simple.parser.ParseException pe) {
-            LOGGER.log(Level.SEVERE, "parse Exception : FeatureSource -- buildFeatureType --" + pe.getMessage(), pe);
+            LOGGER.log(
+                    Level.SEVERE,
+                    "parse Exception : FeatureSource -- buildFeatureType --" + pe.getMessage(),
+                    pe);
         }
         /* Lets build the feature type*/
         SimpleFeatureTypeBuilder fbt = new SimpleFeatureTypeBuilder();
@@ -291,7 +314,8 @@ class SFSFeatureSource extends ContentFeatureSource implements SimpleFeatureSour
             /* Iterate Through the hashMap to extract the key-value pairs*/
             for (Map.Entry<String, String> entry : tmpMap.entrySet()) {
 
-                //LOGGER.log(Level.INFO, "{0} - {1} - {2}", new Object[]{entry.getKey(), entry.getValue(), OpenDataStoreUtil.getClass(entry.getValue())});
+                // LOGGER.log(Level.INFO, "{0} - {1} - {2}", new Object[]{entry.getKey(),
+                // entry.getValue(), OpenDataStoreUtil.getClass(entry.getValue())});
                 fbt.add(entry.getKey(), SFSDataStoreUtil.getClass(entry.getValue()));
             }
         }
@@ -300,7 +324,6 @@ class SFSFeatureSource extends ContentFeatureSource implements SimpleFeatureSour
     }
 
     /**
-     *
      * @param fnSchema
      * @return QueryCapabilities
      * @throws IOException
@@ -313,23 +336,26 @@ class SFSFeatureSource extends ContentFeatureSource implements SimpleFeatureSour
     }
 
     /**
-     *
      * @param fnID
      * @return SimpleFeature
      * @throws MalformedURLException
      * @throws MalformedURLException, IOException, org.json.simple.parser.ParseException
      */
-    public SimpleFeature getFeatureWithID(String fnID) throws MalformedURLException, IOException, org.json.simple.parser.ParseException {
+    public SimpleFeature getFeatureWithID(String fnID)
+            throws MalformedURLException, IOException, org.json.simple.parser.ParseException {
 
         if (fnID == null) {
             throw new IOException("FeatureID cannot be null");
         }
         /* Get the layer describing URL*/
-        String jsonString = ods.resourceToString("data/" + contentEntry.getName().getLocalPart() + "/" + fnID, null);
+        String jsonString =
+                ods.resourceToString(
+                        "data/" + contentEntry.getName().getLocalPart() + "/" + fnID, null);
 
         FeatureJSON fjson = new FeatureJSON();
 
-        SimpleFeature feature = fjson.readFeature(new StringReader(SFSDataStoreUtil.strip(jsonString)));
+        SimpleFeature feature =
+                fjson.readFeature(new StringReader(SFSDataStoreUtil.strip(jsonString)));
 
         return feature;
     }
@@ -343,8 +369,10 @@ class SFSFeatureSource extends ContentFeatureSource implements SimpleFeatureSour
         /* Split filter into 2 parts */
         Filter[] split = new Filter[2];
         if (fnOriginalFilter != null) {
-            //create a filter splitter
-            PostPreProcessFilterSplittingVisitor splitter = new PostPreProcessFilterSplittingVisitor(ods.ODS_FILTER_CAPABILITIES, getSchema(), null);
+            // create a filter splitter
+            PostPreProcessFilterSplittingVisitor splitter =
+                    new PostPreProcessFilterSplittingVisitor(
+                            ods.ODS_FILTER_CAPABILITIES, getSchema(), null);
 
             fnOriginalFilter.accept(splitter, null);
             /* Natively supported*/
@@ -362,27 +390,27 @@ class SFSFeatureSource extends ContentFeatureSource implements SimpleFeatureSour
 
         return split;
     }
-    
+
     @Override
     protected boolean canFilter() {
         return true;
     }
-    
+
     @Override
     protected boolean canLimit() {
         return true;
     }
-    
+
     @Override
     protected boolean canOffset() {
         return true;
     }
-    
+
     @Override
     protected boolean canRetype() {
         return true;
     }
-    
+
     @Override
     protected boolean canSort() {
         return true;

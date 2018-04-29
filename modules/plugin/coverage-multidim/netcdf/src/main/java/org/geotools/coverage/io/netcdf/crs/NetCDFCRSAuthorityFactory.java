@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
- *   
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -19,8 +19,6 @@ package org.geotools.coverage.io.netcdf.crs;
 import java.io.File;
 import java.net.URL;
 import java.util.logging.Level;
-
-import org.geotools.data.DataUtilities;
 import org.geotools.factory.Hints;
 import org.geotools.referencing.factory.epsg.FactoryUsingWKT;
 import org.geotools.util.URLs;
@@ -28,11 +26,10 @@ import org.opengis.referencing.crs.CRSAuthorityFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
- * A factory providing NetCDF/GRIB custom {@link CoordinateReferenceSystem} 
- * instances with the related custom EPSG.
- * 
- * @author Daniele Romagnoli - GeoSolutions
+ * A factory providing NetCDF/GRIB custom {@link CoordinateReferenceSystem} instances with the
+ * related custom EPSG.
  *
+ * @author Daniele Romagnoli - GeoSolutions
  */
 public class NetCDFCRSAuthorityFactory extends FactoryUsingWKT implements CRSAuthorityFactory {
     public static final String SYSTEM_DEFAULT_USER_PROJ_FILE = "netcdf.projections.file";
@@ -51,8 +48,8 @@ public class NetCDFCRSAuthorityFactory extends FactoryUsingWKT implements CRSAut
                 if (url != null) {
                     DEFINITION_URL = url;
                 } else {
-                    LOGGER.log(Level.SEVERE, "Had troubles converting " + cust_proj_file
-                            + " to URL");
+                    LOGGER.log(
+                            Level.SEVERE, "Had troubles converting " + cust_proj_file + " to URL");
                 }
             }
         } else {
@@ -60,7 +57,6 @@ public class NetCDFCRSAuthorityFactory extends FactoryUsingWKT implements CRSAut
             cust_proj_file = "netcdf.projections.properties";
             DEFINITION_URL = NetCDFCRSAuthorityFactory.class.getResource(cust_proj_file);
         }
-
     }
 
     public NetCDFCRSAuthorityFactory() {

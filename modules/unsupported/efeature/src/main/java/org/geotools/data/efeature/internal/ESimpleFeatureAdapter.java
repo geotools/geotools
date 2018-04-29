@@ -18,12 +18,12 @@ package org.geotools.data.efeature.internal;
 
 import static org.geotools.data.efeature.internal.EFeatureInternal.eInternal;
 
+import com.vividsolutions.jts.geom.Geometry;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
@@ -46,21 +46,17 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 
-import com.vividsolutions.jts.geom.Geometry;
-
 /**
- * This class implements a two step algorithm which adapts
- * a {@link SimpleFeature} to a {@link ESimpleFeature}
- * 
+ * This class implements a two step algorithm which adapts a {@link SimpleFeature} to a {@link
+ * ESimpleFeature}
+ *
  * @author kengu - 30. juni 2011
- *
- *
  * @source $URL$
  */
 public final class ESimpleFeatureAdapter {
-    
+
     private String oldSRID;
-    
+
     private String newSRID;
 
     private FeatureType oldType;
@@ -79,22 +75,24 @@ public final class ESimpleFeatureAdapter {
     private List<Object> newValues = new ArrayList<Object>();
     private Map<EAttribute, Object> oldValueMap = new HashMap<EAttribute, Object>();;
     private Map<EAttribute, Object> newValueMap = new HashMap<EAttribute, Object>();;
-    
-    // ----------------------------------------------------- 
+
+    // -----------------------------------------------------
     //  ESimpleFeatureAdapter methods
     // -----------------------------------------------------
 
     /**
      * Adapt given EFeature {@link EObject data} into a {@link ESimpleFeature} instance.
-     * <p>
-     * This method writes adapted data to {@link EObject} and then calls {@link EFeature#getData()}.
-     * </p>
-     * @param eStructure - structure to adapt 
+     *
+     * <p>This method writes adapted data to {@link EObject} and then calls {@link
+     * EFeature#getData()}.
+     *
+     * @param eStructure - structure to adapt
      * @param eObject - EFeature {@link EObject data} to adapt
-     * @param transaction - any adaptation is written to this transaction 
+     * @param transaction - any adaptation is written to this transaction
      * @return a {@link ESimpleFeature} instance with the given structure.
      */
-    public ESimpleFeature eAdapt(EFeatureInfo eStructure, EObject eObject, Transaction transaction) {
+    public ESimpleFeature eAdapt(
+            EFeatureInfo eStructure, EObject eObject, Transaction transaction) {
         //
         // Prepare
         //
@@ -117,8 +115,8 @@ public final class ESimpleFeatureAdapter {
         eInternal.enter(transaction);
         //
         // Try to set values
-        //        
-        try {                        
+        //
+        try {
             //
             // Update SRID for all instances?
             //
@@ -147,29 +145,27 @@ public final class ESimpleFeatureAdapter {
             //
             // Restore notification delivery state
             //
-           eObject.eSetDeliver(eDeliver);
-           //
-           // Notify?
-           //
-           if(eData!=null) {
-               eNotify(eObject, eData);
-           }
-           
+            eObject.eSetDeliver(eDeliver);
+            //
+            // Notify?
+            //
+            if (eData != null) {
+                eNotify(eObject, eData);
+            }
         }
-
     }
-    
+
     /**
      * Adapt given EFeature {@link SimpleFeature data} into a {@link ESimpleFeature} instance.
-     * </p>
+     *
      * @param eStructure - {@link EFeature} structure of given {@link EObject}
-     * @param eObject - {@link EObject} backing given {@link SimpleFeature data}. If null, 
+     * @param eObject - {@link EObject} backing given {@link SimpleFeature data}. If null,
      * @param eData - {@link SimpleFeature data} attached to given {@link EObject}
      * @param transaction - any changes are written to this transaction
      * @return updated {@link ESimpleFeature} instance.
      */
-    public ESimpleFeature eAdapt(EFeatureInfo eStructure, 
-            ESimpleFeature eData, Transaction transaction) {
+    public ESimpleFeature eAdapt(
+            EFeatureInfo eStructure, ESimpleFeature eData, Transaction transaction) {
         //
         // Get EObject
         //
@@ -192,8 +188,8 @@ public final class ESimpleFeatureAdapter {
         eInternal.enter(transaction);
         //
         // Try to set values
-        //        
-        try {                        
+        //
+        try {
             //
             // Update feature directly without any
             // additional validation, since it is
@@ -226,24 +222,22 @@ public final class ESimpleFeatureAdapter {
             //
             eNotify(eObject, eData);
         }
+    }
 
-    }        
-    
-    // ----------------------------------------------------- 
+    // -----------------------------------------------------
     //  Construction methods
     // -----------------------------------------------------
-    
+
     /**
      * Attempts to transform new data into valid form
-     * </p>
+     *
      * @param eStructure - given EFeature {@link EFeatureInfo structure}
      * @param eImpl - {@link EObject} containing EFeature data
      * @param eData - {@link Feature} data to prepare for adaption into given structure
      * @return a new {@link ESimpleFeatureAdapter} instance
      */
     public static ESimpleFeatureAdapter create(
-            EFeatureInfo eStructure, 
-            EObject eImpl, Feature eData) {
+            EFeatureInfo eStructure, EObject eImpl, Feature eData) {
         //
         // Verify that given data is valid
         //
@@ -269,12 +263,15 @@ public final class ESimpleFeatureAdapter {
         // Get transformation
         //
         try {
-            eAdapter.transform = CRS.findMathTransform(
-                    eAdapter.newCRS, eAdapter.oldCRS, true);
+            eAdapter.transform = CRS.findMathTransform(eAdapter.newCRS, eAdapter.oldCRS, true);
         } catch (FactoryException e) {
-            throw new IllegalArgumentException("Tranform from " + "'" 
-                    + eAdapter.newCRS + "' to '" + eAdapter.oldCRS 
-                    + "' not possible");
+            throw new IllegalArgumentException(
+                    "Tranform from "
+                            + "'"
+                            + eAdapter.newCRS
+                            + "' to '"
+                            + eAdapter.oldCRS
+                            + "' not possible");
         }
         //
         // Is identity transform?
@@ -320,8 +317,8 @@ public final class ESimpleFeatureAdapter {
                     try {
                         value = JTS.transform((Geometry) value, eAdapter.transform);
                     } catch (Exception e) {
-                        throw new IllegalArgumentException("Failed to " 
-                                + "transform geometry: " + it);
+                        throw new IllegalArgumentException(
+                                "Failed to " + "transform geometry: " + it);
                     }
                 }
                 //
@@ -335,31 +332,28 @@ public final class ESimpleFeatureAdapter {
         // Finished
         //
         return eAdapter;
-    }        
-    
-    // ----------------------------------------------------- 
+    }
+
+    // -----------------------------------------------------
     //  Helper methods
     // -----------------------------------------------------
-    
+
     protected void eNotify(EObject eObject, ESimpleFeature eData) {
         //
         // Any values changed?
         //
-        if(!oldValues.equals(newValues)) {
-            eNotify((InternalEObject)eObject, EFeaturePackage.EFEATURE__DATA, oldValues, eData);
+        if (!oldValues.equals(newValues)) {
+            eNotify((InternalEObject) eObject, EFeaturePackage.EFEATURE__DATA, oldValues, eData);
         }
         if (!isIdentity) {
-            eNotify((InternalEObject)eObject, EFeaturePackage.EFEATURE__SRID, oldSRID, newSRID);                    
+            eNotify((InternalEObject) eObject, EFeaturePackage.EFEATURE__SRID, oldSRID, newSRID);
         }
     }
 
     protected void eNotify(InternalEObject eObject, int feature, Object oldValue, Object newValue) {
         if (eObject.eNotificationRequired()) {
             eObject.eNotify(
-                    new ENotificationImpl(eObject, Notification.SET,
-                            feature, oldValue, newValue));
+                    new ENotificationImpl(eObject, Notification.SET, feature, oldValue, newValue));
         }
-        
-    }    
-    
+    }
 }

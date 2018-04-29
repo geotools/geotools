@@ -19,11 +19,7 @@ package org.geotools.styling.builder;
 import org.geotools.styling.PointPlacement;
 import org.opengis.filter.expression.Expression;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class PointPlacementBuilder extends AbstractStyleBuilder<PointPlacement> {
     private Expression rotation;
 
@@ -44,8 +40,8 @@ public class PointPlacementBuilder extends AbstractStyleBuilder<PointPlacement> 
         if (unset) {
             return null;
         }
-        PointPlacement placement = sf
-                .pointPlacement(anchor.build(), displacement.build(), rotation);
+        PointPlacement placement =
+                sf.pointPlacement(anchor.build(), displacement.build(), rotation);
         if (parent == null) {
             reset();
         }
@@ -101,5 +97,4 @@ public class PointPlacementBuilder extends AbstractStyleBuilder<PointPlacement> 
     protected void buildStyleInternal(StyleBuilder sb) {
         sb.featureTypeStyle().rule().text().labelText("label").pointPlacement().init(this);
     }
-
 }

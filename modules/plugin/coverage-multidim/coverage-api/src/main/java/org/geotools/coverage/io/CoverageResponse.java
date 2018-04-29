@@ -20,25 +20,23 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-
 import org.geotools.util.NullProgressListener;
 import org.opengis.coverage.Coverage;
 import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.util.ProgressListener;
 
 /**
- * 
  * @author Simone Giannecchini, GeoSolutions
- * 
  * @source $URL$
  */
 public class CoverageResponse {
 
-    /**
-     * @author Simone Giannecchini, GeoSolutions
-     */
+    /** @author Simone Giannecchini, GeoSolutions */
     public enum Status {
-        FAILURE, WARNING, SUCCESS, UNAVAILABLE
+        FAILURE,
+        WARNING,
+        SUCCESS,
+        UNAVAILABLE
     }
 
     private List<Exception> exceptions = Collections.synchronizedList(new ArrayList<Exception>());
@@ -47,8 +45,8 @@ public class CoverageResponse {
 
     private CoverageRequest originatingRequest = null;
 
-    private List<GridCoverage> results = Collections
-            .synchronizedList(new ArrayList<GridCoverage>());
+    private List<GridCoverage> results =
+            Collections.synchronizedList(new ArrayList<GridCoverage>());
 
     private Status status = Status.UNAVAILABLE;
 
@@ -71,9 +69,10 @@ public class CoverageResponse {
     }
 
     /**
-     * The handle attribute is included to allow a client to associate a mnemonic name to the Query request. The purpose of the handle attribute is to
-     * provide an error handling mechanism for locating a statement that might fail.
-     * 
+     * The handle attribute is included to allow a client to associate a mnemonic name to the Query
+     * request. The purpose of the handle attribute is to provide an error handling mechanism for
+     * locating a statement that might fail.
+     *
      * @return the mnemonic name of the query request.
      */
     public String getHandle() {
@@ -94,13 +93,12 @@ public class CoverageResponse {
 
     /**
      * Returns the Coverages available with this coverage response.
-     * 
+     *
      * @param listener
      * @return a collection of coverages.
      */
     public Collection<? extends Coverage> getResults(ProgressListener listener) {
-        if (listener == null)
-            listener = new NullProgressListener();
+        if (listener == null) listener = new NullProgressListener();
         listener.started();
         try {
             synchronized (this.results) {
@@ -124,8 +122,9 @@ public class CoverageResponse {
     }
 
     /**
-     * Get the status of this coverage response. It should always be checked before assuming any data is available.
-     * 
+     * Get the status of this coverage response. It should always be checked before assuming any
+     * data is available.
+     *
      * @return the {@linkplain Status status} of this coverage response.
      */
     public Status getStatus() {
@@ -135,5 +134,4 @@ public class CoverageResponse {
     public void setStatus(final Status status) {
         this.status = status;
     }
-
 }

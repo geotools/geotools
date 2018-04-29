@@ -1,9 +1,9 @@
 package org.geotools.data.efeature;
 
+import com.vividsolutions.jts.geom.Geometry;
 import java.lang.ref.WeakReference;
 import java.util.Collections;
 import java.util.List;
-
 import org.eclipse.emf.ecore.EAttribute;
 import org.geotools.feature.type.AttributeTypeImpl;
 import org.opengis.feature.type.AttributeType;
@@ -14,18 +14,14 @@ import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.util.InternationalString;
 
-import com.vividsolutions.jts.geom.Geometry;
-
 /**
  * This class defines a {@link EFeature} {@link Geometry geometry} {@link EAttribute attribute}.
- *   
+ *
  * @author kengu
- *
- *
  * @source $URL$
  */
 public class EFeatureGeometryInfo extends EFeatureAttributeInfo {
-    
+
     protected String srid;
 
     protected String geometryClassName;
@@ -35,27 +31,23 @@ public class EFeatureGeometryInfo extends EFeatureAttributeInfo {
     protected CoordinateReferenceSystem crs;
 
     private GeometryDescriptorDelegate descriptor;
-    
- // ----------------------------------------------------- 
+
+    // -----------------------------------------------------
     //  Constructors
     // -----------------------------------------------------
 
-    /**
-     * Default constructor
-     */
+    /** Default constructor */
     protected EFeatureGeometryInfo() {
         super();
     }
-    
+
     /**
      * Structure copy constructor.
-     * <p>
-     * This method copies the structure into given context. 
-     * </p>
-     * <b>NOTE</b>: This method only adds a one-way reference from 
-     * copied instance to given {@link EFeatureContext context}. 
-     * No reference is added from the context to this attribute. 
-     * </p>  
+     *
+     * <p>This method copies the structure into given context. <b>NOTE</b>: This method only adds a
+     * one-way reference from copied instance to given {@link EFeatureContext context}. No reference
+     * is added from the context to this attribute.
+     *
      * @param eGeometryInfo - copy from this {@link EFeatureGeometryInfo} instance
      * @param eFeatureInfo - copy into this structure
      */
@@ -65,15 +57,15 @@ public class EFeatureGeometryInfo extends EFeatureAttributeInfo {
         //
         super(eGeometryInfo, eFeatureInfo);
         //
-        // Set geometry members 
+        // Set geometry members
         //
         this.crs = eGeometryInfo.crs;
         this.srid = eGeometryInfo.srid;
         this.geometryClassName = eGeometryInfo.geometryClassName;
         this.isDefaultGeometry = eGeometryInfo.isDefaultGeometry;
-    }    
-    
-    // ----------------------------------------------------- 
+    }
+
+    // -----------------------------------------------------
     //  EFeatureGeometryInfo methods
     // -----------------------------------------------------
 
@@ -87,7 +79,7 @@ public class EFeatureGeometryInfo extends EFeatureAttributeInfo {
 
     /**
      * Get name of class extending {@link Geometry}.
-     * 
+     *
      * @return a {@link Geometry} name.
      */
     public String getGeometryClassName() {
@@ -100,8 +92,8 @@ public class EFeatureGeometryInfo extends EFeatureAttributeInfo {
             descriptor = new GeometryDescriptorDelegate();
         }
         return descriptor;
-    }    
-    
+    }
+
     @Override
     public EFeatureStatus validate(boolean isID, EAttribute eAttribute) {
         //
@@ -120,14 +112,18 @@ public class EFeatureGeometryInfo extends EFeatureAttributeInfo {
             //
             String eType = eAttribute.getEType().getInstanceClassName();
             if (this.geometryClassName != eType) {
-                return failure(this, eName(), "Geometry type mismatch: Found + " + eType + ", expected "
-                        + this.geometryClassName);
+                return failure(
+                        this,
+                        eName(),
+                        "Geometry type mismatch: Found + "
+                                + eType
+                                + ", expected "
+                                + this.geometryClassName);
             }
 
             // Confirm that structure is valid
             //
             return structureIsValid(eName());
-
         }
 
         // Invalidate structure again.
@@ -137,11 +133,10 @@ public class EFeatureGeometryInfo extends EFeatureAttributeInfo {
         // Is invalid
         //
         return s;
-
     }
 
-    //-----------------------------------------------------
-    //  Methods for staying in-sync with EFeatureInfo parent 
+    // -----------------------------------------------------
+    //  Methods for staying in-sync with EFeatureInfo parent
     // -----------------------------------------------------
 
     protected void setSRID(String srid, CoordinateReferenceSystem crs) {
@@ -153,7 +148,7 @@ public class EFeatureGeometryInfo extends EFeatureAttributeInfo {
         this.isDefaultGeometry = isDefault;
     }
 
-    // ----------------------------------------------------- 
+    // -----------------------------------------------------
     //  EStructureInfo implementation
     // -----------------------------------------------------
 
@@ -164,12 +159,12 @@ public class EFeatureGeometryInfo extends EFeatureAttributeInfo {
         crs = null;
     }
 
-    // ----------------------------------------------------- 
+    // -----------------------------------------------------
     //  GeometryDescriptor implementation
     // -----------------------------------------------------
 
-    protected class GeometryDescriptorDelegate extends AttributeDescriptorDelegate implements
-            GeometryDescriptor {
+    protected class GeometryDescriptorDelegate extends AttributeDescriptorDelegate
+            implements GeometryDescriptor {
         private GeometryType type;
 
         @Override
@@ -182,9 +177,15 @@ public class EFeatureGeometryInfo extends EFeatureAttributeInfo {
                 //
                 // Create anonymous attribute type implementation
                 //
-                type = new GeometryTypeDelegate(getName(), cls, eIsID, false,
-                        Collections.<Filter> emptyList(), null, null);
-
+                type =
+                        new GeometryTypeDelegate(
+                                getName(),
+                                cls,
+                                eIsID,
+                                false,
+                                Collections.<Filter>emptyList(),
+                                null,
+                                null);
             }
             return type;
         }
@@ -193,15 +194,19 @@ public class EFeatureGeometryInfo extends EFeatureAttributeInfo {
         public CoordinateReferenceSystem getCoordinateReferenceSystem() {
             return isAvailable() ? getType().getCoordinateReferenceSystem() : null;
         }
-
     }
 
     protected class GeometryTypeDelegate extends AttributeTypeImpl implements GeometryType {
 
         private final Class<?> binding;
 
-        public GeometryTypeDelegate(Name name, Class<?> binding, boolean identified,
-                boolean isAbstract, List<Filter> restrictions, AttributeType superType,
+        public GeometryTypeDelegate(
+                Name name,
+                Class<?> binding,
+                boolean identified,
+                boolean isAbstract,
+                List<Filter> restrictions,
+                AttributeType superType,
                 InternationalString description) {
 
             // Forward
@@ -222,11 +227,10 @@ public class EFeatureGeometryInfo extends EFeatureAttributeInfo {
         public Object parse(Object value) throws IllegalArgumentException {
             return DataBuilder.parse(binding, value);
         }
-
     }
 
-    // ------------------------------------------------------- 
-    //  Helper methods 
+    // -------------------------------------------------------
+    //  Helper methods
     // -------------------------------------------------------
 
     /**
@@ -238,10 +242,12 @@ public class EFeatureGeometryInfo extends EFeatureAttributeInfo {
      * @param eAttribute
      */
     protected static EFeatureGeometryInfo create(
-            EFeatureInfo eFeatureInfo, 
-            boolean isDefault, String srid,
-            CoordinateReferenceSystem crs, EAttribute eAttribute) {
-        
+            EFeatureInfo eFeatureInfo,
+            boolean isDefault,
+            String srid,
+            CoordinateReferenceSystem crs,
+            EAttribute eAttribute) {
+
         //
         // Create new instance
         //
@@ -261,16 +267,16 @@ public class EFeatureGeometryInfo extends EFeatureAttributeInfo {
         //
         eInfo.eNsURI = eFeatureInfo.eNsURI;
         eInfo.eFolderName = eFeatureInfo.eFolderName;
-        eInfo.eFeatureName = eFeatureInfo.eName();        
+        eInfo.eFeatureName = eFeatureInfo.eName();
         //
         // Set other attribute members
-        //        
+        //
         eInfo.eIsID = false;
         eInfo.eName = eAttribute.getName();
         eInfo.eAttribute = new WeakReference<EAttribute>(eAttribute);
         //
         // Set geometry members
-        //        
+        //
         eInfo.crs = crs;
         eInfo.srid = srid;
         eInfo.isDefaultGeometry = isDefault;
@@ -280,5 +286,4 @@ public class EFeatureGeometryInfo extends EFeatureAttributeInfo {
         //
         return eInfo;
     }
-
 }

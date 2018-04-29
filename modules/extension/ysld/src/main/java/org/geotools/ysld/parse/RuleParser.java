@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -18,19 +18,17 @@
 package org.geotools.ysld.parse;
 
 import javax.annotation.Nullable;
-
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.filter.text.ecql.ECQL;
-import org.geotools.ysld.Tuple;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Rule;
+import org.geotools.ysld.Tuple;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 import org.geotools.ysld.YamlSeq;
 
 /**
  * Handles parsing a Ysld "rules" property into {@link Rule} objects for a {@link FeatureTypeStyle}.
- *
  */
 public class RuleParser extends YsldParseHandler {
 
@@ -71,8 +69,7 @@ public class RuleParser extends YsldParseHandler {
             rule.setElseFilter(r.boolOr("else", false));
 
             // Prefer scale over zoom
-            @Nullable
-            ScaleRange range = Util.defaultForNull(parseScale(r), parseZoom(r, context));
+            @Nullable ScaleRange range = Util.defaultForNull(parseScale(r), parseZoom(r, context));
             if (range != null) {
                 range.applyTo(rule);
             }
@@ -80,9 +77,8 @@ public class RuleParser extends YsldParseHandler {
             context.push(r, "symbolizers", new SymbolizersParser(rule, factory));
         }
     }
-    
+
     /**
-     * 
      * @param r
      * @return The parsed scale, or null if the {@link YamlMap} has no "scale" key.
      */
@@ -94,8 +90,10 @@ public class RuleParser extends YsldParseHandler {
             try {
                 t = Tuple.of(2).parse(value);
             } catch (IllegalArgumentException e) {
-                throw new IllegalArgumentException(String
-                        .format("Bad scale value: '%s', must be of form [<min>,<max>]", value), e);
+                throw new IllegalArgumentException(
+                        String.format(
+                                "Bad scale value: '%s', must be of form [<min>,<max>]", value),
+                        e);
             }
             double min = 0;
             double max = Double.POSITIVE_INFINITY;
@@ -127,10 +125,8 @@ public class RuleParser extends YsldParseHandler {
                         String.format("Bad zoom value: '%s', must be of form [<min>,<max>]", value),
                         e);
             }
-            @Nullable
-            Integer min = null;
-            @Nullable
-            Integer max = null;
+            @Nullable Integer min = null;
+            @Nullable Integer max = null;
             if (t.at(0) != null) {
                 if (!t.strAt(0).equalsIgnoreCase("min")) {
                     min = Integer.parseInt(t.strAt(0));
@@ -145,11 +141,11 @@ public class RuleParser extends YsldParseHandler {
         } else {
             return null;
         }
-
     }
 
     protected ZoomContext getZoomContext(YamlParseContext context) {
-        return Util.forceDefaultForNull((ZoomContext) context.getDocHint(ZoomContext.HINT_ID),
+        return Util.forceDefaultForNull(
+                (ZoomContext) context.getDocHint(ZoomContext.HINT_ID),
                 WellKnownZoomContextFinder.getInstance().get("DEFAULT"));
     }
 }

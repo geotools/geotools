@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -23,7 +23,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.geotools.feature.AttributeImpl;
 import org.geotools.feature.GeometryAttributeImpl;
 import org.geotools.feature.NameImpl;
@@ -41,17 +40,10 @@ import org.opengis.geometry.BoundingBox;
 
 /**
  * @author Christian Mueller
- * 
- * Decorator Class for Simple Feature objects having pregeneralized geometries
- * 
- * This feature object is read only, modifying calls result in a
- * {@link UnsupportedOperationException}
- * 
- * The special thing is that a generalized geometry is returned.
- * 
- *
- *
- *
+ *     <p>Decorator Class for Simple Feature objects having pregeneralized geometries
+ *     <p>This feature object is read only, modifying calls result in a {@link
+ *     UnsupportedOperationException}
+ *     <p>The special thing is that a generalized geometry is returned.
  * @source $URL$
  */
 public class PreGeneralizedSimpleFeature implements SimpleFeature {
@@ -68,8 +60,12 @@ public class PreGeneralizedSimpleFeature implements SimpleFeature {
 
     int[] indexMapping;
 
-    public PreGeneralizedSimpleFeature(SimpleFeatureType featureTyp, int indexMapping[],
-            SimpleFeature feature, String geomPropertyName, String backendGeomPropertyName) {
+    public PreGeneralizedSimpleFeature(
+            SimpleFeatureType featureTyp,
+            int indexMapping[],
+            SimpleFeature feature,
+            String geomPropertyName,
+            String backendGeomPropertyName) {
 
         this.feature = feature;
         this.geomPropertyName = geomPropertyName;
@@ -77,34 +73,28 @@ public class PreGeneralizedSimpleFeature implements SimpleFeature {
         this.featureTyp = featureTyp;
         this.indexMapping = indexMapping;
         this.nameBackendGeomProperty = new NameImpl(backendGeomPropertyName);
-
     }
 
     private String getBackendAttributeName(String attrName) {
-        if (geomPropertyName.equals(attrName))
-            return backendGeomPropertyName;
-        else
-            return attrName;
+        if (geomPropertyName.equals(attrName)) return backendGeomPropertyName;
+        else return attrName;
     }
 
     private Name getNameBackendAttribute(Name name) {
-        if (geomPropertyName.equals(name.getLocalPart()))
-            return nameBackendGeomProperty;
-        else
-            return name;
+        if (geomPropertyName.equals(name.getLocalPart())) return nameBackendGeomProperty;
+        else return name;
     }
 
     private Property createProperty(String name) {
-        Object value = name.equals(geomPropertyName) ? feature
-                .getAttribute(backendGeomPropertyName) : feature.getAttribute(name);
+        Object value =
+                name.equals(geomPropertyName)
+                        ? feature.getAttribute(backendGeomPropertyName)
+                        : feature.getAttribute(name);
         AttributeDescriptor attrDescr = featureTyp.getDescriptor(name);
-        if (attrDescr == null)
-            return null;
+        if (attrDescr == null) return null;
         if (attrDescr instanceof GeometryDescriptor)
             return new GeometryAttributeImpl(value, (GeometryDescriptor) attrDescr, null);
-        else
-            return new AttributeImpl(value, attrDescr, null);
-
+        else return new AttributeImpl(value, attrDescr, null);
     }
 
     private UnsupportedOperationException unsupported() {
@@ -129,7 +119,6 @@ public class PreGeneralizedSimpleFeature implements SimpleFeature {
 
     public List<Object> getAttributes() {
         return feature.getAttributes();
-
     }
 
     public Object getDefaultGeometry() {
@@ -166,7 +155,6 @@ public class PreGeneralizedSimpleFeature implements SimpleFeature {
 
     public void setAttributes(Object[] arg0) {
         throw unsupported();
-
     }
 
     public void setDefaultGeometry(Object arg0) {
@@ -179,8 +167,8 @@ public class PreGeneralizedSimpleFeature implements SimpleFeature {
 
     public GeometryAttribute getDefaultGeometryProperty() {
         Object value = feature.getAttribute(backendGeomPropertyName);
-        GeometryAttribute attr = new GeometryAttributeImpl(value, featureTyp
-                .getGeometryDescriptor(), null);
+        GeometryAttribute attr =
+                new GeometryAttributeImpl(value, featureTyp.getGeometryDescriptor(), null);
         return attr;
     }
 
@@ -190,7 +178,6 @@ public class PreGeneralizedSimpleFeature implements SimpleFeature {
 
     public void setDefaultGeometryProperty(GeometryAttribute arg0) {
         throw unsupported();
-
     }
 
     public Collection<Property> getProperties() {
@@ -207,15 +194,12 @@ public class PreGeneralizedSimpleFeature implements SimpleFeature {
 
     public Collection<Property> getProperties(String name) {
         Property p = createProperty(name);
-        if (p == null)
-            return Collections.emptyList();
-        else
-            return Collections.singletonList(p);
+        if (p == null) return Collections.emptyList();
+        else return Collections.singletonList(p);
     }
 
     public Property getProperty(Name name) {
         return createProperty(name.getLocalPart());
-
     }
 
     public Property getProperty(String name) {
@@ -228,12 +212,10 @@ public class PreGeneralizedSimpleFeature implements SimpleFeature {
 
     public void setValue(Collection<Property> arg0) {
         throw unsupported();
-
     }
 
     public void validate() throws IllegalAttributeException {
         feature.validate();
-
     }
 
     public AttributeDescriptor getDescriptor() {
@@ -245,8 +227,7 @@ public class PreGeneralizedSimpleFeature implements SimpleFeature {
     }
 
     public Map<Object, Object> getUserData() {
-        if (userData == null)
-            userData = new HashMap<Object, Object>();
+        if (userData == null) userData = new HashMap<Object, Object>();
         return userData;
     }
 
@@ -272,20 +253,18 @@ public class PreGeneralizedSimpleFeature implements SimpleFeature {
         }
 
         PreGeneralizedSimpleFeature feat = (PreGeneralizedSimpleFeature) obj;
-        if (feat.geomPropertyName.equals(this.geomPropertyName) == false)
-            return false;
+        if (feat.geomPropertyName.equals(this.geomPropertyName) == false) return false;
         if (feat.backendGeomPropertyName.equals(this.backendGeomPropertyName) == false)
             return false;
-        if (feat.featureTyp.equals(this.featureTyp) == false)
-            return false;
-        if (feat.feature.equals(this.feature) == false)
-            return false;
+        if (feat.featureTyp.equals(this.featureTyp) == false) return false;
+        if (feat.feature.equals(this.feature) == false) return false;
         return true;
     }
 
     public int hashCode() {
-        return featureTyp.hashCode() * geomPropertyName.hashCode()
-                * backendGeomPropertyName.hashCode() * feature.hashCode();
+        return featureTyp.hashCode()
+                * geomPropertyName.hashCode()
+                * backendGeomPropertyName.hashCode()
+                * feature.hashCode();
     }
-
 }

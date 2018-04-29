@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2016, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -20,25 +20,24 @@ import org.geotools.data.store.ContentState;
 
 /**
  * State for MemoryDataStore providing FeatureType and stored features.
+ *
  * @author Jody Garnett (Boundless)
  */
 public class MemoryState extends ContentState {
     /**
      * State for MemoryDataStore providing FeatureType and stored features.
-     *  
+     *
      * @param entry
      */
     public MemoryState(MemoryEntry entry) {
         super(entry);
     }
-    
-    /**
-     * Creates the state from an existing one.
-     */
+
+    /** Creates the state from an existing one. */
     public MemoryState(MemoryState state) {
         this(state.getEntry());
     }
-    
+
     @Override
     public MemoryEntry getEntry() {
         return (MemoryEntry) super.getEntry();

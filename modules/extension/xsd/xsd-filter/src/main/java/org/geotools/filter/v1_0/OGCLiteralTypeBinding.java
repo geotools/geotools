@@ -16,30 +16,25 @@
  */
 package org.geotools.filter.v1_0;
 
-import java.util.Calendar;
 import java.util.List;
-import java.util.TimeZone;
-
 import javax.xml.namespace.QName;
-
 import org.geotools.util.Converters;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 import org.geotools.xml.Text;
-import org.geotools.xml.impl.DatatypeConverterImpl;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Literal;
 import org.picocontainer.MutablePicoContainer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-
 /**
  * Binding object for the type http://www.opengis.net/ogc:LiteralType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:complexType name="LiteralType"&gt;
  *      &lt;xsd:complexContent mixed="true"&gt;
@@ -53,12 +48,8 @@ import org.w3c.dom.Element;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class OGCLiteralTypeBinding extends AbstractComplexBinding {
@@ -68,14 +59,13 @@ public class OGCLiteralTypeBinding extends AbstractComplexBinding {
         this.factory = factory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return OGC.LiteralType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -86,6 +76,7 @@ public class OGCLiteralTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -96,42 +87,41 @@ public class OGCLiteralTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {
-    }
+    public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
+     *
      * <!-- begin-user-doc -->
      * Just pass on emeded value as is.
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
-        //number of possibilities here since single child is of type any
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
+        // number of possibilities here since single child is of type any
 
-        //1. has text child elements
+        // 1. has text child elements
         List values = node.getChildValues(Text.class);
         if (!values.isEmpty()) {
             StringBuilder sb = new StringBuilder();
-            for (Object v: values) {
+            for (Object v : values) {
                 Text text = (Text) v;
                 sb.append(text.getValue());
             }
             return factory.literal(sb.toString());
         }
 
-        //2. no child elements, just return the text if any
+        // 2. no child elements, just return the text if any
         return factory.literal(value);
     }
 
-    public Element encode(Object object, Document document, Element value)
-        throws Exception {
+    public Element encode(Object object, Document document, Element value) throws Exception {
         Literal literal = (Literal) object;
 
         Object unconvertedValue = literal.getValue();

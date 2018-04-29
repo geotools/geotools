@@ -16,6 +16,10 @@
  */
 package org.geotools.data.crs;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.junit.Assert.assertThat;
+
 import com.vividsolutions.jts.geom.Point;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureReader;
@@ -27,19 +31,14 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
-
-/**
- * Contains tests for the reproject feature reader.
- */
+/** Contains tests for the reproject feature reader. */
 public final class ReprojectFeatureReaderTest {
 
     @Test
     public void testReprojectWithUserData() throws Exception {
         // create a feature collection wit a single feature
-        SimpleFeatureType featureType = DataUtilities.createType("feature", "id:string,geometry:Point:srid=4326");
+        SimpleFeatureType featureType =
+                DataUtilities.createType("feature", "id:string,geometry:Point:srid=4326");
         SimpleFeature feature = DataUtilities.createFeature(featureType, "1|POINT(1 2)");
         ListFeatureCollection features = new ListFeatureCollection(featureType);
         features.add(feature);
@@ -47,9 +46,11 @@ public final class ReprojectFeatureReaderTest {
         feature.getUserData().put("someKey", "someValue");
         // instantiate the reproject reader
         CoordinateReferenceSystem sphericalMercator = CRS.decode("EPSG:3857");
-        FeatureReader<SimpleFeatureType, SimpleFeature> reader = DataUtilities.reader((SimpleFeatureCollection) features);
+        FeatureReader<SimpleFeatureType, SimpleFeature> reader =
+                DataUtilities.reader((SimpleFeatureCollection) features);
         int featuresCount = 0;
-        try (ReprojectFeatureReader reprojected = new ReprojectFeatureReader(reader, sphericalMercator)) {
+        try (ReprojectFeatureReader reprojected =
+                new ReprojectFeatureReader(reader, sphericalMercator)) {
             // check that the feature was correctly reprojected
             SimpleFeature reprojectedFeature = reprojected.next();
             assertThat(reprojectedFeature, notNullValue());
@@ -65,9 +66,7 @@ public final class ReprojectFeatureReaderTest {
         assertThat(featuresCount, is(1));
     }
 
-    /**
-     * Compare two double values with an accepted error.
-     */
+    /** Compare two double values with an accepted error. */
     private void checkDoubleValue(double value, double expected, double error) {
         double difference = Math.abs(value - expected);
         assertThat(difference < error, is(true));

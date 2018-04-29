@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2014 - 2016 , Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -18,12 +18,13 @@ package org.geotools.renderer.label;
 
 import static org.junit.Assert.assertEquals;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
-
 import org.geotools.geometry.jts.LiteShape2;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.geotools.renderer.label.LabelCacheImpl.LabelRenderingMode;
@@ -37,9 +38,6 @@ import org.mockito.Mockito;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.operation.TransformException;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-
 public class LabelPainterTest {
 
     private static GeometryFactory geometryFactory = new GeometryFactory();
@@ -48,47 +46,51 @@ public class LabelPainterTest {
     private TextStyle2D style;
     private TextSymbolizer symbolizer;
     LiteShape2 shape;
-    
+
     @Before
     public void setUp() throws TransformException, FactoryException {
         graphics = Mockito.mock(Graphics2D.class);
-        Mockito.when(graphics.getFontRenderContext()).thenReturn(
-                new FontRenderContext(new AffineTransform(),
-                        RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT,
-                        RenderingHints.VALUE_FRACTIONALMETRICS_DEFAULT));
+        Mockito.when(graphics.getFontRenderContext())
+                .thenReturn(
+                        new FontRenderContext(
+                                new AffineTransform(),
+                                RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT,
+                                RenderingHints.VALUE_FRACTIONALMETRICS_DEFAULT));
         style = new TextStyle2D();
         style.setFont(new Font("Serif", Font.PLAIN, 10));
-        shape = new LiteShape2(
-                geometryFactory.createPoint(new Coordinate(10, 10)),
-                ProjectiveTransform.create(new AffineTransform()), null, false);
+        shape =
+                new LiteShape2(
+                        geometryFactory.createPoint(new Coordinate(10, 10)),
+                        ProjectiveTransform.create(new AffineTransform()),
+                        null,
+                        false);
         symbolizer = styleFactory.createTextSymbolizer();
     }
-    
+
     @Test
     public void testEmptyLinesInLabel() {
         LabelPainter painter = new LabelPainter(graphics, LabelRenderingMode.STRING);
-        LabelCacheItem labelItem = new LabelCacheItem("LAYERID", style, shape,
-                "line1\n\nline2", symbolizer);
+        LabelCacheItem labelItem =
+                new LabelCacheItem("LAYERID", style, shape, "line1\n\nline2", symbolizer);
         labelItem.setAutoWrap(0);
         painter.setLabel(labelItem);
         assertEquals(3, painter.getLineCount());
     }
-    
+
     @Test
     public void testEmptyLinesInLabelWithAutoWrap() {
         LabelPainter painter = new LabelPainter(graphics, LabelRenderingMode.STRING);
-        LabelCacheItem labelItem = new LabelCacheItem("LAYERID", style, shape,
-                "line1\n\nline2", symbolizer);
+        LabelCacheItem labelItem =
+                new LabelCacheItem("LAYERID", style, shape, "line1\n\nline2", symbolizer);
         labelItem.setAutoWrap(100);
         painter.setLabel(labelItem);
         assertEquals(3, painter.getLineCount());
     }
-    
+
     @Test
     public void testOnlyNewlines() {
         LabelPainter painter = new LabelPainter(graphics, LabelRenderingMode.STRING);
-        LabelCacheItem labelItem = new LabelCacheItem("LAYERID", style, shape,
-                "\n\n", symbolizer);
+        LabelCacheItem labelItem = new LabelCacheItem("LAYERID", style, shape, "\n\n", symbolizer);
         labelItem.setAutoWrap(100);
         painter.setLabel(labelItem);
         // emtpy label

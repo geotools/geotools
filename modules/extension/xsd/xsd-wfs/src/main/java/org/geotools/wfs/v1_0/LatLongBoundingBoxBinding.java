@@ -2,12 +2,9 @@ package org.geotools.wfs.v1_0;
 
 import java.math.BigInteger;
 import java.util.Arrays;
-
 import javax.xml.namespace.QName;
-
 import net.opengis.ows10.Ows10Factory;
 import net.opengis.ows10.WGS84BoundingBoxType;
-
 import org.geotools.xml.AbstractComplexEMFBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
@@ -39,6 +36,5 @@ public class LatLongBoundingBoxBinding extends AbstractComplexEMFBinding {
         bbox.setUpperCorner(Arrays.asList(maxx, maxy));
 
         return bbox;
-
     }
 }

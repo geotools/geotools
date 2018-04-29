@@ -20,17 +20,14 @@ import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
 import org.w3c.dom.Document;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class MultiCurvePropertyTypeBindingTest extends GML3TestSupport {
     public void testEncode() throws Exception {
         Document dom = encode(GML3MockData.multiLineString(), GML.multiCurveProperty);
 
-        assertEquals(2,
-            dom.getElementsByTagNameNS(GML.NAMESPACE, GML.LineString.getLocalPart()).getLength());
+        assertEquals(
+                2,
+                dom.getElementsByTagNameNS(GML.NAMESPACE, GML.LineString.getLocalPart())
+                        .getLength());
     }
 }

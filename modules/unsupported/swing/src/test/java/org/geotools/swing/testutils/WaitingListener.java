@@ -23,15 +23,13 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * An event listener that can be set to expect specified types of events
- * and test if they are received.
- * 
+ * An event listener that can be set to expect specified types of events and test if they are
+ * received.
+ *
  * @param <E> the Enum type associated with the event class
  * @param <T> type of {@code EventObject}
- * 
  * @author Michael Bedward
  * @since 8.0
- *
  * @source $URL$
  * @version $Id$
  */
@@ -41,43 +39,42 @@ public abstract class WaitingListener<T extends EventObject, E extends Enum> {
     protected CountDownLatch[] latches;
     protected AtomicBoolean[] flags;
     protected EventObject[] events;
-    
+
     public WaitingListener(int numEventTypes) {
         NTYPES = numEventTypes;
         latches = new CountDownLatch[NTYPES];
         events = new EventObject[NTYPES];
-        
+
         flags = new AtomicBoolean[NTYPES];
         for (int i = 0; i < NTYPES; i++) {
             flags[i] = new AtomicBoolean(false);
         }
     }
-    
+
     /**
      * Sets the listener to expect one event of the specified type.
-     * 
+     *
      * @param type event type
      */
     public synchronized void setExpected(E type) {
         setExpected(type, 1);
     }
-    
+
     /**
      * Sets the listener to expect {@code count} events of the specified type.
-     * 
+     *
      * @param type event type
      * @param count number of events
      */
     public synchronized void setExpected(E type, int count) {
         latches[type.ordinal()] = new CountDownLatch(count);
     }
-    
+
     /**
      * Waits of an event of the specified type to be received.
-     * 
+     *
      * @param type event type
      * @param timeoutMillis maximum waiting time
-     * 
      * @return {@code true} if the event was received
      */
     public synchronized boolean await(E type, long timeoutMillis) {
@@ -85,7 +82,7 @@ public abstract class WaitingListener<T extends EventObject, E extends Enum> {
         if (latch == null) {
             throw new IllegalStateException("latch not set for " + type);
         }
-        
+
         boolean result = false;
         try {
             result = latch.await(timeoutMillis, TimeUnit.MILLISECONDS);
@@ -99,9 +96,8 @@ public abstract class WaitingListener<T extends EventObject, E extends Enum> {
 
     /**
      * Checks if an event of the specified type has been received.
-     * 
+     *
      * @param type event type
-     * 
      * @return {@code true} if an event of this type has been received
      */
     public synchronized boolean eventReceived(E type) { // MapPaneEvent.Type type) {
@@ -109,11 +105,9 @@ public abstract class WaitingListener<T extends EventObject, E extends Enum> {
     }
 
     /**
-     * Retrieves the more recent event of the specified type received
-     * by this listener.
-     * 
+     * Retrieves the more recent event of the specified type received by this listener.
+     *
      * @param type event type
-     * 
      * @return the most recent event or {@code null} if none received
      */
     public T getEvent(E type) {
@@ -123,12 +117,10 @@ public abstract class WaitingListener<T extends EventObject, E extends Enum> {
     protected void catchEvent(int k, T event) {
         flags[k].set(true);
         events[k] = event;
-        
+
         CountDownLatch latch = latches[k];
         if (latch != null) {
             latch.countDown();
         }
-        
     }
-
 }

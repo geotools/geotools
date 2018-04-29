@@ -23,35 +23,29 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
-import org.geotools.jdbc.SQLDialect;
 import org.geotools.test.FixtureUtilities;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class OracleNGDataStoreFactoryOnlineTest extends JDBCTestSupport {
 
     @Override
     protected JDBCTestSetup createTestSetup() {
         return new OracleTestSetup();
     }
-    
+
     public void testCreateConnection() throws Exception {
         OracleNGDataStoreFactory factory = new OracleNGDataStoreFactory();
         checkCreateConnection(factory, factory.getDatabaseID());
     }
-    
+
     public void testCaptureOldDatastoreConfig() throws Exception {
         OracleNGDataStoreFactory factory = new OracleNGDataStoreFactory();
         checkCreateConnection(factory, "oracle");
     }
-    
+
     public void testGeometryMetadata() throws IOException {
         OracleNGDataStoreFactory factory = new OracleNGDataStoreFactory();
         Properties db = FixtureUtilities.loadFixture("oracle");
@@ -78,7 +72,8 @@ public class OracleNGDataStoreFactoryOnlineTest extends JDBCTestSupport {
         }
     }
 
-    private void checkCreateConnection(OracleNGDataStoreFactory factory, String dbtype) throws IOException {
+    private void checkCreateConnection(OracleNGDataStoreFactory factory, String dbtype)
+            throws IOException {
         Properties db = FixtureUtilities.loadFixture("oracle");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put(HOST.key, db.getProperty(HOST.key));
@@ -100,7 +95,4 @@ public class OracleNGDataStoreFactoryOnlineTest extends JDBCTestSupport {
             store.dispose();
         }
     }
-    
-    
-
 }

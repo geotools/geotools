@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.util.concurrent.Callable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.data.DataStore;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -29,7 +28,7 @@ import org.geotools.util.logging.Logging;
 import org.opengis.feature.type.Name;
 
 class BoundsCallable implements Callable<ReferencedEnvelope> {
-    
+
     static final Logger LOGGER = Logging.getLogger(FeatureCallable.class);
 
     Query query;
@@ -40,7 +39,8 @@ class BoundsCallable implements Callable<ReferencedEnvelope> {
 
     String typeName;
 
-    public BoundsCallable(AggregatingDataStore store, Query query, Name storeName, String typeName) {
+    public BoundsCallable(
+            AggregatingDataStore store, Query query, Name storeName, String typeName) {
         super();
         this.store = store;
         this.query = query;
@@ -56,8 +56,11 @@ class BoundsCallable implements Callable<ReferencedEnvelope> {
             Query q = new Query(query);
             q.setTypeName(typeName);
             ReferencedEnvelope env = (ReferencedEnvelope) source.getBounds(q);
-            if(LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.log(Level.FINE, "Retrieved bounds {0} form store {1}", new Object[] {env, storeName});
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.log(
+                        Level.FINE,
+                        "Retrieved bounds {0} form store {1}",
+                        new Object[] {env, storeName});
             }
             return env;
         } catch (Exception e) {
@@ -70,5 +73,4 @@ class BoundsCallable implements Callable<ReferencedEnvelope> {
             }
         }
     }
-
 }

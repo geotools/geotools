@@ -21,18 +21,13 @@ import org.geotools.validation.ValidationResults;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-
 /**
  * PointCoveredByLineValidation purpose.
- * 
- * <p>
- * Completes the specified attribute comparison.
- * </p>
+ *
+ * <p>Completes the specified attribute comparison.
  *
  * @author dzwiers, Refractions Research, Inc.
  * @author $Author: dmzwiers $ (last modification)
- *
- *
  * @source $URL$
  * @version $Id$
  */
@@ -46,10 +41,8 @@ public class AttributeValidation extends DefaultFeatureValidation {
 
     /**
      * PointCoveredByLineValidation constructor.
-     * 
-     * <p>
-     * Super
-     * </p>
+     *
+     * <p>Super
      */
     public AttributeValidation() {
         super();
@@ -61,24 +54,21 @@ public class AttributeValidation extends DefaultFeatureValidation {
      * @param feature Feature to be Validated
      * @param type FeatureTypeInfo schema of feature
      * @param results coallate results information
-     *
-     *
      * @see org.geotools.validation.FeatureValidation#validate(org.geotools.feature.Feature,
-     *      org.geotools.feature.FeatureType,
-     *      org.geotools.validation.ValidationResults)
+     *     org.geotools.feature.FeatureType, org.geotools.validation.ValidationResults)
      */
-    public boolean validate(SimpleFeature feature, SimpleFeatureType type,
-        ValidationResults results) {
-    	int surface = ((Integer) feature.getAttribute("surface")).intValue();
-    	int speed = ((Integer) feature.getAttribute("speed")).intValue();
-    	if( surface == 1 && speed > 110 ){
-    		results.error( feature, "speed over 110");
-    		return false;
-    	}
-    	if( surface == 2 && speed > 110 ){
-    		results.error( feature, "speed over 70");
-    		return false;
-    	}
+    public boolean validate(
+            SimpleFeature feature, SimpleFeatureType type, ValidationResults results) {
+        int surface = ((Integer) feature.getAttribute("surface")).intValue();
+        int speed = ((Integer) feature.getAttribute("speed")).intValue();
+        if (surface == 1 && speed > 110) {
+            results.error(feature, "speed over 110");
+            return false;
+        }
+        if (surface == 2 && speed > 110) {
+            results.error(feature, "speed over 70");
+            return false;
+        }
         return true;
     }
 

@@ -23,27 +23,25 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.imageio.ImageIO;
 import javax.imageio.spi.ImageInputStreamSpi;
 import javax.imageio.spi.ServiceRegistry;
 import javax.imageio.stream.ImageInputStream;
 
 /**
- * Implementation of an {@link ImageInputStreamSpi} for instantiating an
- * {@link ImageInputStream} capable of connecting to a {@link S3File}
+ * Implementation of an {@link ImageInputStreamSpi} for instantiating an {@link ImageInputStream}
+ * capable of connecting to a {@link S3File}
  *
  * @see ImageInputStream
  * @see ImageInputStreamSpi
  * @see ImageIO#createImageInputStream(Object)
- *
  * @author Andrew Curtis, Boundless
  */
 public class S3ImageInputStreamImplSpi extends ImageInputStreamSpi {
 
     /** Logger. */
-    private final static Logger LOGGER = Logger
-            .getLogger("it.geosolutions.imageio.stream.input.s3");
+    private static final Logger LOGGER =
+            Logger.getLogger("it.geosolutions.imageio.stream.input.s3");
 
     private static final String vendorName = "GeoSolutions";
 
@@ -54,18 +52,15 @@ public class S3ImageInputStreamImplSpi extends ImageInputStreamSpi {
     private static volatile boolean useFileChannel;
 
     /**
-     * Constructs a blank {@link ImageInputStreamSpi}. It is up to the subclass
-     * to initialize instance variables and/or override method implementations
-     * in order to provide working versions of all methods.
-     *
+     * Constructs a blank {@link ImageInputStreamSpi}. It is up to the subclass to initialize
+     * instance variables and/or override method implementations in order to provide working
+     * versions of all methods.
      */
     public S3ImageInputStreamImplSpi() {
         super(vendorName, version, inputClass);
     }
 
-    /**
-     * @see ImageInputStreamSpi#getDescription(Locale).
-     */
+    /** @see ImageInputStreamSpi#getDescription(Locale). */
     public String getDescription(Locale locale) {
         return "Service provider that wraps a file in S3";
     }
@@ -73,58 +68,47 @@ public class S3ImageInputStreamImplSpi extends ImageInputStreamSpi {
     public void onRegistration(ServiceRegistry registry, Class<?> category) {
         super.onRegistration(registry, category);
         Class<ImageInputStreamSpi> targetClass = ImageInputStreamSpi.class;
-        for (Iterator<? extends ImageInputStreamSpi> i = registry.getServiceProviders(targetClass, true); i.hasNext();) {
+        for (Iterator<? extends ImageInputStreamSpi> i =
+                        registry.getServiceProviders(targetClass, true);
+                i.hasNext(); ) {
             ImageInputStreamSpi other = i.next();
 
-            if (this != other)
-                registry.setOrdering(targetClass, this, other);
-
+            if (this != other) registry.setOrdering(targetClass, this, other);
         }
     }
     /**
-     * Returns an instance of the ImageInputStream implementation associated
-     * with this service provider.
+     * Returns an instance of the ImageInputStream implementation associated with this service
+     * provider.
      *
-     * @param input
-     *            an object of the class type returned by getInputClass.
-     * @param useCache
-     *            a boolean indicating whether a cache eraf should be used, in
-     *            cases where it is optional.
-     *
-     * @param cacheDir
-     *            a File indicating where the cache eraf should be created, or
-     *            null to use the system directory.
-     *
-     *
+     * @param input an object of the class type returned by getInputClass.
+     * @param useCache a boolean indicating whether a cache eraf should be used, in cases where it
+     *     is optional.
+     * @param cacheDir a File indicating where the cache eraf should be created, or null to use the
+     *     system directory.
      * @return an ImageInputStream instance.
-     *
-     * @throws IllegalArgumentException
-     *             if input is not an instance of the correct class or is null.
+     * @throws IllegalArgumentException if input is not an instance of the correct class or is null.
      */
-    public ImageInputStream createInputStreamInstance(Object input,
-                                                      boolean useCache, File cacheDir) {
+    public ImageInputStream createInputStreamInstance(
+            Object input, boolean useCache, File cacheDir) {
         LOGGER.warning("S3ImageInputStreamImplSpi.createInputStream(" + input.getClass() + ")");
 
         if (input instanceof S3ImageInputStreamImpl) {
             try {
-                return new S3ImageInputStreamImpl(((S3ImageInputStreamImpl)input).getUrl());
+                return new S3ImageInputStreamImpl(((S3ImageInputStreamImpl) input).getUrl());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
 
         try {
-            String path = (String)input;
+            String path = (String) input;
             return new S3ImageInputStreamImpl(path);
         } catch (FileNotFoundException e) {
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
+            if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
             return null;
         } catch (IOException e) {
-            if (LOGGER.isLoggable(Level.FINE))
-                LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
+            if (LOGGER.isLoggable(Level.FINE)) LOGGER.log(Level.FINE, e.getLocalizedMessage(), e);
             return null;
         }
-
     }
 }

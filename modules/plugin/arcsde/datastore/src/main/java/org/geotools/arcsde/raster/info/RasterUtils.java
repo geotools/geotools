@@ -27,6 +27,7 @@ import static org.geotools.arcsde.raster.info.RasterCellType.TYPE_4BIT;
 import static org.geotools.arcsde.raster.info.RasterCellType.TYPE_64BIT_REAL;
 import static org.geotools.arcsde.raster.info.RasterCellType.TYPE_8BIT_U;
 
+import com.sun.imageio.plugins.common.BogusColorSpace;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Transparency;
@@ -41,9 +42,7 @@ import java.awt.image.SampleModel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-
 import javax.imageio.ImageTypeSpecifier;
-
 import org.geotools.coverage.grid.GridEnvelope2D;
 import org.geotools.coverage.grid.io.OverviewPolicy;
 import org.geotools.geometry.GeneralEnvelope;
@@ -60,20 +59,15 @@ import org.opengis.referencing.operation.MathTransform2D;
 import org.opengis.referencing.operation.NoninvertibleTransformException;
 import org.opengis.referencing.operation.TransformException;
 
-import com.sun.imageio.plugins.common.BogusColorSpace;
-
 /**
- * 
  * @author Gabriel Roldan (OpenGeo)
  * @since 2.5.4
  * @version $Id$
- *
- *
  * @source $URL$
- *         http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/main/java/org
- *         /geotools/arcsde/raster/info/RasterUtils.java $
+ *     http://svn.osgeo.org/geotools/trunk/modules/plugin/arcsde/datastore/src/main/java/org
+ *     /geotools/arcsde/raster/info/RasterUtils.java $
  */
-@SuppressWarnings({ "nls" })
+@SuppressWarnings({"nls"})
 public class RasterUtils {
 
     private static final Logger LOGGER = Logging.getLogger("org.geotools.arcsde.gce");
@@ -85,22 +79,23 @@ public class RasterUtils {
     /**
      * Returns the grid range specifying the matching tiles for a given pyramid level and grid
      * extent specifying the overlapping area to request in the level's pixel space.
-     * 
+     *
      * @param pixelRange
      * @param tilesHigh
      * @param tilesWide
      * @param tileSize
      * @param numTilesHigh
      * @param numTilesWide
-     * 
      * @param pixelRange
      * @param level
-     * 
      * @return a grid range holding the coordinates in tile space that fully covers the requested
-     *         pixel range for the given pyramid level, or a negative area range
+     *     pixel range for the given pyramid level, or a negative area range
      */
-    private static GridEnvelope findMatchingTiles(final Dimension tileSize, int numTilesWide,
-            int numTilesHigh, final GridEnvelope pixelRange) {
+    private static GridEnvelope findMatchingTiles(
+            final Dimension tileSize,
+            int numTilesWide,
+            int numTilesHigh,
+            final GridEnvelope pixelRange) {
 
         final int minPixelX = pixelRange.getLow(0);
         final int minPixelY = pixelRange.getLow(1);
@@ -126,8 +121,8 @@ public class RasterUtils {
         return matchingTiles;
     }
 
-    private static GridEnvelope getTargetGridRange(final MathTransform modelToRaster,
-            final Envelope requestedEnvelope) {
+    private static GridEnvelope getTargetGridRange(
+            final MathTransform modelToRaster, final Envelope requestedEnvelope) {
         GridEnvelope levelOverlappingPixels;
         int levelMinPixelX;
         int levelMaxPixelX;
@@ -153,32 +148,32 @@ public class RasterUtils {
 
             final int width = levelMaxPixelX - levelMinPixelX;
             final int height = levelMaxPixelY - levelMinPixelY;
-            levelOverlappingPixels = new GridEnvelope2D(levelMinPixelX, levelMinPixelY, width,
-                    height);
+            levelOverlappingPixels =
+                    new GridEnvelope2D(levelMinPixelX, levelMinPixelY, width, height);
         }
         return levelOverlappingPixels;
     }
 
     /**
      * Creates an IndexColorModel out of a DataBuffer obtained from an ArcSDE's raster color map.
-     * 
+     *
      * @param colorMapData
      * @return
      */
-    public static IndexColorModel sdeColorMapToJavaColorModel(final DataBuffer colorMapData,
-            final int bitsPerSample) {
+    public static IndexColorModel sdeColorMapToJavaColorModel(
+            final DataBuffer colorMapData, final int bitsPerSample) {
         if (colorMapData == null) {
             throw new NullPointerException("colorMapData");
         }
 
         if (colorMapData.getNumBanks() < 3 || colorMapData.getNumBanks() > 4) {
-            throw new IllegalArgumentException("colorMapData shall have 3 or 4 banks: "
-                    + colorMapData.getNumBanks());
+            throw new IllegalArgumentException(
+                    "colorMapData shall have 3 or 4 banks: " + colorMapData.getNumBanks());
         }
 
         if (bitsPerSample != 8 && bitsPerSample != 16) {
-            throw new IllegalAccessError("bits per sample shall be either 8 or 16. Got "
-                    + bitsPerSample);
+            throw new IllegalAccessError(
+                    "bits per sample shall be either 8 or 16. Got " + bitsPerSample);
         }
 
         final int numBanks = colorMapData.getNumBanks();
@@ -210,8 +205,8 @@ public class RasterUtils {
 
         // Prepare temporary colorModel and sample model, needed to build the final
         // ArcSDEPyramidLevel level;
-        final int sampleImageWidth = 1;// rasterInfo.getImageWidth();
-        final int sampleImageHeight = 1;// rasterInfo.getImageHeight();
+        final int sampleImageWidth = 1; // rasterInfo.getImageWidth();
+        final int sampleImageHeight = 1; // rasterInfo.getImageHeight();
 
         final ImageTypeSpecifier its;
         // treat special cases...
@@ -227,17 +222,21 @@ public class RasterUtils {
         } else if (nativePixelType == TYPE_1BIT && numberOfBands == 1) {
             byte noDataValue = rasterInfo.getNoDataValue(rasterIndex, 0).byteValue();
             // special case, a single band 1-bit
-            its = createOneBitColorMappedImageSpec(sampleImageWidth, sampleImageHeight, noDataValue);
+            its =
+                    createOneBitColorMappedImageSpec(
+                            sampleImageWidth, sampleImageHeight, noDataValue);
 
         } else if (nativePixelType == TYPE_4BIT && numberOfBands == 1) {
             byte noDataValue = rasterInfo.getNoDataValue(rasterIndex, 0).byteValue();
             // special case, a single band 4-bit
-            its = createFourBitColorMappedImageSpec(sampleImageWidth, sampleImageHeight,
-                    noDataValue);
+            its =
+                    createFourBitColorMappedImageSpec(
+                            sampleImageWidth, sampleImageHeight, noDataValue);
         } else if (numberOfBands == 1) {
             // special case, a single band grayscale image, no matter the pixel depth
-            its = createGrayscaleImageSpec(sampleImageWidth, sampleImageHeight, dataType,
-                    bitsPerSample);
+            its =
+                    createGrayscaleImageSpec(
+                            sampleImageWidth, sampleImageHeight, dataType, bitsPerSample);
 
         } else if (numberOfBands == 3 && pixelType == TYPE_8BIT_U) {
             // special case, an optimizable RGB image
@@ -262,8 +261,9 @@ public class RasterUtils {
                 for (int i = 0; i < numberOfBands; i++) {
                     numBits[i] = bitsPerSample;
                 }
-                colorModel = new ComponentColorModelJAI(colorSpace, numBits, false, false,
-                        Transparency.OPAQUE, dataType);
+                colorModel =
+                        new ComponentColorModelJAI(
+                                colorSpace, numBits, false, false, Transparency.OPAQUE, dataType);
             }
             {
                 int[] bankIndices = new int[numberOfBands];
@@ -271,10 +271,16 @@ public class RasterUtils {
                 // int bandOffset = (tileWidth * tileHeight * pixelType.getBitsPerSample()) / 8;
                 for (int i = 0; i < numberOfBands; i++) {
                     bankIndices[i] = i;
-                    bandOffsets[i] = 0;// (i * bandOffset);
+                    bandOffsets[i] = 0; // (i * bandOffset);
                 }
-                sampleModel = new BandedSampleModel(dataType, sampleImageWidth, sampleImageHeight,
-                        sampleImageWidth, bankIndices, bandOffsets);
+                sampleModel =
+                        new BandedSampleModel(
+                                dataType,
+                                sampleImageWidth,
+                                sampleImageHeight,
+                                sampleImageWidth,
+                                bankIndices,
+                                bandOffsets);
             }
             its = new ImageTypeSpecifier(colorModel, sampleModel);
         }
@@ -282,32 +288,33 @@ public class RasterUtils {
         return its;
     }
 
-    private static ImageTypeSpecifier createFourBitColorMappedImageSpec(int sampleImageWidth,
-            int sampleImageHeight, byte noDataValue) {
+    private static ImageTypeSpecifier createFourBitColorMappedImageSpec(
+            int sampleImageWidth, int sampleImageHeight, byte noDataValue) {
 
         int maxValue = (int) TYPE_4BIT.getSampleValueRange().getMaximum();
 
         int mapSize = noDataValue > maxValue ? noDataValue : maxValue + 1;
 
         int[] cmap = new int[mapSize];
-        ColorUtilities.expand(new Color[] { Color.BLACK, Color.WHITE }, cmap, 0, maxValue);
+        ColorUtilities.expand(new Color[] {Color.BLACK, Color.WHITE}, cmap, 0, maxValue);
 
         for (int i = maxValue; i < mapSize; i++) {
             cmap[i] = ColorUtilities.getIntFromColor(0, 0, 0, 0);
         }
 
         int transparentPixel = noDataValue;
-        IndexColorModel colorModel = new IndexColorModel(8, mapSize, cmap, 0, true,
-                transparentPixel, DataBuffer.TYPE_BYTE);
+        IndexColorModel colorModel =
+                new IndexColorModel(
+                        8, mapSize, cmap, 0, true, transparentPixel, DataBuffer.TYPE_BYTE);
 
-        SampleModel sampleModel = colorModel.createCompatibleSampleModel(sampleImageWidth,
-                sampleImageHeight);
+        SampleModel sampleModel =
+                colorModel.createCompatibleSampleModel(sampleImageWidth, sampleImageHeight);
         ImageTypeSpecifier its = new ImageTypeSpecifier(colorModel, sampleModel);
         return its;
     }
 
-    private static ImageTypeSpecifier createOneBitColorMappedImageSpec(int sampleImageWidth,
-            int sampleImageHeight, byte noDataValue) {
+    private static ImageTypeSpecifier createOneBitColorMappedImageSpec(
+            int sampleImageWidth, int sampleImageHeight, byte noDataValue) {
 
         assert noDataValue == 2;
 
@@ -322,17 +329,18 @@ public class RasterUtils {
         cmap[2] = NODATA;
 
         int transparentPixel = noDataValue;
-        IndexColorModel colorModel = new IndexColorModel(8, mapSize, cmap, 0, false,
-                transparentPixel, DataBuffer.TYPE_BYTE);
+        IndexColorModel colorModel =
+                new IndexColorModel(
+                        8, mapSize, cmap, 0, false, transparentPixel, DataBuffer.TYPE_BYTE);
 
-        SampleModel sampleModel = colorModel.createCompatibleSampleModel(sampleImageWidth,
-                sampleImageHeight);
+        SampleModel sampleModel =
+                colorModel.createCompatibleSampleModel(sampleImageWidth, sampleImageHeight);
         ImageTypeSpecifier its = new ImageTypeSpecifier(colorModel, sampleModel);
         return its;
     }
 
-    private static ImageTypeSpecifier createRGBAImageSpec(int sampleImageWidth,
-            int sampleImageHeight, final int dataType) {
+    private static ImageTypeSpecifier createRGBAImageSpec(
+            int sampleImageWidth, int sampleImageHeight, final int dataType) {
 
         final ImageTypeSpecifier its;
 
@@ -342,24 +350,30 @@ public class RasterUtils {
         int transparency = Transparency.TRANSLUCENT;
         int transferType = dataType;
 
-        int[] nBits = { 8, 8, 8, 8 };
-        ColorModel colorModel = new ComponentColorModelJAI(colorSpace, nBits, hasAlpha,
-                isAlphaPremultiplied, transparency, transferType);
+        int[] nBits = {8, 8, 8, 8};
+        ColorModel colorModel =
+                new ComponentColorModelJAI(
+                        colorSpace,
+                        nBits,
+                        hasAlpha,
+                        isAlphaPremultiplied,
+                        transparency,
+                        transferType);
 
         /*
          * Do not use colorModel.createCompatibleSampleModel cause it creates a
          * PixelInterleavedSampleModel and we need a BandedSampleModel so it matches how the data
          * comes out of ArcSDE
          */
-        SampleModel sampleModel = new BandedSampleModel(dataType, sampleImageWidth,
-                sampleImageHeight, 4);
+        SampleModel sampleModel =
+                new BandedSampleModel(dataType, sampleImageWidth, sampleImageHeight, 4);
 
         its = new ImageTypeSpecifier(colorModel, sampleModel);
         return its;
     }
 
-    private static ImageTypeSpecifier createRGBImageSpec(int sampleImageWidth,
-            int sampleImageHeight, final int dataType) {
+    private static ImageTypeSpecifier createRGBImageSpec(
+            int sampleImageWidth, int sampleImageHeight, final int dataType) {
 
         final ImageTypeSpecifier its;
         ColorSpace colorSpace = ColorSpace.getInstance(ColorSpace.CS_sRGB);
@@ -367,36 +381,48 @@ public class RasterUtils {
         boolean isAlphaPremultiplied = false;
         int transparency = Transparency.OPAQUE;
         int transferType = dataType;
-        ColorModel colorModel = new ComponentColorModel(colorSpace, new int[] { 8, 8, 8 },
-                hasAlpha, isAlphaPremultiplied, transparency, transferType);
+        ColorModel colorModel =
+                new ComponentColorModel(
+                        colorSpace,
+                        new int[] {8, 8, 8},
+                        hasAlpha,
+                        isAlphaPremultiplied,
+                        transparency,
+                        transferType);
 
-        SampleModel sampleModel = new BandedSampleModel(dataType, sampleImageWidth,
-                sampleImageHeight, 3);
+        SampleModel sampleModel =
+                new BandedSampleModel(dataType, sampleImageWidth, sampleImageHeight, 3);
 
         its = new ImageTypeSpecifier(colorModel, sampleModel);
         return its;
     }
 
-    private static ImageTypeSpecifier createGrayscaleImageSpec(int sampleImageWidth,
-            int sampleImageHeight, final int dataType, int bitsPerPixel) {
+    private static ImageTypeSpecifier createGrayscaleImageSpec(
+            int sampleImageWidth, int sampleImageHeight, final int dataType, int bitsPerPixel) {
         final ImageTypeSpecifier its;
         ColorSpace colorSpace = ColorSpace.getInstance(ColorSpace.CS_GRAY);
         boolean hasAlpha = false;
         boolean isAlphaPremultiplied = false;
         int transparency = Transparency.OPAQUE;
         int transferType = dataType;
-        int[] nbits = { bitsPerPixel };
-        ColorModel colorModel = new ComponentColorModelJAI(colorSpace, nbits, hasAlpha,
-                isAlphaPremultiplied, transparency, transferType);
+        int[] nbits = {bitsPerPixel};
+        ColorModel colorModel =
+                new ComponentColorModelJAI(
+                        colorSpace,
+                        nbits,
+                        hasAlpha,
+                        isAlphaPremultiplied,
+                        transparency,
+                        transferType);
 
-        SampleModel sampleModel = colorModel.createCompatibleSampleModel(sampleImageWidth,
-                sampleImageHeight);
+        SampleModel sampleModel =
+                colorModel.createCompatibleSampleModel(sampleImageWidth, sampleImageHeight);
         its = new ImageTypeSpecifier(colorModel, sampleModel);
         return its;
     }
 
-    private static ImageTypeSpecifier createColorMappedImageSpec(final IndexColorModel colorModel,
-            int sampleImageWidth, int sampleImageHeight) {
+    private static ImageTypeSpecifier createColorMappedImageSpec(
+            final IndexColorModel colorModel, int sampleImageWidth, int sampleImageHeight) {
 
         final SampleModel sampleModel;
         final ImageTypeSpecifier its;
@@ -404,21 +430,20 @@ public class RasterUtils {
         sampleModel = colorModel.createCompatibleSampleModel(sampleImageWidth, sampleImageHeight);
         its = new ImageTypeSpecifier(colorModel, sampleModel);
         return its;
-
     }
 
     /**
      * Given a collection of {@link RasterQueryInfo} instances holding information about how a
      * request fits for each individual raster composing a catalog, figure out where their resulting
      * images fit into the overall mosaic that's gonna be the result of the request.
-     * 
+     *
      * @param rasterInfo
      * @param resultEnvelope
      * @param results
      * @return
      */
-    public static GridEnvelope setMosaicLocations(final RasterDatasetInfo rasterInfo,
-            final List<RasterQueryInfo> results) {
+    public static GridEnvelope setMosaicLocations(
+            final RasterDatasetInfo rasterInfo, final List<RasterQueryInfo> results) {
         final MathTransform modelToRaster;
         final MathTransform rasterToModel;
         int minx = Integer.MAX_VALUE;
@@ -464,7 +489,7 @@ public class RasterUtils {
     }
 
     public static RasterQueryInfo findLowestResolution(List<RasterQueryInfo> results) {
-        double[] prev = { Double.MIN_VALUE, Double.MIN_VALUE };
+        double[] prev = {Double.MIN_VALUE, Double.MIN_VALUE};
         RasterQueryInfo lowestResQuery = null;
 
         double[] curr;
@@ -481,15 +506,17 @@ public class RasterUtils {
     /**
      * Find out the raster ids and their pyramid levels in the raster dataset for the rasters whose
      * envelope overlaps the requested one
-     * 
+     *
      * @param rasterInfo
      * @param requestedEnvelope
      * @param requestedDim
      * @param overviewPolicy
      * @return
      */
-    public static List<RasterQueryInfo> findMatchingRasters(final RasterDatasetInfo rasterInfo,
-            final GeneralEnvelope requestedEnvelope, final GridEnvelope requestedDim,
+    public static List<RasterQueryInfo> findMatchingRasters(
+            final RasterDatasetInfo rasterInfo,
+            final GeneralEnvelope requestedEnvelope,
+            final GridEnvelope requestedDim,
             final OverviewPolicy overviewPolicy) {
 
         final int numRasters = rasterInfo.getNumRasters();
@@ -498,8 +525,9 @@ public class RasterUtils {
         int optimalPyramidLevel;
         GeneralEnvelope gridEnvelope;
         for (int rasterN = 0; rasterN < numRasters; rasterN++) {
-            optimalPyramidLevel = rasterInfo.getOptimalPyramidLevel(rasterN, overviewPolicy,
-                    requestedEnvelope, requestedDim);
+            optimalPyramidLevel =
+                    rasterInfo.getOptimalPyramidLevel(
+                            rasterN, overviewPolicy, requestedEnvelope, requestedDim);
             gridEnvelope = rasterInfo.getGridEnvelope(rasterN, optimalPyramidLevel);
             final boolean edgesInclusive = true;
             if (requestedEnvelope.intersects(gridEnvelope, edgesInclusive)) {
@@ -517,8 +545,10 @@ public class RasterUtils {
         return matchingRasters;
     }
 
-    public static void fitRequestToRaster(final GeneralEnvelope requestedEnvelope,
-            final RasterDatasetInfo rasterInfo, final RasterQueryInfo query) {
+    public static void fitRequestToRaster(
+            final GeneralEnvelope requestedEnvelope,
+            final RasterDatasetInfo rasterInfo,
+            final RasterQueryInfo query) {
 
         GridEnvelope resultGridRange;
         GeneralEnvelope resultEnvelope;
@@ -529,8 +559,8 @@ public class RasterUtils {
 
         int rasterIndex = query.getRasterIndex();
         int pyramidLevel = query.getPyramidLevel();
-        MathTransform2D rasterToModel = (MathTransform2D) rasterInfo.getRasterToModel(rasterIndex,
-                pyramidLevel);
+        MathTransform2D rasterToModel =
+                (MathTransform2D) rasterInfo.getRasterToModel(rasterIndex, pyramidLevel);
         MathTransform2D modelToRaster;
 
         try {
@@ -546,15 +576,16 @@ public class RasterUtils {
 
             xmin = Math.max(xmin, levelRange.getLow(0));
             ymin = Math.max(ymin, levelRange.getLow(1));
-            xmax = Math.min(xmax, levelRange.getHigh(0) + 1);// 1+ because getHigh is inclusive
-            ymax = Math.min(ymax, levelRange.getHigh(1) + 1);// 1+ because getHigh is inclusive
+            xmax = Math.min(xmax, levelRange.getHigh(0) + 1); // 1+ because getHigh is inclusive
+            ymax = Math.min(ymax, levelRange.getHigh(1) + 1); // 1+ because getHigh is inclusive
 
             int width = xmax - xmin;
             int height = ymax - ymin;
 
             resultGridRange = new GridEnvelope2D(xmin, ymin, width, height);
-            Rectangle2D finalEnvelope = CRS.transform(rasterToModel, (Rectangle2D) resultGridRange,
-                    new Rectangle2D.Double());
+            Rectangle2D finalEnvelope =
+                    CRS.transform(
+                            rasterToModel, (Rectangle2D) resultGridRange, new Rectangle2D.Double());
 
             resultEnvelope = new GeneralEnvelope(finalEnvelope);
             CoordinateReferenceSystem crs = rasterInfo.getCoverageCrs();
@@ -564,8 +595,8 @@ public class RasterUtils {
         }
 
         matchingTiles = findMatchingTiles(rasterInfo, rasterIndex, pyramidLevel, resultGridRange);
-        tiledImageGridRange = getTiledImageGridRange(rasterInfo.getTileDimension(rasterIndex),
-                matchingTiles);
+        tiledImageGridRange =
+                getTiledImageGridRange(rasterInfo.getTileDimension(rasterIndex), matchingTiles);
 
         query.setResultEnvelope(resultEnvelope);
         query.setResultGridRange(resultGridRange);
@@ -576,8 +607,8 @@ public class RasterUtils {
         // query.setLevelTileRange(levelTileRange);
     }
 
-    private static GridEnvelope getTiledImageGridRange(Dimension tileSize,
-            GridEnvelope matchingTiles) {
+    private static GridEnvelope getTiledImageGridRange(
+            Dimension tileSize, GridEnvelope matchingTiles) {
 
         int tiledImageMinX = (matchingTiles.getLow(0) * tileSize.width);
         int tiledImageMinY = (matchingTiles.getLow(1) * tileSize.height);
@@ -585,13 +616,16 @@ public class RasterUtils {
         int tiledHeight = (matchingTiles.getSpan(1) * tileSize.height);
 
         GridEnvelope2D tiledImageGridRange;
-        tiledImageGridRange = new GridEnvelope2D(tiledImageMinX, tiledImageMinY, tiledWidth,
-                tiledHeight);
+        tiledImageGridRange =
+                new GridEnvelope2D(tiledImageMinX, tiledImageMinY, tiledWidth, tiledHeight);
         return tiledImageGridRange;
     }
 
-    private static GridEnvelope findMatchingTiles(RasterDatasetInfo rasterInfo, int rasterIndex,
-            int pyramidLevel, GridEnvelope resultGridRange) {
+    private static GridEnvelope findMatchingTiles(
+            RasterDatasetInfo rasterInfo,
+            int rasterIndex,
+            int pyramidLevel,
+            GridEnvelope resultGridRange) {
         final Dimension tileSize = rasterInfo.getTileDimension(rasterIndex);
         final int numTilesWide = rasterInfo.getNumTilesWide(rasterIndex, pyramidLevel);
         final int numTilesHigh = rasterInfo.getNumTilesHigh(rasterIndex, pyramidLevel);
@@ -605,12 +639,11 @@ public class RasterUtils {
      * transparent pixel whose index can be used as no-data value for colormapped rasters, even if
      * the returned IndexColorModel needs to be of a higher sample depth (ie, 16 instead of 8 bit)
      * to satisfy that.
-     * 
-     * @param colorMap
-     *            the raster's native color map the returned one will be based on
+     *
+     * @param colorMap the raster's native color map the returned one will be based on
      * @return the same {@code colorMap} if it has a transparent pixel, another, possibly of a
-     *         higher depth one if not, containing all the colors from {@code colorMap} and a newly
-     *         allocated cell for the transparent pixel if necessary
+     *     higher depth one if not, containing all the colors from {@code colorMap} and a newly
+     *     allocated cell for the transparent pixel if necessary
      */
     public static IndexColorModel ensureNoDataPixelIsAvailable(final IndexColorModel colorMap) {
         int transparentPixel = colorMap.getTransparentPixel();
@@ -620,11 +653,12 @@ public class RasterUtils {
 
         final int transferType = colorMap.getTransferType();
         final int mapSize = colorMap.getMapSize();
-        final int maxSize = 65536;// true for either transfer type
+        final int maxSize = 65536; // true for either transfer type
 
         if (mapSize == maxSize) {
-            LOGGER.fine("There's no room for a new transparent pixel, "
-                    + "returning the original colorMap as is");
+            LOGGER.fine(
+                    "There's no room for a new transparent pixel, "
+                            + "returning the original colorMap as is");
             return colorMap;
         }
 
@@ -668,19 +702,26 @@ public class RasterUtils {
         final boolean hasalpha = true;
         final int startIndex = 0;
 
-        targetColorModel = new IndexColorModel(significantBits, newMapSize, argb, startIndex,
-                hasalpha, transparentPixelIndex, newTransferType);
+        targetColorModel =
+                new IndexColorModel(
+                        significantBits,
+                        newMapSize,
+                        argb,
+                        startIndex,
+                        hasalpha,
+                        transparentPixelIndex,
+                        newTransferType);
 
         return targetColorModel;
     }
 
     /**
-     * For a color-mapped raster, the no-data value is set to the
-     * {@link IndexColorModel#getTransparentPixel() transparent pixel}
-     * 
+     * For a color-mapped raster, the no-data value is set to the {@link
+     * IndexColorModel#getTransparentPixel() transparent pixel}
+     *
      * @param colorMap
      * @return the index in the colorMap that's the transparent pixel as is to be used as no-data
-     *         value
+     *     value
      */
     public static Number determineNoDataValue(IndexColorModel colorMap) {
         int noDataPixel = colorMap.getTransparentPixel();
@@ -692,22 +733,21 @@ public class RasterUtils {
     }
 
     /**
-     * @param numBands
-     *            number of bands in the raster dataset for the band whose nodata value is to be
-     *            determined. Might be useful to treat special cases where some assumptions are made
-     *            depending on the cell type and number of bands
-     * @param statsMin
-     *            the minimum sample value for the band as reported by the band's statistics, or
-     *            {@code NaN}
-     * @param statsMax
-     *            the maximum sample value for the band as reported by the band's statistics, or
-     *            {@code NaN}
-     * @param nativeCellType
-     *            the band's native cell type
+     * @param numBands number of bands in the raster dataset for the band whose nodata value is to
+     *     be determined. Might be useful to treat special cases where some assumptions are made
+     *     depending on the cell type and number of bands
+     * @param statsMin the minimum sample value for the band as reported by the band's statistics,
+     *     or {@code NaN}
+     * @param statsMax the maximum sample value for the band as reported by the band's statistics,
+     *     or {@code NaN}
+     * @param nativeCellType the band's native cell type
      * @return
      */
-    public static Number determineNoDataValue(final int numBands, final double statsMin,
-            final double statsMax, final RasterCellType nativeCellType) {
+    public static Number determineNoDataValue(
+            final int numBands,
+            final double statsMin,
+            final double statsMax,
+            final RasterCellType nativeCellType) {
 
         final Number nodata;
 
@@ -718,16 +758,19 @@ public class RasterUtils {
             LOGGER.fine("no data value is Double.NaN");
             return Double.valueOf(Double.NaN);
         } else if (nativeCellType == TYPE_1BIT) {
-            LOGGER.fine("1BIT images no-data value is set to 2,"
-                    + " regardless of the raster statistics");
+            LOGGER.fine(
+                    "1BIT images no-data value is set to 2,"
+                            + " regardless of the raster statistics");
             return Double.valueOf(2);
         } else if (nativeCellType == TYPE_4BIT) {
-            LOGGER.fine("4BIT images no-data value is set to 16,"
-                    + " regardless of the raster statistics");
+            LOGGER.fine(
+                    "4BIT images no-data value is set to 16,"
+                            + " regardless of the raster statistics");
             return Double.valueOf(16);
         } else if (!isGeoPhysics(numBands, nativeCellType)) {
-            LOGGER.fine("3 or 4 band, 8 bit unsigned image, assumed to be "
-                    + "RGB or RGBA respectively and nodata value hardcoded to 255");
+            LOGGER.fine(
+                    "3 or 4 band, 8 bit unsigned image, assumed to be "
+                            + "RGB or RGBA respectively and nodata value hardcoded to 255");
             return (Number) nativeCellType.getSampleValueRange().getMaxValue();
         }
 
@@ -784,15 +827,17 @@ public class RasterUtils {
         return geophysics;
     }
 
-    public static RasterCellType determineTargetCellType(final RasterCellType nativeCellType,
-            final List<Number> noDataValues) {
+    public static RasterCellType determineTargetCellType(
+            final RasterCellType nativeCellType, final List<Number> noDataValues) {
 
         if (TYPE_32BIT_REAL == nativeCellType || TYPE_64BIT_REAL == nativeCellType) {
             // no data value is NaN, so no need to promote. For other types NaN is not available
             for (Number nodata : noDataValues) {
                 if (!Double.isNaN(nodata.doubleValue())) {
-                    throw new IllegalArgumentException("no data values for float and "
-                            + "double cell types shall be NaN: " + nodata);
+                    throw new IllegalArgumentException(
+                            "no data values for float and "
+                                    + "double cell types shall be NaN: "
+                                    + nodata);
                 }
             }
             return nativeCellType;
@@ -825,25 +870,25 @@ public class RasterUtils {
 
     private static RasterCellType promote(final RasterCellType nativeCellType) {
         switch (nativeCellType) {
-        case TYPE_1BIT:
-        case TYPE_4BIT:
-            return TYPE_8BIT_U;
-        case TYPE_8BIT_U:
-            return TYPE_16BIT_U;
-        case TYPE_8BIT_S:
-            return TYPE_16BIT_S;
-        case TYPE_16BIT_U:
-            return TYPE_32BIT_U;
-        case TYPE_16BIT_S:
-            return TYPE_32BIT_S;
-        case TYPE_32BIT_S:
-        case TYPE_32BIT_REAL:
-        case TYPE_32BIT_U:
-            return TYPE_64BIT_REAL;
-        default:
-            throw new IllegalArgumentException(
-                    "Can't promote a raster of type 64-bit-real, there's "
-                            + "no higher pixel depth than that!");
+            case TYPE_1BIT:
+            case TYPE_4BIT:
+                return TYPE_8BIT_U;
+            case TYPE_8BIT_U:
+                return TYPE_16BIT_U;
+            case TYPE_8BIT_S:
+                return TYPE_16BIT_S;
+            case TYPE_16BIT_U:
+                return TYPE_32BIT_U;
+            case TYPE_16BIT_S:
+                return TYPE_32BIT_S;
+            case TYPE_32BIT_S:
+            case TYPE_32BIT_REAL:
+            case TYPE_32BIT_U:
+                return TYPE_64BIT_REAL;
+            default:
+                throw new IllegalArgumentException(
+                        "Can't promote a raster of type 64-bit-real, there's "
+                                + "no higher pixel depth than that!");
         }
     }
 }

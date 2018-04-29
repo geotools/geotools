@@ -30,61 +30,57 @@ package org.geotools.caching.spatialindex;
 
 import java.util.Properties;
 
-
-/** 
- * A generic contract for spatial indexes, such as quadtrees or r-trees.
- * Provides methods to insert, delete and query the index.
- * Note that implementations may be n-dimensional.
+/**
+ * A generic contract for spatial indexes, such as quadtrees or r-trees. Provides methods to insert,
+ * delete and query the index. Note that implementations may be n-dimensional.
  *
  * @author Marios Hadjieleftheriou, marioh@cs.ucr.edu
- * @copyright Copyright (C) 2002  Navel Ltd.
- * Modified by Christophe Rousson
- * Modified by Emily Gouge
- *
- *
- *
- *
+ * @copyright Copyright (C) 2002 Navel Ltd. Modified by Christophe Rousson Modified by Emily Gouge
  * @source $URL$
  */
 public interface SpatialIndex {
     public static final String INDEX_TYPE_PROPERTY = "SpatialIndex.Type";
 
     /**
-     * This constant is used to check if two doubles are nearly equal.
-     * Copied from original code by Marios Hadjieleftheriou.
+     * This constant is used to check if two doubles are nearly equal. Copied from original code by
+     * Marios Hadjieleftheriou.
      */
     public static final double EPSILON = 1.192092896e-07;
 
-    /** Empty the index.
+    /**
+     * Empty the index.
+     *
      * @throws IllegalStateException
      */
     public void clear() throws IllegalStateException;
 
-    /** Insert new data in the index.
+    /**
+     * Insert new data in the index.
      *
      * @param data to insert
      * @param a n-dims shape
      */
     public void insertData(final Object data, final Shape shape);
-    
-    /** Traverse index to match data such as :
-     *  <code>query.contains(Data.getShape())</code>
+
+    /**
+     * Traverse index to match data such as : <code>query.contains(Data.getShape())</code>
      *
      * @param query, a n-dims shape
      * @param visitor implementing visit() callback method
      */
     public void containmentQuery(final Shape query, final Visitor v);
 
-    /** Traverse index to match data such as :
-     *  <code>query.intersects(Data.getShape())</code>
+    /**
+     * Traverse index to match data such as : <code>query.intersects(Data.getShape())</code>
      *
      * @param query, a n-dims shape
      * @param visitor implementing visit() callback method
      */
     public void intersectionQuery(final Shape query, final Visitor v);
 
-    /** Traverse index to match data having query falling inside its shape, ie :
-     * <code>Data.getShape().contains(query)</code>
+    /**
+     * Traverse index to match data having query falling inside its shape, ie : <code>
+     * Data.getShape().contains(query)</code>
      *
      * @param query, a n-dims point
      * @param visitor implementing visit() callback method
@@ -97,8 +93,8 @@ public interface SpatialIndex {
      * @param v
      * @param nnc
      */
-    public void nearestNeighborQuery(int k, final Shape query, final Visitor v,
-        NearestNeighborComparator nnc);
+    public void nearestNeighborQuery(
+            int k, final Shape query, final Visitor v, NearestNeighborComparator nnc);
 
     /**
      * @param k
@@ -107,37 +103,31 @@ public interface SpatialIndex {
      */
     public void nearestNeighborQuery(int k, final Shape query, final Visitor v);
 
-
-    /**
-     * @return
-     */
+    /** @return */
     public Properties getIndexProperties();
 
-    /** Implementations may always return true.
+    /**
+     * Implementations may always return true.
      *
      * @return true if index is valid.
-     *
-     * TODO: define what is a valid index.
+     *     <p>TODO: define what is a valid index.
      */
     public boolean isIndexValid();
 
-    /**
-     * @return statistics about the index.
-     */
+    /** @return statistics about the index. */
     public Statistics getStatistics();
 
-    /** Cause pending write operations to happen immediately.
-     * Use this method to persist the index before disposal.
-     *
+    /**
+     * Cause pending write operations to happen immediately. Use this method to persist the index
+     * before disposal.
      */
     public void flush();
-    
+
     /**
-     * Initializes the spatial index from 
-     * a storage instance.
-     * <p>This allows caches to be saved to storage
-     * and reused.</p>
-     * 
+     * Initializes the spatial index from a storage instance.
+     *
+     * <p>This allows caches to be saved to storage and reused.
+     *
      * @param storage
      */
     public void initializeFromStorage(Storage storage);

@@ -18,17 +18,13 @@
 package org.geotools.data.complex.xml;
 
 import java.util.List;
-
 import org.jdom2.Document;
 
 /**
- * The xml object returned for processing via a backend xmlDataStore. 
- * 
+ * The xml object returned for processing via a backend xmlDataStore.
+ *
  * @author Russell Petty (GeoScience Victoria)
  * @version $Id$
- *
- *
- *
  * @source $URL$
  */
 public class XmlResponse {
@@ -51,5 +47,4 @@ public class XmlResponse {
     public List<Integer> getValidFeatureIndex() {
         return validFeatureIndex;
     }
-
 }

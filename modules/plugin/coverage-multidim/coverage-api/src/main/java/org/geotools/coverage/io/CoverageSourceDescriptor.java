@@ -18,7 +18,6 @@ package org.geotools.coverage.io;
 
 import java.io.IOException;
 import java.util.List;
-
 import org.geotools.coverage.grid.io.DimensionDescriptor;
 import org.geotools.coverage.io.CoverageSource.AdditionalDomain;
 import org.geotools.coverage.io.CoverageSource.SpatialDomain;
@@ -27,8 +26,8 @@ import org.geotools.coverage.io.CoverageSource.VerticalDomain;
 import org.geotools.coverage.io.range.RangeType;
 
 /**
- * Describes a {@link CoverageSource} in terms of Name, {@link SpatialDomain}, {@link VerticalDomain}, {@link TemporalDomain},
- * {@link AdditionalDomain}s, {@link DimensionDescriptor}s
+ * Describes a {@link CoverageSource} in terms of Name, {@link SpatialDomain}, {@link
+ * VerticalDomain}, {@link TemporalDomain}, {@link AdditionalDomain}s, {@link DimensionDescriptor}s
  */
 public class CoverageSourceDescriptor {
 
@@ -137,12 +136,9 @@ public class CoverageSourceDescriptor {
         this.dimensionDescriptors = dimensionDescriptors;
     }
 
-    /**
-     * 
-     */
+    /** */
     public void dispose() {
         // default impl, do nothing
 
     }
-
 }

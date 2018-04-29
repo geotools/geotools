@@ -19,16 +19,10 @@ package org.geotools.data.teradata;
 import org.geotools.jdbc.JDBCEmptyOnlineTest;
 import org.geotools.jdbc.JDBCEmptyTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class TeradataEmptyOnlineTest extends JDBCEmptyOnlineTest {
-
 
     protected JDBCEmptyTestSetup createTestSetup() {
         return new TeradataEmptyTestSetup(new TeradataTestSetup());
     }
-
 }

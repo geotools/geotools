@@ -17,7 +17,6 @@
 package org.geotools.filter.v2_0.bindings;
 
 import javax.xml.namespace.QName;
-
 import org.geotools.filter.v2_0.FES;
 import org.geotools.xml.AbstractComplexBinding;
 import org.opengis.filter.BinaryComparisonOperator;
@@ -39,7 +38,7 @@ import org.opengis.filter.expression.Expression;
  *     &lt;/xsd:complexContent>
  *  &lt;/xsd:complexType>
  *  <pre>
- *  
+ *
  * @author Justin Deoliveira, OpenGeo
  *
  */
@@ -54,7 +53,7 @@ public class BinaryComparisonOpTypeBinding extends AbstractComplexBinding {
     public Class getType() {
         return BinaryComparisonOperator.class;
     }
-    
+
     @Override
     public Object getProperty(Object object, QName name) throws Exception {
         BinaryComparisonOperator op = (BinaryComparisonOperator) object;
@@ -65,7 +64,7 @@ public class BinaryComparisonOpTypeBinding extends AbstractComplexBinding {
             return op.isMatchingCase();
         }
         if (FES.expression.equals(name)) {
-            return new Expression[]{op.getExpression1(), op.getExpression2()};
+            return new Expression[] {op.getExpression1(), op.getExpression2()};
         }
         return null;
     }

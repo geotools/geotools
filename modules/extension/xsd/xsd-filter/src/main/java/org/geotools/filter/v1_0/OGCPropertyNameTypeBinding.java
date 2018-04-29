@@ -16,24 +16,24 @@
  */
 package org.geotools.filter.v1_0;
 
-import org.picocontainer.MutablePicoContainer;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import javax.xml.namespace.QName;
-import org.opengis.filter.FilterFactory;
-import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.PropertyName;
 import org.geotools.filter.Filters;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
-
+import org.opengis.filter.FilterFactory;
+import org.opengis.filter.expression.Expression;
+import org.opengis.filter.expression.PropertyName;
+import org.picocontainer.MutablePicoContainer;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
  * Binding object for the type http://www.opengis.net/ogc:PropertyNameType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:complexType name="PropertyNameType"&gt;
  *      &lt;xsd:complexContent mixed="true"&gt;
@@ -43,12 +43,8 @@ import org.geotools.xml.Node;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class OGCPropertyNameTypeBinding extends AbstractComplexBinding {
@@ -58,14 +54,13 @@ public class OGCPropertyNameTypeBinding extends AbstractComplexBinding {
         this.factory = factory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return OGC.PropertyNameType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -76,6 +71,7 @@ public class OGCPropertyNameTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -86,26 +82,26 @@ public class OGCPropertyNameTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {
-    }
+    public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Expression expression = (Expression) value;
         String xpath = Filters.asString(expression);
 
-        //if null returned, assume empty string == default geometry
+        // if null returned, assume empty string == default geometry
         if (xpath == null) {
             xpath = "";
         }
@@ -113,8 +109,7 @@ public class OGCPropertyNameTypeBinding extends AbstractComplexBinding {
         return factory.property(xpath);
     }
 
-    public Element encode(Object object, Document document, Element value)
-        throws Exception {
+    public Element encode(Object object, Document document, Element value) throws Exception {
         PropertyName propertyName = (PropertyName) object;
 
         if (propertyName.getPropertyName() != null) {

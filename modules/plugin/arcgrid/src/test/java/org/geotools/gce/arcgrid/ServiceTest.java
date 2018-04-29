@@ -17,58 +17,47 @@
  */
 package org.geotools.gce.arcgrid;
 
-import java.io.File;
 import java.util.Iterator;
-
 import junit.framework.TestCase;
-
-import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.coverage.grid.io.AbstractGridCoverage2DReader;
-import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 import org.geotools.coverage.grid.io.GridFormatFinder;
-import org.geotools.test.TestData;
-import org.opengis.coverage.grid.GridCoverageReader;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 
 /**
  * Class for testing availaibility of arcgrid format factory
- * 
+ *
  * @author Simone Giannecchini
  * @author ian
- *
- *
  * @source $URL$
  */
 public class ServiceTest extends TestCase {
 
-	public ServiceTest(java.lang.String testName) {
-		super(testName);
-	}
+    public ServiceTest(java.lang.String testName) {
+        super(testName);
+    }
 
-	public static void main(java.lang.String[] args) {
-		junit.textui.TestRunner.run(ServiceTest.class);
-	}
+    public static void main(java.lang.String[] args) {
+        junit.textui.TestRunner.run(ServiceTest.class);
+    }
 
-	public void testIsAvailable() throws NoSuchAuthorityCodeException,
-			FactoryException {
-		GridFormatFinder.scanForPlugins();
-		Iterator<GridFormatFactorySpi> list = GridFormatFinder.getAvailableFormats().iterator();
-		boolean found = false;
-		GridFormatFactorySpi fac = null;
-		while (list.hasNext()) {
-			fac = (GridFormatFactorySpi) list.next();
+    public void testIsAvailable() throws NoSuchAuthorityCodeException, FactoryException {
+        GridFormatFinder.scanForPlugins();
+        Iterator<GridFormatFactorySpi> list = GridFormatFinder.getAvailableFormats().iterator();
+        boolean found = false;
+        GridFormatFactorySpi fac = null;
+        while (list.hasNext()) {
+            fac = (GridFormatFactorySpi) list.next();
 
-			if (fac instanceof ArcGridFormatFactory) {
-				found = true;
+            if (fac instanceof ArcGridFormatFactory) {
+                found = true;
 
-				break;
-			}
-		}
+                break;
+            }
+        }
 
-		assertTrue("ArcGridFormatFactory not registered", found);
-		assertTrue("ArcGridFormatFactory not available", fac.isAvailable());
-		assertNotNull(new ArcGridFormatFactory().createFormat());
-	}
+        assertTrue("ArcGridFormatFactory not registered", found);
+        assertTrue("ArcGridFormatFactory not available", fac.isAvailable());
+        assertNotNull(new ArcGridFormatFactory().createFormat());
+    }
 }

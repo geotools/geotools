@@ -16,60 +16,48 @@
  */
 package org.geotools.referencing.factory.epsg;
 
+import static org.junit.Assert.*;
+
 import java.net.URL;
 import java.util.Iterator;
 import java.util.Set;
-
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.referencing.WKT;
+import org.junit.*;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CRSAuthorityFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.crs.ProjectedCRS;
 
-import org.junit.*;
-import static org.junit.Assert.*;
-
-
 /**
  * Checks the exception thrown by the fallback system do report actual errors when the code is
  * available but for some reason broken, and not "code not found" ones.
- *
- *
  *
  * @source $URL$
  * @version $Id$
  * @author Andrea Aime (TOPP)
  */
 public final class FallbackAuthorityFactoryTest {
-    /**
-     * Set to {@code true} for printing debugging information.
-     */
+    /** Set to {@code true} for printing debugging information. */
     private static final boolean VERBOSE = false;
 
-    /**
-     * The extra factory.
-     */
+    /** The extra factory. */
     private FactoryEPSGExtra extra;
 
-    /**
-     * Adds the extra factory to the set of authority factories.
-     */
+    /** Adds the extra factory to the set of authority factories. */
     @Before
     public void setUp() {
         assertNull(extra);
-        
+
         CRS.reset("all");
         extra = new FactoryEPSGExtra();
         ReferencingFactoryFinder.addAuthorityFactory(extra);
         ReferencingFactoryFinder.scanForPlugins();
     }
 
-    /**
-     * Removes the extra factory from the set of authority factories.
-     */
+    /** Removes the extra factory from the set of authority factories. */
     @After
     public void tearDown() {
         assertNotNull(extra);
@@ -78,18 +66,19 @@ public final class FallbackAuthorityFactoryTest {
     }
 
     /**
-     * Makes sure that the testing {@link FactoryEPSGExtra} has precedence over
-     * {@link FactoryUsingWKT}.
+     * Makes sure that the testing {@link FactoryEPSGExtra} has precedence over {@link
+     * FactoryUsingWKT}.
      */
     @Test
     public void testFactoryOrdering() {
-        Set<CRSAuthorityFactory> factories =  ReferencingFactoryFinder.getCRSAuthorityFactories(null);
-        for( CRSAuthorityFactory factory : factories ){
-            System.out.println("--> "+factory.getClass().getSimpleName() );
+        Set<CRSAuthorityFactory> factories =
+                ReferencingFactoryFinder.getCRSAuthorityFactories(null);
+        for (CRSAuthorityFactory factory : factories) {
+            System.out.println("--> " + factory.getClass().getSimpleName());
         }
         boolean foundWkt = false;
         boolean foundExtra = false;
-        for (Iterator<CRSAuthorityFactory> it = factories.iterator(); it.hasNext();) {
+        for (Iterator<CRSAuthorityFactory> it = factories.iterator(); it.hasNext(); ) {
             CRSAuthorityFactory factory = (CRSAuthorityFactory) it.next();
             Class<?> type = factory.getClass();
             if (VERBOSE) {
@@ -99,7 +88,8 @@ public final class FallbackAuthorityFactoryTest {
                 foundExtra = true;
             } else if (type == FactoryUsingWKT.class) {
                 foundWkt = true;
-                assertTrue("We should have encountered WKT factory after the extra one", foundExtra);
+                assertTrue(
+                        "We should have encountered WKT factory after the extra one", foundExtra);
             }
         }
         assertTrue(foundWkt);
@@ -107,8 +97,8 @@ public final class FallbackAuthorityFactoryTest {
     }
 
     /**
-     * Tests the {@code 42101} code. The purpose of this test is mostly
-     * to make sure that {@link FactoryUsingWKT} is in the chain.
+     * Tests the {@code 42101} code. The purpose of this test is mostly to make sure that {@link
+     * FactoryUsingWKT} is in the chain.
      *
      * @throws FactoryException If the CRS can't be created.
      */
@@ -135,8 +125,8 @@ public final class FallbackAuthorityFactoryTest {
     }
 
     /**
-     * GEOT-1702, make sure looking up for an existing code does not result in a
-     * {@link StackOverflowException}.
+     * GEOT-1702, make sure looking up for an existing code does not result in a {@link
+     * StackOverflowException}.
      *
      * @throws FactoryException If the CRS can't be created.
      */
@@ -148,8 +138,8 @@ public final class FallbackAuthorityFactoryTest {
     }
 
     /**
-     * GEOT-1702, make sure looking up for a non existing code does not result in a
-     * {@link StackOverflowException}.
+     * GEOT-1702, make sure looking up for a non existing code does not result in a {@link
+     * StackOverflowException}.
      *
      * @throws FactoryException If the CRS can't be created.
      */
@@ -160,8 +150,8 @@ public final class FallbackAuthorityFactoryTest {
     }
 
     /**
-     * Extra class used to make sure we have {@link FactoryUsingWKT} among the fallbacks
-     * (used to check the fallback mechanism).
+     * Extra class used to make sure we have {@link FactoryUsingWKT} among the fallbacks (used to
+     * check the fallback mechanism).
      *
      * @author Andrea Aime (TOPP)
      */
@@ -174,9 +164,7 @@ public final class FallbackAuthorityFactoryTest {
             super(null, DEFAULT_PRIORITY + 5);
         }
 
-        /**
-         * Returns the URL to the test file that contains a broken CRS for code EPSG:1.
-         */
+        /** Returns the URL to the test file that contains a broken CRS for code EPSG:1. */
         @Override
         protected URL getDefinitionsURL() {
             return FactoryUsingWKT.class.getResource("epsg2.properties");

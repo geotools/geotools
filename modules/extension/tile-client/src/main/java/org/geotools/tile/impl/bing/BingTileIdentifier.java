@@ -20,15 +20,11 @@ import org.geotools.tile.TileIdentifier;
 import org.geotools.tile.impl.ZoomLevel;
 
 /**
- * <p>
- * The TileIdentifier implementation for the BingMaps family. This identifier
- * follows the grid logic of similar implementations. The different
- * characteristic of a BingTileIdentifier is the use of quadkey to locate a tile
- * in the grid space. Please refer to <a
- * href="https://msdn.microsoft.com/en-us/library/bb259689.aspx>Bing Maps Tile
- * System</a>.
- * </p>
- * 
+ * The TileIdentifier implementation for the BingMaps family. This identifier follows the grid logic
+ * of similar implementations. The different characteristic of a BingTileIdentifier is the use of
+ * quadkey to locate a tile in the grid space. Please refer to <a
+ * href="https://msdn.microsoft.com/en-us/library/bb259689.aspx>Bing Maps Tile System</a>.
+ *
  * @author Ugo Taddei
  * @since 12
  */
@@ -50,14 +46,18 @@ public class BingTileIdentifier extends TileIdentifier {
 
         return new BingTileIdentifier(
                 TileIdentifier.arithmeticMod((getX() + 1), getZoomLevel().getMaxTilePerRowNumber()),
-                getY(), getZoomLevel(), getServiceName());
+                getY(),
+                getZoomLevel(),
+                getServiceName());
     }
 
     public BingTileIdentifier getLowerNeighbour() {
 
-        return new BingTileIdentifier(getX(),
+        return new BingTileIdentifier(
+                getX(),
                 TileIdentifier.arithmeticMod((getY() + 1), getZoomLevel().getMaxTilePerRowNumber()),
-                getZoomLevel(), getServiceName());
+                getZoomLevel(),
+                getServiceName());
     }
 
     public String getId() {

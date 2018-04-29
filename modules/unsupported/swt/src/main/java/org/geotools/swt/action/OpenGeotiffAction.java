@@ -17,7 +17,6 @@
 package org.geotools.swt.action;
 
 import java.io.File;
-
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.widgets.Display;
@@ -37,17 +36,17 @@ import org.geotools.swt.utils.ImageCache;
 
 /**
  * Action to open geotiff files.
- * 
+ *
  * @author Andrea Antonello (www.hydrologis.com)
- *
- *
- *
  * @source $URL$
  */
 public class OpenGeotiffAction extends MapAction implements ISelectionChangedListener {
 
     public OpenGeotiffAction() {
-        super("Open Image", "Load an image file into the viewer.", ImageCache.getInstance().getImage(ImageCache.OPEN));
+        super(
+                "Open Image",
+                "Load an image file into the viewer.",
+                ImageCache.getInstance().getImage(ImageCache.OPEN));
     }
 
     public void run() {
@@ -70,8 +69,5 @@ public class OpenGeotiffAction extends MapAction implements ISelectionChangedLis
         }
     }
 
-    public void selectionChanged( SelectionChangedEvent arg0 ) {
-
-    }
-
+    public void selectionChanged(SelectionChangedEvent arg0) {}
 }

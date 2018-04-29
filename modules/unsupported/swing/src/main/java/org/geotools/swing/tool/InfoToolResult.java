@@ -26,12 +26,11 @@ import java.util.Map.Entry;
 import org.opengis.feature.type.Name;
 
 /**
- * Used by {@code InfoToolHelper} classes to pass feature data to the
- * parent {@code InfoTool} object.
+ * Used by {@code InfoToolHelper} classes to pass feature data to the parent {@code InfoTool}
+ * object.
  *
  * @author Michael Bedward
  * @since 8.0
- *
  * @source $URL$
  * @version $URL$
  */
@@ -40,36 +39,36 @@ public class InfoToolResult {
     private static class ResultItem {
         String id;
         Map<String, Object> data;
-        
+
         ResultItem(String id) {
             this.id = id;
             data = new LinkedHashMap<String, Object>();
         }
-        
+
         boolean isEmpty() {
             return data.isEmpty();
         }
-        
+
         void put(String name, Object value) {
             data.put(name, value);
         }
-        
+
         @Override
         public String toString() {
             StringBuilder sb = new StringBuilder();
-            
+
             if (id != null) {
                 sb.append(id).append("\n");
             }
-            
+
             for (Entry<String, Object> e : data.entrySet()) {
                 sb.append(e.getKey()).append(": ").append(e.getValue()).append('\n');
             }
-            
+
             return sb.toString();
         }
     }
-    
+
     private final List<ResultItem> items;
     private ResultItem currentItem;
 
@@ -78,8 +77,8 @@ public class InfoToolResult {
     }
 
     /**
-     * Adds a new feature entry to this result. This <strong>must</strong>
-     * be called prior to calling the {@code setFeatureValue} methods.
+     * Adds a new feature entry to this result. This <strong>must</strong> be called prior to
+     * calling the {@code setFeatureValue} methods.
      */
     public void newFeature(String id) {
         currentItem = new ResultItem(id);
@@ -126,13 +125,12 @@ public class InfoToolResult {
 
         return Collections.unmodifiableMap(items.get(featureIndex).data);
     }
-    
+
     public String getFeatureId(int featureIndex) {
         if (featureIndex < 0 || featureIndex >= getNumFeatures()) {
             throw new IndexOutOfBoundsException("Invalid index value: " + featureIndex);
         }
-        
+
         return items.get(featureIndex).id;
     }
-    
 }

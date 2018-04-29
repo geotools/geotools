@@ -1,15 +1,10 @@
 package org.geotools.data.h2;
 
 import java.util.TimeZone;
-
 import org.geotools.jdbc.JDBCDateTestSetup;
 import org.geotools.jdbc.JDBCTimeZoneDateOnlineTest;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class H2TimeZoneCETDateOnlineTest extends JDBCTimeZoneDateOnlineTest {
 
     @Override
@@ -17,5 +12,4 @@ public class H2TimeZoneCETDateOnlineTest extends JDBCTimeZoneDateOnlineTest {
         super.setTimeZone(TimeZone.getTimeZone("CET"));
         return new H2DateTestSetup();
     }
-    
 }

@@ -18,7 +18,6 @@
 package org.geotools.data.complex;
 
 import java.io.IOException;
-
 import org.geotools.data.FeatureSource;
 import org.geotools.util.InterpolationProperties;
 import org.opengis.feature.Feature;
@@ -26,41 +25,40 @@ import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
 
 /**
- * A registry that stores all app schema data access instances per application. This allows
- * mappings from different data accesses to be accessed globally.
- * 
- * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
+ * A registry that stores all app schema data access instances per application. This allows mappings
+ * from different data accesses to be accessed globally.
  *
+ * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
  * @source $URL$
  */
 public class AppSchemaDataAccessRegistry extends DataAccessRegistry {
-    
-    //NC - this class is only kept for backward compatibility, all the work is done in DataAccessRegistry
+
+    // NC - this class is only kept for backward compatibility, all the work is done in
+    // DataAccessRegistry
 
     private static final long serialVersionUID = -1517768637801603351L;
-    
-    //-------------------------------------------------------------------------------------
+
+    // -------------------------------------------------------------------------------------
     // Static short-cut methods for convenience and backward compatibility
-    //-----------------------------------------------------------------------------------
-       
+    // -----------------------------------------------------------------------------------
+
     /**
      * Return true if a type name is mapped in one of the registered app-schema data accesses. If
      * the type mapping has mappingName, then it will be the key that is matched in the search. If
      * it doesn't, then it will match the targetElementName.
-     * 
-     * @param featureTypeName
-     *            Feature type name
+     *
+     * @param featureTypeName Feature type name
      * @return
      * @throws IOException
      */
     public static boolean hasName(Name featureTypeName) throws IOException {
         return getInstance().hasAppSchemaAccessName(featureTypeName);
     }
-    
+
     /**
      * Get a feature type mapping from a registered app-schema data access. Please note that this is
      * only possible for app-schema data access instances.
-     * 
+     *
      * @param featureTypeName
      * @return feature type mapping
      * @throws IOException
@@ -75,7 +73,7 @@ public class AppSchemaDataAccessRegistry extends DataAccessRegistry {
 
     /**
      * Get a feature source for simple features with supplied feature type name.
-     * 
+     *
      * @param featureTypeName
      * @return feature source
      * @throws IOException
@@ -89,7 +87,7 @@ public class AppSchemaDataAccessRegistry extends DataAccessRegistry {
     /**
      * Return true if a type name is mapped in one of the registered app-schema data accesses as
      * targetElementName, regardless whether or not mappingName exists.
-     * 
+     *
      * @param featureTypeName
      * @return
      * @throws IOException
@@ -97,21 +95,18 @@ public class AppSchemaDataAccessRegistry extends DataAccessRegistry {
     public static boolean hasTargetElement(Name featureTypeName) throws IOException {
         return getInstance().hasAppSchemaTargetElement(featureTypeName);
     }
-    
+
     /**
      * Get App-schema properties
-     * 
+     *
      * @return app-schema properties
      */
     public static InterpolationProperties getAppSchemaProperties() {
         return getInstance().getProperties();
     }
-    
-    /**
-     * Clean-up properties, mainly used for cleaning up after tests
-     */
+
+    /** Clean-up properties, mainly used for cleaning up after tests */
     public static void clearAppSchemaProperties() {
         getInstance().clearProperties();
     }
-
 }

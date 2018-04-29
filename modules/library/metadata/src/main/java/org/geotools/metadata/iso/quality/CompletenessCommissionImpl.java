@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -21,30 +21,21 @@ package org.geotools.metadata.iso.quality;
 
 import org.opengis.metadata.quality.CompletenessCommission;
 
-
 /**
  * Excess data present in the dataset, as described by the scope.
- *
- *
  *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane
- *
  * @since 2.1
  */
 public class CompletenessCommissionImpl extends CompletenessImpl implements CompletenessCommission {
-    /**
-     * Serial number for interoperability with different versions.
-     */
+    /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 1565144822249562765L;
 
-    /**
-     * Constructs an initially empty completeness commission.
-     */
-    public CompletenessCommissionImpl() {
-    }
+    /** Constructs an initially empty completeness commission. */
+    public CompletenessCommissionImpl() {}
 
     /**
      * Constructs a metadata entity initialized with the values from the specified metadata.

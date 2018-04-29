@@ -17,15 +17,12 @@
 package org.geotools.jdbc;
 
 import java.util.regex.Pattern;
-
 import org.geotools.jdbc.VirtualTableParameter.Validator;
 
 /**
  * A regular expression based validator
- * 
+ *
  * @author Andrea Aime - OpenGeo
- *
- *
  * @source $URL$
  */
 public class RegexpValidator implements Validator {
@@ -41,8 +38,8 @@ public class RegexpValidator implements Validator {
 
     public void validate(String value) throws IllegalArgumentException {
         if (!pattern.matcher(value).matches()) {
-            throw new IllegalArgumentException("Value " + value + " does not match "
-                    + pattern.pattern());
+            throw new IllegalArgumentException(
+                    "Value " + value + " does not match " + pattern.pattern());
         }
     }
 
@@ -60,19 +57,13 @@ public class RegexpValidator implements Validator {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
         RegexpValidator other = (RegexpValidator) obj;
         if (pattern == null) {
-            if (other.pattern != null)
-                return false;
-        } else if (!pattern.pattern().equals(other.pattern.pattern()))
-            return false;
+            if (other.pattern != null) return false;
+        } else if (!pattern.pattern().equals(other.pattern.pattern())) return false;
         return true;
     }
-
 }

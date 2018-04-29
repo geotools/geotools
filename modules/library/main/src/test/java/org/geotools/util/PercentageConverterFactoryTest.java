@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class PercentageConverterFactoryTest {
-    
+
     @Test
     public void testPercentage() throws Exception {
         assertEquals(0.1f, Converters.convert("10%", Float.class), 0f);

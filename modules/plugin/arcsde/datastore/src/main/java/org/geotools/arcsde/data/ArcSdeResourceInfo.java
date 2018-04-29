@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.HashSet;
 import java.util.Set;
-
 import org.geotools.data.ResourceInfo;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -29,15 +28,13 @@ import org.opengis.util.InternationalString;
 
 /**
  * {@link ResourceInfo} adapter for a {@link FeatureTypeInfo} and {@link ArcSdeFeatureSource}
- * 
+ *
  * @author Gabriel Roldan (TOPP)
  * @version $Id$
  * @since 2.5.x
- *
- *
  * @source $URL$
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *         /org/geotools/arcsde/data/ArcSdeResourceInfo.java $
+ *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
+ *     /org/geotools/arcsde/data/ArcSdeResourceInfo.java $
  */
 public final class ArcSdeResourceInfo implements ResourceInfo {
 
@@ -50,11 +47,9 @@ public final class ArcSdeResourceInfo implements ResourceInfo {
     private URI namespace;
 
     /**
-     * @param info
-     *            where to grab most of the information from
-     * @param source
-     *            where the grab the bounds. Its a live value, so asked every time
-     *            {@link #getBounds()} is called
+     * @param info where to grab most of the information from
+     * @param source where the grab the bounds. Its a live value, so asked every time {@link
+     *     #getBounds()} is called
      */
     ArcSdeResourceInfo(final FeatureTypeInfo info, final ArcSdeFeatureSource source) {
         this.info = info;
@@ -65,9 +60,7 @@ public final class ArcSdeResourceInfo implements ResourceInfo {
         }
     }
 
-    /**
-     * @see org.geotools.data.ResourceInfo#getBounds()
-     */
+    /** @see org.geotools.data.ResourceInfo#getBounds() */
     public synchronized ReferencedEnvelope getBounds() {
         ReferencedEnvelope bounds;
         try {
@@ -79,23 +72,17 @@ public final class ArcSdeResourceInfo implements ResourceInfo {
         return bounds;
     }
 
-    /**
-     * @see org.geotools.data.ResourceInfo#getCRS()
-     */
+    /** @see org.geotools.data.ResourceInfo#getCRS() */
     public CoordinateReferenceSystem getCRS() {
         return info.getFeatureType().getCoordinateReferenceSystem();
     }
 
-    /**
-     * @see org.geotools.data.ResourceInfo#getDescription()
-     */
+    /** @see org.geotools.data.ResourceInfo#getDescription() */
     public String getDescription() {
         return null;
     }
 
-    /**
-     * @see org.geotools.data.ResourceInfo#getKeywords()
-     */
+    /** @see org.geotools.data.ResourceInfo#getKeywords() */
     public synchronized Set<String> getKeywords() {
         if (this.cachedKeywords == null) {
             cachedKeywords = new HashSet<String>();
@@ -117,23 +104,17 @@ public final class ArcSdeResourceInfo implements ResourceInfo {
         return new HashSet<String>(this.cachedKeywords);
     }
 
-    /**
-     * @see org.geotools.data.ResourceInfo#getName()
-     */
+    /** @see org.geotools.data.ResourceInfo#getName() */
     public String getName() {
         return info.getFeatureTypeName();
     }
 
-    /**
-     * @see org.geotools.data.ResourceInfo#getSchema()
-     */
+    /** @see org.geotools.data.ResourceInfo#getSchema() */
     public URI getSchema() {
         return namespace;
     }
 
-    /**
-     * @see org.geotools.data.ResourceInfo#getTitle()
-     */
+    /** @see org.geotools.data.ResourceInfo#getTitle() */
     public String getTitle() {
         InternationalString description = info.getFeatureType().getDescription();
         return description == null ? info.getFeatureTypeName() : description.toString();
@@ -143,7 +124,7 @@ public final class ArcSdeResourceInfo implements ResourceInfo {
 
     /**
      * Returns whether the ArcSDE Table is multi-versioned
-     * 
+     *
      * @return {@code true} if the table is marked as multiversioned, {@code false} otherwise
      */
     public boolean isVersioned() {
@@ -152,7 +133,7 @@ public final class ArcSdeResourceInfo implements ResourceInfo {
 
     /**
      * Returns whether the ArcSDE Table is a registered View
-     * 
+     *
      * @return {@code true} if the table is an ArcSDE registered View, {@code false} otherwise
      */
     public boolean isView() {
@@ -162,9 +143,9 @@ public final class ArcSdeResourceInfo implements ResourceInfo {
     /**
      * Returns whether the FeatureType is built at runtime by a SQL SELECT statement in the ArcSDE
      * DataStore configuration parameters.
-     * 
+     *
      * @return {@code true} if the FeatureType does not refers to an actual table or registered
-     *         view, but is built from a SQL SELECT statement, {@code false} otherwise
+     *     view, but is built from a SQL SELECT statement, {@code false} otherwise
      */
     public boolean isInProcessView() {
         return info.isInProcessView();

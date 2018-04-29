@@ -18,10 +18,8 @@ package org.geotools.data.directory;
 
 import java.io.IOException;
 import java.util.List;
-
 import org.geotools.data.FeatureListener;
 import org.geotools.data.FeatureReader;
-import org.geotools.data.FeatureStore;
 import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.feature.FeatureCollection;
@@ -32,13 +30,8 @@ import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.filter.identity.FeatureId;
 
-/**
- * 
- *
- * @source $URL$
- */
-public class DirectoryFeatureStore extends DirectoryFeatureSource implements
-        SimpleFeatureStore {
+/** @source $URL$ */
+public class DirectoryFeatureStore extends DirectoryFeatureSource implements SimpleFeatureStore {
 
     SimpleFeatureStore fstore;
 
@@ -55,28 +48,26 @@ public class DirectoryFeatureStore extends DirectoryFeatureSource implements
             throws IOException {
         fstore.modifyFeatures(attributeName, attributeValue, filter);
     }
-    
-    public void modifyFeatures(AttributeDescriptor type, Object value,
-            Filter filter) throws IOException {
+
+    public void modifyFeatures(AttributeDescriptor type, Object value, Filter filter)
+            throws IOException {
         fstore.modifyFeatures(type, value, filter);
     }
-    
-    public void modifyFeatures(Name[] name, Object[] value,
-            Filter filter) throws IOException {
+
+    public void modifyFeatures(Name[] name, Object[] value, Filter filter) throws IOException {
         fstore.modifyFeatures(name, value, filter);
     }
 
-    public void modifyFeatures(String name, Object value, Filter filter)
-            throws IOException {
+    public void modifyFeatures(String name, Object value, Filter filter) throws IOException {
         fstore.modifyFeatures(name, value, filter);
     }
 
     public void modifyFeatures(String[] names, Object[] values, Filter filter) throws IOException {
         fstore.modifyFeatures(names, values, filter);
     }
-    
-    public void modifyFeatures(AttributeDescriptor[] type, Object[] value,
-            Filter filter) throws IOException {
+
+    public void modifyFeatures(AttributeDescriptor[] type, Object[] value, Filter filter)
+            throws IOException {
         fstore.modifyFeatures(type, value, filter);
     }
 
@@ -88,8 +79,7 @@ public class DirectoryFeatureStore extends DirectoryFeatureSource implements
         fstore.removeFeatures(filter);
     }
 
-    public void setFeatures(
-            FeatureReader<SimpleFeatureType, SimpleFeature> reader)
+    public void setFeatures(FeatureReader<SimpleFeatureType, SimpleFeature> reader)
             throws IOException {
         fstore.setFeatures(reader);
     }
@@ -98,15 +88,12 @@ public class DirectoryFeatureStore extends DirectoryFeatureSource implements
         fstore.setTransaction(transaction);
     }
 
-    public List<FeatureId> addFeatures(
-            FeatureCollection collection)
-            throws IOException {
+    public List<FeatureId> addFeatures(FeatureCollection collection) throws IOException {
         return fstore.addFeatures(collection);
     }
-    
+
     @Override
     public SimpleFeatureStore unwrap() {
         return fstore;
     }
-
 }

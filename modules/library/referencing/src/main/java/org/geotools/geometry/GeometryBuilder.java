@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2017, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -21,7 +21,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-
 import org.geotools.factory.GeoTools;
 import org.geotools.factory.Hints;
 import org.geotools.referencing.CRS;
@@ -66,53 +65,48 @@ import org.opengis.referencing.cs.CoordinateSystemAxis;
 
 /**
  * A Builder to help with Geometry creation.
+ *
+ * <p>The factory interfaces provided by GeoAPI are hard to use in isolation (they are even hard to
+ * collect a matched set in order to work on the same problem). The main advantage a "builder" has
+ * over a factory is that it does not have to be thread safe and can hold state in order to make
+ * your job easier.
+ *
  * <p>
- * The factory interfaces provided by GeoAPI are hard to use in isolation (they
- * are even hard to collect a matched set in order to work on the same problem).
- * The main advantage a "builder" has over a factory is that it does not have to
- * be thread safe and can hold state in order to make your job easier.
- * <p>
- *  
+ *
  * @author Jody Garnett
- *
- *
- *
- *
  * @source $URL$
  */
 public class GeometryBuilder {
-    /**
-     * Hints used for the duration of this GeometryBuilder.
-     */
+    /** Hints used for the duration of this GeometryBuilder. */
     private Hints hints;
-    
+
     /**
      * CoordinateReferenceSystem used to construct the next geometry artifact.
-     * <p>
-     * This forms the core state of our builds, all other factories are created
-     * with this CoordinateReferenceSystem in mind.
+     *
+     * <p>This forms the core state of our builds, all other factories are created with this
+     * CoordinateReferenceSystem in mind.
      */
     private CoordinateReferenceSystem crs;
-    
+
     private PositionFactory positionFactory;
     private PrimitiveFactory primitiveFactory;
     private AggregateFactory aggregateFactory;
     private ComplexFactory complexFactory;
     private GeometryFactory geometryFactory;
-    
-    public GeometryBuilder( CoordinateReferenceSystem crs ){
+
+    public GeometryBuilder(CoordinateReferenceSystem crs) {
         this.crs = crs;
         this.hints = GeoTools.getDefaultHints();
-        hints.put( Hints.CRS, crs );
-        hints.put( Hints.GEOMETRY_VALIDATE, true );
+        hints.put(Hints.CRS, crs);
+        hints.put(Hints.GEOMETRY_VALIDATE, true);
     }
-    
-    public GeometryBuilder( String code ) throws NoSuchAuthorityCodeException, FactoryException{
-        this( CRS.decode( code ));
+
+    public GeometryBuilder(String code) throws NoSuchAuthorityCodeException, FactoryException {
+        this(CRS.decode(code));
     }
-    
-    public GeometryBuilder( Hints hints ){
-        this.crs = (CoordinateReferenceSystem) hints.get( Hints.CRS );
+
+    public GeometryBuilder(Hints hints) {
+        this.crs = (CoordinateReferenceSystem) hints.get(Hints.CRS);
         this.hints = hints;
         getPositionFactory();
         getPrecision();
@@ -121,32 +115,31 @@ public class GeometryBuilder {
         getGeometryFactory();
         getComplexFactory();
     }
-    
+
     public CoordinateReferenceSystem getCoordinateReferenceSystem() {
         return crs;
     }
 
     /**
-         Set the CoordinateReferenceSystem for the geometries that will be produced.
-         
-         @param crs the CoordinateReferenceSystem to set
-         
-         @deprecated Use setCoordinateReferenceSystem() instead.
+     * Set the CoordinateReferenceSystem for the geometries that will be produced.
+     *
+     * @param crs the CoordinateReferenceSystem to set
+     * @deprecated Use setCoordinateReferenceSystem() instead.
      */
     @Deprecated
-    public void setCoordianteReferenceSystem( CoordinateReferenceSystem crs ) {
-            setCoordinateReferenceSystem( crs );
+    public void setCoordianteReferenceSystem(CoordinateReferenceSystem crs) {
+        setCoordinateReferenceSystem(crs);
     }
-    
+
     /**
-        Set the CoordinateReferenceSystem for the geometries that will be produced.
-        
-        @param crs the CoordinateReferenceSystem to set
+     * Set the CoordinateReferenceSystem for the geometries that will be produced.
+     *
+     * @param crs the CoordinateReferenceSystem to set
      */
-    public void setCoordinateReferenceSystem( CoordinateReferenceSystem crs ) {
-        if( this.crs != crs ){
+    public void setCoordinateReferenceSystem(CoordinateReferenceSystem crs) {
+        if (this.crs != crs) {
             hints.remove(Hints.CRS);
-            hints.put( Hints.CRS, crs );
+            hints.put(Hints.CRS, crs);
             this.crs = crs;
             positionFactory = null;
             primitiveFactory = null;
@@ -165,115 +158,119 @@ public class GeometryBuilder {
     public Precision getPrecision() {
         return getPositionFactory().getPrecision();
     }
-    
+
     public PositionFactory getPositionFactory() {
-        if( positionFactory == null ){
-            if( hints.containsKey(Hints.POSITION_FACTORY)){
+        if (positionFactory == null) {
+            if (hints.containsKey(Hints.POSITION_FACTORY)) {
                 // check the hints for something explicit
                 Object factory = hints.get(Hints.POSITION_FACTORY);
-                if( factory instanceof PositionFactory){
+                if (factory instanceof PositionFactory) {
                     positionFactory = (PositionFactory) factory;
                     return positionFactory;
                 }
             }
-            positionFactory = GeometryFactoryFinder.getPositionFactory( hints);
+            positionFactory = GeometryFactoryFinder.getPositionFactory(hints);
         }
         return positionFactory;
     }
 
     public PrimitiveFactory getPrimitiveFactory() {
-        if( primitiveFactory == null ){
-            if( hints.containsKey(Hints.PRIMITIVE_FACTORY)){
+        if (primitiveFactory == null) {
+            if (hints.containsKey(Hints.PRIMITIVE_FACTORY)) {
                 // check the hints for something explicit
                 Object factory = hints.get(Hints.PRIMITIVE_FACTORY);
-                if( factory instanceof PrimitiveFactory){
+                if (factory instanceof PrimitiveFactory) {
                     primitiveFactory = (PrimitiveFactory) factory;
                     return primitiveFactory;
                 }
-            } 
-            primitiveFactory = GeometryFactoryFinder.getPrimitiveFactory(  hints);
+            }
+            primitiveFactory = GeometryFactoryFinder.getPrimitiveFactory(hints);
         }
         return primitiveFactory;
     }
-    
+
     public AggregateFactory getAggregateFactory() {
-        if( aggregateFactory == null ){
-            if( hints.containsKey(Hints.AGGREGATE_FACTORY)){
+        if (aggregateFactory == null) {
+            if (hints.containsKey(Hints.AGGREGATE_FACTORY)) {
                 // check the hints for something explicit
                 Object factory = hints.get(Hints.AGGREGATE_FACTORY);
-                if( factory instanceof AggregateFactory){
+                if (factory instanceof AggregateFactory) {
                     aggregateFactory = (AggregateFactory) factory;
                     return aggregateFactory;
                 }
-            }            
-        	aggregateFactory = GeometryFactoryFinder.getAggregateFactory( hints);
+            }
+            aggregateFactory = GeometryFactoryFinder.getAggregateFactory(hints);
         }
         return aggregateFactory;
     }
-    
+
     public GeometryFactory getGeometryFactory() {
-        if( geometryFactory == null ){
-            if( hints.containsKey(Hints.GEOMETRY_FACTORY)){
+        if (geometryFactory == null) {
+            if (hints.containsKey(Hints.GEOMETRY_FACTORY)) {
                 // check the hints for something explicit
                 Object factory = hints.get(Hints.GEOMETRY_FACTORY);
-                if( factory instanceof GeometryFactory){
+                if (factory instanceof GeometryFactory) {
                     geometryFactory = (GeometryFactory) factory;
                     return geometryFactory;
                 }
-            }            
-            geometryFactory = GeometryFactoryFinder.getGeometryFactory(  hints);
+            }
+            geometryFactory = GeometryFactoryFinder.getGeometryFactory(hints);
         }
         return geometryFactory;
     }
-    
+
     public ComplexFactory getComplexFactory() {
-        if( complexFactory == null ){
-            if( hints.containsKey(Hints.COMPLEX_FACTORY)){
+        if (complexFactory == null) {
+            if (hints.containsKey(Hints.COMPLEX_FACTORY)) {
                 // check the hints for something explicit
                 Object factory = hints.get(Hints.COMPLEX_FACTORY);
-                if( factory instanceof ComplexFactory){
+                if (factory instanceof ComplexFactory) {
                     complexFactory = (ComplexFactory) factory;
                     return complexFactory;
                 }
-            } 
-        	complexFactory = GeometryFactoryFinder.getComplexFactory(  hints);
+            }
+            complexFactory = GeometryFactoryFinder.getComplexFactory(hints);
         }
         return complexFactory;
-    }    
-    
-    public DirectPosition createDirectPosition( double[] ordinates ) {
-        return getPositionFactory().createDirectPosition( ordinates );
     }
 
-    public Position createPosition( Position position ) {
-        return getPositionFactory().createPosition( position );
+    public DirectPosition createDirectPosition(double[] ordinates) {
+        return getPositionFactory().createDirectPosition(ordinates);
+    }
+
+    public Position createPosition(Position position) {
+        return getPositionFactory().createPosition(position);
     }
 
     public PointArray createPointArray() {
         return getPositionFactory().createPointArray();
     }
 
-    public PointArray createPointArray( double[] array ) {
-        return getPositionFactory().createPointArray(array, 0, array.length / crs.getCoordinateSystem().getDimension() );
-    }
-    public PointArray createPointArray( double[] array, int start, int end ) {
-        return getPositionFactory().createPointArray(array, start, end );
-    }
-
-    public PointArray createPositionList( float[] array, int start, int end ) {
-        return getPositionFactory().createPointArray(array, start, end );
+    public PointArray createPointArray(double[] array) {
+        return getPositionFactory()
+                .createPointArray(
+                        array, 0, array.length / crs.getCoordinateSystem().getDimension());
     }
 
-	public Curve createCurve(List segments) throws MismatchedReferenceSystemException, MismatchedDimensionException {
-		if (segments == null)
-			throw new NullPointerException("Segments are required to create a curve");
+    public PointArray createPointArray(double[] array, int start, int end) {
+        return getPositionFactory().createPointArray(array, start, end);
+    }
 
-		// A curve will be created
-		// - The curve will be set as parent curves for the Curve segments
-		// - Start and end params for the CurveSegments will be set
-		return getPrimitiveFactory().createCurve(segments);
-	}
-	
+    public PointArray createPositionList(float[] array, int start, int end) {
+        return getPositionFactory().createPointArray(array, start, end);
+    }
+
+    public Curve createCurve(List segments)
+            throws MismatchedReferenceSystemException, MismatchedDimensionException {
+        if (segments == null)
+            throw new NullPointerException("Segments are required to create a curve");
+
+        // A curve will be created
+        // - The curve will be set as parent curves for the Curve segments
+        // - Start and end params for the CurveSegments will be set
+        return getPrimitiveFactory().createCurve(segments);
+    }
+
     @Deprecated
     public Curve createCurve(PointArray points)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
@@ -282,8 +279,7 @@ public class GeometryBuilder {
 
     public Curve createCurve(PointArray points, boolean closed)
             throws MismatchedReferenceSystemException, MismatchedDimensionException {
-        if (points == null)
-            throw new NullPointerException("Points are required to create a curve");
+        if (points == null) throw new NullPointerException("Points are required to create a curve");
         if (points.size() < 2)
             throw new IllegalArgumentException(
                     "At least two points are required to create a curve");
@@ -291,7 +287,7 @@ public class GeometryBuilder {
         // A curve will be created
         // - The curve will be set as parent curves for the Curve segments
         // - Start and end params for the CurveSegments will be set
-        List/* <LineSegment> */ segmentList = new ArrayList/* <LineSegment> */();
+        List /* <LineSegment> */ segmentList = new ArrayList /* <LineSegment> */();
         for (int i = 0; i < points.size() - 1; i++) {
             int start = i;
             int end = i + 1;
@@ -314,279 +310,313 @@ public class GeometryBuilder {
         return getPrimitiveFactory().createCurve(segmentList);
     }
 
-	/**
-	 * Create a point with the provided ordinates.
-	 * @param ord1
-	 * @param ord2
-	 * @return createPoint( new double[]{ ord1, ord2})
-	 */
-	public Point createPoint( double ord1, double ord2 ){
-	    return createPoint( new double[]{ ord1, ord2});
-	}
-	/**
-	 * Create a point with the provided ordinates.
-	 * @param ord1
-	 * @param ord2
-	 * @param ord3
-	 * @return createPoint( new double[]{ ord1, ord2, ord3 })
-	 */
-	public Point createPoint( double ord1, double ord2, double ord3 ){
-        return createPoint( new double[]{ ord1, ord2, ord3 });
+    /**
+     * Create a point with the provided ordinates.
+     *
+     * @param ord1
+     * @param ord2
+     * @return createPoint( new double[]{ ord1, ord2})
+     */
+    public Point createPoint(double ord1, double ord2) {
+        return createPoint(new double[] {ord1, ord2});
     }
-	/**
-	 * Create a point with the provided ordinates
-	 * @param ordinates
-	 * @return getPrimitiveFactory().createPoint(coordinates)
-	 * @throws MismatchedDimensionException
-	 */
-	public Point createPoint(double[] ordinates) throws MismatchedDimensionException {
-		if (ordinates == null)
-			throw new NullPointerException("Ordinates required to create a point");
-		int dimension = this.getCoordinateReferenceSystem().getCoordinateSystem().getDimension();
+    /**
+     * Create a point with the provided ordinates.
+     *
+     * @param ord1
+     * @param ord2
+     * @param ord3
+     * @return createPoint( new double[]{ ord1, ord2, ord3 })
+     */
+    public Point createPoint(double ord1, double ord2, double ord3) {
+        return createPoint(new double[] {ord1, ord2, ord3});
+    }
+    /**
+     * Create a point with the provided ordinates
+     *
+     * @param ordinates
+     * @return getPrimitiveFactory().createPoint(coordinates)
+     * @throws MismatchedDimensionException
+     */
+    public Point createPoint(double[] ordinates) throws MismatchedDimensionException {
+        if (ordinates == null)
+            throw new NullPointerException("Ordinates required to create a point");
+        int dimension = this.getCoordinateReferenceSystem().getCoordinateSystem().getDimension();
         if (ordinates.length != dimension)
-			throw new MismatchedDimensionException("Create point requires "+dimension+" ordinates ("+ordinates.length+" provided");
+            throw new MismatchedDimensionException(
+                    "Create point requires "
+                            + dimension
+                            + " ordinates ("
+                            + ordinates.length
+                            + " provided");
 
-		return getPrimitiveFactory().createPoint(ordinates);
-	}
+        return getPrimitiveFactory().createPoint(ordinates);
+    }
 
-	public Point createPoint(Position position) throws MismatchedReferenceSystemException, MismatchedDimensionException {
-		if (position == null) {
-			throw new NullPointerException();
-		}
-		setCoordinateReferenceSystem(position.getDirectPosition().getCoordinateReferenceSystem());
-		DirectPosition copy = (DirectPosition) getPositionFactory().createDirectPosition(position.getDirectPosition().getCoordinate());
-		return getPrimitiveFactory().createPoint(copy);
-	}
+    public Point createPoint(Position position)
+            throws MismatchedReferenceSystemException, MismatchedDimensionException {
+        if (position == null) {
+            throw new NullPointerException();
+        }
+        setCoordinateReferenceSystem(position.getDirectPosition().getCoordinateReferenceSystem());
+        DirectPosition copy =
+                (DirectPosition)
+                        getPositionFactory()
+                                .createDirectPosition(position.getDirectPosition().getCoordinate());
+        return getPrimitiveFactory().createPoint(copy);
+    }
 
-	public Primitive createPrimitive(Envelope envelope) throws MismatchedReferenceSystemException, MismatchedDimensionException {
-		LineSegment segment = processBoundsToSegment(envelope);		
-		setCoordinateReferenceSystem(envelope.getCoordinateReferenceSystem());
-		return processSegmentToPrimitive( envelope, segment, 1 );	
-	}
-	
-	private Primitive processSegmentToPrimitive(Envelope bounds, LineSegment segment, int dimension) {
-		CoordinateSystemAxis axis = crs.getCoordinateSystem().getAxis( dimension );
-		
-		if( axis.getDirection() == AxisDirection.OTHER ){
-			return processSegmentToPrimitive( bounds, segment, dimension+1 );
-		}
-		Ring ring = processBoundsToRing( bounds, segment, dimension );
-		return processRingToPrimitive( bounds, ring, dimension+1 );				
-	}
-	
-	private Ring processBoundsToRing( Envelope bounds, LineSegment segment, final int D ){
-		DirectPosition one =  getPositionFactory().createDirectPosition(segment.getStartPoint().getCoordinate());
-		one.setOrdinate( D, bounds.getMinimum(D) );
-		
-		DirectPosition two =  getPositionFactory().createDirectPosition(segment.getEndPoint().getCoordinate());
-		two.setOrdinate( D, bounds.getMinimum(D) );
-		
-		DirectPosition three =  getPositionFactory().createDirectPosition(two.getCoordinate()); 
-		three.setOrdinate( D, bounds.getMaximum(D) );
-		
-		DirectPosition four =  getPositionFactory().createDirectPosition(one.getCoordinate());
-		four.setOrdinate( D, bounds.getMaximum(D) );
-		
-		LineSegment edge1 = getGeometryFactory().createLineSegment(one, two);
-		LineSegment edge2 = getGeometryFactory().createLineSegment(two, three);
-		LineSegment edge3 = getGeometryFactory().createLineSegment(three, four);
-		LineSegment edge4 = getGeometryFactory().createLineSegment(four, one);
-		
-		List<OrientableCurve> edges = new ArrayList<OrientableCurve>();
-		edges.add( createCurve( Arrays.asList(edge1) ));
-		edges.add( createCurve( Arrays.asList(edge2) ));
-		edges.add( createCurve( Arrays.asList(edge3) ));
-		edges.add( createCurve( Arrays.asList(edge4) ));
-		return createRing( edges );
-	}
-	
-	private Primitive processRingToPrimitive(Envelope bounds, Ring ring, int dimension) {
-		int D = crs.getCoordinateSystem().getDimension();
-		if( dimension == D ){ // create Surface from ring and return			
-			SurfaceBoundary boundary = createSurfaceBoundary( ring, Collections.EMPTY_LIST );
-			return createSurface( boundary );
-		}		
-		CoordinateSystemAxis axis = crs.getCoordinateSystem().getAxis( dimension );
-		if( axis.getDirection() == AxisDirection.OTHER ){
-			return processRingToPrimitive( bounds, ring, dimension+1 );
-		}
-		return processRingToVolumne( bounds, ring, dimension+1 );
-	}
-	
-	private Primitive processRingToVolumne(Envelope bounds, Ring ring, int i) {
-		// go into a volume
-		throw new UnsupportedOperationException("Not yet 3D");
-	}
-	
-	private LineSegment processBoundsToSegment( Envelope bounds ) {
-		final int D=0;
-		CoordinateReferenceSystem crs = bounds.getCoordinateReferenceSystem();
-		CoordinateSystemAxis axis = crs.getCoordinateSystem().getAxis( D );
-		
-		DirectPosition positionA = getPositionFactory().createDirectPosition(null);
-		DirectPosition positionB = getPositionFactory().createDirectPosition(null);	
-		if( axis.getDirection() != AxisDirection.OTHER ){
-			positionA.setOrdinate(D, bounds.getMinimum(D) );
-			positionB.setOrdinate(D, bounds.getMaximum(D) );
-		}		
-		return getGeometryFactory().createLineSegment(positionA, positionB);
-	}
-	
-	public Ring createRing(List<OrientableCurve> orientableCurves)
-		throws MismatchedReferenceSystemException, MismatchedDimensionException {
-		/**
-		 * Creates a Ring from triple Array of DirectPositions (Array of arrays,
-		 * which each represent a future Curve. Each array contain an array of
-		 * positions, which each represent a future lineString)
-		 */
-		return getPrimitiveFactory().createRing(orientableCurves);
-	}
+    public Primitive createPrimitive(Envelope envelope)
+            throws MismatchedReferenceSystemException, MismatchedDimensionException {
+        LineSegment segment = processBoundsToSegment(envelope);
+        setCoordinateReferenceSystem(envelope.getCoordinateReferenceSystem());
+        return processSegmentToPrimitive(envelope, segment, 1);
+    }
 
-	public Solid createSolid(SolidBoundary boundary) throws MismatchedReferenceSystemException, MismatchedDimensionException {
-		return getPrimitiveFactory().createSolid(boundary);
-	}
+    private Primitive processSegmentToPrimitive(
+            Envelope bounds, LineSegment segment, int dimension) {
+        CoordinateSystemAxis axis = crs.getCoordinateSystem().getAxis(dimension);
 
-    public SurfaceBoundary createSurfaceBoundary(PointArray points) throws MismatchedReferenceSystemException, MismatchedDimensionException {
+        if (axis.getDirection() == AxisDirection.OTHER) {
+            return processSegmentToPrimitive(bounds, segment, dimension + 1);
+        }
+        Ring ring = processBoundsToRing(bounds, segment, dimension);
+        return processRingToPrimitive(bounds, ring, dimension + 1);
+    }
+
+    private Ring processBoundsToRing(Envelope bounds, LineSegment segment, final int D) {
+        DirectPosition one =
+                getPositionFactory().createDirectPosition(segment.getStartPoint().getCoordinate());
+        one.setOrdinate(D, bounds.getMinimum(D));
+
+        DirectPosition two =
+                getPositionFactory().createDirectPosition(segment.getEndPoint().getCoordinate());
+        two.setOrdinate(D, bounds.getMinimum(D));
+
+        DirectPosition three = getPositionFactory().createDirectPosition(two.getCoordinate());
+        three.setOrdinate(D, bounds.getMaximum(D));
+
+        DirectPosition four = getPositionFactory().createDirectPosition(one.getCoordinate());
+        four.setOrdinate(D, bounds.getMaximum(D));
+
+        LineSegment edge1 = getGeometryFactory().createLineSegment(one, two);
+        LineSegment edge2 = getGeometryFactory().createLineSegment(two, three);
+        LineSegment edge3 = getGeometryFactory().createLineSegment(three, four);
+        LineSegment edge4 = getGeometryFactory().createLineSegment(four, one);
+
+        List<OrientableCurve> edges = new ArrayList<OrientableCurve>();
+        edges.add(createCurve(Arrays.asList(edge1)));
+        edges.add(createCurve(Arrays.asList(edge2)));
+        edges.add(createCurve(Arrays.asList(edge3)));
+        edges.add(createCurve(Arrays.asList(edge4)));
+        return createRing(edges);
+    }
+
+    private Primitive processRingToPrimitive(Envelope bounds, Ring ring, int dimension) {
+        int D = crs.getCoordinateSystem().getDimension();
+        if (dimension == D) { // create Surface from ring and return
+            SurfaceBoundary boundary = createSurfaceBoundary(ring, Collections.EMPTY_LIST);
+            return createSurface(boundary);
+        }
+        CoordinateSystemAxis axis = crs.getCoordinateSystem().getAxis(dimension);
+        if (axis.getDirection() == AxisDirection.OTHER) {
+            return processRingToPrimitive(bounds, ring, dimension + 1);
+        }
+        return processRingToVolumne(bounds, ring, dimension + 1);
+    }
+
+    private Primitive processRingToVolumne(Envelope bounds, Ring ring, int i) {
+        // go into a volume
+        throw new UnsupportedOperationException("Not yet 3D");
+    }
+
+    private LineSegment processBoundsToSegment(Envelope bounds) {
+        final int D = 0;
+        CoordinateReferenceSystem crs = bounds.getCoordinateReferenceSystem();
+        CoordinateSystemAxis axis = crs.getCoordinateSystem().getAxis(D);
+
+        DirectPosition positionA = getPositionFactory().createDirectPosition(null);
+        DirectPosition positionB = getPositionFactory().createDirectPosition(null);
+        if (axis.getDirection() != AxisDirection.OTHER) {
+            positionA.setOrdinate(D, bounds.getMinimum(D));
+            positionB.setOrdinate(D, bounds.getMaximum(D));
+        }
+        return getGeometryFactory().createLineSegment(positionA, positionB);
+    }
+
+    public Ring createRing(List<OrientableCurve> orientableCurves)
+            throws MismatchedReferenceSystemException, MismatchedDimensionException {
+        /**
+         * Creates a Ring from triple Array of DirectPositions (Array of arrays, which each
+         * represent a future Curve. Each array contain an array of positions, which each represent
+         * a future lineString)
+         */
+        return getPrimitiveFactory().createRing(orientableCurves);
+    }
+
+    public Solid createSolid(SolidBoundary boundary)
+            throws MismatchedReferenceSystemException, MismatchedDimensionException {
+        return getPrimitiveFactory().createSolid(boundary);
+    }
+
+    public SurfaceBoundary createSurfaceBoundary(PointArray points)
+            throws MismatchedReferenceSystemException, MismatchedDimensionException {
         Curve curve = createCurve(points);
         return createSurfaceBoundary(curve);
     }
-	public Surface createSurface(List surfaces) throws MismatchedReferenceSystemException, MismatchedDimensionException {
-		return getPrimitiveFactory().createSurface(surfaces);
-	}
 
-	public Surface createSurface(SurfaceBoundary boundary) throws MismatchedReferenceSystemException, MismatchedDimensionException {
-		return getPrimitiveFactory().createSurface(boundary);
-	}
-
-	public SurfaceBoundary createSurfaceBoundary(Ring exterior, List interiors) throws MismatchedReferenceSystemException, MismatchedDimensionException {
-		return getPrimitiveFactory().createSurfaceBoundary(exterior, interiors);
-	}
-	
-	public SurfaceBoundary createSurfaceBoundary(Ring exterior) throws MismatchedReferenceSystemException, MismatchedDimensionException {
-        return createSurfaceBoundary( exterior, new ArrayList<Ring>() );
+    public Surface createSurface(List surfaces)
+            throws MismatchedReferenceSystemException, MismatchedDimensionException {
+        return getPrimitiveFactory().createSurface(surfaces);
     }
 
-	public SurfaceBoundary createSurfaceBoundary(OrientableCurve curve) throws MismatchedReferenceSystemException, MismatchedDimensionException {
-	    List<OrientableCurve> exterior = new ArrayList<OrientableCurve>(1);
-	    exterior.add( curve );
-	    Ring ring = createRing( exterior );
-        return createSurfaceBoundary( ring );
+    public Surface createSurface(SurfaceBoundary boundary)
+            throws MismatchedReferenceSystemException, MismatchedDimensionException {
+        return getPrimitiveFactory().createSurface(boundary);
     }
-	
-	/* not implemented in GeometryFactory yet
-	public Arc createArc(Position startPoint, Position midPoint, Position endPoint) throws MismatchedReferenceSystemException, MismatchedDimensionException {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	public Arc createArc(Position startPoint, Position endPoint, double bulge, double[] normal) throws MismatchedReferenceSystemException, MismatchedDimensionException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public ArcByBulge createArcByBulge(Position startPoint, Position endPoint, double bulge, double[] normal) throws MismatchedReferenceSystemException, MismatchedDimensionException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public ArcString createArcString(List points) throws MismatchedReferenceSystemException, MismatchedDimensionException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public ArcStringByBulge createArcStringByBulge(List points, double[] bulges, List normals) throws MismatchedReferenceSystemException, MismatchedDimensionException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public BSplineCurve createBSplineCurve(int degree, PointArray points, List knots, KnotType knotSpec) throws MismatchedReferenceSystemException, MismatchedDimensionException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public BSplineSurface createBSplineSurface(List points, int[] degree, List[] knots, KnotType knotSpec) throws MismatchedReferenceSystemException, MismatchedDimensionException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public Geodesic createGeodesic(Position startPoint, Position endPoint) throws MismatchedReferenceSystemException, MismatchedDimensionException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public GeodesicString createGeodesicString(List points) throws MismatchedReferenceSystemException, MismatchedDimensionException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	*/
-
-	public DirectPosition createDirectPosition() {
-		return createDirectPosition(null);
-	}
-
-	public Envelope createEnvelope(DirectPosition lowerCorner, DirectPosition upperCorner) throws MismatchedReferenceSystemException, MismatchedDimensionException {
-		return getGeometryFactory().createEnvelope(lowerCorner, upperCorner);
-	}
-
-	public LineSegment createLineSegment(Position startPoint, Position endPoint) throws MismatchedReferenceSystemException, MismatchedDimensionException {
-		return getGeometryFactory().createLineSegment(startPoint, endPoint);
-	}
-
-	public LineString createLineString(List points) throws MismatchedReferenceSystemException, MismatchedDimensionException {
-		return getGeometryFactory().createLineString(points);
-	}
-	public LineString createLineString(PointArray points) throws MismatchedReferenceSystemException, MismatchedDimensionException {
-	    return getGeometryFactory().createLineString(points);
+    public SurfaceBoundary createSurfaceBoundary(Ring exterior, List interiors)
+            throws MismatchedReferenceSystemException, MismatchedDimensionException {
+        return getPrimitiveFactory().createSurfaceBoundary(exterior, interiors);
     }
-	public LineSegment createLineSegment( DirectPosition from, DirectPosition to ) {
-        return getGeometryFactory().createLineSegment( from, to );
+
+    public SurfaceBoundary createSurfaceBoundary(Ring exterior)
+            throws MismatchedReferenceSystemException, MismatchedDimensionException {
+        return createSurfaceBoundary(exterior, new ArrayList<Ring>());
     }
-	public MultiPrimitive createMultiPrimitive() {
-		return getGeometryFactory().createMultiPrimitive();
-	}
 
-	public Polygon createPolygon(SurfaceBoundary boundary) throws MismatchedReferenceSystemException, MismatchedDimensionException {
-		return getGeometryFactory().createPolygon(boundary);
-	}
+    public SurfaceBoundary createSurfaceBoundary(OrientableCurve curve)
+            throws MismatchedReferenceSystemException, MismatchedDimensionException {
+        List<OrientableCurve> exterior = new ArrayList<OrientableCurve>(1);
+        exterior.add(curve);
+        Ring ring = createRing(exterior);
+        return createSurfaceBoundary(ring);
+    }
 
-	public Polygon createPolygon(SurfaceBoundary boundary, Surface spanSurface) throws MismatchedReferenceSystemException, MismatchedDimensionException {
-		return getGeometryFactory().createPolygon(boundary, spanSurface);
-	}
+    /* not implemented in GeometryFactory yet
+    public Arc createArc(Position startPoint, Position midPoint, Position endPoint) throws MismatchedReferenceSystemException, MismatchedDimensionException {
+    	// TODO Auto-generated method stub
+    	return null;
+    }
 
-	public PolyhedralSurface createPolyhedralSurface(List tiles) throws MismatchedReferenceSystemException, MismatchedDimensionException {
-		return getGeometryFactory().createPolyhedralSurface(tiles);
-	}
+    public Arc createArc(Position startPoint, Position endPoint, double bulge, double[] normal) throws MismatchedReferenceSystemException, MismatchedDimensionException {
+    	// TODO Auto-generated method stub
+    	return null;
+    }
 
-	public Tin createTin(Set post, Set stopLines, Set breakLines, double maxLength) throws MismatchedReferenceSystemException, MismatchedDimensionException {
-		return getGeometryFactory().createTin(post, stopLines, breakLines, maxLength);
-	}
+    public ArcByBulge createArcByBulge(Position startPoint, Position endPoint, double bulge, double[] normal) throws MismatchedReferenceSystemException, MismatchedDimensionException {
+    	// TODO Auto-generated method stub
+    	return null;
+    }
 
-	public CompositeCurve createCompositeCurve(List generator) {
-		return getComplexFactory().createCompositeCurve(generator);
-	}
+    public ArcString createArcString(List points) throws MismatchedReferenceSystemException, MismatchedDimensionException {
+    	// TODO Auto-generated method stub
+    	return null;
+    }
 
-	public CompositePoint createCompositePoint(Point generator) {
-		return getComplexFactory().createCompositePoint(generator);
-	}
+    public ArcStringByBulge createArcStringByBulge(List points, double[] bulges, List normals) throws MismatchedReferenceSystemException, MismatchedDimensionException {
+    	// TODO Auto-generated method stub
+    	return null;
+    }
 
-	public CompositeSurface createCompositeSurface(List generator) {
-		return getComplexFactory().createCompositeSurface(generator);
-	}
+    public BSplineCurve createBSplineCurve(int degree, PointArray points, List knots, KnotType knotSpec) throws MismatchedReferenceSystemException, MismatchedDimensionException {
+    	// TODO Auto-generated method stub
+    	return null;
+    }
 
-	public MultiCurve createMultiCurve(Set curves) {
-		return getAggregateFactory().createMultiCurve(curves);
-	}
+    public BSplineSurface createBSplineSurface(List points, int[] degree, List[] knots, KnotType knotSpec) throws MismatchedReferenceSystemException, MismatchedDimensionException {
+    	// TODO Auto-generated method stub
+    	return null;
+    }
 
-	public MultiPoint createMultiPoint(Set points) {
-		return getAggregateFactory().createMultiPoint(points);
-	}
+    public Geodesic createGeodesic(Position startPoint, Position endPoint) throws MismatchedReferenceSystemException, MismatchedDimensionException {
+    	// TODO Auto-generated method stub
+    	return null;
+    }
 
-	public MultiPrimitive createMultiPrimitive(Set primitives) {
-		return getAggregateFactory().createMultiPrimitive(primitives);
-	}
+    public GeodesicString createGeodesicString(List points) throws MismatchedReferenceSystemException, MismatchedDimensionException {
+    	// TODO Auto-generated method stub
+    	return null;
+    }
+    */
 
-	public MultiSurface createMultiSurface(Set surfaces) {
-		return getAggregateFactory().createMultiSurface(surfaces);
-	}
+    public DirectPosition createDirectPosition() {
+        return createDirectPosition(null);
+    }
 
+    public Envelope createEnvelope(DirectPosition lowerCorner, DirectPosition upperCorner)
+            throws MismatchedReferenceSystemException, MismatchedDimensionException {
+        return getGeometryFactory().createEnvelope(lowerCorner, upperCorner);
+    }
+
+    public LineSegment createLineSegment(Position startPoint, Position endPoint)
+            throws MismatchedReferenceSystemException, MismatchedDimensionException {
+        return getGeometryFactory().createLineSegment(startPoint, endPoint);
+    }
+
+    public LineString createLineString(List points)
+            throws MismatchedReferenceSystemException, MismatchedDimensionException {
+        return getGeometryFactory().createLineString(points);
+    }
+
+    public LineString createLineString(PointArray points)
+            throws MismatchedReferenceSystemException, MismatchedDimensionException {
+        return getGeometryFactory().createLineString(points);
+    }
+
+    public LineSegment createLineSegment(DirectPosition from, DirectPosition to) {
+        return getGeometryFactory().createLineSegment(from, to);
+    }
+
+    public MultiPrimitive createMultiPrimitive() {
+        return getGeometryFactory().createMultiPrimitive();
+    }
+
+    public Polygon createPolygon(SurfaceBoundary boundary)
+            throws MismatchedReferenceSystemException, MismatchedDimensionException {
+        return getGeometryFactory().createPolygon(boundary);
+    }
+
+    public Polygon createPolygon(SurfaceBoundary boundary, Surface spanSurface)
+            throws MismatchedReferenceSystemException, MismatchedDimensionException {
+        return getGeometryFactory().createPolygon(boundary, spanSurface);
+    }
+
+    public PolyhedralSurface createPolyhedralSurface(List tiles)
+            throws MismatchedReferenceSystemException, MismatchedDimensionException {
+        return getGeometryFactory().createPolyhedralSurface(tiles);
+    }
+
+    public Tin createTin(Set post, Set stopLines, Set breakLines, double maxLength)
+            throws MismatchedReferenceSystemException, MismatchedDimensionException {
+        return getGeometryFactory().createTin(post, stopLines, breakLines, maxLength);
+    }
+
+    public CompositeCurve createCompositeCurve(List generator) {
+        return getComplexFactory().createCompositeCurve(generator);
+    }
+
+    public CompositePoint createCompositePoint(Point generator) {
+        return getComplexFactory().createCompositePoint(generator);
+    }
+
+    public CompositeSurface createCompositeSurface(List generator) {
+        return getComplexFactory().createCompositeSurface(generator);
+    }
+
+    public MultiCurve createMultiCurve(Set curves) {
+        return getAggregateFactory().createMultiCurve(curves);
+    }
+
+    public MultiPoint createMultiPoint(Set points) {
+        return getAggregateFactory().createMultiPoint(points);
+    }
+
+    public MultiPrimitive createMultiPrimitive(Set primitives) {
+        return getAggregateFactory().createMultiPrimitive(primitives);
+    }
+
+    public MultiSurface createMultiSurface(Set surfaces) {
+        return getAggregateFactory().createMultiSurface(surfaces);
+    }
 }

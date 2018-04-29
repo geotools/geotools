@@ -1,16 +1,13 @@
 package org.geotools.data.aggregate;
 
 import java.util.Set;
-
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.opengis.filter.expression.PropertyName;
 
 /**
  * Replaces all missing properties references with a null literal
- * 
- * @author Andrea Aime
- * 
  *
+ * @author Andrea Aime
  * @source $URL$
  */
 public class MissingPropertiesEraser extends DuplicatingFilterVisitor {

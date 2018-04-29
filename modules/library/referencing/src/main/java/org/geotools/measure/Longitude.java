@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 1999-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,34 +16,24 @@
  */
 package org.geotools.measure;
 
-
 /**
  * A longitude angle. Positive longitudes are East, while negative longitudes are West.
  *
  * @since 2.0
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (PMO, IRD)
- *
  * @see Latitude
  * @see AngleFormat
  */
 public final class Longitude extends Angle {
-    /**
-     * Serial number for interoperability with different versions.
-     */
+    /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -8614900608052762636L;
 
-    /**
-     * Minimum legal value for longitude (-180°).
-     */
+    /** Minimum legal value for longitude (-180°). */
     public static final double MIN_VALUE = -180;
 
-    /**
-     * Maximum legal value for longitude (+180°).
-     */
+    /** Maximum legal value for longitude (+180°). */
     public static final double MAX_VALUE = +180;
 
     /**
@@ -56,13 +46,12 @@ public final class Longitude extends Angle {
     }
 
     /**
-     * Constructs a newly allocated {@code Longitude} object that
-     * represents the longitude value represented by the string.   The
-     * string should represents an angle in either fractional degrees
-     * (e.g. 45.5°) or degrees with minutes and seconds (e.g. 45°30').
-     * The hemisphere (E or W) is optional (default to East).
+     * Constructs a newly allocated {@code Longitude} object that represents the longitude value
+     * represented by the string. The string should represents an angle in either fractional degrees
+     * (e.g. 45.5°) or degrees with minutes and seconds (e.g. 45°30'). The hemisphere (E or W) is
+     * optional (default to East).
      *
-     * @param  theta A string to be converted to a {@code Longitude}.
+     * @param theta A string to be converted to a {@code Longitude}.
      * @throws NumberFormatException if the string does not contain a parsable longitude.
      */
     public Longitude(final String theta) throws NumberFormatException {

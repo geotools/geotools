@@ -21,11 +21,7 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Divide;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class DivideBuilder implements Builder<Divide> {
 
     protected FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);

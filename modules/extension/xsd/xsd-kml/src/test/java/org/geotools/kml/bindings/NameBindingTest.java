@@ -3,7 +3,6 @@ package org.geotools.kml.bindings;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-
 import org.geotools.kml.Folder;
 import org.geotools.kml.v22.KML;
 import org.geotools.kml.v22.KMLTestSupport;
@@ -29,16 +28,21 @@ public class NameBindingTest extends KMLTestSupport {
     }
 
     public void testParseNameInFolder() throws Exception {
-        String xml = "<kml><Folder>" + "<name>foo</name>" + "<Placemark>" + "<name>bar</name>"
-                + "</Placemark>" + "</Folder></kml>";
+        String xml =
+                "<kml><Folder>"
+                        + "<name>foo</name>"
+                        + "<Placemark>"
+                        + "<name>bar</name>"
+                        + "</Placemark>"
+                        + "</Folder></kml>";
         buildDocument(xml);
 
         SimpleFeature document = (SimpleFeature) parse();
         assertEquals("foo", document.getAttribute("name"));
 
         @SuppressWarnings("unchecked")
-        Collection<SimpleFeature> features = (Collection<SimpleFeature>) document
-                .getAttribute("Feature");
+        Collection<SimpleFeature> features =
+                (Collection<SimpleFeature>) document.getAttribute("Feature");
         assertEquals(1, features.size());
         SimpleFeature feature = features.iterator().next();
         Map<Object, Object> userData = feature.getUserData();

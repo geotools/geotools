@@ -17,28 +17,24 @@
 package org.geotools.graph.structure;
 
 /**
- * Represents a directed graph. 
- * 
- * In a directed graph, components have an explicit direction associated with 
- * them. <BR/> 
- * <BR/>
- * Directed nodes differentiate between those 
- * adjacent edges that originate at them (outgoing edges ) and those that 
- * terminate at them (incoming edges).<BR/>
- * <BR/> 
- * Directed edges differentiate between the node at the 
- * the source of the edge (source node) and the node at the destination of the 
- * edges (destination node).<BR/>
- * <BR/>
- * The following is a figure of an undirected graph, and one of the possible 
- * directed graphs that can be derived from it. Directionality is indicated 
- * by arrow heads on the edges of the graph.<BR/>
- * <BR/>
- * <IMG src="doc-files/undirected2directed.gif"><BR/>
- * <BR/>  
- * The following information summarizes the relationships in the directed
- * version of the graph.<BR/>
- * <BR/>
+ * Represents a directed graph.
+ *
+ * <p>In a directed graph, components have an explicit direction associated with them. <br>
+ * <br>
+ * Directed nodes differentiate between those adjacent edges that originate at them (outgoing edges
+ * ) and those that terminate at them (incoming edges).<br>
+ * <br>
+ * Directed edges differentiate between the node at the the source of the edge (source node) and the
+ * node at the destination of the edges (destination node).<br>
+ * <br>
+ * The following is a figure of an undirected graph, and one of the possible directed graphs that
+ * can be derived from it. Directionality is indicated by arrow heads on the edges of the graph.<br>
+ * <br>
+ * <IMG src="doc-files/undirected2directed.gif"><br>
+ * <br>
+ * The following information summarizes the relationships in the directed version of the graph.<br>
+ * <br>
+ *
  * <TABLE border="1">
  *   <TH>Edge</TH>
  *   <TH>Source Node</TH>
@@ -51,8 +47,11 @@ package org.geotools.graph.structure;
  *   <TR align="center"><TD>F</TD><TD>4</TD><TD>6</TD></TR>
  *   <TR align="center"><TD>G</TD><TD>5</TD><TD>7</TD></TR>
  *   <TR align="center"><TD>H</TD><TD>6</TD><TD>7</TD></TR>
- * </TABLE><BR/>
- * <BR/>
+ * </TABLE>
+ *
+ * <br>
+ * <br>
+ *
  * <TABLE border="1">
  *   <TH>Node</TH>
  *   <TH>In Edges</TH>
@@ -65,16 +64,10 @@ package org.geotools.graph.structure;
  *   <TR align="center"><TD>6</TD><TD>F</TD><TD>F</TD></TR>
  *   <TR align="center"><TD>7</TD><TD>E,G,H</TD><TD> </TD></TR>
  * </TABLE>
- * 
+ *
  * @see DirectedNode
  * @see DirectedEdge
- * 
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- *
- *
- *
  * @source $URL$
  */
-public interface DirectedGraph extends Graph {
- 
-}
+public interface DirectedGraph extends Graph {}

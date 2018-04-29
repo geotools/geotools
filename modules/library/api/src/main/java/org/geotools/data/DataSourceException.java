@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,16 +16,12 @@
  */
 package org.geotools.data;
 
-
 /**
  * Thrown when there is an error in a datasource.
- * <p>
- * This class was used back in Java 1.3 before the initCause() method
- * was available for IOException. Since this class is used to pass on
- * problems from external services, providing the root cause is
- * important.
- * </p>
  *
+ * <p>This class was used back in Java 1.3 before the initCause() method was available for
+ * IOException. Since this class is used to pass on problems from external services, providing the
+ * root cause is important.
  *
  * @source $URL$
  */

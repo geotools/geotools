@@ -16,6 +16,7 @@
  */
 package org.geotools.gml2.bindings;
 
+import com.vividsolutions.jts.geom.Geometry;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Iterator;
@@ -23,9 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
-
 import javax.xml.namespace.QName;
-
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDTypeDefinition;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -47,23 +46,18 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import com.vividsolutions.jts.geom.Geometry;
-
 /**
  * Utility methods used by gml2 bindigns when encodding.
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
  * @author Ben Caradoc-Davies, CSIRO Exploration and Mining
- *
- *
- *
  * @source $URL$
  */
 public class GML2EncodingUtils {
-    
+
     /** logging instance */
-    static Logger LOGGER = Logging.getLogger( "org.geotools.gml");
-    
+    static Logger LOGGER = Logging.getLogger("org.geotools.gml");
+
     static GMLEncodingUtils e = new GMLEncodingUtils(GML.getInstance());
 
     public static String epsgCode(CoordinateReferenceSystem crs) {
@@ -71,10 +65,10 @@ public class GML2EncodingUtils {
             return null;
         }
 
-        for (Iterator i = crs.getIdentifiers().iterator(); i.hasNext();) {
+        for (Iterator i = crs.getIdentifiers().iterator(); i.hasNext(); ) {
             Identifier id = (Identifier) i.next();
 
-            //return "EPSG:" + id.getCode();
+            // return "EPSG:" + id.getCode();
             if ((id.getAuthority() != null)
                     && id.getAuthority().getTitle().equals(Citations.EPSG.getTitle())) {
                 return id.getCode();
@@ -84,25 +78,20 @@ public class GML2EncodingUtils {
         return null;
     }
 
-    /**
-     * @deprecated use {@link #toURI(CoordinateReferenceSystem)}.
-     */
+    /** @deprecated use {@link #toURI(CoordinateReferenceSystem)}. */
     public static String crs(CoordinateReferenceSystem crs) {
         return toURI(crs);
     }
 
-    /**
-     * Encodes the crs object as a uri.
-     */
+    /** Encodes the crs object as a uri. */
     public static String toURI(CoordinateReferenceSystem crs) {
-        return toURI(crs,false);
+        return toURI(crs, false);
     }
 
     /**
      * Encodes the crs object as a uri.
-     * <p>
-     * The axis order of the crs determines which form of uri is used.
-     * </p>
+     *
+     * <p>The axis order of the crs determines which form of uri is used.
      */
     public static String toURI(CoordinateReferenceSystem crs, boolean forceOldStyle) {
         return toURI(crs, forceOldStyle ? SrsSyntax.OGC_HTTP_URL : SrsSyntax.OGC_URN_EXPERIMENTAL);
@@ -110,18 +99,18 @@ public class GML2EncodingUtils {
 
     /**
      * Encodes the crs object as a uri using the specified syntax.
-     * <p>
-     * The axis order of the crs is taken into account. In cases where 
-     * </p>
+     *
+     * <p>The axis order of the crs is taken into account. In cases where
      */
     public static String toURI(CoordinateReferenceSystem crs, SrsSyntax srsSyntax) {
         String code = epsgCode(crs);
         AxisOrder axisOrder = CRS.getAxisOrder(crs, true);
 
         if (code != null) {
-            //do an axis order check, if axisOrder is east/north or inapplicable force the legacy
+            // do an axis order check, if axisOrder is east/north or inapplicable force the legacy
             // syntax since the newer syntaxes define a different axis ordering
-            //JD: TODO: perhaps we don't want to do this override and just want to use the specified
+            // JD: TODO: perhaps we don't want to do this override and just want to use the
+            // specified
             // syntax verbatim, maintaining this check for to maintain the excision behavior of this
             // method
             if (axisOrder == AxisOrder.EAST_NORTH || axisOrder == AxisOrder.INAPPLICABLE) {
@@ -130,7 +119,7 @@ public class GML2EncodingUtils {
 
             return srsSyntax.getPrefix() + code;
         }
-        
+
         // if crs has no EPSG code but its identifier is a URI, then use its identifier
         if (crs != null && crs.getName() != null && crs.getName().getCode() != null) {
             try {
@@ -147,9 +136,8 @@ public class GML2EncodingUtils {
 
     /**
      * Determines the crs of the geometry by checking {@link Geometry#getUserData()}.
-     * <p>
-     * This method returns <code>null</code> when no crs can be found.
-     * </p>
+     *
+     * <p>This method returns <code>null</code> when no crs can be found.
      */
     public static CoordinateReferenceSystem getCRS(Geometry g) {
         if (g.getUserData() == null) {
@@ -170,46 +158,42 @@ public class GML2EncodingUtils {
     }
 
     /**
-     * Determines the identifier (gml:id) of the geometry by checking
-     * {@link Geometry#getUserData()}.
-     * <p>
-     * This method returns <code>null</code> when no id can be found.
-     * </p>
+     * Determines the identifier (gml:id) of the geometry by checking {@link
+     * Geometry#getUserData()}.
+     *
+     * <p>This method returns <code>null</code> when no id can be found.
      */
     public static String getID(Geometry g) {
-        return e.getMetadata( g, "gml:id" );
+        return e.getMetadata(g, "gml:id");
     }
-    
+
     /**
-     * Set the identifier (gml:id) of the geometry as a key in the user data map
-     * {@link Geometry#getUserData()} (creating it with{@link Geometry#getUserData()}
-     * if it does not already exist). If the user data exists and is not a
-     * {@link Map}, this method has no effect.
-     * 
+     * Set the identifier (gml:id) of the geometry as a key in the user data map {@link
+     * Geometry#getUserData()} (creating it with{@link Geometry#getUserData()} if it does not
+     * already exist). If the user data exists and is not a {@link Map}, this method has no effect.
+     *
      * @param g the geometry
      * @param id the gml:id to be set
      */
     public static void setID(Geometry g, String id) {
         e.setMetadata(g, "gml:id", id);
     }
-    
+
     /**
-     * Determines the description (gml:description) of the geometry by checking
-     * {@link Geometry#getUserData()}.
-     * <p>
-     * This method returns <code>null</code> when no name can be found.
-     * </p>
+     * Determines the description (gml:description) of the geometry by checking {@link
+     * Geometry#getUserData()}.
+     *
+     * <p>This method returns <code>null</code> when no name can be found.
      */
     public static String getName(Geometry g) {
-        return e.getMetadata( g, "gml:name" );
+        return e.getMetadata(g, "gml:name");
     }
-    
+
     /**
-     * Set the name (gml:name) of the geometry as a key in the user data map
-     * {@link Geometry#getUserData()} (creating it with{@link Geometry#getUserData()}
-     * if it does not already exist). If the user data exists and is not a
-     * {@link Map}, this method has no effect.
-     * 
+     * Set the name (gml:name) of the geometry as a key in the user data map {@link
+     * Geometry#getUserData()} (creating it with{@link Geometry#getUserData()} if it does not
+     * already exist). If the user data exists and is not a {@link Map}, this method has no effect.
+     *
      * @param g the geometry
      * @param name the gml:name to be set
      */
@@ -218,22 +202,19 @@ public class GML2EncodingUtils {
     }
 
     /**
-     * Determines the name (gml:name) of the geometry by checking
-     * {@link Geometry#getUserData()}.
-     * <p>
-     * This method returns <code>null</code> when no description can be found.
-     * </p>
+     * Determines the name (gml:name) of the geometry by checking {@link Geometry#getUserData()}.
+     *
+     * <p>This method returns <code>null</code> when no description can be found.
      */
     public static String getDescription(Geometry g) {
-        return e.getMetadata( g, "gml:description" );
+        return e.getMetadata(g, "gml:description");
     }
-    
+
     /**
-     * Set the description (gml:description) of the geometry as a key in the user data map
-     * {@link Geometry#getUserData()} (creating it with{@link Geometry#getUserData()}
-     * if it does not already exist). If the user data exists and is not a
-     * {@link Map}, this method has no effect.
-     * 
+     * Set the description (gml:description) of the geometry as a key in the user data map {@link
+     * Geometry#getUserData()} (creating it with{@link Geometry#getUserData()} if it does not
+     * already exist). If the user data exists and is not a {@link Map}, this method has no effect.
+     *
      * @param g the geometry
      * @param description the gml:description to be set
      */
@@ -241,7 +222,8 @@ public class GML2EncodingUtils {
         e.setMetadata(g, "gml:description", description);
     }
 
-    public static Element AbstractFeatureType_encode(Object object, Document document, Element value) {
+    public static Element AbstractFeatureType_encode(
+            Object object, Document document, Element value) {
         Feature feature = (Feature) object;
         FeatureType featureType = feature.getType();
 
@@ -253,35 +235,40 @@ public class GML2EncodingUtils {
 
         return encoding;
     }
-    
-    public static List AbstractFeatureType_getProperties(Object object,
-            XSDElementDeclaration element, SchemaIndex schemaIndex, Set<String> toFilter,
+
+    public static List AbstractFeatureType_getProperties(
+            Object object,
+            XSDElementDeclaration element,
+            SchemaIndex schemaIndex,
+            Set<String> toFilter,
             Configuration configuration) {
 
-        return e.AbstractFeatureType_getProperties(object, element, schemaIndex, toFilter, configuration);
-    }
-    
-    public static XSDTypeDefinition createXmlTypeFromFeatureType(SimpleFeatureType featureType, SchemaIndex schemaIndex, Set<String> toFilter ) { 
-       return e.createXmlTypeFromFeatureType(featureType, schemaIndex, toFilter);
+        return e.AbstractFeatureType_getProperties(
+                object, element, schemaIndex, toFilter, configuration);
     }
 
-    public static Object GeometryPropertyType_getProperty(Geometry geometry,
-            QName name) {
-        return e.GeometryPropertyType_getProperty(geometry,name);
+    public static XSDTypeDefinition createXmlTypeFromFeatureType(
+            SimpleFeatureType featureType, SchemaIndex schemaIndex, Set<String> toFilter) {
+        return e.createXmlTypeFromFeatureType(featureType, schemaIndex, toFilter);
     }
-    public static Object GeometryPropertyType_getProperty(Geometry geometry,
-            QName name, boolean includeAbstractGeometry ) {
+
+    public static Object GeometryPropertyType_getProperty(Geometry geometry, QName name) {
+        return e.GeometryPropertyType_getProperty(geometry, name);
+    }
+
+    public static Object GeometryPropertyType_getProperty(
+            Geometry geometry, QName name, boolean includeAbstractGeometry) {
         return e.GeometryPropertyType_getProperty(geometry, name, includeAbstractGeometry);
     }
 
     public static List GeometryPropertyType_getProperties(Geometry geometry) {
         return e.GeometryPropertyType_getProperties(geometry);
     }
-    
+
     /**
      * Returns the geometry dimension, either as forced in the configuration, or the geometry
      * natural one
-     * 
+     *
      * @param geometry
      * @param config
      * @return
@@ -315,5 +302,4 @@ public class GML2EncodingUtils {
 
         return e.getCoordinateReferenceSystem().getCoordinateSystem().getDimension();
     }
-   
 }

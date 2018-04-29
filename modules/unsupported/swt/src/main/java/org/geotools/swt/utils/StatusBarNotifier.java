@@ -25,12 +25,9 @@ import org.geotools.swt.event.MapPaneAdapter;
 import org.geotools.swt.event.MapPaneEvent;
 
 /**
- * The notifier for the statusbar. 
- * 
+ * The notifier for the statusbar.
+ *
  * @author Andrea Antonello (www.hydrologis.com)
- *
- *
- *
  * @source $URL$
  */
 public class StatusBarNotifier {
@@ -38,7 +35,7 @@ public class StatusBarNotifier {
     private MapMouseAdapter mouseListener;
     private MapPaneAdapter mapPaneListener;
 
-    public StatusBarNotifier( ApplicationWindow applicationWindow, SwtMapPane mapPane ) {
+    public StatusBarNotifier(ApplicationWindow applicationWindow, SwtMapPane mapPane) {
         this.applicationWindow = applicationWindow;
 
         createListeners();
@@ -47,48 +44,44 @@ public class StatusBarNotifier {
         mapPane.addMapPaneListener(mapPaneListener);
     }
 
-    /**
-     * Initialize the mouse and map bounds listeners
-     */
+    /** Initialize the mouse and map bounds listeners */
     private void createListeners() {
-        mouseListener = new MapMouseAdapter(){
+        mouseListener =
+                new MapMouseAdapter() {
 
-            @Override
-            public void onMouseMoved( MapMouseEvent ev ) {
-                displayCoords(ev.getMapPosition());
-            }
+                    @Override
+                    public void onMouseMoved(MapMouseEvent ev) {
+                        displayCoords(ev.getMapPosition());
+                    }
 
-            @Override
-            public void onMouseExited( MapMouseEvent ev ) {
-                clearCoords();
-            }
-        };
+                    @Override
+                    public void onMouseExited(MapMouseEvent ev) {
+                        clearCoords();
+                    }
+                };
 
-        mapPaneListener = new MapPaneAdapter(){
+        mapPaneListener =
+                new MapPaneAdapter() {
 
-            @Override
-            public void onDisplayAreaChanged( MapPaneEvent ev ) {
-            }
+                    @Override
+                    public void onDisplayAreaChanged(MapPaneEvent ev) {}
 
-            @Override
-            public void onResized( MapPaneEvent ev ) {
-            }
+                    @Override
+                    public void onResized(MapPaneEvent ev) {}
 
-            @Override
-            public void onRenderingStarted( MapPaneEvent ev ) {
-                applicationWindow.setStatus("rendering...");
-            }
+                    @Override
+                    public void onRenderingStarted(MapPaneEvent ev) {
+                        applicationWindow.setStatus("rendering...");
+                    }
 
-            @Override
-            public void onRenderingStopped( MapPaneEvent ev ) {
-                applicationWindow.setStatus("");
-            }
+                    @Override
+                    public void onRenderingStopped(MapPaneEvent ev) {
+                        applicationWindow.setStatus("");
+                    }
 
-            @Override
-            public void onRenderingProgress( MapPaneEvent ev ) {
-            }
-
-        };
+                    @Override
+                    public void onRenderingProgress(MapPaneEvent ev) {}
+                };
     }
 
     /**
@@ -96,7 +89,7 @@ public class StatusBarNotifier {
      *
      * @param mapPos mouse cursor position (world coords)
      */
-    public void displayCoords( DirectPosition2D mapPos ) {
+    public void displayCoords(DirectPosition2D mapPos) {
         if (mapPos != null) {
             applicationWindow.setStatus(String.format("  %.2f %.2f", mapPos.x, mapPos.y));
         }
@@ -105,5 +98,4 @@ public class StatusBarNotifier {
     public void clearCoords() {
         applicationWindow.setStatus("");
     }
-
 }

@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2003-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,7 +17,6 @@
 package org.geotools.map.event;
 
 import java.util.EventObject;
-
 import org.geotools.map.DefaultMapLayer;
 import org.geotools.map.Layer;
 import org.geotools.map.MapContent;
@@ -26,13 +25,11 @@ import org.geotools.map.MapLayer;
 
 /**
  * Event object used to report changes in the list of layers managed by a MapContext
- * 
+ *
  * @author wolf
- *
- *
  * @source $URL$
- *         http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools
- *         /map/event/MapLayerListEvent.java $
+ *     http://svn.osgeo.org/geotools/trunk/modules/library/render/src/main/java/org/geotools
+ *     /map/event/MapLayerListEvent.java $
  */
 public class MapLayerListEvent extends EventObject {
     /** Holds value of property layer. */
@@ -51,15 +48,11 @@ public class MapLayerListEvent extends EventObject {
 
     /**
      * Creates a new instance of MapLayerListEvent
-     * 
-     * @param source
-     *            DOCUMENT ME!
-     * @param layer
-     *            DOCUMENT ME!
-     * @param fromIndex
-     *            DOCUMENT ME!
-     * @param toIndex
-     *            DOCUMENT ME!
+     *
+     * @param source DOCUMENT ME!
+     * @param layer DOCUMENT ME!
+     * @param fromIndex DOCUMENT ME!
+     * @param toIndex DOCUMENT ME!
      */
     public MapLayerListEvent(MapContext source, MapLayer layer, int fromIndex, int toIndex) {
         super(source);
@@ -71,13 +64,10 @@ public class MapLayerListEvent extends EventObject {
 
     /**
      * Creates a new instance of MapLayerListEvent
-     * 
-     * @param source
-     *            Map issuing the event
-     * @param layer
-     *            Layer being reported against; may be null
-     * @param position
-     *            index modified in layer list
+     *
+     * @param source Map issuing the event
+     * @param layer Layer being reported against; may be null
+     * @param position index modified in layer list
      */
     public MapLayerListEvent(MapContext source, MapLayer layer, int position) {
         super(source);
@@ -89,18 +79,14 @@ public class MapLayerListEvent extends EventObject {
 
     /**
      * Creates a new instance of MapLayerListEvent passing on an event from a layer.
-     * 
-     * @param source
-     *            Map issuing the event
-     * @param layer
-     *            Layer issuing the event
-     * @param position
-     *            Position in the layer list
-     * @param mapLayerEvent
-     *            Event provided from the layer
+     *
+     * @param source Map issuing the event
+     * @param layer Layer issuing the event
+     * @param position Position in the layer list
+     * @param mapLayerEvent Event provided from the layer
      */
-    public MapLayerListEvent(MapContext source, MapLayer layer, int position,
-            MapLayerEvent mapLayerEvent) {
+    public MapLayerListEvent(
+            MapContext source, MapLayer layer, int position, MapLayerEvent mapLayerEvent) {
         this(source, layer, position);
         this.mapLayerEvent = mapLayerEvent;
     }
@@ -121,7 +107,8 @@ public class MapLayerListEvent extends EventObject {
         this.toIndex = toIndex;
     }
 
-    public MapLayerListEvent(MapContent map, Layer element, int index, MapLayerEvent mapLayerEvent) {
+    public MapLayerListEvent(
+            MapContent map, Layer element, int index, MapLayerEvent mapLayerEvent) {
         super(map);
         this.layer = element;
         this.mapLayer = element == null ? null : new DefaultMapLayer(element);
@@ -132,7 +119,7 @@ public class MapLayerListEvent extends EventObject {
 
     /**
      * Returns the layer involved in the change
-     * 
+     *
      * @return Value of property layer.
      */
     public Layer getElement() {
@@ -141,6 +128,7 @@ public class MapLayerListEvent extends EventObject {
 
     /**
      * Return the layer involved in the change.
+     *
      * @return
      */
     public MapLayer getLayer() {
@@ -149,9 +137,9 @@ public class MapLayerListEvent extends EventObject {
 
     /**
      * Returns the index of the first layer involved in the change
-     * 
+     *
      * @return The old index of the layer. -1 will be returned if the layer was not in the
-     *         MapContext
+     *     MapContext
      */
     public int getFromIndex() {
         return this.fromIndex;
@@ -159,9 +147,9 @@ public class MapLayerListEvent extends EventObject {
 
     /**
      * Returns the index of the last layer involved in the change
-     * 
+     *
      * @return The old index of the layer. -1 will be returned if the layer is no more in the
-     *         MapContext
+     *     MapContext
      */
     public int getToIndex() {
         return this.toIndex;
@@ -169,7 +157,7 @@ public class MapLayerListEvent extends EventObject {
 
     /**
      * Returns the map layer event that originated this layer list event
-     * 
+     *
      * @return Value of property mapLayerEvent.
      */
     public MapLayerEvent getMapLayerEvent() {

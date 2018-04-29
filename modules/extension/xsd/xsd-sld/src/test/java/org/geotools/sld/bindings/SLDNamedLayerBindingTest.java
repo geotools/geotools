@@ -18,12 +18,7 @@ package org.geotools.sld.bindings;
 
 import org.geotools.styling.NamedLayer;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class SLDNamedLayerBindingTest extends SLDTestSupport {
     public void testType() throws Exception {
         assertEquals(NamedLayer.class, new SLDNamedLayerBinding(null).getType());

@@ -18,20 +18,22 @@ package org.geotools.data.wfs.internal;
 
 /**
  * Enumeration for the possible operations a WFS may implement.
- * 
+ *
  * @author Gabriel Roldan
  * @version $Id$
  * @since 2.5.x
- * 
- * 
- * 
  * @source $URL$
  */
 public enum WFSOperationType {
-    GET_CAPABILITIES("GetCapabilities"), DESCRIBE_FEATURETYPE("DescribeFeatureType"), GET_FEATURE(
-            "GetFeature"), GET_GML_OBJECT("GetGmlObject"), LOCK_FEATURE("LockFeature"), GET_FEATURE_WITH_LOCK(
-            "GetFeatureWithLock"), TRANSACTION("Transaction"), LIST_STORED_QUERIES("ListStoredQueries"),
-            DESCRIBE_STORED_QUERIES("DescribeStoredQueries");
+    GET_CAPABILITIES("GetCapabilities"),
+    DESCRIBE_FEATURETYPE("DescribeFeatureType"),
+    GET_FEATURE("GetFeature"),
+    GET_GML_OBJECT("GetGmlObject"),
+    LOCK_FEATURE("LockFeature"),
+    GET_FEATURE_WITH_LOCK("GetFeatureWithLock"),
+    TRANSACTION("Transaction"),
+    LIST_STORED_QUERIES("ListStoredQueries"),
+    DESCRIBE_STORED_QUERIES("DescribeStoredQueries");
 
     private String operationName;
 

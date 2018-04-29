@@ -16,12 +16,11 @@
  */
 package org.geotools.coverage.grid.io;
 
+import java.io.IOException;
 import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.store.ReTypingFeatureCollection;
 import org.opengis.filter.Filter;
-
-import java.io.IOException;
 
 public class RenamingGranuleStore extends RenamingGranuleSource implements GranuleStore {
 
@@ -35,13 +34,12 @@ public class RenamingGranuleStore extends RenamingGranuleSource implements Granu
     @Override
     public void addGranules(SimpleFeatureCollection granules) {
         try {
-            ReTypingFeatureCollection backMapped = new ReTypingFeatureCollection(granules, delegate
-                    .getSchema());
+            ReTypingFeatureCollection backMapped =
+                    new ReTypingFeatureCollection(granules, delegate.getSchema());
             store.addGranules(backMapped);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     @Override

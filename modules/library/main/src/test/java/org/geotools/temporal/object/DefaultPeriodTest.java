@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,22 +16,18 @@
  */
 package org.geotools.temporal.object;
 
+import static org.junit.Assert.*;
+
 import java.util.Calendar;
 import java.util.Date;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.opengis.temporal.Instant;
 import org.opengis.temporal.Period;
 
-
 /**
- *
  * @author Mehdi Sidhoum (Geomatys)
- *
- *
- *
  * @source $URL$
  */
 public class DefaultPeriodTest {
@@ -60,18 +56,14 @@ public class DefaultPeriodTest {
         period2 = null;
     }
 
-    /**
-     * Test of getBeginning method, of class DefaultPeriod.
-     */
+    /** Test of getBeginning method, of class DefaultPeriod. */
     @Test
     public void testGetBeginning() {
         Instant result = period1.getBeginning();
         assertFalse(period2.getBeginning().equals(result));
     }
 
-    /**
-     * Test of setBegining method, of class DefaultPeriod.
-     */
+    /** Test of setBegining method, of class DefaultPeriod. */
     @Test
     public void testSetBegining_Instant() {
         Instant result = period1.getBeginning();
@@ -80,9 +72,7 @@ public class DefaultPeriodTest {
         assertFalse(period1.getBeginning().equals(result));
     }
 
-    /**
-     * Test of setBegining method, of class DefaultPeriod.
-     */
+    /** Test of setBegining method, of class DefaultPeriod. */
     @Test
     public void testSetBegining_Date() {
         Date result = period1.getBeginning().getPosition().getDate();
@@ -90,18 +80,14 @@ public class DefaultPeriodTest {
         assertFalse(period1.getBeginning().getPosition().getDate().equals(result));
     }
 
-    /**
-     * Test of getEnding method, of class DefaultPeriod.
-     */
+    /** Test of getEnding method, of class DefaultPeriod. */
     @Test
     public void testGetEnding() {
         Instant result = period1.getEnding();
         assertFalse(period2.getEnding().equals(result));
     }
 
-    /**
-     * Test of setEnding method, of class DefaultPeriod.
-     */
+    /** Test of setEnding method, of class DefaultPeriod. */
     @Test
     public void testSetEnding_Instant() {
         Instant result = period1.getEnding();
@@ -110,9 +96,7 @@ public class DefaultPeriodTest {
         assertFalse(period1.getEnding().equals(result));
     }
 
-    /**
-     * Test of setEnding method, of class DefaultPeriod.
-     */
+    /** Test of setEnding method, of class DefaultPeriod. */
     @Test
     public void testSetEnding_Date() {
         Date result = period1.getEnding().getPosition().getDate();
@@ -120,9 +104,7 @@ public class DefaultPeriodTest {
         assertFalse(period1.getEnding().getPosition().getDate().equals(result));
     }
 
-    /**
-     * Test of equals method, of class DefaultPeriod.
-     */
+    /** Test of equals method, of class DefaultPeriod. */
     @Test
     public void testEquals() {
         assertFalse(period1.equals(null));
@@ -130,18 +112,14 @@ public class DefaultPeriodTest {
         assertFalse(period1.equals(period2));
     }
 
-    /**
-     * Test of hashCode method, of class DefaultPeriod.
-     */
+    /** Test of hashCode method, of class DefaultPeriod. */
     @Test
     public void testHashCode() {
         int result = period1.hashCode();
         assertFalse(period2.hashCode() == result);
     }
 
-    /**
-     * Test of toString method, of class DefaultPeriod.
-     */
+    /** Test of toString method, of class DefaultPeriod. */
     @Test
     public void testToString() {
         String result = period1.toString();

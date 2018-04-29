@@ -23,17 +23,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
-
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
-
 import net.opengis.ows11.KeywordsType;
 import net.opengis.ows11.LanguageStringType;
 import net.opengis.ows11.WGS84BoundingBoxType;
 import net.opengis.wfs20.FeatureTypeType;
 import net.opengis.wfs20.OutputFormatListType;
-
-import org.geotools.data.wfs.WFSDataStore;
 import org.geotools.data.wfs.internal.FeatureTypeInfo;
 import org.geotools.data.wfs.internal.Loggers;
 import org.geotools.data.wfs.internal.WFSConfig;
@@ -47,7 +43,7 @@ import org.opengis.referencing.operation.TransformException;
 public class FeatureTypeInfoImpl implements FeatureTypeInfo {
 
     private final FeatureTypeType eType;
-    
+
     private final WFSConfig config;
 
     public FeatureTypeInfoImpl(FeatureTypeType eType, WFSConfig config) {
@@ -57,8 +53,9 @@ public class FeatureTypeInfoImpl implements FeatureTypeInfo {
 
     @Override
     public String getTitle() {
-        return eType.getTitle() == null || eType.getTitle().isEmpty() ? null : String.valueOf(eType
-                .getTitle().get(0).getValue());
+        return eType.getTitle() == null || eType.getTitle().isEmpty()
+                ? null
+                : String.valueOf(eType.getTitle().get(0).getValue());
     }
 
     @Override
@@ -84,15 +81,16 @@ public class FeatureTypeInfoImpl implements FeatureTypeInfo {
 
     @Override
     public String getDescription() {
-        return eType.getAbstract() == null || eType.getAbstract().isEmpty() ? null : 
-                eType.getAbstract().get(0).getValue();
+        return eType.getAbstract() == null || eType.getAbstract().isEmpty()
+                ? null
+                : eType.getAbstract().get(0).getValue();
     }
 
     @Override
     public String getName() {
         return config.localTypeName(eType.getName());
     }
-    
+
     public QName getQName() {
         return eType.getName();
     }
@@ -119,12 +117,16 @@ public class FeatureTypeInfoImpl implements FeatureTypeInfo {
         try {
             nativeBounds = wgs84Bounds.transform(crs, true);
         } catch (TransformException e) {
-            Loggers.MODULE.log(Level.WARNING, "Can't transform bounds of " + getName() + " to "
-                    + getDefaultSRS(), e);
+            Loggers.MODULE.log(
+                    Level.WARNING,
+                    "Can't transform bounds of " + getName() + " to " + getDefaultSRS(),
+                    e);
             nativeBounds = new ReferencedEnvelope(crs);
         } catch (FactoryException e) {
-            Loggers.MODULE.log(Level.WARNING, "Can't transform bounds of " + getName() + " to "
-                    + getDefaultSRS(), e);
+            Loggers.MODULE.log(
+                    Level.WARNING,
+                    "Can't transform bounds of " + getName() + " to " + getDefaultSRS(),
+                    e);
             nativeBounds = new ReferencedEnvelope(crs);
         }
         return nativeBounds;
@@ -164,8 +166,9 @@ public class FeatureTypeInfoImpl implements FeatureTypeInfo {
             double maxLon = (Double) upperCorner.get(0);
             double maxLat = (Double) upperCorner.get(1);
 
-            ReferencedEnvelope latLonBounds = new ReferencedEnvelope(minLon, maxLon, minLat,
-                    maxLat, DefaultGeographicCRS.WGS84);
+            ReferencedEnvelope latLonBounds =
+                    new ReferencedEnvelope(
+                            minLon, maxLon, minLat, maxLat, DefaultGeographicCRS.WGS84);
 
             return latLonBounds;
         }

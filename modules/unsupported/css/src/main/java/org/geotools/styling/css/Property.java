@@ -20,7 +20,7 @@ import java.util.List;
 
 /**
  * A CSS property, having a name and a list of {@link Value} associated to it
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 public class Property {
@@ -53,29 +53,22 @@ public class Property {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
         Property other = (Property) obj;
         if (getName() == null) {
-            if (other.getName() != null)
-                return false;
-        } else if (!getName().equals(other.getName()))
-            return false;
+            if (other.getName() != null) return false;
+        } else if (!getName().equals(other.getName())) return false;
         if (getValues() == null) {
-            if (other.getValues() != null)
-                return false;
-        } else if (!getValues().equals(other.getValues()))
-            return false;
+            if (other.getValues() != null) return false;
+        } else if (!getValues().equals(other.getValues())) return false;
         return true;
     }
 
     /**
      * True if the property has been used during the conversion
-     * 
+     *
      * @return
      */
     boolean isUsed() {
@@ -84,7 +77,7 @@ public class Property {
 
     /**
      * The property name
-     * 
+     *
      * @return
      */
     public String getName() {
@@ -93,7 +86,7 @@ public class Property {
 
     /**
      * The list of property values
-     * 
+     *
      * @return
      */
     public List<Value> getValues() {
@@ -111,5 +104,4 @@ public class Property {
     void setValues(List<Value> values) {
         this.values = values;
     }
-
 }

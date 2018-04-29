@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2013 - 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -23,7 +23,6 @@ import java.awt.Font;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
-
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -39,7 +38,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class RepeatedLabelTest {
-    
+
     SimpleFeatureSource fs_line;
     SimpleFeatureSource square;
     SimpleFeatureSource squareHoles;
@@ -48,29 +47,32 @@ public class RepeatedLabelTest {
 
     @Before
     public void setUp() throws Exception {
-        File property_line = new File(TestData.getResource(this, "partialLineLabel.properties").toURI());
+        File property_line =
+                new File(TestData.getResource(this, "partialLineLabel.properties").toURI());
         PropertyDataStore ds_line = new PropertyDataStore(property_line.getParentFile());
         fs_line = ds_line.getFeatureSource("partialLineLabel");
         square = ds_line.getFeatureSource("square");
         squareHoles = ds_line.getFeatureSource("square-hole");
 
         bounds = new ReferencedEnvelope(2, 8, 2, 8, DefaultGeographicCRS.WGS84);
-        
-        FontCache.getDefaultInstance().registerFont(
-                Font.createFont(Font.TRUETYPE_FONT, TestData.getResource(this, "Vera.ttf")
-                        .openStream()));
+
+        FontCache.getDefaultInstance()
+                .registerFont(
+                        Font.createFont(
+                                Font.TRUETYPE_FONT,
+                                TestData.getResource(this, "Vera.ttf").openStream()));
     }
-    
+
     @Test
     public void testRepeatedLabel() throws Exception {
         checkRepeatedLabels("repeatedLabelsLine");
     }
-    
+
     @Test
     public void testRepeatedLabelAlongLine() throws Exception {
         checkRepeatedLabels("repeatedLabelsAlongLine");
     }
-    
+
     @Test
     public void testRepeatedLabelAlongLineSmall() throws Exception {
         checkRepeatedLabels("repeatedLabelsAlongLineSmall");
@@ -89,49 +91,67 @@ public class RepeatedLabelTest {
         renderer.setMapContent(mc);
 
         BufferedImage image = RendererBaseTest.renderImage(renderer, bounds, null, 500, 500);
-        File expected = new File("src/test/resources/org/geotools/renderer/lite/test-data/" + styleName + ".png");
+        File expected =
+                new File(
+                        "src/test/resources/org/geotools/renderer/lite/test-data/"
+                                + styleName
+                                + ".png");
         int tolerance = 1000;
         ImageAssert.assertEquals(expected, image, tolerance);
     }
-    
+
     @Test
     public void testLabelSquareBorders() throws Exception {
         checkRepeatedLabelsPolygonBorder(square, "repeatedLabelsAlongLine", "poly", null, 1000);
     }
-    
+
     @Test
     public void testLabelSquareBordersWithHoles() throws Exception {
-        checkRepeatedLabelsPolygonBorder(squareHoles, "repeatedLabelsAlongLine", "polyHole", null, 1000);
+        checkRepeatedLabelsPolygonBorder(
+                squareHoles, "repeatedLabelsAlongLine", "polyHole", null, 1000);
     }
-    
+
     @Test
     public void testLabelSquareBordersPositiveOffset() throws Exception {
         PerpendicularOffsetVisitor visitor = new PerpendicularOffsetVisitor(10);
-        checkRepeatedLabelsPolygonBorder(square, "repeatedLabelsAlongLine", "poly-perp-offset", visitor, 1000);
+        checkRepeatedLabelsPolygonBorder(
+                square, "repeatedLabelsAlongLine", "poly-perp-offset", visitor, 1000);
     }
-    
+
     @Test
     public void testLabelSquareBordersNegativeOffset() throws Exception {
         PerpendicularOffsetVisitor visitor = new PerpendicularOffsetVisitor(-10);
-        checkRepeatedLabelsPolygonBorder(square, "repeatedLabelsAlongLine", "poly-perp-negative-offset", visitor, 1000);
+        checkRepeatedLabelsPolygonBorder(
+                square, "repeatedLabelsAlongLine", "poly-perp-negative-offset", visitor, 1000);
     }
-    
+
     @Test
     public void testLabelSquareBordersHolesPositiveOffset() throws Exception {
         PerpendicularOffsetVisitor visitor = new PerpendicularOffsetVisitor(5);
-        checkRepeatedLabelsPolygonBorder(squareHoles, "repeatedLabelsAlongLine", "poly-hole-perp-offset", visitor, 1000);
+        checkRepeatedLabelsPolygonBorder(
+                squareHoles, "repeatedLabelsAlongLine", "poly-hole-perp-offset", visitor, 1000);
     }
-    
+
     @Test
     public void testLabelSquareBordersHoleNegativeOffset() throws Exception {
         PerpendicularOffsetVisitor visitor = new PerpendicularOffsetVisitor(-5);
-        checkRepeatedLabelsPolygonBorder(squareHoles, "repeatedLabelsAlongLine", "poly-hole-perp-negative-offset", visitor, 1000);
+        checkRepeatedLabelsPolygonBorder(
+                squareHoles,
+                "repeatedLabelsAlongLine",
+                "poly-hole-perp-negative-offset",
+                visitor,
+                1000);
     }
 
-    
-    private void checkRepeatedLabelsPolygonBorder(SimpleFeatureSource features, String styleName, String testImageSuffix, DuplicatingStyleVisitor styleVisitor, int tolerance) throws Exception {
+    private void checkRepeatedLabelsPolygonBorder(
+            SimpleFeatureSource features,
+            String styleName,
+            String testImageSuffix,
+            DuplicatingStyleVisitor styleVisitor,
+            int tolerance)
+            throws Exception {
         Style style = RendererBaseTest.loadStyle(this, styleName + ".sld");
-        if(styleVisitor != null) {
+        if (styleVisitor != null) {
             style.accept(styleVisitor);
             style = (Style) styleVisitor.getCopy();
         }
@@ -148,8 +168,13 @@ public class RepeatedLabelTest {
         renderer.setMapContent(mc);
 
         BufferedImage image = RendererBaseTest.renderImage(renderer, bounds, null, 500, 500);
-        File expected = new File("src/test/resources/org/geotools/renderer/lite/test-data/" + styleName + "-" + testImageSuffix + ".png");
+        File expected =
+                new File(
+                        "src/test/resources/org/geotools/renderer/lite/test-data/"
+                                + styleName
+                                + "-"
+                                + testImageSuffix
+                                + ".png");
         ImageAssert.assertEquals(expected, image, tolerance);
     }
-
 }

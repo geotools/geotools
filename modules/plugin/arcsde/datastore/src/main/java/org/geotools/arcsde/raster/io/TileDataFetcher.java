@@ -10,20 +10,18 @@ import static org.geotools.arcsde.raster.info.RasterCellType.TYPE_64BIT_REAL;
 import static org.geotools.arcsde.raster.info.RasterCellType.TYPE_8BIT_S;
 import static org.geotools.arcsde.raster.info.RasterCellType.TYPE_8BIT_U;
 
+import com.esri.sde.sdk.client.SeRasterTile;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.geotools.arcsde.raster.info.RasterCellType;
-
-import com.esri.sde.sdk.client.SeRasterTile;
 
 /**
  * Fills the raw tile data in a {@link TileInfo} out of a {@link SeRasterTile}, potentially
  * promoting the original tile data to a higher precision sample detph, and filling out the TileInfo
- * pixels with the no-data value where appropriate (determined by the
- * {@link SeRasterTile#getBitMaskData() bitmask data}).
- * 
+ * pixels with the no-data value where appropriate (determined by the {@link
+ * SeRasterTile#getBitMaskData() bitmask data}).
+ *
  * @author Gabriel Roldan (OpenGeo)
  * @version $Id$
  * @since 2.5.9
@@ -32,7 +30,9 @@ import com.esri.sde.sdk.client.SeRasterTile;
  */
 abstract class TileDataFetcher {
 
-    private static Map<RasterCellType, TileDataFetcher> tileDataSetters = new HashMap<RasterCellType, TileDataFetcher>();
+    private static Map<RasterCellType, TileDataFetcher> tileDataSetters =
+            new HashMap<RasterCellType, TileDataFetcher>();
+
     static {
         final ByteTileSetter byteTileSetter = new ByteTileSetter();
         tileDataSetters.put(TYPE_1BIT, new OneBitTileSetter());
@@ -53,15 +53,13 @@ abstract class TileDataFetcher {
      * Returns a {@code TileDataFetcher} that knows how to translate the raw pixel data from an
      * {@link SeRasterTile} with pixel type {@code nativeType} to a {@link TileInfo}'s internal
      * array with a pixel type determined by {@code targetCellType}.
-     * 
-     * @param nativeType
-     *            the arcsde raster's native pixel type
-     * @param targetCellType
-     *            the TileInfo's target pixel type
+     *
+     * @param nativeType the arcsde raster's native pixel type
+     * @param targetCellType the TileInfo's target pixel type
      * @return
      */
-    public static TileDataFetcher getTileDataFetcher(final RasterCellType nativeType,
-            final RasterCellType targetCellType) {
+    public static TileDataFetcher getTileDataFetcher(
+            final RasterCellType nativeType, final RasterCellType targetCellType) {
         final TileDataFetcher tileDataFetcher;
         if (nativeType == targetCellType) {
             tileDataFetcher = tileDataSetters.get(nativeType);
@@ -81,36 +79,34 @@ abstract class TileDataFetcher {
             } else if (nativeType == TYPE_32BIT_S && targetCellType == TYPE_64BIT_REAL) {
                 return new IntToDouble();
             }
-            throw new IllegalArgumentException("No registered TileDataFetcher for pixel type "
-                    + nativeType + " and target type " + targetCellType);
-
+            throw new IllegalArgumentException(
+                    "No registered TileDataFetcher for pixel type "
+                            + nativeType
+                            + " and target type "
+                            + targetCellType);
         }
         if (tileDataFetcher == null) {
-            throw new IllegalArgumentException("No registered TileDataFetcher for pixel type "
-                    + nativeType);
+            throw new IllegalArgumentException(
+                    "No registered TileDataFetcher for pixel type " + nativeType);
         }
         return tileDataFetcher;
     }
 
     /**
      * Grabs the native pixel data out of {@code tile}
-     * 
+     *
      * @param tile
      * @param tileInfo
      */
     public abstract void setTileData(SeRasterTile tile, TileInfo tileInfo);
 
-    /**
-     * Returns whether the sample N in the bitmask byte array is marked as a no-data pixel
-     */
+    /** Returns whether the sample N in the bitmask byte array is marked as a no-data pixel */
     protected final boolean isNoData(final int sampleN, final byte[] bitmaskData) {
         boolean isNoData = ((bitmaskData[sampleN / 8] >> (7 - (sampleN % 8))) & 0x01) == 0x00;
         return isNoData;
     }
 
-    /**
-     *
-     */
+    /** */
     private static final class OneBitTileSetter extends TileDataFetcher {
 
         @Override
@@ -148,9 +144,7 @@ abstract class TileDataFetcher {
         }
     }
 
-    /**
-     *
-     */
+    /** */
     private static final class ByteTileSetter extends TileDataFetcher {
         @Override
         public void setTileData(final SeRasterTile tile, TileInfo tileInfo) {
@@ -364,9 +358,7 @@ abstract class TileDataFetcher {
         }
     }
 
-    /**
-     * Converts native unsigned byte tile data to unsigned short data
-     */
+    /** Converts native unsigned byte tile data to unsigned short data */
     private static final class UcharToUshort extends TileDataFetcher {
         @Override
         public void setTileData(final SeRasterTile tile, final TileInfo tileInfo) {
@@ -375,8 +367,8 @@ abstract class TileDataFetcher {
             final short nodata = (short) (tileInfo.getNoDataValue().intValue() & 0xFFFF);
 
             final short[] tileDataUShorts = tileInfo.getTileDataAsUnsignedShorts();
-            
-            //Arrays.fill(tileDataUShorts, nodata);
+
+            // Arrays.fill(tileDataUShorts, nodata);
             if (numPixelsRead == 0) {
                 Arrays.fill(tileDataUShorts, nodata);
             } else {
@@ -399,9 +391,7 @@ abstract class TileDataFetcher {
         }
     }
 
-    /**
-     * Converts native signed byte tile data to signed short data
-     */
+    /** Converts native signed byte tile data to signed short data */
     private static final class ByteToShort extends TileDataFetcher {
         @Override
         public void setTileData(final SeRasterTile tile, final TileInfo tileInfo) {
@@ -431,9 +421,7 @@ abstract class TileDataFetcher {
         }
     }
 
-    /**
-     * Converts native signed short tile data to signed int data
-     */
+    /** Converts native signed short tile data to signed int data */
     private static final class ShortToInt extends TileDataFetcher {
 
         @Override
@@ -466,9 +454,7 @@ abstract class TileDataFetcher {
         }
     }
 
-    /**
-     * Converts native integer tile data to double data
-     */
+    /** Converts native integer tile data to double data */
     private static final class IntToDouble extends TileDataFetcher {
 
         private int[] cache = {};
@@ -509,9 +495,7 @@ abstract class TileDataFetcher {
         }
     }
 
-    /**
-     * Converts native unsigned integer tile data to double data
-     */
+    /** Converts native unsigned integer tile data to double data */
     private static final class UIntToDouble extends TileDataFetcher {
         @Override
         public void setTileData(final SeRasterTile tile, final TileInfo tileInfo) {
@@ -544,9 +528,7 @@ abstract class TileDataFetcher {
         }
     }
 
-    /**
-     * Converts native unsigned integer tile data to double data
-     */
+    /** Converts native unsigned integer tile data to double data */
     private static final class UShortToUInt extends TileDataFetcher {
         @Override
         public void setTileData(final SeRasterTile tile, final TileInfo tileInfo) {
@@ -578,5 +560,4 @@ abstract class TileDataFetcher {
             }
         }
     }
-
 }

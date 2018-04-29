@@ -19,16 +19,11 @@ package org.geotools.sld.bindings;
 import org.geotools.filter.Filters;
 import org.geotools.styling.ContrastEnhancement;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class SLDContrastEnhancementBindingTest extends SLDTestSupport {
     public void testType() throws Exception {
-        assertEquals(ContrastEnhancement.class,
-            new SLDContrastEnhancementBinding(null, null).getType());
+        assertEquals(
+                ContrastEnhancement.class, new SLDContrastEnhancementBinding(null, null).getType());
     }
 
     public void testHistogram() throws Exception {

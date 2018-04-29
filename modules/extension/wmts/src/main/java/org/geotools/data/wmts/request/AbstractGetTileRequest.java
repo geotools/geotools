@@ -29,32 +29,29 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.ows.Response;
-import org.geotools.data.wmts.client.WMTSTileService;
 import org.geotools.data.wmts.client.WMTSTileFactory;
-import org.geotools.data.wmts.model.WMTSCapabilities;
-import org.geotools.data.wmts.model.WMTSLayer;
+import org.geotools.data.wmts.client.WMTSTileService;
 import org.geotools.data.wmts.model.TileMatrixLimits;
 import org.geotools.data.wmts.model.TileMatrixSet;
 import org.geotools.data.wmts.model.TileMatrixSetLink;
+import org.geotools.data.wmts.model.WMTSCapabilities;
+import org.geotools.data.wmts.model.WMTSLayer;
 import org.geotools.data.wmts.model.WMTSServiceType;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.ows.ServiceException;
 import org.geotools.referencing.CRS;
 import org.geotools.renderer.lite.RendererUtilities;
 import org.geotools.tile.Tile;
-
 import org.geotools.util.logging.Logging;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.TransformException;
 
 /**
- * 
  * (Based on existing work by rgould for WMS service)
- * 
+ *
  * @author ian
  * @author Emanuele Tajariol (etj at geo-solutions dot it)
  */
@@ -105,13 +102,10 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
     private final Map<String, String> headers = new HashMap<>();
 
     /**
-     * Constructs a GetMapRequest. The data passed in represents valid values
-     * that can be used.
+     * Constructs a GetMapRequest. The data passed in represents valid values that can be used.
      *
-     * @param onlineResource
-     *            the location that the request should be applied to
-     * @param properties
-     *            pre-set properties to be used. Can be null.
+     * @param onlineResource the location that the request should be applied to
+     * @param properties pre-set properties to be used. Can be null.
      */
     public AbstractGetTileRequest(URL onlineResource, Properties properties) {
         super(onlineResource, properties);
@@ -159,9 +153,7 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
         return headers;
     }
 
-    /**
-     * @return the crs
-     */
+    /** @return the crs */
     public CoordinateReferenceSystem getCrs() {
         return crs;
     }
@@ -171,9 +163,7 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
         crs = coordinateReferenceSystem;
     }
 
-    /**
-     * Compute the set of tiles needed to generate the image.
-     */
+    /** Compute the set of tiles needed to generate the image. */
     @Override
     public Set<Tile> getTiles() throws ServiceException {
         Set<Tile> tiles;
@@ -181,8 +171,7 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
             throw new ServiceException("GetTiles called with no layer set");
         }
 
-        if (LOGGER.isLoggable(Level.FINE))
-            LOGGER.fine("getTiles: layer:" + layer);
+        if (LOGGER.isLoggable(Level.FINE)) LOGGER.fine("getTiles: layer:" + layer);
 
         String layerString = "";
         String styleString = "";
@@ -205,8 +194,13 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
         setProperty(STYLE, styleString);
 
         if (LOGGER.isLoggable(Level.FINE))
-            LOGGER.fine("getTiles:  layer:" + layer + " w:" + requestedWidth + " x h:"
-                    + requestedHeight);
+            LOGGER.fine(
+                    "getTiles:  layer:"
+                            + layer
+                            + " w:"
+                            + requestedWidth
+                            + " x h:"
+                            + requestedHeight);
 
         TileMatrixSet matrixSet = selectMatrixSet();
 
@@ -231,20 +225,27 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
             }
         }
 
-        WMTSTileService wmtsService = new WMTSTileService(requestUrl, type, layer, styleString,
-                matrixSet);
+        WMTSTileService wmtsService =
+                new WMTSTileService(requestUrl, type, layer, styleString, matrixSet);
 
         wmtsService.getDimensions().put(WMTSTileService.DIMENSION_TIME, requestedTime);
 
-        ((Map) (wmtsService.getExtrainfo().computeIfAbsent(WMTSTileService.EXTRA_HEADERS,
-                extra -> new HashMap<>()))).putAll(this.headers);
+        ((Map)
+                        (wmtsService
+                                .getExtrainfo()
+                                .computeIfAbsent(
+                                        WMTSTileService.EXTRA_HEADERS, extra -> new HashMap<>())))
+                .putAll(this.headers);
 
         // zoomLevel = factory.getZoomLevel(zoom, wmtsService);
         int scale = 0;
 
         try {
-            scale = (int) Math.round(RendererUtilities.calculateScale(requestedBBox, requestedWidth,
-                    requestedHeight, DPI));
+            scale =
+                    (int)
+                            Math.round(
+                                    RendererUtilities.calculateScale(
+                                            requestedBBox, requestedWidth, requestedHeight, DPI));
         } catch (FactoryException | TransformException ex) {
             LOGGER.log(Level.WARNING, "Failed to calculate scale", ex);
             throw new ServiceException("Failed to calculate scale: " + ex.getMessage());
@@ -271,16 +272,26 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
             int y = tile.getTileIdentifier().getY();
             if (x < limit.getMincol() || x > limit.getMaxcol()) {
                 if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.fine("col " + x + " outside limits " + limit.getMincol() + " "
-                            + limit.getMaxcol());
+                    LOGGER.fine(
+                            "col "
+                                    + x
+                                    + " outside limits "
+                                    + limit.getMincol()
+                                    + " "
+                                    + limit.getMaxcol());
                 tilesOutsideLimits.add(tile);
                 continue;
             }
 
             if (y < limit.getMinrow() || y > limit.getMaxrow()) {
                 if (LOGGER.isLoggable(Level.FINE))
-                    LOGGER.fine("row " + y + " outside limits " + limit.getMinrow() + " "
-                            + limit.getMaxrow());
+                    LOGGER.fine(
+                            "row "
+                                    + y
+                                    + " outside limits "
+                                    + limit.getMinrow()
+                                    + " "
+                                    + limit.getMaxrow());
                 tilesOutsideLimits.add(tile);
             }
         }
@@ -317,9 +328,9 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
 
             CoordinateReferenceSystem matrixCRS = matrixSet.getCoordinateReferenceSystem();
 
-            if (CRS.equalsIgnoreMetadata(requestCRS, matrixCRS)) {// matching SRS
+            if (CRS.equalsIgnoreMetadata(requestCRS, matrixCRS)) { // matching SRS
                 if (links.containsKey((matrixSet.getIdentifier()))) { // and available for
-                                                                          // this layer
+                    // this layer
                     if (LOGGER.isLoggable(Level.FINE)) {
                         LOGGER.fine("selected matrix set:" + matrixSet.getIdentifier());
                     }
@@ -334,8 +345,10 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
         // The layer does not provide the requested CRS, so just take any one
         if (retMatrixSet == null) {
             if (LOGGER.isLoggable(Level.INFO)) {
-                LOGGER.info("Failed to match the requested CRS (" + requestCRS.getName()
-                        + ") with any of the tile matrices!");
+                LOGGER.info(
+                        "Failed to match the requested CRS ("
+                                + requestCRS.getName()
+                                + ") with any of the tile matrices!");
             }
             for (TileMatrixSet matrix : capabilities.getMatrixSets()) {
                 if (links.containsKey((matrix.getIdentifier()))) { // available for this layer
@@ -350,10 +363,12 @@ public abstract class AbstractGetTileRequest extends AbstractWMTSRequest impleme
             }
         }
         if (retMatrixSet == null) {
-            throw new ServiceException("Unable to find a matching TileMatrixSet for layer "
-                    + layer.getName() + " and SRS: " + requestCRS.getName());
+            throw new ServiceException(
+                    "Unable to find a matching TileMatrixSet for layer "
+                            + layer.getName()
+                            + " and SRS: "
+                            + requestCRS.getName());
         }
         return retMatrixSet;
     }
-
 }

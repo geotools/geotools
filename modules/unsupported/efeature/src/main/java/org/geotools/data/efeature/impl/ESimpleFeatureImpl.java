@@ -33,71 +33,83 @@ import org.geotools.filter.identity.FeatureIdImpl;
 
 /**
  * @author kengu - 24. juni 2011
- *
- *
  * @source $URL$
  */
 public class ESimpleFeatureImpl extends SimpleFeatureImpl implements ESimpleFeature {
 
-    /**
-     * Strong cached reference to EFeature {@link EObject data object}
-     */
+    /** Strong cached reference to EFeature {@link EObject data object} */
     private EObject eObject;
-    
-    /**
-     * Strong cached reference to EFeature {@link EFeatureInfo structure}
-     */
+
+    /** Strong cached reference to EFeature {@link EFeatureInfo structure} */
     private EFeatureInfo eStructure;
 
-    // ----------------------------------------------------- 
+    // -----------------------------------------------------
     //  Constructors
     // -----------------------------------------------------
 
     /**
      * {@link ESimpleFeature} delegate constructor
+     *
      * @param eFeature
      * @param transaction
      */
     public ESimpleFeatureImpl(ESimpleFeature eFeature, Transaction transaction) {
-        this(eFeature.eFeature().getStructure(),eFeature.eFeature(),eFeature.getID(),
-                eGetFeatureValues(eFeature.eFeature().getStructure(),eFeature.eFeature(),transaction));
+        this(
+                eFeature.eFeature().getStructure(),
+                eFeature.eFeature(),
+                eFeature.getID(),
+                eGetFeatureValues(
+                        eFeature.eFeature().getStructure(), eFeature.eFeature(), transaction));
     }
-    
+
     /**
      * {@link EFeature} delegate constructor
+     *
      * @param eFeature
      * @param transaction
      */
     public ESimpleFeatureImpl(EFeature eFeature, Transaction transaction) {
-        this(eFeature.getStructure(),eFeature,eFeature.getID(),
-                eGetFeatureValues(eFeature.getStructure(),eFeature,transaction));
+        this(
+                eFeature.getStructure(),
+                eFeature,
+                eFeature.getID(),
+                eGetFeatureValues(eFeature.getStructure(), eFeature, transaction));
     }
-    
+
     /**
      * {@link EFeature} compatible {@link EObject} delegate constructor
+     *
      * @param eStructure
      * @param eObject
      * @param transaction
      */
     public ESimpleFeatureImpl(EFeatureInfo eStructure, EObject eObject, Transaction transaction) {
-        this(eStructure,eObject,eStructure.toID(eObject),
+        this(
+                eStructure,
+                eObject,
+                eStructure.toID(eObject),
                 eGetFeatureValues(eStructure, eObject, transaction));
     }
-    
-    
+
     /**
      * Trusted constructor
+     *
      * @param eStructure
      * @param eObject
      * @param id
      * @param values
      */
-    public ESimpleFeatureImpl(EFeatureInfo eStructure, EObject eObject, String eID, List<Object> values) {
+    public ESimpleFeatureImpl(
+            EFeatureInfo eStructure, EObject eObject, String eID, List<Object> values) {
         //
         // Forward to SimpleFeatureImpl
         //
-        super(values.toArray(), eStructure.getFeatureType(), 
-                new FeatureIdImpl(eID), false, eStructure.eGetAttributeIndex());
+        super(
+                values.toArray(),
+                eStructure.getFeatureType(),
+                new FeatureIdImpl(eID),
+                false,
+                eStructure.eGetAttributeIndex());
         //
         // Prepare
         //
@@ -105,32 +117,32 @@ public class ESimpleFeatureImpl extends SimpleFeatureImpl implements ESimpleFeat
         this.eStructure = eStructure;
     }
 
-    // ----------------------------------------------------- 
+    // -----------------------------------------------------
     //  ESimpleFeature implementation
     // -----------------------------------------------------
-    
+
     @Override
     public EObject eObject() {
         //
         // Return implementation, not delegate
         //
-        if(eObject instanceof EFeatureDelegate) {
-            return ((EFeatureDelegate)eObject).eImpl();
+        if (eObject instanceof EFeatureDelegate) {
+            return ((EFeatureDelegate) eObject).eImpl();
         }
         return eObject;
     }
-    
+
     @Override
     public EFeature eFeature() {
         //
-        // Return delegate if not a EFeature implementation  
+        // Return delegate if not a EFeature implementation
         //
-        if(eObject instanceof EFeature) {
-            return (EFeature)eObject();
+        if (eObject instanceof EFeature) {
+            return (EFeature) eObject();
         }
-        return new EFeatureDelegate(eStructure, (InternalEObject)eObject, true, null);
-    }   
-    
+        return new EFeatureDelegate(eStructure, (InternalEObject) eObject, true, null);
+    }
+
     @Override
     public boolean isDetached() {
         return eStructure.eHints().eValuesDetached();
@@ -140,20 +152,20 @@ public class ESimpleFeatureImpl extends SimpleFeatureImpl implements ESimpleFeat
     public boolean isSingleton() {
         return eStructure.eHints().eSingletonFeatures();
     }
-    
+
     @Override
     public List<Object> read() throws IllegalStateException {
         return read(Transaction.AUTO_COMMIT);
     }
-    
+
     @Override
     public List<Object> read(Transaction transaction) throws IllegalStateException {
         //
         // Decide if feature values is allowed to be updated from backing store
         //
-        if(!isDetached()) {
-            throw new IllegalStateException("ESimpleFeature " 
-                    + getType().getTypeName() + " is not detached");
+        if (!isDetached()) {
+            throw new IllegalStateException(
+                    "ESimpleFeature " + getType().getTypeName() + " is not detached");
         }
         //
         // Read values from eImpl()
@@ -173,15 +185,15 @@ public class ESimpleFeatureImpl extends SimpleFeatureImpl implements ESimpleFeat
     public List<Object> write() throws IllegalStateException {
         return write(Transaction.AUTO_COMMIT);
     }
-    
+
     @Override
-    public List<Object> write(Transaction transaction) throws IllegalStateException {            
+    public List<Object> write(Transaction transaction) throws IllegalStateException {
         //
         // Decide if feature values is allowed to be updated from backing store
         //
-        if(!isDetached()) {
-            throw new IllegalStateException("ESimpleFeature " 
-                    + getType().getTypeName() + " is not detached");
+        if (!isDetached()) {
+            throw new IllegalStateException(
+                    "ESimpleFeature " + getType().getTypeName() + " is not detached");
         }
         //
         // Get values as list
@@ -194,9 +206,9 @@ public class ESimpleFeatureImpl extends SimpleFeatureImpl implements ESimpleFeat
         //
         // Finished
         //
-        return eValues;            
-    }    
-    
+        return eValues;
+    }
+
     @Override
     public boolean isReleased() {
         return eObject == null;
@@ -206,8 +218,8 @@ public class ESimpleFeatureImpl extends SimpleFeatureImpl implements ESimpleFeat
     public void release() {
         eObject = null;
     }
-    
-    // ----------------------------------------------------- 
+
+    // -----------------------------------------------------
     //  Object equality implementation
     // -----------------------------------------------------
 
@@ -216,12 +228,12 @@ public class ESimpleFeatureImpl extends SimpleFeatureImpl implements ESimpleFeat
         int hash = 7;
         hash = 31 * hash + getID().hashCode();
         hash = 31 * hash + getFeatureType().hashCode();
-        for(Object it : getAttributes()) {
+        for (Object it : getAttributes()) {
             hash = (null == it ? 0 : it.hashCode());
         }
         return hash;
     }
-               
+
     @Override
     public boolean equals(Object obj) {
         //
@@ -238,14 +250,14 @@ public class ESimpleFeatureImpl extends SimpleFeatureImpl implements ESimpleFeat
         }
         //
         // Not same implementation?
-        //        
+        //
         if (!(obj instanceof ESimpleFeatureInternal)) {
             return false;
         }
         //
         // Cast to ESimpleFeatureInternal
         //
-        ESimpleFeatureInternal eFeature = (ESimpleFeatureInternal)obj;
+        ESimpleFeatureInternal eFeature = (ESimpleFeatureInternal) obj;
         //
         // Get this feature ID
         //
@@ -266,7 +278,7 @@ public class ESimpleFeatureImpl extends SimpleFeatureImpl implements ESimpleFeat
             return false;
         }
         //
-        // Is not same feature type. 
+        // Is not same feature type.
         //
         if (!eFeature.getFeatureType().equals(getFeatureType())) {
             return false;
@@ -300,8 +312,6 @@ public class ESimpleFeatureImpl extends SimpleFeatureImpl implements ESimpleFeat
         //
         // All values are equal
         //
-        return true;        
-    }    
-    
-
+        return true;
+    }
 }

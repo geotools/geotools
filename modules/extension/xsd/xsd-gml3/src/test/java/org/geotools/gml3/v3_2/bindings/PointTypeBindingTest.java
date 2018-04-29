@@ -16,38 +16,31 @@
  */
 package org.geotools.gml3.v3_2.bindings;
 
+import com.vividsolutions.jts.geom.Point;
 import org.geotools.gml3.bindings.GML3MockData;
 import org.geotools.gml3.v3_2.GML;
 import org.geotools.gml3.v3_2.GML32TestSupport;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.w3c.dom.Document;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Point;
-
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class PointTypeBindingTest extends GML32TestSupport {
-//    public void testPos() throws Exception {
-//        GML3MockData.point(document, document);
-//
-//        Point p = (Point) parse();
-//        assertNotNull(p);
-//        assertEquals(new Coordinate(1d, 2d), p.getCoordinate());
-//
-//        assertTrue(p.getUserData() instanceof CoordinateReferenceSystem);
-//    }
+    //    public void testPos() throws Exception {
+    //        GML3MockData.point(document, document);
+    //
+    //        Point p = (Point) parse();
+    //        assertNotNull(p);
+    //        assertEquals(new Coordinate(1d, 2d), p.getCoordinate());
+    //
+    //        assertTrue(p.getUserData() instanceof CoordinateReferenceSystem);
+    //    }
 
     public void testEncode() throws Exception {
         Point p = GML3MockData.point();
         Document dom = encode(p, GML.Point);
 
-        assertEquals(1,
-            dom.getElementsByTagNameNS(GML.NAMESPACE, GML.pos.getLocalPart()).getLength());
-        assertEquals("urn:ogc:def:crs:EPSG::4326", dom.getDocumentElement().getAttribute("srsName"));
+        assertEquals(
+                1, dom.getElementsByTagNameNS(GML.NAMESPACE, GML.pos.getLocalPart()).getLength());
+        assertEquals(
+                "urn:ogc:def:crs:EPSG::4326", dom.getDocumentElement().getAttribute("srsName"));
     }
 }

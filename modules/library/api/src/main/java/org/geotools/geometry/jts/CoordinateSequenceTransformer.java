@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,21 +16,15 @@
  */
 package org.geotools.geometry.jts;
 
-
 import com.vividsolutions.jts.geom.CoordinateSequence;
-
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 
-
 /**
- * Interface that should be implemented by classes able to apply the provided
- * {@linkplain MathTransform transformation} to a
- * {@linkplain CoordinateSequence coordinate sequence}.
+ * Interface that should be implemented by classes able to apply the provided {@linkplain
+ * MathTransform transformation} to a {@linkplain CoordinateSequence coordinate sequence}.
  *
  * @since 2.1
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Andrea Aime
@@ -39,10 +33,10 @@ public interface CoordinateSequenceTransformer {
     /**
      * Returns a transformed coordinate sequence.
      *
-     * @param  sequence The sequence to transform.
-     * @param  transform The transformation to apply.
+     * @param sequence The sequence to transform.
+     * @param transform The transformation to apply.
      * @throws TransformException if at least one coordinate can't be transformed.
      */
     public CoordinateSequence transform(CoordinateSequence sequence, MathTransform transform)
-        throws TransformException;
+            throws TransformException;
 }

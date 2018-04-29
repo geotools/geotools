@@ -18,10 +18,13 @@ package org.geotools.renderer.lite;
 
 import static org.junit.Assert.*;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.io.IOException;
-
+import junit.framework.TestCase;
 import org.geotools.data.memory.MemoryDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.FeatureCollection;
@@ -46,28 +49,16 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Point;
-
-import jj2000.j2k.codestream.HeaderInfo.COC;
-import junit.framework.TestCase;
-
-/**
- * @author ian
- *
- */
+/** @author ian */
 public class DirectLayerLabelsTest extends TestCase {
 
-    private long timout=3000;
+    private long timout = 3000;
     private static final int CENTERX = 130;
     private static final int CENTERY = 40;
-    /**
-     * @throws java.lang.Exception
-     */
+    /** @throws java.lang.Exception */
     @Before
     public void setUp() throws Exception {
-        //System.setProperty(TestData.INTERACTIVE_TEST_KEY, "true");
+        // System.setProperty(TestData.INTERACTIVE_TEST_KEY, "true");
         super.setUp();
     }
 
@@ -78,31 +69,35 @@ public class DirectLayerLabelsTest extends TestCase {
         assertNotNull(style);
         MapContext map = new DefaultMapContext(DefaultGeographicCRS.WGS84);
         map.addLayer(collection, style);
-        DirectLayer dl = new DirectLayer() {
-            
-            @Override
-            public ReferencedEnvelope getBounds() {
-                // TODO Auto-generated method stub
-                return null;
-            }
-            
-            @Override
-            public void draw(Graphics2D graphics, MapContent map, MapViewport viewport) {
-                graphics.setColor(Color.BLACK);
-                graphics.drawString("DirectLayer", 10, 10);
-                
-            }
-        };
+        DirectLayer dl =
+                new DirectLayer() {
+
+                    @Override
+                    public ReferencedEnvelope getBounds() {
+                        // TODO Auto-generated method stub
+                        return null;
+                    }
+
+                    @Override
+                    public void draw(Graphics2D graphics, MapContent map, MapViewport viewport) {
+                        graphics.setColor(Color.BLACK);
+                        graphics.drawString("DirectLayer", 10, 10);
+                    }
+                };
         map.addLayer(dl);
         StreamingRenderer renderer = new StreamingRenderer();
         renderer.setContext(map);
         ReferencedEnvelope env = map.getLayerBounds();
         int boundary = 10;
-        env = new ReferencedEnvelope(env.getMinX() - boundary, env.getMaxX() + boundary,
-                env.getMinY() - boundary, env.getMaxY() + boundary, null);
+        env =
+                new ReferencedEnvelope(
+                        env.getMinX() - boundary,
+                        env.getMaxX() + boundary,
+                        env.getMinY() - boundary,
+                        env.getMaxY() + boundary,
+                        null);
         RendererBaseTest.showRender("testDirectLabeling", renderer, timout, env);
         map.dispose();
-        
     }
 
     private Style loadStyle(String sldFilename) throws IOException {
@@ -131,19 +126,22 @@ public class DirectLayerLabelsTest extends TestCase {
         return data.getFeatureSource(Rendering2DTest.POINT).getFeatures();
     }
 
-    private SimpleFeature createPointFeature(int x, int y, String name,
-            CoordinateReferenceSystem crs, GeometryFactory geomFac, AttributeDescriptor[] types)
-                    throws Exception {
+    private SimpleFeature createPointFeature(
+            int x,
+            int y,
+            String name,
+            CoordinateReferenceSystem crs,
+            GeometryFactory geomFac,
+            AttributeDescriptor[] types)
+            throws Exception {
         Coordinate c = new Coordinate(x, y);
         Point point = geomFac.createPoint(c);
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
-        if (crs != null)
-            builder.add("point", point.getClass(), crs);
-        else
-            builder.add("centre", point.getClass());
+        if (crs != null) builder.add("point", point.getClass(), crs);
+        else builder.add("centre", point.getClass());
         builder.add("name", String.class);
         builder.setName("pointfeature");
         SimpleFeatureType type = builder.buildFeatureType();
-        return SimpleFeatureBuilder.build(type, new Object[] { point, name }, null);
+        return SimpleFeatureBuilder.build(type, new Object[] {point, name}, null);
     }
 }

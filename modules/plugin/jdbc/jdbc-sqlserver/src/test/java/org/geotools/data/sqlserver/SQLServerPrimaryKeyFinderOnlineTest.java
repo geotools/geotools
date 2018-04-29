@@ -19,21 +19,16 @@ package org.geotools.data.sqlserver;
 import org.geotools.jdbc.JDBCPrimaryKeyFinderOnlineTest;
 import org.geotools.jdbc.JDBCPrimaryKeyFinderTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class SQLServerPrimaryKeyFinderOnlineTest extends JDBCPrimaryKeyFinderOnlineTest {
 
     @Override
     protected JDBCPrimaryKeyFinderTestSetup createTestSetup() {
         return new SQLServerPrimaryKeyFinderTestSetup();
     }
-    
+
     @Override
     public void testSequencedPrimaryKey() throws Exception {
-        //SQLSErver does not do explicit sequences
+        // SQLSErver does not do explicit sequences
     }
-
 }

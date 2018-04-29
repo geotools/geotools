@@ -23,15 +23,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
-
 import javax.xml.XMLConstants;
-
 import net.opengis.ows10.KeywordsType;
 import net.opengis.ows10.WGS84BoundingBoxType;
 import net.opengis.wfs.FeatureTypeType;
 import net.opengis.wfs.OutputFormatListType;
-
-import org.geotools.data.wfs.WFSDataStore;
 import org.geotools.data.wfs.internal.FeatureTypeInfo;
 import org.geotools.data.wfs.internal.Loggers;
 import org.geotools.data.wfs.internal.WFSConfig;
@@ -45,7 +41,7 @@ import org.opengis.referencing.operation.TransformException;
 public class FeatureTypeInfoImpl implements FeatureTypeInfo {
 
     private final FeatureTypeType eType;
-    
+
     private final WFSConfig config;
 
     public FeatureTypeInfoImpl(FeatureTypeType eType, WFSConfig config) {
@@ -107,12 +103,16 @@ public class FeatureTypeInfoImpl implements FeatureTypeInfo {
         try {
             nativeBounds = wgs84Bounds.transform(crs, true);
         } catch (TransformException e) {
-            Loggers.MODULE.log(Level.WARNING, "Can't transform bounds of " + getName() + " to "
-                    + getDefaultSRS(), e);
+            Loggers.MODULE.log(
+                    Level.WARNING,
+                    "Can't transform bounds of " + getName() + " to " + getDefaultSRS(),
+                    e);
             nativeBounds = new ReferencedEnvelope(crs);
         } catch (FactoryException e) {
-            Loggers.MODULE.log(Level.WARNING, "Can't transform bounds of " + getName() + " to "
-                    + getDefaultSRS(), e);
+            Loggers.MODULE.log(
+                    Level.WARNING,
+                    "Can't transform bounds of " + getName() + " to " + getDefaultSRS(),
+                    e);
             nativeBounds = new ReferencedEnvelope(crs);
         }
         return nativeBounds;
@@ -154,8 +154,9 @@ public class FeatureTypeInfoImpl implements FeatureTypeInfo {
             double maxLon = (Double) upperCorner.get(0);
             double maxLat = (Double) upperCorner.get(1);
 
-            ReferencedEnvelope latLonBounds = new ReferencedEnvelope(minLon, maxLon, minLat,
-                    maxLat, DefaultGeographicCRS.WGS84);
+            ReferencedEnvelope latLonBounds =
+                    new ReferencedEnvelope(
+                            minLon, maxLon, minLat, maxLat, DefaultGeographicCRS.WGS84);
 
             return latLonBounds;
         }
@@ -188,5 +189,4 @@ public class FeatureTypeInfoImpl implements FeatureTypeInfo {
     public String getAbstract() {
         return eType.getAbstract();
     }
-
 }

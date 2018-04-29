@@ -18,16 +18,13 @@ package org.geotools.jdbc;
 
 import java.io.Serializable;
 
-
 /**
  * A {@link VirtualTable} parameter. Has a name, a default value, and a {@link Validator} to protect
  * the parameters against sql injection attacks.
- * 
- * The class includes some default validators
- * 
+ *
+ * <p>The class includes some default validators
+ *
  * @author Andrea Aime - OpenGeo
- *
- *
  * @source $URL$
  */
 public class VirtualTableParameter implements Serializable {
@@ -40,7 +37,7 @@ public class VirtualTableParameter implements Serializable {
     public VirtualTableParameter(String name, String defaultValue) {
         this(name, defaultValue, null);
     }
-    
+
     public VirtualTableParameter(String name, String defaultValue, Validator validator) {
         this.name = name;
         this.defaultValue = defaultValue;
@@ -83,42 +80,28 @@ public class VirtualTableParameter implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
         VirtualTableParameter other = (VirtualTableParameter) obj;
         if (defaultValue == null) {
-            if (other.defaultValue != null)
-                return false;
-        } else if (!defaultValue.equals(other.defaultValue))
-            return false;
+            if (other.defaultValue != null) return false;
+        } else if (!defaultValue.equals(other.defaultValue)) return false;
         if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!name.equals(other.name))
-            return false;
+            if (other.name != null) return false;
+        } else if (!name.equals(other.name)) return false;
         if (validator == null) {
-            if (other.validator != null)
-                return false;
-        } else if (!validator.equals(other.validator))
-            return false;
+            if (other.validator != null) return false;
+        } else if (!validator.equals(other.validator)) return false;
         return true;
     }
 
-
-
     /**
      * Interface to be implemented by parameter value validators
-     * 
+     *
      * @author aaime
-     * 
      */
     public interface Validator extends Serializable {
         public void validate(String value) throws IllegalArgumentException;
     }
-    
-    
 }

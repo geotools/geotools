@@ -15,7 +15,5 @@
  *    Lesser General Public License for more details.
  */
 
-/**
- * Cursor tools for zooming and panning; subclass to implement additional mouse-driven tools.
- */
+/** Cursor tools for zooming and panning; subclass to implement additional mouse-driven tools. */
 package org.geotools.swing.tool;

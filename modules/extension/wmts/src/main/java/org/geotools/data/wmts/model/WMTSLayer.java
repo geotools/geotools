@@ -22,7 +22,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-
 import org.geotools.data.ows.Layer;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -32,8 +31,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  */
 public class WMTSLayer extends Layer {
 
-    static public final Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger("org.geotools.data.wmts");
+    public static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.data.wmts");
 
     Map<String, TileMatrixSetLink> limits = new HashMap<>();
 
@@ -45,23 +44,17 @@ public class WMTSLayer extends Layer {
 
     private CoordinateReferenceSystem preferredCRS = null;
 
-    /**
-     * @param title
-     */
+    /** @param title */
     public WMTSLayer(String title) {
         super(title);
     }
 
-    /**
-     * @return the limits
-     */
+    /** @return the limits */
     public Map<String, TileMatrixSetLink> getTileMatrixLinks() {
         return limits;
     }
 
-    /**
-     * @param limitList
-     */
+    /** @param limitList */
     public void addTileMatrixLinks(List<TileMatrixSetLink> limitList) {
 
         for (TileMatrixSetLink limit : limitList) {
@@ -73,32 +66,22 @@ public class WMTSLayer extends Layer {
         limits.put(link.getIdentifier(), link);
     }
 
-    /**
-     * @return the formats
-     */
+    /** @return the formats */
     public List<String> getFormats() {
         return formats;
     }
 
-    /**
-     * @param formats
-     *            the formats to set
-     */
+    /** @param formats the formats to set */
     public void setFormats(List<String> formats) {
         this.formats = formats;
     }
 
-    /**
-     * @return the infoFormats
-     */
+    /** @return the infoFormats */
     public List<String> getInfoFormats() {
         return infoFormats;
     }
 
-    /**
-     * @param infoFormats
-     *            the infoFormats to set
-     */
+    /** @param infoFormats the infoFormats to set */
     public void setInfoFormats(List<String> infoFormats) {
         this.infoFormats = infoFormats;
     }
@@ -126,19 +109,13 @@ public class WMTSLayer extends Layer {
         srs.addAll(extractCRSNames(crs));
     }
 
-    /**
-     * @return the preferredCRS
-     */
+    /** @return the preferredCRS */
     public CoordinateReferenceSystem getPreferredCRS() {
         return preferredCRS;
     }
 
-    /**
-     * @param preferredCRS
-     *            the preferredCRS to set
-     */
+    /** @param preferredCRS the preferredCRS to set */
     public void setPreferredCRS(CoordinateReferenceSystem preferredCRS) {
         this.preferredCRS = preferredCRS;
     }
-
 }

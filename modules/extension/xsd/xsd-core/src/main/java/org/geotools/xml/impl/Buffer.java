@@ -16,15 +16,10 @@
  */
 package org.geotools.xml.impl;
 
-
 /**
  * A simple thread safe buffer.
  *
  * @author Justin Deoliveira, The Open Planning Project
- *
- *
- *
- *
  * @source $URL$
  */
 public class Buffer {

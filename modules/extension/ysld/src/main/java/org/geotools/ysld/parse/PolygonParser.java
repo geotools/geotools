@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -21,10 +21,7 @@ import org.geotools.styling.*;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
 
-/**
- * Handles parsing a Ysld "polygon" symbolizer property into a {@link Symbolizer} object.
- *
- */
+/** Handles parsing a Ysld "polygon" symbolizer property into a {@link Symbolizer} object. */
 public class PolygonParser extends SymbolizerParser<PolygonSymbolizer> {
 
     public PolygonParser(Rule rule, Factory factory) {
@@ -36,18 +33,20 @@ public class PolygonParser extends SymbolizerParser<PolygonSymbolizer> {
         super.handle(obj, context);
 
         YamlMap map = obj.map();
-        context.push(new StrokeParser(factory) {
-            @Override
-            protected void stroke(Stroke stroke) {
-                sym.setStroke(stroke);
-            }
-        });
-        context.push(new FillParser(factory) {
-            @Override
-            protected void fill(Fill fill) {
-                sym.setFill(fill);
-            }
-        });
+        context.push(
+                new StrokeParser(factory) {
+                    @Override
+                    protected void stroke(Stroke stroke) {
+                        sym.setStroke(stroke);
+                    }
+                });
+        context.push(
+                new FillParser(factory) {
+                    @Override
+                    protected void fill(Fill fill) {
+                        sym.setFill(fill);
+                    }
+                });
 
         if (map.has("offset")) {
             sym.setPerpendicularOffset(Util.expression(map.str("offset"), factory));

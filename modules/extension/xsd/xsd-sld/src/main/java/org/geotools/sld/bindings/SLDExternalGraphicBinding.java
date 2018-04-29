@@ -16,22 +16,20 @@
  */
 package org.geotools.sld.bindings;
 
-import org.picocontainer.MutablePicoContainer;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import java.net.URI;
 import javax.xml.namespace.QName;
 import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.StyleFactory;
 import org.geotools.util.Converters;
 import org.geotools.xml.*;
-
+import org.picocontainer.MutablePicoContainer;
 
 /**
  * Binding object for the element http://www.opengis.net/sld:ExternalGraphic.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:element name="ExternalGraphic"&gt;
  *      &lt;xsd:annotation&gt;
@@ -49,12 +47,8 @@ import org.geotools.xml.*;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class SLDExternalGraphicBinding extends AbstractComplexBinding {
@@ -64,14 +58,13 @@ public class SLDExternalGraphicBinding extends AbstractComplexBinding {
         this.styleFactory = styleFactory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return SLD.EXTERNALGRAPHIC;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -82,6 +75,7 @@ public class SLDExternalGraphicBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -92,26 +86,26 @@ public class SLDExternalGraphicBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {
-    }
+    public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
-        //the Converters wrapper here is a workaround for http://jira.codehaus.org/browse/GEOT-2457
-        // for some reason on the IBM JDK returns a string, we should really find out why instead 
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
+        // the Converters wrapper here is a workaround for http://jira.codehaus.org/browse/GEOT-2457
+        // for some reason on the IBM JDK returns a string, we should really find out why instead
         // of applying this bandaid
-        URI uri = Converters.convert( node.getChildValue("OnlineResource"), URI.class );
+        URI uri = Converters.convert(node.getChildValue("OnlineResource"), URI.class);
         String format = (String) node.getChildValue("Format");
 
         return styleFactory.createExternalGraphic(uri.toURL(), format);

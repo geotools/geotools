@@ -18,12 +18,7 @@ package org.geotools.sld.bindings;
 
 import org.geotools.styling.UserLayer;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class SLDUserLayerBindingTest extends SLDTestSupport {
     public void testType() throws Exception {
         assertEquals(UserLayer.class, new SLDUserLayerBinding(null).getType());

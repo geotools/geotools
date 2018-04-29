@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,10 +16,10 @@
  */
 package org.geotools.maven.taglet;
 
-import java.util.regex.Matcher;
-import org.junit.*;
 import static org.junit.Assert.*;
 
+import java.util.regex.Matcher;
+import org.junit.*;
 
 /**
  * Tests the {@link Source} taglet.
@@ -29,19 +29,17 @@ import static org.junit.Assert.*;
  * @author Martin Desruisseaux
  */
 public class SourceTest {
-    /**
-     * Tests the regular expression validity using the tag for this source file.
-     */
+    /** Tests the regular expression validity using the tag for this source file. */
     @Test
     public void testCurrentTag() {
-        Source  s = new Source();
+        Source s = new Source();
         Matcher m;
         String tag, url, group, category, module;
         tag = "$URL$";
-        //The url above is only converted from $URL$ if we have obtained the 
-        //  file using a standard access mechanism to SVN. This fails, for 
+        // The url above is only converted from $URL$ if we have obtained the
+        //  file using a standard access mechanism to SVN. This fails, for
         //  example, with mercurial converstion 'hg convert svnrepo hgrepo'
-        if ( !tag.equals("$URL$") ){
+        if (!tag.equals("$URL$")) {
             m = s.findURL.matcher(tag);
             assertTrue(m.matches());
 
@@ -49,9 +47,9 @@ public class SourceTest {
             url = m.group(1).trim();
             m = s.findModule.matcher(url);
             assertTrue(m.matches());
-            group    = m.group(1);
+            group = m.group(1);
             category = m.group(2);
-            module   = m.group(3);
+            module = m.group(3);
             assertEquals("build", group);
             assertEquals("maven", category);
             assertEquals("javadoc", module);

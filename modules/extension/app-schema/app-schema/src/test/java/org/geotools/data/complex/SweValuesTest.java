@@ -24,11 +24,9 @@ import static org.junit.Assert.assertTrue;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.geotools.data.DataAccess;
 import org.geotools.data.DataAccessFinder;
 import org.geotools.data.FeatureSource;
-import org.geotools.data.complex.ComplexFeatureConstants;
 import org.geotools.data.complex.config.Types;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
@@ -45,9 +43,8 @@ import org.xml.sax.helpers.NamespaceSupport;
 
 /**
  * Test checking the correct encoding of the swe:values element from the OGC SWE Common schema.
- * 
- * @author Stefano Costa, GeoSolutions
  *
+ * @author Stefano Costa, GeoSolutions
  */
 public class SweValuesTest {
 
@@ -69,9 +66,7 @@ public class SweValuesTest {
 
     private static FeatureSource<FeatureType, Feature> obsSource;
 
-    /**
-     * Generated observation features
-     */
+    /** Generated observation features */
     private static FeatureCollection<FeatureType, Feature> obsFeatures;
 
     private NamespaceSupport namespaces = new NamespaceSupport();
@@ -96,9 +91,7 @@ public class SweValuesTest {
      * @throws Exception
      */
     private static void loadDataAccesses() throws Exception {
-        /**
-         * Load observation data access
-         */
+        /** Load observation data access */
         Map dsParams = new HashMap();
         URL url = SweValuesTest.class.getResource(SWE_VALUES_MAPPING);
         assertNotNull(url);
@@ -130,9 +123,11 @@ public class SweValuesTest {
     @Test
     public void testSweValues() {
         Map<String, String> expected = new HashMap<String, String>();
-        expected.put("ID1.2",
+        expected.put(
+                "ID1.2",
                 "missing missing 8.9 7.9 14.2 15.4 18.1 19.1 21.7 20.8 19.6 14.9 10.8 8.8 8.5 10.4");
-        expected.put("ID2.2",
+        expected.put(
+                "ID2.2",
                 "16.2 17.1 22.0 25.1 23.9 22.8 17.0 10.2 9.2 7.1 12.3 12.9 17.2 23.6 21.6 21.9 17.6 14.0 9.3 3.8");
 
         FeatureIterator<? extends Feature> featIt = obsFeatures.features();
@@ -143,9 +138,9 @@ public class SweValuesTest {
             assertNotNull(sweValues);
             assertTrue(sweValues instanceof ComplexAttribute);
             ComplexAttribute sweValuesAttr = (ComplexAttribute) sweValues;
-            assertEquals(expected.get(f.getIdentifier().getID()),
+            assertEquals(
+                    expected.get(f.getIdentifier().getID()),
                     sweValuesAttr.getProperty(ComplexFeatureConstants.SIMPLE_CONTENT).getValue());
         }
     }
-
 }

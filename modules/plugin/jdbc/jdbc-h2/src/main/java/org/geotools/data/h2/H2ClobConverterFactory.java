@@ -18,7 +18,6 @@
 package org.geotools.data.h2;
 
 import java.io.Reader;
-
 import org.geotools.factory.Hints;
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
@@ -26,11 +25,8 @@ import org.h2.jdbc.JdbcClob;
 
 /**
  * Converts a H2 JdbcClob to a String
- * 
+ *
  * @author Andrea Aime - GeoSolutions
- * 
- *
- *
  * @source $URL$
  */
 public class H2ClobConverterFactory implements ConverterFactory {
@@ -39,12 +35,10 @@ public class H2ClobConverterFactory implements ConverterFactory {
 
     public Converter createConverter(Class<?> source, Class<?> target, Hints hints) {
         // can only convert towards String
-        if (!(String.class.equals(target)))
-            return null;
+        if (!(String.class.equals(target))) return null;
 
         // can only deal with JdbcClob
-        if (!JdbcClob.class.isAssignableFrom(source))
-            return null;
+        if (!JdbcClob.class.isAssignableFrom(source)) return null;
 
         // converter is thread safe, so cache and return just one
         return converter;
@@ -69,8 +63,6 @@ public class H2ClobConverterFactory implements ConverterFactory {
             } finally {
                 r.close();
             }
-
         }
     }
-
 }

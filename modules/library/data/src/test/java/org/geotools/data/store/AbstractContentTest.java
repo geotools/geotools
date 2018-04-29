@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2014-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,11 +16,12 @@
  */
 package org.geotools.data.store;
 
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.LineString;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
@@ -35,36 +36,26 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.LineString;
-
 public abstract class AbstractContentTest {
 
-    /**
-     * Mock feature type name.
-     */
+    /** Mock feature type name. */
     protected static final Name TYPENAME = new NameImpl("http://www.geotools.org", "Mock");
 
-    /**
-     * Mock feature type.
-     */
+    /** Mock feature type. */
     protected static final SimpleFeatureType TYPE = buildType();
 
-    /**
-     * The list of features on which paging is tested.
-     */
+    /** The list of features on which paging is tested. */
     @SuppressWarnings("serial")
-    List<SimpleFeature> FEATURES = new ArrayList<SimpleFeature>() {
-        {
-            add(buildFeature("mock.3"));
-            add(buildFeature("mock.1"));
-            add(buildFeature("mock.2"));
-        }
-    };
+    List<SimpleFeature> FEATURES =
+            new ArrayList<SimpleFeature>() {
+                {
+                    add(buildFeature("mock.3"));
+                    add(buildFeature("mock.1"));
+                    add(buildFeature("mock.2"));
+                }
+            };
 
-    /**
-     * Build the test type.
-     */
+    /** Build the test type. */
     protected static SimpleFeatureType buildType() {
         SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
         builder.setName(TYPENAME);
@@ -72,28 +63,21 @@ public abstract class AbstractContentTest {
         return builder.buildFeatureType();
     }
 
-    /**
-     * Build a test feature with the specified id.
-     */
+    /** Build a test feature with the specified id. */
     protected static SimpleFeature buildFeature(String id) {
         SimpleFeatureBuilder builder = new SimpleFeatureBuilder(TYPE);
         builder.add(new Envelope(0, 1, 0, 1));
         return builder.buildFeature(id);
     }
 
-    /**
-     * {@link ContentDataStore} for the test features.
-     * 
-     */
+    /** {@link ContentDataStore} for the test features. */
     protected class MockContentDataStore extends ContentDataStore {
 
         {
             namespaceURI = TYPE.getName().getNamespaceURI();
         }
 
-        /**
-         * @see org.geotools.data.store.ContentDataStore#createTypeNames()
-         */
+        /** @see org.geotools.data.store.ContentDataStore#createTypeNames() */
         @SuppressWarnings("serial")
         @Override
         protected List<Name> createTypeNames() throws IOException {
@@ -105,18 +89,16 @@ public abstract class AbstractContentTest {
         }
 
         /**
-         * @see org.geotools.data.store.ContentDataStore#createFeatureSource(org.geotools.data.store.ContentEntry)
+         * @see
+         *     org.geotools.data.store.ContentDataStore#createFeatureSource(org.geotools.data.store.ContentEntry)
          */
         @Override
         protected ContentFeatureSource createFeatureSource(ContentEntry entry) throws IOException {
             return new MockContentFeatureStore(entry, null);
         }
-
     }
 
-    /**
-     * {@link ContentFeatureSource} that returns the test features.
-     */
+    /** {@link ContentFeatureSource} that returns the test features. */
     @SuppressWarnings("unchecked")
     protected class MockContentFeatureStore extends ContentFeatureStore {
 
@@ -124,22 +106,19 @@ public abstract class AbstractContentTest {
             super(entry, query);
         }
 
-        /**
-         * Not implemented.
-         */
+        /** Not implemented. */
         @Override
         protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
             throw new UnsupportedOperationException();
         }
 
-        /**
-         * Not implemented.
-         */
+        /** Not implemented. */
         @Override
         protected int getCountInternal(Query query) throws IOException {
             if (query.getFilter() == Filter.INCLUDE) {
                 int count = 0;
-                FeatureReader<SimpleFeatureType, SimpleFeature> featureReader = getReaderInternal(query);
+                FeatureReader<SimpleFeatureType, SimpleFeature> featureReader =
+                        getReaderInternal(query);
                 try {
                     while (featureReader.hasNext()) {
                         featureReader.next();
@@ -154,7 +133,8 @@ public abstract class AbstractContentTest {
         }
 
         /**
-         * @see org.geotools.data.store.ContentFeatureSource#getReaderInternal(org.geotools.data.Query)
+         * @see
+         *     org.geotools.data.store.ContentFeatureSource#getReaderInternal(org.geotools.data.Query)
          */
         @Override
         protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
@@ -162,75 +142,55 @@ public abstract class AbstractContentTest {
             return new MockSimpleFeatureReader();
         }
 
-        /**
-         * @see org.geotools.data.store.ContentFeatureSource#buildFeatureType()
-         */
+        /** @see org.geotools.data.store.ContentFeatureSource#buildFeatureType() */
         @Override
         protected SimpleFeatureType buildFeatureType() throws IOException {
             return TYPE;
         }
 
         @Override
-        protected FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterInternal(Query query,
-                int flags) throws IOException {
+        protected FeatureWriter<SimpleFeatureType, SimpleFeature> getWriterInternal(
+                Query query, int flags) throws IOException {
             return new MockSimpleFeatureWriter();
         }
-
     }
 
-    /**
-     * Decorate the list of test features as a {@link SimpleFeatureReader}.
-     */
+    /** Decorate the list of test features as a {@link SimpleFeatureReader}. */
     protected class MockSimpleFeatureReader implements SimpleFeatureReader {
 
-        /**
-         * Index of the next test feature to be returned.
-         */
+        /** Index of the next test feature to be returned. */
         private int index = 0;
 
-        /**
-         * @see org.geotools.data.FeatureReader#getFeatureType()
-         */
+        /** @see org.geotools.data.FeatureReader#getFeatureType() */
         @Override
         public SimpleFeatureType getFeatureType() {
             return TYPE;
         }
 
-        /**
-         * @see org.geotools.data.FeatureReader#next()
-         */
+        /** @see org.geotools.data.FeatureReader#next() */
         @Override
-        public SimpleFeature next() throws IOException, IllegalArgumentException,
-                NoSuchElementException {
+        public SimpleFeature next()
+                throws IOException, IllegalArgumentException, NoSuchElementException {
             return FEATURES.get(index++);
         }
 
-        /**
-         * @see org.geotools.data.FeatureReader#hasNext()
-         */
+        /** @see org.geotools.data.FeatureReader#hasNext() */
         @Override
         public boolean hasNext() throws IOException {
             return index < FEATURES.size();
         }
 
-        /**
-         * @see org.geotools.data.FeatureReader#close()
-         */
+        /** @see org.geotools.data.FeatureReader#close() */
         @Override
         public void close() throws IOException {
             // ignored
         }
-
     }
 
-    /**
-     * Decorate the list of test features as a {@link SimpleFeatureReader}.
-     */
+    /** Decorate the list of test features as a {@link SimpleFeatureReader}. */
     protected class MockSimpleFeatureWriter implements SimpleFeatureWriter {
 
-        /**
-         * Index of the next test feature to be returned.
-         */
+        /** Index of the next test feature to be returned. */
         private int index = 0;
 
         SimpleFeature newFeature;
@@ -272,6 +232,5 @@ public abstract class AbstractContentTest {
         public void close() throws IOException {
             // ignored
         }
-
     }
 }

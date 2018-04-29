@@ -26,19 +26,28 @@ public class TeradataAggregateTestSetup extends JDBCAggregateTestSetup {
 
     @Override
     protected void createAggregateTable() throws Exception {
-        run("CREATE TABLE \"aggregate\"(\"fid\" PRIMARY KEY not null generated always as identity (start with 0) integer, \"id\" int, \"geom\" st_geometry, \"name\" varchar(200) )");
-        run("INSERT INTO SYSSPATIAL.GEOMETRY_COLUMNS (F_TABLE_CATALOG, F_TABLE_SCHEMA, F_TABLE_NAME, F_GEOMETRY_COLUMN, COORD_DIMENSION, SRID, GEOM_TYPE) VALUES ('', '"
-                + fixture.getProperty("schema") + "', 'aggregate', 'geom', 2, " + getDelegate().getSrid4326() + ", 'POLYGON')");
+        run(
+                "CREATE TABLE \"aggregate\"(\"fid\" PRIMARY KEY not null generated always as identity (start with 0) integer, \"id\" int, \"geom\" st_geometry, \"name\" varchar(200) )");
+        run(
+                "INSERT INTO SYSSPATIAL.GEOMETRY_COLUMNS (F_TABLE_CATALOG, F_TABLE_SCHEMA, F_TABLE_NAME, F_GEOMETRY_COLUMN, COORD_DIMENSION, SRID, GEOM_TYPE) VALUES ('', '"
+                        + fixture.getProperty("schema")
+                        + "', 'aggregate', 'geom', 2, "
+                        + getDelegate().getSrid4326()
+                        + ", 'POLYGON')");
 
         // add the spatial index
-        run("CREATE MULTISET TABLE \"aggregate_geom_idx\""
-                + " (id INTEGER NOT NULL, cellid INTEGER NOT NULL) PRIMARY INDEX (cellid)");
-        
-        run("INSERT INTO \"aggregate\" (\"fid\", \"id\",\"geom\",\"name\") VALUES (0, 0,'POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))', 'muddy1');");
-        run("INSERT INTO \"aggregate\" (\"fid\", \"id\",\"geom\",\"name\") VALUES (1, 1,'POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))', 'muddy1');");
-        run("INSERT INTO \"aggregate\" (\"fid\", \"id\",\"geom\",\"name\") VALUES (2, 2,'POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))', 'muddy2');");
+        run(
+                "CREATE MULTISET TABLE \"aggregate_geom_idx\""
+                        + " (id INTEGER NOT NULL, cellid INTEGER NOT NULL) PRIMARY INDEX (cellid)");
+
+        run(
+                "INSERT INTO \"aggregate\" (\"fid\", \"id\",\"geom\",\"name\") VALUES (0, 0,'POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))', 'muddy1');");
+        run(
+                "INSERT INTO \"aggregate\" (\"fid\", \"id\",\"geom\",\"name\") VALUES (1, 1,'POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))', 'muddy1');");
+        run(
+                "INSERT INTO \"aggregate\" (\"fid\", \"id\",\"geom\",\"name\") VALUES (2, 2,'POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))', 'muddy2');");
     }
-    
+
     public TeradataTestSetup getDelegate() {
         return (TeradataTestSetup) delegate;
     }
@@ -52,5 +61,4 @@ public class TeradataAggregateTestSetup extends JDBCAggregateTestSetup {
         runSafe("DROP TABLE \"aggregate\"");
         runSafe("DROP TABLE \"aggregate_geom_idx\"");
     }
-
 }

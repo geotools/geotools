@@ -18,36 +18,29 @@ package org.geotools.validation.spatial;
 
 import java.beans.PropertyDescriptor;
 
-
 /**
  * LineAbstractValidationBeanInfopurpose.
- * 
- * <p>
- * Description of LineAbstractValidationBeanInfo...
- * </p>
+ *
+ * <p>Description of LineAbstractValidationBeanInfo...
  *
  * @author dzwiers, Refractions Research, Inc.
  * @author $Author: dmzwiers $ (last modification)
- *
- *
  * @source $URL$
  * @version $Id$
  */
-public class PolygonCoveredByPolygonValidationBeanInfo extends PolygonPolygonAbstractValidationBeanInfo{
+public class PolygonCoveredByPolygonValidationBeanInfo
+        extends PolygonPolygonAbstractValidationBeanInfo {
     /**
      * LineAbstractValidationBeanInfoconstructor.
-     * 
-     * <p>
-     * Description
-     * </p>
+     *
+     * <p>Description
      */
-    public PolygonCoveredByPolygonValidationBeanInfo(){
+    public PolygonCoveredByPolygonValidationBeanInfo() {
         super();
     }
 
     /**
      * Implementation of getPropertyDescriptors.
-     *
      *
      * @see java.beans.BeanInfo#getPropertyDescriptors()
      */

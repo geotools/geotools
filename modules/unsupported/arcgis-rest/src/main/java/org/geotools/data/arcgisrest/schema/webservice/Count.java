@@ -1,4 +1,3 @@
-
 package org.geotools.data.arcgisrest.schema.webservice;
 
 import com.google.gson.annotations.Expose;
@@ -9,27 +8,17 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 
 public class Count {
 
-    /**
-     * 
-     */
+    /** */
     @SerializedName("count")
     @Expose
     private Integer count;
 
-    /**
-     * 
-     * @return
-     *     The count
-     */
+    /** @return The count */
     public Integer getCount() {
         return count;
     }
 
-    /**
-     * 
-     * @param count
-     *     The count
-     */
+    /** @param count The count */
     public void setCount(Integer count) {
         this.count = count;
     }
@@ -55,5 +44,4 @@ public class Count {
         Count rhs = ((Count) other);
         return new EqualsBuilder().append(count, rhs.count).isEquals();
     }
-
 }

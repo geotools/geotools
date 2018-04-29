@@ -3,7 +3,7 @@
  *    http://geotools.org
  *
  *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -16,16 +16,14 @@
  */
 package org.geotools.data.couchdb;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.geotools.data.couchdb.client.CouchDBClient;
-import org.geotools.data.couchdb.client.CouchDBException;
-import org.geotools.data.couchdb.client.CouchDBConnection;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.commons.httpclient.URIException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.geotools.data.Transaction;
+import org.geotools.data.couchdb.client.CouchDBClient;
+import org.geotools.data.couchdb.client.CouchDBConnection;
 import org.geotools.data.store.ContentDataStore;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureSource;
@@ -35,9 +33,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 
 /**
- *
  * @author Ian Schneider (OpenGeo)
- *
  * @source $URL$
  */
 public class CouchDBDataStore extends ContentDataStore {
@@ -53,15 +49,16 @@ public class CouchDBDataStore extends ContentDataStore {
         try {
             client.close();
         } catch (IOException ex) {
-            Logger.getLogger(CouchDBDataStore.class.getName()).log(Level.WARNING, "Error closing client", ex);
+            Logger.getLogger(CouchDBDataStore.class.getName())
+                    .log(Level.WARNING, "Error closing client", ex);
         }
     }
-    
+
     public void init() throws Exception {
         client = new CouchDBClient(couchURL);
         dbConn = client.openDBConnection(dbName);
     }
-    
+
     public CouchDBConnection getConnection() {
         return dbConn;
     }
@@ -109,6 +106,4 @@ public class CouchDBDataStore extends ContentDataStore {
     public void setDatabaseName(String dbName) {
         this.dbName = dbName;
     }
-    
-    
 }

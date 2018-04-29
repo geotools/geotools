@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004 - 2015, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -15,11 +15,6 @@
  *    Lesser General Public License for more details.
  */
 package org.geotools.geometry.jts;
-
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.CoordinateSequence;
@@ -37,10 +32,14 @@ import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.PrecisionModel;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * A {@link GeometryFactory} with extra methods to generate {@link CurvedGeometry} instances
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 public class CurvedGeometryFactory extends GeometryFactory {
@@ -62,9 +61,9 @@ public class CurvedGeometryFactory extends GeometryFactory {
 
     /**
      * Creates a {@link CircularString}
-     * 
+     *
      * @param dimension Number of dimensions in the control point array. For the time being, any
-     *        value other than 2 will cause a IllegalArgumentException
+     *     value other than 2 will cause a IllegalArgumentException
      */
     public LineString createCircularString(int dimension, double... controlPoints) {
         if (dimension != 2) {
@@ -77,9 +76,9 @@ public class CurvedGeometryFactory extends GeometryFactory {
     /**
      * Creates a {@link CircularString} or a {@link CircularRing} depending on whether the points
      * are forming a closed ring, or not
-     * 
+     *
      * @param dimension Number of dimensions in the control point array. For the time being, any
-     *        value other than 2 will cause a IllegalArgumentException
+     *     value other than 2 will cause a IllegalArgumentException
      */
     public LineString createCurvedGeometry(int dimension, double... controlPoints) {
         if (dimension != 2) {
@@ -94,9 +93,7 @@ public class CurvedGeometryFactory extends GeometryFactory {
         }
     }
 
-    /**
-     * Creates a {@link CircularString}
-     */
+    /** Creates a {@link CircularString} */
     public LineString createCircularString(CoordinateSequence cs) {
         return new CircularString(cs, this, tolerance);
     }
@@ -107,7 +104,8 @@ public class CurvedGeometryFactory extends GeometryFactory {
      */
     public LineString createCurvedGeometry(CoordinateSequence cs) {
         int lastCoordinate = cs.size() - 1;
-        if (cs.size() > 0 && cs.getOrdinate(0, 0) == cs.getOrdinate(lastCoordinate, 0)
+        if (cs.size() > 0
+                && cs.getOrdinate(0, 0) == cs.getOrdinate(lastCoordinate, 0)
                 && cs.getOrdinate(0, 1) == cs.getOrdinate(lastCoordinate, 1)) {
             return new CircularRing(cs, this, tolerance);
         } else {
@@ -115,9 +113,7 @@ public class CurvedGeometryFactory extends GeometryFactory {
         }
     }
 
-    /**
-     * Creates a compound curve with the given components
-     */
+    /** Creates a compound curve with the given components */
     public LineString createCurvedGeometry(LineString... components) {
         if (components == null) {
             // return an empty lineString?
@@ -126,9 +122,7 @@ public class CurvedGeometryFactory extends GeometryFactory {
         return createCurvedGeometry(Arrays.asList(components));
     }
 
-    /**
-     * Creates a compound curve with the given components
-     */
+    /** Creates a compound curve with the given components */
     public LineString createCurvedGeometry(List<LineString> components) {
         if (components.isEmpty()) {
             // return an empty lineString?
@@ -145,7 +139,7 @@ public class CurvedGeometryFactory extends GeometryFactory {
 
     /**
      * Explicitly creates a {@link CurvePolygon}
-     * 
+     *
      * @param shell
      * @param holes
      * @return
@@ -156,7 +150,7 @@ public class CurvedGeometryFactory extends GeometryFactory {
 
     /**
      * Explicitly creates a {@link MultiSurface}
-     * 
+     *
      * @param polygons
      * @return
      */
@@ -166,7 +160,7 @@ public class CurvedGeometryFactory extends GeometryFactory {
 
     /**
      * Explicitly creates a {@link MultiCurve}
-     * 
+     *
      * @param components
      * @return
      */
@@ -187,18 +181,13 @@ public class CurvedGeometryFactory extends GeometryFactory {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
         CurvedGeometryFactory other = (CurvedGeometryFactory) obj;
         if (delegate == null) {
-            if (other.delegate != null)
-                return false;
-        } else if (!delegate.equals(other.delegate))
-            return false;
+            if (other.delegate != null) return false;
+        } else if (!delegate.equals(other.delegate)) return false;
         if (Double.doubleToLongBits(tolerance) != Double.doubleToLongBits(other.tolerance))
             return false;
         return true;
@@ -206,7 +195,7 @@ public class CurvedGeometryFactory extends GeometryFactory {
 
     /**
      * Returns the linearization tolerance used to create the curved geometries
-     * 
+     *
      * @return
      */
     public double getTolerance() {
@@ -219,7 +208,6 @@ public class CurvedGeometryFactory extends GeometryFactory {
     }
 
     /* Delegate methods */
-
 
     public Geometry toGeometry(Envelope envelope) {
         return delegate.toGeometry(envelope);
@@ -333,7 +321,7 @@ public class CurvedGeometryFactory extends GeometryFactory {
 
     /**
      * Returns true if the geometry is a curved geometry, or contains curved geometries
-     * 
+     *
      * @param g
      * @return
      */
@@ -343,17 +331,17 @@ public class CurvedGeometryFactory extends GeometryFactory {
         }
 
         final AtomicBoolean hasCurves = new AtomicBoolean(false);
-        g.apply(new GeometryComponentFilter() {
-            
-            @Override
-            public void filter(Geometry geom) {
-                if(geom instanceof CurvedGeometry) {
-                    hasCurves.set(true);
-                }
-                
-            }
-        });
-        
+        g.apply(
+                new GeometryComponentFilter() {
+
+                    @Override
+                    public void filter(Geometry geom) {
+                        if (geom instanceof CurvedGeometry) {
+                            hasCurves.set(true);
+                        }
+                    }
+                });
+
         return hasCurves.get();
     }
 
@@ -369,6 +357,4 @@ public class CurvedGeometryFactory extends GeometryFactory {
 
         return false;
     }
-
-
 }

@@ -29,7 +29,6 @@ import static org.geotools.arcsde.session.ArcSDEConnectionConfig.USER_NAME_PARAM
 import java.io.Serializable;
 import java.util.Map;
 import java.util.logging.Logger;
-
 import org.geotools.arcsde.session.ArcSDEConnectionConfig;
 
 /**
@@ -37,26 +36,22 @@ import org.geotools.arcsde.session.ArcSDEConnectionConfig;
  * validate ArcSDE connection params as in <code>DataSourceFactory.canProcess(java.util.Map)</code>
  * and serves as keys for maintaining single <code>SdeConnectionPool</code>'s by each set of
  * connection properties
- * 
+ *
  * @author Gabriel Roldan
- *
- *
- * @source $URL$
- *         datastore/src/main/java /org/geotools/arcsde/pool/ArcSDEConnectionConfig.java $
+ * @source $URL$ datastore/src/main/java /org/geotools/arcsde/pool/ArcSDEConnectionConfig.java $
  * @version $Id$
  */
 public class ArcSDEDataStoreConfig {
     /*
      * ArcSDEDataStoreConfige's logger
      */
-    private static final Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger("org.geotools.arcsde.pool");
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.arcsde.pool");
 
-    /**
-     * message of the exception thrown if a mandatory parameter is not supplied
-     */
-    private static final String NULL_ARGUMENTS_MSG = "Illegal arguments. At least one of them was null. Check to pass "
-            + "correct values to dbtype, server, port, database, user and password parameters";
+    /** message of the exception thrown if a mandatory parameter is not supplied */
+    private static final String NULL_ARGUMENTS_MSG =
+            "Illegal arguments. At least one of them was null. Check to pass "
+                    + "correct values to dbtype, server, port, database, user and password parameters";
 
     private static final String ILLEGAL_ARGUMENT_MSG = " is not valid for parameter ";
 
@@ -71,7 +66,8 @@ public class ArcSDEDataStoreConfig {
 
     public static final String VERSION_PARAM_NAME = "database.version";
 
-    public static final String ALLOW_NON_SPATIAL_TABLES_PARAM_NAME = "datastore.allowNonSpatialTables";
+    public static final String ALLOW_NON_SPATIAL_TABLES_PARAM_NAME =
+            "datastore.allowNonSpatialTables";
 
     /** default number of connections a pool creates at first population */
     public static final int DEFAULT_CONNECTIONS = 2;
@@ -98,20 +94,21 @@ public class ArcSDEDataStoreConfig {
 
     /**
      * Configure arcsde connection information from supplied connection parameters.
-     * 
-     * @param params
-     *            Connection parameters
-     * @throws NullPointerException
-     *             if at least one mandatory parameter is null
-     * @throws IllegalArgumentException
-     *             if at least one mandatory parameter is present but does not have a "valid" value.
+     *
+     * @param params Connection parameters
+     * @throws NullPointerException if at least one mandatory parameter is null
+     * @throws IllegalArgumentException if at least one mandatory parameter is present but does not
+     *     have a "valid" value.
      */
     public ArcSDEDataStoreConfig(Map<String, Serializable> params) throws IllegalArgumentException {
         init(params);
     }
 
-    public ArcSDEDataStoreConfig(ArcSDEConnectionConfig sessionConfig, final String namespace,
-            final String versionName, final boolean allowNonSpatialTables) {
+    public ArcSDEDataStoreConfig(
+            ArcSDEConnectionConfig sessionConfig,
+            final String namespace,
+            final String versionName,
+            final boolean allowNonSpatialTables) {
 
         this.sessionConfig = sessionConfig;
         this.namespaceUri = namespace;
@@ -121,16 +118,13 @@ public class ArcSDEDataStoreConfig {
 
     /**
      * Extra connection parameters from the provided map.
-     * 
-     * @param params
-     *            Connection parameters
-     * @throws NumberFormatException
-     *             If port could not be parsed into a number
-     * @throws IllegalArgumentException
-     *             If any of the parameters are invalid
+     *
+     * @param params Connection parameters
+     * @throws NumberFormatException If port could not be parsed into a number
+     * @throws IllegalArgumentException If any of the parameters are invalid
      */
-    private void init(Map<String, Serializable> params) throws NumberFormatException,
-            IllegalArgumentException {
+    private void init(Map<String, Serializable> params)
+            throws NumberFormatException, IllegalArgumentException {
         String dbtype = (String) params.get(DBTYPE_PARAM_NAME);
         String server = (String) params.get(SERVER_NAME_PARAM_NAME);
         String port = String.valueOf(params.get(PORT_NUMBER_PARAM_NAME));
@@ -158,11 +152,9 @@ public class ArcSDEDataStoreConfig {
 
     /**
      * Handle optional parameters; most are focused on connection pool use.
-     * 
-     * @param params
-     *            Connection parameters
-     * @throws IllegalArgumentException
-     *             If any of the optional prameters are invlaid.
+     *
+     * @param params Connection parameters
+     * @throws IllegalArgumentException If any of the optional prameters are invlaid.
      */
     private void setUpOptionalParams(Map<String, Serializable> params)
             throws IllegalArgumentException {
@@ -171,17 +163,18 @@ public class ArcSDEDataStoreConfig {
 
         this.namespaceUri = ns == null ? null : String.valueOf(ns);
 
-        Integer minConnections = getInt(params.get(MIN_CONNECTIONS_PARAM_NAME), DEFAULT_CONNECTIONS);
-        Integer maxConnections = getInt(params.get(MAX_CONNECTIONS_PARAM_NAME),
-                DEFAULT_MAX_CONNECTIONS);
-        Integer connTimeOut = getInt(params.get(CONNECTION_TIMEOUT_PARAM_NAME),
-                DEFAULT_MAX_WAIT_TIME);
+        Integer minConnections =
+                getInt(params.get(MIN_CONNECTIONS_PARAM_NAME), DEFAULT_CONNECTIONS);
+        Integer maxConnections =
+                getInt(params.get(MAX_CONNECTIONS_PARAM_NAME), DEFAULT_MAX_CONNECTIONS);
+        Integer connTimeOut =
+                getInt(params.get(CONNECTION_TIMEOUT_PARAM_NAME), DEFAULT_MAX_WAIT_TIME);
 
         this.version = (String) params.get(VERSION_PARAM_NAME);
 
         Object nonSpatial = params.get(ALLOW_NON_SPATIAL_TABLES_PARAM_NAME);
-        this.allowNonSpatialTables = nonSpatial == null ? false : Boolean.valueOf(String
-                .valueOf(nonSpatial));
+        this.allowNonSpatialTables =
+                nonSpatial == null ? false : Boolean.valueOf(String.valueOf(nonSpatial));
 
         if (minConnections.intValue() <= 0) {
             exceptionMsg += MIN_CONNECTIONS_PARAM_NAME + " must be a positive integer. ";
@@ -196,8 +189,11 @@ public class ArcSDEDataStoreConfig {
         }
 
         if (minConnections.intValue() > maxConnections.intValue()) {
-            exceptionMsg += MIN_CONNECTIONS_PARAM_NAME + " must be lower than "
-                    + MAX_CONNECTIONS_PARAM_NAME + ".";
+            exceptionMsg +=
+                    MIN_CONNECTIONS_PARAM_NAME
+                            + " must be lower than "
+                            + MAX_CONNECTIONS_PARAM_NAME
+                            + ".";
         }
 
         if (exceptionMsg.length() != 0) {
@@ -211,11 +207,9 @@ public class ArcSDEDataStoreConfig {
 
     /**
      * Convert value to an Integer, or use the default value
-     * 
-     * @param value
-     *            Object to convert to int
-     * @param defaultValue
-     *            Default value if conversion fails
+     *
+     * @param value Object to convert to int
+     * @param defaultValue Default value if conversion fails
      * @return value as an interger, or default value if that is not possible
      */
     private static final Integer getInt(Object value, int defaultValue) {
@@ -232,8 +226,13 @@ public class ArcSDEDataStoreConfig {
         }
     }
 
-    private static String checkParams(String dbType, String serverName, String portNumber,
-            String databaseName, String userName, String userPassword)
+    private static String checkParams(
+            String dbType,
+            String serverName,
+            String portNumber,
+            String databaseName,
+            String userName,
+            String userPassword)
             throws IllegalArgumentException, NullPointerException {
         // check if dbtype is 'arcsde'
         if (!(DBTYPE_PARAM_VALUE.equals(dbType))) {
@@ -241,7 +240,9 @@ public class ArcSDEDataStoreConfig {
         }
 
         // check for nullity
-        if ((serverName == null) || (portNumber == null) || (userName == null)
+        if ((serverName == null)
+                || (portNumber == null)
+                || (userName == null)
                 || (userPassword == null)) {
             throw new NullPointerException(NULL_ARGUMENTS_MSG);
         }
@@ -283,8 +284,8 @@ public class ArcSDEDataStoreConfig {
 
     private static void throwIllegal(String paramName, String paramValue)
             throws IllegalArgumentException {
-        throw new IllegalArgumentException("'" + paramValue + "'" + ILLEGAL_ARGUMENT_MSG
-                + paramName);
+        throw new IllegalArgumentException(
+                "'" + paramValue + "'" + ILLEGAL_ARGUMENT_MSG + paramName);
     }
 
     public String getNamespaceUri() {
@@ -354,23 +355,19 @@ public class ArcSDEDataStoreConfig {
         return sessionConfig.getMinConnections();
     }
 
-    /**
-     * @return the ArcSDE version name to connect to
-     */
+    /** @return the ArcSDE version name to connect to */
     public String getVersion() {
         return version;
     }
 
-    /**
-     * @return whether to publish ArcSDE registered, non-spatial tables
-     */
+    /** @return whether to publish ArcSDE registered, non-spatial tables */
     public boolean isAllowNonSpatialTables() {
         return allowNonSpatialTables;
     }
 
     /**
      * @return a human friendly description of this parameter holder contents (password is masked),
-     *         mostly usefull for stack traces
+     *     mostly usefull for stack traces
      */
     @Override
     public String toString() {
@@ -392,5 +389,4 @@ public class ArcSDEDataStoreConfig {
 
         return sb.toString();
     }
-
 }

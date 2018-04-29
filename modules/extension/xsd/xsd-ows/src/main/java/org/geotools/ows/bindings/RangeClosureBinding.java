@@ -17,27 +17,24 @@
 package org.geotools.ows.bindings;
 
 import javax.xml.namespace.QName;
-
 import net.opengis.ows11.RangeClosureType;
-
 import org.geotools.ows.v1_1.OWS;
 import org.geotools.xml.AbstractSimpleBinding;
 import org.geotools.xml.InstanceComponent;
 
 public class RangeClosureBinding extends AbstractSimpleBinding {
 
-    public RangeClosureBinding() {
-    }
+    public RangeClosureBinding() {}
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return OWS.rangeClosure;
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
@@ -51,7 +48,9 @@ public class RangeClosureBinding extends AbstractSimpleBinding {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
      *
      * @generated modifiable
      */

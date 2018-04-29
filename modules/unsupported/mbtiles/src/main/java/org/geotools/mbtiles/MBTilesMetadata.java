@@ -1,61 +1,65 @@
 package org.geotools.mbtiles;
+
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
 import org.geotools.util.logging.Logging;
 import org.opengis.geometry.Envelope;
-import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.FactoryException;
 
 public class MBTilesMetadata {
-    
-    private static Logger LOGGER = Logging.getLogger(MBTilesMetadata.class); 
-    
-    protected static Pattern patternEnvelope = Pattern.compile(" *(\\-?[0-9\\.]*) *, *(\\-?[0-9\\.]*) *, *(\\-?[0-9\\.]*) *, *(\\-?[0-9\\.]*) *");
-    
+
+    private static Logger LOGGER = Logging.getLogger(MBTilesMetadata.class);
+
+    protected static Pattern patternEnvelope =
+            Pattern.compile(
+                    " *(\\-?[0-9\\.]*) *, *(\\-?[0-9\\.]*) *, *(\\-?[0-9\\.]*) *, *(\\-?[0-9\\.]*) *");
+
     public enum t_type {
-        OVERLAY("overlay"), 
+        OVERLAY("overlay"),
         BASE_LAYER("baselayer");
-        
+
         private t_type(String identifier) {
             this.identifier = identifier;
         }
-        
+
         public final String identifier;
-        
+
         public static t_type lookUp(final String s) throws IllegalArgumentException {
             return Arrays.stream(t_type.values())
-                .filter((t)->t.identifier.equalsIgnoreCase(s))
-                .findAny()
-                .orElseThrow(()->new IllegalArgumentException(String.format("Unknown mbtiles type '%s'",s)));
+                    .filter((t) -> t.identifier.equalsIgnoreCase(s))
+                    .findAny()
+                    .orElseThrow(
+                            () ->
+                                    new IllegalArgumentException(
+                                            String.format("Unknown mbtiles type '%s'", s)));
         }
-    } ;
-    
+    };
+
     public enum t_format {
-        JPEG, 
-        PNG, 
-        
+        JPEG,
+        PNG,
+
         /** Not part of the spec but used by some implementations of MBTiles for vector tiles */
         PBF
-    } ;
-    
+    };
+
     protected String name;
-    
+
     protected String version;
-    
+
     protected String description;
-    
+
     protected t_type type;
-    
+
     protected t_format format;
-    
+
     protected Envelope bounds;
-    
+
     protected String attribution;
 
     protected int minZoom;
@@ -141,7 +145,7 @@ public class MBTilesMetadata {
             return type.toString().toLowerCase();
         }
     }
-   
+
     public String getFormatStr() {
         if (format == null) {
             return null;
@@ -149,12 +153,18 @@ public class MBTilesMetadata {
             return format.toString().toLowerCase();
         }
     }
-    
+
     public String getBoundsStr() {
         if (bounds == null) {
             return null;
         } else {
-            return bounds.getMinimum(0) + "," + bounds.getMinimum(1) + "," + bounds.getMaximum(0) + "," + bounds.getMaximum(1);
+            return bounds.getMinimum(0)
+                    + ","
+                    + bounds.getMinimum(1)
+                    + ","
+                    + bounds.getMaximum(0)
+                    + ","
+                    + bounds.getMaximum(1);
         }
     }
 
@@ -162,8 +172,13 @@ public class MBTilesMetadata {
         if (typeStr == null) {
             setType(null);
         } else {
-            if(typeStr.equalsIgnoreCase("BASE_LAYER")) {
-                LOGGER.log(Level.WARNING, ()->String.format("MBTiles file has invalid type '%s', using '%s' instead", typeStr, t_type.BASE_LAYER));
+            if (typeStr.equalsIgnoreCase("BASE_LAYER")) {
+                LOGGER.log(
+                        Level.WARNING,
+                        () ->
+                                String.format(
+                                        "MBTiles file has invalid type '%s', using '%s' instead",
+                                        typeStr, t_type.BASE_LAYER));
                 setType(t_type.BASE_LAYER);
             } else {
                 setType(t_type.lookUp(typeStr));
@@ -185,19 +200,21 @@ public class MBTilesMetadata {
         } else {
             Matcher matcherEnvelope = patternEnvelope.matcher(boundsStr);
             if (!matcherEnvelope.matches()) {
-                throw new IllegalArgumentException("Envelope not in correct format: minx,miny,maxx,maxy");
+                throw new IllegalArgumentException(
+                        "Envelope not in correct format: minx,miny,maxx,maxy");
             }
             double minx = Double.parseDouble(matcherEnvelope.group(1));
             double miny = Double.parseDouble(matcherEnvelope.group(2));
             double maxx = Double.parseDouble(matcherEnvelope.group(3));
             double maxy = Double.parseDouble(matcherEnvelope.group(4));
             try {
-                setBounds(new ReferencedEnvelope(minx, maxx, miny, maxy, CRS.decode("EPSG:4326", true)));
+                setBounds(
+                        new ReferencedEnvelope(
+                                minx, maxx, miny, maxy, CRS.decode("EPSG:4326", true)));
             } catch (FactoryException e) {
                 LOGGER.log(Level.SEVERE, e.getMessage(), e);
             }
         }
-        
     }
 
     public void setMinZoomStr(String minZoomStr) {
@@ -215,5 +232,4 @@ public class MBTilesMetadata {
             maxZoom = Integer.parseInt(maxZoomStr);
         }
     }
-
 }

@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -17,39 +17,35 @@
 package org.geotools.renderer.lite;
 
 /**
- *
- * @author  jfc173
- *
- *
+ * @author jfc173
  * @source $URL$
  */
 public class GlyphProperty {
-    
+
     private String name;
     private Class<?> type;
     private Object value;
-    
+
     /** Creates a new instance of GlyphProperty */
     public GlyphProperty(String s, Class<?> c, Object o) {
         name = s;
         type = c;
         value = o;
     }
-    
-    public String getName(){
+
+    public String getName() {
         return name;
     }
-    
-    public Class<?> getType(){
+
+    public Class<?> getType() {
         return type;
     }
-    
-    public Object getValue(){
+
+    public Object getValue() {
         return value;
     }
-    
-    public void setValue(Object v){
+
+    public void setValue(Object v) {
         value = v;
     }
-    
 }

@@ -16,43 +16,36 @@
  */
 package org.geotools.measure;
 
-import java.io.*;
-import javax.measure.unit.Unit;
-import javax.measure.quantity.Quantity;
-import javax.measure.converter.UnitConverter;
 import static javax.measure.unit.NonSI.DEGREE_ANGLE;
 import static org.geotools.measure.Units.*;
-
-import org.junit.*;
 import static org.junit.Assert.*;
 
+import java.io.*;
+import javax.measure.converter.UnitConverter;
+import javax.measure.quantity.Quantity;
+import javax.measure.unit.Unit;
+import org.junit.*;
 
 /**
  * Test conversions using the units declared in {@link Units}.
  *
  * @author Martin Desruisseaux (Geomatys)
- *
- *
- *
  * @source $URL$
  */
 public class UnitsTest {
-    /**
-     * Compares two values for equality.
-     */
+    /** Compares two values for equality. */
     private static <Q extends Quantity> void checkConversion(
-            final double expected, final Unit<Q> unitExpected,
-            final double actual,   final Unit<Q> unitActual)
-    {
+            final double expected,
+            final Unit<Q> unitExpected,
+            final double actual,
+            final Unit<Q> unitActual) {
         UnitConverter converter = unitActual.getConverterTo(unitExpected);
         assertEquals(expected, converter.convert(actual), 1E-6);
         converter = converter.inverse();
         assertEquals(actual, converter.convert(expected), 1E-6);
     }
 
-    /**
-     * Checks the conversions using {@link Units#SEXAGESIMAL_DMS}.
-     */
+    /** Checks the conversions using {@link Units#SEXAGESIMAL_DMS}. */
     @Test
     public void testSexagesimal() {
         checkConversion(10.00, DEGREE_ANGLE, 10.0000, SEXAGESIMAL_DMS);
@@ -69,12 +62,14 @@ public class UnitsTest {
      * @throws IOException Should never occurs.
      * @throws ClassNotFoundException Should never occurs.
      */
-    private static Object serialize(final Object object) throws IOException, ClassNotFoundException {
+    private static Object serialize(final Object object)
+            throws IOException, ClassNotFoundException {
         final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
         final ObjectOutputStream out = new ObjectOutputStream(buffer);
         out.writeObject(object);
         out.close();
-        final ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(buffer.toByteArray()));
+        final ObjectInputStream in =
+                new ObjectInputStream(new ByteArrayInputStream(buffer.toByteArray()));
         final Object read = in.readObject();
         in.close();
         return read;
@@ -85,15 +80,14 @@ public class UnitsTest {
      *
      * @throws IOException Should never occurs.
      * @throws ClassNotFoundException Should never occurs.
-     *
      * @todo Disabled for now. Needs JSR-275 fix.
      */
     @Test
     @Ignore
     public void testSerialization() throws IOException, ClassNotFoundException {
-        assertEquals(DEGREE_ANGLE,         serialize(DEGREE_ANGLE));
-        assertEquals(SEXAGESIMAL_DMS,      serialize(SEXAGESIMAL_DMS));
+        assertEquals(DEGREE_ANGLE, serialize(DEGREE_ANGLE));
+        assertEquals(SEXAGESIMAL_DMS, serialize(SEXAGESIMAL_DMS));
         assertEquals(DEGREE_MINUTE_SECOND, serialize(DEGREE_MINUTE_SECOND));
-        assertEquals(PPM,                  serialize(PPM));
+        assertEquals(PPM, serialize(PPM));
     }
 }

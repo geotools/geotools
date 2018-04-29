@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2017, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -18,7 +18,6 @@ package org.geotools.data.store;
 
 import java.io.IOException;
 import java.util.List;
-
 import org.geotools.data.DataStore;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FeatureWriter;
@@ -28,14 +27,15 @@ import org.geotools.data.ServiceInfo;
 import org.geotools.data.Transaction;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.decorate.AbstractDecorator;
-import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 
 /**
- * Delegates every method to the wrapped feature source. Subclasses will override selected methods to perform their "decoration" job
- * 
+ * Delegates every method to the wrapped feature source. Subclasses will override selected methods
+ * to perform their "decoration" job
+ *
  * @author Andrea Aime
  */
 public abstract class DecoratingDataStore extends AbstractDecorator<DataStore>
@@ -53,8 +53,8 @@ public abstract class DecoratingDataStore extends AbstractDecorator<DataStore>
         delegate.dispose();
     }
 
-    public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(Query query,
-            Transaction transaction) throws IOException {
+    public FeatureReader<SimpleFeatureType, SimpleFeature> getFeatureReader(
+            Query query, Transaction transaction) throws IOException {
         return delegate.getFeatureReader(query, transaction);
     }
 
@@ -66,18 +66,18 @@ public abstract class DecoratingDataStore extends AbstractDecorator<DataStore>
         return delegate.getFeatureSource(typeName);
     }
 
-    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(String typeName,
-            Filter filter, Transaction transaction) throws IOException {
+    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
+            String typeName, Filter filter, Transaction transaction) throws IOException {
         return delegate.getFeatureWriter(typeName, filter, transaction);
     }
 
-    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(String typeName,
-            Transaction transaction) throws IOException {
+    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriter(
+            String typeName, Transaction transaction) throws IOException {
         return delegate.getFeatureWriter(typeName, transaction);
     }
 
-    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriterAppend(String typeName,
-            Transaction transaction) throws IOException {
+    public FeatureWriter<SimpleFeatureType, SimpleFeature> getFeatureWriterAppend(
+            String typeName, Transaction transaction) throws IOException {
         return delegate.getFeatureWriterAppend(typeName, transaction);
     }
 
@@ -120,5 +120,4 @@ public abstract class DecoratingDataStore extends AbstractDecorator<DataStore>
     public void removeSchema(String typeName) throws IOException {
         delegate.removeSchema(typeName);
     }
-
 }

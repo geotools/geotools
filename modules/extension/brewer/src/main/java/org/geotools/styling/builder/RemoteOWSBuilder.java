@@ -18,11 +18,7 @@ package org.geotools.styling.builder;
 
 import org.geotools.styling.RemoteOWS;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class RemoteOWSBuilder extends AbstractSLDBuilder<RemoteOWS> {
     private String service;
 
@@ -83,5 +79,4 @@ public class RemoteOWSBuilder extends AbstractSLDBuilder<RemoteOWS> {
         throw new UnsupportedOperationException(
                 "Cannot build a SLD out of a simple remote ows spec");
     }
-
 }

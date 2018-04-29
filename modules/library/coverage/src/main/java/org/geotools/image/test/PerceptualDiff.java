@@ -8,12 +8,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
-
 import org.geotools.util.logging.Logging;
 
 /**
  * Wrapper around the PerceptualDiff command line utility http://pdiff.sourceforge.net/
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 class PerceptualDiff {
@@ -25,7 +24,7 @@ class PerceptualDiff {
     static class Difference {
         boolean imagesDifferent;
         String output;
-        
+
         public Difference(boolean different, String output) {
             this.imagesDifferent = different;
             this.output = output;
@@ -47,20 +46,17 @@ class PerceptualDiff {
 
     /**
      * Compares two images (either png or tiffs)
-     * 
-     * @param image1
-     *            A png/tiff file
-     * @param image2
-     *            A png/tiff file
-     * @param threshold
-     *            The number of pixels to be visually different in order to consider the test a
-     *            failure, if negative the PerceptualDiff default value will be used
+     *
+     * @param image1 A png/tiff file
+     * @param image2 A png/tiff file
+     * @param threshold The number of pixels to be visually different in order to consider the test
+     *     a failure, if negative the PerceptualDiff default value will be used
      * @return
      */
     public static Difference compareImages(File image1, File image2, int threshold) {
         if (!AVAILABLE) {
-            LOGGER.severe("perceptualdiff is not available, can't compare " + image1
-                    + " with image2");
+            LOGGER.severe(
+                    "perceptualdiff is not available, can't compare " + image1 + " with image2");
             return new Difference(false, "Perceptual diff not available...");
         }
 
@@ -92,7 +88,7 @@ class PerceptualDiff {
 
     /**
      * Runs the specified command and returns the output as a string
-     * 
+     *
      * @param cmd
      * @return
      * @throws IOException

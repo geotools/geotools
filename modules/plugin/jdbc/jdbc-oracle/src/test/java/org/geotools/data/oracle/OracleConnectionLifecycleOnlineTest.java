@@ -18,7 +18,6 @@ package org.geotools.data.oracle;
 
 import java.util.HashMap;
 import java.util.Properties;
-
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.jdbc.JDBCConnectionLifecycleOnlineTest;
@@ -39,8 +38,8 @@ public class OracleConnectionLifecycleOnlineTest extends JDBCConnectionLifecycle
             // doubly wrapped (adding LifeCycleConnection).
             // That tests ability of OracleDialect to unwrap properly.
             Properties addStartupSql = (Properties) fixture.clone();
-            addStartupSql.setProperty(JDBCDataStoreFactory.SQL_ON_BORROW.key,
-                    "select sysdate from dual");
+            addStartupSql.setProperty(
+                    JDBCDataStoreFactory.SQL_ON_BORROW.key, "select sysdate from dual");
             HashMap params = createDataStoreFactoryParams();
             params.putAll(addStartupSql);
             DataStore withWrap = (JDBCDataStore) DataStoreFinder.getDataStore(params);

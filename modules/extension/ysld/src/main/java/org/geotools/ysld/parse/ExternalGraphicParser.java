@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -21,17 +21,8 @@ import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.ResourceLocator;
 import org.geotools.ysld.YamlMap;
 import org.geotools.ysld.YamlObject;
-import org.yaml.snakeyaml.events.Event;
-import org.yaml.snakeyaml.events.MappingEndEvent;
-import org.yaml.snakeyaml.events.ScalarEvent;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
-/**
- * Handles parsing a Ysld "external" property into a {@link ExternalGraphic} object.
- *
- */
+/** Handles parsing a Ysld "external" property into a {@link ExternalGraphic} object. */
 public abstract class ExternalGraphicParser extends YsldParseHandler {
 
     ExternalGraphic external;
@@ -50,8 +41,9 @@ public abstract class ExternalGraphicParser extends YsldParseHandler {
         if (map.has("url")) {
             String value = map.str("url");
             try {
-                external.setLocation(((ResourceLocator) context.getDocHint("resourceLocator"))
-                        .locateResource(value));
+                external.setLocation(
+                        ((ResourceLocator) context.getDocHint("resourceLocator"))
+                                .locateResource(value));
             } catch (IllegalArgumentException e) {
                 external.setURI("file:" + value);
             }

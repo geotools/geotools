@@ -2,11 +2,11 @@ package org.geotools.data.transform;
 
 import static org.junit.Assert.*;
 
+import com.vividsolutions.jts.io.WKTReader;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.commons.io.FileUtils;
 import org.geotools.data.CollectionFeatureReader;
 import org.geotools.data.DataUtilities;
@@ -16,8 +16,6 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
-import org.geotools.data.transform.Definition;
-import org.geotools.data.transform.TransformFactory;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.ecql.ECQL;
@@ -26,17 +24,16 @@ import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
 
-import com.vividsolutions.jts.io.WKTReader;
-
 public class TransformFeatureStoreTest extends AbstractTransformTest {
-    
+
     WKTReader wkt = new WKTReader();
-    
+
     @Before
     public void setupWriteTest() throws IOException {
         // clone the file to avoid issues with write tests
         new File("./target/ ").mkdirs();
-        File source = new File("./src/test/resources/org/geotools/data/transform/states.properties");
+        File source =
+                new File("./src/test/resources/org/geotools/data/transform/states.properties");
         File target = new File("./target/transform/states.properties");
         target.delete();
         FileUtils.copyFile(source, target);
@@ -52,7 +49,8 @@ public class TransformFeatureStoreTest extends AbstractTransformTest {
         definitions.add(new Definition("total", ECQL.toExpression("male + female")));
         definitions.add(new Definition("people", ECQL.toExpression("persons")));
 
-        SimpleFeatureSource transformed = TransformFactory.transform(STATES, "bstates", definitions);
+        SimpleFeatureSource transformed =
+                TransformFactory.transform(STATES, "bstates", definitions);
         return transformed;
     }
 
@@ -109,15 +107,15 @@ public class TransformFeatureStoreTest extends AbstractTransformTest {
         // check it's not possible to get at it anymore
         assertEquals(0, STATES.getFeatures(f).size());
         assertEquals(0, transformed.getFeatures(f).size());
-        
+
         // now remove everything else
         f = CQL.toFilter("people = total");
         transformed.removeFeatures(f);
         assertEquals(0, STATES.getFeatures(Query.ALL).size());
         assertEquals(0, transformed.getFeatures(Query.ALL).size());
     }
-    
-    @Test 
+
+    @Test
     public void testInsertOnSelection() throws Exception {
         SimpleFeatureStore transformed = (SimpleFeatureStore) transformWithSelection();
         SimpleFeatureBuilder fb = new SimpleFeatureBuilder(transformed.getSchema());
@@ -125,19 +123,25 @@ public class TransformFeatureStoreTest extends AbstractTransformTest {
         fb.add("baloon");
         fb.add(1);
         SimpleFeature sf = fb.buildFeature("states_mini.11");
-        
+
         // add the feature
         transformed.addFeatures(DataUtilities.collection(sf));
-        
+
         // check it's there
         int size = STATES.getCount(Query.ALL);
         assertEquals(11, size);
-        
-        assertEquals(1, STATES.getFeatures(new Query(null, CQL.toFilter("state_name = 'baloon'"))).size());
-        assertEquals(1, transformed.getFeatures(new Query(null, CQL.toFilter("state_name = 'baloon'"))).size());
+
+        assertEquals(
+                1,
+                STATES.getFeatures(new Query(null, CQL.toFilter("state_name = 'baloon'"))).size());
+        assertEquals(
+                1,
+                transformed
+                        .getFeatures(new Query(null, CQL.toFilter("state_name = 'baloon'")))
+                        .size());
     }
-    
-    @Test 
+
+    @Test
     public void testInsertOnRename() throws Exception {
         SimpleFeatureStore transformed = (SimpleFeatureStore) transformWithRename();
         SimpleFeatureBuilder fb = new SimpleFeatureBuilder(transformed.getSchema());
@@ -145,19 +149,23 @@ public class TransformFeatureStoreTest extends AbstractTransformTest {
         fb.add("baloon");
         fb.add(1);
         SimpleFeature sf = fb.buildFeature("states_mini.11");
-        
+
         // add the feature
         transformed.addFeatures(DataUtilities.collection(sf));
-        
+
         // check it's there
         int size = STATES.getCount(Query.ALL);
         assertEquals(11, size);
-        
-        assertEquals(1, STATES.getFeatures(new Query(null, CQL.toFilter("state_name = 'baloon'"))).size());
-        assertEquals(1, transformed.getFeatures(new Query(null, CQL.toFilter("name = 'baloon'"))).size());
+
+        assertEquals(
+                1,
+                STATES.getFeatures(new Query(null, CQL.toFilter("state_name = 'baloon'"))).size());
+        assertEquals(
+                1,
+                transformed.getFeatures(new Query(null, CQL.toFilter("name = 'baloon'"))).size());
     }
-    
-    @Test 
+
+    @Test
     public void testInsertOnTransform() throws Exception {
         SimpleFeatureStore transformed = (SimpleFeatureStore) transformWithPartialTransform();
         SimpleFeatureBuilder fb = new SimpleFeatureBuilder(transformed.getSchema());
@@ -166,20 +174,21 @@ public class TransformFeatureStoreTest extends AbstractTransformTest {
         fb.add(1);
         fb.add(1);
         SimpleFeature sf = fb.buildFeature("states_mini.11");
-        
+
         // add the feature
         transformed.addFeatures(DataUtilities.collection(sf));
-        
+
         // check it's there
         int size = STATES.getCount(Query.ALL);
         assertEquals(11, size);
-        
+
         // the name won't be preserved since it's transformed, we use the population instead
         assertEquals(1, STATES.getFeatures(new Query(null, CQL.toFilter("persons = 1"))).size());
-        assertEquals(1, transformed.getFeatures(new Query(null, CQL.toFilter("people = 1"))).size());
+        assertEquals(
+                1, transformed.getFeatures(new Query(null, CQL.toFilter("people = 1"))).size());
     }
-    
-    @Test 
+
+    @Test
     public void testSetOnSelection() throws Exception {
         SimpleFeatureStore transformed = (SimpleFeatureStore) transformWithSelection();
         SimpleFeatureBuilder fb = new SimpleFeatureBuilder(transformed.getSchema());
@@ -187,19 +196,25 @@ public class TransformFeatureStoreTest extends AbstractTransformTest {
         fb.add("baloon");
         fb.add(1);
         SimpleFeature sf = fb.buildFeature("states_mini.11");
-        
+
         // set the feature
         transformed.setFeatures(new CollectionFeatureReader(new SimpleFeature[] {sf}));
-        
+
         // check it's there and it's the only one
         int size = STATES.getCount(Query.ALL);
         assertEquals(1, size);
-        
-        assertEquals(1, STATES.getFeatures(new Query(null, CQL.toFilter("state_name = 'baloon'"))).size());
-        assertEquals(1, transformed.getFeatures(new Query(null, CQL.toFilter("state_name = 'baloon'"))).size());
+
+        assertEquals(
+                1,
+                STATES.getFeatures(new Query(null, CQL.toFilter("state_name = 'baloon'"))).size());
+        assertEquals(
+                1,
+                transformed
+                        .getFeatures(new Query(null, CQL.toFilter("state_name = 'baloon'")))
+                        .size());
     }
-    
-    @Test 
+
+    @Test
     public void testSetOnRename() throws Exception {
         SimpleFeatureStore transformed = (SimpleFeatureStore) transformWithRename();
         SimpleFeatureBuilder fb = new SimpleFeatureBuilder(transformed.getSchema());
@@ -207,19 +222,23 @@ public class TransformFeatureStoreTest extends AbstractTransformTest {
         fb.add("baloon");
         fb.add(1);
         SimpleFeature sf = fb.buildFeature("states_mini.11");
-        
+
         // set the feature
         transformed.setFeatures(new CollectionFeatureReader(new SimpleFeature[] {sf}));
-        
+
         // check it's there
         int size = STATES.getCount(Query.ALL);
         assertEquals(1, size);
-        
-        assertEquals(1, STATES.getFeatures(new Query(null, CQL.toFilter("state_name = 'baloon'"))).size());
-        assertEquals(1, transformed.getFeatures(new Query(null, CQL.toFilter("name = 'baloon'"))).size());
+
+        assertEquals(
+                1,
+                STATES.getFeatures(new Query(null, CQL.toFilter("state_name = 'baloon'"))).size());
+        assertEquals(
+                1,
+                transformed.getFeatures(new Query(null, CQL.toFilter("name = 'baloon'"))).size());
     }
-    
-    @Test 
+
+    @Test
     public void testSetOnTransform() throws Exception {
         SimpleFeatureStore transformed = (SimpleFeatureStore) transformWithPartialTransform();
         SimpleFeatureBuilder fb = new SimpleFeatureBuilder(transformed.getSchema());
@@ -228,31 +247,33 @@ public class TransformFeatureStoreTest extends AbstractTransformTest {
         fb.add(1);
         fb.add(1);
         SimpleFeature sf = fb.buildFeature("states_mini.11");
-        
+
         // set the feature
         transformed.setFeatures(new CollectionFeatureReader(new SimpleFeature[] {sf}));
-        
+
         // check it's there
         int size = STATES.getCount(Query.ALL);
         assertEquals(1, size);
-        
+
         // the name won't be preserved since it's transformed, we use the population instead
         assertEquals(1, STATES.getFeatures(new Query(null, CQL.toFilter("persons = 1"))).size());
-        assertEquals(1, transformed.getFeatures(new Query(null, CQL.toFilter("people = 1"))).size());
+        assertEquals(
+                1, transformed.getFeatures(new Query(null, CQL.toFilter("people = 1"))).size());
     }
-    
+
     @Test
     public void testUpdateOnSelection() throws Exception {
         SimpleFeatureStore transformed = (SimpleFeatureStore) transformWithSelection();
-        
+
         // modify the feature
         transformed.modifyFeatures("persons", 0, CQL.toFilter("state_name = 'Illinois'"));
-        
+
         // check it has been modified
         assertEquals(1, STATES.getFeatures(new Query(null, CQL.toFilter("persons = 0"))).size());
-        SimpleFeatureCollection rfc = transformed.getFeatures(new Query(null, CQL.toFilter("persons = 0")));
+        SimpleFeatureCollection rfc =
+                transformed.getFeatures(new Query(null, CQL.toFilter("persons = 0")));
         assertEquals(1, rfc.size());
-        
+
         // double check the features themselves
         SimpleFeatureIterator fi = rfc.features();
         try {
@@ -263,19 +284,20 @@ public class TransformFeatureStoreTest extends AbstractTransformTest {
             fi.close();
         }
     }
-    
+
     @Test
     public void testUpdateOnRename() throws Exception {
         SimpleFeatureStore transformed = (SimpleFeatureStore) transformWithRename();
-        
+
         // modify the feature
         transformed.modifyFeatures("people", 0, CQL.toFilter("name = 'Illinois'"));
-        
+
         // check it has been modified
         assertEquals(1, STATES.getFeatures(new Query(null, CQL.toFilter("persons = 0"))).size());
-        SimpleFeatureCollection rfc = transformed.getFeatures(new Query(null, CQL.toFilter("people = 0")));
+        SimpleFeatureCollection rfc =
+                transformed.getFeatures(new Query(null, CQL.toFilter("people = 0")));
         assertEquals(1, rfc.size());
-        
+
         // double check the features themselves
         SimpleFeatureIterator fi = rfc.features();
         try {
@@ -286,19 +308,20 @@ public class TransformFeatureStoreTest extends AbstractTransformTest {
             fi.close();
         }
     }
-    
+
     @Test
     public void testUpdateOnTransform() throws Exception {
         SimpleFeatureStore transformed = (SimpleFeatureStore) transformWithPartialTransform();
-        
+
         // modify the feature
         transformed.modifyFeatures("people", 0, CQL.toFilter("name = 'illinois'"));
-        
+
         // check it has been modified
         assertEquals(1, STATES.getFeatures(new Query(null, CQL.toFilter("persons = 0"))).size());
-        SimpleFeatureCollection rfc = transformed.getFeatures(new Query(null, CQL.toFilter("people = 0")));
+        SimpleFeatureCollection rfc =
+                transformed.getFeatures(new Query(null, CQL.toFilter("people = 0")));
         assertEquals(1, rfc.size());
-        
+
         // double check the features themselves
         SimpleFeatureIterator fi = rfc.features();
         try {
@@ -309,5 +332,4 @@ public class TransformFeatureStoreTest extends AbstractTransformTest {
             fi.close();
         }
     }
-    
 }

@@ -20,7 +20,6 @@ package org.geotools.jdbc;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
-
 import org.geotools.data.Query;
 import org.geotools.data.store.ContentFeatureSource;
 import org.opengis.filter.Filter;
@@ -28,7 +27,7 @@ import org.opengis.filter.FilterFactory;
 
 /**
  * Base class for online tests of JDBC time zone handling.
- * 
+ *
  * @source $URL$
  */
 public abstract class JDBCTimeZoneDateOnlineTest extends JDBCTestSupport {
@@ -55,10 +54,11 @@ public abstract class JDBCTimeZoneDateOnlineTest extends JDBCTestSupport {
         DateFormat df = new SimpleDateFormat("yyyy-dd-MM");
         ContentFeatureSource fs = dataStore.getFeatureSource(tname("dates"));
         Filter f = ff.lessOrEqual(ff.property(aname("d")), ff.literal(df.parse("2009-28-06")));
-        assertEquals("wrong number of records for " + TimeZone.getDefault().getDisplayName(), 2,
+        assertEquals(
+                "wrong number of records for " + TimeZone.getDefault().getDisplayName(),
+                2,
                 fs.getCount(new Query(tname("dates"), f)));
         TimeZone.setDefault(originalTimeZone);
         setup.setUpData();
     }
-
 }

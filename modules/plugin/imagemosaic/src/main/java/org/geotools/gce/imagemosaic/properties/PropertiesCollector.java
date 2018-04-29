@@ -21,17 +21,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
 import javax.imageio.ImageReader;
-
 import org.geotools.coverage.grid.io.GridCoverage2DReader;
 import org.opengis.feature.simple.SimpleFeature;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public abstract class PropertiesCollector {
 
     private List<String> propertyNames;
@@ -61,9 +55,9 @@ public abstract class PropertiesCollector {
         return this;
     }
 
-    abstract public void setProperties(final SimpleFeature feature);
+    public abstract void setProperties(final SimpleFeature feature);
 
-    abstract public void setProperties(final Map<String, Object> map);
+    public abstract void setProperties(final Map<String, Object> map);
 
     public void reset() {
         matches = new ArrayList<String>();
@@ -80,5 +74,4 @@ public abstract class PropertiesCollector {
     protected List<String> getMatches() {
         return Collections.unmodifiableList(matches);
     }
-
 }

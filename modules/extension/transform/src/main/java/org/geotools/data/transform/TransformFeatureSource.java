@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.data.DataAccess;
 import org.geotools.data.FeatureListener;
 import org.geotools.data.Query;
@@ -47,17 +46,18 @@ import org.opengis.filter.sort.SortBy;
 
 /**
  * A feature source that can transform a source feature source using a set of expressions
- * 
- * Usages:
+ *
+ * <p>Usages:
+ *
  * <ul>
- * <li>hide, rename fields - compute new fields</li>
- * <li>build geom from x,y (we need to add a new Point filter function and have a special treatment
- * of it in simplifying filter visitor so that it turns bbox filters against it into a filter on
- * x,y)</li>
- * <li>on the fly simplification for WFS (just use environment variables) and in general dynamic
- * processing based on params without stored queries</li>
+ *   <li>hide, rename fields - compute new fields
+ *   <li>build geom from x,y (we need to add a new Point filter function and have a special
+ *       treatment of it in simplifying filter visitor so that it turns bbox filters against it into
+ *       a filter on x,y)
+ *   <li>on the fly simplification for WFS (just use environment variables) and in general dynamic
+ *       processing based on params without stored queries
  * </ul>
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 public class TransformFeatureSource implements SimpleFeatureSource {
@@ -70,22 +70,24 @@ public class TransformFeatureSource implements SimpleFeatureSource {
 
     protected SimpleFeatureSource source;
 
-    
     /**
      * Creates a transformed feature source from the original source, giving it a certain name and a
      * set of computed properties
-     * 
+     *
      * @param source
      * @param name
      * @param definitions
      * @throws IOException
      */
-    public TransformFeatureSource(SimpleFeatureSource source, Name name, List<Definition> definitions)
+    public TransformFeatureSource(
+            SimpleFeatureSource source, Name name, List<Definition> definitions)
             throws IOException {
         this.transformer = new Transformer(source, name, definitions, null);
         this.source = source;
 
-        LOGGER.log(Level.FINE, "Transformed target schema for this feature source is {0}",
+        LOGGER.log(
+                Level.FINE,
+                "Transformed target schema for this feature source is {0}",
                 transformer.getSchema());
     }
 
@@ -152,7 +154,7 @@ public class TransformFeatureSource implements SimpleFeatureSource {
                                     LOGGER.log(
                                             Level.FINE,
                                             "Can't sort on {0} because its property type {1} is not comparable",
-                                            new Object[] { descriptor.getLocalName(), binding });
+                                            new Object[] {descriptor.getLocalName(), binding});
                                 }
                                 return false;
                             }
@@ -162,7 +164,6 @@ public class TransformFeatureSource implements SimpleFeatureSource {
 
                 return true;
             }
-
         };
     }
 
@@ -203,7 +204,8 @@ public class TransformFeatureSource implements SimpleFeatureSource {
         List<String> originalNames = transformer.getOriginalNames(filtered);
         if (originalNames.size() < filtered.size()) {
             if (LOGGER.isLoggable(Level.FINE)) {
-                LOGGER.log(Level.FINE,
+                LOGGER.log(
+                        Level.FINE,
                         "Some of the geometry attributes is the result of a general transformation "
                                 + "(not a rename), can't compute the bbox quickly");
             }
@@ -217,9 +219,10 @@ public class TransformFeatureSource implements SimpleFeatureSource {
 
         // let the world know
         if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.log(Level.FINE,
+            LOGGER.log(
+                    Level.FINE,
                     "The original query for bounds computation{0} has been tranformed to {1}",
-                    new Object[] { query, txQuery });
+                    new Object[] {query, txQuery});
         }
 
         return source.getBounds(txQuery);
@@ -227,7 +230,7 @@ public class TransformFeatureSource implements SimpleFeatureSource {
 
     /**
      * Returns the set of names actually selected by the query
-     * 
+     *
      * @param attributeNames
      * @param query
      * @return
@@ -255,9 +258,10 @@ public class TransformFeatureSource implements SimpleFeatureSource {
 
         // let the world know
         if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.log(Level.FINE,
+            LOGGER.log(
+                    Level.FINE,
                     "The original query for count computation{0} has been transformed to {1}",
-                    new Object[] { query, txQuery });
+                    new Object[] {query, txQuery});
         }
 
         return source.getCount(txQuery);
@@ -287,5 +291,4 @@ public class TransformFeatureSource implements SimpleFeatureSource {
     public SimpleFeatureCollection getFeatures(Query query) throws IOException {
         return new TransformFeatureCollection(this, transformer, query);
     }
-
 }

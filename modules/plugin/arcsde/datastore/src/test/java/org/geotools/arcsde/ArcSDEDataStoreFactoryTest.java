@@ -24,13 +24,14 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import com.esri.sde.sdk.client.SeException;
+import com.esri.sde.sdk.client.SeVersion;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
 import org.geotools.arcsde.data.ArcSDEDataStore;
 import org.geotools.arcsde.data.ArcSDEDataStoreConfig;
 import org.geotools.arcsde.data.InProcessViewSupportTestData;
@@ -48,31 +49,22 @@ import org.junit.Before;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-import com.esri.sde.sdk.client.SeException;
-import com.esri.sde.sdk.client.SeVersion;
-
 /**
  * Test suite for {@link ArcSDEDataStoreFactory}
- * 
+ *
  * @author Gabriel Roldan, Axios Engineering
- *
- *
  * @source $URL$
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/test/java
- *         /org/geotools/arcsde/ArcSDEDataStoreFactoryTest.java $
+ *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/test/java
+ *     /org/geotools/arcsde/ArcSDEDataStoreFactoryTest.java $
  * @version $Id$
  * @since 2.4.x
  */
 public class ArcSDEDataStoreFactoryTest {
 
-    /**
-     * A datastore factory set up with the {@link #workingParams}
-     */
+    /** A datastore factory set up with the {@link #workingParams} */
     private ArcSDEDataStoreFactory dsFactory;
 
-    /**
-     * A set of datastore parameters that are meant to work
-     */
+    /** A set of datastore parameters that are meant to work */
     private Map<String, Serializable> workingParams;
 
     /**
@@ -155,8 +147,8 @@ public class ArcSDEDataStoreFactoryTest {
     }
 
     /**
-     * Test method for
-     * {@link org.geotools.arcsde.ArcSDEDataStoreFactory#createNewDataStore(java.util.Map)}.
+     * Test method for {@link
+     * org.geotools.arcsde.ArcSDEDataStoreFactory#createNewDataStore(java.util.Map)}.
      */
     @SuppressWarnings("unchecked")
     @Test
@@ -180,9 +172,9 @@ public class ArcSDEDataStoreFactoryTest {
     }
 
     /**
-     * Test method for
-     * {@link org.geotools.arcsde.ArcSDEDataStoreFactory#createDataStore(java.util.Map)}.
-     * 
+     * Test method for {@link
+     * org.geotools.arcsde.ArcSDEDataStoreFactory#createDataStore(java.util.Map)}.
+     *
      * @throws IOException
      */
     @Test
@@ -200,16 +192,16 @@ public class ArcSDEDataStoreFactoryTest {
     }
 
     /**
-     * Test method for
-     * {@link org.geotools.arcsde.ArcSDEDataStoreFactory#createDataStore(java.util.Map)}.
-     * 
+     * Test method for {@link
+     * org.geotools.arcsde.ArcSDEDataStoreFactory#createDataStore(java.util.Map)}.
+     *
      * @throws IOException
      * @throws SeException
      * @throws UnavailableConnectionException
      */
     @Test
-    public void testCreateDataStoreWithInProcessViews() throws IOException, SeException,
-            UnavailableConnectionException {
+    public void testCreateDataStoreWithInProcessViews()
+            throws IOException, SeException, UnavailableConnectionException {
         ISession session = testData.getConnectionPool().getSession(true);
         try {
             InProcessViewSupportTestData.setUp(session, testData);
@@ -217,8 +209,8 @@ public class ArcSDEDataStoreFactoryTest {
             session.dispose();
         }
 
-        Map<String, Serializable> workingParamsWithSqlView = new HashMap<String, Serializable>(
-                workingParams);
+        Map<String, Serializable> workingParamsWithSqlView =
+                new HashMap<String, Serializable>(workingParams);
         workingParamsWithSqlView.putAll(InProcessViewSupportTestData.registerViewParams);
 
         DataStore store = dsFactory.createDataStore(workingParamsWithSqlView);
@@ -235,19 +227,20 @@ public class ArcSDEDataStoreFactoryTest {
         ISession session = testData.getConnectionPool().getSession(true);
         final String versionName = "testVersionParamCheck";
         try {
-            testData.createVersion(session, versionName,
-                    SeVersion.SE_QUALIFIED_DEFAULT_VERSION_NAME);
+            testData.createVersion(
+                    session, versionName, SeVersion.SE_QUALIFIED_DEFAULT_VERSION_NAME);
         } finally {
             session.dispose();
         }
 
-        Map<String, Serializable> paramsWithVersion = new HashMap<String, Serializable>(
-                workingParams);
+        Map<String, Serializable> paramsWithVersion =
+                new HashMap<String, Serializable>(workingParams);
         try {
             paramsWithVersion.put(VERSION_PARAM_NAME, "Non existent version name");
             dsFactory.createDataStore(paramsWithVersion);
         } catch (IOException e) {
-            assertTrue(e.getMessage(),
+            assertTrue(
+                    e.getMessage(),
                     e.getMessage().startsWith("Specified ArcSDE version does not exist"));
         }
     }
@@ -257,14 +250,14 @@ public class ArcSDEDataStoreFactoryTest {
         ISession session = testData.getConnectionPool().getSession(true);
         final String versionName = "testVersioned";
         try {
-            testData.createVersion(session, versionName,
-                    SeVersion.SE_QUALIFIED_DEFAULT_VERSION_NAME);
+            testData.createVersion(
+                    session, versionName, SeVersion.SE_QUALIFIED_DEFAULT_VERSION_NAME);
         } finally {
             session.dispose();
         }
 
-        Map<String, Serializable> paramsWithVersion = new HashMap<String, Serializable>(
-                workingParams);
+        Map<String, Serializable> paramsWithVersion =
+                new HashMap<String, Serializable>(workingParams);
         paramsWithVersion.put(VERSION_PARAM_NAME, versionName);
         DataStore ds = dsFactory.createDataStore(paramsWithVersion);
         assertNotNull(ds);

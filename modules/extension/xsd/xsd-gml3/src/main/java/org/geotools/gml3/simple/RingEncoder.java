@@ -16,17 +16,16 @@
  */
 package org.geotools.gml3.simple;
 
+import com.vividsolutions.jts.geom.Geometry;
 import org.geotools.gml2.simple.GMLWriter;
 import org.geotools.gml2.simple.QualifiedName;
 import org.geotools.gml3.GML;
 import org.geotools.xml.Encoder;
 import org.xml.sax.helpers.AttributesImpl;
 
-import com.vividsolutions.jts.geom.Geometry;
-
 /**
  * Encodes a GML3 curved ring
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 public class RingEncoder extends MultiLineStringEncoder {
@@ -49,5 +48,4 @@ public class RingEncoder extends MultiLineStringEncoder {
 
         handler.endElement(ring);
     }
-
 }

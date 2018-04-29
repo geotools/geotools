@@ -19,11 +19,7 @@ package org.geotools.styling.builder;
 import org.geotools.styling.Displacement;
 import org.opengis.filter.expression.Expression;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class DisplacementBuilder extends AbstractStyleBuilder<Displacement> {
     private Expression x = null;
 
@@ -107,8 +103,12 @@ public class DisplacementBuilder extends AbstractStyleBuilder<Displacement> {
 
     @Override
     protected void buildStyleInternal(StyleBuilder sb) {
-        sb.featureTypeStyle().rule().text().labelText("label").pointPlacement()
-                .displacement().init(this);
+        sb.featureTypeStyle()
+                .rule()
+                .text()
+                .labelText("label")
+                .pointPlacement()
+                .displacement()
+                .init(this);
     }
-
 }

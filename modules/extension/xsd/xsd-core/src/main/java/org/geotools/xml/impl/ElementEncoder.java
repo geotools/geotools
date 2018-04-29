@@ -17,7 +17,6 @@
 package org.geotools.xml.impl;
 
 import java.util.logging.Logger;
-
 import org.eclipse.xsd.XSDAttributeDeclaration;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDTypeDefinition;
@@ -27,33 +26,21 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.helpers.NamespaceSupport;
 
-
 /**
  * Utility class to be used by bindings to encode an element or an attribute.
  *
- *
- * @author Justin Deoliveira, The Open Planning Project
- * TODO: rename this class, it is not just for element.s
- *
- *
- *
- *
+ * @author Justin Deoliveira, The Open Planning Project TODO: rename this class, it is not just for
+ *     element.s
  * @source $URL$
  */
 public class ElementEncoder {
-    /**
-     * The walker used to traverse bindings
-     */
+    /** The walker used to traverse bindings */
     private BindingWalker bindingWalker;
 
-    /**
-     * The binding context
-     */
+    /** The binding context */
     private MutablePicoContainer context;
 
-    /**
-     * Logger
-     */
+    /** Logger */
     private Logger logger;
 
     public ElementEncoder(BindingWalker bindingWalker, MutablePicoContainer context) {
@@ -63,37 +50,49 @@ public class ElementEncoder {
 
     /**
      * Sets the logger for the encoder to use.
+     *
      * @param logger
      */
     public void setLogger(Logger logger) {
         this.logger = logger;
     }
 
-    public Element encode(Object value,XSDElementDeclaration element, Document document) {
-        return encode( value, element, document, null);
+    public Element encode(Object value, XSDElementDeclaration element, Document document) {
+        return encode(value, element, document, null);
     }
-    
+
     /**
      * Encodes a value corresponding to an element in a schema.
      *
      * @param value The value to encode.
      * @param element The declaration of the element corresponding to the value.
      * @param document The document used to create the encoded element.
-     *
      * @return The encoded value as an element.
      */
-    public Element encode(Object value, XSDElementDeclaration element,Document document, XSDTypeDefinition container) {
-        ElementEncodeExecutor executor = new ElementEncodeExecutor(value, element, document,
-                logger,
-                (NamespaceSupport) context.getComponentInstanceOfType(NamespaceSupport.class));
+    public Element encode(
+            Object value,
+            XSDElementDeclaration element,
+            Document document,
+            XSDTypeDefinition container) {
+        ElementEncodeExecutor executor =
+                new ElementEncodeExecutor(
+                        value,
+                        element,
+                        document,
+                        logger,
+                        (NamespaceSupport)
+                                context.getComponentInstanceOfType(NamespaceSupport.class));
         BindingVisitorDispatch.walk(value, bindingWalker, element, executor, container, context);
         return executor.getEncodedElement();
     }
 
-    public Attr encode(Object value, XSDAttributeDeclaration attribute, Document document,
+    public Attr encode(
+            Object value,
+            XSDAttributeDeclaration attribute,
+            Document document,
             XSDTypeDefinition container) {
-        AttributeEncodeExecutor executor = new AttributeEncodeExecutor(value, attribute, document,
-                logger);
+        AttributeEncodeExecutor executor =
+                new AttributeEncodeExecutor(value, attribute, document, logger);
         BindingVisitorDispatch.walk(value, bindingWalker, attribute, executor, container, context);
         return executor.getEncodedAttribute();
     }

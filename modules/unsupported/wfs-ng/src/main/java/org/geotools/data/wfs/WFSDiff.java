@@ -17,12 +17,14 @@
 package org.geotools.data.wfs;
 
 import static org.geotools.data.wfs.internal.Loggers.*;
+
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import org.geotools.data.Diff;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.store.ContentState;
@@ -32,9 +34,6 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
 import org.opengis.filter.Filter;
 import org.opengis.geometry.BoundingBox;
-
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
 
 public class WFSDiff extends Diff {
 
@@ -51,7 +50,6 @@ public class WFSDiff extends Diff {
             this.values = values;
             this.filter = filter;
         }
-
     }
 
     // record batch modified fids so a single update element is not built for them by
@@ -87,22 +85,28 @@ public class WFSDiff extends Diff {
             boolean removed = batchModified.remove(fid);
             if (removed) {
                 // will cause an extra update to be sent after the batch modifications
-                MODULE.finer("Removing " + fid
-                        + " from list of batch modified features as it's being modified directly");
+                MODULE.finer(
+                        "Removing "
+                                + fid
+                                + " from list of batch modified features as it's being modified directly");
             }
         }
         super.modify(fid, f);
     }
 
-    public ReferencedEnvelope batchModify(Name[] properties, Object[] values, Filter filter,
-            FeatureReader<SimpleFeatureType, SimpleFeature> oldFeatures, ContentState contentState)
+    public ReferencedEnvelope batchModify(
+            Name[] properties,
+            Object[] values,
+            Filter filter,
+            FeatureReader<SimpleFeatureType, SimpleFeature> oldFeatures,
+            ContentState contentState)
             throws IOException {
 
-        ReferencedEnvelope bounds = new ReferencedEnvelope(contentState.getFeatureType()
-                .getCoordinateReferenceSystem());
-        
-        synchronized (batchModified) {
+        ReferencedEnvelope bounds =
+                new ReferencedEnvelope(
+                        contentState.getFeatureType().getCoordinateReferenceSystem());
 
+        synchronized (batchModified) {
             while (oldFeatures.hasNext()) {
 
                 SimpleFeature old = oldFeatures.next();
@@ -132,5 +136,4 @@ public class WFSDiff extends Diff {
 
         return bounds;
     }
-
 }

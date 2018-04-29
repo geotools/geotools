@@ -1,25 +1,21 @@
 package org.geotools.wmts.bindings;
 
-import org.geotools.wmts.WMTS;
-import org.geotools.xml.*;
-import org.geotools.xml.AbstractComplexBinding;
-
+import java.util.List;
+import javax.xml.namespace.QName;
 import net.opengis.wmts.v_1.TileMatrixLimitsType;
 import net.opengis.wmts.v_1.TileMatrixSetLimitsType;
 import net.opengis.wmts.v_1.wmtsv_1Factory;
-
-import java.util.Iterator;
-import java.util.List;
-
-import javax.xml.namespace.QName;
+import org.geotools.wmts.WMTS;
+import org.geotools.xml.*;
+import org.geotools.xml.AbstractComplexBinding;
 
 /**
  * Binding object for the element http://www.opengis.net/wmts/1.0:TileMatrixSetLimits.
  *
  * <p>
- * 
+ *
  * <pre>
- *	 <code>
+ *  <code>
  *  &lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;element name="TileMatrixSetLimits" xmlns="http://www.w3.org/2001/XMLSchema"&gt;
  *  		&lt;annotation&gt;
  *  			&lt;documentation&gt;
@@ -31,19 +27,18 @@ import javax.xml.namespace.QName;
  *  				&lt;element maxOccurs="unbounded" ref="wmts:TileMatrixLimits"&gt;
  *  					&lt;annotation&gt;
  *  						&lt;documentation&gt;
- *  							Metadata describing the limits of the TileMatrixSet indices. 
- *  							Multiplicity must be the multiplicity of TileMatrix in this 
+ *  							Metadata describing the limits of the TileMatrixSet indices.
+ *  							Multiplicity must be the multiplicity of TileMatrix in this
  *  							TileMatrixSet.
  *  						&lt;/documentation&gt;
  *  					&lt;/annotation&gt;
  *  				&lt;/element&gt;
  *  			&lt;/sequence&gt;
  *  		&lt;/complexType&gt;
- *  	&lt;/element&gt; 
- *		
- *	  </code>
+ *  	&lt;/element&gt;
+ *
+ *   </code>
  * </pre>
- * </p>
  *
  * @generated
  */
@@ -56,16 +51,16 @@ public class TileMatrixSetLimitsBinding extends AbstractComplexBinding {
         this.factory = factory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return WMTS.TileMatrixSetLimits;
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Class getType() {
@@ -73,8 +68,10 @@ public class TileMatrixSetLimitsBinding extends AbstractComplexBinding {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
@@ -82,12 +79,10 @@ public class TileMatrixSetLimitsBinding extends AbstractComplexBinding {
         TileMatrixSetLimitsType limits = factory.createTileMatrixSetLimitsType();
 
         @SuppressWarnings("unchecked")
-
         List<Node> children = node.getChildren("TileMatrixLimits");
         for (Node c : children) {
             limits.getTileMatrixLimits().add((TileMatrixLimitsType) c.getValue());
         }
         return limits;
     }
-
 }

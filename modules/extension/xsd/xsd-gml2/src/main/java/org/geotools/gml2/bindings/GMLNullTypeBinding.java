@@ -16,20 +16,18 @@
  */
 package org.geotools.gml2.bindings;
 
+import com.vividsolutions.jts.geom.Envelope;
 import javax.xml.namespace.QName;
-
 import org.geotools.gml2.GML;
 import org.geotools.xml.InstanceComponent;
 import org.geotools.xml.SimpleBinding;
-
-import com.vividsolutions.jts.geom.Envelope;
-
 
 /**
  * Binding object for the type http://www.opengis.net/gml:NullType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;simpleType name="NullType"&gt;
  *      &lt;annotation&gt;
@@ -51,23 +49,18 @@ import com.vividsolutions.jts.geom.Envelope;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class GMLNullTypeBinding implements SimpleBinding {
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return GML.NULLTYPE;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -78,6 +71,7 @@ public class GMLNullTypeBinding implements SimpleBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -88,21 +82,22 @@ public class GMLNullTypeBinding implements SimpleBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
-     * Returns an object of type @link com.vividsolutions.jts.geom.Envelope. In
-     * the event that a <b>null</b> element is given, a null Envelope is
-     * returned by calling @link com.vividsolutions.jts.geom.Envelope#setToNull().
+     * Returns an object of type @link com.vividsolutions.jts.geom.Envelope. In the event that a
+     * <b>null</b> element is given, a null Envelope is returned by calling @link
+     * com.vividsolutions.jts.geom.Envelope#setToNull().
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(InstanceComponent instance, Object value)
-        throws Exception {
-        //dont do anything special, here just return the string
+    public Object parse(InstanceComponent instance, Object value) throws Exception {
+        // dont do anything special, here just return the string
         return value;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *

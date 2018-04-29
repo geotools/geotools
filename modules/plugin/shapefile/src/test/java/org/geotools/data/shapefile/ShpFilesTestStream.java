@@ -34,7 +34,6 @@ import java.nio.channels.WritableByteChannel;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-
 import org.geotools.TestData;
 import org.geotools.data.shapefile.files.ShpFileType;
 import org.geotools.data.shapefile.files.ShpFiles;
@@ -42,13 +41,8 @@ import org.geotools.data.shapefile.files.StorageFile;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * 
- *
- * @source $URL$
- */
-public class ShpFilesTestStream implements
-        org.geotools.data.shapefile.files.FileWriter {
+/** @source $URL$ */
+public class ShpFilesTestStream implements org.geotools.data.shapefile.files.FileWriter {
 
     private String typeName;
     private Map<ShpFileType, File> map;
@@ -100,10 +94,10 @@ public class ShpFilesTestStream implements
     @Test
     public void testExceptionGetInputStream() throws Exception {
         ShpFiles shpFiles = new ShpFiles(new URL("http://blah/blah.shp"));
-        try{
+        try {
             shpFiles.getInputStream(SHP, this);
             fail("maybe test is bad?  We want an exception here");
-        }catch(Throwable e){
+        } catch (Throwable e) {
             assertEquals(0, shpFiles.numberOfLocks());
         }
     }
@@ -111,10 +105,10 @@ public class ShpFilesTestStream implements
     @Test
     public void testExceptionGetOutputStream() throws Exception {
         ShpFiles shpFiles = new ShpFiles(new URL("http://blah/blah.shp"));
-        try{
+        try {
             shpFiles.getOutputStream(SHP, this);
             fail("maybe test is bad?  We want an exception here");
-        }catch(Throwable e){
+        } catch (Throwable e) {
             assertEquals(0, shpFiles.numberOfLocks());
         }
     }
@@ -122,10 +116,10 @@ public class ShpFilesTestStream implements
     @Test
     public void testExceptionGetWriteChannel() throws Exception {
         ShpFiles shpFiles = new ShpFiles(new URL("http://blah/blah.shp"));
-        try{
+        try {
             shpFiles.getWriteChannel(SHP, this);
             fail("maybe test is bad?  We want an exception here");
-        }catch(Throwable e){
+        } catch (Throwable e) {
             assertEquals(0, shpFiles.numberOfLocks());
         }
     }
@@ -133,14 +127,14 @@ public class ShpFilesTestStream implements
     @Test
     public void testExceptionGetReadChannel() throws Exception {
         ShpFiles shpFiles = new ShpFiles(new URL("http://blah/blah.shp"));
-        try{
+        try {
             shpFiles.getReadChannel(SHP, this);
             fail("maybe test is bad?  We want an exception here");
-        }catch(Throwable e){
+        } catch (Throwable e) {
             assertEquals(0, shpFiles.numberOfLocks());
         }
     }
-    
+
     @Test
     public void testGetInputStream() throws IOException {
         writeDataToFiles();
@@ -171,11 +165,11 @@ public class ShpFilesTestStream implements
 
         ShpFileType[] types = ShpFileType.values();
         for (ShpFileType shpFileType : types) {
-            
+
             OutputStream out = files.getOutputStream(shpFileType, this);
             assertEquals(1, files.numberOfLocks());
             try {
-                out.write((byte)2);
+                out.write((byte) 2);
             } finally {
                 out.close();
                 assertEquals(0, files.numberOfLocks());
@@ -197,18 +191,18 @@ public class ShpFilesTestStream implements
     public void testGetReadChannelURL() throws IOException {
         URL url = TestData.url("shapes/statepop.shp");
         ShpFiles files = new ShpFiles(url);
-        
+
         assertFalse(files.isLocal());
-        
+
         ReadableByteChannel read = files.getReadChannel(SHP, this);
-        
+
         assertEquals(1, files.numberOfLocks());
-        
+
         read.close();
-        
+
         assertEquals(0, files.numberOfLocks());
     }
-    
+
     private void doRead(ShpFileType shpFileType) throws IOException {
         ReadableByteChannel in = files.getReadChannel(shpFileType, this);
         assertEquals(1, files.numberOfLocks());
@@ -276,5 +270,4 @@ public class ShpFilesTestStream implements
     public String id() {
         return getClass().getName();
     }
-
 }

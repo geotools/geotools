@@ -18,21 +18,21 @@ package org.geotools.data.efeature.adapters;
 
 /**
  * @author kengu - 15. juni 2011
- *
- *
  * @source $URL$
  */
-public class FloatAdapter extends org.eclipse.emf.query.conditions.numbers.NumberAdapter.FloatAdapter {
+public class FloatAdapter
+        extends org.eclipse.emf.query.conditions.numbers.NumberAdapter.FloatAdapter {
 
-    public static final org.geotools.data.efeature.adapters.FloatAdapter 
-        DEFAULT = new org.geotools.data.efeature.adapters.FloatAdapter();
+    public static final org.geotools.data.efeature.adapters.FloatAdapter DEFAULT =
+            new org.geotools.data.efeature.adapters.FloatAdapter();
 
     /** Hide constructor */
-    private FloatAdapter() { /*NOP*/};
-    
+    private FloatAdapter() {
+        /*NOP*/
+    };
+
     @Override
     public float floatValue(Object value) {
-        return value instanceof Float ? ((Float)value).floatValue() : (Float)value;
+        return value instanceof Float ? ((Float) value).floatValue() : (Float) value;
     }
-
 }

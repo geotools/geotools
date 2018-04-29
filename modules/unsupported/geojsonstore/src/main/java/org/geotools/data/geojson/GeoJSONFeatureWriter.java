@@ -16,6 +16,7 @@ package org.geotools.data.geojson;
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -24,7 +25,6 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.NoSuchElementException;
 import java.util.logging.Logger;
-
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureWriter;
 import org.geotools.data.Query;
@@ -60,7 +60,7 @@ public class GeoJSONFeatureWriter implements FeatureWriter<SimpleFeatureType, Si
         URL url = ((GeoJSONDataStore) state.getEntry().getDataStore()).url;
         file = URLs.urlToFile(url);
         File directory = file.getParentFile();
-        LOGGER.fine("Opening writer for "+url);
+        LOGGER.fine("Opening writer for " + url);
         if (directory == null) {
             throw new IOException(
                     "Unable to find parent direcotry of file " + file + " from url " + url);
@@ -68,12 +68,11 @@ public class GeoJSONFeatureWriter implements FeatureWriter<SimpleFeatureType, Si
         if (!directory.canWrite()) {
             throw new IOException("Directory " + directory + " is not writable.");
         }
-        this.temp = File.createTempFile(typeName + System.currentTimeMillis(), "geojson",
-                directory);
-        LOGGER.fine("Writing to "+temp.getAbsolutePath());
+        this.temp =
+                File.createTempFile(typeName + System.currentTimeMillis(), "geojson", directory);
+        LOGGER.fine("Writing to " + temp.getAbsolutePath());
         this.geoJSONWriter = new GeoJSONWriter(new FileOutputStream(this.temp));
         this.delegate = new GeoJSONFeatureReader(state, query);
-
     }
 
     public SimpleFeatureType getFeatureType() {
@@ -139,14 +138,14 @@ public class GeoJSONFeatureWriter implements FeatureWriter<SimpleFeatureType, Si
             delegate.close();
             delegate = null;
         }
-        LOGGER.fine("Copyting "+temp+" to "+file);
+        LOGGER.fine("Copyting " + temp + " to " + file);
         // now copy over the new file onto the old one
         Files.copy(temp.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
     }
 
     @Override
     public void remove() throws IOException {
-        LOGGER.fine("deleting current feature ("+currentFeature.getID()+")");
+        LOGGER.fine("deleting current feature (" + currentFeature.getID() + ")");
         this.currentFeature = null;
     }
 
@@ -155,11 +154,9 @@ public class GeoJSONFeatureWriter implements FeatureWriter<SimpleFeatureType, Si
         if (this.currentFeature == null) {
             return; // current feature has been deleted
         }
-        LOGGER.fine("writing current feature ("+currentFeature.getID()+")");
+        LOGGER.fine("writing current feature (" + currentFeature.getID() + ")");
         geoJSONWriter.write(currentFeature);
         nextID++;
         this.currentFeature = null; // indicate that it has been written
-
     }
-
 }

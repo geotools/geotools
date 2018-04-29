@@ -18,38 +18,28 @@ package org.geotools.jdbc;
 
 import java.util.List;
 
-
 /**
  * Primary key of a table.
  *
  * @author Justin Deoliveira, The Open Planning Project, jdeolive@openplans.org
- *
- *
- *
- *
  * @source $URL$
  */
 public class PrimaryKey {
-    /**
-     * The columns making up the primary key.
-     */
+    /** The columns making up the primary key. */
     List<PrimaryKeyColumn> columns;
-    
-    /**
-     * Table name
-     */
+
+    /** Table name */
     String tableName;
-   
-    public PrimaryKey( String tableName, List<PrimaryKeyColumn> columns ) {
+
+    public PrimaryKey(String tableName, List<PrimaryKeyColumn> columns) {
         this.tableName = tableName;
         this.columns = columns;
     }
-    
+
     public List<PrimaryKeyColumn> getColumns() {
         return columns;
     }
-    
-    
+
     public String getTableName() {
         return tableName;
     }
@@ -60,7 +50,7 @@ public class PrimaryKey {
                 return col;
             }
         }
-        
+
         return null;
     }
 }

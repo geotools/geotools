@@ -16,6 +16,7 @@
  */
 package org.geotools.data.geobuf;
 
+import java.io.IOException;
 import org.geotools.data.*;
 import org.geotools.data.store.ContentEntry;
 import org.geotools.data.store.ContentFeatureStore;
@@ -25,8 +26,6 @@ import org.opengis.feature.FeatureVisitor;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.Name;
-
-import java.io.IOException;
 
 public class GeobufFeatureStore extends ContentFeatureStore {
 
@@ -40,19 +39,20 @@ public class GeobufFeatureStore extends ContentFeatureStore {
         this.dimension = dimension;
     }
 
-    GeobufFeatureSource delegate = new GeobufFeatureSource(entry, query, precision, dimension) {
-        @Override
-        public void setTransaction(Transaction transaction) {
-            super.setTransaction(transaction);
-            GeobufFeatureStore.this.setTransaction(transaction);
-        }
-    };
+    GeobufFeatureSource delegate =
+            new GeobufFeatureSource(entry, query, precision, dimension) {
+                @Override
+                public void setTransaction(Transaction transaction) {
+                    super.setTransaction(transaction);
+                    GeobufFeatureStore.this.setTransaction(transaction);
+                }
+            };
 
     @Override
     public void setTransaction(Transaction transaction) {
         super.setTransaction(transaction);
-        if( delegate.getTransaction() != transaction ){
-            delegate.setTransaction( transaction );
+        if (delegate.getTransaction() != transaction) {
+            delegate.setTransaction(transaction);
         }
     }
 
@@ -62,7 +62,8 @@ public class GeobufFeatureStore extends ContentFeatureStore {
     }
 
     @Override
-    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query) throws IOException {
+    protected FeatureReader<SimpleFeatureType, SimpleFeature> getReaderInternal(Query query)
+            throws IOException {
         return delegate.getReaderInternal(query);
     }
 

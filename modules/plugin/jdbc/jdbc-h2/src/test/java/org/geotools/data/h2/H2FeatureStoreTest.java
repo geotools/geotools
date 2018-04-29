@@ -18,30 +18,24 @@ package org.geotools.data.h2;
 
 import java.io.IOException;
 import java.sql.SQLException;
-
 import org.geotools.jdbc.JDBCFeatureStoreOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
-
 
 /**
  * FeatureStore test for H2.
  *
  * @author Justin Deoliveira, The Open Planning Project
- *
- *
- *
- *
  * @source $URL$
  */
 public class H2FeatureStoreTest extends JDBCFeatureStoreOnlineTest {
     protected JDBCTestSetup createTestSetup() {
         return new H2TestSetup();
     }
-    
+
     public void testAddInTransaction() throws IOException {
         // does not work, see GEOT-2832
     }
-    
+
     @Override
     public void testExternalConnection() throws IOException, SQLException {
         // does not work, see GEOT-2832

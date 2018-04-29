@@ -19,18 +19,11 @@ package org.geotools.data.h2;
 import org.geotools.jdbc.JDBCNoPrimaryKeyOnlineTest;
 import org.geotools.jdbc.JDBCNoPrimaryKeyTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class H2NoPrimaryKeyTest extends JDBCNoPrimaryKeyOnlineTest {
-    
-    
 
     @Override
     protected JDBCNoPrimaryKeyTestSetup createTestSetup() {
         return new H2NoPrimaryKeyTestSetup();
     }
-
 }

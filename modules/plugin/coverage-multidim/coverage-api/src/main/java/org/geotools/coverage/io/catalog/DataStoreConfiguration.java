@@ -22,7 +22,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.h2.H2DataStoreFactory;
 import org.geotools.gce.imagemosaic.Utils;
@@ -30,30 +29,27 @@ import org.geotools.util.URLs;
 import org.geotools.util.Utilities;
 
 /**
- * A simple class storing DataStore connection properties such as the FactorySPI
- * used to create that datastore, as well as the connections parameters. 
- * In the beginning, Multidim coverages were holding granules index 
- * within an H2 database for each NetCDF/GRIB file.
- * 
- * Starting with 14.x, it is also possible to deal with a PostGIS DB to be shared 
- * across different readers/files.
- * A new attribute LOCATION is used to distinguish granules coming from specific
- * file/reader instances.
- * 
- *  
+ * A simple class storing DataStore connection properties such as the FactorySPI used to create that
+ * datastore, as well as the connections parameters. In the beginning, Multidim coverages were
+ * holding granules index within an H2 database for each NetCDF/GRIB file.
+ *
+ * <p>Starting with 14.x, it is also possible to deal with a PostGIS DB to be shared across
+ * different readers/files. A new attribute LOCATION is used to distinguish granules coming from
+ * specific file/reader instances.
+ *
  * @author Daniele Romagnoli, GeoSolutions
  */
 public class DataStoreConfiguration {
 
-    private final static H2DataStoreFactory INTERNAL_STORE_SPI = new H2DataStoreFactory();
+    private static final H2DataStoreFactory INTERNAL_STORE_SPI = new H2DataStoreFactory();
 
     /** Default instance is using a H2 DB for each file */
     public DataStoreConfiguration(Map<String, Serializable> datastoreParams) {
         this(INTERNAL_STORE_SPI, datastoreParams);
     }
 
-    public DataStoreConfiguration(DataStoreFactorySpi datastoreSpi,
-            Map<String, Serializable> datastoreParams) {
+    public DataStoreConfiguration(
+            DataStoreFactorySpi datastoreSpi, Map<String, Serializable> datastoreParams) {
         this.datastoreSpi = datastoreSpi;
         this.params = datastoreParams;
     }
@@ -89,8 +85,8 @@ public class DataStoreConfiguration {
     private Map<String, Serializable> params;
 
     /**
-     * Return default params for the 1 File <-> 1 H2 DB classic configuration. 
-     * 
+     * Return default params for the 1 File <-> 1 H2 DB classic configuration.
+     *
      * @param database
      * @param parentLocation
      * @return
@@ -103,8 +99,7 @@ public class DataStoreConfiguration {
         final String url = URLs.fileToUrl(parentLocation).toExternalForm();
         String updatedDB;
         try {
-            updatedDB = "file:"
-                    + (new File(URLs.urlToFile(new URL(url)), database)).getPath();
+            updatedDB = "file:" + (new File(URLs.urlToFile(new URL(url)), database)).getPath();
             params.put("ParentLocation", url);
             params.put("database", updatedDB);
             params.put("dbtype", "h2");
@@ -117,8 +112,8 @@ public class DataStoreConfiguration {
     }
 
     /**
-     * a boolean stating whether the granules index is stored "the classic way", 
-     * which is using an internal H2 DB for each file or it's a shared DB.
+     * a boolean stating whether the granules index is stored "the classic way", which is using an
+     * internal H2 DB for each file or it's a shared DB.
      */
     private boolean shared = false;
 }

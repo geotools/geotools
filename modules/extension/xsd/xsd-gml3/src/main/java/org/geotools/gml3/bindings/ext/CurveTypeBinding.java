@@ -16,16 +16,15 @@
  */
 package org.geotools.gml3.bindings.ext;
 
-import org.geotools.gml3.bindings.LineStringTypeBinding;
-
 import com.vividsolutions.jts.geom.GeometryFactory;
-
+import org.geotools.gml3.bindings.LineStringTypeBinding;
 
 /**
  * Binding object for the type http://www.opengis.net/gml:CurveType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;complexType name="CurveType"&gt;
  *      &lt;annotation&gt;
@@ -48,17 +47,13 @@ import com.vividsolutions.jts.geom.GeometryFactory;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class CurveTypeBinding extends org.geotools.gml3.bindings.CurveTypeBinding
-    implements Comparable {
-    
+        implements Comparable {
+
     public CurveTypeBinding(GeometryFactory gf) {
         super(gf);
     }

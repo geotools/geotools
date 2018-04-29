@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-
 import org.geotools.data.ResourceInfo;
 import org.geotools.data.ServiceInfo;
 import org.geotools.data.ows.AbstractOpenWebService;
@@ -32,25 +31,23 @@ import org.geotools.data.ows.Layer;
 import org.geotools.data.ows.OperationType;
 import org.geotools.data.wms.request.GetFeatureInfoRequest;
 import org.geotools.data.wms.response.GetFeatureInfoResponse;
+import org.geotools.data.wmts.model.WMTSCapabilities;
+import org.geotools.data.wmts.model.WMTSServiceType;
 import org.geotools.data.wmts.request.GetTileRequest;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.ows.ServiceException;
 import org.geotools.referencing.CRS;
 import org.geotools.tile.Tile;
-import org.geotools.data.wmts.model.WMTSServiceType;
-import org.geotools.data.wmts.model.WMTSCapabilities;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * WebMapTileServer is a class representing a WMTS.
  *
- * It is used to access the Capabilities document and perform requests.
- * It will perform version negotiation automatically and use the highest
- * known version that the server can communicate.
+ * <p>It is used to access the Capabilities document and perform requests. It will perform version
+ * negotiation automatically and use the highest known version that the server can communicate.
  *
  * @author ian
  * @author Emanuele Tajariol (etj at geo-solutions dot it)
- * 
  */
 public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, Layer> {
 
@@ -66,8 +63,12 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
      * @throws ServiceException
      * @throws IOException
      */
-    public WebMapTileServer(URL serverURL, HTTPClient httpClient, WMTSCapabilities capabilities,
-            Map<String, Object> hints) throws ServiceException, IOException {
+    public WebMapTileServer(
+            URL serverURL,
+            HTTPClient httpClient,
+            WMTSCapabilities capabilities,
+            Map<String, Object> hints)
+            throws ServiceException, IOException {
         super(serverURL, httpClient, capabilities, hints);
         setType(capabilities.getType());
     }
@@ -136,7 +137,6 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
     protected void setupSpecifications() {
         specs = new WMTSSpecification[1];
         specs[0] = new WMTSSpecification();
-
     }
 
     /**
@@ -148,9 +148,7 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
         return tileRequest.getTiles();
     }
 
-    /**
-     * @return
-     */
+    /** @return */
     public GetTileRequest createGetTileRequest() {
 
         URL url;
@@ -161,8 +159,10 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
             url = serverURL;
         }
 
-        GetTileRequest request = (GetTileRequest) ((WMTSSpecification) specification)
-                .createGetTileRequest(url, (Properties) null, capabilities);
+        GetTileRequest request =
+                (GetTileRequest)
+                        ((WMTSSpecification) specification)
+                                .createGetTileRequest(url, (Properties) null, capabilities);
 
         request.getHeaders().putAll(headers);
 
@@ -199,9 +199,7 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
         return null;
     }
 
-    /**
-     * @param type
-     */
+    /** @param type */
     public void setType(WMTSServiceType type) {
         this.type = type;
     }
@@ -233,5 +231,4 @@ public class WebMapTileServer extends AbstractOpenWebService<WMTSCapabilities, L
         }
         return null;
     }
-
 }

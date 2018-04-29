@@ -18,18 +18,12 @@
 package org.geotools.data.complex;
 
 import java.util.Iterator;
-
 import org.geotools.feature.FeatureIterator;
 import org.opengis.feature.Feature;
 
 /**
  * @author Russell Petty (GeoScience Victoria)
  * @version $Id$
- *
- *
- *
  * @source $URL$
  */
-public interface IMappingFeatureIterator extends Iterator<Feature>, FeatureIterator<Feature> {
-
-}
+public interface IMappingFeatureIterator extends Iterator<Feature>, FeatureIterator<Feature> {}

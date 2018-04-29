@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,6 +17,11 @@
  */
 package org.geotools.ysld.validate;
 
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Deque;
+import java.util.List;
 import org.geotools.ysld.parse.Factory;
 import org.geotools.ysld.parse.Util;
 import org.geotools.ysld.parse.ZoomContext;
@@ -24,16 +29,10 @@ import org.geotools.ysld.parse.ZoomContextFinder;
 import org.yaml.snakeyaml.error.Mark;
 import org.yaml.snakeyaml.error.MarkedYAMLException;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Deque;
-import java.util.List;
-
 /**
  * Validation context for {@link YsldValidator}
  *
- * Manages the validation stack, applies handlers, and tracks errors.
+ * <p>Manages the validation stack, applies handlers, and tracks errors.
  */
 public class YsldValidateContext {
 
@@ -52,8 +51,7 @@ public class YsldValidateContext {
     }
 
     public YsldValidateContext error(String problem, Mark mark) {
-        return error(new MarkedYAMLException(null, null, problem, mark) {
-        });
+        return error(new MarkedYAMLException(null, null, problem, mark) {});
     }
 
     public YsldValidateContext error(MarkedYAMLException e) {

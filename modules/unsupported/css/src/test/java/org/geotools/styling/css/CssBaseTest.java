@@ -20,7 +20,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 import java.io.IOException;
-
 import org.apache.commons.io.IOUtils;
 import org.geotools.styling.css.selector.PseudoClass;
 import org.opengis.style.Style;
@@ -35,8 +34,12 @@ public class CssBaseTest {
 
     CssParser parser = CssParser.getInstance();
 
-    protected void assertProperty(CssRule r, PseudoClass pseudoClass, int propertyIdx,
-            String propertyName, Value expectedValue) {
+    protected void assertProperty(
+            CssRule r,
+            PseudoClass pseudoClass,
+            int propertyIdx,
+            String propertyName,
+            Value expectedValue) {
         Property p = r.getProperties().get(pseudoClass).get(propertyIdx);
         assertEquals(propertyName, p.getName());
         assertEquals(1, p.getValues().size());
@@ -44,8 +47,8 @@ public class CssBaseTest {
         assertEquals(expectedValue, value);
     }
 
-    protected void assertProperty(CssRule r, int propertyIdx, String propertyName,
-            Value expectedValue) {
+    protected void assertProperty(
+            CssRule r, int propertyIdx, String propertyName, Value expectedValue) {
         assertProperty(r, PseudoClass.ROOT, propertyIdx, propertyName, expectedValue);
     }
 
@@ -54,13 +57,14 @@ public class CssBaseTest {
         if (value != null) {
             String str = value.toString();
             int ix = str.indexOf('|');
-            if (ix >= 0)
-                str = str.substring(ix + 2); // extract value part of AST node toString()
+            if (ix >= 0) str = str.substring(ix + 2); // extract value part of AST node toString()
             System.out.println(input + " = " + str + '\n');
         }
         if (value instanceof GraphNode) {
-            System.out.println("\nAbstract Syntax Tree:\n"
-                    + GraphUtils.printTree((GraphNode) value, new ToStringFormatter(null)) + '\n');
+            System.out.println(
+                    "\nAbstract Syntax Tree:\n"
+                            + GraphUtils.printTree((GraphNode) value, new ToStringFormatter(null))
+                            + '\n');
         } else {
             System.out.println("\nParse Tree:\n" + ParseTreeUtils.printNodeTree(result) + '\n');
         }

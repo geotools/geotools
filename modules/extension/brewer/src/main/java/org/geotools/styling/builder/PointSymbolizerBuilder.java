@@ -18,16 +18,11 @@ package org.geotools.styling.builder;
 
 import javax.measure.quantity.Length;
 import javax.measure.unit.Unit;
-
 import org.geotools.Builder;
 import org.geotools.styling.PointSymbolizer;
 import org.opengis.filter.expression.Expression;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class PointSymbolizerBuilder extends SymbolizerBuilder<PointSymbolizer> {
     Expression geometry;
 

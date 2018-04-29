@@ -17,7 +17,6 @@
 package org.geotools.geometry.jts.spatialschema;
 
 import java.util.List;
-
 import org.geotools.geometry.jts.spatialschema.geometry.DirectPositionImpl;
 import org.geotools.geometry.jts.spatialschema.geometry.geometry.PointArrayImpl;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -29,109 +28,103 @@ import org.opengis.geometry.coordinate.PointArray;
 import org.opengis.geometry.coordinate.Position;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class PositionFactoryImpl implements PositionFactory {
-	private CoordinateReferenceSystem crs;
-	
-	/**
-	 * No argument constructor for the plugin system.
-	 */
-	public PositionFactoryImpl(){
-	    this( DefaultGeographicCRS.WGS84);
-	}
-	public PositionFactoryImpl( CoordinateReferenceSystem crs ){
-		this.crs = crs;
-	}
-	public DirectPosition createDirectPosition(double[] ordiantes)
-			throws MismatchedDimensionException {
-		return new DirectPositionImpl( crs, ordiantes );
-	}
+    private CoordinateReferenceSystem crs;
 
-	public Position createPosition(Position position) {
-		return new DirectPositionImpl( position.getDirectPosition() );
-	}
+    /** No argument constructor for the plugin system. */
+    public PositionFactoryImpl() {
+        this(DefaultGeographicCRS.WGS84);
+    }
 
-	public List createPositionList() {
-		return new PointArrayImpl( crs );
-	}
+    public PositionFactoryImpl(CoordinateReferenceSystem crs) {
+        this.crs = crs;
+    }
 
-	public List createPositionList(double[] coordinates, int start, int end) {
-		PointArray array = new PointArrayImpl( crs );
-		int N = crs.getCoordinateSystem().getDimension();
-		for( int i=start; i < end ; i += N ){
-			double[] ords = new double[N];
-			System.arraycopy( coordinates, i, ords, 0, N );
-			array.add( createDirectPosition( ords ));			
-		}
-		return array;
-	}
+    public DirectPosition createDirectPosition(double[] ordiantes)
+            throws MismatchedDimensionException {
+        return new DirectPositionImpl(crs, ordiantes);
+    }
 
-	public List createPositionList(float[] coordinates, int start, int end) {
-		PointArray array = new PointArrayImpl( crs );
-		int N = crs.getCoordinateSystem().getDimension();
-		for( int i=start; i < end ; i += N ){
-			double[] ords = new double[N];
-			System.arraycopy( coordinates, i, ords, 0, N );
-			array.add( createDirectPosition( ords ));			
-		}
-		return array;
-	}
+    public Position createPosition(Position position) {
+        return new DirectPositionImpl(position.getDirectPosition());
+    }
 
-	public CoordinateReferenceSystem getCoordinateReferenceSystem() {
-		return crs;
-	}
+    public List createPositionList() {
+        return new PointArrayImpl(crs);
+    }
 
-	public Precision getPrecision() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public PointArray createPointArray(float[] array, int start, int end) {
-		PointArray pointArray = (PointArray) createPointArray();
-		int D = crs.getCoordinateSystem().getDimension();
-		if (D == 2) {
-			for (int i = start; i < end; i += D) {
-				double[] ordinates = new double[] { array[i], array[i + 1] };
-				pointArray.add(new DirectPositionImpl(crs, ordinates));
-			}
-		} else if (D == 3) {
-			for (int i = start; i < end; i += D) {
-				double[] ordinates = new double[] { array[i], array[i + 1],
-						array[i + 2] };
-				pointArray.add(new DirectPositionImpl(crs, ordinates));
-			}
-		} else {
-			for (int i = start; i < end; i += D) {
-				double[] ordinates = new double[D];
-				for (int o = 0; i < D; i++) {
-					ordinates[o] = array[i + o];
-				}
-				pointArray.add(new DirectPositionImpl(crs, ordinates));
-			}
-		}
-		return pointArray;
-	}
-	
-	public PointArray createPointArray(final double[] array,
-			final int start, final int end) {
-		PointArray pointArray = (PointArray) createPointArray();
-		int n = crs.getCoordinateSystem().getDimension();
-		double[] ordinates = new double[n]; 
-		for (int i=start; i<array.length && i <= end; i += n) {
-		    for ( int j = i; j < i + n; j++ ) {
-		        ordinates[j-i] = array[j]; 
-		    }
-		    
-			pointArray.add(createDirectPosition(ordinates));
-		}
-		return pointArray;
-	}
-	public PointArray createPointArray() {
-		return new PointArrayImpl(crs);
-	}
+    public List createPositionList(double[] coordinates, int start, int end) {
+        PointArray array = new PointArrayImpl(crs);
+        int N = crs.getCoordinateSystem().getDimension();
+        for (int i = start; i < end; i += N) {
+            double[] ords = new double[N];
+            System.arraycopy(coordinates, i, ords, 0, N);
+            array.add(createDirectPosition(ords));
+        }
+        return array;
+    }
 
+    public List createPositionList(float[] coordinates, int start, int end) {
+        PointArray array = new PointArrayImpl(crs);
+        int N = crs.getCoordinateSystem().getDimension();
+        for (int i = start; i < end; i += N) {
+            double[] ords = new double[N];
+            System.arraycopy(coordinates, i, ords, 0, N);
+            array.add(createDirectPosition(ords));
+        }
+        return array;
+    }
+
+    public CoordinateReferenceSystem getCoordinateReferenceSystem() {
+        return crs;
+    }
+
+    public Precision getPrecision() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public PointArray createPointArray(float[] array, int start, int end) {
+        PointArray pointArray = (PointArray) createPointArray();
+        int D = crs.getCoordinateSystem().getDimension();
+        if (D == 2) {
+            for (int i = start; i < end; i += D) {
+                double[] ordinates = new double[] {array[i], array[i + 1]};
+                pointArray.add(new DirectPositionImpl(crs, ordinates));
+            }
+        } else if (D == 3) {
+            for (int i = start; i < end; i += D) {
+                double[] ordinates = new double[] {array[i], array[i + 1], array[i + 2]};
+                pointArray.add(new DirectPositionImpl(crs, ordinates));
+            }
+        } else {
+            for (int i = start; i < end; i += D) {
+                double[] ordinates = new double[D];
+                for (int o = 0; i < D; i++) {
+                    ordinates[o] = array[i + o];
+                }
+                pointArray.add(new DirectPositionImpl(crs, ordinates));
+            }
+        }
+        return pointArray;
+    }
+
+    public PointArray createPointArray(final double[] array, final int start, final int end) {
+        PointArray pointArray = (PointArray) createPointArray();
+        int n = crs.getCoordinateSystem().getDimension();
+        double[] ordinates = new double[n];
+        for (int i = start; i < array.length && i <= end; i += n) {
+            for (int j = i; j < i + n; j++) {
+                ordinates[j - i] = array[j];
+            }
+
+            pointArray.add(createDirectPosition(ordinates));
+        }
+        return pointArray;
+    }
+
+    public PointArray createPointArray() {
+        return new PointArrayImpl(crs);
+    }
 }

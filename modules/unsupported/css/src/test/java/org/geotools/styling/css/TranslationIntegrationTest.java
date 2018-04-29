@@ -21,16 +21,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 /**
  * Reads and translates all tests checking for errors in the process
- * 
+ *
  * @author Andrea Aime - GeoSolutions
- * 
  */
 @RunWith(Parameterized.class)
 public class TranslationIntegrationTest extends AbstractIntegrationTest {
@@ -45,13 +43,12 @@ public class TranslationIntegrationTest extends AbstractIntegrationTest {
         File root = new File("./src/test/resources/css/integration");
         for (File file : root.listFiles()) {
             if (file.getName().endsWith(".css")) {
-                result.add(new Object[] { file.getName(), file, true });
-                result.add(new Object[] { file.getName() + "-first", file, false });
+                result.add(new Object[] {file.getName(), file, true});
+                result.add(new Object[] {file.getName() + "-first", file, false});
             }
         }
         Collections.sort(result, (a, b) -> ((String) a[0]).compareTo((String) b[0]));
 
         return result;
     }
-
 }

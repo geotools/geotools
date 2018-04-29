@@ -20,11 +20,10 @@ import java.util.Date;
 
 /**
  * Used internally by PostGIS dialect to signal the use of the "bigdate" domain type.
- * <p>
- * This type is used to store a date as a raw long value in order to provide a greather range of 
- * date values than the built in postgresql timestamp types. Using a raw long allows for representing
- * a date range of approximately +- 290 million.
- * </p>
+ *
+ * <p>This type is used to store a date as a raw long value in order to provide a greather range of
+ * date values than the built in postgresql timestamp types. Using a raw long allows for
+ * representing a date range of approximately +- 290 million.
  */
 class BigDate extends Date {
 

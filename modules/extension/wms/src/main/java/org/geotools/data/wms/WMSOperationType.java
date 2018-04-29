@@ -3,7 +3,7 @@
  *    http://geotools.org
  *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -18,14 +18,10 @@ package org.geotools.data.wms;
 
 import org.geotools.data.ows.OperationType;
 
-
 /**
- * A subclass of OperationType that allows format getters and setters without
- * having to cast them.
+ * A subclass of OperationType that allows format getters and setters without having to cast them.
  *
  * @author Richard Gould
- *
- *
  * @source $URL$
  * @deprecated Use of OperationType should be sufficient
  */
@@ -35,24 +31,14 @@ public class WMSOperationType extends OperationType {
     }
 
     /**
-     * 
      * @deprecated Use OperationType.getFormats();
-     *
-    public String[] getFormatStrings() {
-        return (String[]) formats.toArray(new String[formats.size()]);
-    }
-
-    /**
-     * 
+     *     <p>public String[] getFormatStrings() { return (String[]) formats.toArray(new
+     *     String[formats.size()]); }
+     *     <p>/**
      * @param formats
      * @deprecated Use OpeartionType.setFormats();
-     *
-    public void setFormatStrings(String[] formats) {
-    	if (formats == null) {
-    		this.formats = null;
-    	} else {
-    		this.formats = new ArrayList(formats.length);
-    		this.formats.addAll(Arrays.asList(formats));
-    	}    	
-    }*/
+     *     <p>public void setFormatStrings(String[] formats) { if (formats == null) { this.formats =
+     *     null; } else { this.formats = new ArrayList(formats.length);
+     *     this.formats.addAll(Arrays.asList(formats)); } }
+     */
 }

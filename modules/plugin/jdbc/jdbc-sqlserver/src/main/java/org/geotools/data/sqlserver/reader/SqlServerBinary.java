@@ -7,7 +7,6 @@ import com.vividsolutions.jts.geom.CoordinateSequence;
  * Represents the information from a binary sqlserver geometry
  *
  * @author Anders Bakkevold, Bouvet
- *
  * @source $URL$
  */
 class SqlServerBinary {
@@ -39,7 +38,7 @@ class SqlServerBinary {
         return (serializationProperties & 2) == 2;
     }
 
-    public boolean isValid(){
+    public boolean isValid() {
         return (serializationProperties & 4) == 4;
     }
 

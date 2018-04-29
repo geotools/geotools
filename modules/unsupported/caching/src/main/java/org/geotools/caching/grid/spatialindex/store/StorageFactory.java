@@ -17,15 +17,9 @@
 package org.geotools.caching.grid.spatialindex.store;
 
 import java.util.Properties;
-
 import org.geotools.caching.spatialindex.Storage;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class StorageFactory {
     private static StorageFactory instance = null;
 

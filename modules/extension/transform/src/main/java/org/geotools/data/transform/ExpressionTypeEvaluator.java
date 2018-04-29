@@ -20,7 +20,6 @@ import org.geotools.filter.function.FilterFunction_Convert;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
 import org.opengis.feature.type.GeometryDescriptor;
-import org.opengis.feature.type.GeometryType;
 import org.opengis.filter.capability.FunctionName;
 import org.opengis.filter.expression.Add;
 import org.opengis.filter.expression.BinaryExpression;
@@ -38,7 +37,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 /**
  * Utility class that tries to figure out the resulting type of an expression against a given
  * feature type by using static analysis.
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 class ExpressionTypeEvaluator implements ExpressionVisitor {
@@ -49,12 +48,12 @@ class ExpressionTypeEvaluator implements ExpressionVisitor {
     public ExpressionTypeEvaluator(SimpleFeatureType schema) {
         this.schema = schema;
     }
-    
+
     /**
-     * Returns the coordinate reference system of the last encontered geometry property. 
-     * Unless a filter function that reprojects geometries is used, that's also the crs of the eventual
+     * Returns the coordinate reference system of the last encontered geometry property. Unless a
+     * filter function that reprojects geometries is used, that's also the crs of the eventual
      * output, in case it's a Geometry, that is.
-     *  
+     *
      * @return
      */
     public CoordinateReferenceSystem getCoordinateReferenceSystem() {
@@ -98,7 +97,7 @@ class ExpressionTypeEvaluator implements ExpressionVisitor {
                             + expression.getPropertyName());
         }
 
-        if(result instanceof GeometryDescriptor) {
+        if (result instanceof GeometryDescriptor) {
             this.crs = ((GeometryDescriptor) result).getCoordinateReferenceSystem();
         }
         return result.getType().getBinding();

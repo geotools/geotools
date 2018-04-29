@@ -18,12 +18,7 @@ package org.geotools.sld.bindings;
 
 import org.geotools.styling.Extent;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class SLDExtentBindingTest extends SLDTestSupport {
     public void testType() throws Exception {
         assertEquals(Extent.class, new SLDExtentBinding(null).getType());

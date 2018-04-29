@@ -19,32 +19,23 @@ package org.geotools.validation.attributes;
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.util.ResourceBundle;
-
 import org.geotools.validation.DefaultIntegrityValidationBeanInfo;
-
 
 /**
  * SQLValidationBeanInfo purpose.
- * 
- * <p>
- * Description of SQLValidationBeanInfo ...
- * </p>
+ *
+ * <p>Description of SQLValidationBeanInfo ...
  *
  * @author dzwiers, Refractions Research, Inc.
  * @author $Author: dmzwiers $ (last modification)
- *
- *
  * @source $URL$
  * @version $Id$
  */
-public class UniqueFIDValidationBeanInfo
-    extends DefaultIntegrityValidationBeanInfo {
+public class UniqueFIDValidationBeanInfo extends DefaultIntegrityValidationBeanInfo {
     /**
      * GazetteerNameValidationBeanInfo constructor.
-     * 
-     * <p>
-     * Description
-     * </p>
+     *
+     * <p>Description
      */
     public UniqueFIDValidationBeanInfo() {
         super();
@@ -52,7 +43,6 @@ public class UniqueFIDValidationBeanInfo
 
     /**
      * Implementation of getPropertyDescriptors.
-     *
      *
      * @see java.beans.BeanInfo#getPropertyDescriptors()
      */
@@ -67,12 +57,10 @@ public class UniqueFIDValidationBeanInfo
         PropertyDescriptor[] pd = new PropertyDescriptor[pd2.length + 1];
         int i = 0;
 
-        for (; i < pd2.length; i++)
-            pd[i] = pd2[i];
+        for (; i < pd2.length; i++) pd[i] = pd2[i];
 
         try {
-            pd[i] = createPropertyDescriptor("typeRef",
-                    UniqueFIDValidation.class, resourceBundle);
+            pd[i] = createPropertyDescriptor("typeRef", UniqueFIDValidation.class, resourceBundle);
             pd[i].setExpert(false);
         } catch (IntrospectionException e) {
             pd = pd2;

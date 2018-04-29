@@ -16,48 +16,49 @@
  */
 package org.geotools.coverage.grid.io.footprint;
 
+import com.vividsolutions.jts.geom.Geometry;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
-
 import javax.imageio.ImageReadParam;
 import javax.media.jai.ROI;
-
 import org.geotools.coverage.grid.io.imageio.ReadType;
-
-import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * A ROI provider that handles multi-scale ROI
- * 
+ *
  * @author Andrea Aime - GeoSolutions
- * 
  */
 public interface MultiLevelROI {
 
     /**
      * Returns a transformed ROI based on the input parameters
-     * 
+     *
      * @param at AffineTransformation
      * @param imageIndex Overview level used for extracting the correct image overview
      * @param imgBounds ImageBounds to set for Raster ROIs
-     * @param readType {@link ReadType} object indicating how the image file must be read. This may be useful for raster ROIs
+     * @param readType {@link ReadType} object indicating how the image file must be read. This may
+     *     be useful for raster ROIs
      * @return a {@link ROI} object
      */
-    public ROI getTransformedROI(AffineTransform at, int imageIndex, Rectangle imgBounds,
-            ImageReadParam params, ReadType readType);
+    public ROI getTransformedROI(
+            AffineTransform at,
+            int imageIndex,
+            Rectangle imgBounds,
+            ImageReadParam params,
+            ReadType readType);
 
     /**
      * Checks if the provided {@link MultiLevelROI} object is empty or not
-     * 
+     *
      * @return a boolean indicating if this object is empty
      */
     public boolean isEmpty();
 
     /**
-     * This method returns a {@link Geometry} object containing the ROI footprint or, at least, its bounding box
-     * 
+     * This method returns a {@link Geometry} object containing the ROI footprint or, at least, its
+     * bounding box
+     *
      * @return a {@link Geometry} object defining ROI bounds
      */
     public Geometry getFootprint();
-
 }

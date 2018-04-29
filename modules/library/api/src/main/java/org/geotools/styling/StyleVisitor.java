@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,21 +16,16 @@
  */
 package org.geotools.styling;
 
-
 /**
- * An interface for classes that want to perform operations on a Style
- * hierarchy. It forms part of a GoF Visitor Patern implementation. A call to
- * style.accept(StyleVisitor) will result in a call to one of the methods in
- * this interface. The responsibility for traversing sub filters is intended
- * to lie with the visitor (this is unusual, but permited under the Visitor
- * pattern). A typical use would be to transcribe a style into a specific
- * format, e.g. XML or SQL.  Alternativly it may be to extract specific
- * information from the Style structure, for example a list of all fills.
+ * An interface for classes that want to perform operations on a Style hierarchy. It forms part of a
+ * GoF Visitor Patern implementation. A call to style.accept(StyleVisitor) will result in a call to
+ * one of the methods in this interface. The responsibility for traversing sub filters is intended
+ * to lie with the visitor (this is unusual, but permited under the Visitor pattern). A typical use
+ * would be to transcribe a style into a specific format, e.g. XML or SQL. Alternativly it may be to
+ * extract specific information from the Style structure, for example a list of all fills.
  *
  * @author James Macgill
  * @author Ian Turton
- *
- *
  * @source $URL$
  * @version $Id$
  */
@@ -99,8 +94,8 @@ public interface StyleVisitor {
     void visit(Stroke stroke);
 
     /**
-     * since it is impossible to create a Symbolizer this method should
-     * generate an exception or warning.
+     * since it is impossible to create a Symbolizer this method should generate an exception or
+     * warning.
      *
      * @param sym the symbolizer to visit
      */
@@ -213,24 +208,28 @@ public interface StyleVisitor {
 
     /**
      * Called when accept is called on a raster ContrastEnhancement element
+     *
      * @param contrastEnhancement the {@link ContrastEnhancement} to visit.
      */
     void visit(ContrastEnhancement contrastEnhancement);
 
     /**
      * Called when accept is called on a raster {@link ImageOutline} element
+     *
      * @param outline the {@link ImageOutline} to visit.
      */
     void visit(ImageOutline outline);
 
     /**
      * Called when accept is called on a raster {@link ChannelSelection} element
+     *
      * @param cs the {@link ChannelSelection} to visit.
      */
     void visit(ChannelSelection cs);
 
     /**
      * Called when accept is called on a raster {@link OverlapBehavior} element
+     *
      * @param cs the {@link OverlapBehavior} to visit.
      */
     @SuppressWarnings("deprecation")
@@ -238,14 +237,15 @@ public interface StyleVisitor {
 
     /**
      * Called when accept is called on a raster {@link SelectedChannelType} element
+     *
      * @param cs the {@link SelectedChannelType} to visit.
      */
     void visit(SelectedChannelType sct);
 
     /**
      * Called when accept is called on a raster {@link ShadedRelief} element
+     *
      * @param cs the {@link ShadedRelief} to visit.
      */
     void visit(ShadedRelief sr);
-
 }

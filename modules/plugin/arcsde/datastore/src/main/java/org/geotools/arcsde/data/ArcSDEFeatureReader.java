@@ -17,7 +17,6 @@
 package org.geotools.arcsde.data;
 
 import java.io.IOException;
-
 import org.geotools.data.AttributeReader;
 import org.geotools.data.DefaultFeatureReader;
 import org.geotools.feature.SchemaException;
@@ -28,15 +27,13 @@ import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
  * FeatureReader<SimpleFeatureType, SimpleFeature> optimized for ArcSDE access.
- * 
+ *
  * @author Gabriel Roldan (TOPP)
  * @version $Id$
  * @since 2.5
- *
- *
  * @source $URL$
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *         /org/geotools/arcsde/data/ArcSDEFeatureReader.java $
+ *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
+ *     /org/geotools/arcsde/data/ArcSDEFeatureReader.java $
  */
 public class ArcSDEFeatureReader extends DefaultFeatureReader {
 
@@ -66,5 +63,4 @@ public class ArcSDEFeatureReader extends DefaultFeatureReader {
         SimpleFeature feature = featureBuilder.buildFeature(fid);
         return feature;
     }
-
 }

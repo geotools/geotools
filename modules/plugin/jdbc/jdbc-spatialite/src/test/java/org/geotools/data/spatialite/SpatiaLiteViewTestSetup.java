@@ -29,15 +29,17 @@ public class SpatiaLiteViewTestSetup extends JDBCViewTestSetup {
         run("CREATE TABLE lakes(fid int primary key, id int)");
         run("SELECT AddGeometryColumn('lakes', 'geom', 4326, 'POLYGON', 2)");
         run("ALTER TABLE lakes ADD COLUMN name varchar");
-        run("INSERT INTO lakes (fid, id, geom,name) VALUES ( 0, 0,"
-                + "ST_GeomFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',4326),"
-                + "'muddy')");
+        run(
+                "INSERT INTO lakes (fid, id, geom,name) VALUES ( 0, 0,"
+                        + "ST_GeomFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',4326),"
+                        + "'muddy')");
     }
 
     @Override
     protected void createLakesView() throws Exception {
         run("CREATE VIEW IF NOT EXISTS lakesview as select * from lakes");
-        run("INSERT INTO views_geometry_columns VALUES ('lakesview', 'geom', 'id', 'lakes', 'geom')");
+        run(
+                "INSERT INTO views_geometry_columns VALUES ('lakesview', 'geom', 'id', 'lakes', 'geom')");
     }
 
     @Override
@@ -53,11 +55,8 @@ public class SpatiaLiteViewTestSetup extends JDBCViewTestSetup {
     }
 
     @Override
-    protected void createLakesViewPk() throws Exception {
-    }
+    protected void createLakesViewPk() throws Exception {}
 
     @Override
-    protected void dropLakesViewPk() throws Exception {
-
-    }
+    protected void dropLakesViewPk() throws Exception {}
 }

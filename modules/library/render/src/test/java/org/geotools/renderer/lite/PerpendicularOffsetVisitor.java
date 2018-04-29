@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2017, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -58,5 +58,4 @@ class PerpendicularOffsetVisitor extends DuplicatingStyleVisitor {
             ts.setLabelPlacement(new LinePlacementImpl());
         }
     }
-
 }

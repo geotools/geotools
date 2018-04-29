@@ -27,10 +27,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.util.Set;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.Query;
 import org.geotools.data.complex.AppSchemaDataAccess;
@@ -48,30 +46,23 @@ import org.opengis.feature.type.Name;
 /**
  * This is a test for AppSchemaDataAccessConfigurator on file-based datastores, including shapefiles
  * and *.properties files.
- * 
+ *
  * @author Tara Athan
  * @author Ben Caradoc-Davies (CSIRO Earth Science and Resource Engineering)
- *
- *
- *
  * @source $URL$
  */
 public class AppSchemaFileDataTest extends AppSchemaTestSupport {
 
-    /**
-     * The resource path containing the source data for testing.
-     */
+    /** The resource path containing the source data for testing. */
     private static final String testData = "/test-data/";
 
-    /**
-     * The temporary directory where tests are run.
-     */
-    private static final File testDir = new File("target/test/"
-            + AppSchemaFileDataTest.class.getSimpleName());
+    /** The temporary directory where tests are run. */
+    private static final File testDir =
+            new File("target/test/" + AppSchemaFileDataTest.class.getSimpleName());
 
     /**
      * Create the test directory.
-     * 
+     *
      * @see junit.framework.TestCase#setUp()
      */
     @Before
@@ -86,7 +77,7 @@ public class AppSchemaFileDataTest extends AppSchemaTestSupport {
 
     /**
      * Remove the test directory.
-     * 
+     *
      * @see junit.framework.TestCase#tearDown()
      */
     @After
@@ -97,25 +88,22 @@ public class AppSchemaFileDataTest extends AppSchemaTestSupport {
 
     /**
      * Copy a file from the test-data directory to another directory.
-     * 
-     * @param baseFileName
-     *            base filename (without any path) of the file to be copied
-     * @param destDir
-     *            destination filename
+     *
+     * @param baseFileName base filename (without any path) of the file to be copied
+     * @param destDir destination filename
      * @throws IOException
      */
     private static void copyTestData(String baseFileName, File destDir) throws IOException {
         destDir.mkdirs();
         FileUtils.copyFileToDirectory(
-                URLs.urlToFile(AppSchemaFileDataTest.class.getResource(testData
-                        + baseFileName)), destDir);
+                URLs.urlToFile(AppSchemaFileDataTest.class.getResource(testData + baseFileName)),
+                destDir);
     }
 
     /**
      * Return the path to a file in the test directory.
-     * 
-     * @param baseFileName
-     *            file name without any path
+     *
+     * @param baseFileName file name without any path
      * @return
      */
     private static String getTestDirPath(String baseFileName) {
@@ -217,8 +205,8 @@ public class AppSchemaFileDataTest extends AppSchemaTestSupport {
         try {
             // now let's test a mapping file with an absolute path to the properties file
             // because we don't know the absolute path in advance, we must create the mapping file
-            copyRelativeToAbsolute(configFilePathRelativeProperties,
-                    configFilePathAbsoluteProperties);
+            copyRelativeToAbsolute(
+                    configFilePathRelativeProperties, configFilePathAbsoluteProperties);
 
             // create the DataAccess based on properties file configured with a absolute path
             dSAbsolute = buildDataAccess(mappingFileNameAbsoluteProperties);
@@ -239,8 +227,8 @@ public class AppSchemaFileDataTest extends AppSchemaTestSupport {
         // we need the feature type in order to query for the number of features
         Name[] dSNameArray = dS.getTypeNames();
         String testType = dSNameArray[0].toString();
-        FeatureSource<FeatureType, Feature> featureSource = dS
-                .getFeatureSourceByName(dSNameArray[0]);
+        FeatureSource<FeatureType, Feature> featureSource =
+                dS.getFeatureSourceByName(dSNameArray[0]);
         int numFeatures = featureSource.getCount(new Query(testType));
 
         return numFeatures;
@@ -265,11 +253,9 @@ public class AppSchemaFileDataTest extends AppSchemaTestSupport {
 
     /**
      * copies a mapping file and changes some parameters to test absolute paths to data files
-     * 
-     * @param filePathIn
-     *            the original mapping file
-     * @param filePathOut
-     *            the new mapping file
+     *
+     * @param filePathIn the original mapping file
+     * @param filePathOut the new mapping file
      * @return
      * @throws Exception
      */
@@ -296,8 +282,11 @@ public class AppSchemaFileDataTest extends AppSchemaTestSupport {
                 // in shapefile test, chosen target feature doesn't allow null entry, so we'll take
                 // the conditional out
                 if (line.trim().startsWith("<OCQL>")) {
-                    line = line.replace("if_then_else(equalTo(CAT_DESC, 'No Name'), "
-                            + "Expression.Nil , CAT_DESC)", "CAT_DESC");
+                    line =
+                            line.replace(
+                                    "if_then_else(equalTo(CAT_DESC, 'No Name'), "
+                                            + "Expression.Nil , CAT_DESC)",
+                                    "CAT_DESC");
                 }
                 writer.println(line);
             }
@@ -314,24 +303,22 @@ public class AppSchemaFileDataTest extends AppSchemaTestSupport {
 
     /**
      * extends a base filename with a path relative to the base filename
-     * 
-     * @param baseFilename
-     *            may be absolute, or relative to the current directory
-     * @param relativePath
-     *            must be relative to the base file name
+     *
+     * @param baseFilename may be absolute, or relative to the current directory
+     * @param relativePath must be relative to the base file name
      * @return an absolute, normalized filename
-     * @throws RuntimeException
-     *             if the base filename and relative path are incompatible
+     * @throws RuntimeException if the base filename and relative path are incompatible
      */
-    private String extendFilename(String baseFilename, String relativePath) throws RuntimeException {
+    private String extendFilename(String baseFilename, String relativePath)
+            throws RuntimeException {
         baseFilename = new File(baseFilename).getAbsolutePath();
         String extendedFilename = FilenameUtils.concat(baseFilename, relativePath);
 
         if (extendedFilename == null) {
-            throw new RuntimeException("Relative path to datastore is incompatible with the "
-                    + "base path - check double dot steps.");
+            throw new RuntimeException(
+                    "Relative path to datastore is incompatible with the "
+                            + "base path - check double dot steps.");
         }
         return extendedFilename;
     }
-
 }

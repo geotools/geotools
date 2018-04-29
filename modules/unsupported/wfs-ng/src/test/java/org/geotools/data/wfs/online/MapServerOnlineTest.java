@@ -25,7 +25,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
-
 import org.geotools.data.DataStore;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -46,23 +45,22 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-/**
- * 
- * 
- * @source $URL$
- */
+/** @source $URL$ */
 public class MapServerOnlineTest {
 
-    public static final String SERVER_URL_100 = "http://demo.mapserver.org/cgi-bin/wfs?SERVICE=WFS&VERSION=1.0.0&REQUEST=GetCapabilities";
+    public static final String SERVER_URL_100 =
+            "http://demo.mapserver.org/cgi-bin/wfs?SERVICE=WFS&VERSION=1.0.0&REQUEST=GetCapabilities";
 
-    public static final String SERVER_URL_110 = "http://demo.mapserver.org/cgi-bin/wfs?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities";
-    
-    public static final String SERVER_URL_200 = "http://www502.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmscartoteca&service=wfs&request=getcapabilities&version=2.0.0";
+    public static final String SERVER_URL_110 =
+            "http://demo.mapserver.org/cgi-bin/wfs?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetCapabilities";
+
+    public static final String SERVER_URL_200 =
+            "http://www502.regione.toscana.it/wmsraster/com.rt.wms.RTmap/wms?map=wmscartoteca&service=wfs&request=getcapabilities&version=2.0.0";
 
     private URL url_100;
 
     private URL url_110;
-    
+
     private URL url_200;
 
     private WFSDataStore wfs100;
@@ -92,10 +90,10 @@ public class MapServerOnlineTest {
                 params.put(WFSDataStoreFactory.WFS_STRATEGY.key, "mapserver");
                 params.put(WFSDataStoreFactory.GML_COMPATIBLE_TYPENAMES.key, Boolean.TRUE);
                 wfs110 = new WFSDataStoreFactory().createDataStore(params);
-                
+
                 params.put(WFSDataStoreFactory.PROTOCOL.key, Boolean.FALSE);
                 wfs110_with_get = new WFSDataStoreFactory().createDataStore(params);
-                
+
                 params = new HashMap<String, Serializable>();
                 params.put(WFSDataStoreFactory.URL.key, url_200);
                 params.put(WFSDataStoreFactory.PROTOCOL.key, Boolean.FALSE);
@@ -105,8 +103,7 @@ public class MapServerOnlineTest {
                 assertEquals("1.1.0", wfs110.getInfo().getVersion());
                 assertEquals("1.1.0", wfs110_with_get.getInfo().getVersion());
                 assertEquals("2.0.0", wfs200.getInfo().getVersion());
-            }
-            catch(Exception e) {
+            } catch (Exception e) {
                 System.err.println("Server is not available. test disabled ");
                 url_100 = null;
             }
@@ -130,7 +127,7 @@ public class MapServerOnlineTest {
     public void testSingleType_WFS_1_1() throws IOException, NoSuchElementException {
         testSingleType(wfs110);
     }
-    
+
     @Test
     public void testSingleType_WFS_1_1_with_get() throws IOException, NoSuchElementException {
         testSingleType(wfs110_with_get);
@@ -142,8 +139,7 @@ public class MapServerOnlineTest {
     }
 
     private void testSingleType(DataStore wfs) throws IOException, NoSuchElementException {
-        if (url_100 == null)
-            return;
+        if (url_100 == null) return;
 
         String typeName = "ms_cities";
         SimpleFeatureType type = wfs.getSchema(typeName);
@@ -157,22 +153,22 @@ public class MapServerOnlineTest {
         SimpleFeatureCollection features = source.getFeatures();
         features.getBounds();
         features.getSchema();
-        
+
         GeometryDescriptor geometryDesc = wfs.getSchema(typeName).getGeometryDescriptor();
         CoordinateReferenceSystem crs = geometryDesc.getCoordinateReferenceSystem();
 
         ReferencedEnvelope env = new ReferencedEnvelope(-59, -58, -35, -34, crs);
-          
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());        
+
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
         Filter filter = ff.bbox(ff.property("msGeometry"), env);
         Query query = new Query();
         query.setTypeName(typeName);
         query.setFilter(filter);
-        //test property names
+        // test property names
         query.setPropertyNames(new String[] {"POPULATION", "NAME"});
-        
+
         features = source.getFeatures(query);
-        
+
         int size = features.size();
         assertEquals(2, size);
 
@@ -186,10 +182,9 @@ public class MapServerOnlineTest {
             iterator.close();
         }
     }
-    
+
     private void testSingleType2(DataStore wfs) throws IOException, NoSuchElementException {
-        if (url_100 == null)
-            return;
+        if (url_100 == null) return;
 
         String typeName = "ms_rt_cartoteca.ctr10k.dxf";
         SimpleFeatureType type = wfs.getSchema(typeName);
@@ -203,22 +198,24 @@ public class MapServerOnlineTest {
         SimpleFeatureCollection features = source.getFeatures();
         features.getBounds();
         features.getSchema();
-        
+
         GeometryDescriptor geometryDesc = wfs.getSchema(typeName).getGeometryDescriptor();
         CoordinateReferenceSystem crs = geometryDesc.getCoordinateReferenceSystem();
 
-        ReferencedEnvelope env = new ReferencedEnvelope(4773438.659659, 648995.437355, 4773439.659659001, 648996.437355001, crs);
-          
-        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());        
+        ReferencedEnvelope env =
+                new ReferencedEnvelope(
+                        4773438.659659, 648995.437355, 4773439.659659001, 648996.437355001, crs);
+
+        FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(GeoTools.getDefaultHints());
         Filter filter = ff.bbox(ff.property("Geometry"), env);
         Query query = new Query();
         query.setTypeName(typeName);
         query.setFilter(filter);
-        //test property names
+        // test property names
         query.setPropertyNames(new String[] {"codice", "nome"});
-        
+
         features = source.getFeatures(query);
-        
+
         int size = features.size();
         assertEquals(308, size);
 

@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,6 +16,11 @@
  */
 package org.geotools.renderer.composite;
 
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.LinearRing;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -25,9 +30,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
 import javax.imageio.ImageIO;
-
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.coverage.grid.GridCoverageFactory;
 import org.geotools.data.DataUtilities;
@@ -56,16 +59,10 @@ import org.junit.runners.Parameterized.Parameters;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
-
 /**
  * Runs the same compositions as the {@link CompositeTest}, but going through the StreamingRenderer
  * and testing feature type and symbolizer based compositions
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 @RunWith(Parameterized.class)
@@ -92,30 +89,30 @@ public class StreamingRendererCompositeTest {
         List<Object[]> result = new ArrayList<>();
 
         // compositing modes
-        result.add(new Object[] { "copy" });
-        result.add(new Object[] { "destination" });
-        result.add(new Object[] { "source-over" });
-        result.add(new Object[] { "destination-over" });
-        result.add(new Object[] { "source-in" });
-        result.add(new Object[] { "destination-in" });
-        result.add(new Object[] { "source-out" });
-        result.add(new Object[] { "destination-out" });
-        result.add(new Object[] { "source-atop" });
-        result.add(new Object[] { "destination-atop" });
-        result.add(new Object[] { "xor" });
+        result.add(new Object[] {"copy"});
+        result.add(new Object[] {"destination"});
+        result.add(new Object[] {"source-over"});
+        result.add(new Object[] {"destination-over"});
+        result.add(new Object[] {"source-in"});
+        result.add(new Object[] {"destination-in"});
+        result.add(new Object[] {"source-out"});
+        result.add(new Object[] {"destination-out"});
+        result.add(new Object[] {"source-atop"});
+        result.add(new Object[] {"destination-atop"});
+        result.add(new Object[] {"xor"});
 
         // blending modes
-        result.add(new Object[] { "multiply" });
-        result.add(new Object[] { "screen" });
-        result.add(new Object[] { "overlay" });
-        result.add(new Object[] { "darken" });
-        result.add(new Object[] { "lighten" });
-        result.add(new Object[] { "color-dodge" });
-        result.add(new Object[] { "color-burn" });
-        result.add(new Object[] { "hard-light" });
-        result.add(new Object[] { "soft-light" });
-        result.add(new Object[] { "difference" });
-        result.add(new Object[] { "exclusion" });
+        result.add(new Object[] {"multiply"});
+        result.add(new Object[] {"screen"});
+        result.add(new Object[] {"overlay"});
+        result.add(new Object[] {"darken"});
+        result.add(new Object[] {"lighten"});
+        result.add(new Object[] {"color-dodge"});
+        result.add(new Object[] {"color-burn"});
+        result.add(new Object[] {"hard-light"});
+        result.add(new Object[] {"soft-light"});
+        result.add(new Object[] {"difference"});
+        result.add(new Object[] {"exclusion"});
 
         return result;
     }
@@ -129,11 +126,12 @@ public class StreamingRendererCompositeTest {
     }
 
     private static GridCoverage2D readCoverage(String imageFileName) throws Exception {
-        BufferedImage bi = ImageIO.read(CompositeTest.class.getResourceAsStream("test-data/"
-                + imageFileName));
+        BufferedImage bi =
+                ImageIO.read(CompositeTest.class.getResourceAsStream("test-data/" + imageFileName));
         GridCoverageFactory factory = new GridCoverageFactory();
-        Envelope2D envelope = new Envelope2D(DefaultEngineeringCRS.GENERIC_2D, 0, 0, bi.getWidth(),
-                bi.getHeight());
+        Envelope2D envelope =
+                new Envelope2D(
+                        DefaultEngineeringCRS.GENERIC_2D, 0, 0, bi.getWidth(), bi.getHeight());
         return factory.create(imageFileName, bi, envelope);
     }
 
@@ -142,11 +140,12 @@ public class StreamingRendererCompositeTest {
         BufferedImage blended = composeFts(BKG, MAP);
 
         // compare with expected image
-        File reference = new File(
-                "./src/test/resources/org/geotools/renderer/composite/test-data/blend1-"
-                        + composite + ".png");
+        File reference =
+                new File(
+                        "./src/test/resources/org/geotools/renderer/composite/test-data/blend1-"
+                                + composite
+                                + ".png");
         ImageAssert.assertEquals(reference, blended, 0);
-
     }
 
     @Test
@@ -154,9 +153,11 @@ public class StreamingRendererCompositeTest {
         BufferedImage blended = composeFts(BKG2, MAP2);
 
         // compare with expected image
-        File reference = new File(
-                "./src/test/resources/org/geotools/renderer/composite/test-data/blend2-"
-                        + composite + ".png");
+        File reference =
+                new File(
+                        "./src/test/resources/org/geotools/renderer/composite/test-data/blend2-"
+                                + composite
+                                + ".png");
         ImageAssert.assertEquals(reference, blended, 0);
     }
 
@@ -166,11 +167,15 @@ public class StreamingRendererCompositeTest {
         BufferedImage blended = composePoint(BKG, style);
 
         // compare with expected image
-        File reference = new File(
-                "./src/test/resources/org/geotools/renderer/composite/test-data/blend1-"
-                        + composite + ".png");
-        ImageIO.write(blended, "PNG", new File(reference.getParent(), "blend1-" + composite
-                + "-point.png"));
+        File reference =
+                new File(
+                        "./src/test/resources/org/geotools/renderer/composite/test-data/blend1-"
+                                + composite
+                                + ".png");
+        ImageIO.write(
+                blended,
+                "PNG",
+                new File(reference.getParent(), "blend1-" + composite + "-point.png"));
         // allow some tolerance, the JDK does not do exactly the same thing as blending two images
         // but only for the copy case... uh
         int threshold = 50;
@@ -186,9 +191,11 @@ public class StreamingRendererCompositeTest {
         BufferedImage blended = composePoint(BKG2, style);
 
         // compare with expected image
-        File reference = new File(
-                "./src/test/resources/org/geotools/renderer/composite/test-data/blend2-"
-                        + composite + ".png");
+        File reference =
+                new File(
+                        "./src/test/resources/org/geotools/renderer/composite/test-data/blend2-"
+                                + composite
+                                + ".png");
         // allow some tolerance, the JDK does not do exactly the same thing as blending two images
         // but only for the copy case... uh
         int threshold = 50;
@@ -196,7 +203,6 @@ public class StreamingRendererCompositeTest {
             threshold = 200;
         }
         ImageAssert.assertEquals(reference, blended, threshold);
-
     }
 
     @Test
@@ -205,9 +211,11 @@ public class StreamingRendererCompositeTest {
         BufferedImage blended = composePoint(BKG2, style);
 
         // compare with expected image
-        File reference = new File(
-                "./src/test/resources/org/geotools/renderer/composite/test-data/bkg2-red-"
-                        + composite + ".png");
+        File reference =
+                new File(
+                        "./src/test/resources/org/geotools/renderer/composite/test-data/bkg2-red-"
+                                + composite
+                                + ".png");
         // allow some tolerance, the JDK does not do exactly the same thing as blending two images
         // but only for the copy case... uh
         int threshold = 50;
@@ -223,9 +231,11 @@ public class StreamingRendererCompositeTest {
         BufferedImage blended = composeLine(BKG2, style);
 
         // compare with expected image
-        File reference = new File(
-                "./src/test/resources/org/geotools/renderer/composite/test-data/bkg2-red-"
-                        + composite + ".png");
+        File reference =
+                new File(
+                        "./src/test/resources/org/geotools/renderer/composite/test-data/bkg2-red-"
+                                + composite
+                                + ".png");
         // allow some tolerance, the JDK does not do exactly the same thing as blending two images
         // but only for the copy case... uh
         int threshold = 50;
@@ -241,9 +251,11 @@ public class StreamingRendererCompositeTest {
         BufferedImage blended = composeLine(BKG2, style);
 
         // compare with expected image
-        File reference = new File(
-                "./src/test/resources/org/geotools/renderer/composite/test-data/bkg2-red-"
-                        + composite + ".png");
+        File reference =
+                new File(
+                        "./src/test/resources/org/geotools/renderer/composite/test-data/bkg2-red-"
+                                + composite
+                                + ".png");
         // allow some tolerance, the JDK does not do exactly the same thing as blending two images
         // but only for the copy case... uh
         int threshold = 50;
@@ -259,9 +271,11 @@ public class StreamingRendererCompositeTest {
         BufferedImage blended = composeLine(BKG, style);
 
         // compare with expected image
-        File reference = new File(
-                "./src/test/resources/org/geotools/renderer/composite/test-data/blend1-"
-                        + composite + ".png");
+        File reference =
+                new File(
+                        "./src/test/resources/org/geotools/renderer/composite/test-data/blend1-"
+                                + composite
+                                + ".png");
         // allow some tolerance, the JDK does not do exactly the same thing as blending two images
         // but only for the copy case... uh
         int threshold = 50;
@@ -277,9 +291,11 @@ public class StreamingRendererCompositeTest {
         BufferedImage blended = composeLine(BKG2, style);
 
         // compare with expected image
-        File reference = new File(
-                "./src/test/resources/org/geotools/renderer/composite/test-data/blend2-"
-                        + composite + ".png");
+        File reference =
+                new File(
+                        "./src/test/resources/org/geotools/renderer/composite/test-data/blend2-"
+                                + composite
+                                + ".png");
         // allow some tolerance, the JDK does not do exactly the same thing as blending two images
         // but only for the copy case... uh
         int threshold = 50;
@@ -295,9 +311,11 @@ public class StreamingRendererCompositeTest {
         BufferedImage blended = composePolygon(BKG2, style);
 
         // compare with expected image
-        File reference = new File(
-                "./src/test/resources/org/geotools/renderer/composite/test-data/bkg2-red-"
-                        + composite + ".png");
+        File reference =
+                new File(
+                        "./src/test/resources/org/geotools/renderer/composite/test-data/bkg2-red-"
+                                + composite
+                                + ".png");
         // allow some tolerance, the JDK does not do exactly the same thing as blending two images
         // but only for the copy case... uh
         int threshold = 50;
@@ -313,9 +331,11 @@ public class StreamingRendererCompositeTest {
         BufferedImage blended = composePolygon(BKG, style);
 
         // compare with expected image
-        File reference = new File(
-                "./src/test/resources/org/geotools/renderer/composite/test-data/blend1-"
-                        + composite + ".png");
+        File reference =
+                new File(
+                        "./src/test/resources/org/geotools/renderer/composite/test-data/blend1-"
+                                + composite
+                                + ".png");
         // allow some tolerance, the JDK does not do exactly the same thing as blending two images
         // but only for the copy case... uh
         int threshold = 50;
@@ -331,9 +351,11 @@ public class StreamingRendererCompositeTest {
         BufferedImage blended = composePolygon(BKG2, style);
 
         // compare with expected image
-        File reference = new File(
-                "./src/test/resources/org/geotools/renderer/composite/test-data/blend2-"
-                        + composite + ".png");
+        File reference =
+                new File(
+                        "./src/test/resources/org/geotools/renderer/composite/test-data/blend2-"
+                                + composite
+                                + ".png");
         // allow some tolerance, the JDK does not do exactly the same thing as blending two images
         // but only for the copy case... uh
         int threshold = 50;
@@ -342,7 +364,6 @@ public class StreamingRendererCompositeTest {
         }
         ImageAssert.assertEquals(reference, blended, threshold);
     }
-
 
     private BufferedImage composeFts(GridCoverage2D first, GridCoverage2D second) {
         // build the map content
@@ -358,12 +379,16 @@ public class StreamingRendererCompositeTest {
 
         // prepare the graphics for the streaming renderer and paint
         RenderedImage referenceImage = first.getRenderedImage();
-        BufferedImage blended = new BufferedImage(referenceImage.getWidth(),
-                referenceImage.getWidth(), BufferedImage.TYPE_4BYTE_ABGR);
+        BufferedImage blended =
+                new BufferedImage(
+                        referenceImage.getWidth(),
+                        referenceImage.getWidth(),
+                        BufferedImage.TYPE_4BYTE_ABGR);
         Graphics2D graphics = blended.createGraphics();
         StreamingRenderer sr = new StreamingRenderer();
         sr.setMapContent(mc);
-        sr.paint(graphics,
+        sr.paint(
+                graphics,
                 new Rectangle(0, 0, referenceImage.getWidth(), referenceImage.getHeight()),
                 ReferencedEnvelope.reference(first.getEnvelope()));
         graphics.dispose();
@@ -382,8 +407,11 @@ public class StreamingRendererCompositeTest {
 
         // second layer is a point in the middle of the map
         RenderedImage referenceImage = first.getRenderedImage();
-        Point midPoint = new Point(new LiteCoordinateSequence(referenceImage.getWidth() / 2d,
-                referenceImage.getHeight() / 2d), GEOMETRY_FACTORY);
+        Point midPoint =
+                new Point(
+                        new LiteCoordinateSequence(
+                                referenceImage.getWidth() / 2d, referenceImage.getHeight() / 2d),
+                        GEOMETRY_FACTORY);
         SimpleFeatureType ft = DataUtilities.createType("test", "geom:Point:srid=4326");
         SimpleFeatureBuilder fb = new SimpleFeatureBuilder(ft);
         fb.add(midPoint);
@@ -394,12 +422,16 @@ public class StreamingRendererCompositeTest {
         mc.addLayer(new FeatureLayer(collection, pointStyle));
 
         // prepare the graphics for the streaming renderer and paint
-        BufferedImage blended = new BufferedImage(referenceImage.getWidth(),
-                referenceImage.getWidth(), BufferedImage.TYPE_4BYTE_ABGR);
+        BufferedImage blended =
+                new BufferedImage(
+                        referenceImage.getWidth(),
+                        referenceImage.getWidth(),
+                        BufferedImage.TYPE_4BYTE_ABGR);
         Graphics2D graphics = blended.createGraphics();
         StreamingRenderer sr = new StreamingRenderer();
         sr.setMapContent(mc);
-        sr.paint(graphics,
+        sr.paint(
+                graphics,
                 new Rectangle(0, 0, referenceImage.getWidth(), referenceImage.getHeight()),
                 ReferencedEnvelope.reference(first.getEnvelope()));
         graphics.dispose();
@@ -418,9 +450,14 @@ public class StreamingRendererCompositeTest {
 
         // second layer is a line in the middle of the map
         RenderedImage referenceImage = first.getRenderedImage();
-        LineString midLine = new LineString(new LiteCoordinateSequence(0,
-                referenceImage.getHeight() / 2d, referenceImage.getWidth(),
-                referenceImage.getHeight() / 2d), GEOMETRY_FACTORY);
+        LineString midLine =
+                new LineString(
+                        new LiteCoordinateSequence(
+                                0,
+                                referenceImage.getHeight() / 2d,
+                                referenceImage.getWidth(),
+                                referenceImage.getHeight() / 2d),
+                        GEOMETRY_FACTORY);
         SimpleFeatureType ft = DataUtilities.createType("test", "geom:LineString:srid=4326");
         SimpleFeatureBuilder fb = new SimpleFeatureBuilder(ft);
         fb.add(midLine);
@@ -431,12 +468,16 @@ public class StreamingRendererCompositeTest {
         mc.addLayer(new FeatureLayer(collection, lineStyle));
 
         // prepare the graphics for the streaming renderer and paint
-        BufferedImage blended = new BufferedImage(referenceImage.getWidth(),
-                referenceImage.getWidth(), BufferedImage.TYPE_4BYTE_ABGR);
+        BufferedImage blended =
+                new BufferedImage(
+                        referenceImage.getWidth(),
+                        referenceImage.getWidth(),
+                        BufferedImage.TYPE_4BYTE_ABGR);
         Graphics2D graphics = blended.createGraphics();
         StreamingRenderer sr = new StreamingRenderer();
         sr.setMapContent(mc);
-        sr.paint(graphics,
+        sr.paint(
+                graphics,
                 new Rectangle(0, 0, referenceImage.getWidth(), referenceImage.getHeight()),
                 ReferencedEnvelope.reference(first.getEnvelope()));
         graphics.dispose();
@@ -457,8 +498,9 @@ public class StreamingRendererCompositeTest {
         RenderedImage referenceImage = first.getRenderedImage();
         int w = referenceImage.getWidth();
         int h = referenceImage.getHeight();
-        LinearRing shell = new LinearRing(new LiteCoordinateSequence(0, 0, 0, h, w, h, w, 0, 0, 0),
-                GEOMETRY_FACTORY);
+        LinearRing shell =
+                new LinearRing(
+                        new LiteCoordinateSequence(0, 0, 0, h, w, h, w, 0, 0, 0), GEOMETRY_FACTORY);
         Polygon polygon = new Polygon(shell, null, GEOMETRY_FACTORY);
         SimpleFeatureType ft = DataUtilities.createType("test", "geom:Polygon:srid=4326");
         SimpleFeatureBuilder fb = new SimpleFeatureBuilder(ft);
@@ -470,12 +512,16 @@ public class StreamingRendererCompositeTest {
         mc.addLayer(new FeatureLayer(collection, polygonStyle));
 
         // prepare the graphics for the streaming renderer and paint
-        BufferedImage blended = new BufferedImage(referenceImage.getWidth(),
-                referenceImage.getWidth(), BufferedImage.TYPE_4BYTE_ABGR);
+        BufferedImage blended =
+                new BufferedImage(
+                        referenceImage.getWidth(),
+                        referenceImage.getWidth(),
+                        BufferedImage.TYPE_4BYTE_ABGR);
         Graphics2D graphics = blended.createGraphics();
         StreamingRenderer sr = new StreamingRenderer();
         sr.setMapContent(mc);
-        sr.paint(graphics,
+        sr.paint(
+                graphics,
                 new Rectangle(0, 0, referenceImage.getWidth(), referenceImage.getHeight()),
                 ReferencedEnvelope.reference(first.getEnvelope()));
         graphics.dispose();
@@ -485,10 +531,9 @@ public class StreamingRendererCompositeTest {
 
     private Style applyCompositeOnFirstSymbolizer(String styleName) throws IOException {
         Style style = RendererBaseTest.loadStyle(StreamingRendererCompositeTest.class, styleName);
-        Symbolizer symbolizer = style.featureTypeStyles().get(0).rules().get(0).symbolizers()
-                .get(0);
+        Symbolizer symbolizer =
+                style.featureTypeStyles().get(0).rules().get(0).symbolizers().get(0);
         symbolizer.getOptions().put(FeatureTypeStyle.COMPOSITE, composite);
         return style;
     }
-
 }

@@ -17,7 +17,6 @@
 package org.geotools.gce.imagemosaic.catalog;
 
 import java.io.IOException;
-
 import org.geotools.coverage.grid.io.GranuleSource;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -27,10 +26,9 @@ import org.opengis.feature.simple.SimpleFeatureType;
 
 /**
  * A {@link GranuleSource} implementation wrapping a {@link GranuleCatalog}.
- * 
+ *
  * @author Daniele Romagnoli, GeoSolutions SAS
  * @author Simone Giannecchini, GeoSolutions SAS
- *
  */
 public class GranuleCatalogSource implements GranuleSource {
 
@@ -94,5 +92,4 @@ public class GranuleCatalogSource implements GranuleSource {
         // Does nothing, the catalog should be disposed by the user
 
     }
-
 }

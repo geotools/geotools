@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -18,21 +18,17 @@ package org.geotools.maven;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.Set;
-
-import org.apache.maven.model.Dependency;
+import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
-import org.apache.maven.artifact.Artifact;
 import org.codehaus.plexus.util.FileUtils;
-
 
 // Note: javadoc in class and fields descriptions must be XHTML.
 /**
- * Copies <code>.jar</code> files in a single directory. Dependencies are copied as well,
- * except if already presents.
+ * Copies <code>.jar</code> files in a single directory. Dependencies are copied as well, except if
+ * already presents.
  *
  * @goal collect
  * @phase package
@@ -41,14 +37,12 @@ import org.codehaus.plexus.util.FileUtils;
  * @author Martin Desruisseaux
  */
 public class JarCollector extends AbstractMojo {
-    /**
-     * The sub directory to create inside the "target" directory.
-     */
+    /** The sub directory to create inside the "target" directory. */
     private static final String SUB_DIRECTORY = "binaries";
 
     /**
-     * The directory where JARs are to be copied. It should
-     * be the "target" directory of the parent {@code pom.xml}.
+     * The directory where JARs are to be copied. It should be the "target" directory of the parent
+     * {@code pom.xml}.
      */
     private String collectDirectory;
 
@@ -100,9 +94,7 @@ public class JarCollector extends AbstractMojo {
         }
     }
 
-    /**
-     * Implementation of the {@link #execute} method.
-     */
+    /** Implementation of the {@link #execute} method. */
     private void collect() throws MojoExecutionException, IOException {
         /*
          * Make sure that we are collecting the JAR file from a module which produced
@@ -118,7 +110,8 @@ public class JarCollector extends AbstractMojo {
         File collect = new File(collectDirectory);
         if (!collect.exists()) {
             if (!collect.mkdir()) {
-                throw new MojoExecutionException("Failed to create target directory: " + collect.getAbsolutePath());
+                throw new MojoExecutionException(
+                        "Failed to create target directory: " + collect.getAbsolutePath());
             }
         }
         if (collect.getCanonicalFile().equals(jarFile.getParentFile().getCanonicalFile())) {
@@ -140,15 +133,15 @@ public class JarCollector extends AbstractMojo {
             }
         }
         FileUtils.copyFileToDirectory(jarFile, collect);
-		Set<Artifact> dependencies = project.getDependencyArtifacts();
+        Set<Artifact> dependencies = project.getDependencyArtifacts();
         if (dependencies != null) {
             for (final Artifact artifact : dependencies) {
-				System.out.println("+++++++++++++++++++++++ DEP: " + artifact.getDependencyTrail());
+                System.out.println("+++++++++++++++++++++++ DEP: " + artifact.getDependencyTrail());
                 final String scope = artifact.getScope();
-                if (scope != null &&  // Maven 2.0.6 bug?
-                   (scope.equalsIgnoreCase(Artifact.SCOPE_COMPILE) ||
-                    scope.equalsIgnoreCase(Artifact.SCOPE_RUNTIME)))
-                {
+                if (scope != null
+                        && // Maven 2.0.6 bug?
+                        (scope.equalsIgnoreCase(Artifact.SCOPE_COMPILE)
+                                || scope.equalsIgnoreCase(Artifact.SCOPE_RUNTIME))) {
                     final File file = artifact.getFile();
                     if (!artifact.getGroupId().startsWith("org.geotools")) {
                         final File copy = new File(collect, file.getName());

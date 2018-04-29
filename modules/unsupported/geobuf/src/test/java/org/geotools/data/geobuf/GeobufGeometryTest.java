@@ -16,18 +16,18 @@
  */
 package org.geotools.data.geobuf;
 
+import static org.junit.Assert.assertEquals;
+
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.WKTReader;
+import java.io.*;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import static org.junit.Assert.assertEquals;
-import java.io.*;
 
 public class GeobufGeometryTest {
 
-    @Rule
-    public TemporaryFolder temporaryFolder = new TemporaryFolder();
+    @Rule public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
     protected void encodeDecode(String geometryWkt) throws Exception {
         File file = temporaryFolder.newFile("geom.pbf");
@@ -48,5 +48,4 @@ public class GeobufGeometryTest {
         encodeDecode("POINT (12.3 56.78)");
         encodeDecode("POINT (-122.381635 47.116273)");
     }
-
 }

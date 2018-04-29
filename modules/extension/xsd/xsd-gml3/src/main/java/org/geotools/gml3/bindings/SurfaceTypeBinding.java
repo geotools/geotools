@@ -16,21 +16,19 @@
  */
 package org.geotools.gml3.bindings;
 
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.MultiPolygon;
 import javax.xml.namespace.QName;
-
 import org.geotools.gml3.GML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.MultiPolygon;
-
 /**
  * Binding object for the type http://www.opengis.net/gml:SurfaceType.
- * 
+ *
  * <p>
- * 
+ *
  * <pre>
  *  &lt;code&gt;
  *  &lt;complexType name=&quot;SurfaceType&quot;&gt;
@@ -69,42 +67,37 @@ import com.vividsolutions.jts.geom.MultiPolygon;
  *              &lt;/sequence&gt;
  *          &lt;/extension&gt;
  *      &lt;/complexContent&gt;
- *  &lt;/complexType&gt; 
- * 	
+ *  &lt;/complexType&gt;
+ *
  *   &lt;/code&gt;
  * </pre>
- * 
- * </p>
- * 
+ *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class SurfaceTypeBinding extends AbstractComplexBinding implements Comparable {
 
     GeometryFactory gf;
-    
+
     public SurfaceTypeBinding(GeometryFactory gf) {
         this.gf = gf;
     }
-    
-    /**
-     * @generated
-     */
+
+    /** @generated */
     public QName getTarget() {
         return GML.SurfaceType;
     }
-    
+
     @Override
     public int getExecutionMode() {
         return BEFORE;
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Class getType() {
@@ -112,8 +105,10 @@ public class SurfaceTypeBinding extends AbstractComplexBinding implements Compar
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
@@ -121,13 +116,13 @@ public class SurfaceTypeBinding extends AbstractComplexBinding implements Compar
     }
 
     public int compareTo(Object o) {
-        //JD: HACK here, since we map SurfaceType and MultiSurfaceType to MultiPolygon, there is a 
+        // JD: HACK here, since we map SurfaceType and MultiSurfaceType to MultiPolygon, there is a
         // conflict when it comes to encoding where the actual type is not specifically specifid.
-        // this comparison is made to ensure backwards compatability and favor MultiSurfaceTypeBinding 
-        if ( o instanceof MultiSurfaceTypeBinding ) {
+        // this comparison is made to ensure backwards compatability and favor
+        // MultiSurfaceTypeBinding
+        if (o instanceof MultiSurfaceTypeBinding) {
             return 1;
         }
         return 0;
     }
-
 }

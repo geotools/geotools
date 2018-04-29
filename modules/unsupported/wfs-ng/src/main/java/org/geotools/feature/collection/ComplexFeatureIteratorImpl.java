@@ -20,18 +20,17 @@ import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.data.wfs.internal.parsers.XmlComplexFeatureParser;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.Feature;
 
 /**
- * Defines the complex feature iterator implementation class. It's responsible for exposing an iterator-style interface for complex features.
- * 
+ * Defines the complex feature iterator implementation class. It's responsible for exposing an
+ * iterator-style interface for complex features.
+ *
  * @author Adam Brown (Curtin University of Technology)
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
- * 
  */
 public class ComplexFeatureIteratorImpl implements FeatureIterator<Feature> {
 
@@ -45,7 +44,7 @@ public class ComplexFeatureIteratorImpl implements FeatureIterator<Feature> {
 
     /**
      * Initialises a new instance of ComplexFeatureIteratorImpl.
-     * 
+     *
      * @param parser The feature parser to use.
      */
     public ComplexFeatureIteratorImpl(XmlComplexFeatureParser parser) {

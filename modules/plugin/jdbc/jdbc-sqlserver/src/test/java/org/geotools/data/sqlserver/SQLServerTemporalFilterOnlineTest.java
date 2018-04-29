@@ -25,5 +25,4 @@ public class SQLServerTemporalFilterOnlineTest extends JDBCTemporalFilterOnlineT
     protected JDBCDateTestSetup createTestSetup() {
         return new SQLServerDateTestSetup();
     }
-
 }

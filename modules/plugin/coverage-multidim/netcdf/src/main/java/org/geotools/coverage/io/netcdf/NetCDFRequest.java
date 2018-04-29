@@ -24,9 +24,7 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.media.jai.Interpolation;
-
 import org.geotools.coverage.grid.GridGeometry2D;
 import org.geotools.coverage.io.CoverageReadRequest;
 import org.geotools.coverage.io.RasterLayout;
@@ -52,14 +50,15 @@ import org.opengis.referencing.operation.TransformException;
 
 /**
  * A class to handle coverage requests to a reader for a single 2D layer..
- * 
+ *
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini, GeoSolutions
  */
-class NetCDFRequest extends CoverageReadRequest{
-    
+class NetCDFRequest extends CoverageReadRequest {
+
     /** Logger. */
-    private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(NetCDFRequest.class);
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger(NetCDFRequest.class);
 
     /** The Interpolation required to serve this request */
     // TODO: CUSTOMIZE INTERPOLATION request.getInterpolation();
@@ -67,7 +66,8 @@ class NetCDFRequest extends CoverageReadRequest{
 
     NetCDFSource source;
 
-    // on NetCDF adopt the direct read: see the google document (Which one? it seems it has been deleted)
+    // on NetCDF adopt the direct read: see the google document (Which one? it seems it has been
+    // deleted)
     ReadType readType = ReadType.DIRECT_READ;
 
     SpatialRequestHelper spatialRequestHelper;
@@ -75,13 +75,13 @@ class NetCDFRequest extends CoverageReadRequest{
     CoverageReadRequest originalRequest = null;
 
     String name = null;
-    
+
     /**
      * Build a new {@code CoverageRequest} given a set of input parameters.
-     * 
+     *
      * @param params The {@code GeneralParameterValue}s to initialize this request
      * @param baseGridCoverage2DReader
-     * @throws IOException 
+     * @throws IOException
      */
     public NetCDFRequest(NetCDFSource source, CoverageReadRequest request) throws IOException {
         this.source = source;
@@ -108,22 +108,26 @@ class NetCDFRequest extends CoverageReadRequest{
 
     /**
      * Initialize coverage input properties by collecting them from a {@link CoverageSourceWrapper}
-     * 
+     *
      * @param wrapper
      * @throws IOException
      */
     private void initInputCoverageProperties() throws IOException {
-        VariableAdapter.UnidataSpatialDomain spatialDomain = (org.geotools.imageio.netcdf.VariableAdapter.UnidataSpatialDomain) (source.getSpatialDomain());
+        VariableAdapter.UnidataSpatialDomain spatialDomain =
+                (org.geotools.imageio.netcdf.VariableAdapter.UnidataSpatialDomain)
+                        (source.getSpatialDomain());
 
         // Getting spatial context
-        final Set<? extends RasterLayout> rasterElements = spatialDomain.getRasterElements(false, null);
+        final Set<? extends RasterLayout> rasterElements =
+                spatialDomain.getRasterElements(false, null);
         final GridGeometry2D gridGeometry2D = spatialDomain.getGridGeometry();
         final AffineTransform gridToCRS = (AffineTransform) gridGeometry2D.getGridToCRS();
         final double[] coverageFullResolution = CoverageUtilities.getResolution(gridToCRS);
         final MathTransform raster2Model = gridGeometry2D.getGridToCRS();
         final ReferencedEnvelope bbox = spatialDomain.getReferencedEnvelope();
         final ReferencedEnvelope referencedEnvelope = new ReferencedEnvelope(bbox);
-        final CoordinateReferenceSystem spatialReferenceSystem2D = spatialDomain.getCoordinateReferenceSystem2D();
+        final CoordinateReferenceSystem spatialReferenceSystem2D =
+                spatialDomain.getCoordinateReferenceSystem2D();
         rasterArea = rasterElements.iterator().next().toRectangle();
 
         // Setting up Coverage info
@@ -134,7 +138,7 @@ class NetCDFRequest extends CoverageReadRequest{
 
         ReferencedEnvelope wgs84Envelope = new ReferencedEnvelope(bbox);
         try {
-            wgs84Envelope =  wgs84Envelope.transform(DefaultGeographicCRS.WGS84, true);
+            wgs84Envelope = wgs84Envelope.transform(DefaultGeographicCRS.WGS84, true);
         } catch (TransformException e) {
             IOException ioe = new IOException();
             ioe.initCause(e);
@@ -147,11 +151,11 @@ class NetCDFRequest extends CoverageReadRequest{
 
         properties.setGeographicBBox(wgs84Envelope);
         properties.setGeographicCRS2D(wgs84Envelope.getCoordinateReferenceSystem());
-        properties.setGridToWorld2D((MathTransform2D)raster2Model);
+        properties.setGridToWorld2D((MathTransform2D) raster2Model);
         properties.setRasterArea(rasterArea);
         spatialRequestHelper.setCoverageProperties(properties);
         spatialRequestHelper.prepare();
-}
+    }
 
     private void checkRequest(CoverageReadRequest request) throws IOException {
         BoundingBox requestedBoundingBox = request.getGeographicArea();
@@ -162,14 +166,18 @@ class NetCDFRequest extends CoverageReadRequest{
         //
         // //
         Rectangle requestedRasterArea = request.getRasterArea();
-        VariableAdapter.UnidataSpatialDomain horizontalDomain = (VariableAdapter.UnidataSpatialDomain) source.getSpatialDomain();
-        VariableAdapter.UnidataTemporalDomain temporalDomain = (VariableAdapter.UnidataTemporalDomain) source.getTemporalDomain();
-        VariableAdapter.UnidataVerticalDomain verticalDomain = (VariableAdapter.UnidataVerticalDomain) source.getVerticalDomain();
+        VariableAdapter.UnidataSpatialDomain horizontalDomain =
+                (VariableAdapter.UnidataSpatialDomain) source.getSpatialDomain();
+        VariableAdapter.UnidataTemporalDomain temporalDomain =
+                (VariableAdapter.UnidataTemporalDomain) source.getTemporalDomain();
+        VariableAdapter.UnidataVerticalDomain verticalDomain =
+                (VariableAdapter.UnidataVerticalDomain) source.getVerticalDomain();
 
         if (requestedRasterArea == null || requestedBoundingBox == null) {
             boolean bothNull = true;
             if (requestedRasterArea == null) {
-                requestedRasterArea = horizontalDomain.getGridGeometry().getGridRange2D().getBounds();
+                requestedRasterArea =
+                        horizontalDomain.getGridGeometry().getGridRange2D().getBounds();
             } else {
                 bothNull = false;
             }
@@ -182,17 +190,25 @@ class NetCDFRequest extends CoverageReadRequest{
 
             if (bothNull) {
                 try {
-                    request.setDomainSubset(requestedRasterArea,horizontalDomain.getGridGeometry().getGridToCRS2D(),horizontalDomain.getCoordinateReferenceSystem2D());
+                    request.setDomainSubset(
+                            requestedRasterArea,
+                            horizontalDomain.getGridGeometry().getGridToCRS2D(),
+                            horizontalDomain.getCoordinateReferenceSystem2D());
                 } catch (TransformException e) {
-                    request.setDomainSubset(requestedRasterArea, ReferencedEnvelope.reference(requestedBoundingBox));
-                    LOGGER.log(Level.SEVERE,"Transform exception while setting the domain subset to: "+requestedRasterArea,e);
+                    request.setDomainSubset(
+                            requestedRasterArea,
+                            ReferencedEnvelope.reference(requestedBoundingBox));
+                    LOGGER.log(
+                            Level.SEVERE,
+                            "Transform exception while setting the domain subset to: "
+                                    + requestedRasterArea,
+                            e);
                 }
             } else {
                 // TODO: Check for center/corner anchor point
-                request.setDomainSubset(requestedRasterArea, ReferencedEnvelope.reference(requestedBoundingBox));
-
+                request.setDomainSubset(
+                        requestedRasterArea, ReferencedEnvelope.reference(requestedBoundingBox));
             }
-
         }
 
         // //
@@ -202,14 +218,15 @@ class NetCDFRequest extends CoverageReadRequest{
         // //
         SortedSet<DateRange> temporalSubset = request.getTemporalSubset();
         if (temporalDomain != null) {
-            if (temporalSubset.isEmpty() && 
-                    NetCDFUtilities.getParameterBehaviour(NetCDFUtilities.TIME_DIM) == ParameterBehaviour.DO_NOTHING) {
+            if (temporalSubset.isEmpty()
+                    && NetCDFUtilities.getParameterBehaviour(NetCDFUtilities.TIME_DIM)
+                            == ParameterBehaviour.DO_NOTHING) {
                 Set<DateRange> temporalExtent = temporalDomain.getTemporalExtent();
                 if (temporalExtent != null) {
                     temporalSubset = new DateRangeTreeSet(temporalExtent);
                 }
                 request.setTemporalSubset(temporalSubset);
-            }    
+            }
         }
 
         // //
@@ -220,8 +237,9 @@ class NetCDFRequest extends CoverageReadRequest{
         Set<NumberRange<Double>> verticalSubset = request.getVerticalSubset();
         if (verticalDomain != null) {
             Set<NumberRange<Double>> verticalExtent = verticalDomain.getVerticalExtent();
-            if (verticalSubset.isEmpty() && NetCDFUtilities.getParameterBehaviour(
-                    NetCDFUtilities.ELEVATION_DIM) == ParameterBehaviour.DO_NOTHING) {
+            if (verticalSubset.isEmpty()
+                    && NetCDFUtilities.getParameterBehaviour(NetCDFUtilities.ELEVATION_DIM)
+                            == ParameterBehaviour.DO_NOTHING) {
                 if (verticalExtent != null) {
                     verticalSubset = new HashSet<NumberRange<Double>>(verticalExtent);
                 }
@@ -229,13 +247,19 @@ class NetCDFRequest extends CoverageReadRequest{
             } else {
                 final NumberRange<Double> requestedVerticalEnv = verticalSubset.iterator().next();
 
-                if (verticalExtent != null && !verticalExtent.isEmpty() && !verticalExtent.iterator().next().contains(requestedVerticalEnv)) {
+                if (verticalExtent != null
+                        && !verticalExtent.isEmpty()
+                        && !verticalExtent.iterator().next().contains(requestedVerticalEnv)) {
                     // Find the nearest vertical Envelope
                     NumberRange<Double> nearestEnvelope = verticalExtent.iterator().next();
 
-                    double minimumDistance = Math.abs(nearestEnvelope.getMinimum() - requestedVerticalEnv.getMinimum());
+                    double minimumDistance =
+                            Math.abs(
+                                    nearestEnvelope.getMinimum()
+                                            - requestedVerticalEnv.getMinimum());
                     for (NumberRange<Double> env : verticalExtent) {
-                        double distance = Math.abs(env.getMinimum() - requestedVerticalEnv.getMinimum());
+                        double distance =
+                                Math.abs(env.getMinimum() - requestedVerticalEnv.getMinimum());
                         if (distance < minimumDistance) {
                             nearestEnvelope = env;
                             minimumDistance = distance;
@@ -247,7 +271,6 @@ class NetCDFRequest extends CoverageReadRequest{
                 }
             }
         }
-        
 
         // //
         //
@@ -270,8 +293,18 @@ class NetCDFRequest extends CoverageReadRequest{
 
     @Override
     public String toString() {
-        return "NetCDFRequest [interpolation=" + interpolation + ", source=" + source
-                + ", readType=" + readType + ", spatialRequestHelper=" + spatialRequestHelper
-                + ", originalRequest=" + originalRequest + ", name=" + name + "]";
+        return "NetCDFRequest [interpolation="
+                + interpolation
+                + ", source="
+                + source
+                + ", readType="
+                + readType
+                + ", spatialRequestHelper="
+                + spatialRequestHelper
+                + ", originalRequest="
+                + originalRequest
+                + ", name="
+                + name
+                + "]";
     }
 }

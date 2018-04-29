@@ -16,8 +16,10 @@
  */
 package org.geotools.swing.dialog;
 
-import java.awt.Dialog;
+import static org.junit.Assert.*;
+
 import java.awt.AWTEvent;
+import java.awt.Dialog;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,36 +30,31 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-
+import org.fest.swing.fixture.DialogFixture;
+import org.fest.swing.fixture.JButtonFixture;
+import org.fest.swing.fixture.JListFixture;
+import org.fest.swing.fixture.JTextComponentFixture;
 import org.geotools.factory.Hints;
 import org.geotools.referencing.CRS;
 import org.geotools.referencing.ReferencingFactoryFinder;
 import org.geotools.swing.testutils.GraphicsTestBase;
 import org.geotools.swing.testutils.GraphicsTestRunner;
-
-import org.opengis.referencing.crs.CRSAuthorityFactory;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-
-import org.fest.swing.fixture.DialogFixture;
-import org.fest.swing.fixture.JButtonFixture;
-import org.fest.swing.fixture.JListFixture;
-import org.fest.swing.fixture.JTextComponentFixture;
-
 import org.geotools.swing.testutils.WindowActivatedListener;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.junit.Assert.*;
+import org.opengis.referencing.crs.CRSAuthorityFactory;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Tests for {@linkplain JCRSChooser}.
- * <p>
- * This test class uses an {@linkplain ExecutorService} to launch the dialog which 
- * avoids a deadlock between the dialog waiting for a user response and this class
- * waiting for the dialog to show up on the event thread.
- * 
+ *
+ * <p>This test class uses an {@linkplain ExecutorService} to launch the dialog which avoids a
+ * deadlock between the dialog waiting for a user response and this class waiting for the dialog to
+ * show up on the event thread.
+ *
  * @author Michael Bedward
  * @since 8.0
  * @source $URL$
@@ -80,8 +77,9 @@ public class JCRSChooserTest extends GraphicsTestBase<Dialog> {
     public static void setUpOnce() throws Exception {
         // Specify longitude-first order for the authority factory
         Hints hints = new Hints(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE);
-        FACTORY = ReferencingFactoryFinder.getCRSAuthorityFactory(
-                JCRSChooser.DEFAULT_AUTHORITY, hints);
+        FACTORY =
+                ReferencingFactoryFinder.getCRSAuthorityFactory(
+                        JCRSChooser.DEFAULT_AUTHORITY, hints);
 
         CODES = new ArrayList<String>(FACTORY.getAuthorityCodes(CoordinateReferenceSystem.class));
     }
@@ -203,7 +201,7 @@ public class JCRSChooserTest extends GraphicsTestBase<Dialog> {
         windowFixture.robot.waitForIdle();
 
         // Note: there may be more than one list item if the code
-        // we just typed is also the start of longer codes or if the 
+        // we just typed is also the start of longer codes or if the
         // code string happens to appear in descriptive text
         String[] items = list.contents();
         for (String item : items) {
@@ -221,8 +219,9 @@ public class JCRSChooserTest extends GraphicsTestBase<Dialog> {
 
         while (filterStr == null) {
             String code = getRandomCode();
-            String desc = FACTORY.getDescriptionText(
-                    JCRSChooser.DEFAULT_AUTHORITY + ":" + code).toString();
+            String desc =
+                    FACTORY.getDescriptionText(JCRSChooser.DEFAULT_AUTHORITY + ":" + code)
+                            .toString();
 
             // double check the text is suitable for filtering
             if (desc != null && desc.length() >= FILTER_STRING_LEN) {
@@ -255,15 +254,16 @@ public class JCRSChooserTest extends GraphicsTestBase<Dialog> {
         assertNotNull(crs);
 
         // Compare return value to list selection
-        CoordinateReferenceSystem expected = FACTORY.createCoordinateReferenceSystem(
-                JCRSChooser.DEFAULT_AUTHORITY + ":" + CODES.get(index));
+        CoordinateReferenceSystem expected =
+                FACTORY.createCoordinateReferenceSystem(
+                        JCRSChooser.DEFAULT_AUTHORITY + ":" + CODES.get(index));
 
         assertTrue(CRS.equalsIgnoreMetadata(expected, crs));
     }
 
     /**
      * Launches the dialog in a new thread.
-     * 
+     *
      * @return the Future for the dialog task
      */
     private Future<CoordinateReferenceSystem> showDialog() throws Exception {
@@ -272,24 +272,24 @@ public class JCRSChooserTest extends GraphicsTestBase<Dialog> {
 
     /**
      * Launches the dialog in a new thread.
-     * 
+     *
      * @param title custom title (may be {@code null}
-     * 
      * @return the Future for the dialog task
      */
     private Future<CoordinateReferenceSystem> showDialog(final String title) throws Exception {
-        Future<CoordinateReferenceSystem> future = executor.submit(
-                new Callable<CoordinateReferenceSystem>() {
-                    @Override
-                    public CoordinateReferenceSystem call() throws Exception {
-                        if (title == null) {
-                            return JCRSChooser.showDialog();
-                        } else {
-                            return JCRSChooser.showDialog(title);
-                        }
-                    }
-                });
-        
+        Future<CoordinateReferenceSystem> future =
+                executor.submit(
+                        new Callable<CoordinateReferenceSystem>() {
+                            @Override
+                            public CoordinateReferenceSystem call() throws Exception {
+                                if (title == null) {
+                                    return JCRSChooser.showDialog();
+                                } else {
+                                    return JCRSChooser.showDialog(title);
+                                }
+                            }
+                        });
+
         assertComponentDisplayed(JCRSChooser.CRSDialog.class);
         windowFixture = listener.getFixture(DISPLAY_TIMEOUT);
         return future;
@@ -297,7 +297,7 @@ public class JCRSChooserTest extends GraphicsTestBase<Dialog> {
 
     /**
      * Randomly chooses a code from the CODES list.
-     * 
+     *
      * @return the selected code
      */
     private String getRandomCode() {
@@ -306,9 +306,9 @@ public class JCRSChooserTest extends GraphicsTestBase<Dialog> {
     }
 
     /**
-     * Retrieves a CRS from the given task future. If the value cannot be retrieved
-     * within the set time-out, an assertion error is raised.
-     * 
+     * Retrieves a CRS from the given task future. If the value cannot be retrieved within the set
+     * time-out, an assertion error is raised.
+     *
      * @param future task future
      * @return the CRS
      */

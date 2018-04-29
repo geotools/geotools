@@ -17,20 +17,17 @@
 package org.geotools.se.v1_1.bindings;
 
 import java.util.List;
-
+import javax.xml.namespace.QName;
 import org.geotools.se.v1_1.SE;
 import org.geotools.xml.*;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
-import org.opengis.filter.expression.Function;
-
-import javax.xml.namespace.QName;
 
 /**
  * Binding object for the element http://www.opengis.net/se:Concatenate.
- * 
+ *
  * <p>
- * 
+ *
  * <pre>
  *  <code>
  *  &lt;xsd:element name="Concatenate" substitutionGroup="se:Function" type="se:ConcatenateType"&gt;
@@ -39,11 +36,11 @@ import javax.xml.namespace.QName;
  *  Concatenates strings.
  *               &lt;/xsd:documentation&gt;
  *      &lt;/xsd:annotation&gt;
- *  &lt;/xsd:element&gt; 
- * 	
+ *  &lt;/xsd:element&gt;
+ *
  *   </code>
  * </pre>
- * 
+ *
  * <pre>
  *       <code>
  *  &lt;xsd:complexType name="ConcatenateType"&gt;
@@ -54,16 +51,12 @@ import javax.xml.namespace.QName;
  *              &lt;/xsd:sequence&gt;
  *          &lt;/xsd:extension&gt;
  *      &lt;/xsd:complexContent&gt;
- *  &lt;/xsd:complexType&gt; 
- *              
+ *  &lt;/xsd:complexType&gt;
+ *
  *        </code>
  * </pre>
- * 
- * </p>
- * 
+ *
  * @generated
- *
- *
  * @source $URL$
  */
 public class ConcatenateBinding extends AbstractComplexBinding {
@@ -74,16 +67,16 @@ public class ConcatenateBinding extends AbstractComplexBinding {
         this.filterFactory = filterFactory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return SE.Concatenate;
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Class getType() {
@@ -91,13 +84,15 @@ public class ConcatenateBinding extends AbstractComplexBinding {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
 
-        //&lt;xsd:element maxOccurs="unbounded" ref="se:StringValue"/&gt;
+        // &lt;xsd:element maxOccurs="unbounded" ref="se:StringValue"/&gt;
         List<Expression> values = node.getChildValues("StringValue");
         Expression e = values.get(0);
         for (int i = 1; i < values.size(); i++) {
@@ -106,5 +101,4 @@ public class ConcatenateBinding extends AbstractComplexBinding {
 
         return e;
     }
-
 }

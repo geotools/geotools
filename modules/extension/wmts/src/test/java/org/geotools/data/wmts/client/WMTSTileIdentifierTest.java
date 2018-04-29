@@ -16,10 +16,13 @@
  */
 package org.geotools.data.wmts.client;
 
+import static org.geotools.data.wmts.client.WMTSTileFactory4326Test.createCapabilities;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
-import static org.geotools.data.wmts.client.WMTSTileFactory4326Test.createCapabilities;
 import org.geotools.data.wmts.model.TileMatrixSet;
 import org.geotools.data.wmts.model.WMTSCapabilities;
 import org.geotools.data.wmts.model.WMTSLayer;
@@ -28,8 +31,6 @@ import org.geotools.tile.TileIdentifier;
 import org.geotools.tile.impl.ZoomLevel;
 import org.junit.After;
 import org.junit.Assert;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -68,7 +69,8 @@ public class WMTSTileIdentifierTest {
             File capaFile = new File(capaKvp.toURI());
             WMTSCapabilities capa = createCapabilities(capaFile);
 
-            String baseURL = "http://demo.geo-solutions.it/geoserver/gwc/service/wmts?REQUEST=getcapabilities";
+            String baseURL =
+                    "http://demo.geo-solutions.it/geoserver/gwc/service/wmts?REQUEST=getcapabilities";
 
             WMTSLayer layer = capa.getLayer("spearfish");
             TileMatrixSet matrixSet = capa.getMatrixSet("EPSG:4326");
@@ -94,22 +96,22 @@ public class WMTSTileIdentifierTest {
 
     @Test
     public void testGetRightNeighbour() {
-        WMTSTileIdentifier neighbour = new WMTSTileIdentifier(11, 12, new WMTSZoomLevel(5, service),
-                "SomeService");
+        WMTSTileIdentifier neighbour =
+                new WMTSTileIdentifier(11, 12, new WMTSZoomLevel(5, service), "SomeService");
 
         Assert.assertEquals(neighbour, this.tileId.getRightNeighbour());
     }
 
     @Test
     public void testGetLowertNeighbour() {
-        WMTSTileIdentifier neighbour = new WMTSTileIdentifier(10, 13, new WMTSZoomLevel(5, service),
-                "SomeService");
+        WMTSTileIdentifier neighbour =
+                new WMTSTileIdentifier(10, 13, new WMTSZoomLevel(5, service), "SomeService");
 
         Assert.assertEquals(neighbour, this.tileId.getLowerNeighbour());
     }
 
-    protected TileIdentifier createTestTileIdentifier(ZoomLevel zoomLevel, int x, int y,
-            String name) {
+    protected TileIdentifier createTestTileIdentifier(
+            ZoomLevel zoomLevel, int x, int y, String name) {
         return new WMTSTileIdentifier(x, y, zoomLevel, name);
     }
 }

@@ -16,28 +16,20 @@
  */
 package org.geotools.data.sqlserver.jtds;
 
+import com.vividsolutions.jts.geom.Geometry;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Map;
-
 import org.geotools.data.sqlserver.SQLServerDialect;
 import org.geotools.jdbc.JDBCDataStore;
 
-import com.vividsolutions.jts.geom.Geometry;
-
-/**
- * @author ian.turton
- *
- */
+/** @author ian.turton */
 public class JTDSSQLServerDialect extends SQLServerDialect {
 
-    /**
-     * @param dataStore
-     */
+    /** @param dataStore */
     public JTDSSQLServerDialect(JDBCDataStore dataStore) {
         super(dataStore);
-
     }
 
     @Override
@@ -55,9 +47,8 @@ public class JTDSSQLServerDialect extends SQLServerDialect {
         mappings.put("datetime", Timestamp.class);
         mappings.put("time", Time.class);
         mappings.put("date", Date.class);
-        mappings.put( "image", Geometry.class );
+        mappings.put("image", Geometry.class);
         mappings.put("smallmoney", Float.class);
         mappings.put("money", Double.class);
     }
-
 }

@@ -20,6 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
+import com.csvreader.CsvReader;
 import java.awt.Shape;
 import java.awt.geom.IllegalPathStateException;
 import java.awt.geom.PathIterator;
@@ -30,9 +31,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
-
 import javax.measure.unit.SI;
-
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.geotools.referencing.cs.DefaultCoordinateSystemAxis;
@@ -46,37 +45,34 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.GeographicCRS;
 import org.opengis.referencing.operation.TransformException;
 
-import com.csvreader.CsvReader;
-
-
 /**
  * Tests the geodetic calculator.
- *
- *
  *
  * @source $URL$
  * @version $Id$
  */
 public final class GeodeticCalculatorTest {
-    /**
-     * Tests some trivial azimuth directions.
-     */
+    /** Tests some trivial azimuth directions. */
     @Test
     public void testAzimuth() {
         final double EPS = 2E-1;
         final GeodeticCalculator calculator = new GeodeticCalculator();
         assertTrue(calculator.getCoordinateReferenceSystem() instanceof GeographicCRS);
         calculator.setStartingGeographicPoint(12, 20);
-        calculator.setDestinationGeographicPoint(13, 20);  assertEquals("East",   90, calculator.getAzimuth(), EPS);
-        calculator.setDestinationGeographicPoint(12, 21);  assertEquals("North",   0, calculator.getAzimuth(), EPS);
-        calculator.setDestinationGeographicPoint(11, 20);  assertEquals("West",  -90, calculator.getAzimuth(), EPS);
-        calculator.setDestinationGeographicPoint(12, 19);  assertEquals("South",-180, calculator.getAzimuth(), EPS);
+        calculator.setDestinationGeographicPoint(13, 20);
+        assertEquals("East", 90, calculator.getAzimuth(), EPS);
+        calculator.setDestinationGeographicPoint(12, 21);
+        assertEquals("North", 0, calculator.getAzimuth(), EPS);
+        calculator.setDestinationGeographicPoint(11, 20);
+        assertEquals("West", -90, calculator.getAzimuth(), EPS);
+        calculator.setDestinationGeographicPoint(12, 19);
+        assertEquals("South", -180, calculator.getAzimuth(), EPS);
     }
 
     /**
-     * Test path on the 45th parallel. Data for this test come from the
-     * <A HREF="http://www.univ-lemans.fr/~hainry/articles/loxonavi.html">Orthodromie et
-     * loxodromie</A> page.
+     * Test path on the 45th parallel. Data for this test come from the <A
+     * HREF="http://www.univ-lemans.fr/~hainry/articles/loxonavi.html">Orthodromie et loxodromie</A>
+     * page.
      */
     @Test
     @SuppressWarnings("fallthrough")
@@ -85,81 +81,79 @@ public final class GeodeticCalculatorTest {
         // Column 2: Orthodromic distance in kilometers
         // Column 3: Loxodromic  distance in kilometers
         final double[] DATA = {
-              0.00,     0,      0,
-             11.25,   883,    884,
-             22.50,  1762,   1768,
-             33.75,  2632,   2652,
-             45.00,  3489,   3536,
-             56.25,  4327,   4419,
-             67.50,  5140,   5303,
-             78.75,  5923,   6187,
-             90.00,  6667,   7071,
-            101.25,  7363,   7955,
-            112.50,  8002,   8839,
-            123.75,  8573,   9723,
-            135.00,  9064,  10607,
-            146.25,  9463,  11490,
-            157.50,  9758,  12374,
-            168.75,  9939,  13258,
-            180.00, 10000,  14142
+            0.00, 0, 0, 11.25, 883, 884, 22.50, 1762, 1768, 33.75, 2632, 2652, 45.00, 3489, 3536,
+            56.25, 4327, 4419, 67.50, 5140, 5303, 78.75, 5923, 6187, 90.00, 6667, 7071, 101.25,
+            7363, 7955, 112.50, 8002, 8839, 123.75, 8573, 9723, 135.00, 9064, 10607, 146.25, 9463,
+            11490, 157.50, 9758, 12374, 168.75, 9939, 13258, 180.00, 10000, 14142
         };
-        final double             R          = 20000/Math.PI;
-        final DefaultEllipsoid   ellipsoid  = DefaultEllipsoid.createEllipsoid("Test",R,R,SI.KILO(SI.METER));
+        final double R = 20000 / Math.PI;
+        final DefaultEllipsoid ellipsoid =
+                DefaultEllipsoid.createEllipsoid("Test", R, R, SI.KILO(SI.METER));
         final GeodeticCalculator calculator = new GeodeticCalculator(ellipsoid);
         calculator.setStartingGeographicPoint(0, 45);
-        for (int i=0; i<DATA.length; i+=3) {
+        for (int i = 0; i < DATA.length; i += 3) {
             calculator.setDestinationGeographicPoint(DATA[i], 45);
             final double orthodromic = calculator.getOrthodromicDistance();
-//          final double loxodromic  = calculator. getLoxodromicDistance();
-            assertEquals("Orthodromic distance", DATA[i+1], orthodromic, 0.75);
-//          assertEquals( "Loxodromic distance", DATA[i+2], loxodromic,  0.75);
+            //          final double loxodromic  = calculator. getLoxodromicDistance();
+            assertEquals("Orthodromic distance", DATA[i + 1], orthodromic, 0.75);
+            //          assertEquals( "Loxodromic distance", DATA[i+2], loxodromic,  0.75);
             /*
              * Test the orthodromic path. We compare its length with the expected length.
              */
-            int    count=0;
-            double length=0, lastX=Double.NaN, lastY=Double.NaN;
-            final Shape        path     = calculator.getGeodeticCurve(1000);
+            int count = 0;
+            double length = 0, lastX = Double.NaN, lastY = Double.NaN;
+            final Shape path = calculator.getGeodeticCurve(1000);
             final PathIterator iterator = path.getPathIterator(null, 0.1);
-            final double[]     buffer   = new double[6];
+            final double[] buffer = new double[6];
             while (!iterator.isDone()) {
                 switch (iterator.currentSegment(buffer)) {
-                    case PathIterator.SEG_LINETO: {
-                        count++;
-                        length += ellipsoid.orthodromicDistance(lastX, lastY, buffer[0], buffer[1]);
-                        // Fall through
-                    }
-                    case PathIterator.SEG_MOVETO: {
-                        lastX = buffer[0];
-                        lastY = buffer[1];
-                        break;
-                    }
-                    default: {
-                        throw new IllegalPathStateException();
-                    }
+                    case PathIterator.SEG_LINETO:
+                        {
+                            count++;
+                            length +=
+                                    ellipsoid.orthodromicDistance(
+                                            lastX, lastY, buffer[0], buffer[1]);
+                            // Fall through
+                        }
+                    case PathIterator.SEG_MOVETO:
+                        {
+                            lastX = buffer[0];
+                            lastY = buffer[1];
+                            break;
+                        }
+                    default:
+                        {
+                            throw new IllegalPathStateException();
+                        }
                 }
                 iterator.next();
             }
             assertEquals("Segment count", 1001, count); // Implementation check; will no longer be
-                                                        // valid when the path will contains curves.
+            // valid when the path will contains curves.
             assertEquals("Orthodromic path length", orthodromic, length, 1E-4);
         }
     }
 
     /**
-     * Tests geodetic calculator involving a coordinate operation.
-     * Our test uses a simple geographic CRS with only the axis order interchanged.
+     * Tests geodetic calculator involving a coordinate operation. Our test uses a simple geographic
+     * CRS with only the axis order interchanged.
      */
     @Test
     public void testUsingTransform() throws FactoryException, TransformException {
-        final GeographicCRS crs = new DefaultGeographicCRS("Test", DefaultGeodeticDatum.WGS84,
-                new DefaultEllipsoidalCS("Test", DefaultCoordinateSystemAxis.LATITUDE,
-                                                 DefaultCoordinateSystemAxis.LONGITUDE));
+        final GeographicCRS crs =
+                new DefaultGeographicCRS(
+                        "Test",
+                        DefaultGeodeticDatum.WGS84,
+                        new DefaultEllipsoidalCS(
+                                "Test",
+                                DefaultCoordinateSystemAxis.LATITUDE,
+                                DefaultCoordinateSystemAxis.LONGITUDE));
         final GeodeticCalculator calculator = new GeodeticCalculator(crs);
         assertSame(crs, calculator.getCoordinateReferenceSystem());
 
         final double x = 45;
         final double y = 30;
-        calculator.setStartingPosition(new DirectPosition2D(x,y));
+        calculator.setStartingPosition(new DirectPosition2D(x, y));
         Point2D point = calculator.getStartingGeographicPoint();
         assertEquals(y, point.getX(), 1E-5);
         assertEquals(x, point.getY(), 1E-5);
@@ -172,9 +166,9 @@ public final class GeodeticCalculatorTest {
     }
 
     /**
-     * Tests orthrodromic distance on the equator. The main purpose of this method is actually
-     * to get Java assertions to be run, which will compare the Geodetic Calculator results with
-     * the Default Ellipsoid computations.
+     * Tests orthrodromic distance on the equator. The main purpose of this method is actually to
+     * get Java assertions to be run, which will compare the Geodetic Calculator results with the
+     * Default Ellipsoid computations.
      */
     @Test
     public void testEquator() {
@@ -182,15 +176,18 @@ public final class GeodeticCalculatorTest {
         final GeodeticCalculator calculator = new GeodeticCalculator();
         calculator.setStartingGeographicPoint(0, 0);
         double last = Double.NaN;
-        for (double x=0; x<=180; x+=0.125) {
+        for (double x = 0; x <= 180; x += 0.125) {
             calculator.setDestinationGeographicPoint(x, 0);
             final double distance = calculator.getOrthodromicDistance() / 1000; // In kilometers
             /*
              * Checks that the increment is constant and then tapers off.
              */
-            assertTrue(x == 0 ? (distance == 0) :
-                       (x < 179.5 ? (Math.abs(distance - last - 13.914936) < 2E-6)
-                        : (distance - last < 13)));
+            assertTrue(
+                    x == 0
+                            ? (distance == 0)
+                            : (x < 179.5
+                                    ? (Math.abs(distance - last - 13.914936) < 2E-6)
+                                    : (distance - last < 13)));
             last = distance;
         }
     }
@@ -205,7 +202,7 @@ public final class GeodeticCalculatorTest {
         calculator.setStartingGeographicPoint(180, 40);
         calculator.setDestinationGeographicPoint(-5, -30);
     }
-    
+
     @Test
     public void testGEOT3826() {
         final GeodeticCalculator calculator = new GeodeticCalculator();
@@ -215,8 +212,7 @@ public final class GeodeticCalculatorTest {
         assertEquals(0.0, calculator.getAzimuth(), 0.0);
         assertEquals(1.0001966E7, calculator.getOrthodromicDistance(), 1);
     }
-    
-    
+
     @Test
     public void testGetPathAlongLongitude() {
         GeodeticCalculator calculator = new GeodeticCalculator();
@@ -226,10 +222,10 @@ public final class GeodeticCalculatorTest {
         double y = 10.0;
         for (Point2D p : path) {
             assertEquals(y, p.getY(), 0.001);
-            y-- ;
+            y--;
         }
     }
-    
+
     @Test
     public void testGetPathAlongLatitude() {
         GeodeticCalculator calculator = new GeodeticCalculator();
@@ -239,37 +235,35 @@ public final class GeodeticCalculatorTest {
         double x = 10.0;
         for (Point2D p : path) {
             assertEquals(x, p.getX(), 0.001);
-            x-- ;
+            x--;
         }
     }
-    
+
     @Test
     public void testVincentyFails() throws FileNotFoundException, IOException {
-        //check pairs of points known to fail with the Vincenty method
-        //taken from Wikipedia Talk page.
-        //https://en.wikipedia.org/wiki/Talk:Geodesics_on_an_ellipsoid#Computations
-        InputStream in = TestData.openStream( this, "vincenty.csv" );
+        // check pairs of points known to fail with the Vincenty method
+        // taken from Wikipedia Talk page.
+        // https://en.wikipedia.org/wiki/Talk:Geodesics_on_an_ellipsoid#Computations
+        InputStream in = TestData.openStream(this, "vincenty.csv");
         BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-       CsvReader creader = new CsvReader(reader);
-       creader.setComment('#');
-       creader.setUseComments(true);
-       while(creader.readRecord()) {
-           
-           double lat1 = Double.parseDouble(creader.get(0));
-           double lon1 = Double.parseDouble(creader.get(1));
-           double lat2 = Double.parseDouble(creader.get(2));
-           double lon2 = Double.parseDouble(creader.get(3));
-           
-           GeodeticCalculator calculator = new GeodeticCalculator();
-           calculator.setStartingGeographicPoint(lon1,lat1);
-           calculator.setDestinationGeographicPoint(lon2,lat2);
-           double dist = calculator.getOrthodromicDistance();
-           //really we are just proving it works as previous code failed 
-           //to converge for these points.
-           //but this way there is no chance of optimising the call away.
-           assertTrue("Bad distance calculation",dist>0.0d);
-           
-           
-       }
+        CsvReader creader = new CsvReader(reader);
+        creader.setComment('#');
+        creader.setUseComments(true);
+        while (creader.readRecord()) {
+
+            double lat1 = Double.parseDouble(creader.get(0));
+            double lon1 = Double.parseDouble(creader.get(1));
+            double lat2 = Double.parseDouble(creader.get(2));
+            double lon2 = Double.parseDouble(creader.get(3));
+
+            GeodeticCalculator calculator = new GeodeticCalculator();
+            calculator.setStartingGeographicPoint(lon1, lat1);
+            calculator.setDestinationGeographicPoint(lon2, lat2);
+            double dist = calculator.getOrthodromicDistance();
+            // really we are just proving it works as previous code failed
+            // to converge for these points.
+            // but this way there is no chance of optimising the call away.
+            assertTrue("Bad distance calculation", dist > 0.0d);
+        }
     }
 }

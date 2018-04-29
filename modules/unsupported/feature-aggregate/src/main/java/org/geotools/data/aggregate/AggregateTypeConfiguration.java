@@ -19,37 +19,29 @@ package org.geotools.data.aggregate;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.geotools.feature.NameImpl;
 import org.opengis.feature.type.Name;
 
 /**
  * Maps a set of source datastores and type names into an aggregated feature type
- * 
- * @author Andrea Aime - GeoSolutions
  *
+ * @author Andrea Aime - GeoSolutions
  * @source $URL$
  */
 public class AggregateTypeConfiguration implements Serializable {
 
-    /**
-     * The feature type name
-     */
+    /** The feature type name */
     String name;
 
-    /**
-     * The store to native type name map
-     */
+    /** The store to native type name map */
     List<SourceType> sourceTypes = new ArrayList<SourceType>();
 
-    /**
-     * The store that drives the feature type
-     */
+    /** The store that drives the feature type */
     SourceType primarySource;
 
     /**
      * Builds a new aggreate type configuration
-     * 
+     *
      * @param name the name of the aggregate type
      */
     public AggregateTypeConfiguration(String name) {
@@ -63,7 +55,7 @@ public class AggregateTypeConfiguration implements Serializable {
     /**
      * Builds a new aggregate type configuration, with a store list, assuming the feature type in
      * the store has always the same name
-     * 
+     *
      * @param name the name of the aggregate type
      * @param storeNames the name of the various stores
      */
@@ -79,7 +71,7 @@ public class AggregateTypeConfiguration implements Serializable {
     /**
      * Builds a new aggregate type configuration, with a store list, assuming the feature type in
      * the store has always the same name
-     * 
+     *
      * @param name the name of the aggregate type
      * @param storeNames the name of the various stores
      */
@@ -105,7 +97,7 @@ public class AggregateTypeConfiguration implements Serializable {
 
     /**
      * Adds a source store/type for this aggregated feature type
-     * 
+     *
      * @param storeName
      * @param typeName
      */
@@ -119,7 +111,7 @@ public class AggregateTypeConfiguration implements Serializable {
 
     /**
      * Adds a source store/type for this aggregated feature type
-     * 
+     *
      * @param storeName
      * @param typeName
      */
@@ -163,8 +155,13 @@ public class AggregateTypeConfiguration implements Serializable {
 
     @Override
     public String toString() {
-        return "AggregateTypeConfiguration [name=" + name + ", storeMap=" + sourceTypes
-                + ", primarySource=" + primarySource + "]";
+        return "AggregateTypeConfiguration [name="
+                + name
+                + ", storeMap="
+                + sourceTypes
+                + ", primarySource="
+                + primarySource
+                + "]";
     }
 
     int getStoreIndex(Name storeName) {
@@ -181,7 +178,7 @@ public class AggregateTypeConfiguration implements Serializable {
     /**
      * Builds a qualified name from a name containing the ":" separator, otherwise the given name
      * will be used as the local part
-     * 
+     *
      * @param name
      * @return
      */
@@ -208,28 +205,19 @@ public class AggregateTypeConfiguration implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
         AggregateTypeConfiguration other = (AggregateTypeConfiguration) obj;
         if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!name.equals(other.name))
-            return false;
+            if (other.name != null) return false;
+        } else if (!name.equals(other.name)) return false;
         if (primarySource == null) {
-            if (other.primarySource != null)
-                return false;
-        } else if (!primarySource.equals(other.primarySource))
-            return false;
+            if (other.primarySource != null) return false;
+        } else if (!primarySource.equals(other.primarySource)) return false;
         if (sourceTypes == null) {
-            if (other.sourceTypes != null)
-                return false;
-        } else if (!sourceTypes.equals(other.sourceTypes))
-            return false;
+            if (other.sourceTypes != null) return false;
+        } else if (!sourceTypes.equals(other.sourceTypes)) return false;
         return true;
     }
 }

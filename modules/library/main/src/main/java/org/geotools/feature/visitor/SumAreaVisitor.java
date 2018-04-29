@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2017, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -28,7 +28,6 @@ import org.opengis.filter.expression.Expression;
  * Calculates the Sum of Areas for geometric fields
  *
  * @author Mauro Bartolomeoli
- *
  */
 public class SumAreaVisitor extends SumVisitor {
 
@@ -38,23 +37,17 @@ public class SumAreaVisitor extends SumVisitor {
         super(factory.function("area2", expr));
     }
 
-    
-    
     @Override
     public void visit(SimpleFeature feature) {
         this.setStrategy(new SumAreaStrategy());
         super.visit(feature);
     }
 
-
-
     @Override
     public void visit(Feature feature) {
         this.setStrategy(new SumAreaStrategy());
         super.visit(feature);
     }
-
-
 
     public SumAreaVisitor(int attributeTypeIndex, SimpleFeatureType type)
             throws IllegalFilterException {
@@ -65,7 +58,7 @@ public class SumAreaVisitor extends SumVisitor {
     public SumAreaVisitor(String attrName, SimpleFeatureType type) throws IllegalFilterException {
         this(factory.property(type.getDescriptor(attrName).getLocalName()));
     }
-    
+
     static class SumAreaStrategy implements SumStrategy {
         Double number = null;
 

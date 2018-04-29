@@ -16,9 +16,9 @@
  */
 package org.geotools.processing.jai;
 
+import com.sun.media.jai.util.AreaOpPropertyGenerator;
 import java.awt.RenderingHints;
 import java.awt.image.RenderedImage;
-
 import javax.media.jai.EnumeratedParameter;
 import javax.media.jai.JAI;
 import javax.media.jai.OperationDescriptorImpl;
@@ -26,8 +26,6 @@ import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.PropertyGenerator;
 import javax.media.jai.RenderedOp;
 import javax.media.jai.registry.RenderedRegistryMode;
-
-import com.sun.media.jai.util.AreaOpPropertyGenerator;
 
 @SuppressWarnings("serial")
 public class TransparencyFillDescriptor extends OperationDescriptorImpl {
@@ -45,32 +43,27 @@ public class TransparencyFillDescriptor extends OperationDescriptorImpl {
     }
 
     /**
-     * The resource strings that provide the general documentation and specify the parameter list for a TransparencyFill operation.
+     * The resource strings that provide the general documentation and specify the parameter list
+     * for a TransparencyFill operation.
      */
-    private static final String[][] resources = { 
-            { "GlobalName", "TransparencyFill" },
-            { "LocalName", "TransparencyFill" }, 
-            { "Vendor", "it.geosolutions.jaiext" },
-            { "Description", "Transparency pixels Filler" },
-            { "DocURL", "" },
-            { "Version", "1.0"},
-            { "arg0Desc", "Type of fill"}
+    private static final String[][] resources = {
+        {"GlobalName", "TransparencyFill"},
+        {"LocalName", "TransparencyFill"},
+        {"Vendor", "it.geosolutions.jaiext"},
+        {"Description", "Transparency pixels Filler"},
+        {"DocURL", ""},
+        {"Version", "1.0"},
+        {"arg0Desc", "Type of fill"}
     };
 
     /** The parameter names for the TransparencyFill operation. */
-    private static final String[] paramNames = {
-            "type"
-    };
+    private static final String[] paramNames = {"type"};
 
     /** The parameter class types for the TransparencyFill operation. */
-    private static final Class[] paramClasses = {
-            FillType.class
-    };
+    private static final Class[] paramClasses = {FillType.class};
 
     /** The parameter default values for the TransparencyFill operation. */
-    private static final Object[] paramDefaults = {
-            FILL_AVERAGE
-    };
+    private static final Object[] paramDefaults = {FILL_AVERAGE};
 
     /** Constructor. */
     public TransparencyFillDescriptor() {
@@ -78,7 +71,8 @@ public class TransparencyFillDescriptor extends OperationDescriptorImpl {
     }
 
     /**
-     * Returns an array of <code>PropertyGenerators</code> implementing property inheritance for the "TransparencyFill" operation.
+     * Returns an array of <code>PropertyGenerators</code> implementing property inheritance for the
+     * "TransparencyFill" operation.
      *
      * @return An array of property generators.
      */
@@ -89,8 +83,8 @@ public class TransparencyFillDescriptor extends OperationDescriptorImpl {
     }
 
     public static RenderedOp create(RenderedImage source0, FillType type, RenderingHints hints) {
-        ParameterBlockJAI pb = new ParameterBlockJAI("TransparencyFill",
-                RenderedRegistryMode.MODE_NAME);
+        ParameterBlockJAI pb =
+                new ParameterBlockJAI("TransparencyFill", RenderedRegistryMode.MODE_NAME);
 
         pb.setSource("source0", source0);
         pb.setParameter("type", type);

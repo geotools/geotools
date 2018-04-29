@@ -19,11 +19,7 @@ package org.geotools.data.teradata;
 import org.geotools.jdbc.JDBCEmptyTestSetup;
 import org.geotools.jdbc.JDBCTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class TeradataEmptyTestSetup extends JDBCEmptyTestSetup {
 
     public TeradataEmptyTestSetup(JDBCTestSetup delegate) {
@@ -33,18 +29,22 @@ public class TeradataEmptyTestSetup extends JDBCEmptyTestSetup {
     public TeradataTestSetup getDelegate() {
         return (TeradataTestSetup) delegate;
     }
-    
-    protected void createEmptyTable() throws Exception {
-        run("CREATE TABLE \"empty\"(\"key\" PRIMARY KEY not null generated always as identity (start with 0) integer, geom ST_GEOMETRY)");
-        run("INSERT INTO SYSSPATIAL.GEOMETRY_COLUMNS (F_TABLE_CATALOG, F_TABLE_SCHEMA, F_TABLE_NAME, " +
-                "F_GEOMETRY_COLUMN, COORD_DIMENSION, SRID, GEOM_TYPE) VALUES ('', " +
-                "'" + fixture.getProperty("schema") + "', 'empty', 'geom', 2, " + getDelegate().getSrid4326() + " , 'GEOMETRY');");
-    }
 
+    protected void createEmptyTable() throws Exception {
+        run(
+                "CREATE TABLE \"empty\"(\"key\" PRIMARY KEY not null generated always as identity (start with 0) integer, geom ST_GEOMETRY)");
+        run(
+                "INSERT INTO SYSSPATIAL.GEOMETRY_COLUMNS (F_TABLE_CATALOG, F_TABLE_SCHEMA, F_TABLE_NAME, "
+                        + "F_GEOMETRY_COLUMN, COORD_DIMENSION, SRID, GEOM_TYPE) VALUES ('', "
+                        + "'"
+                        + fixture.getProperty("schema")
+                        + "', 'empty', 'geom', 2, "
+                        + getDelegate().getSrid4326()
+                        + " , 'GEOMETRY');");
+    }
 
     protected void dropEmptyTable() throws Exception {
         runSafe("DELETE SYSSPATIAL.GEOMETRY_COLUMNS WHERE F_TABLE_NAME = 'empty'");
         runSafe("DROP TABLE \"empty\"");
     }
-
 }

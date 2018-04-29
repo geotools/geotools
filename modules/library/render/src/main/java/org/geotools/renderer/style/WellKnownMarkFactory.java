@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -23,26 +23,22 @@ import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.Rectangle2D.Double;
 import java.util.logging.Logger;
-
 import org.geotools.renderer.style.shape.ExplicitBoundsShape;
 import org.opengis.feature.Feature;
 import org.opengis.filter.expression.Expression;
 
 /**
- * The WellKnownMarkFactory is used to hold the knolwedge of how to draw
- * all the marks hardboiled into the SLD specification (cross, arrow, triangle etc...)
- * 
+ * The WellKnownMarkFactory is used to hold the knolwedge of how to draw all the marks hardboiled
+ * into the SLD specification (cross, arrow, triangle etc...)
+ *
  * @author James
- *
- *
- *
  * @source $URL$
  */
 public class WellKnownMarkFactory implements MarkFactory {
 
     /** The logger for the rendering module. */
-    private static final Logger LOGGER = org.geotools.util.logging.Logging.getLogger(
-            "org.geotools.rendering");
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.rendering");
 
     /** Cross general path */
     static Shape cross;
@@ -58,10 +54,10 @@ public class WellKnownMarkFactory implements MarkFactory {
 
     /** X general path */
     static Shape X;
-    
+
     /** hatch path */
     static Shape hatch;
-    
+
     /** square */
     static Shape square;
 
@@ -82,15 +78,15 @@ public class WellKnownMarkFactory implements MarkFactory {
         crossPath.lineTo(0.125f, -0.125f);
         crossPath.lineTo(0.5f, -0.125f);
         crossPath.lineTo(0.5f, 0.125f);
-        
+
         cross = new ExplicitBoundsShape(crossPath);
-        ((ExplicitBoundsShape)cross).setBounds(new Rectangle2D.Double(-.5,.5,1.,1.));
+        ((ExplicitBoundsShape) cross).setBounds(new Rectangle2D.Double(-.5, .5, 1., 1.));
 
         AffineTransform at = new AffineTransform();
         at.rotate(Math.PI / 4.0);
         X = new ExplicitBoundsShape(crossPath.createTransformedShape(at));
-        ((ExplicitBoundsShape)X).setBounds(new Rectangle2D.Double(-.5,.5,1.,1.));
-        
+        ((ExplicitBoundsShape) X).setBounds(new Rectangle2D.Double(-.5, .5, 1., 1.));
+
         GeneralPath starPath = new GeneralPath(GeneralPath.WIND_EVEN_ODD);
         starPath.moveTo(-0.309f, -0.5f);
         starPath.lineTo(-0.25f, -0.156f);
@@ -103,10 +99,10 @@ public class WellKnownMarkFactory implements MarkFactory {
         starPath.lineTo(0.309f, -0.5f);
         starPath.lineTo(0.0f, -0.338);
         starPath.lineTo(-0.309f, -0.5f);
-        
+
         star = new ExplicitBoundsShape(starPath);
-        ((ExplicitBoundsShape)star).setBounds(new Rectangle2D.Double(-.5,.5,1.,1.));
-        
+        ((ExplicitBoundsShape) star).setBounds(new Rectangle2D.Double(-.5, .5, 1., 1.));
+
         GeneralPath trianglePath = new GeneralPath(GeneralPath.WIND_EVEN_ODD);
         trianglePath.moveTo(0f, 1f);
         trianglePath.lineTo(0.866f, -.5f);
@@ -116,9 +112,9 @@ public class WellKnownMarkFactory implements MarkFactory {
         at.translate(0, -.25);
         at.scale(.5, .5);
         trianglePath.transform(at);
-        
+
         triangle = new ExplicitBoundsShape(trianglePath);
-        ((ExplicitBoundsShape)triangle).setBounds(new Rectangle2D.Double(-.5,.5,1.,1.));
+        ((ExplicitBoundsShape) triangle).setBounds(new Rectangle2D.Double(-.5, .5, 1., 1.));
 
         GeneralPath arrowPath = new GeneralPath(GeneralPath.WIND_EVEN_ODD);
         arrowPath.moveTo(0f, -.5f);
@@ -129,42 +125,42 @@ public class WellKnownMarkFactory implements MarkFactory {
         arrowPath.lineTo(-.5f, -.1f);
         arrowPath.lineTo(0f, -.1f);
         arrowPath.lineTo(0f, -.5f);
-        
+
         arrow = new ExplicitBoundsShape(arrowPath);
-        ((ExplicitBoundsShape)arrow).setBounds(new Rectangle2D.Double(-.5,.5,1.,1.));
+        ((ExplicitBoundsShape) arrow).setBounds(new Rectangle2D.Double(-.5, .5, 1., 1.));
 
         GeneralPath hatchPath = new GeneralPath(GeneralPath.WIND_EVEN_ODD);
-        hatchPath.moveTo(.55f,.57f);
-        hatchPath.lineTo(.52f,.57f);
-        hatchPath.lineTo(-.57f,-.52f);
-        hatchPath.lineTo(-.57f,-.57f);
+        hatchPath.moveTo(.55f, .57f);
+        hatchPath.lineTo(.52f, .57f);
+        hatchPath.lineTo(-.57f, -.52f);
+        hatchPath.lineTo(-.57f, -.57f);
         hatchPath.lineTo(-.52f, -.57f);
         hatchPath.lineTo(.57f, .52f);
-        hatchPath.lineTo(.57f,.57f);
-                
-        hatchPath.moveTo(.57f,-.49f);
+        hatchPath.lineTo(.57f, .57f);
+
+        hatchPath.moveTo(.57f, -.49f);
         hatchPath.lineTo(.49f, -.57f);
-        hatchPath.lineTo(.57f,-.57f);
-        hatchPath.lineTo(.57f,-.49f);
-                
-        hatchPath.moveTo(-.57f,.5f);
+        hatchPath.lineTo(.57f, -.57f);
+        hatchPath.lineTo(.57f, -.49f);
+
+        hatchPath.moveTo(-.57f, .5f);
         hatchPath.lineTo(-.5f, .57f);
-        hatchPath.lineTo(-.57f,.57f);
-        hatchPath.lineTo(-.57f,.5f);
-        
-        hatch = new ExplicitBoundsShape(hatchPath); 
-        ((ExplicitBoundsShape)hatch).setBounds(new Rectangle2D.Double(-.5,.5,1.,1.));
-        
+        hatchPath.lineTo(-.57f, .57f);
+        hatchPath.lineTo(-.57f, .5f);
+
+        hatch = new ExplicitBoundsShape(hatchPath);
+        ((ExplicitBoundsShape) hatch).setBounds(new Rectangle2D.Double(-.5, .5, 1., 1.));
+
         square = new Double(-.5, -.5, 1., 1.);
     }
 
-    public Shape getShape(Graphics2D graphics, Expression symbolUrl, Feature feature) throws Exception {
+    public Shape getShape(Graphics2D graphics, Expression symbolUrl, Feature feature)
+            throws Exception {
         // cannot handle a null url
-        if(symbolUrl == null)
-            return null;
-        
+        if (symbolUrl == null) return null;
+
         String wellKnownName = symbolUrl.evaluate(feature, String.class);
-        
+
         LOGGER.finer("fetching mark of name " + wellKnownName);
 
         if (wellKnownName.equalsIgnoreCase("cross")) {
@@ -202,16 +198,16 @@ public class WellKnownMarkFactory implements MarkFactory {
 
             return arrow;
         }
-        
+
         if (wellKnownName.equalsIgnoreCase("hatch")) {
             LOGGER.finer("returning hatch");
-             
+
             return hatch;
         }
-        
+
         if (wellKnownName.equalsIgnoreCase("square")) {
             LOGGER.finer("returning square");
-             
+
             return square;
         }
 
@@ -220,5 +216,4 @@ public class WellKnownMarkFactory implements MarkFactory {
 
         return null;
     }
-
 }

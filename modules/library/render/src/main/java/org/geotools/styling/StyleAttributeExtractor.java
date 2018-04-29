@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -18,9 +18,7 @@ package org.geotools.styling;
 
 import java.net.MalformedURLException;
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
-
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.renderer.style.ExpressionExtractor;
 import org.opengis.filter.Filter;
@@ -28,20 +26,15 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Literal;
 import org.opengis.filter.expression.PropertyName;
 
-
 /**
- * A simple visitor whose purpose is to extract the set of attributes used by a
- * Style, that is, those that the Style expects to find in order to work
- * properly
+ * A simple visitor whose purpose is to extract the set of attributes used by a Style, that is,
+ * those that the Style expects to find in order to work properly
  *
  * @author Andrea Aime - OpenGeo
- *
- *
  * @source $URL$
  */
-public class StyleAttributeExtractor extends FilterAttributeExtractor
-    implements StyleVisitor {
-    
+public class StyleAttributeExtractor extends FilterAttributeExtractor implements StyleVisitor {
+
     /**
      * Returns PropertyNames rather than strings (includes namespace info)
      *
@@ -51,16 +44,14 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor
         return Collections.unmodifiableSet(propertyNames);
     }
 
-    /**
-     *   if the default geometry is used, this will be true.  See GEOS-469
-     */
+    /** if the default geometry is used, this will be true. See GEOS-469 */
     boolean defaultGeometryUsed = false;
 
     /**
-     * Symbolizer geometry is enabled by default, but there are relevant cases in which we don't desire that
+     * Symbolizer geometry is enabled by default, but there are relevant cases in which we don't
+     * desire that
      */
     boolean symbolizerGeometriesVisitEnabled = true;
-
 
     public boolean isSymbolizerGeometriesVisitEnabled() {
         return symbolizerGeometriesVisitEnabled;
@@ -68,6 +59,7 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor
 
     /**
      * Enables/disables visit of the symbolizer geometry property (on by default)
+     *
      * @param symbolizerGeometriesVisitEnabled
      */
     public void setSymbolizerGeometriesVisitEnabled(boolean symbolizerGeometriesVisitEnabled) {
@@ -75,19 +67,15 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor
     }
 
     /**
-     * reads the read-only-property.
-     * See GEOS-469
+     * reads the read-only-property. See GEOS-469
      *
      * @return true if any of the symbolizers visted use the default geometry.
      */
-    public boolean getDefaultGeometryUsed()
-    {
+    public boolean getDefaultGeometryUsed() {
         return defaultGeometryUsed;
     }
 
-    /**
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Style)
-     */
+    /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Style) */
     public void visit(org.geotools.styling.Style style) {
         FeatureTypeStyle[] ftStyles = style.getFeatureTypeStyles();
 
@@ -96,14 +84,12 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor
         }
     }
 
-    /**
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Rule)
-     */
+    /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Rule) */
     public void visit(Rule rule) {
         Filter filter = rule.getFilter();
 
         if (filter != null) {
-            filter.accept( this, null );
+            filter.accept(this, null);
         }
 
         Symbolizer[] symbolizers = rule.getSymbolizers();
@@ -117,13 +103,10 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor
 
         Graphic[] legendGraphics = rule.getLegendGraphic();
 
-        if (legendGraphics != null) {
-        }
+        if (legendGraphics != null) {}
     }
 
-    /**
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.FeatureTypeStyle)
-     */
+    /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.FeatureTypeStyle) */
     public void visit(FeatureTypeStyle fts) {
         Rule[] rules = fts.getRules();
 
@@ -133,16 +116,14 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor
         }
     }
 
-    /**
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Fill)
-     */
+    /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Fill) */
     public void visit(Fill fill) {
         if (fill.getBackgroundColor() != null) {
             fill.getBackgroundColor().accept(this, null);
         }
 
         if (fill.getColor() != null) {
-            fill.getColor().accept(this, null );
+            fill.getColor().accept(this, null);
         }
 
         if (fill.getGraphicFill() != null) {
@@ -150,20 +131,18 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor
         }
 
         if (fill.getOpacity() != null) {
-            fill.getOpacity().accept(this, null );
+            fill.getOpacity().accept(this, null);
         }
     }
 
-    /**
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Stroke)
-     */
+    /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Stroke) */
     public void visit(Stroke stroke) {
         if (stroke.getColor() != null) {
-            stroke.getColor().accept(this, null );
+            stroke.getColor().accept(this, null);
         }
 
         if (stroke.getDashOffset() != null) {
-            stroke.getDashOffset().accept(this, null );
+            stroke.getDashOffset().accept(this, null);
         }
 
         if (stroke.getGraphicFill() != null) {
@@ -187,19 +166,17 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor
         }
 
         if (stroke.getWidth() != null) {
-            stroke.getWidth().accept(this, null );
+            stroke.getWidth().accept(this, null);
         }
 
         if (stroke.dashArray() != null) {
-            for(Expression expression: stroke.dashArray()) {
+            for (Expression expression : stroke.dashArray()) {
                 expression.accept(this, null);
             }
         }
     }
 
-    /**
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Symbolizer)
-     */
+    /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Symbolizer) */
     public void visit(Symbolizer sym) {
         if (sym instanceof PointSymbolizer) {
             visit((PointSymbolizer) sym);
@@ -238,9 +215,7 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor
         }
     }
 
-    /**
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.PointSymbolizer)
-     */
+    /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.PointSymbolizer) */
     public void visit(PointSymbolizer ps) {
         if (symbolizerGeometriesVisitEnabled) {
             if (ps.getGeometry() != null) {
@@ -253,12 +228,9 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor
         if (ps.getGraphic() != null) {
             ps.getGraphic().accept(this);
         }
-
     }
 
-    /**
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.LineSymbolizer)
-     */
+    /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.LineSymbolizer) */
     public void visit(LineSymbolizer line) {
         if (symbolizerGeometriesVisitEnabled) {
             if (line.getGeometry() != null) {
@@ -277,9 +249,7 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor
         }
     }
 
-    /**
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.PolygonSymbolizer)
-     */
+    /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.PolygonSymbolizer) */
     public void visit(PolygonSymbolizer poly) {
         if (symbolizerGeometriesVisitEnabled) {
             if (poly.getGeometry() != null) {
@@ -298,9 +268,7 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor
         }
     }
 
-    /**
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.TextSymbolizer)
-     */
+    /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.TextSymbolizer) */
     public void visit(TextSymbolizer text) {
         if (symbolizerGeometriesVisitEnabled) {
             if (text.getGeometry() != null) {
@@ -310,10 +278,9 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor
             }
         }
 
-        if (text instanceof TextSymbolizer2)
-        {
-            if ( ((TextSymbolizer2)text).getGraphic() !=null)
-                ((TextSymbolizer2)text).getGraphic().accept(this);
+        if (text instanceof TextSymbolizer2) {
+            if (((TextSymbolizer2) text).getGraphic() != null)
+                ((TextSymbolizer2) text).getGraphic().accept(this);
         }
 
         if (text.getFill() != null) {
@@ -325,22 +292,22 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor
         }
 
         if (text.fonts() != null) {
-            for (Font font : text.fonts() ){
+            for (Font font : text.fonts()) {
                 if (font.getFamily() != null) {
-                    for( Expression list: font.getFamily() ){
-                        list.accept(this,null);
+                    for (Expression list : font.getFamily()) {
+                        list.accept(this, null);
                     }
                 }
                 if (font.getSize() != null) {
-                    font.getSize().accept(this,null);
+                    font.getSize().accept(this, null);
                 }
 
                 if (font.getStyle() != null) {
-                    font.getStyle().accept(this,null);
+                    font.getStyle().accept(this, null);
                 }
 
                 if (font.getWeight() != null) {
-                    font.getWeight().accept(this,null);
+                    font.getWeight().accept(this, null);
                 }
             }
         }
@@ -350,7 +317,7 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor
         }
 
         if (text.getLabel() != null) {
-            text.getLabel().accept(this,null);
+            text.getLabel().accept(this, null);
         }
 
         if (text.getLabelPlacement() != null) {
@@ -358,13 +325,11 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor
         }
 
         if (text.getPriority() != null) {
-            text.getPriority().accept(this,null);
+            text.getPriority().accept(this, null);
         }
     }
 
-    /**
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Graphic)
-     */
+    /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Graphic) */
     public void visit(Graphic gr) {
         if (gr.getSymbols() != null) {
             Symbol[] symbols = gr.getSymbols();
@@ -376,27 +341,23 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor
         }
 
         if (gr.getOpacity() != null) {
-            gr.getOpacity().accept(this,null);
+            gr.getOpacity().accept(this, null);
         }
 
         if (gr.getRotation() != null) {
-            gr.getRotation().accept(this,null);
+            gr.getRotation().accept(this, null);
         }
 
         if (gr.getSize() != null) {
-            gr.getSize().accept(this,null);
+            gr.getSize().accept(this, null);
         }
-        
-        if (gr.getDisplacement() != null)
-            gr.getDisplacement().accept(this);
 
-        if (gr.getAnchorPoint() != null)
-            gr.getAnchorPoint().accept(this);
+        if (gr.getDisplacement() != null) gr.getDisplacement().accept(this);
+
+        if (gr.getAnchorPoint() != null) gr.getAnchorPoint().accept(this);
     }
 
-    /**
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Mark)
-     */
+    /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Mark) */
     public void visit(Mark mark) {
         if (mark.getFill() != null) {
             mark.getFill().accept(this);
@@ -405,46 +366,40 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor
         if (mark.getStroke() != null) {
             mark.getStroke().accept(this);
         }
-        
-        if(mark.getWellKnownName() != null) {
-            if(mark.getWellKnownName() instanceof Literal) {
+
+        if (mark.getWellKnownName() != null) {
+            if (mark.getWellKnownName() instanceof Literal) {
                 visitCqlExpression(mark.getWellKnownName().evaluate(null, String.class));
             } else {
-                mark.getWellKnownName().accept(this,null);
+                mark.getWellKnownName().accept(this, null);
             }
         }
     }
 
     /**
-     * Handles the special CQL expressions embedded in the style markers since
-     * the time 
+     * Handles the special CQL expressions embedded in the style markers since the time
+     *
      * @param expression
      */
     private void visitCqlExpression(String expression) {
         Expression parsed = ExpressionExtractor.extractCqlExpressions(expression);
-        if(parsed != null)
-            parsed.accept(this, null);
+        if (parsed != null) parsed.accept(this, null);
     }
 
-    /**
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.ExternalGraphic)
-     */
+    /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.ExternalGraphic) */
     public void visit(ExternalGraphic exgr) {
         // add dynamic support for ExternalGrapic format attribute
         visitCqlExpression(exgr.getFormat());
 
         try {
-            if(exgr.getLocation() != null)
-                visitCqlExpression(exgr.getLocation().toString());
-        } catch(MalformedURLException e) {
-            throw new RuntimeException("Errors while inspecting " +
-            		"the location of an external graphic", e);
+            if (exgr.getLocation() != null) visitCqlExpression(exgr.getLocation().toString());
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(
+                    "Errors while inspecting " + "the location of an external graphic", e);
         }
     }
 
-    /**
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.PointPlacement)
-     */
+    /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.PointPlacement) */
     public void visit(PointPlacement pp) {
         if (pp.getAnchorPoint() != null) {
             pp.getAnchorPoint().accept(this);
@@ -455,55 +410,47 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor
         }
 
         if (pp.getRotation() != null) {
-            pp.getRotation().accept(this,null);
+            pp.getRotation().accept(this, null);
         }
     }
 
-    /**
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.AnchorPoint)
-     */
+    /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.AnchorPoint) */
     public void visit(AnchorPoint ap) {
         if (ap.getAnchorPointX() != null) {
-            ap.getAnchorPointX().accept(this,null);
+            ap.getAnchorPointX().accept(this, null);
         }
 
         if (ap.getAnchorPointY() != null) {
-            ap.getAnchorPointY().accept(this,null);
+            ap.getAnchorPointY().accept(this, null);
         }
     }
 
-    /**
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Displacement)
-     */
+    /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Displacement) */
     public void visit(Displacement dis) {
         if (dis.getDisplacementX() != null) {
-            dis.getDisplacementX().accept(this,null);
+            dis.getDisplacementX().accept(this, null);
         }
 
         if (dis.getDisplacementY() != null) {
-            dis.getDisplacementY().accept(this,null);
+            dis.getDisplacementY().accept(this, null);
         }
     }
 
-    /**
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.LinePlacement)
-     */
+    /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.LinePlacement) */
     public void visit(LinePlacement lp) {
         if (lp.getPerpendicularOffset() != null) {
-            lp.getPerpendicularOffset().accept(this,null);
+            lp.getPerpendicularOffset().accept(this, null);
         }
     }
 
-    /**
-     * @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Halo)
-     */
+    /** @see org.geotools.styling.StyleVisitor#visit(org.geotools.styling.Halo) */
     public void visit(Halo halo) {
         if (halo.getFill() != null) {
             halo.getFill().accept(this);
         }
 
         if (halo.getRadius() != null) {
-            halo.getRadius().accept(this,null);
+            halo.getRadius().accept(this, null);
         }
     }
 
@@ -553,27 +500,22 @@ public class StyleAttributeExtractor extends FilterAttributeExtractor
 
     public void visit(ContrastEnhancement contrastEnhancement) {
         contrastEnhancement.accept(this);
-        
     }
 
     public void visit(ImageOutline outline) {
         outline.getSymbolizer().accept(this);
-        
     }
 
     public void visit(ChannelSelection cs) {
         cs.accept(this);
-        
     }
 
     public void visit(OverlapBehavior ob) {
         ob.accept(this);
-        
     }
 
     public void visit(SelectedChannelType sct) {
         sct.accept(this);
-        
     }
 
     public void visit(ShadedRelief sr) {

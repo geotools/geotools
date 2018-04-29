@@ -21,11 +21,8 @@ import org.geotools.caching.grid.spatialindex.GridSpatialIndex;
 import org.geotools.caching.spatialindex.Region;
 import org.geotools.caching.spatialindex.RegionNodeIdentifier;
 
-
 class TestNode extends GridNode {
-    /**
-     *
-     */
+    /** */
     private static final long serialVersionUID = 6760237342477762805L;
 
     TestNode() {

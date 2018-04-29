@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -20,25 +20,19 @@
 package org.geotools.metadata.iso.citation;
 
 import java.util.Collection;
-import org.opengis.metadata.citation.Telephone;
 import org.geotools.metadata.iso.MetadataEntity;
-
+import org.opengis.metadata.citation.Telephone;
 
 /**
  * Telephone numbers for contacting the responsible individual or organization.
  *
  * @author Jody Garnett
  * @author Martin Desruisseaux
- *
  * @since 2.1
- *
- *
  * @source $URL$
  */
 public class TelephoneImpl extends MetadataEntity implements Telephone {
-    /**
-     * Serial number for interoperability with different versions.
-     */
+    /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = 4920157673337669241L;
 
     /**
@@ -47,16 +41,11 @@ public class TelephoneImpl extends MetadataEntity implements Telephone {
      */
     private Collection<String> voices;
 
-    /**
-     * Telephone numbers of a facsimile machine for the responsible organization or individual.
-     */
+    /** Telephone numbers of a facsimile machine for the responsible organization or individual. */
     private Collection<String> facsimiles;
 
-    /**
-     * Constructs a default telephone.
-     */
-    public TelephoneImpl() {
-    }
+    /** Constructs a default telephone. */
+    public TelephoneImpl() {}
 
     /**
      * Constructs a metadata entity initialized with the values from the specified metadata.
@@ -68,8 +57,8 @@ public class TelephoneImpl extends MetadataEntity implements Telephone {
     }
 
     /**
-     * Returns the telephone numbers by which individuals can speak to the responsible
-     * organization or individual.
+     * Returns the telephone numbers by which individuals can speak to the responsible organization
+     * or individual.
      *
      * @since 2.4
      */
@@ -78,8 +67,8 @@ public class TelephoneImpl extends MetadataEntity implements Telephone {
     }
 
     /**
-     * Set the telephone numbers by which individuals can speak to the responsible
-     * organization or individual.
+     * Set the telephone numbers by which individuals can speak to the responsible organization or
+     * individual.
      *
      * @since 2.4
      */
@@ -88,8 +77,8 @@ public class TelephoneImpl extends MetadataEntity implements Telephone {
     }
 
     /**
-     * Returns the telephone numbers of a facsimile machine for the responsible organization
-     * or individual.
+     * Returns the telephone numbers of a facsimile machine for the responsible organization or
+     * individual.
      *
      * @since 2.4
      */
@@ -98,8 +87,8 @@ public class TelephoneImpl extends MetadataEntity implements Telephone {
     }
 
     /**
-     * Set the telephone number of a facsimile machine for the responsible organization
-     * or individual.
+     * Set the telephone number of a facsimile machine for the responsible organization or
+     * individual.
      *
      * @since 2.4
      */

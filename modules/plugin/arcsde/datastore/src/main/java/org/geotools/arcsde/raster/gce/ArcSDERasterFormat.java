@@ -29,7 +29,6 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.arcsde.jndi.SharedSessionPool;
 import org.geotools.arcsde.raster.info.GatherCoverageMetadataCommand;
 import org.geotools.arcsde.raster.info.RasterDatasetInfo;
@@ -54,31 +53,28 @@ import org.opengis.parameter.GeneralParameterDescriptor;
 
 /**
  * An implementation of the ArcSDE Raster Format. Based on the ArcGrid module.
- * 
+ *
  * @author Saul Farber (saul.farber)
  * @author jeichar
  * @author Simone Giannecchini (simboss)
  * @author Gabriel Roldan (OpenGeo)
- *
- *
  * @source $URL$
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *         /org/geotools/arcsde/gce/ArcSDERasterFormat.java $
+ *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
+ *     /org/geotools/arcsde/gce/ArcSDERasterFormat.java $
  */
-@SuppressWarnings({ "nls", "deprecation" })
+@SuppressWarnings({"nls", "deprecation"})
 public final class ArcSDERasterFormat extends AbstractGridFormat implements Format {
 
     protected static final Logger LOGGER = Logging.getLogger("org.geotools.arcsde.gce");
 
-    private final Map<String, ArcSDEConnectionConfig> connectionConfigs = new WeakHashMap<String, ArcSDEConnectionConfig>();
+    private final Map<String, ArcSDEConnectionConfig> connectionConfigs =
+            new WeakHashMap<String, ArcSDEConnectionConfig>();
 
     private static final ArcSDERasterFormat instance = new ArcSDERasterFormat();
 
     private boolean statisticsMandatory = true;
 
-    /**
-     * Creates an instance and sets the metadata.
-     */
+    /** Creates an instance and sets the metadata. */
     private ArcSDERasterFormat() {
         setInfo();
     }
@@ -87,9 +83,7 @@ public final class ArcSDERasterFormat extends AbstractGridFormat implements Form
         return instance;
     }
 
-    /**
-     * Sets the metadata information.
-     */
+    /** Sets the metadata information. */
     private void setInfo() {
         Map<String, String> info = new HashMap<String, String>();
 
@@ -100,13 +94,18 @@ public final class ArcSDERasterFormat extends AbstractGridFormat implements Form
         info.put("version", GeoTools.getVersion().toString());
         mInfo = info;
 
-        readParameters = new ParameterGroup(new DefaultParameterDescriptorGroup(mInfo,
-                new GeneralParameterDescriptor[] { READ_GRIDGEOMETRY2D, OVERVIEW_POLICY }));
+        readParameters =
+                new ParameterGroup(
+                        new DefaultParameterDescriptorGroup(
+                                mInfo,
+                                new GeneralParameterDescriptor[] {
+                                    READ_GRIDGEOMETRY2D, OVERVIEW_POLICY
+                                }));
     }
 
     /**
-     * @param source
-     *            either a {@link String} or {@link File} instance representing the connection URL
+     * @param source either a {@link String} or {@link File} instance representing the connection
+     *     URL
      * @see AbstractGridFormat#getReader(Object source)
      */
     @Override
@@ -114,13 +113,14 @@ public final class ArcSDERasterFormat extends AbstractGridFormat implements Form
         return getReader(source, null);
     }
 
-    private static final WeakHashMap<String, ArcSDEGridCoverage2DReaderJAI> readerCache = new WeakHashMap<String, ArcSDEGridCoverage2DReaderJAI>();
+    private static final WeakHashMap<String, ArcSDEGridCoverage2DReaderJAI> readerCache =
+            new WeakHashMap<String, ArcSDEGridCoverage2DReaderJAI>();
 
     private static final ReadWriteLock readersLock = new ReentrantReadWriteLock();
 
     /**
-     * @param source
-     *            either a {@link String} or {@link File} instance representing the connection URL
+     * @param source either a {@link String} or {@link File} instance representing the connection
+     *     URL
      * @see AbstractGridFormat#getReader(Object, Hints)
      */
     @Override
@@ -144,18 +144,20 @@ public final class ArcSDERasterFormat extends AbstractGridFormat implements Form
                 try {
                     reader = readerCache.get(coverageUrl);
                     if (reader == null) {
-                        final ArcSDEConnectionConfig connectionConfig = getConnectionConfig(coverageUrl);
+                        final ArcSDEConnectionConfig connectionConfig =
+                                getConnectionConfig(coverageUrl);
 
                         final ISessionPool sessionPool = setupConnectionPool(connectionConfig);
 
-                        final RasterDatasetInfo rasterInfo = loadRasterInfo(coverageUrl,
-                                sessionPool);
+                        final RasterDatasetInfo rasterInfo =
+                                loadRasterInfo(coverageUrl, sessionPool);
 
-                        final RasterReaderFactory rasterReaderFactory = new RasterReaderFactory(
-                                sessionPool);
+                        final RasterReaderFactory rasterReaderFactory =
+                                new RasterReaderFactory(sessionPool);
 
-                        reader = new ArcSDEGridCoverage2DReaderJAI(this, rasterReaderFactory,
-                                rasterInfo, hints);
+                        reader =
+                                new ArcSDEGridCoverage2DReaderJAI(
+                                        this, rasterReaderFactory, rasterInfo, hints);
                         readerCache.put(coverageUrl, reader);
                     }
                 } finally {
@@ -164,7 +166,8 @@ public final class ArcSDERasterFormat extends AbstractGridFormat implements Form
             }
             return reader;
         } catch (IOException dse) {
-            LOGGER.log(Level.SEVERE, "Unable to creata ArcSDERasterReader for " + source + ".", dse);
+            LOGGER.log(
+                    Level.SEVERE, "Unable to creata ArcSDERasterReader for " + source + ".", dse);
             throw new RuntimeException(dse);
         }
     }
@@ -198,8 +201,8 @@ public final class ArcSDERasterFormat extends AbstractGridFormat implements Form
         RasterDatasetInfo rasterInfo;
 
         try {
-            GatherCoverageMetadataCommand command = new GatherCoverageMetadataCommand(rasterTable,
-                    statisticsMandatory);
+            GatherCoverageMetadataCommand command =
+                    new GatherCoverageMetadataCommand(rasterTable, statisticsMandatory);
             rasterInfo = scon.issue(command);
         } finally {
             scon.dispose();
@@ -222,9 +225,7 @@ public final class ArcSDERasterFormat extends AbstractGridFormat implements Form
         return sdeConfig;
     }
 
-    /**
-     * @see AbstractGridFormat#getWriter(Object)
-     */
+    /** @see AbstractGridFormat#getWriter(Object) */
     @Override
     public GridCoverageWriter getWriter(Object destination) {
         // return new ArcGridWriter(destination);
@@ -232,8 +233,8 @@ public final class ArcSDERasterFormat extends AbstractGridFormat implements Form
     }
 
     /**
-     * @param source
-     *            either a {@link String} or {@link File} instance representing the connection URL
+     * @param source either a {@link String} or {@link File} instance representing the connection
+     *     URL
      * @see AbstractGridFormat#accepts(Object input)
      */
     @Override
@@ -254,52 +255,42 @@ public final class ArcSDERasterFormat extends AbstractGridFormat implements Form
         }
     }
 
-    /**
-     * @see Format#getName()
-     */
+    /** @see Format#getName() */
     @Override
     public String getName() {
         return this.mInfo.get("name");
     }
 
-    /**
-     * @see Format#getDescription()
-     */
+    /** @see Format#getDescription() */
     @Override
     public String getDescription() {
         return this.mInfo.get("description");
     }
 
-    /**
-     * @see Format#getVendor()
-     */
+    /** @see Format#getVendor() */
     @Override
     public String getVendor() {
         return this.mInfo.get("vendor");
     }
 
-    /**
-     * @see Format#getDocURL()
-     */
+    /** @see Format#getDocURL() */
     @Override
     public String getDocURL() {
         return this.mInfo.get("docURL");
     }
 
-    /**
-     * @see Format#getVersion()
-     */
+    /** @see Format#getVersion() */
     @Override
     public String getVersion() {
         return this.mInfo.get("version");
     }
 
     /**
-     * Retrieves the default instance for the {@link ArcSDERasterFormat} of the
-     * {@link GeoToolsWriteParams} to control the writing process.
-     * 
-     * @return a default instance for the {@link ArcSDERasterFormat} of the
-     *         {@link GeoToolsWriteParams} to control the writing process.
+     * Retrieves the default instance for the {@link ArcSDERasterFormat} of the {@link
+     * GeoToolsWriteParams} to control the writing process.
+     *
+     * @return a default instance for the {@link ArcSDERasterFormat} of the {@link
+     *     GeoToolsWriteParams} to control the writing process.
      * @see AbstractGridFormat#getDefaultImageIOWriteParameters()
      */
     @Override
@@ -310,9 +301,8 @@ public final class ArcSDERasterFormat extends AbstractGridFormat implements Form
     // ////////////////
 
     /**
-     * @param input
-     *            either a {@link String} or a {@link File} instance representing the connection URL
-     *            to a given coverage
+     * @param input either a {@link String} or a {@link File} instance representing the connection
+     *     URL to a given coverage
      * @return the connection URL as a string
      */
     private String parseCoverageUrl(Object input) {
@@ -346,10 +336,9 @@ public final class ArcSDERasterFormat extends AbstractGridFormat implements Form
     /**
      * Checks the input provided to this {@link ArcSDERasterGridCoverage2DReader} and sets all the
      * other objects and flags accordingly.
-     * 
-     * @param sdeUrl
-     *            a url representing the connection parameters to an arcsde server instance provied
-     *            to this {@link ArcSDERasterGridCoverage2DReader}.
+     *
+     * @param sdeUrl a url representing the connection parameters to an arcsde server instance
+     *     provied to this {@link ArcSDERasterGridCoverage2DReader}.
      * @throws IOException
      */
     private ISessionPool setupConnectionPool(ArcSDEConnectionConfig sdeConfig) throws IOException {
@@ -364,8 +353,8 @@ public final class ArcSDERasterFormat extends AbstractGridFormat implements Form
         return sessionPool;
     }
 
-    public static String createRasterURL(final ArcSDEConnectionConfig config,
-            final String rasterName) {
+    public static String createRasterURL(
+            final ArcSDEConnectionConfig config, final String rasterName) {
         StringBuilder sb = new StringBuilder("sde://");
         sb.append(config.getUserName()).append(":").append(config.getPassword()).append("@");
         sb.append(config.getServerName()).append(":");
@@ -378,9 +367,8 @@ public final class ArcSDERasterFormat extends AbstractGridFormat implements Form
     }
 
     /**
-     * @param sdeUrl
-     *            - A StringBuffer containing a string of form
-     *            'sde://user:pass@sdehost:[port]/[dbname]
+     * @param sdeUrl - A StringBuffer containing a string of form
+     *     'sde://user:pass@sdehost:[port]/[dbname]
      * @return a ConnectionConfig object representing these parameters
      */
     public static ArcSDEConnectionConfig sdeURLToConnectionConfig(StringBuffer sdeUrl) {
@@ -477,8 +465,10 @@ public final class ArcSDERasterFormat extends AbstractGridFormat implements Form
                         LOGGER.warning("Wrong pool.maxConnections parameter: " + value);
                     }
                 } else {
-                    LOGGER.info("Ignoring unrecognized optional parameter '" + option
-                            + "'. Must be one of [pool.minConnections, pool.maxConnections]");
+                    LOGGER.info(
+                            "Ignoring unrecognized optional parameter '"
+                                    + option
+                                    + "'. Must be one of [pool.minConnections, pool.maxConnections]");
                 }
             }
         }
@@ -490,7 +480,7 @@ public final class ArcSDERasterFormat extends AbstractGridFormat implements Form
         params.put(ArcSDEConnectionConfig.PASSWORD_PARAM_NAME, sdePass);
         params.put(ArcSDEConnectionConfig.MIN_CONNECTIONS_PARAM_NAME, minConnections);
         params.put(ArcSDEConnectionConfig.MAX_CONNECTIONS_PARAM_NAME, maxConnections);
-        params.put(ArcSDEConnectionConfig.CONNECTION_TIMEOUT_PARAM_NAME, "-1");// do not wait
+        params.put(ArcSDEConnectionConfig.CONNECTION_TIMEOUT_PARAM_NAME, "-1"); // do not wait
 
         ArcSDEConnectionConfig config = ArcSDEConnectionConfig.fromMap(params);
         return config;
@@ -499,15 +489,15 @@ public final class ArcSDERasterFormat extends AbstractGridFormat implements Form
     /**
      * Used by test code to indicate wether to fail when a raster lacks statistics, since we can't
      * create statistics with the ArcSDE Java API
-     * 
+     *
      * @param statisticsMandatory
      */
     void setStatisticsMandatory(final boolean statisticsMandatory) {
         this.statisticsMandatory = statisticsMandatory;
     }
 
-	@Override
-	public GridCoverageWriter getWriter(Object destination, Hints hints) {
-		return null;
-	}
+    @Override
+    public GridCoverageWriter getWriter(Object destination, Hints hints) {
+        return null;
+    }
 }

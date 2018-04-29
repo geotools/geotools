@@ -17,14 +17,12 @@
 package org.geotools.gml3;
 
 /**
- *
  * @author Erik van de Pol
- *
- *
  * @source $URL$
  */
 public class CircleRadiusTolerance implements LinearizationTolerance {
     private double circleRadiusMultiplier;
+
     public CircleRadiusTolerance(double circleRadiusMultiplier) {
         this.circleRadiusMultiplier = circleRadiusMultiplier;
     }
@@ -32,5 +30,4 @@ public class CircleRadiusTolerance implements LinearizationTolerance {
     public double getTolerance(Circle circle) {
         return circleRadiusMultiplier * circle.getRadius();
     }
-
 }

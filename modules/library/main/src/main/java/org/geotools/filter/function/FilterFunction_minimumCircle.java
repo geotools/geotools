@@ -3,9 +3,9 @@ package org.geotools.filter.function;
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -16,33 +16,33 @@ package org.geotools.filter.function;
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
  */
+
 import static org.geotools.filter.capability.FunctionNameImpl.*;
 
-import org.geotools.filter.FunctionExpression;
+import com.vividsolutions.jts.geom.Geometry;
 import org.geotools.filter.FunctionExpressionImpl;
 import org.geotools.filter.capability.FunctionNameImpl;
 import org.opengis.filter.capability.FunctionName;
 
-import com.vividsolutions.jts.geom.Geometry;
-
 /**
  * A FilterFunction that expects a Geometry and returns it's minimum bounding circle.
+ *
  * @author Jared Erickson
  */
 public class FilterFunction_minimumCircle extends FunctionExpressionImpl {
-    
-    public static FunctionName NAME = new FunctionNameImpl("mincircle", Geometry.class,
-            parameter("geometry", Geometry.class));
 
-    /**
-     * Create a new FilterFunction_minimumCircle instance
-     */
+    public static FunctionName NAME =
+            new FunctionNameImpl(
+                    "mincircle", Geometry.class, parameter("geometry", Geometry.class));
+
+    /** Create a new FilterFunction_minimumCircle instance */
     public FilterFunction_minimumCircle() {
         super(NAME);
     }
 
     /**
      * Calculate the Geometry's minimum bounding circle.
+     *
      * @param feature The feature should be a Geometry
      * @return The minimum bounding circle Geometry
      * @throws IllegalArgumentException if the feature is not a Geometry

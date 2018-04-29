@@ -19,54 +19,38 @@ package org.geotools.util;
 import java.io.Serializable;
 import java.util.regex.Pattern;
 
-
 /**
  * Holds a version number. Versions are often of the form <code>{@linkplain #getMajor
- * major}.{@linkplain #getMinor minor}.{@linkplain #getRevision revision}</code>, but
- * are not required to. For example an EPSG database version is {@code "6.11.2"}. The
- * separator character is the dot.
- * <p>
- * This class provides convenience methods for fetching the major, minor and reversion
- * numbers, and for performing comparaisons.
+ * major}.{@linkplain #getMinor minor}.{@linkplain #getRevision revision}</code>, but are not
+ * required to. For example an EPSG database version is {@code "6.11.2"}. The separator character is
+ * the dot.
+ *
+ * <p>This class provides convenience methods for fetching the major, minor and reversion numbers,
+ * and for performing comparaisons.
  *
  * @since 2.4
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
- *
  * @see org.geotools.factory.GeoTools#getVersion
  */
 public class Version implements CharSequence, Comparable<Version>, Serializable {
-    /**
-     * For cross-version compatibility.
-     */
+    /** For cross-version compatibility. */
     private static final long serialVersionUID = -6793384507333713770L;
 
-    /**
-     * The pattern to use for splitting version numbers.
-     */
+    /** The pattern to use for splitting version numbers. */
     private static final Pattern PATTERN = Pattern.compile("(\\.|\\-)");
 
-    /**
-     * The version in string form, with leading and trailing spaces removed.
-     */
+    /** The version in string form, with leading and trailing spaces removed. */
     private final String version;
 
-    /**
-     * The components of the version string. Will be created when first needed.
-     */
+    /** The components of the version string. Will be created when first needed. */
     private transient String[] components;
 
-    /**
-     * The parsed components of the version string. Will be created when first needed.
-     */
+    /** The parsed components of the version string. Will be created when first needed. */
     private transient Comparable<?>[] parsed;
 
-    /**
-     * The hash code value. Will be computed when first needed.
-     */
+    /** The hash code value. Will be computed when first needed. */
     private transient int hashCode;
 
     /**
@@ -79,8 +63,8 @@ public class Version implements CharSequence, Comparable<Version>, Serializable 
     }
 
     /**
-     * Returns the major version number. This method returns an {@link Integer} if possible,
-     * or a {@link String} otherwise.
+     * Returns the major version number. This method returns an {@link Integer} if possible, or a
+     * {@link String} otherwise.
      *
      * @return The major version number.
      */
@@ -89,9 +73,9 @@ public class Version implements CharSequence, Comparable<Version>, Serializable 
     }
 
     /**
-     * Returns the minor version number. This method returns an {@link Integer} if possible,
-     * or a {@link String} otherwise. If there is no minor version number, then this method
-     * returns {@code null}.
+     * Returns the minor version number. This method returns an {@link Integer} if possible, or a
+     * {@link String} otherwise. If there is no minor version number, then this method returns
+     * {@code null}.
      *
      * @return The minor version number, or {@code null} if none.
      */
@@ -100,9 +84,8 @@ public class Version implements CharSequence, Comparable<Version>, Serializable 
     }
 
     /**
-     * Returns the revision number. This method returns an {@link Integer} if possible,
-     * or a {@link String} otherwise. If there is no revision number, then this method
-     * returns {@code null}.
+     * Returns the revision number. This method returns an {@link Integer} if possible, or a {@link
+     * String} otherwise. If there is no revision number, then this method returns {@code null}.
      *
      * @return The revision number, or {@code null} if none.
      */
@@ -111,15 +94,15 @@ public class Version implements CharSequence, Comparable<Version>, Serializable 
     }
 
     /**
-     * Returns the specified components of this version string. For a version of the
-     * {@code major.minor.revision} form, index 0 stands for the major version number,
-     * 1 stands for the minor version number and 2 stands for the revision number.
-     * <p>
-     * The return value is an {@link Integer} if the component is parsable as an integer,
-     * or a {@link String} otherwise. If there is no component at the specified index,
-     * then this method returns {@code null}.
+     * Returns the specified components of this version string. For a version of the {@code
+     * major.minor.revision} form, index 0 stands for the major version number, 1 stands for the
+     * minor version number and 2 stands for the revision number.
      *
-     * @param  index The index of the component to fetch.
+     * <p>The return value is an {@link Integer} if the component is parsable as an integer, or a
+     * {@link String} otherwise. If there is no component at the specified index, then this method
+     * returns {@code null}.
+     *
+     * @param index The index of the component to fetch.
      * @return The value at the specified index, or {@code null} if none.
      * @throws IndexOutOfBoundsException if {@code index} is negative.
      */
@@ -147,8 +130,8 @@ public class Version implements CharSequence, Comparable<Version>, Serializable 
     }
 
     /**
-     * Get the rank of the specified object according this type.
-     * This is for {@link #compareTo(Version, int)} internal only.
+     * Get the rank of the specified object according this type. This is for {@link
+     * #compareTo(Version, int)} internal only.
      */
     private static int getTypeRank(final Object value) {
         if (value instanceof CharSequence) {
@@ -161,20 +144,19 @@ public class Version implements CharSequence, Comparable<Version>, Serializable 
     }
 
     /**
-     * Compares this version with an other version object, up to the specified limit. A limit
-     * of 1 compares only the {@linkplain #getMajor major} version number. A limit of 2 compares
-     * the major and {@linkplain #getMinor minor} version numbers, <cite>etc</cite>. The
-     * comparaisons are performed as {@link Integer} object if possible, or as {@link String}
-     * otherwise.
+     * Compares this version with an other version object, up to the specified limit. A limit of 1
+     * compares only the {@linkplain #getMajor major} version number. A limit of 2 compares the
+     * major and {@linkplain #getMinor minor} version numbers, <cite>etc</cite>. The comparaisons
+     * are performed as {@link Integer} object if possible, or as {@link String} otherwise.
      *
-     * @param  other The other version object to compare with.
-     * @param  limit The maximum number of components to compare.
-     * @return A negative value if this version is lower than the supplied version, a positive
-     *         value if it is higher, or 0 if they are equal.
+     * @param other The other version object to compare with.
+     * @param limit The maximum number of components to compare.
+     * @return A negative value if this version is lower than the supplied version, a positive value
+     *     if it is higher, or 0 if they are equal.
      */
     public int compareTo(final Version other, final int limit) {
-        for (int i=0; i<limit; i++) {
-            final Comparable<?> v1 =  this.getComponent(i);
+        for (int i = 0; i < limit; i++) {
+            final Comparable<?> v1 = this.getComponent(i);
             final Comparable<?> v2 = other.getComponent(i);
             if (v1 == null) {
                 return (v2 == null) ? 0 : -1;
@@ -212,12 +194,12 @@ public class Version implements CharSequence, Comparable<Version>, Serializable 
     }
 
     /**
-     * Compares this version with an other version object. This method performs the same
-     * comparaison than {@link #compareTo(Version, int)} with no limit.
+     * Compares this version with an other version object. This method performs the same comparaison
+     * than {@link #compareTo(Version, int)} with no limit.
      *
-     * @param  other The other version object to compare with.
-     * @return A negative value if this version is lower than the supplied version, a positive
-     *         value if it is higher, or 0 if they are equal.
+     * @param other The other version object to compare with.
+     * @return A negative value if this version is lower than the supplied version, a positive value
+     *     if it is higher, or 0 if they are equal.
      */
     public int compareTo(final Version other) {
         return compareTo(other, Integer.MAX_VALUE);
@@ -237,38 +219,28 @@ public class Version implements CharSequence, Comparable<Version>, Serializable 
         return false;
     }
 
-    /**
-     * Returns the length of the version string.
-     */
+    /** Returns the length of the version string. */
     public int length() {
         return version.length();
     }
 
-    /**
-     * Returns the {@code char} value at the specified index.
-     */
+    /** Returns the {@code char} value at the specified index. */
     public char charAt(final int index) {
         return version.charAt(index);
     }
 
-    /**
-     * Returns a new version string that is a subsequence of this sequence.
-     */
+    /** Returns a new version string that is a subsequence of this sequence. */
     public CharSequence subSequence(final int start, final int end) {
         return version.subSequence(start, end);
     }
 
-    /**
-     * Returns the version string. This is the string specified at construction time.
-     */
+    /** Returns the version string. This is the string specified at construction time. */
     @Override
     public String toString() {
         return version;
     }
 
-    /**
-     * Returns a hash code value for this version.
-     */
+    /** Returns a hash code value for this version. */
     @Override
     public int hashCode() {
         if (hashCode == 0) {

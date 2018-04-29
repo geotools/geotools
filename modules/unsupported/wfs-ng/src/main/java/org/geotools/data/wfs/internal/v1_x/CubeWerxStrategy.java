@@ -26,12 +26,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import javax.xml.namespace.QName;
 import javax.xml.transform.TransformerException;
-
 import net.opengis.wfs.GetFeatureType;
-
 import org.geotools.data.wfs.internal.GetFeatureRequest;
 import org.geotools.data.wfs.internal.GetFeatureRequest.ResultType;
 import org.geotools.data.wfs.internal.WFSRequest;
@@ -52,29 +49,28 @@ import org.xml.sax.SAXException;
 
 /**
  * A strategy object to aid in querying a CubeWerx WFS 1.1 server
- * <p>
- * This strategy was created as per the limitations encountered at the CubeWerx server being tested
- * while developing this plugin.
- * </p>
- * <p>
- * For instance, the following issues were found:
+ *
+ * <p>This strategy was created as per the limitations encountered at the CubeWerx server being
+ * tested while developing this plugin.
+ *
+ * <p>For instance, the following issues were found:
+ *
  * <ul>
- * <li>resultType parameter is not supported in GetFeature
- * <li>Logically grouped spatial filters can't be handled
- * <li>CubeWerx does not support logical filters containing mixed geometry filters (eg, AND(BBOX,
- * Intersects)), no matter what the capabilities doc says
+ *   <li>resultType parameter is not supported in GetFeature
+ *   <li>Logically grouped spatial filters can't be handled
+ *   <li>CubeWerx does not support logical filters containing mixed geometry filters (eg, AND(BBOX,
+ *       Intersects)), no matter what the capabilities doc says
  * </ul>
- * </p>
- * 
+ *
  * @author groldan
  */
 public class CubeWerxStrategy extends StrictWFS_1_x_Strategy {
 
     /**
      * @return {@code true} only if resultType == results, CubeWerx throws a service exception if
-     *         the resultType parameter is set on a POST request, no matter it's value, and on a GET
-     *         request it's just ignored; also the returned feature collection does not contain the
-     *         number of features matched.
+     *     the resultType parameter is set on a POST request, no matter it's value, and on a GET
+     *     request it's just ignored; also the returned feature collection does not contain the
+     *     number of features matched.
      */
     @Override
     public boolean supports(final ResultType resultType) {
@@ -83,8 +79,9 @@ public class CubeWerxStrategy extends StrictWFS_1_x_Strategy {
 
     /**
      * Removes the {@code RESULTTYPE}.
-     * 
-     * @see org.geotools.data.wfs.internal.AbstractWFSStrategy#buildGetFeatureParametersForGET(org.geotools.data.wfs.internal.GetFeatureRequest)
+     *
+     * @see
+     *     org.geotools.data.wfs.internal.AbstractWFSStrategy#buildGetFeatureParametersForGET(org.geotools.data.wfs.internal.GetFeatureRequest)
      */
     @Override
     protected Map<String, String> buildGetFeatureParametersForGET(GetFeatureRequest request) {
@@ -114,9 +111,9 @@ public class CubeWerxStrategy extends StrictWFS_1_x_Strategy {
         }
 
         dom.getDocumentElement().removeAttribute("resultType");
-        DOMImplementationLS domImpl = (DOMImplementationLS) dom.getImplementation();// safe cast as
-                                                                                    // long as we're
-                                                                                    // on Java6
+        DOMImplementationLS domImpl = (DOMImplementationLS) dom.getImplementation(); // safe cast as
+        // long as we're
+        // on Java6
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         LSOutput destination = domImpl.createLSOutput();
@@ -131,7 +128,6 @@ public class CubeWerxStrategy extends StrictWFS_1_x_Strategy {
         requestTrace("Encoded ", request.getOperation(), " request: ", out);
 
         return new ByteArrayInputStream(out.toByteArray());
-
     }
 
     @Override
@@ -154,9 +150,9 @@ public class CubeWerxStrategy extends StrictWFS_1_x_Strategy {
         } else {
             boolean spatialAdded = false;
             // if a logical operator, check no more than one geometry filter is enclosed on it
-            List<Filter> children = new ArrayList<Filter>(
-                    ((BinaryLogicOperator) serverFilter).getChildren());
-            for (Iterator<Filter> it = children.iterator(); it.hasNext();) {
+            List<Filter> children =
+                    new ArrayList<Filter>(((BinaryLogicOperator) serverFilter).getChildren());
+            for (Iterator<Filter> it = children.iterator(); it.hasNext(); ) {
                 Filter f = it.next();
                 if (f instanceof BinarySpatialOperator) {
                     if (spatialAdded) {
@@ -171,6 +167,6 @@ public class CubeWerxStrategy extends StrictWFS_1_x_Strategy {
             SimplifyingFilterVisitor sfv = new SimplifyingFilterVisitor();
             serverFilter = (Filter) serverFilter.accept(sfv, null);
         }
-        return new Filter[] { serverFilter, postFilter };
+        return new Filter[] {serverFilter, postFilter};
     }
 }

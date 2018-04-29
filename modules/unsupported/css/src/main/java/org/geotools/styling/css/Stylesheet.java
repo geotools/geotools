@@ -17,14 +17,12 @@
 package org.geotools.styling.css;
 
 import java.util.List;
-
 import org.geotools.styling.Rule;
 
 /**
  * A CSS stylesheet, that is, a ordered list of {@link Rule}
- * 
- * @author Andrea Aime - GeoSolutions
  *
+ * @author Andrea Aime - GeoSolutions
  */
 public class Stylesheet {
 
@@ -39,7 +37,7 @@ public class Stylesheet {
 
     /**
      * The list of rules in the stylesheet
-     * 
+     *
      * @return
      */
     List<CssRule> getRules() {
@@ -52,7 +50,7 @@ public class Stylesheet {
 
     /**
      * The list of directives parsed from the style
-     * 
+     *
      * @return
      */
     public List<Directive> getDirectives() {
@@ -89,24 +87,16 @@ public class Stylesheet {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
         Stylesheet other = (Stylesheet) obj;
         if (directives == null) {
-            if (other.directives != null)
-                return false;
-        } else if (!directives.equals(other.directives))
-            return false;
+            if (other.directives != null) return false;
+        } else if (!directives.equals(other.directives)) return false;
         if (rules == null) {
-            if (other.rules != null)
-                return false;
-        } else if (!rules.equals(other.rules))
-            return false;
+            if (other.rules != null) return false;
+        } else if (!rules.equals(other.rules)) return false;
         return true;
     }
-
 }

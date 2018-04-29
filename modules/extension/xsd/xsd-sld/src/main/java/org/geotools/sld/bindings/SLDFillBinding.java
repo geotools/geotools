@@ -18,9 +18,7 @@ package org.geotools.sld.bindings;
 
 import java.util.Iterator;
 import java.util.List;
-
 import javax.xml.namespace.QName;
-
 import org.geotools.sld.CssParameter;
 import org.geotools.styling.Fill;
 import org.geotools.styling.Graphic;
@@ -32,12 +30,12 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.picocontainer.MutablePicoContainer;
 
-
 /**
  * Binding object for the element http://www.opengis.net/sld:Fill.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xsd:element name="Fill"&gt;
  *      &lt;xsd:annotation&gt;
@@ -56,31 +54,26 @@ import org.picocontainer.MutablePicoContainer;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class SLDFillBinding extends AbstractComplexBinding {
     StyleFactory styleFactory;
     FilterFactory filterFactory;
-   
+
     public SLDFillBinding(StyleFactory styleFactory, FilterFactory filterFactory) {
         this.styleFactory = styleFactory;
         this.filterFactory = filterFactory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return SLD.FILL;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -91,6 +84,7 @@ public class SLDFillBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -101,33 +95,33 @@ public class SLDFillBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {
-    }
+    public void initialize(ElementInstance instance, Node node, MutablePicoContainer context) {}
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Expression color = null;
         Expression opacity = null;
         Graphic graphicFill = null;
 
         graphicFill = (Graphic) node.getChildValue("GraphicFill");
 
-        //&quot;fill&quot; (color) 
-        //&quot;fill-opacity&quot;
+        // &quot;fill&quot; (color)
+        // &quot;fill-opacity&quot;
         List params = node.getChildValues(CssParameter.class);
 
-        for (Iterator itr = params.iterator(); itr.hasNext();) {
+        for (Iterator itr = params.iterator(); itr.hasNext(); ) {
             CssParameter param = (CssParameter) itr.next();
 
             if ("fill".equals(param.getName())) {
@@ -144,7 +138,7 @@ public class SLDFillBinding extends AbstractComplexBinding {
         if (opacity != null) {
             fill.setOpacity(opacity);
         }
-        if(graphicFill != null) {
+        if (graphicFill != null) {
             fill.setGraphicFill(graphicFill);
         }
 

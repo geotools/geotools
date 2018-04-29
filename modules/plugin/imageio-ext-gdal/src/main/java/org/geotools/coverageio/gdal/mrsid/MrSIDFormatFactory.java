@@ -17,30 +17,25 @@
 package org.geotools.coverageio.gdal.mrsid;
 
 import it.geosolutions.imageio.plugins.mrsid.MrSIDImageReaderSpi;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 import org.geotools.coverageio.BaseGridFormatFactorySPI;
 import org.opengis.coverage.grid.Format;
 
-
 /**
- * Implementation of the {@link Format} service provider interface for MrSID
- * files.
+ * Implementation of the {@link Format} service provider interface for MrSID files.
  *
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
  * @since 2.5.x
- *
- *
  * @source $URL$
  */
-public final class MrSIDFormatFactory extends BaseGridFormatFactorySPI implements GridFormatFactorySpi {
+public final class MrSIDFormatFactory extends BaseGridFormatFactorySPI
+        implements GridFormatFactorySpi {
     /** Logger. */
-    private final static Logger LOGGER = org.geotools.util.logging.Logging.getLogger(
-            "org.geotools.coverageio.gdal.mrsid");
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.coverageio.gdal.mrsid");
 
     /**
      * Tells me if the coverage plugin to access MrSID is available or not.

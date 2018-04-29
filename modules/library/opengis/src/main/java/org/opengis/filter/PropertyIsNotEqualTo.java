@@ -4,18 +4,15 @@
  *
  *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2005 Open Geospatial Consortium Inc.
- *    
+ *
  *    All Rights Reserved. http://www.opengis.org/legal/
  */
 package org.opengis.filter;
 
 import org.opengis.annotation.XmlElement;
 
-
 /**
  * Filter operator that compares that its two sub-expressions are not equal to each other.
- *
- *
  *
  * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.0</A>
@@ -24,6 +21,6 @@ import org.opengis.annotation.XmlElement;
  */
 @XmlElement("PropertyIsNotEqualTo")
 public interface PropertyIsNotEqualTo extends BinaryComparisonOperator {
-	/** Operator name used to check FilterCapabilities */
-	public static String NAME = "NotEqualTo";
+    /** Operator name used to check FilterCapabilities */
+    public static String NAME = "NotEqualTo";
 }

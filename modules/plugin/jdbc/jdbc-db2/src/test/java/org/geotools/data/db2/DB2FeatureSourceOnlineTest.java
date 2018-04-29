@@ -20,30 +20,24 @@ import org.geotools.jdbc.JDBCFeatureSourceOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class DB2FeatureSourceOnlineTest extends JDBCFeatureSourceOnlineTest {
     protected JDBCTestSetup createTestSetup() {
         return new DB2TestSetup();
     }
 
     protected boolean areCRSEqual(CoordinateReferenceSystem crs1, CoordinateReferenceSystem crs2) {
-    	if (crs1==null && crs2==null)
-    		return true;
-    	
-    	if (crs1==null ) return false;
-    	if (crs2==null ) return false;
-    	
-    	String name1 =crs1.getName().toString();
-    	String name2 =crs2.getName().toString();
-    	
-    	return (name1.contains("WGS") && name1.contains("84") &&
-    		name2.contains("WGS") && name2.contains("84"));
-   	}
-    
-    
+        if (crs1 == null && crs2 == null) return true;
+
+        if (crs1 == null) return false;
+        if (crs2 == null) return false;
+
+        String name1 = crs1.getName().toString();
+        String name2 = crs2.getName().toString();
+
+        return (name1.contains("WGS")
+                && name1.contains("84")
+                && name2.contains("WGS")
+                && name2.contains("84"));
+    }
 }

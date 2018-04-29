@@ -3,11 +3,9 @@ package org.geotools.wcs.v2_0;
 import static org.junit.Assert.assertEquals;
 
 import java.util.List;
-
 import net.opengis.wcs20.DescribeEOCoverageSetType;
 import net.opengis.wcs20.DimensionTrimType;
 import net.opengis.wcs20.Section;
-
 import org.eclipse.emf.common.util.EList;
 import org.geotools.xml.Parser;
 import org.junit.Test;
@@ -19,22 +17,23 @@ public class DescribeEOCoverageSetTest {
     @Test
     public void testParseDescribeCoverage() throws Exception {
         String capRequestPath = "requestDescribeEOCoverageSet.xml";
-        DescribeEOCoverageSetType dcs = (DescribeEOCoverageSetType) parser.parse(getClass()
-                .getResourceAsStream(capRequestPath));
+        DescribeEOCoverageSetType dcs =
+                (DescribeEOCoverageSetType)
+                        parser.parse(getClass().getResourceAsStream(capRequestPath));
         assertEquals("WCS", dcs.getService());
         assertEquals("2.0.0", dcs.getVersion());
 
         List<String> ids = dcs.getEoId();
         assertEquals(1, ids.size());
         assertEquals("someDatasetSeries", ids.get(0));
-        
+
         assertEquals(100, dcs.getCount());
-        
+
         EList<Section> sections = dcs.getSections().getSection();
         assertEquals(2, sections.size());
         assertEquals(Section.COVERAGEDESCRIPTIONS, sections.get(0));
         assertEquals(Section.DATASETSERIESDESCRIPTIONS, sections.get(1));
-        
+
         EList<DimensionTrimType> trims = dcs.getDimensionTrim();
         assertEquals(3, trims.size());
         DimensionTrimType lonTrim = trims.get(0);
@@ -49,7 +48,5 @@ public class DescribeEOCoverageSetTest {
         assertEquals("phenomenonTime", timeTrim.getDimension());
         assertEquals("2011-01-18T22:21:52Z", timeTrim.getTrimLow());
         assertEquals("2011-01-18T22:22:52Z", timeTrim.getTrimHigh());
-
     }
-
 }

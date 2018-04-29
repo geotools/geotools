@@ -1,16 +1,11 @@
 package org.geotools.data.efeature.query;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class EFeatureEncoderException extends Exception {
 
     private static final long serialVersionUID = 1L;
 
-    public EFeatureEncoderException() {
-    }
+    public EFeatureEncoderException() {}
 
     public EFeatureEncoderException(String message) {
         super(message);
@@ -23,5 +18,4 @@ public class EFeatureEncoderException extends Exception {
     public EFeatureEncoderException(String message, Throwable cause) {
         super(message, cause);
     }
-
 }

@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -20,64 +20,68 @@ import org.opengis.filter.capability.IdCapabilities;
 
 /**
  * Implementation of the IdCapabilities interface.
- * 
+ *
  * @author Justin Deoliveira, The Open Planning Project
- *
- *
- *
- *
  * @source $URL$
  */
 public class IdCapabilitiesImpl implements IdCapabilities {
 
     boolean eid;
     boolean fid;
-    
+
     public IdCapabilitiesImpl() {
-        this( false, false );
+        this(false, false);
     }
-    public IdCapabilitiesImpl( boolean eid, boolean fid ) {
+
+    public IdCapabilitiesImpl(boolean eid, boolean fid) {
         this.eid = eid;
         this.fid = fid;
     }
-    public IdCapabilitiesImpl( IdCapabilities copy ) {
-        this( copy.hasEID(), copy.hasFID() ); 
+
+    public IdCapabilitiesImpl(IdCapabilities copy) {
+        this(copy.hasEID(), copy.hasFID());
     }
-    
+
     public boolean hasEID() {
         return eid;
     }
-    public void setEid( boolean eid ) {
+
+    public void setEid(boolean eid) {
         this.eid = eid;
     }
+
     public boolean hasFID() {
         return fid;
     }
-    public void setFID( boolean fid ){
+
+    public void setFID(boolean fid) {
         this.fid = fid;
     }
-    public void addAll( IdCapabilities copy ){
-        if( copy == null ) return;
-        if( copy.hasEID() ){
+
+    public void addAll(IdCapabilities copy) {
+        if (copy == null) return;
+        if (copy.hasEID()) {
             this.eid = true;
         }
-        if( copy.hasFID() ){
+        if (copy.hasFID()) {
             this.fid = true;
         }
     }
+
     @Override
     public String toString() {
         StringBuffer buf = new StringBuffer();
         buf.append("IdCapabilitiesImpl[");
-        if( fid){
+        if (fid) {
             buf.append(" FeatureId");
         }
-        if( eid){
+        if (eid) {
             buf.append(" GMLObjectId");
         }
         buf.append(" ]");
         return buf.toString();
     }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -86,19 +90,15 @@ public class IdCapabilitiesImpl implements IdCapabilities {
         result = prime * result + (fid ? 1231 : 1237);
         return result;
     }
+
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
         IdCapabilitiesImpl other = (IdCapabilitiesImpl) obj;
-        if (eid != other.eid)
-            return false;
-        if (fid != other.fid)
-            return false;
+        if (eid != other.eid) return false;
+        if (fid != other.fid) return false;
         return true;
     }
 }

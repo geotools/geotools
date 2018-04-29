@@ -16,24 +16,16 @@
  */
 package org.geotools.gml2;
 
-import javax.xml.parsers.SAXParserFactory;
-
-import junit.framework.TestCase;
-
-import org.geotools.xml.Configuration;
-import org.geotools.xml.Parser;
-
 import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
+import javax.xml.parsers.SAXParserFactory;
+import junit.framework.TestCase;
+import org.geotools.xml.Configuration;
+import org.geotools.xml.Parser;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class GMLGeometryTest extends TestCase {
     Parser parser;
 

@@ -18,29 +18,21 @@
 package org.geotools.coverageio.jp2k;
 
 import java.util.Iterator;
-
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 import org.geotools.coverage.grid.io.GridFormatFinder;
-import org.geotools.coverageio.jp2k.JP2KFormatFactory;
 import org.junit.Test;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
-
 
 /**
  * Class for testing availability of JP2K format factory
  *
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini (simboss), GeoSolutions
- *
- *
- *
- *
  * @source $URL$
  */
 public class ServiceTest extends BaseJP2K {
-    public ServiceTest() {
-    }
+    public ServiceTest() {}
 
     @Test
     public void testIsAvailable() throws NoSuchAuthorityCodeException, FactoryException {
@@ -50,7 +42,8 @@ public class ServiceTest extends BaseJP2K {
 
         GridFormatFinder.scanForPlugins();
 
-        final Iterator<GridFormatFactorySpi> list = GridFormatFinder.getAvailableFormats().iterator();
+        final Iterator<GridFormatFactorySpi> list =
+                GridFormatFinder.getAvailableFormats().iterator();
         boolean found = false;
         GridFormatFactorySpi fac = null;
 

@@ -41,7 +41,6 @@ public class TileFactoryTest {
         Assert.assertEquals(-150, value3, 0.00001);
         double value4 = TileFactory.normalizeDegreeValue(91, 90);
         Assert.assertEquals(-89, value4, 0.00001);
-
     }
 
     protected TileFactory createFactory() {

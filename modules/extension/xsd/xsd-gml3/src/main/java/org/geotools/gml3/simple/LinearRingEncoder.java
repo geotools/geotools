@@ -25,7 +25,7 @@ import org.xml.sax.helpers.AttributesImpl;
 
 /**
  * Encodes a GML3 linear ring
- * 
+ *
  * @author Justin Deoliveira, OpenGeo
  * @author Andrea Aime - GeoSolutions
  */
@@ -38,7 +38,8 @@ class LinearRingEncoder extends LineStringEncoder {
     }
 
     @Override
-    public void encode(LineString geometry, AttributesImpl atts, GMLWriter handler, String gmlId) throws Exception {
+    public void encode(LineString geometry, AttributesImpl atts, GMLWriter handler, String gmlId)
+            throws Exception {
         // linearRing is not a geometry, just a component, has no id
         super.encode(geometry, atts, handler, null);
     }

@@ -26,51 +26,47 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.geotools.maven.taglet.Source;
 
 /**
- * This program adds the @source tag to class header javadocs. Optionally, it will also
- * replace an existing @source tag with a new one. The tag is used to generate the module
- * module listing in the class javadocs. For example, this tag:
+ * This program adds the @source tag to class header javadocs. Optionally, it will also replace an
+ * existing @source tag with a new one. The tag is used to generate the module module listing in the
+ * class javadocs. For example, this tag:
+ *
  * <pre><code>
  * &#64source http://svn.osgeo.org/geotools/trunk/modules/library/api/src/main/java/org/geotools/data/DataStore.java
  * </code></pre>
+ *
  * Will result in this content at the end of the class header javadocs:
- * <p>
- * <b>Module:</b><br>
+ *
+ * <p><b>Module:</b><br>
  * &nbsp;&nbsp;&nbsp;&nbsp;modules/library/api (gt-api.jar)<br>
  * <b>Source repository:</b><br>
  * &nbsp;&nbsp;&nbsp;&nbsp;http://svn.osgeo.org/geotools/trunk/modules/library/api/src/main/java/org/geotools/data/DataStore.java
- * <p>
- * To run this program on the command line using Maven:
+ *
+ * <p>To run this program on the command line using Maven:
+ *
  * <pre><code>
  * cd /topgtdir/build/maven/javadoc
  * mvn exec:java -Dexec.args="path-to-module-src-dir options"
  * </code></pre>
+ *
  * Where<br>
- * 
  * {@code path-to-module-src-dir} is a full or relative path to the module's top src directory<br>
- * 
  * {@code options} is zero or more of the following:<br>
- * 
- * {@code --add-header} to add an empty class javadoc block if none exists (default is to skip
- * files with no class javadoc block)<br>
- * 
- * {@code --any-class} process all classes, interfaces and enums (default is only those 
- * that are public)<br>
- * 
+ * {@code --add-header} to add an empty class javadoc block if none exists (default is to skip files
+ * with no class javadoc block)<br>
+ * {@code --any-class} process all classes, interfaces and enums (default is only those that are
+ * public)<br>
  * {@code --fix} attempt to fix existing source tags that have been incorrectly broken across lines
  * (default is just report broken tags)<br>
- * 
- * {@code --replace-tag} to force replacement of existing source tags (default is no replacement)<br>
- * 
- * {@code --svn} add Subversion delimiters ($URL, $) to the source path to enable auto-updating
- * when the file is committed using svn (default is to add delimiters)<br>
- * 
- * <p>
- * Adapted from the CommentUpdater class previously in this package that was written
- * by Martin Desruisseaux.
+ * {@code --replace-tag} to force replacement of existing source tags (default is no replacement)
+ * <br>
+ * {@code --svn} add Subversion delimiters ($URL, $) to the source path to enable auto-updating when
+ * the file is committed using svn (default is to add delimiters)<br>
+ *
+ * <p>Adapted from the CommentUpdater class previously in this package that was written by Martin
+ * Desruisseaux.
  *
  * @author Michael Bedward
  * @source $URL$
@@ -83,48 +79,42 @@ public class InsertSourceTag {
     private final Pattern findCommentStart = Pattern.compile("^\\s*\\Q/*\\E([^\\*]|$)");
     private final Pattern findCommentEnd = Pattern.compile("\\Q*/\\E");
     private final Pattern findSourceTag = Pattern.compile("^.*?\\Q@source\\E");
-    private final Pattern findCompleteSourceTag = Pattern.compile(
-            "^.*?\\Q@source\\E(.*?)\\Q.java\\E\\s*\\$?");
-    private final Pattern findCompletePath = Pattern.compile(
-            "^.*?http.*?\\Q.java\\E\\s*\\$?");
+    private final Pattern findCompleteSourceTag =
+            Pattern.compile("^.*?\\Q@source\\E(.*?)\\Q.java\\E\\s*\\$?");
+    private final Pattern findCompletePath = Pattern.compile("^.*?http.*?\\Q.java\\E\\s*\\$?");
     private final Pattern findVersionTag = Pattern.compile("^.*?\\Q@version\\E");
-    private final Pattern findPublicClass = Pattern.compile(
-            "\\s*public[a-zA-Z\\s]+(class|interface|enum)");
+    private final Pattern findPublicClass =
+            Pattern.compile("\\s*public[a-zA-Z\\s]+(class|interface|enum)");
     private final Pattern findClass = Pattern.compile(".*?(class|interface|enum)");
     private final Pattern findAnnotation = Pattern.compile("^@[a-zA-Z]+");
     private final String lineSeparator = System.getProperty("line.separator", "\n");
-    /**
-     * Option to add a class javadoc block if none is found.
-     */
+    /** Option to add a class javadoc block if none is found. */
     private static final String ADD_HEADER_OPTION = "--add-header";
+
     private boolean optionAddHeader;
-    /**
-     * Option to process any class as opposed to only public classes.
-     */
+    /** Option to process any class as opposed to only public classes. */
     private static final String ANY_CLASS_OPTION = "--any-class";
+
     private boolean optionAnyClass;
-    /**
-     * Option to attempt to fix existing, broken source tags.
-     */
+    /** Option to attempt to fix existing, broken source tags. */
     private static final String FIX_BROKEN_TAG_OPTION = "--fix";
+
     private boolean optionFixBreaks;
-    /** 
-     * Option to replace existing source taglet if one is found.
-     */
+    /** Option to replace existing source taglet if one is found. */
     private static final String REPLACE_OPTION = "--replace-tag";
+
     private boolean optionReplace;
-    /**
-     * Option to add svn URL keyword if not found.
-     */
+    /** Option to add svn URL keyword if not found. */
     private static final String SVN_OPTION = "--svn";
+
     private boolean optionSVNDelims;
 
     /**
-     * Main method. Takes the name of the file or directory to process from the
-     * first command line argument provided (only the first is examined). If a
-     * directory, all child directories and java source files will be processed.
-     * <p>
-     * Note: local backup files are <b>not</b> saved by this program.
+     * Main method. Takes the name of the file or directory to process from the first command line
+     * argument provided (only the first is examined). If a directory, all child directories and
+     * java source files will be processed.
+     *
+     * <p>Note: local backup files are <b>not</b> saved by this program.
      */
     public static void main(String[] args) {
 
@@ -137,21 +127,31 @@ public class InsertSourceTag {
             System.out.println("usage: InsertSourceTag {options} fileOrDirName");
             System.out.println("options:");
 
-            System.out.println("   " + ANY_CLASS_OPTION
-                    + ": Process any class. Default is only public classes.");
+            System.out.println(
+                    "   "
+                            + ANY_CLASS_OPTION
+                            + ": Process any class. Default is only public classes.");
 
-            System.out.println("   " + ADD_HEADER_OPTION
-                    + ": Add class header javadocs if absent. Default is skip classes with no header.");
+            System.out.println(
+                    "   "
+                            + ADD_HEADER_OPTION
+                            + ": Add class header javadocs if absent. Default is skip classes with no header.");
 
-            System.out.println("   " + FIX_BROKEN_TAG_OPTION
-                    + ": Attempt to fix source tags that have been broken across lines. "
-                    + "Default is do not fix.");
+            System.out.println(
+                    "   "
+                            + FIX_BROKEN_TAG_OPTION
+                            + ": Attempt to fix source tags that have been broken across lines. "
+                            + "Default is do not fix.");
 
-            System.out.println("   " + REPLACE_OPTION
-                    + ": Replace existing source tags. Default is do not replace.");
+            System.out.println(
+                    "   "
+                            + REPLACE_OPTION
+                            + ": Replace existing source tags. Default is do not replace.");
 
-            System.out.println("   " + SVN_OPTION
-                    + ": Add the svn URL keyword. Default is do not add keyword.");
+            System.out.println(
+                    "   "
+                            + SVN_OPTION
+                            + ": Add the svn URL keyword. Default is do not add keyword.");
 
             return;
         }
@@ -196,8 +196,8 @@ public class InsertSourceTag {
     }
 
     /**
-     * Process the given file or directory. If a directory, this method will
-     * be called recursively for all child directories and files.
+     * Process the given file or directory. If a directory, this method will be called recursively
+     * for all child directories and files.
      *
      * @param file the file or directory to be processed
      */
@@ -221,13 +221,12 @@ public class InsertSourceTag {
     }
 
     /**
-     * This method performs the task of searching the file for a public class or interface
-     * and its associated javadoc comment block. If found, the comment block is searched
-     * for a source tag which, if absent, will be generated and inserted into the file.
+     * This method performs the task of searching the file for a public class or interface and its
+     * associated javadoc comment block. If found, the comment block is searched for a source tag
+     * which, if absent, will be generated and inserted into the file.
      *
      * @param file file to process
      * @return true if the source tag was inserted into the file; false otherwise
-     *
      * @throws FileNotFoundException
      * @throws IOException
      */
@@ -295,8 +294,9 @@ public class InsertSourceTag {
                     } else if (inCommentBlock) {
                         inCommentBlock = false;
                     } else {
-                        System.out.println("   *** Mis-placed end marker for comment block "
-                                + "- skipping this file ***");
+                        System.out.println(
+                                "   *** Mis-placed end marker for comment block "
+                                        + "- skipping this file ***");
                         System.out.println();
                         return false;
                     }
@@ -348,8 +348,9 @@ public class InsertSourceTag {
                      * the class header we will act safely and not modify the file
                      */
                     if (unknownPrecedingContent) {
-                        System.out.println("   *** Javadocs do not directly precede class"
-                                + " - skipping file ***");
+                        System.out.println(
+                                "   *** Javadocs do not directly precede class"
+                                        + " - skipping file ***");
                         System.out.println();
                         return false;
                     }
@@ -359,11 +360,12 @@ public class InsertSourceTag {
                      * the replace tag option is false, skip this file.
                      */
                     for (int blockLineNo = javadocStartLine;
-                            blockLineNo <= javadocEndLine; blockLineNo++) {
+                            blockLineNo <= javadocEndLine;
+                            blockLineNo++) {
                         String commentText = buffer.get(blockLineNo);
                         matcher = findSourceTag.matcher(commentText);
                         if (matcher.find()) {
-                            /* 
+                            /*
                              * Check that those pesky Eclipse users haven't
                              * split the source tag across multiple lines with
                              * their auto-format thing.
@@ -378,7 +380,7 @@ public class InsertSourceTag {
                                         sourceTagLine = blockLineNo;
                                         if (!optionReplace) {
                                             // Make the new tag text the old lines joined together.
-                                            // 
+                                            //
                                             String http = matcher.group();
                                             int start = http.indexOf("$URL");
                                             if (start < 0) {
@@ -392,8 +394,9 @@ public class InsertSourceTag {
                                     }
                                 } else {
                                     // Just report the broken tag and skip this file
-                                    System.out.println("   *** Incomplete source tag detected"
-                                            + "- skipping this file ***");
+                                    System.out.println(
+                                            "   *** Incomplete source tag detected"
+                                                    + "- skipping this file ***");
                                     System.out.println();
                                     return false;
                                 }
@@ -407,7 +410,6 @@ public class InsertSourceTag {
                             } else {
                                 return false;
                             }
-
                         }
                     }
 
@@ -456,20 +458,16 @@ public class InsertSourceTag {
     }
 
     /**
-     * Writes the file with a newly generated source tag in the class header
-     * javadocs
+     * Writes the file with a newly generated source tag in the class header javadocs
      *
      * @param file the file to write
      * @param buffer file contents
      * @param sourceTagLine line number for the new source tag
      * @param sourceTag text for the new source tag
-     *
      * @return always returns true
-     * 
      * @throws IOException
      */
-    private boolean writeFile(File file, List<String> buffer,
-            int sourceTagLine, String sourceTag)
+    private boolean writeFile(File file, List<String> buffer, int sourceTagLine, String sourceTag)
             throws IOException {
 
         FileWriter writer = new FileWriter(file);

@@ -22,10 +22,9 @@ import java.net.URL;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
-
 import org.geotools.data.ows.Layer;
-import org.geotools.data.wmts.model.WMTSLayer;
 import org.geotools.data.wmts.model.WMTSCapabilities;
+import org.geotools.data.wmts.model.WMTSLayer;
 import org.geotools.data.wmts.request.GetTileRequest;
 import org.geotools.geometry.GeneralEnvelope;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -39,7 +38,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 /**
  * @author Richard Gould
  * @author ian
- *
  * @source $URL$
  */
 public class WebMapTileServerOnlineTest extends OnlineTestCase {

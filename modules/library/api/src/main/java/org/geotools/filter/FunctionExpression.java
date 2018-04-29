@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -17,11 +17,9 @@
 package org.geotools.filter;
 
 import java.util.List;
-
-import org.opengis.filter.capability.FunctionName;
+import org.geotools.factory.Factory;
 import org.opengis.filter.expression.Function;
 import org.opengis.filter.expression.Literal;
-import org.geotools.factory.Factory;
 
 /**
  * Quick Function implementation for direct use as a factory.
@@ -34,37 +32,35 @@ import org.geotools.factory.Factory;
  * <li>{@link #setParameters(List)} is used to supply the argument expressions.</li>
  * <li>{@link #setFallbackValue(Literal)} is used to supply a placeholder Literal to be used if the function implementation is not available</li>
  * </ul>
- * 
+ *
  * All implements should be registered for service provider interface
- * 
+ *
  * <pre>
  * org.opengis.filter.Function</code>
  * DefaultFunctionFactor.
- * 
+ *
  * <p>
  * If you have a large number of related functions consider the use of {@link FunctionFactory}.
- * 
+ *
  * @author James Macgill, PSU
  * @author Jody Garnett (Boundless)
  * @see FunctionFactory
  * @source $URL$
  */
 public interface FunctionExpression extends Factory, Function {
-    
+
     /**
      * Fallback value to use in the event the function is unavailable in the requested environment.
-     * <p>
-     * The fallback value is not provided as one of the arguments, as it is an advanced option used
-     * in style layer descriptor documents to facilitate interoperability. It allows a user to specify
-     * an SQL function, and provide a value to use when the documented is used with a WFS that does
-     * not support the provided function.
-     * 
+     *
+     * <p>The fallback value is not provided as one of the arguments, as it is an advanced option
+     * used in style layer descriptor documents to facilitate interoperability. It allows a user to
+     * specify an SQL function, and provide a value to use when the documented is used with a WFS
+     * that does not support the provided function.
+     *
      * @param parameters
      */
     void setFallbackValue(Literal fallback);
 
-    /**
-     * Sets the Parameters for the function.
-     */
+    /** Sets the Parameters for the function. */
     void setParameters(List<org.opengis.filter.expression.Expression> parameters);
 }

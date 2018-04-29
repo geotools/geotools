@@ -18,34 +18,31 @@
 package org.geotools.map.event;
 
 /**
- * An abstract adapter class to receive events about map bounds and layer changes. 
- * All of the methods are empty. This class exists as convenience for creating listener
- * objects.
+ * An abstract adapter class to receive events about map bounds and layer changes. All of the
+ * methods are empty. This class exists as convenience for creating listener objects.
  *
  * @author Michael Bedward
  * @since 8.0
- *
  * @source $URL$
  * @version $Id$
  */
 public abstract class MapAdapter implements MapBoundsListener, MapLayerListListener {
-    
-    @Override
-    public void mapBoundsChanged(MapBoundsEvent event) { }
 
     @Override
-    public void layerAdded(MapLayerListEvent event) { }
+    public void mapBoundsChanged(MapBoundsEvent event) {}
 
     @Override
-    public void layerRemoved(MapLayerListEvent event) { }
+    public void layerAdded(MapLayerListEvent event) {}
 
     @Override
-    public void layerChanged(MapLayerListEvent event) { }
+    public void layerRemoved(MapLayerListEvent event) {}
 
     @Override
-    public void layerMoved(MapLayerListEvent event) { }
+    public void layerChanged(MapLayerListEvent event) {}
 
     @Override
-    public void layerPreDispose(MapLayerListEvent event) { }
-    
+    public void layerMoved(MapLayerListEvent event) {}
+
+    @Override
+    public void layerPreDispose(MapLayerListEvent event) {}
 }

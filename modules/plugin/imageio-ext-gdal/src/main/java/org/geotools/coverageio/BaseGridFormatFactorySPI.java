@@ -19,33 +19,29 @@ package org.geotools.coverageio;
 import java.awt.RenderingHints.Key;
 import java.util.Collections;
 import java.util.Map;
-
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 import org.geotools.coverage.grid.io.UnknownFormat;
 
 /**
  * Base implementation for {@link GridFormatFactorySpi}.
- * 
+ *
  * @author Daniele Romagnoli, GeoSolutions
  * @author Simone Giannecchini, GeoSolutions
  * @since 2.5.x
- *
- *
  * @source $URL$
  */
 public class BaseGridFormatFactorySPI implements GridFormatFactorySpi {
 
-	public AbstractGridFormat createFormat() {
-		return new UnknownFormat();
-	}
+    public AbstractGridFormat createFormat() {
+        return new UnknownFormat();
+    }
 
-	public boolean isAvailable() {
-		return false;
-	}
+    public boolean isAvailable() {
+        return false;
+    }
 
-	public Map<Key, ?> getImplementationHints() {
-		return Collections.emptyMap();
-	}
-
+    public Map<Key, ?> getImplementationHints() {
+        return Collections.emptyMap();
+    }
 }

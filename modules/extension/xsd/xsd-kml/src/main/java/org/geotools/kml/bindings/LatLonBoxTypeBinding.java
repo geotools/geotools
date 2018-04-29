@@ -16,19 +16,19 @@
  */
 package org.geotools.kml.bindings;
 
-import javax.xml.namespace.QName;
 import com.vividsolutions.jts.geom.Envelope;
+import javax.xml.namespace.QName;
 import org.geotools.kml.KML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 
-
 /**
  * Binding object for the type http://earth.google.com/kml/2.1:LatLonBoxType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;complexType name="LatLonBoxType"&gt;
  *      &lt;complexContent&gt;
@@ -49,23 +49,18 @@ import org.geotools.xml.Node;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class LatLonBoxTypeBinding extends AbstractComplexBinding {
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return KML.LatLonBoxType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -76,23 +71,23 @@ public class LatLonBoxTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
-        //&lt;element default="180.0" minOccurs="0" name="north" type="kml:angle180"/&gt;
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
+        // &lt;element default="180.0" minOccurs="0" name="north" type="kml:angle180"/&gt;
         Double n = (Double) node.getChildValue("north", Double.valueOf(180d));
 
-        //&lt;element default="-180.0" minOccurs="0" name="south" type="kml:angle180"/&gt;
+        // &lt;element default="-180.0" minOccurs="0" name="south" type="kml:angle180"/&gt;
         Double s = (Double) node.getChildValue("south", Double.valueOf(-180d));
 
-        //&lt;element default="180.0" minOccurs="0" name="east" type="kml:angle180"/&gt;
+        // &lt;element default="180.0" minOccurs="0" name="east" type="kml:angle180"/&gt;
         Double e = (Double) node.getChildValue("east", Double.valueOf(180d));
 
-        //&lt;element default="-180.0" minOccurs="0" name="west" type="kml:angle180"/&gt;
+        // &lt;element default="-180.0" minOccurs="0" name="west" type="kml:angle180"/&gt;
         Double w = (Double) node.getChildValue("west", Double.valueOf(-180d));
 
         return new Envelope(w.doubleValue(), e.doubleValue(), s.doubleValue(), n.doubleValue());

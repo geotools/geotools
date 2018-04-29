@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2010-2011, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -19,7 +19,6 @@ package org.geotools.filter.expression;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import org.geotools.data.complex.ComplexFeatureConstants;
 import org.geotools.factory.Hints;
 import org.geotools.filter.capability.FunctionNameImpl;
@@ -33,15 +32,12 @@ import org.opengis.filter.expression.Literal;
  * This function redirects an attribute to be encoded as xlink:href, instead of being encoded as a
  * full attribute. This is useful in polymorphism, where static client property cannot be used when
  * the encoding is conditional. This function expects:
+ *
  * <ol>
- * <li>Expression: REFERENCE_VALUE (could be another function or literal)
+ *   <li>Expression: REFERENCE_VALUE (could be another function or literal)
  * </ol>
- * 
+ *
  * @author Rini Angreani (CSIRO Earth Science and Resource Engineering)
- * 
- *
- *
- *
  * @source $URL$
  */
 public class ToXlinkHrefFunction implements Function {
@@ -64,9 +60,11 @@ public class ToXlinkHrefFunction implements Function {
     public String getName() {
         return NAME.getName();
     }
+
     public FunctionName getFunctionName() {
         return NAME;
     }
+
     public List<Expression> getParameters() {
         return Collections.unmodifiableList(parameters);
     }
@@ -85,8 +83,9 @@ public class ToXlinkHrefFunction implements Function {
 
     @SuppressWarnings("unchecked")
     public <T> T evaluate(Object object, Class<T> context) {
-        return (T) new Hints(ComplexFeatureConstants.STRING_KEY, parameters.get(0).evaluate(object,
-                String.class));
+        return (T)
+                new Hints(
+                        ComplexFeatureConstants.STRING_KEY,
+                        parameters.get(0).evaluate(object, String.class));
     }
-
 }

@@ -9,7 +9,6 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
-
 import org.geotools.data.property.PropertyDataStore;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.geometry.jts.ReferencedEnvelope;
@@ -72,8 +71,11 @@ public class CompositeLayeringTest {
         renderer.paint(graphics, new Rectangle(0, 0, image.getWidth(), image.getHeight()), bounds);
         mc.dispose();
 
-        File reference = new File("./src/test/resources/org/geotools/renderer/lite/test-data/"
-                + styleName + ".png");
+        File reference =
+                new File(
+                        "./src/test/resources/org/geotools/renderer/lite/test-data/"
+                                + styleName
+                                + ".png");
         ImageAssert.assertEquals(reference, image, threshold);
     }
 }

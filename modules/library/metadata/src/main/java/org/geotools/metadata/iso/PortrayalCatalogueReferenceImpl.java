@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -20,41 +20,28 @@
 package org.geotools.metadata.iso;
 
 import java.util.Collection;
-
-import org.opengis.metadata.citation.Citation;
 import org.opengis.metadata.PortrayalCatalogueReference;
-
+import org.opengis.metadata.citation.Citation;
 
 /**
  * Information identifying the portrayal catalogue used.
- *
- *
  *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  * @author Touraïvane
- *
  * @since 2.1
  */
 public class PortrayalCatalogueReferenceImpl extends MetadataEntity
-        implements PortrayalCatalogueReference
-{
-    /**
-     * Serial number for compatibility with different versions.
-     */
+        implements PortrayalCatalogueReference {
+    /** Serial number for compatibility with different versions. */
     private static final long serialVersionUID = -3095277682987563157L;
 
-    /**
-     * Bibliographic reference to the portrayal catalogue cited.
-     */
+    /** Bibliographic reference to the portrayal catalogue cited. */
     private Collection<Citation> portrayalCatalogueCitations;
 
-    /**
-     * Construct an initially empty portrayal catalogue reference.
-     */
-    public PortrayalCatalogueReferenceImpl() {
-    }
+    /** Construct an initially empty portrayal catalogue reference. */
+    public PortrayalCatalogueReferenceImpl() {}
 
     /**
      * Constructs a metadata entity initialized with the values from the specified metadata.
@@ -65,26 +52,21 @@ public class PortrayalCatalogueReferenceImpl extends MetadataEntity
         super(source);
     }
 
-    /**
-     * Creates a portrayal catalogue reference initialized to the given values.
-     */
+    /** Creates a portrayal catalogue reference initialized to the given values. */
     public PortrayalCatalogueReferenceImpl(final Collection<Citation> portrayalCatalogueCitations) {
         setPortrayalCatalogueCitations(portrayalCatalogueCitations);
     }
 
-    /**
-     * Bibliographic reference to the portrayal catalogue cited.
-     */
+    /** Bibliographic reference to the portrayal catalogue cited. */
     public synchronized Collection<Citation> getPortrayalCatalogueCitations() {
-        return portrayalCatalogueCitations = nonNullCollection(portrayalCatalogueCitations, Citation.class);
+        return portrayalCatalogueCitations =
+                nonNullCollection(portrayalCatalogueCitations, Citation.class);
     }
 
-    /**
-     * Set bibliographic reference to the portrayal catalogue cited.
-     */
+    /** Set bibliographic reference to the portrayal catalogue cited. */
     public synchronized void setPortrayalCatalogueCitations(
-            Collection<? extends Citation> newValues)
-    {
-        portrayalCatalogueCitations = copyCollection(newValues, portrayalCatalogueCitations, Citation.class);
+            Collection<? extends Citation> newValues) {
+        portrayalCatalogueCitations =
+                copyCollection(newValues, portrayalCatalogueCitations, Citation.class);
     }
 }

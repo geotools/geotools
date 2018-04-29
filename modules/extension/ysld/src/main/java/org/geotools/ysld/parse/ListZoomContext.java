@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -23,9 +23,8 @@ import java.util.List;
 
 /**
  * A zoom context specified by an explicit list of scale denominators.
- * 
- * @author Kevin Smith, Boundless
  *
+ * @author Kevin Smith, Boundless
  */
 public class ListZoomContext extends MedialZoomContext {
     final List<Double> scales;
@@ -34,7 +33,7 @@ public class ListZoomContext extends MedialZoomContext {
 
     /**
      * Checks if the list contains a decreasing sequence of finite, positive, non-null values.
-     * 
+     *
      * @param scales
      * @throws IllegalArgumentException if the values are not decreasing, positive, and finite.
      * @throws NullPointerException if any values are null.
@@ -44,8 +43,7 @@ public class ListZoomContext extends MedialZoomContext {
         for (double x : scales) {
             if (x >= last)
                 throw new IllegalArgumentException("Scale denominator list must be decreasing");
-            if (x <= 0)
-                throw new IllegalArgumentException("Scale Denominators must be positive");
+            if (x <= 0) throw new IllegalArgumentException("Scale Denominators must be positive");
             if (Double.isInfinite(x) || Double.isNaN(x))
                 throw new IllegalArgumentException("Scale Denominators must be finite");
         }
@@ -65,10 +63,8 @@ public class ListZoomContext extends MedialZoomContext {
     @Override
     public double getScaleDenominator(int level) {
         final int i = level - initial;
-        if (i < 0)
-            return Double.POSITIVE_INFINITY;
-        if (i >= scales.size())
-            return 0;
+        if (i < 0) return Double.POSITIVE_INFINITY;
+        if (i >= scales.size()) return 0;
         return scales.get(i);
     }
 
@@ -77,10 +73,10 @@ public class ListZoomContext extends MedialZoomContext {
         final double scale = getScaleDenominator(level);
         final double nextScale = getScaleDenominator(level + 1);
 
-        if (nextScale == 0)
-            return 0;
+        if (nextScale == 0) return 0;
 
-        return Math.sqrt(scale * nextScale); // Geometric mean as zoom levels are usually exponential
+        return Math.sqrt(
+                scale * nextScale); // Geometric mean as zoom levels are usually exponential
     }
 
     @Override

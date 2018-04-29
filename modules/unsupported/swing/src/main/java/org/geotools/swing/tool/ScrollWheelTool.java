@@ -19,9 +19,7 @@ package org.geotools.swing.tool;
 
 import java.awt.Cursor;
 import java.awt.Rectangle;
-
 import javax.swing.JComponent;
-
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.swing.JMapPane;
@@ -29,10 +27,9 @@ import org.geotools.swing.event.MapMouseEvent;
 
 /**
  * Allow scrolling with the mouse wheel.
- * 
+ *
  * @author Ian Turton
  * @since 2.15
- *
  */
 public class ScrollWheelTool extends AbstractZoomTool {
 
@@ -62,20 +59,19 @@ public class ScrollWheelTool extends AbstractZoomTool {
             actualZoom = -1.0 / (clicks * getZoom());
         } else {
             actualZoom = clicks * getZoom();
-
         }
         double newScale = scale * actualZoom;
 
-        DirectPosition2D corner = new DirectPosition2D(
-                mapPos.getX() - 0.5d * paneArea.getWidth() / newScale,
-                mapPos.getY() + 0.5d * paneArea.getHeight() / newScale);
+        DirectPosition2D corner =
+                new DirectPosition2D(
+                        mapPos.getX() - 0.5d * paneArea.getWidth() / newScale,
+                        mapPos.getY() + 0.5d * paneArea.getHeight() / newScale);
 
-        //I would prefer to offset the new map based on the cursor but this matches
-        //the current zoom in/out tools.
-        
+        // I would prefer to offset the new map based on the cursor but this matches
+        // the current zoom in/out tools.
+
         Envelope2D newMapArea = new Envelope2D();
         newMapArea.setFrameFromCenter(mapPos, corner);
         getMapPane().setDisplayArea(newMapArea);
-
     }
 }

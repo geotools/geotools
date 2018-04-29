@@ -18,7 +18,6 @@ package org.geotools.data.wfs;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
-
 import org.geotools.data.FeatureReader;
 import org.geotools.data.wfs.internal.GetFeatureParser;
 import org.geotools.data.wfs.internal.parsers.EmfAppSchemaParser;
@@ -52,9 +51,7 @@ class WFSFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature
         }
     }
 
-    /**
-     * @see FeatureReader#close()
-     */
+    /** @see FeatureReader#close() */
     public void close() throws IOException {
         final GetFeatureParser parser = this.parser;
         this.parser = null;
@@ -64,9 +61,7 @@ class WFSFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature
         }
     }
 
-    /**
-     * @see FeatureReader#getFeatureType()
-     */
+    /** @see FeatureReader#getFeatureType() */
     public SimpleFeatureType getFeatureType() {
         if (featureType == null) {
             throw new IllegalStateException(
@@ -75,16 +70,12 @@ class WFSFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature
         return featureType;
     }
 
-    /**
-     * @see FeatureReader#hasNext()
-     */
+    /** @see FeatureReader#hasNext() */
     public boolean hasNext() throws IOException {
         return next != null;
     }
 
-    /**
-     * @see FeatureReader#next()
-     */
+    /** @see FeatureReader#next() */
     public SimpleFeature next() throws IOException, NoSuchElementException {
         if (this.next == null) {
             throw new NoSuchElementException();
@@ -93,5 +84,4 @@ class WFSFeatureReader implements FeatureReader<SimpleFeatureType, SimpleFeature
         this.next = parser.parse();
         return current;
     }
-
 }

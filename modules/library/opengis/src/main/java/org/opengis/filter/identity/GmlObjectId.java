@@ -4,21 +4,17 @@
  *
  *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2005, Open Geospatial Consortium Inc.
- *    
+ *
  *    All Rights Reserved. http://www.opengis.org/legal/
  */
 package org.opengis.filter.identity;
 
 import org.opengis.annotation.XmlElement;
 
-
 /**
  * Feature and Geometry identifier for GML3 specification.
- * <p>
- * GML3 constructs are are identified with a String, commonly referred to as a "id".
- * </p>
  *
- *
+ * <p>GML3 constructs are are identified with a String, commonly referred to as a "id".
  *
  * @source $URL$
  * @version <A HREF="http://www.opengis.org/docs/02-059.pdf">Implementation specification 1.0</A>
@@ -28,9 +24,7 @@ import org.opengis.annotation.XmlElement;
  */
 @XmlElement("GMLObjectId")
 public interface GmlObjectId extends Identifier {
-    /**
-     * The identifier value, which is a string.
-     */
+    /** The identifier value, which is a string. */
     @XmlElement("id")
     String getID();
 

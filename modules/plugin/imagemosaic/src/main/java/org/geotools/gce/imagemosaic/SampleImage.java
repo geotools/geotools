@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-
 import javax.media.jai.RasterFactory;
 import javax.media.jai.remote.SerializableState;
 import javax.media.jai.remote.SerializerFactory;
@@ -35,7 +34,7 @@ import javax.media.jai.remote.SerializerFactory;
  * @author Andrea Aime - GeoSolutions
  */
 public class SampleImage implements Serializable {
-    
+
     private static final long serialVersionUID = 6324143924454724262l;
 
     transient SampleModel sampleModel;
@@ -44,7 +43,7 @@ public class SampleImage implements Serializable {
 
     /**
      * Builds a new sample image
-     * 
+     *
      * @param sampleModel
      * @param colorModel
      */
@@ -55,16 +54,15 @@ public class SampleImage implements Serializable {
 
     /**
      * Builds a 1x1 BufferedImage with the provided sample model and color model
-     * 
+     *
      * @return
      */
     public BufferedImage toBufferedImage() {
         final SampleModel sm = sampleModel.createCompatibleSampleModel(1, 1);
         final WritableRaster raster = RasterFactory.createWritableRaster(sm, null);
-        final BufferedImage image = new BufferedImage(colorModel, raster,
-                colorModel.isAlphaPremultiplied(), null);
+        final BufferedImage image =
+                new BufferedImage(colorModel, raster, colorModel.isAlphaPremultiplied(), null);
         return image;
-
     }
 
     private void writeObject(ObjectOutputStream out) throws IOException {
@@ -80,5 +78,4 @@ public class SampleImage implements Serializable {
         SerializableState cmState = (SerializableState) in.readObject();
         colorModel = (ColorModel) cmState.getObject();
     }
-
 }

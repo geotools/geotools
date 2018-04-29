@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.coverage.io.CoverageAccess;
 import org.geotools.coverage.io.FileDriver;
 import org.geotools.data.Parameter;
@@ -38,29 +37,36 @@ import org.opengis.util.ProgressListener;
 
 /**
  * Base class extending {@link DefaultDriver} leveraging on URLs.
- * 
+ *
  * @author Simone Giannecchini, GeoSolutions
- * 
  * @source $URL$
  */
 public class DefaultFileDriver extends DefaultDriver implements FileDriver {
 
-    private final static Logger LOGGER = Logging.getLogger(DefaultFileDriver.class);
+    private static final Logger LOGGER = Logging.getLogger(DefaultFileDriver.class);
 
     /**
-     * Parameter "url" used to indicate to a local file or remote resource being accessed as a coverage.
+     * Parameter "url" used to indicate to a local file or remote resource being accessed as a
+     * coverage.
      */
-    public final static Parameter<URL> URL = new Parameter<URL>("url", java.net.URL.class,
-            new SimpleInternationalString("URL"), new SimpleInternationalString(
-                    "Url to a local file or remote location"));
+    public static final Parameter<URL> URL =
+            new Parameter<URL>(
+                    "url",
+                    java.net.URL.class,
+                    new SimpleInternationalString("URL"),
+                    new SimpleInternationalString("Url to a local file or remote location"));
 
     private final List<String> fileExtensions;
 
-    protected DefaultFileDriver(final String name, final String description, final String title,
-            final Hints implementationHints, final List<String> fileExtensions,
+    protected DefaultFileDriver(
+            final String name,
+            final String description,
+            final String title,
+            final Hints implementationHints,
+            final List<String> fileExtensions,
             final EnumSet<DriverCapabilities> driverCapabilities) {
-        super(name, description, title, driverCapabilities,implementationHints);
-        
+        super(name, description, title, driverCapabilities, implementationHints);
+
         Utilities.ensureNonNull("fileExtensions", fileExtensions);
         this.fileExtensions = new ArrayList<String>(fileExtensions);
     }
@@ -75,7 +81,8 @@ public class DefaultFileDriver extends DefaultDriver implements FileDriver {
         // check for URL
         if (!params.containsKey(URL.key)) {
             if (LOGGER.isLoggable(Level.INFO))
-                LOGGER.log(Level.INFO,
+                LOGGER.log(
+                        Level.INFO,
                         "Unable to find parameter URL in parameters " + params.toString());
             return false;
         }
@@ -90,7 +97,8 @@ public class DefaultFileDriver extends DefaultDriver implements FileDriver {
         // check for URL
         if (!params.containsKey(URL.key)) {
             if (LOGGER.isLoggable(Level.INFO))
-                LOGGER.log(Level.INFO,
+                LOGGER.log(
+                        Level.INFO,
                         "Unable to find parameter URL in parameters " + params.toString());
             return false;
         }
@@ -104,7 +112,8 @@ public class DefaultFileDriver extends DefaultDriver implements FileDriver {
         // check for URL
         if (!params.containsKey(URL.key)) {
             if (LOGGER.isLoggable(Level.INFO))
-                LOGGER.log(Level.INFO,
+                LOGGER.log(
+                        Level.INFO,
                         "Unable to find parameter URL in parameters " + params.toString());
             return false;
         }
@@ -115,14 +124,14 @@ public class DefaultFileDriver extends DefaultDriver implements FileDriver {
     }
 
     @Override
-    protected CoverageAccess connect(Map<String, Serializable> params, Hints hints,
-            ProgressListener listener) throws IOException {
+    protected CoverageAccess connect(
+            Map<String, Serializable> params, Hints hints, ProgressListener listener)
+            throws IOException {
         // check for URL
-        if (params == null)
-            throw new IllegalArgumentException("Invalid or no input provided.");
+        if (params == null) throw new IllegalArgumentException("Invalid or no input provided.");
         if (!params.containsKey(URL.key))
-            throw new IllegalArgumentException("Unable to find parameter URL in parameters "
-                    + params.toString());
+            throw new IllegalArgumentException(
+                    "Unable to find parameter URL in parameters " + params.toString());
 
         // get the URL
         final URL url = (URL) params.get(URL.key);
@@ -130,14 +139,14 @@ public class DefaultFileDriver extends DefaultDriver implements FileDriver {
     }
 
     @Override
-    protected CoverageAccess create(Map<String, Serializable> params, Hints hints,
-            ProgressListener listener) throws IOException {
+    protected CoverageAccess create(
+            Map<String, Serializable> params, Hints hints, ProgressListener listener)
+            throws IOException {
         // check for URL
-        if (params == null)
-            throw new IllegalArgumentException("Invalid or no input provided.");
+        if (params == null) throw new IllegalArgumentException("Invalid or no input provided.");
         if (!params.containsKey(URL.key))
-            throw new IllegalArgumentException("Unable to find parameter URL in parameters "
-                    + params.toString());
+            throw new IllegalArgumentException(
+                    "Unable to find parameter URL in parameters " + params.toString());
 
         // get the URL
         final URL url = (URL) params.get(URL.key);
@@ -145,33 +154,33 @@ public class DefaultFileDriver extends DefaultDriver implements FileDriver {
     }
 
     @Override
-    protected CoverageAccess delete(Map<String, Serializable> params, Hints hints,
-            ProgressListener listener) throws IOException {
+    protected CoverageAccess delete(
+            Map<String, Serializable> params, Hints hints, ProgressListener listener)
+            throws IOException {
         // check for URL
-        if (params == null)
-            throw new IllegalArgumentException("Invalid or no input provided.");
+        if (params == null) throw new IllegalArgumentException("Invalid or no input provided.");
         if (!params.containsKey(URL.key))
-            throw new IllegalArgumentException("Unable to find parameter URL in parameters "
-                    + params.toString());
+            throw new IllegalArgumentException(
+                    "Unable to find parameter URL in parameters " + params.toString());
 
         // get the URL
         final URL url = (URL) params.get(URL.key);
         return delete(url, params, hints, listener);
     }
 
-    public boolean canProcess(DriverCapabilities operation, URL url,
-            Map<String, Serializable> params) {
+    public boolean canProcess(
+            DriverCapabilities operation, URL url, Map<String, Serializable> params) {
 
         if (!getDriverCapabilities().contains(operation))
-            throw new UnsupportedOperationException("Operation " + operation
-                    + " is not supported by this driver");
+            throw new UnsupportedOperationException(
+                    "Operation " + operation + " is not supported by this driver");
 
         // check input URL
         if (url == null) {
             // check for URL
             if (!params.containsKey(URL.key))
-                throw new IllegalArgumentException("Unable to find parameter URL in parameters "
-                        + params.toString());
+                throw new IllegalArgumentException(
+                        "Unable to find parameter URL in parameters " + params.toString());
 
             // get the URL
             url = (URL) params.get(URL.key);
@@ -179,32 +188,36 @@ public class DefaultFileDriver extends DefaultDriver implements FileDriver {
 
         // check the operation
         switch (operation) {
-        case CONNECT:
-            return canConnect(url, params);
-        case DELETE:
-            return canDelete(url, params);
-        case CREATE:
-            return canCreate(url, params);
-        default:
-            throw new IllegalArgumentException("Unrecognized operation " + operation);
+            case CONNECT:
+                return canConnect(url, params);
+            case DELETE:
+                return canDelete(url, params);
+            case CREATE:
+                return canCreate(url, params);
+            default:
+                throw new IllegalArgumentException("Unrecognized operation " + operation);
         }
     }
 
-    public CoverageAccess process(DriverCapabilities operation, URL url,
-            Map<String, Serializable> params, Hints hints, ProgressListener listener)
+    public CoverageAccess process(
+            DriverCapabilities operation,
+            URL url,
+            Map<String, Serializable> params,
+            Hints hints,
+            ProgressListener listener)
             throws IOException {
 
-        if (!getDriverCapabilities().contains(operation)){
-            throw new UnsupportedOperationException("Operation " + operation
-                    + " is not supported by this driver");
+        if (!getDriverCapabilities().contains(operation)) {
+            throw new UnsupportedOperationException(
+                    "Operation " + operation + " is not supported by this driver");
         }
-        
+
         // check input URL
         if (url == null) {
             // check for URL
             if (!params.containsKey(URL.key))
-                throw new IllegalArgumentException("Unable to find parameter URL in parameters "
-                        + params.toString());
+                throw new IllegalArgumentException(
+                        "Unable to find parameter URL in parameters " + params.toString());
 
             // get the URL
             url = (URL) params.get(URL.key);
@@ -212,14 +225,14 @@ public class DefaultFileDriver extends DefaultDriver implements FileDriver {
 
         // check the operation
         switch (operation) {
-        case CONNECT:
-            return connect(url, params, hints, listener);
-        case DELETE:
-            return delete(url, params, hints, listener);
-        case CREATE:
-            return create(url, params, hints, listener);
-        default:
-            throw new IllegalArgumentException("Unrecognized operation " + operation);
+            case CONNECT:
+                return connect(url, params, hints, listener);
+            case DELETE:
+                return delete(url, params, hints, listener);
+            case CREATE:
+                return create(url, params, hints, listener);
+            default:
+                throw new IllegalArgumentException("Unrecognized operation " + operation);
         }
     }
 
@@ -235,18 +248,30 @@ public class DefaultFileDriver extends DefaultDriver implements FileDriver {
         return false;
     }
 
-    protected CoverageAccess connect(java.net.URL url, Map<String, Serializable> params,
-            Hints hints, ProgressListener listener) throws IOException {
+    protected CoverageAccess connect(
+            java.net.URL url,
+            Map<String, Serializable> params,
+            Hints hints,
+            ProgressListener listener)
+            throws IOException {
         throw new UnsupportedOperationException("Operation not currently implemented");
     }
 
-    protected CoverageAccess create(java.net.URL url, Map<String, Serializable> params,
-            Hints hints, ProgressListener listener) throws IOException {
+    protected CoverageAccess create(
+            java.net.URL url,
+            Map<String, Serializable> params,
+            Hints hints,
+            ProgressListener listener)
+            throws IOException {
         throw new UnsupportedOperationException("Operation not currently implemented");
     }
 
-    protected CoverageAccess delete(java.net.URL url, Map<String, Serializable> params,
-            Hints hints, ProgressListener listener) throws IOException {
+    protected CoverageAccess delete(
+            java.net.URL url,
+            Map<String, Serializable> params,
+            Hints hints,
+            ProgressListener listener)
+            throws IOException {
         throw new UnsupportedOperationException("Operation not currently implemented");
     }
 
@@ -270,6 +295,4 @@ public class DefaultFileDriver extends DefaultDriver implements FileDriver {
         params.put(URL.key, URL);
         return params;
     }
-
-
 }

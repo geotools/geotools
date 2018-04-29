@@ -17,10 +17,8 @@
 package org.geotools.gml3.bindings;
 
 import java.net.URI;
-
 import javax.measure.unit.BaseUnit;
 import javax.xml.namespace.QName;
-
 import org.geotools.gml3.GML;
 import org.geotools.measure.Measure;
 import org.geotools.xml.AbstractComplexBinding;
@@ -29,12 +27,12 @@ import org.geotools.xml.Node;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-
 /**
  * Binding object for the type http://www.opengis.net/gml:MeasureType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;complexType name="MeasureType"&gt;
  *      &lt;annotation&gt;
@@ -50,23 +48,18 @@ import org.w3c.dom.Element;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class MeasureTypeBinding extends AbstractComplexBinding {
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return GML.MeasureType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -77,34 +70,31 @@ public class MeasureTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         Double d = Double.valueOf(node.getComponent().getText());
         URI uom = (URI) node.getAttributeValue(URI.class);
 
         if (uom != null) {
-            return new Measure(d.doubleValue(), new BaseUnit(uom.toString()) {
-                });
+            return new Measure(d.doubleValue(), new BaseUnit(uom.toString()) {});
         }
 
         return new Measure(d.doubleValue(), null);
     }
 
-    public Element encode(Object object, Document document, Element value)
-        throws Exception {
+    public Element encode(Object object, Document document, Element value) throws Exception {
         Measure measure = (Measure) object;
         value.appendChild(document.createTextNode("" + measure.doubleValue()));
 
         return value;
     }
 
-    public Object getProperty(Object object, QName name)
-        throws Exception {
+    public Object getProperty(Object object, QName name) throws Exception {
         if ("uom".equals(name.getLocalPart())) {
             Measure measure = (Measure) object;
 

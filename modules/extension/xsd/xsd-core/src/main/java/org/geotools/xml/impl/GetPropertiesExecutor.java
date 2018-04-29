@@ -18,21 +18,15 @@ package org.geotools.xml.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.geotools.xml.Binding;
 import org.geotools.xml.ComplexBinding;
 
-
 /**
- * Gets properties from a parent object by visiting bindings in the hierachy.
- * The object properties are stored as name, object tuples.
+ * Gets properties from a parent object by visiting bindings in the hierachy. The object properties
+ * are stored as name, object tuples.
  *
  * @author Justin Deoliveira, The Open Planning Project
- *
- *
- *
- *
  * @source $URL$
  */
 public class GetPropertiesExecutor implements BindingWalker.Visitor {
@@ -41,7 +35,7 @@ public class GetPropertiesExecutor implements BindingWalker.Visitor {
 
     /** the parent element */
     XSDElementDeclaration element;
-    
+
     /** the properties */
     List properties;
 
@@ -61,7 +55,7 @@ public class GetPropertiesExecutor implements BindingWalker.Visitor {
 
             try {
                 List properties = complex.getProperties(parent);
-                if ( properties == null || properties.isEmpty() ) {
+                if (properties == null || properties.isEmpty()) {
                     properties = complex.getProperties(parent, element);
                 }
                 if (properties != null) {

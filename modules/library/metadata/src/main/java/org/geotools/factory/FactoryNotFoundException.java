@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,33 +16,24 @@
  */
 package org.geotools.factory;
 
-
 /**
  * Thrown when a factory can't be found in the registery.
  *
  * @since 2.1
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
  */
 public class FactoryNotFoundException extends FactoryRegistryException {
-    /**
-     * For cross-version compatibility.
-     */
+    /** For cross-version compatibility. */
     private static final long serialVersionUID = 7555229653402417318L;
 
-    /**
-     * Creates a new exception with the specified detail message.
-     */
+    /** Creates a new exception with the specified detail message. */
     public FactoryNotFoundException(final String message) {
         super(message);
     }
 
-    /**
-     * Creates a new exception with the specified detail message and cause.
-     */
+    /** Creates a new exception with the specified detail message and cause. */
     public FactoryNotFoundException(final String message, final Throwable cause) {
         super(message, cause);
     }

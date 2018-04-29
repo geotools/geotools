@@ -17,14 +17,11 @@
 package org.geotools.gml2;
 
 import java.util.concurrent.ConcurrentHashMap;
-
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.Name;
 
 /**
  * Holds a cache of FeatureTypes by Name.
- *
- *
  *
  * @source $URL$
  */
@@ -32,16 +29,16 @@ public class FeatureTypeCache {
     ConcurrentHashMap<Name, FeatureType> map = new ConcurrentHashMap<Name, FeatureType>();
 
     public FeatureType get(Name name) {
-    	return map.get(name);
+        return map.get(name);
     }
 
     public void put(FeatureType type) {
-    	FeatureType other = map.putIfAbsent(type.getName(), type);
-    	if(other != null) {
-    	    if(!other.equals(type)) {
-    	        String msg = "Type with same name already exists in cache.";
+        FeatureType other = map.putIfAbsent(type.getName(), type);
+        if (other != null) {
+            if (!other.equals(type)) {
+                String msg = "Type with same name already exists in cache.";
                 throw new IllegalArgumentException(msg);
-    	    }
-    	}
+            }
+        }
     }
 }

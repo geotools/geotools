@@ -16,20 +16,14 @@
  */
 package org.geotools.gml3.bindings;
 
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.MultiPolygon;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.MultiPolygon;
-
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class MultiSurfaceTypeBindingTest extends GML3TestSupport {
 
     public void testEncode() throws Exception {
@@ -48,16 +42,14 @@ public class MultiSurfaceTypeBindingTest extends GML3TestSupport {
     public void testParseWithSurfaceMember() throws Exception {
         GML3MockData.multiSurface(document, document);
         MultiPolygon mpoly = (MultiPolygon) parse();
-        
+
         assertEquals(2, mpoly.getNumGeometries());
     }
 
     public void testParseWithSurfaceMembers() throws Exception {
         GML3MockData.multiSurface(document, document, false);
         MultiPolygon mpoly = (MultiPolygon) parse();
-        
+
         assertEquals(2, mpoly.getNumGeometries());
     }
-    
-    
 }

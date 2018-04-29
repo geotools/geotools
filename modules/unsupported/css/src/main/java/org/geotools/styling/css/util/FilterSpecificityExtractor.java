@@ -18,7 +18,6 @@ package org.geotools.styling.css.util;
 
 import java.util.HashSet;
 import java.util.Set;
-
 import org.geotools.filter.FilterAttributeExtractor;
 import org.geotools.filter.function.EnvFunction;
 import org.geotools.filter.function.FilterFunction_property;
@@ -28,8 +27,9 @@ import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.expression.VolatileFunction;
 
 /**
- * A subclass of {@link FilterAttributeExtractor} that computes a specificity score for the filter. Besides counting the attributes being used, it
- * applies special logic to the dynamic property function, the env function, and volatile functions too
+ * A subclass of {@link FilterAttributeExtractor} that computes a specificity score for the filter.
+ * Besides counting the attributes being used, it applies special logic to the dynamic property
+ * function, the env function, and volatile functions too
  */
 public class FilterSpecificityExtractor extends DefaultFilterVisitor {
 

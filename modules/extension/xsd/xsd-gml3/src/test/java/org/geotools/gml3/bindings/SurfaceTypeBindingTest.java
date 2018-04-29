@@ -16,26 +16,21 @@
  */
 package org.geotools.gml3.bindings;
 
-import org.geotools.gml3.GML3TestSupport;
-
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
+import org.geotools.gml3.GML3TestSupport;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class SurfaceTypeBindingTest extends GML3TestSupport {
 
     public void testParse() throws Exception {
         GML3MockData.surface(document, document);
         MultiPolygon surface = (MultiPolygon) parse();
         assertNotNull(surface);
-        
-        assertEquals( 1, surface.getNumGeometries() );
-        Polygon p = (Polygon) surface.getGeometryN( 0 );
-        
-        assertEquals( 1, p.getNumInteriorRing() );
+
+        assertEquals(1, surface.getNumGeometries());
+        Polygon p = (Polygon) surface.getGeometryN(0);
+
+        assertEquals(1, p.getNumInteriorRing());
     }
 }

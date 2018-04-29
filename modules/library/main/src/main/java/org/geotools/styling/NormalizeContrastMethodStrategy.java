@@ -18,15 +18,11 @@ package org.geotools.styling;
 
 import java.util.Arrays;
 import java.util.List;
-
 import org.opengis.filter.expression.Expression;
 import org.opengis.style.ContrastMethod;
 
-/**
- * @author iant
- *
- */
-public class NormalizeContrastMethodStrategy extends AbstractContrastMethodStrategy{
+/** @author iant */
+public class NormalizeContrastMethodStrategy extends AbstractContrastMethodStrategy {
 
     /** CLIP_TO_ZERO */
     private static final String CLIP_TO_ZERO = "ClipToZero";
@@ -34,9 +30,9 @@ public class NormalizeContrastMethodStrategy extends AbstractContrastMethodStrat
     private static final String CLIP_TO_MINIMUM_MAXIMUM = "ClipToMinimumMaximum";
     /** STRETCH_TO_MINIMUM_MAXIMUM */
     private static final String STRETCH_TO_MINIMUM_MAXIMUM = "StretchToMinimumMaximum";
-    final static List<String> ALGORITHM_NAMES = 
-            Arrays.asList(STRETCH_TO_MINIMUM_MAXIMUM,
-            CLIP_TO_MINIMUM_MAXIMUM, CLIP_TO_ZERO);
+
+    static final List<String> ALGORITHM_NAMES =
+            Arrays.asList(STRETCH_TO_MINIMUM_MAXIMUM, CLIP_TO_MINIMUM_MAXIMUM, CLIP_TO_ZERO);
 
     public NormalizeContrastMethodStrategy() {
         method = ContrastMethod.NORMALIZE;
@@ -47,7 +43,8 @@ public class NormalizeContrastMethodStrategy extends AbstractContrastMethodStrat
         if (name != null) {
             String algorithm = name.evaluate(null, String.class);
             if (algorithm != null && !ALGORITHM_NAMES.contains(algorithm)) {
-                throw new IllegalArgumentException("Unsupported Algorithm has been specified: " + algorithm);
+                throw new IllegalArgumentException(
+                        "Unsupported Algorithm has been specified: " + algorithm);
             }
         }
         super.setAlgorithm(name);

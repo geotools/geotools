@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -20,22 +20,14 @@ import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.logging.Level;
-
 import junit.framework.TestCase;
-
 import org.geotools.TestData;
 import org.geotools.xml.schema.Schema;
 
-
 /**
- * <p>
- * DOCUMENT ME!
- * </p>
- * @
+ * DOCUMENT ME! @
  *
  * @author dzwiers www.refractions.net
- *
- *
  * @source $URL$
  */
 public class SchemaParser2Test extends TestCase {
@@ -62,9 +54,8 @@ public class SchemaParser2Test extends TestCase {
         Schema s = null;
 
         try {
-            File f = TestData.copy(this,path);
-            s = SchemaFactory.getInstance(targetNS, f.toURI(),
-                    Level.INFO);
+            File f = TestData.copy(this, path);
+            s = SchemaFactory.getInstance(targetNS, f.toURI(), Level.INFO);
         } catch (Exception e) {
             e.printStackTrace();
             fail(e.toString());

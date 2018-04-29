@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -20,9 +20,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
+import junit.framework.TestCase;
 import org.geotools.geometry.GeometryBuilder;
-import org.geotools.geometry.iso.root.GeometryImpl;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.coordinate.GeometryFactory;
@@ -33,16 +32,9 @@ import org.opengis.geometry.primitive.Ring;
 import org.opengis.geometry.primitive.Surface;
 import org.opengis.geometry.primitive.SurfaceBoundary;
 import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CRSFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import junit.framework.TestCase;
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public abstract class AbstractGeometryTest extends TestCase {
 
     private org.opengis.geometry.coordinate.GeometryFactory gFact;
@@ -52,23 +44,20 @@ public abstract class AbstractGeometryTest extends TestCase {
     protected CoordinateReferenceSystem crs;
 
     protected static String WGS84_WKT =
-            "GEOGCS[\"WGS84\", DATUM[\"WGS84\", SPHEROID[\"WGS84\", 6378137.0, 298.257223563]]," +
-                    "PRIMEM[\"Greenwich\", 0.0], UNIT[\"degree\",0.017453292519943295], " +
-                    "AXIS[\"Longitude\",EAST], AXIS[\"Latitude\",NORTH]]";
-
+            "GEOGCS[\"WGS84\", DATUM[\"WGS84\", SPHEROID[\"WGS84\", 6378137.0, 298.257223563]],"
+                    + "PRIMEM[\"Greenwich\", 0.0], UNIT[\"degree\",0.017453292519943295], "
+                    + "AXIS[\"Longitude\",EAST], AXIS[\"Latitude\",NORTH]]";
 
     /**
-     * setUp
-     * Called before each test.
+     * setUp Called before each test.
      *
      * @throws FactoryException
      */
     public void setUp() throws FactoryException {
-    	GeometryBuilder builder = new GeometryBuilder(DefaultGeographicCRS.WGS84);       
+        GeometryBuilder builder = new GeometryBuilder(DefaultGeographicCRS.WGS84);
         gFact = builder.getGeometryFactory();
         pFact = builder.getPrimitiveFactory();
     }
-
 
     protected GeometryFactory getGeometryFactory() {
         return gFact;
@@ -136,6 +125,7 @@ public abstract class AbstractGeometryTest extends TestCase {
 
     /**
      * Creates a simple polygon with no holes
+     *
      * @param points points defining the polygon (surface)
      * @return the surface created out of the points
      */
@@ -145,5 +135,4 @@ public abstract class AbstractGeometryTest extends TestCase {
         Surface surface = getPrimitiveFactory().createSurface(surfaceBoundary);
         return surface;
     }
-
 }

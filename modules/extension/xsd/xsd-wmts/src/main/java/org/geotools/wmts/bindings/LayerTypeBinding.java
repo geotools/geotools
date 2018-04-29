@@ -1,31 +1,28 @@
 package org.geotools.wmts.bindings;
 
 import java.util.List;
-
 import javax.xml.namespace.QName;
-
-import org.geotools.wmts.WMTS;
-import org.geotools.xml.AbstractComplexBinding;
-import org.geotools.xml.ElementInstance;
-import org.geotools.xml.Node;
-
 import net.opengis.ows11.CodeType;
 import net.opengis.ows11.DatasetDescriptionSummaryBaseType;
 import net.opengis.ows11.MetadataType;
-
 import net.opengis.wmts.v_1.DimensionType;
 import net.opengis.wmts.v_1.LayerType;
 import net.opengis.wmts.v_1.StyleType;
 import net.opengis.wmts.v_1.TileMatrixSetLinkType;
 import net.opengis.wmts.v_1.URLTemplateType;
 import net.opengis.wmts.v_1.wmtsv_1Factory;
+import org.geotools.wmts.WMTS;
+import org.geotools.xml.AbstractComplexBinding;
+import org.geotools.xml.ElementInstance;
+import org.geotools.xml.Node;
 
 /**
  * Binding object for the type http://www.opengis.net/wmts/1.0:LayerType.
  *
  * <p>
+ *
  * <pre>
- *	 <code>
+ *  <code>
  *  &lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;complexType name="LayerType" xmlns="http://www.w3.org/2001/XMLSchema"&gt;
  *  		&lt;complexContent&gt;
  *  			&lt;extension base="ows:DatasetDescriptionSummaryBaseType"&gt;
@@ -43,7 +40,7 @@ import net.opengis.wmts.v_1.wmtsv_1Factory;
  *  					&lt;element maxOccurs="unbounded" minOccurs="0" name="InfoFormat" type="ows:MimeType"&gt;
  *  						&lt;annotation&gt;
  *  							&lt;documentation&gt;
- *  							Supported valid output MIME types for a FeatureInfo. 
+ *  							Supported valid output MIME types for a FeatureInfo.
  *  							If there isn't any, The server do not support FeatureInfo requests
  *  							for this layer.&lt;/documentation&gt;
  *  						&lt;/annotation&gt;
@@ -61,7 +58,7 @@ import net.opengis.wmts.v_1.wmtsv_1Factory;
  *  					&lt;element maxOccurs="unbounded" minOccurs="0" name="ResourceURL" type="wmts:URLTemplateType"&gt;
  *  						&lt;annotation&gt;
  *  							&lt;documentation&gt;
- *  								URL template to a tile or a FeatureInfo resource on 
+ *  								URL template to a tile or a FeatureInfo resource on
  *  								resource oriented architectural style
  *  							&lt;/documentation&gt;
  *  						&lt;/annotation&gt;
@@ -69,11 +66,10 @@ import net.opengis.wmts.v_1.wmtsv_1Factory;
  *  				&lt;/sequence&gt;
  *  			&lt;/extension&gt;
  *  		&lt;/complexContent&gt;
- *  	&lt;/complexType&gt; 
- *		
- *	  </code>
+ *  	&lt;/complexType&gt;
+ *
+ *   </code>
  * </pre>
- * </p>
  *
  * @generated
  */
@@ -86,16 +82,16 @@ public class LayerTypeBinding extends AbstractComplexBinding {
         this.factory = factory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return WMTS.LayerType;
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Class<LayerType> getType() {
@@ -103,8 +99,10 @@ public class LayerTypeBinding extends AbstractComplexBinding {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     @SuppressWarnings("unchecked")
@@ -112,7 +110,7 @@ public class LayerTypeBinding extends AbstractComplexBinding {
         LayerType layer = factory.createLayerType();
 
         List<Node> children;
-        
+
         children = node.getChildren("Abstract");
         for (Node c : children) {
             layer.getAbstract().add(c.getValue());
@@ -130,8 +128,7 @@ public class LayerTypeBinding extends AbstractComplexBinding {
         layer.getDatasetDescriptionSummary()
                 .addAll(node.getChildren(DatasetDescriptionSummaryBaseType.class));
 
-        layer.getDimension()
-                .addAll(node.getChildValues(DimensionType.class));
+        layer.getDimension().addAll(node.getChildValues(DimensionType.class));
 
         children = node.getChildren("Format");
         for (Node c : children) {
@@ -146,11 +143,11 @@ public class LayerTypeBinding extends AbstractComplexBinding {
         layer.setIdentifier((CodeType) node.getChildValue("Identifier"));
 
         children = node.getChildren("Keyword");
-        for(Node c: children) {
+        for (Node c : children) {
             layer.getKeywords().add(c.getValue());
         }
         children = node.getChildren(MetadataType.class);
-        for(Node c: children) {
+        for (Node c : children) {
             layer.getMetadata().add(c.getValue());
         }
         children = node.getChildren("ResourceURL");
@@ -174,5 +171,4 @@ public class LayerTypeBinding extends AbstractComplexBinding {
 
         return layer;
     }
-
 }

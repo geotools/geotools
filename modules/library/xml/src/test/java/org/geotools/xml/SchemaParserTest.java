@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -20,24 +20,15 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.util.logging.Level;
-
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-
 import junit.framework.TestCase;
-
 import org.geotools.TestData;
 
-
 /**
- * <p>
- * DOCUMENT ME!
- * </p>
- * @
+ * DOCUMENT ME! @
  *
  * @author dzwiers www.refractions.net
- *
- *
  * @source $URL$
  */
 public class SchemaParserTest extends TestCase {
@@ -55,44 +46,44 @@ public class SchemaParserTest extends TestCase {
         parser = spf.newSAXParser();
     }
 
-    public void testMail(){
+    public void testMail() {
         runit("xml/mails.xsd");
     }
 
-    public void testWFS(){
+    public void testWFS() {
         runit("xml/wfs/WFS-basic.xsd");
     }
 
-    public void testGMLFeature(){
+    public void testGMLFeature() {
         runit("xml/gml/feature.xsd");
     }
 
-    public void testGMLGeometry(){
+    public void testGMLGeometry() {
         runit("xml/gml/geometry.xsd");
     }
 
-    public void testGMLXLinks(){
+    public void testGMLXLinks() {
         runit("xml/gml/xlinks.xsd");
     }
 
-    private void runit(String path){
+    private void runit(String path) {
         File f;
         try {
-            f = TestData.copy(this,path);
+            f = TestData.copy(this, path);
             URI u = f.toURI();
             XSISAXHandler contentHandler = new XSISAXHandler(u);
             XSISAXHandler.setLogLevel(Level.WARNING);
-    
+
             try {
                 parser.parse(f, contentHandler);
             } catch (Exception e) {
                 e.printStackTrace();
                 fail(e.toString());
             }
-    
-            try{
+
+            try {
                 assertNotNull("Schema missing", contentHandler.getSchema());
-                //System.out.println(contentHandler.getSchema());
+                // System.out.println(contentHandler.getSchema());
             } catch (Exception e) {
                 e.printStackTrace();
                 fail(e.toString());

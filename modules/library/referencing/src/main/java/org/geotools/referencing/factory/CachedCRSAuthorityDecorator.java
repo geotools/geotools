@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2005-2008, Open Source Geospatial Foundation (OSGeo)
- *   
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -13,15 +13,15 @@
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *    Lesser General Public License for more details.
- *    
+ *
  *    This package contains documentation from OpenGIS specifications.
  *    OpenGIS consortium's work is fully acknowledged here.
  */
 package org.geotools.referencing.factory;
 
 // J2SE dependencies and extensions
-import java.util.Set;
 
+import java.util.Set;
 import org.geotools.factory.BufferedFactory;
 import org.geotools.factory.FactoryRegistryException;
 import org.geotools.factory.GeoTools;
@@ -49,323 +49,300 @@ import org.opengis.referencing.operation.CoordinateOperationAuthorityFactory;
 import org.opengis.util.InternationalString;
 
 /**
- * An authority factory that caches all objects created by the delegate CRSAuthorityFactory.
- * </p>
- * The behaviour of the {@code createFoo(String)} methods first looks if a
- * previously created object exists for the given code. If such an object
- * exists, it is returned directly. The testing of the cache is synchronized and
- * may block if the referencing object is under construction.
- * <p>
- * If the object is not yet created, the definition is delegated to the
- * appropriate the {@linkplain an AuthorityFactory authority factory} and the
- * result is cached for next time.
- * <p>
- * This object is responsible for owning a {{ReferencingObjectCache}}; there are
- * several implementations to choose from on construction.
- * </p>
- * 
+ * An authority factory that caches all objects created by the delegate CRSAuthorityFactory. The
+ * behaviour of the {@code createFoo(String)} methods first looks if a previously created object
+ * exists for the given code. If such an object exists, it is returned directly. The testing of the
+ * cache is synchronized and may block if the referencing object is under construction.
+ *
+ * <p>If the object is not yet created, the definition is delegated to the appropriate the
+ * {@linkplain an AuthorityFactory authority factory} and the result is cached for next time.
+ *
+ * <p>This object is responsible for owning a {{ReferencingObjectCache}}; there are several
+ * implementations to choose from on construction.
+ *
  * @since 2.4
- *
- *
  * @source $URL$
- * @version $Id: BufferedAuthorityDecorator.java 26038 2007-06-27 01:58:12Z
- *          jgarnett $
+ * @version $Id: BufferedAuthorityDecorator.java 26038 2007-06-27 01:58:12Z jgarnett $
  * @author Jody Garnett
  */
 public final class CachedCRSAuthorityDecorator extends AbstractAuthorityFactory
-		implements AuthorityFactory, CRSAuthorityFactory,
-		BufferedFactory {
+        implements AuthorityFactory, CRSAuthorityFactory, BufferedFactory {
 
-	/** Cache to be used for referencing objects. */
-	ObjectCache cache;
+    /** Cache to be used for referencing objects. */
+    ObjectCache cache;
 
-	/** The delegate authority for coordinate reference systems. */
-	private CRSAuthorityFactory crsAuthority;
+    /** The delegate authority for coordinate reference systems. */
+    private CRSAuthorityFactory crsAuthority;
 
-	/** The delegate authority for searching. */
+    /** The delegate authority for searching. */
     private AbstractAuthorityFactory delegate;
 
-	/**
-	 * Constructs an instance wrapping the specified factory with a default
-	 * cache.
-	 * <p>
-	 * The provided authority factory must implement
-	 * {@link DatumAuthorityFactory}, {@link CSAuthorityFactory},
-	 * {@link CRSAuthorityFactory} and
-	 * {@link CoordinateOperationAuthorityFactory} .
-	 * 
-	 * @param factory
-	 *            The factory to cache. Can not be {@code null}.
-	 */
-	public CachedCRSAuthorityDecorator(final CRSAuthorityFactory factory) {
-		this(factory, createCache(GeoTools.getDefaultHints()));
-	}
+    /**
+     * Constructs an instance wrapping the specified factory with a default cache.
+     *
+     * <p>The provided authority factory must implement {@link DatumAuthorityFactory}, {@link
+     * CSAuthorityFactory}, {@link CRSAuthorityFactory} and {@link
+     * CoordinateOperationAuthorityFactory} .
+     *
+     * @param factory The factory to cache. Can not be {@code null}.
+     */
+    public CachedCRSAuthorityDecorator(final CRSAuthorityFactory factory) {
+        this(factory, createCache(GeoTools.getDefaultHints()));
+    }
 
-	/**
-	 * Constructs an instance wrapping the specified factory. The
-	 * {@code maxStrongReferences} argument specify the maximum number of
-	 * objects to keep by strong reference. If a greater amount of objects are
-	 * created, then the strong references for the oldest ones are replaced by
-	 * weak references.
-	 * <p>
-	 * This constructor is protected because subclasses must declare which of
-	 * the {@link DatumAuthorityFactory}, {@link CSAuthorityFactory},
-	 * {@link CRSAuthorityFactory} {@link SearchableAuthorityFactory} and
-	 * {@link CoordinateOperationAuthorityFactory} interfaces they choose to
-	 * implement.
-	 * 
-	 * @param factory
-	 *            The factory to cache. Can not be {@code null}.
-	 * @param maxStrongReferences
-	 *            The maximum number of objects to keep by strong reference.
-	 */
-	protected CachedCRSAuthorityDecorator(CRSAuthorityFactory factory,
-			ObjectCache cache) {
-	    super( ((ReferencingFactory)factory).getPriority() ); // TODO
-		this.cache = cache;
-		crsAuthority = (CRSAuthorityFactory) factory;
-		this.delegate = (AbstractAuthorityFactory) factory;
-	}
+    /**
+     * Constructs an instance wrapping the specified factory. The {@code maxStrongReferences}
+     * argument specify the maximum number of objects to keep by strong reference. If a greater
+     * amount of objects are created, then the strong references for the oldest ones are replaced by
+     * weak references.
+     *
+     * <p>This constructor is protected because subclasses must declare which of the {@link
+     * DatumAuthorityFactory}, {@link CSAuthorityFactory}, {@link CRSAuthorityFactory} {@link
+     * SearchableAuthorityFactory} and {@link CoordinateOperationAuthorityFactory} interfaces they
+     * choose to implement.
+     *
+     * @param factory The factory to cache. Can not be {@code null}.
+     * @param maxStrongReferences The maximum number of objects to keep by strong reference.
+     */
+    protected CachedCRSAuthorityDecorator(CRSAuthorityFactory factory, ObjectCache cache) {
+        super(((ReferencingFactory) factory).getPriority()); // TODO
+        this.cache = cache;
+        crsAuthority = (CRSAuthorityFactory) factory;
+        this.delegate = (AbstractAuthorityFactory) factory;
+    }
 
-	/** Utility method used to produce cache based on hint */
-	protected static ObjectCache createCache(final Hints hints)
-			throws FactoryRegistryException {
-		return ObjectCaches.create(hints);
-	}
+    /** Utility method used to produce cache based on hint */
+    protected static ObjectCache createCache(final Hints hints) throws FactoryRegistryException {
+        return ObjectCaches.create(hints);
+    }
 
-	//
-	// Utility Methods and Cache Care and Feeding
-	//
-	protected String toKey(String code) {
-		return ObjectCaches.toKey( getAuthority(), code);
-	}
+    //
+    // Utility Methods and Cache Care and Feeding
+    //
+    protected String toKey(String code) {
+        return ObjectCaches.toKey(getAuthority(), code);
+    }
 
-	//
-	// AuthorityFactory
-	//    
-	public IdentifiedObject createObject(String code) throws FactoryException {
-		final String key = toKey(code);
-		IdentifiedObject obj = (IdentifiedObject) cache.get(key);
-		if (obj == null) {
-			try {
-				cache.writeLock(key);
-				obj = (IdentifiedObject) cache.peek(key);
-				if (obj == null) {
-					obj = crsAuthority.createObject(code);
-					cache.put(key, obj);
-				}
-			} finally {
-				cache.writeUnLock(key);
-			}
-		}
-		return obj;
-	}
+    //
+    // AuthorityFactory
+    //
+    public IdentifiedObject createObject(String code) throws FactoryException {
+        final String key = toKey(code);
+        IdentifiedObject obj = (IdentifiedObject) cache.get(key);
+        if (obj == null) {
+            try {
+                cache.writeLock(key);
+                obj = (IdentifiedObject) cache.peek(key);
+                if (obj == null) {
+                    obj = crsAuthority.createObject(code);
+                    cache.put(key, obj);
+                }
+            } finally {
+                cache.writeUnLock(key);
+            }
+        }
+        return obj;
+    }
 
-	public Citation getAuthority() {
-		return crsAuthority.getAuthority();
-	}
+    public Citation getAuthority() {
+        return crsAuthority.getAuthority();
+    }
 
-	public Set getAuthorityCodes(Class type) throws FactoryException {
-		return crsAuthority.getAuthorityCodes(type);
-	}
+    public Set getAuthorityCodes(Class type) throws FactoryException {
+        return crsAuthority.getAuthorityCodes(type);
+    }
 
-	public InternationalString getDescriptionText(String code)
-			throws FactoryException {
-		return crsAuthority.getDescriptionText(code);
-	}
+    public InternationalString getDescriptionText(String code) throws FactoryException {
+        return crsAuthority.getDescriptionText(code);
+    }
 
-	//
-	// CRSAuthority
-	//
-	public synchronized CompoundCRS createCompoundCRS(final String code)
-			throws FactoryException {
-		final String key = toKey(code);
-		CompoundCRS crs = (CompoundCRS) cache.get(key);
-		if (crs == null) {
-			try {
-				cache.writeLock(key);
-				crs = (CompoundCRS) cache.peek(key);
-				if (crs == null) {
-					crs = crsAuthority.createCompoundCRS(code);
-					cache.put(key, crs);
-				}
-			} finally {
-				cache.writeUnLock(key);
-			}
-		}
-		return crs;
-	}
+    //
+    // CRSAuthority
+    //
+    public synchronized CompoundCRS createCompoundCRS(final String code) throws FactoryException {
+        final String key = toKey(code);
+        CompoundCRS crs = (CompoundCRS) cache.get(key);
+        if (crs == null) {
+            try {
+                cache.writeLock(key);
+                crs = (CompoundCRS) cache.peek(key);
+                if (crs == null) {
+                    crs = crsAuthority.createCompoundCRS(code);
+                    cache.put(key, crs);
+                }
+            } finally {
+                cache.writeUnLock(key);
+            }
+        }
+        return crs;
+    }
 
-	public CoordinateReferenceSystem createCoordinateReferenceSystem(String code)
-			throws FactoryException {
-		final String key = toKey(code);
-		CoordinateReferenceSystem crs = (CoordinateReferenceSystem) cache
-				.get(key);
-		if (crs == null) {
-			try {
-				cache.writeLock(key);
-				crs = (CoordinateReferenceSystem) cache.peek(key);
-				if (crs == null) {
-					crs = crsAuthority.createCoordinateReferenceSystem(code);
-					cache.put(key, crs);
-				}
-			} finally {
-				cache.writeUnLock(key);
-			}
-		}
-		return crs;
-	}
+    public CoordinateReferenceSystem createCoordinateReferenceSystem(String code)
+            throws FactoryException {
+        final String key = toKey(code);
+        CoordinateReferenceSystem crs = (CoordinateReferenceSystem) cache.get(key);
+        if (crs == null) {
+            try {
+                cache.writeLock(key);
+                crs = (CoordinateReferenceSystem) cache.peek(key);
+                if (crs == null) {
+                    crs = crsAuthority.createCoordinateReferenceSystem(code);
+                    cache.put(key, crs);
+                }
+            } finally {
+                cache.writeUnLock(key);
+            }
+        }
+        return crs;
+    }
 
-	public DerivedCRS createDerivedCRS(String code) throws FactoryException {
-		final String key = toKey(code);
-		DerivedCRS crs = (DerivedCRS) cache.get(key);
-		if (crs == null) {
-			try {
-				cache.writeLock(key);
-				crs = (DerivedCRS) cache.peek(key);
-				if (crs == null) {
-					crs = crsAuthority.createDerivedCRS(code);
-					cache.put(key, crs);
-				}
-			} finally {
-				cache.writeUnLock(key);
-			}
-		}
-		return crs;
-	}
+    public DerivedCRS createDerivedCRS(String code) throws FactoryException {
+        final String key = toKey(code);
+        DerivedCRS crs = (DerivedCRS) cache.get(key);
+        if (crs == null) {
+            try {
+                cache.writeLock(key);
+                crs = (DerivedCRS) cache.peek(key);
+                if (crs == null) {
+                    crs = crsAuthority.createDerivedCRS(code);
+                    cache.put(key, crs);
+                }
+            } finally {
+                cache.writeUnLock(key);
+            }
+        }
+        return crs;
+    }
 
-	public EngineeringCRS createEngineeringCRS(String code)
-			throws FactoryException {
-		final String key = toKey(code);
-		EngineeringCRS crs = (EngineeringCRS) cache.get(key);
-		if (crs == null) {
-			try {
-				cache.writeLock(key);
-				crs = (EngineeringCRS) cache.peek(key);
-				if (crs == null) {
-					crs = crsAuthority.createEngineeringCRS(code);
-					cache.put(key, crs);
-				}
-			} finally {
-				cache.writeUnLock(key);
-			}
-		}
-		return crs;
-	}
+    public EngineeringCRS createEngineeringCRS(String code) throws FactoryException {
+        final String key = toKey(code);
+        EngineeringCRS crs = (EngineeringCRS) cache.get(key);
+        if (crs == null) {
+            try {
+                cache.writeLock(key);
+                crs = (EngineeringCRS) cache.peek(key);
+                if (crs == null) {
+                    crs = crsAuthority.createEngineeringCRS(code);
+                    cache.put(key, crs);
+                }
+            } finally {
+                cache.writeUnLock(key);
+            }
+        }
+        return crs;
+    }
 
-	public GeocentricCRS createGeocentricCRS(String code)
-			throws FactoryException {
-		final String key = toKey(code);
-		GeocentricCRS crs = (GeocentricCRS) cache.get(key);
-		if (crs == null) {
-			try {
-				cache.writeLock(key);
-				crs = (GeocentricCRS) cache.peek(key);
-				if (crs == null) {
-					crs = crsAuthority.createGeocentricCRS(code);
-					cache.put(key, crs);
-				}
-			} finally {
-				cache.writeUnLock(key);
-			}
-		}
-		return crs;
-	}
+    public GeocentricCRS createGeocentricCRS(String code) throws FactoryException {
+        final String key = toKey(code);
+        GeocentricCRS crs = (GeocentricCRS) cache.get(key);
+        if (crs == null) {
+            try {
+                cache.writeLock(key);
+                crs = (GeocentricCRS) cache.peek(key);
+                if (crs == null) {
+                    crs = crsAuthority.createGeocentricCRS(code);
+                    cache.put(key, crs);
+                }
+            } finally {
+                cache.writeUnLock(key);
+            }
+        }
+        return crs;
+    }
 
-	public GeographicCRS createGeographicCRS(String code)
-			throws FactoryException {
-		final String key = toKey(code);
-		GeographicCRS crs = (GeographicCRS) cache.get(key);
-		if (crs == null) {
-			try {
-				cache.writeLock(key);
-				crs = (GeographicCRS) cache.peek(key);
-				if (crs == null) {
-					crs = crsAuthority.createGeographicCRS(code);
-					cache.put(key, crs);
-				}
-			} finally {
-				cache.writeUnLock(key);
-			}
-		}
-		return crs;
-	}
+    public GeographicCRS createGeographicCRS(String code) throws FactoryException {
+        final String key = toKey(code);
+        GeographicCRS crs = (GeographicCRS) cache.get(key);
+        if (crs == null) {
+            try {
+                cache.writeLock(key);
+                crs = (GeographicCRS) cache.peek(key);
+                if (crs == null) {
+                    crs = crsAuthority.createGeographicCRS(code);
+                    cache.put(key, crs);
+                }
+            } finally {
+                cache.writeUnLock(key);
+            }
+        }
+        return crs;
+    }
 
-	public ImageCRS createImageCRS(String code) throws FactoryException {
-		final String key = toKey(code);
-		ImageCRS crs = (ImageCRS) cache.get(key);
-		if (crs == null) {
-			try {
-				cache.writeLock(key);
-				crs = (ImageCRS) cache.peek(key);
-				if (crs == null) {
-					crs = crsAuthority.createImageCRS(code);
-					cache.put(key, crs);
-				}
-			} finally {
-				cache.writeUnLock(key);
-			}
-		}
-		return crs;
-	}
+    public ImageCRS createImageCRS(String code) throws FactoryException {
+        final String key = toKey(code);
+        ImageCRS crs = (ImageCRS) cache.get(key);
+        if (crs == null) {
+            try {
+                cache.writeLock(key);
+                crs = (ImageCRS) cache.peek(key);
+                if (crs == null) {
+                    crs = crsAuthority.createImageCRS(code);
+                    cache.put(key, crs);
+                }
+            } finally {
+                cache.writeUnLock(key);
+            }
+        }
+        return crs;
+    }
 
-	public ProjectedCRS createProjectedCRS(String code) throws FactoryException {
-		final String key = toKey(code);
-		ProjectedCRS crs = (ProjectedCRS) cache.get(key);
-		if (crs == null) {
-			try {
-				cache.writeLock(key);
-				crs = (ProjectedCRS) cache.peek(key);
-				if (crs == null) {
-					crs = crsAuthority.createProjectedCRS(code);
-					cache.put(key, crs);
-				}
-			} finally {
-				cache.writeUnLock(key);
-			}
-		}
-		return crs;
-	}
+    public ProjectedCRS createProjectedCRS(String code) throws FactoryException {
+        final String key = toKey(code);
+        ProjectedCRS crs = (ProjectedCRS) cache.get(key);
+        if (crs == null) {
+            try {
+                cache.writeLock(key);
+                crs = (ProjectedCRS) cache.peek(key);
+                if (crs == null) {
+                    crs = crsAuthority.createProjectedCRS(code);
+                    cache.put(key, crs);
+                }
+            } finally {
+                cache.writeUnLock(key);
+            }
+        }
+        return crs;
+    }
 
-	public TemporalCRS createTemporalCRS(String code) throws FactoryException {
-		final String key = toKey(code);
-		TemporalCRS crs = (TemporalCRS) cache.get(key);
-		if (crs == null) {
-			try {
-				cache.writeLock(key);
-				crs = (TemporalCRS) cache.peek(key);
-				if (crs == null) {
-					crs = crsAuthority.createTemporalCRS(code);
-					cache.put(key, crs);
-				}
-			} finally {
-				cache.writeUnLock(key);
-			}
-		}
-		return crs;
-	}
+    public TemporalCRS createTemporalCRS(String code) throws FactoryException {
+        final String key = toKey(code);
+        TemporalCRS crs = (TemporalCRS) cache.get(key);
+        if (crs == null) {
+            try {
+                cache.writeLock(key);
+                crs = (TemporalCRS) cache.peek(key);
+                if (crs == null) {
+                    crs = crsAuthority.createTemporalCRS(code);
+                    cache.put(key, crs);
+                }
+            } finally {
+                cache.writeUnLock(key);
+            }
+        }
+        return crs;
+    }
 
-	public VerticalCRS createVerticalCRS(String code) throws FactoryException {
-		final String key = toKey(code);
-		VerticalCRS crs = (VerticalCRS) cache.get(key);
-		if (crs == null) {
-			try {
-				cache.writeLock(key);
-				crs = (VerticalCRS) cache.peek(key);
-				if (crs == null) {
-					crs = crsAuthority.createVerticalCRS(code);
-					cache.put(key, crs);
-				}
-			} finally {
-				cache.writeUnLock(key);
-			}
-		}
-		return crs;
-	}
-	
-	//
-	// AbstractAuthorityFactory
-	//
+    public VerticalCRS createVerticalCRS(String code) throws FactoryException {
+        final String key = toKey(code);
+        VerticalCRS crs = (VerticalCRS) cache.get(key);
+        if (crs == null) {
+            try {
+                cache.writeLock(key);
+                crs = (VerticalCRS) cache.peek(key);
+                if (crs == null) {
+                    crs = crsAuthority.createVerticalCRS(code);
+                    cache.put(key, crs);
+                }
+            } finally {
+                cache.writeUnLock(key);
+            }
+        }
+        return crs;
+    }
+
+    //
+    // AbstractAuthorityFactory
+    //
     public void dispose() throws FactoryException {
         delegate.dispose();
         cache.clear();
@@ -376,51 +353,47 @@ public final class CachedCRSAuthorityDecorator extends AbstractAuthorityFactory
     public String getBackingStoreDescription() throws FactoryException {
         return delegate.getBackingStoreDescription();
     }
-    
+
     /**
-     * Returns a finder which can be used for looking up unidentified objects.
-     * The default implementation delegates lookup to the underlying backing
-     * store and caches the result.
+     * Returns a finder which can be used for looking up unidentified objects. The default
+     * implementation delegates lookup to the underlying backing store and caches the result.
      *
      * @since 2.4
      */
     @Override
     public synchronized IdentifiedObjectFinder getIdentifiedObjectFinder(
-            final Class/*<? extends IdentifiedObject>*/ type) throws FactoryException
-    {        
-        return new Finder( delegate.getIdentifiedObjectFinder(type), ObjectCaches.create("weak",250));
+            final Class /*<? extends IdentifiedObject>*/ type) throws FactoryException {
+        return new Finder(
+                delegate.getIdentifiedObjectFinder(type), ObjectCaches.create("weak", 250));
     }
 
     /**
-     * An implementation of {@link IdentifiedObjectFinder} which delegates
-     * the work to the underlying backing store and caches the result.
-     * <p>
-     * A separate ObjectCache, findCache, is used to store the values created over the course
-     * of finding. The findCache is set up as a "chain" allowing it to use our cache
-     * to prevent duplication of effort. In the future this findCache may be shared between
-     * instances.
-     * <p>
-     * <b>Implementation note:</b> we will create objects using directly the underlying backing
-     * store, not using the cache. This is because hundred of objects may be created during a
-     * scan while only one will be typically retained. We don't want to overload the cache with
-     * every false candidates that we encounter during the scan.
+     * An implementation of {@link IdentifiedObjectFinder} which delegates the work to the
+     * underlying backing store and caches the result.
+     *
+     * <p>A separate ObjectCache, findCache, is used to store the values created over the course of
+     * finding. The findCache is set up as a "chain" allowing it to use our cache to prevent
+     * duplication of effort. In the future this findCache may be shared between instances.
+     *
+     * <p><b>Implementation note:</b> we will create objects using directly the underlying backing
+     * store, not using the cache. This is because hundred of objects may be created during a scan
+     * while only one will be typically retained. We don't want to overload the cache with every
+     * false candidates that we encounter during the scan.
      */
     private final class Finder extends IdentifiedObjectFinder.Adapter {
         /** Cache used when finding */
         private ObjectCache findCache;
 
-        /**
-         * Creates a finder for the underlying backing store.
-         */
+        /** Creates a finder for the underlying backing store. */
         Finder(final IdentifiedObjectFinder finder, ObjectCache tempCache) {
             super(finder);
             this.findCache = tempCache;
         }
 
         /**
-         * Looks up an object from this authority factory which is equals, ignoring metadata,
-         * to the specified object. The default implementation performs the same lookup than
-         * the backing store and caches the result.
+         * Looks up an object from this authority factory which is equals, ignoring metadata, to the
+         * specified object. The default implementation performs the same lookup than the backing
+         * store and caches the result.
          */
         @Override
         public IdentifiedObject find(final IdentifiedObject object) throws FactoryException {
@@ -435,7 +408,7 @@ public final class CachedCRSAuthorityDecorator extends AbstractAuthorityFactory
              */
             IdentifiedObject candidate;
             candidate = (IdentifiedObject) findCache.get(object);
-            
+
             if (candidate == null) {
                 // Must delegates to 'finder' (not to 'super') in order to take
                 // advantage of the method overriden by AllAuthoritiesFactory.
@@ -444,7 +417,7 @@ public final class CachedCRSAuthorityDecorator extends AbstractAuthorityFactory
                     try {
                         findCache.writeLock(object);
                         candidate = (IdentifiedObject) findCache.peek(object);
-                        if( candidate == null ){
+                        if (candidate == null) {
                             findCache.put(object, found);
                             return found;
                         }
@@ -457,13 +430,11 @@ public final class CachedCRSAuthorityDecorator extends AbstractAuthorityFactory
             return candidate;
         }
 
-        /**
-         * Returns the identifier for the specified object.
-         */
+        /** Returns the identifier for the specified object. */
         @Override
         public String findIdentifier(final IdentifiedObject object) throws FactoryException {
             IdentifiedObject candidate;
-            candidate = (IdentifiedObject) findCache.get(object);            
+            candidate = (IdentifiedObject) findCache.get(object);
             if (candidate != null) {
                 return getIdentifier(candidate);
             }

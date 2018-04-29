@@ -21,334 +21,269 @@ import javax.xml.namespace.QName;
 import org.geotools.xml.XSD;
 
 /**
- * This interface contains the qualified names of all the types,elements, and 
- * attributes in the http://www.opengis.net/wms schema.
+ * This interface contains the qualified names of all the types,elements, and attributes in the
+ * http://www.opengis.net/wms schema.
  *
  * @generated
- *
- *
  * @source $URL$
  */
 public final class WMS extends XSD {
 
     /** singleton instance */
     private static final WMS instance = new WMS();
-    
-    /**
-     * Returns the singleton instance.
-     */
+
+    /** Returns the singleton instance. */
     public static final WMS getInstance() {
-       return instance;
+        return instance;
     }
-    
-    /**
-     * private constructor
-     */
-    private WMS() {
-    }
-    
+
+    /** private constructor */
+    private WMS() {}
+
     protected void addDependencies(Set dependencies) {
-       //TODO: add dependencies here
+        // TODO: add dependencies here
     }
-    
-    /**
-     * Returns 'http://www.opengis.net/wms'.
-     */
+
+    /** Returns 'http://www.opengis.net/wms'. */
     public String getNamespaceURI() {
-       return NAMESPACE;
+        return NAMESPACE;
     }
-    
-    /**
-     * Returns the location of 'capabilities_1_3_0.xsd.'.
-     */
+
+    /** Returns the location of 'capabilities_1_3_0.xsd.'. */
     public String getSchemaLocation() {
-       return getClass().getResource("capabilities_1_3_0.xsd").toString();
+        return getClass().getResource("capabilities_1_3_0.xsd").toString();
     }
-    
+
     /** @generated */
     public static final String NAMESPACE = "http://www.opengis.net/wms";
-    
+
     /* Type Definitions */
     /** @generated */
-    public static final QName latitudeType = 
-        new QName("http://www.opengis.net/wms","latitudeType");
+    public static final QName latitudeType =
+            new QName("http://www.opengis.net/wms", "latitudeType");
     /** @generated */
-    public static final QName longitudeType = 
-        new QName("http://www.opengis.net/wms","longitudeType");
+    public static final QName longitudeType =
+            new QName("http://www.opengis.net/wms", "longitudeType");
     /** @generated */
-    public static final QName OperationType = 
-        new QName("http://www.opengis.net/wms","OperationType");
+    public static final QName OperationType =
+            new QName("http://www.opengis.net/wms", "OperationType");
     /** @generated */
-    public static final QName _Attribution = 
-        new QName("http://www.opengis.net/wms","_Attribution");
+    public static final QName _Attribution =
+            new QName("http://www.opengis.net/wms", "_Attribution");
     /** @generated */
-    public static final QName _AuthorityURL = 
-        new QName("http://www.opengis.net/wms","_AuthorityURL");
+    public static final QName _AuthorityURL =
+            new QName("http://www.opengis.net/wms", "_AuthorityURL");
     /** @generated */
-    public static final QName _BoundingBox = 
-        new QName("http://www.opengis.net/wms","_BoundingBox");
+    public static final QName _BoundingBox =
+            new QName("http://www.opengis.net/wms", "_BoundingBox");
     /** @generated */
-    public static final QName _Capability = 
-        new QName("http://www.opengis.net/wms","_Capability");
+    public static final QName _Capability = new QName("http://www.opengis.net/wms", "_Capability");
     /** @generated */
-    public static final QName _ContactAddress = 
-        new QName("http://www.opengis.net/wms","_ContactAddress");
+    public static final QName _ContactAddress =
+            new QName("http://www.opengis.net/wms", "_ContactAddress");
     /** @generated */
-    public static final QName _ContactInformation = 
-        new QName("http://www.opengis.net/wms","_ContactInformation");
+    public static final QName _ContactInformation =
+            new QName("http://www.opengis.net/wms", "_ContactInformation");
     /** @generated */
-    public static final QName _ContactPersonPrimary = 
-        new QName("http://www.opengis.net/wms","_ContactPersonPrimary");
+    public static final QName _ContactPersonPrimary =
+            new QName("http://www.opengis.net/wms", "_ContactPersonPrimary");
     /** @generated */
-    public static final QName _DataURL = 
-        new QName("http://www.opengis.net/wms","_DataURL");
+    public static final QName _DataURL = new QName("http://www.opengis.net/wms", "_DataURL");
     /** @generated */
-    public static final QName _DCPType = 
-        new QName("http://www.opengis.net/wms","_DCPType");
+    public static final QName _DCPType = new QName("http://www.opengis.net/wms", "_DCPType");
     /** @generated */
-    public static final QName _Dimension = 
-        new QName("http://www.opengis.net/wms","_Dimension");
+    public static final QName _Dimension = new QName("http://www.opengis.net/wms", "_Dimension");
     /** @generated */
-    public static final QName _EX_GeographicBoundingBox = 
-        new QName("http://www.opengis.net/wms","_EX_GeographicBoundingBox");
+    public static final QName _EX_GeographicBoundingBox =
+            new QName("http://www.opengis.net/wms", "_EX_GeographicBoundingBox");
     /** @generated */
-    public static final QName _Exception = 
-        new QName("http://www.opengis.net/wms","_Exception");
+    public static final QName _Exception = new QName("http://www.opengis.net/wms", "_Exception");
     /** @generated */
-    public static final QName _FeatureListURL = 
-        new QName("http://www.opengis.net/wms","_FeatureListURL");
+    public static final QName _FeatureListURL =
+            new QName("http://www.opengis.net/wms", "_FeatureListURL");
     /** @generated */
-    public static final QName _Get = 
-        new QName("http://www.opengis.net/wms","_Get");
+    public static final QName _Get = new QName("http://www.opengis.net/wms", "_Get");
     /** @generated */
-    public static final QName _HTTP = 
-        new QName("http://www.opengis.net/wms","_HTTP");
+    public static final QName _HTTP = new QName("http://www.opengis.net/wms", "_HTTP");
     /** @generated */
-    public static final QName _Identifier = 
-        new QName("http://www.opengis.net/wms","_Identifier");
+    public static final QName _Identifier = new QName("http://www.opengis.net/wms", "_Identifier");
     /** @generated */
-    public static final QName _Keyword = 
-        new QName("http://www.opengis.net/wms","_Keyword");
+    public static final QName _Keyword = new QName("http://www.opengis.net/wms", "_Keyword");
     /** @generated */
-    public static final QName _KeywordList = 
-        new QName("http://www.opengis.net/wms","_KeywordList");
+    public static final QName _KeywordList =
+            new QName("http://www.opengis.net/wms", "_KeywordList");
     /** @generated */
-    public static final QName _Layer = 
-        new QName("http://www.opengis.net/wms","_Layer");
+    public static final QName _Layer = new QName("http://www.opengis.net/wms", "_Layer");
     /** @generated */
-    public static final QName _LegendURL = 
-        new QName("http://www.opengis.net/wms","_LegendURL");
+    public static final QName _LegendURL = new QName("http://www.opengis.net/wms", "_LegendURL");
     /** @generated */
-    public static final QName _LogoURL = 
-        new QName("http://www.opengis.net/wms","_LogoURL");
+    public static final QName _LogoURL = new QName("http://www.opengis.net/wms", "_LogoURL");
     /** @generated */
-    public static final QName _MetadataURL = 
-        new QName("http://www.opengis.net/wms","_MetadataURL");
+    public static final QName _MetadataURL =
+            new QName("http://www.opengis.net/wms", "_MetadataURL");
     /** @generated */
-    public static final QName _OnlineResource = 
-        new QName("http://www.opengis.net/wms","_OnlineResource");
+    public static final QName _OnlineResource =
+            new QName("http://www.opengis.net/wms", "_OnlineResource");
     /** @generated */
-    public static final QName _Post = 
-        new QName("http://www.opengis.net/wms","_Post");
+    public static final QName _Post = new QName("http://www.opengis.net/wms", "_Post");
     /** @generated */
-    public static final QName _Request = 
-        new QName("http://www.opengis.net/wms","_Request");
+    public static final QName _Request = new QName("http://www.opengis.net/wms", "_Request");
     /** @generated */
-    public static final QName _Service = 
-        new QName("http://www.opengis.net/wms","_Service");
+    public static final QName _Service = new QName("http://www.opengis.net/wms", "_Service");
     /** @generated */
-    public static final QName _Style = 
-        new QName("http://www.opengis.net/wms","_Style");
+    public static final QName _Style = new QName("http://www.opengis.net/wms", "_Style");
     /** @generated */
-    public static final QName _StyleSheetURL = 
-        new QName("http://www.opengis.net/wms","_StyleSheetURL");
+    public static final QName _StyleSheetURL =
+            new QName("http://www.opengis.net/wms", "_StyleSheetURL");
     /** @generated */
-    public static final QName _StyleURL = 
-        new QName("http://www.opengis.net/wms","_StyleURL");
+    public static final QName _StyleURL = new QName("http://www.opengis.net/wms", "_StyleURL");
     /** @generated */
-    public static final QName _WMS_Capabilities = 
-        new QName("http://www.opengis.net/wms","_WMS_Capabilities");
+    public static final QName _WMS_Capabilities =
+            new QName("http://www.opengis.net/wms", "_WMS_Capabilities");
 
     /* Elements */
     /** @generated */
-    public static final QName _ExtendedCapabilities = 
-        new QName("http://www.opengis.net/wms","_ExtendedCapabilities");
+    public static final QName _ExtendedCapabilities =
+            new QName("http://www.opengis.net/wms", "_ExtendedCapabilities");
     /** @generated */
-    public static final QName _ExtendedOperation = 
-        new QName("http://www.opengis.net/wms","_ExtendedOperation");
+    public static final QName _ExtendedOperation =
+            new QName("http://www.opengis.net/wms", "_ExtendedOperation");
     /** @generated */
-    public static final QName Abstract = 
-        new QName("http://www.opengis.net/wms","Abstract");
+    public static final QName Abstract = new QName("http://www.opengis.net/wms", "Abstract");
     /** @generated */
-    public static final QName AccessConstraints = 
-        new QName("http://www.opengis.net/wms","AccessConstraints");
+    public static final QName AccessConstraints =
+            new QName("http://www.opengis.net/wms", "AccessConstraints");
     /** @generated */
-    public static final QName Address = 
-        new QName("http://www.opengis.net/wms","Address");
+    public static final QName Address = new QName("http://www.opengis.net/wms", "Address");
     /** @generated */
-    public static final QName AddressType = 
-        new QName("http://www.opengis.net/wms","AddressType");
+    public static final QName AddressType = new QName("http://www.opengis.net/wms", "AddressType");
     /** @generated */
-    public static final QName Attribution = 
-        new QName("http://www.opengis.net/wms","Attribution");
+    public static final QName Attribution = new QName("http://www.opengis.net/wms", "Attribution");
     /** @generated */
-    public static final QName AuthorityURL = 
-        new QName("http://www.opengis.net/wms","AuthorityURL");
+    public static final QName AuthorityURL =
+            new QName("http://www.opengis.net/wms", "AuthorityURL");
     /** @generated */
-    public static final QName BoundingBox = 
-        new QName("http://www.opengis.net/wms","BoundingBox");
+    public static final QName BoundingBox = new QName("http://www.opengis.net/wms", "BoundingBox");
     /** @generated */
-    public static final QName Capability = 
-        new QName("http://www.opengis.net/wms","Capability");
+    public static final QName Capability = new QName("http://www.opengis.net/wms", "Capability");
     /** @generated */
-    public static final QName City = 
-        new QName("http://www.opengis.net/wms","City");
+    public static final QName City = new QName("http://www.opengis.net/wms", "City");
     /** @generated */
-    public static final QName ContactAddress = 
-        new QName("http://www.opengis.net/wms","ContactAddress");
+    public static final QName ContactAddress =
+            new QName("http://www.opengis.net/wms", "ContactAddress");
     /** @generated */
-    public static final QName ContactElectronicMailAddress = 
-        new QName("http://www.opengis.net/wms","ContactElectronicMailAddress");
+    public static final QName ContactElectronicMailAddress =
+            new QName("http://www.opengis.net/wms", "ContactElectronicMailAddress");
     /** @generated */
-    public static final QName ContactFacsimileTelephone = 
-        new QName("http://www.opengis.net/wms","ContactFacsimileTelephone");
+    public static final QName ContactFacsimileTelephone =
+            new QName("http://www.opengis.net/wms", "ContactFacsimileTelephone");
     /** @generated */
-    public static final QName ContactInformation = 
-        new QName("http://www.opengis.net/wms","ContactInformation");
+    public static final QName ContactInformation =
+            new QName("http://www.opengis.net/wms", "ContactInformation");
     /** @generated */
-    public static final QName ContactOrganization = 
-        new QName("http://www.opengis.net/wms","ContactOrganization");
+    public static final QName ContactOrganization =
+            new QName("http://www.opengis.net/wms", "ContactOrganization");
     /** @generated */
-    public static final QName ContactPerson = 
-        new QName("http://www.opengis.net/wms","ContactPerson");
+    public static final QName ContactPerson =
+            new QName("http://www.opengis.net/wms", "ContactPerson");
     /** @generated */
-    public static final QName ContactPersonPrimary = 
-        new QName("http://www.opengis.net/wms","ContactPersonPrimary");
+    public static final QName ContactPersonPrimary =
+            new QName("http://www.opengis.net/wms", "ContactPersonPrimary");
     /** @generated */
-    public static final QName ContactPosition = 
-        new QName("http://www.opengis.net/wms","ContactPosition");
+    public static final QName ContactPosition =
+            new QName("http://www.opengis.net/wms", "ContactPosition");
     /** @generated */
-    public static final QName ContactVoiceTelephone = 
-        new QName("http://www.opengis.net/wms","ContactVoiceTelephone");
+    public static final QName ContactVoiceTelephone =
+            new QName("http://www.opengis.net/wms", "ContactVoiceTelephone");
     /** @generated */
-    public static final QName Country = 
-        new QName("http://www.opengis.net/wms","Country");
+    public static final QName Country = new QName("http://www.opengis.net/wms", "Country");
     /** @generated */
-    public static final QName CRS = 
-        new QName("http://www.opengis.net/wms","CRS");
+    public static final QName CRS = new QName("http://www.opengis.net/wms", "CRS");
     /** @generated */
-    public static final QName DataURL = 
-        new QName("http://www.opengis.net/wms","DataURL");
+    public static final QName DataURL = new QName("http://www.opengis.net/wms", "DataURL");
     /** @generated */
-    public static final QName DCPType = 
-        new QName("http://www.opengis.net/wms","DCPType");
+    public static final QName DCPType = new QName("http://www.opengis.net/wms", "DCPType");
     /** @generated */
-    public static final QName Dimension = 
-        new QName("http://www.opengis.net/wms","Dimension");
+    public static final QName Dimension = new QName("http://www.opengis.net/wms", "Dimension");
     /** @generated */
-    public static final QName EX_GeographicBoundingBox = 
-        new QName("http://www.opengis.net/wms","EX_GeographicBoundingBox");
+    public static final QName EX_GeographicBoundingBox =
+            new QName("http://www.opengis.net/wms", "EX_GeographicBoundingBox");
     /** @generated */
-    public static final QName Exception = 
-        new QName("http://www.opengis.net/wms","Exception");
+    public static final QName Exception = new QName("http://www.opengis.net/wms", "Exception");
     /** @generated */
-    public static final QName FeatureListURL = 
-        new QName("http://www.opengis.net/wms","FeatureListURL");
+    public static final QName FeatureListURL =
+            new QName("http://www.opengis.net/wms", "FeatureListURL");
     /** @generated */
-    public static final QName Fees = 
-        new QName("http://www.opengis.net/wms","Fees");
+    public static final QName Fees = new QName("http://www.opengis.net/wms", "Fees");
     /** @generated */
-    public static final QName Format = 
-        new QName("http://www.opengis.net/wms","Format");
+    public static final QName Format = new QName("http://www.opengis.net/wms", "Format");
     /** @generated */
-    public static final QName Get = 
-        new QName("http://www.opengis.net/wms","Get");
+    public static final QName Get = new QName("http://www.opengis.net/wms", "Get");
     /** @generated */
-    public static final QName GetCapabilities = 
-        new QName("http://www.opengis.net/wms","GetCapabilities");
+    public static final QName GetCapabilities =
+            new QName("http://www.opengis.net/wms", "GetCapabilities");
     /** @generated */
-    public static final QName GetFeatureInfo = 
-        new QName("http://www.opengis.net/wms","GetFeatureInfo");
+    public static final QName GetFeatureInfo =
+            new QName("http://www.opengis.net/wms", "GetFeatureInfo");
     /** @generated */
-    public static final QName GetMap = 
-        new QName("http://www.opengis.net/wms","GetMap");
+    public static final QName GetMap = new QName("http://www.opengis.net/wms", "GetMap");
     /** @generated */
-    public static final QName HTTP = 
-        new QName("http://www.opengis.net/wms","HTTP");
+    public static final QName HTTP = new QName("http://www.opengis.net/wms", "HTTP");
     /** @generated */
-    public static final QName Identifier = 
-        new QName("http://www.opengis.net/wms","Identifier");
+    public static final QName Identifier = new QName("http://www.opengis.net/wms", "Identifier");
     /** @generated */
-    public static final QName Keyword = 
-        new QName("http://www.opengis.net/wms","Keyword");
+    public static final QName Keyword = new QName("http://www.opengis.net/wms", "Keyword");
     /** @generated */
-    public static final QName KeywordList = 
-        new QName("http://www.opengis.net/wms","KeywordList");
+    public static final QName KeywordList = new QName("http://www.opengis.net/wms", "KeywordList");
     /** @generated */
-    public static final QName Layer = 
-        new QName("http://www.opengis.net/wms","Layer");
+    public static final QName Layer = new QName("http://www.opengis.net/wms", "Layer");
     /** @generated */
-    public static final QName LayerLimit = 
-        new QName("http://www.opengis.net/wms","LayerLimit");
+    public static final QName LayerLimit = new QName("http://www.opengis.net/wms", "LayerLimit");
     /** @generated */
-    public static final QName LegendURL = 
-        new QName("http://www.opengis.net/wms","LegendURL");
+    public static final QName LegendURL = new QName("http://www.opengis.net/wms", "LegendURL");
     /** @generated */
-    public static final QName LogoURL = 
-        new QName("http://www.opengis.net/wms","LogoURL");
+    public static final QName LogoURL = new QName("http://www.opengis.net/wms", "LogoURL");
     /** @generated */
-    public static final QName MaxHeight = 
-        new QName("http://www.opengis.net/wms","MaxHeight");
+    public static final QName MaxHeight = new QName("http://www.opengis.net/wms", "MaxHeight");
     /** @generated */
-    public static final QName MaxScaleDenominator = 
-        new QName("http://www.opengis.net/wms","MaxScaleDenominator");
+    public static final QName MaxScaleDenominator =
+            new QName("http://www.opengis.net/wms", "MaxScaleDenominator");
     /** @generated */
-    public static final QName MaxWidth = 
-        new QName("http://www.opengis.net/wms","MaxWidth");
+    public static final QName MaxWidth = new QName("http://www.opengis.net/wms", "MaxWidth");
     /** @generated */
-    public static final QName MetadataURL = 
-        new QName("http://www.opengis.net/wms","MetadataURL");
+    public static final QName MetadataURL = new QName("http://www.opengis.net/wms", "MetadataURL");
     /** @generated */
-    public static final QName MinScaleDenominator = 
-        new QName("http://www.opengis.net/wms","MinScaleDenominator");
+    public static final QName MinScaleDenominator =
+            new QName("http://www.opengis.net/wms", "MinScaleDenominator");
     /** @generated */
-    public static final QName Name = 
-        new QName("http://www.opengis.net/wms","Name");
+    public static final QName Name = new QName("http://www.opengis.net/wms", "Name");
     /** @generated */
-    public static final QName OnlineResource = 
-        new QName("http://www.opengis.net/wms","OnlineResource");
+    public static final QName OnlineResource =
+            new QName("http://www.opengis.net/wms", "OnlineResource");
     /** @generated */
-    public static final QName Post = 
-        new QName("http://www.opengis.net/wms","Post");
+    public static final QName Post = new QName("http://www.opengis.net/wms", "Post");
     /** @generated */
-    public static final QName PostCode = 
-        new QName("http://www.opengis.net/wms","PostCode");
+    public static final QName PostCode = new QName("http://www.opengis.net/wms", "PostCode");
     /** @generated */
-    public static final QName Request = 
-        new QName("http://www.opengis.net/wms","Request");
+    public static final QName Request = new QName("http://www.opengis.net/wms", "Request");
     /** @generated */
-    public static final QName Service = 
-        new QName("http://www.opengis.net/wms","Service");
+    public static final QName Service = new QName("http://www.opengis.net/wms", "Service");
     /** @generated */
-    public static final QName StateOrProvince = 
-        new QName("http://www.opengis.net/wms","StateOrProvince");
+    public static final QName StateOrProvince =
+            new QName("http://www.opengis.net/wms", "StateOrProvince");
     /** @generated */
-    public static final QName Style = 
-        new QName("http://www.opengis.net/wms","Style");
+    public static final QName Style = new QName("http://www.opengis.net/wms", "Style");
     /** @generated */
-    public static final QName StyleSheetURL = 
-        new QName("http://www.opengis.net/wms","StyleSheetURL");
+    public static final QName StyleSheetURL =
+            new QName("http://www.opengis.net/wms", "StyleSheetURL");
     /** @generated */
-    public static final QName StyleURL = 
-        new QName("http://www.opengis.net/wms","StyleURL");
+    public static final QName StyleURL = new QName("http://www.opengis.net/wms", "StyleURL");
     /** @generated */
-    public static final QName Title = 
-        new QName("http://www.opengis.net/wms","Title");
+    public static final QName Title = new QName("http://www.opengis.net/wms", "Title");
     /** @generated */
-    public static final QName WMS_Capabilities = 
-        new QName("http://www.opengis.net/wms","WMS_Capabilities");
+    public static final QName WMS_Capabilities =
+            new QName("http://www.opengis.net/wms", "WMS_Capabilities");
 
     /* Attributes */
 
 }
-    

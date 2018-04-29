@@ -21,21 +21,16 @@ import org.xml.sax.helpers.AttributesImpl;
 
 /**
  * Base class for all encoders used by {@link FeatureCollectionEncoderDelegate}
- * 
+ *
  * @author Justin Deoliveira, OpenGeo
  */
 public abstract class ObjectEncoder<T extends Object> {
-    
+
     protected Encoder encoder;
-    
 
     protected ObjectEncoder(Encoder e) {
         this.encoder = e;
     }
-    
-    public abstract void encode(T object, AttributesImpl atts, GMLWriter handler)
-            throws Exception;
 
-
-
+    public abstract void encode(T object, AttributesImpl atts, GMLWriter handler) throws Exception;
 }

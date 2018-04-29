@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2015, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -17,8 +17,8 @@
 package org.geotools.util;
 
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
 import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
 
 import org.junit.Test;
 import org.opengis.util.InternationalString;
@@ -26,11 +26,9 @@ import org.opengis.util.ProgressListener;
 
 /**
  * Test suite for {@link SubProgressListener}
- * 
+ *
  * @author groldan
  * @version $Id$
- *
- *
  * @source $URL$
  */
 public class SubProgressListenerTest {
@@ -45,7 +43,6 @@ public class SubProgressListenerTest {
         sub.complete();
         assertEquals(100F, sub.getProgress());
     }
-
 
     @Test
     public void testSubProgressStartFirstListener() {
@@ -78,7 +75,7 @@ public class SubProgressListenerTest {
         assertEquals(75f, parent.getProgress());
 
         sub.progress(100f);
-        
+
         assertEquals(100f, sub.getProgress());
         assertEquals(100f, parent.getProgress());
     }
@@ -100,8 +97,7 @@ public class SubProgressListenerTest {
             return this.progress;
         }
 
-        public void complete() {
-        }
+        public void complete() {}
 
         public boolean getStarted() {
             return this.startedCalled;
@@ -111,11 +107,9 @@ public class SubProgressListenerTest {
             this.startedCalled = true;
         }
 
-        public void dispose() {
-        }
+        public void dispose() {}
 
-        public void exceptionOccurred(Throwable exception) {
-        }
+        public void exceptionOccurred(Throwable exception) {}
 
         public String getDescription() {
             return null;
@@ -129,16 +123,12 @@ public class SubProgressListenerTest {
             return false;
         }
 
-        public void setCanceled(boolean cancel) {
-        }
+        public void setCanceled(boolean cancel) {}
 
-        public void setDescription(String description) {
-        }
+        public void setDescription(String description) {}
 
-        public void setTask(InternationalString task) {
-        }
+        public void setTask(InternationalString task) {}
 
-        public void warningOccurred(String source, String location, String warning) {
-        }
+        public void warningOccurred(String source, String location, String warning) {}
     }
 }

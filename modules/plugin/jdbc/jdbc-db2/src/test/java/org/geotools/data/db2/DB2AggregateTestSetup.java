@@ -17,10 +17,9 @@
 package org.geotools.data.db2;
 
 import java.sql.Connection;
-
 import org.geotools.jdbc.JDBCAggregateTestSetup;
 
-public class DB2AggregateTestSetup  extends JDBCAggregateTestSetup {
+public class DB2AggregateTestSetup extends JDBCAggregateTestSetup {
 
     protected DB2AggregateTestSetup() {
         super(new DB2TestSetup());
@@ -29,17 +28,42 @@ public class DB2AggregateTestSetup  extends JDBCAggregateTestSetup {
     @Override
     protected void createAggregateTable() throws Exception {
         Connection con = getDataSource().getConnection();
-        con.prepareStatement("CREATE TABLE "+DB2TestUtil.SCHEMA_QUOTED+".\"aggregate\"(\"fid\" int  PRIMARY KEY not null GENERATED ALWAYS AS IDENTITY, \"id\" int, "
-            + "\"geom\" db2gse.ST_POLYGON, \"name\" varchar(255) ) ").execute();
+        con.prepareStatement(
+                        "CREATE TABLE "
+                                + DB2TestUtil.SCHEMA_QUOTED
+                                + ".\"aggregate\"(\"fid\" int  PRIMARY KEY not null GENERATED ALWAYS AS IDENTITY, \"id\" int, "
+                                + "\"geom\" db2gse.ST_POLYGON, \"name\" varchar(255) ) ")
+                .execute();
 
-        String insertClause = "INSERT INTO "+DB2TestUtil.SCHEMA_QUOTED+".\"aggregate\"(\"id\",\"geom\",\"name\")";
-        DB2Util.executeRegister(DB2TestUtil.SCHEMA, "aggregate", "geom",DB2TestUtil.SRSNAME, con);
-        con.prepareStatement(insertClause+" VALUES ( 0,"
-            + "db2gse.ST_PolyFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',"+DB2TestUtil.SRID+")," + "'muddy1')").execute();
-        con.prepareStatement(insertClause+" VALUES ( 1,"
-                + "db2gse.ST_PolyFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',"+DB2TestUtil.SRID+")," + "'muddy1')").execute();
-        con.prepareStatement(insertClause+" VALUES ( 2,"
-                + "db2gse.ST_PolyFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',"+DB2TestUtil.SRID+")," + "'muddy2')").execute();
+        String insertClause =
+                "INSERT INTO "
+                        + DB2TestUtil.SCHEMA_QUOTED
+                        + ".\"aggregate\"(\"id\",\"geom\",\"name\")";
+        DB2Util.executeRegister(DB2TestUtil.SCHEMA, "aggregate", "geom", DB2TestUtil.SRSNAME, con);
+        con.prepareStatement(
+                        insertClause
+                                + " VALUES ( 0,"
+                                + "db2gse.ST_PolyFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',"
+                                + DB2TestUtil.SRID
+                                + "),"
+                                + "'muddy1')")
+                .execute();
+        con.prepareStatement(
+                        insertClause
+                                + " VALUES ( 1,"
+                                + "db2gse.ST_PolyFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',"
+                                + DB2TestUtil.SRID
+                                + "),"
+                                + "'muddy1')")
+                .execute();
+        con.prepareStatement(
+                        insertClause
+                                + " VALUES ( 2,"
+                                + "db2gse.ST_PolyFromText('POLYGON((12 6, 14 8, 16 6, 16 4, 14 4, 12 6))',"
+                                + DB2TestUtil.SRID
+                                + "),"
+                                + "'muddy2')")
+                .execute();
         con.close();
     }
 
@@ -50,5 +74,4 @@ public class DB2AggregateTestSetup  extends JDBCAggregateTestSetup {
         DB2TestUtil.dropTable(DB2TestUtil.SCHEMA, "aggregate", con);
         con.close();
     }
-
 }

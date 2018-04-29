@@ -26,7 +26,6 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.geotools.coverage.io.netcdf.crs.NetCDFProjection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.imageio.netcdf.cv.CoordinateVariable;
@@ -36,32 +35,26 @@ import org.geotools.util.Utilities;
 import org.geotools.util.logging.Logging;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-
 import ucar.nc2.Attribute;
 import ucar.nc2.Variable;
 import ucar.nc2.constants.AxisType;
 import ucar.nc2.dataset.CoordinateAxis;
-import ucar.nc2.dataset.CoordinateAxis1D;
 import ucar.nc2.dataset.NetcdfDataset;
 
 /**
- * Store information about the underlying NetCDF georeferencing, 
- * such as Coordinate Variables (i.e. Latitude, Longitude, Time variables, with values), 
- * Coordinate Reference Systems (i.e. GridMappings), NetCDF dimensions to NetCDF coordinates 
- * relations.
+ * Store information about the underlying NetCDF georeferencing, such as Coordinate Variables (i.e.
+ * Latitude, Longitude, Time variables, with values), Coordinate Reference Systems (i.e.
+ * GridMappings), NetCDF dimensions to NetCDF coordinates relations.
  */
 class NetCDFGeoreferenceManager {
 
-    /** 
-     * Base class for BBOX initialization and retrieval. 
-     */
+    /** Base class for BBOX initialization and retrieval. */
     class BBoxGetter {
 
         /**
-         * BoundingBoxes available for the underlying dataset. Most common case is that
-         * the whole dataset has a single boundingbox/grid-mapping, resulting into a map 
-         * made by a single element. In that case, the only one envelope will be referred
-         * through the "DEFAULT" key  
+         * BoundingBoxes available for the underlying dataset. Most common case is that the whole
+         * dataset has a single boundingbox/grid-mapping, resulting into a map made by a single
+         * element. In that case, the only one envelope will be referred through the "DEFAULT" key
          */
         protected Map<String, ReferencedEnvelope> boundingBoxes;
 
@@ -82,30 +75,30 @@ class NetCDFGeoreferenceManager {
                     // is it lat or lon (or geoY or geoX)?
                     AxisType type = cv.getAxisType();
                     switch (type) {
-                    case GeoY:
-                    case Lat:
-                        getCoordinate(cv, yLat);
-                        if (yLat[1] > yLat[0]) {
-                            setNeedsFlipping(true);
-                        } else {
-                            setNeedsFlipping(false);
-                        }
-                        set++;
-                        break;
-                    case GeoX:
-                    case Lon:
-                        getCoordinate(cv, xLon);
-                        set++;
-                        break;
-                    default:
-                        break;
+                        case GeoY:
+                        case Lat:
+                            getCoordinate(cv, yLat);
+                            if (yLat[1] > yLat[0]) {
+                                setNeedsFlipping(true);
+                            } else {
+                                setNeedsFlipping(false);
+                            }
+                            set++;
+                            break;
+                        case GeoX:
+                        case Lon:
+                            getCoordinate(cv, xLon);
+                            set++;
+                            break;
+                        default:
+                            break;
                     }
                     switch (type) {
-                    case Lat:
-                    case Lon:
-                        isLonLat = true;
-                    default:
-                        break;
+                        case Lat:
+                        case Lon:
+                            isLonLat = true;
+                        default:
+                            break;
                     }
                 }
                 if (set == 2) {
@@ -126,14 +119,15 @@ class NetCDFGeoreferenceManager {
                 CoordinateReferenceSystem defaultCrs = NetCDFProjection.lookForDatasetCRS(dataset);
 
                 // Then, look for a per variable CRS
-                CoordinateReferenceSystem localCrs = NetCDFProjection.lookForVariableCRS(dataset,
-                        defaultCrs);
+                CoordinateReferenceSystem localCrs =
+                        NetCDFProjection.lookForVariableCRS(dataset, defaultCrs);
                 if (localCrs != null) {
                     // lookup for a custom EPSG if any
                     crs = NetCDFProjection.lookupForCustomEpsg(localCrs);
                 }
             }
-            ReferencedEnvelope boundingBox = new ReferencedEnvelope(xLon[0], xLon[1], yLat[0], yLat[1], crs);
+            ReferencedEnvelope boundingBox =
+                    new ReferencedEnvelope(xLon[0], xLon[1], yLat[0], yLat[1], crs);
             boundingBoxes.put(NetCDFGeoreferenceManager.DEFAULT, boundingBox);
         }
 
@@ -149,14 +143,14 @@ class NetCDFGeoreferenceManager {
     }
 
     /**
-     *  BBoxGetter Implementation for multiple bounding boxes management.
-     *  Use it for NetCDF datasets defining multiple bounding boxes. 
+     * BBoxGetter Implementation for multiple bounding boxes management. Use it for NetCDF datasets
+     * defining multiple bounding boxes.
      */
     class MultipleBBoxGetter extends BBoxGetter {
 
-        /** 
-         * Class delegated to retrieve and compute the coordinates from the available
-         * coordinate variables.
+        /**
+         * Class delegated to retrieve and compute the coordinates from the available coordinate
+         * variables.
          */
         class CoordinatesManager {
 
@@ -185,8 +179,11 @@ class NetCDFGeoreferenceManager {
                 xLonCoords.put(cv.getName(), xLon);
             }
 
-            /** Compute a {@link ReferencedEnvelope} instance, from the specified coordinate names */
-            public ReferencedEnvelope computeEnvelope(String coordinates, CoordinateReferenceSystem crs) {
+            /**
+             * Compute a {@link ReferencedEnvelope} instance, from the specified coordinate names
+             */
+            public ReferencedEnvelope computeEnvelope(
+                    String coordinates, CoordinateReferenceSystem crs) {
                 Utilities.ensureNonNull("coordinates", coordinates);
                 String coords[] = coordinates.split(" ");
                 double xLon[] = null;
@@ -196,20 +193,21 @@ class NetCDFGeoreferenceManager {
                     if (xLonCoords.containsKey(coord)) {
                         xLon = xLonCoords.get(coord);
                     } else if (yLatCoords.containsKey(coord)) {
-                        yLat = yLatCoords.get(coord); 
+                        yLat = yLatCoords.get(coord);
                     }
                 }
 
                 if (xLon == null || yLat == null) {
-                    throw new IllegalArgumentException("Unable to initialize the boundingBox due to missing coordinates ");
+                    throw new IllegalArgumentException(
+                            "Unable to initialize the boundingBox due to missing coordinates ");
                 }
                 return new ReferencedEnvelope(xLon[0], xLon[1], yLat[0], yLat[1], crs);
             }
 
-            /** 
-             * Get the coordinates available for this variable. 
-             * They are retrieved from the {@linkplain NetCDFUtilities#COORDINATES} coordinates attribute.
-             * If missing, they will be retrieved from the dimension names 
+            /**
+             * Get the coordinates available for this variable. They are retrieved from the
+             * {@linkplain NetCDFUtilities#COORDINATES} coordinates attribute. If missing, they will
+             * be retrieved from the dimension names
              */
             public String getCoordinateNames(Variable var) {
                 String coordinates = null;
@@ -222,7 +220,7 @@ class NetCDFGeoreferenceManager {
                 } else if (!(var instanceof CoordinateAxis)) {
                     // fallback on dimensions to coordinates mapping
                     String dimensions = var.getDimensionsString();
-                    if (dimensions!= null && !dimensions.isEmpty()) {
+                    if (dimensions != null && !dimensions.isEmpty()) {
                         coordinates = dimensions;
                     }
                 }
@@ -256,7 +254,7 @@ class NetCDFGeoreferenceManager {
         }
 
         @Override
-        protected void init() throws FactoryException, IOException { 
+        protected void init() throws FactoryException, IOException {
 
             isLonLat = false;
             CoordinatesManager manager = new CoordinatesManager();
@@ -265,16 +263,16 @@ class NetCDFGeoreferenceManager {
                     // is it lat or lon (or geoY or geoX)?
                     AxisType type = cv.getAxisType();
                     switch (type) {
-                    case GeoY:
-                    case Lat:
-                        manager.setYLat(cv);
-                        break;
-                    case GeoX:
-                    case Lon:
-                        manager.setXlon(cv);
-                        break;
-                    default:
-                        break;
+                        case GeoY:
+                        case Lat:
+                            manager.setYLat(cv);
+                            break;
+                        case GeoX:
+                        case Lon:
+                            manager.setXlon(cv);
+                            break;
+                        default:
+                            break;
                     }
                 }
             }
@@ -303,15 +301,14 @@ class NetCDFGeoreferenceManager {
             if (coordinates != null) {
                 return boundingBoxes.get(coordinates);
             }
-            throw new IllegalArgumentException("Unable to find an envelope for the provided variable: "
-                    + shortName);
+            throw new IllegalArgumentException(
+                    "Unable to find an envelope for the provided variable: " + shortName);
         }
-        
-        /** 
-         * Look for a Coordinate Reference System 
-         */
-        private CoordinateReferenceSystem lookForCrs(CoordinateReferenceSystem crs, 
-                Attribute gridMappingAttribute, Variable var) throws FactoryException {
+
+        /** Look for a Coordinate Reference System */
+        private CoordinateReferenceSystem lookForCrs(
+                CoordinateReferenceSystem crs, Attribute gridMappingAttribute, Variable var)
+                throws FactoryException {
             if (gridMappingAttribute != null) {
                 String gridMappingName = gridMappingAttribute.getStringValue();
                 if (LOGGER.isLoggable(Level.FINE)) {
@@ -325,20 +322,25 @@ class NetCDFGeoreferenceManager {
                         crs = NetCDFProjection.lookupForCustomEpsg(localCrs);
                     }
                 } else if (LOGGER.isLoggable(Level.WARNING)) {
-                    LOGGER.warning("The specified variable " + var.getFullName() + " declares a gridMapping = "  
-                            + gridMappingName + " but that mapping doesn't exist.");
+                    LOGGER.warning(
+                            "The specified variable "
+                                    + var.getFullName()
+                                    + " declares a gridMapping = "
+                                    + gridMappingName
+                                    + " but that mapping doesn't exist.");
                 }
             }
             return crs;
         }
     }
 
-    private final static Logger LOGGER = Logging.getLogger(NetCDFGeoreferenceManager.class.toString());
+    private static final Logger LOGGER =
+            Logging.getLogger(NetCDFGeoreferenceManager.class.toString());
 
     /**
-     * Set it to {@code true} in case the dataset has a single bbox.
-     * Set it to {@code false} in case the dataset has multiple 2D coordinates definitions and bboxes.
-     * Used to quickly access the bbox in case there is only a single one.
+     * Set it to {@code true} in case the dataset has a single bbox. Set it to {@code false} in case
+     * the dataset has multiple 2D coordinates definitions and bboxes. Used to quickly access the
+     * bbox in case there is only a single one.
      */
     private boolean hasSingleBBox = true;
 
@@ -346,38 +348,34 @@ class NetCDFGeoreferenceManager {
     private BBoxGetter bbox;
 
     /**
-     * Class mapping the NetCDF dimensions to related coordinate variables/axis names.
-     * Typical example is a "time" coordinate variable containing the time instants 
-     * for the "time" dimensions. 
+     * Class mapping the NetCDF dimensions to related coordinate variables/axis names. Typical
+     * example is a "time" coordinate variable containing the time instants for the "time"
+     * dimensions.
      */
     class DimensionMapper {
-        /** Mapping containing the relation between a dimension and the related coordinate variable */
+        /**
+         * Mapping containing the relation between a dimension and the related coordinate variable
+         */
         private Map<String, String> dimensions;
 
-        /**
-         * Return the whole dimension to coordinates mapping
-         */
+        /** Return the whole dimension to coordinates mapping */
         public Map<String, String> getDimensions() {
             return dimensions;
         }
 
-        /**
-         * Return the dimension names handled by this mapper
-         */
+        /** Return the dimension names handled by this mapper */
         public Set<String> getDimensionNames() {
             return dimensions.keySet();
         }
 
-        /** 
-         * Return the dimension name associated to the specified coordinateVariable.
-         */
+        /** Return the dimension name associated to the specified coordinateVariable. */
         public String getDimension(String coordinateVariableName) {
             return dimensions.get(coordinateVariableName);
         }
 
         /**
          * Mapper parsing the coordinateVariables.
-         *  
+         *
          * @param coordinates
          */
         public DimensionMapper(Map<String, CoordinateVariable<?>> coordinates) {
@@ -394,51 +392,56 @@ class NetCDFGeoreferenceManager {
                     final String name = cv.getName();
                     AxisType axisType = cv.getAxisType();
                     switch (axisType) {
-                    case GeoX:
-                    case Lon:
-                        coordinates2Dx++;
-                        continue;
-                    case GeoY:
-                    case Lat:
-                        coordinates2Dy++;
-                        continue;
-                    case Height:
-                    case Pressure:
-                    case RadialElevation:
-                    case RadialDistance:
-                    case GeoZ:
-                        if (NetCDFCRSUtilities.VERTICAL_AXIS_NAMES.contains(name)
-                                && !dimensions.containsKey(NetCDFUtilities.ELEVATION_DIM)) {
-                            // Main elevation dimension
-                            dimensions.put(NetCDFUtilities.ELEVATION_DIM, name);
-                        } else {
-                            // additional elevation dimension
+                        case GeoX:
+                        case Lon:
+                            coordinates2Dx++;
+                            continue;
+                        case GeoY:
+                        case Lat:
+                            coordinates2Dy++;
+                            continue;
+                        case Height:
+                        case Pressure:
+                        case RadialElevation:
+                        case RadialDistance:
+                        case GeoZ:
+                            if (NetCDFCRSUtilities.VERTICAL_AXIS_NAMES.contains(name)
+                                    && !dimensions.containsKey(NetCDFUtilities.ELEVATION_DIM)) {
+                                // Main elevation dimension
+                                dimensions.put(NetCDFUtilities.ELEVATION_DIM, name);
+                            } else {
+                                // additional elevation dimension
+                                dimensions.put(name.toUpperCase(), name);
+                            }
+                            break;
+                        case Time:
+                            if (!dimensions.containsKey(NetCDFUtilities.TIME_DIM)) {
+                                // Main time dimension
+                                dimensions.put(NetCDFUtilities.TIME_DIM, name);
+                            } else {
+                                // additional time dimension
+                                dimensions.put(name.toUpperCase(), name);
+                            }
+                            break;
+                        default:
+                            // additional dimension
                             dimensions.put(name.toUpperCase(), name);
-                        }
-                        break;
-                    case Time:
-                        if (!dimensions.containsKey(NetCDFUtilities.TIME_DIM)) {
-                            // Main time dimension
-                            dimensions.put(NetCDFUtilities.TIME_DIM, name);
-                        } else {
-                            // additional time dimension
-                            dimensions.put(name.toUpperCase(), name);
-                        }
-                        break;
-                    default:
-                        //additional dimension
-                        dimensions.put(name.toUpperCase(), name);
-                        break;
+                            break;
                     }
                 } else {
                     if (LOGGER.isLoggable(Level.FINE)) {
-                        LOGGER.fine("Null coordinate variable: '" + key + "' while processing input: " + dataset.getLocation());
+                        LOGGER.fine(
+                                "Null coordinate variable: '"
+                                        + key
+                                        + "' while processing input: "
+                                        + dataset.getLocation());
                     }
                 }
             }
             if (coordinates2Dx + coordinates2Dy > 2) {
                 if (coordinates2Dx != coordinates2Dy) {
-                    throw new IllegalArgumentException("number of x/lon coordinates must match number of y/lat coordinates");
+                    throw new IllegalArgumentException(
+                            "number of x/lon coordinates must match number of y/lat coordinates");
                 }
                 // More than 2D coordinates have been found, as an instance lon1, lat1, lon2, lat2
                 // Report that by unsetting the singleBbox flag.
@@ -455,7 +458,7 @@ class NetCDFGeoreferenceManager {
     /** Map containing coordinates being wrapped by variables */
     private Map<String, CoordinateVariable<?>> coordinatesVariables;
 
-    final static String DEFAULT = "Default";
+    static final String DEFAULT = "Default";
 
     /** Flag reporting if the input file needs flipping or not */
     private boolean needsFlipping = false;
@@ -513,7 +516,8 @@ class NetCDFGeoreferenceManager {
         if (envelope != null) {
             return envelope.getCoordinateReferenceSystem();
         }
-        throw new IllegalArgumentException("Unable to find a CRS for the provided variable: " + shortName);
+        throw new IllegalArgumentException(
+                "Unable to find a CRS for the provided variable: " + shortName);
     }
 
     private String getCoordinatesForVariable(String shortName) {
@@ -522,7 +526,7 @@ class NetCDFGeoreferenceManager {
             // Getting the coordinates attribute
             Attribute attribute = var.findAttribute(NetCDFUtilities.COORDINATES);
             if (attribute != null) {
-                return attribute.getStringValue(); 
+                return attribute.getStringValue();
             } else {
                 return var.getDimensionsString();
             }
@@ -537,7 +541,7 @@ class NetCDFGeoreferenceManager {
             String coordinates = getCoordinatesForVariable(shortName);
             String coords[] = coordinates.split(" ");
             List<CoordinateVariable<?>> coordVar = new ArrayList<CoordinateVariable<?>>();
-            for (String coord: coords) {
+            for (String coord : coords) {
                 coordVar.add(coordinatesVariables.get(coord));
             }
             return coordVar;
@@ -548,10 +552,10 @@ class NetCDFGeoreferenceManager {
         return dimensionMapper;
     }
 
-    /** 
-     * Main constructor to setup the NetCDF Georeferencing based on the available
-     * information stored within the NetCDF dataset. 
-     * */
+    /**
+     * Main constructor to setup the NetCDF Georeferencing based on the available information stored
+     * within the NetCDF dataset.
+     */
     public NetCDFGeoreferenceManager(NetcdfDataset dataset) {
         this.dataset = dataset;
         initCoordinates();
@@ -570,7 +574,8 @@ class NetCDFGeoreferenceManager {
      */
     private void initCoordinates() {
         // get the coordinate variables
-        Map<String, CoordinateVariable<?>> coordinates = new HashMap<String, CoordinateVariable<?>>();
+        Map<String, CoordinateVariable<?>> coordinates =
+                new HashMap<String, CoordinateVariable<?>>();
         Set<String> unsupported = NetCDFUtilities.getUnsupportedDimensions();
         Set<String> ignored = NetCDFUtilities.getIgnoredDimensions();
         for (CoordinateAxis axis : dataset.getCoordinateAxes()) {
@@ -584,17 +589,24 @@ class NetCDFGeoreferenceManager {
                     if (unsupported.contains(axisName)) {
                         axis.setAxisType(AxisType.GeoZ);
                         coordinates.put(axisName, CoordinateVariable.create(axis));
-                    // Workaround for files that have a time dimension, but in a format that could not be parsed
+                        // Workaround for files that have a time dimension, but in a format that
+                        // could not be parsed
                     } else if ("time".equals(axisName)) {
                         if (LOGGER.isLoggable(Level.FINE)) {
-                            LOGGER.fine("Detected unparseable unit string in time axis: '"
-                                + axis.getUnitsString() + "'.");
+                            LOGGER.fine(
+                                    "Detected unparseable unit string in time axis: '"
+                                            + axis.getUnitsString()
+                                            + "'.");
                         }
                         axis.setAxisType(AxisType.Time);
                         coordinates.put(axisName, CoordinateVariable.create(axis));
-                    } else if (!ignored.contains(axisName)){
-                        LOGGER.warning("Unsupported axis: " + axis + " in input: " + dataset.getLocation()
-                                + " has been found");
+                    } else if (!ignored.contains(axisName)) {
+                        LOGGER.warning(
+                                "Unsupported axis: "
+                                        + axis
+                                        + " in input: "
+                                        + dataset.getLocation()
+                                        + " has been found");
                     }
                 }
             }
@@ -605,19 +617,20 @@ class NetCDFGeoreferenceManager {
 
     /**
      * Initialize the bbox getter
-     * 
-     * @throws IOException 
-     * @throws FactoryException 
+     *
+     * @throws IOException
+     * @throws FactoryException
      */
     private void initBBox() throws IOException, FactoryException {
         bbox = hasSingleBBox ? new BBoxGetter() : new MultipleBBoxGetter();
     }
 
     /**
-     * Get the bounding box coordinates from the provided coordinateVariable.
-     * The resulting coordinates will be stored in the provided array.
-     * The convention is that the stored coordinates represent the center of the cell
-     * so we apply a half pixel offset to go to the corner. 
+     * Get the bounding box coordinates from the provided coordinateVariable. The resulting
+     * coordinates will be stored in the provided array. The convention is that the stored
+     * coordinates represent the center of the cell so we apply a half pixel offset to go to the
+     * corner.
+     *
      * @param cv
      * @param coordinate
      * @throws IOException

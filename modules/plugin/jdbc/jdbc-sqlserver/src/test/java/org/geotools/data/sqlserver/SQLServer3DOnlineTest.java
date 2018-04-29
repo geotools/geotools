@@ -12,10 +12,9 @@ public class SQLServer3DOnlineTest extends JDBC3DOnlineTest {
         ssd.setGeometryMetadataTable("GEOMETRY_COLUMNS_3D_TEST");
         ssd.setUseNativeSerialization(true);
     }
-    
+
     @Override
     protected JDBC3DTestSetup createTestSetup() {
         return new SQLServer3DTestSetup();
     }
-
 }

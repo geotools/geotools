@@ -17,34 +17,31 @@
 
 package org.geotools.data.complex;
 
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.fail;
+
 import java.io.IOException;
 import java.net.URL;
-import static org.junit.Assert.fail;
-import static org.junit.Assert.assertSame;
 import org.geotools.data.complex.config.AppSchemaDataAccessConfigurator;
 import org.geotools.data.complex.config.AppSchemaDataAccessDTO;
 import org.geotools.data.complex.config.XMLConfigDigester;
 import org.geotools.test.AppSchemaTestSupport;
-
 import org.junit.Test;
 
 /**
  * To test client properties of app-schema mapping file
- * 
+ *
  * @author Jacqui Githaiga (Curtin University of Technology)
- *
- *
- *
  * @source $URL$
  */
 public class XlinkMissingNamespaceTest extends AppSchemaTestSupport {
     /**
      * Illustrates that if xlink namespace has not been declared in the app-schema mapping file,the
      * client property is set as if for href (in the no-name namespace).
-     * 
-     * This test shows correct behaviour by throwing an exception reporting the undeclared
+     *
+     * <p>This test shows correct behaviour by throwing an exception reporting the undeclared
      * namespace.
-     * 
+     *
      * @throws IllegalArgumentException
      */
     @Test

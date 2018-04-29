@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
-
 import org.geotools.styling.css.util.UnboundSimplifyingFilterVisitor;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.filter.And;
@@ -32,8 +31,9 @@ import org.opengis.filter.Not;
 import org.opengis.filter.Or;
 
 /**
- * A simplifying filter visitor that caches the results, to avoid repeating their computation over and over
- * 
+ * A simplifying filter visitor that caches the results, to avoid repeating their computation over
+ * and over
+ *
  * @author Andrea Aime - GeoSolutions
  */
 class CachedSimplifyingFilterVisitor extends UnboundSimplifyingFilterVisitor {
@@ -87,7 +87,7 @@ class CachedSimplifyingFilterVisitor extends UnboundSimplifyingFilterVisitor {
                     topLevel.add(filter);
                 }
             }
-            for (int i = 0; i < filters.size();) {
+            for (int i = 0; i < filters.size(); ) {
                 Filter f = filters.get(i);
                 boolean skip = false;
                 if (f instanceof Or) {
@@ -163,7 +163,7 @@ class CachedSimplifyingFilterVisitor extends UnboundSimplifyingFilterVisitor {
                     topLevel.add(filter);
                 }
             }
-            for (int i = 0; i < filters.size();) {
+            for (int i = 0; i < filters.size(); ) {
                 Filter f = filters.get(i);
                 boolean skip = false;
                 if (f instanceof And) {
@@ -228,5 +228,4 @@ class CachedSimplifyingFilterVisitor extends UnboundSimplifyingFilterVisitor {
         }
         return filters;
     }
-
 }

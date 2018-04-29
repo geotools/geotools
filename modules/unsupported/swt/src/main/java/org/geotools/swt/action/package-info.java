@@ -15,7 +15,5 @@
  *    Lesser General Public License for more details.
  */
 
-/**
- * JFace Action classes to use with controls such as toolbar buttons.
- */
+/** JFace Action classes to use with controls such as toolbar buttons. */
 package org.geotools.swt.action;

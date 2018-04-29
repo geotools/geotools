@@ -21,35 +21,29 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
-
 import org.geotools.factory.Hints;
 import org.geotools.util.CommonsConverterFactory;
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
 import org.geotools.xml.impl.DatatypeConverterImpl;
 
-
 /**
  * A ConverterFactory which can convert strings using {@link javax.xml.datatype.DatatypeFactory}.
- * <p>
- * Supported converstions:
+ *
+ * <p>Supported converstions:
+ *
  * <ul>
- *         <li>String to {@link java.util.Date}
- *         <li>String to {@link java.util.Calendar}
- *         <li>{@link java.util.Date} to String
- *         <li>{@link java.util.Calendar} to String
+ *   <li>String to {@link java.util.Date}
+ *   <li>String to {@link java.util.Calendar}
+ *   <li>{@link java.util.Date} to String
+ *   <li>{@link java.util.Calendar} to String
  * </ul>
- * </p>
  *
  * @author Justin Deoliveira, The Open Planning Project
- *
- *
- *
- *
  * @source $URL$
  */
 public class XmlConverterFactory implements ConverterFactory {
-    
+
     public Converter createConverter(Class source, Class target, Hints hints) {
         // make sure either source or target is String in order not to step over
         // TemporalConverterFactory
@@ -68,58 +62,54 @@ public class XmlConverterFactory implements ConverterFactory {
     }
 
     static class XmlConverter implements Converter {
-        public Object convert(Object source, Class target)
-            throws Exception {
+        public Object convert(Object source, Class target) throws Exception {
             if (String.class.equals(target)) {
                 return convertToString(source);
             }
             return convertFromString((String) source, target);
         }
-        
+
         private Object convertFromString(final String source, final Class<?> target) {
 
             // don't bother performing conversions if the target types are not dates/times
-            if(!Calendar.class.equals(target) && !Date.class.isAssignableFrom(target))
-                return null;
+            if (!Calendar.class.equals(target) && !Date.class.isAssignableFrom(target)) return null;
 
-            //JD: this is a bit of a hack but delegate to the 
+            // JD: this is a bit of a hack but delegate to the
             // commons converter in case we are executing first.
             try {
-                Converter converter = new CommonsConverterFactory().createConverter(String.class,
-                        target, null);
-    
+                Converter converter =
+                        new CommonsConverterFactory().createConverter(String.class, target, null);
+
                 if (converter != null) {
                     Object converted = null;
-    
+
                     try {
                         converted = converter.convert(source, target);
                     } catch (Exception e) {
-                        //ignore
+                        // ignore
                     }
-    
+
                     if (converted != null) {
                         return converted;
                     }
                 }
+            } catch (Exception e) {
+                // fall through to jaxb parsing
             }
-            catch(Exception e) {
-                //fall through to jaxb parsing
-            }
-            
+
             Calendar date;
 
-            //try parsing as dateTime
+            // try parsing as dateTime
             try {
                 try {
                     date = DatatypeConverterImpl.getInstance().parseDateTime(source);
+                } catch (Exception e) {
+                    // try as just date
+                    date = DatatypeConverterImpl.getInstance().parseDate(source);
                 }
-                catch(Exception e) {
-                    //try as just date
-                    date = DatatypeConverterImpl.getInstance().parseDate(source);    
-                }
-                
+
             } catch (Exception e) {
-                //try as just time
+                // try as just time
                 date = DatatypeConverterImpl.getInstance().parseTime(source);
             }
 
@@ -130,7 +120,7 @@ public class XmlConverterFactory implements ConverterFactory {
             if (Date.class.isAssignableFrom(target)) {
                 Date time = date.getTime();
 
-                //check for subclasses
+                // check for subclasses
                 if (java.sql.Date.class.equals(target)) {
                     return new java.sql.Date(time.getTime());
                 }
@@ -157,13 +147,13 @@ public class XmlConverterFactory implements ConverterFactory {
                 Calendar cal = (Calendar) unconvertedValue;
                 textValue = DatatypeConverterImpl.getInstance().printDateTime(cal);
 
-            } else if(unconvertedValue instanceof java.sql.Date){
+            } else if (unconvertedValue instanceof java.sql.Date) {
                 DatatypeConverterImpl converter = DatatypeConverterImpl.getInstance();
                 Object hint = Hints.getSystemDefault(Hints.LOCAL_DATE_TIME_HANDLING);
                 Calendar cal;
-                if(Boolean.TRUE.equals(hint)){
+                if (Boolean.TRUE.equals(hint)) {
                     cal = Calendar.getInstance();
-                }else{
+                } else {
                     cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
                 }
                 cal.setTimeInMillis(((java.util.Date) unconvertedValue).getTime());
@@ -184,5 +174,4 @@ public class XmlConverterFactory implements ConverterFactory {
             return textValue;
         }
     }
-
 }

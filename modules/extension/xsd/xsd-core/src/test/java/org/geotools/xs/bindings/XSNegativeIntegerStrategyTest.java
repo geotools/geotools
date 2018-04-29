@@ -21,24 +21,17 @@ import javax.xml.namespace.QName;
 import org.geotools.xs.TestSchema;
 import org.geotools.xs.XS;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class XSNegativeIntegerStrategyTest extends TestSchema {
     /**
-     * negativeInteger has a lexical representation consisting of a negative
-     * sign ("-") followed by a finite-length sequence of decimal digits
-     * (#x30-#x39).
+     * negativeInteger has a lexical representation consisting of a negative sign ("-") followed by
+     * a finite-length sequence of decimal digits (#x30-#x39).
      *
-     * For example: -1, -12678967543233, -100000.
+     * <p>For example: -1, -12678967543233, -100000.
+     *
      * @throws Exception
-     *
      */
-    public void validateValues(String text, Number expected)
-        throws Exception {
+    public void validateValues(String text, Number expected) throws Exception {
         Object value = new BigInteger(text.trim());
 
         Object result = strategy.parse(element(text, qname), value);
@@ -51,8 +44,9 @@ public class XSNegativeIntegerStrategyTest extends TestSchema {
     }
 
     public BigInteger integer(Object value) {
-        return (value instanceof BigInteger) ? ((BigInteger) value)
-                                             : BigInteger.valueOf(((Number) value).longValue());
+        return (value instanceof BigInteger)
+                ? ((BigInteger) value)
+                : BigInteger.valueOf(((Number) value).longValue());
     }
 
     public Number number(String number) {

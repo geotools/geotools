@@ -18,20 +18,16 @@ package org.geotools.styling.builder;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.geotools.styling.NamedLayer;
 import org.geotools.styling.StyledLayer;
 import org.geotools.styling.StyledLayerDescriptor;
 import org.geotools.styling.UserLayer;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class StyledLayerDescriptorBuilder extends AbstractSLDBuilder<StyledLayerDescriptor> {
 
-    List<AbstractSLDBuilder<? extends StyledLayer>> layers = new ArrayList<AbstractSLDBuilder<? extends StyledLayer>>();
+    List<AbstractSLDBuilder<? extends StyledLayer>> layers =
+            new ArrayList<AbstractSLDBuilder<? extends StyledLayer>>();
 
     String name;
 
@@ -76,9 +72,7 @@ public class StyledLayerDescriptorBuilder extends AbstractSLDBuilder<StyledLayer
         return ulb;
     }
 
-    /**
-     * Reset stroke to default values.
-     */
+    /** Reset stroke to default values. */
     public StyledLayerDescriptorBuilder reset() {
         unset = false;
         this.name = null;
@@ -90,11 +84,11 @@ public class StyledLayerDescriptorBuilder extends AbstractSLDBuilder<StyledLayer
 
     /**
      * Reset builder to provided original stroke.
-     * 
+     *
      * @param stroke
      */
     public StyledLayerDescriptorBuilder reset(StyledLayerDescriptor other) {
-        if(other == null) {
+        if (other == null) {
             return unset();
         }
         this.name = other.getName();
@@ -102,13 +96,13 @@ public class StyledLayerDescriptorBuilder extends AbstractSLDBuilder<StyledLayer
         this.sldAbstract = other.getAbstract();
         this.layers.clear();
         for (StyledLayer layer : other.getStyledLayers()) {
-            if(layer instanceof UserLayer) {
-                layers.add(new UserLayerBuilder().reset((UserLayer) layer)); 
-            } else if(layer instanceof NamedLayer) {
+            if (layer instanceof UserLayer) {
+                layers.add(new UserLayerBuilder().reset((UserLayer) layer));
+            } else if (layer instanceof NamedLayer) {
                 layers.add(new NamedLayerBuilder().reset((NamedLayer) layer));
             }
         }
-        
+
         unset = false;
         return this;
     }
@@ -137,10 +131,9 @@ public class StyledLayerDescriptorBuilder extends AbstractSLDBuilder<StyledLayer
     protected void buildSLDInternal(StyledLayerDescriptorBuilder sb) {
         sb.init(this);
     }
-    
+
     @Override
     public StyledLayerDescriptorBuilder unset() {
         return (StyledLayerDescriptorBuilder) super.unset();
     }
-
 }

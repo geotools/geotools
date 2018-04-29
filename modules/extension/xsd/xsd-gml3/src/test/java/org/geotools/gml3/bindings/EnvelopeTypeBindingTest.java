@@ -16,36 +16,31 @@
  */
 package org.geotools.gml3.bindings;
 
+import com.vividsolutions.jts.geom.Envelope;
 import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import com.vividsolutions.jts.geom.Envelope;
-
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class EnvelopeTypeBindingTest extends GML3TestSupport {
     public void testEncode() throws Exception {
         Document dom = encode(GML3MockData.bounds(), GML.Envelope);
         assertEquals(1, dom.getElementsByTagNameNS(GML.NAMESPACE, "lowerCorner").getLength());
         assertEquals(1, dom.getElementsByTagNameNS(GML.NAMESPACE, "upperCorner").getLength());
 
-        Element lowerCorner = (Element) dom.getElementsByTagNameNS(GML.NAMESPACE, "lowerCorner")
-                                           .item(0);
+        Element lowerCorner =
+                (Element) dom.getElementsByTagNameNS(GML.NAMESPACE, "lowerCorner").item(0);
         assertEquals("0 0", lowerCorner.getFirstChild().getNodeValue());
 
-        Element upperCorner = (Element) dom.getElementsByTagNameNS(GML.NAMESPACE, "upperCorner")
-                                           .item(0);
+        Element upperCorner =
+                (Element) dom.getElementsByTagNameNS(GML.NAMESPACE, "upperCorner").item(0);
         assertEquals("10 10", upperCorner.getFirstChild().getNodeValue());
 
-        //assertEquals("urn:x-ogc:def:crs:EPSG:6.11.2:4326",
-        assertEquals("urn:x-ogc:def:crs:EPSG:4326",
-            dom.getDocumentElement().getAttributeNS(null, "srsName"));
+        // assertEquals("urn:x-ogc:def:crs:EPSG:6.11.2:4326",
+        assertEquals(
+                "urn:x-ogc:def:crs:EPSG:4326",
+                dom.getDocumentElement().getAttributeNS(null, "srsName"));
     }
 
     public void testEncodeNull() throws Exception {
@@ -54,7 +49,7 @@ public class EnvelopeTypeBindingTest extends GML3TestSupport {
 
         Document dom = encode(e, GML.Envelope);
 
-        assertEquals(1,
-            dom.getElementsByTagNameNS(GML.NAMESPACE, GML.Null.getLocalPart()).getLength());
+        assertEquals(
+                1, dom.getElementsByTagNameNS(GML.NAMESPACE, GML.Null.getLocalPart()).getLength());
     }
 }

@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -20,95 +20,95 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-
 import org.opengis.filter.capability.GeometryOperand;
 import org.opengis.filter.capability.SpatialCapabilities;
 import org.opengis.filter.capability.SpatialOperators;
 
 /**
  * Implementation of the SpatialCapabilities interface.
- * <p>
- * This class is "null safe" in that component classes
- * will be created as needed if if they were not provided
- * during construction.
- * 
+ *
+ * <p>This class is "null safe" in that component classes will be created as needed if if they were
+ * not provided during construction.
+ *
  * @author Justin Deoliveira, The Open Planning Project
- *
- *
- *
- *
  * @source $URL$
  */
 public class SpatialCapabiltiesImpl implements SpatialCapabilities {
 
     Set<GeometryOperand> geometryOperands;
     SpatialOperatorsImpl spatialOperators;
-    
-    public SpatialCapabiltiesImpl(){
+
+    public SpatialCapabiltiesImpl() {
         this.geometryOperands = new HashSet<GeometryOperand>();
         this.spatialOperators = new SpatialOperatorsImpl();
     }
-    public SpatialCapabiltiesImpl(Collection<GeometryOperand> geometryOperands, 
-            SpatialOperators spatialOperators) {
+
+    public SpatialCapabiltiesImpl(
+            Collection<GeometryOperand> geometryOperands, SpatialOperators spatialOperators) {
         this.geometryOperands = new HashSet<GeometryOperand>();
-        if( geometryOperands != null ){
-            this.geometryOperands.addAll( geometryOperands );    
+        if (geometryOperands != null) {
+            this.geometryOperands.addAll(geometryOperands);
         }
-        this.spatialOperators = toSpatialOperatorsImpl( spatialOperators );
+        this.spatialOperators = toSpatialOperatorsImpl(spatialOperators);
     }
-    public SpatialCapabiltiesImpl( GeometryOperand[] geometryOperands, 
-            SpatialOperators spatialOperators) {
+
+    public SpatialCapabiltiesImpl(
+            GeometryOperand[] geometryOperands, SpatialOperators spatialOperators) {
         this.geometryOperands = new HashSet<GeometryOperand>();
-        if( geometryOperands != null ){
-            this.geometryOperands.addAll( Arrays.asList( geometryOperands ) );
+        if (geometryOperands != null) {
+            this.geometryOperands.addAll(Arrays.asList(geometryOperands));
         }
-        this.spatialOperators = toSpatialOperatorsImpl( spatialOperators );
+        this.spatialOperators = toSpatialOperatorsImpl(spatialOperators);
     }
-    public SpatialCapabiltiesImpl( SpatialCapabilities copy ){
-        this.spatialOperators = new SpatialOperatorsImpl(  );
+
+    public SpatialCapabiltiesImpl(SpatialCapabilities copy) {
+        this.spatialOperators = new SpatialOperatorsImpl();
         this.geometryOperands = new HashSet<GeometryOperand>();
-        if( copy.getGeometryOperands() != null ){
-            geometryOperands.addAll( copy.getGeometryOperands() );
+        if (copy.getGeometryOperands() != null) {
+            geometryOperands.addAll(copy.getGeometryOperands());
         }
     }
-    
-    private static SpatialOperatorsImpl toSpatialOperatorsImpl( SpatialOperators spatialOperators ) {
-        if( spatialOperators == null ){
+
+    private static SpatialOperatorsImpl toSpatialOperatorsImpl(SpatialOperators spatialOperators) {
+        if (spatialOperators == null) {
             return new SpatialOperatorsImpl();
-        }
-        else if( spatialOperators instanceof SpatialOperatorsImpl){
+        } else if (spatialOperators instanceof SpatialOperatorsImpl) {
             return (SpatialOperatorsImpl) spatialOperators;
         }
-        return new SpatialOperatorsImpl( spatialOperators );
+        return new SpatialOperatorsImpl(spatialOperators);
     }
-    
-    public void setGeometryOperands( Collection<GeometryOperand> geometryOperands ) {
-        this.geometryOperands = new HashSet<GeometryOperand>( geometryOperands );
+
+    public void setGeometryOperands(Collection<GeometryOperand> geometryOperands) {
+        this.geometryOperands = new HashSet<GeometryOperand>(geometryOperands);
     }
+
     public Collection<GeometryOperand> getGeometryOperands() {
         return geometryOperands;
-    }    
-    public void setSpatialOperators( SpatialOperatorsImpl spatialOperators ) {
+    }
+
+    public void setSpatialOperators(SpatialOperatorsImpl spatialOperators) {
         this.spatialOperators = spatialOperators;
     }
+
     public SpatialOperatorsImpl getSpatialOperators() {
-        if( spatialOperators == null ){
+        if (spatialOperators == null) {
             spatialOperators = new SpatialOperatorsImpl();
         }
         return spatialOperators;
     }
-    
+
     /**
      * Add additional SpatialOperators.
-     * 
-     * @param copy Copy these additional SpatialCapabilities 
+     *
+     * @param copy Copy these additional SpatialCapabilities
      */
-    public void addAll( SpatialCapabilities copy ) {
-        if( copy.getGeometryOperands() != null ){
-            this.geometryOperands.addAll( copy.getGeometryOperands() );
+    public void addAll(SpatialCapabilities copy) {
+        if (copy.getGeometryOperands() != null) {
+            this.geometryOperands.addAll(copy.getGeometryOperands());
         }
-        this.spatialOperators.addAll( copy.getSpatialOperators() );
+        this.spatialOperators.addAll(copy.getSpatialOperators());
     }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -117,25 +117,19 @@ public class SpatialCapabiltiesImpl implements SpatialCapabilities {
         result = prime * result + ((spatialOperators == null) ? 0 : spatialOperators.hashCode());
         return result;
     }
+
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
         SpatialCapabiltiesImpl other = (SpatialCapabiltiesImpl) obj;
         if (geometryOperands == null) {
-            if (other.geometryOperands != null)
-                return false;
-        } else if (!geometryOperands.equals(other.geometryOperands))
-            return false;
+            if (other.geometryOperands != null) return false;
+        } else if (!geometryOperands.equals(other.geometryOperands)) return false;
         if (spatialOperators == null) {
-            if (other.spatialOperators != null)
-                return false;
-        } else if (!spatialOperators.equals(other.spatialOperators))
-            return false;
+            if (other.spatialOperators != null) return false;
+        } else if (!spatialOperators.equals(other.spatialOperators)) return false;
         return true;
     }
 }

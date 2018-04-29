@@ -16,18 +16,18 @@
  */
 package org.geotools.filter.v1_1.capabilities;
 
-import org.w3c.dom.Document;
 import javax.xml.namespace.QName;
-import org.opengis.filter.capability.FunctionName;
 import org.geotools.filter.v1_1.OGC;
 import org.geotools.xml.Binding;
-
+import org.opengis.filter.capability.FunctionName;
+import org.w3c.dom.Document;
 
 /**
  * Binding test case for http://www.opengis.net/ogc:FunctionNamesType.
  *
  * <p>
- *  <pre>
+ *
+ * <pre>
  *   <code>
  *  &lt;xsd:complexType name="FunctionNamesType"&gt;
  *      &lt;xsd:sequence maxOccurs="unbounded"&gt;
@@ -37,12 +37,8 @@ import org.geotools.xml.Binding;
  *
  *    </code>
  *   </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class FunctionNamesTypeBindingTest extends OGCTestSupport {
@@ -65,8 +61,11 @@ public class FunctionNamesTypeBindingTest extends OGCTestSupport {
     }
 
     public void testEncode() throws Exception {
-        Document dom = encode(FilterMockData.functionNames(),
-                new QName(OGC.NAMESPACE, "FunctionNames"), OGC.FunctionNamesType);
+        Document dom =
+                encode(
+                        FilterMockData.functionNames(),
+                        new QName(OGC.NAMESPACE, "FunctionNames"),
+                        OGC.FunctionNamesType);
 
         assertEquals(2, dom.getElementsByTagNameNS(OGC.NAMESPACE, "FunctionName").getLength());
     }

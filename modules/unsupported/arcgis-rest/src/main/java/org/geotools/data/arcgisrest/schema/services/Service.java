@@ -1,4 +1,3 @@
-
 package org.geotools.data.arcgisrest.schema.services;
 
 import com.google.gson.annotations.Expose;
@@ -9,92 +8,68 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 
 public class Service {
 
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     @SerializedName("name")
     @Expose
     private String name;
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     @SerializedName("type")
     @Expose
     private String type;
-    /**
-     * 
-     * (Required)
-     * 
-     */
+    /** (Required) */
     @SerializedName("url")
     @Expose
     private String url;
 
     /**
-     * 
      * (Required)
-     * 
-     * @return
-     *     The name
+     *
+     * @return The name
      */
     public String getName() {
         return name;
     }
 
     /**
-     * 
      * (Required)
-     * 
-     * @param name
-     *     The name
+     *
+     * @param name The name
      */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
-     * 
      * (Required)
-     * 
-     * @return
-     *     The type
+     *
+     * @return The type
      */
     public String getType() {
         return type;
     }
 
     /**
-     * 
      * (Required)
-     * 
-     * @param type
-     *     The type
+     *
+     * @param type The type
      */
     public void setType(String type) {
         this.type = type;
     }
 
     /**
-     * 
      * (Required)
-     * 
-     * @return
-     *     The url
+     *
+     * @return The url
      */
     public String getUrl() {
         return url;
     }
 
     /**
-     * 
      * (Required)
-     * 
-     * @param url
-     *     The url
+     *
+     * @param url The url
      */
     public void setUrl(String url) {
         this.url = url;
@@ -119,7 +94,10 @@ public class Service {
             return false;
         }
         Service rhs = ((Service) other);
-        return new EqualsBuilder().append(name, rhs.name).append(type, rhs.type).append(url, rhs.url).isEquals();
+        return new EqualsBuilder()
+                .append(name, rhs.name)
+                .append(type, rhs.type)
+                .append(url, rhs.url)
+                .isEquals();
     }
-
 }

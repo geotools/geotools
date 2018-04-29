@@ -2,7 +2,7 @@
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
  *
- *   (C) 2016, Open Source Geospatial Foundation (OSGeo). 
+ *   (C) 2016, Open Source Geospatial Foundation (OSGeo).
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -24,7 +24,6 @@ import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
-
 import org.geotools.geometry.jts.CircularRing;
 import org.geotools.geometry.jts.CircularString;
 import org.geotools.geometry.jts.CompoundCurve;
@@ -37,8 +36,8 @@ import org.xml.sax.helpers.AttributesImpl;
 
 /**
  * Helper class that encodes the geometries within GeometryCollection
- * 
- * @author 
+ *
+ * @author
  */
 public class GenericGeometryEncoder extends GeometryEncoder<Geometry> {
 
@@ -51,7 +50,6 @@ public class GenericGeometryEncoder extends GeometryEncoder<Geometry> {
     }
 
     /**
-     *
      * @param encoder
      * @param gmlPrefix
      */
@@ -63,11 +61,12 @@ public class GenericGeometryEncoder extends GeometryEncoder<Geometry> {
     }
 
     @Override
-    public void encode(Geometry geometry, AttributesImpl atts, GMLWriter handler, String parentId) throws Exception {
-        
+    public void encode(Geometry geometry, AttributesImpl atts, GMLWriter handler, String parentId)
+            throws Exception {
+
         if (geometry instanceof LineString) {
-            LineStringEncoder lineString = new LineStringEncoder(encoder,
-                LineStringEncoder.LINE_STRING);
+            LineStringEncoder lineString =
+                    new LineStringEncoder(encoder, LineStringEncoder.LINE_STRING);
             lineString.encode((LineString) geometry, atts, handler, parentId);
         } else if (geometry instanceof Point) {
             PointEncoder pt = new PointEncoder(encoder, gmlPrefix, gmlUri);
@@ -76,7 +75,8 @@ public class GenericGeometryEncoder extends GeometryEncoder<Geometry> {
             PolygonEncoder polygon = new PolygonEncoder(encoder, gmlPrefix, gmlUri);
             polygon.encode((Polygon) geometry, atts, handler, parentId);
         } else if (geometry instanceof MultiLineString) {
-            MultiLineStringEncoder multiLineString = new MultiLineStringEncoder(encoder, gmlPrefix, gmlUri, true);
+            MultiLineStringEncoder multiLineString =
+                    new MultiLineStringEncoder(encoder, gmlPrefix, gmlUri, true);
             multiLineString.encode((MultiLineString) geometry, atts, handler, parentId);
         } else if (geometry instanceof MultiPoint) {
             MultiPointEncoder multiPoint = new MultiPointEncoder(encoder, gmlPrefix, gmlUri);
@@ -87,8 +87,10 @@ public class GenericGeometryEncoder extends GeometryEncoder<Geometry> {
         } else if (geometry instanceof LinearRing) {
             LinearRingEncoder linearRing = new LinearRingEncoder(encoder, gmlPrefix, gmlUri);
             linearRing.encode((LinearRing) geometry, atts, handler, parentId);
-        } else if (geometry instanceof CircularString || geometry instanceof CompoundCurve
-                        || geometry instanceof CircularRing || geometry instanceof CompoundRing) {
+        } else if (geometry instanceof CircularString
+                || geometry instanceof CompoundCurve
+                || geometry instanceof CircularRing
+                || geometry instanceof CompoundRing) {
             CurveEncoder curve = new CurveEncoder(encoder, gmlPrefix, gmlUri);
             curve.encode((LineString) geometry, atts, handler, parentId);
         } else {

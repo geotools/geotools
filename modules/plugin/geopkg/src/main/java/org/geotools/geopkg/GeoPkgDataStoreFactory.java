@@ -16,6 +16,11 @@
  */
 package org.geotools.geopkg;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.Map;
+import javax.sql.DataSource;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.geotools.data.Parameter;
 import org.geotools.geopkg.geom.GeoPkgGeomWriter;
@@ -25,39 +30,36 @@ import org.geotools.jdbc.SQLDialect;
 import org.sqlite.SQLiteConfig;
 import org.sqlite.javax.SQLiteConnectionPoolDataSource;
 
-import javax.sql.DataSource;
-import java.io.File;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.Map;
-
 /**
  * The GeoPackage DataStore Factory.
- * 
+ *
  * @author Justin Deoliveira
  * @author Niels Charlier
- *
  */
 public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
 
     /** parameter for database type */
-    public static final Param DBTYPE = new Param("dbtype", String.class, "Type", true, "geopkg",
-            Collections.singletonMap(Parameter.LEVEL, "program"));
+    public static final Param DBTYPE =
+            new Param(
+                    "dbtype",
+                    String.class,
+                    "Type",
+                    true,
+                    "geopkg",
+                    Collections.singletonMap(Parameter.LEVEL, "program"));
 
     /** parameter for database instance */
-    public static final Param DATABASE = new Param("database", File.class, "Database", true );
+    public static final Param DATABASE = new Param("database", File.class, "Database", true);
 
-    /**
-     * base location to store database files
-     */
+    /** base location to store database files */
     File baseDirectory = null;
-        
+
     GeoPkgGeomWriter.Configuration writerConfig;
-    
+
     public GeoPkgDataStoreFactory() {
         this.writerConfig = new GeoPkgGeomWriter.Configuration();
     }
-    
+
     public GeoPkgDataStoreFactory(GeoPkgGeomWriter.Configuration writerConfig) {
         this.writerConfig = writerConfig;
     }
@@ -114,7 +116,7 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
     @Override
     protected void setupParameters(Map parameters) {
         super.setupParameters(parameters);
-        
+
         // remove unnecessary parameters
         parameters.remove(HOST.key);
         parameters.remove(PORT.key);
@@ -136,14 +138,16 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
     }
 
     /**
-     * This is left for public API compatibility but it's not as efficient as using the GeoPackage internal pool
+     * This is left for public API compatibility but it's not as efficient as using the GeoPackage
+     * internal pool
+     *
      * @param params Map of connection parameter.
      * @return
      * @throws IOException
      */
     @Override
     public BasicDataSource createDataSource(Map params) throws IOException {
-        //create a datasource
+        // create a datasource
         BasicDataSource dataSource = new BasicDataSource();
 
         // driver
@@ -159,26 +163,25 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
         return dataSource;
     }
 
-
     @Override
     protected DataSource createDataSource(Map params, SQLDialect dialect) throws IOException {
         SQLiteConfig config = new SQLiteConfig();
         config.setSharedCache(true);
         config.enableLoadExtension(true);
         String password = (String) PASSWD.lookUp(params);
-        // support for encrypted databases has been ddded after 3.20.1, we'll have to 
+        // support for encrypted databases has been ddded after 3.20.1, we'll have to
         // wait for a future release of sqlite-jdbc
         // if(password != null) {
         //     config.setPragma(SQLiteConfig.Pragma.PASSWORD, password);
         // }
         // TODO: add this and make configurable once we upgrade to a sqlitejdbc exposing mmap_size
         // config.setPragma(SQLiteConfig.Pragma.MMAP_SIZE, String.valueOf(1024 * 1024 * 1000));
-        
+
         // use native "pool", which is actually not pooling anything (that's fast and
         // has less scalability overhead)
         SQLiteConnectionPoolDataSource ds = new SQLiteConnectionPoolDataSource(config);
         ds.setUrl(getJDBCUrl(params));
-                
+
         return ds;
     }
 
@@ -188,14 +191,14 @@ public class GeoPkgDataStoreFactory extends JDBCDataStoreFactory {
         config.enableLoadExtension(true);
 
         for (Map.Entry e : config.toProperties().entrySet()) {
-            dataSource.addConnectionProperty((String)e.getKey(), (String)e.getValue());
+            dataSource.addConnectionProperty((String) e.getKey(), (String) e.getValue());
         }
     }
 
     @Override
-    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map params) throws IOException {
+    protected JDBCDataStore createDataStoreInternal(JDBCDataStore dataStore, Map params)
+            throws IOException {
         dataStore.setDatabaseSchema(null);
         return dataStore;
     }
-
 }

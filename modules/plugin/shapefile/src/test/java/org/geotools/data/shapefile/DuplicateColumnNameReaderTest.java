@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
-
 import org.geotools.TestData;
 import org.geotools.data.Query;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -20,11 +19,7 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.identity.FeatureId;
 
-/**
- * 
- * 
- * @source $URL$
- */
+/** @source $URL$ */
 public class DuplicateColumnNameReaderTest extends TestCaseSupport {
 
     public final String SHPFILE = "dup-column/dup_column.shp";
@@ -73,10 +68,13 @@ public class DuplicateColumnNameReaderTest extends TestCaseSupport {
         // query the datastore
         FilterFactory ff = CommonFactoryFinder.getFilterFactory(null);
         Filter idFilter = ff.id(Collections.singleton(fid));
-        final Query query = new Query(indexedstore.getSchema().getName().getLocalPart(),
-                idFilter, new String[] { testColumn });
-        final SimpleFeatureCollection indexedfeatures = indexedstore.getFeatureSource()
-                .getFeatures(query);
+        final Query query =
+                new Query(
+                        indexedstore.getSchema().getName().getLocalPart(),
+                        idFilter,
+                        new String[] {testColumn});
+        final SimpleFeatureCollection indexedfeatures =
+                indexedstore.getFeatureSource().getFeatures(query);
 
         // compare the results
         SimpleFeatureIterator indexIterator = indexedfeatures.features();

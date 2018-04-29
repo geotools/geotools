@@ -20,41 +20,30 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
 import org.geotools.validation.dto.ArgumentDTO;
 import org.geotools.validation.dto.PlugInDTO;
 import org.geotools.validation.dto.TestDTO;
 import org.geotools.validation.dto.TestSuiteDTO;
 
-
 /**
  * XMLWriter purpose.
- * 
- * <p>
- * Description of XMLWriter ...
- * </p>
- * 
- * <p>
- * Capabilities:
- * </p>
- * 
+ *
+ * <p>Description of XMLWriter ...
+ *
+ * <p>Capabilities:
+ *
  * <ul>
- * <li>
- * Feature: description
- * </li>
+ *   <li>Feature: description
  * </ul>
- * 
- * <p>
- * Example Use:
- * </p>
+ *
+ * <p>Example Use:
+ *
  * <pre><code>
  * XMLWriter x = new XMLWriter(...);
  * </code></pre>
  *
  * @author dzwiers, Refractions Research, Inc.
  * @author $Author: dmzwiers $ (last modification)
- *
- *
  * @source $URL$
  * @version $Id$
  */
@@ -66,8 +55,7 @@ public class XMLWriter {
         m.put("xmlns:gml", "http://www.opengis.net/gml");
         m.put("xmlns:ogc", "http://www.opengis.net/ogc");
         m.put("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-        m.put("xsi:schemaLocation",
-            "pluginSchema /data/capabilities/validate/pluginSchema.xsd");
+        m.put("xsi:schemaLocation", "pluginSchema /data/capabilities/validate/pluginSchema.xsd");
 
         try {
             cw.openTag("plugin", m);
@@ -133,8 +121,9 @@ public class XMLWriter {
         m.put("xmlns:gml", "http://www.opengis.net/gml");
         m.put("xmlns:ogc", "http://www.opengis.net/ogc");
         m.put("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-        m.put("xsi:schemaLocation",
-            "testSuiteSchema /data/capabilities/validate/testSuiteSchema.xsd");
+        m.put(
+                "xsi:schemaLocation",
+                "testSuiteSchema /data/capabilities/validate/testSuiteSchema.xsd");
 
         try {
             cw.openTag("suite", m);
@@ -177,7 +166,7 @@ public class XMLWriter {
                 cw.textTag("name", dto.getName());
                 cw.writeln(ArgHelper.getArgumentEncoding(dto.getValue()));
             } catch (Exception e) {
-            	// do nothing, just don't write it out
+                // do nothing, just don't write it out
                 e.printStackTrace();
 
                 // error log it;

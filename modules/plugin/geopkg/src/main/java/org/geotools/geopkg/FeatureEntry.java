@@ -20,9 +20,9 @@ import org.geotools.geometry.jts.Geometries;
 
 /**
  * Feature entry in a geopackage.
- * <p>
- * This class corresponds to the "geometry_columns" table.
- * </p>
+ *
+ * <p>This class corresponds to the "geometry_columns" table.
+ *
  * @author Justin Deoliveira, OpenGeo
  * @author Niels Charlier
  */
@@ -60,7 +60,6 @@ public class FeatureEntry extends Entry {
         setZ(e.isZ());
         setM(e.isM());
     }
-    
 
     public boolean isZ() {
         return z;

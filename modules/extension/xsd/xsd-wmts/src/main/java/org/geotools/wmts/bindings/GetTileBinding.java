@@ -1,26 +1,23 @@
 package org.geotools.wmts.bindings;
 
-import org.geotools.wmts.WMTS;
-import org.geotools.xml.*;
-import org.geotools.xml.AbstractComplexBinding;
-
+import java.math.BigInteger;
+import java.util.List;
+import javax.xml.namespace.QName;
 import net.opengis.wmts.v_1.DimensionNameValueType;
 import net.opengis.wmts.v_1.DimensionType;
 import net.opengis.wmts.v_1.GetTileType;
 import net.opengis.wmts.v_1.wmtsv_1Factory;
-
-import java.math.BigInteger;
-import java.util.List;
-
-import javax.xml.namespace.QName;
+import org.geotools.wmts.WMTS;
+import org.geotools.xml.*;
+import org.geotools.xml.AbstractComplexBinding;
 
 /**
  * Binding object for the element http://www.opengis.net/wmts/1.0:GetTile.
  *
  * <p>
- * 
+ *
  * <pre>
- *	 <code>
+ *  <code>
  *  &lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;element name="GetTile" xmlns="http://www.w3.org/2001/XMLSchema"&gt;
  *  		&lt;complexType&gt;
  *  			&lt;sequence&gt;
@@ -68,11 +65,10 @@ import javax.xml.namespace.QName;
  *  			&lt;attribute fixed="WMTS" name="service" type="string" use="required"/&gt;
  *  			&lt;attribute fixed="1.0.0" name="version" type="string" use="required"/&gt;
  *  		&lt;/complexType&gt;
- *  	&lt;/element&gt; 
- *		
- *	  </code>
+ *  	&lt;/element&gt;
+ *
+ *   </code>
  * </pre>
- * </p>
  *
  * @generated
  */
@@ -85,16 +81,16 @@ public class GetTileBinding extends AbstractComplexBinding {
         this.factory = factory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return WMTS.GetTile;
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Class getType() {
@@ -102,13 +98,15 @@ public class GetTileBinding extends AbstractComplexBinding {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         GetTileType getTile = factory.createGetTileType();
-        
+
         getTile.setLayer((String) node.getChildValue("Layer"));
         getTile.setStyle((String) node.getChildValue("Style"));
         getTile.setFormat((String) node.getChildValue("Format"));
@@ -119,11 +117,10 @@ public class GetTileBinding extends AbstractComplexBinding {
         getTile.setTileMatrix((String) node.getChildValue("TileMatrix"));
         getTile.setTileMatrixSet((String) node.getChildValue("TileMatrixSet"));
         List<Node> children = node.getChildren(DimensionType.class);
-        for(Node c:children) {  
+        for (Node c : children) {
             getTile.getDimensionNameValue().add((DimensionNameValueType) c.getValue());
         }
-        
+
         return getTile;
     }
-
 }

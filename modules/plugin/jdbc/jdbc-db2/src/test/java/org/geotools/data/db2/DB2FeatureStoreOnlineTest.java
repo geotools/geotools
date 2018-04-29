@@ -18,19 +18,13 @@ package org.geotools.data.db2;
 
 import java.io.IOException;
 import java.sql.SQLException;
-
 import org.geotools.jdbc.JDBCFeatureStoreOnlineTest;
 import org.geotools.jdbc.JDBCTestSetup;
-
 
 /**
  * FeatureStore test for MySQL.
  *
  * @author Justin Deoliveira, The Open Planning Project
- *
- *
- *
- *
  * @source $URL$
  */
 public class DB2FeatureStoreOnlineTest extends JDBCFeatureStoreOnlineTest {

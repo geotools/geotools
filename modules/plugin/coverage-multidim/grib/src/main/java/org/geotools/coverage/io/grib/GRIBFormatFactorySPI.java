@@ -19,11 +19,10 @@ package org.geotools.coverage.io.grib;
 import java.awt.RenderingHints.Key;
 import java.util.Collections;
 import java.util.Map;
-
 import org.geotools.coverage.grid.io.AbstractGridFormat;
 import org.geotools.coverage.grid.io.GridFormatFactorySpi;
 
-public class GRIBFormatFactorySPI implements GridFormatFactorySpi{
+public class GRIBFormatFactorySPI implements GridFormatFactorySpi {
 
     @Override
     public boolean isAvailable() {
@@ -39,5 +38,4 @@ public class GRIBFormatFactorySPI implements GridFormatFactorySpi{
     public AbstractGridFormat createFormat() {
         return new GRIBFormat();
     }
-
 }

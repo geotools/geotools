@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,6 +16,8 @@
  */
 package org.geotools.data.store;
 
+import static org.easymock.EasyMock.*;
+
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.factory.CommonFactoryFinder;
@@ -23,15 +25,9 @@ import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.visitor.NearestVisitor;
 import org.geotools.feature.visitor.UniqueVisitor;
 import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
 
-import static org.easymock.EasyMock.*;
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class ReTypingFeatureCollectionTest extends FeatureCollectionWrapperTestSupport {
 
     public void testSchema() throws Exception {
@@ -61,7 +57,7 @@ public class ReTypingFeatureCollectionTest extends FeatureCollectionWrapperTestS
         replay(delegate);
 
         ReTypingFeatureCollection rtc =
-            new ReTypingFeatureCollection(delegate, stb.buildFeatureType());
+                new ReTypingFeatureCollection(delegate, stb.buildFeatureType());
         rtc.accepts(vis, null);
         verify(delegate);
 

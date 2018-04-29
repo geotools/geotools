@@ -17,105 +17,99 @@
 package org.geotools.gce.imagemosaic.jdbc;
 
 import java.net.URL;
-
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class MySqlOnlineTest extends AbstractTest {
-	static DBDialect dialect = null;
+    static DBDialect dialect = null;
 
-	public MySqlOnlineTest(String test) {
-		super(test);
-	}
+    public MySqlOnlineTest(String test) {
+        super(test);
+    }
 
-	public static Test suite() {
-		TestSuite suite = new TestSuite();
+    public static Test suite() {
+        TestSuite suite = new TestSuite();
 
-		MySqlOnlineTest test = new MySqlOnlineTest("");
+        MySqlOnlineTest test = new MySqlOnlineTest("");
 
-		if (test.checkPreConditions() == false) {
-			return suite;
-		}
+        if (test.checkPreConditions() == false) {
+            return suite;
+        }
 
-		suite.addTest(new MySqlOnlineTest("testScripts"));
-		suite.addTest(new MySqlOnlineTest("testGetConnection"));
-		suite.addTest(new MySqlOnlineTest("testDrop"));
-		suite.addTest(new MySqlOnlineTest("testCreate"));
-		suite.addTest(new MySqlOnlineTest("testImage1"));
-		suite.addTest(new MySqlOnlineTest("testFullExtent"));
-		suite.addTest(new MySqlOnlineTest("testNoData"));
-		suite.addTest(new MySqlOnlineTest("testPartial"));
-		suite.addTest(new MySqlOnlineTest("testVienna"));
-		suite.addTest(new MySqlOnlineTest("testViennaEnv"));
-		suite.addTest(new MySqlOnlineTest("testDrop"));
-		suite.addTest(new MySqlOnlineTest("testCreateJoined"));
-		suite.addTest(new MySqlOnlineTest("testImage1Joined"));
-		suite.addTest(new MySqlOnlineTest("testFullExtentJoined"));
-		suite.addTest(new MySqlOnlineTest("testNoDataJoined"));
-		suite.addTest(new MySqlOnlineTest("testPartialJoined"));
-		suite.addTest(new MySqlOnlineTest("testViennaJoined"));
-		suite.addTest(new MySqlOnlineTest("testViennaEnvJoined"));
-		suite.addTest(new MySqlOnlineTest("testDrop"));
-		suite.addTest(new MySqlOnlineTest("testCloseConnection"));
+        suite.addTest(new MySqlOnlineTest("testScripts"));
+        suite.addTest(new MySqlOnlineTest("testGetConnection"));
+        suite.addTest(new MySqlOnlineTest("testDrop"));
+        suite.addTest(new MySqlOnlineTest("testCreate"));
+        suite.addTest(new MySqlOnlineTest("testImage1"));
+        suite.addTest(new MySqlOnlineTest("testFullExtent"));
+        suite.addTest(new MySqlOnlineTest("testNoData"));
+        suite.addTest(new MySqlOnlineTest("testPartial"));
+        suite.addTest(new MySqlOnlineTest("testVienna"));
+        suite.addTest(new MySqlOnlineTest("testViennaEnv"));
+        suite.addTest(new MySqlOnlineTest("testDrop"));
+        suite.addTest(new MySqlOnlineTest("testCreateJoined"));
+        suite.addTest(new MySqlOnlineTest("testImage1Joined"));
+        suite.addTest(new MySqlOnlineTest("testFullExtentJoined"));
+        suite.addTest(new MySqlOnlineTest("testNoDataJoined"));
+        suite.addTest(new MySqlOnlineTest("testPartialJoined"));
+        suite.addTest(new MySqlOnlineTest("testViennaJoined"));
+        suite.addTest(new MySqlOnlineTest("testViennaEnvJoined"));
+        suite.addTest(new MySqlOnlineTest("testDrop"));
+        suite.addTest(new MySqlOnlineTest("testCloseConnection"));
 
-		return suite;
-	}
+        return suite;
+    }
 
-	@Override
-	public String getConfigUrl() {
-		return "file:target/resources/oek.mysql.xml";
-	}
+    @Override
+    public String getConfigUrl() {
+        return "file:target/resources/oek.mysql.xml";
+    }
 
-	@Override
-	protected String getSubDir() {
-		return "mysql";
-	}
+    @Override
+    protected String getSubDir() {
+        return "mysql";
+    }
 
-	@Override
-	protected DBDialect getDBDialect() {
-		if (dialect != null) {
-			return dialect;
-		}
+    @Override
+    protected DBDialect getDBDialect() {
+        if (dialect != null) {
+            return dialect;
+        }
 
-		Config config = null;
+        Config config = null;
 
-		try {
-			config = Config.readFrom(new URL(getConfigUrl()));
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+        try {
+            config = Config.readFrom(new URL(getConfigUrl()));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
-		dialect = DBDialect.getDBDialect(config);
+        dialect = DBDialect.getDBDialect(config);
 
-		return dialect;
-	}
+        return dialect;
+    }
 
-	protected String getXMLConnectFragmentName() {
-		return "connect.mysql.xml.inc";
-	}
+    protected String getXMLConnectFragmentName() {
+        return "connect.mysql.xml.inc";
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geotools.gce.imagemosaic.jdbc.AbstractTest#getDriverClassName()
-	 */
-	protected String getDriverClassName() {
-		return "com.mysql.jdbc.Driver";
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.geotools.gce.imagemosaic.jdbc.AbstractTest#getDriverClassName()
+     */
+    protected String getDriverClassName() {
+        return "com.mysql.jdbc.Driver";
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geotools.gce.imagemosaic.jdbc.AbstractTest#getJDBCUrl(java.lang.String,
-	 *      java.lang.Integer, java.lang.String)
-	 */
-	protected String getJDBCUrl(String host, Integer port, String dbName) {
-		return "jdbc:mysql://" + host + ":" + port + "/" + dbName;
-	}
-
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.geotools.gce.imagemosaic.jdbc.AbstractTest#getJDBCUrl(java.lang.String,
+     *      java.lang.Integer, java.lang.String)
+     */
+    protected String getJDBCUrl(String host, Integer port, String dbName) {
+        return "jdbc:mysql://" + host + ":" + port + "/" + dbName;
+    }
 }

@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -21,37 +21,31 @@ import org.geotools.factory.Hints;
 
 /**
  * This class supports the use of Expression/NIL for referring to a 'null' value.
- * 
+ *
  * @author Niels Charlier, Curtin University Of Technology
- * 
- *
- *
  * @source $URL$
- *         http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/
- *         filter/expression/NullPropertyAccessorFactory.java $
+ *     http://svn.osgeo.org/geotools/trunk/modules/library/main/src/main/java/org/geotools/
+ *     filter/expression/NullPropertyAccessorFactory.java $
  */
 public class NullPropertyAccessorFactory implements PropertyAccessorFactory {
 
-    static private PropertyAccessor NULLPA = new NullPropertyAccessor();
+    private static PropertyAccessor NULLPA = new NullPropertyAccessor();
 
-    public PropertyAccessor createPropertyAccessor(Class type, String xpath, Class target,
-            Hints hints) {
+    public PropertyAccessor createPropertyAccessor(
+            Class type, String xpath, Class target, Hints hints) {
         return NULLPA;
     }
 
     /**
      * Return null for Expression/NIL
-     * 
+     *
      * @author Niels Charlier, CSIRO
      */
     static class NullPropertyAccessor implements PropertyAccessor {
 
-        /**
-         * We can handle *one* case and one case only
-         */
+        /** We can handle *one* case and one case only */
         public boolean canHandle(Object object, String xpath, Class target) {
             return "Expression/NIL".equals(xpath); // case sensitive
-
         }
 
         public Object get(Object object, String xpath, Class target)
@@ -64,5 +58,4 @@ public class NullPropertyAccessorFactory implements PropertyAccessorFactory {
             throw new IllegalArgumentException("Cannot assign a value to Expression/NIL.");
         }
     }
-
 }

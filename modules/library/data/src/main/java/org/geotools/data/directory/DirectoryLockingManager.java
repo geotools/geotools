@@ -18,26 +18,21 @@ package org.geotools.data.directory;
 
 import java.io.IOException;
 import java.util.List;
-
 import org.geotools.data.DataStore;
 import org.geotools.data.FeatureLock;
 import org.geotools.data.LockingManager;
 import org.geotools.data.Transaction;
 
 /**
- * Locking manager that will delegate its work to the locking managers of the 
- * delegate data stores 
+ * Locking manager that will delegate its work to the locking managers of the delegate data stores
+ *
  * @author Andrea Aime - OpenGeo
- *
- *
- *
- *
  * @source $URL$
  */
 public class DirectoryLockingManager implements LockingManager {
-    
+
     DirectoryTypeCache cache;
-    
+
     public DirectoryLockingManager(DirectoryTypeCache cache) {
         this.cache = cache;
     }
@@ -45,8 +40,7 @@ public class DirectoryLockingManager implements LockingManager {
     public boolean exists(String authID) {
         List<DataStore> stores = cache.getDataStores();
         for (DataStore store : stores) {
-            if ((store.getLockingManager() != null)
-                    && store.getLockingManager().exists(authID)) {
+            if ((store.getLockingManager() != null) && store.getLockingManager().exists(authID)) {
                 return true;
             }
         }
@@ -54,12 +48,10 @@ public class DirectoryLockingManager implements LockingManager {
         return false;
     }
 
-    public boolean release(String authID, Transaction transaction)
-        throws IOException {
+    public boolean release(String authID, Transaction transaction) throws IOException {
         List<DataStore> stores = cache.getDataStores();
         for (DataStore store : stores) {
-            if ((store.getLockingManager() != null)
-                    && store.getLockingManager().exists(authID)) {
+            if ((store.getLockingManager() != null) && store.getLockingManager().exists(authID)) {
                 return store.getLockingManager().release(authID, transaction);
             }
         }
@@ -67,12 +59,10 @@ public class DirectoryLockingManager implements LockingManager {
         return false;
     }
 
-    public boolean refresh(String authID, Transaction transaction)
-        throws IOException {
+    public boolean refresh(String authID, Transaction transaction) throws IOException {
         List<DataStore> stores = cache.getDataStores();
         for (DataStore store : stores) {
-            if ((store.getLockingManager() != null)
-                    && store.getLockingManager().exists(authID)) {
+            if ((store.getLockingManager() != null) && store.getLockingManager().exists(authID)) {
                 return store.getLockingManager().refresh(authID, transaction);
             }
         }
@@ -80,26 +70,23 @@ public class DirectoryLockingManager implements LockingManager {
         return false;
     }
 
-    public void unLockFeatureID(String typeName, String authID,
-        Transaction transaction, FeatureLock featureLock)
-        throws IOException {
+    public void unLockFeatureID(
+            String typeName, String authID, Transaction transaction, FeatureLock featureLock)
+            throws IOException {
         DataStore store = cache.getDataStore(typeName, false);
 
         if ((store != null) && (store.getLockingManager() != null)) {
-            store.getLockingManager().unLockFeatureID(typeName, authID,
-                transaction, featureLock);
+            store.getLockingManager().unLockFeatureID(typeName, authID, transaction, featureLock);
         }
     }
 
-    public void lockFeatureID(String typeName, String authID,
-        Transaction transaction, FeatureLock featureLock)
-        throws IOException {
+    public void lockFeatureID(
+            String typeName, String authID, Transaction transaction, FeatureLock featureLock)
+            throws IOException {
         DataStore store = cache.getDataStore(typeName, false);
 
         if ((store != null) && (store.getLockingManager() != null)) {
-            store.getLockingManager().lockFeatureID(typeName, authID,
-                transaction, featureLock);
+            store.getLockingManager().lockFeatureID(typeName, authID, transaction, featureLock);
         }
     }
-
 }

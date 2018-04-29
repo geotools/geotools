@@ -22,7 +22,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Map;
-
 import org.apache.commons.dbcp.BasicDataSource;
 import org.geotools.data.Parameter;
 import org.geotools.jdbc.JDBCDataStore;
@@ -33,28 +32,32 @@ import org.spatialite.SQLiteJDBCLoader;
 
 /**
  * DataStoreFactory for SpatiaLite database.
- * 
+ *
  * @author Justin Deoliveira, OpenGeo
- *
- *
- *
- *
  * @source $URL$
  */
 public class SpatiaLiteDataStoreFactory extends JDBCDataStoreFactory {
 
-  
     /** parameter for database type */
-    public static final Param DBTYPE = new Param("dbtype", String.class, "Type", true, "spatialite",
-            Collections.singletonMap(Parameter.LEVEL, "program"));
-    
+    public static final Param DBTYPE =
+            new Param(
+                    "dbtype",
+                    String.class,
+                    "Type",
+                    true,
+                    "spatialite",
+                    Collections.singletonMap(Parameter.LEVEL, "program"));
+
     /** optional user parameter */
-    public static final Param USER = new Param(JDBCDataStoreFactory.USER.key, JDBCDataStoreFactory.USER.type, 
-            JDBCDataStoreFactory.USER.description, false, JDBCDataStoreFactory.USER.sample);
-    
-    /**
-     * base location to store sqlite database files
-     */
+    public static final Param USER =
+            new Param(
+                    JDBCDataStoreFactory.USER.key,
+                    JDBCDataStoreFactory.USER.type,
+                    JDBCDataStoreFactory.USER.description,
+                    false,
+                    JDBCDataStoreFactory.USER.sample);
+
+    /** base location to store sqlite database files */
     File baseDirectory = null;
 
     /**
@@ -66,9 +69,7 @@ public class SpatiaLiteDataStoreFactory extends JDBCDataStoreFactory {
         this.baseDirectory = baseDirectory;
     }
 
-    /**
-     * The base location to store sqlite database files.
-     */
+    /** The base location to store sqlite database files. */
     public File getBaseDirectory() {
         return baseDirectory;
     }
@@ -84,19 +85,19 @@ public class SpatiaLiteDataStoreFactory extends JDBCDataStoreFactory {
 
     @Override
     protected SQLDialect createSQLDialect(JDBCDataStore dataStore) {
-        return new SpatiaLiteDialect( dataStore );
+        return new SpatiaLiteDialect(dataStore);
     }
 
     @Override
     protected String getDatabaseID() {
         return "spatialite";
     }
-    
+
     @Override
     protected String getDriverClassName() {
         return "org.spatialite.JDBC";
     }
-    
+
     public String getDescription() {
         return "SpatiaLite";
     }
@@ -105,41 +106,40 @@ public class SpatiaLiteDataStoreFactory extends JDBCDataStoreFactory {
     protected String getValidationQuery() {
         return null;
     }
-    
+
     @Override
     protected void setupParameters(Map parameters) {
         super.setupParameters(parameters);
-        
-        //remove unneccessary parameters
+
+        // remove unneccessary parameters
         parameters.remove(HOST.key);
         parameters.remove(PORT.key);
-        
-        //remove user and password temporarily in order to make username optional
+
+        // remove user and password temporarily in order to make username optional
         parameters.remove(JDBCDataStoreFactory.USER.key);
         parameters.put(USER.key, USER);
-        
-        //add user 
-        //add additional parameters
-        parameters.put(DBTYPE.key, DBTYPE);
 
+        // add user
+        // add additional parameters
+        parameters.put(DBTYPE.key, DBTYPE);
     }
-    
+
     @Override
     protected String getJDBCUrl(Map params) throws IOException {
         String db = (String) DATABASE.lookUp(params);
         String location = db;
         if (baseDirectory != null) {
-            //prepend base directory unless it is an absolute path
+            // prepend base directory unless it is an absolute path
             if (!new File(location).isAbsolute()) {
-                location = baseDirectory.getAbsolutePath() + File.separator + db;    
+                location = baseDirectory.getAbsolutePath() + File.separator + db;
             }
         }
         return "jdbc:spatialite:" + location;
     }
-    
+
     @Override
     public BasicDataSource createDataSource(Map params) throws IOException {
-        //create a datasource
+        // create a datasource
         BasicDataSource dataSource = new BasicDataSource();
 
         // driver
@@ -147,33 +147,32 @@ public class SpatiaLiteDataStoreFactory extends JDBCDataStoreFactory {
 
         // url
         dataSource.setUrl(getJDBCUrl(params));
-        
+
         addConnectionProperties(dataSource);
         initializeDataSource(dataSource);
-        
+
         return dataSource;
     }
-    
+
     static void addConnectionProperties(BasicDataSource dataSource) {
         SQLiteConfig config = new SQLiteConfig();
         config.setSharedCache(true);
         config.enableLoadExtension(true);
         config.enableSpatiaLite(true);
-        
+
         for (Map.Entry e : config.toProperties().entrySet()) {
-            dataSource.addConnectionProperty((String)e.getKey(), (String)e.getValue());
+            dataSource.addConnectionProperty((String) e.getKey(), (String) e.getValue());
         }
     }
-    
+
     static void initializeDataSource(BasicDataSource dataSource) throws IOException {
-        //because of the way spatialite is loaded we need to instantiate and close
+        // because of the way spatialite is loaded we need to instantiate and close
         // a connection, and the spatialite functions will be registered for all future
         // connections
         try {
             Connection cx = dataSource.getConnection();
             cx.close();
-        } 
-        catch (SQLException e) {
+        } catch (SQLException e) {
             throw (IOException) new IOException().initCause(e);
         }
     }

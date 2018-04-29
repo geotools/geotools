@@ -20,6 +20,14 @@ package org.geotools.arcsde.data;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.LinearRing;
+import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.io.ParseException;
+import com.vividsolutions.jts.io.WKTReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -28,7 +36,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.NoSuchElementException;
-
 import org.geotools.data.DataStore;
 import org.geotools.data.FeatureReader;
 import org.geotools.data.FilteringFeatureReader;
@@ -53,31 +60,21 @@ import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.spatial.BBOX;
 import org.opengis.filter.spatial.Within;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.io.ParseException;
-import com.vividsolutions.jts.io.WKTReader;
-
 /**
  * @author cdillard
  * @author Gabriel Roldan
- * 
- * 
  * @source $URL$
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/test/java
- *         /org/geotools/arcsde/data/FilterTest.java.fixme $
+ *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/test/java
+ *     /org/geotools/arcsde/data/FilterTest.java.fixme $
  * @version $Id$
  */
 public class SpatialFilterTest {
-    private static final Comparator<SimpleFeature> FEATURE_COMPARATOR = new Comparator<SimpleFeature>() {
-        public int compare(SimpleFeature f1, SimpleFeature f2) {
-            return f1.getID().compareTo(f2.getID());
-        }
-    };
+    private static final Comparator<SimpleFeature> FEATURE_COMPARATOR =
+            new Comparator<SimpleFeature>() {
+                public int compare(SimpleFeature f1, SimpleFeature f2) {
+                    return f1.getID().compareTo(f2.getID());
+                }
+            };
 
     private static final GeometryFactory gf = new GeometryFactory();
 
@@ -114,13 +111,11 @@ public class SpatialFilterTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() throws Exception {}
 
-    }
-
-    private static void collectResults(FeatureReader<SimpleFeatureType, SimpleFeature> fr,
-            Collection<SimpleFeature> c) throws NoSuchElementException, IOException,
-            IllegalAttributeException {
+    private static void collectResults(
+            FeatureReader<SimpleFeatureType, SimpleFeature> fr, Collection<SimpleFeature> c)
+            throws NoSuchElementException, IOException, IllegalAttributeException {
         while (fr.hasNext()) {
             c.add(fr.next());
         }
@@ -128,13 +123,13 @@ public class SpatialFilterTest {
 
     /**
      * Are the two collections similar?
-     * 
+     *
      * @param c1 Collection first
      * @param c2 Collection second
      * @return true if they have the same content
      */
-    private void assertFeatureListsSimilar(Collection<SimpleFeature> c1,
-            Collection<SimpleFeature> c2) {
+    private void assertFeatureListsSimilar(
+            Collection<SimpleFeature> c1, Collection<SimpleFeature> c2) {
         assertEquals("Actual feature collection was not the expected size", c1.size(), c2.size());
 
         ArrayList<SimpleFeature> al1 = new ArrayList<SimpleFeature>(c1);
@@ -150,8 +145,10 @@ public class SpatialFilterTest {
             if (i == 0) {
                 assertEquals("Feature Type", f1.getType(), f2.getType());
             }
-            assertEquals("Feature[" + i + "] identifiers Equal", f1.getIdentifier().getID(), f2
-                    .getIdentifier().getID());
+            assertEquals(
+                    "Feature[" + i + "] identifiers Equal",
+                    f1.getIdentifier().getID(),
+                    f2.getIdentifier().getID());
             if (!f1.equals(f2)) {
                 // go through properties and figure out differneces...
                 for (PropertyDescriptor property : f1.getType().getDescriptors()) {
@@ -167,7 +164,8 @@ public class SpatialFilterTest {
 
                     if (value1 instanceof Geometry) {
                         // jts geometry is not my friend
-                        assertTrue("Feature[" + i + "]." + name + " geometry",
+                        assertTrue(
+                                "Feature[" + i + "]." + name + " geometry",
                                 ((Geometry) value1).equalsTopo((Geometry) value2));
                     } else {
                         assertEquals("Feature[" + i + "]." + name, value1, value2);
@@ -178,24 +176,27 @@ public class SpatialFilterTest {
     }
 
     private static LineString buildSegment(double x1, double y1, double x2, double y2) {
-        Coordinate[] coordArray = new Coordinate[] { new Coordinate(x1, y1), new Coordinate(x2, y2) };
+        Coordinate[] coordArray = new Coordinate[] {new Coordinate(x1, y1), new Coordinate(x2, y2)};
         LineString result = gf.createLineString(coordArray);
 
         return result;
     }
 
     private static Polygon buildPolygon(double minx, double miny, double maxx, double maxy) {
-        Coordinate[] coordArray = new Coordinate[] { new Coordinate(minx, miny),
-                new Coordinate(minx, maxy), new Coordinate(maxx, maxy), new Coordinate(maxx, miny),
-                new Coordinate(minx, miny) };
+        Coordinate[] coordArray =
+                new Coordinate[] {
+                    new Coordinate(minx, miny),
+                    new Coordinate(minx, maxy),
+                    new Coordinate(maxx, maxy),
+                    new Coordinate(maxx, miny),
+                    new Coordinate(minx, miny)
+                };
         Polygon p = gf.createPolygon(gf.createLinearRing(coordArray), new LinearRing[0]);
 
         return p;
     }
 
-    /**
-     * TODO: resurrect testDisjointFilter
-     */
+    /** TODO: resurrect testDisjointFilter */
     @Test
     public void testDisjointFilter() throws Exception {
         FeatureType ft = this.dataStore.getSchema(testData.getTempTableName());
@@ -231,7 +232,8 @@ public class SpatialFilterTest {
 
         // Build a filter so that SDE would actually catch more geometries, it would
         // actually include
-        // "MULTIPOLYGON( ((-1 -1, -1 1, 1 1, 1 -1, -1 -1)), ((-170 -80, -170 -70, -160 -70, -160 -80, -170 -80)) )"
+        // "MULTIPOLYGON( ((-1 -1, -1 1, 1 1, 1 -1, -1 -1)), ((-170 -80, -170 -70, -160 -70, -160
+        // -80, -170 -80)) )"
         // in the results as well. It seems the containment semantics is applied in or to the
         // multigeometry
         // components. We do in memory post filtering to get the right semantics
@@ -259,8 +261,8 @@ public class SpatialFilterTest {
     public void testOrBBoxFilter() throws Exception {
         FeatureType ft = this.dataStore.getSchema(testData.getTempTableName());
 
-        System.out
-                .println(this.dataStore.getFeatureSource(ft.getName().getLocalPart()).getBounds());
+        System.out.println(
+                this.dataStore.getFeatureSource(ft.getName().getLocalPart()).getBounds());
 
         // build a or of bbox so that
         // - the intersection of the bboxes is empty
@@ -320,9 +322,7 @@ public class SpatialFilterTest {
         runTestWithFilter(ft, filter, false);
     }
 
-    /**
-     * TODO: resurrect testEqualFilter
-     */
+    /** TODO: resurrect testEqualFilter */
     @Test
     public void testEqualFilter() throws Exception {
         FeatureType ft = this.dataStore.getSchema(testData.getTempTableName());
@@ -331,8 +331,8 @@ public class SpatialFilterTest {
         Query Query = new Query(testData.getTempTableName());
         Query.setPropertyNames(safePropertyNames(ft));
         Query.setMaxFeatures(1);
-        FeatureReader<SimpleFeatureType, SimpleFeature> fr = this.dataStore.getFeatureReader(Query,
-                Transaction.AUTO_COMMIT);
+        FeatureReader<SimpleFeatureType, SimpleFeature> fr =
+                this.dataStore.getFeatureReader(Query, Transaction.AUTO_COMMIT);
         SimpleFeature feature = fr.next();
         fr.close();
 
@@ -369,7 +369,7 @@ public class SpatialFilterTest {
 
         geom = geom("POINT(-1 -1)");
         filter = ff.dwithin(property, ff.literal(geom), 0.1, "");
-        runTestWithFilter(ft, filter, false, 2);// geoms 4. and 6.
+        runTestWithFilter(ft, filter, false, 2); // geoms 4. and 6.
     }
 
     @Test
@@ -393,11 +393,11 @@ public class SpatialFilterTest {
 
         geom = geom("POINT(170 0)");
         filter = ff.beyond(property, ff.literal(geom), 1d, "");
-        runTestWithFilter(ft, filter, false, 5);// all non null but geom 2.
+        runTestWithFilter(ft, filter, false, 5); // all non null but geom 2.
 
         geom = geom("POINT(-1 -1)");
         filter = ff.beyond(property, ff.literal(geom), 0.1, "");
-        runTestWithFilter(ft, filter, false, 4);// all non null but geoms 4. and 6.
+        runTestWithFilter(ft, filter, false, 4); // all non null but geoms 4. and 6.
     }
 
     @Test
@@ -423,30 +423,31 @@ public class SpatialFilterTest {
 
         geom = findGeom("INT32_COL = 3");
         filter = ff.touches(property, ff.literal(geom));
-        runTestWithFilter(ft, filter, false, 2);// features 1. and 2.
+        runTestWithFilter(ft, filter, false, 2); // features 1. and 2.
 
         // doesn't touch itself
         geom = findGeom("INT32_COL = 3");
-        filter = ff.and(ff.equals(ff.property("INT32_COL"), ff.literal(3)),
-                ff.touches(property, ff.literal(geom)));
-        runTestWithFilter(ft, filter, true);// empty
+        filter =
+                ff.and(
+                        ff.equals(ff.property("INT32_COL"), ff.literal(3)),
+                        ff.touches(property, ff.literal(geom)));
+        runTestWithFilter(ft, filter, true); // empty
 
-        geom = findGeom("INT32_COL = 3").getBoundary().getGeometryN(0);// first point of 3.
+        geom = findGeom("INT32_COL = 3").getBoundary().getGeometryN(0); // first point of 3.
         filter = ff.touches(property, ff.literal(geom));
         runTestWithFilter(ft, filter, false, 1);
 
         geom = findGeom("INT32_COL = 6");
         filter = ff.touches(property, ff.literal(geom));
-        runTestWithFilter(ft, filter, true);// empty, polygon intersects
+        runTestWithFilter(ft, filter, true); // empty, polygon intersects
 
         geom = findGeom("INT32_COL = 6").getBoundary();
         filter = ff.touches(property, ff.literal(geom));
-        runTestWithFilter(ft, filter, false, 1);// true, polygon boundary touches polygon
+        runTestWithFilter(ft, filter, false, 1); // true, polygon boundary touches polygon
 
         geom = findGeom("INT32_COL = 4").getGeometryN(0);
         filter = ff.touches(property, ff.literal(geom));
         runTestWithFilter(ft, filter, false, 1);
-
     }
 
     /**
@@ -457,8 +458,8 @@ public class SpatialFilterTest {
 
         Query query = new Query(testData.getTempTableName());
         query.setFilter(ECQL.toFilter(cql));
-        FeatureReader<SimpleFeatureType, SimpleFeature> fr = this.dataStore.getFeatureReader(query,
-                Transaction.AUTO_COMMIT);
+        FeatureReader<SimpleFeatureType, SimpleFeature> fr =
+                this.dataStore.getFeatureReader(query, Transaction.AUTO_COMMIT);
         SimpleFeature feature = fr.next();
         fr.close();
         return (Geometry) feature.getDefaultGeometry();
@@ -476,8 +477,9 @@ public class SpatialFilterTest {
         }
     }
 
-    private void runTestWithFilter(FeatureType ft, Filter filter, boolean empty, /* Nullable */
-            Integer expectedCount) throws Exception {
+    private void runTestWithFilter(
+            FeatureType ft, Filter filter, boolean empty, /* Nullable */ Integer expectedCount)
+            throws Exception {
         System.err.println("****************");
         System.err.println("**");
         System.err.println("** TESTING FILTER: " + filter);
@@ -491,10 +493,10 @@ public class SpatialFilterTest {
         System.err.println("Performing slow read...");
 
         long startTime = System.currentTimeMillis();
-        FeatureReader<SimpleFeatureType, SimpleFeature> fr = this.dataStore.getFeatureReader(
-                allQuery, Transaction.AUTO_COMMIT);
-        FilteringFeatureReader<SimpleFeatureType, SimpleFeature> ffr = new FilteringFeatureReader<SimpleFeatureType, SimpleFeature>(
-                fr, filter);
+        FeatureReader<SimpleFeatureType, SimpleFeature> fr =
+                this.dataStore.getFeatureReader(allQuery, Transaction.AUTO_COMMIT);
+        FilteringFeatureReader<SimpleFeatureType, SimpleFeature> ffr =
+                new FilteringFeatureReader<SimpleFeatureType, SimpleFeature>(fr, filter);
         ArrayList<SimpleFeature> slowResults = new ArrayList<SimpleFeature>();
         collectResults(ffr, slowResults);
         ffr.close();
@@ -506,7 +508,8 @@ public class SpatialFilterTest {
         System.err.println("Performing fast read...");
         startTime = System.currentTimeMillis();
 
-        Query filteringQuery = new Query(testData.getTempTableName(), filter, safePropertyNames(ft));
+        Query filteringQuery =
+                new Query(testData.getTempTableName(), filter, safePropertyNames(ft));
         fr = this.dataStore.getFeatureReader(filteringQuery, Transaction.AUTO_COMMIT);
 
         ArrayList<SimpleFeature> fastResults = new ArrayList<SimpleFeature>();
@@ -527,7 +530,6 @@ public class SpatialFilterTest {
         } else {
             assertTrue("Result was supposed to be non empty", fastResults.size() > 0);
         }
-
     }
 
     private String[] safePropertyNames(FeatureType ft) {
@@ -545,5 +547,4 @@ public class SpatialFilterTest {
         String[] propertyNames = names.toArray(new String[names.size()]);
         return propertyNames;
     }
-
 }

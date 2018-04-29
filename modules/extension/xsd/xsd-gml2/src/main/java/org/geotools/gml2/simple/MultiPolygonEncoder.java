@@ -16,26 +16,25 @@
  */
 package org.geotools.gml2.simple;
 
+import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Polygon;
 import org.geotools.gml2.GML;
 import org.geotools.xml.Encoder;
 import org.xml.sax.helpers.AttributesImpl;
 
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Polygon;
-
 /**
  * Encodes a GML2 multi polygon
- * 
+ *
  * @author Justin Deoliveira, OpenGeo
  * @author Andrea Aime - GeoSolutions
  */
 class MultiPolygonEncoder extends GeometryEncoder<MultiPolygon> {
 
-    static final QualifiedName MULTI_POLYGON = new QualifiedName(GML.NAMESPACE, "MultiPolygon",
-            "gml");
+    static final QualifiedName MULTI_POLYGON =
+            new QualifiedName(GML.NAMESPACE, "MultiPolygon", "gml");
 
-    static final QualifiedName POLYGON_MEMBER = new QualifiedName(GML.NAMESPACE, "polygonMember",
-            "gml");
+    static final QualifiedName POLYGON_MEMBER =
+            new QualifiedName(GML.NAMESPACE, "polygonMember", "gml");
 
     QualifiedName multiPolygon;
 
@@ -63,5 +62,4 @@ class MultiPolygonEncoder extends GeometryEncoder<MultiPolygon> {
 
         handler.endElement(multiPolygon);
     }
-
 }

@@ -16,18 +16,18 @@
  */
 package org.geotools.filter.v1_1.capabilities;
 
-import org.w3c.dom.Document;
 import javax.xml.namespace.QName;
-import org.opengis.filter.capability.SpatialOperator;
 import org.geotools.filter.v1_1.OGC;
 import org.geotools.xml.Binding;
-
+import org.opengis.filter.capability.SpatialOperator;
+import org.w3c.dom.Document;
 
 /**
  * Binding test case for http://www.opengis.net/ogc:SpatialOperatorType.
  *
  * <p>
- *  <pre>
+ *
+ * <pre>
  *   <code>
  *  &lt;xsd:complexType name="SpatialOperatorType"&gt;
  *      &lt;xsd:sequence&gt;
@@ -38,12 +38,8 @@ import org.geotools.xml.Binding;
  *
  *    </code>
  *   </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class SpatialOperatorTypeBindingTest extends OGCTestSupport {
@@ -64,8 +60,11 @@ public class SpatialOperatorTypeBindingTest extends OGCTestSupport {
     }
 
     public void testEncode() throws Exception {
-        Document dom = encode(FilterMockData.spatialOperator("Intersect"),
-                new QName(OGC.NAMESPACE, "SpatialOperator"), OGC.SpatialOperatorType);
+        Document dom =
+                encode(
+                        FilterMockData.spatialOperator("Intersect"),
+                        new QName(OGC.NAMESPACE, "SpatialOperator"),
+                        OGC.SpatialOperatorType);
         assertEquals("Intersect", dom.getDocumentElement().getAttribute("name"));
     }
 }

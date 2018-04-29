@@ -19,7 +19,6 @@ package org.geotools.swt.action;
 
 import java.io.File;
 import java.io.IOException;
-
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.widgets.Display;
@@ -36,23 +35,24 @@ import org.geotools.swt.utils.Utils;
 
 /**
  * Action to open shapefile.
- * 
+ *
  * @author Andrea Antonello (www.hydrologis.com)
- *
- *
- *
  * @source $URL$
  */
 public class OpenShapefileAction extends MapAction implements ISelectionChangedListener {
 
     public OpenShapefileAction() {
-        super("Open Shapefile", "Load a shapefile into the viewer.", ImageCache.getInstance().getImage(ImageCache.OPEN));
+        super(
+                "Open Shapefile",
+                "Load a shapefile into the viewer.",
+                ImageCache.getInstance().getImage(ImageCache.OPEN));
     }
 
     public void run() {
         Display display = Display.getCurrent();
         Shell shell = new Shell(display);
-        File openFile = JFileDataStoreChooser.showOpenFile(new String[]{"*.shp"}, shell); //$NON-NLS-1$
+        File openFile =
+                JFileDataStoreChooser.showOpenFile(new String[] {"*.shp"}, shell); // $NON-NLS-1$
 
         try {
             if (openFile != null && openFile.exists()) {
@@ -69,8 +69,5 @@ public class OpenShapefileAction extends MapAction implements ISelectionChangedL
         }
     }
 
-    public void selectionChanged( SelectionChangedEvent arg0 ) {
-
-    }
-
+    public void selectionChanged(SelectionChangedEvent arg0) {}
 }

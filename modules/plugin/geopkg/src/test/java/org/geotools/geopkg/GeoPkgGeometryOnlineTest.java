@@ -19,21 +19,16 @@ package org.geotools.geopkg;
 import org.geotools.jdbc.JDBCGeometryOnlineTest;
 import org.geotools.jdbc.JDBCGeometryTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class GeoPkgGeometryOnlineTest extends JDBCGeometryOnlineTest {
 
     @Override
     protected JDBCGeometryTestSetup createTestSetup() {
         return new GeoPkgGeometryTestSetup();
     }
-    
+
     @Override
     public void testLinearRing() throws Exception {
-        //JD: GeoPkg does not do linear rings
+        // JD: GeoPkg does not do linear rings
     }
-
 }

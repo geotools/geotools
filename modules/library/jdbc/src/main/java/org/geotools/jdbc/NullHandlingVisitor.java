@@ -18,7 +18,6 @@ package org.geotools.jdbc;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.geotools.filter.visitor.DuplicatingFilterVisitor;
 import org.opengis.feature.type.FeatureType;
 import org.opengis.feature.type.PropertyDescriptor;
@@ -40,7 +39,7 @@ import org.opengis.filter.expression.PropertyName;
 /**
  * Amends the differences between our in-memory two-valued logic and the database own three-valued
  * logic making sure we treat null values just like in memory (avoiding the third "unkonwn" status)
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 class NullHandlingVisitor extends DuplicatingFilterVisitor {
@@ -55,8 +54,7 @@ class NullHandlingVisitor extends DuplicatingFilterVisitor {
         this.schema = schema;
     }
 
-    public NullHandlingVisitor() {
-    }
+    public NullHandlingVisitor() {}
 
     public Object visit(PropertyIsEqualTo filter, Object extraData) {
         return guardAgainstNulls((BinaryComparisonOperator) super.visit(filter, extraData));
@@ -138,5 +136,4 @@ class NullHandlingVisitor extends DuplicatingFilterVisitor {
         PropertyDescriptor descriptor = schema.getDescriptor(name);
         return descriptor == null || descriptor.isNillable();
     }
-
 }

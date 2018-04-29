@@ -35,7 +35,6 @@ import java.util.logging.Handler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 import java.util.logging.StreamHandler;
-
 import org.geotools.factory.CommonFactoryFinder;
 import org.junit.After;
 import org.junit.Test;
@@ -47,14 +46,10 @@ import org.opengis.filter.expression.Function;
  * @author Andrea Aime
  * @author Michael Bedward
  * @author Frank Gasdorf
- * 
  * @since 2.6
- *
- *
  * @source $URL$
  * @version $Id $
  */
-
 public class EnvFunctionTest {
 
     private final ExecutorService executor = Executors.newFixedThreadPool(2);
@@ -68,9 +63,7 @@ public class EnvFunctionTest {
 
     public EnvFunctionTest() {}
 
-    /**
-     * Tests the use of two thread-local tables with same var names and different values
-     */
+    /** Tests the use of two thread-local tables with same var names and different values */
     @Test
     public void testSetLocalValues() throws Exception {
         System.out.println("   setLocalValues");
@@ -128,9 +121,7 @@ public class EnvFunctionTest {
         f2.get();
     }
 
-    /**
-     * Tests the use of a single var name with two thread-local values
-     */
+    /** Tests the use of a single var name with two thread-local values */
     @Test
     public void testSetLocalValue() throws Exception {
         System.out.println("   setLocalValue");
@@ -173,9 +164,7 @@ public class EnvFunctionTest {
         f2.get();
     }
 
-    /**
-     * Tests setting global values and accessing them from different threads
-     */
+    /** Tests setting global values and accessing them from different threads */
     @Test
     public void testSetGlobalValues() throws Exception {
         System.out.println("   setGlobalValues");
@@ -225,9 +214,7 @@ public class EnvFunctionTest {
         f2.get();
     }
 
-    /**
-     * Tests setting a global value and accessing it from different threads
-     */
+    /** Tests setting a global value and accessing it from different threads */
     @Test
     public void testSetGlobalValue() throws Exception {
         System.out.println("   setGlobalValue");
@@ -318,7 +305,9 @@ public class EnvFunctionTest {
 
         int defaultValue = 42;
 
-        Object result = ff.function("env", ff.literal("doesnotexist"), ff.literal(defaultValue)).evaluate(null);
+        Object result =
+                ff.function("env", ff.literal("doesnotexist"), ff.literal(defaultValue))
+                        .evaluate(null);
         int value = ((Number) result).intValue();
         assertEquals(defaultValue, value);
     }
@@ -335,10 +324,7 @@ public class EnvFunctionTest {
         assertEquals(x + x, value);
     }
 
-    /**
-     * The setFallback method should log a warning and ignore 
-     * the argument.
-     */
+    /** The setFallback method should log a warning and ignore the argument. */
     @Test
     public void testSetFallbackNotAllowed() {
         Logger logger = Logger.getLogger(EnvFunction.class.getName());
@@ -371,7 +357,9 @@ public class EnvFunctionTest {
         // remove from global lookup table
         String expectedFallback = "does not exist";
         EnvFunction.removeGlobalValue("foo");
-        assertEvalStringEquals(expectedFallback, ff.function("env", ff.literal("foo"), ff.literal(expectedFallback)));
+        assertEvalStringEquals(
+                expectedFallback,
+                ff.function("env", ff.literal("foo"), ff.literal(expectedFallback)));
     }
 
     @Test
@@ -383,12 +371,15 @@ public class EnvFunctionTest {
         // remove from local lookup table
         String expectedFallback = "does not exist";
         EnvFunction.removeLocalValue("foo");
-        assertEvalStringEquals(expectedFallback, ff.function("env", ff.literal("foo"), ff.literal(expectedFallback)));
+        assertEvalStringEquals(
+                expectedFallback,
+                ff.function("env", ff.literal("foo"), ff.literal(expectedFallback)));
     }
 
     @Test
     public void testNonExistingKeyEvalIsNilWithoutDefault() {
-        boolean isNil = ff.isNil(ff.function("env", ff.literal("not existig key")), null).evaluate(null);
+        boolean isNil =
+                ff.isNil(ff.function("env", ff.literal("not existig key")), null).evaluate(null);
         assertTrue(isNil);
     }
 
@@ -414,7 +405,7 @@ public class EnvFunctionTest {
     }
 
     private void assertEvalStringEquals(final String expectedString, final Function function) {
-        String result = (String) function.evaluate(null);        
+        String result = (String) function.evaluate(null);
         assertEquals(expectedString, result);
     }
 }

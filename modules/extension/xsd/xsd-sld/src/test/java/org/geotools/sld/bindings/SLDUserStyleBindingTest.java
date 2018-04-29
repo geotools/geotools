@@ -18,12 +18,7 @@ package org.geotools.sld.bindings;
 
 import org.geotools.styling.Style;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class SLDUserStyleBindingTest extends SLDTestSupport {
     public void testType() throws Exception {
         assertEquals(Style.class, new SLDUserStyleBinding(null).getType());

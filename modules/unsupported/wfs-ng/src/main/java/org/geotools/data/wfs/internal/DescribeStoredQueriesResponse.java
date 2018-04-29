@@ -27,13 +27,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.logging.Level;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-
 import net.opengis.wfs20.DescribeStoredQueriesResponseType;
 import net.opengis.wfs20.StoredQueryDescriptionType;
-
 import org.apache.commons.io.IOUtils;
 import org.geotools.data.DataSourceException;
 import org.geotools.data.ows.HTTPResponse;
@@ -46,7 +43,8 @@ public class DescribeStoredQueriesResponse extends WFSResponse {
 
     private DescribeStoredQueriesResponseType describeStoredQueriesResponse;
 
-    public DescribeStoredQueriesResponse(WFSRequest originatingRequest, HTTPResponse response) throws IOException, ServiceException {
+    public DescribeStoredQueriesResponse(WFSRequest originatingRequest, HTTPResponse response)
+            throws IOException, ServiceException {
         super(originatingRequest, response);
 
         MODULE.finer("Parsing DescribeStoredQueries response");
@@ -67,17 +65,13 @@ public class DescribeStoredQueriesResponse extends WFSResponse {
                 RESPONSES.fine("Full ListStoredQueries response: " + new String(rawResponse));
             }
             try {
-                DocumentBuilderFactory builderFactory = DocumentBuilderFactory
-                        .newInstance();
+                DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
                 builderFactory.setNamespaceAware(true);
                 builderFactory.setValidating(false);
-                DocumentBuilder documentBuilder = builderFactory
-                        .newDocumentBuilder();
-                rawDocument = documentBuilder.parse(new ByteArrayInputStream(
-                        rawResponse));
+                DocumentBuilder documentBuilder = builderFactory.newDocumentBuilder();
+                rawDocument = documentBuilder.parse(new ByteArrayInputStream(rawResponse));
             } catch (Exception e) {
-                throw new IOException("Error parsing capabilities document: "
-                        + e.getMessage(), e);
+                throw new IOException("Error parsing capabilities document: " + e.getMessage(), e);
             }
 
             describeStoredQueriesResponse = parseStoredQueries(rawDocument, WFS_2_0_CONFIGURATION);
@@ -90,12 +84,10 @@ public class DescribeStoredQueriesResponse extends WFSResponse {
         } finally {
             response.dispose();
         }
-
     }
 
-
-    private DescribeStoredQueriesResponseType parseStoredQueries(Document document,
-            Configuration wfsConfig) throws DataSourceException {
+    private DescribeStoredQueriesResponseType parseStoredQueries(
+            Document document, Configuration wfsConfig) throws DataSourceException {
         DOMParser parser = new DOMParser(wfsConfig, document);
         final Object parsed;
         try {
@@ -105,10 +97,12 @@ public class DescribeStoredQueriesResponse extends WFSResponse {
         }
 
         if (!(parsed instanceof DescribeStoredQueriesResponseType)) {
-            throw new DataSourceException("DescribedStoredQueries response is not a DescribeStoredQueriesResponseType but a "+parsed.getClass());
+            throw new DataSourceException(
+                    "DescribedStoredQueries response is not a DescribeStoredQueriesResponseType but a "
+                            + parsed.getClass());
         }
 
-        return (DescribeStoredQueriesResponseType)parsed;
+        return (DescribeStoredQueriesResponseType) parsed;
     }
 
     public List<StoredQueryDescriptionType> getStoredQueryDescriptions() {

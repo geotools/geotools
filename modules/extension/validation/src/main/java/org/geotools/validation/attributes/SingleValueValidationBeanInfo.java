@@ -17,32 +17,23 @@
 package org.geotools.validation.attributes;
 
 import java.beans.PropertyDescriptor;
-
 import org.geotools.validation.DefaultFeatureValidationBeanInfo;
-
 
 /**
  * RangeValidationBeanInfo purpose.
- * 
- * <p>
- * Description of RangeValidationBeanInfo ...
- * </p>
+ *
+ * <p>Description of RangeValidationBeanInfo ...
  *
  * @author dzwiers, Refractions Research, Inc.
  * @author $Author: dmzwiers $ (last modification)
- *
- *
  * @source $URL$
  * @version $Id$
  */
-public class SingleValueValidationBeanInfo
-    extends DefaultFeatureValidationBeanInfo {
+public class SingleValueValidationBeanInfo extends DefaultFeatureValidationBeanInfo {
     /**
      * GazetteerNameValidationBeanInfo constructor.
-     * 
-     * <p>
-     * Description
-     * </p>
+     *
+     * <p>Description
      */
     public SingleValueValidationBeanInfo() {
         super();
@@ -50,7 +41,6 @@ public class SingleValueValidationBeanInfo
 
     /**
      * Implementation of getPropertyDescriptors.
-     *
      *
      * @see java.beans.BeanInfo#getPropertyDescriptors()
      */

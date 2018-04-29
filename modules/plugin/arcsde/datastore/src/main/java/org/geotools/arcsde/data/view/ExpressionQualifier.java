@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import net.sf.jsqlparser.expression.BinaryExpression;
 import net.sf.jsqlparser.expression.CaseExpression;
 import net.sf.jsqlparser.expression.DateValue;
@@ -58,18 +57,17 @@ import net.sf.jsqlparser.expression.operators.relational.MinorThanEquals;
 import net.sf.jsqlparser.expression.operators.relational.NotEqualsTo;
 import net.sf.jsqlparser.schema.Column;
 import net.sf.jsqlparser.statement.select.SubSelect;
-
 import org.geotools.arcsde.session.ISession;
 
 /**
  * Qualifies the column references (aliased or not) the ArcSDE "table.user." prefix as required by
  * the ArcSDE java api to not get confused when using joined tables.
- * 
+ *
  * @author Gabriel Roldan, Axios Engineering
  * @version $Id$
  * @source $URL:
- *         http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
- *         /org/geotools/arcsde/data/view/ExpressionQualifier.java $
+ *     http://svn.geotools.org/geotools/trunk/gt/modules/plugin/arcsde/datastore/src/main/java
+ *     /org/geotools/arcsde/data/view/ExpressionQualifier.java $
  * @since 2.3.x
  */
 class ExpressionQualifier implements ExpressionVisitor {
@@ -81,7 +79,7 @@ class ExpressionQualifier implements ExpressionVisitor {
 
     /**
      * Creates a new ExpressionQualifier object.
-     * 
+     *
      * @param session
      */
     private ExpressionQualifier(ISession session, Map<String, Object> tableAliases) {
@@ -89,8 +87,8 @@ class ExpressionQualifier implements ExpressionVisitor {
         this.tableAliases = tableAliases;
     }
 
-    public static Expression qualify(ISession session, Map<String, Object> tableAliases,
-            Expression exp) {
+    public static Expression qualify(
+            ISession session, Map<String, Object> tableAliases, Expression exp) {
         if (exp == null) {
             return null;
         }
@@ -115,8 +113,8 @@ class ExpressionQualifier implements ExpressionVisitor {
         ExpressionList parameters = function.getParameters();
         ExpressionList qualifiedParams;
 
-        qualifiedParams = (ExpressionList) ItemsListQualifier.qualify(session, tableAliases,
-                parameters);
+        qualifiedParams =
+                (ExpressionList) ItemsListQualifier.qualify(session, tableAliases, parameters);
 
         qfunction.setParameters(qualifiedParams);
 
@@ -173,37 +171,25 @@ class ExpressionQualifier implements ExpressionVisitor {
 
     private void visitBinaryExpression(BinaryExpression exp) {
 
-        Expression left = ExpressionQualifier.qualify(session, tableAliases,
-                exp.getLeftExpression());
-        Expression right = ExpressionQualifier.qualify(session, tableAliases,
-                exp.getRightExpression());
+        Expression left =
+                ExpressionQualifier.qualify(session, tableAliases, exp.getLeftExpression());
+        Expression right =
+                ExpressionQualifier.qualify(session, tableAliases, exp.getRightExpression());
 
         BinaryExpression qualified;
 
-        if (exp instanceof Addition)
-            qualified = new Addition();
-        else if (exp instanceof Division)
-            qualified = new Division();
-        else if (exp instanceof Multiplication)
-            qualified = new Multiplication();
-        else if (exp instanceof Subtraction)
-            qualified = new Subtraction();
-        else if (exp instanceof EqualsTo)
-            qualified = new EqualsTo();
-        else if (exp instanceof GreaterThan)
-            qualified = new GreaterThan();
-        else if (exp instanceof GreaterThanEquals)
-            qualified = new GreaterThanEquals();
-        else if (exp instanceof LikeExpression)
-            qualified = new LikeExpression();
-        else if (exp instanceof MinorThan)
-            qualified = new MinorThan();
-        else if (exp instanceof MinorThanEquals)
-            qualified = new MinorThanEquals();
-        else if (exp instanceof NotEqualsTo)
-            qualified = new NotEqualsTo();
-        else
-            throw new IllegalArgumentException("Unknown binary expression: " + exp);
+        if (exp instanceof Addition) qualified = new Addition();
+        else if (exp instanceof Division) qualified = new Division();
+        else if (exp instanceof Multiplication) qualified = new Multiplication();
+        else if (exp instanceof Subtraction) qualified = new Subtraction();
+        else if (exp instanceof EqualsTo) qualified = new EqualsTo();
+        else if (exp instanceof GreaterThan) qualified = new GreaterThan();
+        else if (exp instanceof GreaterThanEquals) qualified = new GreaterThanEquals();
+        else if (exp instanceof LikeExpression) qualified = new LikeExpression();
+        else if (exp instanceof MinorThan) qualified = new MinorThan();
+        else if (exp instanceof MinorThanEquals) qualified = new MinorThanEquals();
+        else if (exp instanceof NotEqualsTo) qualified = new NotEqualsTo();
+        else throw new IllegalArgumentException("Unknown binary expression: " + exp);
 
         qualified.setLeftExpression(left);
         qualified.setRightExpression(right);
@@ -270,8 +256,8 @@ class ExpressionQualifier implements ExpressionVisitor {
 
     public void visit(InExpression inExpression) {
         Expression left = qualify(session, tableAliases, inExpression.getLeftExpression());
-        ItemsList itemsList = ItemsListQualifier.qualify(session, tableAliases,
-                inExpression.getItemsList());
+        ItemsList itemsList =
+                ItemsListQualifier.qualify(session, tableAliases, inExpression.getItemsList());
 
         InExpression qualified = new InExpression();
         qualified.setLeftExpression(left);
@@ -308,7 +294,6 @@ class ExpressionQualifier implements ExpressionVisitor {
 
         Column qualified = ColumnQualifier.qualify(session, tableAliases, tableColumn);
         this._qualifiedExpression = qualified;
-
     }
 
     public void visit(SubSelect subSelect) {
@@ -318,13 +303,15 @@ class ExpressionQualifier implements ExpressionVisitor {
 
     @SuppressWarnings("unchecked")
     public void visit(CaseExpression caseExpression) {
-        Expression switchExpr = qualify(session, tableAliases, caseExpression.getSwitchExpression());
+        Expression switchExpr =
+                qualify(session, tableAliases, caseExpression.getSwitchExpression());
         Expression elseExpr = qualify(session, tableAliases, caseExpression.getElseExpression());
 
         List<WhenClause> whenClauses = null;
         if (caseExpression.getWhenClauses() != null) {
             whenClauses = new ArrayList<WhenClause>();
-            for (Iterator<WhenClause> it = caseExpression.getWhenClauses().iterator(); it.hasNext();) {
+            for (Iterator<WhenClause> it = caseExpression.getWhenClauses().iterator();
+                    it.hasNext(); ) {
                 WhenClause whenClause = it.next();
                 WhenClause qWhen = (WhenClause) qualify(session, tableAliases, whenClause);
                 whenClauses.add(qWhen);

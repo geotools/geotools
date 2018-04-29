@@ -20,13 +20,9 @@ import org.geotools.Builder;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.NilExpression;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class NilBuilder implements Builder<NilExpression> {
-    
+
     public NilExpression build() {
         return (NilExpression) Expression.NIL;
     }
@@ -42,5 +38,4 @@ public class NilBuilder implements Builder<NilExpression> {
     public Builder<NilExpression> unset() {
         return this;
     }
-
 }

@@ -16,18 +16,13 @@
  */
 package org.geotools.xml;
 
-import org.eclipse.xsd.XSDElementDeclaration;
 import java.util.List;
-
+import org.eclipse.xsd.XSDElementDeclaration;
 
 /**
  * Factory used by the encoder to obtain child values from objects being encoded.
  *
  * @author Justin Deoliveira, The Open Planning Project
- *
- *
- *
- *
  * @source $URL$
  */
 public interface PropertyExtractor {
@@ -43,14 +38,12 @@ public interface PropertyExtractor {
 
     /**
      * Exracts the properties from the object being encoded.
-     * <p>
-     * This method should return a set of tuples made up of
-     * ({@link org.eclipse.xsd.XSDParticle},Object).
-     * </p>
+     *
+     * <p>This method should return a set of tuples made up of ({@link
+     * org.eclipse.xsd.XSDParticle},Object).
      *
      * @param object The object being encoded.
      * @param element The element declaration corresponding to the object being encoded.
-     *
      * @return A set of element, object tuples.
      */
     List /*Object[2]*/ properties(Object object, XSDElementDeclaration element);

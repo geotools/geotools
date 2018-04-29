@@ -18,21 +18,21 @@ package org.geotools.data.efeature.adapters;
 
 /**
  * @author kengu - 15. juni 2011
- *
- *
  * @source $URL$
  */
-public class ByteAdapter extends org.eclipse.emf.query.conditions.numbers.NumberAdapter.ByteAdapter {
+public class ByteAdapter
+        extends org.eclipse.emf.query.conditions.numbers.NumberAdapter.ByteAdapter {
 
-    public static final org.geotools.data.efeature.adapters.ByteAdapter 
-        DEFAULT = new org.geotools.data.efeature.adapters.ByteAdapter();
+    public static final org.geotools.data.efeature.adapters.ByteAdapter DEFAULT =
+            new org.geotools.data.efeature.adapters.ByteAdapter();
 
     /** Hide constructor */
-    private ByteAdapter() { /*NOP*/};
-    
+    private ByteAdapter() {
+        /*NOP*/
+    };
+
     @Override
     public byte byteValue(Object value) {
-        return value instanceof Byte ? ((Byte)value).byteValue() : (Byte)value;
+        return value instanceof Byte ? ((Byte) value).byteValue() : (Byte) value;
     }
-
 }

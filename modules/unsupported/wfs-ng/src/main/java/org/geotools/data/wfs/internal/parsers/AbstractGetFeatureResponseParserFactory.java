@@ -22,14 +22,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PushbackInputStream;
-import java.io.Reader;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import net.opengis.wfs.GetFeatureType;
-
 import org.geotools.data.ows.HTTPResponse;
 import org.geotools.data.wfs.WFSDataStore;
 import org.geotools.data.wfs.internal.GetFeatureParser;
@@ -45,17 +42,13 @@ import org.geotools.ows.ServiceException;
 import org.geotools.xml.Parser;
 import org.xml.sax.EntityResolver;
 
-/**
- * An abstract WFS response parser factory for GetFeature requests in GML output formats.
- */
+/** An abstract WFS response parser factory for GetFeature requests in GML output formats. */
 @SuppressWarnings("nls")
 public abstract class AbstractGetFeatureResponseParserFactory implements WFSResponseFactory {
 
     private static final Logger LOGGER = Loggers.MODULE;
 
-    /**
-     * @see WFSResponseFactory#isAvailable()
-     */
+    /** @see WFSResponseFactory#isAvailable() */
     public boolean isAvailable() {
         return true;
     }
@@ -63,12 +56,11 @@ public abstract class AbstractGetFeatureResponseParserFactory implements WFSResp
     /**
      * Checks if this factory can create a parser for the potential responses of the given WFS
      * request.
-     * <p>
-     * For instance, this factory can create a parser as long as the request is a
-     * {@link GetFeatureType GetFeature} request and the request output format matches
-     * {@code "text/xml; subtype=gml/3.1.1"}.
-     * </p>
-     * 
+     *
+     * <p>For instance, this factory can create a parser as long as the request is a {@link
+     * GetFeatureType GetFeature} request and the request output format matches {@code "text/xml;
+     * subtype=gml/3.1.1"}.
+     *
      * @see WFSResponseFactory#canProcess(WFSOperationType, String)
      */
     public boolean canProcess(final WFSRequest request, final String contentType) {
@@ -95,17 +87,17 @@ public abstract class AbstractGetFeatureResponseParserFactory implements WFSResp
     /**
      * Returns either a {@link FeatureCollectionParser} or an {@link ExceptionReportParser}
      * depending on what the server returned.
-     * <p>
-     * Ideally, the decision should only be taken based on the WFS response's content-type HTTP
+     *
+     * <p>Ideally, the decision should only be taken based on the WFS response's content-type HTTP
      * header. Truth is, some WFS implementations does not set proper HTTP response headers so a bit
      * of an heuristic may be needed in order to identify the actual response.
-     * </p>
-     * 
+     *
      * @see WFSResponseFactory#createParser(WFSResponse)
      * @see FeatureCollectionParser
      * @see ExceptionReportParser
      */
-    public WFSResponse createResponse(WFSRequest request, HTTPResponse response) throws IOException {
+    public WFSResponse createResponse(WFSRequest request, HTTPResponse response)
+            throws IOException {
 
         // We can't rely on the server returning the correct output format. Some, for example
         // CubeWerx, upon a successful GetFeature request, set the response's content-type
@@ -117,7 +109,8 @@ public abstract class AbstractGetFeatureResponseParserFactory implements WFSResp
         } else {
             buffSize = 512;
         }
-        PushbackInputStream pushbackIn = new PushbackInputStream(response.getResponseStream(), buffSize);
+        PushbackInputStream pushbackIn =
+                new PushbackInputStream(response.getResponseStream(), buffSize);
         byte[] buff = new byte[buffSize];
         int readCount = 0;
         int r;
@@ -136,8 +129,9 @@ public abstract class AbstractGetFeatureResponseParserFactory implements WFSResp
         }
 
         StringBuilder head = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(
-                new ByteArrayInputStream(buff), charset))) {
+        try (BufferedReader reader =
+                new BufferedReader(
+                        new InputStreamReader(new ByteArrayInputStream(buff), charset))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 head.append(line).append('\n');
@@ -162,32 +156,33 @@ public abstract class AbstractGetFeatureResponseParserFactory implements WFSResp
             throw new IllegalStateException("Unkown server response: " + head);
         }
     }
-    
+
     /**
-     * @param wfs
-     *            the {@link WFSDataStore} that sent the request
-     * @param response
-     *            a response handle to a service exception report
+     * @param wfs the {@link WFSDataStore} that sent the request
+     * @param response a response handle to a service exception report
      * @return a {@link WFSException} containing the server returned exception report messages
      * @see WFSResponseParser#parse(WFSProtocol, WFSResponse)
      */
-    public WFSException parseException(WFSRequest originatingRequest, InputStream inputStream) throws WFSException {
+    public WFSException parseException(WFSRequest originatingRequest, InputStream inputStream)
+            throws WFSException {
         Parser parser = new Parser(originatingRequest.getStrategy().getWfsConfiguration());
         EntityResolver resolver = originatingRequest.getStrategy().getConfig().getEntityResolver();
-        if(resolver != null) {
+        if (resolver != null) {
             parser.setEntityResolver(resolver);
         }
         Object parsed;
-        try  {
+        try {
             parsed = parser.parse(inputStream);
-            if (!(parsed instanceof net.opengis.ows10.ExceptionReportType || parsed instanceof net.opengis.ows11.ExceptionReportType)) {
+            if (!(parsed instanceof net.opengis.ows10.ExceptionReportType
+                    || parsed instanceof net.opengis.ows11.ExceptionReportType)) {
                 throw new IOException("Unrecognized server error");
             }
         } catch (Exception e) {
             return new WFSException("Exception parsing server exception report", e);
         }
-        if(parsed instanceof net.opengis.ows10.ExceptionReportType) {
-            net.opengis.ows10.ExceptionReportType report = (net.opengis.ows10.ExceptionReportType) parsed;
+        if (parsed instanceof net.opengis.ows10.ExceptionReportType) {
+            net.opengis.ows10.ExceptionReportType report =
+                    (net.opengis.ows10.ExceptionReportType) parsed;
             @SuppressWarnings("unchecked")
             List<net.opengis.ows10.ExceptionType> exceptions = report.getException();
 
@@ -198,11 +193,13 @@ public abstract class AbstractGetFeatureResponseParserFactory implements WFSResp
             }
             WFSException result = new WFSException(msg.toString());
             for (net.opengis.ows10.ExceptionType ex : exceptions) {
-                result.addExceptionReport(ex.getExceptionCode() + ": " + String.valueOf(ex.getExceptionText()));
+                result.addExceptionReport(
+                        ex.getExceptionCode() + ": " + String.valueOf(ex.getExceptionText()));
             }
             return result;
         } else {
-            net.opengis.ows11.ExceptionReportType report = (net.opengis.ows11.ExceptionReportType) parsed;
+            net.opengis.ows11.ExceptionReportType report =
+                    (net.opengis.ows11.ExceptionReportType) parsed;
             @SuppressWarnings("unchecked")
             List<net.opengis.ows11.ExceptionType> exceptions = report.getException();
 
@@ -213,20 +210,20 @@ public abstract class AbstractGetFeatureResponseParserFactory implements WFSResp
             }
             WFSException result = new WFSException(msg.toString());
             for (net.opengis.ows11.ExceptionType ex : exceptions) {
-                result.addExceptionReport(ex.getExceptionCode() + ": " + String.valueOf(ex.getExceptionText()));
+                result.addExceptionReport(
+                        ex.getExceptionCode() + ": " + String.valueOf(ex.getExceptionText()));
             }
             return result;
         }
-        
     }
-    
+
     @Override
     public boolean canProcess(WFSOperationType operation) {
         return WFSOperationType.GET_FEATURE.equals(operation);
     }
 
-    protected abstract GetFeatureParser parser(GetFeatureRequest request, InputStream in) throws IOException;   
-    
+    protected abstract GetFeatureParser parser(GetFeatureRequest request, InputStream in)
+            throws IOException;
+
     protected abstract List<String> getSupportedVersions();
-    
 }

@@ -16,33 +16,27 @@
  */
 package org.geotools.gml3.v3_2.bindings;
 
-import org.geotools.gml3.v3_2.GML;
-import org.geotools.gml3.v3_2.GML32TestSupport;
-import org.geotools.gml3.bindings.GML3EncodingUtils;
-import org.geotools.gml3.bindings.GML3MockData;
-import org.w3c.dom.Document;
-
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryCollection;
+import org.geotools.gml3.bindings.GML3EncodingUtils;
+import org.geotools.gml3.bindings.GML3MockData;
+import org.geotools.gml3.v3_2.GML;
+import org.geotools.gml3.v3_2.GML32TestSupport;
+import org.w3c.dom.Document;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class MultiGeometryTypeBindingTest extends GML32TestSupport {
-    
 
     public void testParse() throws Exception {
         GML3MockData.multiGeometry(document, document);
-    
+
         GeometryCollection multiGeom = (GeometryCollection) parse();
         assertNotNull(multiGeom);
-    
+
         assertEquals(3, multiGeom.getNumGeometries());
     }
-    
-    public void testEncode() throws Exception {        
+
+    public void testEncode() throws Exception {
         Geometry geometry = GML3MockData.multiGeometry();
         GML3EncodingUtils.setID(geometry, "geometry");
         Document dom = encode(geometry, GML.MultiGeometry);
@@ -52,10 +46,10 @@ public class MultiGeometryTypeBindingTest extends GML32TestSupport {
         // geometry.1 is not encoded on the gml:Point because user data is already being used for
         // srsDimension and srsName; not going to support the use of these inside a multigeometry
         // and combined with gml:id
-        assertEquals("geometry.2", getID(dom.getElementsByTagNameNS(GML.NAMESPACE, "LineString")
-                .item(0)));
-        assertEquals("geometry.3",
-                getID(dom.getElementsByTagNameNS(GML.NAMESPACE, "Polygon").item(0)));
+        assertEquals(
+                "geometry.2",
+                getID(dom.getElementsByTagNameNS(GML.NAMESPACE, "LineString").item(0)));
+        assertEquals(
+                "geometry.3", getID(dom.getElementsByTagNameNS(GML.NAMESPACE, "Polygon").item(0)));
     }
-
 }

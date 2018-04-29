@@ -20,16 +20,14 @@ import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
 import org.w3c.dom.Document;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class MultiGeometryPropertyTypeBindingTest extends GML3TestSupport {
     public void testEncode() throws Exception {
         Document dom = encode(GML3MockData.multiGeometry(), GML.multiGeometryProperty);
         // print(dom);
-        assertEquals(1,
-            dom.getElementsByTagNameNS(GML.NAMESPACE, GML.MultiGeometry.getLocalPart()).getLength());
+        assertEquals(
+                1,
+                dom.getElementsByTagNameNS(GML.NAMESPACE, GML.MultiGeometry.getLocalPart())
+                        .getLength());
     }
 }

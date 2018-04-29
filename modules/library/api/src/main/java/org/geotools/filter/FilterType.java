@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,18 +16,18 @@
  */
 package org.geotools.filter;
 
-
 /**
  * The FilterType interface lists all the possible type of filter.
- * <p>
- * Example:<pre><code>
+ *
+ * <p>Example:
+ *
+ * <pre><code>
  * BEFORE: filter.getFilterType() == FilterType.GEOMETRY_CONTAINS
  * QUICK:  Filters.getFilterType( filter ) == FilterType.GEOMETRY_CONTAINS
  * AFTER: filter instanceof Contains
  * </code></pre>
  *
  * @author aaime
- *
  * @source $URL$
  */
 public interface FilterType {
@@ -101,8 +101,8 @@ public interface FilterType {
     public static final short COMPARE_NOT_EQUALS = 23;
 
     /**
-     * Defines a between filter, which is implemented by FilterBetween. Note
-     * that this filter is defined as a math filter.
+     * Defines a between filter, which is implemented by FilterBetween. Note that this filter is
+     * defined as a math filter.
      */
     public static final short BETWEEN = 19;
 

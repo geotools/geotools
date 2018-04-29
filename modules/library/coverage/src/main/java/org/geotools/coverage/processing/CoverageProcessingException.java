@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2006-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,30 +16,21 @@
  */
 package org.geotools.coverage.processing;
 
-
 /**
  * Throws when a coverage operation failed.
  *
  * @since 2.3
- *
- *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux
- *
  * @todo This exception may become a checked one in a future Geotools version.
  */
 public class CoverageProcessingException extends RuntimeException {
-    /**
-     * Serial number for interoperability with different versions.
-     */
+    /** Serial number for interoperability with different versions. */
     private static final long serialVersionUID = -2199436135615396946L;
 
-    /**
-     * Creates a new exception without detail message.
-     */
-    public CoverageProcessingException() {
-    }
+    /** Creates a new exception without detail message. */
+    public CoverageProcessingException() {}
 
     /**
      * Constructs a new exception with the specified detail message.

@@ -16,7 +16,7 @@
  */
 package org.geotools.filter.v1_0;
 
-import org.w3c.dom.Document;
+import org.geotools.xml.Binding;
 import org.opengis.filter.BinaryComparisonOperator;
 import org.opengis.filter.PropertyIsEqualTo;
 import org.opengis.filter.PropertyIsGreaterThan;
@@ -24,14 +24,9 @@ import org.opengis.filter.PropertyIsGreaterThanOrEqualTo;
 import org.opengis.filter.PropertyIsLessThan;
 import org.opengis.filter.PropertyIsLessThanOrEqualTo;
 import org.opengis.filter.PropertyIsNotEqualTo;
-import org.geotools.xml.Binding;
+import org.w3c.dom.Document;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class BinaryComparisonOpTypeBindingTest extends FilterTestSupport {
     public void testBinaryComparisonOpType() {
         assertEquals(BinaryComparisonOperator.class, binding(OGC.BinaryComparisonOpType).getType());
@@ -59,10 +54,13 @@ public class BinaryComparisonOpTypeBindingTest extends FilterTestSupport {
         PropertyIsEqualTo equalTo = FilterMockData.propertyIsEqualTo();
 
         Document dom = encode(equalTo, OGC.PropertyIsEqualTo);
-        assertEquals(1,
-            dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.PropertyName.getLocalPart()).getLength());
-        assertEquals(1,
-            dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart()).getLength());
+        assertEquals(
+                1,
+                dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.PropertyName.getLocalPart())
+                        .getLength());
+        assertEquals(
+                1,
+                dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart()).getLength());
     }
 
     public void testPropertyIsNotEqualToType() {
@@ -87,10 +85,13 @@ public class BinaryComparisonOpTypeBindingTest extends FilterTestSupport {
         PropertyIsNotEqualTo equalTo = FilterMockData.propertyIsNotEqualTo();
 
         Document dom = encode(equalTo, OGC.PropertyIsNotEqualTo);
-        assertEquals(1,
-            dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.PropertyName.getLocalPart()).getLength());
-        assertEquals(1,
-            dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart()).getLength());
+        assertEquals(
+                1,
+                dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.PropertyName.getLocalPart())
+                        .getLength());
+        assertEquals(
+                1,
+                dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart()).getLength());
     }
 
     public void testPropertyIsLessThanType() {
@@ -115,23 +116,26 @@ public class BinaryComparisonOpTypeBindingTest extends FilterTestSupport {
         PropertyIsLessThan equalTo = FilterMockData.propertyIsLessThan();
 
         Document dom = encode(equalTo, OGC.PropertyIsLessThan);
-        assertEquals(1,
-            dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.PropertyName.getLocalPart()).getLength());
-        assertEquals(1,
-            dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart()).getLength());
+        assertEquals(
+                1,
+                dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.PropertyName.getLocalPart())
+                        .getLength());
+        assertEquals(
+                1,
+                dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart()).getLength());
     }
 
     public void testPropertyIsLessThanOrEqualToType() {
-        assertEquals(PropertyIsLessThanOrEqualTo.class,
-            binding(OGC.PropertyIsLessThanOrEqualTo).getType());
+        assertEquals(
+                PropertyIsLessThanOrEqualTo.class,
+                binding(OGC.PropertyIsLessThanOrEqualTo).getType());
     }
 
     public void testPropertyIsLessThanOrEqualToExecutionMode() {
         assertEquals(Binding.AFTER, binding(OGC.PropertyIsLessThanOrEqualTo).getExecutionMode());
     }
 
-    public void testPropertyIsLessThanOrEqualToParse()
-        throws Exception {
+    public void testPropertyIsLessThanOrEqualToParse() throws Exception {
         FilterMockData.propertyIsLessThanOrEqualTo(document, document);
 
         PropertyIsLessThanOrEqualTo equalTo = (PropertyIsLessThanOrEqualTo) parse();
@@ -141,15 +145,17 @@ public class BinaryComparisonOpTypeBindingTest extends FilterTestSupport {
         assertNotNull(equalTo.getExpression2());
     }
 
-    public void testPropertyIsLessThanOrEqualToEncode()
-        throws Exception {
+    public void testPropertyIsLessThanOrEqualToEncode() throws Exception {
         PropertyIsLessThanOrEqualTo equalTo = FilterMockData.propertyIsLessThanOrEqualTo();
 
         Document dom = encode(equalTo, OGC.PropertyIsLessThanOrEqualTo);
-        assertEquals(1,
-            dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.PropertyName.getLocalPart()).getLength());
-        assertEquals(1,
-            dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart()).getLength());
+        assertEquals(
+                1,
+                dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.PropertyName.getLocalPart())
+                        .getLength());
+        assertEquals(
+                1,
+                dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart()).getLength());
     }
 
     public void testPropertyIsGreaterThanType() {
@@ -174,23 +180,26 @@ public class BinaryComparisonOpTypeBindingTest extends FilterTestSupport {
         PropertyIsGreaterThan equalTo = FilterMockData.propertyIsGreaterThan();
 
         Document dom = encode(equalTo, OGC.PropertyIsGreaterThan);
-        assertEquals(1,
-            dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.PropertyName.getLocalPart()).getLength());
-        assertEquals(1,
-            dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart()).getLength());
+        assertEquals(
+                1,
+                dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.PropertyName.getLocalPart())
+                        .getLength());
+        assertEquals(
+                1,
+                dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart()).getLength());
     }
 
     public void testPropertyIsGreaterThanOrEqualToType() {
-        assertEquals(PropertyIsGreaterThanOrEqualTo.class,
-            binding(OGC.PropertyIsGreaterThanOrEqualTo).getType());
+        assertEquals(
+                PropertyIsGreaterThanOrEqualTo.class,
+                binding(OGC.PropertyIsGreaterThanOrEqualTo).getType());
     }
 
     public void testPropertyIsGreaterThanOrEqualToExecutionMode() {
         assertEquals(Binding.AFTER, binding(OGC.PropertyIsGreaterThanOrEqualTo).getExecutionMode());
     }
 
-    public void testPropertyIsGreaterThanOrEqualToParse()
-        throws Exception {
+    public void testPropertyIsGreaterThanOrEqualToParse() throws Exception {
         FilterMockData.propertyIsGreaterThanOrEqualTo(document, document);
 
         PropertyIsGreaterThanOrEqualTo equalTo = (PropertyIsGreaterThanOrEqualTo) parse();
@@ -200,14 +209,16 @@ public class BinaryComparisonOpTypeBindingTest extends FilterTestSupport {
         assertNotNull(equalTo.getExpression2());
     }
 
-    public void testPropertyIsGreaterThanOrEqualToEncode()
-        throws Exception {
+    public void testPropertyIsGreaterThanOrEqualToEncode() throws Exception {
         PropertyIsGreaterThanOrEqualTo equalTo = FilterMockData.propertyIsGreaterThanOrEqualTo();
 
         Document dom = encode(equalTo, OGC.PropertyIsGreaterThanOrEqualTo);
-        assertEquals(1,
-            dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.PropertyName.getLocalPart()).getLength());
-        assertEquals(1,
-            dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart()).getLength());
+        assertEquals(
+                1,
+                dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.PropertyName.getLocalPart())
+                        .getLength());
+        assertEquals(
+                1,
+                dom.getElementsByTagNameNS(OGC.NAMESPACE, OGC.Literal.getLocalPart()).getLength());
     }
 }

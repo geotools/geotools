@@ -18,19 +18,16 @@ package org.geotools.gce.imagemosaic.catalog.index;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
 /**
- * <p>
  * Java class for parametersType complex type.
- * 
- * <p>
- * The following schema fragment specifies the expected content contained within this class.
- * 
+ *
+ * <p>The following schema fragment specifies the expected content contained within this class.
+ *
  * <pre>
  * &lt;complexType name="parametersType">
  *   &lt;complexContent>
@@ -53,34 +50,30 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "parametersType", propOrder = { "parameter" })
+@XmlType(
+    name = "parametersType",
+    propOrder = {"parameter"}
+)
 public class ParametersType {
 
     protected List<ParametersType.Parameter> parameter;
 
     /**
      * Gets the value of the parameter property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to the returned list will be
-     * present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for the parameter property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * 
+     *
+     * <p>This accessor method returns a reference to the live list, not a snapshot. Therefore any
+     * modification you make to the returned list will be present inside the JAXB object. This is
+     * why there is not a <CODE>set</CODE> method for the parameter property.
+     *
+     * <p>For example, to add a new item, do as follows:
+     *
      * <pre>
      * getParameter().add(newItem);
      * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list {@link ParametersType.Parameter }
-     * 
-     * 
+     *
+     * <p>Objects of the following type(s) are allowed in the list {@link ParametersType.Parameter }
      */
     public List<ParametersType.Parameter> getParameter() {
         if (parameter == null) {
@@ -90,12 +83,10 @@ public class ParametersType {
     }
 
     /**
-     * <p>
      * Java class for anonymous complex type.
-     * 
-     * <p>
-     * The following schema fragment specifies the expected content contained within this class.
-     * 
+     *
+     * <p>The following schema fragment specifies the expected content contained within this class.
+     *
      * <pre>
      * &lt;complexType>
      *   &lt;complexContent>
@@ -108,11 +99,9 @@ public class ParametersType {
      *   &lt;/complexContent>
      * &lt;/complexType>
      * </pre>
-     * 
-     * 
      */
     @XmlAccessorType(XmlAccessType.FIELD)
-    @XmlType(name = ""/*
+    @XmlType(name = "" /*
                        * , propOrder = { "value" }
                        */)
     public static class Parameter {
@@ -125,9 +114,8 @@ public class ParametersType {
 
         /**
          * Gets the value of the value property.
-         * 
+         *
          * @return possible object is {@link String }
-         * 
          */
         public String getValue() {
             return value;
@@ -135,9 +123,8 @@ public class ParametersType {
 
         /**
          * Sets the value of the value property.
-         * 
+         *
          * @param value allowed object is {@link String }
-         * 
          */
         public void setValue(String value) {
             this.value = value;
@@ -145,9 +132,8 @@ public class ParametersType {
 
         /**
          * Gets the value of the name property.
-         * 
+         *
          * @return possible object is {@link String }
-         * 
          */
         public String getName() {
             return name;
@@ -155,9 +141,8 @@ public class ParametersType {
 
         /**
          * Sets the value of the name property.
-         * 
+         *
          * @param value allowed object is {@link String }
-         * 
          */
         public void setName(String value) {
             this.name = value;
@@ -165,24 +150,22 @@ public class ParametersType {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see java.lang.Object#toString()
          */
         @Override
         public String toString() {
             return "Parameter [value=" + value + ", name=" + name + "]";
         }
-
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
         return "ParametersType [" + parameter + "]";
     }
-
 }

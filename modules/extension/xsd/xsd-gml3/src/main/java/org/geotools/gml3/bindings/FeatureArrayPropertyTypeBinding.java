@@ -18,9 +18,7 @@ package org.geotools.gml3.bindings;
 
 import java.util.Collection;
 import java.util.List;
-
 import javax.xml.namespace.QName;
-
 import org.geotools.feature.FeatureCollection;
 import org.geotools.gml3.GML;
 import org.geotools.xml.AbstractComplexBinding;
@@ -28,12 +26,12 @@ import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 import org.opengis.feature.simple.SimpleFeature;
 
-
 /**
  * Binding object for the type http://www.opengis.net/gml:FeatureArrayPropertyType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;complexType name="FeatureArrayPropertyType"&gt;
  *      &lt;annotation&gt;
@@ -46,23 +44,18 @@ import org.opengis.feature.simple.SimpleFeature;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class FeatureArrayPropertyTypeBinding extends AbstractComplexBinding {
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return GML.FeatureArrayPropertyType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -73,27 +66,27 @@ public class FeatureArrayPropertyTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         FeatureCollection fc = (FeatureCollection) node.getChildValue(FeatureCollection.class);
         if (fc != null) {
             return fc;
         }
-        
+
         List features = node.getChildValues(SimpleFeature.class);
-        fc = new DelayedSchemaFeatureCollection(); 
-        
-        ((Collection)fc).addAll(features);
+        fc = new DelayedSchemaFeatureCollection();
+
+        ((Collection) fc).addAll(features);
         return fc;
     }
 
     public Object getProperty(Object object, QName name) {
-        //passed in should be FeatureCollection, just pass it back
+        // passed in should be FeatureCollection, just pass it back
         return object;
     }
 }

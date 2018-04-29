@@ -18,7 +18,6 @@ package org.geotools.styling.css.util;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.geotools.styling.css.selector.Accept;
 import org.geotools.styling.css.selector.And;
 import org.geotools.styling.css.selector.Data;
@@ -33,9 +32,8 @@ import org.geotools.styling.css.selector.TypeName;
 
 /**
  * Simplifies out all pseudo classes, replacing them with {@link Selector#ACCEPT}
- * 
- * @author Andrea Aime - GeoSolutions
  *
+ * @author Andrea Aime - GeoSolutions
  */
 public class PseudoClassRemover implements SelectorVisitor {
 
@@ -114,5 +112,4 @@ public class PseudoClassRemover implements SelectorVisitor {
         // simplify out all pseudo classes
         return Selector.ACCEPT;
     }
-
 }

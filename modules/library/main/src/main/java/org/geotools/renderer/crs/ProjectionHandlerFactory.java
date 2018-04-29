@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -21,12 +21,10 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
- * Builds {@link ProjectionHandler} instances
- * WARNING: this API is not finalized and is meant to be used by StreamingRenderer only
- * 
+ * Builds {@link ProjectionHandler} instances WARNING: this API is not finalized and is meant to be
+ * used by StreamingRenderer only
+ *
  * @author Andrea Aime - OpenGeo
- *
- *
  * @source $URL$
  */
 public interface ProjectionHandlerFactory {
@@ -34,11 +32,17 @@ public interface ProjectionHandlerFactory {
     /**
      * Returns an handler capable of dealing with the specified envelope, or null if this factory
      * cannot create one
-     * 
+     *
      * @param wrap enables map wrapping, if it's possible and makes sense for this projection
-     * @param wrapLimit Max number of wraps performed when wrapping coordinates (to limit memory usage)
+     * @param wrapLimit Max number of wraps performed when wrapping coordinates (to limit memory
+     *     usage)
      * @return
-     * @throws FactoryException 
+     * @throws FactoryException
      */
-    ProjectionHandler getHandler(ReferencedEnvelope renderingEnvelope, CoordinateReferenceSystem sourceCRS, boolean wrap, int wrapLimit) throws FactoryException;
+    ProjectionHandler getHandler(
+            ReferencedEnvelope renderingEnvelope,
+            CoordinateReferenceSystem sourceCRS,
+            boolean wrap,
+            int wrapLimit)
+            throws FactoryException;
 }

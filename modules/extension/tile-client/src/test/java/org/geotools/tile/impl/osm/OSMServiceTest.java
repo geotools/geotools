@@ -21,7 +21,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.tile.ServiceTest;
 import org.geotools.tile.Tile;
@@ -43,26 +42,34 @@ public class OSMServiceTest extends ServiceTest {
         String urlSuffix = ".png";
 
         extentNameToUrlList = new HashMap<String, List<String>>();
-        List<String> expectedIds_DE = Arrays
-                .asList(new String[] { "5/16/11", "5/17/11", "5/16/10", "5/17/10" });
+        List<String> expectedIds_DE =
+                Arrays.asList(new String[] {"5/16/11", "5/17/11", "5/16/10", "5/17/10"});
 
         enrichIdWithNameAndExtension(urlPrefix, expectedIds_DE, urlSuffix);
         extentNameToUrlList.put(DE_EXTENT_NAME, expectedIds_DE);
 
-        List<String> expectedIds_BR = Arrays.asList(new String[] { "10/387/578", "10/389/578",
-                "10/388/578", "10/389/579", "10/388/579", "10/387/579" });
+        List<String> expectedIds_BR =
+                Arrays.asList(
+                        new String[] {
+                            "10/387/578",
+                            "10/389/578",
+                            "10/388/578",
+                            "10/389/579",
+                            "10/388/579",
+                            "10/387/579"
+                        });
         enrichIdWithNameAndExtension(urlPrefix, expectedIds_BR, urlSuffix);
         extentNameToUrlList.put(BR_EXTENT_NAME, expectedIds_BR);
 
-        List<String> expectedIds_HAWAII = Arrays
-                .asList(new String[] { "6/4/27", "6/3/28", "6/3/27", "6/4/28" });
+        List<String> expectedIds_HAWAII =
+                Arrays.asList(new String[] {"6/4/27", "6/3/28", "6/3/27", "6/4/28"});
 
         enrichIdWithNameAndExtension(urlPrefix, expectedIds_HAWAII, urlSuffix);
         extentNameToUrlList.put(HAWAII_EXTENT_NAME, expectedIds_HAWAII);
     }
 
-    private static void enrichIdWithNameAndExtension(String prefix, List<String> expectedIds,
-            String suffix) {
+    private static void enrichIdWithNameAndExtension(
+            String prefix, List<String> expectedIds, String suffix) {
         for (int i = 0; i < expectedIds.size(); i++) {
             String oldValue = expectedIds.get(i);
             String newValue = prefix + oldValue + suffix;

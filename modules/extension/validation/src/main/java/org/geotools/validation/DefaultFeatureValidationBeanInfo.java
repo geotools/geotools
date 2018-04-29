@@ -20,38 +20,29 @@ import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.util.ResourceBundle;
 
-
 /**
  * DefaultFeatureValidationBeanInfo purpose.
- * 
- * <p>
- * Description of DefaultFeatureValidationBeanInfo ...
- * </p>
+ *
+ * <p>Description of DefaultFeatureValidationBeanInfo ...
  *
  * @author dzwiers, Refractions Research, Inc.
  * @author $Author: dmzwiers $ (last modification)
- *
- *
  * @source $URL$
  * @version $Id$
  */
 public class DefaultFeatureValidationBeanInfo extends ValidationBeanInfo {
     /**
      * DefaultFeatureValidationBeanInfo constructor.
-     * 
-     * <p>
-     * super
-     * </p>
+     *
+     * <p>super
      */
     public DefaultFeatureValidationBeanInfo() {
         super();
     }
 
     /**
-     * Implementation of getPropertyDescriptors.  This method should be called
-     * by all overriding sub-class methods.  Property names 'name',
-     * 'description', 'typeNames'
-     *
+     * Implementation of getPropertyDescriptors. This method should be called by all overriding
+     * sub-class methods. Property names 'name', 'description', 'typeNames'
      *
      * @see java.beans.BeanInfo#getPropertyDescriptors()
      */
@@ -62,11 +53,11 @@ public class DefaultFeatureValidationBeanInfo extends ValidationBeanInfo {
             ResourceBundle resourceBundle = getResourceBundle(DefaultFeatureValidation.class);
             int i = 0;
 
-            for (; i < tmp.length; i++)
-                pd[i] = tmp[i];
+            for (; i < tmp.length; i++) pd[i] = tmp[i];
 
-            pd[i] = createPropertyDescriptor("typeRef",
-                    DefaultFeatureValidation.class, resourceBundle);
+            pd[i] =
+                    createPropertyDescriptor(
+                            "typeRef", DefaultFeatureValidation.class, resourceBundle);
             pd[i].setExpert(false);
 
             return pd;

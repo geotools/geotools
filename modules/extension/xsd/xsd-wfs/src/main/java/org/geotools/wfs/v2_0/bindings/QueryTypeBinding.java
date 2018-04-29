@@ -20,13 +20,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.namespace.QName;
-
 import net.opengis.wfs20.QueryType;
 import net.opengis.wfs20.Wfs20Factory;
-
 import org.eclipse.emf.ecore.EObject;
 import org.geotools.util.Converters;
 import org.geotools.wfs.v2_0.WFS;
@@ -43,21 +40,20 @@ public class QueryTypeBinding extends ComplexEMFBinding {
         super(Wfs20Factory.eINSTANCE, WFS.QueryType);
         this.namespaceContext = namespaceContext;
     }
-    
+
     @Override
     protected void setProperty(EObject eObject, String property, Object value, boolean lax) {
         super.setProperty(eObject, property, value, lax);
         if (!lax) {
             if ("typeNames".equalsIgnoreCase(property)) {
-                QueryType q = (QueryType)eObject;
-                
-                //turn into list of qname
+                QueryType q = (QueryType) eObject;
+
+                // turn into list of qname
                 List qNames = new ArrayList();
                 for (Object s : q.getTypeNames()) {
                     try {
                         qNames.add(new XSQNameBinding(namespaceContext).parse(null, s));
-                    } 
-                    catch (Exception e) {
+                    } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
                 }
@@ -66,20 +62,20 @@ public class QueryTypeBinding extends ComplexEMFBinding {
             }
         }
     }
-    
+
     @Override
     public Object getProperty(Object object, QName name) throws Exception {
         if ("aliases".equalsIgnoreCase(name.getLocalPart())) {
-            List aliases = ((QueryType)object).getAliases();
+            List aliases = ((QueryType) object).getAliases();
             if (aliases.size() == 0) return null;
-            
+
             StringBuffer ret = new StringBuffer();
             for (Object o : aliases) {
-                String alias = (String)o;
+                String alias = (String) o;
                 if (ret.length() > 0) ret.append(",");
                 ret.append(alias);
             }
-            
+
             return ret.toString();
         } else if ("typeNames".equalsIgnoreCase(name.getLocalPart())) {
             StringBuilder s = new StringBuilder();
@@ -92,14 +88,13 @@ public class QueryTypeBinding extends ComplexEMFBinding {
             }
             s.setLength(s.length() - 1);
             return s.toString();
-        }
-        else if (("AbstractProjectionClause").equalsIgnoreCase(name.getLocalPart())){
+        } else if (("AbstractProjectionClause").equalsIgnoreCase(name.getLocalPart())) {
             return null;
         }
-        
+
         return super.getProperty(object, name);
     }
-    
+
     @Override
     public Element encode(Object object, Document document, Element value) throws Exception {
         Element e = super.encode(object, document, value);
@@ -115,5 +110,4 @@ public class QueryTypeBinding extends ComplexEMFBinding {
 
         return e;
     }
-
 }

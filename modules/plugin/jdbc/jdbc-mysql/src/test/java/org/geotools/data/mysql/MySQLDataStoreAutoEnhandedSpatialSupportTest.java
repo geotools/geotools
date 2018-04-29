@@ -19,10 +19,9 @@ package org.geotools.data.mysql;
 import org.geotools.jdbc.JDBCTestSetup;
 import org.geotools.jdbc.JDBCTestSupport;
 
-
 /**
- * Tests that enhandedSpatialSupport flag is automatically and properly set
- * based on identified MySQL version.
+ * Tests that enhandedSpatialSupport flag is automatically and properly set based on identified
+ * MySQL version.
  *
  * @author Justin Deoliveira, The Open Planning Project
  * @source $URL$
@@ -31,7 +30,6 @@ public class MySQLDataStoreAutoEnhandedSpatialSupportTest extends JDBCTestSuppor
     protected JDBCTestSetup createTestSetup() {
         return new MySQLTestSetup();
     }
-
 
     public void testEnhancedSpatialSupportDetection() throws Exception {
         boolean isMySQL56 = MySQLDataStoreFactory.isMySqlVersion56(dataStore);

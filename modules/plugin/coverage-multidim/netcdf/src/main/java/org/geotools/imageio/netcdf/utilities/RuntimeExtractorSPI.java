@@ -17,31 +17,28 @@
 package org.geotools.imageio.netcdf.utilities;
 
 import java.util.List;
-
 import org.geotools.gce.imagemosaic.properties.DefaultPropertiesCollectorSPI;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollector;
 import org.geotools.gce.imagemosaic.properties.PropertiesCollectorSPI;
 
 /**
- * {@link PropertiesCollectorSPI} for a {@link PropertiesCollector} that is able to collect properties from a file name.
- * 
+ * {@link PropertiesCollectorSPI} for a {@link PropertiesCollector} that is able to collect
+ * properties from a file name.
+ *
  * @author Romagnoli Daniele, GeoSolutions SAS
- * 
- * 
  * @source $URL$
  */
-public class RuntimeExtractorSPI extends DefaultPropertiesCollectorSPI implements
-        PropertiesCollectorSPI {
+public class RuntimeExtractorSPI extends DefaultPropertiesCollectorSPI
+        implements PropertiesCollectorSPI {
 
     public RuntimeExtractorSPI() {
         super("RuntimeExtractorSPI");
     }
 
     @Override
-    protected PropertiesCollector createInternal(PropertiesCollectorSPI spi,
-            List<String> propertyNames, String type) {
+    protected PropertiesCollector createInternal(
+            PropertiesCollectorSPI spi, List<String> propertyNames, String type) {
 
         return new RuntimeExtractor(spi, propertyNames, type);
     }
-
 }

@@ -19,9 +19,7 @@ package org.geotools.coverage.grid;
 import java.awt.Color;
 import java.awt.image.DataBuffer;
 import java.awt.image.WritableRaster;
-
 import javax.media.jai.RasterFactory;
-
 import org.geotools.coverage.CoverageFactoryFinder;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
@@ -30,20 +28,15 @@ import org.opengis.coverage.grid.GridCoverage;
 import org.opengis.geometry.Envelope;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-
 /**
  * Tests the creation of a grid coverage using floating point value.
- *
- *
  *
  * @source $URL$
  * @version $Id$
  * @author Martin Desruisseaux (IRD)
  */
 public final class FloatRasterTest extends GridCoverageTestBase {
-    /**
-     * Tests the creation of a floating point {@link WritableRaster}.
-     */
+    /** Tests the creation of a floating point {@link WritableRaster}. */
     @Test
     public void testRaster() {
         /*
@@ -51,13 +44,13 @@ public final class FloatRasterTest extends GridCoverageTestBase {
          * is pretty similar to the code we would have if we were just setting the values in
          * a matrix.
          */
-        final int width  = 500;
+        final int width = 500;
         final int height = 500;
         WritableRaster raster =
                 RasterFactory.createBandedRaster(DataBuffer.TYPE_FLOAT, width, height, 1, null);
-        for (int y=0; y<height; y++) {
-            for (int x=0; x<width; x++) {
-                raster.setSample(x, y, 0, x+y);
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                raster.setSample(x, y, 0, x + y);
             }
         }
         /*
@@ -80,24 +73,30 @@ public final class FloatRasterTest extends GridCoverageTestBase {
          * default value.
          */
         Color[] colors = new Color[] {Color.BLUE, Color.CYAN, Color.WHITE, Color.YELLOW, Color.RED};
-        gc = factory.create("My colored coverage", raster, envelope,
-                            null, null, null, new Color[][] {colors}, null);
+        gc =
+                factory.create(
+                        "My colored coverage",
+                        raster,
+                        envelope,
+                        null,
+                        null,
+                        null,
+                        new Color[][] {colors},
+                        null);
         if (SHOW) {
             ((GridCoverage2D) gc).show();
         }
     }
 
-    /**
-     * Tests the creation of a floating point matrix.
-     */
+    /** Tests the creation of a floating point matrix. */
     @Test
     public void testMatrix() {
-        final int width  = 500;
+        final int width = 500;
         final int height = 500;
         final float[][] matrix = new float[height][width];
-        for (int y=0; y<height; y++) {
-            for (int x=0; x<width; x++) {
-                matrix[y][x] = x+y;
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                matrix[y][x] = x + y;
             }
         }
         CoordinateReferenceSystem crs = DefaultGeographicCRS.WGS84;

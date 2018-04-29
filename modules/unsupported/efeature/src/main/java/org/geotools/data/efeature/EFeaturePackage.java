@@ -1,8 +1,7 @@
 /**
- * <copyright>
- * </copyright>
+ * <copyright> </copyright>
  *
- * $Id$
+ * <p>$Id$
  */
 package org.geotools.data.efeature;
 
@@ -12,53 +11,67 @@ import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EPackage;
 
 /**
- * <!-- begin-user-doc --> The <b>Package</b> for the model. It contains accessors for the meta
- * objects to represent
+ *
+ * <!-- begin-user-doc -->
+ * The <b>Package</b> for the model. It contains accessors for the meta objects to represent
+ *
  * <ul>
- * <li>each class,</li>
- * <li>each feature of each class,</li>
- * <li>each enum,</li>
- * <li>and each data type</li>
+ *   <li>each class,
+ *   <li>each feature of each class,
+ *   <li>each enum,
+ *   <li>and each data type
  * </ul>
+ *
  * <!-- end-user-doc -->
+ *
  * @see org.geotools.data.efeature.EFeatureFactory
  * @model kind="package"
  * @generated
- *
  * @source $URL$
  */
 public interface EFeaturePackage extends EPackage {
     /**
      * The package name.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated
      */
     String eNAME = "efeature";
 
     /**
      * The package namespace URI.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated
      */
     String eNS_URI = "http://geotools.org/data/efeature/efeature.ecore/1.0";
 
     /**
      * The package namespace name.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated
      */
     String eNS_PREFIX = "efeature";
 
     /**
      * The singleton instance of the package.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated
      */
     EFeaturePackage eINSTANCE = org.geotools.data.efeature.impl.EFeaturePackageImpl.init();
 
     /**
-     * The meta object id for the '{@link org.geotools.data.efeature.impl.EFeatureImpl <em>EFeature</em>}' class.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The meta object id for the '{@link org.geotools.data.efeature.impl.EFeatureImpl
+     * <em>EFeature</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @see org.geotools.data.efeature.impl.EFeatureImpl
      * @see org.geotools.data.efeature.impl.EFeaturePackageImpl#getEFeature()
      * @generated
@@ -69,6 +82,7 @@ public interface EFeaturePackage extends EPackage {
      * The feature id for the '<em><b>ID</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     *
      * @generated
      * @ordered
      */
@@ -78,6 +92,7 @@ public interface EFeaturePackage extends EPackage {
      * The feature id for the '<em><b>Data</b></em>' attribute.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     *
      * @generated
      * @ordered
      */
@@ -85,8 +100,10 @@ public interface EFeaturePackage extends EPackage {
 
     /**
      * The feature id for the '<em><b>SRID</b></em>' attribute.
-     * <!-- begin-user-doc --> <!--
+     * <!-- begin-user-doc -->
+     * <!--
      * end-user-doc -->
+     *
      * @generated
      * @ordered
      */
@@ -94,8 +111,10 @@ public interface EFeaturePackage extends EPackage {
 
     /**
      * The feature id for the '<em><b>Default</b></em>' attribute.
-     * <!-- begin-user-doc --> <!--
+     * <!-- begin-user-doc -->
+     * <!--
      * end-user-doc -->
+     *
      * @generated
      * @ordered
      */
@@ -103,8 +122,10 @@ public interface EFeaturePackage extends EPackage {
 
     /**
      * The feature id for the '<em><b>Structure</b></em>' attribute.
-     * <!-- begin-user-doc --> <!--
+     * <!-- begin-user-doc -->
+     * <!--
      * end-user-doc -->
+     *
      * @generated
      * @ordered
      */
@@ -114,6 +135,7 @@ public interface EFeaturePackage extends EPackage {
      * The number of structural features of the '<em>EFeature</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     *
      * @generated
      * @ordered
      */
@@ -121,8 +143,10 @@ public interface EFeaturePackage extends EPackage {
 
     /**
      * The meta object id for the '<em>Property</em>' data type.
-     * <!-- begin-user-doc --> <!--
+     * <!-- begin-user-doc -->
+     * <!--
      * end-user-doc -->
+     *
      * @see org.geotools.data.efeature.EFeatureProperty
      * @see org.geotools.data.efeature.impl.EFeaturePackageImpl#getEFeatureProperty()
      * @generated
@@ -131,8 +155,10 @@ public interface EFeaturePackage extends EPackage {
 
     /**
      * The meta object id for the '<em>Attribute</em>' data type.
-     * <!-- begin-user-doc --> <!--
+     * <!-- begin-user-doc -->
+     * <!--
      * end-user-doc -->
+     *
      * @see org.geotools.data.efeature.EFeatureAttribute
      * @see org.geotools.data.efeature.impl.EFeaturePackageImpl#getEFeatureAttribute()
      * @generated
@@ -141,8 +167,10 @@ public interface EFeaturePackage extends EPackage {
 
     /**
      * The meta object id for the '<em>Geometry</em>' data type.
-     * <!-- begin-user-doc --> <!--
+     * <!-- begin-user-doc -->
+     * <!--
      * end-user-doc -->
+     *
      * @see org.geotools.data.efeature.EFeatureGeometry
      * @see org.geotools.data.efeature.impl.EFeaturePackageImpl#getEFeatureGeometry()
      * @generated
@@ -153,6 +181,7 @@ public interface EFeaturePackage extends EPackage {
      * The meta object id for the '<em>EStructural Feature</em>' data type.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     *
      * @see org.eclipse.emf.ecore.EStructuralFeature
      * @see org.geotools.data.efeature.impl.EFeaturePackageImpl#getEStructuralFeature()
      * @generated
@@ -161,8 +190,10 @@ public interface EFeaturePackage extends EPackage {
 
     /**
      * The meta object id for the '<em>Geometry</em>' data type.
-     * <!-- begin-user-doc --> <!--
+     * <!-- begin-user-doc -->
+     * <!--
      * end-user-doc -->
+     *
      * @see com.vividsolutions.jts.geom.Geometry
      * @see org.geotools.data.efeature.impl.EFeaturePackageImpl#getGeometry()
      * @generated
@@ -171,8 +202,10 @@ public interface EFeaturePackage extends EPackage {
 
     /**
      * The meta object id for the '<em>EStructure Info</em>' data type.
-     * <!-- begin-user-doc --> <!--
+     * <!-- begin-user-doc -->
+     * <!--
      * end-user-doc -->
+     *
      * @see org.geotools.data.efeature.EStructureInfo
      * @see org.geotools.data.efeature.impl.EFeaturePackageImpl#getEStructureInfo()
      * @generated
@@ -181,8 +214,10 @@ public interface EFeaturePackage extends EPackage {
 
     /**
      * The meta object id for the '<em>Info</em>' data type.
-     * <!-- begin-user-doc --> <!--
+     * <!-- begin-user-doc -->
+     * <!--
      * end-user-doc -->
+     *
      * @see org.geotools.data.efeature.EFeatureInfo
      * @see org.geotools.data.efeature.impl.EFeaturePackageImpl#getEFeatureInfo()
      * @generated
@@ -191,8 +226,10 @@ public interface EFeaturePackage extends EPackage {
 
     /**
      * The meta object id for the '<em>Attribute Info</em>' data type.
-     * <!-- begin-user-doc --> <!--
+     * <!-- begin-user-doc -->
+     * <!--
      * end-user-doc -->
+     *
      * @see org.geotools.data.efeature.EFeatureAttributeInfo
      * @see org.geotools.data.efeature.impl.EFeaturePackageImpl#getEFeatureAttributeInfo()
      * @generated
@@ -201,8 +238,10 @@ public interface EFeaturePackage extends EPackage {
 
     /**
      * The meta object id for the '<em>Geometry Info</em>' data type.
-     * <!-- begin-user-doc --> <!--
+     * <!-- begin-user-doc -->
+     * <!--
      * end-user-doc -->
+     *
      * @see org.geotools.data.efeature.EFeatureGeometryInfo
      * @see org.geotools.data.efeature.impl.EFeaturePackageImpl#getEFeatureGeometryInfo()
      * @generated
@@ -211,8 +250,10 @@ public interface EFeaturePackage extends EPackage {
 
     /**
      * The meta object id for the '<em>List</em>' data type.
-     * <!-- begin-user-doc --> <!--
+     * <!-- begin-user-doc -->
+     * <!--
      * end-user-doc -->
+     *
      * @see java.util.List
      * @see org.geotools.data.efeature.impl.EFeaturePackageImpl#getList()
      * @generated
@@ -221,8 +262,10 @@ public interface EFeaturePackage extends EPackage {
 
     /**
      * The meta object id for the '<em>Feature</em>' data type.
-     * <!-- begin-user-doc --> <!--
+     * <!-- begin-user-doc -->
+     * <!--
      * end-user-doc -->
+     *
      * @see org.opengis.feature.Feature
      * @see org.geotools.data.efeature.impl.EFeaturePackageImpl#getFeature()
      * @generated
@@ -231,8 +274,10 @@ public interface EFeaturePackage extends EPackage {
 
     /**
      * The meta object id for the '<em>Property</em>' data type.
-     * <!-- begin-user-doc --> <!--
+     * <!-- begin-user-doc -->
+     * <!--
      * end-user-doc -->
+     *
      * @see org.opengis.feature.Property
      * @see org.geotools.data.efeature.impl.EFeaturePackageImpl#getProperty()
      * @generated
@@ -241,8 +286,10 @@ public interface EFeaturePackage extends EPackage {
 
     /**
      * The meta object id for the '<em>Attribute</em>' data type.
-     * <!-- begin-user-doc --> <!--
+     * <!-- begin-user-doc -->
+     * <!--
      * end-user-doc -->
+     *
      * @see org.opengis.feature.Attribute
      * @see org.geotools.data.efeature.impl.EFeaturePackageImpl#getAttribute()
      * @generated
@@ -253,6 +300,7 @@ public interface EFeaturePackage extends EPackage {
      * The meta object id for the '<em>Transaction</em>' data type.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     *
      * @see org.geotools.data.Transaction
      * @see org.geotools.data.efeature.impl.EFeaturePackageImpl#getTransaction()
      * @generated
@@ -263,6 +311,7 @@ public interface EFeaturePackage extends EPackage {
      * The meta object id for the '<em>Geometry Attribute</em>' data type.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     *
      * @see org.opengis.feature.GeometryAttribute
      * @see org.geotools.data.efeature.impl.EFeaturePackageImpl#getGeometryAttribute()
      * @generated
@@ -270,8 +319,11 @@ public interface EFeaturePackage extends EPackage {
     int GEOMETRY_ATTRIBUTE = 5;
 
     /**
-     * Returns the meta object for class '{@link org.geotools.data.efeature.EFeature <em>EFeature</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for class '{@link org.geotools.data.efeature.EFeature
+     * <em>EFeature</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @return the meta object for class '<em>EFeature</em>'.
      * @see org.geotools.data.efeature.EFeature
      * @generated
@@ -279,9 +331,11 @@ public interface EFeaturePackage extends EPackage {
     EClass getEFeature();
 
     /**
-     * Returns the meta object for the attribute '{@link org.geotools.data.efeature.EFeature#getID <em>ID</em>}'.
+     * Returns the meta object for the attribute '{@link org.geotools.data.efeature.EFeature#getID
+     * <em>ID</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     *
      * @return the meta object for the attribute '<em>ID</em>'.
      * @see org.geotools.data.efeature.EFeature#getID()
      * @see #getEFeature()
@@ -290,9 +344,11 @@ public interface EFeaturePackage extends EPackage {
     EAttribute getEFeature_ID();
 
     /**
-     * Returns the meta object for the attribute '{@link org.geotools.data.efeature.EFeature#getData <em>Data</em>}'.
+     * Returns the meta object for the attribute '{@link org.geotools.data.efeature.EFeature#getData
+     * <em>Data</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     *
      * @return the meta object for the attribute '<em>Data</em>'.
      * @see org.geotools.data.efeature.EFeature#getData()
      * @see #getEFeature()
@@ -301,9 +357,11 @@ public interface EFeaturePackage extends EPackage {
     EAttribute getEFeature_Data();
 
     /**
-     * Returns the meta object for the attribute '{@link org.geotools.data.efeature.EFeature#getSRID <em>SRID</em>}'.
+     * Returns the meta object for the attribute '{@link org.geotools.data.efeature.EFeature#getSRID
+     * <em>SRID</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     *
      * @return the meta object for the attribute '<em>SRID</em>'.
      * @see org.geotools.data.efeature.EFeature#getSRID()
      * @see #getEFeature()
@@ -312,9 +370,12 @@ public interface EFeaturePackage extends EPackage {
     EAttribute getEFeature_SRID();
 
     /**
-     * Returns the meta object for the attribute '{@link org.geotools.data.efeature.EFeature#getDefault <em>Default</em>}'.
+     * Returns the meta object for the attribute '{@link
+     * org.geotools.data.efeature.EFeature#getDefault <em>Default</em>}'.
      * <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
+     * -->
+     * <!-- end-user-doc -->
+     *
      * @return the meta object for the attribute '<em>Default</em>'.
      * @see org.geotools.data.efeature.EFeature#getDefault()
      * @see #getEFeature()
@@ -323,10 +384,12 @@ public interface EFeaturePackage extends EPackage {
     EAttribute getEFeature_Default();
 
     /**
-     * Returns the meta object for the attribute '
-     * {@link org.geotools.data.efeature.EFeature#getStructure <em>Structure</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     * Returns the meta object for the attribute ' {@link
+     * org.geotools.data.efeature.EFeature#getStructure <em>Structure</em>}'.
+     * <!--
+     * begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @return the meta object for the attribute '<em>Structure</em>'.
      * @see org.geotools.data.efeature.EFeature#getStructure()
      * @see #getEFeature()
@@ -335,38 +398,53 @@ public interface EFeaturePackage extends EPackage {
     EAttribute getEFeature_Structure();
 
     /**
-     * Returns the meta object for data type '{@link org.geotools.data.efeature.EFeatureProperty <em>Property</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for data type '{@link org.geotools.data.efeature.EFeatureProperty
+     * <em>Property</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @return the meta object for data type '<em>Property</em>'.
      * @see org.geotools.data.efeature.EFeatureProperty
-     * @model instanceClass="org.geotools.data.efeature.EFeatureProperty" serializeable="false" typeParameters="V T" TBounds="org.geotools.data.efeature.Property"
+     * @model instanceClass="org.geotools.data.efeature.EFeatureProperty" serializeable="false"
+     *     typeParameters="V T" TBounds="org.geotools.data.efeature.Property"
      * @generated
      */
     EDataType getEFeatureProperty();
 
     /**
-     * Returns the meta object for data type '{@link org.geotools.data.efeature.EFeatureAttribute <em>Attribute</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for data type '{@link org.geotools.data.efeature.EFeatureAttribute
+     * <em>Attribute</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @return the meta object for data type '<em>Attribute</em>'.
      * @see org.geotools.data.efeature.EFeatureAttribute
-     * @model instanceClass="org.geotools.data.efeature.EFeatureAttribute" serializeable="false" typeParameters="V"
+     * @model instanceClass="org.geotools.data.efeature.EFeatureAttribute" serializeable="false"
+     *     typeParameters="V"
      * @generated
      */
     EDataType getEFeatureAttribute();
 
     /**
-     * Returns the meta object for data type '{@link org.geotools.data.efeature.EFeatureGeometry <em>Geometry</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for data type '{@link org.geotools.data.efeature.EFeatureGeometry
+     * <em>Geometry</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @return the meta object for data type '<em>Geometry</em>'.
      * @see org.geotools.data.efeature.EFeatureGeometry
-     * @model instanceClass="org.geotools.data.efeature.EFeatureGeometry" serializeable="false" typeParameters="V" VBounds="org.geotools.data.efeature.Geometry"
+     * @model instanceClass="org.geotools.data.efeature.EFeatureGeometry" serializeable="false"
+     *     typeParameters="V" VBounds="org.geotools.data.efeature.Geometry"
      * @generated
      */
     EDataType getEFeatureGeometry();
 
     /**
-     * Returns the meta object for data type '{@link org.eclipse.emf.ecore.EStructuralFeature <em>EStructural Feature</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for data type '{@link org.eclipse.emf.ecore.EStructuralFeature
+     * <em>EStructural Feature</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @return the meta object for data type '<em>EStructural Feature</em>'.
      * @see org.eclipse.emf.ecore.EStructuralFeature
      * @model instanceClass="org.eclipse.emf.ecore.EStructuralFeature"
@@ -375,8 +453,11 @@ public interface EFeaturePackage extends EPackage {
     EDataType getEStructuralFeature();
 
     /**
-     * Returns the meta object for data type '{@link com.vividsolutions.jts.geom.Geometry <em>Geometry</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for data type '{@link com.vividsolutions.jts.geom.Geometry
+     * <em>Geometry</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @return the meta object for data type '<em>Geometry</em>'.
      * @see com.vividsolutions.jts.geom.Geometry
      * @model instanceClass="com.vividsolutions.jts.geom.Geometry"
@@ -385,8 +466,11 @@ public interface EFeaturePackage extends EPackage {
     EDataType getGeometry();
 
     /**
-     * Returns the meta object for data type '{@link org.geotools.data.efeature.EStructureInfo <em>EStructure Info</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for data type '{@link org.geotools.data.efeature.EStructureInfo
+     * <em>EStructure Info</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @return the meta object for data type '<em>EStructure Info</em>'.
      * @see org.geotools.data.efeature.EStructureInfo
      * @model instanceClass="org.geotools.data.efeature.EStructureInfo" serializeable="false"
@@ -395,8 +479,11 @@ public interface EFeaturePackage extends EPackage {
     EDataType getEStructureInfo();
 
     /**
-     * Returns the meta object for data type '{@link org.geotools.data.efeature.EFeatureInfo <em>Info</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for data type '{@link org.geotools.data.efeature.EFeatureInfo
+     * <em>Info</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @return the meta object for data type '<em>Info</em>'.
      * @see org.geotools.data.efeature.EFeatureInfo
      * @model instanceClass="org.geotools.data.efeature.EFeatureInfo" serializeable="false"
@@ -405,10 +492,12 @@ public interface EFeaturePackage extends EPackage {
     EDataType getEFeatureInfo();
 
     /**
-     * Returns the meta object for data type '
-     * {@link org.geotools.data.efeature.EFeatureAttributeInfo <em>Attribute Info</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     * Returns the meta object for data type ' {@link
+     * org.geotools.data.efeature.EFeatureAttributeInfo <em>Attribute Info</em>}'.
+     * <!--
+     * begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @return the meta object for data type '<em>Attribute Info</em>'.
      * @see org.geotools.data.efeature.EFeatureAttributeInfo
      * @model instanceClass="org.geotools.data.efeature.EFeatureAttributeInfo" serializeable="false"
@@ -417,10 +506,12 @@ public interface EFeaturePackage extends EPackage {
     EDataType getEFeatureAttributeInfo();
 
     /**
-     * Returns the meta object for data type '
-     * {@link org.geotools.data.efeature.EFeatureGeometryInfo <em>Geometry Info</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     * Returns the meta object for data type ' {@link
+     * org.geotools.data.efeature.EFeatureGeometryInfo <em>Geometry Info</em>}'.
+     * <!--
+     * begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @return the meta object for data type '<em>Geometry Info</em>'.
      * @see org.geotools.data.efeature.EFeatureGeometryInfo
      * @model instanceClass="org.geotools.data.efeature.EFeatureGeometryInfo" serializeable="false"
@@ -429,9 +520,11 @@ public interface EFeaturePackage extends EPackage {
     EDataType getEFeatureGeometryInfo();
 
     /**
-     * Returns the meta object for data type '{@link java.util.List <em>List</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     * Returns the meta object for data type '{@link java.util.List <em>List</em>}'.
+     * <!--
+     * begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @return the meta object for data type '<em>List</em>'.
      * @see java.util.List
      * @model instanceClass="java.util.List" serializeable="false" typeParameters="T"
@@ -441,7 +534,9 @@ public interface EFeaturePackage extends EPackage {
 
     /**
      * Returns the meta object for data type '{@link org.opengis.feature.Feature <em>Feature</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @return the meta object for data type '<em>Feature</em>'.
      * @see org.opengis.feature.Feature
      * @model instanceClass="org.opengis.feature.Feature" serializeable="false"
@@ -450,8 +545,11 @@ public interface EFeaturePackage extends EPackage {
     EDataType getFeature();
 
     /**
-     * Returns the meta object for data type '{@link org.opengis.feature.Property <em>Property</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for data type '{@link org.opengis.feature.Property
+     * <em>Property</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @return the meta object for data type '<em>Property</em>'.
      * @see org.opengis.feature.Property
      * @model instanceClass="org.opengis.feature.Property"
@@ -460,8 +558,11 @@ public interface EFeaturePackage extends EPackage {
     EDataType getProperty();
 
     /**
-     * Returns the meta object for data type '{@link org.opengis.feature.Attribute <em>Attribute</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for data type '{@link org.opengis.feature.Attribute
+     * <em>Attribute</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @return the meta object for data type '<em>Attribute</em>'.
      * @see org.opengis.feature.Attribute
      * @model instanceClass="org.opengis.feature.Attribute"
@@ -470,9 +571,11 @@ public interface EFeaturePackage extends EPackage {
     EDataType getAttribute();
 
     /**
-     * Returns the meta object for data type '{@link org.geotools.data.Transaction <em>Transaction</em>}'.
+     * Returns the meta object for data type '{@link org.geotools.data.Transaction
+     * <em>Transaction</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     *
      * @return the meta object for data type '<em>Transaction</em>'.
      * @see org.geotools.data.Transaction
      * @model instanceClass="org.geotools.data.Transaction" serializeable="false"
@@ -481,8 +584,11 @@ public interface EFeaturePackage extends EPackage {
     EDataType getTransaction();
 
     /**
-     * Returns the meta object for data type '{@link org.opengis.feature.GeometryAttribute <em>Geometry Attribute</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for data type '{@link org.opengis.feature.GeometryAttribute
+     * <em>Geometry Attribute</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @return the meta object for data type '<em>Geometry Attribute</em>'.
      * @see org.opengis.feature.GeometryAttribute
      * @model instanceClass="org.opengis.feature.GeometryAttribute" serializeable="false"
@@ -492,28 +598,38 @@ public interface EFeaturePackage extends EPackage {
 
     /**
      * Returns the factory that creates the instances of the model.
-     * <!-- begin-user-doc --> <!--
+     * <!-- begin-user-doc -->
+     * <!--
      * end-user-doc -->
+     *
      * @return the factory that creates the instances of the model.
      * @generated
      */
     EFeatureFactory getEFeatureFactory();
 
     /**
-     * <!-- begin-user-doc --> Defines literals for the meta objects that represent
+     *
+     * <!-- begin-user-doc -->
+     * Defines literals for the meta objects that represent
+     *
      * <ul>
-     * <li>each class,</li>
-     * <li>each feature of each class,</li>
-     * <li>each enum,</li>
-     * <li>and each data type</li>
+     *   <li>each class,
+     *   <li>each feature of each class,
+     *   <li>each enum,
+     *   <li>and each data type
      * </ul>
+     *
      * <!-- end-user-doc -->
+     *
      * @generated
      */
     interface Literals {
         /**
-         * The meta object literal for the '{@link org.geotools.data.efeature.impl.EFeatureImpl <em>EFeature</em>}' class.
-         * <!-- begin-user-doc --> <!-- end-user-doc -->
+         * The meta object literal for the '{@link org.geotools.data.efeature.impl.EFeatureImpl
+         * <em>EFeature</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
          * @see org.geotools.data.efeature.impl.EFeatureImpl
          * @see org.geotools.data.efeature.impl.EFeaturePackageImpl#getEFeature()
          * @generated
@@ -524,6 +640,7 @@ public interface EFeaturePackage extends EPackage {
          * The meta object literal for the '<em><b>ID</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
+         *
          * @generated
          */
         EAttribute EFEATURE__ID = eINSTANCE.getEFeature_ID();
@@ -532,30 +649,37 @@ public interface EFeaturePackage extends EPackage {
          * The meta object literal for the '<em><b>Data</b></em>' attribute feature.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
+         *
          * @generated
          */
         EAttribute EFEATURE__DATA = eINSTANCE.getEFeature_Data();
 
         /**
-         * The meta object literal for the '<em><b>SRID</b></em>' attribute feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         * 
+         * The meta object literal for the '<em><b>SRID</b></em>' attribute feature.
+         * <!--
+         * begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
          * @generated
          */
         EAttribute EFEATURE__SRID = eINSTANCE.getEFeature_SRID();
 
         /**
-         * The meta object literal for the '<em><b>Default</b></em>' attribute feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         * 
+         * The meta object literal for the '<em><b>Default</b></em>' attribute feature.
+         * <!--
+         * begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
          * @generated
          */
         EAttribute EFEATURE__DEFAULT = eINSTANCE.getEFeature_Default();
 
         /**
-         * The meta object literal for the '<em><b>Structure</b></em>' attribute feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         * 
+         * The meta object literal for the '<em><b>Structure</b></em>' attribute feature.
+         * <!--
+         * begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
          * @generated
          */
         EAttribute EFEATURE__STRUCTURE = eINSTANCE.getEFeature_Structure();
@@ -564,6 +688,7 @@ public interface EFeaturePackage extends EPackage {
          * The meta object literal for the '<em>Property</em>' data type.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
+         *
          * @see org.geotools.data.efeature.EFeatureProperty
          * @see org.geotools.data.efeature.impl.EFeaturePackageImpl#getEFeatureProperty()
          * @generated
@@ -574,6 +699,7 @@ public interface EFeaturePackage extends EPackage {
          * The meta object literal for the '<em>Attribute</em>' data type.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
+         *
          * @see org.geotools.data.efeature.EFeatureAttribute
          * @see org.geotools.data.efeature.impl.EFeaturePackageImpl#getEFeatureAttribute()
          * @generated
@@ -584,6 +710,7 @@ public interface EFeaturePackage extends EPackage {
          * The meta object literal for the '<em>Geometry</em>' data type.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
+         *
          * @see org.geotools.data.efeature.EFeatureGeometry
          * @see org.geotools.data.efeature.impl.EFeaturePackageImpl#getEFeatureGeometry()
          * @generated
@@ -591,9 +718,11 @@ public interface EFeaturePackage extends EPackage {
         EDataType EFEATURE_GEOMETRY = eINSTANCE.getEFeatureGeometry();
 
         /**
-         * The meta object literal for the '<em>EStructural Feature</em>' data type. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         * 
+         * The meta object literal for the '<em>EStructural Feature</em>' data type.
+         * <!--
+         * begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
          * @see org.eclipse.emf.ecore.EStructuralFeature
          * @see org.geotools.data.efeature.impl.EFeaturePackageImpl#getEStructuralFeature()
          * @generated
@@ -604,6 +733,7 @@ public interface EFeaturePackage extends EPackage {
          * The meta object literal for the '<em>Geometry</em>' data type.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
+         *
          * @see com.vividsolutions.jts.geom.Geometry
          * @see org.geotools.data.efeature.impl.EFeaturePackageImpl#getGeometry()
          * @generated
@@ -613,7 +743,9 @@ public interface EFeaturePackage extends EPackage {
         /**
          * The meta object literal for the '<em>EStructure Info</em>' data type.
          * <!-- begin-user-doc
-         * --> <!-- end-user-doc -->
+         * -->
+         * <!-- end-user-doc -->
+         *
          * @see org.geotools.data.efeature.EStructureInfo
          * @see org.geotools.data.efeature.impl.EFeaturePackageImpl#getEStructureInfo()
          * @generated
@@ -622,8 +754,10 @@ public interface EFeaturePackage extends EPackage {
 
         /**
          * The meta object literal for the '<em>Info</em>' data type.
-         * <!-- begin-user-doc --> <!--
+         * <!-- begin-user-doc -->
+         * <!--
          * end-user-doc -->
+         *
          * @see org.geotools.data.efeature.EFeatureInfo
          * @see org.geotools.data.efeature.impl.EFeaturePackageImpl#getEFeatureInfo()
          * @generated
@@ -633,7 +767,9 @@ public interface EFeaturePackage extends EPackage {
         /**
          * The meta object literal for the '<em>Attribute Info</em>' data type.
          * <!-- begin-user-doc
-         * --> <!-- end-user-doc -->
+         * -->
+         * <!-- end-user-doc -->
+         *
          * @see org.geotools.data.efeature.EFeatureAttributeInfo
          * @see org.geotools.data.efeature.impl.EFeaturePackageImpl#getEFeatureAttributeInfo()
          * @generated
@@ -643,7 +779,9 @@ public interface EFeaturePackage extends EPackage {
         /**
          * The meta object literal for the '<em>Geometry Info</em>' data type.
          * <!-- begin-user-doc
-         * --> <!-- end-user-doc -->
+         * -->
+         * <!-- end-user-doc -->
+         *
          * @see org.geotools.data.efeature.EFeatureGeometryInfo
          * @see org.geotools.data.efeature.impl.EFeaturePackageImpl#getEFeatureGeometryInfo()
          * @generated
@@ -652,8 +790,10 @@ public interface EFeaturePackage extends EPackage {
 
         /**
          * The meta object literal for the '<em>List</em>' data type.
-         * <!-- begin-user-doc --> <!--
+         * <!-- begin-user-doc -->
+         * <!--
          * end-user-doc -->
+         *
          * @see java.util.List
          * @see org.geotools.data.efeature.impl.EFeaturePackageImpl#getList()
          * @generated
@@ -664,6 +804,7 @@ public interface EFeaturePackage extends EPackage {
          * The meta object literal for the '<em>Feature</em>' data type.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
+         *
          * @see org.opengis.feature.Feature
          * @see org.geotools.data.efeature.impl.EFeaturePackageImpl#getFeature()
          * @generated
@@ -674,6 +815,7 @@ public interface EFeaturePackage extends EPackage {
          * The meta object literal for the '<em>Property</em>' data type.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
+         *
          * @see org.opengis.feature.Property
          * @see org.geotools.data.efeature.impl.EFeaturePackageImpl#getProperty()
          * @generated
@@ -684,6 +826,7 @@ public interface EFeaturePackage extends EPackage {
          * The meta object literal for the '<em>Attribute</em>' data type.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
+         *
          * @see org.opengis.feature.Attribute
          * @see org.geotools.data.efeature.impl.EFeaturePackageImpl#getAttribute()
          * @generated
@@ -694,6 +837,7 @@ public interface EFeaturePackage extends EPackage {
          * The meta object literal for the '<em>Transaction</em>' data type.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
+         *
          * @see org.geotools.data.Transaction
          * @see org.geotools.data.efeature.impl.EFeaturePackageImpl#getTransaction()
          * @generated
@@ -701,15 +845,15 @@ public interface EFeaturePackage extends EPackage {
         EDataType TRANSACTION = eINSTANCE.getTransaction();
 
         /**
-         * The meta object literal for the '<em>Geometry Attribute</em>' data type. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         * 
+         * The meta object literal for the '<em>Geometry Attribute</em>' data type.
+         * <!--
+         * begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
          * @see org.opengis.feature.GeometryAttribute
          * @see org.geotools.data.efeature.impl.EFeaturePackageImpl#getGeometryAttribute()
          * @generated
          */
         EDataType GEOMETRY_ATTRIBUTE = eINSTANCE.getGeometryAttribute();
-
     }
-
 } // EFeaturePackage

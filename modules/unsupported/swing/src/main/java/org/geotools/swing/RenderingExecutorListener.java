@@ -22,25 +22,17 @@ package org.geotools.swing;
  *
  * @author Michael Bedward
  * @since 2.7
- *
  * @source $URL$
  * @version $Id$
  */
 public interface RenderingExecutorListener {
-    
-    /**
-     * Called by the executor when rendering has started.
-     */
+
+    /** Called by the executor when rendering has started. */
     void onRenderingStarted(RenderingExecutorEvent ev);
-    
-    /**
-     * Called by the executor when rendering has been completed.
-     */
+
+    /** Called by the executor when rendering has been completed. */
     void onRenderingCompleted(RenderingExecutorEvent ev);
-    
-    /**
-     * Called by the executor when rendering failed for some reason.
-     */
+
+    /** Called by the executor when rendering failed for some reason. */
     void onRenderingFailed(RenderingExecutorEvent ev);
-    
 }

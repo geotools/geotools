@@ -19,25 +19,21 @@ package org.geotools.referencing.wkt;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
-
 import javax.measure.unit.SI;
 import javax.measure.unit.Unit;
 import javax.measure.unit.UnitFormat;
-
 import org.geotools.metadata.iso.citation.Citations;
 import org.junit.Test;
 
-/**
- * @author ian
- *
- */
+/** @author ian */
 public class GeoToolsUnitFormatTest {
 
     private UnitFormat unitFormat = GeoToolsUnitFormat.getInstance(Citations.EPSG);
 
     /**
-     * Test method for {@link javax.measure.unit.UnitFormat#format(javax.measure.unit.Unit, java.lang.Appendable)}.
-     * 
+     * Test method for {@link javax.measure.unit.UnitFormat#format(javax.measure.unit.Unit,
+     * java.lang.Appendable)}.
+     *
      * @throws IOException
      */
     @Test
@@ -48,5 +44,4 @@ public class GeoToolsUnitFormatTest {
         unitFormat.format(u, appendable);
         assertEquals("Missing symbol formats", u.toString(), appendable.toString());
     }
-
 }

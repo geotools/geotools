@@ -19,9 +19,7 @@ package org.geotools.gce.imagemosaic.acceptors;
 
 import java.util.List;
 
-/**
- * Factory for creating GranuleAcceptor instances
- */
+/** Factory for creating GranuleAcceptor instances */
 public interface GranuleAcceptorFactorySPI {
     List<GranuleAcceptor> create();
 }

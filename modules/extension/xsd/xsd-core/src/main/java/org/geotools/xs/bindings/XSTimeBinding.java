@@ -19,19 +19,18 @@ package org.geotools.xs.bindings;
 import java.sql.Time;
 import java.util.Calendar;
 import java.util.TimeZone;
-
 import javax.xml.namespace.QName;
 import org.geotools.xml.InstanceComponent;
 import org.geotools.xml.SimpleBinding;
 import org.geotools.xml.impl.DatatypeConverterImpl;
 import org.geotools.xs.XS;
 
-
 /**
  * Binding object for the type http://www.w3.org/2001/XMLSchema:time.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;xs:simpleType name="time" id="time"&gt;
  *      &lt;xs:annotation&gt;
@@ -57,23 +56,18 @@ import org.geotools.xs.XS;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class XSTimeBinding implements SimpleBinding {
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return XS.TIME;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -84,6 +78,7 @@ public class XSTimeBinding implements SimpleBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * This binding returns objects of type {@link Calendar}.
      * <!-- end-user-doc -->
@@ -95,20 +90,21 @@ public class XSTimeBinding implements SimpleBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * This binding returns objects of type {@link Calendar}.
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Time parse(InstanceComponent instance, Object value)
-        throws Exception {
+    public Time parse(InstanceComponent instance, Object value) throws Exception {
         Calendar calTime = DatatypeConverterImpl.getInstance().parseTime((String) value);
         Time time = new Time(calTime.getTimeInMillis());
         return time;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *

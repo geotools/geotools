@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2002-2008, Open Source Geospatial Foundation (OSGeo)
  *
  *    This library is free software; you can redistribute it and/or
@@ -16,9 +16,12 @@
  */
 package org.geotools.data.view;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
 import java.io.IOException;
-
+import junit.framework.TestCase;
 import org.geotools.data.DataUtilities;
+import org.geotools.data.Query;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -32,87 +35,77 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-
-import junit.framework.TestCase;
-
-import org.geotools.data.Query;
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class DefaultViewTest extends TestCase {
 
     String typeName = "type1";
     private SimpleFeatureSource fs;
 
     protected void setUp() throws Exception {
-        
-        SimpleFeatureType ft=DataUtilities.createType(typeName, "geom:Point,name:String,id:int");
-        ListFeatureCollection collection = new ListFeatureCollection( ft );
-        collection.add(createFeatures(ft,1));
-        collection.add(createFeatures(ft,2));
-        collection.add(createFeatures(ft,3));
-        collection.add(createFeatures(ft,4));
+
+        SimpleFeatureType ft = DataUtilities.createType(typeName, "geom:Point,name:String,id:int");
+        ListFeatureCollection collection = new ListFeatureCollection(ft);
+        collection.add(createFeatures(ft, 1));
+        collection.add(createFeatures(ft, 2));
+        collection.add(createFeatures(ft, 3));
+        collection.add(createFeatures(ft, 4));
         fs = DataUtilities.source(collection);
     }
 
-    private SimpleFeature createFeatures(SimpleFeatureType ft, int i) throws IllegalAttributeException {
-        GeometryFactory fac=new GeometryFactory();
-        return SimpleFeatureBuilder.build(ft,new Object[]{
-            fac.createPoint(new Coordinate(i,i)),
-            "name"+i, 
-            new Integer(i)
-        }, null);
+    private SimpleFeature createFeatures(SimpleFeatureType ft, int i)
+            throws IllegalAttributeException {
+        GeometryFactory fac = new GeometryFactory();
+        return SimpleFeatureBuilder.build(
+                ft,
+                new Object[] {fac.createPoint(new Coordinate(i, i)), "name" + i, new Integer(i)},
+                null);
     }
 
     public void testGetFeatures() throws Exception {
 
         SimpleFeatureSource view = getView();
-        
+
         SimpleFeatureIterator features = view.getFeatures().features();
-        int count=0;
-        while( features.hasNext() ){
+        int count = 0;
+        while (features.hasNext()) {
             count++;
             features.next();
         }
-        
+
         assertEquals(2, count);
     }
 
     public void testGetFeaturesQuery() throws Exception {
 
         SimpleFeatureSource view = getView();
-        
+
         SimpleFeatureIterator features = view.getFeatures(getQuery()).features();
-        int count=0;
-        while( features.hasNext() ){
+        int count = 0;
+        while (features.hasNext()) {
             count++;
             features.next();
         }
-        
+
         assertEquals(1, count);
     }
+
     public void testGetFeaturesFilter() throws Exception {
 
         SimpleFeatureSource view = getView();
         Filter f = getFilter();
         SimpleFeatureIterator features = view.getFeatures(f).features();
-        int count=0;
-        while( features.hasNext() ){
+        int count = 0;
+        while (features.hasNext()) {
             count++;
             features.next();
         }
-        
+
         assertEquals(1, count);
     }
-  
+
     public void testGetCount() throws Exception {
         SimpleFeatureSource view = getView();
-        
+
         Query query = getQuery();
         int count = view.getCount(query);
         assertEquals(1, count);
@@ -130,12 +123,12 @@ public class DefaultViewTest extends TestCase {
         return f;
     }
 
-    private SimpleFeatureSource getView() throws IllegalFilterException, IOException, SchemaException {
+    private SimpleFeatureSource getView()
+            throws IllegalFilterException, IOException, SchemaException {
         FilterFactory fac = CommonFactoryFinder.getFilterFactory(null);
         Filter f = fac.less(fac.property("id"), fac.literal(3));
 
         SimpleFeatureSource view = DataUtilities.createView(fs, new Query(typeName, f));
         return view;
     }
-
 }

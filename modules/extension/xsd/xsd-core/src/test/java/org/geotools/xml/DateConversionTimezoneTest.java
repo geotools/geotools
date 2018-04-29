@@ -19,20 +19,18 @@ package org.geotools.xml;
 import java.sql.Date;
 import java.util.Calendar;
 import java.util.TimeZone;
-
+import junit.framework.TestCase;
 import org.geotools.factory.Hints;
 import org.geotools.xs.bindings.XSDateBinding;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import junit.framework.TestCase;
-
 /**
- * Tests for time zone aspects of date conversion in {@link XmlConverterFactory} and {@link XSDateBinding}.
- * 
- * @author awaterme
+ * Tests for time zone aspects of date conversion in {@link XmlConverterFactory} and {@link
+ * XSDateBinding}.
  *
+ * @author awaterme
  */
 public class DateConversionTimezoneTest extends TestCase {
 
@@ -45,13 +43,13 @@ public class DateConversionTimezoneTest extends TestCase {
 
     /**
      * Tests date encoding having {@link Hints#LOCAL_DATE_TIME_HANDLING} activated
-     * 
+     *
      * @throws Exception
      */
     @Test
     public void testLocalEncode() throws Exception {
         Hints.putSystemDefault(Hints.LOCAL_DATE_TIME_HANDLING, true);
-        
+
         // UTC
         assertDateEquals("2015-09-02", 2015, 9, 2, 0, "UTC");
         assertDateEquals("2015-09-02", 2015, 9, 2, 1, "UTC");
@@ -73,7 +71,7 @@ public class DateConversionTimezoneTest extends TestCase {
 
     /**
      * Tests date encoding having {@link Hints#LOCAL_DATE_TIME_HANDLING} activated
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -97,8 +95,9 @@ public class DateConversionTimezoneTest extends TestCase {
         assertDateEquals("2015-09-03Z", 2015, 9, 2, 23, "EST");
     }
 
-    private void assertDateEquals(String expected, int year, int month, int day, int hour,
-            String timezoneId) throws Exception {
+    private void assertDateEquals(
+            String expected, int year, int month, int day, int hour, String timezoneId)
+            throws Exception {
         TimeZone timeZone = TimeZone.getTimeZone(timezoneId);
         TimeZone.setDefault(timeZone);
         Calendar calendar = Calendar.getInstance();
@@ -113,9 +112,7 @@ public class DateConversionTimezoneTest extends TestCase {
         assertEquals(expected, sut2Convert(date));
     }
 
-    /**
-     * Save & restore system time zone, so later tests are not affected.
-     */
+    /** Save & restore system time zone, so later tests are not affected. */
     @Before
     public void setUp() {
         systemTimeZone = TimeZone.getDefault();
@@ -134,6 +131,4 @@ public class DateConversionTimezoneTest extends TestCase {
     private String sut2Convert(Date date) throws Exception {
         return sut2.encode(date, null);
     }
-
 }
-

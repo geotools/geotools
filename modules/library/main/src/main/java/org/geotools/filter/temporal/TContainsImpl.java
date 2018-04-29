@@ -4,7 +4,7 @@
  *
  *    (C) 2011, Open Source Geospatial Foundation (OSGeo)
  *    (C) 2005, Open Geospatial Consortium Inc.
- *    
+ *
  *    All Rights Reserved. http://www.opengis.org/legal/
  */
 package org.geotools.filter.temporal;
@@ -14,17 +14,13 @@ import org.opengis.filter.expression.Expression;
 import org.opengis.filter.temporal.TContains;
 import org.opengis.temporal.RelativePosition;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class TContainsImpl extends BinaryTemporalOperatorImpl implements TContains {
-    
+
     public TContainsImpl(Expression e1, Expression e2) {
         super(e1, e2);
     }
-    
+
     public TContainsImpl(Expression e1, Expression e2, MatchAction matchAction) {
         super(e1, e2, matchAction);
     }
@@ -37,5 +33,4 @@ public class TContainsImpl extends BinaryTemporalOperatorImpl implements TContai
     public Object accept(FilterVisitor visitor, Object extraData) {
         return visitor.visit(this, extraData);
     }
-
 }

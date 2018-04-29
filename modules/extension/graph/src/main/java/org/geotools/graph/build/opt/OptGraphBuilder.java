@@ -23,39 +23,33 @@ import org.geotools.graph.structure.Node;
 import org.geotools.graph.structure.opt.OptEdge;
 import org.geotools.graph.structure.opt.OptNode;
 
-
 /**
  * An implementation of GraphBuilder that builds optimized graph components.
- * 
+ *
  * @see org.geotools.graph.structure.opt.OptNode
  * @see org.geotools.graph.structure.opt.OptEdge
- * 
  * @author Justin Deoliveira, Refractions Research Inc, jdeolive@refractions.net
- *
- *
- *
  * @source $URL$
  */
 public class OptGraphBuilder extends BasicGraphBuilder {
- 
-  /**
-   * Creates an optimized node.
-   * 
-   * @see GraphBuilder#buildNode()
-   * @see OptNode
-   */
-  public Node buildNode() {
-    return(new OptNode());
-  }
 
-  /**
-   * Creates an optimized edge.
-   * 
-   * @see GraphBuilder#buildEdge()
-   * @see OptEdge
-   */
-  public Edge buildEdge(Node nodeA, Node nodeB) {
-    return(new OptEdge((OptNode)nodeA, (OptNode)nodeB));
-  }
- 
+    /**
+     * Creates an optimized node.
+     *
+     * @see GraphBuilder#buildNode()
+     * @see OptNode
+     */
+    public Node buildNode() {
+        return (new OptNode());
+    }
+
+    /**
+     * Creates an optimized edge.
+     *
+     * @see GraphBuilder#buildEdge()
+     * @see OptEdge
+     */
+    public Edge buildEdge(Node nodeA, Node nodeB) {
+        return (new OptEdge((OptNode) nodeA, (OptNode) nodeB));
+    }
 }

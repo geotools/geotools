@@ -1,23 +1,20 @@
 package org.geotools.wmts.bindings;
 
-import org.geotools.wmts.WMTS;
-import org.geotools.xml.*;
-import org.geotools.xml.AbstractComplexBinding;
-
+import javax.xml.namespace.QName;
 import net.opengis.wmts.v_1.TileMatrixSetLimitsType;
 import net.opengis.wmts.v_1.TileMatrixSetLinkType;
 import net.opengis.wmts.v_1.wmtsv_1Factory;
-import net.opengis.wmts.v_1.impl.TileMatrixSetLinkTypeImpl;
-
-import javax.xml.namespace.QName;
+import org.geotools.wmts.WMTS;
+import org.geotools.xml.*;
+import org.geotools.xml.AbstractComplexBinding;
 
 /**
  * Binding object for the element http://www.opengis.net/wmts/1.0:TileMatrixSetLink.
  *
  * <p>
- * 
+ *
  * <pre>
- *	 <code>
+ *  <code>
  *  &lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;element name="TileMatrixSetLink" xmlns="http://www.w3.org/2001/XMLSchema"&gt;
  *  		&lt;annotation&gt;
  *  			&lt;documentation&gt;Metadata about the TileMatrixSet reference.&lt;/documentation&gt;
@@ -31,18 +28,17 @@ import javax.xml.namespace.QName;
  *  				&lt;/element&gt;
  *  				&lt;element minOccurs="0" ref="wmts:TileMatrixSetLimits"&gt;
  *  					&lt;annotation&gt;
- *  						&lt;documentation&gt;Indices limits for this tileMatrixSet. The absence of this 
- *  						element means that tile row and tile col indices are only limited by 0 
+ *  						&lt;documentation&gt;Indices limits for this tileMatrixSet. The absence of this
+ *  						element means that tile row and tile col indices are only limited by 0
  *  						and the corresponding tileMatrixSet maximum definitions.&lt;/documentation&gt;
  *  					&lt;/annotation&gt;
  *  				&lt;/element&gt;
  *  			&lt;/sequence&gt;
  *  		&lt;/complexType&gt;
- *  	&lt;/element&gt; 
- *		
- *	  </code>
+ *  	&lt;/element&gt;
+ *
+ *   </code>
  * </pre>
- * </p>
  *
  * @generated
  */
@@ -55,16 +51,16 @@ public class TileMatrixSetLinkBinding extends AbstractComplexBinding {
         this.factory = factory;
     }
 
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return WMTS.TileMatrixSetLink;
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Class getType() {
@@ -72,17 +68,18 @@ public class TileMatrixSetLinkBinding extends AbstractComplexBinding {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated modifiable
      */
     public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         TileMatrixSetLinkType link = factory.createTileMatrixSetLinkType();
-        
-        link.setTileMatrixSet((String) node.getChildValue("TileMatrixSet"));
-        link.setTileMatrixSetLimits((TileMatrixSetLimitsType) node.getChildValue("TileMatrixSetLimits"));
-        return link;
-    
-    }
 
+        link.setTileMatrixSet((String) node.getChildValue("TileMatrixSet"));
+        link.setTileMatrixSetLimits(
+                (TileMatrixSetLimitsType) node.getChildValue("TileMatrixSetLimits"));
+        return link;
+    }
 }

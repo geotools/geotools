@@ -1,24 +1,22 @@
 package org.geotools.mbtiles;
 
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import org.geotools.factory.Hints;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.jdbc.SQLDialect;
 import org.opengis.feature.type.GeometryDescriptor;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-
 public class MBTilesDialect extends SQLDialect {
 
     protected MBTilesDialect(JDBCDataStore dataStore) {
         super(dataStore);
-    }    
+    }
 
     @Override
     public void initializeConnection(Connection cx) throws SQLException {
@@ -39,10 +37,15 @@ public class MBTilesDialect extends SQLDialect {
     }
 
     @Override
-    public Geometry decodeGeometryValue(GeometryDescriptor descriptor, ResultSet rs, String column,
-                                        GeometryFactory factory, Connection cx, Hints hints) throws IOException, SQLException {
+    public Geometry decodeGeometryValue(
+            GeometryDescriptor descriptor,
+            ResultSet rs,
+            String column,
+            GeometryFactory factory,
+            Connection cx,
+            Hints hints)
+            throws IOException, SQLException {
         // TODO Auto-generated method stub
         return null;
     }
-
 }

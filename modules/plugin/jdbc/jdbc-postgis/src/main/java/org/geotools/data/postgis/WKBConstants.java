@@ -1,9 +1,9 @@
 /*
  *  GeoTools - The Open Source Java GIS Toolkit
  *  http://geotools.org
- * 
+ *
  *  (C) 2015, Open Source Geospatial Foundation (OSGeo)
- * 
+ *
  * The JTS Topology Suite is a collection of Java classes that
  * implement the fundamental operations required to validate a given
  * geo-spatial data set to a known topological specification.
@@ -37,9 +37,7 @@
  */
 package org.geotools.data.postgis;
 
-/**
- * Constant values used by the WKB format
- */
+/** Constant values used by the WKB format */
 interface WKBConstants {
     int wkbXDR = 0;
 

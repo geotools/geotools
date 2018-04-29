@@ -18,31 +18,26 @@ package org.geotools.data.efeature.tests.unit.conditions;
 
 import java.util.Collection;
 import java.util.Iterator;
-
 import org.eclipse.emf.query.conditions.Condition;
 import org.geotools.data.efeature.query.EAttributeValueIsBetween;
 import org.geotools.data.efeature.query.EFeatureEncoderException;
 
 /**
  * @author kengu - 14. juni 2011
- *
- *
  * @source $URL$
  */
 public class EAttributeValueIsBetweenTest extends AbstractEAttributeValueTest {
-    
-    // ----------------------------------------------------- 
+
+    // -----------------------------------------------------
     //  Constructors
     // -----------------------------------------------------
-    
-    /**
-     * @param name
-     */
+
+    /** @param name */
     public EAttributeValueIsBetweenTest(String name) {
-        super(name,BETWEEN);
+        super(name, BETWEEN);
     }
 
-    // ----------------------------------------------------- 
+    // -----------------------------------------------------
     //  AbstractEAttributeValueTest implementation
     // -----------------------------------------------------
 
@@ -51,16 +46,15 @@ public class EAttributeValueIsBetweenTest extends AbstractEAttributeValueTest {
         //
         // Get iterator
         //
-        Iterator<?> it = ((Collection<?>)filter).iterator();
+        Iterator<?> it = ((Collection<?>) filter).iterator();
         //
         // Get lower and upper values
         //
         Object lower = it.next();
-        Object upper = it.next();        
+        Object upper = it.next();
         //
         // Create condition
         //
         return new EAttributeValueIsBetween(eAttribute, lower, upper);
     }
-
 }

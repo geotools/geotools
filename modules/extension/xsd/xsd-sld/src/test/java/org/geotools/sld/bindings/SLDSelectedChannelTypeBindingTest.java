@@ -16,15 +16,10 @@
  */
 package org.geotools.sld.bindings;
 
-import org.w3c.dom.Element;
 import org.geotools.styling.SelectedChannelType;
+import org.w3c.dom.Element;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class SLDSelectedChannelTypeBindingTest extends SLDTestSupport {
     public void testType() throws Exception {
         assertEquals(SelectedChannelType.class, new SLDSelectedChannelTypeBinding(null).getType());

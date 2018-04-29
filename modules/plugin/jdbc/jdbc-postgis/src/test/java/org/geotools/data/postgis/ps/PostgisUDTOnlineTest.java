@@ -17,19 +17,13 @@
 package org.geotools.data.postgis.ps;
 
 import org.geotools.data.postgis.PostgisUDTTestSetup;
-import org.geotools.jdbc.JDBCUDTOnlineTest;
 import org.geotools.jdbc.JDBCUDTTestSetup;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class PostgisUDTOnlineTest extends org.geotools.data.postgis.PostgisUDTOnlineTest {
 
     @Override
     protected JDBCUDTTestSetup createTestSetup() {
         return new PostgisUDTTestSetup(new PostGISPSTestSetup());
     }
-
 }

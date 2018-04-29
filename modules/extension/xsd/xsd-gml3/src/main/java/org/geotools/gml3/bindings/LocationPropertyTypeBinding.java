@@ -16,21 +16,19 @@
  */
 package org.geotools.gml3.bindings;
 
+import com.vividsolutions.jts.geom.Geometry;
 import javax.xml.namespace.QName;
-
 import org.geotools.gml3.GML;
 import org.geotools.xml.AbstractComplexBinding;
 import org.geotools.xml.ElementInstance;
 import org.geotools.xml.Node;
 
-import com.vividsolutions.jts.geom.Geometry;
-
-
 /**
  * Binding object for the type http://www.opengis.net/gml:LocationPropertyType.
  *
  * <p>
- *        <pre>
+ *
+ * <pre>
  *         <code>
  *  &lt;complexType name="LocationPropertyType"&gt;
  *      &lt;annotation&gt;
@@ -52,23 +50,18 @@ import com.vividsolutions.jts.geom.Geometry;
  *
  *          </code>
  *         </pre>
- * </p>
  *
  * @generated
- *
- *
- *
  * @source $URL$
  */
 public class LocationPropertyTypeBinding extends AbstractComplexBinding {
-    /**
-     * @generated
-     */
+    /** @generated */
     public QName getTarget() {
         return GML.LocationPropertyType;
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -79,19 +72,19 @@ public class LocationPropertyTypeBinding extends AbstractComplexBinding {
     }
 
     /**
+     *
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated modifiable
      */
-    public Object parse(ElementInstance instance, Node node, Object value)
-        throws Exception {
+    public Object parse(ElementInstance instance, Node node, Object value) throws Exception {
         return node.getChildValue(Geometry.class);
     }
 
-    public Object getProperty(Object object, QName name)
-        throws Exception {
-        if ("_Geometry".equals(name.getLocalPart()) || "AbstractGeometry".equals(name.getLocalPart()) ) {
+    public Object getProperty(Object object, QName name) throws Exception {
+        if ("_Geometry".equals(name.getLocalPart())
+                || "AbstractGeometry".equals(name.getLocalPart())) {
             return object;
         }
 

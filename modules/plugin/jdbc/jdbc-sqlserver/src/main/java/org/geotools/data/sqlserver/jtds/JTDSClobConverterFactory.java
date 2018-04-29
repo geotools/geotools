@@ -19,17 +19,12 @@ package org.geotools.data.sqlserver.jtds;
 
 import java.lang.reflect.Method;
 import java.util.logging.Logger;
-
 import org.geotools.factory.Hints;
 import org.geotools.util.Converter;
 import org.geotools.util.ConverterFactory;
 import org.geotools.util.logging.Logging;
 
-/**
- *
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class JTDSClobConverterFactory implements ConverterFactory {
     private static final Logger LOGGER = Logging.getLogger(JTDSClobConverterFactory.class);
     JTDSDateConverter converter = new JTDSDateConverter();
@@ -53,17 +48,16 @@ public class JTDSClobConverterFactory implements ConverterFactory {
                 JTDS_CLOB = jTDSClobClass;
                 JTDS_LENGTH = JTDS_CLOB.getMethod("length");
                 JTDS_GET_CHARS = JTDS_CLOB.getMethod("getSubString", long.class, int.class);
-            } catch(Exception e) {
+            } catch (Exception e) {
                 throw new RuntimeException("Could not initialize the jtds clob converter", e);
             }
         }
     }
 
     @Override
-    public Converter createConverter(Class<?> source, Class<?> target,
-            Hints hints) {
+    public Converter createConverter(Class<?> source, Class<?> target, Hints hints) {
         // if the jdbc driver is not in the classpath don't bother trying to convert
-        if(JTDS_CLOB == null) {
+        if (JTDS_CLOB == null) {
             LOGGER.fine("Failed to find JTDS jar");
             return null;
         }
@@ -92,8 +86,5 @@ public class JTDSClobConverterFactory implements ConverterFactory {
             String buffer = (String) JTDS_GET_CHARS.invoke(source, 1l, length);
             return (T) new String(buffer);
         }
-
     }
-
-
 }

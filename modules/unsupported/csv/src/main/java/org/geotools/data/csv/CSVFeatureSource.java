@@ -1,7 +1,7 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- *    
+ *
  * 	  (c) 2014 Open Source Geospatial Foundation - all rights reserved
  * 	  (c) 2012 - 2014 OpenPlans
  *
@@ -18,7 +18,6 @@
 package org.geotools.data.csv;
 
 import java.io.IOException;
-
 import org.geotools.data.FeatureReader;
 import org.geotools.data.Query;
 import org.geotools.data.store.ContentEntry;
@@ -51,8 +50,8 @@ public class CSVFeatureSource extends ContentFeatureSource {
     }
 
     protected ReferencedEnvelope getBoundsInternal(Query query) throws IOException {
-        ReferencedEnvelope bounds = new ReferencedEnvelope(getSchema()
-                .getCoordinateReferenceSystem());
+        ReferencedEnvelope bounds =
+                new ReferencedEnvelope(getSchema().getCoordinateReferenceSystem());
         FeatureReader<SimpleFeatureType, SimpleFeature> featureReader = getReader(query);
         try {
             while (featureReader.hasNext()) {
@@ -87,5 +86,4 @@ public class CSVFeatureSource extends ContentFeatureSource {
     protected SimpleFeatureType buildFeatureType() throws IOException {
         return getDataStore().getSchema();
     }
-
 }

@@ -19,42 +19,35 @@ package org.geotools.data.shapefile.files;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class StreamLogging {
-    private static final Logger LOGGER = org.geotools.util.logging.Logging
-            .getLogger("org.geotools.data.shapefile");
+    private static final Logger LOGGER =
+            org.geotools.util.logging.Logging.getLogger("org.geotools.data.shapefile");
 
     private String name;
     private int open = 0;
 
     /**
      * The name that will appear in the debug message
-     * 
+     *
      * @param name
      */
     public StreamLogging(String name) {
         this.name = name;
     }
 
-    /**
-     * Call when reader or writer is opened
-     */
+    /** Call when reader or writer is opened */
     public synchronized void open() {
         open++;
-        if(LOGGER.isLoggable(Level.FINER)) {
+        if (LOGGER.isLoggable(Level.FINER)) {
             LOGGER.finest(name + " has been opened. Number open: " + open);
         }
     }
 
     public synchronized void close() {
         open--;
-        if(LOGGER.isLoggable(Level.FINER)) {
+        if (LOGGER.isLoggable(Level.FINER)) {
             LOGGER.finest(name + " has been closed. Number open: " + open);
         }
     }
-
 }

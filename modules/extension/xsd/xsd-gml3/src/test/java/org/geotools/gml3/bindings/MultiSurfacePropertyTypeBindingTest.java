@@ -20,18 +20,17 @@ import org.geotools.gml3.GML;
 import org.geotools.gml3.GML3TestSupport;
 import org.w3c.dom.Document;
 
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class MultiSurfacePropertyTypeBindingTest extends GML3TestSupport {
     public void testEncode() throws Exception {
         Document dom = encode(GML3MockData.multiPolygon(), GML.multiSurfaceProperty);
-        assertEquals(1,
-            dom.getElementsByTagNameNS(GML.NAMESPACE, GML.MultiSurface.getLocalPart()).getLength());
-        assertEquals(2,
-            dom.getElementsByTagNameNS(GML.NAMESPACE, GML.surfaceMember.getLocalPart()).getLength());
+        assertEquals(
+                1,
+                dom.getElementsByTagNameNS(GML.NAMESPACE, GML.MultiSurface.getLocalPart())
+                        .getLength());
+        assertEquals(
+                2,
+                dom.getElementsByTagNameNS(GML.NAMESPACE, GML.surfaceMember.getLocalPart())
+                        .getLength());
     }
 }

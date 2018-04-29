@@ -20,7 +20,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -29,160 +28,149 @@ import org.opengis.feature.simple.SimpleFeature;
 
 /**
  * {@link EFeature} hints class.
+ *
  * <p>
- * 
+ *
  * @author kengu - 4. juni 2011
- *
- *
  * @source $URL$
  */
 public class EFeatureHints extends Hints {
-    
+
     /** serialVersionUID */
     private static final long serialVersionUID = 1L;
 
-    /** 
-     * Key to set of {@link EAttribute}s which maps to {@link EFeature#getID()}
-     */
+    /** Key to set of {@link EAttribute}s which maps to {@link EFeature#getID()} */
     public static final Key EFEATURE_ID_ATTRIBUTES = new Key(Set.class);
 
-    /** 
-     * Key to set of {@link EAttribute}s which maps to {@link EFeature#getSRID()}  
-     */
+    /** Key to set of {@link EAttribute}s which maps to {@link EFeature#getSRID()} */
     public static final Key EFEATURE_SRID_ATTRIBUTES = new Key(Set.class);
-    
-    /** 
-     * Key to set of {@link EAttribute}s which maps to {@link EFeature#getDefault()}  
-     */
+
+    /** Key to set of {@link EAttribute}s which maps to {@link EFeature#getDefault()} */
     public static final Key EFEATURE_DEFAULT_ATTRIBUTES = new Key(Set.class);
-    
-    /** 
-     * Key to set of default  {@link EFeature#getDefault()} value
-     */
+
+    /** Key to set of default {@link EFeature#getDefault()} value */
     public static final Key EFEATURE_DEFAULT_GEOMETRY_NAMES = new Key(Set.class);
 
-    /** 
-     * Key to default {@link EFeature#getSRID()} value 
-     */
+    /** Key to default {@link EFeature#getSRID()} value */
     public static final Key EFEATURE_DEFAULT_SRID_HINT = new Key(String.class);
-    
+
     /**
-     * Indicates that {@link ESimpleFeature}s returned by {@link EFeature#getData()} and
-     * {@link EFeatureReader#next()} should be considered detached from the 
-     * {@link EFeatureDataStore#eResource() backing store}. If <code>true</code> 
-     * the features can be updated without altering the backing store.
-     * <p>
-     * Default value is <code>false</code>.
-     * </p> 
+     * Indicates that {@link ESimpleFeature}s returned by {@link EFeature#getData()} and {@link
+     * EFeatureReader#next()} should be considered detached from the {@link
+     * EFeatureDataStore#eResource() backing store}. If <code>true</code> the features can be
+     * updated without altering the backing store.
+     *
+     * <p>Default value is <code>false</code>.
+     *
      * @see {@link Hints#FEATURE_DETACHED} (same key)
      */
     public static final Key EFEATURE_VALUES_DETACHED = Hints.FEATURE_DETACHED;
 
     /**
-     * Indicates that {@link ESimpleFeature}s returned by {@link EFeature#getData()} and
-     * {@link EFeatureReader#next()} should be singletons. If <code>true</code> 
-     * repeated calls to {@link EFeature#getData()} and {@link EFeatureReader#next()} will
-     * return the same feature instance.
-     * <p>
-     * Use this hint to optimize operations where only 
-     * {@link SimpleFeature#getAttributes() values} are read or written. 
-     * <p>
-     * Default value is <code>true</code>.
-     * </p> 
-     */    
+     * Indicates that {@link ESimpleFeature}s returned by {@link EFeature#getData()} and {@link
+     * EFeatureReader#next()} should be singletons. If <code>true</code> repeated calls to {@link
+     * EFeature#getData()} and {@link EFeatureReader#next()} will return the same feature instance.
+     *
+     * <p>Use this hint to optimize operations where only {@link SimpleFeature#getAttributes()
+     * values} are read or written.
+     *
+     * <p>Default value is <code>true</code>.
+     */
     public static final Key EFEATURE_SINGLETON_FEATURES = new Key(Boolean.class);
 
-    // ----------------------------------------------------- 
+    // -----------------------------------------------------
     //  Constructors
     // -----------------------------------------------------
-    
-    /**
-     * Default {@link EFeatureHints} constructor 
-     */
+
+    /** Default {@link EFeatureHints} constructor */
     public EFeatureHints() {
         super();
         //
         // Initialize EFeature hints
         //
-        put(EFEATURE_ID_ATTRIBUTES, new HashSet<EAttribute>(
-                Arrays.asList(new EAttribute[]{EFeaturePackage.eINSTANCE.getEFeature_ID()})));
-        put(EFEATURE_SRID_ATTRIBUTES, new HashSet<EAttribute>(
-                Arrays.asList(new EAttribute[]{EFeaturePackage.eINSTANCE.getEFeature_SRID()})));
-        put(EFEATURE_DEFAULT_ATTRIBUTES, new HashSet<EAttribute>(
-                Arrays.asList(new EAttribute[]{EFeaturePackage.eINSTANCE.getEFeature_Default()})));
-        put(EFEATURE_DEFAULT_SRID_HINT,EFeatureConstants.DEFAULT_SRID);
-        put(EFEATURE_DEFAULT_GEOMETRY_NAMES,new HashSet<String>(
-                Arrays.asList(EFeatureConstants.DEFAULT_GEOMETRY_NAME)));
-        put(EFEATURE_VALUES_DETACHED,new Boolean(false));
-        put(EFEATURE_SINGLETON_FEATURES,new Boolean(false));
-                
+        put(
+                EFEATURE_ID_ATTRIBUTES,
+                new HashSet<EAttribute>(
+                        Arrays.asList(
+                                new EAttribute[] {EFeaturePackage.eINSTANCE.getEFeature_ID()})));
+        put(
+                EFEATURE_SRID_ATTRIBUTES,
+                new HashSet<EAttribute>(
+                        Arrays.asList(
+                                new EAttribute[] {EFeaturePackage.eINSTANCE.getEFeature_SRID()})));
+        put(
+                EFEATURE_DEFAULT_ATTRIBUTES,
+                new HashSet<EAttribute>(
+                        Arrays.asList(
+                                new EAttribute[] {
+                                    EFeaturePackage.eINSTANCE.getEFeature_Default()
+                                })));
+        put(EFEATURE_DEFAULT_SRID_HINT, EFeatureConstants.DEFAULT_SRID);
+        put(
+                EFEATURE_DEFAULT_GEOMETRY_NAMES,
+                new HashSet<String>(Arrays.asList(EFeatureConstants.DEFAULT_GEOMETRY_NAME)));
+        put(EFEATURE_VALUES_DETACHED, new Boolean(false));
+        put(EFEATURE_SINGLETON_FEATURES, new Boolean(false));
     }
-    
-    /**
-     * {@link EFeatureHints} copy constructor
-     */
-    public EFeatureHints(Map<?,?> eHints) {
+
+    /** {@link EFeatureHints} copy constructor */
+    public EFeatureHints(Map<?, ?> eHints) {
         this();
-        if(eHints!=null) putAll(eHints);
+        if (eHints != null) putAll(eHints);
     }
-    
-    
-    // ----------------------------------------------------- 
+
+    // -----------------------------------------------------
     //  EFeatureHints methods
     // -----------------------------------------------------
 
-    
     public EAttribute eGetAttribute(EClass eClass, Key eHint) {
         Object eHints = get(eHint);
-        if(eHints instanceof Set) {
-            Set<?> eSet = (Set<?>)eHints;
+        if (eHints instanceof Set) {
+            Set<?> eSet = (Set<?>) eHints;
             EList<EAttribute> eAll = eClass.getEAllAttributes();
-            for(EAttribute it : eAll) {
-                if(eSet.contains(it)) {
+            for (EAttribute it : eAll) {
+                if (eSet.contains(it)) {
                     return it;
                 }
             }
-        } else if(eHints instanceof EAttribute) {
+        } else if (eHints instanceof EAttribute) {
             EList<EAttribute> eAll = eClass.getEAllAttributes();
-            if(eAll.contains(eHints)) {
-                return (EAttribute)eHints;
+            if (eAll.contains(eHints)) {
+                return (EAttribute) eHints;
             }
         }
         return null;
-    }  
-    
+    }
+
     public boolean eValuesDetached() {
         Object v = get(EFEATURE_VALUES_DETACHED);
-        return v instanceof Boolean && (Boolean)v;
+        return v instanceof Boolean && (Boolean) v;
     }
-    
+
     public Boolean eSetValuesDetached(boolean eValuesDetached) {
-        return (Boolean)put(EFEATURE_VALUES_DETACHED,eValuesDetached);
+        return (Boolean) put(EFEATURE_VALUES_DETACHED, eValuesDetached);
     }
-        
+
     public boolean eSingletonFeatures() {
-        Object v = get(EFEATURE_SINGLETON_FEATURES);        
-        return v instanceof Boolean && (Boolean)v;
+        Object v = get(EFEATURE_SINGLETON_FEATURES);
+        return v instanceof Boolean && (Boolean) v;
     }
 
     public Boolean eSetSingletonFeatures(boolean eSingletonFeatures) {
-        return (Boolean)put(EFEATURE_SINGLETON_FEATURES,eSingletonFeatures);
+        return (Boolean) put(EFEATURE_SINGLETON_FEATURES, eSingletonFeatures);
     }
-    
+
     public Object replace(Hints hints, Key key) {
-        Object value = hints.get(key); 
-        if(value!=null) {
-            return put(key,value);
+        Object value = hints.get(key);
+        if (value != null) {
+            return put(key, value);
         }
         return null;
     }
-    
+
     public void restore(Key key, Object value) {
-        if(value!=null) {
-            put(key,value);
+        if (value != null) {
+            put(key, value);
         }
     }
-    
-    
-    
 }

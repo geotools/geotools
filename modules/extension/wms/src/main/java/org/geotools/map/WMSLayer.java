@@ -3,7 +3,7 @@
  *    http://geotools.org
  *
  *    (C) 2004-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
-
 import org.geotools.data.ows.Layer;
 import org.geotools.data.wms.WebMapServer;
 import org.geotools.data.wms.request.GetMapRequest;
@@ -45,18 +44,15 @@ import org.opengis.referencing.operation.MathTransform;
  * Wraps a WMS layer into a {@link MapLayer} for interactive rendering usage TODO: expose a
  * GetFeatureInfo that returns a feature collection TODO: expose the list of named styles and allow
  * choosing which style to use
- * 
+ *
  * @author Andrea Aime - OpenGeo
- *
- *
  * @source $URL$
  */
 public class WMSLayer extends GridReaderLayer {
 
-    /**
-     * The default raster style
-     */
+    /** The default raster style */
     static Style STYLE;
+
     static {
         StyleFactory factory = CommonFactoryFinder.getStyleFactory(null);
         RasterSymbolizer symbolizer = factory.createRasterSymbolizer();
@@ -73,17 +69,17 @@ public class WMSLayer extends GridReaderLayer {
 
     /**
      * Builds a new WMS layer
-     * 
+     *
      * @param wms
      * @param layer
      */
     public WMSLayer(WebMapServer wms, Layer layer) {
-        super( new WMSCoverageReader(wms, layer), STYLE );
+        super(new WMSCoverageReader(wms, layer), STYLE);
     }
-    
+
     /**
      * Builds a new WMS layer
-     * 
+     *
      * @param wms
      * @param layer
      * @param style
@@ -92,14 +88,13 @@ public class WMSLayer extends GridReaderLayer {
         super(new WMSCoverageReader(wms, layer, style), STYLE);
     }
 
-    public WMSCoverageReader getReader(){
+    public WMSCoverageReader getReader() {
         return (WMSCoverageReader) this.reader;
     }
-    
 
     public synchronized ReferencedEnvelope getBounds() {
         WMSCoverageReader wmsReader = getReader();
-        if( wmsReader != null ){
+        if (wmsReader != null) {
             return wmsReader.bounds;
         }
         return super.getBounds();
@@ -107,9 +102,8 @@ public class WMSLayer extends GridReaderLayer {
 
     /**
      * Retrieves the feature info as text (assuming "text/plain" is a supported feature info format)
-     * 
-     * @param pos
-     *            the position to be checked, in real world coordinates
+     *
+     * @param pos the position to be checked, in real world coordinates
      * @return
      * @throws IOException
      */
@@ -117,7 +111,8 @@ public class WMSLayer extends GridReaderLayer {
         BufferedReader br = null;
         try {
             GetMapRequest mapRequest = getReader().mapRequest;
-            InputStream is = getReader().getFeatureInfo(pos, "text/plain", featureCount, mapRequest);
+            InputStream is =
+                    getReader().getFeatureInfo(pos, "text/plain", featureCount, mapRequest);
             br = new BufferedReader(new InputStreamReader(is));
             String line;
             StringBuilder sb = new StringBuilder();
@@ -130,19 +125,16 @@ public class WMSLayer extends GridReaderLayer {
         } catch (Throwable t) {
             throw (IOException) new IOException("Failed to grab feature info").initCause(t);
         } finally {
-            if (br != null)
-                br.close();
+            if (br != null) br.close();
         }
     }
 
     /**
      * Retrieves the feature info as a generic input stream, it's the duty of the caller to
      * interpret the contents and ensure the stream is closed feature info format)
-     * 
-     * @param pos
-     *            the position to be checked, in real world coordinates
-     * @param infoFormat
-     *            The INFO_FORMAT parameter in the GetFeatureInfo request
+     *
+     * @param pos the position to be checked, in real world coordinates
+     * @param infoFormat The INFO_FORMAT parameter in the GetFeatureInfo request
      * @return
      * @throws IOException
      */
@@ -156,39 +148,51 @@ public class WMSLayer extends GridReaderLayer {
      * Allows to run a standalone GetFeatureInfo request, without the need to have previously run a
      * GetMap request on this layer. Mostly useful for stateless users that rebuild the map context
      * for each rendering operation (e.g., GeoServer)
-     * 
+     *
      * @param pos
-     * @param infoFormat
-     *            The INFO_FORMAT parameter in the GetFeatureInfo request
+     * @param infoFormat The INFO_FORMAT parameter in the GetFeatureInfo request
      * @return
      * @throws IOException
      */
-    public InputStream getFeatureInfo(ReferencedEnvelope bbox, int width, int height, int x, int y,
-            String infoFormat, int featureCount) throws IOException {
+    public InputStream getFeatureInfo(
+            ReferencedEnvelope bbox,
+            int width,
+            int height,
+            int x,
+            int y,
+            String infoFormat,
+            int featureCount)
+            throws IOException {
         try {
             getReader().initMapRequest(bbox, width, height, null);
-            // we need to convert x/y from the screen to the original coordinates, and then to the ones
+            // we need to convert x/y from the screen to the original coordinates, and then to the
+            // ones
             // that will be used to make the request
-            AffineTransform at = RendererUtilities.worldToScreenTransform(bbox, new Rectangle(width, height));
+            AffineTransform at =
+                    RendererUtilities.worldToScreenTransform(bbox, new Rectangle(width, height));
             Point2D screenPos = new Point2D.Double(x, y);
             Point2D worldPos = new Point2D.Double(x, y);
             at.inverseTransform(screenPos, worldPos);
             DirectPosition2D fromPos = new DirectPosition2D(worldPos.getX(), worldPos.getY());
             DirectPosition2D toPos = new DirectPosition2D();
-            MathTransform mt = CRS.findMathTransform(bbox.getCoordinateReferenceSystem(), getReader().requestCRS, true);
+            MathTransform mt =
+                    CRS.findMathTransform(
+                            bbox.getCoordinateReferenceSystem(), getReader().requestCRS, true);
             mt.transform(fromPos, toPos);
             GetMapRequest mapRequest = getReader().mapRequest;
             return getReader().getFeatureInfo(toPos, infoFormat, featureCount, mapRequest);
-        } catch(IOException e) {
+        } catch (IOException e) {
             throw e;
-        } catch(Throwable t) {
-            throw (IOException) new IOException("Unexpected issue during GetFeatureInfo execution").initCause(t);
+        } catch (Throwable t) {
+            throw (IOException)
+                    new IOException("Unexpected issue during GetFeatureInfo execution")
+                            .initCause(t);
         }
     }
 
     /**
      * Returns the {@link WebMapServer} used by this layer
-     * 
+     *
      * @return
      */
     public WebMapServer getWebMapServer() {
@@ -197,24 +201,25 @@ public class WMSLayer extends GridReaderLayer {
 
     /**
      * Returns the WMS {@link Layer}s used by this layer
-     * 
+     *
      * @return
      */
     public List<Layer> getWMSLayers() {
-        return ((WMSCoverageReader)reader).getLayers();
+        return ((WMSCoverageReader) reader).getLayers();
     }
 
     /**
      * return the names of the styles used by this layer.
+     *
      * @return
      */
-    public List<String> getWMSStyles(){
-        return ((WMSCoverageReader)reader).getStyles();
+    public List<String> getWMSStyles() {
+        return ((WMSCoverageReader) reader).getStyles();
     }
-    
+
     /**
      * Returns the CRS used to make requests to the remote WMS
-     * 
+     *
      * @return
      */
     public CoordinateReferenceSystem getCoordinateReferenceSystem() {
@@ -223,7 +228,7 @@ public class WMSLayer extends GridReaderLayer {
 
     /**
      * Returns last GetMap request performed by this layer
-     * 
+     *
      * @return
      */
     public GetMapRequest getLastGetMap() {
@@ -232,7 +237,7 @@ public class WMSLayer extends GridReaderLayer {
 
     /**
      * Allows to add another WMS layer into the GetMap requests
-     * 
+     *
      * @param layer
      */
     public void addLayer(Layer layer) {
@@ -241,7 +246,7 @@ public class WMSLayer extends GridReaderLayer {
 
     /**
      * Allows to add another WMS layer into the GetMap requests
-     * 
+     *
      * @param layer
      * @param style
      */
@@ -253,7 +258,7 @@ public class WMSLayer extends GridReaderLayer {
      * Returns true if the specified CRS can be used directly to perform WMS requests. Natively
      * supported crs will provide the best rendering quality as no client side reprojection is
      * necessary, the image coming from the WMS server will be used as-is
-     * 
+     *
      * @param crs
      * @return
      */
@@ -265,5 +270,4 @@ public class WMSLayer extends GridReaderLayer {
             return false;
         }
     }
-
 }

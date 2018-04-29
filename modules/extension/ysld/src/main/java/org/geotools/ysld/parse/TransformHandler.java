@@ -4,7 +4,7 @@
  *
  *    (C) 2016 Open Source Geospatial Foundation (OSGeo)
  *    (C) 2014-2016 Boundless Spatial
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -17,6 +17,13 @@
  */
 package org.geotools.ysld.parse;
 
+import static org.geotools.ysld.ProcessUtil.*;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import org.geotools.data.Parameter;
 import org.geotools.filter.FunctionFactory;
 import org.geotools.styling.FeatureTypeStyle;
@@ -28,18 +35,7 @@ import org.opengis.filter.FilterFactory;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.expression.Function;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
-import static org.geotools.ysld.ProcessUtil.*;
-
-/**
- * Handles parsing a Ysld "transform" property into a transformation {@link Function} object.
- *
- */
+/** Handles parsing a Ysld "transform" property into a transformation {@link Function} object. */
 public class TransformHandler extends YsldParseHandler {
 
     FeatureTypeStyle featureStyle;
@@ -101,12 +97,13 @@ public class TransformHandler extends YsldParseHandler {
         Expression outputWidth = null;
         Expression outputHeight = null;
         if (wmsParams) {
-            outputBBOX = paramExpression("outputBBOX",
-                    Collections.singletonList(envVar("wms_bbox")));
-            outputWidth = paramExpression("outputWidth",
-                    Collections.singletonList(envVar("wms_width")));
-            outputHeight = paramExpression("outputHeight",
-                    Collections.singletonList(envVar("wms_height")));
+            outputBBOX =
+                    paramExpression("outputBBOX", Collections.singletonList(envVar("wms_bbox")));
+            outputWidth =
+                    paramExpression("outputWidth", Collections.singletonList(envVar("wms_width")));
+            outputHeight =
+                    paramExpression(
+                            "outputHeight", Collections.singletonList(envVar("wms_height")));
         }
 
         YamlMap params = map.map("params");
@@ -137,26 +134,27 @@ public class TransformHandler extends YsldParseHandler {
                     valueArgs.add(factory.filter.literal(val));
                 }
                 switch (key) {
-                case "outputBBOX":
-                    outputBBOX = paramExpression(key, valueArgs);
-                    break;
-                case "outputWidth":
-                    outputWidth = paramExpression(key, valueArgs);
-                    break;
-                case "outputHeight":
-                    outputHeight = paramExpression(key, valueArgs);
-                    break;
-                default:
-                    processArgs.add(paramExpression(key, valueArgs));
+                    case "outputBBOX":
+                        outputBBOX = paramExpression(key, valueArgs);
+                        break;
+                    case "outputWidth":
+                        outputWidth = paramExpression(key, valueArgs);
+                        break;
+                    case "outputHeight":
+                        outputHeight = paramExpression(key, valueArgs);
+                        break;
+                    default:
+                        processArgs.add(paramExpression(key, valueArgs));
                 }
             }
         }
-        // If this process is the only one, and no input parameter was specified, use data by default
+        // If this process is the only one, and no input parameter was specified, use data by
+        // default
         if (input == null && processes == 1) {
             input = "data";
         }
         if (input != null) {
-            processArgs.add(paramExpression(input, Collections.<Expression> emptyList()));
+            processArgs.add(paramExpression(input, Collections.<Expression>emptyList()));
         }
         if (outputBBOX != null) {
             processArgs.add(outputBBOX);
@@ -175,8 +173,8 @@ public class TransformHandler extends YsldParseHandler {
         List<Expression> paramArgs = new ArrayList<Expression>(valueArgs.size() + 1);
         paramArgs.add(factory.filter.literal(name));
         paramArgs.addAll(valueArgs);
-        return factory.filter.function("parameter",
-                paramArgs.toArray(new Expression[paramArgs.size()]));
+        return factory.filter.function(
+                "parameter", paramArgs.toArray(new Expression[paramArgs.size()]));
     }
 
     void convertAndAdd(Object val, Parameter<?> p, List<Expression> valueArgs) {
@@ -187,12 +185,11 @@ public class TransformHandler extends YsldParseHandler {
                 valueArgs.add(factory.filter.literal(o));
             }
         } else if (val instanceof Map) {
-            YamlMap map = YamlMap.<Map<?, ?>> create((Map<?, ?>) val).map();
+            YamlMap map = YamlMap.<Map<?, ?>>create((Map<?, ?>) val).map();
             valueArgs.add(process(map));
         } else {
             // just add directly
             valueArgs.add(factory.filter.literal(val));
         }
     }
-
 }

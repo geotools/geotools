@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2015, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -15,17 +15,16 @@
  */
 package org.geotools.geometry.jts;
 
-import java.util.List;
-
 import com.vividsolutions.jts.geom.CoordinateSequence;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.Polygon;
+import java.util.List;
 
 /**
  * A subclass of polygon that can host also curves and will linearize if needed
- * 
+ *
  * @author Andrea Aime - GeoSolutions
  */
 public class CurvePolygon extends Polygon implements CurvedGeometry<Polygon> {
@@ -33,14 +32,14 @@ public class CurvePolygon extends Polygon implements CurvedGeometry<Polygon> {
     private static final long serialVersionUID = -6961191502473439328L;
     private double tolerance;
 
-    public CurvePolygon(LinearRing shell, List<LinearRing> holes, GeometryFactory factory,
-            double tolerance) {
+    public CurvePolygon(
+            LinearRing shell, List<LinearRing> holes, GeometryFactory factory, double tolerance) {
         super(shell, holes.toArray(new LinearRing[holes.size()]), factory);
         this.tolerance = tolerance;
     }
 
-    public CurvePolygon(LinearRing shell, LinearRing[] holes, GeometryFactory factory,
-            double tolerance) {
+    public CurvePolygon(
+            LinearRing shell, LinearRing[] holes, GeometryFactory factory, double tolerance) {
         super(shell, holes, factory);
         this.tolerance = tolerance;
     }
@@ -115,5 +114,4 @@ public class CurvePolygon extends Polygon implements CurvedGeometry<Polygon> {
     public int getCoordinatesDimension() {
         return 2;
     }
-
 }

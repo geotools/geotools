@@ -18,7 +18,6 @@ package org.geotools.data.postgis;
 
 import java.io.IOException;
 import java.util.logging.Logger;
-
 import org.geotools.data.DataUtilities;
 import org.geotools.data.Query;
 import org.geotools.data.store.ContentFeatureSource;
@@ -31,7 +30,7 @@ import org.opengis.filter.PropertyIsEqualTo;
 
 public class PostGISHStoreOnlineTest extends JDBCTestSupport {
 
-    private final static Logger LOGGER = Logger.getLogger(PostGISHStoreOnlineTest.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PostGISHStoreOnlineTest.class.getName());
 
     @Override
     protected JDBCTestSetup createTestSetup() {

@@ -1,9 +1,9 @@
 /*
  *    GeoTools - The Open Source Java GIS Toolkit
  *    http://geotools.org
- * 
+ *
  *    (C) 2006-2008, Open Source Geospatial Foundation (OSGeo)
- *    
+ *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
  *    License as published by the Free Software Foundation;
@@ -16,18 +16,13 @@
  */
 package org.geotools.filter.spatial;
 
+import com.vividsolutions.jts.geom.Geometry;
 import org.geotools.filter.CartesianDistanceFilter;
 import org.opengis.filter.FilterVisitor;
 import org.opengis.filter.expression.Expression;
 import org.opengis.filter.spatial.DWithin;
 
-import com.vividsolutions.jts.geom.Geometry;
-
-/**
- * 
- *
- * @source $URL$
- */
+/** @source $URL$ */
 public class DWithinImpl extends CartesianDistanceFilter implements DWithin {
 
     public DWithinImpl(Expression e1, Expression e2) {
@@ -38,12 +33,12 @@ public class DWithinImpl extends CartesianDistanceFilter implements DWithin {
         super(e1, e2, matchAction);
     }
 
-	@Override
-        public boolean evaluateInternal(Geometry left, Geometry right) {
-		return left.isWithinDistance(right, getDistance());
-	}
-	
-	public Object accept(FilterVisitor visitor, Object extraData) {
-		return visitor.visit(this,extraData);
-	}
+    @Override
+    public boolean evaluateInternal(Geometry left, Geometry right) {
+        return left.isWithinDistance(right, getDistance());
+    }
+
+    public Object accept(FilterVisitor visitor, Object extraData) {
+        return visitor.visit(this, extraData);
+    }
 }
